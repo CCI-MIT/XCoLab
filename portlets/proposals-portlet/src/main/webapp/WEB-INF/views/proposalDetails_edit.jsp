@@ -81,6 +81,7 @@
         <form:hidden path="baseProposalContestId" />
         <form:hidden path="move" />
         <form:hidden path="hideOnMove" />
+        <form:hidden path="moveFromContestPhaseId" />
         <form:hidden path="moveToContestPhaseId" />
 
         <div class="addpropbox q1">

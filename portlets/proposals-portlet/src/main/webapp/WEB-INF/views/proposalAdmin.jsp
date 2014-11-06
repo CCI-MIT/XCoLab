@@ -220,9 +220,10 @@
 		</div>
 	</div>
     <script>
-		var currentProposal = {
+		currentProposal = {
 				proposalId: ${proposal.proposalId},
-				version: ${proposal.version}
+				version: ${proposal.version},
+                contestPhaseId :  ${proposal.contestPhase.contestPhasePK}
 		}
 	</script>
 

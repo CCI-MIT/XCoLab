@@ -36,6 +36,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             @RequestParam(defaultValue="false") boolean edit,
             @RequestParam(defaultValue="false") boolean move,
             @RequestParam(defaultValue="false") boolean hideOnMove,
+            @RequestParam(required = false) Long moveFromContestPhaseId,
             Model model, PortletRequest request) 
             throws PortalException, SystemException {
         
@@ -58,6 +59,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         			new UpdateProposalDetailsBean(proposalsContext.getProposalWrapped(request), baseProposalWrapped, true);
 
             updateProposalDetailsBean.setHideOnMove(hideOnMove);
+            updateProposalDetailsBean.setMoveFromContestPhaseId(moveFromContestPhaseId);
         	// find sections that can't be mapped without user interaction
 
         	boolean hasNotMappedSections = false;

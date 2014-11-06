@@ -284,7 +284,8 @@ public class PointsLocalServiceUtil {
     }
 
     /**
-    * Distribute points for given contest
+    * Calculates the hypothetical points for all proposals for a given contest and
+    * if the contest ended, materializes the points for winning proposals.
     *
     * @param contestPK
     * @throws SystemException
@@ -294,6 +295,13 @@ public class PointsLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().distributePoints(contestPK);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Points> previewMaterializedPoints(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().previewMaterializedPoints(contestPK);
     }
 
     public static void clearService() {

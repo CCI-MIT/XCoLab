@@ -29,7 +29,15 @@
 			<url>https://maven.nuxeo.org/nexus/content/groups/public/</url>
 			<name>nuxeo</name>
 		</repository>
-		
+
+        <repository>
+            <id>ROMA-repo</id>
+            <url>https://raw.github.com/CCI-MIT/ROMA/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
         <repository>
             <id>XColab-repo</id>
             <url>https://xcolab.googlecode.com/svn/maven</url>

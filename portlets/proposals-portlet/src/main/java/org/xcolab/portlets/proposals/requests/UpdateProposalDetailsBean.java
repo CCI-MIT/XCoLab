@@ -22,7 +22,8 @@ public class UpdateProposalDetailsBean {
     private long imageId;
     private long baseProposalId;
     private long baseProposalContestId;
-    private long moveToContestPhaseId;
+    private Long moveToContestPhaseId;
+    private long moveFromContestPhaseId;
     private boolean hideOnMove;
 
     // legacy
@@ -150,5 +151,12 @@ public class UpdateProposalDetailsBean {
         this.hideOnMove = hideOnMove;
     }
 
+    public Long getMoveFromContestPhaseId() {
+        return moveFromContestPhaseId;
+    }
+
+    public void setMoveFromContestPhaseId(Long moveFromContestPhaseId) {
+        this.moveFromContestPhaseId = moveFromContestPhaseId;
+    }
 
 }

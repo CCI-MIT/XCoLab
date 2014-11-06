@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.ext.portlet.contests.ContestStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseType;
@@ -585,10 +586,13 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     private void reindex(Contest contest) {
         Indexer indexer = IndexerRegistryUtil.getIndexer(Contest.class);
 
+        String errorMessage = "Can't reindex contest " + contest.getContestPK();
         try {
             indexer.reindex(contest.getContestPK());
         } catch (SearchException e) {
-            _log.error("Can't reindex contest " + contest.getContestPK(), e);
+            _log.error(errorMessage, e);
+        } catch (NullPointerException e) {
+            _log.error(errorMessage, e);
         }
     }
     
@@ -935,8 +939,13 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public boolean hasContestEnded(Contest contest) throws SystemException, PortalException {
     	ContestPhase activePhase = getActiveOrLastPhase(contest);
+        com.ext.portlet.model.ContestPhaseType type = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(activePhase.getContestPhaseType());
+        boolean typeIsClosed =
+                ContestStatus.COMPLETED.toString().toUpperCase().equals(type.getStatus().toUpperCase()) ||
+                ContestStatus.CLOSED.toString().toUpperCase().equals(type.getStatus().toUpperCase()) ||
+                ContestStatus.FINISHED.toString().toUpperCase().equals(type.getStatus().toUpperCase());
         //Either, the active or last phase has no end date (which means the contest ended), or the current date is after it's end date.
-    	if (activePhase.getPhaseEndDate() == null || new Date().after(activePhase.getPhaseEndDate())) {
+    	if (typeIsClosed && (activePhase.getPhaseEndDate() == null || new Date().after(activePhase.getPhaseEndDate()))) {
     		return true;
     	}
     	return false;
@@ -950,6 +959,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             return null;
         }
     	ContestPhase lastPhase = getActiveOrLastPhase(contest);
+        //this is the winner of combined award such as judges & popular choice award. he will be returned if no one won the popular choice award directly
+        Proposal winnerOfCombinedAwards = null;
 
         for (Proposal proposal : ProposalLocalServiceUtil.getActiveProposalsInContestPhase(lastPhase.getContestPhasePK())) {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), lastPhase.getContestPhasePK());
@@ -962,14 +973,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             	if (pcpa.getNumericValue() == 2) {
             		// FIXME - this has to be improved to make sure that we select proper ribbon
             		return proposal;
-            	}
+            	} else if (pcpa.getNumericValue() == 5 || pcpa.getNumericValue() == 7|| pcpa.getNumericValue() == 8|| pcpa.getNumericValue() == 9) {
+                    winnerOfCombinedAwards = proposal;
+                }
             }
             catch (NoSuchProposalContestPhaseAttributeException e) {
             	// ignore
             }
             
         }
-        return null;
+        return winnerOfCombinedAwards;
     	
     }
 

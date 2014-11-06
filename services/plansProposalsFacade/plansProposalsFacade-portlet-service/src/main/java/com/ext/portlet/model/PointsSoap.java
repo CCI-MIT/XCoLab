@@ -20,6 +20,7 @@ public class PointsSoap implements Serializable {
     private double _hypotheticalPoints;
     private long _pointsSourceId;
     private long _originatingContestPK;
+    private long _originatingProposalId;
 
     public PointsSoap() {
     }
@@ -34,6 +35,7 @@ public class PointsSoap implements Serializable {
         soapModel.setHypotheticalPoints(model.getHypotheticalPoints());
         soapModel.setPointsSourceId(model.getPointsSourceId());
         soapModel.setOriginatingContestPK(model.getOriginatingContestPK());
+        soapModel.setOriginatingProposalId(model.getOriginatingProposalId());
 
         return soapModel;
     }
@@ -136,5 +138,13 @@ public class PointsSoap implements Serializable {
 
     public void setOriginatingContestPK(long originatingContestPK) {
         _originatingContestPK = originatingContestPK;
+    }
+
+    public long getOriginatingProposalId() {
+        return _originatingProposalId;
+    }
+
+    public void setOriginatingProposalId(long originatingProposalId) {
+        _originatingProposalId = originatingProposalId;
     }
 }

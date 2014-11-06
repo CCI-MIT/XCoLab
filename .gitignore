@@ -48,3 +48,6 @@ target*
 rebel.xml
 
 /other/logwatcher/src/main/resources/config.properties
+
+#sitemonitor
+/other/site-monitor/src/main/resources/siteMonitor-config.xml

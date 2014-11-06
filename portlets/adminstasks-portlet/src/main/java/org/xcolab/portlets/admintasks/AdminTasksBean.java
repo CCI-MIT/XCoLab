@@ -1180,6 +1180,11 @@ public class AdminTasksBean {
         SessionRenderer.render("pushMessages");
     }
 
+    public void testLogs() {
+        _log.error("Test error log");
+        _log.info("Test info log");
+        _log.debug("Test debug log");
+    }
 
 	public DataBean getDataBean() {
 		return dataBean;

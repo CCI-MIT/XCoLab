@@ -1193,6 +1193,7 @@
 			<basic name="hypotheticalPoints" />
 			<basic name="pointsSourceId" />
 			<basic name="originatingContestPK" />
+			<basic name="originatingProposalId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

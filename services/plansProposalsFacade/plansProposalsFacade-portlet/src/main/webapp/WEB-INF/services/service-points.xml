@@ -61,7 +61,8 @@
     	<column name="hypotheticalPoints" type="double" />
     	<column name="pointsSourceId" type="long" />
     	<column name="originatingContestPK" type="long" />
-    	
+    	<column name="originatingProposalId" type="long" />
+
         <finder return-type="Collection" name="ProposalId">
             <finder-column name="proposalId" />
         </finder>

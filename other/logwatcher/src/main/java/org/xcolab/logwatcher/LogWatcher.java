@@ -20,9 +20,8 @@ public class LogWatcher {
 
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
         parseConfigFile();
+        createWhiteListFileIfNotExists();
         readWhiteListFromDisk();
-
-
 
         String command = "tail -F " + prop.getProperty("pathForLogFile");
 
@@ -53,8 +52,9 @@ public class LogWatcher {
                 Iterator<ParsedException> i = newLogMessages.iterator();
                 while (i.hasNext()) {
                     ParsedException e = i.next();
-                    // handle only exceptions
-                    if (e.header.contains("ERROR") || e.header.contains("Exception")) {
+                    // handle only exceptions (check first half of message)
+                    String half = e.header.substring(0,e.header.length()/2);
+                    if (half.contains("ERROR") || half.contains("Exception")) {
                         // ignore known exceptions
                         boolean known = false;
                         for (ParsedException ex : knownExceptions){
@@ -62,9 +62,9 @@ public class LogWatcher {
                         }
                         if (!known) {
                             knownExceptions.add(e);
-                            System.out.println(e.header);
-                            //createIssue(e);
-                            saveWhiteListToDisk();
+                            //System.out.println(e.header);
+                            createIssue(e);
+                            appendToWhiteListOnDisk(e);
                         }
                     }
                     i.remove();
@@ -84,7 +84,7 @@ public class LogWatcher {
             IssueInputBuilder issueBuilder = new IssueInputBuilder(prop.getProperty("jiraProjectKey"), 1l);
 
             issueBuilder.setSummary("[LOGWATCHER] " + e.header.substring(0,Math.min(e.header.length(),200)));
-            issueBuilder.setDescription("This ticket was generated automatically by logwatcher.\n\nStacktrace:\n" + e.header + "\n" + e.stackTrace);
+            issueBuilder.setDescription("This ticket was generated automatically by logwatcher.\n\nStacktrace:\n" + e.header + "\n\n" + e.stackTrace);
 
             restClient.getIssueClient().createIssue(issueBuilder.build()).claim();
             restClient.close();
@@ -93,11 +93,27 @@ public class LogWatcher {
         }
     }
 
-    private static void saveWhiteListToDisk(){
+    private static void createWhiteListFileIfNotExists(){
+        File f = new File(prop.getProperty("knownExceptionsPath"));
+        if(!f.exists()) {
+            try{
+                ObjectOutputStream os1 = new ObjectOutputStream(new FileOutputStream(prop.getProperty("knownExceptionsPath")));
+                os1.close();
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void appendToWhiteListOnDisk(ParsedException pe){
         try{
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(prop.getProperty("knownExceptionsPath")));
-            oos.writeObject(knownExceptions);
-            oos.close();
+            ObjectOutputStream os2 = new ObjectOutputStream(new FileOutputStream(prop.getProperty("knownExceptionsPath"), true)) {
+                protected void writeStreamHeader() throws IOException {
+                    reset();
+                }
+            };
+            os2.writeObject(pe);
+            os2.close();
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -106,9 +122,13 @@ public class LogWatcher {
     private static void readWhiteListFromDisk(){
         try{
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(prop.getProperty("knownExceptionsPath")));
-            knownExceptions = (List<ParsedException>) ois.readObject();
+            ParsedException obj;
+            while ((obj = (ParsedException)ois.readObject()) != null) {
+                knownExceptions.add(obj);
+            }
             ois.close();
-        } catch(Exception e){
+        } catch(EOFException e) {  }
+        catch(Exception e){
             e.printStackTrace();
         }
     }

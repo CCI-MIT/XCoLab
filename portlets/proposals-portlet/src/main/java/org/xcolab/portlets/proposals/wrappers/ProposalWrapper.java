@@ -34,6 +34,7 @@ public class ProposalWrapper {
     private final Proposal proposal;
     private final int version;
     private final Contest contest;
+
     private final ContestPhase contestPhase;
     private final Proposal2Phase proposal2Phase;
     private ContestPhaseRibbonType contestPhaseRibbonType;
@@ -710,5 +711,9 @@ public class ProposalWrapper {
         } else {
             return "";
         }
+    }
+
+    public ContestPhase getContestPhase() {
+        return contestPhase;
     }
 }

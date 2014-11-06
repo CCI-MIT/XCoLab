@@ -836,6 +836,7 @@
 		<field name="hypotheticalPoints" type="double" />
 		<field name="pointsSourceId" type="long" />
 		<field name="originatingContestPK" type="long" />
+		<field name="originatingProposalId" type="long" />
 	</model>
 	<model name="com.ext.portlet.model.PointsDistributionConfiguration">
 		<field name="id" type="long" />
