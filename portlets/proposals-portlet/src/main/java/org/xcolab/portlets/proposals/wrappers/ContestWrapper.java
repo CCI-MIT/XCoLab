@@ -392,7 +392,7 @@ public class ContestWrapper {
         try {
             activePhase = ContestLocalServiceUtil.getActivePhase(this.contest);
             type = new ContestPhaseWrapper(activePhase).getContestPhaseTypeObject();
-        } catch (NullPointerException | SystemException | PortalException e) {
+        } catch (IllegalArgumentException | NullPointerException | SystemException | PortalException e) {
             return false;
         }
         if (type == null || activePhase == null || contestPhase.getContestPhasePK() != activePhase.getContestPhasePK()) {
