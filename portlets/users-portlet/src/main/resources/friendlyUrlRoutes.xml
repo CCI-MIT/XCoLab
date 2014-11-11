@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.2.0//EN"
+"http://www.liferay.com/dtd/liferay-friendly-url-routes_6_2_0.dtd">
+<routes>
+    <route>
+        <pattern>/page/{page}/{instanceId}</pattern>
+        <generated-parameter name="page">{page}</generated-parameter>
+    </route>
+    
+    <route>
+        <pattern>/userId/{userId}/{instanceId}</pattern>
+        <generated-parameter name="userId">{userId}</generated-parameter>
+    </route>
+    
+    <route>
+        <pattern>/userId/{userId}/page/{page}/{instanceId}</pattern>
+        <generated-parameter name="userId">{userId}</generated-parameter>
+        <generated-parameter name="page">{page}</generated-parameter>
+    </route>
+    
+    <route>
+        <pattern>/generateDump/{instanceId}/activities.zip</pattern>
+        <generated-parameter name="action">generateDump</generated-parameter>
+    </route>
+</routes>
