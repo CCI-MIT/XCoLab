@@ -47,6 +47,10 @@
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.utils.FileUploadFilter</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter>
+		<servlet-filter-name>ErrorReporting</servlet-filter-name>
+		<servlet-filter-impl>org.xcolab.hooks.climatecolab.errorreporting.ErrorReporting</servlet-filter-impl>
+	</servlet-filter>
+	<servlet-filter>
 		<servlet-filter-name>CaptchaFilter</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.captcha.CaptchaFilter</servlet-filter-impl>
 	</servlet-filter>
@@ -97,6 +101,10 @@
     	<url-pattern>/fileUpload</url-pattern>
     </servlet-filter-mapping>
 	<servlet-filter-mapping>
+		<servlet-filter-name>ErrorReporting</servlet-filter-name>
+		<url-pattern>/c/reportError</url-pattern>
+	</servlet-filter-mapping>
+	<servlet-filter-mapping>
 		<servlet-filter-name>CaptchaFilter</servlet-filter-name>
 		<url-pattern>/captchaFilter</url-pattern>
 	</servlet-filter-mapping>
@@ -123,5 +131,7 @@
         <struts-action-path>/portal/proposal_invite_response</struts-action-path>
         <struts-action-impl>org.xcolab.hooks.climatecolab.strutsaction.ProposalMembershipInvitationResponseStrutsAction</struts-action-impl>
     </struts-action>
+
+
     
 </hook>
