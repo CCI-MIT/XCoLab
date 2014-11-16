@@ -136,7 +136,7 @@ public class UpdateProposalDetailsBean {
 	}
 
 	public long getMoveToContestPhaseId() {
-		return moveToContestPhaseId;
+		return moveToContestPhaseId == null ? -1 : moveToContestPhaseId;
 	}
 
 	public void setMoveToContestPhaseId(long moveToContestPhaseId) {
