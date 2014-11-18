@@ -50,4 +50,25 @@
 
     </div>
     <div class="shadebar"><!--  --></div>
+
+	<div class="shadebar"><!--  --></div>
+
+	<table class="contestlist table">
+		<c:forEach var="user" items="${users }">
+			<tr>
+				<td class="column contestName" style="">
+					<div class="contestFlag">
+						<a href="/web/guest/member/-/member/userId/${user.userId}">${user.screenName}</a>
+					</div>
+				</td>
+				<td class="column contestWhere">
+					${user.activityCount}
+				</td>
+				<td class="column contestWho g">
+					${user.category}
+				</td>
+			</tr>
+		</c:forEach>
+	</table>
+
 </jsp:root>

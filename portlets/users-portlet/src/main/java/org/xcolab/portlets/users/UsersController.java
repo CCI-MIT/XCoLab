@@ -18,9 +18,12 @@ import com.liferay.portal.theme.ThemeDisplay;
 
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.ext.portlet.Activity.ActivityUtil;
+import org.xcolab.portlets.users.utils.UserItem;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("view")
@@ -56,9 +59,17 @@ public class UsersController {
             viewType = VIEW_TYPE_DEFAULT;
         }
 
-        List<User> users = UserLocalServiceUtil.getUsers(0,UserLocalServiceUtil.getUsersCount()-1);
 
-        model.addAttribute("viewType", viewType);
+        //List<User> liferayUsers = UserLocalServiceUtil.getUsers(0,UserLocalServiceUtil.getUsersCount()-1);
+        List<User> liferayUsers = UserLocalServiceUtil.getUsers(0,50);
+        List<UserItem> users = new ArrayList<UserItem>();
+        for (User liferayUser : liferayUsers)
+        {
+            UserItem userItem = new UserItem(liferayUser);
+            users.add(userItem);
+        }
+
+        //model.addAttribute("viewType", viewType);
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("users", users);
 
