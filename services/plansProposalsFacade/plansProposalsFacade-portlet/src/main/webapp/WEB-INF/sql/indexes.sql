@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-
-=======
-
->>>>>>> points
-
 create index IX_FD6093DD on xcolab_ActivitySubscription (classNameId, classPK);
 create index IX_61FA63BB on xcolab_ActivitySubscription (classNameId, classPK, receiverId);
 create index IX_20164EB2 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData);
