@@ -49,7 +49,6 @@
         </div>
 
     </div>
-    <div class="shadebar"><!--  --></div>
 
 	<div class="shadebar"><!--  --></div>
 
@@ -61,14 +60,71 @@
 						<a href="/web/guest/member/-/member/userId/${user.userId}">${user.screenName}</a>
 					</div>
 				</td>
-				<td class="column contestWhere">
+				<td class="column contestProposalsCount g">
 					${user.activityCount}
 				</td>
-				<td class="column contestWho g">
+				<td class="column contestCommentsCount">
 					${user.category}
+				</td>
+				<td class="column contestWhat g">
+					${user.memberSince}
 				</td>
 			</tr>
 		</c:forEach>
 	</table>
+<br/>
+<div>
+<table>
+	<tbody>
+	<tr>
+		<td>
+		<span>Page ${pageNumber} of ${pagesCount}&#160;&#160;</span>
+		</td>
+		<td>
+	<span>
+
+	<portlet:renderURL var="firstPageURL">
+		<portlet:param name="page" value="1" />
+	</portlet:renderURL>
+		<a href="${firstPageURL}">First</a>&#160;
+	</span>
+
+	<span>
+
+	<portlet:renderURL var="prevPageURL">
+		<portlet:param name="page" value="${startPage}" />
+	</portlet:renderURL>
+		<a href="${prevPageURL}">&lt; Prev</a>&#160;
+	</span>
+
+	<c:forEach begin="${startPage}" end="${endPage}" var="p">
+		<span>
+			<portlet:renderURL var="pageURL">
+				<portlet:param name="page" value="${p}" />
+			</portlet:renderURL>
+			<a href="${pageURL}">${p}</a>&#160;
+		</span>
+	</c:forEach>
+
+	<span>
+	<portlet:renderURL var="nextPageURL">
+		<portlet:param name="page" value="${endPage}" />
+	</portlet:renderURL>
+		<a href="${nextPageURL}">Next &gt;</a>&#160;
+	</span>
+
+	<span>
+
+	<portlet:renderURL var="lastPageURL">
+		<portlet:param name="page" value="${pagesCount}" />
+	</portlet:renderURL>
+		<a href="${lastPageURL}">Last</a>
+	</span>
+		</td>
+	</tr>
+	</tbody>
+</table>
+
+</div>
 
 </jsp:root>

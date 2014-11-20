@@ -9,6 +9,7 @@ import com.liferay.portal.model.User;
 
 import java.io.Serializable;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -59,8 +60,10 @@ public class UserItem implements Serializable {
         return category;    
     }
     
-    public Date getMemberSince() {
-        return joinDate;
+    public String getMemberSince() {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/dd/yyyy");
+        return simpleDateFormat.format(joinDate);
     }
     
     public Comparable getColumnVal(MembersListColumns column) {

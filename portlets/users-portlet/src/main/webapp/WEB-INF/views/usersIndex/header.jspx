@@ -7,6 +7,7 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	<div class="headline formmargin">
 		<h1>Community Members</h1>
+		<!--
 		<portlet:renderURL var="changeToListViewTypeURL">
 			<portlet:param name="viewType" value="LIST" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
@@ -19,81 +20,82 @@
 			<portlet:param name="viewType" value="OUTLINE" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 		</portlet:renderURL>
+		-->
 			
-		<div class="view ${fn:toLowerCase(viewType)}view">
-			<!-- To switch the button over to list view just change "gridview" to "listview" -->
-			<div class="grid">
-				<div>
-					<c:choose>
-						<c:when test="${viewType == 'GRID' }">
-								Grid view
-							</c:when>
-						<c:otherwise>
-							<a href="${changeToGridViewTypeURL }">Grid view</a>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
-			<div class="outline">
-				<div>
-					<c:choose>
-						<c:when test="${viewType == 'OUTLINE' }">
-								Outline view
-							</c:when>
-						<c:otherwise>
-							<a href="${changeToOutlineViewTypeURL }">Outline view</a>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
-			<div class="list">
-				<div>
-					<c:choose>
-						<c:when test="${viewType == 'LIST' }">
-								List view
-							</c:when>
-						<c:otherwise>
-							<a href="${changeToListViewTypeURL }">List view</a>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
-		</div>
-			<div class="show">
-				<div class="show-active">
+		<!--<div class="view ${fn:toLowerCase(viewType)}view">-->
+			<!--&lt;!&ndash; To switch the button over to list view just change "gridview" to "listview" &ndash;&gt;-->
+			<!--<div class="grid">-->
+				<!--<div>-->
+					<!--<c:choose>-->
+						<!--<c:when test="${viewType == 'GRID' }">-->
+								<!--Grid view-->
+							<!--</c:when>-->
+						<!--<c:otherwise>-->
+							<!--<a href="${changeToGridViewTypeURL }">Grid view</a>-->
+						<!--</c:otherwise>-->
+					<!--</c:choose>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="outline">-->
+				<!--<div>-->
+					<!--<c:choose>-->
+						<!--<c:when test="${viewType == 'OUTLINE' }">-->
+								<!--Outline view-->
+							<!--</c:when>-->
+						<!--<c:otherwise>-->
+							<!--<a href="${changeToOutlineViewTypeURL }">Outline view</a>-->
+						<!--</c:otherwise>-->
+					<!--</c:choose>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="list">-->
+				<!--<div>-->
+					<!--<c:choose>-->
+						<!--<c:when test="${viewType == 'LIST' }">-->
+								<!--List view-->
+							<!--</c:when>-->
+						<!--<c:otherwise>-->
+							<!--<a href="${changeToListViewTypeURL }">List view</a>-->
+						<!--</c:otherwise>-->
+					<!--</c:choose>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
+			<!--<div class="show">-->
+				<!--<div class="show-active">-->
 
-                        <!-- Recorrer categorias
-						<c:when test="${showActiveContests }">
-							<a href="#" >Active contests</a>
-						</c:when>
-						-->
-							<a href="#" >All users</a>
+                        <!--&lt;!&ndash; Recorrer categorias-->
+						<!--<c:when test="${showActiveContests }">-->
+							<!--<a href="#" >Active contests</a>-->
+						<!--</c:when>-->
+						<!--&ndash;&gt;-->
+							<!--<a href="#" >All users</a>-->
 
-					<div id="priorActiveAllWidget">
-						<ul>
-							<li class="active"><a href="/web/guest/plans/" >Categoria 1</a></li>
-							<li class=""><a href="/web/guest/plans/-/plans/contestsType/prior" >Categoria 2</a></li>
-							<li class=""><a href="/web/guest/plans/-/plans/contestsType/all" >All users</a></li>
-						</ul>
-						
-					</div>
-				</div>
-			</div>
-  			<div class="divider"><!--  --></div> 
+					<!--<div id="priorActiveAllWidget">-->
+						<!--<ul>-->
+							<!--<li class="active"><a href="/web/guest/plans/" >Categoria 1</a></li>-->
+							<!--<li class=""><a href="/web/guest/plans/-/plans/contestsType/prior" >Categoria 2</a></li>-->
+							<!--<li class=""><a href="/web/guest/plans/-/plans/contestsType/all" >All users</a></li>-->
+						<!--</ul>-->
+						<!---->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+  			<!--<div class="divider">&lt;!&ndash;  &ndash;&gt;</div> -->
 
- 			<div class="filter" style="position: relative;">
- 				<portlet:renderURL var="filterURL" />
-	 			<form action="${filterURL }" id="filterContestsForm" method="get">
- 					<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
- 					<input type="hidden" name="showActiveContests" value="${showActiveContests }" />
- 					<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
- 					<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
-	 				<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter contests" name="filter" />
-    				<c:if test="${not empty sortFilterPage.filter }">
-        				<a href="javascript:;" id="contestsFilterClear">&#160;</a>
-        			</c:if>
-	            </form>
-    	    </div>
+ 			<!--<div class="filter" style="position: relative;">-->
+ 				<!--<portlet:renderURL var="filterURL" />-->
+	 			<!--<form action="${filterURL }" id="filterContestsForm" method="get">-->
+ 					<!--<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />-->
+ 					<!--<input type="hidden" name="showActiveContests" value="${showActiveContests }" />-->
+ 					<!--<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />-->
+ 					<!--<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />-->
+	 				<!--<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter contests" name="filter" />-->
+    				<!--<c:if test="${not empty sortFilterPage.filter }">-->
+        				<!--<a href="javascript:;" id="contestsFilterClear">&#160;</a>-->
+        			<!--</c:if>-->
+	            <!--</form>-->
+    	    <!--</div>-->
 
     </div>
 

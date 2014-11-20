@@ -29,39 +29,30 @@ import java.util.HashMap;
 @RequestMapping("view")
 public class UsersController {
 
-    private final static String COOKIE_VIEW_TYPE = "cc_contests_viewType";
-    private final static String VIEW_TYPE_GRID = "GRID";
-    private final static String VIEW_TYPE_LIST = "LIST";
-    private final static String VIEW_TYPE_OUTLINE = "OUTLINE";
-    private final static String VIEW_TYPE_DEFAULT = VIEW_TYPE_GRID;
+    private int USERS_PER_PAGE = 20;
 
     @RequestMapping
-    public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage, Model model,
-                            @RequestParam(required = false) String viewType) throws SystemException, PortalException {
+    public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage, @RequestParam(value = "page", required = false) Long pageParam, Model model) throws SystemException, PortalException {
 
-        if (viewType == null) {
-            // view type wasn't set
-            for (Cookie cookie: request.getCookies()) {
-                if (cookie.getName().equals(COOKIE_VIEW_TYPE)) {
-                    viewType = cookie.getValue();
-                }
-            }
-        }
-        else {
-            // we need to change the view type
-            if (viewType.equals(VIEW_TYPE_GRID) || viewType.equals(VIEW_TYPE_LIST) || viewType.equals(VIEW_TYPE_OUTLINE)) {
-                // we should set the cookie but it doesn't work currently https://issues.liferay.com/browse/LPS-25733
-                // it should be handled in the view
-                response.addProperty(new Cookie(COOKIE_VIEW_TYPE, viewType));
-            }
-        }
-        if (viewType == null) {
-            viewType = VIEW_TYPE_DEFAULT;
-        }
+        //Pagination
+
+        int page=1;
+        if (pageParam!=null)
+            page = pageParam.intValue();
+
+        //int pagesCount = (int)Math.ceil((double)UserLocalServiceUtil.getUsersCount() / (double)USERS_PER_PAGE);
+        int pagesCount = UserLocalServiceUtil.getUsersCount() / USERS_PER_PAGE;
+        int startPage = page - 5 > 0?page - 5:1;
+        int endPage = startPage + 10<pagesCount? startPage+10:pagesCount;
 
 
-        //List<User> liferayUsers = UserLocalServiceUtil.getUsers(0,UserLocalServiceUtil.getUsersCount()-1);
-        List<User> liferayUsers = UserLocalServiceUtil.getUsers(0,50);
+        int firstUser = 1;
+        if (page > 1)
+            firstUser = ((page-1) * USERS_PER_PAGE)+1;
+
+        int endUser = (firstUser+USERS_PER_PAGE)-1;
+
+        List<User> liferayUsers = UserLocalServiceUtil.getUsers(firstUser,endUser);
         List<UserItem> users = new ArrayList<UserItem>();
         for (User liferayUser : liferayUsers)
         {
@@ -69,7 +60,10 @@ public class UsersController {
             users.add(userItem);
         }
 
-        //model.addAttribute("viewType", viewType);
+        model.addAttribute("pageNumber", page);
+        model.addAttribute("pagesCount", pagesCount);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("users", users);
 
