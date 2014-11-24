@@ -35,6 +35,7 @@
 			</plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <source>1.7</source>
@@ -189,7 +190,7 @@
         <dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.0.2.Final</version>
+			<version>5.1.1.Final</version>
 		</dependency>
 
 		<dependency>

@@ -5,7 +5,7 @@
     <portlet>
         <portlet-name>loginregister-portlet</portlet-name>
 
-        <scheduler-entry>
+        <!--<scheduler-entry>
             <scheduler-description>
                 this scheduler should periodically fetch the list of conference attenders and create a colab account for
                 them
@@ -18,7 +18,7 @@
                     <time-unit>minute</time-unit>
                 </simple>
             </trigger>
-        </scheduler-entry>
+        </scheduler-entry>-->
 
         <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
         <friendly-url-mapping>login</friendly-url-mapping>

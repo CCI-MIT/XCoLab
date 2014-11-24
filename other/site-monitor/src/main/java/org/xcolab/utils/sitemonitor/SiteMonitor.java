@@ -249,14 +249,16 @@ public class SiteMonitor {
 			// proceed with crawl
 
 			for (String linkPatter : crawlConfig.getLinkPatterns()) {
-				String path = newPageUrl.substring(newPageUrl.indexOf("/", 9));
-				if (pathMatcher.match(linkPatter, path)) {
-					urlsToCrawl.add(new UrlToCrawl(newPageUrl, level + 1, crawlConfig));
-					break;
-				}
-				else {
-					//System.out.println("Url rejected: " + path);
-				}
+                int positionOf10thSlash = newPageUrl.indexOf("/", 9);
+                if (positionOf10thSlash != -1) {
+                    String path = newPageUrl.substring(positionOf10thSlash);
+                    if (pathMatcher.match(linkPatter, path)) {
+                        urlsToCrawl.add(new UrlToCrawl(newPageUrl, level + 1, crawlConfig));
+                        break;
+                    } else {
+                        //System.out.println("Url rejected: " + path);
+                    }
+                }
 			}
 
 		}
@@ -273,6 +275,7 @@ public class SiteMonitor {
 			new SiteMonitor().go();
 		}
 		catch (Exception e) {
+            e.printStackTrace();
 			_log.error(e);
 		}
 	}

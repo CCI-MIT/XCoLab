@@ -20,7 +20,7 @@
                         </div>
                     </td>
                     <c:if test="${contest.sponsorLogoId > 0}">
-                        <td>
+                        <td style="vertical-align: middle;">
                             <div class="heading-sponsor-logo">
                                 <c:choose>
                                     <c:when test="${contest.sponsorLinkAvailable}"><a href="//${contest.sponsorLink}"><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></a></c:when>
