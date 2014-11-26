@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("view")
-public class StaffMembersController {
+public class StaffMemberController {
     @RequestMapping
     public String showStaffMembers(PortletRequest request, PortletResponse response, Model model) throws SystemException, PortalException {
         StaffMembersPreferences preferences = new StaffMembersPreferences(request);
