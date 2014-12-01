@@ -164,7 +164,7 @@
                             <a href="./#{currentUser.userId}/page/edit">Manage profile
                                 and settings &gt;&gt;</a>
                         </f:subview>
-                    </ice:form> <f:subview rendered="#{not userprofileBean.viewingOwnProfile and userprofileBean.canSendMessage}">
+                    </ice:form> <f:subview rendered="#{not userprofileBean.viewingOwnProfile}">
                         <a style="margin-top: 6px; display: block;" href="javascript:;"
                            onclick="if (! deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
                             <strong>#{currentUser.firstName}</strong> a Message </a>
