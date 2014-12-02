@@ -10,6 +10,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 
+import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.util.Validator;
@@ -109,8 +110,12 @@ public class AddUpdateProposalDetailsActionController {
                 if (targetPhase == null) throw new SystemException("No Proposal creation phase is associated with target contest.");
 
                 //check if the proposal is already in the target phase
-                if (Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), targetPhase.getContestPhasePK()) != null) {
-                    throw new SystemException("The proposal is already associated with the target contest.");
+                try {
+                    if (Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), targetPhase.getContestPhasePK()) != null) {
+                        throw new SystemException("The proposal is already associated with the target contest.");
+                    }
+                } catch (NoSuchProposal2PhaseException e) {
+                    //this is the expected behaviour.
                 }
 
             	if (updateProposalSectionsBean.isHideOnMove()) {
