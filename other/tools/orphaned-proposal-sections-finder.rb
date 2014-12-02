@@ -79,7 +79,7 @@ GROUP BY
     )
     if contest_count.first["count"] < 2
       puts "pId: "+p["proposalId"].to_s+", sectionId: "+p["additionalId"].to_s+", maxV: "+p["version"].to_s+", section-string-length: "+p["stringValue"].length.to_s
-      proposals_affected[p["proposalId"]] = 1
+      proposals_affected[p["proposalId"]] = c
     end
 
   end
@@ -91,5 +91,7 @@ GROUP BY
 end
 
 puts "TOTAL proposals affected which have not been moved: "+proposals_affected.size.to_s
-
-puts proposals_affected.keys.inspect
+puts "Links:"
+proposals_affected.each do |key, value|
+  puts "http://climatecolab.org/web/guest/plans/-/plans/contestId/#{value}/planId/#{key}"
+end
