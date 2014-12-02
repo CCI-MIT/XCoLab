@@ -34,11 +34,11 @@
             </p>
             <p>
                 Message Format:<br />
-                <form:input path="messageFormat" />
+                <form:textarea path="messageFormat" cols="30" rows="10" />
             </p>
             <p>
                 Message Subject:<br />
-                <form:textarea path="messageSubject" cols="30" rows="10" />
+                <form:input path="messageSubject" />
             </p>
             <p>
                 Expand Link Text:<br />
