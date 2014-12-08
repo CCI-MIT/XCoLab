@@ -1,4 +1,4 @@
-update xcolab_StaffMember set role="CCI Associate Director" where id_=149;
+update xcolab_StaffMember set role="Project Advisor" where id_=149;
 update xcolab_StaffMember set role="Project Manager" where id_=150;
 update xcolab_StaffMember set categoryId=8, role="" where id_=155;
 update xcolab_StaffMember set userId=1003305, photoUrl="" where id_=159;
