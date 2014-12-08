@@ -4,6 +4,7 @@ import com.ext.portlet.model.StaffMember;
 import com.ext.portlet.service.base.StaffMemberLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -32,7 +33,8 @@ public class StaffMemberLocalServiceImpl extends StaffMemberLocalServiceBaseImpl
 
     public List<StaffMember> getStaffMembersByCategoryId(long categoryId) throws SystemException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(StaffMember.class)
-                .add(PropertyFactoryUtil.forName("categoryId").eq(categoryId));
+                .add(PropertyFactoryUtil.forName("categoryId").eq(categoryId))
+                .addOrder(OrderFactoryUtil.asc("sort"));
         return dynamicQuery(query);
     }
 }
