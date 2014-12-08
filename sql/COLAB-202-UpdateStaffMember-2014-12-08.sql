@@ -12,9 +12,8 @@ insert into xcolab_StaffMember (userID, categoryId, firstNames, lastName, url, p
 
 insert into xcolab_StaffMember (userID, categoryId, firstNames, lastName, url, photoUrl, role, organization, sort) 
 select us.userId, 10, "","","","", "", "", 0
-from user_ us
+from User_ us
 inner join (
 select * from users_roles where users_roles.roleId=193260
 ) as usrRoles
 on usrRoles.userId=us.userId WHERE us.screenName NOT LIKE '2013_' AND us.status=0;
-SELECT * FROM xcolab_staffmember;
