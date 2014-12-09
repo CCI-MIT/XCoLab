@@ -33,8 +33,8 @@ public class StaffMemberLocalServiceImpl extends StaffMemberLocalServiceBaseImpl
 
     public List<StaffMember> getStaffMembersByCategoryId(long categoryId) throws SystemException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(StaffMember.class)
-                .add(PropertyFactoryUtil.forName("categoryId").eq(categoryId))
-                .addOrder(OrderFactoryUtil.asc("sort"));
+                .add(PropertyFactoryUtil.forName("categoryId").eq(categoryId));
+        query.addOrder(OrderFactoryUtil.asc("sort"));
         return dynamicQuery(query);
     }
 }
