@@ -149,10 +149,15 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
         int numberOfVersions = 0;
         for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
             if (c!=null){
-                // Skip versions that do not belong to this contest
-                long cph = Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion).getContestPhaseId();
-                Contest c2 = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(cph));
-                if (c2.getContestPK() != c.getContestPK()) continue;
+                try{
+                    // Skip versions that do not belong to this contest
+                    long cph = Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion).getContestPhaseId();
+                    Contest c2 = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(cph));
+                    if (c2.getContestPK() != c.getContestPK()) continue;
+                }catch(SystemException se){
+                    System.out.println(se);
+                    continue;
+                }
             }
 
             if (p2p != null
