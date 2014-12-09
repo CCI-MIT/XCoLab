@@ -224,6 +224,8 @@
                 classToBeShown = "SCREENING_DO_NOT_ADVANCE_INCOMPLETE";
             } else if (fellowAction == "2") {
                 classToBeShown = "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC";
+            } else if (fellowAction == "3") {
+                classToBeShown = "SCREENING_DO_NOT_ADVANCE_OTHER";
             }
             if (classToBeShown != "") {
                 jQuery("#comment-headers ."+classToBeShown).add("#comment-footers ."+classToBeShown).show();
