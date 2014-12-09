@@ -318,6 +318,8 @@ public class JudgeProposalActionController {
                     commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
                 } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()) {
                     commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
+                } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.NOT_ADVANCE_OTHER.getAttributeValue()) {
+                    commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
                 }
             }
 

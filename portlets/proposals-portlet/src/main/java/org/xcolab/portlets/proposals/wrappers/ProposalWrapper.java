@@ -500,7 +500,7 @@ public class ProposalWrapper {
     public GenericJudgingStatus getScreeningStatus() {
         try {
             switch (getFellowAction()) {
-                case INCOMPLETE: case OFFTOPIC:
+                case INCOMPLETE: case OFFTOPIC: case NOT_ADVANCE_OTHER:
                     return GenericJudgingStatus.STATUS_REJECTED;
                 case PASS_TO_JUDGES:
                     return GenericJudgingStatus.STATUS_ACCEPTED;
@@ -520,7 +520,7 @@ public class ProposalWrapper {
      */
     public GenericJudgingStatus getJudgeStatus() {
         try {
-            if (getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE || getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC)
+            if (getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE || getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC || getFellowAction() == JudgingSystemActions.FellowAction.NOT_ADVANCE_OTHER)
                 return GenericJudgingStatus.STATUS_REJECTED;
             if (getSelectedJudges().size() > 0 && getAllJudgesReviewFinished()) {
                 return GenericJudgingStatus.STATUS_ACCEPTED;

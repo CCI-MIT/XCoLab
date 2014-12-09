@@ -21,7 +21,8 @@ public class FellowProposalScreeningBean extends RatingBean implements Serializa
 
     private static final String[] EMAIL_TEMPLATES_TO_LOAD = {
             "SCREENING_DO_NOT_ADVANCE_INCOMPLETE",
-            "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC"
+            "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC",
+            "SCREENING_DO_NOT_ADVANCE_OTHER"
     };
     private ContestEmailTemplateBean emailTemplateBean;
 

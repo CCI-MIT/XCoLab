@@ -253,17 +253,18 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
             NO_DECISION(0, "No decision made yet", false, false),
             INCOMPLETE(1, "Do Not Advance: incomplete", true, false),
             OFFTOPIC(2, "Do Not Advance: off-topic", true, false),
+            NOT_ADVANCE_OTHER(2, "Do Not Advance: other", true, false),
             PASS_TO_JUDGES(3, "Advance", false, true);
 
              */
             if (doWithProbability(0.8)) {
-                int fellowAction = randomInt(0, 4);
+                int fellowAction = randomInt(0, 5);
                 User judgingFellow = contestFellows.get(contestIndex).get(randomInt(0, contestFellows.get(contestIndex).size()));
                 testInstance.proposalLocalService.setAttribute(judgingFellow.getUserId(), p.getProposalId(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION, fellowAction);
 
                 System.out.println("contestIndex: "+contestIndex+" proposal: "+p.getProposalId()+" fellowAction: "+fellowAction);
 
-                if (fellowAction == 3) {
+                if (fellowAction == 4) {
                     Set<Long> selectedJudgeIds = new HashSet<>();
                     do {
                         selectedJudgeIds.add(contestJudges.get(contestIndex).get(randomInt(0, contestJudges.get(contestIndex).size())).getUserId());
