@@ -1,25 +1,25 @@
 @echo off
-if defined XCOLAB_HOME  ( 
+if defined XCOLAB_SRC  (
 
-echo XCOLAB_HOME found at %XCOLAB_HOME%
+echo XCOLAB_SRC found at %XCOLAB_SRC%
 
-cd %XCOLAB_HOME%/services/plansProposalsFacade/plansProposalsFacade-portlet
+cd %XCOLAB_SRC%/services/plansProposalsFacade/plansProposalsFacade-portlet
 mvn liferay:build-service
 
-cd %XCOLAB_HOME%/services/plansProposalsFacade
+cd %XCOLAB_SRC%/services/plansProposalsFacade
 mvn install -N
 
-cd %XCOLAB_HOME%/services/plansProposalsFacade/plansProposalsFacade-portlet-service
+cd %XCOLAB_SRC%/services/plansProposalsFacade/plansProposalsFacade-portlet-service
 mvn compile package install
 
-cd %XCOLAB_HOME%/services/plansProposalsFacade/plansProposalsFacade-portlet
+cd %XCOLAB_SRC%/services/plansProposalsFacade/plansProposalsFacade-portlet
 mvn compile package liferay:deploy -DskipTests=true
 
 echo rebuilding the service layer done.
 
 ) else (
 
-echo XCOLAB_HOME can't be found, please create an environemt variable point to your XColab source folder
+echo XCOLAB_SRC can't be found, please create an environemt variable point to your XColab source folder
 pause > null
 
 )
