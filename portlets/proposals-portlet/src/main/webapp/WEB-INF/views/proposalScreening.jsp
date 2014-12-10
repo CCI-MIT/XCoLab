@@ -183,7 +183,7 @@
         var fellowScreeningActions = {};
 
         <c:forEach var="fellowScreeningActions" items="${judgingOptions}">
-                fellowScreeningActions[${fellowScreeningActions.attributeValue}] = {attributeValue: ${fellowScreeningActions.attributeValue},
+            fellowScreeningActions[${fellowScreeningActions.attributeValue}] = {attributeValue: ${fellowScreeningActions.attributeValue},
             description: "${fellowScreeningActions.description}", selectJudgesEnabled: ${fellowScreeningActions.selectJudgesEnabled},
             commentEnabled: ${fellowScreeningActions.commentEnabled}};
         </c:forEach>
@@ -200,23 +200,26 @@
         });
 
         function refreshCommentFieldVisibility() {
-            var fellowActionSelectIdx = document.getElementById("fellowScreeningAction").selectedIndex;
-            if (fellowScreeningActions[fellowActionSelectIdx].commentEnabled) {
+            var fellowAction = $("#fellowScreeningAction").val();
+
+            if (fellowScreeningActions[fellowAction].commentEnabled) {
                 jQuery('#fellowActionCommentContainer').slideDown();
             } else {
                 jQuery('#fellowActionCommentContainer').slideUp();
             }
 
-            if (fellowScreeningActions[fellowActionSelectIdx].selectJudgesEnabled) {
+            if (fellowScreeningActions[fellowAction].selectJudgesEnabled) {
                 jQuery('#fellowSelectJudgesContainer').slideDown();
             } else {
                 jQuery('#fellowSelectJudgesContainer').slideUp();
             }
         }
 
+
         function refreshEmailTemplates() {
             jQuery("#comment-footers > div").hide();
             jQuery("#comment-headers > div").hide();
+
 
             var fellowAction = $("#fellowScreeningAction").val();
             var classToBeShown = "";
@@ -224,7 +227,7 @@
                 classToBeShown = "SCREENING_DO_NOT_ADVANCE_INCOMPLETE";
             } else if (fellowAction == "2") {
                 classToBeShown = "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC";
-            } else if (fellowAction == "3") {
+            } else if (fellowAction == "4") {
                 classToBeShown = "SCREENING_DO_NOT_ADVANCE_OTHER";
             }
             if (classToBeShown != "") {
