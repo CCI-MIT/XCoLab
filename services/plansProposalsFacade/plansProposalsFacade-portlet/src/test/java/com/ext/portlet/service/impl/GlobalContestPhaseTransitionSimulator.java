@@ -264,7 +264,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
 
                 System.out.println("contestIndex: "+contestIndex+" proposal: "+p.getProposalId()+" fellowAction: "+fellowAction);
 
-                if (fellowAction == 4) {
+                if (fellowAction == 3) {
                     Set<Long> selectedJudgeIds = new HashSet<>();
                     do {
                         selectedJudgeIds.add(contestJudges.get(contestIndex).get(randomInt(0, contestJudges.get(contestIndex).size())).getUserId());
