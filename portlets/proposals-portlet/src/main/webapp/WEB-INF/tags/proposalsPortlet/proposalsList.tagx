@@ -94,35 +94,7 @@
 
                 <c:if test="${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
                     <div class="fellow-judge-action">
-                        <proposalsPortlet:proposalJudgingIcon value="${proposal.overallStatus.statusValue}" />
-                        <div class="tooltip">
-                            <c:choose>
-                                <c:when test="${proposal.overallStatus.statusValue == 0}">
-                                    The proposal review has not been done yet.
-                                </c:when>
-                                <c:when test="${proposal.overallStatus.statusValue == 1}">
-                                    Proposal review has been prepared and proposal will not advance.
-                                </c:when>
-                                <c:otherwise>
-                                    Proposal review has been prepared and proposal will advance.
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
 
-                        <proposalsPortlet:proposalJudgingIcon value="${proposal.judgeStatus.statusValue}" />
-                        <div class="tooltip">
-                            <c:choose>
-                                <c:when test="${proposal.judgeStatus.statusValue == 0}">
-                                    The judges have not rated this proposal yet.
-                                </c:when>
-                                <c:when test="${proposal.judgeStatus.statusValue == 1}">
-                                    Fellows decided that the proposal will not proceed to next round.
-                                </c:when>
-                                <c:otherwise>
-                                    All judges have completed the reviewing process.
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
                         <c:if test="${proposalsPermissions.canFellowActions}">
                             <proposalsPortlet:proposalJudgingIcon value="${proposal.screeningStatus.statusValue}" />
                             <div class="tooltip">
@@ -139,6 +111,36 @@
                                 </c:choose>
                             </div>
                         </c:if>
+
+                        <proposalsPortlet:proposalJudgingIcon value="${proposal.judgeStatus.statusValue}" />
+                        <div class="tooltip">
+                            <c:choose>
+                                <c:when test="${proposal.judgeStatus.statusValue == 0}">
+                                    The judges have not rated this proposal yet.
+                                </c:when>
+                                <c:when test="${proposal.judgeStatus.statusValue == 1}">
+                                    Fellows decided that the proposal will not proceed to next round.
+                                </c:when>
+                                <c:otherwise>
+                                    All judges have completed the reviewing process.
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+
+                        <proposalsPortlet:proposalJudgingIcon value="${proposal.overallStatus.statusValue}" />
+                        <div class="tooltip">
+                            <c:choose>
+                                <c:when test="${proposal.overallStatus.statusValue == 0}">
+                                    The proposal review has not been done yet.
+                                </c:when>
+                                <c:when test="${proposal.overallStatus.statusValue == 1}">
+                                    Proposal review has been prepared and proposal will not advance.
+                                </c:when>
+                                <c:otherwise>
+                                    Proposal review has been prepared and proposal will advance.
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </c:if>
 
