@@ -35,11 +35,11 @@ public class SendEmailNotifications implements MessageListener {
             System.out.println("digest-debug: SendEmailNotifications line 35 reached");
 
             // Workaround to get the right port (80) on production
-            int port = GetterUtil.getInteger(PortletProps.get(SERVER_PORT_PROPS_KEY));
+            /*int port = GetterUtil.getInteger(PortletProps.get(SERVER_PORT_PROPS_KEY));
             if (Validator.isNull(port) || port <= 0) {
                 port = PortalUtil.getPortalPort(false);
             }
-            System.out.println("digest-debug: SendEmailNotifications line 42 reached");
+            System.out.println("digest-debug: SendEmailNotifications line 42 reached");*/int port = 80;
 
             String baseUrl = PortalUtil.getPortalURL(company.getVirtualHostname(), port, false);
             //String baseUrl = "http://localhost:8080";
