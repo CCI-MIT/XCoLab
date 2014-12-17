@@ -35,10 +35,12 @@ public class TestScheduler implements MessageListener {
             System.out.println("digest-debug: SendEmailNotifications line 35 reached");
 
             // Workaround to get the right port (80) on production
-            int port = GetterUtil.getInteger(PortletProps.get(SERVER_PORT_PROPS_KEY));
+            /*int port = GetterUtil.getInteger(PortletProps.get(SERVER_PORT_PROPS_KEY));
             if (Validator.isNull(port) || port <= 0) {
                 port = PortalUtil.getPortalPort(false);
-            }
+            }*/
+            //quick fix for production to set the right port
+            int port = 80;
             System.out.println("digest-debug: SendEmailNotifications line 42 reached");
 
             String baseUrl = PortalUtil.getPortalURL(company.getVirtualHostname(), port, false);
