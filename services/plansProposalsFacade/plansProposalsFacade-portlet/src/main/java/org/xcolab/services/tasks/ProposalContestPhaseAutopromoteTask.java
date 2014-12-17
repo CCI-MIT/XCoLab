@@ -28,6 +28,7 @@ public class ProposalContestPhaseAutopromoteTask implements MessageListener {
 
 	@Override
 	public void receive(Message message) throws MessageListenerException {
+        System.out.println("digest-debug: ProposalContestPhaseAutopromoteTask reached");
 		// only one thread at at time is allowed to be doing autopromotion tasks
 		synchronized (mutex) {
 			if (isExecuting) {
