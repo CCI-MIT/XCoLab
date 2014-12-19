@@ -443,6 +443,7 @@ public class UserProfileController {
                 UserLocalServiceUtil.updateUser(_currentUserProfile.getUser());
                 UserServiceUtil.updatePortrait(_currentUserProfile.getUser().getUserId(), bytes);
                 _currentUserProfile.setUser(UserLocalServiceUtil.getUser(_currentUserProfile.getUser().getUserId()));
+                //TODO update iamge on relaod
                 changedDetails = true;
             }
         }

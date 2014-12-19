@@ -40,7 +40,7 @@
 		<div class="profile_action">
 		<c:if test="${currentUser.viewingOwnProfile}">
 			<div class="blue-button">
-				<a href="./${currentUser.userId}/page/edit">Manage profile and settings</a>
+				<a href="/web/guest/member/-/member/userId/${currentUser.userId}/page/edit">Manage profile and settings</a>
 			</div>
 		</c:if>
 
@@ -278,12 +278,12 @@
 					</c:forEach>
 
 					<div class="rounded_button brn">
-						<a href="./${currentUser.userId}/page/subscriptionsManage">MANAGE</a>
+						<a href="/web/guest/member/-/member/userId/${currentUser.userId}/page/subscriptionsManage">MANAGE</a>
 					</div>
 
 					<div class="rounded_button brn">
 						<c:if test="${not empty currentUser.subscribedActivities}">
-							<a href="./${currentUser.userId}/page/subscriptions">SEE ALL</a>
+							<a href="/web/guest/member/-/member/userId/${currentUser.userId}/page/subscriptions">SEE ALL</a>
 						</c:if>
 					</div>
 				</form:form>
