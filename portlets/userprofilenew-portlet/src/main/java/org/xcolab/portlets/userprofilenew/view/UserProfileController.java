@@ -92,8 +92,8 @@ public class UserProfileController {
             initUserWrapper(request, model, userId);
 
             if(_currentUserProfile != null) {
+                model.addAttribute("userBean", _currentUserProfile.getUserBean());
                 if (_currentUserProfile.isViewingOwnProfile()) {
-                    model.addAttribute("userBean", _currentUserProfile.getUserBean());
                     if (edit) {
                         return "editUserProfile";
                     } else if (subscriptionsManage) {
