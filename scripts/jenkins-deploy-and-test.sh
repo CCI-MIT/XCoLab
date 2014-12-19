@@ -1,8 +1,11 @@
 #!/bin/bash
 
+#git pull origin master
+git pull origin jenkins-tests
+
 XCOLAB_HOME=$(pwd)"/../"
 
-
+<<COMMENT1
 #deploy service layer
 cd $XCOLAB_HOME/services/plansProposalsFacade/plansProposalsFacade-portlet-service
 mvn clean compile package install
@@ -19,6 +22,8 @@ for D in *; do
         cd ..
 	fi;
 done
-
+COMMENT1
 
 #run tests
+cd $XCOLAB_HOME/scripts
+./jenkins-run-junit-tests.sh
