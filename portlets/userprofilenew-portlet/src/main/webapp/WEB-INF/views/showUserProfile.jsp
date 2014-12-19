@@ -223,7 +223,7 @@
 							</c:when>
 						</c:choose>
 						&#160;
-						<fmt:formatDate value="${message.createdDate}" type="time" timeStyle="medium" timeZone="America/New_York" />
+						<fmt:formatDate value="${message.createDate}" type="time" timeStyle="medium" timeZone="America/New_York" />
 					</div>
 
 					<div class="activityBody">
