@@ -1,4 +1,4 @@
 #!/bin/sh
 
-cd /home/manuel/XCoLab/other/site-monitor
+cd ../other/site-monitor
 java -cp "target/dependency/*:target/classes" org.xcolab.utils.sitemonitor.SiteMonitor > siteMonitor.log
