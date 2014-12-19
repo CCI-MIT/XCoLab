@@ -83,7 +83,7 @@ public class UserProfileController {
 
     @RequestMapping
     public String showUserProfileNew(PortletRequest request, PortletResponse response, Model model,
-                                     @RequestParam(required = false, defaultValue = "1947856") String userId, // 1427678, 1947856
+                                     @RequestParam(required = false, defaultValue = "1011659") String userId, // 1427678, 1947856
                                      @RequestParam(required = false, defaultValue = "true") boolean edit,
                                      @RequestParam(required = false, defaultValue = "false") boolean subscriptionsManage
                                      ) throws SystemException, PortalException {
