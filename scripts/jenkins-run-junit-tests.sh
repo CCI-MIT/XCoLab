@@ -1,25 +1,30 @@
+#!/bin/bash
+set -e
+
 #temp dir, where test dependency libs will be copied to. ATTENTION, this directory's contents will be deleted!
-test_deps_lib="/Users/manu/Development/Repositories/XCoLab/scripts/dep4"
+test_deps_lib="/home/manuel/XCoLab/other/tools/intellij-junit-tmp-dir"
 #location of the facade
-plansProposalsFacade_dir="/Users/manu/Development/Repositories/XCoLab/services/plansProposalsFacade"
+plansProposalsFacade_dir="/home/manuel/XCoLab/services/plansProposalsFacade"
 #java binary
-java_bin="/Library/Java/JavaVirtualMachines/jdk1.7.0_60.jdk/Contents/Home/bin/java"
+java_bin="/home/manuel/jdk1.7.0_60/bin/java"
 #this dir has to contain idea_rt.jar and junit-rt.jar
-intellij_junit_lib_dir="/Users/manu/Development/Repositories/XCoLab/other/tools/intellij-junit-libraries"
+intellij_junit_lib_dir="/home/manuel/XCoLab/other/tools/intellij-junit-libraries"
 
 email_recipient="thurner@mit.edu"
 
 #copy dependencies
 cd $test_deps_lib
-#rm *
+rm *
 cd "$plansProposalsFacade_dir/plansProposalsFacade-portlet"
-#mvn dependency:copy-dependencies -DoutputDirectory="$test_deps_lib"
+mvn dependency:copy-dependencies -DoutputDirectory="$test_deps_lib"
 
 #define the tests to be run
 #declare -a arr=("com.ext.portlet.service.impl.PointsTest,randomHypotheticalTest" "com.ext.portlet.service.impl.PointsTest,randomMaterializedTest" "com.ext.portlet.service.impl.PhaseTransitionTest,randomTest")
 
 #debug
 declare -a arr=("com.ext.portlet.service.impl.PhaseTransitionTest,debugTestAlwaysFails")
+
+set +e
 
 ## now loop through the above array
 for testname in "${arr[@]}"
