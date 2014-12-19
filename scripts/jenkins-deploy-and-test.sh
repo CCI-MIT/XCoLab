@@ -2,6 +2,9 @@
 
 XCOLAB_HOME=$(pwd)"/../"
 
+cd $XCOLAB_HOME
+git pull origin master
+
 
 #deploy service layer
 cd $XCOLAB_HOME/services/plansProposalsFacade/plansProposalsFacade-portlet-service
@@ -22,3 +25,5 @@ done
 
 
 #run tests
+cd $XCOLAB_HOME/scripts
+./jenkins-run-junit-tests.sh

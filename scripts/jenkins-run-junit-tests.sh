@@ -14,15 +14,17 @@ email_recipient="thurner@mit.edu"
 
 #copy dependencies
 cd $test_deps_lib
+set +e
 rm *
+set -e
 cd "$plansProposalsFacade_dir/plansProposalsFacade-portlet"
 mvn dependency:copy-dependencies -DoutputDirectory="$test_deps_lib"
 
 #define the tests to be run
-#declare -a arr=("com.ext.portlet.service.impl.PointsTest,randomHypotheticalTest" "com.ext.portlet.service.impl.PointsTest,randomMaterializedTest" "com.ext.portlet.service.impl.PhaseTransitionTest,randomTest")
+declare -a arr=("com.ext.portlet.service.impl.PointsTest,randomHypotheticalTest" "com.ext.portlet.service.impl.PointsTest,randomMaterializedTest" "com.ext.portlet.service.impl.PhaseTransitionTest,randomTest")
 
 #debug
-declare -a arr=("com.ext.portlet.service.impl.PhaseTransitionTest,debugTestAlwaysFails")
+#declare -a arr=("com.ext.portlet.service.impl.PhaseTransitionTest,debugTestAlwaysFails")
 
 set +e
 
