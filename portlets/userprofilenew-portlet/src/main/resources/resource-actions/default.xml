@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource-action-mapping>
+    <portlet-resource>
+        <portlet-name>proposals-portlet</portlet-name>
+        <supports>
+            <action-key>CAN_VIEW</action-key>
+        </supports>
+        <community-defaults>
+            <action-key>CAN_VIEW</action-key>
+        </community-defaults>
+        <guest-defaults>
+            <action-key>CAN_VIEW</action-key>
+        </guest-defaults>
+        <guest-unsupported />
+    </portlet-resource>
+</resource-action-mapping>
