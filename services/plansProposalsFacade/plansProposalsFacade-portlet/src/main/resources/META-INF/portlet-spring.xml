@@ -280,6 +280,12 @@
 	<bean id="com.ext.portlet.service.ProposalVoteLocalService" class="com.ext.portlet.service.impl.ProposalVoteLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalVoteService" class="com.ext.portlet.service.impl.ProposalVoteServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalVotePersistence" class="com.ext.portlet.service.persistence.ProposalVotePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.Role_LocalService" class="com.ext.portlet.service.impl.Role_LocalServiceImpl" />
+	<bean id="com.ext.portlet.service.Role_Service" class="com.ext.portlet.service.impl.Role_ServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.Role_Persistence" class="com.ext.portlet.service.persistence.Role_PersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.SocialActivityLocalService" class="com.ext.portlet.service.impl.SocialActivityLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.SocialActivityService" class="com.ext.portlet.service.impl.SocialActivityServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.SocialActivityPersistence" class="com.ext.portlet.service.persistence.SocialActivityPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.StaffMemberLocalService" class="com.ext.portlet.service.impl.StaffMemberLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.StaffMemberService" class="com.ext.portlet.service.impl.StaffMemberServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.StaffMemberPersistence" class="com.ext.portlet.service.persistence.StaffMemberPersistenceImpl" parent="basePersistence" />
@@ -289,6 +295,13 @@
 	<bean id="com.ext.portlet.service.TrackedVisitor2UserLocalService" class="com.ext.portlet.service.impl.TrackedVisitor2UserLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.TrackedVisitor2UserService" class="com.ext.portlet.service.impl.TrackedVisitor2UserServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.TrackedVisitor2UserPersistence" class="com.ext.portlet.service.persistence.TrackedVisitor2UserPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.User_LocalService" class="com.ext.portlet.service.impl.User_LocalServiceImpl" />
+	<bean id="com.ext.portlet.service.User_Service" class="com.ext.portlet.service.impl.User_ServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.User_Persistence" class="com.ext.portlet.service.persistence.User_PersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.persistence.User_Finder" class="com.ext.portlet.service.persistence.User_FinderImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.Users_RolesLocalService" class="com.ext.portlet.service.impl.Users_RolesLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.Users_RolesService" class="com.ext.portlet.service.impl.Users_RolesServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.Users_RolesPersistence" class="com.ext.portlet.service.persistence.Users_RolesPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.utils.userInput.PolicyFct" class="com.ext.utils.userInput.PolicyFct">
 		<property name="policyFile">
 			<value>antisamy-policy.xml</value>

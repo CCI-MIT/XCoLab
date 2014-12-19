@@ -848,6 +848,16 @@ create table xcolab_ProposalVote (
 	primary key (contestPhaseId, userId)
 );
 
+create table xcolab_Role_ (
+	roleId LONG not null primary key,
+	name VARCHAR(75) null
+);
+
+create table xcolab_SocialActivity (
+	activityId LONG not null primary key,
+	userId LONG
+);
+
 create table xcolab_StaffMember (
 	id_ LONG not null primary key,
 	userId LONG,
@@ -880,4 +890,16 @@ create table xcolab_TrackedVisitor2User (
 	uuid_ VARCHAR(36) null,
 	userId LONG,
 	createDate DATE null
+);
+
+create table xcolab_User_ (
+	userId LONG not null primary key,
+	createDate DATE null,
+	screenName VARCHAR(75) null
+);
+
+create table xcolab_Users_Roles (
+	roleId LONG not null,
+	userId LONG not null,
+	primary key (roleId, userId)
 );

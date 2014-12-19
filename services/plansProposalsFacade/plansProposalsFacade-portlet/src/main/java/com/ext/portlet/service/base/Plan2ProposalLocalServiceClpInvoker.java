@@ -41,10 +41,10 @@ public class Plan2ProposalLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName576;
-    private String[] _methodParameterTypes576;
-    private String _methodName577;
-    private String[] _methodParameterTypes577;
+    private String _methodName602;
+    private String[] _methodParameterTypes602;
+    private String _methodName603;
+    private String[] _methodParameterTypes603;
 
     public Plan2ProposalLocalServiceClpInvoker() {
         _methodName0 = "addPlan2Proposal";
@@ -129,13 +129,13 @@ public class Plan2ProposalLocalServiceClpInvoker {
                 "com.ext.portlet.model.Plan2Proposal"
             };
 
-        _methodName576 = "getBeanIdentifier";
+        _methodName602 = "getBeanIdentifier";
 
-        _methodParameterTypes576 = new String[] {  };
+        _methodParameterTypes602 = new String[] {  };
 
-        _methodName577 = "setBeanIdentifier";
+        _methodName603 = "setBeanIdentifier";
 
-        _methodParameterTypes577 = new String[] { "java.lang.String" };
+        _methodParameterTypes603 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -227,13 +227,13 @@ public class Plan2ProposalLocalServiceClpInvoker {
             return Plan2ProposalLocalServiceUtil.updatePlan2Proposal((com.ext.portlet.model.Plan2Proposal) arguments[0]);
         }
 
-        if (_methodName576.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes576, parameterTypes)) {
+        if (_methodName602.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes602, parameterTypes)) {
             return Plan2ProposalLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName577.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes577, parameterTypes)) {
+        if (_methodName603.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes603, parameterTypes)) {
             Plan2ProposalLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

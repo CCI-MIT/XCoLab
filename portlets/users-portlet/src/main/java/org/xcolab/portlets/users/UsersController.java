@@ -4,6 +4,8 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.Cookie;
 
+import com.ext.portlet.model.User_;
+import com.ext.portlet.service.User_LocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,11 +54,43 @@ public class UsersController {
 
         int endUser = (firstUser+USERS_PER_PAGE)-1;
 
-        List<User> liferayUsers = UserLocalServiceUtil.getUsers(firstUser,endUser);
-        List<UserItem> users = new ArrayList<UserItem>();
-        for (User liferayUser : liferayUsers)
+        //List<User> liferayUsers = UserLocalServiceUtil.getUsers(firstUser,endUser);
+
+        List<User_> dBUsers = null;
+        if (sortFilterPage.getFilter()!=null)
+        switch (sortFilterPage.getFilter())
         {
-            UserItem userItem = new UserItem(liferayUser);
+            case "USER_NAME":default:
+                if (sortFilterPage.isSortAscending())
+                    dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser,endUser);
+                else
+                    dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser,endUser);
+
+            case "ACTIVITY":
+                if (sortFilterPage.isSortAscending())
+                    dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAsc(firstUser,endUser);
+                else
+                    dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDesc(firstUser,endUser);
+
+            case "CATEGORY":
+                if (sortFilterPage.isSortAscending())
+                    dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameAsc(firstUser,endUser);
+                else
+                    dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameDesc(firstUser,endUser);
+
+            case "MEMBER_SINCE":
+                if (sortFilterPage.isSortAscending())
+                    dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAsc(firstUser,endUser);
+                else
+                    dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDesc(firstUser,endUser);
+        }
+        else
+            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser,endUser);
+
+        List<UserItem> users = new ArrayList<UserItem>();
+        for (User_ user : dBUsers)
+        {
+            UserItem userItem = new UserItem(user);
             users.add(userItem);
         }
 

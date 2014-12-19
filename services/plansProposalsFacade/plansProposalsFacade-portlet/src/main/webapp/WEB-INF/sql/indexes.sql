@@ -214,3 +214,9 @@ create index IX_497348F2 on xcolab_ProposalVote (userId);
 create index IX_9C5CE364 on xcolab_StaffMember (userId);
 
 create index IX_21569857 on xcolab_TrackedVisit (uuid_);
+
+create index IX_FD2AB29 on xcolab_User_ (roles);
+create index IX_EA7236BE on xcolab_User_ (userId);
+
+create index IX_2EC2E39B on xcolab_Users_Roles (roleId);
+create index IX_2EC49C70 on xcolab_Users_Roles (userId);

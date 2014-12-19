@@ -1,0 +1,74 @@
+<custom-sql>
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameAsc">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us
+INNER JOIN Users_Roles as ur ON us.userId = ur.userId
+INNER JOIN Role_ as ro ON ur.roleId = ro.roleId
+ORDER BY us.screenName ASC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameDesc">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us
+INNER JOIN Users_Roles as ur ON us.userId = ur.userId
+INNER JOIN Role_ as ro ON ur.roleId = ro.roleId
+ORDER BY us.screenName DESC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountAsc">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us
+INNER JOIN Users_Roles as ur ON us.userId = ur.userId
+INNER JOIN Role_ as ro ON ur.roleId = ro.roleId
+ORDER BY activityCount ASC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountDesc">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us
+INNER JOIN Users_Roles as ur ON us.userId = ur.userId
+INNER JOIN Role_ as ro ON ur.roleId = ro.roleId
+ORDER BY activityCount DESC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByRoleNameAsc">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us
+INNER JOIN Users_Roles as ur ON us.userId = ur.userId
+INNER JOIN Role_ as ro ON ur.roleId = ro.roleId
+ORDER BY ro.name ASC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByRoleNameDesc">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us
+INNER JOIN Users_Roles as ur ON us.userId = ur.userId
+INNER JOIN Role_ as ro ON ur.roleId = ro.roleId
+ORDER BY ro.name DESC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceAsc">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us
+INNER JOIN Users_Roles as ur ON us.userId = ur.userId
+INNER JOIN Role_ as ro ON ur.roleId = ro.roleId
+ORDER BY us.createDate ASC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceDesc">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us
+INNER JOIN Users_Roles as ur ON us.userId = ur.userId
+INNER JOIN Role_ as ro ON ur.roleId = ro.roleId
+ORDER BY us.createDate DESC
+		]]>
+    </sql>
+
+</custom-sql>

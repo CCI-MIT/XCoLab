@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class MessagingUserPreferencesServiceClpInvoker {
-    private String _methodName560;
-    private String[] _methodParameterTypes560;
-    private String _methodName561;
-    private String[] _methodParameterTypes561;
+    private String _methodName586;
+    private String[] _methodParameterTypes586;
+    private String _methodName587;
+    private String[] _methodParameterTypes587;
 
     public MessagingUserPreferencesServiceClpInvoker() {
-        _methodName560 = "getBeanIdentifier";
+        _methodName586 = "getBeanIdentifier";
 
-        _methodParameterTypes560 = new String[] {  };
+        _methodParameterTypes586 = new String[] {  };
 
-        _methodName561 = "setBeanIdentifier";
+        _methodName587 = "setBeanIdentifier";
 
-        _methodParameterTypes561 = new String[] { "java.lang.String" };
+        _methodParameterTypes587 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName560.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes560, parameterTypes)) {
+        if (_methodName586.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes586, parameterTypes)) {
             return MessagingUserPreferencesServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName561.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes561, parameterTypes)) {
+        if (_methodName587.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes587, parameterTypes)) {
             MessagingUserPreferencesServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

@@ -87,9 +87,13 @@ import com.ext.portlet.model.ProposalRatingValueClp;
 import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
+import com.ext.portlet.model.Role_Clp;
+import com.ext.portlet.model.SocialActivityClp;
 import com.ext.portlet.model.StaffMemberClp;
 import com.ext.portlet.model.TrackedVisitClp;
 import com.ext.portlet.model.TrackedVisitor2UserClp;
+import com.ext.portlet.model.User_Clp;
+import com.ext.portlet.model.Users_RolesClp;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -533,6 +537,14 @@ public class ClpSerializer {
             return translateInputProposalVote(oldModel);
         }
 
+        if (oldModelClassName.equals(Role_Clp.class.getName())) {
+            return translateInputRole_(oldModel);
+        }
+
+        if (oldModelClassName.equals(SocialActivityClp.class.getName())) {
+            return translateInputSocialActivity(oldModel);
+        }
+
         if (oldModelClassName.equals(StaffMemberClp.class.getName())) {
             return translateInputStaffMember(oldModel);
         }
@@ -543,6 +555,14 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(TrackedVisitor2UserClp.class.getName())) {
             return translateInputTrackedVisitor2User(oldModel);
+        }
+
+        if (oldModelClassName.equals(User_Clp.class.getName())) {
+            return translateInputUser_(oldModel);
+        }
+
+        if (oldModelClassName.equals(Users_RolesClp.class.getName())) {
+            return translateInputUsers_Roles(oldModel);
         }
 
         return oldModel;
@@ -1456,6 +1476,26 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateInputRole_(BaseModel<?> oldModel) {
+        Role_Clp oldClpModel = (Role_Clp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getRole_RemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputSocialActivity(BaseModel<?> oldModel) {
+        SocialActivityClp oldClpModel = (SocialActivityClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getSocialActivityRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
     public static Object translateInputStaffMember(BaseModel<?> oldModel) {
         StaffMemberClp oldClpModel = (StaffMemberClp) oldModel;
 
@@ -1481,6 +1521,26 @@ public class ClpSerializer {
         TrackedVisitor2UserClp oldClpModel = (TrackedVisitor2UserClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getTrackedVisitor2UserRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputUser_(BaseModel<?> oldModel) {
+        User_Clp oldClpModel = (User_Clp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getUser_RemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputUsers_Roles(BaseModel<?> oldModel) {
+        Users_RolesClp oldClpModel = (Users_RolesClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getUsers_RolesRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1924,6 +1984,15 @@ public class ClpSerializer {
             return translateOutputProposalVote(oldModel);
         }
 
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.Role_Impl")) {
+            return translateOutputRole_(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.SocialActivityImpl")) {
+            return translateOutputSocialActivity(oldModel);
+        }
+
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.StaffMemberImpl")) {
             return translateOutputStaffMember(oldModel);
@@ -1937,6 +2006,15 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.TrackedVisitor2UserImpl")) {
             return translateOutputTrackedVisitor2User(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.User_Impl")) {
+            return translateOutputUser_(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.Users_RolesImpl")) {
+            return translateOutputUsers_Roles(oldModel);
         }
 
         return oldModel;
@@ -2542,6 +2620,14 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchProposalVoteException();
         }
 
+        if (className.equals("com.ext.portlet.NoSuchRole_Exception")) {
+            return new com.ext.portlet.NoSuchRole_Exception();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchSocialActivityException")) {
+            return new com.ext.portlet.NoSuchSocialActivityException();
+        }
+
         if (className.equals("com.ext.portlet.NoSuchStaffMemberException")) {
             return new com.ext.portlet.NoSuchStaffMemberException();
         }
@@ -2553,6 +2639,14 @@ public class ClpSerializer {
         if (className.equals(
                     "com.ext.portlet.NoSuchTrackedVisitor2UserException")) {
             return new com.ext.portlet.NoSuchTrackedVisitor2UserException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchUser_Exception")) {
+            return new com.ext.portlet.NoSuchUser_Exception();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchUsers_RolesException")) {
+            return new com.ext.portlet.NoSuchUsers_RolesException();
         }
 
         return throwable;
@@ -3462,6 +3556,26 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateOutputRole_(BaseModel<?> oldModel) {
+        Role_Clp newModel = new Role_Clp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setRole_RemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputSocialActivity(BaseModel<?> oldModel) {
+        SocialActivityClp newModel = new SocialActivityClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setSocialActivityRemoteModel(oldModel);
+
+        return newModel;
+    }
+
     public static Object translateOutputStaffMember(BaseModel<?> oldModel) {
         StaffMemberClp newModel = new StaffMemberClp();
 
@@ -3489,6 +3603,26 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setTrackedVisitor2UserRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputUser_(BaseModel<?> oldModel) {
+        User_Clp newModel = new User_Clp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setUser_RemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputUsers_Roles(BaseModel<?> oldModel) {
+        Users_RolesClp newModel = new Users_RolesClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setUsers_RolesRemoteModel(oldModel);
 
         return newModel;
     }

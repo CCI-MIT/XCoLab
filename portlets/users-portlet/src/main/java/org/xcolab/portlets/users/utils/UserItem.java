@@ -1,6 +1,9 @@
 package org.xcolab.portlets.users.utils;
 
 import com.ext.portlet.Activity.ActivityUtil;
+import com.ext.portlet.model.Role_;
+import com.ext.portlet.model.User_;
+import com.ext.portlet.service.Role_LocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
@@ -12,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class UserItem implements Serializable {
     private MemberCategory category;
@@ -20,19 +24,21 @@ public class UserItem implements Serializable {
     private Long userId;
     private String screenName;
 
-    public UserItem(User user) throws PortalException, SystemException {
+    public UserItem(User_ user) throws PortalException, SystemException {
 
         userId = user.getUserId();
         activityCount = ActivityUtil.getActivitiesCount(userId);
         screenName = user.getScreenName();
         joinDate = user.getCreateDate();
+        List<Role_> roles = Role_LocalServiceUtil.getUser_Role_s(user.getUserId());
 
-        if (user.getRoles().size() > 0) {
+        if (roles.size() > 0) {
 
             MemberCategory currentCat = MemberCategory.MEMBER;
             category = MemberCategory.MEMBER;
 
-            for (Role role: user.getRoles()) {
+
+            for (Role_ role: roles) {
                 String roleName = role.getName();
 
                 for (MemberCategory memberCategory : MemberCategory.values())
@@ -49,6 +55,7 @@ public class UserItem implements Serializable {
 
             if (category == MemberCategory.MODERATOR) category = MemberCategory.STAFF;
 
+
         }
     }
 
@@ -62,7 +69,7 @@ public class UserItem implements Serializable {
     
     public String getMemberSince() {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/dd/yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
         return simpleDateFormat.format(joinDate);
     }
     

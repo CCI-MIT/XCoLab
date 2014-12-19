@@ -960,6 +960,14 @@
 		<field name="userId" type="long" />
 		<field name="createDate" type="Date" />
 	</model>
+	<model name="com.ext.portlet.model.Role_">
+		<field name="roleId" type="long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.SocialActivity">
+		<field name="activityId" type="long" />
+		<field name="userId" type="long" />
+	</model>
 	<model name="com.ext.portlet.model.StaffMember">
 		<field name="id" type="long" />
 		<field name="userId" type="long" />
@@ -1011,5 +1019,14 @@
 		</field>
 		<field name="userId" type="long" />
 		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.User_">
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="screenName" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.Users_Roles">
+		<field name="userId" type="long" />
+		<field name="roleId" type="long" />
 	</model>
 </model-hints>
