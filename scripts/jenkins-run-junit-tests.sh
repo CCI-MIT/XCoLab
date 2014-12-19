@@ -21,7 +21,8 @@ cd "$plansProposalsFacade_dir/plansProposalsFacade-portlet"
 mvn dependency:copy-dependencies -DoutputDirectory="$test_deps_lib"
 
 #define the tests to be run
-declare -a arr=("com.ext.portlet.service.impl.PointsTest,randomHypotheticalTest" "com.ext.portlet.service.impl.PointsTest,randomMaterializedTest" "com.ext.portlet.service.impl.PhaseTransitionTest,randomTest")
+#declare -a arr=("com.ext.portlet.service.impl.PointsTest,randomHypotheticalTest" "com.ext.portlet.service.impl.PointsTest,randomMaterializedTest" "com.ext.portlet.service.impl.PhaseTransitionTest,randomTest")
+declare -a arr=("com.ext.portlet.service.impl.PointsTest,randomMaterializedTest" "com.ext.portlet.service.impl.PhaseTransitionTest,randomTest")
 
 #debug
 #declare -a arr=("com.ext.portlet.service.impl.PhaseTransitionTest,debugTestAlwaysFails")
@@ -32,7 +33,7 @@ set +e
 for testname in "${arr[@]}"
 do
    #use the IntelliJ JUnit runner because with this, we can set single tests to be executed (rather than the whole class with the vanilla junit jar)
-	$java_bin -ea -da:org.apache.lucene.analysis.Analyzer -Xms1024m -Xmx2048m -XX:PermSize=512m -XX:MaxPermSize=1024m -Didea.launcher.port=7532 -Dfile.encoding=UTF-8 -classpath "$intellij_junit_lib_dir/*:$plansProposalsFacade_dir/plansProposalsFacade-portlet/target/test-classes:$plansProposalsFacade_dir/plansProposalsFacade-portlet/target/classes:$plansProposalsFacade_dir/plansProposalsFacade-portlet-service/target/classes:$test_deps_lib/*" com.intellij.rt.execution.application.AppMain com.intellij.rt.execution.junit.JUnitStarter -ideVersion5  "$testname" | grep 'Exception\|Error' >> $test_deps_lib/error-report.log
+	$java_bin -ea -da:org.apache.lucene.analysis.Analyzer -Xms1024m -Xmx2048m -XX:PermSize=512m -XX:MaxPermSize=1024m -Didea.launcher.port=7532 -Dfile.encoding=UTF-8 -classpath "$intellij_junit_lib_dir/*:$plansProposalsFacade_dir/plansProposalsFacade-portlet/target/test-classes:$plansProposalsFacade_dir/plansProposalsFacade-portlet/target/classes:$plansProposalsFacade_dir/plansProposalsFacade-portlet-service/target/classes:$test_deps_lib/*" com.intellij.rt.execution.application.AppMain com.intellij.rt.execution.junit.JUnitStarter -ideVersion5  "$testname" | grep 'Error' >> $test_deps_lib/error-report.log
 done
 
 if [[ -s $test_deps_lib/error-report.log ]] ; then
