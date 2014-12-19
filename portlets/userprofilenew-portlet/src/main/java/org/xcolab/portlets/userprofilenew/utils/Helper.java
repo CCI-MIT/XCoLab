@@ -10,11 +10,17 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class Helper {
-    
+
+        private static final String COLLAB_URL_PARAMETER_PREFIX = "_collab_param";
+
     public static String removeParamFromRequestStr(String requestStr, String param) {
         return requestStr == null ? null : requestStr.replaceAll("&?" + param + "=[^&#]*", "");
     }
-    
+
+        public static String getUrlParameterKey(String key) {
+                return COLLAB_URL_PARAMETER_PREFIX + key;
+        }
+
     public static String modifyRedirectUrl(String redirect, ActionRequest actionRequest, Map<String, String> parameters) 
     throws UnsupportedEncodingException {
 

@@ -45,9 +45,11 @@
 		</c:if>
 
 		<c:if test="${currentUser.canSendMessage and not currentUser.viewingOwnProfile }">
-			<a style="margin-top: 6px; display: block;" href="javascript:;"
+			<div class="blue-button">
+			<a href="javascript:;"
 			   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
 				<strong>${userBean.firstName}</strong> a Message </a>
+			</div>
 		</c:if>
 		</div>
 		<div class="comm_member" style="margin-top: 0;">

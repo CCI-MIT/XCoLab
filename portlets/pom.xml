@@ -23,6 +23,7 @@
         <module>contactform-portlet</module>
         <module>members-portlet</module>
         <module>userprofile-portlet</module>
+        <module>userprofilenew-portlet</module>
         <module>contests-portlet</module>
         <module>reporting-portlet</module>
         <module>search-portlet</module>
@@ -32,7 +33,6 @@
         <module>ontology-portlet</module>
         <module>redballoon-portlet</module>
         <module>staffmembers-portlet</module>
-        <module>models-portlet</module>
         <module>plansadmin-portlet</module>
         <module>loginregister-portlet</module>
         <module>massmessaging-portlet</module>

@@ -81,17 +81,80 @@ public class UserProfileController {
 
     }
 
+    @RequestMapping(params = "page=view")
+    public String showUserProfileView(PortletRequest request, PortletResponse response, Model model,
+                                     @RequestParam(required = true) String userId
+    ) throws SystemException, PortalException {
+
+        try{
+            initUserWrapper(request, model, userId);
+
+            if(_currentUserProfile.isInitialized()) {
+                model.addAttribute("userBean", _currentUserProfile.getUserBean());
+                return "showUserProfile";
+            }
+        } catch(Exception e){
+            System.out.println("Could not crate user profile for " + userId);
+        }
+
+        return "showProfileNotInitialized";
+
+    }
+
+    @RequestMapping(params = "page=edit")
+    public String showUserProfileEdit(PortletRequest request, PortletResponse response, Model model,
+                                     @RequestParam(required = true) String userId
+    ) throws SystemException, PortalException {
+
+        try{
+            initUserWrapper(request, model, userId);
+
+            if(_currentUserProfile.isInitialized()) {
+                model.addAttribute("userBean", _currentUserProfile.getUserBean());
+                if (_currentUserProfile.isViewingOwnProfile()) {
+                    return "editUserProfile";
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Could not crate user profile for " + userId);
+        }
+
+        return "showProfileNotInitialized";
+
+    }
+
+    @RequestMapping(params = "page=subscriptions")
+    public String showUserProfileSubscriptions(PortletRequest request, PortletResponse response, Model model,
+                                      @RequestParam(required = true) String userId
+    ) throws SystemException, PortalException {
+
+        try{
+            initUserWrapper(request, model, userId);
+
+            if(_currentUserProfile.isInitialized()) {
+                model.addAttribute("userBean", _currentUserProfile.getUserBean());
+                if (_currentUserProfile.isViewingOwnProfile()) {
+                    return "showUserSubscriptions";
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Could not crate user profile for " + userId);
+        }
+
+        return "showProfileNotInitialized";
+
+    }
+
+    /*
     @RequestMapping
     public String showUserProfileNew(PortletRequest request, PortletResponse response, Model model,
-                                     @RequestParam(required = false, defaultValue = "1011659") String userId, // 1427678, 1947856
-                                     @RequestParam(required = false, defaultValue = "true") boolean edit,
-                                     @RequestParam(required = false, defaultValue = "false") boolean subscriptionsManage
+                                     @RequestParam(required = false, defaultValue = "1011659") Long userId
                                      ) throws SystemException, PortalException {
 
         try{
             initUserWrapper(request, model, userId);
 
-            if(_currentUserProfile != null) {
+            if(_currentUserProfile.isInitialized()) {
                 model.addAttribute("userBean", _currentUserProfile.getUserBean());
                 if (_currentUserProfile.isViewingOwnProfile()) {
                     if (edit) {
@@ -109,7 +172,7 @@ public class UserProfileController {
 
         return "showProfileNotInitialized";
 
-    }
+    }*/
 
     @RequestMapping(params = "messageError=true")
     public String sendMessageError(PortletRequest request, Model model,
@@ -468,6 +531,17 @@ public class UserProfileController {
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
         }
+
+            /*
+        public void unlinkSSOAccount(ActionEvent event) throws SystemException, PortalException {
+            String accountType = event.getComponent().getAttributes().get("accountType").toString();
+            User u = UserLocalServiceUtil.getUser(wrappedUser.getUserId());
+            if (accountType.equalsIgnoreCase("FACEBOOK")) u.setFacebookId(0);
+            else if (accountType.equalsIgnoreCase("GOOGLE")) u.setOpenId("");
+            UserLocalServiceUtil.updateUser(u);
+            editing = !editing;
+            pageType = PageType.PROFILE_DETAILS;
+        }*/
 
         return changedDetails;
 

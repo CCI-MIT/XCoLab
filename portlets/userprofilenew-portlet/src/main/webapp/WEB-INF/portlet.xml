@@ -16,7 +16,7 @@
 		</init-param>
 		<supports>
 			<mime-type>text/html</mime-type>
-			<portlet-mode>edit</portlet-mode>
+			<portlet-mode>view</portlet-mode>
 		</supports>
 		<portlet-info>
 			<title>MIT userprofilenew</title>

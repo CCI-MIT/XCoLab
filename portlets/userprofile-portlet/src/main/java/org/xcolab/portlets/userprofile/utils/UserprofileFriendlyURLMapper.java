@@ -9,7 +9,7 @@ import javax.portlet.PortletRequest;
 import java.util.Map;
 
 public class UserprofileFriendlyURLMapper extends BaseFriendlyURLMapper {
-    private static final String _MAPPING = "member";
+    private static final String _MAPPING = "memberALT";
 
     private static final String _PORTLET_ID = "member_portlet";
 

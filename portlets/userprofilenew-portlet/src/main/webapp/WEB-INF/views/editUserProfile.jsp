@@ -176,9 +176,10 @@
 
 						<c:if test="${currentUser.hasFacebookId}">
 							<tr>
-								<td class="b m">Facebook</td>
+								<th class="b m">Facebook</th>
 								<td>
 									<div class="blue-button">
+										<a href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Unlink Facebook account</a>
 										<!-- TODO <ice:commandLink  actionListener="${userprofileBean.unlinkSSOAccount}" onclick="updateTextarea();" value="Unlink Facebook account"><f:attribute name="accountType" value="FACEBOOK" /> </ice:commandLink> -->
 									</div>
 								</td>
@@ -187,9 +188,10 @@
 
 						<c:if test="${currentUser.hasOpenId}">
 							<tr>
-								<td class="b m">Google</td>
+								<th class="b m">Google</th>
 								<td>
 									<div class="blue-button">
+										<a href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Unlink Google account</a>
 										<!-- TODO <ice:commandLink  actionListener="${userprofileBean.unlinkSSOAccount}" onclick="updateTextarea();" value="Unlink Google account"><f:attribute name="accountType" value="GOOGLE" /> </ice:commandLink>-->
 									</div>
 								</td>
