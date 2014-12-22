@@ -154,7 +154,7 @@ public class UserProfileController {
         switch(paginationAction){
             case "First": paginationPageId = 1; break;
             case "<Previous": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageId() - 1; break;
-            case "Next>;": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageId() + 1; break;
+            case "Next>": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageId() + 1; break;
             case "Last": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageMax(); break;
         }
         //response.setRenderParameter("paginationId", paginationPageId.toString());
