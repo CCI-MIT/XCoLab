@@ -125,16 +125,56 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=subscriptions")
     public String showUserProfileSubscriptions(PortletRequest request, PortletResponse response, Model model,
-                                      @RequestParam(required = true) String userId
+                                      @RequestParam(required = true) String userId,
+                                      @RequestParam(required = false, defaultValue = "1") int paginationId
     ) throws SystemException, PortalException {
 
         try{
             initUserWrapper(request, model, userId);
 
             if(_currentUserProfile.isInitialized()) {
+                _currentUserProfile.setSubscriptionsPaginationPageId(paginationId);
+                model.addAttribute("userBean", _currentUserProfile.getUserBean());
+                    return "showUserSubscriptions";
+            }
+        } catch(Exception e){
+            System.out.println("Could not crate user profile for " + userId);
+        }
+
+        return "showProfileNotInitialized";
+
+    }
+
+    @RequestMapping(params = "action=navigateSubscriptions")
+    public void navigateSubscriptions(ActionRequest request, Model model, ActionResponse response,
+                                @RequestParam(required = true) String paginationAction) throws IOException{
+        //response.setRenderParameter("page","subscriptions");
+        //response.setRenderParameter("userId",_currentUserProfile.getUserId().toString());
+        Integer paginationPageId = 1;
+        switch(paginationAction){
+            case "First": paginationPageId = 1; break;
+            case "<Previous": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageId() - 1; break;
+            case "Next>;": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageId() + 1; break;
+            case "Last": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageMax(); break;
+        }
+        //response.setRenderParameter("paginationId", paginationPageId.toString());
+
+        response.sendRedirect("/web/guest/member/-/member/userId/" + _currentUserProfile.getUserId().toString()+
+                        "/page/subscriptions/"+paginationPageId.toString());
+    }
+
+    @RequestMapping(params = "page=subscriptionsManage")
+    public String showUserSubscriptionsManage(PortletRequest request, PortletResponse response, Model model,
+                                               @RequestParam(required = true) String userId
+    ) throws SystemException, PortalException {
+
+        try{
+            initUserWrapper(request, model, userId);
+            // TODO check wheter profile is alreada initilazed after being on the view page
+            if(_currentUserProfile.isInitialized()) {
                 model.addAttribute("userBean", _currentUserProfile.getUserBean());
                 if (_currentUserProfile.isViewingOwnProfile()) {
-                    return "showUserSubscriptions";
+                    return "showUserSubscriptionsManage";
                 }
             }
         } catch(Exception e){
@@ -144,6 +184,7 @@ public class UserProfileController {
         return "showProfileNotInitialized";
 
     }
+
 
     /*
     @RequestMapping
@@ -569,4 +610,16 @@ public class UserProfileController {
         MailEngine.send(addressFrom, addressTo, null, null, null,
                 messageSubject, messageBody, false, replyTo, null, null);
     }
+
+
+    /* TODO
+    public void removeSelected(ActionEvent e) throws SystemException {
+        for (ActivitySubscriptionWrapper subscription: subscriptions) {
+            if (subscription.getSelected()) {
+                ActivitySubscriptionLocalServiceUtil.delete(subscription.getWrapped());
+            }
+        }
+        subscriptions = null;
+
+    }*/
 }

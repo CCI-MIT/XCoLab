@@ -1,9 +1,11 @@
 package org.xcolab.portlets.userprofilenew.wrappers;
 
 import com.ext.portlet.Activity.ActivityUtil;
+import com.ext.portlet.Activity.SubscriptionType;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageConstants;
 import com.ext.portlet.messaging.MessageUtil;
+import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.model.Message;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
@@ -53,14 +55,19 @@ public class
 
     private Boolean attendsConference;
     private MemberRole role;
+    private int subscriptionsPageSize = 20;
+    private int subscriptionsPaginationPageId = 0;
+
     private int maxActivitiesCount = 50;
 
     private List<MessageBean> messages;
     private SendMessagePermissionChecker _messagePermissionChecker;
     private List<SupportedPlanWrapper> supportedPlans = new ArrayList<SupportedPlanWrapper>();
-    private List<UserActivityWrapper> userActivities = new ArrayList<UserActivityWrapper>();
     private List<ProposalWrapper> userProposals = new ArrayList<ProposalWrapper>();
-    private ArrayList<UserActivityWrapper> subscribedActivities;
+
+    private ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
+    private List<UserActivityWrapper> subscribedActivities;
+
     private UserSubscriptionsWrapper userSubscriptions;
     private BadgeBean badges;
 
@@ -212,6 +219,32 @@ public class
     public void setAttendsConference(Boolean attendsConference) { this.attendsConference = attendsConference; }
 
     public String getRealName() { return realName; }
+
+    public UserSubscriptionsWrapper getUserSubscriptions(){return userSubscriptions;}
+
+    public int getSubscriptionsPageSize(){return subscriptionsPageSize; }
+
+    public void setSubscriptionsPageSize(int subscriptionsPageSize) {this.subscriptionsPageSize = subscriptionsPageSize;}
+
+    public int getSubscriptionsPaginationPageId() {return subscriptionsPaginationPageId;}
+
+    public void setSubscriptionsPaginationPageId(int subscriptionsPaginationPageId){this.subscriptionsPaginationPageId = subscriptionsPaginationPageId;}
+
+    public int getSubscriptionsPaginationPageMax(){
+        if (subscribedActivities != null && subscriptionsPageSize != 0) {
+            double d1=subscribedActivities.size();
+            double d2=subscriptionsPageSize;
+            return (int) Math.ceil(d1/d2);
+        }
+        else return 0;
+    }
+
+    public int getSubscribedActivitiesCount() {
+        if (subscribedActivities != null) {
+            return subscribedActivities.size();
+        }
+        else return 0;
+    }
 
 
     // TODO check this

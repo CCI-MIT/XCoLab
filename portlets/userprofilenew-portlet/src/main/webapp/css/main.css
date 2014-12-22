@@ -100,3 +100,13 @@ a.attendingConference {
     font-weight: bold;
     line-height: 44px;
 }
+.comm_controlsScrBtn{
+    background: none;
+    border: 0px;
+    color: #30a3fb;
+    margin: 0px!important;
+    cursor:pointer;
+    text-decoration:none;
+    text-align: center;
+    width: 65px;
+}

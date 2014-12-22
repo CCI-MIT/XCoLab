@@ -1,10 +1,12 @@
 package org.xcolab.portlets.userprofilenew.wrappers;
 
+import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.Activity.SubscriptionType;
 import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+import com.liferay.portlet.social.model.SocialActivity;
 import org.xcolab.portlets.userprofilenew.wrappers.ActivitySubscriptionWrapper;
 
 import java.io.Serializable;
@@ -23,13 +25,14 @@ public class UserSubscriptionsWrapper implements Serializable {
     public UserSubscriptionsWrapper(User user) throws SystemException {
         this.user = user;
     }
-    
+
     public List<ActivitySubscriptionWrapper> getSubscriptions(){
         if (subscriptions == null) {
             try {
                 subscriptions = new ArrayList<ActivitySubscriptionWrapper>();
 
-                for (ActivitySubscription subscription : ActivitySubscriptionLocalServiceUtil.findByUser(user.getUserId())) {
+                    for (ActivitySubscription subscription : ActivitySubscriptionLocalServiceUtil.findByUser(user.getUserId())) {
+
                     if (typeFilter == null || typeFilter == SubscriptionType.getSubscriptionType(subscription)) {
                         subscriptions.add(new ActivitySubscriptionWrapper(subscription));
                     }
@@ -41,29 +44,15 @@ public class UserSubscriptionsWrapper implements Serializable {
         return subscriptions;
     }
 
-    /* TODO
-    public void removeSelected(ActionEvent e) throws SystemException {
-        for (ActivitySubscriptionWrapper subscription: subscriptions) {
-            if (subscription.getSelected()) {
-                ActivitySubscriptionLocalServiceUtil.delete(subscription.getWrapped());
-            }
-        }
+    public void setFilterType(String filterType) {
+        typeFilter = SubscriptionType.valueOf(filterType);
         subscriptions = null;
-        
     }
     
-    public void setFilterType(ActionEvent e) {
-        Object type = e.getComponent().getAttributes().get("type");
-        if (type == null) {
-            typeFilter = null;
-        }
-        else {
-            typeFilter = SubscriptionType.valueOf(type.toString());
-        }
-        subscriptions = null;
-    }*/
-    
     public int getSubscriptionsCount() {
+        if(subscriptions == null){
+            getSubscriptions();
+        }
         return subscriptions.size();
     }
 
@@ -74,5 +63,6 @@ public class UserSubscriptionsWrapper implements Serializable {
     public String getTypeFilterName() {
         return typeFilter != null ? typeFilter.name() : null;
     }
+
 
 }

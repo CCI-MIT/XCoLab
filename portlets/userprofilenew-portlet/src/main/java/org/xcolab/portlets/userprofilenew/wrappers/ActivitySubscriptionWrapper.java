@@ -34,8 +34,7 @@ public class ActivitySubscriptionWrapper implements Serializable {
     public boolean getSelected() {
         return selected;
     }
-    
-    
+
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
