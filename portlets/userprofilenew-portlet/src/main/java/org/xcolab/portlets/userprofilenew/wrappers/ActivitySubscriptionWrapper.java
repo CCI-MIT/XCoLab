@@ -14,9 +14,15 @@ public class ActivitySubscriptionWrapper implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private ActivitySubscription subscription;
     private boolean selected;
-    
+    private long subscriptionPk;
+
+    public ActivitySubscriptionWrapper(){
+
+    }
+
     public ActivitySubscriptionWrapper(ActivitySubscription subscription) {
         this.subscription = subscription;
+        this.subscriptionPk = subscription.getPk();
     }
     
     public String getName() {
@@ -42,4 +48,16 @@ public class ActivitySubscriptionWrapper implements Serializable {
     public ActivitySubscription getWrapped() {
         return subscription;
     }
+
+    public ActivitySubscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(ActivitySubscription subscription) {
+        this.subscription = subscription;
+    }
+
+    public void setSubscriptionPk(long subscriptionPk) {this.subscriptionPk = subscriptionPk;}
+
+    public long getSubscriptionPk(){return subscriptionPk;}
 }

@@ -145,34 +145,22 @@ public class UserProfileController {
 
     }
 
-    @RequestMapping(params = "action=navigateSubscriptions")
-    public void navigateSubscriptions(ActionRequest request, Model model, ActionResponse response,
-                                @RequestParam(required = true) String paginationAction) throws IOException{
-        //response.setRenderParameter("page","subscriptions");
-        //response.setRenderParameter("userId",_currentUserProfile.getUserId().toString());
-        Integer paginationPageId = 1;
-        switch(paginationAction){
-            case "First": paginationPageId = 1; break;
-            case "<Previous": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageId() - 1; break;
-            case "Next>": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageId() + 1; break;
-            case "Last": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageMax(); break;
-        }
-        //response.setRenderParameter("paginationId", paginationPageId.toString());
-
-        response.sendRedirect("/web/guest/member/-/member/userId/" + _currentUserProfile.getUserId().toString()+
-                        "/page/subscriptions/"+paginationPageId.toString());
-    }
-
     @RequestMapping(params = "page=subscriptionsManage")
     public String showUserSubscriptionsManage(PortletRequest request, PortletResponse response, Model model,
-                                               @RequestParam(required = true) String userId
+                                               @RequestParam(required = true) String userId,
+                                               @RequestParam(required = false) String typeFilter
     ) throws SystemException, PortalException {
 
         try{
             initUserWrapper(request, model, userId);
-            // TODO check wheter profile is alreada initilazed after being on the view page
+            // TODO check whether profile is already initialized after being on the view page
             if(_currentUserProfile.isInitialized()) {
+                if(typeFilter != null){
+                    _currentUserProfile.getUserSubscriptions().setFilterType(typeFilter);
+                }
                 model.addAttribute("userBean", _currentUserProfile.getUserBean());
+                model.addAttribute("userSubscriptions", _currentUserProfile.getUserSubscriptions());
+
                 if (_currentUserProfile.isViewingOwnProfile()) {
                     return "showUserSubscriptionsManage";
                 }
@@ -185,6 +173,22 @@ public class UserProfileController {
 
     }
 
+    @RequestMapping(params = "action=navigateSubscriptions")
+    public void navigateSubscriptions(ActionRequest request, Model model, ActionResponse response,
+                                      @RequestParam(required = true) String paginationAction) throws IOException {
+
+        Integer paginationPageId = 1;
+        switch(paginationAction){
+            case "First": paginationPageId = 1; break;
+            case "<Previous": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageId() - 1; break;
+            case "Next>": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageId() + 1; break;
+            case "Last": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageMax(); break;
+        }
+        //response.setRenderParameter("paginationId", paginationPageId.toString());
+
+        response.sendRedirect("/web/guest/member/-/member/userId/" + _currentUserProfile.getUserId().toString()+
+                "/page/subscriptions/"+paginationPageId.toString());
+    }
 
     /*
     @RequestMapping
@@ -447,6 +451,7 @@ public class UserProfileController {
                         _log.warn(e);
                     }
                 }
+                //model.addAttribute("updateSuccess", true);
                 response.setRenderParameter("updateSuccess", "true");
 
             } else {
@@ -610,16 +615,4 @@ public class UserProfileController {
         MailEngine.send(addressFrom, addressTo, null, null, null,
                 messageSubject, messageBody, false, replyTo, null, null);
     }
-
-
-    /* TODO
-    public void removeSelected(ActionEvent e) throws SystemException {
-        for (ActivitySubscriptionWrapper subscription: subscriptions) {
-            if (subscription.getSelected()) {
-                ActivitySubscriptionLocalServiceUtil.delete(subscription.getWrapped());
-            }
-        }
-        subscriptions = null;
-
-    }*/
 }

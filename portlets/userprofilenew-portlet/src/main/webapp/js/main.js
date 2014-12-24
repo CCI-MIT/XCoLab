@@ -59,3 +59,12 @@ function clearSendMessageForm() {
     jQuery(".sendMessagePopup .error").hide();
     jQuery(".sendMessage_subject .sendMessage_message").val('');
 }
+
+function selectAllSubscriptions() {
+    jQuery(".subscriptionSelect").prop('checked', true);
+}
+
+function unSelectAllSubscriptions() {
+    jQuery(".subscriptionSelect").prop('checked', false);
+}
+

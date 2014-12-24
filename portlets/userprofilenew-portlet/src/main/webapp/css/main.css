@@ -39,6 +39,11 @@
     padding: 20px;
     border: 1px solid #bdbcb7;
     margin-left: 15px!important;
+    margin-top: 49px!important;
+}
+
+#activtiesTable td{
+    text-align: center!important;
 }
 
 .profile_action{
@@ -86,6 +91,26 @@ a.attendingConference {
 #main h1{
     margin-bottom: 10px;
 }
+
+.main_long h1{
+    margin-bottom: 10px;
+    float: left;
+}
+.main_long th{
+    margin-bottom: 10px;
+}
+
+.main_long{
+    width: 720px!important;
+}
+
+.comm_list{
+    margin-top:0px!important;
+}
+.comm_list h3{
+    padding-top: 10px;
+}
+
 #main table th {
     line-height: 44px;
     width: 180px;
@@ -109,4 +134,8 @@ a.attendingConference {
     text-decoration:none;
     text-align: center;
     width: 65px;
+}
+
+.subscriptionSelect{
+    text-align: center!important;
 }

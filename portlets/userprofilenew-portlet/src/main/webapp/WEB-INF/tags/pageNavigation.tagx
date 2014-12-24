@@ -11,11 +11,11 @@
 	<jsp:directive.attribute name="maxPageId" type="java.lang.Long" required="true" rtexprvalue="true" description="max Page id" />
 
 	<c:choose>
-		<c:when test="${currentUser.subscriptionsPaginationPageId lt 2}">
+		<c:when test="${currentUser.subscriptionsPaginationPageId lt 3}">
 			<c:set var="startPage" value="1"/>
 		</c:when>
-		<c:when test="${currentUser.subscriptionsPaginationPageId gt maxPageId-4}">
-			<c:set var="startPage" value="${maxPageId-4}"/>
+		<c:when test="${currentUser.subscriptionsPaginationPageId gt maxPageId-3}">
+			<c:set var="startPage" value="${maxPageId-3}"/>
 		</c:when>
 		<c:otherwise>
 			<c:set var="startPage" value="${pageId-2}"/>

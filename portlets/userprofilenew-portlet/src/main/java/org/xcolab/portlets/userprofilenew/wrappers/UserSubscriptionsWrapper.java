@@ -22,8 +22,12 @@ public class UserSubscriptionsWrapper implements Serializable {
     private List<ActivitySubscriptionWrapper> subscriptions;
     private SubscriptionType typeFilter;
 
+    public UserSubscriptionsWrapper() {
+    }
+
     public UserSubscriptionsWrapper(User user) throws SystemException {
         this.user = user;
+        getSubscriptions();
     }
 
     public List<ActivitySubscriptionWrapper> getSubscriptions(){
@@ -45,8 +49,13 @@ public class UserSubscriptionsWrapper implements Serializable {
     }
 
     public void setFilterType(String filterType) {
-        typeFilter = SubscriptionType.valueOf(filterType);
+        if(filterType.equals("null")) {
+            typeFilter = null;
+        } else{
+            typeFilter = SubscriptionType.valueOf(filterType);
+        }
         subscriptions = null;
+        getSubscriptions();
     }
     
     public int getSubscriptionsCount() {

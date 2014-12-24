@@ -23,7 +23,7 @@
 
     <div class="main_long">
         <h1>Subscribed activities</h1>
-        <c:if test="${userprofileBean.viewingOwnProfile}">
+        <c:if test="${currentUser.viewingOwnProfile}">
           <div class="profile_action">
             <div class="blue-button">
               <a href="/web/guest/member/-/member/userId/${currentUser.userId}/page/subscriptionsManage">MANAGE</a>
@@ -34,7 +34,7 @@
         <thead class="portlet-section-header">
             <tr>
               <th style="width: 585px" class="Hdr">Activity</th>
-              <th style="width: 140px" class="Hdr">Date</th>
+              <th style="width: 160px" class="Hdr">Date</th>
             </tr>
           </thead>
           <tbody>
@@ -43,7 +43,7 @@
                         end="${currentUser.subscriptionsPaginationPageId * currentUser.subscriptionsPageSize}">
               <tr class="colabRow">
                 <td>${activity.body}</td>
-                <td><fmt:formatDate value="${activity.createdDate}" type="time" timeStyle="medium" timeZone="America/New_York" /></td>
+                <td><fmt:formatDate value="${activity.createdDate}" type="both" timeStyle="short" dateStyle="medium" timeZone="America/New_York" /></td>
               </tr>
 
             </c:forEach>

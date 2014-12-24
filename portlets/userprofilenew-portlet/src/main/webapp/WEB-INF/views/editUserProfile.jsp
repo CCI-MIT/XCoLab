@@ -15,6 +15,11 @@
 		<portlet:param name="action" value="update" />
 	</portlet:actionURL>
 
+	<portlet:actionURL var="unlinkSSOURL">
+		<portlet:param name="action" value="unlinkSSO" />
+		<portlet:param name="userId" value="${currentUser.userId}" />
+	</portlet:actionURL>
+
 	<form style="margin-top: 20px;" action="/userprofilenew-portlet/fileUploadServlet" method="post"
 		  enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
 		<input type="file" name="file" id="portraitUploadInput" />
@@ -40,11 +45,9 @@
 			<div class="comm_member">
 				<div class="comm_member-photo">
 					<div style="float: right">
-							<img src="${baseImagePath}${userBean.portrait}" id="userPortrait"
-								 width="150" height="150" alt="${userBean.screenName}" />
-						<div class="clearfix">
-							<!--  -->
-						</div>
+						<img src="${baseImagePath}${userBean.portrait}" id="userPortrait"
+							 width="150" height="150" alt="${userBean.screenName}" />
+						<div class="clearfix"><!--  --></div>
 						<div id="uploadImageContainer"><!--  --></div>
 					</div>
 				</div>
@@ -174,29 +177,7 @@
 						</tr>
 
 
-						<c:if test="${currentUser.hasFacebookId}">
-							<tr>
-								<th class="b m">Facebook</th>
-								<td>
-									<div class="blue-button">
-										<a href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Unlink Facebook account</a>
-										<!-- TODO <ice:commandLink  actionListener="${userprofileBean.unlinkSSOAccount}" onclick="updateTextarea();" value="Unlink Facebook account"><f:attribute name="accountType" value="FACEBOOK" /> </ice:commandLink> -->
-									</div>
-								</td>
-							</tr>
-						</c:if>
 
-						<c:if test="${currentUser.hasOpenId}">
-							<tr>
-								<th class="b m">Google</th>
-								<td>
-									<div class="blue-button">
-										<a href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Unlink Google account</a>
-										<!-- TODO <ice:commandLink  actionListener="${userprofileBean.unlinkSSOAccount}" onclick="updateTextarea();" value="Unlink Google account"><f:attribute name="accountType" value="GOOGLE" /> </ice:commandLink>-->
-									</div>
-								</td>
-							</tr>
-						</c:if>
 					</tbody>
 				</table>
 

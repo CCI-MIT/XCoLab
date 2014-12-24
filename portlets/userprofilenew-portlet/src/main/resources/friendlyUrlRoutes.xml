@@ -35,9 +35,9 @@
         <generated-parameter name="page">subscriptionsManage</generated-parameter>
     </route>
     <route>
-        <pattern>/userId/{userId}/page/subscriptionsManage/{paginationId}</pattern>
+        <pattern>/userId/{userId}/page/subscriptionsManage/{typeFilter}</pattern>
         <generated-parameter name="userId">{userId}</generated-parameter>
         <generated-parameter name="page">subscriptionsManage</generated-parameter>
-        <generated-parameter name="pageId">{paginationId}</generated-parameter>
+        <generated-parameter name="typeFilter">{typeFilter}</generated-parameter>
     </route>
 </routes>
