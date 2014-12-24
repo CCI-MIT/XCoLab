@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,10 +22,10 @@ public class MessageBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-    //@NotBlank
+    @NotBlank
     private String messageSubject;
 
-    //@NotBlank
+    @NotBlank
     private String messageText;
 
     private String messageHoneypot;

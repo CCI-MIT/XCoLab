@@ -3,6 +3,7 @@ package org.xcolab.portlets.userprofilenew.view;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.*;
+import javax.validation.Valid;
 
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
@@ -27,6 +28,7 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -59,18 +61,16 @@ public class UserProfileController {
     private final static Log _log = LogFactoryUtil.getLog(UserProfileController.class);
 
     @Autowired
+    //@Qualifier("UserBean")
     private SmartValidator validator;
 
-    //@Autowired(propertyNames = {"password,retypePassword"})
-    //@CompareStrings(propertyNames = {"password,retypePassword", "email,retypeEmail"})
     //@Autowired
-    //private SmartValidator compareStringsValidator;
+    //@Qualifier("MessageBean")
+    //private SmartValidator validator;
 
-    //@Qualifier("uniqueScreenNameEmailValidator")
-    //private UniqueScreenNameEmailValidator uniqueScreenNameEmailValidator;
 
-    //@InitBinder("messageBean")
-    //public void initMessageBeanBinder(WebDataBinder binder) {        binder.setValidator(validator);     }
+    @InitBinder("messageBean")
+    public void initMessageBeanBinder(WebDataBinder binder) { binder.setValidator(validator); }
 
     @InitBinder("userBean")
     public void initUserWrapperBeanBinder(WebDataBinder binder) {
@@ -94,7 +94,7 @@ public class UserProfileController {
                 return "showUserProfile";
             }
         } catch(Exception e){
-            System.out.println("Could not crate user profile for " + userId);
+            System.out.println("Could not create user profile for " + userId);
         }
 
         return "showProfileNotInitialized";
@@ -116,7 +116,7 @@ public class UserProfileController {
                 }
             }
         } catch(Exception e){
-            System.out.println("Could not crate user profile for " + userId);
+            System.out.println("Could not create user profile for " + userId);
         }
 
         return "showProfileNotInitialized";
@@ -138,7 +138,7 @@ public class UserProfileController {
                     return "showUserSubscriptions";
             }
         } catch(Exception e){
-            System.out.println("Could not crate user profile for " + userId);
+            System.out.println("Could not create user profile for " + userId);
         }
 
         return "showProfileNotInitialized";
@@ -153,7 +153,6 @@ public class UserProfileController {
 
         try{
             initUserWrapper(request, model, userId);
-            // TODO check whether profile is already initialized after being on the view page
             if(_currentUserProfile.isInitialized()) {
                 if(typeFilter != null){
                     _currentUserProfile.getUserSubscriptions().setFilterType(typeFilter);
@@ -166,7 +165,7 @@ public class UserProfileController {
                 }
             }
         } catch(Exception e){
-            System.out.println("Could not crate user profile for " + userId);
+            System.out.println("Could not create user profile for " + userId);
         }
 
         return "showProfileNotInitialized";
@@ -190,38 +189,8 @@ public class UserProfileController {
                 "/page/subscriptions/"+paginationPageId.toString());
     }
 
-    /*
-    @RequestMapping
-    public String showUserProfileNew(PortletRequest request, PortletResponse response, Model model,
-                                     @RequestParam(required = false, defaultValue = "1011659") Long userId
-                                     ) throws SystemException, PortalException {
-
-        try{
-            initUserWrapper(request, model, userId);
-
-            if(_currentUserProfile.isInitialized()) {
-                model.addAttribute("userBean", _currentUserProfile.getUserBean());
-                if (_currentUserProfile.isViewingOwnProfile()) {
-                    if (edit) {
-                        return "editUserProfile";
-                    } else if (subscriptionsManage) {
-                        return "showUserSubscriptions";
-                    }
-                } else {
-                    return "showUserProfile";
-                }
-            }
-        } catch(Exception e){
-            System.out.println("Could not crate user profile for " + userId);
-        }
-
-        return "showProfileNotInitialized";
-
-    }*/
-
     @RequestMapping(params = "messageError=true")
     public String sendMessageError(PortletRequest request, Model model,
-                               BindingResult result,
                                @RequestParam(required = false) String redirect,
                                @RequestParam(required = true) String userId) {
 
@@ -229,17 +198,20 @@ public class UserProfileController {
 
         try{
             initUserWrapper(request, model, userId);
+            if(_currentUserProfile.isInitialized()) {
+                model.addAttribute("userBean", _currentUserProfile.getUserBean());
+                model.addAttribute("userSubscriptions", _currentUserProfile.getUserSubscriptions());
+                return "showUserProfile";
+            }
         } catch(Exception e){
-            System.out.println("Could not crate user profile for " + userId);
-            return "showProfileNotinitUserWrapperialized";
+            System.out.println("Could not create user profile for " + userId);
         }
+        return "showProfileNotInitialized";
 
-        return "showUserProfile";
     }
 
     @RequestMapping(params = "messageSuccess=true")
     public String sendMessageSuccess(PortletRequest request, Model model,
-                                     BindingResult result,
                                      @RequestParam(required = false) String redirect,
                                      @RequestParam(required = true) String userId) {
 
@@ -247,17 +219,21 @@ public class UserProfileController {
 
         try{
             initUserWrapper(request, model, userId);
+            if(_currentUserProfile.isInitialized()) {
+                model.addAttribute("userBean", _currentUserProfile.getUserBean());
+                model.addAttribute("userSubscriptions", _currentUserProfile.getUserSubscriptions());
+                return "showUserProfile";
+            }
         } catch(Exception e){
-            System.out.println("Could not crate user profile for " + userId);
-            return "showProfileNotInitialized";
+            System.out.println("Could not create user profile for " + userId);
         }
+        return "showProfileNotInitialized";
 
-        return "showUserProfile";
     }
 
 
     @RequestMapping(params = "action=send")
-    public void sendMessage(ActionRequest request, Model model, ActionResponse response, MessageBean messageBean,
+    public void sendMessage(ActionRequest request, Model model, ActionResponse response,@Valid MessageBean messageBean,
                             BindingResult result, @RequestParam(required = false) String redirect)
                             throws  AddressException, SystemException, PortalException, MailEngineException {
 
@@ -275,8 +251,6 @@ public class UserProfileController {
 
                 List<Long> recipients = new ArrayList<Long>();
                 recipients.add(_currentUserProfile.getUserId());
-
-                response.setRenderParameter("messageSuccess", "true");
 
                 boolean success = MessageUtil.checkLimitAndSendMessage(messageBean.getMessageSubject(), messageBean.getMessageText(), _loggedInUser, recipients);
                 if (success) {
@@ -337,7 +311,7 @@ public class UserProfileController {
         try{
             initUserWrapper(request, model, userId);
         } catch(Exception e){
-            System.out.println("Could not crate user profile for " + userId);
+            System.out.println("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
 

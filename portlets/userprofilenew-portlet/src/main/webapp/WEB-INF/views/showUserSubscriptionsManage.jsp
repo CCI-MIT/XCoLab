@@ -67,7 +67,7 @@
 
       </div>
 
-      <div class="right_col3">
+      <div class="right_col3" style="margin-top: 49px!important;">
         <div class="comm_list">
           <h3>Display</h3>
           <ul>

@@ -175,9 +175,6 @@
 								</div>
 							</td>
 						</tr>
-
-
-
 					</tbody>
 				</table>
 
@@ -238,7 +235,39 @@
 		<form:hidden id="userRegistrationImageId" path="imageId" />
 	</form:form>
 
-	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
+	<c:if test="${currentUser.hasFacebookId or currentUser.hasOpenId}">
+		<div class="right_col v1">
+			<div class="comm_rightcol">
+				<div class="comm_rightcol-title2">SSO SETTINGS</div>
+				<table border="0" cellpadding="0" cellspacing="0" class="colab">
+					<form:form  id="unlinkSSOForm" action="${unlinkSSOURL}" method="post">
+						<input id="inputTypeSSO" type="hidden" name="accountType" value=""/>
+						<c:if test="${currentUser.hasFacebookId}">
+							<tr>
+								<td>
+									<div class="blue-button">
+										<a href="javascript:;" onclick="setSSOType('FACEBOOK');jQuery('#unlinkSSOForm').submit();">Unlink Facebook account</a>
+									</div>
+								</td>
+							</tr>
+						</c:if>
+						<c:if test="${currentUser.hasOpenId}">
+							<tr>
+								<td>
+									<div class="blue-button">
+										<a href="javascript:;" onclick="setSSOType('GOOGLE');jQuery('#unlinkSSOForm').submit();">Unlink Google account</a>
+									</div>
+								</td>
+							</tr>
+						</c:if>
+					</form:form>
+				</table>
+				<div class="clearfix"><!-- --></div>
+			</div>
+		</div> <!-- /right_col3 -->
+	</c:if>
+
+		<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
 	<script>
 		function updateTextarea() {
 			for ( var instance in CKEDITOR.instances) {
