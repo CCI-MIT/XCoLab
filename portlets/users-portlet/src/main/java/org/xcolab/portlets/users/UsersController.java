@@ -57,32 +57,36 @@ public class UsersController {
         //List<User> liferayUsers = UserLocalServiceUtil.getUsers(firstUser,endUser);
 
         List<User_> dBUsers = null;
-        if (sortFilterPage.getFilter()!=null)
-        switch (sortFilterPage.getFilter())
+        if (sortFilterPage.getSortColumn()!=null)
+        switch (sortFilterPage.getSortColumn())
         {
-            case "USER_NAME":default:
+            case "USER_NAME":
                 if (sortFilterPage.isSortAscending())
                     dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser,endUser);
                 else
-                    dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser,endUser);
+                    dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDesc(firstUser,endUser);
+            break;
 
             case "ACTIVITY":
                 if (sortFilterPage.isSortAscending())
                     dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAsc(firstUser,endUser);
                 else
                     dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDesc(firstUser,endUser);
+                break;
 
             case "CATEGORY":
                 if (sortFilterPage.isSortAscending())
                     dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameAsc(firstUser,endUser);
                 else
                     dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameDesc(firstUser,endUser);
+                break;
 
             case "MEMBER_SINCE":
                 if (sortFilterPage.isSortAscending())
                     dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAsc(firstUser,endUser);
                 else
                     dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDesc(firstUser,endUser);
+                break;
         }
         else
             dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser,endUser);

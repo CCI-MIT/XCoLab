@@ -7,6 +7,7 @@
 		<instanceable>true</instanceable>
         <requires-namespaced-parameters>false</requires-namespaced-parameters> 
 		<header-portlet-css>/css/main.css</header-portlet-css>
+		<header-portlet-css>/css/users.css</header-portlet-css>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

@@ -289,6 +289,16 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar .how {float:left; padding: 0;  width:105px; height:37px;background:url(../images/contest-icon-how.png) no-repeat 10px 6px; }
 .blueheaderbar .how a {height:27px;padding-top:10px; margin-left:33px; display:inline-block;}
 
+/* users page */
+.blueheaderbar .user {float:left; width:357px; height:37px; padding-left:9px;}
+.blueheaderbar .user a {padding-top:10px; height:27px; display:inline-block;}
+.blueheaderbar .activity {float:left; width:133px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
+.blueheaderbar .activity a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
+.blueheaderbar .category {float:left;  width:125px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
+.blueheaderbar .category a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
+.blueheaderbar .seniority {float:left; width:120px; height:37px;background:url(../images/icon-list-who.png) no-repeat 10px 6px; }
+.blueheaderbar .seniority a {height:27px; padding-top:10px; margin-left:33px; display:inline-block;}
+
 /* proposal page */
 .blueheaderbar .proposalname {float:left; width:645px; height:37px; padding-left:9px;}
 .blueheaderbar.completed .proposalname {width:765px;}
@@ -636,6 +646,16 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 
 .contestlist.featured td {background-color:#f2f1e9;}
 .contestlist tr.feat-bot {border-bottom:1px solid #9cbcca;}
+
+/* the table with rows of users  */
+.userslist {clear:both; margin-top:-4px;}
+.userslist td {height:57px; padding:11px 10px 0; font-size:14px; line-height:20px; color:#404041; border-bottom:1px solid #d2d1d0;}
+.userslist a {font-weight:700;}
+.userslist tr.top td {height:61px; padding-top:15px;}
+.userslist td.g {background-image:url(../images/pattern-tbl-6x6.png);}
+
+.userslist.featured td {background-color:#f2f1e9;}
+.userslist tr.feat-bot {border-bottom:1px solid #9cbcca;}
 
 
 /* to be replaced ???  edit and wiki buttons next to a proposal title */
