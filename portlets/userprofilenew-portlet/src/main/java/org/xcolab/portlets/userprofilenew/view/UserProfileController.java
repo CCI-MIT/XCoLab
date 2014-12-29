@@ -402,6 +402,7 @@ public class UserProfileController {
         if(validationError) {
             response.setRenderParameter("userId", _currentUserProfile.getUserId().toString());
             response.setRenderParameter("updateError", "true");
+            updatedUserBean.setPortrait(_currentUserProfile.getUserBean().getPortrait());
         }
         else if(changedUserPart){
 
