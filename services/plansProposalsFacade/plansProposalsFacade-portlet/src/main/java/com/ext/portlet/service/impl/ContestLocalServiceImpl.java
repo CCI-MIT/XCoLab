@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.ext.portlet.contests.ContestStatus;
+import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseType;
@@ -745,15 +746,19 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
                 final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal, judgingPhase);
                 final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
-
+                proposalReview.setReviewers(ImmutableSet.copyOf(getProposalReviewingJudges(proposal, judgingPhase)));
                 List<ProposalRating> ratings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), judgingPhase.getContestPhasePK());
                 Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<ProposalRatingType, List<Long>>();
+
                 for (ProposalRating rating: ratings) {
                     ProposalRatingWrapper wrapper = new ProposalRatingWrapper(rating);
                     if (ratingsPerType.get(wrapper.getRatingType()) == null) {
                         ratingsPerType.put(wrapper.getRatingType(), new ArrayList<Long>());
                     }
                     ratingsPerType.get(wrapper.getRatingType()).add(wrapper.getRatingValue().getValue());
+
+                    proposalReview.addUserRating(wrapper.getUser(),wrapper.getRatingType(),wrapper.getRatingValue().getValue());
+
                     occurringRatingTypes.add(wrapper.getRatingType());
                     if (rating.isCommentEnabled()) {
                         proposalReview.addReview(wrapper.getUser(), rating.getComment());
@@ -773,18 +778,21 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                     proposalReview.addRatingAverage(key, avg);
                 }
 
-
                 if (Validator.isNull(proposalToProposalReviewsMap.get(proposal))) {
                     proposalToProposalReviewsMap.put(proposal, new ArrayList<ProposalReview>());
                 }
 
+                /*
                 if (ratings.size() > 0) {
                     proposalToProposalReviewsMap.get(proposal).add(proposalReview);
-                }
+                }*/
+
+                proposalToProposalReviewsMap.get(proposal).add(proposalReview);
             }
         }
 
         ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalToProposalReviewsMap, new ArrayList(occurringJudges), new ArrayList(occurringRatingTypes));
+
         return csvExporter.getCsvString();
     }
 
