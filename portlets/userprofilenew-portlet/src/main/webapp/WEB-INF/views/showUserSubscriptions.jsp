@@ -28,6 +28,9 @@
             <div class="blue-button">
               <a href="/web/guest/member/-/member/userId/${currentUser.userId}/page/subscriptionsManage">MANAGE</a>
             </div>
+              <div class="blue-button">
+                  <a href="/web/guest/member/-/member/userId/${currentUser.userId}">BACK TO PROFILE</a>
+              </div>
           </div>
         </c:if>
         <table id="activitiesTable" class="fullscreen colab">

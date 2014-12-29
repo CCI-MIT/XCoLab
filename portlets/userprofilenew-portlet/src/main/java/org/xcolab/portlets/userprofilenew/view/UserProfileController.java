@@ -28,7 +28,6 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -68,7 +67,6 @@ public class UserProfileController {
     //@Qualifier("MessageBean")
     //private SmartValidator validator;
 
-
     @InitBinder("messageBean")
     public void initMessageBeanBinder(WebDataBinder binder) { binder.setValidator(validator); }
 
@@ -94,7 +92,7 @@ public class UserProfileController {
                 return "showUserProfile";
             }
         } catch(Exception e){
-            System.out.println("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for " + userId);
         }
 
         return "showProfileNotInitialized";
@@ -116,7 +114,7 @@ public class UserProfileController {
                 }
             }
         } catch(Exception e){
-            System.out.println("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for " + userId);
         }
 
         return "showProfileNotInitialized";
@@ -138,7 +136,7 @@ public class UserProfileController {
                     return "showUserSubscriptions";
             }
         } catch(Exception e){
-            System.out.println("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for " + userId);
         }
 
         return "showProfileNotInitialized";
@@ -165,7 +163,7 @@ public class UserProfileController {
                 }
             }
         } catch(Exception e){
-            System.out.println("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for " + userId);
         }
 
         return "showProfileNotInitialized";
@@ -174,7 +172,8 @@ public class UserProfileController {
 
     @RequestMapping(params = "action=navigateSubscriptions")
     public void navigateSubscriptions(ActionRequest request, Model model, ActionResponse response,
-                                      @RequestParam(required = true) String paginationAction) throws IOException {
+                                      @RequestParam(required = true) String paginationAction
+    ) throws IOException {
 
         Integer paginationPageId = 1;
         switch(paginationAction){
@@ -184,7 +183,6 @@ public class UserProfileController {
             case "Last": paginationPageId = _currentUserProfile.getSubscriptionsPaginationPageMax(); break;
         }
         //response.setRenderParameter("paginationId", paginationPageId.toString());
-
         response.sendRedirect("/web/guest/member/-/member/userId/" + _currentUserProfile.getUserId().toString()+
                 "/page/subscriptions/"+paginationPageId.toString());
     }
@@ -204,7 +202,7 @@ public class UserProfileController {
                 return "showUserProfile";
             }
         } catch(Exception e){
-            System.out.println("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for " + userId);
         }
         return "showProfileNotInitialized";
 
@@ -225,7 +223,7 @@ public class UserProfileController {
                 return "showUserProfile";
             }
         } catch(Exception e){
-            System.out.println("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for " + userId);
         }
         return "showProfileNotInitialized";
 
@@ -233,15 +231,15 @@ public class UserProfileController {
 
 
     @RequestMapping(params = "action=send")
-    public void sendMessage(ActionRequest request, Model model, ActionResponse response,@Valid MessageBean messageBean,
-                            BindingResult result, @RequestParam(required = false) String redirect)
-                            throws  AddressException, SystemException, PortalException, MailEngineException {
+    public void sendMessage(ActionRequest request, Model model, ActionResponse response,
+                            @Valid MessageBean messageBean, BindingResult result
+    ) throws  AddressException, SystemException, PortalException, MailEngineException {
 
 
         if (!result.hasErrors()) {
 
             if (messageBean.getMessageHoneypot() != null && messageBean.getMessageHoneypot().length() > 0) {
-                System.out.println("Message was not sent because honeypot was filled - text: " + messageBean.getMessageText() + " honeypot: " + messageBean.getMessageHoneypot());
+                _log.warn("Message was not sent because honeypot was filled - text: " + messageBean.getMessageText() + " honeypot: " + messageBean.getMessageHoneypot());
                 //trick bot into thinking message was sent
                 // currentUser.setMessageSent(true); TODO
                 return;
@@ -282,7 +280,6 @@ public class UserProfileController {
             model.addAttribute("passwordError", true);
         }
 
-        _currentUserProfile = null;
         try {
             initUserWrapper(request, model, userId);
 
@@ -293,8 +290,9 @@ public class UserProfileController {
                     return "showUserProfile";
                 }
             }
+
         } catch (Exception e) {
-            System.out.println("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for " + userId);
         }
 
         return "showProfileNotInitialized";
@@ -302,16 +300,14 @@ public class UserProfileController {
 
     @RequestMapping(params = "updateSuccess=true")
     public String updateProfileSuccess(PortletRequest request, Model model,
-                                     @RequestParam(required = false) String redirect,
                                      @RequestParam(required = true) String userId) {
 
         model.addAttribute("updateSuccess", true);
-        _currentUserProfile = null;
 
         try{
             initUserWrapper(request, model, userId);
         } catch(Exception e){
-            System.out.println("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
 
@@ -324,8 +320,8 @@ public class UserProfileController {
     public void updateUserProfile(ActionRequest request, Model model,
                              ActionResponse response,
                              @ModelAttribute UserBean updatedUserBean,
-                             BindingResult result,
-                             @RequestParam(required = false) String redirect) throws IOException, PwdEncryptorException{
+                             BindingResult result
+    ) throws IOException, PwdEncryptorException{
 
         boolean changedUserPart = false;
         boolean validationError = false;
@@ -402,36 +398,38 @@ public class UserProfileController {
             validationError = true;
         }
 
-        if(changedUserPart){
+
+        if(validationError) {
+            response.setRenderParameter("userId", _currentUserProfile.getUserId().toString());
+            response.setRenderParameter("updateError", "true");
+        }
+        else if(changedUserPart){
+
+            response.setRenderParameter("userId", _currentUserProfile.getUserId().toString());
+            response.setRenderParameter("updateSuccess", "true");
 
             updatedUserBean.setPortrait(_currentUserProfile.getUserBean().getPortrait());
-            response.setRenderParameter("userId", _currentUserProfile.getUserId().toString());
 
-            if(!validationError ) {
+            try {
+                UserLocalServiceUtil.updateUser(_currentUserProfile.getUser());
+            } catch(SystemException e) {
+                response.removePublicRenderParameter("updateSuccess");
+                response.setRenderParameter("updateError", "true");
+                _log.warn("Updating user failed for userId: " + _currentUserProfile.getUser().getUserId());
+                _log.warn(e);
+            }
 
+            if (eMailChanged) {
+                updatedUserBean.setEmailStored(updatedUserBean.getEmail());
                 try {
-                    UserLocalServiceUtil.updateUser(_currentUserProfile.getUser());
-                } catch(SystemException e) {
-                    _log.warn("Updating user failed for userId: " + _currentUserProfile.getUser().getUserId());
+                    sendUpatedEmail(_currentUserProfile.getUser());
+                } catch(AddressException | MailEngineException e){
+                    _log.warn("Sending eMail confirmation after email change failed for userId: " + _currentUserProfile.getUser().getUserId());
                     _log.warn(e);
                 }
-
-                if (eMailChanged) {
-                    updatedUserBean.setEmailStored(updatedUserBean.getEmail());
-                    try {
-                        sendUpatedEmail(_currentUserProfile.getUser());
-                    } catch(AddressException | MailEngineException e){
-                        _log.warn("Sending eMail confirmation after email change failed for userId: " + _currentUserProfile.getUser().getUserId());
-                        _log.warn(e);
-                    }
-                }
-                //model.addAttribute("updateSuccess", true);
-                response.setRenderParameter("updateSuccess", "true");
-
-            } else {
-                response.setRenderParameter("updateError", "true");
             }
-        } else {
+        }
+        else {
             response.sendRedirect("/web/guest/member/-/member/userId/" + _currentUserProfile.getUserId().toString());
         }
 
@@ -440,36 +438,22 @@ public class UserProfileController {
 
     }
 
-    private void initUserWrapper(PortletRequest request, Model model, String userId) throws PortalException, SystemException {
-
-        /*
-        HttpServletRequest originalRequest = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
-        Map<String, String[]> parameters = request.getParameterMap();
-
-        String userIdStr = null;
-        if (parameters.containsKey("userId")) {
-            userIdStr = parameters.get("userId")[0];
-        }
-        else if (originalRequest.getParameter("userId") != null){
-            userIdStr = originalRequest.getParameter("userId");
-        }
-
-        System.out.println("showUserProfile for " + userIdStr);
-        model.addAttribute("viewingOwnProfile", false);
-        */
+    private void initUserWrapper(PortletRequest request, Model model, String userId
+    ) throws PortalException, SystemException {
 
         _loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
-        
+        _currentUserProfile = null;
+
         if (userId != null) {
+
             try {
                 _currentUserProfile = new UserProfileWrapper(Long.parseLong(userId), request);
                 model.addAttribute("currentUser", _currentUserProfile);
                 model.addAttribute("baseImagePath", _currentUserProfile.getThemeDisplay().getPathImage());
                 model.addAttribute("messageBean", new MessageBean());
-                //model.addAttribute("userBean", _currentUserProfile.getUserBean());
 
             } catch (NumberFormatException e) {
-                System.out.println("Can't parse user id: " + userId);
+                _log.warn("Can't parse user id: " + userId);
             }
         }
     }
@@ -526,7 +510,6 @@ public class UserProfileController {
                 UserLocalServiceUtil.updateUser(_currentUserProfile.getUser());
                 UserServiceUtil.updatePortrait(_currentUserProfile.getUser().getUserId(), bytes);
                 _currentUserProfile.setUser(UserLocalServiceUtil.getUser(_currentUserProfile.getUser().getUserId()));
-                //TODO update iamge on relaod
                 changedDetails = true;
             }
         }
@@ -551,17 +534,6 @@ public class UserProfileController {
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
         }
-
-            /*
-        public void unlinkSSOAccount(ActionEvent event) throws SystemException, PortalException {
-            String accountType = event.getComponent().getAttributes().get("accountType").toString();
-            User u = UserLocalServiceUtil.getUser(wrappedUser.getUserId());
-            if (accountType.equalsIgnoreCase("FACEBOOK")) u.setFacebookId(0);
-            else if (accountType.equalsIgnoreCase("GOOGLE")) u.setOpenId("");
-            UserLocalServiceUtil.updateUser(u);
-            editing = !editing;
-            pageType = PageType.PROFILE_DETAILS;
-        }*/
 
         return changedDetails;
 

@@ -25,15 +25,15 @@ public class SubscriptionsActionController {
     @RequestMapping(params = {"action=removeSubscription"})
     public void handleRemoveSubscriptionAction(ActionRequest request, Model model, ActionResponse response,
                                                @ModelAttribute("userSubscriptions") UserSubscriptionsWrapper userSubscriptions,
-                                                    @RequestParam(required = true) Long userId)
-                                                throws PortalException, SystemException, IOException {
+                                               @RequestParam(required = true) Long userId
+    ) throws PortalException, SystemException, IOException {
 
         for (ActivitySubscriptionWrapper subscription : userSubscriptions.getSubscriptions()) {
             if (subscription.getSelected()) {
                 ActivitySubscriptionLocalServiceUtil.delete(ActivitySubscriptionLocalServiceUtil.getActivitySubscription(subscription.getSubscriptionPk()));
             }
         }
-        response.sendRedirect("/web/guest/member/-/member/userId/" + userId.toString()+"/page/subscriptionsManage");
+        response.sendRedirect("/web/guest/member/-/member/userId/" + userId.toString()+ "/page/subscriptionsManage");
 
     }
 
@@ -48,8 +48,8 @@ public class SubscriptionsActionController {
     @RequestMapping(params = {"action=unlinkSSO"})
     public void handleUnlinkSSOAction(ActionRequest request, Model model, ActionResponse response,
                                                @RequestParam(required = true) String userId,
-                                               @RequestParam(required = true) String accountType)
-            throws PortalException, SystemException, IOException {
+                                               @RequestParam(required = true) String accountType
+    ) throws PortalException, SystemException, IOException {
 
         User u = UserLocalServiceUtil.getUser(Long.parseLong(userId));
         if (accountType.equalsIgnoreCase("FACEBOOK")) u.setFacebookId(0);
