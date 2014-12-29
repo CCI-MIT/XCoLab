@@ -11,14 +11,14 @@ cd $XCOLAB_HOME/services/plansProposalsFacade/plansProposalsFacade-portlet-servi
 mvn clean compile package install
 
 cd $XCOLAB_HOME/services/plansProposalsFacade/plansProposalsFacade-portlet
-mvn clean compile package liferay:deploy -DskipTests=true
+mvn clean compile package -DskipTests=true
 
 #deploy all other portlets
 cd $XCOLAB_HOME/portlets
 for D in *; do
 	if [ -d "${D}" ]; then
 		cd $D
-        mvn compile package liferay:deploy
+        mvn clean compile package
         cd ..
 	fi;
 done
