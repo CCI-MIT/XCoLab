@@ -123,9 +123,10 @@
         	<c:if test="${discussionPermissions.canSeeAddCommentButton }">
         		<div class="addcomment">
         			<div id="add">
-           				<strong>ADD YOUR COMMENT</strong>
+           				<strong>ADD YOUR COMMENT</strong><br />
+						(1) Visible to judging team only.
                         <br />
-                        (You must be logged into your account to post a comment.)
+                        (2) You must be logged into your account to post a comment.
         			</div>
         			<div id="thecomment">
         				<portlet:actionURL var="addCommentURL">
