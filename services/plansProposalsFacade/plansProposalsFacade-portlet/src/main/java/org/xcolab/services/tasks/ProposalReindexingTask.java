@@ -19,6 +19,7 @@ public class ProposalReindexingTask implements MessageListener, Serializable{
 	private final static Log _log = LogFactoryUtil.getLog(ProposalReindexingTask.class);
 	@Override
 	public void receive(Message message) throws MessageListenerException {
+        System.out.println("digest-debug: ProposalReindexingTask reached");
 		final Indexer indexer = IndexerRegistryUtil.getIndexer(Proposal.class);
 		
 		Calendar calendar = Calendar.getInstance();

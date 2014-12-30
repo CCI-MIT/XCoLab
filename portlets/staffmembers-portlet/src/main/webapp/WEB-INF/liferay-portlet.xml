@@ -4,9 +4,22 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>staffmembers-portlet</portlet-name>
+
+        <scheduler-entry>
+            <scheduler-event-listener-class>org.xcolab.utils.TestScheduler</scheduler-event-listener-class>
+            <trigger>
+                <simple>
+                    <simple-trigger-value>10</simple-trigger-value>
+                    <time-unit>minute</time-unit>
+                </simple>
+            </trigger>
+        </scheduler-entry>
+
 		<instanceable>true</instanceable>
         <requires-namespaced-parameters>false</requires-namespaced-parameters>
 		<header-portlet-css>/css/main.css</header-portlet-css>
+
+
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
