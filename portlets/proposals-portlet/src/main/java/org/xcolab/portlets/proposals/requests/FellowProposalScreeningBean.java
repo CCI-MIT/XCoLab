@@ -19,6 +19,8 @@ public class FellowProposalScreeningBean extends RatingBean implements Serializa
 
     private List<Long> selectedJudges;
 
+    private Long screeningUserId;
+
     private static final String[] EMAIL_TEMPLATES_TO_LOAD = {
             "SCREENING_DO_NOT_ADVANCE_INCOMPLETE",
             "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC",
@@ -57,6 +59,10 @@ public class FellowProposalScreeningBean extends RatingBean implements Serializa
         this.fellowScreeningAction = JudgingSystemActions.FellowAction.fromInt(fellowActionValue);
     }
 
+    public void addSelectedJudge(Long userId){
+        selectedJudges.add(userId);
+    }
+
     public List<Long> getSelectedJudges() {
         return selectedJudges;
     }
@@ -72,4 +78,8 @@ public class FellowProposalScreeningBean extends RatingBean implements Serializa
     public void setFellowScreeningActionCommentBody(String fellowActionCommentBody) {
         this.fellowScreeningActionCommentBody = fellowActionCommentBody;
     }
+
+    public void setScreeningUserId(Long screeningUserId){this.screeningUserId=screeningUserId;}
+
+    public Long getScreeningUserId(){return screeningUserId;}
 }
