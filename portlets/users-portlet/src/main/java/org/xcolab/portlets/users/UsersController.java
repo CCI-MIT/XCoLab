@@ -42,8 +42,8 @@ public class UsersController {
         if (pageParam!=null)
             page = pageParam.intValue();
 
-        //int pagesCount = (int)Math.ceil((double)UserLocalServiceUtil.getUsersCount() / (double)USERS_PER_PAGE);
-        int pagesCount = UserLocalServiceUtil.getUsersCount() / USERS_PER_PAGE;
+        int usersCount = UserLocalServiceUtil.getUsersCount();
+        int pagesCount = usersCount / USERS_PER_PAGE;
         int startPage = page - 5 > 0?page - 5:1;
         int endPage = startPage + 10<pagesCount? startPage+10:pagesCount;
 
@@ -88,8 +88,11 @@ public class UsersController {
                     dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDesc(firstUser,endUser);
                 break;
         }
-        else
-            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser,endUser);
+        else {
+            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser);
+            sortFilterPage.setSortColumn("USER_NAME");
+            sortFilterPage.setSortAscending(true);
+        }
 
         List<UserItem> users = new ArrayList<UserItem>();
         for (User_ user : dBUsers)
@@ -104,6 +107,7 @@ public class UsersController {
         model.addAttribute("endPage", endPage);
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("users", users);
+        model.addAttribute("usersCount", usersCount);
 
         return "users";
 

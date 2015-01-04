@@ -1,9 +1,9 @@
 /** userss list **/
-.userslist.table .column.usersName {
-	width: 366px;
+.userslist.table .column.screenName {
+	width: 345px;
 }
 
-.userslist.table .column.usersName .usersFlag {
+.userslist.table .column.screenName .usersFlag {
 	position: relative;
 }
 
@@ -17,7 +17,7 @@
 }
 */
 .userslist.table .column.usersActivityCount {
-	width: 118px;
+	width: 105px;
 }
 
 .userslist.table .column.usersCategory {

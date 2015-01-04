@@ -6,7 +6,9 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-	
+
+	<div class="main_long">
+
 	<div class="blueheaderbar tooltips">
         <div class="user">
         	<portlet:renderURL var="sortURL">
@@ -50,8 +52,6 @@
 
     </div>
 
-	<div class="shadebar"><!--  --></div>
-
 	<table class="userslist table">
 		<c:forEach var="user" items="${users }">
 			<tr>
@@ -63,7 +63,7 @@
 				<td class="column usersActivityCount g">
 					${user.activityCount}
 				</td>
-				<td class="column userscategory">
+				<td class="column usersCategory">
 					${user.category}
 				</td>
 				<td class="column usersSeniority g">
@@ -72,6 +72,49 @@
 			</tr>
 		</c:forEach>
 	</table>
+
+	</div>
+
+	<div class="right_col3">
+
+		<div class="members comm_list">
+			<h2>Categories</h2>
+			<ul class="membersCategories">
+				<li class="${categoryFilter == 'MEMBER' ? 'c' : ''}">
+					<img src="/climatecolab-theme/images/icon_mem-member.png"
+						 width="16" height="16" />&#160; <a href="#">Members</a>
+				</li>
+				<li class="${categoryFilter == 'CATALYST' ? 'c' : ''}">
+					<img src="/climatecolab-theme/images/icon_mem-catalyst.png"
+						 width="16" height="16" />&#160; <a href="#">Catalyst</a>
+				</li>
+				<li class="${categoryFilter == 'FELLOW' ? 'c' : ''}">
+					<img src="/climatecolab-theme/images/icon_mem-fellow.png"
+						 width="16" height="16" />&#160; <a href="#">Fellows</a>
+				</li>
+				<li class="${categoryFilter == 'ADVISOR' ? 'c' : ''}">
+					<img src="/climatecolab-theme/images/icon_mem-advisor.png"
+						 width="16" height="16" />&#160; <a href="#">Advisors</a>
+				</li>
+				<li class="${categoryFilter == 'EXPERT' ? 'c' : ''}">
+					<img src="/climatecolab-theme/images/icon_mem-expert.png"
+						 width="16" height="16" />&#160; <a href="#">Experts</a>
+				</li>
+				<li class="${categoryFilter == 'JUDGES' ? 'c' : ''}">
+					<img src="/climatecolab-theme/images/icon_mem-judges.png"
+						 width="16" height="16" />&#160; <a href="#">Judges</a>
+				</li>
+				<li class="${categoryFilter == 'STAFF' ? 'c' : ''}">
+					<img src="/climatecolab-theme/images/icon_mem-staff.png"
+						 width="16" height="16" />&#160; <a href="#">Staff</a>
+				</li>
+				<li class="${categoryFilter == 'ALL' ? 'c' : ''}">
+					<a href="#">All</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
 <br/>
 <div>
 <table>
