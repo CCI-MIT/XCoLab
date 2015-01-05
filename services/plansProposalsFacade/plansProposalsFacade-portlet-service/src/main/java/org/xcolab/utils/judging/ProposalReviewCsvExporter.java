@@ -100,6 +100,9 @@ public class ProposalReviewCsvExporter {
 
                     tableBody.append(commentString).append("\n");
                 }
+
+                tableBody.append(TQF + "\"" + escapeQuote(proposalName) + "\"" + delimiter +
+                        "\"" + proposalReview.getProposalUrl() + "\"" + delimiter);
                 tableBody.append(getAverageRatings(proposalReview)).append("\n");
             }
         }
@@ -109,9 +112,8 @@ public class ProposalReviewCsvExporter {
     }
 
     private String getAverageRatings(ProposalReview proposalReview){
-        StringBuilder averageRating = new StringBuilder(TQF);
-        averageRating.append(TQF + "\"\"" + delimiter + "\"\"" + delimiter + "\"\"" + delimiter +  "\"Average\"");
-        averageRating.append(delimiter + "\"" + df.format(proposalReview.getRatingAverage()) + TQF + "\"");
+        StringBuilder averageRating = new StringBuilder();
+        averageRating.append( "\"Average\"" + delimiter + "\"" + df.format(proposalReview.getRatingAverage()) + TQF + "\"");
 
         for (ProposalRatingType ratingType : ratingTypes) {
             Double average = proposalReview.getRatingAverage(ratingType);
