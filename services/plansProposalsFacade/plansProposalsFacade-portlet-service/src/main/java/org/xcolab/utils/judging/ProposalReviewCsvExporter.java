@@ -26,6 +26,7 @@ public class ProposalReviewCsvExporter {
     private static final String TQF = ""; // text qualifier
     private static final String delimiter = TQF + DEL + TQF;
 
+    private static final DecimalFormat df = new DecimalFormat("#.##");
     /*
     * Cluster all proposal reviews (from multiple Contest phases) by proposal since we
     * have multiple reviews for each proposal (multiple judging phases)
@@ -45,45 +46,61 @@ public class ProposalReviewCsvExporter {
             return StringPool.BLANK;
         }
 
-        DecimalFormat df = new DecimalFormat("#.##");
-
         StringBuilder tableBody = new StringBuilder();
         for (Proposal proposal : proposalToProposalReviewsMap.keySet()) {
             String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(),
                     ProposalAttributeKeys.NAME, 0).getStringValue();
-            boolean isFirstLine = true;
 
             for (ProposalReview proposalReview : proposalToProposalReviewsMap.get(proposal)) {
-                // Print the proposal name and url only for the first line of each proposal
-                if (isFirstLine) {
+                for (User reviewer : reviewers) {
+
                     tableBody.append(TQF + "\"" + escapeQuote(proposalName) + "\"" + delimiter +
                             "\"" + proposalReview.getProposalUrl() + "\"" + delimiter);
-                } else {
-                    tableBody.append(TQF + "\"\"" + delimiter + "\"\"" + delimiter);
-                }
 
-                String contestPhaseName = ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
-                tableBody.append("\"" + escapeQuote(contestPhaseName) + "\"");
+                    String contestPhaseName = ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
 
-                StringBuilder commentString = new StringBuilder();
-                for (ProposalRatingType ratingType : ratingTypes) {
-                    Double average = proposalReview.getRatingAverage(ratingType);
-                    if (Validator.isNull(average)) {
-                        commentString.append(delimiter + "\"\"");
+                    tableBody.append("\"" + escapeQuote(contestPhaseName) + "\"");
+
+                    tableBody.append(delimiter + "\"" + reviewer.getFirstName() + " " + reviewer.getLastName() + "\"");
+
+                    StringBuilder commentString = new StringBuilder();
+
+                    Double ratingAverage = proposalReview.getUserRatingAverage(reviewer);
+                    if (Validator.isNull(ratingAverage)) {
+                        if(proposalReview.getReviewers().contains(reviewer)) {
+                            commentString.append(delimiter + "\"-\"" + TQF);
+                        }
+                            else {
+                            commentString.append(delimiter + "\"\"");
+                        }
                     } else {
-                        commentString.append(delimiter + "\"" + df.format(average) + TQF + "\"");
+                        commentString.append(delimiter + "\"" + df.format(ratingAverage) + TQF + "\"");
                     }
-                }
-                for (User reviewer : reviewers) {
+
+                    for (ProposalRatingType ratingType : ratingTypes) {
+                        Double rating = proposalReview.getUserRating(reviewer,ratingType);
+                        if (Validator.isNull(rating)) {
+                            if(proposalReview.getReviewers().contains(reviewer)) {
+                                commentString.append(delimiter + "\"-\"" + TQF);
+                            }
+                            else {
+                                commentString.append(delimiter + "\"\"");
+                            }
+                        } else {
+                            commentString.append(delimiter + "\"" + df.format(rating) + TQF + "\"");
+                        }
+                    }
+
                     String review = proposalReview.getReview(reviewer);
                     if (Validator.isNull(review)) {
                         commentString.append(delimiter + "\"\"");
                     } else {
                         commentString.append(delimiter + "\"" + escapeQuote(review) + TQF + "\"");
                     }
+
+                    tableBody.append(commentString).append("\n");
                 }
-                tableBody.append(commentString).append("\n");
-                isFirstLine = false;
+                tableBody.append(getAverageRatings(proposalReview)).append("\n");
             }
         }
 
@@ -91,28 +108,33 @@ public class ProposalReviewCsvExporter {
         return replaceNonAsciiCharacters(deAccent(rawCsv));
     }
 
+    private String getAverageRatings(ProposalReview proposalReview){
+        StringBuilder averageRating = new StringBuilder(TQF);
+        averageRating.append(TQF + "\"\"" + delimiter + "\"\"" + delimiter + "\"\"" + delimiter +  "\"Average\"");
+        averageRating.append(delimiter + "\"" + df.format(proposalReview.getRatingAverage()) + TQF + "\"");
+
+        for (ProposalRatingType ratingType : ratingTypes) {
+            Double average = proposalReview.getRatingAverage(ratingType);
+            if (Validator.isNull(average)) {
+                averageRating.append(delimiter + "\"\"");
+            } else {
+                averageRating.append(delimiter + "\"" + df.format(average) + TQF + "\"");
+            }
+        }
+
+        return averageRating.toString();
+    }
+
     private String getTableHeader() {
-        String header = TQF + "\"Proposal title\"" + delimiter + "\"Proposal URL\"" + delimiter + "\"Contest Phase\"";
+        String header = TQF + "\"Proposal title\"" + delimiter + "\"Proposal URL\"" + delimiter + "\"Contest Phase\""  + delimiter + "\"Judge\"" + delimiter + "\"Average\"";
 
         StringBuilder ratingSubHeader = new StringBuilder(TQF);
         for (ProposalRatingType ratingType : ratingTypes) {
             String ratingTitle = ratingType.getLabel();
-            ratingSubHeader.append(delimiter + "\"" + ratingTitle + " avg\"");
+            ratingSubHeader.append(delimiter + "\"" + ratingTitle + "\"");
         }
 
-        StringBuilder commentSubHeader = new StringBuilder(TQF);
-        for (User reviewer : reviewers) {
-            String judgeInitials = "";
-            if (!reviewer.getFirstName().isEmpty()) {
-                judgeInitials += reviewer.getFirstName().substring(0, 1).toUpperCase();
-            }
-            if (!reviewer.getLastName().isEmpty()) {
-                judgeInitials += reviewer.getLastName().substring(0, 1).toUpperCase();
-            }
-            commentSubHeader.append(delimiter + "\"" + judgeInitials + " comment\"");
-        }
-
-        header += ratingSubHeader.toString() + commentSubHeader.toString() + TQF + "\n";
+        header += ratingSubHeader.toString() + delimiter +"\"Comment\"" + delimiter + "\"Author/Team name\"" + delimiter + "\"Presented by\"" + "\n"; //commentSubHeader.toString()
         return header;
     }
 
