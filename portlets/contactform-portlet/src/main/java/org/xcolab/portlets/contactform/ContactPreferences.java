@@ -54,9 +54,8 @@ public class ContactPreferences implements Serializable {
         recipients = prefs.getValue(RECIPIENTS_PREF, String.valueOf(defaultRecipients));
     }
 
-    public String store(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {
+    public String store(PortletPreferences prefs) throws ReadOnlyException, ValidatorException, IOException {
 
-        PortletPreferences prefs = request.getPreferences();
         prefs.setValue(MESSAGE_FORMAT_PREF, messageFormat);
         prefs.setValue(MESSAGE_SUBJECT_PREF, messageSubject);
         prefs.setValue(EXPAND_LINK_TEXT_PREF, expandLinkText);
