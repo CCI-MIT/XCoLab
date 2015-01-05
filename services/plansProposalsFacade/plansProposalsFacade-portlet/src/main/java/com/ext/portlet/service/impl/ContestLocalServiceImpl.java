@@ -725,6 +725,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
 
         for (ContestPhase judgingPhase : getAllPhases(contest)) {
+            if(!judgingPhase.getFellowScreeningActive()){
+                continue;
+            }
             for (Proposal proposal : stillActiveProposals) {
                 try {
                     ProposalContestPhaseAttribute fellowActionAttribute = getProposalContestPhaseAttributeLocalService().

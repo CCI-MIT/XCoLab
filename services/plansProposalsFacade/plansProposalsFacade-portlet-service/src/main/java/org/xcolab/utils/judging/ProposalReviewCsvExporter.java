@@ -50,44 +50,18 @@ public class ProposalReviewCsvExporter {
         for (Proposal proposal : proposalToProposalReviewsMap.keySet()) {
             String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(),
                     ProposalAttributeKeys.NAME, 0).getStringValue();
-            boolean isFirstLine = true;
 
             for (ProposalReview proposalReview : proposalToProposalReviewsMap.get(proposal)) {
-
-
                 for (User reviewer : reviewers) {
 
-                    // Print the proposal name and url only for the first line of each proposal
-                    if (isFirstLine) {
-                        tableBody.append(TQF + "\"" + escapeQuote(proposalName) + "\"" + delimiter +
-                                "\"" + proposalReview.getProposalUrl() + "\"" + delimiter);
-                    } else {
-                        tableBody.append(TQF + "\"\"" + delimiter + "\"\"" + delimiter);
-                    }
+                    tableBody.append(TQF + "\"" + escapeQuote(proposalName) + "\"" + delimiter +
+                            "\"" + proposalReview.getProposalUrl() + "\"" + delimiter);
 
                     String contestPhaseName = ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
+
                     tableBody.append("\"" + escapeQuote(contestPhaseName) + "\"");
 
-                    /*
-                    StringBuilder commentSubHeader = new StringBuilder(TQF);
-                    for (ProposalRatingType ratingType : ratingTypes) {
-                        Double average = proposalReview.getRatingAverage(ratingType);
-                        if (Validator.isNull(average)) {
-                            commentString.append(delimiter + "\"\"");
-                        } else {
-                            commentString.append(delimiter + "\"" + df.format(average) + TQF + "\"");
-                        }
-                    }*/
-
-                    String judgeInitials = "";
-                    if (!reviewer.getFirstName().isEmpty()) {
-                        judgeInitials += reviewer.getFirstName().substring(0, 1).toUpperCase();
-                    }
-                    if (!reviewer.getLastName().isEmpty()) {
-                        judgeInitials += reviewer.getLastName().substring(0, 1).toUpperCase();
-                    }
-                    tableBody.append(delimiter + "\"" + judgeInitials + "\"");
-
+                    tableBody.append(delimiter + "\"" + reviewer.getFirstName() + " " + reviewer.getLastName() + "\"");
 
                     StringBuilder commentString = new StringBuilder();
 
@@ -125,7 +99,6 @@ public class ProposalReviewCsvExporter {
                     }
 
                     tableBody.append(commentString).append("\n");
-                    isFirstLine = false;
                 }
                 tableBody.append(getAverageRatings(proposalReview)).append("\n");
             }
