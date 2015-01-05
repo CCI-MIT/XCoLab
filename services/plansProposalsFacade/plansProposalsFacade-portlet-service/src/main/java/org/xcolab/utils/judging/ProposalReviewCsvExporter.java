@@ -103,6 +103,8 @@ public class ProposalReviewCsvExporter {
 
                 tableBody.append(TQF + "\"" + escapeQuote(proposalName) + "\"" + delimiter +
                         "\"" + proposalReview.getProposalUrl() + "\"" + delimiter);
+                String contestPhaseName = ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
+                tableBody.append("\"" + escapeQuote(contestPhaseName) + "\"" + delimiter);
                 tableBody.append(getAverageRatings(proposalReview)).append("\n");
             }
         }
