@@ -48,6 +48,7 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 				.equals(LOCAL_IPv6_ADDRESS))) {
 			_log.warn(String
 					.format("Denied request from address %s!", clientIp));
+			resetMutexLock();
 			return null;
 		}
         System.out.println("digest-debug: SchedulerDispatchStrutsAction line 53 reached");
@@ -68,11 +69,15 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 					e);
 		}
 
-		synchronized (mutex) {
-			isRunning = false;
-		}
+		resetMutexLock();
+
 		return StringPool.BLANK;
 
 	}
 
+	private void resetMutexLock() {
+		synchronized (mutex) {
+			isRunning = false;
+		}
+	}
 }
