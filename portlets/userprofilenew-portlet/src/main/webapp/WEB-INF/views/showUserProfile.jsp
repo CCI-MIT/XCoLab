@@ -112,7 +112,7 @@
 					<c:if test="${currentUser.viewingOwnProfile}">
 						<tr>
 							<td class="b" width="50%">Email</td>
-							<td width="50%">
+							<td width="50%" style="white-space: nowrap;">
 								<a href="mailto:${userBean.email}">${userBean.emailStored}</a>
 
 								<c:if test="${currentUser.displayEMailErrorMessage}">
