@@ -57,7 +57,7 @@ public class ProposalReviewCsvExporter {
                 for (User reviewer : reviewers) {
 
                     tableBody.append(getRowHeader(proposalName, proposalReview));
-                    tableBody.append(delimiter + "\"" + reviewer.getFirstName() + " " + reviewer.getLastName() + "\"");
+                    tableBody.append("\"" + reviewer.getFirstName() + " " + reviewer.getLastName() + "\"");
 
                     StringBuilder commentString = new StringBuilder();
 

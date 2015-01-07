@@ -65,11 +65,10 @@ public class ProposalReview {
 
         double avg = 0F;
         double sum = 0;
-        int count = 0;
+        int count =  ratingAverages.keySet().size();
 
         for(ProposalRatingType key : ratingAverages.keySet()){
             sum += ratingAverages.get(key);
-            count++;
         }
 
         if(count > 0) {
@@ -106,12 +105,11 @@ public class ProposalReview {
         if(userRatings.get(user) != null) {
             double avg = 0F;
             double sum = 0;
-            int count = 0;
+            int count =  userRatings.get(user).keySet().size();
 
             //take the average for each user
             for (ProposalRatingType key : userRatings.get(user).keySet()) {
                 sum += userRatings.get(user).get(key);
-                count++;
             }
             if (count > 0) {
                 avg = sum / count;
