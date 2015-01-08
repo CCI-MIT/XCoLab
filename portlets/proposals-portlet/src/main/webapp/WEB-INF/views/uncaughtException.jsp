@@ -11,11 +11,10 @@
     Internal error has ocurred, please contact the administrator.
     <div id="stackTrace" style="display:none;">
     <c:if test="${not empty exception}">
-        <p>An error occured: <c:out value="${exception}"/></p>
-        <c:out value="\r\n"/>
+        <p><strong>Exception:</strong><c:out value="${exception}"/></p>
+        <br/>
         <pre>
         <c:forEach var="stackTraceElem" items="${exception.stackTrace}">
-            <c:out value="\r\n"/>
             <c:out value="${stackTraceElem}"/><br/>
         </c:forEach>
         </pre><br/>
