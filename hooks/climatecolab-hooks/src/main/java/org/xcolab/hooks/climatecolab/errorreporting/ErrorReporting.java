@@ -34,8 +34,9 @@ public class ErrorReporting implements Filter {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String url = request.getParameter("url");
-        String description = request.getParameter("description");
+        String descriptionInHtmlFormat = request.getParameter("description").replaceAll("(\r\n|\n)", "<br />");
         String stackTrace = request.getParameter("stackTrace");
         String userScreenName = "";
         try {
@@ -45,12 +46,10 @@ public class ErrorReporting implements Filter {
             // Couldn't find user
         }
         StringBuilder messageBuilder = new StringBuilder();
-        if (StringUtils.isNotEmpty(url) && StringUtils.isNotEmpty(description)){
-            //messageBuilder.append("An exception occured at: " + url + "\r\n\n");
-            //messageBuilder.append("Message from user:\n " + description + "\r\n\n");
-            //messageBuilder.append("Stacktrace:\n " + URLDecoder.decode(stackTrace, "UTF-8") +"\n");
+        if (StringUtils.isNotEmpty(url)){
             messageBuilder.append("<p><strong>An exception occured at:</strong><br> " + url + "</p>");
-            messageBuilder.append("<p><strong>Message from user " + userScreenName + ":</strong><br/> " + description + "</p>");
+            messageBuilder.append("<p><strong>Message from user " + userScreenName + ":</strong><br/> ");
+            messageBuilder.append(descriptionInHtmlFormat + "</p>");
             messageBuilder.append(URLDecoder.decode(stackTrace, "UTF-8"));
             sendMessage("Error Report from User", messageBuilder.toString());
         }
@@ -69,7 +68,7 @@ public class ErrorReporting implements Filter {
         try {
             InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");
 
-            String emailRecipients = "pdeboer@mit.edu,knauert@mit.edu,mangk@mit.edu";
+            String emailRecipients = "pdeboer@mit.edu,knauert@mit.edu,mail@klemensmang.com";
             String[] recipients = emailRecipients.split(",");
 
             InternetAddress[] addressTo = new InternetAddress[recipients.length];
