@@ -11,7 +11,7 @@
     Internal error has ocurred, please contact the administrator.
     <div id="stackTrace" style="display:none;">
     <c:if test="${not empty exception}">
-        <p><strong>Exception:</strong><c:out value="${exception}"/></p>
+        <p><strong>Exception:</strong><br/><c:out value="${exception}"/></p>
         <p><strong>Stacktrace:</strong><br/>
             <pre>
                 <c:forEach var="stackTraceElem" items="${exception.stackTrace}">
