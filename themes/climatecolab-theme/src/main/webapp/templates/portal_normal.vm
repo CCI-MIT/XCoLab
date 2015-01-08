@@ -219,6 +219,7 @@
              <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0px;">
                  <form id="signInForm_form" method="post" action="/c/reportError">
                      <input name="url" type="hidden" />
+                     <input id="stackTrackeInput" name="stackTrace" type="hidden" value="${exception.stackTrace}"/>
                      <textarea name="description" class="username" style="max-width:100%; min-width:100%; width:100%;" placeholder="Description" ></textarea>
                      <div class="clearfix"></div>
                      <div class="btns">
@@ -230,8 +231,6 @@
              </div>
          </div>
      </div>
-
-
      <!-- /ERROR REPORT POPUP -->
   
   

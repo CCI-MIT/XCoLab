@@ -9,6 +9,7 @@ jQuery( document ).ready(function() {
         text = body.textContent || body.innerText;
 
         if (text.match(errorMessage)){
+            jQuery('#stackTrackeInput').val(jQuery('#stackTrace').text());
             jQuery('#popup_error_reporting').show();
         }
     });

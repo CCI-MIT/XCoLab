@@ -31,8 +31,13 @@ public class ErrorReporting implements Filter {
             throws ServletException, IOException {
         String url = request.getParameter("url");
         String description = request.getParameter("description");
+        String stackTrace = request.getParameter("stackTrace");
+        StringBuilder messageBuilder = new StringBuilder();
         if (StringUtils.isNotEmpty(url) && StringUtils.isNotEmpty(description)){
-           sendMessage("Error Report from User","An exception occured at: " + url + "\n\n" + "Message from user:\n" + description);
+            messageBuilder.append("An exception occured at: " + url + "\n\n");
+            messageBuilder.append("Message from user:\n " + description + "\n\n");
+            messageBuilder.append("Stacktrace:\n " + stackTrace);
+            sendMessage("Error Report from User", messageBuilder.toString());
         }
         response.sendRedirect("/");
     }
@@ -48,10 +53,18 @@ public class ErrorReporting implements Filter {
     protected void sendMessage(String subject, String body) {
         try {
             InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");
-            InternetAddress toEmail = new InternetAddress("pdeboer@mit.edu", "Patrick de Boer");
-            MailEngine.send(fromEmail, toEmail, subject, body, true);
+
+            String emailRecipients = "pdeboer@mit.edu,knauert@mit.edu,mangk@mit.edu";
+            String[] recipients = emailRecipients.split(",");
+
+            InternetAddress[] addressTo = new InternetAddress[recipients.length];
+            for (int i = 0; i < recipients.length; i++) {
+                addressTo[i] = new InternetAddress(recipients[i]);
+            }
+
+            MailEngine.send(fromEmail, addressTo, subject, body, true);
         } catch (Exception e) {
-            _log.error("Could not send vote message", e);
+            _log.error("Could not send feedback message", e);
         }
     }
 
