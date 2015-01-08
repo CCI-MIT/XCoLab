@@ -1,23 +1,15 @@
 package org.xcolab.hooks.climatecolab.errorreporting;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngine;
-import com.liferay.util.mail.MailEngineException;
 import org.parboiled.common.StringUtils;
-
 import javax.mail.internet.InternetAddress;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sound.sampled.Port;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 
@@ -38,17 +30,17 @@ public class ErrorReporting implements Filter {
         String url = request.getParameter("url");
         String descriptionInHtmlFormat = request.getParameter("description").replaceAll("(\r\n|\n)", "<br />");
         String stackTrace = request.getParameter("stackTrace");
-        String userScreenName = "";
+        String userScreenName = "no user was logged in";
         try {
             userScreenName = PortalUtil.getUser(request).getScreenName();
         }
         catch(Exception e){
-            // Couldn't find user
+            // Couldn't find user or no user is logged in
         }
         StringBuilder messageBuilder = new StringBuilder();
         if (StringUtils.isNotEmpty(url)){
             messageBuilder.append("<p><strong>An exception occured at:</strong><br> " + url + "</p>");
-            messageBuilder.append("<p><strong>Message from user " + userScreenName + ":</strong><br/> ");
+            messageBuilder.append("<p><strong>Message from user (" + userScreenName + "):</strong><br/> ");
             messageBuilder.append(descriptionInHtmlFormat + "</p>");
             messageBuilder.append(URLDecoder.decode(stackTrace, "UTF-8"));
             sendMessage("Error Report from User", messageBuilder.toString());
