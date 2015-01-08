@@ -141,18 +141,17 @@
 							</td>
 						</tr>
 
-						<!--
 						<tr>
-							<td class="b m nowrap">Current password
+							<th class="b m nowrap">Current password
 								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
-							</td>
+							</th>
 							<td>
 								<form:password cssClass="profile_input" path="currentPassword" />
 								<div class="reg_errors">
 									<form:errors cssClass="alert alert-error" path="currentPassword" />
 								</div>
 							</td>
-						</tr> -->
+						</tr>
 						<tr>
 							<th class="b m nowrap">New password
 								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />

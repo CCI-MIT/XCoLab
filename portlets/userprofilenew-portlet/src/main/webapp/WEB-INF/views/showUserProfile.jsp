@@ -38,12 +38,6 @@
 	<div id="main" class="${currentUser.viewingOwnProfile ? '' : 'full'} userProfile">
 		<h1>Member Profile</h1>
 		<div class="profile_action">
-		<c:if test="${currentUser.viewingOwnProfile}">
-			<div class="blue-button">
-				<a href="/web/guest/member/-/member/userId/${currentUser.userId}/page/edit">Manage profile and settings</a>
-			</div>
-		</c:if>
-
 		<c:if test="${currentUser.canSendMessage and not currentUser.viewingOwnProfile }">
 			<div class="blue-button">
 			<a href="javascript:;"
@@ -118,7 +112,7 @@
 					<c:if test="${currentUser.viewingOwnProfile}">
 						<tr>
 							<td class="b" width="50%">Email</td>
-							<td width="50%">
+							<td width="50%" style="white-space: nowrap;">
 								<a href="mailto:${userBean.email}">${userBean.emailStored}</a>
 
 								<c:if test="${currentUser.displayEMailErrorMessage}">
@@ -133,6 +127,14 @@
 						<tr>
 							<td class="b" width="50%">Country</td>
 							<td width="50%">${userBean.country}</td>
+						</tr>
+					</c:if>
+
+					<c:if test="${currentUser.viewingOwnProfile}">
+						<tr>
+							<td colspan="2">
+							<a href="/web/guest/member/-/member/userId/${currentUser.userId}/page/edit">Manage profile and settings</a>
+							</td>
 						</tr>
 					</c:if>
 

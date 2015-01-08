@@ -11,6 +11,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import org.apache.commons.lang.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.Normalizer;
@@ -54,14 +56,8 @@ public class ProposalReviewCsvExporter {
             for (ProposalReview proposalReview : proposalToProposalReviewsMap.get(proposal)) {
                 for (User reviewer : reviewers) {
 
-                    tableBody.append(TQF + "\"" + escapeQuote(proposalName) + "\"" + delimiter +
-                            "\"" + proposalReview.getProposalUrl() + "\"" + delimiter);
-
-                    String contestPhaseName = ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
-
-                    tableBody.append("\"" + escapeQuote(contestPhaseName) + "\"");
-
-                    tableBody.append(delimiter + "\"" + reviewer.getFirstName() + " " + reviewer.getLastName() + "\"");
+                    tableBody.append(getRowHeader(proposalName, proposalReview));
+                    tableBody.append("\"" + reviewer.getFirstName() + " " + reviewer.getLastName() + "\"");
 
                     StringBuilder commentString = new StringBuilder();
 
@@ -101,10 +97,7 @@ public class ProposalReviewCsvExporter {
                     tableBody.append(commentString).append("\n");
                 }
 
-                tableBody.append(TQF + "\"" + escapeQuote(proposalName) + "\"" + delimiter +
-                        "\"" + proposalReview.getProposalUrl() + "\"" + delimiter);
-                String contestPhaseName = ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
-                tableBody.append("\"" + escapeQuote(contestPhaseName) + "\"" + delimiter);
+                tableBody.append(getRowHeader(proposalName, proposalReview));
                 tableBody.append(getAverageRatings(proposalReview)).append("\n");
             }
         }
@@ -129,17 +122,35 @@ public class ProposalReviewCsvExporter {
         return averageRating.toString();
     }
 
-    private String getTableHeader() {
-        String header = TQF + "\"Proposal title\"" + delimiter + "\"Proposal URL\"" + delimiter + "\"Contest Phase\""  + delimiter + "\"Judge\"" + delimiter + "\"Average\"";
+    private String getRowHeader(String proposalName, ProposalReview proposalReview){
+        String contestPhaseName = "";
+        try {
+            contestPhaseName = ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
+        } catch(SystemException s){
+            // Ignore contest phase
+        }
+        return  TQF + "\"" + escapeQuote(proposalName) + "\"" + delimiter +
+                "\"" + escapeQuote(proposalReview.getProposalTeamAuthor()) + "\"" + delimiter +
+                "\"" + proposalReview.getProposalUrl() + "\"" + delimiter +
+                "\"" + escapeQuote(contestPhaseName) + "\"" + delimiter;
+    }
 
+    private String getTableHeader() {
         StringBuilder ratingSubHeader = new StringBuilder(TQF);
         for (ProposalRatingType ratingType : ratingTypes) {
             String ratingTitle = ratingType.getLabel();
-            ratingSubHeader.append(delimiter + "\"" + ratingTitle + "\"");
+            ratingSubHeader.append("\"" + ratingTitle + "\"" + delimiter);
         }
 
-        header += ratingSubHeader.toString() + delimiter +"\"Comment\"" + delimiter + "\"Author/Team name\"" + delimiter + "\"Presented by\"" + "\n"; //commentSubHeader.toString()
-        return header;
+        return  TQF + "\"Proposal title\"" + delimiter +
+                "\"Author/Team name\"" + delimiter +
+                "\"Proposal URL\"" + delimiter +
+                "\"Contest Phase\""  + delimiter +
+                "\"Judge\"" + delimiter +
+                "\"Average\"" + delimiter +
+                ratingSubHeader.toString() +
+                "\"Comment\"" + delimiter +
+                "\"Presented by\"" + "\n";
     }
 
     private String deAccent(String str) {

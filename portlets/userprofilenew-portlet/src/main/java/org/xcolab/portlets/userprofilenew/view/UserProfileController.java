@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -328,16 +329,25 @@ public class UserProfileController {
         boolean eMailChanged = false;
 
         if (updatedUserBean.getPassword().trim().length() > 0) {
-            validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
+            if(_currentUserProfile.getUser().getPassword()
+                    .equals(PwdEncryptor.encrypt(updatedUserBean.getCurrentPassword().trim()))){
 
-            if (!result.hasErrors()) {
-                _currentUserProfile.getUser().setPassword(PwdEncryptor.encrypt(updatedUserBean.getPassword().trim()));
-                changedUserPart = true;
-            }
-            else {
+                validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
+
+                if (!result.hasErrors()) {
+                    _currentUserProfile.getUser().setPassword(PwdEncryptor.encrypt(updatedUserBean.getPassword().trim()));
+                    changedUserPart = true;
+                }
+                else {
+                    validationError = true;
+                    response.setRenderParameter("passwordError", "true");
+                    _log.warn("CompareStrings password failed for userId: " + _currentUserProfile.getUser().getUserId());
+                }
+            } else {
+                result.addError(new ObjectError("currentPassword","Password change failed: Current password is incorrect."));
                 validationError = true;
                 response.setRenderParameter("passwordError", "true");
-                _log.warn("CompareStrings Password failed for userId: " + _currentUserProfile.getUser().getUserId());
+                _log.warn("Current password wrong for userId: " + _currentUserProfile.getUser().getUserId());
             }
         }
 

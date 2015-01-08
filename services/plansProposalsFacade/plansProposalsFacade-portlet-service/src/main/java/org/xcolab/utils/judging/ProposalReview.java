@@ -1,10 +1,17 @@
 package org.xcolab.utils.judging;
 
+import com.ext.portlet.NoSuchProposalAttributeException;
+import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalRatingType;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-
+import com.liferay.portal.service.UserLocalServiceUtil;
+import org.apache.commons.lang.StringUtils;
 import java.util.*;
 
 
@@ -15,8 +22,6 @@ public class ProposalReview {
     private Proposal proposal;
     ContestPhase contestPhase;
     private String proposalUrl;
-
-
 
     private Map<ProposalRatingType, Double> ratingAverages;
     private Map<User, String> reviews;
@@ -60,11 +65,10 @@ public class ProposalReview {
 
         double avg = 0F;
         double sum = 0;
-        int count = 0;
+        int count =  ratingAverages.keySet().size();
 
         for(ProposalRatingType key : ratingAverages.keySet()){
             sum += ratingAverages.get(key);
-            count++;
         }
 
         if(count > 0) {
@@ -101,12 +105,11 @@ public class ProposalReview {
         if(userRatings.get(user) != null) {
             double avg = 0F;
             double sum = 0;
-            int count = 0;
+            int count =  userRatings.get(user).keySet().size();
 
             //take the average for each user
             for (ProposalRatingType key : userRatings.get(user).keySet()) {
                 sum += userRatings.get(user).get(key);
-                count++;
             }
             if (count > 0) {
                 avg = sum / count;
@@ -159,4 +162,37 @@ public class ProposalReview {
     public void setProposalUrl(String proposalUrl) {
         this.proposalUrl = proposalUrl;
     }
+
+    public String getProposalTeamAuthor(){
+        try {
+            String authorName = getTeamOrNull();
+            if (StringUtils.isBlank(authorName)) {
+                authorName = UserLocalServiceUtil.getUser(proposal.getAuthorId()).getScreenName();
+            }
+            return authorName;
+        }
+        catch(SystemException se){
+        }
+        catch(PortalException pe){
+        }
+        return "";
+
+    }
+
+    private String getTeamOrNull(){
+        try {
+            for (ProposalAttribute attr: ProposalLocalServiceUtil.getAttributes(proposal.getProposalId(), proposal.getCurrentVersion())) {
+                if (attr.getName().equals(ProposalAttributeKeys.TEAM) && attr.getAdditionalId() == 0) {
+                    return attr.getStringValue();
+                }
+            }
+        }
+        catch(SystemException se){
+        }
+        catch(PortalException pe){
+        }
+
+        return null;
+    }
+
 }
