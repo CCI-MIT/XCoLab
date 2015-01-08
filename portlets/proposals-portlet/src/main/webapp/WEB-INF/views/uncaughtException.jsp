@@ -12,12 +12,13 @@
     <div id="stackTrace" style="display:none;">
     <c:if test="${not empty exception}">
         <p><strong>Exception:</strong><c:out value="${exception}"/></p>
-        <br/>
-        <pre>
-        <c:forEach var="stackTraceElem" items="${exception.stackTrace}">
-            <c:out value="${stackTraceElem}"/><br/>
-        </c:forEach>
-        </pre><br/>
+        <p><strong>Stacktrace:</strong><br/>
+            <pre>
+                <c:forEach var="stackTraceElem" items="${exception.stackTrace}">
+                    <c:out value="${stackTraceElem}"/><br/>
+                </c:forEach>
+            </pre>
+        </p>
     </c:if>
     </div>
 </div>

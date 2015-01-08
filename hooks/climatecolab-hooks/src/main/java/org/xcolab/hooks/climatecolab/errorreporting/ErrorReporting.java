@@ -40,7 +40,7 @@ public class ErrorReporting implements Filter {
             //messageBuilder.append("Stacktrace:\n " + URLDecoder.decode(stackTrace, "UTF-8") +"\n");
             messageBuilder.append("<p><strong>An exception occured at:</strong><br> " + url + "</p>");
             messageBuilder.append("<p><strong>Message from user:</strong><br/> " + description + "</p>");
-            messageBuilder.append("<p><strong>Stacktrace:</strong><br/> " + URLDecoder.decode(stackTrace, "UTF-8") +  "</p>");
+            messageBuilder.append(URLDecoder.decode(stackTrace, "UTF-8"));
             sendMessage("Error Report from User", messageBuilder.toString());
         }
         response.sendRedirect("/");
