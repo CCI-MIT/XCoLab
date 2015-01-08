@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 
 /**
@@ -34,9 +35,9 @@ public class ErrorReporting implements Filter {
         String stackTrace = request.getParameter("stackTrace");
         StringBuilder messageBuilder = new StringBuilder();
         if (StringUtils.isNotEmpty(url) && StringUtils.isNotEmpty(description)){
-            messageBuilder.append("An exception occured at: " + url + "\n\n");
-            messageBuilder.append("Message from user:\n " + description + "\n\n");
-            messageBuilder.append("Stacktrace:\n " + stackTrace);
+            messageBuilder.append("An exception occured at: " + url + "\r\n\n");
+            messageBuilder.append("Message from user:\n " + description + "\r\n\n");
+            messageBuilder.append("Stacktrace:\n " + URLDecoder.decode(stackTrace, "UTF-8"));
             sendMessage("Error Report from User", messageBuilder.toString());
         }
         response.sendRedirect("/");
@@ -63,6 +64,7 @@ public class ErrorReporting implements Filter {
             }
 
             MailEngine.send(fromEmail, addressTo, subject, body, true);
+            MailEngine.send(fromEmail, addressTo, subject, body, false);
         } catch (Exception e) {
             _log.error("Could not send feedback message", e);
         }
