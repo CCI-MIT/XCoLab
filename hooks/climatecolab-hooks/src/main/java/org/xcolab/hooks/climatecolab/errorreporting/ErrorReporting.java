@@ -37,7 +37,10 @@ public class ErrorReporting implements Filter {
         if (StringUtils.isNotEmpty(url) && StringUtils.isNotEmpty(description)){
             messageBuilder.append("An exception occured at: " + url + "\r\n\n");
             messageBuilder.append("Message from user:\n " + description + "\r\n\n");
-            messageBuilder.append("Stacktrace:\n " + URLDecoder.decode(stackTrace, "UTF-8"));
+            messageBuilder.append("Stacktrace:\n " + URLDecoder.decode(stackTrace, "UTF-8") +"\n");
+            //messageBuilder.append("<p>An exception occured at:<br> " + url + "</p>");
+            //messageBuilder.append("<p>Message from user:<br/> " + description + "</p>");
+            //messageBuilder.append("<p>Stacktrace:<br/> " + URLDecoder.decode(stackTrace, "UTF-8") +  "</p>");
             sendMessage("Error Report from User", messageBuilder.toString());
         }
         response.sendRedirect("/");
@@ -63,7 +66,6 @@ public class ErrorReporting implements Filter {
                 addressTo[i] = new InternetAddress(recipients[i]);
             }
 
-            MailEngine.send(fromEmail, addressTo, subject, body, true);
             MailEngine.send(fromEmail, addressTo, subject, body, false);
         } catch (Exception e) {
             _log.error("Could not send feedback message", e);
