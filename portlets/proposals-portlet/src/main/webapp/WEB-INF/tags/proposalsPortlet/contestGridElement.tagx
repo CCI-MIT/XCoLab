@@ -49,28 +49,30 @@
 			</div>
         </div>
 
-        <c:choose>
-            <c:when test="${not empty contest.flagText}">
-                <div class="contest-flag-container">
-                    <span class="contest-flag-left contest-flag-${contest.flag}-left">&#160;</span>
-                    <span class="contest-flag-middle contest-flag-${contest.flag}-middle">${contest.flagText}</span>
-                    <span class="contest-flag-right contest-flag-${contest.flag}-right">&#160;</span>
-                </div>
-            </c:when>
-            <c:when test='${not empty contest.activePhase.status and contest.activePhase.status eq "CLOSED" or contest.activePhase.status eq "COMPLETED"}'>
-                <div class="contest-flag-container">
-                    <span class="contest-flag-left contest-flag-2-left">&#160;</span>
-                    <span class="contest-flag-middle contest-flag-2-middle">${contest.activePhase.name}</span>
-                    <span class="contest-flag-right contest-flag-2-right">&#160;</span>
-                </div>
-            </c:when>
-            <c:when test='${not empty contest.activePhase.status}'>
-                <div class="contest-flag-container">
-                    <span class="contest-flag-left contest-flag-1-left">&#160;</span>
-                    <span class="contest-flag-middle contest-flag-1-middle">${contest.activePhase.name}</span>
-                    <span class="contest-flag-right contest-flag-1-right">&#160;</span>
-                </div>
-            </c:when>
-        </c:choose>
+        <c:if test="${contest.flag ge 0}">
+            <c:choose>
+                <c:when test="${not empty contest.flagText}">
+                    <div class="contest-flag-container">
+                        <span class="contest-flag-left contest-flag-${contest.flag}-left">&#160;</span>
+                        <span class="contest-flag-middle contest-flag-${contest.flag}-middle">${contest.flagText}</span>
+                        <span class="contest-flag-right contest-flag-${contest.flag}-right">&#160;</span>
+                    </div>
+                </c:when>
+                <c:when test='${not empty contest.activePhase.status and contest.activePhase.status eq "CLOSED" or contest.activePhase.status eq "COMPLETED"}'>
+                    <div class="contest-flag-container">
+                        <span class="contest-flag-left contest-flag-2-left">&#160;</span>
+                        <span class="contest-flag-middle contest-flag-2-middle">${contest.activePhase.name}</span>
+                        <span class="contest-flag-right contest-flag-2-right">&#160;</span>
+                    </div>
+                </c:when>
+                <c:when test='${not empty contest.activePhase.status}'>
+                    <div class="contest-flag-container">
+                        <span class="contest-flag-left contest-flag-1-left">&#160;</span>
+                        <span class="contest-flag-middle contest-flag-1-middle">${contest.activePhase.name}</span>
+                        <span class="contest-flag-right contest-flag-1-right">&#160;</span>
+                    </div>
+                </c:when>
+            </c:choose>
+        </c:if>
      </div> <!-- /contestbox -->
 </jsp:root>
