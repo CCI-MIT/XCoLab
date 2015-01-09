@@ -9,14 +9,16 @@
 
 <div id="content">
     Internal error has ocurred, please contact the administrator.
-    <div style="display:none;">
+    <div id="stackTrace" style="display:none;">
     <c:if test="${not empty exception}">
-        <p class="error">An error occured: <c:out value="${exception}"/></p>
-        <pre>
-            <c:forEach var="stackTraceElem" items="${exception.stackTrace}">
-                <c:out value="${stackTraceElem}"/><br/>
-            </c:forEach>
-        </pre>
+        <p><strong>Exception:</strong><br/><c:out value="${exception}"/></p>
+        <p><strong>Stacktrace:</strong><br/>
+            <pre>
+                <c:forEach var="stackTraceElem" items="${exception.stackTrace}">
+                    <c:out value="${stackTraceElem}"/><br/>
+                </c:forEach>
+            </pre>
+        </p>
     </c:if>
     </div>
 </div>
