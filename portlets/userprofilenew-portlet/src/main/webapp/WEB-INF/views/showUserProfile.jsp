@@ -149,61 +149,64 @@
 			${userBean.shortBio}
 		</p>
 
-		<h2 style="margin-top: 20px;">Proposals</h2>
-		<c:if test="${empty currentUser.proposals}">
-				${userBean.firstName} has not yet contributed to any Climate CoLab proposals.
-		</c:if>
+		<c:if test="${not currentUser.staffMemberProfile}">
+			<h2 style="margin-top: 20px;">Proposals</h2>
+			<c:if test="${empty currentUser.proposals}">
+					${userBean.firstName} has not yet contributed to any Climate CoLab proposals.
+			</c:if>
 
-		<table class="colab">
-			<c:forEach var="proposal" items="${currentUser.proposals}">
-				<tr class="colabRow">
-					<td>
+			<table class="colab">
+				<c:forEach var="proposal" items="${currentUser.proposals}">
+					<tr class="colabRow">
+						<td>
 
-						<collab:planLink planId="${proposal.planId}"
-										 contestId="${proposal.contestId}"
-										 text="${proposal.proposalName}" />
-					</td>
-					<td style="text-align: right;"><fmt:formatDate value="${proposal.proposalCreationDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
-				</tr>
-			</c:forEach>
-		</table>
+							<collab:planLink planId="${proposal.planId}"
+											 contestId="${proposal.contestId}"
+											 text="${proposal.proposalName}" />
+						</td>
+						<td style="text-align: right;"><fmt:formatDate value="${proposal.proposalCreationDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+					</tr>
+				</c:forEach>
+			</table>
 
-		<h2>Supporting</h2>
-		<c:if test="${empty currentUser.supportedPlans}">
-				${userBean.firstName} has not yet supported any Climate CoLab proposals.
-		</c:if>
 
-		<table class="colab">
-			<c:forEach var="supportedPlan" items="${currentUser.supportedPlans}">
-				<tr class="colabRow">
-					<td>
-						<collab:planLink planId="${supportedPlan.planId}"
-														 contestId="${supportedPlan.contestId}"
-														 text="${supportedPlan.planName}" />
-					</td>
-					<td style="text-align: right;"><fmt:formatDate value="${supportedPlan.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
-				</tr>
-			</c:forEach>
-		</table>
+			<h2>Supporting</h2>
+			<c:if test="${empty currentUser.supportedPlans}">
+					${userBean.firstName} has not yet supported any Climate CoLab proposals.
+			</c:if>
 
-		<h2 style="margin-top: 20px;">Activities</h2>
-		<c:if test="${empty currentUser.activities}">
-				${userBean.firstName} does not have any Climate CoLab activities yet.
-		</c:if>
+			<table class="colab">
+				<c:forEach var="supportedPlan" items="${currentUser.supportedPlans}">
+					<tr class="colabRow">
+						<td>
+							<collab:planLink planId="${supportedPlan.planId}"
+															 contestId="${supportedPlan.contestId}"
+															 text="${supportedPlan.planName}" />
+						</td>
+						<td style="text-align: right;"><fmt:formatDate value="${supportedPlan.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+					</tr>
+				</c:forEach>
+			</table>
 
-		<table class="colab">
-			<c:forEach var="activity" items="${currentUser.activities}">
-				<tr class="colabRow">
-					<td>${activity.body}</td>
-					<td style="text-align: right;"><fmt:formatDate value="${activity.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
-				</tr>
-			</c:forEach>
-		</table>
+			<h2 style="margin-top: 20px;">Activities</h2>
+			<c:if test="${empty currentUser.activities}">
+					${userBean.firstName} does not have any Climate CoLab activities yet.
+			</c:if>
 
-		<c:if test="${not empty currentUser.activities}">
-			<div class="blue-button">
-				<a href="/web/guest/activities/-/feeds?userId=${currentUser.userId}">SEE ALL</a>
-			</div>
+			<table class="colab">
+				<c:forEach var="activity" items="${currentUser.activities}">
+					<tr class="colabRow">
+						<td>${activity.body}</td>
+						<td style="text-align: right;"><fmt:formatDate value="${activity.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+					</tr>
+				</c:forEach>
+			</table>
+
+			<c:if test="${not empty currentUser.activities}">
+				<div class="blue-button">
+					<a href="/web/guest/activities/-/feeds?userId=${currentUser.userId}">SEE ALL</a>
+				</div>
+			</c:if>
 		</c:if>
 	</div>
 	<!-- /main -->

@@ -153,32 +153,27 @@ public class
         supportedPlans.clear();
         userActivities.clear();
         userProposals.clear();
-
-        if(!user.getUserUuid().equals(laurFishersUuid)) {
-
-            for (Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
-                ProposalSupporter ps = (ProposalSupporter) o;
-                try {
-                    supportedPlans.add(new SupportedPlanWrapper(ps));
-                } catch (PortalException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
-                    .getUserActivities(user.getUserId(), 0, maxActivitiesCount))) {
-
-                UserActivityWrapper a = new UserActivityWrapper(activity, _themeDisplay);
-                if (a.getBody() != null && !a.getBody().equals(""))
-                    userActivities.add(a);
-            }
-
-            List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
-            for (Proposal p : proposals) {
-                userProposals.add(new ProposalWrapper(p));
+        for (Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
+            ProposalSupporter ps = (ProposalSupporter) o;
+            try {
+                supportedPlans.add(new SupportedPlanWrapper(ps));
+            } catch (PortalException e) {
+                e.printStackTrace();
             }
         }
 
+        for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
+                .getUserActivities(user.getUserId(), 0, maxActivitiesCount))) {
+
+            UserActivityWrapper a = new UserActivityWrapper(activity, _themeDisplay);
+            if (a.getBody() != null && !a.getBody().equals(""))
+                userActivities.add(a);
+        }
+
+        List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
+        for (Proposal p : proposals) {
+            userProposals.add(new ProposalWrapper(p));
+        }
     }
 
     private boolean profileIsComplete() {
@@ -187,6 +182,10 @@ public class
         for (String s : blankCheck) if (s == null || s.equals(StringPool.BLANK)) return false;
 
         return true;
+    }
+
+    public boolean isStaffMemberProfile(){
+        return this.role == MemberRole.STAFF;
     }
 
     public boolean isInitialized() {
