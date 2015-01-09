@@ -80,6 +80,7 @@ public class
     private ThemeDisplay _themeDisplay;
     private final static Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
 
+    private final String laurFishersUuid = "0596aa38-49b4-4633-8ae4-f1c210763c98";
 
     public UserProfileWrapper(Long userId, PortletRequest request) throws PortalException, SystemException {
         _themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -148,31 +149,34 @@ public class
 
         userSubscriptions = new UserSubscriptionsWrapper(user);
 
+
         supportedPlans.clear();
-        for(Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
-            ProposalSupporter ps = (ProposalSupporter) o;
-            try {
-                supportedPlans.add(new SupportedPlanWrapper(ps));
-            } catch (PortalException e) {
-                e.printStackTrace();
-            }
-        }
-
         userActivities.clear();
-        for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
-                .getUserActivities(user.getUserId(), 0, maxActivitiesCount))) {
-
-            UserActivityWrapper a = new UserActivityWrapper(activity,_themeDisplay );
-            if(a.getBody() !=null && !a.getBody().equals(""))
-                userActivities.add(a);
-        }
-
         userProposals.clear();
-        List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
-        userProposals = new ArrayList<>();
 
-        for (Proposal p : proposals) {
-            userProposals.add(new ProposalWrapper(p));
+        if(!user.getUserUuid().equals(laurFishersUuid)) {
+
+            for (Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
+                ProposalSupporter ps = (ProposalSupporter) o;
+                try {
+                    supportedPlans.add(new SupportedPlanWrapper(ps));
+                } catch (PortalException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
+                    .getUserActivities(user.getUserId(), 0, maxActivitiesCount))) {
+
+                UserActivityWrapper a = new UserActivityWrapper(activity, _themeDisplay);
+                if (a.getBody() != null && !a.getBody().equals(""))
+                    userActivities.add(a);
+            }
+
+            List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
+            for (Proposal p : proposals) {
+                userProposals.add(new ProposalWrapper(p));
+            }
         }
 
     }

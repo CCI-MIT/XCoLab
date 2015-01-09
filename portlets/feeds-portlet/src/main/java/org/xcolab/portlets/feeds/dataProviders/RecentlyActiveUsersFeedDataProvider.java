@@ -28,6 +28,8 @@ import com.liferay.portlet.social.model.SocialActivity;
 public class RecentlyActiveUsersFeedDataProvider implements
 		FeedTypeDataProvider {
 
+	private final String laurFishersUuid = "0596aa38-49b4-4633-8ae4-f1c210763c98";
+
 	@Override
 	public String populateModel(PortletRequest request,
 			PortletResponse response, SortFilterPage sortFilterPage,
@@ -53,9 +55,11 @@ public class RecentlyActiveUsersFeedDataProvider implements
 					currentStart, currentEnd)) {
 				if (usersAlreadyAdded.contains(activity.getUserId())
 						|| (feedsPreferences.getRemoveAdmin() && Helper.isUserAnAdmin(request, activity.getUserId()))
-						|| SocialActivityWrapper.isEmpty(activity, request)) {
+						|| SocialActivityWrapper.isEmpty(activity, request)
+						|| activity.getUserUuid().equals(laurFishersUuid)) {
 					continue;
 				}
+
 				usersAlreadyAdded.add(activity.getUserId());
 
 				int curDaysBetween = DateUtil.getDaysBetween(

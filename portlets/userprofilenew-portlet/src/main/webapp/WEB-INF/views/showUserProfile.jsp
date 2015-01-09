@@ -187,6 +187,9 @@
 		</table>
 
 		<h2 style="margin-top: 20px;">Activities</h2>
+		<c:if test="${empty currentUser.activities}">
+				${userBean.firstName} does not have any Climate CoLab activities yet.
+		</c:if>
 
 		<table class="colab">
 			<c:forEach var="activity" items="${currentUser.activities}">
@@ -197,9 +200,11 @@
 			</c:forEach>
 		</table>
 
-		<div class="blue-button">
-			<a href="/web/guest/activities/-/feeds?userId=${currentUser.userId}">SEE ALL</a>
-		</div>
+		<c:if test="${not empty currentUser.activities}">
+			<div class="blue-button">
+				<a href="/web/guest/activities/-/feeds?userId=${currentUser.userId}">SEE ALL</a>
+			</div>
+		</c:if>
 	</div>
 	<!-- /main -->
 

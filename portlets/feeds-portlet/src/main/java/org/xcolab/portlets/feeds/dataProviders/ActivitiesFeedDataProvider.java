@@ -22,6 +22,8 @@ import java.util.*;
 
 public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
+	private final String laurFishersUuid = "0596aa38-49b4-4633-8ae4-f1c210763c98";
+
 	@Override
 	public String populateModel(PortletRequest request,
 								PortletResponse response, SortFilterPage sortFilterPage,
@@ -55,7 +57,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 				// ignore
 			}
 		}
-        
+
         List<SocialActivity> windowedActivities;
         int startRetrievalAt = sortFilterPage.getPage() * pageSize;
         int endRetrievalAt = (sortFilterPage.getPage() + 1) * pageSize;
@@ -66,13 +68,16 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         }
 
         for (SocialActivity activity : windowedActivities) {
+
 			if (SocialActivityWrapper.isEmpty(activity, request)) {
 				continue;
 			}
 			if (!feedsPreferences.getRemoveAdmin() && Helper.isUserAnAdmin(request, activity.getUserId())) {
 				continue;
 			}
-
+			if(activity.getUserUuid().equals(laurFishersUuid)){
+				continue;
+			}
 			if (i >= feedsPreferences.getFeedSize()) {
 				break;
 			}
