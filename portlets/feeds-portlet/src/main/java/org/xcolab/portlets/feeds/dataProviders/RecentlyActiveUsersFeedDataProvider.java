@@ -11,8 +11,10 @@ import java.util.prefs.PreferenceChangeEvent;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
+import com.liferay.portal.service.RoleLocalServiceUtil;
 import org.springframework.ui.Model;
 import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.feeds.FeedTypeDataProvider;
 import org.xcolab.portlets.feeds.FeedsPreferences;
 import org.xcolab.portlets.feeds.Helper;
@@ -27,8 +29,6 @@ import com.liferay.portlet.social.model.SocialActivity;
 
 public class RecentlyActiveUsersFeedDataProvider implements
 		FeedTypeDataProvider {
-
-	private final String laurFishersUuid = "0596aa38-49b4-4633-8ae4-f1c210763c98";
 
 	@Override
 	public String populateModel(PortletRequest request,
@@ -56,7 +56,7 @@ public class RecentlyActiveUsersFeedDataProvider implements
 				if (usersAlreadyAdded.contains(activity.getUserId())
 						|| (feedsPreferences.getRemoveAdmin() && Helper.isUserAnAdmin(request, activity.getUserId()))
 						|| SocialActivityWrapper.isEmpty(activity, request)
-						|| activity.getUserUuid().equals(laurFishersUuid)) {
+						|| RoleLocalServiceUtil.hasUserRole(activity.getUserId(), MemberRole.STAFF.getRoleId())) {
 					continue;
 				}
 
