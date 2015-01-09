@@ -10,7 +10,6 @@ jQuery( document ).ready(function() {
 
         if (text.match(errorMessage)){
             jQuery('#stackTrackeInput').val(encodeURIComponent(jQuery('#stackTrace').html()));
-            //jQuery('#stackTrackeInput').val(encodeURIComponent(jQuery('#stackTrace').text()));
             jQuery('#popup_error_reporting').show();
         }
     });

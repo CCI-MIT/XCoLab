@@ -28,6 +28,7 @@ public class ErrorReporting implements Filter {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String url = request.getParameter("url");
+        String email = request.getParameter("email");
         String descriptionInHtmlFormat = request.getParameter("description").replaceAll("(\r\n|\n)", "<br />");
         String stackTrace = request.getParameter("stackTrace");
         String userScreenName = "no user was logged in";
@@ -42,6 +43,10 @@ public class ErrorReporting implements Filter {
             messageBuilder.append("<p><strong>An exception occured at:</strong><br> " + url + "</p>");
             messageBuilder.append("<p><strong>Message from user (" + userScreenName + "):</strong><br/> ");
             messageBuilder.append(descriptionInHtmlFormat + "</p>");
+            if(StringUtils.isNotEmpty(email)){
+                messageBuilder.append("<p><strong>Please notify user once we have a fix for the bug:</strong><br/>");
+                messageBuilder.append(email + "</p>");
+            }
             messageBuilder.append(URLDecoder.decode(stackTrace, "UTF-8"));
             sendMessage("Error Report from User", messageBuilder.toString());
         }
