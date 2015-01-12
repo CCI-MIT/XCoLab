@@ -20,14 +20,18 @@
                 <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalBean">
                     <form:hidden path="contestPhaseId" />
                     <h3 style="margin-top: 20px;">Judge Rating</h3>
+
                     <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
-                        are saved when clicking on save.</i>
+                        are saved when clicking on save. Your rating will be visible to the Judging team only.</i><br/>
                     <br/>
+                    <div style="float: left; padding-left: 50px;"><i>Least (1)</i></div> <div style="text-align: right; padding-right: 50px;"><i>Most (4)</i></div>
+
                     <form:errors cssClass="alert alert-error" />
 
                     <proposalsPortlet:proposalRating ratingTypes="${judgeProposalBean.ratingTypes}" ratingValuesPath="ratingValues" />
 
                     <h3 style="margin-top: 10px;">Judge Feedback</h3>
+                    <i style="font-size:10pt;">Your feedback will be visible to the judging team only.</i>
                     <div class="form-errors"><!--  -->
                         <form:errors cssClass="alert alert-error" path="comment" />
                     </div>
