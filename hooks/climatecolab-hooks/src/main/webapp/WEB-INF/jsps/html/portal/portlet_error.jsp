@@ -17,8 +17,17 @@
 <%@ include file="/html/portal/init.jsp" %>
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<link rel="stylesheet" href="/climatecolab-theme/css/style.css?tt=$themeTimestamp" type="text/css" />
+<link rel="stylesheet" href="/climatecolab-theme/css/style.css" type="text/css" />
+<link rel="stylesheet" href="/climatecolab-theme/css/style_additions.css" type="text/css" />
+<style>
+.hideDiv{
+    display: none !important;
+}
 
+.showDiv{
+    display: block;
+}
+</style>
 <portlet:defineObjects />
 
 <%
@@ -55,9 +64,13 @@ pageScope
 </div>
 
 <!-- ERROR REPORT POPUP -->
-<div id="popup_error_reporting" class="popup-wrap">
+<div id="popup_error_reporting" class="popup-wrap showDiv">
     <div class="popup">
-        <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_error_reporting').hide()"><img src="/climatecolab-theme/images/help_close.png" width="20" height="20" alt="X" /></a></div>
+        <div class="closepopuplogin">
+            <a href="javascript:;" onclick="closeErrorForm();">
+                <img src="/climatecolab-theme/images/help_close.png" width="20" height="20" alt="X" />
+            </a>
+        </div>
         <h4>Oh Snap!</h4>
         <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0px;">
             <form id="signInForm_form" method="post" action="/c/reportError">
@@ -84,3 +97,10 @@ pageScope
     </div>
 </div>
 <!-- /ERROR REPORT POPUP -->
+
+<script type="text/javascript">
+    function closeErrorForm(){
+        jQuery('#popup_error_reporting').removeClass('showDiv');
+        jQuery('#popup_error_reporting').addClass('hideDiv');
+    }
+</script>
