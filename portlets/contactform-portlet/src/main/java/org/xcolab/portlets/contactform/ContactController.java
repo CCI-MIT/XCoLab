@@ -79,7 +79,7 @@ public class ContactController {
     @RequestMapping
     public String showContact(PortletRequest request, PortletResponse response, Model model) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
+        contactPreferences = new ContactPreferences(request);
         model.addAttribute("contactBean", new ContactBean());
 
         return "view";
@@ -125,6 +125,7 @@ public class ContactController {
     public void sendMessage(ActionRequest request, Model model, ActionResponse response,
             @Valid ContactBean contactBean, BindingResult result, @RequestParam(required = false) String redirect) throws AddressException, MailEngineException {
         HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
+
 
         SessionErrors.clear(request);
         SessionMessages.clear(request);

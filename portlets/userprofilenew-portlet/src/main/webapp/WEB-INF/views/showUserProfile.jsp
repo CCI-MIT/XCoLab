@@ -38,12 +38,6 @@
 	<div id="main" class="${currentUser.viewingOwnProfile ? '' : 'full'} userProfile">
 		<h1>Member Profile</h1>
 		<div class="profile_action">
-		<c:if test="${currentUser.viewingOwnProfile}">
-			<div class="blue-button">
-				<a href="/web/guest/member/-/member/userId/${currentUser.userId}/page/edit">Manage profile and settings</a>
-			</div>
-		</c:if>
-
 		<c:if test="${currentUser.canSendMessage and not currentUser.viewingOwnProfile }">
 			<div class="blue-button">
 			<a href="javascript:;"
@@ -118,7 +112,7 @@
 					<c:if test="${currentUser.viewingOwnProfile}">
 						<tr>
 							<td class="b" width="50%">Email</td>
-							<td width="50%">
+							<td width="50%" style="white-space: nowrap;">
 								<a href="mailto:${userBean.email}">${userBean.emailStored}</a>
 
 								<c:if test="${currentUser.displayEMailErrorMessage}">
@@ -136,6 +130,14 @@
 						</tr>
 					</c:if>
 
+					<c:if test="${currentUser.viewingOwnProfile}">
+						<tr>
+							<td colspan="2">
+							<a href="/web/guest/member/-/member/userId/${currentUser.userId}/page/edit">Manage profile and settings</a>
+							</td>
+						</tr>
+					</c:if>
+
 					</tbody>
 				</table>
 			</div>
@@ -147,57 +149,65 @@
 			${userBean.shortBio}
 		</p>
 
-		<h2 style="margin-top: 20px;">Proposals</h2>
-		<c:if test="${empty currentUser.proposals}">
-				${userBean.firstName} has not yet contributed to any Climate CoLab proposals.
+		<c:if test="${not currentUser.staffMemberProfile}">
+			<h2 style="margin-top: 20px;">Proposals</h2>
+			<c:if test="${empty currentUser.proposals}">
+					${userBean.firstName} has not yet contributed to any Climate CoLab proposals.
+			</c:if>
+
+			<table class="colab">
+				<c:forEach var="proposal" items="${currentUser.proposals}">
+					<tr class="colabRow">
+						<td>
+
+							<collab:planLink planId="${proposal.planId}"
+											 contestId="${proposal.contestId}"
+											 text="${proposal.proposalName}" />
+						</td>
+						<td style="text-align: right;"><fmt:formatDate value="${proposal.proposalCreationDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+					</tr>
+				</c:forEach>
+			</table>
+
+
+			<h2>Supporting</h2>
+			<c:if test="${empty currentUser.supportedPlans}">
+					${userBean.firstName} has not yet supported any Climate CoLab proposals.
+			</c:if>
+
+			<table class="colab">
+				<c:forEach var="supportedPlan" items="${currentUser.supportedPlans}">
+					<tr class="colabRow">
+						<td>
+							<collab:planLink planId="${supportedPlan.planId}"
+															 contestId="${supportedPlan.contestId}"
+															 text="${supportedPlan.planName}" />
+						</td>
+						<td style="text-align: right;"><fmt:formatDate value="${supportedPlan.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+					</tr>
+				</c:forEach>
+			</table>
+
+			<h2 style="margin-top: 20px;">Activities</h2>
+			<c:if test="${empty currentUser.activities}">
+					${userBean.firstName} does not have any Climate CoLab activities yet.
+			</c:if>
+
+			<table class="colab">
+				<c:forEach var="activity" items="${currentUser.activities}">
+					<tr class="colabRow">
+						<td>${activity.body}</td>
+						<td style="text-align: right;"><fmt:formatDate value="${activity.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+					</tr>
+				</c:forEach>
+			</table>
+
+			<c:if test="${not empty currentUser.activities}">
+				<div class="blue-button">
+					<a href="/web/guest/activities/-/feeds?userId=${currentUser.userId}">SEE ALL</a>
+				</div>
+			</c:if>
 		</c:if>
-
-		<table class="colab">
-			<c:forEach var="proposal" items="${currentUser.proposals}">
-				<tr class="colabRow">
-					<td>
-
-						<collab:planLink planId="${proposal.planId}"
-										 contestId="${proposal.contestId}"
-										 text="${proposal.proposalName}" />
-					</td>
-					<td style="text-align: right;"><fmt:formatDate value="${proposal.proposalCreationDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
-				</tr>
-			</c:forEach>
-		</table>
-
-		<h2>Supporting</h2>
-		<c:if test="${empty currentUser.supportedPlans}">
-				${userBean.firstName} has not yet supported any Climate CoLab proposals.
-		</c:if>
-
-		<table class="colab">
-			<c:forEach var="supportedPlan" items="${currentUser.supportedPlans}">
-				<tr class="colabRow">
-					<td>
-						<collab:planLink planId="${supportedPlan.planId}"
-														 contestId="${supportedPlan.contestId}"
-														 text="${supportedPlan.planName}" />
-					</td>
-					<td style="text-align: right;"><fmt:formatDate value="${supportedPlan.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
-				</tr>
-			</c:forEach>
-		</table>
-
-		<h2 style="margin-top: 20px;">Activities</h2>
-
-		<table class="colab">
-			<c:forEach var="activity" items="${currentUser.activities}">
-				<tr class="colabRow">
-					<td>${activity.body}</td>
-					<td style="text-align: right;"><fmt:formatDate value="${activity.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
-				</tr>
-			</c:forEach>
-		</table>
-
-		<div class="blue-button">
-			<a href="/web/guest/activities/-/feeds?userId=${currentUser.userId}">SEE ALL</a>
-		</div>
 	</div>
 	<!-- /main -->
 

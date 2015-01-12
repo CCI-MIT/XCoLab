@@ -55,6 +55,10 @@ public class UserBean implements Serializable{
 
 	@NotBlank(groups = {UserBean.PasswordChanged.class})
 	@Length(min = 8, max = 24, groups = {UserBean.PasswordChanged.class})
+	private String currentPassword;
+
+	@NotBlank(groups = {UserBean.PasswordChanged.class})
+	@Length(min = 8, max = 24, groups = {UserBean.PasswordChanged.class})
 	private String password;
 
 	@NotBlank(groups = {UserBean.PasswordChanged.class})
@@ -186,6 +190,10 @@ public class UserBean implements Serializable{
     public void setRetypeEmail(String retypeEmail) {
         this.retypeEmail = retypeEmail;
     }
+
+	public String getCurrentPassword(){ return currentPassword;}
+
+	public void setCurrentPassword(String currentPassword){this.currentPassword=currentPassword;}
 
 	public String getPassword() { return password; }
 

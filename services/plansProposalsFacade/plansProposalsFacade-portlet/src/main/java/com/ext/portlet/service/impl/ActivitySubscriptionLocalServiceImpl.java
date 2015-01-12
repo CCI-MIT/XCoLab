@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
@@ -389,6 +390,10 @@ public class ActivitySubscriptionLocalServiceImpl
         String body = StringUtil.replace(DAILY_DIGEST_ENTRY_TEXT, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification)) + "<br/><br/>";
 
         for (SocialActivity socialActivity : userDigestActivities) {
+            //prevent null pointer exceptions which might happen at this point
+            if (socialActivity == null || serviceContext == null || serviceContext.getRequest() == null || serviceContext.getRequest().getAttribute(WebKeys.THEME_DISPLAY) == null) {
+                continue;
+            }
             SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(StringPool.BLANK, socialActivity, serviceContext);
             if (entry == null) {
                 continue;

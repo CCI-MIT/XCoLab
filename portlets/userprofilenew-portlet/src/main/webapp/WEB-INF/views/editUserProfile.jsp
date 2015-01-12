@@ -114,7 +114,7 @@
 							<th class="b m" >Stored email
 							</th>
 							<td>
-								<form:input  id="retypeEmail" cssClass="profile_input" path="emailStored" readonly="true"></form:input>
+								<form:input  id="emailStored" cssClass="profile_input" path="emailStored" readonly="true"></form:input>
 							</td>
 						</tr>
 						<tr id="EmailRow">
@@ -141,18 +141,17 @@
 							</td>
 						</tr>
 
-						<!--
 						<tr>
-							<td class="b m nowrap">Current password
+							<th class="b m nowrap">Current password
 								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
-							</td>
+							</th>
 							<td>
 								<form:password cssClass="profile_input" path="currentPassword" />
 								<div class="reg_errors">
 									<form:errors cssClass="alert alert-error" path="currentPassword" />
 								</div>
 							</td>
-						</tr> -->
+						</tr>
 						<tr>
 							<th class="b m nowrap">New password
 								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
@@ -266,6 +265,38 @@
 			</div>
 		</div> <!-- /right_col3 -->
 	</c:if>
+
+	<div class="right_col v1">
+		<div class="comm_rightcol">
+			<div class="comm_rightcol-title2">COLAB NEWSLETTER SETTINGS</div>
+			<table border="0" cellpadding="0" cellspacing="0" class="colab">
+				<form:form  id="newsletterSettingsForm" method="post">
+					<input type="hidden" name="subscribeAction" value="" id="subscribeActionInput"/>
+					<input type="hidden" name="prev_member_email" value=""/>
+					<input type="hidden" name="source" value=""/>
+					<input type="hidden" name="group_1383691" value="1383691"/>
+					<input type="hidden" name="prev_member_email" value=""/>
+					<input type="hidden" name="email" value="${userBean.emailStored}"/>
+					<input type="hidden" name="Submit" value="Submit"/>
+					<tr>
+						<td>
+							<div class="blue-button">
+								<a href="javascript:;" onclick="subscribeNewsletter();">Subscribe</a>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="blue-button">
+								<a href="javascript:;" onclick="unSubscribeNewsletter();">Un-Subscribe</a>
+							</div>
+						</td>
+					</tr>
+				</form:form>
+			</table>
+			<div class="clearfix"><!-- --></div>
+		</div>
+	</div> <!-- /right_col3 -->
 
 		<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
 	<script>
@@ -416,6 +447,42 @@
 				jQuery("#sendDailyEmailOnActivity").removeAttr("disabled");
 			}
 		})
+
+		function updateNewsletterSettings(updateUrl){
+
+			var formData = jQuery("#newsletterSettingsForm");
+			jQuery.ajax({
+				type: 'POST',
+				url: updateUrl,
+				dataType: 'text',
+				data: formData.serialize(),
+				success: function(response){
+					console.log("Update succesful: " + response);
+					jQuery.growlUI('','Successfully updated Newsletter settings!');
+				},
+				error: function(xhr, status, error){
+					console.log("Update failed xhr: ", xhr);
+					console.log("Update failed xhr: ", xhr.status);
+					console.log("Update failed xhr: ", xhr.readyState);
+					console.log("Update failed xhr: ", xhr.statusCode());
+					console.log("Update failed status: ", status);
+					console.log("Update failed error: ", error);
+					jQuery.growlUI('','Updating Newsletter settings failed!');
+				}
+			});
+
+			//jQuery.post(updateUrl, formData.serialize(), function(response) {
+			//	alert( response );
+			//});
+		}
+
+		function subscribeNewsletter(){
+			updateNewsletterSettings('https://app.e2ma.net/app2/audience/signup/1771713/1729803/');
+
+		}
+		function unSubscribeNewsletter() {
+			updateNewsletterSettings('https://app.e2ma.net/app2/audience/signup/1766977/1729803/');
+		}
 
 	</script>
 

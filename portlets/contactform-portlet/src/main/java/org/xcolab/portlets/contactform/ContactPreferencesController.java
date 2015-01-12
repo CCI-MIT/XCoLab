@@ -22,8 +22,8 @@ public class ContactPreferencesController {
 	
 
     @RequestMapping(params = {"action=savePreferences"})
-    public void savePreferences(ActionRequest request, ActionRequest response, Model model, ContactPreferences preferences) throws ReadOnlyException, ValidatorException, IOException {
-    	preferences.store(request);
+    public void savePreferences(ActionRequest request, ActionRequest response, Model model, ContactPreferences preferences) throws ReadOnlyException, ValidatorException, IOException {;
+        preferences.store(request.getPreferences());
 	}
 
 }
