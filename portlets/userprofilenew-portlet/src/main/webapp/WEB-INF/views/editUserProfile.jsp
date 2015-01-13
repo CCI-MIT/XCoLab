@@ -11,6 +11,16 @@
 		</script>
 	</c:if>
 
+	<portlet:resourceURL var="newsletterSubscribtionStatus" id="newsletterSubscribtionStatus" >
+		<portlet:param name="email" value="${userBean.emailStored}"/>
+	</portlet:resourceURL>
+	<portlet:resourceURL var="newsletterSubscribe" id="newsletterSubscribe" >
+		<portlet:param name="email" value="${userBean.emailStored}"/>
+	</portlet:resourceURL>
+	<portlet:resourceURL var="newsletterUnSubscribe" id="newsletterUnSubscribe" >
+		<portlet:param name="email" value="${userBean.emailStored}"/>
+	</portlet:resourceURL>
+
 	<portlet:actionURL var="updateUserProfileForm">
 		<portlet:param name="action" value="update" />
 	</portlet:actionURL>
@@ -114,7 +124,7 @@
 							<th class="b m" >Stored email
 							</th>
 							<td>
-								<form:input  id="retypeEmail" cssClass="profile_input" path="emailStored" readonly="true"></form:input>
+								<form:input  id="emailStored" cssClass="profile_input" path="emailStored" readonly="true"></form:input>
 							</td>
 						</tr>
 						<tr id="EmailRow">
@@ -141,18 +151,17 @@
 							</td>
 						</tr>
 
-						<!--
 						<tr>
-							<td class="b m nowrap">Current password
+							<th class="b m nowrap">Current password
 								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
-							</td>
+							</th>
 							<td>
 								<form:password cssClass="profile_input" path="currentPassword" />
 								<div class="reg_errors">
 									<form:errors cssClass="alert alert-error" path="currentPassword" />
 								</div>
 							</td>
-						</tr> -->
+						</tr>
 						<tr>
 							<th class="b m nowrap">New password
 								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
@@ -267,6 +276,30 @@
 		</div> <!-- /right_col3 -->
 	</c:if>
 
+	<div class="right_col v1">
+		<div class="comm_rightcol">
+			<div class="comm_rightcol-title2">COLAB NEWSLETTER SETTINGS</div>
+			<table border="0" cellpadding="0" cellspacing="0" class="colab">
+					<tr>
+						<td>
+							<div class="blue-button" id="newsletterSettings">
+								<c:choose>
+									<c:when test="${newsletterBean.emailSubscribedToNewsletter}">
+										<a href="javascript:;" onclick="unSubscribeNewsletter();">Un-Subscribe</a>
+									</c:when>
+									<c:otherwise>
+										<a href="javascript:;" onclick="subscribeNewsletter();">Subscribe</a>
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</td>
+					</tr>
+
+			</table>
+			<div class="clearfix"><!-- --></div>
+		</div>
+	</div> <!-- /right_col3 -->
+
 		<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
 	<script>
 		function updateTextarea() {
@@ -291,6 +324,7 @@
 			});
 
 		});
+
 		jQuery("#fileUploadFrame").load(
 				function() {
 					try {
@@ -416,6 +450,55 @@
 				jQuery("#sendDailyEmailOnActivity").removeAttr("disabled");
 			}
 		})
+
+		function updateNewsletterSettings(updateUrl){
+
+			var deferred = jQuery.Deferred();
+
+			var formData = jQuery("#newsletterSettingsForm");
+			jQuery.ajax({
+				type: 'POST',
+				url: updateUrl,
+				dataType: 'text',
+				success: function(response){
+					var responseStatus  = JSON.parse(response);
+					if(responseStatus.hasOwnProperty("success") &amp;&amp; responseStatus.success) {
+						jQuery.growlUI('', 'Successfully updated Newsletter settings!');
+						deferred.resolve(true);
+					} else{
+						jQuery.growlUI('','Updating Newsletter settings failed!');
+						deferred.resolve(false);
+					}
+				},
+				error: function(xhr, status, error){
+					jQuery.growlUI('','Updating Newsletter settings failed!');
+					deferred.resolve(fale);
+				}
+			});
+
+			return deferred;
+
+		}
+
+		function subscribeNewsletter(){
+			var newsletterSubscribeURL = '${newsletterSubscribe}';
+			updateNewsletterSettings(newsletterSubscribeURL).done(function (result) {
+				if(result) {
+					jQuery("#newsletterSettings a").attr("onclick", "unSubscribeNewsletter();");
+					jQuery("#newsletterSettings a").text("Un-Subscribe");
+				}
+			});
+
+		}
+		function unSubscribeNewsletter() {
+			var newsletterUnSubscribeURL = '${newsletterUnSubscribe}';
+			updateNewsletterSettings(newsletterUnSubscribeURL).done(function (result) {
+				if(result) {
+					jQuery("#newsletterSettings a").attr("onclick", "subscribeNewsletter();");
+					jQuery("#newsletterSettings a").text("Subscribe");
+				}
+			});
+		}
 
 	</script>
 

@@ -5,11 +5,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.RoleLocalService;
+import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import org.springframework.ui.Model;
 import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.feeds.FeedTypeDataProvider;
 import org.xcolab.portlets.feeds.FeedsPreferences;
 import org.xcolab.portlets.feeds.Helper;
@@ -55,7 +58,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 				// ignore
 			}
 		}
-        
+
         List<SocialActivity> windowedActivities;
         int startRetrievalAt = sortFilterPage.getPage() * pageSize;
         int endRetrievalAt = (sortFilterPage.getPage() + 1) * pageSize;
@@ -66,13 +69,16 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         }
 
         for (SocialActivity activity : windowedActivities) {
+
 			if (SocialActivityWrapper.isEmpty(activity, request)) {
 				continue;
 			}
 			if (!feedsPreferences.getRemoveAdmin() && Helper.isUserAnAdmin(request, activity.getUserId())) {
 				continue;
 			}
-
+			if(RoleLocalServiceUtil.hasUserRole(activity.getUserId(),MemberRole.STAFF.getRoleId())){
+				continue;
+			}
 			if (i >= feedsPreferences.getFeedSize()) {
 				break;
 			}

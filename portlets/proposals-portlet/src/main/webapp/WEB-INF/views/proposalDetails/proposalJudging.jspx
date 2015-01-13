@@ -41,7 +41,7 @@
                         </select>
                     </c:if>
                     <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
-                        are saved when clicking on save.</i>
+                        are saved when clicking on save.Your rating will be visible to the Judging team only.</i>
                     <div class="clearfix"><!-- --></div>
                     <br/>
                     <form:errors cssClass="alert alert-error" />

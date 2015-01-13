@@ -99,10 +99,12 @@
            <ice:outputLabel value="Plans opened by default" />
            <ice:selectBooleanCheckbox value="#{contestsAdmin.editedContest.plansOpenByDefault}" />
            
-           
-           <ice:outputLabel value="Flag number (ie 1 for featured)" />
-           <ice:inputText value="#{contestsAdmin.editedContest.flag}" />
-           
+           <ice:outputLabel value="Flag number" />
+            <f:subview>
+                <ice:inputText value="#{contestsAdmin.editedContest.flag}" />
+                <p>-1 to hide flage<br/>0 for phase default<br/>1 for green <br/>2 for grey</p>
+            </f:subview>
+
            <ice:outputLabel value="Flag text (ie. featured)" />
            <ice:inputText value="#{contestsAdmin.editedContest.flagText}" />
            <!-- 

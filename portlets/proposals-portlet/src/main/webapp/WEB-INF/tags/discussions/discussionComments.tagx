@@ -124,9 +124,14 @@
         		<div class="addcomment">
         			<div id="add">
            				<strong>ADD YOUR COMMENT</strong><br />
-						(1) Visible to judging team only.
-                        <br />
-                        (2) You must be logged into your account to post a comment.
+						<c:choose>
+							<c:when test="${currentTab eq 'SCREENING'}">
+								<i>Your comment will be visible to the Judging team only.</i>
+							</c:when>
+							<c:otherwise>
+								<i>You must be logged into your account to post a comment.</i>
+							</c:otherwise>
+						</c:choose>
         			</div>
         			<div id="thecomment">
         				<portlet:actionURL var="addCommentURL">

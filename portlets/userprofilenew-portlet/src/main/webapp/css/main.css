@@ -27,7 +27,7 @@
     display: block;
 }
 .comm_rightcol{
-    margin-top: 20px!important;
+    margin-top: 0px!important;
 }
 
 .comm_member{
@@ -35,7 +35,6 @@
 }
 
 .right_col3{
-    background-color: #f2f1e9;
     padding: 20px;
     border: 1px solid #bdbcb7;
     margin-left: 15px!important;
