@@ -7,9 +7,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.xcolab.portlets.userprofilenew.wrappers.ActivitySubscriptionWrapper;
 import org.xcolab.portlets.userprofilenew.wrappers.UserSubscriptionsWrapper;
 
@@ -20,7 +18,6 @@ import java.io.IOException;
 @Controller
 @RequestMapping("view")
 public class SubscriptionsActionController {
-
 
     @RequestMapping(params = {"action=removeSubscription"})
     public void handleRemoveSubscriptionAction(ActionRequest request, Model model, ActionResponse response,

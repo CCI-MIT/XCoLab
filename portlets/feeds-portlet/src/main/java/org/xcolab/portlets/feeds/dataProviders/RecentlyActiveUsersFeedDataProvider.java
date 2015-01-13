@@ -11,8 +11,10 @@ import java.util.prefs.PreferenceChangeEvent;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
+import com.liferay.portal.service.RoleLocalServiceUtil;
 import org.springframework.ui.Model;
 import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.feeds.FeedTypeDataProvider;
 import org.xcolab.portlets.feeds.FeedsPreferences;
 import org.xcolab.portlets.feeds.Helper;
@@ -53,9 +55,11 @@ public class RecentlyActiveUsersFeedDataProvider implements
 					currentStart, currentEnd)) {
 				if (usersAlreadyAdded.contains(activity.getUserId())
 						|| (feedsPreferences.getRemoveAdmin() && Helper.isUserAnAdmin(request, activity.getUserId()))
-						|| SocialActivityWrapper.isEmpty(activity, request)) {
+						|| SocialActivityWrapper.isEmpty(activity, request)
+						|| RoleLocalServiceUtil.hasUserRole(activity.getUserId(), MemberRole.STAFF.getRoleId())) {
 					continue;
 				}
+
 				usersAlreadyAdded.add(activity.getUserId());
 
 				int curDaysBetween = DateUtil.getDaysBetween(

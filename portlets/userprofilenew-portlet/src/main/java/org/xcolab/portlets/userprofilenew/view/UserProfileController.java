@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.commons.utils.PwdEncryptor;
+import org.xcolab.portlets.userprofilenew.beans.NewsletterBean;
 import org.xcolab.portlets.userprofilenew.utils.Helper;
 import org.xcolab.portlets.userprofilenew.beans.MessageBean;
 import org.xcolab.portlets.userprofilenew.beans.UserBean;
@@ -110,6 +111,7 @@ public class UserProfileController {
 
             if(_currentUserProfile.isInitialized()) {
                 model.addAttribute("userBean", _currentUserProfile.getUserBean());
+                model.addAttribute("newsletterBean", new NewsletterBean(_currentUserProfile.getUserBean().getEmailStored()));
                 if (_currentUserProfile.isViewingOwnProfile()) {
                     return "editUserProfile";
                 }

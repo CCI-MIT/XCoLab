@@ -80,6 +80,7 @@ public class
     private ThemeDisplay _themeDisplay;
     private final static Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
 
+    private final String laurFishersUuid = "0596aa38-49b4-4633-8ae4-f1c210763c98";
 
     public UserProfileWrapper(Long userId, PortletRequest request) throws PortalException, SystemException {
         _themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -148,8 +149,11 @@ public class
 
         userSubscriptions = new UserSubscriptionsWrapper(user);
 
+
         supportedPlans.clear();
-        for(Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
+        userActivities.clear();
+        userProposals.clear();
+        for (Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
             ProposalSupporter ps = (ProposalSupporter) o;
             try {
                 supportedPlans.add(new SupportedPlanWrapper(ps));
@@ -158,23 +162,18 @@ public class
             }
         }
 
-        userActivities.clear();
         for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
                 .getUserActivities(user.getUserId(), 0, maxActivitiesCount))) {
 
-            UserActivityWrapper a = new UserActivityWrapper(activity,_themeDisplay );
-            if(a.getBody() !=null && !a.getBody().equals(""))
+            UserActivityWrapper a = new UserActivityWrapper(activity, _themeDisplay);
+            if (a.getBody() != null && !a.getBody().equals(""))
                 userActivities.add(a);
         }
 
-        userProposals.clear();
         List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
-        userProposals = new ArrayList<>();
-
         for (Proposal p : proposals) {
             userProposals.add(new ProposalWrapper(p));
         }
-
     }
 
     private boolean profileIsComplete() {
@@ -183,6 +182,10 @@ public class
         for (String s : blankCheck) if (s == null || s.equals(StringPool.BLANK)) return false;
 
         return true;
+    }
+
+    public boolean isStaffMemberProfile(){
+        return this.role == MemberRole.STAFF;
     }
 
     public boolean isInitialized() {
