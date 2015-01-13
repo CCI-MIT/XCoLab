@@ -26,6 +26,7 @@
     <script type="text/javascript" src="$javascript_folder/jquery.blockUI.js?tt=$themeTimestamp"></script>
     <script type="text/javascript" src="$javascript_folder/jquery.cookie.js?tt=$themeTimestamp"></script>
     <script type="text/javascript" src="$javascript_folder/jquery.jgrowl.min.js?tt=$themeTimestamp"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.ddslick.min.js?tt=$themeTimestamp"></script>
     <script type="text/javascript" src="$javascript_folder/spin.min.js?tt=$themeTimestamp"></script>
 	$theme.include($top_head_include)
 	
