@@ -130,23 +130,6 @@
                 <div class="addpropbox">
                     <form:errors path="*" cssClass="alert alert-error" />
 
-                    <c:if test="proposalsPermissions.canAdminAll">
-                        admin all visible
-                        </c:if>
-                    <h3>Transfer rating/comment for selected judge:</h3>
-                    <form:hidden path="screeningUserId" id="judgeUserId"/>
-                        <select id="judges-select">
-                            <c:forEach var="judge" items="${contest.contestJudges}">
-                                <proposalsPortlet:userPortraitSelectOption
-                                        screenName="${judge.screenName}"
-                                        fullName="${judge.fullName}"
-                                        portraitId="${judge.portraitId}"
-                                        userId="${judge.userId}"
-                                        width="30" height="30"
-                                        text="${judge.fullName}"/>
-                            </c:forEach>
-                        </select>
-
                     <h3 style="margin-top: 0;">My Rating</h3>
                     <h4>(Visible to judging team only)</h4>
                     <c:choose>
@@ -265,18 +248,4 @@
         </script>
     </c:if>
 
-    <!--<script type="text/javascript" src="js/jquery.ddslick.min.js"></script> -->
-    <script type="text/javascript" src="http://dl.dropboxusercontent.com/u/40036711/Scripts/jquery.ddslick.min.js"><!-- --></script>
-    <script type="text/javascript">
-        jQuery(document).ready(function() {
-            jQuery('#judges-select').ddslick({
-                showSelectedHTML: false,
-                width: 260,
-                imagePosition: "left",
-                onSelected: function (data) {
-                    jQuery('#judgeUserId').val(data.selectedData.value);
-                }
-            });
-        });
-    </script>
 </jsp:root>

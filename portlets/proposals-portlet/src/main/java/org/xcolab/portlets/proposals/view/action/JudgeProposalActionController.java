@@ -245,6 +245,10 @@ public class JudgeProposalActionController {
         User currentUser = proposalsContext.getUser(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
+        if(judgeProposalFeedbackBean.getScreeningUserId() != null) {
+            currentUser = UserLocalServiceUtil.getUser(judgeProposalFeedbackBean.getScreeningUserId());
+        }
+
         // Security handling
         if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser))) {
             return;
@@ -279,11 +283,6 @@ public class JudgeProposalActionController {
             ProposalsPermissions permissions = proposalsContext.getPermissions(request);
             User currentUser = proposalsContext.getUser(request);
 
-            if(fellowProposalScreeningBean.getScreeningUserId() != null) {
-                currentUser = UserLocalServiceUtil.getUser(fellowProposalScreeningBean.getScreeningUserId());
-
-            }
-
             // Security handling
             if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
                     !permissions.getCanAdminAll()) {
@@ -293,9 +292,6 @@ public class JudgeProposalActionController {
 
             // save selection of judges
             if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.PASS_TO_JUDGES.getAttributeValue()) {
-                if(!fellowProposalScreeningBean.getSelectedJudges().contains(fellowProposalScreeningBean.getScreeningUserId())){
-                    fellowProposalScreeningBean.addSelectedJudge(fellowProposalScreeningBean.getScreeningUserId());
-                }
                 ProposalContestPhaseAttributeLocalServiceUtil.persistSelectedJudgesAttribute(
                         proposalId,
                         contestPhaseId,
