@@ -11,6 +11,16 @@
 		</script>
 	</c:if>
 
+	<portlet:resourceURL var="newsletterSubscribtionStatus" id="newsletterSubscribtionStatus" >
+		<portlet:param name="email" value="${userBean.emailStored}"/>
+	</portlet:resourceURL>
+	<portlet:resourceURL var="newsletterSubscribe" id="newsletterSubscribe" >
+		<portlet:param name="email" value="${userBean.emailStored}"/>
+	</portlet:resourceURL>
+	<portlet:resourceURL var="newsletterUnSubscribe" id="newsletterUnSubscribe" >
+		<portlet:param name="email" value="${userBean.emailStored}"/>
+	</portlet:resourceURL>
+
 	<portlet:actionURL var="updateUserProfileForm">
 		<portlet:param name="action" value="update" />
 	</portlet:actionURL>
@@ -270,29 +280,21 @@
 		<div class="comm_rightcol">
 			<div class="comm_rightcol-title2">COLAB NEWSLETTER SETTINGS</div>
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
-				<form:form  id="newsletterSettingsForm" method="post">
-					<input type="hidden" name="subscribeAction" value="" id="subscribeActionInput"/>
-					<input type="hidden" name="prev_member_email" value=""/>
-					<input type="hidden" name="source" value=""/>
-					<input type="hidden" name="group_1383691" value="1383691"/>
-					<input type="hidden" name="prev_member_email" value=""/>
-					<input type="hidden" name="email" value="${userBean.emailStored}"/>
-					<input type="hidden" name="Submit" value="Submit"/>
 					<tr>
 						<td>
-							<div class="blue-button">
-								<a href="javascript:;" onclick="subscribeNewsletter();">Subscribe</a>
+							<div class="blue-button" id="newsletterSettings">
+								<c:choose>
+									<c:when test="${newsletterBean.emailSubscribedToNewsletter}">
+										<a href="javascript:;" onclick="unSubscribeNewsletter();">Un-Subscribe</a>
+									</c:when>
+									<c:otherwise>
+										<a href="javascript:;" onclick="subscribeNewsletter();">Subscribe</a>
+									</c:otherwise>
+								</c:choose>
 							</div>
 						</td>
 					</tr>
-					<tr>
-						<td>
-							<div class="blue-button">
-								<a href="javascript:;" onclick="unSubscribeNewsletter();">Un-Subscribe</a>
-							</div>
-						</td>
-					</tr>
-				</form:form>
+
 			</table>
 			<div class="clearfix"><!-- --></div>
 		</div>
@@ -322,6 +324,7 @@
 			});
 
 		});
+
 		jQuery("#fileUploadFrame").load(
 				function() {
 					try {
@@ -450,38 +453,51 @@
 
 		function updateNewsletterSettings(updateUrl){
 
+			var deferred = jQuery.Deferred();
+
 			var formData = jQuery("#newsletterSettingsForm");
 			jQuery.ajax({
 				type: 'POST',
 				url: updateUrl,
 				dataType: 'text',
-				data: formData.serialize(),
 				success: function(response){
-					console.log("Update succesful: " + response);
-					jQuery.growlUI('','Successfully updated Newsletter settings!');
+					var responseStatus  = JSON.parse(response);
+					if(responseStatus.hasOwnProperty("success") &amp;&amp; responseStatus.success) {
+						jQuery.growlUI('', 'Successfully updated Newsletter settings!');
+						deferred.resolve(true);
+					} else{
+						jQuery.growlUI('','Updating Newsletter settings failed!');
+						deferred.resolve(false);
+					}
 				},
 				error: function(xhr, status, error){
-					console.log("Update failed xhr: ", xhr);
-					console.log("Update failed xhr: ", xhr.status);
-					console.log("Update failed xhr: ", xhr.readyState);
-					console.log("Update failed xhr: ", xhr.statusCode());
-					console.log("Update failed status: ", status);
-					console.log("Update failed error: ", error);
 					jQuery.growlUI('','Updating Newsletter settings failed!');
+					deferred.resolve(fale);
 				}
 			});
 
-			//jQuery.post(updateUrl, formData.serialize(), function(response) {
-			//	alert( response );
-			//});
+			return deferred;
+
 		}
 
 		function subscribeNewsletter(){
-			updateNewsletterSettings('https://app.e2ma.net/app2/audience/signup/1771713/1729803/');
+			var newsletterSubscribeURL = '${newsletterSubscribe}';
+			updateNewsletterSettings(newsletterSubscribeURL).done(function (result) {
+				if(result) {
+					jQuery("#newsletterSettings a").attr("onclick", "unSubscribeNewsletter();");
+					jQuery("#newsletterSettings a").text("Un-Subscribe");
+				}
+			});
 
 		}
 		function unSubscribeNewsletter() {
-			updateNewsletterSettings('https://app.e2ma.net/app2/audience/signup/1766977/1729803/');
+			var newsletterUnSubscribeURL = '${newsletterUnSubscribe}';
+			updateNewsletterSettings(newsletterUnSubscribeURL).done(function (result) {
+				if(result) {
+					jQuery("#newsletterSettings a").attr("onclick", "subscribeNewsletter();");
+					jQuery("#newsletterSettings a").text("Subscribe");
+				}
+			});
 		}
 
 	</script>
