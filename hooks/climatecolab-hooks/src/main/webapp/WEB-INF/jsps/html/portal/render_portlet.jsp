@@ -734,11 +734,6 @@
     catch (Exception e) {
       portletException = true;
 
-      /*
-      StringWriter sw = new StringWriter();
-      PrintWriter pw = new PrintWriter(sw);
-      e.printStackTrace(pw);*/
-
       StringBuilder stackTraceMessage = new StringBuilder();
       stackTraceMessage.append("<p><strong>Exception:</strong><br/>");
       stackTraceMessage.append(e.toString() + "</p>");
@@ -750,9 +745,6 @@
       stackTraceMessage.append("</pre></p>");
       renderRequestImpl.setAttribute("stackTrace", URLEncoder.encode(stackTraceMessage.toString(), "UTF-8"));
 
-      //System.out.println("Exception occured at 736");
-      //System.out.println(e);
-      //e.printStackTrace(System.out);
       // Under parallel rendering context. An interrupted state means the call
       // was cancelled and so we should terminate the render process.
 

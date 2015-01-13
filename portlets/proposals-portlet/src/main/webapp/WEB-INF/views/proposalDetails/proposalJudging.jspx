@@ -72,8 +72,6 @@
     </c:if>
 
     <c:if test="${proposalsPermissions.canAdminAll}">
-        <!--<script type="text/javascript" src="js/jquery.ddslick.min.js"></script>
-        <script type="text/javascript" src="http://dl.dropboxusercontent.com/u/40036711/Scripts/jquery.ddslick.min.js"/> -->
         <script type="text/javascript">
             jQuery(document).ready(function() {
                 jQuery('#judges-select').ddslick({
