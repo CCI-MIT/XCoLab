@@ -36,7 +36,7 @@ public class UsersController {
     private int USERS_PER_PAGE = 20;
 
     @RequestMapping
-    public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage, @RequestParam(value = "page", required = false) Long pageParam, Model model) throws SystemException, PortalException {
+    public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage, @RequestParam(value = "page", required = false) Long pageParam, @RequestParam(value="memberCategory", required = false) String memberCategoryParam, Model model) throws SystemException, PortalException {
 
         //Pagination
 

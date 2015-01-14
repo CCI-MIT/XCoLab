@@ -251,7 +251,7 @@ public class ActivityUtil {
 
     public static HashMap<Long,Integer> getUsersActivityCount() throws SystemException, PortalException {
 
-        List<User> liferayUsers = UserLocalServiceUtil.getUsers(0, UserLocalServiceUtil.getUsersCount());
+        List<User> liferayUsers = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
         HashMap<Long, Integer> activityCounts = new HashMap<Long, Integer>();
 
         for(User u:liferayUsers)

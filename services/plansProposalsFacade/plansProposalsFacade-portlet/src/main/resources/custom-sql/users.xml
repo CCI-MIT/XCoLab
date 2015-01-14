@@ -6,21 +6,21 @@
 		]]>
     </sql>
 
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameAscFilteredByCategory">
+        <![CDATA[
+			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE ro.categoryName = ? ORDER BY us.screenName ASC
+		]]>
+    </sql>
+
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameDesc">
         <![CDATA[
 			SELECT * FROM User_ as us ORDER BY us.screenName DESC
 		]]>
     </sql>
 
-    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountAsc">
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameDescFilteredByCategory">
         <![CDATA[
-			SELECT count(*), userId FROM SocialActivity group by userId order by count(*) ASC
-		]]>
-    </sql>
-
-    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountDesc">
-        <![CDATA[
-			SELECT count(*), userId FROM SocialActivity group by userId order by count(*) DESC
+			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE ro.categoryName = ? ORDER BY us.screenName DESC
 		]]>
     </sql>
 
@@ -66,9 +66,21 @@ ORDER BY r.categoryName DESC
 		]]>
     </sql>
 
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceAscFilteredByCategory">
+        <![CDATA[
+			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE ro.categoryName = ? ORDER BY us.createDate ASC
+		]]>
+    </sql>
+
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceDesc">
         <![CDATA[
 			SELECT * FROM User_ as us ORDER BY us.createDate DESC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceDescFilteredByCategory">
+        <![CDATA[
+			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE ro.categoryName = ? ORDER BY us.createDate DESC
 		]]>
     </sql>
 
