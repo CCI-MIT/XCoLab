@@ -14,27 +14,49 @@
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountAsc">
         <![CDATA[
-			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us
-ORDER BY activityCount ASC
+			SELECT count(*), userId FROM SocialActivity group by userId order by count(*) ASC
 		]]>
     </sql>
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountDesc">
         <![CDATA[
-			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us
-ORDER BY activityCount DESC
+			SELECT count(*), userId FROM SocialActivity group by userId order by count(*) DESC
 		]]>
     </sql>
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByRoleNameAsc">
         <![CDATA[
-			SELECT * FROM User_ as us ORDER BY ro.name ASC
+			SELECT  u.*, r.*
+FROM User_ u
+    INNER JOIN
+    (
+        SELECT ur.userId, MAX(roleOrdinal) roleOrdinal
+        FROM Users_Roles ur
+	INNER JOIN Role_ r
+ON ur.roleId = r.roleId
+        GROUP BY ur.userId
+    ) b ON u.userId = b.userId
+INNER JOIN Role_ r
+ON r.roleOrdinal = b.roleOrdinal
+ORDER BY r.categoryName ASC
 		]]>
     </sql>
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByRoleNameDesc">
         <![CDATA[
-			SELECT * FROM User_ as us ORDER BY ro.name DESC
+			SELECT  u.*, r.*
+FROM User_ u
+    INNER JOIN
+    (
+        SELECT ur.userId, MAX(roleOrdinal) roleOrdinal
+        FROM Users_Roles ur
+	INNER JOIN Role_ r
+ON ur.roleId = r.roleId
+        GROUP BY ur.userId
+    ) b ON u.userId = b.userId
+INNER JOIN Role_ r
+ON r.roleOrdinal = b.roleOrdinal
+ORDER BY r.categoryName DESC
 		]]>
     </sql>
 

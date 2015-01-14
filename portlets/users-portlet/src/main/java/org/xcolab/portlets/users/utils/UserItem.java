@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -28,9 +29,10 @@ public class UserItem implements Serializable {
 
         userId = user.getUserId();
         activityCount = ActivityUtil.getActivitiesCount(userId);
+        //activityCount = user.
         screenName = user.getScreenName();
         joinDate = user.getCreateDate();
-        List<Role_> roles = Role_LocalServiceUtil.getUser_Role_s(user.getUserId());
+        List<Role> roles = UserLocalServiceUtil.getUser(userId).getRoles();
 
         if (roles.size() > 0) {
 
@@ -38,7 +40,7 @@ public class UserItem implements Serializable {
             category = MemberCategory.MEMBER;
 
 
-            for (Role_ role: roles) {
+            for (Role role: roles) {
                 String roleName = role.getName();
 
                 for (MemberCategory memberCategory : MemberCategory.values())
