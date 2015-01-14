@@ -212,28 +212,31 @@
 			<div class="comm_rightcol">
 				<div class="comm_rightcol-title2">MESSAGE SETTINGS</div>
 				<table border="0" cellpadding="0" cellspacing="0" class="colab">
-					<tr>
+					<tr class="colabRow">
 						<td>
-							<form:checkbox cssClass="profile_cbx" path="sendEmailOnMessage"/>
+							<form:checkbox id="sendEmailOnMessage" cssClass="cmn-toggle cmn-toggle-round" path="sendEmailOnMessage"/>
+							<form:label path="sendEmailOnMessage"/>
 						</td>
 						<td class="profile_settings">
 							Send me an email copy of messages I receive.
 						</td>
 					</tr>
-					<tr>
+					<tr class="colabRow">
 						<td>
-							<form:checkbox id="sendEmailOnActivity" cssClass="profile_cbx" path="sendEmailOnActivity"/>
+							<form:checkbox itemLabel="sendEmailOnActivity" id="sendEmailOnActivity" cssClass="cmn-toggle cmn-toggle-round" path="sendEmailOnActivity"/>
+							<form:label path="sendEmailOnActivity"/>
 						</td>
 						<td class="profile_settings">
 							Send me an email copy of activities that I'm subscribed to.
 						</td>
 					</tr>
-					<tr>
+					<tr class="colabRow">
 						<td>
-							<form:checkbox id="sendDailyEmailOnActivity" disabled="${not userBean.sendEmailOnActivity}"  cssClass="profile_cbx" path="sendDailyEmailOnActivity" />
+							<form:checkbox id="sendDailyEmailOnActivity" disabled="${not userBean.sendEmailOnActivity}"  cssClass="cmn-toggle cmn-toggle-round" path="sendDailyEmailOnActivity" />
+							<form:label path="sendDailyEmailOnActivity"/>
 						</td>
 						<td class="profile_settings">
-							Only send me a daily summary of all activities I'm subscribed to
+							Only send me a daily summary of all activities I'm subscribed to.
 						</td>
 					</tr>
 				</table>
@@ -252,7 +255,7 @@
 					<form:form  id="unlinkSSOForm" action="${unlinkSSOURL}" method="post">
 						<input id="inputTypeSSO" type="hidden" name="accountType" value=""/>
 						<c:if test="${currentUser.hasFacebookId}">
-							<tr>
+							<tr class="colabRow">
 								<td>
 									<div class="blue-button">
 										<a href="javascript:;" onclick="setSSOType('FACEBOOK');jQuery('#unlinkSSOForm').submit();">Unlink Facebook account</a>
@@ -280,21 +283,17 @@
 		<div class="comm_rightcol">
 			<div class="comm_rightcol-title2">COLAB NEWSLETTER SETTINGS</div>
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
-					<tr>
+				<form:form commandName="newsletterBean">
+					<tr class="colabRow">
 						<td>
-							<div class="blue-button" id="newsletterSettings">
-								<c:choose>
-									<c:when test="${newsletterBean.emailSubscribedToNewsletter}">
-										<a href="javascript:;" onclick="unSubscribeNewsletter();">Un-Subscribe</a>
-									</c:when>
-									<c:otherwise>
-										<a href="javascript:;" onclick="subscribeNewsletter();">Subscribe</a>
-									</c:otherwise>
-								</c:choose>
-							</div>
+							<form:checkbox id="emailSubscribedToNewsletter" disabled="${not newsletterBean.emailSubscribedToNewsletter}"  cssClass="cmn-toggle cmn-toggle-round" path="emailSubscribedToNewsletter" />
+							<form:label path="emailSubscribedToNewsletter"/>
+						</td>
+						<td>
+							Send me the CoLab newsletter.
 						</td>
 					</tr>
-
+				</form:form>
 			</table>
 			<div class="clearfix"><!-- --></div>
 		</div>
@@ -451,11 +450,11 @@
 			}
 		})
 
-		function updateNewsletterSettings(updateUrl){
+
+		function updateNewsletterSettingsOnServer(updateUrl){
 
 			var deferred = jQuery.Deferred();
 
-			var formData = jQuery("#newsletterSettingsForm");
 			jQuery.ajax({
 				type: 'POST',
 				url: updateUrl,
@@ -472,7 +471,7 @@
 				},
 				error: function(xhr, status, error){
 					jQuery.growlUI('','Updating Newsletter settings failed!');
-					deferred.resolve(fale);
+					deferred.resolve(false);
 				}
 			});
 
@@ -480,22 +479,33 @@
 
 		}
 
+		jQuery("#emailSubscribedToNewsletter").change(function() {
+
+			if (jQuery("#newsletterSettingsCheckbox").is(":checked")) {
+				subscribeNewsletter();
+			} else {
+				unSubscribeNewsletter();
+			}
+
+		});
+
+
 		function subscribeNewsletter(){
 			var newsletterSubscribeURL = '${newsletterSubscribe}';
-			updateNewsletterSettings(newsletterSubscribeURL).done(function (result) {
-				if(result) {
-					jQuery("#newsletterSettings a").attr("onclick", "unSubscribeNewsletter();");
-					jQuery("#newsletterSettings a").text("Un-Subscribe");
+			updateNewsletterSettingsOnServer(newsletterSubscribeURL).done(function (result) {
+				if(!result) {
+					jQuery("#emailSubscribedToNewsletter").attr('checked', false);
+					//jQuery("#newsletterSettingsLabel").text("Un-Subscribe");
 				}
 			});
 
 		}
 		function unSubscribeNewsletter() {
 			var newsletterUnSubscribeURL = '${newsletterUnSubscribe}';
-			updateNewsletterSettings(newsletterUnSubscribeURL).done(function (result) {
-				if(result) {
-					jQuery("#newsletterSettings a").attr("onclick", "subscribeNewsletter();");
-					jQuery("#newsletterSettings a").text("Subscribe");
+			updateNewsletterSettingsOnServer(newsletterUnSubscribeURL).done(function (result) {
+				if(!result) {
+					jQuery("#emailSubscribedToNewsletter").attr('checked', true);
+					//jQuery("#newsletterSettingsLabel").text("Subscribe");
 				}
 			});
 		}

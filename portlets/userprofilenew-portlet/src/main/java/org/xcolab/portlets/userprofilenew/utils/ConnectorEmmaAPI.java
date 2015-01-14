@@ -4,7 +4,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
@@ -13,9 +12,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.xcolab.portlets.userprofilenew.entity.AccountDetailsEmmaAPI;
 
+import javax.portlet.PortletRequest;
 import java.io.IOException;
-import java.net.URI;
 
 /**
  * Created by Thomas on 1/12/2015.
@@ -24,12 +24,14 @@ public class ConnectorEmmaAPI {
 
     final private String charset = java.nio.charset.StandardCharsets.UTF_8.name();
     final private String contentType = "application/json";
-    final private String accountId = "1729803";
-    final private String groupId = "1383691";
-    final private String publicApiKey = "02c43a642dfec501401b";
-    final private String privateApiKey = "99af7a68f8fff3ae52ad";
-    final private String myemmaApiBaseUrl = "https://api.e2ma.net/" + accountId;
-    final private String encodedAuthorization = "Basic " + new Base64().encodeToString((publicApiKey + ":" + privateApiKey).getBytes()).trim();
+    private String myEmmaApiBaseUrl;
+
+    private AccountDetailsEmmaAPI accountDetailsEmmaAPI;
+
+    public ConnectorEmmaAPI(PortletRequest request){
+        accountDetailsEmmaAPI = new AccountDetailsEmmaAPI(request.getPreferences());
+        myEmmaApiBaseUrl = "https://api.e2ma.net/" + accountDetailsEmmaAPI.getAccountId();
+    }
 
     public boolean unSubscribeMemberWithEmail(String email) throws IOException{
 
@@ -45,8 +47,8 @@ public class ConnectorEmmaAPI {
         boolean unsubscribeSuccessfull = false;
 
         try{
-            HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(myemmaApiBaseUrl + "/members/" + memberId,
-                    contentType, charset, encodedAuthorization);
+            HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(myEmmaApiBaseUrl + "/members/" + memberId,
+                    contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
 
             CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest);
 
@@ -75,13 +77,13 @@ public class ConnectorEmmaAPI {
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         JSONArray groupIds = JSONFactoryUtil.createJSONArray();
-        groupIds.put(groupId);
+        groupIds.put(accountDetailsEmmaAPI.getGroupId());
         jsonSubscribeInformation.put("email", email);
         jsonSubscribeInformation.put("group_ids", groupIds);
 
         try{
-            HttpUriRequest newsletterSubscribeRequest = createPostWithAuthorizationForJSONObject(myemmaApiBaseUrl + "/members/add",
-                    contentType, charset, encodedAuthorization, jsonSubscribeInformation);
+            HttpUriRequest newsletterSubscribeRequest = createPostWithAuthorizationForJSONObject(myEmmaApiBaseUrl + "/members/add",
+                    contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization(), jsonSubscribeInformation);
 
              CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest);
 
@@ -110,8 +112,8 @@ public class ConnectorEmmaAPI {
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         try{
-            HttpGet getMemberDetails=createGetWithAuthorization( myemmaApiBaseUrl + "/members/email/" + email,
-                    contentType, charset, encodedAuthorization);
+            HttpGet getMemberDetails=createGetWithAuthorization( myEmmaApiBaseUrl + "/members/email/" + email,
+                    contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
 
             CloseableHttpResponse getMemberDetailsResponse = httpclient.execute(getMemberDetails);
 

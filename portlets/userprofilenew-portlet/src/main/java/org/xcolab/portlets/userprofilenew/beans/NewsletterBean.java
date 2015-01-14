@@ -3,6 +3,7 @@ package org.xcolab.portlets.userprofilenew.beans;
 import com.liferay.portal.kernel.json.JSONObject;
 import org.xcolab.portlets.userprofilenew.utils.ConnectorEmmaAPI;
 
+import javax.portlet.PortletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -15,9 +16,9 @@ public class NewsletterBean implements Serializable{
     private ConnectorEmmaAPI connectorEmmaAPI;
     private String email;
 
-    public NewsletterBean(String email){
+    public NewsletterBean(String email, PortletRequest request){
         this.email = email;
-        this.connectorEmmaAPI = new ConnectorEmmaAPI();
+        this.connectorEmmaAPI = new ConnectorEmmaAPI(request);
     }
 
     public boolean isEmailSubscribedToNewsletter(){

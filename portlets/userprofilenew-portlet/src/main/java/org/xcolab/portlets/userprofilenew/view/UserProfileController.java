@@ -111,7 +111,8 @@ public class UserProfileController {
 
             if(_currentUserProfile.isInitialized()) {
                 model.addAttribute("userBean", _currentUserProfile.getUserBean());
-                model.addAttribute("newsletterBean", new NewsletterBean(_currentUserProfile.getUserBean().getEmailStored()));
+                model.addAttribute("newsletterBean",
+                        new NewsletterBean(_currentUserProfile.getUserBean().getEmailStored(),request));
                 if (_currentUserProfile.isViewingOwnProfile()) {
                     return "editUserProfile";
                 }
