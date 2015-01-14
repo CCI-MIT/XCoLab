@@ -3,16 +3,22 @@ package org.xcolab.portlets.userprofilenew.view;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.util.PortalUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.userprofilenew.wrappers.ActivitySubscriptionWrapper;
 import org.xcolab.portlets.userprofilenew.wrappers.UserSubscriptionsWrapper;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.ResourceResponse;
 import java.io.IOException;
 
 @Controller
@@ -41,20 +47,5 @@ public class SubscriptionsActionController {
             throws PortalException, SystemException {
 
     }*/
-
-    @RequestMapping(params = {"action=unlinkSSO"})
-    public void handleUnlinkSSOAction(ActionRequest request, Model model, ActionResponse response,
-                                               @RequestParam(required = true) String userId,
-                                               @RequestParam(required = true) String accountType
-    ) throws PortalException, SystemException, IOException {
-
-        User u = UserLocalServiceUtil.getUser(Long.parseLong(userId));
-        if (accountType.equalsIgnoreCase("FACEBOOK")) u.setFacebookId(0);
-        else if (accountType.equalsIgnoreCase("GOOGLE")) u.setOpenId("");
-        UserLocalServiceUtil.updateUser(u);
-
-        response.sendRedirect("/web/guest/member/-/member/userId/" + userId + "/page/edit");
-
-    }
 
 }

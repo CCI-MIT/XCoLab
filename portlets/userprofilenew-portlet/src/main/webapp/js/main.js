@@ -67,7 +67,3 @@ function selectAllSubscriptions() {
 function unSelectAllSubscriptions() {
     jQuery(".subscriptionSelect").prop('checked', false);
 }
-
-function setSSOType(type){
-    document.getElementById("inputTypeSSO").value = type;
-}

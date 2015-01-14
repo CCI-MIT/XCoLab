@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.userprofilenew.utils.ConnectorEmmaAPI;
+import org.xcolab.portlets.userprofilenew.utils.JSONHelper;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
@@ -18,7 +19,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("view")
-public class NewsletterJSONController {
+public class NewsletterJSONController extends JSONHelper{
 
     private ConnectorEmmaAPI connectorEmmaAPI;
 
@@ -35,8 +36,7 @@ public class NewsletterJSONController {
         initializeConnectorIfNull(request);
         JSONObject memberDetails = connectorEmmaAPI.subscribeMemberWithEmail(email);
         boolean memberHasActiveSubscription = hasNewMemberActiveSubscription(memberDetails);
-        JSONObject resultResponseJson = createResultResponseJson(memberHasActiveSubscription);
-        response.getPortletOutputStream().write(resultResponseJson.toString().getBytes());
+        this.writeResultResponseJSON(memberHasActiveSubscription, response);
     }
 
     @ResourceMapping("newsletterUnSubscribe")
@@ -48,8 +48,7 @@ public class NewsletterJSONController {
 
         initializeConnectorIfNull(request);
         boolean isMemberUnsubscribed = connectorEmmaAPI.unSubscribeMemberWithEmail(email);
-        JSONObject resultResponseJson = createResultResponseJson(isMemberUnsubscribed);
-        response.getPortletOutputStream().write(resultResponseJson.toString().getBytes());
+        this.writeResultResponseJSON(isMemberUnsubscribed, response);
     }
 
     @ResourceMapping("newsletterSubscribtionStatus")
@@ -62,8 +61,7 @@ public class NewsletterJSONController {
         initializeConnectorIfNull(request);
         JSONObject memberDetails = connectorEmmaAPI.getMemberJSONfromEmail(email);
         boolean memberHasActiveSubscription = hasMemberActiveSubscription(memberDetails);
-        JSONObject resultResponseJson = createResultResponseJson(memberHasActiveSubscription);
-        response.getPortletOutputStream().write(resultResponseJson.toString().getBytes());
+        this.writeResultResponseJSON(memberHasActiveSubscription, response);
     }
 
 
@@ -90,12 +88,5 @@ public class NewsletterJSONController {
             return false;
         }
     }
-
-    private JSONObject createResultResponseJson(boolean success){
-        JSONObject resultResponseJson = JSONFactoryUtil.createJSONObject();
-        resultResponseJson.put("success", success);
-        return resultResponseJson;
-    }
-
 
 }

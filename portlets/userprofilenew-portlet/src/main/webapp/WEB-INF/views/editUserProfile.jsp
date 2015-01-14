@@ -11,6 +11,13 @@
 		</script>
 	</c:if>
 
+	<portlet:resourceURL var="unlinkFacebookSSO" id="unlinkFacebookSSO" />
+	<portlet:resourceURL var="unlinkGoogleSSO" id="unlinkGoogleSSO"/>
+
+	<portlet:resourceURL var="updateUserSendEmailOnMessageSettings" id="updateUserSendEmailOnMessageSettings"/>
+	<portlet:resourceURL var="updateUserSendEmailOnActivitySettings" id="updateUserSendEmailOnActivitySettings"/>
+	<portlet:resourceURL var="updateUserSendDailyEmailOnActivitySettings" id="updateUserSendDailyEmailOnActivitySettings"/>
+
 	<portlet:resourceURL var="newsletterSubscribtionStatus" id="newsletterSubscribtionStatus" >
 		<portlet:param name="email" value="${userBean.emailStored}"/>
 	</portlet:resourceURL>
@@ -25,10 +32,6 @@
 		<portlet:param name="action" value="update" />
 	</portlet:actionURL>
 
-	<portlet:actionURL var="unlinkSSOURL">
-		<portlet:param name="action" value="unlinkSSO" />
-		<portlet:param name="userId" value="${currentUser.userId}" />
-	</portlet:actionURL>
 
 	<form style="margin-top: 20px;" action="/userprofilenew-portlet/fileUploadServlet" method="post"
 		  enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
@@ -214,7 +217,8 @@
 				<table border="0" cellpadding="0" cellspacing="0" class="colab">
 					<tr class="colabRow">
 						<td>
-							<form:checkbox id="sendEmailOnMessage" cssClass="cmn-toggle cmn-toggle-round" path="sendEmailOnMessage"/>
+							<form:checkbox id="sendEmailOnMessage" cssClass="cmn-toggle cmn-toggle-round"
+										   path="sendEmailOnMessage" onchange="updateUserSendEmailOnMessageSettings(this)"/>
 							<form:label path="sendEmailOnMessage"/>
 						</td>
 						<td class="profile_settings">
@@ -223,7 +227,8 @@
 					</tr>
 					<tr class="colabRow">
 						<td>
-							<form:checkbox itemLabel="sendEmailOnActivity" id="sendEmailOnActivity" cssClass="cmn-toggle cmn-toggle-round" path="sendEmailOnActivity"/>
+							<form:checkbox id="sendEmailOnActivity" cssClass="cmn-toggle cmn-toggle-round"
+										   path="sendEmailOnActivity" onchange="updateUserSendEmailOnActivitySettings(this)"/>
 							<form:label path="sendEmailOnActivity"/>
 						</td>
 						<td class="profile_settings">
@@ -232,7 +237,9 @@
 					</tr>
 					<tr class="colabRow">
 						<td>
-							<form:checkbox id="sendDailyEmailOnActivity" disabled="${not userBean.sendEmailOnActivity}"  cssClass="cmn-toggle cmn-toggle-round" path="sendDailyEmailOnActivity" />
+							<form:checkbox id="sendDailyEmailOnActivity" disabled="${not userBean.sendEmailOnActivity}"
+										   cssClass="cmn-toggle cmn-toggle-round" path="sendDailyEmailOnActivity"
+										   onchange="updateUserSendDailyEmailOnActivitySettings(this)" />
 							<form:label path="sendDailyEmailOnActivity"/>
 						</td>
 						<td class="profile_settings">
@@ -247,38 +254,6 @@
 		<form:hidden id="userRegistrationImageId" path="imageId" />
 	</form:form>
 
-	<c:if test="${currentUser.hasFacebookId or currentUser.hasOpenId}">
-		<div class="right_col v1">
-			<div class="comm_rightcol">
-				<div class="comm_rightcol-title2">SSO SETTINGS</div>
-				<table border="0" cellpadding="0" cellspacing="0" class="colab">
-					<form:form  id="unlinkSSOForm" action="${unlinkSSOURL}" method="post">
-						<input id="inputTypeSSO" type="hidden" name="accountType" value=""/>
-						<c:if test="${currentUser.hasFacebookId}">
-							<tr class="colabRow">
-								<td>
-									<div class="blue-button">
-										<a href="javascript:;" onclick="setSSOType('FACEBOOK');jQuery('#unlinkSSOForm').submit();">Unlink Facebook account</a>
-									</div>
-								</td>
-							</tr>
-						</c:if>
-						<c:if test="${currentUser.hasOpenId}">
-							<tr>
-								<td>
-									<div class="blue-button">
-										<a href="javascript:;" onclick="setSSOType('GOOGLE');jQuery('#unlinkSSOForm').submit();">Unlink Google account</a>
-									</div>
-								</td>
-							</tr>
-						</c:if>
-					</form:form>
-				</table>
-				<div class="clearfix"><!-- --></div>
-			</div>
-		</div> <!-- /right_col3 -->
-	</c:if>
-
 	<div class="right_col v1">
 		<div class="comm_rightcol">
 			<div class="comm_rightcol-title2">COLAB NEWSLETTER SETTINGS</div>
@@ -286,7 +261,8 @@
 				<form:form commandName="newsletterBean">
 					<tr class="colabRow">
 						<td>
-							<form:checkbox id="emailSubscribedToNewsletter" disabled="${not newsletterBean.emailSubscribedToNewsletter}"  cssClass="cmn-toggle cmn-toggle-round" path="emailSubscribedToNewsletter" />
+							<form:checkbox id="emailSubscribedToNewsletter" cssClass="cmn-toggle cmn-toggle-round"
+										   path="emailSubscribedToNewsletter" />
 							<form:label path="emailSubscribedToNewsletter"/>
 						</td>
 						<td>
@@ -294,6 +270,51 @@
 						</td>
 					</tr>
 				</form:form>
+			</table>
+			<div class="clearfix"><!-- --></div>
+		</div>
+	</div> <!-- /right_col -->
+
+	<div class="right_col v1">
+		<div class="comm_rightcol">
+			<div class="comm_rightcol-title2">SSO SETTINGS</div>
+			<table border="0" cellpadding="0" cellspacing="0" class="colab">
+				<tr class="colabRow">
+					<td>
+						<c:choose>
+							<c:when test="${currentUser.hasFacebookId}">
+								<input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+									   value="true" checked="checked" onClick="unlinkFacebookSSO();" />
+							</c:when>
+							<c:otherwise>
+								<input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+									   disabled="true" />
+							</c:otherwise>
+						</c:choose>
+						<label for="hasFacebookId"></label>
+					</td>
+					<td>
+						Facebook account
+					</td>
+				</tr>
+				<tr class="colabRow">
+					<td>
+						<c:choose>
+							<c:when test="${currentUser.hasOpenId}">
+								<input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+									   value="true" checked="checked" onClick="unlinkGoogleSSO();" />
+							</c:when>
+							<c:otherwise>
+								<input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+									   disabled="true" />
+							</c:otherwise>
+						</c:choose>
+						<label for="hasOpenId"></label>
+					</td>
+					<td>
+						Google account
+					</td>
+				</tr>
 			</table>
 			<div class="clearfix"><!-- --></div>
 		</div>
@@ -336,10 +357,10 @@
 							var response = eval("("
 							+ jQuery(this).contents().text().substring(imageIdPos) + ")");
 
-							console.log("response -> ", response);
+							//console.log("response -> ", response);
 							jQuery("#userPortrait").attr("src",
 									"/image/contest?img_id=" + response.imageId);
-							console.log("#userPortrait.src -> ", response.imageId);
+							//console.log("#userPortrait.src -> ", response.imageId);
 							jQuery("#userPortrait").unblock();
 
 							jQuery("#userRegistrationImageId")
@@ -440,6 +461,8 @@
 			}
 		})
 
+
+
 		jQuery("#sendEmailOnActivity").change(function(){
 
 			if(!jQuery("#sendEmailOnActivity").is(":checked")){
@@ -451,33 +474,99 @@
 		})
 
 
-		function updateNewsletterSettingsOnServer(updateUrl){
-
+		function updateMessageSettingsOnServer(updateUrl, formData){
 			var deferred = jQuery.Deferred();
-
-			jQuery.ajax({
-				type: 'POST',
-				url: updateUrl,
-				dataType: 'text',
-				success: function(response){
-					var responseStatus  = JSON.parse(response);
-					if(responseStatus.hasOwnProperty("success") &amp;&amp; responseStatus.success) {
-						jQuery.growlUI('', 'Successfully updated Newsletter settings!');
-						deferred.resolve(true);
+				sendAjaxToServer(updateUrl, formData).done(function(response){
+					if(response){
+						jQuery.growlUI('', 'Successfully updated message settings!');
 					} else{
-						jQuery.growlUI('','Updating Newsletter settings failed!');
-						deferred.resolve(false);
+						jQuery.growlUI('','Updating message settings failed!');
 					}
-				},
-				error: function(xhr, status, error){
-					jQuery.growlUI('','Updating Newsletter settings failed!');
-					deferred.resolve(false);
+				});
+			return deferred;
+		}
+
+		/*
+		function updateMessageSettings(element){
+
+			var updateMessageSettingsURL = '${updateUserSendEmailOnMessageSettings}';
+			var checkedFormData = createCheckedFormData(element.checked);
+			updateMessageSettingsOnServer(updateMessageSettingsURL, checkedFormData).done(function (result) {
+				if(!result) {
+					jQuery("#" + element.id +"").attr('checked', true);
+				}
+
+			});
+		}*/
+
+		function updateUserSendEmailOnActivitySettings(element){
+
+			var updateMessageSettingsURL = '${updateUserSendEmailOnActivitySettings}';
+			var checkedFormData = createCheckedFormData(element.checked);
+			updateMessageSettingsOnServer(updateMessageSettingsURL, checkedFormData).done(function (result) {
+				if(!result) {
+					jQuery("#updateUserSendEmailOnActivitySettings").attr('checked', !element.checked);
 				}
 			});
 
-			return deferred;
+			/*
+			 var updateMessageSettingsActivityDailyURL = '${updateUserSendDailyEmailOnActivitySettings}';
+			sendAjaxToServer(updateMessageSettingsActivityURL, formData).done(function(response){
+				if(response){
+
+					if(!element.checked) {
+						sendAjaxToServer(updateMessageSettingsActivityDailyURL, formData).done(function (response) {
+							if (response) {
+								jQuery.growlUI('', 'Successfully updated message settings!');
+							} else {
+								jQuery.growlUI('', 'Updating message settings partly failed!');
+								jQuery("#updateUserSendDailyEmailOnActivitySettings").attr('checked', true);
+							}
+						});
+					} else{
+						jQuery.growlUI('', 'Successfully updated message settings!');
+					}
+
+				} else{
+					jQuery.growlUI('','Updating message settings failed!');
+					jQuery("#updateUserSendDailyEmailOnActivitySettings").attr('checked', true);
+				}
+			});*/
 
 		}
+
+		function updateUserSendEmailOnMessageSettings(element){
+
+			var updateMessageSettingsURL = '${updateUserSendEmailOnMessageSettings}';
+			var checkedFormData = createCheckedFormData(element.checked);
+			updateMessageSettingsOnServer(updateMessageSettingsURL, checkedFormData).done(function (result) {
+				if(!result) {
+					jQuery("#updateUserSendEmailOnMessageSettings").attr('checked', !element.checked);
+				}
+			});
+		}
+
+		function createCheckedFormData(elementChecked){
+			var formData = "messageSetting=";
+			if(elementChecked) {
+				formData += "true";
+			} else {
+				formData += "false";
+			}
+			return formData;
+		}
+
+		function updateUserSendDailyEmailOnActivitySettings(element){
+
+			var updateMessageSettingsURL = '${updateUserSendDailyEmailOnActivitySettings}';
+			var checkedFormData = createCheckedFormData(element.checked);
+			updateMessageSettingsOnServer(updateMessageSettingsURL, checkedFormData).done(function (result) {
+				if(!result) {
+					jQuery("#updateUserSendDailyEmailOnActivitySettings").attr('checked', !element.checked);
+				}
+			});
+		}
+
 
 		jQuery("#emailSubscribedToNewsletter").change(function() {
 
@@ -489,6 +578,17 @@
 
 		});
 
+		function updateNewsletterSettingsOnServer(updateUrl){
+			var deferred = jQuery.Deferred();
+				sendAjaxToServer(updateUrl).done(function(response){
+					if(response){
+						jQuery.growlUI('', 'Successfully updated Newsletter settings!');
+					} else{
+						jQuery.growlUI('','Updating Newsletter settings failed!');
+					}
+				});
+			return deferred;
+		}
 
 		function subscribeNewsletter(){
 			var newsletterSubscribeURL = '${newsletterSubscribe}';
@@ -508,6 +608,72 @@
 					//jQuery("#newsletterSettingsLabel").text("Subscribe");
 				}
 			});
+		}
+
+		function unlinkSSOonServer(updateUrl){
+			var deferred = jQuery.Deferred();
+				sendAjaxToServer(updateUrl).done(function(response){
+					if(response){
+						deferred.resolve(true);
+						jQuery.growlUI('','Unlinking SSO successfull!');
+					} else{
+						deferred.resolve(false);
+						jQuery.growlUI('','Unlinking SSO failed!');
+					}
+				});
+			return deferred;
+		}
+
+		function unlinkFacebookSSO(){
+			var unlinkSSOURL = '${unlinkFacebookSSO}';
+			unlinkSSOonServer(unlinkSSOURL).done(function (result) {
+				if(result) {
+					jQuery("#hasFacebookId").attr('onclick',"");
+					jQuery("#hasOpenId").attr('disabled', true);
+					jQuery("#hasOpenId").removeAttr('checked');
+				} else{
+					jQuery("#hasFacebookId").attr('checked', true);
+				}
+			});
+		}
+
+		function unlinkGoogleSSO(){
+			var unlinkSSOURL = '${unlinkGoogleSSO}';
+			unlinkSSOonServer(unlinkSSOURL).done(function (result) {
+				if(result) {
+					jQuery("#hasOpenId").attr('onclick', "");
+					jQuery("#hasOpenId").attr('disabled', "true");
+					jQuery("#hasOpenId").removeAttr('checked');
+				} else {
+					jQuery("#hasOpenId").attr('checked', true);
+				}
+			});
+		}
+
+		function sendAjaxToServer(updateUrl, formData){
+
+			var deferred = jQuery.Deferred();
+
+			jQuery.ajax({
+				type: 'POST',
+				url: updateUrl,
+				dataType: 'text',
+				data: formData,
+				success: function(response){
+					var responseStatus  = JSON.parse(response);
+					if(responseStatus.hasOwnProperty("success") &amp;&amp; responseStatus.success) {
+						deferred.resolve(true);
+					} else{
+						deferred.resolve(false);
+					}
+				},
+				error: function(xhr, status, error){
+					deferred.resolve(false);
+				}
+			});
+
+			return deferred;
+
 		}
 
 	</script>
