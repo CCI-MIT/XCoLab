@@ -10,7 +10,7 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
     <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions
-                    or proposalsPermissions.canAdminAll and proposalsPermissions.canAdminJudgeActions and proposal.selectedJudges > 0}">
+                    or proposalsPermissions.canAdminAll and proposalsPermissions.canAdminJudgeActions and proposal.selectedJudges.size() > 0}">
 
         <c:choose>
             <c:when test="${proposalsPermissions.canAdminAll or proposal.judgeReviewStatus.statusValue > 0}">
