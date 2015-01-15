@@ -43,73 +43,136 @@ public class UsersController {
         int page=1;
         if (pageParam!=null)
             page = pageParam.intValue();
+        int firstUser = 1;
 
         int usersCount = UserLocalServiceUtil.getUsersCount();
         int pagesCount = usersCount / USERS_PER_PAGE;
         int startPage = page - 5 > 0?page - 5:1;
         int endPage = startPage + 10<pagesCount? startPage+10:pagesCount;
 
-
-        int firstUser = 1;
         if (page > 1)
             firstUser = ((page-1) * USERS_PER_PAGE)+1;
 
         int endUser = (firstUser+USERS_PER_PAGE)-1;
 
-        //List<User> liferayUsers = UserLocalServiceUtil.getUsers(firstUser,endUser);
-
         List<User_> dBUsers = null;
+
+        if (memberCategoryParam==null || memberCategoryParam.compareTo("")==0)
         if (sortFilterPage.getSortColumn()!=null)
-        switch (sortFilterPage.getSortColumn())
-        {
-            case "USER_NAME":
-                if (sortFilterPage.isSortAscending())
-                    dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser,endUser);
-                else
-                    dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDesc(firstUser,endUser);
-            break;
 
-            case "ACTIVITY":
-                Map<Long,Integer> activityCounts = ActivityUtil.getUsersActivityCount();
-                activityCounts = sortByComparator (activityCounts);
-                Object[] userIds = activityCounts.keySet().toArray();
-                dBUsers = new ArrayList<User_>();
-                if (sortFilterPage.isSortAscending()) {
-                    for (int i = firstUser-1; i <= endUser-1; i++) {
-                        Long userId = new Long(new Long(userIds[i].toString()));
-                        User_ user_ = User_LocalServiceUtil.getUser_(userId);
-                        dBUsers.add(user_);
+            switch (sortFilterPage.getSortColumn()) {
+                case "USER_NAME":
+                    if (sortFilterPage.isSortAscending())
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser);
+                    else
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDesc(firstUser, endUser);
+                    break;
+
+                case "ACTIVITY":
+                    Map<Long, Integer> activityCounts = ActivityUtil.getUsersActivityCount();
+                    activityCounts = sortByComparator(activityCounts);
+                    Object[] userIds = activityCounts.keySet().toArray();
+                    dBUsers = new ArrayList<User_>();
+                    if (sortFilterPage.isSortAscending()) {
+                        for (int i = firstUser - 1; i <= endUser - 1; i++) {
+                            Long userId = new Long(new Long(userIds[i].toString()));
+                            User_ user_ = User_LocalServiceUtil.getUser_(userId);
+                            dBUsers.add(user_);
+                        }
+                    } else {
+                        for (int i = endUser - 1; i >= firstUser - 1; i--) {
+                            Long userId = new Long(new Long(userIds[i].toString()));
+                            User_ user_ = User_LocalServiceUtil.getUser_(userId);
+                            dBUsers.add(user_);
+                        }
                     }
-                }
-                else
-                {
-                    for (int i = endUser-1; i >= firstUser-1; i--)
-                    {
-                        Long userId = new Long(new Long(userIds[i].toString()));
-                        User_ user_ = User_LocalServiceUtil.getUser_(userId);
-                        dBUsers.add(user_);
-                    }
-                }
-                break;
+                    break;
 
-            case "CATEGORY":
-                if (sortFilterPage.isSortAscending())
-                    dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameAsc(firstUser,endUser);
-                else
-                    dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameDesc(firstUser,endUser);
-                break;
+                case "CATEGORY":
+                    if (sortFilterPage.isSortAscending())
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameAsc(firstUser, endUser);
+                    else
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameDesc(firstUser, endUser);
+                    break;
 
-            case "MEMBER_SINCE":
-                if (sortFilterPage.isSortAscending())
-                    dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAsc(firstUser,endUser);
-                else
-                    dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDesc(firstUser,endUser);
-                break;
-        }
+                case "MEMBER_SINCE":
+                    if (sortFilterPage.isSortAscending())
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAsc(firstUser, endUser);
+                    else
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDesc(firstUser, endUser);
+                    break;
+            }
         else {
             dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser);
             sortFilterPage.setSortColumn("USER_NAME");
             sortFilterPage.setSortAscending(true);
+        }
+
+        else {
+
+            // Pagination
+
+            usersCount = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(0,Integer.MAX_VALUE,memberCategoryParam).size();
+            pagesCount = usersCount / USERS_PER_PAGE;
+            endPage = startPage + 10<pagesCount? startPage+10:pagesCount;
+
+            //Filtering by category
+
+            if (sortFilterPage.getSortColumn()!=null)
+                switch (sortFilterPage.getSortColumn())
+                {
+                    case "USER_NAME":
+                        if (sortFilterPage.isSortAscending())
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                        else
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                        break;
+
+                    case "ACTIVITY":
+                        Map<Long,Integer> activityCounts = ActivityUtil.getUsersActivityCount();
+                        activityCounts = sortByComparator (activityCounts);
+                        Object[] userIds = activityCounts.keySet().toArray();
+                        dBUsers = new ArrayList<User_>();
+                        if (sortFilterPage.isSortAscending()) {
+                            for (int i = firstUser-1; i <= endUser-1; i++) {
+                                Long userId = new Long(new Long(userIds[i].toString()));
+                                User_ user_ = User_LocalServiceUtil.getUser_(userId);
+                                //TODO: Filter by category
+                                dBUsers.add(user_);
+                            }
+                        }
+                        else
+                        {
+                            for (int i = endUser-1; i >= firstUser-1; i--)
+                            {
+                                Long userId = new Long(new Long(userIds[i].toString()));
+                                User_ user_ = User_LocalServiceUtil.getUser_(userId);
+                                //TODO: Filter by category
+                                dBUsers.add(user_);
+                            }
+                        }
+                        break;
+
+                    case "CATEGORY":
+                        if (sortFilterPage.isSortAscending())
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                        else
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                        break;
+
+                    case "MEMBER_SINCE":
+                        if (sortFilterPage.isSortAscending())
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                        else
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDescFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                        break;
+                }
+            else {
+                dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser,memberCategoryParam);
+                sortFilterPage.setSortColumn("USER_NAME");
+                sortFilterPage.setSortAscending(true);
+            }
+
         }
 
         List<UserItem> users = new ArrayList<UserItem>();
@@ -126,6 +189,7 @@ public class UsersController {
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("users", users);
         model.addAttribute("usersCount", usersCount);
+        model.addAttribute("memberCategory", memberCategoryParam);
 
         return "users";
 
