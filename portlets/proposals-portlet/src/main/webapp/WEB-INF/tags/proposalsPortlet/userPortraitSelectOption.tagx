@@ -10,9 +10,19 @@
 	<jsp:directive.attribute name="fullName" type="java.lang.String" required="true" rtexprvalue="true" description="User full name" />
 	<jsp:directive.attribute name="width" type="java.lang.Integer" required="true" rtexprvalue="true" description="Width" />
 	<jsp:directive.attribute name="height" type="java.lang.Integer" required="true" rtexprvalue="true" description="Height" />
-	<jsp:directive.attribute name="text" type="java.lang.String" required="true" rtexprvalue="true" description="Option text" />
+	<jsp:directive.attribute name="judgeRatingSatus" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Option text" />
 
-	<option value="${userId}" width="${width}" height="${height}"
+	<c:choose>
+		<c:when test="${judgeRatingSatus}">
+			<c:set var="judgeStatus" value="Has rated already."/>
+		</c:when>
+		<c:otherwise>
+			<c:set var="judgeStatus" value="Has NOT yet rated."/>
+		</c:otherwise>
+	</c:choose>
+	<option value="${userId}" width="${width}" height="${height}" css="${cssClass}"
 			data-imagesrc="/image/user_male_portrait?screenName=${screenName}&amp;companyId=10112&amp;portraitId=${portraitId}"
-			data-description="${fullName}">${text}</option>
+			data-description="${judgeStatus}">
+			${fullName} (${screenName})
+	</option>
 </jsp:root>

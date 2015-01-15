@@ -9,7 +9,9 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions or proposalsPermissions.canAdminAll}">
+    <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions
+                    or proposalsPermissions.canAdminAll and proposalsPermissions.canAdminJudgeActions and proposal.selectedJudges > 0}">
+
         <c:choose>
             <c:when test="${proposalsPermissions.canAdminAll or proposal.judgeReviewStatus.statusValue > 0}">
                 <portlet:actionURL var="saveJudgingFeedbackURL">
@@ -29,14 +31,14 @@
                     <h3>Judge Rating</h3>
                     <c:if test="${proposalsPermissions.canAdminAll}">
                         <select id="judges-select">
-                            <c:forEach var="judge" items="${contest.contestJudges}">
+                            <c:forEach var="judge" items="${proposal.selectedJudgeUsers}">
                                 <proposalsPortlet:userPortraitSelectOption
                                         screenName="${judge.screenName}"
                                         fullName="${judge.fullName}"
                                         portraitId="${judge.portraitId}"
                                         userId="${judge.userId}"
                                         width="30" height="30"
-                                        text="${judge.screenName}"/>
+                                        judgeRatingSatus="${proposal.getJudgeReviewFinishedStatusUserId(judge.userId)}"/>
                             </c:forEach>
                         </select>
                     </c:if>
