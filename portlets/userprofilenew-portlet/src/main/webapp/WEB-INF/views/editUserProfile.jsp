@@ -569,7 +569,7 @@
 
 
 		function updateNewsletterSettings(element){
-			console.log("updateNewsletterSettings", element.checked);
+			//console.log("updateNewsletterSettings", element.checked);
 			if(element.checked){
 				subscribeNewsletter();
 			} else{

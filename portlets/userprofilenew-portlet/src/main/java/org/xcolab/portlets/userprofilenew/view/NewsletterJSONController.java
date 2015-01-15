@@ -22,6 +22,8 @@ import java.io.IOException;
 @RequestMapping("view")
 public class NewsletterJSONController extends JSONHelper{
 
+
+    private final static String MEMBER_ACCOUNT_ACTIVE_STATUS = "a";
     private ConnectorEmmaAPI connectorEmmaAPI;
 
     public NewsletterJSONController(){
@@ -82,21 +84,10 @@ public class NewsletterJSONController extends JSONHelper{
     }
 
     private boolean hasNewMemberActiveSubscription(JSONObject memberDetails){
-
-        if(memberDetails.has("status") && memberDetails.getString("status").equals("a")){
-            return true;
-        } else{
-            return false;
-        }
+        return memberDetails.has("status") && memberDetails.getString("status").equals(MEMBER_ACCOUNT_ACTIVE_STATUS);
     }
-
     private boolean hasMemberActiveSubscription(JSONObject memberDetails){
-
-        if(memberDetails.has("member_status_id") && memberDetails.getString("member_status_id").equals("a")){
-            return true;
-        } else{
-            return false;
-        }
+        return memberDetails.has("member_status_id") && memberDetails.getString("member_status_id").equals(MEMBER_ACCOUNT_ACTIVE_STATUS);
     }
 
 }
