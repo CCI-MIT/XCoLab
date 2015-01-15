@@ -262,7 +262,7 @@
 					<tr class="colabRow">
 						<td>
 							<form:checkbox id="emailSubscribedToNewsletter" cssClass="cmn-toggle cmn-toggle-round"
-										   path="emailSubscribedToNewsletter" />
+										   path="emailSubscribedToNewsletter" onchange="updateNewsletterSettings(this)" />
 							<form:label path="emailSubscribedToNewsletter"/>
 						</td>
 						<td>
@@ -568,22 +568,23 @@
 		}
 
 
-		jQuery("#emailSubscribedToNewsletter").change(function() {
-
-			if (jQuery("#newsletterSettingsCheckbox").is(":checked")) {
+		function updateNewsletterSettings(element){
+			console.log("updateNewsletterSettings", element.checked);
+			if(element.checked){
 				subscribeNewsletter();
-			} else {
+			} else{
 				unSubscribeNewsletter();
 			}
-
-		});
+		}
 
 		function updateNewsletterSettingsOnServer(updateUrl){
 			var deferred = jQuery.Deferred();
 				sendAjaxToServer(updateUrl).done(function(response){
 					if(response){
+						deferred.resolve(true);
 						jQuery.growlUI('', 'Successfully updated Newsletter settings!');
 					} else{
+						deferred.resolve(false);
 						jQuery.growlUI('','Updating Newsletter settings failed!');
 					}
 				});

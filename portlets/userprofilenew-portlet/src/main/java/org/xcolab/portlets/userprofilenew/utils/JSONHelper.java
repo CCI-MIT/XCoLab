@@ -12,6 +12,7 @@ import java.io.IOException;
 public class JSONHelper {
 
     private final static String JSON_RESPONSE_MESSAGE = "success";
+    private final static boolean JSON_ERROR_MESSAGE = false;
 
     private JSONObject createResultResponseJson(boolean success){
 

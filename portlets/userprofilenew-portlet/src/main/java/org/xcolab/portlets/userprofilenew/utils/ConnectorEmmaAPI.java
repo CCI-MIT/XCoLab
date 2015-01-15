@@ -39,6 +39,7 @@ public class ConnectorEmmaAPI {
         if(memberDetails.has("member_id")){
             return unSubscribeMemberWithMemberId(memberDetails.getString("member_id"));
         }
+
         return true;
     }
 
@@ -70,7 +71,7 @@ public class ConnectorEmmaAPI {
 
     }
 
-    public JSONObject subscribeMemberWithEmail(String email) throws IOException{
+    public JSONObject subscribeMemberWithEmail(String email) throws IOException, JSONException{
 
         JSONObject jsonSubscribeInformation = JSONFactoryUtil.createJSONObject();
         JSONObject memberDetails = JSONFactoryUtil.createJSONObject();
@@ -96,8 +97,6 @@ public class ConnectorEmmaAPI {
             } finally {
                 newsletterSubscribeResponse.close();
             }
-
-        } catch (JSONException e) {
 
         } finally {
             httpclient.close();

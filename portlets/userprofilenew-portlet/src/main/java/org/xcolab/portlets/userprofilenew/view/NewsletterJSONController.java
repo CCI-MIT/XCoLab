@@ -1,5 +1,6 @@
 package org.xcolab.portlets.userprofilenew.view;
 
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -31,12 +32,17 @@ public class NewsletterJSONController extends JSONHelper{
     void handleNewsletterSubscribeAJAXRequest(
             PortletRequest request,
             ResourceResponse response,
-            @RequestParam("email") String email) throws IOException {
+            @RequestParam("email") String email) {
 
         initializeConnectorIfNull(request);
-        JSONObject memberDetails = connectorEmmaAPI.subscribeMemberWithEmail(email);
-        boolean memberHasActiveSubscription = hasNewMemberActiveSubscription(memberDetails);
-        this.writeResultResponseJSON(memberHasActiveSubscription, response);
+        try {
+            JSONObject memberDetails = connectorEmmaAPI.subscribeMemberWithEmail(email);
+            boolean memberHasActiveSubscription = hasNewMemberActiveSubscription(memberDetails);
+            this.writeResultResponseJSON(memberHasActiveSubscription, response);
+        } catch (IOException |  JSONException e) {
+            this.writeResultResponseJSON(false, response);
+        }
+
     }
 
     @ResourceMapping("newsletterUnSubscribe")
@@ -44,11 +50,15 @@ public class NewsletterJSONController extends JSONHelper{
     void handleNewsletterUnSubscribeAJAXRequest(
             PortletRequest request,
             ResourceResponse response,
-            @RequestParam("email") String email) throws IOException {
+            @RequestParam("email") String email) {
 
         initializeConnectorIfNull(request);
-        boolean isMemberUnsubscribed = connectorEmmaAPI.unSubscribeMemberWithEmail(email);
-        this.writeResultResponseJSON(isMemberUnsubscribed, response);
+        try {
+            boolean isMemberUnsubscribed = connectorEmmaAPI.unSubscribeMemberWithEmail(email);
+            this.writeResultResponseJSON(isMemberUnsubscribed, response);
+        } catch (IOException e) {
+            this.writeResultResponseJSON(false, response);
+        }
     }
 
     @ResourceMapping("newsletterSubscribtionStatus")

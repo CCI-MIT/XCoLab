@@ -1,12 +1,5 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
-          xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:f="http://java.sun.com/jsf/core"
-          xmlns:liferay-faces="http://liferay.com/tld/faces"
-          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:jsp="http://java.sun.com/JSP/PaJ
           xmlns:ui="http://java.sun.com/jsf/facelets"
           xmlns:ice="http://www.icesoft.com/icefaces/component"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
@@ -47,9 +40,7 @@
                 <form:input path="privateApiKey" />
             </p>
             <p>
-                <div class="blue-button">
-                    <input type="submit" value="Save" />
-                </div>
+                <input type="submit" value="Save" />
             </p>
         </fieldset>
     </form:form>
