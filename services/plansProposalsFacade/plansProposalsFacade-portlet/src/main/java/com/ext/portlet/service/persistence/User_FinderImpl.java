@@ -18,7 +18,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
         implements User_Finder {
 
 
-    public List<User_> getUsersSortedByScreenNameAsc(int begin, int end) {
+    public List<User_> getUsersSortedByScreenNameAsc(int begin, int end, String filter) {
         Session session = null;
         try {
             session = openSession();
@@ -27,6 +27,10 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             SQLQuery q = session.createSQLQuery(sql);
             q.setCacheable(false);
             q.addEntity("User_", User_Impl.class);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
             return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
         } catch (Exception e) {
             try {
@@ -40,7 +44,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
         return null;
     }
 
-    public List<User_> getUsersSortedByScreenNameAscFilteredByCategory(int begin, int end, String categoryName) {
+    public List<User_> getUsersSortedByScreenNameAscFilteredByCategory(int begin, int end, String filter, String categoryName) {
         Session session = null;
         try {
             session = openSession();
@@ -50,6 +54,9 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             q.setCacheable(false);
             q.addEntity("User_", User_Impl.class);
             QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
             qPos.add(categoryName);
             return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
         } catch (Exception e) {
@@ -64,7 +71,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
         return null;
     }
 
-    public List<User_> getUsersSortedByScreenNameDesc(int begin, int end) {
+    public List<User_> getUsersSortedByScreenNameDesc(int begin, int end, String filter) {
         Session session = null;
         try {
             session = openSession();
@@ -73,6 +80,10 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             SQLQuery q = session.createSQLQuery(sql);
             q.setCacheable(false);
             q.addEntity("User_", User_Impl.class);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
             return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
         } catch (Exception e) {
             try {
@@ -86,7 +97,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
         return null;
     }
 
-    public List<User_> getUsersSortedByScreenNameDescFilteredByCategory (int begin, int end, String categoryName) {
+    public List<User_> getUsersSortedByScreenNameDescFilteredByCategory (int begin, int end, String filter, String categoryName) {
         Session session = null;
         try {
             session = openSession();
@@ -96,6 +107,9 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             q.setCacheable(false);
             q.addEntity("User_", User_Impl.class);
             QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
             qPos.add(categoryName);
             return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
         } catch (Exception e) {
@@ -110,7 +124,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
         return null;
     }
 
-    public List<User_> getUsersSortedByRoleNameAsc(int begin, int end) {
+    public List<User_> getUsersSortedByRoleNameAsc(int begin, int end, String filter) {
         Session session = null;
         try {
             session = openSession();
@@ -119,6 +133,10 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             SQLQuery q = session.createSQLQuery(sql);
             q.setCacheable(false);
             q.addEntity("User_", User_Impl.class);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
             return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
         } catch (Exception e) {
             try {
@@ -132,7 +150,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
         return null;
     }
 
-    public List<User_> getUsersSortedByRoleNameDesc(int begin, int end) {
+    public List<User_> getUsersSortedByRoleNameDesc(int begin, int end, String filter) {
         Session session = null;
         try {
             session = openSession();
@@ -141,6 +159,10 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             SQLQuery q = session.createSQLQuery(sql);
             q.setCacheable(false);
             q.addEntity("User_", User_Impl.class);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
             return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
         } catch (Exception e) {
             try {
@@ -154,7 +176,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
         return null;
     }
 
-    public List<User_> getUsersSortedByMemberSinceAsc(int begin, int end) {
+    public List<User_> getUsersSortedByMemberSinceAsc(int begin, int end, String filter) {
         Session session = null;
         try {
             session = openSession();
@@ -163,6 +185,10 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             SQLQuery q = session.createSQLQuery(sql);
             q.setCacheable(false);
             q.addEntity("User_", User_Impl.class);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
             return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
         } catch (Exception e) {
             try {
@@ -176,7 +202,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
         return null;
     }
 
-    public List<User_> getUsersSortedByMemberSinceAscFilteredByCategory(int begin, int end, String categoryName) {
+    public List<User_> getUsersSortedByMemberSinceAscFilteredByCategory(int begin, int end, String filter, String categoryName) {
         Session session = null;
         try {
             session = openSession();
@@ -186,6 +212,9 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             q.setCacheable(false);
             q.addEntity("User_", User_Impl.class);
             QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
             qPos.add(categoryName);
             return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
         } catch (Exception e) {
@@ -200,7 +229,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
         return null;
     }
 
-    public List<User_> getUsersSortedByMemberSinceDesc(int begin, int end) {
+    public List<User_> getUsersSortedByMemberSinceDesc(int begin, int end, String filter) {
         Session session = null;
         try {
             session = openSession();
@@ -209,6 +238,10 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             SQLQuery q = session.createSQLQuery(sql);
             q.setCacheable(false);
             q.addEntity("User_", User_Impl.class);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
             return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
         } catch (Exception e) {
             try {
@@ -222,7 +255,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
         return null;
     }
 
-    public List<User_> getUsersSortedByMemberSinceDescFilteredByCategoryName(int begin, int end, String categoryName) {
+    public List<User_> getUsersSortedByMemberSinceDescFilteredByCategoryName(int begin, int end, String filter, String categoryName) {
         Session session = null;
         try {
             session = openSession();
@@ -232,6 +265,9 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             q.setCacheable(false);
             q.addEntity("User_", User_Impl.class);
             QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
             qPos.add(categoryName);
             return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
         } catch (Exception e) {

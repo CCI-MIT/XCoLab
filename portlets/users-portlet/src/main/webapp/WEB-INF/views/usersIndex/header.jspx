@@ -36,7 +36,7 @@
 		</script>
 	</div>
 
-	<c:if test="${categoryFilter == 'STAFF'}">
+	<c:if test="${memberCategory == 'Staff'}">
 		<p>The Climate CoLab staff includes researchers affiliated with
 			the <a href="http://www.climatecolab.org/web/guest/resources/-/wiki/Main/Project%20staff" target="_blank">MIT Center for Collective Intelligence</a>. Members of the staff
 			work together to develop a long-term vision for the CoLab and
@@ -44,7 +44,7 @@
 	</c:if>
 
 	<!-- HELP DIVS -->
-	<c:if test="${categoryFilter == 'EXPERT'}">
+	<c:if test="${memberCategory == 'Expert'}">
 		<p>
 			A group of world renowned experts, who serve on the Climate CoLab’s
 			&#160; <a href="/web/guest/resources/-/wiki/Main/Expert+Council">Expert
@@ -55,7 +55,7 @@
 	</c:if>
 
 	<!-- HELP DIVS -->
-	<c:if test="${categoryFilter == 'FELLOW'}">
+	<c:if test="${memberCategory == 'Fellow'}">
 		<p>
 			Climate CoLab <a
 				href="/web/guest/resources/-/wiki/Main/Climate%20Colab%20Fellows">Fellows</a>
@@ -66,7 +66,7 @@
 	</c:if>
 
 	<!-- HELP DIVS -->
-	<c:if test="${categoryFilter == 'ADVISOR'}">
+	<c:if test="${memberCategory == 'Advisor'}">
 		<p>
 			Climate CoLab <a
 				href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Advisors">Advisors</a>
@@ -81,12 +81,24 @@
         	<span>${usersCount}</span> Members
 		</div>
 		<div class="comm_info-large">
-			<c:if test="${not empty membersBean.searchPhrase}">
-							<span id="clearSearchBox"
-								  onclick="jQuery('.comm_search').val(''); jQuery('.comm_disc-head .blue-button a').click();">x</span>
-			</c:if>
 
-			<!-- <input class="comm_submit" type="submit" name="submit" value="Search" />-->
+			<div class="filter" style="position: relative;">
+				<portlet:renderURL var="filterURL" />
+				<form action="${filterURL }" id="filterUsersForm" method="post">
+					<!--
+					<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
+					-->
+					<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
+					<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
+					<input type="hidden" name="memberCategory" value="${memberCategory}" />
+					<input type="text" id="userFilterInput" value="${sortFilterPage.filter }" placeholder="Filter users" name="filter" />
+					<c:if test="${not empty sortFilterPage.filter }">
+						<a href="javascript:;" id="usersFilterClear">&#160;</a>
+					</c:if>
+					<input class="comm_submit" type="submit" name="submit" value="Search" />
+				</form>
+			</div>
+
 		</div>
 	</div>
 

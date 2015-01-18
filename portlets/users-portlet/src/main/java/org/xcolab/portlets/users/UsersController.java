@@ -57,15 +57,22 @@ public class UsersController {
 
         List<User_> dBUsers = null;
 
+        String filter = "%";
+        String filterParam = request.getParameter("filter");
+        if (filterParam!=null){
+            filter = "%"+filterParam+"%";
+            sortFilterPage.setFilter(filterParam);
+        }
+
         if (memberCategoryParam==null || memberCategoryParam.compareTo("")==0)
         if (sortFilterPage.getSortColumn()!=null)
 
             switch (sortFilterPage.getSortColumn()) {
                 case "USER_NAME":
                     if (sortFilterPage.isSortAscending())
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser);
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser, filter);
                     else
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDesc(firstUser, endUser);
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDesc(firstUser, endUser, filter);
                     break;
 
                 case "ACTIVITY":
@@ -90,20 +97,20 @@ public class UsersController {
 
                 case "CATEGORY":
                     if (sortFilterPage.isSortAscending())
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameAsc(firstUser, endUser);
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameAsc(firstUser, endUser, filter);
                     else
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameDesc(firstUser, endUser);
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameDesc(firstUser, endUser, filter);
                     break;
 
                 case "MEMBER_SINCE":
                     if (sortFilterPage.isSortAscending())
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAsc(firstUser, endUser);
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAsc(firstUser, endUser, filter);
                     else
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDesc(firstUser, endUser);
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDesc(firstUser, endUser, filter);
                     break;
             }
         else {
-            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser);
+            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser, filter);
             sortFilterPage.setSortColumn("USER_NAME");
             sortFilterPage.setSortAscending(true);
         }
@@ -112,7 +119,7 @@ public class UsersController {
 
             // Pagination
 
-            usersCount = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(0,Integer.MAX_VALUE,memberCategoryParam).size();
+            usersCount = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(0, Integer.MAX_VALUE,memberCategoryParam, filter).size();
             pagesCount = usersCount / USERS_PER_PAGE;
             endPage = startPage + 10<pagesCount? startPage+10:pagesCount;
 
@@ -123,9 +130,9 @@ public class UsersController {
                 {
                     case "USER_NAME":
                         if (sortFilterPage.isSortAscending())
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
                         else
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
                         break;
 
                     case "ACTIVITY":
@@ -155,20 +162,20 @@ public class UsersController {
 
                     case "CATEGORY":
                         if (sortFilterPage.isSortAscending())
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser,endUser,filter,memberCategoryParam);
                         else
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser,endUser,filter,memberCategoryParam);
                         break;
 
                     case "MEMBER_SINCE":
                         if (sortFilterPage.isSortAscending())
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser,endUser,filter,memberCategoryParam);
                         else
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDescFilteredByCategory(firstUser,endUser,memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDescFilteredByCategory(firstUser,endUser,filter,memberCategoryParam);
                         break;
                 }
             else {
-                dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser,memberCategoryParam);
+                dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
                 sortFilterPage.setSortColumn("USER_NAME");
                 sortFilterPage.setSortAscending(true);
             }

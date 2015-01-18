@@ -111,7 +111,7 @@
 		<div class="members comm_list">
 			<h2>Categories</h2>
 			<ul class="membersCategories">
-				<li class="${categoryFilter == 'MEMBER' ? 'c' : ''}">
+				<li class="${memberCategory == 'Member' ? 'c' : ''}">
 					<img src="/climatecolab-theme/images/icon_mem-member.png"
 						 width="16" height="16" />&#160;
 
@@ -121,7 +121,7 @@
 
 					<a href="${memberCategoryURL }">Members</a>
 				</li>
-				<li class="${categoryFilter == 'CATALYST' ? 'c' : ''}">
+				<li class="${memberCategory == 'Catalyst' ? 'c' : ''}">
 					<img src="/climatecolab-theme/images/icon_mem-catalyst.png"
 						 width="16" height="16" />&#160;
 
@@ -131,7 +131,7 @@
 
 					<a href="${catalystCategoryURL }">Catalyst</a>
 				</li>
-				<li class="${categoryFilter == 'FELLOW' ? 'c' : ''}">
+				<li class="${memberCategory == 'Fellow' ? 'c' : ''}">
 					<img src="/climatecolab-theme/images/icon_mem-fellow.png"
 						 width="16" height="16" />&#160;
 
@@ -141,7 +141,7 @@
 
 					<a href="${fellowCategoryURL }">Fellows</a>
 				</li>
-				<li class="${categoryFilter == 'ADVISOR' ? 'c' : ''}">
+				<li class="${memberCategory == 'Advisor' ? 'c' : ''}">
 					<img src="/climatecolab-theme/images/icon_mem-advisor.png"
 						 width="16" height="16" />&#160;
 
@@ -151,7 +151,7 @@
 
 					<a href="${advisorCategoryURL }">Advisors</a>
 				</li>
-				<li class="${categoryFilter == 'EXPERT' ? 'c' : ''}">
+				<li class="${memberCategory == 'Expert' ? 'c' : ''}">
 					<img src="/climatecolab-theme/images/icon_mem-expert.png"
 						 width="16" height="16" />&#160;
 
@@ -161,7 +161,7 @@
 
 					<a href="${expertCategoryURL }">Experts</a>
 				</li>
-				<li class="${categoryFilter == 'JUDGES' ? 'c' : ''}">
+				<li class="${memberCategory == 'Judges' ? 'c' : ''}">
 					<img src="/climatecolab-theme/images/icon_mem-judges.png"
 						 width="16" height="16" />&#160;
 
@@ -171,7 +171,7 @@
 
 					<a href="${judgesCategoryURL }">Judges</a>
 				</li>
-				<li class="${categoryFilter == 'STAFF' ? 'c' : ''}">
+				<li class="${memberCategory == 'Staff' ? 'c' : ''}">
 					<img src="/climatecolab-theme/images/icon_mem-staff.png"
 						 width="16" height="16" />&#160;
 
@@ -181,7 +181,7 @@
 
 					<a href="${staffCategoryURL }">Staff</a>
 				</li>
-				<li class="${categoryFilter == 'ALL' ? 'c' : ''}">
+				<li class="${memberCategory == '' ? 'c' : ''}">
 
 					<portlet:renderURL var="allCategoriesURL">
 						<portlet:param name="memberCategory" value="" />

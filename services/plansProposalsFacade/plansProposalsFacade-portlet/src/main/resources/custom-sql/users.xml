@@ -2,25 +2,25 @@
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameAsc">
         <![CDATA[
-			SELECT * FROM User_ as us ORDER BY us.screenName ASC
+			SELECT * FROM User_ as us WHERE us.screenName like ? or us.firstName like ? or us.lastName like ? ORDER BY us.screenName ASC
 		]]>
     </sql>
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameAscFilteredByCategory">
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE ro.categoryName = ? ORDER BY us.screenName ASC
+			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE us.screenName like ? or us.firstName like ? or us.lastName like ? AND ro.categoryName = ? ORDER BY us.screenName ASC
 		]]>
     </sql>
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameDesc">
         <![CDATA[
-			SELECT * FROM User_ as us ORDER BY us.screenName DESC
+			SELECT * FROM User_ as us WHERE us.screenName like ? or us.firstName like ? or us.lastName like ? ORDER BY us.screenName DESC
 		]]>
     </sql>
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameDescFilteredByCategory">
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE ro.categoryName = ? ORDER BY us.screenName DESC
+			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE us.screenName like ? or us.firstName like ? or us.lastName like ? AND ro.categoryName = ? ORDER BY us.screenName DESC
 		]]>
     </sql>
 
@@ -38,6 +38,7 @@ ON ur.roleId = r.roleId
     ) b ON u.userId = b.userId
 INNER JOIN Role_ r
 ON r.roleOrdinal = b.roleOrdinal
+WHERE u.screenName like ? or u.firstName like ? or u.lastName like ?
 ORDER BY r.categoryName ASC
 		]]>
     </sql>
@@ -56,31 +57,32 @@ ON ur.roleId = r.roleId
     ) b ON u.userId = b.userId
 INNER JOIN Role_ r
 ON r.roleOrdinal = b.roleOrdinal
+WHERE u.screenName like ? or u.firstName like ? or u.lastName like ?
 ORDER BY r.categoryName DESC
 		]]>
     </sql>
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceAsc">
         <![CDATA[
-			SELECT * FROM User_ as us ORDER BY us.createDate ASC
+			SELECT * FROM User_ as us WHERE us.screenName like ? or us.firstName like ? or us.lastName like ? ORDER BY us.createDate ASC
 		]]>
     </sql>
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceAscFilteredByCategory">
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE ro.categoryName = ? ORDER BY us.createDate ASC
+			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE us.screenName like ? or us.firstName like ? or us.lastName like ? AND ro.categoryName = ? ORDER BY us.createDate ASC
 		]]>
     </sql>
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceDesc">
         <![CDATA[
-			SELECT * FROM User_ as us ORDER BY us.createDate DESC
+			SELECT * FROM User_ as us WHERE us.screenName like ? or us.firstName like ? or us.lastName like ? ORDER BY us.createDate DESC
 		]]>
     </sql>
 
     <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceDescFilteredByCategory">
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE ro.categoryName = ? ORDER BY us.createDate DESC
+			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE us.screenName like ? or us.firstName like ? or us.lastName like ? AND ro.categoryName = ? ORDER BY us.createDate DESC
 		]]>
     </sql>
 
