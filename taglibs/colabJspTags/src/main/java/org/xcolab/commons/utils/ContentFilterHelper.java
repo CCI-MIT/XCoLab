@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 
 public class ContentFilterHelper {
 
@@ -13,7 +17,32 @@ public class ContentFilterHelper {
     public static String filterLineBreaks(String content) {
         return content.replaceAll("\n", " <br />\n");
     }
-    
+
+    private static String createLink(String url, String desc) {
+        return createLink(url, desc, "");
+    }
+
+    private static String createLink(String url, String desc, String title) {
+        if (! url.contains("http://")) {
+            url = "http://" + url;
+        }
+        return "<a rel='nofollow' href='" + url + "' title='" + title + "' class='" + title + "' >" + desc + "</a>";
+    }
+
+    private static String addNoFollowToUserDefinedLinks(String content){
+        Document d = Jsoup.parse(content.trim());
+
+        for (Element e : d.select("a")) {
+            if (!e.attr("rel").equals("nofollow")) {
+                String linkURL = e.attr("href");
+                String linkWithNoFollow = createLink(linkURL, linkURL);
+                e.after(linkWithNoFollow);
+                e.remove();
+            }
+        }
+        return d.select("body").html();
+    }
+
     public static String filterUrlEmbeddedLinks(String content) {
         Pattern pattern = Pattern.compile("\\[url=[^\\]]*\\][^\\[]*\\[/url\\]");
         Matcher matcher = pattern.matcher(content);
@@ -111,22 +140,12 @@ public class ContentFilterHelper {
         return content+"...";
     }
 
-    private static String createLink(String url, String desc) {
-        return createLink(url, desc, "");
-    }
-
-    private static String createLink(String url, String desc, String title) {
-        if (! url.contains("http://")) {
-            url = "http://" + url;
-        }
-        return "<a href='" + url + "' title='" + title + "' class='" + title + "'>" + desc + "</a>";
-    }
-    
     public static String filterContent(String content) {
         String tmp = content;
         if (! content.contains("<br")) {
             tmp = filterLineBreaks(tmp);
         }
+        tmp = addNoFollowToUserDefinedLinks(tmp);
         tmp = filterUrlEmbeddedLinks(tmp);
         tmp = filterLinkifyUrls(tmp);
         tmp = tmp.replaceAll("\"", "'");

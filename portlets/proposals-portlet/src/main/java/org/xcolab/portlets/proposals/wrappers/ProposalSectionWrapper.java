@@ -63,6 +63,29 @@ public class ProposalSectionWrapper {
         else return attr.getStringValue().trim();
     }
 
+    private static String createLink(String url, String desc) {
+        return createLink(url, desc, "");
+    }
+
+    private static String createLink(String url, String desc, String title) {
+        if (! url.contains("http://")) {
+            url = "http://" + url;
+        }
+        return "<a rel='nofollow' href='" + url + "' title='" + title + "' class='" + title + "' >" + desc + "</a>";
+    }
+
+    private static Document addNoFollowToUserDefinedLinks(Document document){
+        for (Element linkElement : document.select("a")) {
+            if (!linkElement.attr("rel").equals("nofollow")) {
+                String linkURL = linkElement.attr("href");
+                String linkWithNoFollow = createLink(linkURL, linkURL);
+                linkElement.after(linkWithNoFollow);
+                linkElement.remove();
+            }
+        }
+        return document;
+    }
+
     public String getContentFormatted() throws SystemException, PortalException, URISyntaxException {
         String content = getContent();
         if (content == null) {
@@ -70,9 +93,10 @@ public class ProposalSectionWrapper {
             return (definition!=null && !StringUtils.isEmpty(definition.getDefaultText())) ? definition.getDefaultText() : null;
 
         }
-        Document d = Jsoup.parse(content.trim());
-        
-        for (Element e : d.select("a")) {
+        Document contentDocument = Jsoup.parse(content.trim());
+        contentDocument = addNoFollowToUserDefinedLinks(contentDocument);
+
+        for (Element e : contentDocument.select("a")) {
         	String curURL = e.attr("href");
         	final String[] youtubeAddresses = {"http://youtu.be", "https://youtu.be", "http://www.youtube.com", 
         			"https://www.youtube.com", "http://youtube.com", "https://youtube.com"};
@@ -130,8 +154,10 @@ public class ProposalSectionWrapper {
                         "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*" +
                         "(#([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?\\b");
 
+
+
         // Scan all <p> tags
-        for (Element e : d.select("p")) {
+        for (Element e : contentDocument.select("p")) {
             // Separate the <p> tags by the space character and process potential URLs
             String html = e.html();
 
@@ -157,13 +183,13 @@ public class ProposalSectionWrapper {
                     // Replace exactly this word in the HTML code with leading and trailing spaces
                     if (words.length == 1) { // In this case there are no leading and trailing spaces in the html code
                         if (!html.contains("<"))
-                            html = html.replaceFirst(Pattern.quote(word), " <a href=\""+link+"\">"+ elementName +"</a> ");
+                            html = html.replaceFirst(Pattern.quote(word), " <a rel='nofollow' href=\""+link+"\">"+ elementName +"</a> ");
                     } else if (i == 0) {
-                        html = html.replaceFirst(Pattern.quote(word) + "(\\s|&nbsp;)", "<a href=\""+link+"\">"+ elementName +"</a> ");
+                        html = html.replaceFirst(Pattern.quote(word) + "(\\s|&nbsp;)", "<a rel='nofollow' href=\""+link+"\">"+ elementName +"</a> ");
                     } else if (i == words.length - 1) {
-                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word), " <a href=\""+link+"\">"+ elementName +"</a>");
+                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word), " <a rel='nofollow' href=\""+link+"\">"+ elementName +"</a>");
                     } else {
-                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word) + "(\\s|&nbsp;)", " <a href=\""+link+"\">"+ elementName +"</a> ");
+                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word) + "(\\s|&nbsp;)", " <a rel='nofollow' href=\""+link+"\">"+ elementName +"</a> ");
                     }
                 }
             }
@@ -173,7 +199,7 @@ public class ProposalSectionWrapper {
             e.remove();
         }
 
-        return d.select("body").html();
+        return contentDocument.select("body").html();
     }
 
     public PlanSectionTypeKeys getType() {
@@ -261,9 +287,9 @@ public class ProposalSectionWrapper {
             } else {
                 return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), "SECTION", definition.getId());
             }
-        } catch (NoSuchProposalAttributeException e) {
+        } catch (NoSuchProposalAttributeException linkElement) {
             return null;
-        } catch (NoSuchProposalException e) {
+        } catch (NoSuchProposalException linkElement) {
             return null;
         }
         */
