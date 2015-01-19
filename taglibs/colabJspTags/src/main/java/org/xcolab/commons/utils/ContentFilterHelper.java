@@ -18,7 +18,7 @@ public class ContentFilterHelper {
         return content.replaceAll("\n", " <br />\n");
     }
 
-    private static String createLink(String url, String desc) {
+    public static String createLink(String url, String desc) {
         return createLink(url, desc, "");
     }
 
@@ -29,18 +29,27 @@ public class ContentFilterHelper {
         return "<a rel='nofollow' href='" + url + "' title='" + title + "' class='" + title + "' >" + desc + "</a>";
     }
 
-    private static String addNoFollowToUserDefinedLinks(String content){
-        Document d = Jsoup.parse(content.trim());
-
-        for (Element e : d.select("a")) {
-            if (!e.attr("rel").equals("nofollow")) {
-                String linkURL = e.attr("href");
-                String linkWithNoFollow = createLink(linkURL, linkURL);
-                e.after(linkWithNoFollow);
-                e.remove();
+    public static Document addNoFollowToLinkTagsInDocument(Document document){
+        for (Element aTagElement : document.select("a")) {
+            if (!aTagElement.attr("rel").equals("nofollow")) {
+                String linkURL = aTagElement.attr("href");
+                String linkText = aTagElement.text();
+                String linkWithNoFollow;
+                if(linkText.equals(""))
+                    linkWithNoFollow = createLink(linkURL, linkURL);
+                else
+                    linkWithNoFollow = createLink(linkURL, linkText);
+                aTagElement.after(linkWithNoFollow);
+                aTagElement.remove();
             }
         }
-        return d.select("body").html();
+        return document;
+    }
+
+    private static String addNoFollowToUserDefinedLinks(String content){
+        Document document = Jsoup.parse(content.trim());
+        document = addNoFollowToLinkTagsInDocument(document);
+        return document.select("body").html();
     }
 
     public static String filterUrlEmbeddedLinks(String content) {
@@ -53,18 +62,18 @@ public class ContentFilterHelper {
             String urlDef = matcher.group();
             int urlDefEnd = urlDef.indexOf("]");
             int urlDescEnd = urlDef.lastIndexOf("[");
-            
+
             String url = urlDef.substring(5, urlDefEnd);
-            String urlDesc = urlDef.substring(urlDefEnd + 1, urlDescEnd); 
-            
+            String urlDesc = urlDef.substring(urlDefEnd + 1, urlDescEnd);
+
             strBuilder.append(createLink(url, urlDesc));
             lastIndex = matcher.end();
         }
         strBuilder.append(content.substring(lastIndex));
-        
+
         return strBuilder.toString();
     }
-    
+
     public static String filterLinkifyUrls(String content) {
         Pattern existingLinksPattern = Pattern.compile("(<a[^>]*>[^<]*</a>)|(\\[url=[^\\[]*\\[/url\\])");
         Matcher existingLinksMatcher = existingLinksPattern.matcher(content);
