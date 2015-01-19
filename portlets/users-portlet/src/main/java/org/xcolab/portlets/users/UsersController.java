@@ -119,7 +119,7 @@ public class UsersController {
 
             // Pagination
 
-            usersCount = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(0, Integer.MAX_VALUE,memberCategoryParam, filter).size();
+            usersCount = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(0, Integer.MAX_VALUE, filter, memberCategoryParam).size();
             pagesCount = usersCount / USERS_PER_PAGE;
             endPage = startPage + 10<pagesCount? startPage+10:pagesCount;
 
