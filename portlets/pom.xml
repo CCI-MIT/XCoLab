@@ -23,7 +23,6 @@
         <module>contactform-portlet</module>
         <module>members-portlet</module>
         <module>userprofile-portlet</module>
-        <module>userprofilenew-portlet</module>
         <module>contests-portlet</module>
         <module>reporting-portlet</module>
         <module>search-portlet</module>
