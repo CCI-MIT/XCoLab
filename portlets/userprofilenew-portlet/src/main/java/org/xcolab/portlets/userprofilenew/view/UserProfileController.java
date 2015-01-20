@@ -289,6 +289,8 @@ public class UserProfileController {
 
             if (_currentUserProfile != null) {
                 if (_currentUserProfile.isViewingOwnProfile()) {
+		    model.addAttribute("newsletterBean",
+                            new NewsletterBean(_currentUserProfile.getUserBean().getEmailStored(),request));
                     return "editUserProfile";
                 } else {
                     return "showUserProfile";
@@ -332,8 +334,7 @@ public class UserProfileController {
         boolean eMailChanged = false;
 
         if (updatedUserBean.getPassword().trim().length() > 0) {
-            if(_currentUserProfile.getUser().getPassword()
-                    .equals(PwdEncryptor.encrypt(updatedUserBean.getCurrentPassword().trim()))){
+		if(isPasswordMatchingExistingPassword(updatedUserBean.getCurrentPassword().trim())){ 
 
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
@@ -492,9 +493,12 @@ public class UserProfileController {
             changedDetails = true;
         }
 
-        String existingCountry = Helper.getCodeForCounty(ExpandoValueLocalServiceUtil.getData(
+
+        String existingCountry = ExpandoValueLocalServiceUtil.getData(
                 User.class.getName(), CommunityConstants.EXPANDO,
-                CommunityConstants.COUNTRY, _currentUserProfile.getUser().getUserId(), StringPool.BLANK));
+                CommunityConstants.COUNTRY, _currentUserProfile.getUser().getUserId(), StringPool.BLANK);
+        if(!existingCountry.isEmpty())
+            existingCountry = Helper.getCodeForCounty(existingCountry);
 
         if (!existingCountry.equals(updatedUserBean.getCountry())) {
             ExpandoValueLocalServiceUtil.addValue(User.class.getName(),
@@ -551,6 +555,18 @@ public class UserProfileController {
 
         return changedDetails;
 
+    }
+
+    private boolean isPasswordMatchingExistingPassword(String password){
+        boolean existing = false;
+        final String existingPassword = _currentUserProfile.getUser().getPassword();
+        final String existingPasswordWithoutSHA1 = _currentUserProfile.getUser().getPassword().substring(7);
+        try {
+            existing = PwdEncryptor.encrypt(password).equals(existingPassword) ||
+                   PwdEncryptor.encrypt(password).equals(existingPasswordWithoutSHA1);
+        } catch (PwdEncryptorException e) {
+        }
+        return existing;
     }
 
     private void sendUpatedEmail(User user) throws AddressException, MailEngineException {
