@@ -50,6 +50,12 @@
 			<version>${liferay.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<!-- jsoup HTML parser library @ http://jsoup.org/ -->
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.7.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

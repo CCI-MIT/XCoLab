@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 
 public class ContentFilterHelper {
 
@@ -13,7 +17,41 @@ public class ContentFilterHelper {
     public static String filterLineBreaks(String content) {
         return content.replaceAll("\n", " <br />\n");
     }
-    
+
+    public static String createLink(String url, String desc) {
+        return createLink(url, desc, "");
+    }
+
+    private static String createLink(String url, String desc, String title) {
+        if (! url.contains("http://")) {
+            url = "http://" + url;
+        }
+        return "<a rel='nofollow' href='" + url + "' title='" + title + "' class='" + title + "' >" + desc + "</a>";
+    }
+
+    public static Document addNoFollowToLinkTagsInDocument(Document document){
+        for (Element aTagElement : document.select("a")) {
+            if (!aTagElement.attr("rel").equals("nofollow")) {
+                String linkURL = aTagElement.attr("href");
+                String linkText = aTagElement.text();
+                String linkWithNoFollow;
+                if(linkText.equals(""))
+                    linkWithNoFollow = createLink(linkURL, linkURL);
+                else
+                    linkWithNoFollow = createLink(linkURL, linkText);
+                aTagElement.after(linkWithNoFollow);
+                aTagElement.remove();
+            }
+        }
+        return document;
+    }
+
+    private static String addNoFollowToUserDefinedLinks(String content){
+        Document document = Jsoup.parse(content.trim());
+        document = addNoFollowToLinkTagsInDocument(document);
+        return document.select("body").html();
+    }
+
     public static String filterUrlEmbeddedLinks(String content) {
         Pattern pattern = Pattern.compile("\\[url=[^\\]]*\\][^\\[]*\\[/url\\]");
         Matcher matcher = pattern.matcher(content);
@@ -24,18 +62,18 @@ public class ContentFilterHelper {
             String urlDef = matcher.group();
             int urlDefEnd = urlDef.indexOf("]");
             int urlDescEnd = urlDef.lastIndexOf("[");
-            
+
             String url = urlDef.substring(5, urlDefEnd);
-            String urlDesc = urlDef.substring(urlDefEnd + 1, urlDescEnd); 
-            
+            String urlDesc = urlDef.substring(urlDefEnd + 1, urlDescEnd);
+
             strBuilder.append(createLink(url, urlDesc));
             lastIndex = matcher.end();
         }
         strBuilder.append(content.substring(lastIndex));
-        
+
         return strBuilder.toString();
     }
-    
+
     public static String filterLinkifyUrls(String content) {
         Pattern existingLinksPattern = Pattern.compile("(<a[^>]*>[^<]*</a>)|(\\[url=[^\\[]*\\[/url\\])");
         Matcher existingLinksMatcher = existingLinksPattern.matcher(content);
@@ -111,22 +149,12 @@ public class ContentFilterHelper {
         return content+"...";
     }
 
-    private static String createLink(String url, String desc) {
-        return createLink(url, desc, "");
-    }
-
-    private static String createLink(String url, String desc, String title) {
-        if (! url.contains("http://")) {
-            url = "http://" + url;
-        }
-        return "<a href='" + url + "' title='" + title + "' class='" + title + "'>" + desc + "</a>";
-    }
-    
     public static String filterContent(String content) {
         String tmp = content;
         if (! content.contains("<br")) {
             tmp = filterLineBreaks(tmp);
         }
+        tmp = addNoFollowToUserDefinedLinks(tmp);
         tmp = filterUrlEmbeddedLinks(tmp);
         tmp = filterLinkifyUrls(tmp);
         tmp = tmp.replaceAll("\"", "'");
