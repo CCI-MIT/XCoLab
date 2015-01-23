@@ -262,6 +262,12 @@ public class ProposalsPermissions {
         return permissionChecker.hasPermission(contestGroupId, portletId, primKey, ProposalsActions.CAN_JUDGE_ACTIONS) || getCanAdminAll();
     }
 
+
+    public boolean getCanAdminJudgeActions() {
+        return contestPhase.getFellowScreeningActive();
+    }
+
+
     public boolean getUserHasOpenMembershipRequest() throws PortalException, SystemException {
         for (MembershipRequest mr : ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId())){
             if (mr.getUserId() == user.getUserId() && mr.getStatusId() == MembershipRequestConstants.STATUS_PENDING) return true;

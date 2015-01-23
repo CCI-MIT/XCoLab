@@ -1,8 +1,6 @@
 package org.xcolab.hooks.climatecolab.strutsaction;
 
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
@@ -34,6 +32,7 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 
 		synchronized (mutex) {
 			if (isRunning) {
+                _log.warn("Activity email notification sending (instant notifications / daily digest) is already running!");
 				// if task is already running don't run it again
 				return StringPool.BLANK;
 			}
@@ -45,6 +44,7 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 				.equals(LOCAL_IPv6_ADDRESS))) {
 			_log.warn(String
 					.format("Denied request from address %s!", clientIp));
+			resetIsRunning();
 			return null;
 		}
 
@@ -52,21 +52,25 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 		serviceContext.setRequest(request);
 		serviceContext.setPortalURL(((ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY)).getPortalURL());
-
 		try {
 			ActivitySubscriptionLocalServiceUtil
 					.sendEmailNotifications(serviceContext);
 		} catch (Throwable e) {
+            e.printStackTrace();
 			_log.error(
 					"Could not process email notification of proposal subscription feature",
 					e);
 		}
 
-		synchronized (mutex) {
-			isRunning = false;
-		}
+		resetIsRunning();
+
 		return StringPool.BLANK;
 
 	}
 
+	private void resetIsRunning() {
+		synchronized (mutex) {
+			isRunning = false;
+		}
+	}
 }

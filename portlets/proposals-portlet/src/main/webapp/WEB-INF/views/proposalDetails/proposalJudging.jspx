@@ -8,9 +8,12 @@
 	xmlns:addthis="http://www.addthis.com/help/api-spec"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-    <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}">
+
+    <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions
+                    or proposalsPermissions.canAdminAll and proposalsPermissions.canAdminJudgeActions and proposal.selectedJudges.size() > 0}">
+
         <c:choose>
-            <c:when test="${proposal.judgeReviewStatus.statusValue > 0}">
+            <c:when test="${proposalsPermissions.canAdminAll or proposal.judgeReviewStatus.statusValue > 0}">
                 <portlet:actionURL var="saveJudgingFeedbackURL">
                     <portlet:param name="action_forwardToPage" value="proposalDetails"/>
                     <portlet:param name="contestId" value="${contest.contestPK }"/>
@@ -19,9 +22,29 @@
                 </portlet:actionURL>
                 <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalBean">
                     <form:hidden path="contestPhaseId" />
-                    <h3 style="margin-top: 20px;">Judge Rating</h3>
+                    <form:hidden path="screeningUserId" id="judgeUserId"/>
+
+                    <c:if test="${proposalsPermissions.canAdminAll}">
+                        <i style="float: right;">Transfer rating/comment for selected judge:</i>
+                    </c:if>
+
+                    <h3>Judge Rating</h3>
+                    <c:if test="${proposalsPermissions.canAdminAll}">
+                        <select id="judges-select">
+                            <c:forEach var="judge" items="${proposal.selectedJudgeUsers}">
+                                <proposalsPortlet:userPortraitSelectOption
+                                        screenName="${judge.screenName}"
+                                        fullName="${judge.fullName}"
+                                        portraitId="${judge.portraitId}"
+                                        userId="${judge.userId}"
+                                        width="30" height="30"
+                                        judgeRatingSatus="${proposal.getJudgeReviewFinishedStatusUserId(judge.userId)}"/>
+                            </c:forEach>
+                        </select>
+                    </c:if>
                     <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
-                        are saved when clicking on save.</i>
+                        are saved when clicking on save.Your rating will be visible to the Judging team only.</i>
+                    <div class="clearfix"><!-- --></div>
                     <br/>
                     <form:errors cssClass="alert alert-error" />
 
@@ -48,5 +71,22 @@
                 </div>
             </c:when>
         </c:choose>
+    </c:if>
+
+    <c:if test="${proposalsPermissions.canAdminAll}">
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                jQuery('#judges-select').ddslick({
+                    showSelectedHTML: true,
+                    width: 260,
+                    imagePosition: "left",
+                    onSelected: function (data) {
+                        jQuery('#judgeUserId').val(data.selectedData.value);
+                    }
+                });
+
+                jQuery('#judges-select').css({'float': 'right'});
+            });
+        </script>
     </c:if>
 </jsp:root>

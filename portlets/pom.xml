@@ -31,7 +31,7 @@
         <module>modelsadmin-portlet</module>
         <module>ontology-portlet</module>
         <module>redballoon-portlet</module>
-        <module>models-portlet</module>
+        <module>staffmembers-portlet</module>
         <module>plansadmin-portlet</module>
         <module>loginregister-portlet</module>
         <module>massmessaging-portlet</module>

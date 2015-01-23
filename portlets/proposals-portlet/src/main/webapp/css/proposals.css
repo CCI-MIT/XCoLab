@@ -491,3 +491,9 @@ table.judgingForm {
 .contestbar .phaseLinkContainer div.tooltip {
     top: -102px !important;
 }
+
+.dd-options li{
+    margin-left: 0px !important;
+    padding: inherit!important;
+    background: none!important;
+}

@@ -1,0 +1,28 @@
+<jsp:root 
+	xmlns:c="http://java.sun.com/jsp/jstl/core" 
+	xmlns:jsp="http://java.sun.com/JSP/Page"  
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	version="2.0">
+	<jsp:directive.attribute name="portraitId" type="java.lang.Long" required="true" rtexprvalue="true" description="Portrait id" />
+	<jsp:directive.attribute name="userId" type="java.lang.Long" required="true" rtexprvalue="true" description="User id" />
+	<jsp:directive.attribute name="screenName" type="java.lang.String" required="true" rtexprvalue="true" description="User screen name" />
+	<jsp:directive.attribute name="fullName" type="java.lang.String" required="true" rtexprvalue="true" description="User full name" />
+	<jsp:directive.attribute name="width" type="java.lang.Integer" required="true" rtexprvalue="true" description="Width" />
+	<jsp:directive.attribute name="height" type="java.lang.Integer" required="true" rtexprvalue="true" description="Height" />
+	<jsp:directive.attribute name="judgeRatingSatus" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Option text" />
+
+	<c:choose>
+		<c:when test="${judgeRatingSatus}">
+			<c:set var="judgeStatus" value="Has rated already."/>
+		</c:when>
+		<c:otherwise>
+			<c:set var="judgeStatus" value="Has NOT yet rated."/>
+		</c:otherwise>
+	</c:choose>
+	<option value="${userId}" width="${width}" height="${height}" css="${cssClass}"
+			data-imagesrc="/image/user_male_portrait?screenName=${screenName}&amp;companyId=10112&amp;portraitId=${portraitId}"
+			data-description="${judgeStatus}">
+			${fullName} (${screenName})
+	</option>
+</jsp:root>

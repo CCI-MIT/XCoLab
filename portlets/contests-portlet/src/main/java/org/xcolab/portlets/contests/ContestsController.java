@@ -29,7 +29,7 @@ public class ContestsController {
     public String showContests(PortletRequest request, PortletResponse response, Model model) throws SystemException, PortalException {
     	
         List<ContestWrapper> ret = new ArrayList<>();
-        List<Contest> contests = ContestLocalServiceUtil.findByActiveFlagText(true, "");
+        List<Contest> contests = ContestLocalServiceUtil.findByActiveFlagText(true, "Open");
         Collections.shuffle(contests);
         for (Contest contest: contests) {
             if(ret.size() >= NUM_CONTESTS) {

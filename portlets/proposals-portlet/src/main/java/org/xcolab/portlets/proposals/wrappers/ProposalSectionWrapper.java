@@ -27,6 +27,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.xcolab.portlets.proposals.utils.LinkUtils;
+import org.xcolab.commons.utils.ContentFilterHelper;
 
 public class ProposalSectionWrapper {
 
@@ -70,11 +71,12 @@ public class ProposalSectionWrapper {
             return (definition!=null && !StringUtils.isEmpty(definition.getDefaultText())) ? definition.getDefaultText() : null;
 
         }
-        Document d = Jsoup.parse(content.trim());
-        
-        for (Element e : d.select("a")) {
-        	String curURL = e.attr("href");
-        	final String[] youtubeAddresses = {"http://youtu.be", "https://youtu.be", "http://www.youtube.com", 
+        Document contentDocument = Jsoup.parse(content.trim());
+        contentDocument = ContentFilterHelper.addNoFollowToLinkTagsInDocument(contentDocument);
+
+        for (Element aTagElements : contentDocument.select("a")) {
+        	String curURL = aTagElements.attr("href");
+        	final String[] youtubeAddresses = {"http://youtu.be", "https://youtu.be", "http://www.youtube.com",
         			"https://www.youtube.com", "http://youtube.com", "https://youtube.com"};
         	boolean isYoutube = false;
         	for (String youtubePrefix: youtubeAddresses) {
@@ -86,8 +88,8 @@ public class ProposalSectionWrapper {
         	if (!isYoutube) {
         		continue;
         	}
-        	
-        	if (! (e.hasClass("utube") || e.text().toString().toLowerCase().startsWith("embed"))) {
+
+        	if (! (aTagElements.hasClass("utube") || aTagElements.text().toString().toLowerCase().startsWith("embed"))) {
         		// only links with "embed" text or "utube" class should be replaced by an iframe
         		continue;
         	}
@@ -110,8 +112,8 @@ public class ProposalSectionWrapper {
         	}
         	if (videoId != null) {
 
-                e.after("<iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/" + videoId + "\" frameborder=\"0\" allowfullscreen></iframe><br/>");
-                e.remove();
+                aTagElements.after("<iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/" + videoId + "\" frameborder=\"0\" allowfullscreen></iframe><br/>");
+                aTagElements.remove();
         	}
         	
         }
@@ -130,13 +132,13 @@ public class ProposalSectionWrapper {
                         "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*" +
                         "(#([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?\\b");
 
-        // Scan all <p> tags
-        for (Element e : d.select("p")) {
+
+        for (Element pTagElements : contentDocument.select("p")) {
             // Separate the <p> tags by the space character and process potential URLs
-            String html = e.html();
+            String html = pTagElements.html();
 
             // Eliminates wierd &nbsp; ASCII val 160 characters
-            String text = e.text().replaceAll("[\\u00A0]", " ");
+            String text = pTagElements.text().replaceAll("[\\u00A0]", " ");
             String[] words = text.split("\\s");
             for (int i = 0; i < words.length; i++) {
                 final String word = words[i];
@@ -154,26 +156,27 @@ public class ProposalSectionWrapper {
                         elementName = link;
                     }
 
+                    String newLinkElementWithNoFollow = ContentFilterHelper.createLink(link, elementName);
                     // Replace exactly this word in the HTML code with leading and trailing spaces
                     if (words.length == 1) { // In this case there are no leading and trailing spaces in the html code
                         if (!html.contains("<"))
-                            html = html.replaceFirst(Pattern.quote(word), " <a href=\""+link+"\">"+ elementName +"</a> ");
+                            html = html.replaceFirst(Pattern.quote(word), newLinkElementWithNoFollow);
                     } else if (i == 0) {
-                        html = html.replaceFirst(Pattern.quote(word) + "(\\s|&nbsp;)", "<a href=\""+link+"\">"+ elementName +"</a> ");
+                        html = html.replaceFirst(Pattern.quote(word) + "(\\s|&nbsp;)", newLinkElementWithNoFollow);
                     } else if (i == words.length - 1) {
-                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word), " <a href=\""+link+"\">"+ elementName +"</a>");
+                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word), newLinkElementWithNoFollow);
                     } else {
-                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word) + "(\\s|&nbsp;)", " <a href=\""+link+"\">"+ elementName +"</a> ");
+                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word) + "(\\s|&nbsp;)", newLinkElementWithNoFollow);
                     }
                 }
             }
 
             // Rebuild the whole value string of the <p> tag and exchange the old one
-            e.after("<p>"+html+"</p>");
-            e.remove();
+            pTagElements.after("<p>"+html+"</p>");
+            pTagElements.remove();
         }
 
-        return d.select("body").html();
+        return contentDocument.select("body").html();
     }
 
     public PlanSectionTypeKeys getType() {
@@ -261,9 +264,9 @@ public class ProposalSectionWrapper {
             } else {
                 return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), "SECTION", definition.getId());
             }
-        } catch (NoSuchProposalAttributeException e) {
+        } catch (NoSuchProposalAttributeException linkElement) {
             return null;
-        } catch (NoSuchProposalException e) {
+        } catch (NoSuchProposalException linkElement) {
             return null;
         }
         */

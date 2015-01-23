@@ -31,14 +31,12 @@ public class SendEmailNotifications implements MessageListener {
 		try {
 			Company company = CompanyLocalServiceUtil.getCompany(COMPANY_ID);
 
-            // Workaround to get the right port (80) on production
             int port = GetterUtil.getInteger(PortletProps.get(SERVER_PORT_PROPS_KEY));
             if (Validator.isNull(port) || port <= 0) {
                 port = PortalUtil.getPortalPort(false);
             }
 
             String baseUrl = PortalUtil.getPortalURL(company.getVirtualHostname(), port, false);
-            //String baseUrl = "http://localhost:9082";
 
             requestUrl = baseUrl + EXECUTE_SCHEDULER_PATH;
 			URL url = new URL(baseUrl + EXECUTE_SCHEDULER_PATH);
@@ -50,7 +48,6 @@ public class SendEmailNotifications implements MessageListener {
 			if (statusCode != 200) {
 				throw new MessageListenerException(String.format("Could not process request: Bad request: (%s)", requestUrl));
 			}
-
 		} catch (IOException | SystemException | PortalException e) {
 			throw new MessageListenerException(String.format("Could not process request (%s)", requestUrl), e);
 		}

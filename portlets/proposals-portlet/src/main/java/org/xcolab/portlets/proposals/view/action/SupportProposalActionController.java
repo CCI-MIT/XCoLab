@@ -29,15 +29,15 @@ public class SupportProposalActionController {
 
     
     @RequestMapping(params = {"action=supportProposalAction"})
-    public void handleAction(ActionRequest request, Model model, ActionResponse response)
+    public synchronized void handleAction(ActionRequest request, Model model, ActionResponse response)
                     throws PortalException, SystemException, ProposalsAuthorizationException {
         
         if (proposalsContext.getPermissions(request).getCanSupportProposal()) {
             long userId = proposalsContext.getUser(request).getUserId();
             long proposalId = proposalsContext.getProposal(request).getProposalId();
-            
+
             if (ProposalLocalServiceUtil.isSupporter(proposalId, userId)) {
-                ProposalLocalServiceUtil.removeSupporter(proposalId, userId);   
+                ProposalLocalServiceUtil.removeSupporter(proposalId, userId);
             }
             else {
                 ProposalLocalServiceUtil.addSupporter(proposalId, userId);
@@ -53,10 +53,10 @@ public class SupportProposalActionController {
                 	else {
                 		analyticsValue = 3;
                 	}
-            	AnalyticsUtil.publishEvent(request, userId, SUPPORT_ANALYTICS_KEY + analyticsValue, 
-            			SUPPORT_ANALYTICS_CATEGORY, 
-            			SUPPORT_ANALYTICS_ACTION , 
-            			SUPPORT_ANALYTICS_LABEL, 
+            	AnalyticsUtil.publishEvent(request, userId, SUPPORT_ANALYTICS_KEY + analyticsValue,
+            			SUPPORT_ANALYTICS_CATEGORY,
+            			SUPPORT_ANALYTICS_ACTION,
+            			SUPPORT_ANALYTICS_LABEL,
             			analyticsValue);
                 }
             }

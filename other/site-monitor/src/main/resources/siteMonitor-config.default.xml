@@ -56,8 +56,8 @@
 		<smtphost>smtp.gmail.com</smtphost>
 		<smtpport>465</smtpport>
 		<smtpusetsl>true</smtpusetsl>
-		<smtpuser>cognosismailer@gmail.com</smtpuser>
-		<smtppassword>Testtest1+</smtppassword>
+		<smtpuser></smtpuser>
+		<smtppassword></smtppassword>
 		<subject>Site Monitor has detected errors in climatecolab.org</subject>
 	</emailNotification>
 

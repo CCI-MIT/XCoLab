@@ -115,14 +115,15 @@
         <div class="prop-settings">
             <c:choose>
                 <c:when test="${proposal.open }">
-                    <strong>Public Proposal:</strong> Anyone will be able to edit this proposal.&#160;
+                    <strong>Public Proposal:</strong> Anyone will be able to edit this proposal. To change this, click Save below and open the proposal’s Admin tab. &#160;
                 </c:when>
                 <c:otherwise>
-                <strong>Team Proposal:</strong> Only team members will be able to edit this proposal.&#160;
+                <strong>Team Proposal:</strong> Only members that you invite as contributors will be able to edit this proposal.
+                    To open this proposal for anyone to edit, click Save below and open the proposal’s Admin tab. &#160;
                 </c:otherwise>
             </c:choose>
 
-            <c:if test="${proposalsPermissions.canAdmin }">
+            <c:if test="${proposalsPermissions.canAdmin and false}">
                 <a href="${proposal.proposalId }/tab/ADMIN">Change settings</a>
             </c:if>
 

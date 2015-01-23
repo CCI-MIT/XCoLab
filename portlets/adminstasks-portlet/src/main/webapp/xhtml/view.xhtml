@@ -106,6 +106,22 @@
                         <li><ice:commandButton action="#{adminTask.testLogs}" value="Test Logs" /></li>
                     </ul>
                 </ice:panelTab>
+                <ice:panelTab label="Batch register users">
+                    <p>You can use this tool to register many users at once.</p>
+                    <p>Paste in a semicolon separated CSV list of users, in the following format:</p>
+                    <p><em>john.doe@example.com;United States;John;Doe</em></p>
+                    <ul>
+                        <li> CSV Input:
+                            <ice:inputTextarea style="width: 650px;" cols="120" rows="30" value="#{batchRegisterUsers.csvInput}" />
+                        </li>
+                        <li>
+                            <ice:commandButton action="#{batchRegisterUsers.registerUsers}" value="Batch register users" />
+                            <p>
+                                <ice:outputText value="#{batchRegisterUsers.resultMessage}" escape="false" />
+                            </p>
+                        </li>
+                    </ul>
+                </ice:panelTab>
 
             </ice:panelTabSet>
             <h:dataTable id="messages" value="#{adminTask.messages}" var="m">

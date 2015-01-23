@@ -51,3 +51,4 @@ rebel.xml
 
 #sitemonitor
 /other/site-monitor/src/main/resources/siteMonitor-config.xml
+atlassian-ide-plugin.xml

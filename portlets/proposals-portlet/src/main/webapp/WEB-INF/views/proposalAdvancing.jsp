@@ -57,7 +57,7 @@
                                 <form:select id="advanceDecision" path="advanceDecision" items="${advanceOptions}" itemValue="attributeValue" itemLabel="description"/>
 
                                 <div id="comment-container">
-                                    <h3>Comment to send to author</h3>
+                                    <h3>Comment to send to author:</h3>
                                     <i style="font-size:10pt;">The following message will be used as a template as the response message to the author. Your comment
                                         will be replacing the marked section in the text below.<br />
                                         When writing this message, please consider the comments and ratings of judges in the Fellows &amp; Judges Comments tab.
@@ -71,6 +71,7 @@
                                             </div>
                                         </c:forEach>
                                     </div>
+                                    <i>Your comment will be visible to the public.</i>
                                     <div class="form-errors"><!--  -->
                                         <form:errors cssClass="alert alert-error" path="advanceComment" />
                                     </div>

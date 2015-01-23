@@ -10,6 +10,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 
+import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.util.Validator;
@@ -97,11 +98,31 @@ public class AddUpdateProposalDetailsActionController {
         if (proposalsContext.getProposal(request) != null) {
             proposal = proposalsContext.getProposalWrapped(request);
             if (updateProposalSectionsBean.isMove() && updateProposalSectionsBean.getMoveToContestPhaseId() > 0) {
-            	if (updateProposalSectionsBean.isHideOnMove()){
+                // Find creation phase for contest
+                List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(proposalsContext.getContestPhase(request).getContestPK());
+                ContestPhase targetPhase=null;
+                for (ContestPhase c : contestPhases){
+                    if(ContestPhaseTypeLocalServiceUtil.getContestPhaseType(c.getContestPhaseType()).getStatus().equalsIgnoreCase("OPEN_FOR_SUBMISSION")){
+                        targetPhase = c;
+                        break;
+                    }
+                }
+                if (targetPhase == null) throw new SystemException("No Proposal creation phase is associated with target contest.");
+
+                //check if the proposal is already in the target phase
+                try {
+                    if (Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), targetPhase.getContestPhasePK()) != null) {
+                        throw new SystemException("The proposal is already associated with the target contest.");
+                    }
+                } catch (NoSuchProposal2PhaseException e) {
+                    //this is the expected behaviour.
+                }
+
+            	if (updateProposalSectionsBean.isHideOnMove()) {
                     // make proposal invisible in all contest phases to which it belonged to
 
                     for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
-                        // only handle phases of the currrent contest and remove these. this allows for more advanced proposal movement
+                        // only handle phases of the current contest and remove these. this allows for more advanced proposal movement
                         if (ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId()).getContestPK() != updateProposalSectionsBean.getBaseProposalContestId()) {
                             continue;
                         }
@@ -130,25 +151,13 @@ public class AddUpdateProposalDetailsActionController {
                     }
                 }
 
-                // Find creation phase for contest
-                List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(proposalsContext.getContestPhase(request).getContestPK());
-                ContestPhase targetPhase=null;
-                for (ContestPhase c : contestPhases){
-                    if(ContestPhaseTypeLocalServiceUtil.getContestPhaseType(c.getContestPhaseType()).getStatus().equalsIgnoreCase("OPEN_FOR_SUBMISSION")){
-                        targetPhase = c;
-                        break;
-                    }
-                }
-                if (targetPhase == null) throw new SystemException("No Proposal creation phase is associated with target contest.");
-
             	// associate proposal with creation phase
             	Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), targetPhase.getContestPhasePK(),
             			proposal.getCurrentVersion(), -1);
                 ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(),
                         ProposalContestPhaseAttributeKeys.VISIBLE, 1);
             }
-        }
-        else {
+        } else {
             // create
             createNew = true;
             Proposal newProposal = ProposalLocalServiceUtil.create(proposalsContext.getUser(request).getUserId(),
@@ -290,10 +299,8 @@ public class AddUpdateProposalDetailsActionController {
         
         proposalsContext.invalidateContext(request);
         
-        //if (createNew || updateProposalSectionsBean.isMove()) {
         request.setAttribute("ACTION_REDIRECTING", true);
         response.sendRedirect("/web/guest/plans/-/plans/contestId/" + proposalsContext.getContest(request).getContestPK() + "/planId/" + proposal.getProposalId());
-        //}
     }
 
     private String removeHtml(String data) {

@@ -39,6 +39,7 @@ public class JudgingSystemActions {
         NO_DECISION(0, "No decision made yet", false, false),
         INCOMPLETE(1, "Do Not Advance: incomplete", true, false),
         OFFTOPIC(2, "Do Not Advance: off-topic", true, false),
+        NOT_ADVANCE_OTHER(4, "Do Not Advance: other", true, false),
         PASS_TO_JUDGES(3, "Advance", false, true);
 
         int attributeValue;

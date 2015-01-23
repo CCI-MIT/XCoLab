@@ -1,16 +1,15 @@
 package org.xcolab.portlets.contactform;
 
-import java.io.IOException;
-
-import java.io.Serializable;
-import java.util.List;
-
-import javax.portlet.ReadOnlyException;
-import javax.portlet.ValidatorException;
-
+import com.liferay.portal.model.User;
 import org.springframework.stereotype.Component;
 
-import com.liferay.portal.model.User;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
+import javax.portlet.ReadOnlyException;
+import javax.portlet.ValidatorException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
 @Component
 public class ContactPreferences implements Serializable {
 
@@ -28,7 +27,7 @@ public class ContactPreferences implements Serializable {
     private final static String MESSAGE_SUBJECT_PREF = "MESSAGE_SUBJECT";
     private final static String EXPAND_LINK_TEXT_PREF = "EXPAND_LINK_TEXT";
     
-    private final static String defaultRecipients = "rjl@mit.edu,janusz.parfieniuk@gmail.com,pdeboer@mit.edu,lfi@mit.edu,thurner@mit.edu";
+    private final static String defaultRecipients = "pdeboer@mit.edu,lfi@mit.edu,knauert@mit.edu";
     private final static String defaultMessageFormat = "USER_NAME (USER_EMAIL) has sent message using contact form\nUSER_MESSAGE";
     private final static String defaultMessageSubject = "[CoLab] USER_NAME sent a message using contact form";
     private final static String defaultExpandLinkText = "Send feedback message";    
@@ -41,13 +40,29 @@ public class ContactPreferences implements Serializable {
     }
     
     public ContactPreferences() {
-        //PortletPreferences prefs = Helper.getPortletPrefs();
-        
         messageFormat = defaultMessageFormat;
         messageSubject = defaultMessageSubject;
         expandLinkText = defaultExpandLinkText;
         recipients = defaultRecipients;
-        
+    }
+    public ContactPreferences(PortletRequest request) {
+        PortletPreferences prefs = request.getPreferences();
+
+        messageFormat = prefs.getValue(MESSAGE_FORMAT_PREF, String.valueOf(defaultMessageFormat));
+        messageSubject = prefs.getValue(MESSAGE_SUBJECT_PREF, String.valueOf(defaultMessageSubject));
+        expandLinkText = prefs.getValue(EXPAND_LINK_TEXT_PREF, String.valueOf(defaultExpandLinkText));
+        recipients = prefs.getValue(RECIPIENTS_PREF, String.valueOf(defaultRecipients));
+    }
+
+    public String store(PortletPreferences prefs) throws ReadOnlyException, ValidatorException, IOException {
+
+        prefs.setValue(MESSAGE_FORMAT_PREF, messageFormat);
+        prefs.setValue(MESSAGE_SUBJECT_PREF, messageSubject);
+        prefs.setValue(EXPAND_LINK_TEXT_PREF, expandLinkText);
+        prefs.setValue(RECIPIENTS_PREF, recipients);
+        prefs.store();
+
+        return null;
     }
 
 
@@ -108,27 +123,4 @@ public class ContactPreferences implements Serializable {
     public static String getMessageSubjectPref() {
         return MESSAGE_SUBJECT_PREF;
     }
-    
-    public String submit() throws ReadOnlyException, ValidatorException, IOException {
-        /*
-        PortletPreferences prefs = Helper.getPortletPrefs();
-        prefs.setValue(MESSAGE_FORMAT_PREF, messageFormat);
-        prefs.setValue(MESSAGE_SUBJECT_PREF, me
-        FacesMessage fm = new FacesMessage();
-        fm.setSummary("Settings saved successfully");
-        fm.setSeverity(FacesMessage.SEVERITY_INFO);
-
-        FacesContext fc = FacesContext.getCurrentInstance();
-        fc.addMessage(null, fm);ssageSubject);
-        prefs.setValue(EXPAND_LINK_TEXT_PREF, expandLinkText);
-        prefs.setValue(RECIPIENTS_PREF, recipients);
-
-        prefs.store();
-            
-        */
-        
-        return null;
-    }
-    
-
 }

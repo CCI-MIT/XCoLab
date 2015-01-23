@@ -51,6 +51,18 @@
         <path>/META-INF/tags/collab/proposalLink.tagx</path>
     </tag-file>
 
+    <tag-file>
+        <description>Plan Link</description>
+        <name>planLink</name>
+        <path>/META-INF/tags/collab/planLink.tagx</path>
+    </tag-file>
+
+    <tag-file>
+        <description>User Link Simple</description>
+        <name>userLinkSimple</name>
+        <path>/META-INF/tags/collab/userLinkSimple.tagx</path>
+    </tag-file>
+
 
 
     <tag-file>

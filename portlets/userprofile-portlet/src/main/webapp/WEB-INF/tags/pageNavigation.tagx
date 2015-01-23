@@ -1,0 +1,33 @@
+<jsp:root 
+	xmlns:c="http://java.sun.com/jsp/jstl/core" 
+	xmlns:jsp="http://java.sun.com/JSP/Page"  
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:pagination ="urn:jsptagdir:/WEB-INF/tags"
+	version="2.0">
+
+	<jsp:directive.attribute name="userId" type="java.lang.Long" required="true" rtexprvalue="true" description="User id" />
+	<jsp:directive.attribute name="pageId" type="java.lang.Long" required="true" rtexprvalue="true" description="Page id" />
+	<jsp:directive.attribute name="maxPageId" type="java.lang.Long" required="true" rtexprvalue="true" description="max Page id" />
+
+	<c:choose>
+		<c:when test="${currentUser.subscriptionsPaginationPageId lt 3}">
+			<c:set var="startPage" value="1"/>
+		</c:when>
+		<c:when test="${currentUser.subscriptionsPaginationPageId gt maxPageId-3}">
+			<c:set var="startPage" value="${maxPageId-3}"/>
+		</c:when>
+		<c:otherwise>
+			<c:set var="startPage" value="${pageId-2}"/>
+		</c:otherwise>
+	</c:choose>
+
+	<c:forEach var="i"
+			   begin="${startPage}"
+			   end="${startPage+4}">
+		<td style="width: 25px!important; ${pageId eq i? 'font-weight: bold;' : ''}">
+			<pagination:paginationLink userId="${userId}" pageId="${i}" text="${i}"/>
+		</td>
+	</c:forEach>
+
+</jsp:root>

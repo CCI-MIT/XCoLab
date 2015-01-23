@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
@@ -83,7 +84,7 @@ public class ActivitySubscriptionLocalServiceImpl
 
 	// 1 am
 	private final static int DAILY_DIGEST_TRIGGER_HOUR = 1;
-	private Date lastDailyEmailNotification = new Date();
+	private Date lastDailyEmailNotification = getLastDailyEmailNotificationDate();
 
     private final String MESSAGE_FOOTER_TEMPLATE = "<br /><br />\n<hr /><br />\n"
             + "To configure your notification preferences, visit your <a href=\"USER_PROFILE_LINK\">profile</a> page";
@@ -115,6 +116,20 @@ public class ActivitySubscriptionLocalServiceImpl
     private static final String UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to receiving a daily digest of activities on the Climate CoLab.  " +
             "To stop receiving these notifications, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
+
+    /**
+     * This method is used to construct the last daily digest notification date after a restart of the application server
+     * @return
+     */
+    private Date getLastDailyEmailNotificationDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, DAILY_DIGEST_TRIGGER_HOUR);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        return cal.getTime();
+    }
 
     public List<ActivitySubscription> getActivitySubscriptions(Class clasz, Long classPK, Integer type, String extraData)
             throws PortalException, SystemException {
@@ -389,6 +404,10 @@ public class ActivitySubscriptionLocalServiceImpl
         String body = StringUtil.replace(DAILY_DIGEST_ENTRY_TEXT, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification)) + "<br/><br/>";
 
         for (SocialActivity socialActivity : userDigestActivities) {
+            //prevent null pointer exceptions which might happen at this point
+            if (socialActivity == null || serviceContext == null || serviceContext.getRequest() == null || serviceContext.getRequest().getAttribute(WebKeys.THEME_DISPLAY) == null) {
+                continue;
+            }
             SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(StringPool.BLANK, socialActivity, serviceContext);
             if (entry == null) {
                 continue;
