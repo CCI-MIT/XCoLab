@@ -54,7 +54,7 @@ public class ProposalReviewCsvExporter {
                     ProposalAttributeKeys.NAME, 0).getStringValue();
 
             for (ProposalReview proposalReview : proposalToProposalReviewsMap.get(proposal)) {
-                for (User reviewer : reviewers) {
+                for (User reviewer : proposalReview.getReviewers()) {
 
                     tableBody.append(getRowHeader(proposalName, proposalReview));
                     tableBody.append("\"" + reviewer.getFirstName() + " " + reviewer.getLastName() + "\"");
@@ -62,13 +62,9 @@ public class ProposalReviewCsvExporter {
                     StringBuilder commentString = new StringBuilder();
 
                     Double ratingAverage = proposalReview.getUserRatingAverage(reviewer);
+
                     if (Validator.isNull(ratingAverage)) {
-                        if(proposalReview.getReviewers().contains(reviewer)) {
-                            commentString.append(delimiter + "\"-\"" + TQF);
-                        }
-                            else {
-                            commentString.append(delimiter + "\"\"");
-                        }
+                        commentString.append(delimiter + "\"-\"" + TQF);
                     } else {
                         commentString.append(delimiter + "\"" + df.format(ratingAverage) + TQF + "\"");
                     }

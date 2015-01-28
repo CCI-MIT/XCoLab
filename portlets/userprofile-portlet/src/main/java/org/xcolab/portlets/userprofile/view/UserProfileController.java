@@ -412,14 +412,16 @@ public class UserProfileController {
         if(validationError) {
             response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
             response.setRenderParameter("updateError", "true");
-            updatedUserBean.setPortrait(currentUserProfile.getUserBean().getPortrait());
+            updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
         }
         else if(changedUserPart){
 
             response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
             response.setRenderParameter("updateSuccess", "true");
 
-            updatedUserBean.setPortrait(currentUserProfile.getUserBean().getPortrait());
+            if(updatedUserBean.getImageId() == null){
+                updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
+            }
 
             try {
                 UserLocalServiceUtil.updateUser(currentUserProfile.getUser());
@@ -439,8 +441,7 @@ public class UserProfileController {
                     _log.warn(e);
                 }
             }
-        }
-        else {
+        } else {
             response.sendRedirect("/web/guest/member/-/member/userId/" + currentUserProfile.getUserId().toString());
         }
 

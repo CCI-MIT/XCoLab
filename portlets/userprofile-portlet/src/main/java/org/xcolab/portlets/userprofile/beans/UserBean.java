@@ -71,7 +71,7 @@ public class UserBean implements Serializable{
 	private String country;
 
 	private Long imageId;
-	private String portrait;
+	private boolean isFemale;
 
 	private User user;
 	
@@ -93,8 +93,8 @@ public class UserBean implements Serializable{
 		firstName = user.getFirstName();
 		imageId = user.getPortraitId();
 		lastName = user.getLastName();
-		portrait = getPortraitString(user);
 		screenName = user.getScreenName();
+		isFemale = user.getFemale();
 		shortBio = ExpandoValueLocalServiceUtil.getData(User.class.getName(),
 				CommunityConstants.EXPANDO, CommunityConstants.BIO,
 				user.getUserId(), StringPool.BLANK);
@@ -105,14 +105,18 @@ public class UserBean implements Serializable{
 		
 	}
 
-	private String getPortraitString(User user) throws PortalException, SystemException {
-		return  "/user_" + (user.getFemale() ? "female" : "male") + "_portrait?img_id="
-				+ user.getPortraitId();
+	private String getPortraitString() {
+
+		try {
+			return  "/user_" + (this.isFemale ? "female" : "male") + "_portrait?img_id="
+                    + this.imageId;
+		} catch (Exception e) {
+		}
+
+		return "";
 	}
 
-	public String getPortrait() { return portrait; }
-
-	public void setPortrait(String portrait) { this.portrait = portrait; }
+	public String getPortrait() { return getPortraitString(); }
 
 	/**
 	 * @return the imageId

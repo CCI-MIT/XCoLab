@@ -49,8 +49,7 @@ public class
     private User user = null;
     private UserBean userBean = null; // TODO remove.
 
-    private String realName;  // TODO remove
-
+    private String realName;
     private Boolean attendsConference;
     private MemberRole role;
     private int subscriptionsPageSize = 20;
@@ -59,7 +58,7 @@ public class
     private int maxActivitiesCount = 50;
 
     private List<MessageBean> messages;
-    private SendMessagePermissionChecker _messagePermissionChecker;
+    private SendMessagePermissionChecker messagePermissionChecker;
     private List<SupportedPlanWrapper> supportedPlans = new ArrayList<SupportedPlanWrapper>();
     private List<ProposalWrapper> userProposals = new ArrayList<ProposalWrapper>();
 
@@ -75,13 +74,12 @@ public class
     private boolean viewingOwnProfile = false;
 
     private String messagingPortletId = "messagingportlet_WAR_messagingportlet";
-    private ThemeDisplay _themeDisplay;
+    private ThemeDisplay themeDisplay;
+
     private final static Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
 
-    private final String laurFishersUuid = "0596aa38-49b4-4633-8ae4-f1c210763c98";
-
     public UserProfileWrapper(Long userId, PortletRequest request) throws PortalException, SystemException {
-        _themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         User loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
 
         User user;
@@ -90,7 +88,7 @@ public class
             if (user.isActive()) {
 
                 if (loggedInUser != null) {
-                    _messagePermissionChecker = new SendMessagePermissionChecker(loggedInUser);
+                    messagePermissionChecker = new SendMessagePermissionChecker(loggedInUser);
 
                     if(loggedInUser.getUserId() == user.getUserId()) {
                         viewingOwnProfile = true;
@@ -112,8 +110,7 @@ public class
 
         userBean = new UserBean(user);
 
-        // TODO check whether needed
-        realName = getName(user.getFullName(), user.getScreenName());
+         realName = getName(user.getFullName(), user.getScreenName());
 
         String firstPart = realName.substring(0, realName.length() / 2).trim();
         String secondPart = realName.substring(realName.length() / 2).trim();
@@ -163,7 +160,7 @@ public class
         for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
                 .getUserActivities(user.getUserId(), 0, maxActivitiesCount))) {
 
-            UserActivityWrapper a = new UserActivityWrapper(activity, _themeDisplay);
+            UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
             if (a.getBody() != null && !a.getBody().equals(""))
                 userActivities.add(a);
         }
@@ -283,12 +280,12 @@ public class
     }
 
     public ThemeDisplay getThemeDisplay() {
-        return _themeDisplay;
+        return themeDisplay;
     }
 
     public boolean getCanSendMessage() throws SystemException {
-        if (_messagePermissionChecker != null) {
-            return _messagePermissionChecker.canSendToUser(this.user);
+        if (messagePermissionChecker != null) {
+            return messagePermissionChecker.canSendToUser(this.user);
         }
         return false;
     }
@@ -308,7 +305,7 @@ public class
             subscribedActivities = new ArrayList<UserActivityWrapper>();
             for (SocialActivity activity: ActivityUtil.groupActivities(ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getUserId(), 0, 1000))) {
                 try {
-                    subscribedActivities.add(new UserActivityWrapper(activity,_themeDisplay));
+                    subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
                 } catch (Exception e) {
                     //e.printStackTrace();
                 }
