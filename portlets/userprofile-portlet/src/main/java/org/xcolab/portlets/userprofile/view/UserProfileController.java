@@ -330,7 +330,7 @@ public class UserProfileController {
         boolean validationError = false;
         boolean eMailChanged = false;
 
-        if (updatedUserBean.getPassword().trim().length() > 0) {
+        if (updatedUserBean.getPassword() != null  && updatedUserBean.getPassword().trim().length() > 0) {
             if(isPasswordMatchingExistingPassword(updatedUserBean.getCurrentPassword().trim())){
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
@@ -351,7 +351,9 @@ public class UserProfileController {
             }
         }
 
-        if (!updatedUserBean.getScreenName().equals(currentUserProfile.getUserBean().getScreenName())) {
+        if (updatedUserBean.getScreenName() != null
+                && !updatedUserBean.getScreenName().equals(currentUserProfile.getUserBean().getScreenName())) {
+
             validator.validate(updatedUserBean, result, UserBean.ScreenNameChanged.class);
 
             if (!result.hasErrors()) {
@@ -363,7 +365,7 @@ public class UserProfileController {
             }
         }
 
-        if (updatedUserBean.getEmail()!=null && updatedUserBean.getEmail().trim().length() > 0 &&
+        if (updatedUserBean.getEmail()!= null && updatedUserBean.getEmail().trim().length() > 0 &&
                 !updatedUserBean.getEmail().equals(currentUserProfile.getUserBean().getEmailStored())) {
             validator.validate(updatedUserBean, result, UserBean.EmailChanged.class);
 
@@ -379,7 +381,8 @@ public class UserProfileController {
 
         }
 
-        if (!updatedUserBean.getFirstName().equals(currentUserProfile.getUserBean().getFirstName())) {
+        if (updatedUserBean.getFirstName() != null
+                && !updatedUserBean.getFirstName().equals(currentUserProfile.getUserBean().getFirstName())) {
             validator.validate(updatedUserBean, result);
             if (!result.hasErrors()) {
                 currentUserProfile.getUser().setFirstName(updatedUserBean.getFirstName());
@@ -389,7 +392,8 @@ public class UserProfileController {
                 _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getUserId());
             }
         }
-        if (!updatedUserBean.getLastName().equals(currentUserProfile.getUserBean().getLastName())) {
+        if (updatedUserBean.getLastName() != null
+                && !updatedUserBean.getLastName().equals(currentUserProfile.getUserBean().getLastName())) {
             validator.validate(updatedUserBean, result);
             if (!result.hasErrors()) {
                 currentUserProfile.getUser().setLastName(updatedUserBean.getLastName());
@@ -570,12 +574,12 @@ public class UserProfileController {
 
     private boolean isPasswordMatchingExistingPassword(String password){
         boolean existing = false;
-        final String existingPassword = currentUserProfile.getUser().getPassword();
-        final String existingPasswordWithoutSHA1 = currentUserProfile.getUser().getPassword().substring(7);
         try {
+            final String existingPassword = currentUserProfile.getUser().getPassword();
+            final String existingPasswordWithoutSHA1 = currentUserProfile.getUser().getPassword().substring(7);
             existing = PwdEncryptor.encrypt(password).equals(existingPassword) ||
                    PwdEncryptor.encrypt(password).equals(existingPasswordWithoutSHA1);
-        } catch (PwdEncryptorException e) {
+        } catch (Exception e) {
         }
         return existing;
     }

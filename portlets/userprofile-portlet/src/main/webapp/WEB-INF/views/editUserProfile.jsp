@@ -338,6 +338,7 @@
 
 	<script type="text/javascript">
 		jQuery("#portraitUploadInput").change(function() {
+			console.log("Start Upload.");
 			jQuery("#fileUploadForm").submit();
 			jQuery("#userPortrait").block({
 				message : "Sending message"
@@ -345,32 +346,34 @@
 
 		});
 
+		function isJSONavailable(){
+			return typeof JSON === 'object' &amp;&amp; typeof JSON.parse === 'function';
+		}
+		function updateProfilePictureId (imageId){
+			jQuery("#userPortrait").attr("src","/image/contest?img_id=" + imageId);
+			jQuery("#userRegistrationImageId").val(imageId);
+		}
+
 		jQuery("#fileUploadFrame").load(
 				function() {
 					try {
-						console.log("jQuery(this).contents()", jQuery(this).contents());
-
-						var imageIdPos = jQuery(this).contents().text().indexOf('{"imageId":')
-
-						if (imageIdPos > 0) {
-
-							var response = eval("("
-							+ jQuery(this).contents().text().substring(imageIdPos) + ")");
-
-							//console.log("response -> ", response);
-							jQuery("#userPortrait").attr("src",
-									"/image/contest?img_id=" + response.imageId);
-							//console.log("#userPortrait.src -> ", response.imageId);
-							jQuery("#userPortrait").unblock();
-
-							jQuery("#userRegistrationImageId")
-									.val(response.imageId);
+						if(jQuery(this).contents().text()) {
+							var response;
+							if (isJSONavailable()) {
+								response = JSON.parse(jQuery(this).contents().text());
+							} else {
+								response = eval("(" + jQuery(this).contents().text() + ")");
+							}
+							if (response.hasOwnProperty("imageId") &amp;&amp; response.imageId > 0) {
+								updateProfilePictureId(response.imageId);
+								jQuery("#userPortrait").unblock();
+								jQuery.growlUI('', 'Profile image uploaded, press save to store!');
+							}
 						}
-
 					}
 					catch (e) {
-						// ignore
-						console.log("fileUploadFrame error",e);
+						jQuery.growlUI('', 'Profile image upload failed!');
+						//console.log("fileUploadFrame error",e);
 					}
 
 				});
