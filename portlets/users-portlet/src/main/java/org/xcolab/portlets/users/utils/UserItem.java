@@ -4,6 +4,7 @@ import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.model.Role_;
 import com.ext.portlet.model.User_;
 import com.ext.portlet.service.Role_LocalServiceUtil;
+import com.ext.portlet.service.User_LocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
@@ -28,8 +29,7 @@ public class UserItem implements Serializable {
     public UserItem(User_ user) throws PortalException, SystemException {
 
         userId = user.getUserId();
-        activityCount = ActivityUtil.getActivitiesCount(userId);
-        //activityCount = user.
+        activityCount = User_LocalServiceUtil.getUserActivityCount(userId).get(0).intValue();
         screenName = user.getScreenName();
         joinDate = user.getCreateDate();
         List<Role> roles = UserLocalServiceUtil.getUser(userId).getRoles();

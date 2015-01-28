@@ -2,14 +2,9 @@ package org.xcolab.portlets.users;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import javax.servlet.http.Cookie;
 
 import com.ext.portlet.model.User_;
-import com.ext.portlet.service.Role_LocalService;
-import com.ext.portlet.service.StaffMemberServiceUtil;
 import com.ext.portlet.service.User_LocalServiceUtil;
-import com.ext.portlet.service.persistence.User_Finder;
-import com.ext.portlet.service.persistence.User_Util;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,13 +13,7 @@ import org.xcolab.commons.beans.SortFilterPage;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.PortletDisplay;
-import com.liferay.portal.theme.ThemeDisplay;
-
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.ext.portlet.Activity.ActivityUtil;
 import org.xcolab.portlets.users.utils.UserItem;
 
 import java.util.*;
@@ -76,23 +65,10 @@ public class UsersController {
                     break;
 
                 case "ACTIVITY":
-                    Map<Long, Integer> activityCounts = ActivityUtil.getUsersActivityCount();
-                    activityCounts = sortByComparator(activityCounts);
-                    Object[] userIds = activityCounts.keySet().toArray();
-                    dBUsers = new ArrayList<User_>();
-                    if (sortFilterPage.isSortAscending()) {
-                        for (int i = firstUser - 1; i <= endUser - 1; i++) {
-                            Long userId = new Long(new Long(userIds[i].toString()));
-                            User_ user_ = User_LocalServiceUtil.getUser_(userId);
-                            dBUsers.add(user_);
-                        }
-                    } else {
-                        for (int i = endUser - 1; i >= firstUser - 1; i--) {
-                            Long userId = new Long(new Long(userIds[i].toString()));
-                            User_ user_ = User_LocalServiceUtil.getUser_(userId);
-                            dBUsers.add(user_);
-                        }
-                    }
+                    if (sortFilterPage.isSortAscending())
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAsc(firstUser, endUser, filter);
+                    else
+                        dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDesc(firstUser, endUser, filter);
                     break;
 
                 case "CATEGORY":
@@ -136,28 +112,10 @@ public class UsersController {
                         break;
 
                     case "ACTIVITY":
-                        Map<Long,Integer> activityCounts = ActivityUtil.getUsersActivityCount();
-                        activityCounts = sortByComparator (activityCounts);
-                        Object[] userIds = activityCounts.keySet().toArray();
-                        dBUsers = new ArrayList<User_>();
-                        if (sortFilterPage.isSortAscending()) {
-                            for (int i = firstUser-1; i <= endUser-1; i++) {
-                                Long userId = new Long(new Long(userIds[i].toString()));
-                                User_ user_ = User_LocalServiceUtil.getUser_(userId);
-                                //TODO: Filter by category
-                                dBUsers.add(user_);
-                            }
-                        }
+                        if (sortFilterPage.isSortAscending())
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
                         else
-                        {
-                            for (int i = endUser-1; i >= firstUser-1; i--)
-                            {
-                                Long userId = new Long(new Long(userIds[i].toString()));
-                                User_ user_ = User_LocalServiceUtil.getUser_(userId);
-                                //TODO: Filter by category
-                                dBUsers.add(user_);
-                            }
-                        }
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
                         break;
 
                     case "CATEGORY":
@@ -200,29 +158,6 @@ public class UsersController {
 
         return "users";
 
-    }
-
-    private static Map<Long, Integer> sortByComparator(Map<Long, Integer> unsortMap) {
-
-        // Convert Map to List
-        List<Map.Entry<Long, Integer>> list =
-                new LinkedList<Map.Entry<Long, Integer>>(unsortMap.entrySet());
-
-        // Sort list with comparator, to compare the Map values
-        Collections.sort(list, new Comparator<Map.Entry<Long, Integer>>() {
-            public int compare(Map.Entry<Long, Integer> o1,
-                               Map.Entry<Long, Integer> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
-
-        // Convert sorted map back to a Map
-        Map<Long, Integer> sortedMap = new LinkedHashMap<Long, Integer>();
-        for (Iterator<Map.Entry<Long, Integer>> it = list.iterator(); it.hasNext();) {
-            Map.Entry<Long, Integer> entry = it.next();
-            sortedMap.put(entry.getKey(), entry.getValue());
-        }
-        return sortedMap;
     }
 
 }
