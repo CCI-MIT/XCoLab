@@ -96,6 +96,16 @@ public class User_LocalServiceClp implements User_LocalService {
     private String[] _methodParameterTypes43;
     private String _methodName44;
     private String[] _methodParameterTypes44;
+    private String _methodName45;
+    private String[] _methodParameterTypes45;
+    private String _methodName46;
+    private String[] _methodParameterTypes46;
+    private String _methodName47;
+    private String[] _methodParameterTypes47;
+    private String _methodName48;
+    private String[] _methodParameterTypes48;
+    private String _methodName49;
+    private String[] _methodParameterTypes49;
 
     public User_LocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -302,6 +312,30 @@ public class User_LocalServiceClp implements User_LocalService {
         _methodParameterTypes44 = new String[] {
                 "int", "int", "java.lang.String", "java.lang.String"
             };
+
+        _methodName45 = "getUsersSortedByActivityCountAsc";
+
+        _methodParameterTypes45 = new String[] { "int", "int", "java.lang.String" };
+
+        _methodName46 = "getUsersSortedByActivityCountAscFilteredByCategory";
+
+        _methodParameterTypes46 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName47 = "getUsersSortedByActivityCountDesc";
+
+        _methodParameterTypes47 = new String[] { "int", "int", "java.lang.String" };
+
+        _methodName48 = "getUsersSortedByActivityCountDescFilteredByCategory";
+
+        _methodParameterTypes48 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName49 = "getUserActivityCount";
+
+        _methodParameterTypes49 = new String[] { "java.lang.Long" };
     }
 
     @Override
@@ -1560,5 +1594,175 @@ public class User_LocalServiceClp implements User_LocalService {
         }
 
         return (java.util.List<com.ext.portlet.model.User_>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountAsc(
+        int begin, int end, java.lang.String filter)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName45,
+                    _methodParameterTypes45,
+                    new Object[] {
+                        begin,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(filter)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.User_>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountAscFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName46,
+                    _methodParameterTypes46,
+                    new Object[] {
+                        begin,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(filter),
+                        
+                    ClpSerializer.translateInput(memberCategory)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.User_>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountDesc(
+        int begin, int end, java.lang.String filter)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName47,
+                    _methodParameterTypes47,
+                    new Object[] {
+                        begin,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(filter)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.User_>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountDescFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName48,
+                    _methodParameterTypes48,
+                    new Object[] {
+                        begin,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(filter),
+                        
+                    ClpSerializer.translateInput(memberCategory)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.User_>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<java.math.BigInteger> getUserActivityCount(
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName49,
+                    _methodParameterTypes49,
+                    new Object[] { ClpSerializer.translateInput(userId) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<java.math.BigInteger>) ClpSerializer.translateOutput(returnObj);
     }
 }

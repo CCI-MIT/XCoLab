@@ -97,6 +97,16 @@ public class User_LocalServiceClpInvoker {
     private String[] _methodParameterTypes632;
     private String _methodName633;
     private String[] _methodParameterTypes633;
+    private String _methodName634;
+    private String[] _methodParameterTypes634;
+    private String _methodName635;
+    private String[] _methodParameterTypes635;
+    private String _methodName636;
+    private String[] _methodParameterTypes636;
+    private String _methodName637;
+    private String[] _methodParameterTypes637;
+    private String _methodName638;
+    private String[] _methodParameterTypes638;
 
     public User_LocalServiceClpInvoker() {
         _methodName0 = "addUser_";
@@ -301,6 +311,30 @@ public class User_LocalServiceClpInvoker {
         _methodParameterTypes633 = new String[] {
                 "int", "int", "java.lang.String", "java.lang.String"
             };
+
+        _methodName634 = "getUsersSortedByActivityCountAsc";
+
+        _methodParameterTypes634 = new String[] { "int", "int", "java.lang.String" };
+
+        _methodName635 = "getUsersSortedByActivityCountAscFilteredByCategory";
+
+        _methodParameterTypes635 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName636 = "getUsersSortedByActivityCountDesc";
+
+        _methodParameterTypes636 = new String[] { "int", "int", "java.lang.String" };
+
+        _methodName637 = "getUsersSortedByActivityCountDescFilteredByCategory";
+
+        _methodParameterTypes637 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName638 = "getUserActivityCount";
+
+        _methodParameterTypes638 = new String[] { "java.lang.Long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -587,6 +621,39 @@ public class User_LocalServiceClpInvoker {
             return User_LocalServiceUtil.getUsersSortedByMemberSinceDescFilteredByCategory(((Integer) arguments[0]).intValue(),
                 ((Integer) arguments[1]).intValue(),
                 (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
+        }
+
+        if (_methodName634.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes634, parameterTypes)) {
+            return User_LocalServiceUtil.getUsersSortedByActivityCountAsc(((Integer) arguments[0]).intValue(),
+                ((Integer) arguments[1]).intValue(),
+                (java.lang.String) arguments[2]);
+        }
+
+        if (_methodName635.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes635, parameterTypes)) {
+            return User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(((Integer) arguments[0]).intValue(),
+                ((Integer) arguments[1]).intValue(),
+                (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
+        }
+
+        if (_methodName636.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes636, parameterTypes)) {
+            return User_LocalServiceUtil.getUsersSortedByActivityCountDesc(((Integer) arguments[0]).intValue(),
+                ((Integer) arguments[1]).intValue(),
+                (java.lang.String) arguments[2]);
+        }
+
+        if (_methodName637.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes637, parameterTypes)) {
+            return User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(((Integer) arguments[0]).intValue(),
+                ((Integer) arguments[1]).intValue(),
+                (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
+        }
+
+        if (_methodName638.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+            return User_LocalServiceUtil.getUserActivityCount((java.lang.Long) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

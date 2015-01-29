@@ -69,6 +69,37 @@ public class User_FinderUtil {
             end, filter, categoryName);
     }
 
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountAsc(
+        int begin, int end, java.lang.String filter) {
+        return getFinder().getUsersSortedByActivityCountAsc(begin, end, filter);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountAscFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String categoryName) {
+        return getFinder()
+                   .getUsersSortedByActivityCountAscFilteredByCategory(begin,
+            end, filter, categoryName);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountDesc(
+        int begin, int end, java.lang.String filter) {
+        return getFinder().getUsersSortedByActivityCountDesc(begin, end, filter);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountDescFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String categoryName) {
+        return getFinder()
+                   .getUsersSortedByActivityCountDescFilteredByCategory(begin,
+            end, filter, categoryName);
+    }
+
+    public static java.util.List<java.math.BigInteger> getUserActivityCount(
+        java.lang.Long userId) {
+        return getFinder().getUserActivityCount(userId);
+    }
+
     public static User_Finder getFinder() {
         if (_finder == null) {
             _finder = (User_Finder) PortletBeanLocatorUtil.locate(com.ext.portlet.service.ClpSerializer.getServletContextName(),

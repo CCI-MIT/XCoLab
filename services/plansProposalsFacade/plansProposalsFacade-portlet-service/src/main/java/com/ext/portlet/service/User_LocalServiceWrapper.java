@@ -500,6 +500,47 @@ public class User_LocalServiceWrapper implements User_LocalService,
             end, filter, memberCategory);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountAsc(
+        int begin, int end, java.lang.String filter)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _user_LocalService.getUsersSortedByActivityCountAsc(begin, end,
+            filter);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountAscFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _user_LocalService.getUsersSortedByActivityCountAscFilteredByCategory(begin,
+            end, filter, memberCategory);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountDesc(
+        int begin, int end, java.lang.String filter)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _user_LocalService.getUsersSortedByActivityCountDesc(begin, end,
+            filter);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountDescFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _user_LocalService.getUsersSortedByActivityCountDescFilteredByCategory(begin,
+            end, filter, memberCategory);
+    }
+
+    @Override
+    public java.util.List<java.math.BigInteger> getUserActivityCount(
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _user_LocalService.getUserActivityCount(userId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

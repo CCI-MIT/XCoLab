@@ -86,4 +86,34 @@ ORDER BY r.categoryName DESC
 		]]>
     </sql>
 
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountAsc">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us WHERE us.screenName like ? or us.firstName like ? or us.lastName like ? ORDER BY activityCount ASC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountAscFilteredByCategory">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName = ? ORDER BY activityCount ASC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountDesc">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us WHERE us.screenName like ? or us.firstName like ? or us.lastName like ? ORDER BY activityCount DESC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountDescFilteredByCategory">
+        <![CDATA[
+			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN Role_ as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName = ? ORDER BY activityCount DESC
+		]]>
+    </sql>
+
+    <sql id="com.ext.portlet.service.persistence.User_Finder.getUserActivityCount">
+        <![CDATA[
+			SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = ?
+		]]>
+    </sql>
+
 </custom-sql>

@@ -257,7 +257,7 @@ public class ActivityUtil {
         for(User u:liferayUsers)
         {
             Long userId = u.getUserId();
-            activityCounts.put(userId, ActivityUtil.getActivitiesCount(userId));
+            activityCounts.put(userId, SocialActivityLocalServiceUtil.getUserActivitiesCount(userId));
         }
 
         return activityCounts;

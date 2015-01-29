@@ -5,6 +5,7 @@ import com.ext.portlet.service.base.User_LocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.User_FinderUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -88,4 +89,33 @@ public class User_LocalServiceImpl extends User_LocalServiceBaseImpl {
         return User_FinderUtil.getUsersSortedByMemberSinceDescFilteredByCategoryName(begin, end, filter, memberCategory);
     }
 
+    public List<User_> getUsersSortedByActivityCountAsc(int begin, int end, String filter)
+            throws SystemException {
+
+        return User_FinderUtil.getUsersSortedByActivityCountAsc(begin, end, filter);
+    }
+
+    public List<User_> getUsersSortedByActivityCountAscFilteredByCategory(int begin, int end, String filter, String memberCategory)
+            throws SystemException {
+
+        return User_FinderUtil.getUsersSortedByActivityCountAscFilteredByCategory(begin, end, filter, memberCategory);
+    }
+
+    public List<User_> getUsersSortedByActivityCountDesc(int begin, int end, String filter)
+            throws SystemException {
+
+        return User_FinderUtil.getUsersSortedByActivityCountDesc(begin, end, filter);
+    }
+
+    public List<User_> getUsersSortedByActivityCountDescFilteredByCategory(int begin, int end, String filter, String memberCategory)
+            throws SystemException {
+
+        return User_FinderUtil.getUsersSortedByActivityCountDescFilteredByCategory(begin, end, filter, memberCategory);
+    }
+
+    public List<BigInteger> getUserActivityCount(Long userId)
+            throws SystemException {
+
+        return User_FinderUtil.getUserActivityCount(userId);
+    }
 }

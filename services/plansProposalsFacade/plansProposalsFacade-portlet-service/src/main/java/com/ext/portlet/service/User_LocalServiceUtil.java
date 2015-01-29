@@ -466,6 +466,42 @@ public class User_LocalServiceUtil {
             end, filter, memberCategory);
     }
 
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountAsc(
+        int begin, int end, java.lang.String filter)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUsersSortedByActivityCountAsc(begin, end, filter);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountAscFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getUsersSortedByActivityCountAscFilteredByCategory(begin,
+            end, filter, memberCategory);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountDesc(
+        int begin, int end, java.lang.String filter)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUsersSortedByActivityCountDesc(begin, end, filter);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByActivityCountDescFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getUsersSortedByActivityCountDescFilteredByCategory(begin,
+            end, filter, memberCategory);
+    }
+
+    public static java.util.List<java.math.BigInteger> getUserActivityCount(
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUserActivityCount(userId);
+    }
+
     public static void clearService() {
         _service = null;
     }
