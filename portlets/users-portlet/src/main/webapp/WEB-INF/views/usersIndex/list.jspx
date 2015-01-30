@@ -14,6 +14,8 @@
         	<portlet:renderURL var="sortURL">
         		<portlet:param name="sortColumn" value="USER_NAME" />
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'USER_NAME' ? not sortFilterPage.sortAscending : true }" />
+                <portlet:param name="filter" value="${sortFilterPage.filter}" />
+                <portlet:param name="memberCategory" value="${memberCategory}" />
         	</portlet:renderURL>
            	<a href="${sortURL }">User</a>
            	<div class="tooltip">
@@ -25,6 +27,8 @@
         	<portlet:renderURL var="sortURLActivity">
         		<portlet:param name="sortColumn" value="ACTIVITY" />
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'ACTIVITY' ? not sortFilterPage.sortAscending : true }" />
+                <portlet:param name="filter" value="${sortFilterPage.filter}" />
+                <portlet:param name="memberCategory" value="${memberCategory}" />
 			</portlet:renderURL>
         	<a href="${sortURLActivity }"> Activity</a>
             <div class="tooltip">Click to sort by activity<div class="tt-arrow"><!--  --></div></div>
@@ -34,6 +38,8 @@
         	<portlet:renderURL var="sortURLCategory">
         		<portlet:param name="sortColumn" value="CATEGORY" />
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'CATEGORY' ? not sortFilterPage.sortAscending : true }" />
+                <portlet:param name="filter" value="${sortFilterPage.filter}" />
+                <portlet:param name="memberCategory" value="${memberCategory}" />
 			</portlet:renderURL>
         	<a href="${sortURLCategory }"> Category</a>
             <div class="tooltip">Click to sort by<br />category<div class="tt-arrow"><!--  --></div></div>
@@ -44,6 +50,8 @@
         	<portlet:renderURL var="sortURLSeniority">
         		<portlet:param name="sortColumn" value="MEMBER_SINCE" />
         		<portlet:param name="sortAscending" value="${sortAscending}" />
+                <portlet:param name="filter" value="${sortFilterPage.filter}" />
+                <portlet:param name="memberCategory" value="${memberCategory}" />
 			</portlet:renderURL>
         	<a href="${sortURLSeniority }"> Member since</a>
             <div class="tooltip">Click to sort by <br />seniority<div class="tt-arrow"><!--  --></div></div>
@@ -116,6 +124,7 @@
 						 width="16" height="16" />&#160;
 
 					<portlet:renderURL var="memberCategoryURL">
+                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 						<portlet:param name="memberCategory" value="Member" />
 					</portlet:renderURL>
 
@@ -126,6 +135,7 @@
 						 width="16" height="16" />&#160;
 
 					<portlet:renderURL var="catalystCategoryURL">
+                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 						<portlet:param name="memberCategory" value="Catalyst" />
 					</portlet:renderURL>
 
@@ -136,6 +146,7 @@
 						 width="16" height="16" />&#160;
 
 					<portlet:renderURL var="fellowCategoryURL">
+                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 						<portlet:param name="memberCategory" value="Fellow" />
 					</portlet:renderURL>
 
@@ -146,6 +157,7 @@
 						 width="16" height="16" />&#160;
 
 					<portlet:renderURL var="advisorCategoryURL">
+                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 						<portlet:param name="memberCategory" value="Advisor" />
 					</portlet:renderURL>
 
@@ -156,6 +168,7 @@
 						 width="16" height="16" />&#160;
 
 					<portlet:renderURL var="expertCategoryURL">
+                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 						<portlet:param name="memberCategory" value="Expert" />
 					</portlet:renderURL>
 
@@ -166,6 +179,7 @@
 						 width="16" height="16" />&#160;
 
 					<portlet:renderURL var="judgesCategoryURL">
+                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 						<portlet:param name="memberCategory" value="Judges" />
 					</portlet:renderURL>
 
@@ -176,6 +190,7 @@
 						 width="16" height="16" />&#160;
 
 					<portlet:renderURL var="staffCategoryURL">
+                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 						<portlet:param name="memberCategory" value="Staff" />
 					</portlet:renderURL>
 
@@ -184,6 +199,7 @@
 				<li class="${memberCategory == '' ? 'c' : ''}">
 
 					<portlet:renderURL var="allCategoriesURL">
+                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 						<portlet:param name="memberCategory" value="" />
 					</portlet:renderURL>
 
@@ -194,7 +210,7 @@
 	</div>
 
 <br/>
-<div>
+<div class="users-pagination">
 <table>
 	<tbody>
 	<tr>
@@ -209,6 +225,7 @@
 		<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
 		<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
 		<portlet:param name="memberCategory" value="${memberCategory}" />
+        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 	</portlet:renderURL>
 		<a href="${firstPageURL}">First</a>&#160;
 	</span>
@@ -220,6 +237,7 @@
 		<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
 		<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
 		<portlet:param name="memberCategory" value="${memberCategory}" />
+        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 	</portlet:renderURL>
 		<a href="${prevPageURL}">&lt; Prev</a>&#160;
 	</span>
@@ -231,6 +249,7 @@
 				<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
 				<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
 				<portlet:param name="memberCategory" value="${memberCategory}" />
+                <portlet:param name="filter" value="${sortFilterPage.filter}" />
 			</portlet:renderURL>
 			<a href="${pageURL}">${p}</a>&#160;
 		</span>
@@ -242,6 +261,7 @@
 		<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
 		<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
 		<portlet:param name="memberCategory" value="${memberCategory}" />
+        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 	</portlet:renderURL>
 		<a href="${nextPageURL}">Next &gt;</a>&#160;
 	</span>
@@ -253,6 +273,7 @@
 		<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
 		<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
 		<portlet:param name="memberCategory" value="${memberCategory}" />
+        <portlet:param name="filter" value="${sortFilterPage.filter}" />
 	</portlet:renderURL>
 		<a href="${lastPageURL}">Last</a>
 	</span>

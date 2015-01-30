@@ -36,8 +36,12 @@ public class UsersController {
 
         int usersCount = UserLocalServiceUtil.getUsersCount();
         int pagesCount = usersCount / USERS_PER_PAGE;
-        int startPage = page - 5 > 0?page - 5:1;
-        int endPage = startPage + 10<pagesCount? startPage+10:pagesCount;
+        int startPage = 1;
+        if (page - 5 > 0)
+        startPage=page - 5;
+        int endPage = pagesCount;
+        if (startPage + 10<pagesCount)
+            endPage=startPage+10;
 
         if (page > 1)
             firstUser = ((page-1) * USERS_PER_PAGE)+1;
@@ -143,7 +147,7 @@ public class UsersController {
         List<UserItem> users = new ArrayList<UserItem>();
         for (User_ user : dBUsers)
         {
-            UserItem userItem = new UserItem(user);
+            UserItem userItem = new UserItem(user,memberCategoryParam);
             users.add(userItem);
         }
 

@@ -38,6 +38,8 @@ public class Role_Wrapper implements Role_, ModelWrapper<Role_> {
 
         attributes.put("roleId", getRoleId());
         attributes.put("name", getName());
+        attributes.put("categoryName", getCategoryName());
+        attributes.put("roleOrdinal", getRoleOrdinal());
 
         return attributes;
     }
@@ -54,6 +56,18 @@ public class Role_Wrapper implements Role_, ModelWrapper<Role_> {
 
         if (name != null) {
             setName(name);
+        }
+
+        String categoryName = (String) attributes.get("categoryName");
+
+        if (categoryName != null) {
+            setCategoryName(categoryName);
+        }
+
+        Integer roleOrdinal = (Integer) attributes.get("roleOrdinal");
+
+        if (roleOrdinal != null) {
+            setRoleOrdinal(roleOrdinal);
         }
     }
 
@@ -115,6 +129,46 @@ public class Role_Wrapper implements Role_, ModelWrapper<Role_> {
     @Override
     public void setName(java.lang.String name) {
         _role_.setName(name);
+    }
+
+    /**
+    * Returns the category name of this role_.
+    *
+    * @return the category name of this role_
+    */
+    @Override
+    public java.lang.String getCategoryName() {
+        return _role_.getCategoryName();
+    }
+
+    /**
+    * Sets the category name of this role_.
+    *
+    * @param categoryName the category name of this role_
+    */
+    @Override
+    public void setCategoryName(java.lang.String categoryName) {
+        _role_.setCategoryName(categoryName);
+    }
+
+    /**
+    * Returns the role ordinal of this role_.
+    *
+    * @return the role ordinal of this role_
+    */
+    @Override
+    public int getRoleOrdinal() {
+        return _role_.getRoleOrdinal();
+    }
+
+    /**
+    * Sets the role ordinal of this role_.
+    *
+    * @param roleOrdinal the role ordinal of this role_
+    */
+    @Override
+    public void setRoleOrdinal(int roleOrdinal) {
+        _role_.setRoleOrdinal(roleOrdinal);
     }
 
     @Override

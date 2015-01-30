@@ -21,6 +21,8 @@ import java.util.Map;
 public class Role_Clp extends BaseModelImpl<Role_> implements Role_ {
     private long _roleId;
     private String _name;
+    private String _categoryName;
+    private int _roleOrdinal;
     private BaseModel<?> _role_RemoteModel;
 
     public Role_Clp() {
@@ -62,6 +64,8 @@ public class Role_Clp extends BaseModelImpl<Role_> implements Role_ {
 
         attributes.put("roleId", getRoleId());
         attributes.put("name", getName());
+        attributes.put("categoryName", getCategoryName());
+        attributes.put("roleOrdinal", getRoleOrdinal());
 
         return attributes;
     }
@@ -78,6 +82,18 @@ public class Role_Clp extends BaseModelImpl<Role_> implements Role_ {
 
         if (name != null) {
             setName(name);
+        }
+
+        String categoryName = (String) attributes.get("categoryName");
+
+        if (categoryName != null) {
+            setCategoryName(categoryName);
+        }
+
+        Integer roleOrdinal = (Integer) attributes.get("roleOrdinal");
+
+        if (roleOrdinal != null) {
+            setRoleOrdinal(roleOrdinal);
         }
     }
 
@@ -119,6 +135,50 @@ public class Role_Clp extends BaseModelImpl<Role_> implements Role_ {
                 Method method = clazz.getMethod("setName", String.class);
 
                 method.invoke(_role_RemoteModel, name);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getCategoryName() {
+        return _categoryName;
+    }
+
+    @Override
+    public void setCategoryName(String categoryName) {
+        _categoryName = categoryName;
+
+        if (_role_RemoteModel != null) {
+            try {
+                Class<?> clazz = _role_RemoteModel.getClass();
+
+                Method method = clazz.getMethod("setCategoryName", String.class);
+
+                method.invoke(_role_RemoteModel, categoryName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public int getRoleOrdinal() {
+        return _roleOrdinal;
+    }
+
+    @Override
+    public void setRoleOrdinal(int roleOrdinal) {
+        _roleOrdinal = roleOrdinal;
+
+        if (_role_RemoteModel != null) {
+            try {
+                Class<?> clazz = _role_RemoteModel.getClass();
+
+                Method method = clazz.getMethod("setRoleOrdinal", int.class);
+
+                method.invoke(_role_RemoteModel, roleOrdinal);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -194,6 +254,8 @@ public class Role_Clp extends BaseModelImpl<Role_> implements Role_ {
 
         clone.setRoleId(getRoleId());
         clone.setName(getName());
+        clone.setCategoryName(getCategoryName());
+        clone.setRoleOrdinal(getRoleOrdinal());
 
         return clone;
     }
@@ -239,12 +301,16 @@ public class Role_Clp extends BaseModelImpl<Role_> implements Role_ {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(9);
 
         sb.append("{roleId=");
         sb.append(getRoleId());
         sb.append(", name=");
         sb.append(getName());
+        sb.append(", categoryName=");
+        sb.append(getCategoryName());
+        sb.append(", roleOrdinal=");
+        sb.append(getRoleOrdinal());
         sb.append("}");
 
         return sb.toString();
@@ -252,7 +318,7 @@ public class Role_Clp extends BaseModelImpl<Role_> implements Role_ {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(10);
+        StringBundler sb = new StringBundler(16);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Role_");
@@ -265,6 +331,14 @@ public class Role_Clp extends BaseModelImpl<Role_> implements Role_ {
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");
         sb.append(getName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>categoryName</column-name><column-value><![CDATA[");
+        sb.append(getCategoryName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>roleOrdinal</column-name><column-value><![CDATA[");
+        sb.append(getRoleOrdinal());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

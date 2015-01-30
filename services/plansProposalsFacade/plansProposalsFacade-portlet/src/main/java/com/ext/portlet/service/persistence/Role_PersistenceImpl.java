@@ -333,6 +333,8 @@ public class Role_PersistenceImpl extends BasePersistenceImpl<Role_>
 
         role_Impl.setRoleId(role_.getRoleId());
         role_Impl.setName(role_.getName());
+        role_Impl.setCategoryName(role_.getCategoryName());
+        role_Impl.setRoleOrdinal(role_.getRoleOrdinal());
 
         return role_Impl;
     }

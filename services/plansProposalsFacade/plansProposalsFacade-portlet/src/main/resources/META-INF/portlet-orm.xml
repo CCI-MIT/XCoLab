@@ -1422,6 +1422,8 @@
 		<attributes>
 			<id name="roleId" />
 			<basic name="name" />
+			<basic name="categoryName" />
+			<basic name="roleOrdinal" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

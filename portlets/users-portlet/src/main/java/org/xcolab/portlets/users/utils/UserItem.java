@@ -26,37 +26,68 @@ public class UserItem implements Serializable {
     private Long userId;
     private String screenName;
 
-    public UserItem(User_ user) throws PortalException, SystemException {
+    public UserItem(User_ user, String memberCategoryParam) throws PortalException, SystemException {
 
         userId = user.getUserId();
         activityCount = User_LocalServiceUtil.getUserActivityCount(userId).get(0).intValue();
         screenName = user.getScreenName();
         joinDate = user.getCreateDate();
-        List<Role> roles = UserLocalServiceUtil.getUser(userId).getRoles();
-
-        if (roles.size() > 0) {
-
-            MemberCategory currentCat = MemberCategory.MEMBER;
-            category = MemberCategory.MEMBER;
 
 
-            for (Role role: roles) {
-                String roleName = role.getName();
-
-                for (MemberCategory memberCategory : MemberCategory.values())
-
-                    if (Arrays.asList(memberCategory.getRoleNames()).contains(roleName)) {
-                        currentCat = memberCategory;
-                        break;
-                    }
-
-                if (currentCat.ordinal() > category.ordinal()) {
-                    category = currentCat;
-                }
+        if (memberCategoryParam!=null && memberCategoryParam.compareTo("")!=0)
+        {
+            switch (memberCategoryParam){
+                case "Member":
+                    category=MemberCategory.MEMBER;
+                    break;
+                case "Catalyst":
+                    category=MemberCategory.CATALYST;
+                    break;
+                case "Fellow":
+                    category=MemberCategory.FELLOW;
+                    break;
+                case "Advisor":
+                    category=MemberCategory.ADVISOR;
+                    break;
+                case "Expert":
+                    category=MemberCategory.EXPERT;
+                    break;
+                case "Judges":
+                    category=MemberCategory.JUDGES;
+                    break;
+                case "Staff":
+                    category=MemberCategory.STAFF;
             }
+        }
 
-            if (category == MemberCategory.MODERATOR) category = MemberCategory.STAFF;
+        else {
 
+            List<Role> roles = UserLocalServiceUtil.getUser(userId).getRoles();
+            if (roles.size() > 0) {
+
+                MemberCategory currentCat = MemberCategory.MEMBER;
+                category = MemberCategory.MEMBER;
+
+
+                for (Role role: roles) {
+                    String roleName = role.getName();
+
+                    for (MemberCategory memberCategory : MemberCategory.values())
+
+                        if (Arrays.asList(memberCategory.getRoleNames()).contains(roleName)) {
+                            currentCat = memberCategory;
+                            break;
+                        }
+
+                    if (currentCat.ordinal() > category.ordinal()) {
+                        category = currentCat;
+                    }
+                }
+
+                if (category == MemberCategory.MODERATOR) category = MemberCategory.STAFF;
+
+
+            }
 
         }
     }

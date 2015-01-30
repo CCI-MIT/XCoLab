@@ -49,9 +49,11 @@ public class Role_ModelImpl extends BaseModelImpl<Role_> implements Role_Model {
     public static final String TABLE_NAME = "xcolab_Role_";
     public static final Object[][] TABLE_COLUMNS = {
             { "roleId", Types.BIGINT },
-            { "name", Types.VARCHAR }
+            { "name", Types.VARCHAR },
+            { "categoryName", Types.VARCHAR },
+            { "roleOrdinal", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Role_ (roleId LONG not null primary key,name VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Role_ (roleId LONG not null primary key,name VARCHAR(75) null,categoryName VARCHAR(75) null,roleOrdinal INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Role_";
     public static final String ORDER_BY_JPQL = " ORDER BY role_.roleId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Role_.roleId ASC";
@@ -79,6 +81,8 @@ public class Role_ModelImpl extends BaseModelImpl<Role_> implements Role_Model {
     private static Class<?>[] _escapedModelInterfaces = new Class[] { Role_.class };
     private long _roleId;
     private String _name;
+    private String _categoryName;
+    private int _roleOrdinal;
     private Role_ _escapedModel;
 
     public Role_ModelImpl() {
@@ -99,6 +103,8 @@ public class Role_ModelImpl extends BaseModelImpl<Role_> implements Role_Model {
 
         model.setRoleId(soapModel.getRoleId());
         model.setName(soapModel.getName());
+        model.setCategoryName(soapModel.getCategoryName());
+        model.setRoleOrdinal(soapModel.getRoleOrdinal());
 
         return model;
     }
@@ -159,6 +165,8 @@ public class Role_ModelImpl extends BaseModelImpl<Role_> implements Role_Model {
 
         attributes.put("roleId", getRoleId());
         attributes.put("name", getName());
+        attributes.put("categoryName", getCategoryName());
+        attributes.put("roleOrdinal", getRoleOrdinal());
 
         return attributes;
     }
@@ -175,6 +183,18 @@ public class Role_ModelImpl extends BaseModelImpl<Role_> implements Role_Model {
 
         if (name != null) {
             setName(name);
+        }
+
+        String categoryName = (String) attributes.get("categoryName");
+
+        if (categoryName != null) {
+            setCategoryName(categoryName);
+        }
+
+        Integer roleOrdinal = (Integer) attributes.get("roleOrdinal");
+
+        if (roleOrdinal != null) {
+            setRoleOrdinal(roleOrdinal);
         }
     }
 
@@ -202,6 +222,32 @@ public class Role_ModelImpl extends BaseModelImpl<Role_> implements Role_Model {
     @Override
     public void setName(String name) {
         _name = name;
+    }
+
+    @JSON
+    @Override
+    public String getCategoryName() {
+        if (_categoryName == null) {
+            return StringPool.BLANK;
+        } else {
+            return _categoryName;
+        }
+    }
+
+    @Override
+    public void setCategoryName(String categoryName) {
+        _categoryName = categoryName;
+    }
+
+    @JSON
+    @Override
+    public int getRoleOrdinal() {
+        return _roleOrdinal;
+    }
+
+    @Override
+    public void setRoleOrdinal(int roleOrdinal) {
+        _roleOrdinal = roleOrdinal;
     }
 
     @Override
@@ -233,6 +279,8 @@ public class Role_ModelImpl extends BaseModelImpl<Role_> implements Role_Model {
 
         role_Impl.setRoleId(getRoleId());
         role_Impl.setName(getName());
+        role_Impl.setCategoryName(getCategoryName());
+        role_Impl.setRoleOrdinal(getRoleOrdinal());
 
         role_Impl.resetOriginalValues();
 
@@ -296,17 +344,31 @@ public class Role_ModelImpl extends BaseModelImpl<Role_> implements Role_Model {
             role_CacheModel.name = null;
         }
 
+        role_CacheModel.categoryName = getCategoryName();
+
+        String categoryName = role_CacheModel.categoryName;
+
+        if ((categoryName != null) && (categoryName.length() == 0)) {
+            role_CacheModel.categoryName = null;
+        }
+
+        role_CacheModel.roleOrdinal = getRoleOrdinal();
+
         return role_CacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(9);
 
         sb.append("{roleId=");
         sb.append(getRoleId());
         sb.append(", name=");
         sb.append(getName());
+        sb.append(", categoryName=");
+        sb.append(getCategoryName());
+        sb.append(", roleOrdinal=");
+        sb.append(getRoleOrdinal());
         sb.append("}");
 
         return sb.toString();
@@ -314,7 +376,7 @@ public class Role_ModelImpl extends BaseModelImpl<Role_> implements Role_Model {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(10);
+        StringBundler sb = new StringBundler(16);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Role_");
@@ -327,6 +389,14 @@ public class Role_ModelImpl extends BaseModelImpl<Role_> implements Role_Model {
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");
         sb.append(getName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>categoryName</column-name><column-value><![CDATA[");
+        sb.append(getCategoryName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>roleOrdinal</column-name><column-value><![CDATA[");
+        sb.append(getRoleOrdinal());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

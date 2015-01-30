@@ -1113,6 +1113,8 @@
 			<generator class="assigned" />
 		</id>
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="categoryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="roleOrdinal" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.SocialActivityImpl" table="xcolab_SocialActivity">
 		<cache usage="read-write" />

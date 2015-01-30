@@ -594,6 +594,11 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .grid a  {width: 100%;}
 .filter {float:right; width:180px; height:27px;}
 .filter input {width:170px; height:27px; padding:1px 0 0 8px; border:1px solid #bdb7b2; font:12px "Lucida Grande", Arial, sans-serif; /*color:#bdb7b2;*/}
+.users-filter {float:right; padding-right:240px; height:27px;}
+.users-filter input {font:12px "Lucida Grande", Arial, sans-serif; /*color:#bdb7b2;*/}
+#userFilterInput {height:24px;}
+#usersFilterSubmit {margin-bottom:6px; margin-top:6px;}
+.users-pagination {float:left;margin-top:40px;margin-left:10px;}
 
 
 /* contest boxes - rounded corners ------------- */

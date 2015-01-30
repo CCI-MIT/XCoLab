@@ -15,6 +15,8 @@ import java.util.List;
 public class Role_Soap implements Serializable {
     private long _roleId;
     private String _name;
+    private String _categoryName;
+    private int _roleOrdinal;
 
     public Role_Soap() {
     }
@@ -24,6 +26,8 @@ public class Role_Soap implements Serializable {
 
         soapModel.setRoleId(model.getRoleId());
         soapModel.setName(model.getName());
+        soapModel.setCategoryName(model.getCategoryName());
+        soapModel.setRoleOrdinal(model.getRoleOrdinal());
 
         return soapModel;
     }
@@ -86,5 +90,21 @@ public class Role_Soap implements Serializable {
 
     public void setName(String name) {
         _name = name;
+    }
+
+    public String getCategoryName() {
+        return _categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        _categoryName = categoryName;
+    }
+
+    public int getRoleOrdinal() {
+        return _roleOrdinal;
+    }
+
+    public void setRoleOrdinal(int roleOrdinal) {
+        _roleOrdinal = roleOrdinal;
     }
 }

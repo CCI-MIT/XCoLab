@@ -11,6 +11,8 @@
     <entity name="Role_" local-service="true">
         <column name="roleId" type="long" primary="true" />
         <column name="name" type="String" />
+        <column name="categoryName" type="String" />
+        <column name="roleOrdinal" type="int"/>
         <column name="users" type="Collection" entity="User_" mapping-table="Users_Roles" />
     </entity>
 

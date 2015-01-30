@@ -80,9 +80,9 @@
 		<div class="comm_info-left members">
         	<span>${usersCount}</span> Members
 		</div>
-		<div class="comm_info-large">
+		<div>
 
-			<div class="filter" style="position: relative;">
+			<div class="users-filter" style="position: relative;">
 				<portlet:renderURL var="filterURL" />
 				<form action="${filterURL }" id="filterUsersForm" method="post">
 					<!--
@@ -95,7 +95,7 @@
 					<c:if test="${not empty sortFilterPage.filter }">
 						<a href="javascript:;" id="usersFilterClear">&#160;</a>
 					</c:if>
-					<input class="comm_submit" type="submit" name="submit" value="Search" />
+					<input class="comm_submit" type="submit" id="usersFilterSubmit" name="submit" value="Search" />
 				</form>
 			</div>
 

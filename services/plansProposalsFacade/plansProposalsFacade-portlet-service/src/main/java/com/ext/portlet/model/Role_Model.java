@@ -72,6 +72,35 @@ public interface Role_Model extends BaseModel<Role_> {
      */
     public void setName(String name);
 
+    /**
+     * Returns the category name of this role_.
+     *
+     * @return the category name of this role_
+     */
+    @AutoEscape
+    public String getCategoryName();
+
+    /**
+     * Sets the category name of this role_.
+     *
+     * @param categoryName the category name of this role_
+     */
+    public void setCategoryName(String categoryName);
+
+    /**
+     * Returns the role ordinal of this role_.
+     *
+     * @return the role ordinal of this role_
+     */
+    public int getRoleOrdinal();
+
+    /**
+     * Sets the role ordinal of this role_.
+     *
+     * @param roleOrdinal the role ordinal of this role_
+     */
+    public void setRoleOrdinal(int roleOrdinal);
+
     @Override
     public boolean isNew();
 
