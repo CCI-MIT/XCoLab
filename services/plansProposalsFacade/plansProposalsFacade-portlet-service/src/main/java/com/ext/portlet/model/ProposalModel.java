@@ -150,6 +150,20 @@ public interface ProposalModel extends BaseModel<Proposal> {
     public void setDiscussionId(long discussionId);
 
     /**
+     * Returns the results discussion ID of this proposal.
+     *
+     * @return the results discussion ID of this proposal
+     */
+    public long getResultsDiscussionId();
+
+    /**
+     * Sets the results discussion ID of this proposal.
+     *
+     * @param resultsDiscussionId the results discussion ID of this proposal
+     */
+    public void setResultsDiscussionId(long resultsDiscussionId);
+
+    /**
      * Returns the judge discussion ID of this proposal.
      *
      * @return the judge discussion ID of this proposal

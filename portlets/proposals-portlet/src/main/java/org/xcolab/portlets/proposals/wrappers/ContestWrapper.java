@@ -476,6 +476,26 @@ public class ContestWrapper {
         return contestTeamMembersByRole;
     }
 
+    public List<User> getContestAdvisors() throws PortalException, SystemException {
+        List<User> advisors = null;
+        for (ContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("Advisor")) {
+                advisors = c.getUsers();
+            }
+        }
+        if(advisors == null) return new LinkedList<>(); //return empty list if null
+        return advisors;
+    }
+
+    public boolean isUserAmongAdvisors(User userInQuestion) throws SystemException, PortalException {
+        for (User judge : getContestAdvisors()) {
+            if (judge.getUserId() == userInQuestion.getUserId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<User> getContestJudges() throws PortalException, SystemException {
         List<User> judges = null;
         for (ContestTeamRoleWrapper c : getContestTeamMembersByRole()) {

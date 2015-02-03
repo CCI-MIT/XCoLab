@@ -747,6 +747,7 @@ create table xcolab_Proposal (
 	authorId LONG,
 	visible BOOLEAN,
 	discussionId LONG,
+	resultsDiscussionId LONG,
 	judgeDiscussionId LONG,
 	fellowDiscussionId LONG,
 	advisorDiscussionId LONG,

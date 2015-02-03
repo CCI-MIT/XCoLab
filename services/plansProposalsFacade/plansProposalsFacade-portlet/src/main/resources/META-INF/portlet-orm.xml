@@ -1249,6 +1249,7 @@
 			<basic name="authorId" />
 			<basic name="visible" />
 			<basic name="discussionId" />
+			<basic name="resultsDiscussionId" />
 			<basic name="judgeDiscussionId" />
 			<basic name="fellowDiscussionId" />
 			<basic name="advisorDiscussionId" />

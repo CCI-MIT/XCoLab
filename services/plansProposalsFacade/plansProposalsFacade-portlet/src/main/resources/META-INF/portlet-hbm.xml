@@ -985,6 +985,7 @@
 		<property name="authorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="visible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="discussionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="resultsDiscussionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="judgeDiscussionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="fellowDiscussionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="advisorDiscussionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />

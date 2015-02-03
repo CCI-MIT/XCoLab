@@ -393,6 +393,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Invokab
 
 		// Invalidate the previous session to prevent phishing
 
+		System.out.println("logoff-debubg: AuthenticationServciceImpl -> renewSession -> init[396]");
 		String[] protectedAttributeNames =
 			SESSION_PHISHING_PROTECTED_ATTRIBUTES;
 
@@ -411,6 +412,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Invokab
 		}
 
 		try {
+			System.out.println("logoff-debubg: AuthenticationServciceImpl -> renewSession -> session.invalidate[415]");
 			session.invalidate();
 		}
 		catch (IllegalStateException ise) {
@@ -422,6 +424,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Invokab
 			}
 		}
 
+		System.out.println("logoff-debubg: AuthenticationServciceImpl -> renewSession -> request.getSession[427]");
 		session = request.getSession(true);
 
 		for (String protectedAttributeName : protectedAttributeNames) {

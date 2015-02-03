@@ -826,6 +826,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
         proposalImpl.setAuthorId(proposal.getAuthorId());
         proposalImpl.setVisible(proposal.isVisible());
         proposalImpl.setDiscussionId(proposal.getDiscussionId());
+        proposalImpl.setResultsDiscussionId(proposal.getResultsDiscussionId());
         proposalImpl.setJudgeDiscussionId(proposal.getJudgeDiscussionId());
         proposalImpl.setFellowDiscussionId(proposal.getFellowDiscussionId());
         proposalImpl.setAdvisorDiscussionId(proposal.getAdvisorDiscussionId());

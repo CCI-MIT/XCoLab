@@ -27,6 +27,7 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
     private long _authorId;
     private boolean _visible;
     private long _discussionId;
+    private long _resultsDiscussionId;
     private long _judgeDiscussionId;
     private long _fellowDiscussionId;
     private long _advisorDiscussionId;
@@ -77,6 +78,7 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
         attributes.put("authorId", getAuthorId());
         attributes.put("visible", getVisible());
         attributes.put("discussionId", getDiscussionId());
+        attributes.put("resultsDiscussionId", getResultsDiscussionId());
         attributes.put("judgeDiscussionId", getJudgeDiscussionId());
         attributes.put("fellowDiscussionId", getFellowDiscussionId());
         attributes.put("advisorDiscussionId", getAdvisorDiscussionId());
@@ -127,6 +129,12 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
 
         if (discussionId != null) {
             setDiscussionId(discussionId);
+        }
+
+        Long resultsDiscussionId = (Long) attributes.get("resultsDiscussionId");
+
+        if (resultsDiscussionId != null) {
+            setResultsDiscussionId(resultsDiscussionId);
         }
 
         Long judgeDiscussionId = (Long) attributes.get("judgeDiscussionId");
@@ -314,6 +322,29 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
     }
 
     @Override
+    public long getResultsDiscussionId() {
+        return _resultsDiscussionId;
+    }
+
+    @Override
+    public void setResultsDiscussionId(long resultsDiscussionId) {
+        _resultsDiscussionId = resultsDiscussionId;
+
+        if (_proposalRemoteModel != null) {
+            try {
+                Class<?> clazz = _proposalRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setResultsDiscussionId",
+                        long.class);
+
+                method.invoke(_proposalRemoteModel, resultsDiscussionId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public long getJudgeDiscussionId() {
         return _judgeDiscussionId;
     }
@@ -478,6 +509,7 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
         clone.setAuthorId(getAuthorId());
         clone.setVisible(getVisible());
         clone.setDiscussionId(getDiscussionId());
+        clone.setResultsDiscussionId(getResultsDiscussionId());
         clone.setJudgeDiscussionId(getJudgeDiscussionId());
         clone.setFellowDiscussionId(getFellowDiscussionId());
         clone.setAdvisorDiscussionId(getAdvisorDiscussionId());
@@ -527,7 +559,7 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(23);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("{proposalId=");
         sb.append(getProposalId());
@@ -543,6 +575,8 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
         sb.append(getVisible());
         sb.append(", discussionId=");
         sb.append(getDiscussionId());
+        sb.append(", resultsDiscussionId=");
+        sb.append(getResultsDiscussionId());
         sb.append(", judgeDiscussionId=");
         sb.append(getJudgeDiscussionId());
         sb.append(", fellowDiscussionId=");
@@ -558,7 +592,7 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(37);
+        StringBundler sb = new StringBundler(40);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Proposal");
@@ -591,6 +625,10 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
         sb.append(
             "<column><column-name>discussionId</column-name><column-value><![CDATA[");
         sb.append(getDiscussionId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>resultsDiscussionId</column-name><column-value><![CDATA[");
+        sb.append(getResultsDiscussionId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>judgeDiscussionId</column-name><column-value><![CDATA[");

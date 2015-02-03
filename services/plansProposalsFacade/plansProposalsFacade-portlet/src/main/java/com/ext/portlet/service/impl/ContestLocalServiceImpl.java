@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.ext.portlet.contests.ContestStatus;
+import com.ext.portlet.model.*;
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
@@ -30,23 +31,6 @@ import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestDebate;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestTeamMember;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.FocusAreaOntologyTerm;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.PlanTemplate;
-import com.ext.portlet.model.PlanType;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.ProposalRating;
-import com.ext.portlet.model.ProposalRatingType;
-import com.ext.portlet.model.ProposalSupporter;
-import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
@@ -785,11 +769,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                     proposalToProposalReviewsMap.put(proposal, new ArrayList<ProposalReview>());
                 }
 
-                /*
-                if (ratings.size() > 0) {
-                    proposalToProposalReviewsMap.get(proposal).add(proposalReview);
-                }*/
-
                 proposalToProposalReviewsMap.get(proposal).add(proposalReview);
             }
         }
@@ -819,6 +798,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                                 ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
 
                 selectedJudges = new ArrayList<>();
+
                 for (String element : judgeIdString.split(";")) {
                     long userId = GetterUtil.getLong(element);
                     User judge = userLocalService.getUser(userId);
@@ -830,10 +810,19 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
         // Choose all judges
         else {
-            selectedJudges = getJudgesForContest(contestLocalService.getContest(judgingPhase.getContestPK()));
+            selectedJudges =  getJudgesForContest(contestLocalService.getContest(judgingPhase.getContestPK()));
         }
 
         return selectedJudges;
+    }
+
+    public List<User> getAdvisorsForContest(Contest contest) throws SystemException, PortalException {
+        Map<MemberRole, List<User>> roleToUserMap = getContestTeamMembersByRole(contest);
+        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.ADVISOR))) {
+            return roleToUserMap.get(MemberRole.ADVISOR);
+        }
+
+        return new ArrayList<>();
     }
 
     public List<User> getJudgesForContest(Contest contest) throws SystemException, PortalException {

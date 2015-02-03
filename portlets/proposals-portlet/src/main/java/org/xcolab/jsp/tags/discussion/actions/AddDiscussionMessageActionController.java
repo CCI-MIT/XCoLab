@@ -10,6 +10,7 @@ import javax.servlet.http.Cookie;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.analytics.AnalyticsUtil;
@@ -24,6 +25,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
+import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
 @Controller
 @RequestMapping("view")
@@ -34,12 +36,16 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     private final static String COMMENT_ANALYTICS_ACTION = "Comment on contest entry";
     private final static String COMMENT_ANALYTICS_LABEL = "";
 
+    @Autowired
+    private ProposalsContext proposalsContext;
+
     @RequestMapping(params = "action=addDiscussionMessage")
     public void handleAction(ActionRequest request, ActionResponse response, NewMessageWrapper newMessage)
             throws IOException, PortalException, SystemException, DiscussionsException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(newMessage.getDiscussionId());
+
 
         checkPermissions(request, "User isn't allowed to add comment", newMessage.getDiscussionId());
         long userId = themeDisplay.getUser().getUserId();

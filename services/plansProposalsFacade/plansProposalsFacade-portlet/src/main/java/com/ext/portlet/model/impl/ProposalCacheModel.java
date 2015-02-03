@@ -27,6 +27,7 @@ public class ProposalCacheModel implements CacheModel<Proposal>, Externalizable 
     public long authorId;
     public boolean visible;
     public long discussionId;
+    public long resultsDiscussionId;
     public long judgeDiscussionId;
     public long fellowDiscussionId;
     public long advisorDiscussionId;
@@ -34,7 +35,7 @@ public class ProposalCacheModel implements CacheModel<Proposal>, Externalizable 
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(23);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("{proposalId=");
         sb.append(proposalId);
@@ -50,6 +51,8 @@ public class ProposalCacheModel implements CacheModel<Proposal>, Externalizable 
         sb.append(visible);
         sb.append(", discussionId=");
         sb.append(discussionId);
+        sb.append(", resultsDiscussionId=");
+        sb.append(resultsDiscussionId);
         sb.append(", judgeDiscussionId=");
         sb.append(judgeDiscussionId);
         sb.append(", fellowDiscussionId=");
@@ -85,6 +88,7 @@ public class ProposalCacheModel implements CacheModel<Proposal>, Externalizable 
         proposalImpl.setAuthorId(authorId);
         proposalImpl.setVisible(visible);
         proposalImpl.setDiscussionId(discussionId);
+        proposalImpl.setResultsDiscussionId(resultsDiscussionId);
         proposalImpl.setJudgeDiscussionId(judgeDiscussionId);
         proposalImpl.setFellowDiscussionId(fellowDiscussionId);
         proposalImpl.setAdvisorDiscussionId(advisorDiscussionId);
@@ -104,6 +108,7 @@ public class ProposalCacheModel implements CacheModel<Proposal>, Externalizable 
         authorId = objectInput.readLong();
         visible = objectInput.readBoolean();
         discussionId = objectInput.readLong();
+        resultsDiscussionId = objectInput.readLong();
         judgeDiscussionId = objectInput.readLong();
         fellowDiscussionId = objectInput.readLong();
         advisorDiscussionId = objectInput.readLong();
@@ -120,6 +125,7 @@ public class ProposalCacheModel implements CacheModel<Proposal>, Externalizable 
         objectOutput.writeLong(authorId);
         objectOutput.writeBoolean(visible);
         objectOutput.writeLong(discussionId);
+        objectOutput.writeLong(resultsDiscussionId);
         objectOutput.writeLong(judgeDiscussionId);
         objectOutput.writeLong(fellowDiscussionId);
         objectOutput.writeLong(advisorDiscussionId);

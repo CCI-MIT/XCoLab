@@ -44,6 +44,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
         attributes.put("authorId", getAuthorId());
         attributes.put("visible", getVisible());
         attributes.put("discussionId", getDiscussionId());
+        attributes.put("resultsDiscussionId", getResultsDiscussionId());
         attributes.put("judgeDiscussionId", getJudgeDiscussionId());
         attributes.put("fellowDiscussionId", getFellowDiscussionId());
         attributes.put("advisorDiscussionId", getAdvisorDiscussionId());
@@ -94,6 +95,12 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
 
         if (discussionId != null) {
             setDiscussionId(discussionId);
+        }
+
+        Long resultsDiscussionId = (Long) attributes.get("resultsDiscussionId");
+
+        if (resultsDiscussionId != null) {
+            setResultsDiscussionId(resultsDiscussionId);
         }
 
         Long judgeDiscussionId = (Long) attributes.get("judgeDiscussionId");
@@ -289,6 +296,26 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     @Override
     public void setDiscussionId(long discussionId) {
         _proposal.setDiscussionId(discussionId);
+    }
+
+    /**
+    * Returns the results discussion ID of this proposal.
+    *
+    * @return the results discussion ID of this proposal
+    */
+    @Override
+    public long getResultsDiscussionId() {
+        return _proposal.getResultsDiscussionId();
+    }
+
+    /**
+    * Sets the results discussion ID of this proposal.
+    *
+    * @param resultsDiscussionId the results discussion ID of this proposal
+    */
+    @Override
+    public void setResultsDiscussionId(long resultsDiscussionId) {
+        _proposal.setResultsDiscussionId(resultsDiscussionId);
     }
 
     /**

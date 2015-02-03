@@ -21,6 +21,7 @@ public class ProposalSoap implements Serializable {
     private long _authorId;
     private boolean _visible;
     private long _discussionId;
+    private long _resultsDiscussionId;
     private long _judgeDiscussionId;
     private long _fellowDiscussionId;
     private long _advisorDiscussionId;
@@ -39,6 +40,7 @@ public class ProposalSoap implements Serializable {
         soapModel.setAuthorId(model.getAuthorId());
         soapModel.setVisible(model.getVisible());
         soapModel.setDiscussionId(model.getDiscussionId());
+        soapModel.setResultsDiscussionId(model.getResultsDiscussionId());
         soapModel.setJudgeDiscussionId(model.getJudgeDiscussionId());
         soapModel.setFellowDiscussionId(model.getFellowDiscussionId());
         soapModel.setAdvisorDiscussionId(model.getAdvisorDiscussionId());
@@ -149,6 +151,14 @@ public class ProposalSoap implements Serializable {
 
     public void setDiscussionId(long discussionId) {
         _discussionId = discussionId;
+    }
+
+    public long getResultsDiscussionId() {
+        return _resultsDiscussionId;
+    }
+
+    public void setResultsDiscussionId(long resultsDiscussionId) {
+        _resultsDiscussionId = resultsDiscussionId;
     }
 
     public long getJudgeDiscussionId() {

@@ -210,12 +210,19 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contestPhase.getContestPK(), proposalId));
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(proposalDiscussion);
-
         proposal.setDiscussionId(proposalDiscussion.getId());
+
+        DiscussionCategoryGroup resultsDiscussion = discussionCategoryGroupLocalService
+                .createDiscussionCategoryGroup("Proposal " + proposalId + " results discussion");
+        resultsDiscussion.setIsQuiet(true);
+
+        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(resultsDiscussion);
+        proposal.setResultsDiscussionId(resultsDiscussion.getId());
 
         DiscussionCategoryGroup judgesDiscussion = discussionCategoryGroupLocalService
                 .createDiscussionCategoryGroup("Proposal " + proposalId + " judges discussion");
         judgesDiscussion.setIsQuiet(true);
+
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(judgesDiscussion);
         proposal.setJudgeDiscussionId(judgesDiscussion.getId());
 
@@ -1264,7 +1271,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         String commentBody = reviewContentHelper.getPromotionComment(false);
         //only post comment if it is not empty.
         if (commentBody != null && !commentBody.trim().equals("")) {
-            DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
+            DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getResultsDiscussionId());
             DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
         }
     }

@@ -865,6 +865,7 @@
 		<field name="authorId" type="long" />
 		<field name="visible" type="boolean" />
 		<field name="discussionId" type="long" />
+		<field name="resultsDiscussionId" type="long" />
 		<field name="judgeDiscussionId" type="long" />
 		<field name="fellowDiscussionId" type="long" />
 		<field name="advisorDiscussionId" type="long" />
