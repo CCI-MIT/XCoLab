@@ -37,17 +37,14 @@ public class ProposalWrapper {
 
     private final ContestPhase contestPhase;
     private final Proposal2Phase proposal2Phase;
+    protected ProposalRatingsWrapper proposalRatings;
     private ContestPhaseRibbonType contestPhaseRibbonType;
     private ProposalWrapper baseProposal;
-
     private List<ProposalTeamMemberWrapper> members;
     private List<ProposalSectionWrapper> sections;
     private List<MembershipRequestWrapper> membershipRequests;
     private List<ProposalContestPhaseAttribute> contestPhaseAttributes;
-
     private ProposalAttributeUtil proposalAttributeUtil;
-
-    protected ProposalRatingsWrapper proposalRatings;
 
     public ProposalWrapper(Proposal proposal) {
         this(proposal, proposal.getCurrentVersion());
@@ -115,8 +112,7 @@ public class ProposalWrapper {
     public void setAuthorId(long authorId) {
         proposal.setAuthorId(authorId);
     }
-    
-    
+
     public boolean getVisible() {
         return proposal.getVisible();
     }
@@ -140,6 +136,14 @@ public class ProposalWrapper {
 
     public void setJudgeDiscussionId(long judgeDiscussionId) {
         proposal.setJudgeDiscussionId(judgeDiscussionId);
+    }
+
+    public long getResultsDiscussionId() {
+        return proposal.getResultsDiscussionId();
+    }
+
+    public void setResultsDiscussionId(long resultsDiscussionId) {
+        proposal.setResultsDiscussionId(resultsDiscussionId);
     }
 
     public long getFellowDiscussionId() {
@@ -333,10 +337,17 @@ public class ProposalWrapper {
         return ProposalLocalServiceUtil.getSupportersCount(proposal.getProposalId());
     }
 
+
+
+
     public long getCommentsCount() throws PortalException, SystemException {
         if (proposal.getProposalId() > 0) {
             return ProposalLocalServiceUtil.getCommentsCount(proposal.getProposalId());
         }
+        return 0;
+    }
+
+    public long getDiscussionCommentsCount() throws PortalException, SystemException {
         return 0;
     }
 
@@ -575,22 +586,6 @@ public class ProposalWrapper {
         return GenericJudgingStatus.STATUS_UNKNOWN;
     }
 
-    public enum GenericJudgingStatus {
-        STATUS_UNKNOWN(0),
-        STATUS_REJECTED(1),
-        STATUS_ACCEPTED(2);
-
-        private int statusValue;
-
-        GenericJudgingStatus(int statusValue) {
-            this.statusValue = statusValue;
-        }
-
-        public int getStatusValue() {
-            return statusValue;
-        }
-    }
-
     public boolean getIsLatestVersion() {
         try {
             return getCurrentVersion() == version;
@@ -598,6 +593,7 @@ public class ProposalWrapper {
             return false;
         }
     }
+
      /*
     public boolean getIsLatestVersionInContest() throws SystemException, PortalException {
         if (getWasMovedToContest() == null) return getIsLatestVersion();
@@ -624,7 +620,6 @@ public class ProposalWrapper {
         } catch (PortalException e) { return null; }
         catch (SystemException e) { return null; }
     }
-
 
     public ProposalVersion getSelectedVersion() {
         try {
@@ -677,7 +672,6 @@ public class ProposalWrapper {
         return true;
     }
 
-
     public ProposalAttributeUtil getProposalAttributeUtil() {
         return proposalAttributeUtil;
     }
@@ -689,7 +683,7 @@ public class ProposalWrapper {
 	public void setContestPhaseAttributes(List<ProposalContestPhaseAttribute> contestPhaseAttributes) {
 		this.contestPhaseAttributes = contestPhaseAttributes;
 	}
-	
+
 	public int getVersion() {
 		return version;
 	}
@@ -706,7 +700,7 @@ public class ProposalWrapper {
 		}
 		return baseProposal;
 	}
-
+	
 	public long getContestPK() {
 		return contest.getContestPK();
 	}
@@ -755,5 +749,21 @@ public class ProposalWrapper {
 
     public ContestPhase getContestPhase() {
         return contestPhase;
+    }
+
+    public enum GenericJudgingStatus {
+        STATUS_UNKNOWN(0),
+        STATUS_REJECTED(1),
+        STATUS_ACCEPTED(2);
+
+        private int statusValue;
+
+        GenericJudgingStatus(int statusValue) {
+            this.statusValue = statusValue;
+        }
+
+        public int getStatusValue() {
+            return statusValue;
+        }
     }
 }

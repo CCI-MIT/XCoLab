@@ -27,7 +27,7 @@ public class DiscussionPermissions {
     private String primKey;
     private long groupId;
     private String discussionTabName;
-    private Long proposalId;
+    private Integer proposalId;
     private Integer contestPhaseId;
 
 
@@ -56,16 +56,16 @@ public class DiscussionPermissions {
         }
         return discussionTabName;
     }
-    private Long getProposalId(PortletRequest request){
-        Long proposalId = null;
+    private Integer getProposalId(PortletRequest request){
+        Integer proposalId = null;
         try {
             String proposalIdParameter = request.getParameter("proposalId");
             if (proposalIdParameter != null) {
-                proposalId = Long.parseLong(proposalIdParameter);
+                proposalId = Integer.parseInt(proposalIdParameter);
             } else {
                 proposalIdParameter = request.getParameter("planId");
                 if (proposalIdParameter != null) {
-                    proposalId = Long.parseLong(proposalIdParameter);
+                    proposalId = Integer.parseInt(proposalIdParameter);
                 }
             }
         } catch (NumberFormatException e) {
@@ -84,20 +84,19 @@ public class DiscussionPermissions {
         return proposalId;
     }
 
-    public boolean getCanSeeAddCommentButton() throws PortalException, SystemException{
+    public boolean getCanSeeAddCommentButton(){
         boolean canSeeAddCommentButton = false;
         boolean isIdsInitialized = proposalId != null && contestPhaseId != null;
         boolean isDiscussionTabActive = discussionTabName != null && discussionTabName.equals("DISCUSSION");
+
         if(isDiscussionTabActive) {
-
-            if(isIdsInitialized) {
-                return isUserAllowToAddCommentsToProposalDiscussionInContestPhase(currentUser, proposalId, contestPhaseId);
-            } else {
-
+            if(isIdsInitialized){
+                canSeeAddCommentButton = isUserAllowedToAddCommentsToProposalDiscussionInContestPhase(currentUser, proposalId, contestPhaseId);
             }
         } else {
-            return true;
+            canSeeAddCommentButton = true;
         }
+
         return canSeeAddCommentButton;
     }
     
@@ -115,43 +114,51 @@ public class DiscussionPermissions {
                 || permissionChecker.isCompanyAdmin();
     }
 
-    private boolean isUserAllowToAddCommentsToProposalDiscussionInContestPhase(User user, Proposal proposal, Integer contestPhaseId){
-        proposalId
-        return isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId) || isUserProposalAuthorOrTeamMember(user, proposal);
+    private boolean isUserAllowedToAddCommentsToProposalDiscussionInContestPhase
+            (User user, Integer proposalId, Integer contestPhaseId){
+
+        boolean isUserAllowed = false;
+        try {
+            Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
+            isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId) ||
+                    isUserProposalAuthorOrTeamMember(user, proposal);
+        } catch (Exception e) {
+        }
+        return isUserAllowed;
     }
 
     private boolean isUserFellowOrJudgeOrAdvisor(User user, Proposal proposal,Integer contestPhaseId){
-        boolean fellow = false;
-        boolean judge = false;
-        boolean advisor = false;
+        boolean isFellow = false;
+        boolean isJudge = false;
+        boolean isAdvisor= false;
 
         try {
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal,contestPhase);
             ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
 
-            judge = proposalWrapper.isUserAmongSelectedJudge(user);
-            fellow = proposalWrapper.isUserAmongFellows(user);
-            advisor = contestWrapper.isUserAmongAdvisors(user);
+            isJudge = proposalWrapper.isUserAmongSelectedJudge(user);
+            isFellow = proposalWrapper.isUserAmongFellows(user);
+            isAdvisor = contestWrapper.isUserAmongAdvisors(user);
         } catch (SystemException | PortalException e) {
             e.printStackTrace();
         }
 
-        return fellow || judge || advisor;
+        return isFellow || isJudge || isAdvisor;
     }
 
     private boolean isUserProposalAuthorOrTeamMember(User user, Proposal proposal){
+        boolean isAuthor = false;
+        boolean isMember = false;
 
         try {
-            boolean author = proposal.getAuthorId() == user.getUserId();
-            boolean member = ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId());
-            return author || member;
+            isAuthor = proposal.getAuthorId() == user.getUserId();
+            isMember = ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId());
         } catch (PortalException | SystemException e) {
         }
 
-        return false;
+        return isAuthor || isMember;
     }
-
 
 
 }
