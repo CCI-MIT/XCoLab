@@ -65,7 +65,7 @@ public class ErrorReporting implements Filter {
         try {
             InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");
 
-            String emailRecipients = "pdeboer@mit.edu,knauert@mit.edu,mail@klemensmang.com";
+            String emailRecipients = "pdeboer@mit.edu,knauert@mit.edu,mail@klemensmang.com,lamche@mit.edu";
             String[] recipients = emailRecipients.split(",");
 
             InternetAddress[] addressTo = new InternetAddress[recipients.length];
