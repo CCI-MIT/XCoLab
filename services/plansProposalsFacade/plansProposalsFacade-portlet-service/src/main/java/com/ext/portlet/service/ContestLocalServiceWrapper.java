@@ -650,6 +650,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
+    public java.util.List<com.liferay.portal.model.User> getAdvisorsForContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getAdvisorsForContest(contest);
+    }
+
+    @Override
     public java.util.List<com.liferay.portal.model.User> getJudgesForContest(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,

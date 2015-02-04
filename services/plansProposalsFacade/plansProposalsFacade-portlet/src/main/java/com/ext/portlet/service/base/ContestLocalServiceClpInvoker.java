@@ -137,16 +137,18 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes629;
     private String _methodName630;
     private String[] _methodParameterTypes630;
-    private String _methodName633;
-    private String[] _methodParameterTypes633;
-    private String _methodName636;
-    private String[] _methodParameterTypes636;
+    private String _methodName631;
+    private String[] _methodParameterTypes631;
+    private String _methodName634;
+    private String[] _methodParameterTypes634;
     private String _methodName637;
     private String[] _methodParameterTypes637;
     private String _methodName638;
     private String[] _methodParameterTypes638;
     private String _methodName639;
     private String[] _methodParameterTypes639;
+    private String _methodName640;
+    private String[] _methodParameterTypes640;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -424,33 +426,37 @@ public class ContestLocalServiceClpInvoker {
                 "com.liferay.portal.service.ServiceContext"
             };
 
-        _methodName629 = "getJudgesForContest";
+        _methodName629 = "getAdvisorsForContest";
 
         _methodParameterTypes629 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName630 = "getFellowsForContest";
+        _methodName630 = "getJudgesForContest";
 
         _methodParameterTypes630 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName633 = "getContestLinkUrl";
+        _methodName631 = "getFellowsForContest";
 
-        _methodParameterTypes633 = new String[] { "com.ext.portlet.model.Contest" };
+        _methodParameterTypes631 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName636 = "hasContestEnded";
+        _methodName634 = "getContestLinkUrl";
 
-        _methodParameterTypes636 = new String[] { "long" };
+        _methodParameterTypes634 = new String[] { "com.ext.portlet.model.Contest" };
 
         _methodName637 = "hasContestEnded";
 
-        _methodParameterTypes637 = new String[] { "com.ext.portlet.model.Contest" };
+        _methodParameterTypes637 = new String[] { "long" };
 
-        _methodName638 = "getWinnerProposal";
+        _methodName638 = "hasContestEnded";
 
-        _methodParameterTypes638 = new String[] { "long" };
+        _methodParameterTypes638 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName639 = "getPointsAccessibleForActivePhaseOfContest";
+        _methodName639 = "getWinnerProposal";
 
-        _methodParameterTypes639 = new String[] { "com.ext.portlet.model.Contest" };
+        _methodParameterTypes639 = new String[] { "long" };
+
+        _methodName640 = "getPointsAccessibleForActivePhaseOfContest";
+
+        _methodParameterTypes640 = new String[] { "com.ext.portlet.model.Contest" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -806,36 +812,41 @@ public class ContestLocalServiceClpInvoker {
 
         if (_methodName629.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes629, parameterTypes)) {
-            return ContestLocalServiceUtil.getJudgesForContest((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getAdvisorsForContest((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName630.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes630, parameterTypes)) {
+            return ContestLocalServiceUtil.getJudgesForContest((com.ext.portlet.model.Contest) arguments[0]);
+        }
+
+        if (_methodName631.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes631, parameterTypes)) {
             return ContestLocalServiceUtil.getFellowsForContest((com.ext.portlet.model.Contest) arguments[0]);
         }
 
-        if (_methodName633.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
+        if (_methodName634.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes634, parameterTypes)) {
             return ContestLocalServiceUtil.getContestLinkUrl((com.ext.portlet.model.Contest) arguments[0]);
-        }
-
-        if (_methodName636.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes636, parameterTypes)) {
-            return ContestLocalServiceUtil.hasContestEnded(((Long) arguments[0]).longValue());
         }
 
         if (_methodName637.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes637, parameterTypes)) {
-            return ContestLocalServiceUtil.hasContestEnded((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.hasContestEnded(((Long) arguments[0]).longValue());
         }
 
         if (_methodName638.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
-            return ContestLocalServiceUtil.getWinnerProposal(((Long) arguments[0]).longValue());
+            return ContestLocalServiceUtil.hasContestEnded((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName639.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+            return ContestLocalServiceUtil.getWinnerProposal(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName640.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes640, parameterTypes)) {
             return ContestLocalServiceUtil.getPointsAccessibleForActivePhaseOfContest((com.ext.portlet.model.Contest) arguments[0]);
         }
 

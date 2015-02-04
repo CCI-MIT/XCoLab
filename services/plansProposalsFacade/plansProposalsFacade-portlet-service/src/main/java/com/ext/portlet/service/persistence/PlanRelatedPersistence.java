@@ -137,7 +137,8 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanRelated[] findByPlanId_PrevAndNext(
-        PlanRelatedPK planRelatedPK, long relatedPlanId,
+        com.ext.portlet.service.persistence.PlanRelatedPK planRelatedPK,
+        long relatedPlanId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanRelatedException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -182,7 +183,8 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @param planRelatedPK the primary key for the new plan related
     * @return the new plan related
     */
-    public com.ext.portlet.model.PlanRelated create(PlanRelatedPK planRelatedPK);
+    public com.ext.portlet.model.PlanRelated create(
+        com.ext.portlet.service.persistence.PlanRelatedPK planRelatedPK);
 
     /**
     * Removes the plan related with the primary key from the database. Also notifies the appropriate model listeners.
@@ -192,7 +194,8 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @throws com.ext.portlet.NoSuchPlanRelatedException if a plan related with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.PlanRelated remove(PlanRelatedPK planRelatedPK)
+    public com.ext.portlet.model.PlanRelated remove(
+        com.ext.portlet.service.persistence.PlanRelatedPK planRelatedPK)
         throws com.ext.portlet.NoSuchPlanRelatedException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -209,7 +212,7 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanRelated findByPrimaryKey(
-        PlanRelatedPK planRelatedPK)
+        com.ext.portlet.service.persistence.PlanRelatedPK planRelatedPK)
         throws com.ext.portlet.NoSuchPlanRelatedException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -221,7 +224,7 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanRelated fetchByPrimaryKey(
-        PlanRelatedPK planRelatedPK)
+        com.ext.portlet.service.persistence.PlanRelatedPK planRelatedPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

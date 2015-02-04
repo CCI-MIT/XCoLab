@@ -463,7 +463,8 @@ public class MessagingMessageWrapper implements MessagingMessage,
     }
 
     @Override
-    public int compareTo(MessagingMessage messagingMessage) {
+    public int compareTo(
+        com.ext.portlet.model.MessagingMessage messagingMessage) {
         return _messagingMessage.compareTo(messagingMessage);
     }
 
@@ -473,17 +474,17 @@ public class MessagingMessageWrapper implements MessagingMessage,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<MessagingMessage> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.MessagingMessage> toCacheModel() {
         return _messagingMessage.toCacheModel();
     }
 
     @Override
-    public MessagingMessage toEscapedModel() {
+    public com.ext.portlet.model.MessagingMessage toEscapedModel() {
         return new MessagingMessageWrapper(_messagingMessage.toEscapedModel());
     }
 
     @Override
-    public MessagingMessage toUnescapedModel() {
+    public com.ext.portlet.model.MessagingMessage toUnescapedModel() {
         return new MessagingMessageWrapper(_messagingMessage.toUnescapedModel());
     }
 

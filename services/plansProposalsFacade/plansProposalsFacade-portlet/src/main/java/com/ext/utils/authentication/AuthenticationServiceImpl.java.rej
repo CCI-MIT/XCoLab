@@ -1,0 +1,9 @@
+diff a/services/plansProposalsFacade/plansProposalsFacade-portlet/src/main/java/com/ext/utils/authentication/AuthenticationServiceImpl.java b/services/plansProposalsFacade/plansProposalsFacade-portlet/src/main/java/com/ext/utils/authentication/AuthenticationServiceImpl.java	(rejected hunks)
+@@ -412,6 +412,7 @@
+ 		}
+ 
+ 		try {
++			System.out.println("logoff-debubg: AuthenticationServciceImpl -> renewSession -> session.invalidate[415]");
+ 			session.invalidate();
+ 		}
+ 		catch (IllegalStateException ise) {

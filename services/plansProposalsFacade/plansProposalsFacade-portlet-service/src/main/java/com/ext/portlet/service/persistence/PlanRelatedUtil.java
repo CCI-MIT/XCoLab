@@ -231,7 +231,8 @@ public class PlanRelatedUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanRelated[] findByPlanId_PrevAndNext(
-        PlanRelatedPK planRelatedPK, long relatedPlanId,
+        com.ext.portlet.service.persistence.PlanRelatedPK planRelatedPK,
+        long relatedPlanId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanRelatedException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -290,7 +291,7 @@ public class PlanRelatedUtil {
     * @return the new plan related
     */
     public static com.ext.portlet.model.PlanRelated create(
-        PlanRelatedPK planRelatedPK) {
+        com.ext.portlet.service.persistence.PlanRelatedPK planRelatedPK) {
         return getPersistence().create(planRelatedPK);
     }
 
@@ -303,7 +304,7 @@ public class PlanRelatedUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanRelated remove(
-        PlanRelatedPK planRelatedPK)
+        com.ext.portlet.service.persistence.PlanRelatedPK planRelatedPK)
         throws com.ext.portlet.NoSuchPlanRelatedException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(planRelatedPK);
@@ -324,7 +325,7 @@ public class PlanRelatedUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanRelated findByPrimaryKey(
-        PlanRelatedPK planRelatedPK)
+        com.ext.portlet.service.persistence.PlanRelatedPK planRelatedPK)
         throws com.ext.portlet.NoSuchPlanRelatedException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(planRelatedPK);
@@ -338,7 +339,7 @@ public class PlanRelatedUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanRelated fetchByPrimaryKey(
-        PlanRelatedPK planRelatedPK)
+        com.ext.portlet.service.persistence.PlanRelatedPK planRelatedPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(planRelatedPK);
     }

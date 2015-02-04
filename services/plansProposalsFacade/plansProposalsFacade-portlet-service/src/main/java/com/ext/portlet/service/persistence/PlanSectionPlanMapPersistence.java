@@ -137,7 +137,8 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanSectionPlanMap[] findByPlanId_PrevAndNext(
-        PlanSectionPlanMapPK planSectionPlanMapPK, long relatedPlanId,
+        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK,
+        long relatedPlanId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -275,7 +276,8 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanSectionPlanMap[] findBySectionId_PrevAndNext(
-        PlanSectionPlanMapPK planSectionPlanMapPK, long sectionId,
+        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK,
+        long sectionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -322,7 +324,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @return the new plan section plan map
     */
     public com.ext.portlet.model.PlanSectionPlanMap create(
-        PlanSectionPlanMapPK planSectionPlanMapPK);
+        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK);
 
     /**
     * Removes the plan section plan map with the primary key from the database. Also notifies the appropriate model listeners.
@@ -333,7 +335,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanSectionPlanMap remove(
-        PlanSectionPlanMapPK planSectionPlanMapPK)
+        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK)
         throws com.ext.portlet.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -350,7 +352,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanSectionPlanMap findByPrimaryKey(
-        PlanSectionPlanMapPK planSectionPlanMapPK)
+        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK)
         throws com.ext.portlet.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -362,7 +364,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanSectionPlanMap fetchByPrimaryKey(
-        PlanSectionPlanMapPK planSectionPlanMapPK)
+        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

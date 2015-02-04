@@ -600,6 +600,13 @@ public class ContestLocalServiceUtil {
             serviceContext);
     }
 
+    public static java.util.List<com.liferay.portal.model.User> getAdvisorsForContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAdvisorsForContest(contest);
+    }
+
     public static java.util.List<com.liferay.portal.model.User> getJudgesForContest(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,

@@ -30,22 +30,8 @@ public class DeleteDiscussionMessageFlagActionController extends BaseDiscussions
                 throws IOException, PortalException, SystemException, DiscussionsException {
             
             checkPermissions(request, "User isn't allowed to delete message", discussionId);
-
-            DiscussionCategoryGroup discussionCategoryGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
-            int commentCount = DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(discussionCategoryGroup);
-
             DiscussionMessage message = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
             DiscussionMessageLocalServiceUtil.delete(message);
-
-            //discussionCategoryGroup = DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(discussionCategoryGroup);
-
-            if(commentCount == DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(discussionCategoryGroup)){
-                int threadMessageCount = DiscussionMessageLocalServiceUtil.getThreadMessagesCount(message);
-                //DiscussionMessageLocalServiceUtil.deleteDiscussionMessage(message);
-                //discussionCategoryGroup.setCommentsThread(0);
-            }
-            //DiscussionMessageLocalServiceUtil.deleteThread()
-
             redirectToReferer(request, response);
         }
 

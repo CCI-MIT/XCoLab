@@ -237,7 +237,8 @@ public class PlanPositionItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanPositionItem[] findByAllByPlanPositionsId_PrevAndNext(
-        PlanPositionItemPK planPositionItemPK, long planPositionsId,
+        com.ext.portlet.service.persistence.PlanPositionItemPK planPositionItemPK,
+        long planPositionsId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanPositionItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -296,7 +297,7 @@ public class PlanPositionItemUtil {
     * @return the new plan position item
     */
     public static com.ext.portlet.model.PlanPositionItem create(
-        PlanPositionItemPK planPositionItemPK) {
+        com.ext.portlet.service.persistence.PlanPositionItemPK planPositionItemPK) {
         return getPersistence().create(planPositionItemPK);
     }
 
@@ -309,7 +310,7 @@ public class PlanPositionItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanPositionItem remove(
-        PlanPositionItemPK planPositionItemPK)
+        com.ext.portlet.service.persistence.PlanPositionItemPK planPositionItemPK)
         throws com.ext.portlet.NoSuchPlanPositionItemException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(planPositionItemPK);
@@ -330,7 +331,7 @@ public class PlanPositionItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanPositionItem findByPrimaryKey(
-        PlanPositionItemPK planPositionItemPK)
+        com.ext.portlet.service.persistence.PlanPositionItemPK planPositionItemPK)
         throws com.ext.portlet.NoSuchPlanPositionItemException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(planPositionItemPK);
@@ -344,7 +345,7 @@ public class PlanPositionItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanPositionItem fetchByPrimaryKey(
-        PlanPositionItemPK planPositionItemPK)
+        com.ext.portlet.service.persistence.PlanPositionItemPK planPositionItemPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(planPositionItemPK);
     }

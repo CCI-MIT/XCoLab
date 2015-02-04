@@ -145,8 +145,8 @@ public interface PlansFilterPositionPersistence extends BasePersistence<PlansFil
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlansFilterPosition[] findByUserIdPlanTypeId_PrevAndNext(
-        PlansFilterPositionPK plansFilterPositionPK, long userId,
-        long planTypeId,
+        com.ext.portlet.service.persistence.PlansFilterPositionPK plansFilterPositionPK,
+        long userId, long planTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlansFilterPositionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -195,7 +195,7 @@ public interface PlansFilterPositionPersistence extends BasePersistence<PlansFil
     * @return the new plans filter position
     */
     public com.ext.portlet.model.PlansFilterPosition create(
-        PlansFilterPositionPK plansFilterPositionPK);
+        com.ext.portlet.service.persistence.PlansFilterPositionPK plansFilterPositionPK);
 
     /**
     * Removes the plans filter position with the primary key from the database. Also notifies the appropriate model listeners.
@@ -206,7 +206,7 @@ public interface PlansFilterPositionPersistence extends BasePersistence<PlansFil
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlansFilterPosition remove(
-        PlansFilterPositionPK plansFilterPositionPK)
+        com.ext.portlet.service.persistence.PlansFilterPositionPK plansFilterPositionPK)
         throws com.ext.portlet.NoSuchPlansFilterPositionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -223,7 +223,7 @@ public interface PlansFilterPositionPersistence extends BasePersistence<PlansFil
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlansFilterPosition findByPrimaryKey(
-        PlansFilterPositionPK plansFilterPositionPK)
+        com.ext.portlet.service.persistence.PlansFilterPositionPK plansFilterPositionPK)
         throws com.ext.portlet.NoSuchPlansFilterPositionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -235,7 +235,7 @@ public interface PlansFilterPositionPersistence extends BasePersistence<PlansFil
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlansFilterPosition fetchByPrimaryKey(
-        PlansFilterPositionPK plansFilterPositionPK)
+        com.ext.portlet.service.persistence.PlansFilterPositionPK plansFilterPositionPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

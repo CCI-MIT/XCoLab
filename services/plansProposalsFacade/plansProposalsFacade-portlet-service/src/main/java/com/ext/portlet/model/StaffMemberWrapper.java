@@ -420,7 +420,7 @@ public class StaffMemberWrapper implements StaffMember,
     }
 
     @Override
-    public int compareTo(StaffMember staffMember) {
+    public int compareTo(com.ext.portlet.model.StaffMember staffMember) {
         return _staffMember.compareTo(staffMember);
     }
 
@@ -430,17 +430,17 @@ public class StaffMemberWrapper implements StaffMember,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<StaffMember> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.StaffMember> toCacheModel() {
         return _staffMember.toCacheModel();
     }
 
     @Override
-    public StaffMember toEscapedModel() {
+    public com.ext.portlet.model.StaffMember toEscapedModel() {
         return new StaffMemberWrapper(_staffMember.toEscapedModel());
     }
 
     @Override
-    public StaffMember toUnescapedModel() {
+    public com.ext.portlet.model.StaffMember toUnescapedModel() {
         return new StaffMemberWrapper(_staffMember.toUnescapedModel());
     }
 
