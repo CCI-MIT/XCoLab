@@ -7,22 +7,24 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
 >
 	<portlet>
-		<portlet-name>userprofile-portlet</portlet-name>
-		<display-name>userprofile-portlet</display-name>
-		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+		<portlet-name>search-portlet</portlet-name>
+		<display-name>search-portlet</display-name>
+		<portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
 		<init-param>
-    		<name>check-auth-token</name>
-    		<value>false</value>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/xhtml/view.xhtml</value>
+		</init-param>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.edit</name>
+			<value>/xhtml/edit.xhtml</value>
 		</init-param>
 		<supports>
 			<mime-type>text/html</mime-type>
-			<portlet-mode>view</portlet-mode>
-			<portlet-mode>edit</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>MIT search portlet</title>
-			<short-title>search</short-title>
-			<keywords>search</keywords>
+			<title>MIT search (ICE)</title>
+			<short-title>Search</short-title>
+			<keywords>Search</keywords>
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>
