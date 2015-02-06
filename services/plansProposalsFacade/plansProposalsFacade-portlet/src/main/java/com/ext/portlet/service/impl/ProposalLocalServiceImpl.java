@@ -1271,10 +1271,30 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         String commentBody = reviewContentHelper.getPromotionComment(false);
         //only post comment if it is not empty.
         if (commentBody != null && !commentBody.trim().equals("")) {
-            DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getResultsDiscussionId());
+            Long discussionId = getDiscussionIdAndGenerateIfNull(proposal);
+            DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
             DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
         }
     }
+
+    public Long getDiscussionIdAndGenerateIfNull(Proposal proposal) throws SystemException{
+
+        Long discussionId = proposal.getResultsDiscussionId();
+
+        if(discussionId == null || discussionId == 0) {
+
+            DiscussionCategoryGroup resultsDiscussion = DiscussionCategoryGroupLocalServiceUtil.
+                    createDiscussionCategoryGroup("Proposal " + proposal.getProposalId() + " results discussion");
+            resultsDiscussion.setIsQuiet(true);
+            DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(resultsDiscussion);
+            proposal.setResultsDiscussionId(resultsDiscussion.getId());
+            proposal.persist();
+            discussionId = proposal.getResultsDiscussionId();
+        }
+
+        return discussionId;
+    }
+
 
     private List<Long> getMemberUserIds(Proposal proposal) throws PortalException, SystemException {
         List<Long> recipientIds = new ArrayList<>();

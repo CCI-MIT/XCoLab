@@ -63,15 +63,11 @@ public class UserProfileController {
     private final static Log _log = LogFactoryUtil.getLog(UserProfileController.class);
 
     @Autowired
-    //@Qualifier("UserBean")
     private SmartValidator validator;
 
     //@Autowired
     //@Qualifier("MessageBean")
     //private SmartValidator validator;
-
-    @InitBinder("messageBean")
-    public void initMessageBeanBinder(WebDataBinder binder) { binder.setValidator(validator); }
 
     @InitBinder("userBean")
     public void initUserWrapperBeanBinder(WebDataBinder binder) {
@@ -186,85 +182,6 @@ public class UserProfileController {
         //response.setRenderParameter("paginationId", paginationPageId.toString());
         response.sendRedirect("/web/guest/member/-/member/userId/" + currentUserProfile.getUserId().toString()+
                 "/page/subscriptions/"+paginationPageId.toString());
-    }
-
-    @RequestMapping(params = "messageError=true")
-    public String sendMessageError(PortletRequest request, Model model,
-                               @RequestParam(required = false) String redirect,
-                               @RequestParam(required = true) String userId) {
-
-        model.addAttribute("limitExceeded", true);
-
-        try{
-            initUserWrapper(request, model, userId);
-            if(currentUserProfile.isInitialized()) {
-                model.addAttribute("userBean", currentUserProfile.getUserBean());
-                model.addAttribute("userSubscriptions", currentUserProfile.getUserSubscriptions());
-                return "showUserProfile";
-            }
-        } catch(Exception e){
-            _log.warn("Could not create user profile for " + userId);
-        }
-        return "showProfileNotInitialized";
-
-    }
-
-    @RequestMapping(params = "messageSuccess=true")
-    public String sendMessageSuccess(PortletRequest request, Model model,
-                                     @RequestParam(required = false) String redirect,
-                                     @RequestParam(required = true) String userId) {
-
-        model.addAttribute("messageSent", true);
-
-        try{
-            initUserWrapper(request, model, userId);
-            if(currentUserProfile.isInitialized()) {
-                model.addAttribute("userBean", currentUserProfile.getUserBean());
-                model.addAttribute("userSubscriptions", currentUserProfile.getUserSubscriptions());
-                return "showUserProfile";
-            }
-        } catch(Exception e){
-            _log.warn("Could not create user profile for " + userId);
-        }
-        return "showProfileNotInitialized";
-
-    }
-
-
-    @RequestMapping(params = "action=send")
-    public void sendMessage(ActionRequest request, Model model, ActionResponse response,
-                            @Valid MessageBean messageBean, BindingResult result
-    ) throws  AddressException, SystemException, PortalException, MailEngineException {
-
-
-        if (!result.hasErrors()) {
-
-            if (messageBean.getMessageHoneypot() != null && messageBean.getMessageHoneypot().length() > 0) {
-                _log.warn("Message was not sent because honeypot was filled - text: " + messageBean.getMessageText() + " honeypot: " + messageBean.getMessageHoneypot());
-                //trick bot into thinking message was sent
-                // currentUser.setMessageSent(true); TODO
-                return;
-            }
-
-            if (messageBean.getMessageText() != null && messageBean.getMessageText().trim().length() > 0 && currentUserProfile != null && loggedInUser !=null) { // TODO check recipient user for not null
-
-                List<Long> recipients = new ArrayList<Long>();
-                recipients.add(currentUserProfile.getUserId());
-
-                boolean success = MessageUtil.checkLimitAndSendMessage(messageBean.getMessageSubject(), messageBean.getMessageText(), loggedInUser, recipients);
-                if (success) {
-                    response.setRenderParameter("messageSuccess", "true");
-                } else {
-                    response.setRenderParameter("messageError", "true");
-                }
-            }
-        } else {
-            response.setRenderParameter("messageError", "true");
-        }
-
-        response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
-        SessionErrors.clear(request);
-        SessionMessages.clear(request);
     }
 
     @RequestMapping(params = "updateError=true")

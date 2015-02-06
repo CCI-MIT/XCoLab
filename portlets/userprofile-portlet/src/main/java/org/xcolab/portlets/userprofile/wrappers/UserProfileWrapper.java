@@ -47,24 +47,21 @@ public class
     private static final long serialVersionUID = 1L;
 
     private User user = null;
-    private UserBean userBean = null; // TODO remove.
+    private UserBean userBean = null;
 
     private String realName;
     private Boolean attendsConference;
     private MemberRole role;
     private int subscriptionsPageSize = 20;
     private int subscriptionsPaginationPageId = 0;
-
     private int maxActivitiesCount = 50;
 
-    private List<MessageBean> messages;
     private SendMessagePermissionChecker messagePermissionChecker;
+    private List<MessageBean> messages;
     private List<SupportedPlanWrapper> supportedPlans = new ArrayList<SupportedPlanWrapper>();
     private List<ProposalWrapper> userProposals = new ArrayList<ProposalWrapper>();
-
     private ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
-
     private UserSubscriptionsWrapper userSubscriptions;
     private BadgeBean badges;
 
@@ -244,7 +241,6 @@ public class
         else return 0;
     }
 
-
     // TODO check this
     // public void setAbout(String about) throws UserInputException { this.about = UserInputFilterUtil.filterHtml(about); }
     //public String getFilteredAbout() {        return filteredAbout;    }
@@ -307,10 +303,8 @@ public class
                 try {
                     subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
                 } catch (Exception e) {
-                    //e.printStackTrace();
                 }
             }
-
         }
         return subscribedActivities;
     }

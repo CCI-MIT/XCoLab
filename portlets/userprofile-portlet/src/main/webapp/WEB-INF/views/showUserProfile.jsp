@@ -8,24 +8,15 @@
 
     <jsp:directive.include file="./init.jspx" />
 
-	<c:if test="${messageSent}">
-		<script type="text/javascript" >
-			messageSent();
-		</script>
-	</c:if>
-
-	<c:if test="${limitExceeded}">
-		<script type="text/javascript" >
-			limitExceeded();
-		</script>
-	</c:if>
-
 	<c:if test="${updateSuccess}">
 		<script type="text/javascript" >
 			updateSuccess();
 		</script>
 	</c:if>
 
+	<portlet:resourceURL var="submitSendMessageForm" id="submitSendMessageForm">
+		<portlet:param name="userIdRecipient" value="${currentUser.userId}"/>
+	</portlet:resourceURL>
 
 	<div id="bread" class="pro">
 		<a href="/web/guest/community">Community</a> <img
@@ -310,12 +301,7 @@
 			<div class="savechanges">
 				<h4>Send <strong>${currentUser.realName}</strong> a message</h4>
 
-				<portlet:actionURL var="sendMessageForm" >
-					<portlet:param name="action" value="send" />
-				</portlet:actionURL>
-
-				<form:form action="${sendMessageForm }" commandName="messageBean" id="messageForm">
-					<input type="hidden" name="action" value="send" />
+				<form:form commandName="messageBean" id="messageForm">
 					<div class="reg_errors"><!--  --></div>
 					<form:errors cssClass="alert alert-error" />
 
@@ -353,7 +339,7 @@
 
 					<div class="btns">
 						<div class="blue-button">
-							<a href="javascript:;" onclick="if (sendMessageFormValid()) { lockSendMessageForm(); } else { return false; }">Send message</a>
+							<a href="javascript:;" onclick="submitSendMessageForm()">Send message</a>
 						</div>
 
 						<div class="gray-button">
@@ -369,5 +355,43 @@
 
 		</div>
 	</div>
+
+
+	<script type="text/javascript">
+
+		function submitSendMessageForm(){
+
+			if (sendMessageFormValid()) {
+				lockSendMessageForm();
+				var messageFormData = jQuery("#messageForm").serialize();
+				var sendMessageFormURL = '${submitSendMessageForm}';
+				submitSendMessageFormToServer(sendMessageFormURL, messageFormData).done(function () {
+					unblockSendMessageForm();
+					hideSendMessagForm();
+					clearSendMessageForm();
+				});
+			}
+		}
+
+		function submitSendMessageFormToServer(serverUrl, formData){
+			var deferred = jQuery.Deferred();
+			sendAjaxToServer(serverUrl, formData).done(function(response){
+				if(typeof response === 'boolean'){
+					if(response){
+						messageSent();
+					} else {
+						messageNotSent();
+					}
+				} else if(typeof response === 'string' &amp;&amp; response === 'LIMIT_SUCCEEDED'){
+					limitExceeded()
+				}
+				deferred.resolve();
+			});
+			return deferred;
+		}
+
+
+	</script>
+
 
 </jsp:root>

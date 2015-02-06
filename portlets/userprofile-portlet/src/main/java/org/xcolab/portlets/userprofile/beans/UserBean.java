@@ -26,9 +26,7 @@ import java.io.Serializable;
 @ValidBioLength(bioProperty = "shortBio")
 public class UserBean implements Serializable{
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
     private static final String EMAIL_REGEX ="(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
@@ -72,9 +70,6 @@ public class UserBean implements Serializable{
 
 	private Long imageId;
 	private boolean isFemale;
-
-	private User user;
-	
 	private boolean sendEmailOnMessage;
 	private boolean sendEmailOnActivity;
 	private boolean sendDailyEmailOnActivity;
@@ -83,25 +78,25 @@ public class UserBean implements Serializable{
 	}
 
 	public UserBean(User user) throws PortalException, SystemException {
-		this.user = user;
+
+		screenName = user.getScreenName();
+		firstName = user.getFirstName();
+		lastName = user.getLastName();
+		emailStored = user.getEmailAddress();
+		imageId = user.getPortraitId();
+		isFemale = user.getFemale();
 
 		country = Helper.getCodeForCounty(ExpandoValueLocalServiceUtil.getData(User.class.getName(),
 				CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
 				user.getUserId(), StringPool.BLANK));
 
-		emailStored = user.getEmailAddress();
-		firstName = user.getFirstName();
-		imageId = user.getPortraitId();
-		lastName = user.getLastName();
-		screenName = user.getScreenName();
-		isFemale = user.getFemale();
 		shortBio = ExpandoValueLocalServiceUtil.getData(User.class.getName(),
 				CommunityConstants.EXPANDO, CommunityConstants.BIO,
 				user.getUserId(), StringPool.BLANK);
 
-		sendEmailOnMessage = MessageUtil.getMessagingPreferences(this.user.getUserId()).getEmailOnReceipt();
-		sendEmailOnActivity = MessageUtil.getMessagingPreferences(this.user.getUserId()).getEmailOnActivity();
-		sendDailyEmailOnActivity = MessageUtil.getMessagingPreferences(this.user.getUserId()).getEmailActivityDailyDigest();
+		sendEmailOnMessage = MessageUtil.getMessagingPreferences(user.getUserId()).getEmailOnReceipt();
+		sendEmailOnActivity = MessageUtil.getMessagingPreferences(user.getUserId()).getEmailOnActivity();
+		sendDailyEmailOnActivity = MessageUtil.getMessagingPreferences(user.getUserId()).getEmailActivityDailyDigest();
 		
 	}
 
@@ -118,47 +113,26 @@ public class UserBean implements Serializable{
 
 	public String getPortrait() { return getPortraitString(); }
 
-	/**
-	 * @return the imageId
-	 */
 	public Long getImageId() {
 		return imageId;
 	}
 
-	/**
-	 * @param imageId
-	 *            the imageId to set
-	 */
 	public void setImageId(Long imageId) {
 		this.imageId = imageId;
 	}
 
-	/**
-	 * @return the country
-	 */
 	public String getCountry() {
 		return country;
 	}
 
-	/**
-	 * @param country
-	 *            the country to set
-	 */
 	public void setCountry(String country) {
 		this.country = country;
 	}
 
-	/**
-	 * @return the shortBio
-	 */
 	public String getShortBio() {
 		return shortBio;
 	}
 
-	/**
-	 * @param shortBio
-	 *            the shortBio to set
-	 */
 	public void setShortBio(String shortBio) {
 		this.shortBio = shortBio;
 	}

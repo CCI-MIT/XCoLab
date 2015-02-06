@@ -1,7 +1,9 @@
 package org.xcolab.portlets.proposals.view;
 
+import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -25,27 +27,23 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_DISCUSSION"})
     public String showDiscussion(PortletRequest request, Model model)
-            throws PortalException, SystemException {
+            throws PortalException, SystemException  {
 
-        /* TODO Clarify on where to put authentication, can be removed after that
-        User currentUser = proposalsContext.getUser(request);
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        boolean isUserAmongFellows =  proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser);
-        boolean isUserAmongJudges =  proposalsContext.getProposalWrapped(request).isUserAmongSelectedJudge(currentUser);
-        boolean isUserAuthor =  proposalsContext.getProposal(request).getAuthorId() == currentUser.getUserId();
-        boolean isUserAmongTeam = proposalsContext.getPermissions(request).getIsTeamMember();
-        boolean isUserAdmin = permissions.getCanAdminAll();
-        model.addAttribute("", hasNoWritePermission);*/
-
-        if(isPhaseStatusClosedOrOpenForSubmission(request)) {
+        try {
+            if(isPhaseStatusClosedOrOpenForSubmission(request)) {
+                model.addAttribute("showDiscussion", false);
+            } else {
+                Long discussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposalsContext.getProposal(request));
+                model.addAttribute("discussionId", discussionId);
+                model.addAttribute("showDiscussion", true);
+                model.addAttribute("authorId", proposalsContext.getProposal(request).getAuthorId());
+                model.addAttribute("proposalId", proposalsContext.getProposal(request).getProposalId());
+            }
+        } catch (Exception e){
             model.addAttribute("showDiscussion", false);
-        } else {
-            model.addAttribute("showDiscussion", true);
-            model.addAttribute("discussionId", proposalsContext.getProposal(request).getResultsDiscussionId());
-            model.addAttribute("authorId", proposalsContext.getProposal(request).getAuthorId());
-            model.addAttribute("proposalId", proposalsContext.getProposal(request).getProposalId());
-            setCommonModelAndPageAttributes(request, model, ProposalTab.DISCUSSION);
         }
+
+        setCommonModelAndPageAttributes(request, model, ProposalTab.DISCUSSION);
         return "proposalDiscussion";
     }
 

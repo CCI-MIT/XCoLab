@@ -654,32 +654,6 @@
 			});
 		}
 
-		function sendAjaxToServer(updateUrl, formData){
-
-			var deferred = jQuery.Deferred();
-
-			jQuery.ajax({
-				type: 'POST',
-				url: updateUrl,
-				dataType: 'text',
-				data: formData,
-				success: function(response){
-					var responseStatus  = JSON.parse(response);
-					if(responseStatus.hasOwnProperty("success") &amp;&amp; responseStatus.success) {
-						deferred.resolve(true);
-					} else{
-						deferred.resolve(false);
-					}
-				},
-				error: function(xhr, status, error){
-					deferred.resolve(false);
-				}
-			});
-
-			return deferred;
-
-		}
-
 	</script>
 
 </jsp:root>

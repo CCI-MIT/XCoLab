@@ -21,7 +21,6 @@ import java.io.IOException;
 @RequestMapping("view")
 public class NewsletterJSONController extends JSONHelper{
 
-
     private final static String MEMBER_ACCOUNT_ACTIVE_STATUS = "a";
     private ConnectorEmmaAPI connectorEmmaAPI;
 
@@ -39,9 +38,9 @@ public class NewsletterJSONController extends JSONHelper{
         try {
             JSONObject memberDetails = connectorEmmaAPI.subscribeMemberWithEmail(email);
             boolean memberHasActiveSubscription = hasNewMemberActiveSubscription(memberDetails);
-            this.writeResultResponseJSON(memberHasActiveSubscription, response);
+            this.writeSuccessResultResponseJSON(memberHasActiveSubscription, response);
         } catch (IOException |  JSONException e) {
-            this.writeResultResponseJSON(false, response);
+            this.writeSuccessResultResponseJSON(false, response);
         }
 
     }
@@ -56,9 +55,9 @@ public class NewsletterJSONController extends JSONHelper{
         initializeConnectorIfNull(request);
         try {
             boolean isMemberUnsubscribed = connectorEmmaAPI.unSubscribeMemberWithEmail(email);
-            this.writeResultResponseJSON(isMemberUnsubscribed, response);
+            this.writeSuccessResultResponseJSON(isMemberUnsubscribed, response);
         } catch (IOException e) {
-            this.writeResultResponseJSON(false, response);
+            this.writeSuccessResultResponseJSON(false, response);
         }
     }
 
@@ -72,7 +71,7 @@ public class NewsletterJSONController extends JSONHelper{
         initializeConnectorIfNull(request);
         JSONObject memberDetails = connectorEmmaAPI.getMemberJSONfromEmail(email);
         boolean memberHasActiveSubscription = hasMemberActiveSubscription(memberDetails);
-        this.writeResultResponseJSON(memberHasActiveSubscription, response);
+        this.writeSuccessResultResponseJSON(memberHasActiveSubscription, response);
     }
 
 

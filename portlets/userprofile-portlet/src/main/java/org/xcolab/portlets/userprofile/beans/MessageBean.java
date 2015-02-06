@@ -100,6 +100,10 @@ public class MessageBean implements Serializable {
         return recipients;
     }
 
+    public void addRecipientUser(User recipientUser) {
+         recipients.add(recipientUser);
+    }
+
     public Long getMessageId() {
         return message.getMessageId();
     }
