@@ -1083,6 +1083,11 @@ public interface ProposalLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long getDiscussionIdAndGenerateIfNull(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
     /**
     * Returns the URL link address for the passed proposal and contest
     *
