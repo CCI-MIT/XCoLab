@@ -14,13 +14,13 @@ import org.xcolab.commons.beans.SortFilterPage;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.portlets.users.utils.UserItem;
+import org.xcolab.portlets.users.utils.MemberItem;
 
 import java.util.*;
 
 @Controller
 @RequestMapping("view")
-public class UsersController {
+public class MembersController {
 
     private int USERS_PER_PAGE = 20;
 
@@ -144,11 +144,11 @@ public class UsersController {
 
         }
 
-        List<UserItem> users = new ArrayList<UserItem>();
+        List<MemberItem> users = new ArrayList<MemberItem>();
         for (User_ user : dBUsers)
         {
-            UserItem userItem = new UserItem(user,memberCategoryParam);
-            users.add(userItem);
+            MemberItem memberItem = new MemberItem(user,memberCategoryParam);
+            users.add(memberItem);
         }
 
         model.addAttribute("pageNumber", page);

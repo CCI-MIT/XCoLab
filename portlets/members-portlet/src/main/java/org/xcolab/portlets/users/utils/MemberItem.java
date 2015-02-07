@@ -19,14 +19,14 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class UserItem implements Serializable {
+public class MemberItem implements Serializable {
     private MemberCategory category;
     private int activityCount;
     private Date joinDate;
     private Long userId;
     private String screenName;
 
-    public UserItem(User_ user, String memberCategoryParam) throws PortalException, SystemException {
+    public MemberItem(User_ user, String memberCategoryParam) throws PortalException, SystemException {
 
         userId = user.getUserId();
         activityCount = User_LocalServiceUtil.getUserActivityCount(userId).get(0).intValue();

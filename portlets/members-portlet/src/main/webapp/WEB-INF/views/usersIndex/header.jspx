@@ -5,9 +5,6 @@
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-	<div class="headline formmargin">
-		<h1>Community Members</h1>
-    </div>
 
 	<div id="bread" class="pro">
 		<a href="/web/guest/community">Community</a>&#160; <img
