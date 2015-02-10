@@ -5,10 +5,12 @@
 	<portlet>
 		<portlet-name>userprofile-portlet</portlet-name>
 		<icon>/icon.png</icon>
-		<friendly-url-mapper-class>org.xcolab.portlets.userprofile.utils.UserprofileFriendlyURLMapper</friendly-url-mapper-class>
-		<instanceable>true</instanceable>
-		<private-session-attributes>true</private-session-attributes>
-        <requires-namespaced-parameters>false</requires-namespaced-parameters> 
+		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
+		<friendly-url-mapping>member</friendly-url-mapping>
+		<friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>
+		<instanceable>false</instanceable>
+		<private-session-attributes>false</private-session-attributes>
+		<requires-namespaced-parameters>false</requires-namespaced-parameters>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-javascript>/js/main.js</header-portlet-javascript>
 	</portlet>

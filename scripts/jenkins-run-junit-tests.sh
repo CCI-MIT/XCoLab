@@ -2,13 +2,13 @@
 set -e
 
 #temp dir, where test dependency libs will be copied to. ATTENTION, this directory's contents will be deleted!
-test_deps_lib="/home/manuel/XCoLab/other/tools/intellij-junit-tmp-dir"
+test_deps_lib="/home/jenkins/tests/intellij-junit-tmp-dir"
 #location of the facade
-plansProposalsFacade_dir="/home/manuel/XCoLab/services/plansProposalsFacade"
+plansProposalsFacade_dir="/home/jenkins/.jenkins/jobs/xcolab/workspace/services/plansProposalsFacade"
 #java binary
-java_bin="/home/manuel/jdk1.7.0_60/bin/java"
+java_bin="/opt/jdk/bin/java"
 #this dir has to contain idea_rt.jar and junit-rt.jar
-intellij_junit_lib_dir="/home/manuel/XCoLab/other/tools/intellij-junit-libraries"
+intellij_junit_lib_dir="/home/jenkins/.jenkins/jobs/xcolab/workspace/other/tools/intellij-junit-libraries"
 
 email_recipient="thurner@mit.edu"
 

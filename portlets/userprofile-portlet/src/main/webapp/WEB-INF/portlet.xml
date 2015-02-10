@@ -9,22 +9,19 @@
 	<portlet>
 		<portlet-name>userprofile-portlet</portlet-name>
 		<display-name>userprofile-portlet</display-name>
-		<portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
 		<init-param>
-			<name>javax.portlet.faces.defaultViewId.view</name>
-			<value>/xhtml/view.xhtml</value>
-		</init-param>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.edit</name>
-			<value>/xhtml/edit.xhtml</value>
+    		<name>check-auth-token</name>
+    		<value>false</value>
 		</init-param>
 		<supports>
 			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
 			<portlet-mode>edit</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>MIT Userprofile (ICE)</title>
-			<short-title>Members</short-title>
+			<title>MIT userprofile</title>
+			<short-title>userprofile</short-title>
 			<keywords>userprofile</keywords>
 		</portlet-info>
 		<security-role-ref>

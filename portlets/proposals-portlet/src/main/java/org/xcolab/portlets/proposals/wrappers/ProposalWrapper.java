@@ -260,6 +260,29 @@ public class ProposalWrapper {
         return selectedJudges;
     }
 
+    public List<User> getSelectedJudgeUsers() throws SystemException, PortalException {
+        List<User> selectedJudges = new ArrayList<>();
+
+        // All judges are selected when screening is disabled
+        if (!contestPhase.getFellowScreeningActive()) {
+            for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
+                selectedJudges.add(judge);
+            }
+        }
+        else {
+            String s;
+            try {
+                s = getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
+            } catch (Exception e) {
+                return selectedJudges;
+            }
+            if (s == null || s.length() == 0) return selectedJudges;
+            for (String element : s.split(";")) selectedJudges.add(UserLocalServiceUtil.getUser(Long.parseLong(element)));
+        }
+
+        return selectedJudges;
+    }
+
     public boolean isUserAmongSelectedJudge(User user) throws PortalException, SystemException {
         if (!getFellowScreeningNeccessary()) {
             return isUserAmongJudges(user);
@@ -386,6 +409,7 @@ public class ProposalWrapper {
     public List<User> getSupporters() throws PortalException, SystemException {
         return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
     }
+
 
     protected boolean getFellowScreeningNeccessary() {
         return contestPhase.getFellowScreeningActive();
@@ -531,6 +555,7 @@ public class ProposalWrapper {
         return GenericJudgingStatus.STATUS_UNKNOWN;
     }
 
+
     /**
      * Determines whether the screening/advance decision of the proposal is done
      * @return
@@ -637,6 +662,21 @@ public class ProposalWrapper {
 
         return true;
     }
+
+    public boolean getJudgeReviewFinishedStatusUserId(Long userId) throws SystemException, PortalException {
+
+        List<ProposalRating> proposalRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
+                userId,
+                this.proposal.getProposalId(),
+                this.contestPhase.getContestPhasePK());
+        ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);
+        if (!wrapper.isReviewComplete()) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     public ProposalAttributeUtil getProposalAttributeUtil() {
         return proposalAttributeUtil;

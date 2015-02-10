@@ -94,6 +94,7 @@
                                 </div>
                             </c:forEach>
                         </div>
+                        <i>Your comment will be visible to the public.</i>
                         <div class="form-errors"><!--  -->
                             <form:errors cssClass="alert alert-error" path="fellowScreeningActionCommentBody" />
                         </div>
@@ -130,7 +131,7 @@
                     <form:errors path="*" cssClass="alert alert-error" />
 
                     <h3 style="margin-top: 0;">My Rating</h3>
-
+                    <i>Your rating will be visible to the Judging team only.</i>
                     <c:choose>
                         <c:when test="${hasNoWritePermission}">
                             <p class="submitStatus error">
@@ -147,6 +148,7 @@
                             <proposalsPortlet:proposalRating ratingTypes="${fellowProposalScreeningBean.ratingTypes}" ratingValuesPath="ratingValues" />
 
                             <h4>Rating comment:</h4>
+                            <i>Your comment will be visible to other Fellows and Judges only.</i>
                             <form:textarea id="fellowRatingComment" cssClass="commentbox" path="comment" style="width:100%;"/>
                             <div class="blue-button" style="display:block; float:right;">
                                 <a href="javascript:;" class="requestMembershipSubmitButton"
@@ -181,13 +183,17 @@
 
     <script type="text/javascript">
         var fellowScreeningActions = {};
+    </script>
 
-        <c:forEach var="fellowScreeningActions" items="${judgingOptions}">
-            fellowScreeningActions[${fellowScreeningActions.attributeValue}] = {attributeValue: ${fellowScreeningActions.attributeValue},
-            description: "${fellowScreeningActions.description}", selectJudgesEnabled: ${fellowScreeningActions.selectJudgesEnabled},
-            commentEnabled: ${fellowScreeningActions.commentEnabled}};
-        </c:forEach>
+    <c:forEach var="fellowScreeningActions" items="${judgingOptions}">
+        <script type="text/javascript">
+        fellowScreeningActions[${fellowScreeningActions.attributeValue}] = {attributeValue: ${fellowScreeningActions.attributeValue},
+        description: "${fellowScreeningActions.description}", selectJudgesEnabled: ${fellowScreeningActions.selectJudgesEnabled},
+        commentEnabled: ${fellowScreeningActions.commentEnabled}};
+        </script>
+    </c:forEach>
 
+    <script type="text/javascript">
 
         jQuery( document ).ready(function() {
             jQuery('#fellowScreeningAction').change(function() {
@@ -234,8 +240,8 @@
                 jQuery("#comment-headers ."+classToBeShown).add("#comment-footers ."+classToBeShown).show();
             }
         }
-
     </script>
+
     <c:if test="${hasNoWritePermission}">
         <script>
             $("#fellowRatingForm select").add($("#fellowRatingForm input")).add($("#fellowRatingForm textarea")).attr("disabled", "disabled");

@@ -2,18 +2,15 @@ package org.xcolab.hooks.climatecolab.errorreporting;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngine;
-import com.liferay.util.mail.MailEngineException;
 import org.parboiled.common.StringUtils;
-
 import javax.mail.internet.InternetAddress;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 
 /**
@@ -29,10 +26,29 @@ public class ErrorReporting implements Filter {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String url = request.getParameter("url");
-        String description = request.getParameter("description");
-        if (StringUtils.isNotEmpty(url) && StringUtils.isNotEmpty(description)){
-           sendMessage("Error Report from User","An exception occured at: " + url + "\n\n" + "Message from user:\n" + description);
+        String email = request.getParameter("email");
+        String descriptionInHtmlFormat = request.getParameter("description").replaceAll("(\r\n|\n)", "<br />");
+        String stackTrace = request.getParameter("stackTrace");
+        String userScreenName = "no user was logged in";
+        try {
+            userScreenName = PortalUtil.getUser(request).getScreenName();
+        }
+        catch(Exception e){
+            // Couldn't find user or no user is logged in
+        }
+        StringBuilder messageBuilder = new StringBuilder();
+        if (StringUtils.isNotEmpty(url)){
+            messageBuilder.append("<p><strong>An exception occured at:</strong><br> " + url + "</p>");
+            messageBuilder.append("<p><strong>Message from user (" + userScreenName + "):</strong><br/> ");
+            messageBuilder.append(descriptionInHtmlFormat + "</p>");
+            if(StringUtils.isNotEmpty(email)){
+                messageBuilder.append("<p><strong>Please notify user once we have a fix for the bug:</strong><br/>");
+                messageBuilder.append(email + "</p>");
+            }
+            messageBuilder.append(URLDecoder.decode(stackTrace, "UTF-8"));
+            sendMessage("Error Report from User", messageBuilder.toString());
         }
         response.sendRedirect("/");
     }
@@ -48,10 +64,18 @@ public class ErrorReporting implements Filter {
     protected void sendMessage(String subject, String body) {
         try {
             InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");
-            InternetAddress toEmail = new InternetAddress("pdeboer@mit.edu", "Patrick de Boer");
-            MailEngine.send(fromEmail, toEmail, subject, body, true);
+
+            String emailRecipients = "pdeboer@mit.edu,knauert@mit.edu,mail@klemensmang.com,lamche@mit.edu";
+            String[] recipients = emailRecipients.split(",");
+
+            InternetAddress[] addressTo = new InternetAddress[recipients.length];
+            for (int i = 0; i < recipients.length; i++) {
+                addressTo[i] = new InternetAddress(recipients[i]);
+            }
+
+            MailEngine.send(fromEmail, addressTo, subject, body, true);
         } catch (Exception e) {
-            _log.error("Could not send vote message", e);
+            _log.error("Could not send feedback message", e);
         }
     }
 

@@ -1,0 +1,43 @@
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.1.0//EN"
+        "http://www.liferay.com/dtd/liferay-friendly-url-routes_6_1_0.dtd">
+<routes>
+    <route>
+        <pattern>/userId/{userId}</pattern>
+        <generated-parameter name="userId">{userId}</generated-parameter>
+        <generated-parameter name="page">view</generated-parameter>
+    </route>
+    <route>
+        <pattern>/userId/{userId}/page/edit</pattern>
+        <generated-parameter name="userId">{userId}</generated-parameter>
+        <generated-parameter name="page">edit</generated-parameter>
+    </route>
+    <route>
+        <pattern>/userId/{userId}/page/subscriptions</pattern>
+        <generated-parameter name="userId">{userId}</generated-parameter>
+        <generated-parameter name="page">subscriptions</generated-parameter>
+    </route>
+    <route>
+        <pattern>/userId/{userId}/page/subscriptions/{paginationId}</pattern>
+        <generated-parameter name="userId">{userId}</generated-parameter>
+        <generated-parameter name="page">subscriptions</generated-parameter>
+        <generated-parameter name="paginationId">{paginationId}</generated-parameter>
+        <ignored-parameter name="p_p_col_id"></ignored-parameter>
+        <ignored-parameter name="p_p_col_count"></ignored-parameter>
+        <ignored-parameter name="p_p_id"></ignored-parameter>
+        <ignored-parameter name="p_auth"></ignored-parameter>
+        <implicit-parameter name="p_p_lifecycle">0</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+        <implicit-parameter name="p_p_mode">view</implicit-parameter>
+    </route>
+    <route>
+        <pattern>/userId/{userId}/page/subscriptionsManage</pattern>
+        <generated-parameter name="userId">{userId}</generated-parameter>
+        <generated-parameter name="page">subscriptionsManage</generated-parameter>
+    </route>
+    <route>
+        <pattern>/userId/{userId}/page/subscriptionsManage/{typeFilter}</pattern>
+        <generated-parameter name="userId">{userId}</generated-parameter>
+        <generated-parameter name="page">subscriptionsManage</generated-parameter>
+        <generated-parameter name="typeFilter">{typeFilter}</generated-parameter>
+    </route>
+</routes>

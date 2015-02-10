@@ -1,8 +1,6 @@
 package org.xcolab.hooks.climatecolab.strutsaction;
 
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
@@ -31,48 +29,48 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 
 	public String execute(HttpServletRequest request,
 			HttpServletResponse response) throws MessageListenerException {
-        System.out.println("digest-debug: SchedulerDispatchStrutsAction line 34 reached");
 
 		synchronized (mutex) {
 			if (isRunning) {
-                System.out.println("digest-debug: task is already running");
+                _log.warn("Activity email notification sending (instant notifications / daily digest) is already running!");
 				// if task is already running don't run it again
 				return StringPool.BLANK;
 			}
 			isRunning = true;
 		}
-        System.out.println("digest-debug: SchedulerDispatchStrutsAction line 44 reached");
 
 		String clientIp = request.getRemoteAddr();
 		if (!(clientIp.equals(LOCAL_IPv4_ADDRESS) || clientIp
 				.equals(LOCAL_IPv6_ADDRESS))) {
 			_log.warn(String
 					.format("Denied request from address %s!", clientIp));
+			resetIsRunning();
 			return null;
 		}
-        System.out.println("digest-debug: SchedulerDispatchStrutsAction line 53 reached");
 
 		ServiceContext serviceContext = new ServiceContext();
 		serviceContext.setRequest(request);
 		serviceContext.setPortalURL(((ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY)).getPortalURL());
-        System.out.println("digest-debug: SchedulerDispatchStrutsAction line 59 reached");
 		try {
 			ActivitySubscriptionLocalServiceUtil
 					.sendEmailNotifications(serviceContext);
 		} catch (Throwable e) {
-            System.out.println("digest-debug: SchedulerDispatchStrutsAction line 64 reached, exception thrown.");
             e.printStackTrace();
 			_log.error(
 					"Could not process email notification of proposal subscription feature",
 					e);
 		}
 
-		synchronized (mutex) {
-			isRunning = false;
-		}
+		resetIsRunning();
+
 		return StringPool.BLANK;
 
 	}
 
+	private void resetIsRunning() {
+		synchronized (mutex) {
+			isRunning = false;
+		}
+	}
 }

@@ -57,6 +57,10 @@ public class FellowProposalScreeningBean extends RatingBean implements Serializa
         this.fellowScreeningAction = JudgingSystemActions.FellowAction.fromInt(fellowActionValue);
     }
 
+    public void addSelectedJudge(Long userId){
+        selectedJudges.add(userId);
+    }
+
     public List<Long> getSelectedJudges() {
         return selectedJudges;
     }

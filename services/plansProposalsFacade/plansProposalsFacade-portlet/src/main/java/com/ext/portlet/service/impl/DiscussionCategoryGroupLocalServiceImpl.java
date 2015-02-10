@@ -113,7 +113,7 @@ public class DiscussionCategoryGroupLocalServiceImpl
     
     public DiscussionMessage addComment(DiscussionCategoryGroup dcg, String title, String description, User author) throws SystemException, PortalException {
         DiscussionMessage comment = null;
-        if (getCommentThread(dcg) == null) {
+        if (getCommentThread(dcg) == null || getCommentThread(dcg).getDeleted() != null) {
             // create new thread
             comment = DiscussionMessageLocalServiceUtil.addThread(dcg.getId(), 0L, title, description, author);
             dcg.setCommentsThread(comment.getMessageId());
@@ -151,7 +151,9 @@ public class DiscussionCategoryGroupLocalServiceImpl
             return 0;
         }
         else {
-            return DiscussionMessageLocalServiceUtil.getThreadMessagesCount(getCommentThread(dcg)) + 1;
+            boolean commentThreadMessageDeleted = getCommentThread(dcg).getDeleted() != null;
+            int countCommentThreadMessage = (commentThreadMessageDeleted) ? 0 : 1;
+            return DiscussionMessageLocalServiceUtil.getThreadMessagesCount(getCommentThread(dcg)) + countCommentThreadMessage;
         }
     }
     
