@@ -41,12 +41,12 @@ public class PointTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName576;
-    private String[] _methodParameterTypes576;
-    private String _methodName577;
-    private String[] _methodParameterTypes577;
-    private String _methodName582;
-    private String[] _methodParameterTypes582;
+    private String _methodName588;
+    private String[] _methodParameterTypes588;
+    private String _methodName589;
+    private String[] _methodParameterTypes589;
+    private String _methodName594;
+    private String[] _methodParameterTypes594;
 
     public PointTypeLocalServiceClpInvoker() {
         _methodName0 = "addPointType";
@@ -125,17 +125,17 @@ public class PointTypeLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.PointType" };
 
-        _methodName576 = "getBeanIdentifier";
+        _methodName588 = "getBeanIdentifier";
 
-        _methodParameterTypes576 = new String[] {  };
+        _methodParameterTypes588 = new String[] {  };
 
-        _methodName577 = "setBeanIdentifier";
+        _methodName589 = "setBeanIdentifier";
 
-        _methodParameterTypes577 = new String[] { "java.lang.String" };
+        _methodParameterTypes589 = new String[] { "java.lang.String" };
 
-        _methodName582 = "getChildrenOfPointType";
+        _methodName594 = "getChildrenOfPointType";
 
-        _methodParameterTypes582 = new String[] { "long" };
+        _methodParameterTypes594 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -227,20 +227,20 @@ public class PointTypeLocalServiceClpInvoker {
             return PointTypeLocalServiceUtil.updatePointType((com.ext.portlet.model.PointType) arguments[0]);
         }
 
-        if (_methodName576.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes576, parameterTypes)) {
+        if (_methodName588.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes588, parameterTypes)) {
             return PointTypeLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName577.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes577, parameterTypes)) {
+        if (_methodName589.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes589, parameterTypes)) {
             PointTypeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName582.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes582, parameterTypes)) {
+        if (_methodName594.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes594, parameterTypes)) {
             return PointTypeLocalServiceUtil.getChildrenOfPointType(((Long) arguments[0]).longValue());
         }
 

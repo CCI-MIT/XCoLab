@@ -41,6 +41,7 @@ public class ContestPhaseWrapper implements ContestPhase,
         attributes.put("ContestPhasePK", getContestPhasePK());
         attributes.put("ContestPK", getContestPK());
         attributes.put("ContestPhaseType", getContestPhaseType());
+        attributes.put("ContestSchedulePK", getContestSchedulePK());
         attributes.put("fellowScreeningActive", getFellowScreeningActive());
         attributes.put("contestPhaseAutopromote", getContestPhaseAutopromote());
         attributes.put("ContestPhaseDescriptionOverride",
@@ -49,6 +50,7 @@ public class ContestPhaseWrapper implements ContestPhase,
         attributes.put("phaseInactiveOverride", getPhaseInactiveOverride());
         attributes.put("PhaseStartDate", getPhaseStartDate());
         attributes.put("PhaseEndDate", getPhaseEndDate());
+        attributes.put("PhaseBufferEndDated", getPhaseBufferEndDated());
         attributes.put("nextStatus", getNextStatus());
         attributes.put("created", getCreated());
         attributes.put("updated", getUpdated());
@@ -75,6 +77,12 @@ public class ContestPhaseWrapper implements ContestPhase,
 
         if (ContestPhaseType != null) {
             setContestPhaseType(ContestPhaseType);
+        }
+
+        Long ContestSchedulePK = (Long) attributes.get("ContestSchedulePK");
+
+        if (ContestSchedulePK != null) {
+            setContestSchedulePK(ContestSchedulePK);
         }
 
         Boolean fellowScreeningActive = (Boolean) attributes.get(
@@ -122,6 +130,12 @@ public class ContestPhaseWrapper implements ContestPhase,
 
         if (PhaseEndDate != null) {
             setPhaseEndDate(PhaseEndDate);
+        }
+
+        Date PhaseBufferEndDated = (Date) attributes.get("PhaseBufferEndDated");
+
+        if (PhaseBufferEndDated != null) {
+            setPhaseBufferEndDated(PhaseBufferEndDated);
         }
 
         String nextStatus = (String) attributes.get("nextStatus");
@@ -227,6 +241,26 @@ public class ContestPhaseWrapper implements ContestPhase,
     @Override
     public void setContestPhaseType(long ContestPhaseType) {
         _contestPhase.setContestPhaseType(ContestPhaseType);
+    }
+
+    /**
+    * Returns the contest schedule p k of this contest phase.
+    *
+    * @return the contest schedule p k of this contest phase
+    */
+    @Override
+    public long getContestSchedulePK() {
+        return _contestPhase.getContestSchedulePK();
+    }
+
+    /**
+    * Sets the contest schedule p k of this contest phase.
+    *
+    * @param ContestSchedulePK the contest schedule p k of this contest phase
+    */
+    @Override
+    public void setContestSchedulePK(long ContestSchedulePK) {
+        _contestPhase.setContestSchedulePK(ContestSchedulePK);
     }
 
     /**
@@ -402,6 +436,26 @@ public class ContestPhaseWrapper implements ContestPhase,
     }
 
     /**
+    * Returns the phase buffer end dated of this contest phase.
+    *
+    * @return the phase buffer end dated of this contest phase
+    */
+    @Override
+    public java.util.Date getPhaseBufferEndDated() {
+        return _contestPhase.getPhaseBufferEndDated();
+    }
+
+    /**
+    * Sets the phase buffer end dated of this contest phase.
+    *
+    * @param PhaseBufferEndDated the phase buffer end dated of this contest phase
+    */
+    @Override
+    public void setPhaseBufferEndDated(java.util.Date PhaseBufferEndDated) {
+        _contestPhase.setPhaseBufferEndDated(PhaseBufferEndDated);
+    }
+
+    /**
     * Returns the next status of this contest phase.
     *
     * @return the next status of this contest phase
@@ -545,7 +599,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.ContestPhase contestPhase) {
+    public int compareTo(ContestPhase contestPhase) {
         return _contestPhase.compareTo(contestPhase);
     }
 
@@ -555,17 +609,17 @@ public class ContestPhaseWrapper implements ContestPhase,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ContestPhase> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<ContestPhase> toCacheModel() {
         return _contestPhase.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.ContestPhase toEscapedModel() {
+    public ContestPhase toEscapedModel() {
         return new ContestPhaseWrapper(_contestPhase.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.ContestPhase toUnescapedModel() {
+    public ContestPhase toUnescapedModel() {
         return new ContestPhaseWrapper(_contestPhase.toUnescapedModel());
     }
 

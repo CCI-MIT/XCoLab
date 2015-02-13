@@ -232,8 +232,7 @@ public class PlanSectionPlanMapUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanSectionPlanMap[] findByPlanId_PrevAndNext(
-        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK,
-        long relatedPlanId,
+        PlanSectionPlanMapPK planSectionPlanMapPK, long relatedPlanId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -398,8 +397,7 @@ public class PlanSectionPlanMapUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanSectionPlanMap[] findBySectionId_PrevAndNext(
-        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK,
-        long sectionId,
+        PlanSectionPlanMapPK planSectionPlanMapPK, long sectionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -458,7 +456,7 @@ public class PlanSectionPlanMapUtil {
     * @return the new plan section plan map
     */
     public static com.ext.portlet.model.PlanSectionPlanMap create(
-        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK) {
+        PlanSectionPlanMapPK planSectionPlanMapPK) {
         return getPersistence().create(planSectionPlanMapPK);
     }
 
@@ -471,7 +469,7 @@ public class PlanSectionPlanMapUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanSectionPlanMap remove(
-        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK)
+        PlanSectionPlanMapPK planSectionPlanMapPK)
         throws com.ext.portlet.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(planSectionPlanMapPK);
@@ -492,7 +490,7 @@ public class PlanSectionPlanMapUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanSectionPlanMap findByPrimaryKey(
-        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK)
+        PlanSectionPlanMapPK planSectionPlanMapPK)
         throws com.ext.portlet.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(planSectionPlanMapPK);
@@ -506,7 +504,7 @@ public class PlanSectionPlanMapUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanSectionPlanMap fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK)
+        PlanSectionPlanMapPK planSectionPlanMapPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(planSectionPlanMapPK);
     }

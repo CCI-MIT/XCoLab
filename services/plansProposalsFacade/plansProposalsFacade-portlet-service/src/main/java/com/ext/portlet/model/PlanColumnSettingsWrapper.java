@@ -247,8 +247,7 @@ public class PlanColumnSettingsWrapper implements PlanColumnSettings,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.PlanColumnSettings planColumnSettings) {
+    public int compareTo(PlanColumnSettings planColumnSettings) {
         return _planColumnSettings.compareTo(planColumnSettings);
     }
 
@@ -258,17 +257,17 @@ public class PlanColumnSettingsWrapper implements PlanColumnSettings,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanColumnSettings> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PlanColumnSettings> toCacheModel() {
         return _planColumnSettings.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PlanColumnSettings toEscapedModel() {
+    public PlanColumnSettings toEscapedModel() {
         return new PlanColumnSettingsWrapper(_planColumnSettings.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PlanColumnSettings toUnescapedModel() {
+    public PlanColumnSettings toUnescapedModel() {
         return new PlanColumnSettingsWrapper(_planColumnSettings.toUnescapedModel());
     }
 

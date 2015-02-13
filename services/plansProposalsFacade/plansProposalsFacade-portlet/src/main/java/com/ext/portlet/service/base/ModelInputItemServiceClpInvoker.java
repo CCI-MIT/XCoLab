@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class ModelInputItemServiceClpInvoker {
-    private String _methodName560;
-    private String[] _methodParameterTypes560;
-    private String _methodName561;
-    private String[] _methodParameterTypes561;
+    private String _methodName572;
+    private String[] _methodParameterTypes572;
+    private String _methodName573;
+    private String[] _methodParameterTypes573;
 
     public ModelInputItemServiceClpInvoker() {
-        _methodName560 = "getBeanIdentifier";
+        _methodName572 = "getBeanIdentifier";
 
-        _methodParameterTypes560 = new String[] {  };
+        _methodParameterTypes572 = new String[] {  };
 
-        _methodName561 = "setBeanIdentifier";
+        _methodName573 = "setBeanIdentifier";
 
-        _methodParameterTypes561 = new String[] { "java.lang.String" };
+        _methodParameterTypes573 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName560.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes560, parameterTypes)) {
+        if (_methodName572.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes572, parameterTypes)) {
             return ModelInputItemServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName561.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes561, parameterTypes)) {
+        if (_methodName573.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes573, parameterTypes)) {
             ModelInputItemServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

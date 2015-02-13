@@ -1109,7 +1109,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.Contest contest) {
+    public int compareTo(Contest contest) {
         return _contest.compareTo(contest);
     }
 
@@ -1119,17 +1119,17 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.Contest> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<Contest> toCacheModel() {
         return _contest.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.Contest toEscapedModel() {
+    public Contest toEscapedModel() {
         return new ContestWrapper(_contest.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.Contest toUnescapedModel() {
+    public Contest toUnescapedModel() {
         return new ContestWrapper(_contest.toUnescapedModel());
     }
 

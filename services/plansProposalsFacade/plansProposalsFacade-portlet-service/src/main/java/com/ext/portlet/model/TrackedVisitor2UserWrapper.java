@@ -259,8 +259,7 @@ public class TrackedVisitor2UserWrapper implements TrackedVisitor2User,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.TrackedVisitor2User trackedVisitor2User) {
+    public int compareTo(TrackedVisitor2User trackedVisitor2User) {
         return _trackedVisitor2User.compareTo(trackedVisitor2User);
     }
 
@@ -270,17 +269,17 @@ public class TrackedVisitor2UserWrapper implements TrackedVisitor2User,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.TrackedVisitor2User> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<TrackedVisitor2User> toCacheModel() {
         return _trackedVisitor2User.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.TrackedVisitor2User toEscapedModel() {
+    public TrackedVisitor2User toEscapedModel() {
         return new TrackedVisitor2UserWrapper(_trackedVisitor2User.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.TrackedVisitor2User toUnescapedModel() {
+    public TrackedVisitor2User toUnescapedModel() {
         return new TrackedVisitor2UserWrapper(_trackedVisitor2User.toUnescapedModel());
     }
 

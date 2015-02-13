@@ -37,8 +37,8 @@ public class ProposalCreationNotification extends EmailNotification {
             "<ul>" +
             "<li><b>Share your proposal</b> with your friends and colleagues over TWITTER_PLACEHOLDER, FACEBOOK_PLACEHOLDER, PINTEREST_PLACEHOLDER, LINKEDIN_PLACEHOLDER & more.  " +
             "Ask for support, comments, or just to check out what you're working on.  Don't forget to mention us @ClimateCoLab!</li>" +
-            "<li><b>The YEAR_PLACEHOLDER contest deadline is DEADLINE_PLACEHOLDER</b>.  You can edit your proposal as many times as you want before then, but make sure your final " +
-            "version is updated before midnight.  At that point, the most recent version of your proposal will be frozen and submitted to the Judges for review.  " +
+            "<li><b>The contest deadline is DEADLINE_PLACEHOLDER</b> (except for proposals created in the Workspace, where there is no deadline). You can edit your proposal as many times as you want before then, but make sure your final " +
+            "version is updated before the deadline.  At that point, the most recent version of your proposal will be frozen and submitted to the Judges for review.  " +
             "To learn more about the judging process, click <a href='http://climatecolab.org/web/guest/crowdsourcing'>click here</a>.</li>" +
             "</ul>" +
             "Happy CoLaborating!" +
@@ -52,7 +52,7 @@ public class ProposalCreationNotification extends EmailNotification {
     private static final String PROPOSAL_SHARE_TEXT = "I just created a new proposal at the Climate CoLab. Check it out!";
     private static final String PROPOSAL_SHARE_TITLE = "New proposal at @ClimateCoLab";
 
-    private static final String YEAR_FALLBACK = "2014";
+    private static final String YEAR_FALLBACK = "2015";
     private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
 
     // Placeholder strings

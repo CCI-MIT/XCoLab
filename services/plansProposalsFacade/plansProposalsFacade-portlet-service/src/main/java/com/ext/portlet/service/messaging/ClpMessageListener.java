@@ -15,6 +15,8 @@ import com.ext.portlet.service.BalloonUserTrackingServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestDebateServiceUtil;
+import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
+import com.ext.portlet.service.ContestDiscussionServiceUtil;
 import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.ext.portlet.service.ContestEmailTemplateServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -26,6 +28,8 @@ import com.ext.portlet.service.ContestPhaseRibbonTypeServiceUtil;
 import com.ext.portlet.service.ContestPhaseServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeServiceUtil;
+import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
+import com.ext.portlet.service.ContestScheduleServiceUtil;
 import com.ext.portlet.service.ContestServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberServiceUtil;
@@ -224,6 +228,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ContestDebateLocalServiceUtil.clearService();
 
             ContestDebateServiceUtil.clearService();
+            ContestDiscussionLocalServiceUtil.clearService();
+
+            ContestDiscussionServiceUtil.clearService();
             ContestEmailTemplateLocalServiceUtil.clearService();
 
             ContestEmailTemplateServiceUtil.clearService();
@@ -239,6 +246,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ContestPhaseTypeLocalServiceUtil.clearService();
 
             ContestPhaseTypeServiceUtil.clearService();
+            ContestScheduleLocalServiceUtil.clearService();
+
+            ContestScheduleServiceUtil.clearService();
             ContestTeamMemberLocalServiceUtil.clearService();
 
             ContestTeamMemberServiceUtil.clearService();

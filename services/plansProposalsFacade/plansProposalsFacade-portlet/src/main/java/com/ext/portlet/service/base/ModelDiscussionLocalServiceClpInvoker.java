@@ -41,10 +41,10 @@ public class ModelDiscussionLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName576;
-    private String[] _methodParameterTypes576;
-    private String _methodName577;
-    private String[] _methodParameterTypes577;
+    private String _methodName588;
+    private String[] _methodParameterTypes588;
+    private String _methodName589;
+    private String[] _methodParameterTypes589;
 
     public ModelDiscussionLocalServiceClpInvoker() {
         _methodName0 = "addModelDiscussion";
@@ -129,13 +129,13 @@ public class ModelDiscussionLocalServiceClpInvoker {
                 "com.ext.portlet.model.ModelDiscussion"
             };
 
-        _methodName576 = "getBeanIdentifier";
+        _methodName588 = "getBeanIdentifier";
 
-        _methodParameterTypes576 = new String[] {  };
+        _methodParameterTypes588 = new String[] {  };
 
-        _methodName577 = "setBeanIdentifier";
+        _methodName589 = "setBeanIdentifier";
 
-        _methodParameterTypes577 = new String[] { "java.lang.String" };
+        _methodParameterTypes589 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -227,13 +227,13 @@ public class ModelDiscussionLocalServiceClpInvoker {
             return ModelDiscussionLocalServiceUtil.updateModelDiscussion((com.ext.portlet.model.ModelDiscussion) arguments[0]);
         }
 
-        if (_methodName576.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes576, parameterTypes)) {
+        if (_methodName588.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes588, parameterTypes)) {
             return ModelDiscussionLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName577.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes577, parameterTypes)) {
+        if (_methodName589.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes589, parameterTypes)) {
             ModelDiscussionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

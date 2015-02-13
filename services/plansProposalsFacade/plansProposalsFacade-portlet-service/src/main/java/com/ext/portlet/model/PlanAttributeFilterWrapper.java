@@ -291,8 +291,7 @@ public class PlanAttributeFilterWrapper implements PlanAttributeFilter,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.PlanAttributeFilter planAttributeFilter) {
+    public int compareTo(PlanAttributeFilter planAttributeFilter) {
         return _planAttributeFilter.compareTo(planAttributeFilter);
     }
 
@@ -302,17 +301,17 @@ public class PlanAttributeFilterWrapper implements PlanAttributeFilter,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanAttributeFilter> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PlanAttributeFilter> toCacheModel() {
         return _planAttributeFilter.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PlanAttributeFilter toEscapedModel() {
+    public PlanAttributeFilter toEscapedModel() {
         return new PlanAttributeFilterWrapper(_planAttributeFilter.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PlanAttributeFilter toUnescapedModel() {
+    public PlanAttributeFilter toUnescapedModel() {
         return new PlanAttributeFilterWrapper(_planAttributeFilter.toUnescapedModel());
     }
 

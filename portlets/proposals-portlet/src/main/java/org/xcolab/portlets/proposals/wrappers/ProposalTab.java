@@ -34,7 +34,7 @@ public enum ProposalTab {
             , ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
     TEAM("Contributors", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.membersCount),
     COMMENTS("Comments", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.commentsCount),
-    DISCUSSION("Judging Results", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.discussionCommentsCount),
+    DISCUSSION("Evaluation", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.discussionCommentsCount),
     ADVANCING("Judging Decision",ProposalTabCanAccessAlgorithm.advancingAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     SCREENING("Screening", ProposalTabCanAccessAlgorithm.screeningAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     ADMIN("Admin", ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),

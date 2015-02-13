@@ -88,6 +88,20 @@ public interface ContestPhaseModel extends BaseModel<ContestPhase> {
     public void setContestPhaseType(long ContestPhaseType);
 
     /**
+     * Returns the contest schedule p k of this contest phase.
+     *
+     * @return the contest schedule p k of this contest phase
+     */
+    public long getContestSchedulePK();
+
+    /**
+     * Sets the contest schedule p k of this contest phase.
+     *
+     * @param ContestSchedulePK the contest schedule p k of this contest phase
+     */
+    public void setContestSchedulePK(long ContestSchedulePK);
+
+    /**
      * Returns the fellow screening active of this contest phase.
      *
      * @return the fellow screening active of this contest phase
@@ -208,6 +222,20 @@ public interface ContestPhaseModel extends BaseModel<ContestPhase> {
      * @param PhaseEndDate the phase end date of this contest phase
      */
     public void setPhaseEndDate(Date PhaseEndDate);
+
+    /**
+     * Returns the phase buffer end dated of this contest phase.
+     *
+     * @return the phase buffer end dated of this contest phase
+     */
+    public Date getPhaseBufferEndDated();
+
+    /**
+     * Sets the phase buffer end dated of this contest phase.
+     *
+     * @param PhaseBufferEndDated the phase buffer end dated of this contest phase
+     */
+    public void setPhaseBufferEndDated(Date PhaseBufferEndDated);
 
     /**
      * Returns the next status of this contest phase.

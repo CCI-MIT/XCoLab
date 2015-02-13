@@ -662,7 +662,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.PlanMeta planMeta) {
+    public int compareTo(PlanMeta planMeta) {
         return _planMeta.compareTo(planMeta);
     }
 
@@ -672,17 +672,17 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanMeta> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PlanMeta> toCacheModel() {
         return _planMeta.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PlanMeta toEscapedModel() {
+    public PlanMeta toEscapedModel() {
         return new PlanMetaWrapper(_planMeta.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PlanMeta toUnescapedModel() {
+    public PlanMeta toUnescapedModel() {
         return new PlanMetaWrapper(_planMeta.toUnescapedModel());
     }
 

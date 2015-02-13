@@ -306,8 +306,7 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.MessageRecipientStatus messageRecipientStatus) {
+    public int compareTo(MessageRecipientStatus messageRecipientStatus) {
         return _messageRecipientStatus.compareTo(messageRecipientStatus);
     }
 
@@ -317,17 +316,17 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.MessageRecipientStatus> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<MessageRecipientStatus> toCacheModel() {
         return _messageRecipientStatus.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.MessageRecipientStatus toEscapedModel() {
+    public MessageRecipientStatus toEscapedModel() {
         return new MessageRecipientStatusWrapper(_messageRecipientStatus.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.MessageRecipientStatus toUnescapedModel() {
+    public MessageRecipientStatus toUnescapedModel() {
         return new MessageRecipientStatusWrapper(_messageRecipientStatus.toUnescapedModel());
     }
 

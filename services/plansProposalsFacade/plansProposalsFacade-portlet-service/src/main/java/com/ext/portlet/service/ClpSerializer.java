@@ -8,11 +8,13 @@ import com.ext.portlet.model.BalloonTextClp;
 import com.ext.portlet.model.BalloonUserTrackingClp;
 import com.ext.portlet.model.ContestClp;
 import com.ext.portlet.model.ContestDebateClp;
+import com.ext.portlet.model.ContestDiscussionClp;
 import com.ext.portlet.model.ContestEmailTemplateClp;
 import com.ext.portlet.model.ContestPhaseClp;
 import com.ext.portlet.model.ContestPhaseColumnClp;
 import com.ext.portlet.model.ContestPhaseRibbonTypeClp;
 import com.ext.portlet.model.ContestPhaseTypeClp;
+import com.ext.portlet.model.ContestScheduleClp;
 import com.ext.portlet.model.ContestTeamMemberClp;
 import com.ext.portlet.model.DiscussionCategoryClp;
 import com.ext.portlet.model.DiscussionCategoryGroupClp;
@@ -209,6 +211,10 @@ public class ClpSerializer {
             return translateInputContestDebate(oldModel);
         }
 
+        if (oldModelClassName.equals(ContestDiscussionClp.class.getName())) {
+            return translateInputContestDiscussion(oldModel);
+        }
+
         if (oldModelClassName.equals(ContestEmailTemplateClp.class.getName())) {
             return translateInputContestEmailTemplate(oldModel);
         }
@@ -227,6 +233,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ContestPhaseTypeClp.class.getName())) {
             return translateInputContestPhaseType(oldModel);
+        }
+
+        if (oldModelClassName.equals(ContestScheduleClp.class.getName())) {
+            return translateInputContestSchedule(oldModel);
         }
 
         if (oldModelClassName.equals(ContestTeamMemberClp.class.getName())) {
@@ -642,6 +652,16 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateInputContestDiscussion(BaseModel<?> oldModel) {
+        ContestDiscussionClp oldClpModel = (ContestDiscussionClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getContestDiscussionRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
     public static Object translateInputContestEmailTemplate(
         BaseModel<?> oldModel) {
         ContestEmailTemplateClp oldClpModel = (ContestEmailTemplateClp) oldModel;
@@ -688,6 +708,16 @@ public class ClpSerializer {
         ContestPhaseTypeClp oldClpModel = (ContestPhaseTypeClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getContestPhaseTypeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputContestSchedule(BaseModel<?> oldModel) {
+        ContestScheduleClp oldClpModel = (ContestScheduleClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getContestScheduleRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1542,6 +1572,11 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ContestDiscussionImpl")) {
+            return translateOutputContestDiscussion(oldModel);
+        }
+
+        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ContestEmailTemplateImpl")) {
             return translateOutputContestEmailTemplate(oldModel);
         }
@@ -1564,6 +1599,11 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ContestPhaseTypeImpl")) {
             return translateOutputContestPhaseType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ContestScheduleImpl")) {
+            return translateOutputContestSchedule(oldModel);
         }
 
         if (oldModelClassName.equals(
@@ -2195,6 +2235,10 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchContestDebateException();
         }
 
+        if (className.equals("com.ext.portlet.NoSuchContestDiscussionException")) {
+            return new com.ext.portlet.NoSuchContestDiscussionException();
+        }
+
         if (className.equals(
                     "com.ext.portlet.NoSuchContestEmailTemplateException")) {
             return new com.ext.portlet.NoSuchContestEmailTemplateException();
@@ -2216,6 +2260,10 @@ public class ClpSerializer {
 
         if (className.equals("com.ext.portlet.NoSuchContestPhaseTypeException")) {
             return new com.ext.portlet.NoSuchContestPhaseTypeException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchContestScheduleException")) {
+            return new com.ext.portlet.NoSuchContestScheduleException();
         }
 
         if (className.equals("com.ext.portlet.NoSuchContestTeamMemberException")) {
@@ -2641,6 +2689,16 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateOutputContestDiscussion(BaseModel<?> oldModel) {
+        ContestDiscussionClp newModel = new ContestDiscussionClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestDiscussionRemoteModel(oldModel);
+
+        return newModel;
+    }
+
     public static Object translateOutputContestEmailTemplate(
         BaseModel<?> oldModel) {
         ContestEmailTemplateClp newModel = new ContestEmailTemplateClp();
@@ -2690,6 +2748,16 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setContestPhaseTypeRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputContestSchedule(BaseModel<?> oldModel) {
+        ContestScheduleClp newModel = new ContestScheduleClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestScheduleRemoteModel(oldModel);
 
         return newModel;
     }

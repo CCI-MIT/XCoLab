@@ -15,6 +15,7 @@ import java.util.List;
 public class PlanTemplateSoap implements Serializable {
     private long _id;
     private String _name;
+    private Long _baseTemplateId;
 
     public PlanTemplateSoap() {
     }
@@ -24,6 +25,7 @@ public class PlanTemplateSoap implements Serializable {
 
         soapModel.setId(model.getId());
         soapModel.setName(model.getName());
+        soapModel.setBaseTemplateId(model.getBaseTemplateId());
 
         return soapModel;
     }
@@ -86,5 +88,13 @@ public class PlanTemplateSoap implements Serializable {
 
     public void setName(String name) {
         _name = name;
+    }
+
+    public Long getBaseTemplateId() {
+        return _baseTemplateId;
+    }
+
+    public void setBaseTemplateId(Long baseTemplateId) {
+        _baseTemplateId = baseTemplateId;
     }
 }

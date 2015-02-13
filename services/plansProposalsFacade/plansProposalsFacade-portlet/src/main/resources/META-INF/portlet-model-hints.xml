@@ -170,6 +170,11 @@
 		<field name="debateId" type="long" />
 		<field name="ContestPK" type="long" />
 	</model>
+	<model name="com.ext.portlet.model.ContestDiscussion">
+		<field name="DiscussionId" type="long" />
+		<field name="ContestId" type="long" />
+		<field name="Tab" type="String" />
+	</model>
 	<model name="com.ext.portlet.model.ContestEmailTemplate">
 		<field name="type" type="String">
 			<hint name="max-length">75</hint>
@@ -188,6 +193,7 @@
 		<field name="ContestPhasePK" type="long" />
 		<field name="ContestPK" type="long" />
 		<field name="ContestPhaseType" type="long" />
+		<field name="ContestSchedulePK" type="long" />
 		<field name="fellowScreeningActive" type="boolean" />
 		<field name="contestPhaseAutopromote" type="String" />
 		<field name="ContestPhaseDescriptionOverride" type="String">
@@ -197,6 +203,7 @@
 		<field name="phaseInactiveOverride" type="boolean" />
 		<field name="PhaseStartDate" type="Date" />
 		<field name="PhaseEndDate" type="Date" />
+		<field name="PhaseBufferEndDated" type="Date" />
 		<field name="nextStatus" type="String" />
 		<field name="created" type="Date" />
 		<field name="updated" type="Date" />
@@ -225,8 +232,18 @@
 			<hint name="max-length">4096</hint>
 		</field>
 		<field name="status" type="String" />
+		<field name="fellowScreeningActiveDefault" type="boolean" />
+		<field name="contestPhaseAutopromoteDefault" type="String" />
 		<field name="invisible" type="boolean" />
 		<field name="pointsAccessible" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.ContestSchedule">
+		<field name="ContestSchedulePK" type="long" />
+		<field name="ContestPK" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="status" type="String" />
+		<field name="invisible" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ContestTeamMember">
 		<field name="id" type="long" />
@@ -783,6 +800,7 @@
 		<field name="name" type="String">
 			<hint name="max-length">1024</hint>
 		</field>
+		<field name="baseTemplateId" type="Long" />
 	</model>
 	<model name="com.ext.portlet.model.PlanTemplateSection">
 		<field name="planTemplateId" type="long" />

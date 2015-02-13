@@ -522,7 +522,7 @@ public class BalloonTextWrapper implements BalloonText,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.BalloonText balloonText) {
+    public int compareTo(BalloonText balloonText) {
         return _balloonText.compareTo(balloonText);
     }
 
@@ -532,17 +532,17 @@ public class BalloonTextWrapper implements BalloonText,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.BalloonText> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<BalloonText> toCacheModel() {
         return _balloonText.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.BalloonText toEscapedModel() {
+    public BalloonText toEscapedModel() {
         return new BalloonTextWrapper(_balloonText.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.BalloonText toUnescapedModel() {
+    public BalloonText toUnescapedModel() {
         return new BalloonTextWrapper(_balloonText.toUnescapedModel());
     }
 

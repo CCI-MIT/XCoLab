@@ -41,6 +41,10 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
         attributes.put("name", getName());
         attributes.put("description", getDescription());
         attributes.put("status", getStatus());
+        attributes.put("fellowScreeningActiveDefault",
+            getFellowScreeningActiveDefault());
+        attributes.put("contestPhaseAutopromoteDefault",
+            getContestPhaseAutopromoteDefault());
         attributes.put("invisible", getInvisible());
         attributes.put("pointsAccessible", getPointsAccessible());
 
@@ -71,6 +75,20 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
 
         if (status != null) {
             setStatus(status);
+        }
+
+        Boolean fellowScreeningActiveDefault = (Boolean) attributes.get(
+                "fellowScreeningActiveDefault");
+
+        if (fellowScreeningActiveDefault != null) {
+            setFellowScreeningActiveDefault(fellowScreeningActiveDefault);
+        }
+
+        String contestPhaseAutopromoteDefault = (String) attributes.get(
+                "contestPhaseAutopromoteDefault");
+
+        if (contestPhaseAutopromoteDefault != null) {
+            setContestPhaseAutopromoteDefault(contestPhaseAutopromoteDefault);
         }
 
         Boolean invisible = (Boolean) attributes.get("invisible");
@@ -187,6 +205,58 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
     }
 
     /**
+    * Returns the fellow screening active default of this contest phase type.
+    *
+    * @return the fellow screening active default of this contest phase type
+    */
+    @Override
+    public boolean getFellowScreeningActiveDefault() {
+        return _contestPhaseType.getFellowScreeningActiveDefault();
+    }
+
+    /**
+    * Returns <code>true</code> if this contest phase type is fellow screening active default.
+    *
+    * @return <code>true</code> if this contest phase type is fellow screening active default; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isFellowScreeningActiveDefault() {
+        return _contestPhaseType.isFellowScreeningActiveDefault();
+    }
+
+    /**
+    * Sets whether this contest phase type is fellow screening active default.
+    *
+    * @param fellowScreeningActiveDefault the fellow screening active default of this contest phase type
+    */
+    @Override
+    public void setFellowScreeningActiveDefault(
+        boolean fellowScreeningActiveDefault) {
+        _contestPhaseType.setFellowScreeningActiveDefault(fellowScreeningActiveDefault);
+    }
+
+    /**
+    * Returns the contest phase autopromote default of this contest phase type.
+    *
+    * @return the contest phase autopromote default of this contest phase type
+    */
+    @Override
+    public java.lang.String getContestPhaseAutopromoteDefault() {
+        return _contestPhaseType.getContestPhaseAutopromoteDefault();
+    }
+
+    /**
+    * Sets the contest phase autopromote default of this contest phase type.
+    *
+    * @param contestPhaseAutopromoteDefault the contest phase autopromote default of this contest phase type
+    */
+    @Override
+    public void setContestPhaseAutopromoteDefault(
+        java.lang.String contestPhaseAutopromoteDefault) {
+        _contestPhaseType.setContestPhaseAutopromoteDefault(contestPhaseAutopromoteDefault);
+    }
+
+    /**
     * Returns the invisible of this contest phase type.
     *
     * @return the invisible of this contest phase type
@@ -300,8 +370,7 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.ContestPhaseType contestPhaseType) {
+    public int compareTo(ContestPhaseType contestPhaseType) {
         return _contestPhaseType.compareTo(contestPhaseType);
     }
 
@@ -311,17 +380,17 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ContestPhaseType> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<ContestPhaseType> toCacheModel() {
         return _contestPhaseType.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.ContestPhaseType toEscapedModel() {
+    public ContestPhaseType toEscapedModel() {
         return new ContestPhaseTypeWrapper(_contestPhaseType.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.ContestPhaseType toUnescapedModel() {
+    public ContestPhaseType toUnescapedModel() {
         return new ContestPhaseTypeWrapper(_contestPhaseType.toUnescapedModel());
     }
 

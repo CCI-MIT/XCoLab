@@ -27,6 +27,10 @@ create index IX_FC5EA30B on xcolab_Contest (contestActive, privateContest);
 
 create index IX_379DF74A on xcolab_ContestDebate (ContestPK);
 
+create index IX_DD06DA92 on xcolab_ContestDiscussion (ContestId, Tab);
+
+create index IX_4DF8F0B9 on xcolab_ContestDiscussions (ContestId, Tab);
+
 create index IX_ED61C03C on xcolab_ContestPhase (ContestPK);
 create index IX_2BA2B787 on xcolab_ContestPhase (ContestPK, PhaseStartDate, PhaseEndDate);
 create index IX_19E93261 on xcolab_ContestPhase (ContestPK, invisible);

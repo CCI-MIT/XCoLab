@@ -273,7 +273,7 @@ public class PlanTypeColumnWrapper implements PlanTypeColumn,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.PlanTypeColumn planTypeColumn) {
+    public int compareTo(PlanTypeColumn planTypeColumn) {
         return _planTypeColumn.compareTo(planTypeColumn);
     }
 
@@ -283,17 +283,17 @@ public class PlanTypeColumnWrapper implements PlanTypeColumn,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanTypeColumn> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PlanTypeColumn> toCacheModel() {
         return _planTypeColumn.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PlanTypeColumn toEscapedModel() {
+    public PlanTypeColumn toEscapedModel() {
         return new PlanTypeColumnWrapper(_planTypeColumn.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PlanTypeColumn toUnescapedModel() {
+    public PlanTypeColumn toUnescapedModel() {
         return new PlanTypeColumnWrapper(_planTypeColumn.toUnescapedModel());
     }
 

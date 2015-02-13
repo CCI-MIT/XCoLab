@@ -10,11 +10,13 @@
 	<import class="com.ext.portlet.model.BalloonUserTracking" />
 	<import class="com.ext.portlet.model.Contest" />
 	<import class="com.ext.portlet.model.ContestDebate" />
+	<import class="com.ext.portlet.model.ContestDiscussion" />
 	<import class="com.ext.portlet.model.ContestEmailTemplate" />
 	<import class="com.ext.portlet.model.ContestPhase" />
 	<import class="com.ext.portlet.model.ContestPhaseColumn" />
 	<import class="com.ext.portlet.model.ContestPhaseRibbonType" />
 	<import class="com.ext.portlet.model.ContestPhaseType" />
+	<import class="com.ext.portlet.model.ContestSchedule" />
 	<import class="com.ext.portlet.model.ContestTeamMember" />
 	<import class="com.ext.portlet.model.DiscussionCategory" />
 	<import class="com.ext.portlet.model.DiscussionCategoryGroup" />
@@ -230,6 +232,14 @@
 		<property name="debateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
+	<class name="com.ext.portlet.model.impl.ContestDiscussionImpl" table="xcolab_ContestDiscussion">
+		<cache usage="read-write" />
+		<id name="DiscussionId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="ContestId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="Tab" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
 	<class name="com.ext.portlet.model.impl.ContestEmailTemplateImpl" table="xcolab_ContestEmailTemplate">
 		<cache usage="read-write" />
 		<id name="type" column="type_" type="java.lang.String">
@@ -246,6 +256,7 @@
 		</id>
 		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ContestPhaseType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="ContestSchedulePK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="fellowScreeningActive" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="contestPhaseAutopromote" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ContestPhaseDescriptionOverride" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -253,6 +264,7 @@
 		<property name="phaseInactiveOverride" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="PhaseStartDate" type="org.hibernate.type.TimestampType" />
 		<property name="PhaseEndDate" type="org.hibernate.type.TimestampType" />
+		<property name="PhaseBufferEndDated" type="org.hibernate.type.TimestampType" />
 		<property name="nextStatus" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="created" type="org.hibernate.type.TimestampType" />
 		<property name="updated" type="org.hibernate.type.TimestampType" />
@@ -286,8 +298,21 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="fellowScreeningActiveDefault" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="contestPhaseAutopromoteDefault" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="invisible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="pointsAccessible" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ContestScheduleImpl" table="xcolab_ContestSchedule">
+		<cache usage="read-write" />
+		<id name="ContestSchedulePK" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="invisible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestTeamMemberImpl" table="xcolab_ContestTeamMember">
 		<cache usage="read-write" />
@@ -875,6 +900,7 @@
 			<generator class="assigned" />
 		</id>
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="baseTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.PlanTemplateSectionImpl" table="xcolab_PlanTemplateSection">
 		<cache usage="read-write" />

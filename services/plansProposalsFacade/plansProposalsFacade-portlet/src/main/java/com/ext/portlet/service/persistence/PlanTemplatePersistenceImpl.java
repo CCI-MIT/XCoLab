@@ -329,6 +329,7 @@ public class PlanTemplatePersistenceImpl extends BasePersistenceImpl<PlanTemplat
 
         planTemplateImpl.setId(planTemplate.getId());
         planTemplateImpl.setName(planTemplate.getName());
+        planTemplateImpl.setBaseTemplateId(planTemplate.getBaseTemplateId());
 
         return planTemplateImpl;
     }

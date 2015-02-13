@@ -246,8 +246,8 @@ public class PlansFilterPositionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlansFilterPosition[] findByUserIdPlanTypeId_PrevAndNext(
-        com.ext.portlet.service.persistence.PlansFilterPositionPK plansFilterPositionPK,
-        long userId, long planTypeId,
+        PlansFilterPositionPK plansFilterPositionPK, long userId,
+        long planTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlansFilterPositionException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -308,7 +308,7 @@ public class PlansFilterPositionUtil {
     * @return the new plans filter position
     */
     public static com.ext.portlet.model.PlansFilterPosition create(
-        com.ext.portlet.service.persistence.PlansFilterPositionPK plansFilterPositionPK) {
+        PlansFilterPositionPK plansFilterPositionPK) {
         return getPersistence().create(plansFilterPositionPK);
     }
 
@@ -321,7 +321,7 @@ public class PlansFilterPositionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlansFilterPosition remove(
-        com.ext.portlet.service.persistence.PlansFilterPositionPK plansFilterPositionPK)
+        PlansFilterPositionPK plansFilterPositionPK)
         throws com.ext.portlet.NoSuchPlansFilterPositionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(plansFilterPositionPK);
@@ -342,7 +342,7 @@ public class PlansFilterPositionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlansFilterPosition findByPrimaryKey(
-        com.ext.portlet.service.persistence.PlansFilterPositionPK plansFilterPositionPK)
+        PlansFilterPositionPK plansFilterPositionPK)
         throws com.ext.portlet.NoSuchPlansFilterPositionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(plansFilterPositionPK);
@@ -356,7 +356,7 @@ public class PlansFilterPositionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlansFilterPosition fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.PlansFilterPositionPK plansFilterPositionPK)
+        PlansFilterPositionPK plansFilterPositionPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(plansFilterPositionPK);
     }

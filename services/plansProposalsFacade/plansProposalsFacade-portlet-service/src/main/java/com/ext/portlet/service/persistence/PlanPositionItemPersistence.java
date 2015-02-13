@@ -137,8 +137,7 @@ public interface PlanPositionItemPersistence extends BasePersistence<PlanPositio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanPositionItem[] findByAllByPlanPositionsId_PrevAndNext(
-        com.ext.portlet.service.persistence.PlanPositionItemPK planPositionItemPK,
-        long planPositionsId,
+        PlanPositionItemPK planPositionItemPK, long planPositionsId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanPositionItemException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -185,7 +184,7 @@ public interface PlanPositionItemPersistence extends BasePersistence<PlanPositio
     * @return the new plan position item
     */
     public com.ext.portlet.model.PlanPositionItem create(
-        com.ext.portlet.service.persistence.PlanPositionItemPK planPositionItemPK);
+        PlanPositionItemPK planPositionItemPK);
 
     /**
     * Removes the plan position item with the primary key from the database. Also notifies the appropriate model listeners.
@@ -196,7 +195,7 @@ public interface PlanPositionItemPersistence extends BasePersistence<PlanPositio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanPositionItem remove(
-        com.ext.portlet.service.persistence.PlanPositionItemPK planPositionItemPK)
+        PlanPositionItemPK planPositionItemPK)
         throws com.ext.portlet.NoSuchPlanPositionItemException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -213,7 +212,7 @@ public interface PlanPositionItemPersistence extends BasePersistence<PlanPositio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanPositionItem findByPrimaryKey(
-        com.ext.portlet.service.persistence.PlanPositionItemPK planPositionItemPK)
+        PlanPositionItemPK planPositionItemPK)
         throws com.ext.portlet.NoSuchPlanPositionItemException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -225,7 +224,7 @@ public interface PlanPositionItemPersistence extends BasePersistence<PlanPositio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanPositionItem fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.PlanPositionItemPK planPositionItemPK)
+        PlanPositionItemPK planPositionItemPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

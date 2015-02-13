@@ -290,7 +290,7 @@ public class OntologyTermWrapper implements OntologyTerm,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.OntologyTerm ontologyTerm) {
+    public int compareTo(OntologyTerm ontologyTerm) {
         return _ontologyTerm.compareTo(ontologyTerm);
     }
 
@@ -300,17 +300,17 @@ public class OntologyTermWrapper implements OntologyTerm,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.OntologyTerm> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<OntologyTerm> toCacheModel() {
         return _ontologyTerm.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.OntologyTerm toEscapedModel() {
+    public OntologyTerm toEscapedModel() {
         return new OntologyTermWrapper(_ontologyTerm.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.OntologyTerm toUnescapedModel() {
+    public OntologyTerm toUnescapedModel() {
         return new OntologyTermWrapper(_ontologyTerm.toUnescapedModel());
     }
 

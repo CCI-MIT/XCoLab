@@ -13,8 +13,15 @@
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	<div id="content">
+
+		proposalRatingComments
+
 		<c:choose>
 			<c:when test="${showDiscussion}">
+				<div class="addpropbox">
+					<proposalsPortlet:proposalRatingComments showRating="true" proposalRatingsWrappers="${judgeAverageRating}" proposalId="${proposalId}" />
+				</div>
+
 				<discussionsTagFiles:discussionComments discussionId="${discussionId }" />
 			</c:when>
 			<c:otherwise>

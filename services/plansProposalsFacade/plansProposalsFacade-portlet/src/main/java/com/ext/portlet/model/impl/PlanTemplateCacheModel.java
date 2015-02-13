@@ -22,15 +22,18 @@ public class PlanTemplateCacheModel implements CacheModel<PlanTemplate>,
     Externalizable {
     public long id;
     public String name;
+    public Long baseTemplateId;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(7);
 
         sb.append("{id=");
         sb.append(id);
         sb.append(", name=");
         sb.append(name);
+        sb.append(", baseTemplateId=");
+        sb.append(baseTemplateId);
         sb.append("}");
 
         return sb.toString();
@@ -48,6 +51,8 @@ public class PlanTemplateCacheModel implements CacheModel<PlanTemplate>,
             planTemplateImpl.setName(name);
         }
 
+        planTemplateImpl.setBaseTemplateId(baseTemplateId);
+
         planTemplateImpl.resetOriginalValues();
 
         return planTemplateImpl;
@@ -57,6 +62,7 @@ public class PlanTemplateCacheModel implements CacheModel<PlanTemplate>,
     public void readExternal(ObjectInput objectInput) throws IOException {
         id = objectInput.readLong();
         name = objectInput.readUTF();
+        baseTemplateId = objectInput.readLong();
     }
 
     @Override
@@ -69,5 +75,7 @@ public class PlanTemplateCacheModel implements CacheModel<PlanTemplate>,
         } else {
             objectOutput.writeUTF(name);
         }
+
+        objectOutput.writeLong(baseTemplateId);
     }
 }

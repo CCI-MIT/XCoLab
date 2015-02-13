@@ -87,6 +87,10 @@ public abstract class EmailNotification {
         return UserLocalServiceUtil.getUserById(proposal.getAuthorId());
     }
 
+    protected User getContestlAuthor(Contest contest) throws SystemException, PortalException {
+        return UserLocalServiceUtil.getUserById(contest.getAuthorId());
+    }
+
     protected void sendMessage(String subject, String body, User recipient) {
         try {
             InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");

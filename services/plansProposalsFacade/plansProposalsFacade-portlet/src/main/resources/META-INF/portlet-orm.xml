@@ -196,6 +196,16 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ContestDiscussionModelImpl">
+		<attributes>
+			<id name="DiscussionId" />
+			<basic name="ContestId" />
+			<basic name="Tab" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestEmailTemplateModelImpl">
 		<attributes>
 			<id name="type">
@@ -214,6 +224,7 @@
 			<id name="ContestPhasePK" />
 			<basic name="ContestPK" />
 			<basic name="ContestPhaseType" />
+			<basic name="ContestSchedulePK" />
 			<basic name="fellowScreeningActive" />
 			<basic name="contestPhaseAutopromote" />
 			<basic name="ContestPhaseDescriptionOverride" />
@@ -223,6 +234,9 @@
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="PhaseEndDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="PhaseBufferEndDated">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="nextStatus" />
@@ -274,8 +288,23 @@
 			<basic name="name" />
 			<basic name="description" />
 			<basic name="status" />
+			<basic name="fellowScreeningActiveDefault" />
+			<basic name="contestPhaseAutopromoteDefault" />
 			<basic name="invisible" />
 			<basic name="pointsAccessible" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ContestScheduleModelImpl">
+		<attributes>
+			<id name="ContestSchedulePK" />
+			<basic name="ContestPK" />
+			<basic name="name" />
+			<basic name="description" />
+			<basic name="status" />
+			<basic name="invisible" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -1098,6 +1127,7 @@
 				<column name="ID_" />
 			</id>
 			<basic name="name" />
+			<basic name="baseTemplateId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -1512,6 +1542,10 @@
 		<table name="xcolab_ContestDebate" />
 		<attributes />
 	</entity>
+	<entity class="com.ext.portlet.model.impl.ContestDiscussionImpl" name="ContestDiscussion">
+		<table name="xcolab_ContestDiscussion" />
+		<attributes />
+	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestEmailTemplateImpl" name="ContestEmailTemplate">
 		<table name="xcolab_ContestEmailTemplate" />
 		<attributes />
@@ -1530,6 +1564,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestPhaseTypeImpl" name="ContestPhaseType">
 		<table name="xcolab_ContestPhaseType" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ContestScheduleImpl" name="ContestSchedule">
+		<table name="xcolab_ContestSchedule" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestTeamMemberImpl" name="ContestTeamMember">

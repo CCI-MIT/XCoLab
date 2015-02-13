@@ -302,7 +302,7 @@ public class Proposal2PhaseWrapper implements Proposal2Phase,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.Proposal2Phase proposal2Phase) {
+    public int compareTo(Proposal2Phase proposal2Phase) {
         return _proposal2Phase.compareTo(proposal2Phase);
     }
 
@@ -312,17 +312,17 @@ public class Proposal2PhaseWrapper implements Proposal2Phase,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.Proposal2Phase> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<Proposal2Phase> toCacheModel() {
         return _proposal2Phase.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.Proposal2Phase toEscapedModel() {
+    public Proposal2Phase toEscapedModel() {
         return new Proposal2PhaseWrapper(_proposal2Phase.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.Proposal2Phase toUnescapedModel() {
+    public Proposal2Phase toUnescapedModel() {
         return new Proposal2PhaseWrapper(_proposal2Phase.toUnescapedModel());
     }
 

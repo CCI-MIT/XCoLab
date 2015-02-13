@@ -103,6 +103,44 @@ public interface ContestPhaseTypeModel extends BaseModel<ContestPhaseType> {
     public void setStatus(String status);
 
     /**
+     * Returns the fellow screening active default of this contest phase type.
+     *
+     * @return the fellow screening active default of this contest phase type
+     */
+    public boolean getFellowScreeningActiveDefault();
+
+    /**
+     * Returns <code>true</code> if this contest phase type is fellow screening active default.
+     *
+     * @return <code>true</code> if this contest phase type is fellow screening active default; <code>false</code> otherwise
+     */
+    public boolean isFellowScreeningActiveDefault();
+
+    /**
+     * Sets whether this contest phase type is fellow screening active default.
+     *
+     * @param fellowScreeningActiveDefault the fellow screening active default of this contest phase type
+     */
+    public void setFellowScreeningActiveDefault(
+        boolean fellowScreeningActiveDefault);
+
+    /**
+     * Returns the contest phase autopromote default of this contest phase type.
+     *
+     * @return the contest phase autopromote default of this contest phase type
+     */
+    @AutoEscape
+    public String getContestPhaseAutopromoteDefault();
+
+    /**
+     * Sets the contest phase autopromote default of this contest phase type.
+     *
+     * @param contestPhaseAutopromoteDefault the contest phase autopromote default of this contest phase type
+     */
+    public void setContestPhaseAutopromoteDefault(
+        String contestPhaseAutopromoteDefault);
+
+    /**
      * Returns the invisible of this contest phase type.
      *
      * @return the invisible of this contest phase type

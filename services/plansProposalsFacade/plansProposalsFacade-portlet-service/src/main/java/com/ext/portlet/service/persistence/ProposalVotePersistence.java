@@ -137,8 +137,7 @@ public interface ProposalVotePersistence extends BasePersistence<ProposalVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalVote[] findByProposalId_PrevAndNext(
-        com.ext.portlet.service.persistence.ProposalVotePK proposalVotePK,
-        long proposalId,
+        ProposalVotePK proposalVotePK, long proposalId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalVoteException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -284,8 +283,7 @@ public interface ProposalVotePersistence extends BasePersistence<ProposalVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalVote[] findByProposalIdContestPhaseId_PrevAndNext(
-        com.ext.portlet.service.persistence.ProposalVotePK proposalVotePK,
-        long proposalId, long contestPhaseId,
+        ProposalVotePK proposalVotePK, long proposalId, long contestPhaseId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalVoteException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -422,8 +420,7 @@ public interface ProposalVotePersistence extends BasePersistence<ProposalVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalVote[] findByUserId_PrevAndNext(
-        com.ext.portlet.service.persistence.ProposalVotePK proposalVotePK,
-        long userId,
+        ProposalVotePK proposalVotePK, long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalVoteException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -532,7 +529,7 @@ public interface ProposalVotePersistence extends BasePersistence<ProposalVote> {
     * @return the new proposal vote
     */
     public com.ext.portlet.model.ProposalVote create(
-        com.ext.portlet.service.persistence.ProposalVotePK proposalVotePK);
+        ProposalVotePK proposalVotePK);
 
     /**
     * Removes the proposal vote with the primary key from the database. Also notifies the appropriate model listeners.
@@ -543,7 +540,7 @@ public interface ProposalVotePersistence extends BasePersistence<ProposalVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalVote remove(
-        com.ext.portlet.service.persistence.ProposalVotePK proposalVotePK)
+        ProposalVotePK proposalVotePK)
         throws com.ext.portlet.NoSuchProposalVoteException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -560,7 +557,7 @@ public interface ProposalVotePersistence extends BasePersistence<ProposalVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalVote findByPrimaryKey(
-        com.ext.portlet.service.persistence.ProposalVotePK proposalVotePK)
+        ProposalVotePK proposalVotePK)
         throws com.ext.portlet.NoSuchProposalVoteException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -572,7 +569,7 @@ public interface ProposalVotePersistence extends BasePersistence<ProposalVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalVote fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.ProposalVotePK proposalVotePK)
+        ProposalVotePK proposalVotePK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

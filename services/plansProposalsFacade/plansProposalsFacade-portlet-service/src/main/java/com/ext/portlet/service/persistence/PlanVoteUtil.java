@@ -230,8 +230,7 @@ public class PlanVoteUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanVote[] findBycontestId_PrevAndNext(
-        com.ext.portlet.service.persistence.PlanVotePK planVotePK,
-        long contestId,
+        PlanVotePK planVotePK, long contestId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -391,7 +390,7 @@ public class PlanVoteUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanVote[] findByPlanId_PrevAndNext(
-        com.ext.portlet.service.persistence.PlanVotePK planVotePK, long planId,
+        PlanVotePK planVotePK, long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -522,8 +521,7 @@ public class PlanVoteUtil {
     * @param planVotePK the primary key for the new plan vote
     * @return the new plan vote
     */
-    public static com.ext.portlet.model.PlanVote create(
-        com.ext.portlet.service.persistence.PlanVotePK planVotePK) {
+    public static com.ext.portlet.model.PlanVote create(PlanVotePK planVotePK) {
         return getPersistence().create(planVotePK);
     }
 
@@ -535,8 +533,7 @@ public class PlanVoteUtil {
     * @throws com.ext.portlet.NoSuchPlanVoteException if a plan vote with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.PlanVote remove(
-        com.ext.portlet.service.persistence.PlanVotePK planVotePK)
+    public static com.ext.portlet.model.PlanVote remove(PlanVotePK planVotePK)
         throws com.ext.portlet.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(planVotePK);
@@ -557,7 +554,7 @@ public class PlanVoteUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanVote findByPrimaryKey(
-        com.ext.portlet.service.persistence.PlanVotePK planVotePK)
+        PlanVotePK planVotePK)
         throws com.ext.portlet.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(planVotePK);
@@ -571,7 +568,7 @@ public class PlanVoteUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanVote fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.PlanVotePK planVotePK)
+        PlanVotePK planVotePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(planVotePK);
     }

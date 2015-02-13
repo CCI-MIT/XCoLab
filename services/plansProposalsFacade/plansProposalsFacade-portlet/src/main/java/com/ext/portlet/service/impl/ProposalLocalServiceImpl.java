@@ -204,6 +204,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposal.setCreateDate(new Date());
 
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
+
         // create discussions
         DiscussionCategoryGroup proposalDiscussion = discussionCategoryGroupLocalService
                 .createDiscussionCategoryGroup("Proposal " + proposalId + " main discussion");

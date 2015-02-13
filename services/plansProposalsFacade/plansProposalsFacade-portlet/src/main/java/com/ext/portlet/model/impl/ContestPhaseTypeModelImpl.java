@@ -53,10 +53,12 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
             { "name", Types.VARCHAR },
             { "description", Types.VARCHAR },
             { "status", Types.VARCHAR },
+            { "fellowScreeningActiveDefault", Types.BOOLEAN },
+            { "contestPhaseAutopromoteDefault", Types.VARCHAR },
             { "invisible", Types.BOOLEAN },
             { "pointsAccessible", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhaseType (id_ LONG not null primary key,name VARCHAR(1024) null,description TEXT null,status VARCHAR(75) null,invisible BOOLEAN,pointsAccessible INTEGER)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhaseType (id_ LONG not null primary key,name VARCHAR(1024) null,description TEXT null,status VARCHAR(75) null,fellowScreeningActiveDefault BOOLEAN,contestPhaseAutopromoteDefault VARCHAR(75) null,invisible BOOLEAN,pointsAccessible INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestPhaseType";
     public static final String ORDER_BY_JPQL = " ORDER BY contestPhaseType.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestPhaseType.id_ ASC";
@@ -80,6 +82,8 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
     private String _name;
     private String _description;
     private String _status;
+    private boolean _fellowScreeningActiveDefault;
+    private String _contestPhaseAutopromoteDefault;
     private boolean _invisible;
     private int _pointsAccessible;
     private ContestPhaseType _escapedModel;
@@ -104,6 +108,8 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         model.setName(soapModel.getName());
         model.setDescription(soapModel.getDescription());
         model.setStatus(soapModel.getStatus());
+        model.setFellowScreeningActiveDefault(soapModel.getFellowScreeningActiveDefault());
+        model.setContestPhaseAutopromoteDefault(soapModel.getContestPhaseAutopromoteDefault());
         model.setInvisible(soapModel.getInvisible());
         model.setPointsAccessible(soapModel.getPointsAccessible());
 
@@ -169,6 +175,10 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         attributes.put("name", getName());
         attributes.put("description", getDescription());
         attributes.put("status", getStatus());
+        attributes.put("fellowScreeningActiveDefault",
+            getFellowScreeningActiveDefault());
+        attributes.put("contestPhaseAutopromoteDefault",
+            getContestPhaseAutopromoteDefault());
         attributes.put("invisible", getInvisible());
         attributes.put("pointsAccessible", getPointsAccessible());
 
@@ -199,6 +209,20 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
 
         if (status != null) {
             setStatus(status);
+        }
+
+        Boolean fellowScreeningActiveDefault = (Boolean) attributes.get(
+                "fellowScreeningActiveDefault");
+
+        if (fellowScreeningActiveDefault != null) {
+            setFellowScreeningActiveDefault(fellowScreeningActiveDefault);
+        }
+
+        String contestPhaseAutopromoteDefault = (String) attributes.get(
+                "contestPhaseAutopromoteDefault");
+
+        if (contestPhaseAutopromoteDefault != null) {
+            setContestPhaseAutopromoteDefault(contestPhaseAutopromoteDefault);
         }
 
         Boolean invisible = (Boolean) attributes.get("invisible");
@@ -272,6 +296,39 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
 
     @JSON
     @Override
+    public boolean getFellowScreeningActiveDefault() {
+        return _fellowScreeningActiveDefault;
+    }
+
+    @Override
+    public boolean isFellowScreeningActiveDefault() {
+        return _fellowScreeningActiveDefault;
+    }
+
+    @Override
+    public void setFellowScreeningActiveDefault(
+        boolean fellowScreeningActiveDefault) {
+        _fellowScreeningActiveDefault = fellowScreeningActiveDefault;
+    }
+
+    @JSON
+    @Override
+    public String getContestPhaseAutopromoteDefault() {
+        if (_contestPhaseAutopromoteDefault == null) {
+            return StringPool.BLANK;
+        } else {
+            return _contestPhaseAutopromoteDefault;
+        }
+    }
+
+    @Override
+    public void setContestPhaseAutopromoteDefault(
+        String contestPhaseAutopromoteDefault) {
+        _contestPhaseAutopromoteDefault = contestPhaseAutopromoteDefault;
+    }
+
+    @JSON
+    @Override
     public boolean getInvisible() {
         return _invisible;
     }
@@ -328,6 +385,8 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         contestPhaseTypeImpl.setName(getName());
         contestPhaseTypeImpl.setDescription(getDescription());
         contestPhaseTypeImpl.setStatus(getStatus());
+        contestPhaseTypeImpl.setFellowScreeningActiveDefault(getFellowScreeningActiveDefault());
+        contestPhaseTypeImpl.setContestPhaseAutopromoteDefault(getContestPhaseAutopromoteDefault());
         contestPhaseTypeImpl.setInvisible(getInvisible());
         contestPhaseTypeImpl.setPointsAccessible(getPointsAccessible());
 
@@ -409,6 +468,17 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
             contestPhaseTypeCacheModel.status = null;
         }
 
+        contestPhaseTypeCacheModel.fellowScreeningActiveDefault = getFellowScreeningActiveDefault();
+
+        contestPhaseTypeCacheModel.contestPhaseAutopromoteDefault = getContestPhaseAutopromoteDefault();
+
+        String contestPhaseAutopromoteDefault = contestPhaseTypeCacheModel.contestPhaseAutopromoteDefault;
+
+        if ((contestPhaseAutopromoteDefault != null) &&
+                (contestPhaseAutopromoteDefault.length() == 0)) {
+            contestPhaseTypeCacheModel.contestPhaseAutopromoteDefault = null;
+        }
+
         contestPhaseTypeCacheModel.invisible = getInvisible();
 
         contestPhaseTypeCacheModel.pointsAccessible = getPointsAccessible();
@@ -418,7 +488,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(17);
 
         sb.append("{id=");
         sb.append(getId());
@@ -428,6 +498,10 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         sb.append(getDescription());
         sb.append(", status=");
         sb.append(getStatus());
+        sb.append(", fellowScreeningActiveDefault=");
+        sb.append(getFellowScreeningActiveDefault());
+        sb.append(", contestPhaseAutopromoteDefault=");
+        sb.append(getContestPhaseAutopromoteDefault());
         sb.append(", invisible=");
         sb.append(getInvisible());
         sb.append(", pointsAccessible=");
@@ -439,7 +513,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(28);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhaseType");
@@ -460,6 +534,14 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         sb.append(
             "<column><column-name>status</column-name><column-value><![CDATA[");
         sb.append(getStatus());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>fellowScreeningActiveDefault</column-name><column-value><![CDATA[");
+        sb.append(getFellowScreeningActiveDefault());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestPhaseAutopromoteDefault</column-name><column-value><![CDATA[");
+        sb.append(getContestPhaseAutopromoteDefault());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>invisible</column-name><column-value><![CDATA[");

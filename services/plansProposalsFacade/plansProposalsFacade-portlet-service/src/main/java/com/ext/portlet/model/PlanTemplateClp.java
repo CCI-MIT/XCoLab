@@ -22,6 +22,7 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
     implements PlanTemplate {
     private long _id;
     private String _name;
+    private Long _baseTemplateId;
     private BaseModel<?> _planTemplateRemoteModel;
 
     public PlanTemplateClp() {
@@ -63,6 +64,7 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
 
         attributes.put("id", getId());
         attributes.put("name", getName());
+        attributes.put("baseTemplateId", getBaseTemplateId());
 
         return attributes;
     }
@@ -79,6 +81,12 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
 
         if (name != null) {
             setName(name);
+        }
+
+        Long baseTemplateId = (Long) attributes.get("baseTemplateId");
+
+        if (baseTemplateId != null) {
+            setBaseTemplateId(baseTemplateId);
         }
     }
 
@@ -120,6 +128,28 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
                 Method method = clazz.getMethod("setName", String.class);
 
                 method.invoke(_planTemplateRemoteModel, name);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public Long getBaseTemplateId() {
+        return _baseTemplateId;
+    }
+
+    @Override
+    public void setBaseTemplateId(Long baseTemplateId) {
+        _baseTemplateId = baseTemplateId;
+
+        if (_planTemplateRemoteModel != null) {
+            try {
+                Class<?> clazz = _planTemplateRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setBaseTemplateId", Long.class);
+
+                method.invoke(_planTemplateRemoteModel, baseTemplateId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -195,6 +225,7 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
 
         clone.setId(getId());
         clone.setName(getName());
+        clone.setBaseTemplateId(getBaseTemplateId());
 
         return clone;
     }
@@ -240,12 +271,14 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(7);
 
         sb.append("{id=");
         sb.append(getId());
         sb.append(", name=");
         sb.append(getName());
+        sb.append(", baseTemplateId=");
+        sb.append(getBaseTemplateId());
         sb.append("}");
 
         return sb.toString();
@@ -253,7 +286,7 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(10);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanTemplate");
@@ -266,6 +299,10 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");
         sb.append(getName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>baseTemplateId</column-name><column-value><![CDATA[");
+        sb.append(getBaseTemplateId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

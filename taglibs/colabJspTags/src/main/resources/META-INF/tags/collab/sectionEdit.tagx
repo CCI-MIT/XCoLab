@@ -1,0 +1,126 @@
+<jsp:root 
+	xmlns:c="http://java.sun.com/jsp/jstl/core" 
+	xmlns:jsp="http://java.sun.com/JSP/Page"  
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	version="2.0">
+	<jsp:directive.attribute name="section" type="org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper" 
+		required="true" rtexprvalue="true" description="Section which content should be displayed" />
+		
+	<jsp:directive.attribute name="showCopySectionContentButton" type="java.lang.Boolean" 
+		required="false" rtexprvalue="true" description="Tells if 'copy content from base proposal section' button should be shown" />
+	
+	<label>
+		<strong>${section.title}</strong> 
+		<a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+		<c:if test="${section.characterLimit gt 0}">
+        	${section.characterLimit} characters
+        </c:if>
+	</label>
+	<div class="addprophelp">${section.helpText}</div>
+	
+	
+	<div class="addpropInputContainer" id="proposalSection_${section.sectionDefinitionId }"  >
+		<c:choose>
+			<c:when test="${section.type == 'ONTOLOGY_REFERENCE' }">
+				<c:set var="term" value="${section.numericValueAsOntologyTerm }" />
+				<select name='sectionsContent[${section.sectionDefinitionId }]'>
+					<c:forEach var="term" items="${section.focusAreaTerms }">	
+						<c:choose>
+							<c:when test="${section.numericValueAsOntologyTerm.id == term.id }">
+								<option value="${term.id }" selected="selected">${term.name }</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${term.id }">${term.name }</option>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</select>
+			</c:when>
+
+            <c:when test="${section.type == 'PROPOSAL_REFERENCE' }">
+                <c:set var="p" value="${section.numericValueAsProposal }" />
+                <c:choose>
+                    <c:when test="${empty p  }">
+                        <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" />
+                    </c:when>
+                    <c:otherwise>
+                        <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${p.proposalId }" />
+                        <span><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}" />
+                        (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</span><br />
+                    </c:otherwise>
+                </c:choose>
+                <div class="blue-button"><a href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId});">Select Proposal</a></div>
+            </c:when>
+            <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
+                <c:set var="pl" value="${section.stringValueAsProposalArray }"/>
+                <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${empty pl ? '' : section.stringValue}"/>
+                <table>
+                    <c:forEach var="p" items="${pl}">
+                		<tr>
+                			<td><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}"/> </td>
+                			<td class="removeProposalFromList"><a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a></td>
+                		</tr>
+                	</c:forEach>
+                </table>
+                <div class="blue-button"><a href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId});">Add proposal</a></div>
+            </c:when>
+
+			<c:when test="${section.type == 'TEXT' }">
+				<form:textarea cssClass="rte" data-section-type="${section.type }" cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]" />
+				<c:if test="${section.characterLimit gt 0}">
+					<div class="clearfix"><!-- --></div>
+					<div class="inputLimitContainer">
+						<span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">${section.characterLimit}</span> characters
+					</div>
+				</c:if>
+			</c:when>
+
+			<c:when test="${section.type == 'IMAGE' }">
+				<div class="upload proposalImageUpload">
+					<div class="uploadbox" id="proposalImage">
+						<c:choose>
+							<c:when test='${proposal.imageId > 0}'>
+								<c:set var="imageUrl" value="/image/proposal?img_id=${proposal.imageId}" />
+							</c:when>
+							<c:otherwise>
+								<c:set var="imageUrl" value="/climatecolab-theme/images/proposal_default.png" />
+							</c:otherwise>
+						</c:choose>
+						<img src="${imageUrl }" width="52" height="52" alt="${proposal.name}" id="proposalImageImg"/>
+						<form:input path="imageId" cssStyle="display: none;" id="proposalImageId" />
+					</div>
+
+					<div id="uploadWidget"><!--  --></div>
+					<div class="clear"><!--  --></div>
+				</div>
+			</c:when>
+
+			<!-- PlanSectionTypeKeys, IMAGE -->
+			<c:otherwise>
+                <c:if test="${section.type == 'PROPOSAL_LIST_TEXT_REFERENCE' }">
+                    <span class="proposalListTextReference">(Please copy&amp;paste links to referenced proposals right into the textfield)</span>
+                </c:if>
+				<form:textarea cssClass="rte" data-section-type="${section.type }" cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]" />
+				<c:if test="${section.characterLimit gt 0}">
+                    <div class="clearfix"><!-- --></div>
+					<div class="inputLimitContainer">
+            			<span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">${section.characterLimit}</span> characters
+            		</div>
+        		</c:if>
+        		<c:if test="${showCopySectionContentButton }">
+        			<div class='blue-button alignright copyFromBaseProposalTriggerContainer'>
+        				<a href="javascript:;" class="copyFromBaseProposalTrigger" data-section-id="${section.sectionDefinitionId}">Copy from base proposal</a>
+        			</div>
+        		</c:if>
+			</c:otherwise>
+		</c:choose>
+    </div>
+    <script type="text/javascript">
+        jQuery(".addpropform .helpTrigger").each(function() {
+            var trigger = jQuery(this);
+            trigger.parent().parent().find(".addprophelp").slideDown(0);
+        });
+    </script>
+</jsp:root>

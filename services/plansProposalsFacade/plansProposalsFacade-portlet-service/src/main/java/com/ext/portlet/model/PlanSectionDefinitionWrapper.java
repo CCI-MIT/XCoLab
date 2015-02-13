@@ -382,8 +382,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition) {
+    public int compareTo(PlanSectionDefinition planSectionDefinition) {
         return _planSectionDefinition.compareTo(planSectionDefinition);
     }
 
@@ -393,17 +392,17 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanSectionDefinition> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PlanSectionDefinition> toCacheModel() {
         return _planSectionDefinition.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PlanSectionDefinition toEscapedModel() {
+    public PlanSectionDefinition toEscapedModel() {
         return new PlanSectionDefinitionWrapper(_planSectionDefinition.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PlanSectionDefinition toUnescapedModel() {
+    public PlanSectionDefinition toUnescapedModel() {
         return new PlanSectionDefinitionWrapper(_planSectionDefinition.toUnescapedModel());
     }
 

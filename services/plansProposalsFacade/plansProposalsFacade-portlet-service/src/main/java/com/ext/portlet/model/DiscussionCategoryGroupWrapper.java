@@ -274,8 +274,7 @@ public class DiscussionCategoryGroupWrapper implements DiscussionCategoryGroup,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.DiscussionCategoryGroup discussionCategoryGroup) {
+    public int compareTo(DiscussionCategoryGroup discussionCategoryGroup) {
         return _discussionCategoryGroup.compareTo(discussionCategoryGroup);
     }
 
@@ -285,17 +284,17 @@ public class DiscussionCategoryGroupWrapper implements DiscussionCategoryGroup,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.DiscussionCategoryGroup> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<DiscussionCategoryGroup> toCacheModel() {
         return _discussionCategoryGroup.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.DiscussionCategoryGroup toEscapedModel() {
+    public DiscussionCategoryGroup toEscapedModel() {
         return new DiscussionCategoryGroupWrapper(_discussionCategoryGroup.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.DiscussionCategoryGroup toUnescapedModel() {
+    public DiscussionCategoryGroup toUnescapedModel() {
         return new DiscussionCategoryGroupWrapper(_discussionCategoryGroup.toUnescapedModel());
     }
 

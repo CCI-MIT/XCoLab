@@ -4,5 +4,7 @@
   version="2.0">
   <jsp:directive.attribute name="contestId" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest id" />
   <jsp:directive.attribute name="text" type="java.lang.String" required="true" rtexprvalue="true" description="Link text" />
-  <a href="/web/guest/plans/-/plans/contestId/${contestId}">${text}</a>
+  <jsp:directive.attribute name="linkId" type="java.lang.String" required="false" rtexprvalue="true" description="Link text" />
+  <jsp:directive.attribute name="target" type="java.lang.String" required="false" rtexprvalue="true" description="Link text" />
+  <a href="/web/guest/plans/-/plans/contestId/${contestId}" id="${linkId}" target="${target}">${text}</a>
 </jsp:root>

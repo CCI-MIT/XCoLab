@@ -314,8 +314,7 @@ public class DiscussionMessageFlagWrapper implements DiscussionMessageFlag,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.DiscussionMessageFlag discussionMessageFlag) {
+    public int compareTo(DiscussionMessageFlag discussionMessageFlag) {
         return _discussionMessageFlag.compareTo(discussionMessageFlag);
     }
 
@@ -325,17 +324,17 @@ public class DiscussionMessageFlagWrapper implements DiscussionMessageFlag,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.DiscussionMessageFlag> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<DiscussionMessageFlag> toCacheModel() {
         return _discussionMessageFlag.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.DiscussionMessageFlag toEscapedModel() {
+    public DiscussionMessageFlag toEscapedModel() {
         return new DiscussionMessageFlagWrapper(_discussionMessageFlag.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.DiscussionMessageFlag toUnescapedModel() {
+    public DiscussionMessageFlag toUnescapedModel() {
         return new DiscussionMessageFlagWrapper(_discussionMessageFlag.toUnescapedModel());
     }
 

@@ -41,32 +41,32 @@ public class DiscussionCategoryLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName576;
-    private String[] _methodParameterTypes576;
-    private String _methodName577;
-    private String[] _methodParameterTypes577;
-    private String _methodName582;
-    private String[] _methodParameterTypes582;
-    private String _methodName583;
-    private String[] _methodParameterTypes583;
-    private String _methodName584;
-    private String[] _methodParameterTypes584;
-    private String _methodName585;
-    private String[] _methodParameterTypes585;
-    private String _methodName586;
-    private String[] _methodParameterTypes586;
-    private String _methodName587;
-    private String[] _methodParameterTypes587;
     private String _methodName588;
     private String[] _methodParameterTypes588;
     private String _methodName589;
     private String[] _methodParameterTypes589;
-    private String _methodName590;
-    private String[] _methodParameterTypes590;
-    private String _methodName591;
-    private String[] _methodParameterTypes591;
-    private String _methodName592;
-    private String[] _methodParameterTypes592;
+    private String _methodName594;
+    private String[] _methodParameterTypes594;
+    private String _methodName595;
+    private String[] _methodParameterTypes595;
+    private String _methodName596;
+    private String[] _methodParameterTypes596;
+    private String _methodName597;
+    private String[] _methodParameterTypes597;
+    private String _methodName598;
+    private String[] _methodParameterTypes598;
+    private String _methodName599;
+    private String[] _methodParameterTypes599;
+    private String _methodName600;
+    private String[] _methodParameterTypes600;
+    private String _methodName601;
+    private String[] _methodParameterTypes601;
+    private String _methodName602;
+    private String[] _methodParameterTypes602;
+    private String _methodName603;
+    private String[] _methodParameterTypes603;
+    private String _methodName604;
+    private String[] _methodParameterTypes604;
 
     public DiscussionCategoryLocalServiceClpInvoker() {
         _methodName0 = "addDiscussionCategory";
@@ -151,76 +151,76 @@ public class DiscussionCategoryLocalServiceClpInvoker {
                 "com.ext.portlet.model.DiscussionCategory"
             };
 
-        _methodName576 = "getBeanIdentifier";
+        _methodName588 = "getBeanIdentifier";
 
-        _methodParameterTypes576 = new String[] {  };
+        _methodParameterTypes588 = new String[] {  };
 
-        _methodName577 = "setBeanIdentifier";
+        _methodName589 = "setBeanIdentifier";
 
-        _methodParameterTypes577 = new String[] { "java.lang.String" };
+        _methodParameterTypes589 = new String[] { "java.lang.String" };
 
-        _methodName582 = "getCategoriesByCategoryGroupId";
+        _methodName594 = "getCategoriesByCategoryGroupId";
 
-        _methodParameterTypes582 = new String[] { "long" };
+        _methodParameterTypes594 = new String[] { "long" };
 
-        _methodName583 = "getDiscussionCategoryById";
+        _methodName595 = "getDiscussionCategoryById";
 
-        _methodParameterTypes583 = new String[] { "long" };
+        _methodParameterTypes595 = new String[] { "long" };
 
-        _methodName584 = "createDebateCategory";
+        _methodName596 = "createDebateCategory";
 
-        _methodParameterTypes584 = new String[] {
+        _methodParameterTypes596 = new String[] {
                 "long", "java.lang.String", "java.lang.String",
                 "com.liferay.portal.model.User"
             };
 
-        _methodName585 = "getThreads";
+        _methodName597 = "getThreads";
 
-        _methodParameterTypes585 = new String[] {
+        _methodParameterTypes597 = new String[] {
                 "com.ext.portlet.model.DiscussionCategory"
             };
 
-        _methodName586 = "addThread";
+        _methodName598 = "addThread";
 
-        _methodParameterTypes586 = new String[] {
+        _methodParameterTypes598 = new String[] {
                 "com.ext.portlet.model.DiscussionCategory", "java.lang.String",
                 "java.lang.String", "com.liferay.portal.model.User"
             };
 
-        _methodName587 = "store";
+        _methodName599 = "store";
 
-        _methodParameterTypes587 = new String[] {
+        _methodParameterTypes599 = new String[] {
                 "com.ext.portlet.model.DiscussionCategory"
             };
 
-        _methodName588 = "getAuthor";
+        _methodName600 = "getAuthor";
 
-        _methodParameterTypes588 = new String[] {
+        _methodParameterTypes600 = new String[] {
                 "com.ext.portlet.model.DiscussionCategory"
             };
 
-        _methodName589 = "getLastActivityAuthor";
+        _methodName601 = "getLastActivityAuthor";
 
-        _methodParameterTypes589 = new String[] {
+        _methodParameterTypes601 = new String[] {
                 "com.ext.portlet.model.DiscussionCategory"
             };
 
-        _methodName590 = "delete";
+        _methodName602 = "delete";
 
-        _methodParameterTypes590 = new String[] {
+        _methodParameterTypes602 = new String[] {
                 "com.ext.portlet.model.DiscussionCategory"
             };
 
-        _methodName591 = "update";
+        _methodName603 = "update";
 
-        _methodParameterTypes591 = new String[] {
+        _methodParameterTypes603 = new String[] {
                 "com.ext.portlet.model.DiscussionCategory", "java.lang.String",
                 "java.lang.String"
             };
 
-        _methodName592 = "getCategoryGroup";
+        _methodName604 = "getCategoryGroup";
 
-        _methodParameterTypes592 = new String[] {
+        _methodParameterTypes604 = new String[] {
                 "com.ext.portlet.model.DiscussionCategory"
             };
     }
@@ -314,83 +314,83 @@ public class DiscussionCategoryLocalServiceClpInvoker {
             return DiscussionCategoryLocalServiceUtil.updateDiscussionCategory((com.ext.portlet.model.DiscussionCategory) arguments[0]);
         }
 
-        if (_methodName576.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes576, parameterTypes)) {
+        if (_methodName588.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes588, parameterTypes)) {
             return DiscussionCategoryLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName577.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes577, parameterTypes)) {
+        if (_methodName589.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes589, parameterTypes)) {
             DiscussionCategoryLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName582.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes582, parameterTypes)) {
+        if (_methodName594.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes594, parameterTypes)) {
             return DiscussionCategoryLocalServiceUtil.getCategoriesByCategoryGroupId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName583.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes583, parameterTypes)) {
+        if (_methodName595.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes595, parameterTypes)) {
             return DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName584.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes584, parameterTypes)) {
+        if (_methodName596.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes596, parameterTypes)) {
             return DiscussionCategoryLocalServiceUtil.createDebateCategory(((Long) arguments[0]).longValue(),
                 (java.lang.String) arguments[1],
                 (java.lang.String) arguments[2],
                 (com.liferay.portal.model.User) arguments[3]);
         }
 
-        if (_methodName585.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes585, parameterTypes)) {
+        if (_methodName597.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes597, parameterTypes)) {
             return DiscussionCategoryLocalServiceUtil.getThreads((com.ext.portlet.model.DiscussionCategory) arguments[0]);
         }
 
-        if (_methodName586.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes586, parameterTypes)) {
+        if (_methodName598.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes598, parameterTypes)) {
             return DiscussionCategoryLocalServiceUtil.addThread((com.ext.portlet.model.DiscussionCategory) arguments[0],
                 (java.lang.String) arguments[1],
                 (java.lang.String) arguments[2],
                 (com.liferay.portal.model.User) arguments[3]);
         }
 
-        if (_methodName587.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes587, parameterTypes)) {
+        if (_methodName599.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes599, parameterTypes)) {
             DiscussionCategoryLocalServiceUtil.store((com.ext.portlet.model.DiscussionCategory) arguments[0]);
 
             return null;
         }
 
-        if (_methodName588.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes588, parameterTypes)) {
+        if (_methodName600.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes600, parameterTypes)) {
             return DiscussionCategoryLocalServiceUtil.getAuthor((com.ext.portlet.model.DiscussionCategory) arguments[0]);
         }
 
-        if (_methodName589.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes589, parameterTypes)) {
+        if (_methodName601.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes601, parameterTypes)) {
             return DiscussionCategoryLocalServiceUtil.getLastActivityAuthor((com.ext.portlet.model.DiscussionCategory) arguments[0]);
         }
 
-        if (_methodName590.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes590, parameterTypes)) {
+        if (_methodName602.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes602, parameterTypes)) {
             DiscussionCategoryLocalServiceUtil.delete((com.ext.portlet.model.DiscussionCategory) arguments[0]);
 
             return null;
         }
 
-        if (_methodName591.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes591, parameterTypes)) {
+        if (_methodName603.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes603, parameterTypes)) {
             DiscussionCategoryLocalServiceUtil.update((com.ext.portlet.model.DiscussionCategory) arguments[0],
                 (java.lang.String) arguments[1], (java.lang.String) arguments[2]);
 
             return null;
         }
 
-        if (_methodName592.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes592, parameterTypes)) {
+        if (_methodName604.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes604, parameterTypes)) {
             return DiscussionCategoryLocalServiceUtil.getCategoryGroup((com.ext.portlet.model.DiscussionCategory) arguments[0]);
         }
 

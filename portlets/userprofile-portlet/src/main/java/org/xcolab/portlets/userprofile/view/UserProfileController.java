@@ -3,7 +3,6 @@ package org.xcolab.portlets.userprofile.view;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.*;
-import javax.validation.Valid;
 
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
@@ -69,10 +68,8 @@ public class UserProfileController {
     //@Qualifier("MessageBean")
     //private SmartValidator validator;
 
-    @InitBinder("userBean")
-    public void initUserWrapperBeanBinder(WebDataBinder binder) {
-        binder.setValidator(validator);
-    }
+    @InitBinder //("userBean")
+    public void initUserWrapperBeanBinder(WebDataBinder binder) { binder.setValidator(validator);    }
 
     public UserProfileController() {
 

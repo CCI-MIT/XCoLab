@@ -1,0 +1,124 @@
+.fileUploadFrame input {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+    width: 219px;
+    height: 30px;
+    z-index: 100000;
+}
+
+.uploadWidget {
+    background: url(/proposals-portlet/img/image_upload-button.png) no-repeat;
+    width: 219px;
+    height: 30px;
+    margin-top: 12px;
+    cursor: pointer;
+    float: left;
+}
+
+.cmsDetailsBox{
+    border: 1px solid #30a3fb;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.cmsDetailsBox h1{
+    padding-bottom: 15px;
+}
+
+
+.cmsDetailsBox .addpropbox .addprophelp{
+    width: 700px;
+    color: #999;
+}
+
+.cmsDetailsBox .addpropInputContainer{
+    float:left;
+}
+
+.cmsDetailsBox .addpropInputContainer input{
+    width: 910px;
+}
+
+.cmsDetailsBox .addpropInputContainer textarea{
+    width: 910px;
+}
+
+.cmsDetailsBox .addpropbox .upload{
+    width: 700px;
+}
+
+.cmsDetailsBox .addpropbox label{
+    width: 200px;
+}
+
+.cmsDetailsBox .addpropbox .contestDescription{
+    height: 100px;
+}
+
+.cmsDetailsBox .addcomment {
+    height: 300px;
+}
+
+.cmsDetailsBox .actionItems {
+    text-align: center;
+}
+
+.cmsDetailsBox .addpropbox.teamBox{
+    float: left;
+    margin-right: 20px;
+}
+
+.cmsDetailsBox .addpropbox.teamBox:last-child{
+    margin-right: 0px;
+}
+
+.cmsDetailsBox .addpropbox.teamBox .teamMemberHeader h2{
+    float: left;
+}
+
+.cmsDetailsBox .addpropbox.teamBox .teamMemberListing li{
+    line-height: 40px;
+    background-color: #FFF;
+    margin-bottom: 5px;
+    background-image: url("/climatecolab-theme/images/icon_question-x.png");
+    background-position: 215px;
+    background-size: 20px;
+    background-repeat: no-repeat;
+}
+
+.cmsDetailsBox .addpropbox.teamBox .teamMemberAdd input {
+    width: 260px;
+    height: 40px;
+    background-color: #FFF;
+    background-image: url("/climatecolab-theme/images/contest-icon-cplus-orange.png");
+    background-position: 225px;
+    background-size: 20px;
+}
+
+.cmsDetailsBox .addpropbox.teamBox .teamMemberListing .portrait{
+    float: left;
+    margin-left: -19px;
+}
+
+.cmsDetailsBox .addpropbox.teamBox .teamMemberListing .name{
+    padding-left: 5px;
+}
+li.ui-menu-item {
+    background-image: url("/climatecolab-theme/images/contest-icon-cplus-blue.png");
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    background-position: 225px;
+    background-size: 20px;
+}
+
+li.ui-menu-item .ui-state-focus {
+    background-image: url("/climatecolab-theme/images/contest-icon-cplus-green.png");
+    background-color: #FFF;
+    background-position: 225px;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    color: #000;
+}

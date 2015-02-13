@@ -360,8 +360,7 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.PlansUserSettings plansUserSettings) {
+    public int compareTo(PlansUserSettings plansUserSettings) {
         return _plansUserSettings.compareTo(plansUserSettings);
     }
 
@@ -371,17 +370,17 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlansUserSettings> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PlansUserSettings> toCacheModel() {
         return _plansUserSettings.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PlansUserSettings toEscapedModel() {
+    public PlansUserSettings toEscapedModel() {
         return new PlansUserSettingsWrapper(_plansUserSettings.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PlansUserSettings toUnescapedModel() {
+    public PlansUserSettings toUnescapedModel() {
         return new PlansUserSettingsWrapper(_plansUserSettings.toUnescapedModel());
     }
 

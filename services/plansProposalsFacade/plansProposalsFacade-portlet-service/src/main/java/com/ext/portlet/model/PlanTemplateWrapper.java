@@ -39,6 +39,7 @@ public class PlanTemplateWrapper implements PlanTemplate,
 
         attributes.put("id", getId());
         attributes.put("name", getName());
+        attributes.put("baseTemplateId", getBaseTemplateId());
 
         return attributes;
     }
@@ -55,6 +56,12 @@ public class PlanTemplateWrapper implements PlanTemplate,
 
         if (name != null) {
             setName(name);
+        }
+
+        Long baseTemplateId = (Long) attributes.get("baseTemplateId");
+
+        if (baseTemplateId != null) {
+            setBaseTemplateId(baseTemplateId);
         }
     }
 
@@ -116,6 +123,26 @@ public class PlanTemplateWrapper implements PlanTemplate,
     @Override
     public void setName(java.lang.String name) {
         _planTemplate.setName(name);
+    }
+
+    /**
+    * Returns the base template ID of this plan template.
+    *
+    * @return the base template ID of this plan template
+    */
+    @Override
+    public java.lang.Long getBaseTemplateId() {
+        return _planTemplate.getBaseTemplateId();
+    }
+
+    /**
+    * Sets the base template ID of this plan template.
+    *
+    * @param baseTemplateId the base template ID of this plan template
+    */
+    @Override
+    public void setBaseTemplateId(java.lang.Long baseTemplateId) {
+        _planTemplate.setBaseTemplateId(baseTemplateId);
     }
 
     @Override
@@ -182,7 +209,7 @@ public class PlanTemplateWrapper implements PlanTemplate,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.PlanTemplate planTemplate) {
+    public int compareTo(PlanTemplate planTemplate) {
         return _planTemplate.compareTo(planTemplate);
     }
 
@@ -192,17 +219,17 @@ public class PlanTemplateWrapper implements PlanTemplate,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanTemplate> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PlanTemplate> toCacheModel() {
         return _planTemplate.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PlanTemplate toEscapedModel() {
+    public PlanTemplate toEscapedModel() {
         return new PlanTemplateWrapper(_planTemplate.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PlanTemplate toUnescapedModel() {
+    public PlanTemplate toUnescapedModel() {
         return new PlanTemplateWrapper(_planTemplate.toUnescapedModel());
     }
 

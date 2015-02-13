@@ -17,6 +17,8 @@ public class ContestPhaseTypeSoap implements Serializable {
     private String _name;
     private String _description;
     private String _status;
+    private boolean _fellowScreeningActiveDefault;
+    private String _contestPhaseAutopromoteDefault;
     private boolean _invisible;
     private int _pointsAccessible;
 
@@ -30,6 +32,8 @@ public class ContestPhaseTypeSoap implements Serializable {
         soapModel.setName(model.getName());
         soapModel.setDescription(model.getDescription());
         soapModel.setStatus(model.getStatus());
+        soapModel.setFellowScreeningActiveDefault(model.getFellowScreeningActiveDefault());
+        soapModel.setContestPhaseAutopromoteDefault(model.getContestPhaseAutopromoteDefault());
         soapModel.setInvisible(model.getInvisible());
         soapModel.setPointsAccessible(model.getPointsAccessible());
 
@@ -112,6 +116,28 @@ public class ContestPhaseTypeSoap implements Serializable {
 
     public void setStatus(String status) {
         _status = status;
+    }
+
+    public boolean getFellowScreeningActiveDefault() {
+        return _fellowScreeningActiveDefault;
+    }
+
+    public boolean isFellowScreeningActiveDefault() {
+        return _fellowScreeningActiveDefault;
+    }
+
+    public void setFellowScreeningActiveDefault(
+        boolean fellowScreeningActiveDefault) {
+        _fellowScreeningActiveDefault = fellowScreeningActiveDefault;
+    }
+
+    public String getContestPhaseAutopromoteDefault() {
+        return _contestPhaseAutopromoteDefault;
+    }
+
+    public void setContestPhaseAutopromoteDefault(
+        String contestPhaseAutopromoteDefault) {
+        _contestPhaseAutopromoteDefault = contestPhaseAutopromoteDefault;
     }
 
     public boolean getInvisible() {

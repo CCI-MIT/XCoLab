@@ -399,7 +399,7 @@ public class TrackedVisitWrapper implements TrackedVisit,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.TrackedVisit trackedVisit) {
+    public int compareTo(TrackedVisit trackedVisit) {
         return _trackedVisit.compareTo(trackedVisit);
     }
 
@@ -409,17 +409,17 @@ public class TrackedVisitWrapper implements TrackedVisit,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.TrackedVisit> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<TrackedVisit> toCacheModel() {
         return _trackedVisit.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.TrackedVisit toEscapedModel() {
+    public TrackedVisit toEscapedModel() {
         return new TrackedVisitWrapper(_trackedVisit.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.TrackedVisit toUnescapedModel() {
+    public TrackedVisit toUnescapedModel() {
         return new TrackedVisitWrapper(_trackedVisit.toUnescapedModel());
     }
 

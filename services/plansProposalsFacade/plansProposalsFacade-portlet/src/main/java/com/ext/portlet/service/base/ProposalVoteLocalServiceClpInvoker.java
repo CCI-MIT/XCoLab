@@ -41,16 +41,16 @@ public class ProposalVoteLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName576;
-    private String[] _methodParameterTypes576;
-    private String _methodName577;
-    private String[] _methodParameterTypes577;
-    private String _methodName582;
-    private String[] _methodParameterTypes582;
-    private String _methodName583;
-    private String[] _methodParameterTypes583;
-    private String _methodName584;
-    private String[] _methodParameterTypes584;
+    private String _methodName588;
+    private String[] _methodParameterTypes588;
+    private String _methodName589;
+    private String[] _methodParameterTypes589;
+    private String _methodName594;
+    private String[] _methodParameterTypes594;
+    private String _methodName595;
+    private String[] _methodParameterTypes595;
+    private String _methodName596;
+    private String[] _methodParameterTypes596;
 
     public ProposalVoteLocalServiceClpInvoker() {
         _methodName0 = "addProposalVote";
@@ -143,25 +143,25 @@ public class ProposalVoteLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalVote"
             };
 
-        _methodName576 = "getBeanIdentifier";
+        _methodName588 = "getBeanIdentifier";
 
-        _methodParameterTypes576 = new String[] {  };
+        _methodParameterTypes588 = new String[] {  };
 
-        _methodName577 = "setBeanIdentifier";
+        _methodName589 = "setBeanIdentifier";
 
-        _methodParameterTypes577 = new String[] { "java.lang.String" };
+        _methodParameterTypes589 = new String[] { "java.lang.String" };
 
-        _methodName582 = "create";
+        _methodName594 = "create";
 
-        _methodParameterTypes582 = new String[] { "long", "long" };
+        _methodParameterTypes594 = new String[] { "long", "long" };
 
-        _methodName583 = "findByProposalIdContestPhaseIdUserId";
+        _methodName595 = "findByProposalIdContestPhaseIdUserId";
 
-        _methodParameterTypes583 = new String[] { "long", "long" };
+        _methodParameterTypes595 = new String[] { "long", "long" };
 
-        _methodName584 = "hasUserVoted";
+        _methodName596 = "hasUserVoted";
 
-        _methodParameterTypes584 = new String[] { "long", "long" };
+        _methodParameterTypes596 = new String[] { "long", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -253,32 +253,32 @@ public class ProposalVoteLocalServiceClpInvoker {
             return ProposalVoteLocalServiceUtil.updateProposalVote((com.ext.portlet.model.ProposalVote) arguments[0]);
         }
 
-        if (_methodName576.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes576, parameterTypes)) {
+        if (_methodName588.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes588, parameterTypes)) {
             return ProposalVoteLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName577.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes577, parameterTypes)) {
+        if (_methodName589.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes589, parameterTypes)) {
             ProposalVoteLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName582.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes582, parameterTypes)) {
+        if (_methodName594.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes594, parameterTypes)) {
             return ProposalVoteLocalServiceUtil.create(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName583.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes583, parameterTypes)) {
+        if (_methodName595.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes595, parameterTypes)) {
             return ProposalVoteLocalServiceUtil.findByProposalIdContestPhaseIdUserId(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName584.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes584, parameterTypes)) {
+        if (_methodName596.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes596, parameterTypes)) {
             return ProposalVoteLocalServiceUtil.hasUserVoted(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }

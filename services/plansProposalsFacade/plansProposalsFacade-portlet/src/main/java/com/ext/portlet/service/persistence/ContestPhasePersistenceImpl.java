@@ -3080,6 +3080,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
         contestPhaseImpl.setContestPhasePK(contestPhase.getContestPhasePK());
         contestPhaseImpl.setContestPK(contestPhase.getContestPK());
         contestPhaseImpl.setContestPhaseType(contestPhase.getContestPhaseType());
+        contestPhaseImpl.setContestSchedulePK(contestPhase.getContestSchedulePK());
         contestPhaseImpl.setFellowScreeningActive(contestPhase.isFellowScreeningActive());
         contestPhaseImpl.setContestPhaseAutopromote(contestPhase.getContestPhaseAutopromote());
         contestPhaseImpl.setContestPhaseDescriptionOverride(contestPhase.getContestPhaseDescriptionOverride());
@@ -3087,6 +3088,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
         contestPhaseImpl.setPhaseInactiveOverride(contestPhase.isPhaseInactiveOverride());
         contestPhaseImpl.setPhaseStartDate(contestPhase.getPhaseStartDate());
         contestPhaseImpl.setPhaseEndDate(contestPhase.getPhaseEndDate());
+        contestPhaseImpl.setPhaseBufferEndDated(contestPhase.getPhaseBufferEndDated());
         contestPhaseImpl.setNextStatus(contestPhase.getNextStatus());
         contestPhaseImpl.setCreated(contestPhase.getCreated());
         contestPhaseImpl.setUpdated(contestPhase.getUpdated());

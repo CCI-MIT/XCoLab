@@ -370,7 +370,7 @@ public class PointsDistributionConfigurationWrapper
 
     @Override
     public int compareTo(
-        com.ext.portlet.model.PointsDistributionConfiguration pointsDistributionConfiguration) {
+        PointsDistributionConfiguration pointsDistributionConfiguration) {
         return _pointsDistributionConfiguration.compareTo(pointsDistributionConfiguration);
     }
 
@@ -380,17 +380,17 @@ public class PointsDistributionConfigurationWrapper
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PointsDistributionConfiguration> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PointsDistributionConfiguration> toCacheModel() {
         return _pointsDistributionConfiguration.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PointsDistributionConfiguration toEscapedModel() {
+    public PointsDistributionConfiguration toEscapedModel() {
         return new PointsDistributionConfigurationWrapper(_pointsDistributionConfiguration.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PointsDistributionConfiguration toUnescapedModel() {
+    public PointsDistributionConfiguration toUnescapedModel() {
         return new PointsDistributionConfigurationWrapper(_pointsDistributionConfiguration.toUnescapedModel());
     }
 

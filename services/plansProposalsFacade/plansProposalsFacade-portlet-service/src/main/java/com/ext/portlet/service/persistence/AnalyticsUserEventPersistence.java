@@ -46,7 +46,7 @@ public interface AnalyticsUserEventPersistence extends BasePersistence<Analytics
     * @return the new analytics user event
     */
     public com.ext.portlet.model.AnalyticsUserEvent create(
-        com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK);
+        AnalyticsUserEventPK analyticsUserEventPK);
 
     /**
     * Removes the analytics user event with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface AnalyticsUserEventPersistence extends BasePersistence<Analytics
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.AnalyticsUserEvent remove(
-        com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK)
+        AnalyticsUserEventPK analyticsUserEventPK)
         throws com.ext.portlet.NoSuchAnalyticsUserEventException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -74,7 +74,7 @@ public interface AnalyticsUserEventPersistence extends BasePersistence<Analytics
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.AnalyticsUserEvent findByPrimaryKey(
-        com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK)
+        AnalyticsUserEventPK analyticsUserEventPK)
         throws com.ext.portlet.NoSuchAnalyticsUserEventException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -86,7 +86,7 @@ public interface AnalyticsUserEventPersistence extends BasePersistence<Analytics
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.AnalyticsUserEvent fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK)
+        AnalyticsUserEventPK analyticsUserEventPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

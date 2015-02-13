@@ -233,8 +233,7 @@ public class ProposalSupporterWrapper implements ProposalSupporter,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.ProposalSupporter proposalSupporter) {
+    public int compareTo(ProposalSupporter proposalSupporter) {
         return _proposalSupporter.compareTo(proposalSupporter);
     }
 
@@ -244,17 +243,17 @@ public class ProposalSupporterWrapper implements ProposalSupporter,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ProposalSupporter> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<ProposalSupporter> toCacheModel() {
         return _proposalSupporter.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.ProposalSupporter toEscapedModel() {
+    public ProposalSupporter toEscapedModel() {
         return new ProposalSupporterWrapper(_proposalSupporter.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.ProposalSupporter toUnescapedModel() {
+    public ProposalSupporter toUnescapedModel() {
         return new ProposalSupporterWrapper(_proposalSupporter.toUnescapedModel());
     }
 
