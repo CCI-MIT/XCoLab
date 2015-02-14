@@ -26,8 +26,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import java.nio.file.AccessDeniedException;
-
 @Controller
 @RequestMapping("view")
 public class CreateProposalController extends BaseProposalsController {
