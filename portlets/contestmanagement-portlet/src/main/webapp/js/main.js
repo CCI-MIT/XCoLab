@@ -151,14 +151,29 @@ function updateUploadBtnOffset(uploadWidget,fileUploadInputId) {
 }
 
 
+function autoresize(textarea) {
+    textarea.style.height = '0px';     //Reset height, so that it not only grows but also shrinks
+    textarea.style.height = (textarea.scrollHeight-10) + 'px';    //Set new height
+}
+
+function resizeAllTextareas(){
+    jQuery("textarea").each(function () {
+        this.style.height = (this.scrollHeight-10)+'px';
+    });
+}
+
+
 jQuery(function() {
+
     jQuery(".addpropform .helpTrigger").click(function() {
         var trigger = jQuery(this);
         trigger.parent().parent().find(".addprophelp").slideToggle("fast");
     });
 
-    // tooltips
     initTooltips();
 
     initializeTextEditors();
+
+    resizeAllTextareas();
+
 });

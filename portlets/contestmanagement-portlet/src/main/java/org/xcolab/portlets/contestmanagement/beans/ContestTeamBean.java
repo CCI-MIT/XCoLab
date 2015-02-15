@@ -14,7 +14,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * Created by Thomas on 2/10/2015.
+ */
 public class ContestTeamBean implements Serializable{
     private static final long serialVersionUID = 1L;
 

@@ -38,6 +38,10 @@ import javax.portlet.PortletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Thomas on 2/6/2015.
+ */
+
 @Controller
 @RequestMapping("view")
 public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTabController {
@@ -74,7 +78,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             throws PortalException, SystemException {
 
         if(!tabWrapper.getCanView()) {
-            return "details/noPermissionTab";
+            return NO_PERMISSION_TAB_VIEW;
         }
         setPageAttributes(request, model, tab);
         model.addAttribute("contestDescriptionBean", new ContestDescriptionBean(getContest()));
@@ -85,17 +89,19 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     public void showDescriptionTabController(ActionRequest request, Model model,
                                              ActionResponse response, @Valid ContestDescriptionBean updatedContestDescriptionBean, BindingResult result) {
         boolean createNew = false;
+
+        if(!tabWrapper.getCanEdit()) {
+            setNoPermissionErrorRenderParameter(response);
+            return;
+        }
+
+        if (result.hasErrors()) {
+            setErrorRenderParameter(response, "updateContestDetails");
+            return;
+        }
+
         try{
-            if(!tabWrapper.getCanEdit()) {
-                return;
-            }
-
-            if (result.hasErrors()) {
-                response.setRenderParameter("error", "true");
-                response.setRenderParameter("action", "updateContestDetails");
-                return;
-            }
-
+            // TODO check Inpuz
             updatedContestDescriptionBean.persist();
 
             if (createNew) {

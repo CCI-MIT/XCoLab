@@ -32,6 +32,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.SmartValidator;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -64,11 +65,7 @@ public class UserProfileController {
     @Autowired
     private SmartValidator validator;
 
-    //@Autowired
-    //@Qualifier("MessageBean")
-    //private SmartValidator validator;
-
-    @InitBinder //("userBean")
+    @InitBinder("userBean")
     public void initUserWrapperBeanBinder(WebDataBinder binder) { binder.setValidator(validator);    }
 
     public UserProfileController() {
@@ -297,7 +294,7 @@ public class UserProfileController {
 
         if (updatedUserBean.getFirstName() != null
                 && !updatedUserBean.getFirstName().equals(currentUserProfile.getUserBean().getFirstName())) {
-            validator.validate(updatedUserBean, result);
+            validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
             if (!result.hasErrors()) {
                 currentUserProfile.getUser().setFirstName(updatedUserBean.getFirstName());
                 changedUserPart = true;

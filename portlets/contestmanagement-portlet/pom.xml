@@ -156,8 +156,8 @@
 			<version>5.1.1.Final</version>
 			<exclusions>
 				<exclusion>
-					<groupId>javax.persistence</groupId>
-					<artifactId>persistence-api</artifactId>
+					<artifactId>hibernate-jpa-2.0-api</artifactId>
+					<groupId> org.hibernate.javax.persistence</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>

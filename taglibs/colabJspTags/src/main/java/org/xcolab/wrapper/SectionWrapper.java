@@ -29,26 +29,13 @@ import java.util.regex.Pattern;
 public class SectionWrapper {
 
     private final static Log _log = LogFactoryUtil.getLog(SectionWrapper.class);
+
     private PlanSectionDefinition definition;
-    private Proposal proposal;
-    private ProposalWrapper wrappedProposal;
-    private Integer version;
 
-    public SectionWrapper(PlanSectionDefinition definition, Proposal proposal, ProposalWrapper wrappedProposal) {
+    public SectionWrapper(PlanSectionDefinition definition) {
         super();
         this.definition = definition;
-        this.proposal = proposal;
-        this.wrappedProposal = wrappedProposal;
     }
-
-    public SectionWrapper(PlanSectionDefinition definition, Proposal proposal, int version, ProposalWrapper wrappedProposal) {
-        super();
-        this.definition = definition;
-        this.proposal = proposal;
-        this.version = version;
-        this.wrappedProposal = wrappedProposal;
-    }
-
 
     public String getTitle() {
         return definition.getTitle();
@@ -255,19 +242,7 @@ public class SectionWrapper {
     }
 
     private ProposalAttribute getSectionAttribute() throws SystemException, PortalException {
-        /*
-        try {
-            if (version != null && version > 0) {
-                return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), version, "SECTION", definition.getId());
-            } else {
-                return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), "SECTION", definition.getId());
-            }
-        } catch (NoSuchProposalAttributeException linkElement) {
-            return null;
-        } catch (NoSuchProposalException linkElement) {
-            return null;
-        }
-        */
+
         return this.wrappedProposal.getProposalAttributeUtil().getAttributeOrNull("SECTION", definition.getId());
 
     }

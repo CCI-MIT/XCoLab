@@ -7,9 +7,11 @@ import org.xcolab.interfaces.TabPermissionAlgorithm;
 import org.xcolab.interfaces.TabActivityCountAlgorithm;
 
 import javax.portlet.PortletRequest;
-
+/**
+ * Created by Thomas on 2/9/2015.
+ */
 public enum ContestDetailsTabs implements TabEnum{
-	ADMIN("Admin", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
+	ADMIN("Admin", TabPermissionAlgorithm.adminOnlyViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	DESCRIPTION("Description", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	TEAM("Team", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	ONTOLOGY("Ontology", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),

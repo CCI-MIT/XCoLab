@@ -5,6 +5,7 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.omg.CORBA.NO_PERMISSION;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.xcolab.controller.BaseTabController;
@@ -13,6 +14,7 @@ import org.xcolab.portlets.contestmanagement.views.ContestDetailsTabs;
 import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
+import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import java.util.List;
 
@@ -22,6 +24,9 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     private Contest contest;
     private ContestWrapper contestWrapper;
     protected TabWrapper tabWrapper;
+
+    static final String NO_PERMISSION_TAB_VIEW = "details/noPermissionTab";
+    static final String NOT_FOUND_TAB_VIEW = "details/notFound";
 
     @ModelAttribute("tabs")
     @Override
@@ -87,4 +92,21 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     public void setContestWrapper(ContestWrapper contestWrapper) {
         this.contestWrapper = contestWrapper;
     }
+
+    public void setErrorRenderParameter(ActionResponse response, String errorActionParameter){
+        response.setRenderParameter("error", "true");
+        response.setRenderParameter("action", errorActionParameter);
+    }
+    public void setNoPermissionErrorRenderParameter(ActionResponse response){
+        setErrorRenderParameter(response, "showNoPermission");
+    }
+
+    public void setNotFoundErrorRenderParameter(ActionResponse response){
+        setErrorRenderParameter(response, "showNotFound");
+    }
+
+    public void setSuccessRenderRedirect (ActionResponse response, String tabName) throws Exception{
+        response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/" + tabName);
+    }
+
 }

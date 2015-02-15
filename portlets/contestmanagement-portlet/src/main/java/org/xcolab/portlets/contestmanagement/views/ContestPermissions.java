@@ -22,7 +22,9 @@ import org.xcolab.interfaces.TabPermissions;
 import javax.portlet.PortletRequest;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Created by Thomas on 2/9/2015.
+ */
 public class ContestPermissions implements TabPermissions {
     private final PermissionChecker permissionChecker;
     private final String portletId;
@@ -54,7 +56,7 @@ public class ContestPermissions implements TabPermissions {
     }
 
     public boolean getCanAdmin() {
-        return getCanAdminAll() || getIsOwner();
+        return getCanAdminAll(); // || getIsOwner();
     }
 
     public boolean getCanStaff() {

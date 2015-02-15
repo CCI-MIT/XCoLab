@@ -10,6 +10,9 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+/**
+ * Created by Thomas on 2/8/2015.
+ */
 public class ContestDescriptionBean implements Serializable{
     private static final long serialVersionUID = 1L;
 

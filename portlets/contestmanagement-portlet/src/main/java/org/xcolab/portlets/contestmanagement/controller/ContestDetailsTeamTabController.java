@@ -65,6 +65,9 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
                                         @RequestParam(required = false) Long contestId)
             throws PortalException, SystemException {
 
+        if(!tabWrapper.getCanView()) {
+            return NO_PERMISSION_TAB_VIEW;
+        }
         setPageAttributes(request, model, ContestDetailsTabs.TEAM);
         model.addAttribute("contestTeamBean", new ContestTeamBean(getContest()));
         return "details/teamTab";
@@ -72,15 +75,19 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
 
     @RequestMapping(params = "action=updateContestTeam")
     public void showDescriptionTabController(ActionRequest request, Model model, ActionResponse response) {
+
+        if(!tabWrapper.getCanEdit()) {
+            setNoPermissionErrorRenderParameter(response);
+            return;
+        }
+
         try {
             ContestTeamBean contestTeamBeam = new ContestTeamBean(request, getContest());
             ContestTeamWrapper contestTeamWrapper = new ContestTeamWrapper(contestTeamBeam);
             contestTeamWrapper.updateContestTeamMembers();
-            response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId/" + tabContext.getContest(request).getContestPK() + "/tab/TEAM");
-            tabContext.invalidateContext(request);
-        } catch (Exception e) {
-            response.setRenderParameter("error", "true");
-            response.setRenderParameter("action", "updateContestTeam");
+            setSuccessRenderRedirect(response, tab.getName());
+        } catch(Exception e){
+            setNotFoundErrorRenderParameter(response);
         }
     }
 
@@ -92,7 +99,19 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
     @RequestMapping
     public String showDescriptionTabController(PortletRequest request, PortletResponse response, Model model)
             throws PortalException, SystemException {
-        return "details/notFound";
+        return NOT_FOUND_TAB_VIEW;
+    }
+
+    @RequestMapping(params = {"action=showNoPermission", "error=true"})
+    public String showNoPermissionErrorRenderParameter(PortletRequest request, PortletResponse response, Model model)
+            throws PortalException, SystemException {
+        return NO_PERMISSION_TAB_VIEW;
+    }
+
+    @RequestMapping(params = {"action=showNotFound", "error=true"})
+    public String showNotFoundErrorRenderParameter(PortletRequest request, PortletResponse response, Model model)
+            throws PortalException, SystemException {
+        return NOT_FOUND_TAB_VIEW;
     }
 
 }
