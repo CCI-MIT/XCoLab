@@ -126,8 +126,8 @@
 						removeOntologyTermFromSelection(termId);
 
 						// remove children from selection
-						container.find("> a > input").prop('checked', false);
-						container.find("> a").map(function () {
+						container.find("> ul > li > a input").prop('checked', false);
+						container.find("> ul > li > a").map(function () {
 							var termId = jQuery(this).attr("data-term-id");
 							removeOntologyTermFromSelection(termId);
 						})
@@ -151,13 +151,13 @@
 						})
 					} else {
 						addOntologyTermToSelection(termId);
-						//self.find(" > a input").prop('checked', true);
+						//self.find("a input").prop('checked', true);
 						container.find("> ul > li > a input").prop('checked', true);
 
 						//jQuery(ontologyTermIdSelector + " a input").prop('checked', true);
 
 						container.find("> ul > li > a").map(function () {
-						//self.find("> a").map(function () {
+						//self.find("a").map(function () {
 							var termId = jQuery(this).attr("data-term-id");
 							removeOntologyTermFromSelection(termId);
 						})
@@ -176,17 +176,17 @@
 
 				jQuery('.contest-outline-left li.active').not('.currentlyClicked').removeClass('active');
 
-
+				/*
 				jQuery('.contest-outline-left a.open').each(function () {
 					if (that == this) return;
-					/*
+
 					var parent = jQuery(this).parent();
 					if (!parent.hasClass('currentlyClicked') && parent.find(".currentlyClicked").length == 0) {
 						// this is different branch than the one currently clicked, close it
 						//parent.find(".open").removeClass("open");
 						//parent.find("> ul").slideUp();
-					}*/
-				});
+					}
+				});*/
 
 				container.removeClass('currentlyClicked').toggleClass('active');
 
