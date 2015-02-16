@@ -104,7 +104,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
 
         try{
             // TODO check Input
-            updatedContestDescriptionBean.persist();
+            updatedContestDescriptionBean.persist(getContest());
 
             if (createNew) {
                 ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);

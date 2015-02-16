@@ -26,8 +26,8 @@ public class ContestDescriptionBean implements Serializable{
     @NotBlank(message = "The contest name must be at least 5 characters and not more than 50 characters.")
     @Length(min = 5, max = 50, message = "The contest name must be at least 5 characters and not more than 50 characters.")
     private String contestShortName;
-    @NotBlank(message = "The contest description must be at least 5 characters and not more than 900 characters.")
-    @Length(min = 5, max = 900, message = "The contest description must be at least 5 characters and not more than 900 characters.")
+    @NotBlank(message = "The contest description must be at least 5 characters and not more than 1300 characters.")
+    @Length(min = 5, max = 1300, message = "The contest description must be at least 5 characters and not more than 1300 characters.")
     private String contestDescription;
     @NotNull(message = "A plan template must be selected.")
     private Long planTemplateId;
@@ -51,9 +51,8 @@ public class ContestDescriptionBean implements Serializable{
         }
     }
 
-    public void persist() throws PortalException, SystemException {
+    public void persist(Contest contest) throws PortalException, SystemException {
 
-        Contest contest = ContestLocalServiceUtil.getContest(ContestPK);
         contest.setContestName(contestName);
         contest.setContestShortName(contestShortName);
         contest.setContestDescription(contestDescription);
