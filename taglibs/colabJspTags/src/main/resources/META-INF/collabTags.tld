@@ -51,6 +51,15 @@
     </tag-file>
 
     <tag-file>
+        <description>outline_ontologyTermWithChildren</description>
+        <name>outline_ontologyTermWithChildren</name>
+        <path>/META-INF/tags/collab/outline_ontologyTermWithChildren.tagx</path>
+    </tag-file>
+
+
+
+
+    <tag-file>
         <description>Team Box</description>
         <name>teamBox</name>
         <path>/META-INF/tags/collab/teamBox.tagx</path>

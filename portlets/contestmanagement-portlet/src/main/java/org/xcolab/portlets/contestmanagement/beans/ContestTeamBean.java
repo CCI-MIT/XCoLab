@@ -1,18 +1,15 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestWrapper;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
+import org.xcolab.portlets.contestmanagement.utils.RequestParameterParser;
 
 import javax.portlet.PortletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 /**
  * Created by Thomas on 2/10/2015.
@@ -49,22 +46,10 @@ public class ContestTeamBean implements Serializable{
     }
 
     private void parseAndPopulateMember() throws NumberFormatException{
-        userIdsJudges = parseStringParameterToLongList("userIdsJudges");
-        userIdsFellows = parseStringParameterToLongList("userIdsFellows");
-        userIdsAdvisors = parseStringParameterToLongList("userIdsAdvisors");
-    }
-
-    private List<Long> parseStringParameterToLongList(String paramterName) throws NumberFormatException{
-        List<String>  stringList = Arrays.asList(request.getParameter(paramterName).split("\\s*,\\s*"));
-        return parseStringListToLongList(stringList);
-    }
-
-    private static List<Long> parseStringListToLongList(List<String> stringList) throws NumberFormatException{
-        List<Long> longList = new ArrayList<>();
-        for (String string : stringList) {
-            longList.add(Long.parseLong(string));
-        }
-        return longList;
+        RequestParameterParser requestParameterParser = new RequestParameterParser();
+        userIdsJudges = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsJudges");
+        userIdsFellows = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsFellows");
+        userIdsAdvisors = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsAdvisors");
     }
 
     private void populateJudges() throws SystemException, PortalException{

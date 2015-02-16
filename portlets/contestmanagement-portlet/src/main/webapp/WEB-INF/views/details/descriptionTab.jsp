@@ -185,6 +185,5 @@
 	</form:form>
 	</div>
 
-
 	<jsp:directive.include file="./footer.jspx"/>
 </jsp:root>

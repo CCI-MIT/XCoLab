@@ -21,7 +21,6 @@
 		var users = [];
 		var usersMap = {};
 		var userNames = [];
-		//var userNames2 = [${userNames}];
 		<c:forEach var="user" items="${usersList}">
 			usersMap["${user.screenName}"] = "${user.userId}";
 			userNames.push("${user.screenName}");
