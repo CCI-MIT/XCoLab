@@ -76,7 +76,7 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
     }
 
     @RequestMapping(params = "action=updateContestTeam")
-    public void showDescriptionTabController(ActionRequest request, Model model, ActionResponse response) {
+    public void updateTeamTabController(ActionRequest request, Model model, ActionResponse response) {
 
         if(!tabWrapper.getCanEdit()) {
             setNoPermissionErrorRenderParameter(response);
@@ -99,7 +99,7 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
     }
 
     @RequestMapping
-    public String showDescriptionTabController(PortletRequest request, PortletResponse response, Model model)
+    public String updateTeamTabController(PortletRequest request, PortletResponse response, Model model)
             throws PortalException, SystemException {
         return NOT_FOUND_TAB_VIEW;
     }

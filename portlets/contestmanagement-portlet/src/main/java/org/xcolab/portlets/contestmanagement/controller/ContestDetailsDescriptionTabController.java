@@ -87,7 +87,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     }
 
     @RequestMapping(params = "action=updateContestDetails")
-    public void showDescriptionTabController(ActionRequest request, Model model, ActionResponse response,
+    public void updateDescriptionTabController(ActionRequest request, Model model, ActionResponse response,
                                              @Valid ContestDescriptionBean updatedContestDescriptionBean,
                                              BindingResult result) {
         boolean createNew = false;

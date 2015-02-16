@@ -62,6 +62,10 @@ public class ContestTeamWrapper {
         if (memberRole == MemberRole.JUDGES) memberRoleName = "Judge"; // TODO change in config file
         for (Long userId : userIds) {
             Long contestMemberId = CounterLocalServiceUtil.increment(ContestTeamMember.class.getName());
+            if(contestMemberId < 400){ // TODO check how the value is currently generated
+                CounterLocalServiceUtil.reset(ContestTeamMember.class.getName(),400);
+                contestMemberId = CounterLocalServiceUtil.increment(ContestTeamMember.class.getName());
+            }
             ContestTeamMember contestTeamMember = ContestTeamMemberLocalServiceUtil.createContestTeamMember(contestMemberId);
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);

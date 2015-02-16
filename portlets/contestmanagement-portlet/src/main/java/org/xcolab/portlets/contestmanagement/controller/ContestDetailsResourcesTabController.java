@@ -63,7 +63,7 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
     }
 
     @RequestMapping(params = "tab=RESOURCES")
-    public String showDescriptionTabController(PortletRequest request, PortletResponse response, Model model)
+    public String showResourcesTabController(PortletRequest request, PortletResponse response, Model model)
             throws PortalException, SystemException {
 
         if(!tabWrapper.getCanView()) {
@@ -81,7 +81,7 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
     }
 
     @RequestMapping(params = "action=updateContestResources")
-    public void showDescriptionTabController(ActionRequest request, Model model, ActionResponse response,
+    public void updateResourcesTabController(ActionRequest request, Model model, ActionResponse response,
                                              @ModelAttribute ContestResourcesBean updatedContestResourcesBean, BindingResult result) {
 
         if(!tabWrapper.getCanEdit()) {
