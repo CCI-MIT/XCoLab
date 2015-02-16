@@ -37,6 +37,7 @@ import java.util.List;
 public class ContestDetailsTeamTabController extends ContestDetailsBaseTabController {
 
     static final private TabEnum tab = ContestDetailsTabs.TEAM;
+    static final private String TAB_VIEW = "details/teamTab";
 
     @ModelAttribute("usersList")
     public List<User> populateUsers() throws SystemException {
@@ -68,9 +69,10 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
         if(!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
+
         setPageAttributes(request, model, ContestDetailsTabs.TEAM);
         model.addAttribute("contestTeamBean", new ContestTeamBean(getContest()));
-        return "details/teamTab";
+        return TAB_VIEW;
     }
 
     @RequestMapping(params = "action=updateContestTeam")
@@ -93,7 +95,7 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
 
     @RequestMapping(params = {"action=updateContestTeam", "error=true"})
     public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
-        return "details/teamTab";
+        return TAB_VIEW;
     }
 
     @RequestMapping

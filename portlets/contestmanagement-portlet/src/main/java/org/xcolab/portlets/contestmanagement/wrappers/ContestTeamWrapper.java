@@ -50,18 +50,16 @@ public class ContestTeamWrapper {
             throws SystemException, PortalException {
         for(Long userId : userIds) {
             Long roleId = memberRole.getRoleId();
-            //Role role = RoleLocalServiceUtil.getRole(roleId);
-            //List<Role> userRole = new ArrayList<>();
-            //userRole.add(role);
-            RoleLocalServiceUtil.addUserRole(roleId,roleId);
-            //RoleLocalServiceUtil.updateRole(role);
+            Role role = RoleLocalServiceUtil.getRole(roleId);
+            RoleLocalServiceUtil.addUserRole(userId,roleId);
+            RoleLocalServiceUtil.updateRole(role);
         }
     }
 
     private void asssignMemberWithRoleToContest(MemberRole memberRole, List<Long> userIds)
             throws SystemException, PortalException {
         String memberRoleName = memberRole.getPrintName();
-        if (memberRole == MemberRole.JUDGES) memberRoleName = "Judge";
+        if (memberRole == MemberRole.JUDGES) memberRoleName = "Judge"; // TODO change in config file
         for (Long userId : userIds) {
             Long contestMemberId = CounterLocalServiceUtil.increment(ContestTeamMember.class.getName());
             ContestTeamMember contestTeamMember = ContestTeamMemberLocalServiceUtil.createContestTeamMember(contestMemberId);

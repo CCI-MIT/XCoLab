@@ -129,7 +129,7 @@
 			<label>
 				<strong>Description</strong>
 				<a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
-				300 characters
+				900 characters
 			</label>
 			<div class="addprophelp">A short paragraph that states the specific problem the contest seeks to address and why it is important. The description is essentially a summary of the details page (see below) and typically starts by briefly outlining the opportunity and/or challenge the contest seeks to tackle and concludes by stating the contest's focus.</div>
 			<div class="clearfix"><!-- --></div>
@@ -140,7 +140,7 @@
 				</div>
 				<div class="clearfix"><!-- --></div>
 				<div class="inputLimitContainer">
-					<span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">300</span> characters
+					<span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">900</span> characters
 				</div>
 			</div>
 		</div>

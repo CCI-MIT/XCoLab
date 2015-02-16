@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.portlets.contestmanagement.views.ContestDetailsTabs;
+import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.ActionRequest;
@@ -45,14 +46,8 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
     static final private TabEnum tab = ContestDetailsTabs.RESOURCES;
     static final private String TAB_VIEW = "details/resourcesTab";
 
-    private WikiPage wikiPage;
-    private WikiPageResource wikiPageResource;
-    private String contestTitle;
+    private WikiPageWrapper wikiPageWrapper;
 
-    final static Long WIKI_NODE_ID = 18855L;
-    final static Long WIKI_GROUP_ID = 10136L;
-    final static Long DEFAULT_COMPANY_ID = 10112L;
-    final static Long WIKI_USER_ID  = 10144L;
 
     @InitBinder("contestResourcesBean")
     public void initBinder(WebDataBinder binder) {
@@ -74,12 +69,11 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
         if(!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
-        contestTitle = getContest().getContestShortName();
+
         try {
+            wikiPageWrapper = new WikiPageWrapper(getContest());
             setPageAttributes(request, model, tab);
-            initWikiPageResourceAndCreateIfNoneExistsForThisContest();
-            initWikiPageAndCreateIfNoneExistsForThisContest();
-            model.addAttribute("contestResourcesBean", getContestResourcesBean());
+            model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
             return TAB_VIEW;
         } catch (Exception e){
         }
@@ -101,13 +95,12 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
         }
 
         try{
-            updateWikiPage(updatedContestResourcesBean);
+            wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
             e.printStackTrace();
             setNotFoundErrorRenderParameter(response);
         }
-
     }
 
     @RequestMapping(params = {"action=updateContestResources", "error=true"})
@@ -115,76 +108,5 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
         return TAB_VIEW;
     }
 
-    private void initWikiPageResourceAndCreateIfNoneExistsForThisContest() throws Exception{
-        try {
-            wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WIKI_NODE_ID, contestTitle);
-        } catch(NoSuchPageResourceException e){
-            createWikiPageResource();
-        }
-    }
 
-    private void createWikiPageResource() throws Exception{
-        wikiPageResource = WikiPageResourceLocalServiceUtil.addPageResource(WIKI_NODE_ID, contestTitle);
-    }
-
-    private void initWikiPageAndCreateIfNoneExistsForThisContest() throws Exception{
-        try {
-            wikiPage = WikiPageLocalServiceUtil.getPage(wikiPageResource.getResourcePrimKey());
-        } catch(NoSuchPageException e){
-            createWikiPage();
-        }
-    }
-    private void createWikiPage() throws Exception {
-        double version = 1;
-        String content = "";
-        addWikiPage(version, content);
-    }
-    private void addWikiPage(double version, String content) throws Exception{
-        ServiceContext serviceContext = new ServiceContext();
-        if(wikiPageResource != null) initWikiPageResourceAndCreateIfNoneExistsForThisContest();
-        Long resourcePrimaryKey = wikiPageResource.getPrimaryKey();
-        String summary = "";
-        boolean minorEdit = false;
-        boolean head = true;
-        wikiPage = WikiPageLocalServiceUtil.addPage(
-                WIKI_USER_ID,
-                WIKI_NODE_ID,
-                contestTitle,
-                version,
-                content,
-                summary,
-                minorEdit,
-                "html",
-                head,
-                "", "",
-                serviceContext);
-
-        wikiPage.setResourcePrimKey(resourcePrimaryKey);
-        wikiPage.persist();
-        WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
-    }
-
-    private ContestResourcesBean getContestResourcesBean() throws Exception{
-        ContestResourcesBean contestResourcesBean = new ContestResourcesBean();
-        String resourcesContent = wikiPage.getContent();
-        contestResourcesBean.fillSectionsWithContent(resourcesContent);
-        return contestResourcesBean;
-    }
-
-    private void updateWikiPage(ContestResourcesBean updatedContestResourcesBean) throws Exception{
-        updatedContestResourcesBean.fillOverviewSectionContent(getContest());
-        String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
-        double currentVersion = wikiPage.getVersion();
-        double newVersion = currentVersion + 0.1;
-
-        removeHeadFlagFromCurrentWikiPage();
-        addWikiPage(newVersion, updatedResourcesContent);
-
-    }
-
-    private void removeHeadFlagFromCurrentWikiPage() throws Exception{
-        wikiPage.setHead(false);
-        wikiPage.persist();
-        WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
-    }
 }

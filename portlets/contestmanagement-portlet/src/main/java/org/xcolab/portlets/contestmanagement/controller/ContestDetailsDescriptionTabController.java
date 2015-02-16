@@ -49,6 +49,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     @Autowired
     private Validator validator;
     static final private TabEnum tab = ContestDetailsTabs.DESCRIPTION;
+    static final private String TAB_VIEW = "details/descriptionTab";
 
     @InitBinder("contestDescriptionBean")
     public void initBinder(WebDataBinder binder) {
@@ -82,12 +83,13 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         }
         setPageAttributes(request, model, tab);
         model.addAttribute("contestDescriptionBean", new ContestDescriptionBean(getContest()));
-        return "details/descriptionTab";
+        return TAB_VIEW;
     }
 
     @RequestMapping(params = "action=updateContestDetails")
-    public void showDescriptionTabController(ActionRequest request, Model model,
-                                             ActionResponse response, @Valid ContestDescriptionBean updatedContestDescriptionBean, BindingResult result) {
+    public void showDescriptionTabController(ActionRequest request, Model model, ActionResponse response,
+                                             @Valid ContestDescriptionBean updatedContestDescriptionBean,
+                                             BindingResult result) {
         boolean createNew = false;
 
         if(!tabWrapper.getCanEdit()) {
@@ -101,7 +103,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         }
 
         try{
-            // TODO check Inpuz
+            // TODO check Input
             updatedContestDescriptionBean.persist();
 
             if (createNew) {
@@ -109,19 +111,16 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
                 Contest contest = ContestLocalServiceUtil.getContest(updatedContestDescriptionBean.getContestPK());
                 sendEmailNotificationToAuthor(themeDisplay, contest);
             }
-
-            //LinkUtils.getContestLink(updatedContestDescriptionBean.getContestPK());
-            response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId" + tabContext.getContest(request).getContestPK() + "/tab/DESCRIPTION)");
-            tabContext.invalidateContext(request);
+            setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
-            response.setRenderParameter("error", "true");
+            setNotFoundErrorRenderParameter(response);
         }
 
     }
 
     @RequestMapping(params = {"action=updateContestDetails", "error=true"})
     public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
-        return "details/descriptionTab";
+        return TAB_VIEW;
     }
 
     private void sendEmailNotificationToAuthor(ThemeDisplay themeDisplay, Contest contest) throws PortalException, SystemException{
