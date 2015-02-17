@@ -1,4 +1,4 @@
-package org.xcolab.portlets.contestmanagement.utils;
+package org.xcolab.portlets.contestmanagement.entities;
 
 /**
  * Created by Thomas on 2/9/2015.

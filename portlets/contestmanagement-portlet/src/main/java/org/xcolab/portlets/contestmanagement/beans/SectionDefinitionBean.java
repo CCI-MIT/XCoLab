@@ -15,6 +15,7 @@ public class SectionDefinitionBean implements Serializable{
     private String content;
     private boolean deletable = true;
     private boolean isSectionNew = false;
+    private boolean templateSection = false;
 
     public SectionDefinitionBean() {
     }
@@ -85,5 +86,13 @@ public class SectionDefinitionBean implements Serializable{
 
     public void setSectionNew(boolean isSectionNew) {
         this.isSectionNew = isSectionNew;
+    }
+
+    public boolean isTemplateSection() {
+        return templateSection;
+    }
+
+    public void setTemplateSection(boolean templateSection) {
+        this.templateSection = templateSection;
     }
 }

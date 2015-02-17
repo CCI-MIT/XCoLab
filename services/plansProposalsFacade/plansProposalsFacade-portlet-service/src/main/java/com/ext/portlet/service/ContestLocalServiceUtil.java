@@ -621,6 +621,13 @@ public class ContestLocalServiceUtil {
         return getService().getFellowsForContest(contest);
     }
 
+    public static java.util.List<com.liferay.portal.model.User> getContestManagersForContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestManagersForContest(contest);
+    }
+
     /**
     * Returns the URL link address for the passed contest
     *

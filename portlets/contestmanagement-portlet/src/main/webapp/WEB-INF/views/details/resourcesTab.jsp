@@ -36,6 +36,8 @@
 				</div>
 
 				<c:forEach var="section" items="${contestResourcesBean.sections}" varStatus="x" >
+					<form:hidden path="sections[${x.index}].templateSection"/>
+
 					<c:if test="${fn:length(contestResourcesBean.sections)-2 eq x.index}">
 						<div class="addSection" id="addSection">
 							<div class="blue-button">
@@ -55,7 +57,7 @@
 						<label>
 							<c:choose>
 								<c:when test="${section.deletable}">
-									<strong>Title:</strong> <form:input path="sections[${x.index}].title"/>
+									<strong>Title:</strong><form:input path="sections[${x.index}].title"/>
 								</c:when>
 								<c:otherwise>
 									<form:hidden path="sections[${x.index}].title"/>
@@ -79,8 +81,11 @@
 						</c:if>
 
 						<div class="clearfix"><!--  --></div>
+						<c:if test="${section.deletable}">
+							<strong>Content:</strong>
+						</c:if>
 						<div class="addpropInputContainer">
-							<form:textarea path="sections[${x.index}].content" />
+							<form:textarea path="sections[${x.index}].content" cssClass="ckeditor_placeholder" />
 							<div class="reg_errors">
 								<form:errors cssClass="alert alert-error" path="sections[${x.index}].content" />
 							</div>
@@ -172,7 +177,9 @@
 			})
 
 			jQuery('.deletable').delegate(".deleteIcon", "click", function() {
-				deleteSection(this);
+				if(confirm("Do want to remove this section ?")) {
+					deleteSection(this);
+				}
 			});
 
 		});

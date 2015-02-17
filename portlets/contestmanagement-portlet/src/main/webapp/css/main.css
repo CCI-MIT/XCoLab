@@ -1,3 +1,7 @@
+.floatLeft{
+    float: left;
+}
+
 .fileUploadFrame input {
     opacity: 0;
     filter: alpha(opacity=0);
@@ -41,6 +45,10 @@
 }
 
 .cmsDetailsBox .addpropInputContainer input{
+    width: 910px;
+}
+
+.cmsDetailsBox .cke_skin_colab {
     width: 910px;
 }
 

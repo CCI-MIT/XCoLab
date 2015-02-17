@@ -18,6 +18,7 @@ import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by Thomas on 2/12/2015.
@@ -35,9 +36,10 @@ public class ContestTeamWrapper {
     public void updateContestTeamMembers()
             throws SystemException, PortalException {
         removeAllContestTeamMembersForContest();
-        assignMemberToContest(MemberRole.JUDGES,contestTeamBean.getUserIdsJudges());
+        assignMemberToContest(MemberRole.JUDGES, contestTeamBean.getUserIdsJudges());
         assignMemberToContest(MemberRole.ADVISOR, contestTeamBean.getUserIdsAdvisors());
         assignMemberToContest(MemberRole.FELLOW, contestTeamBean.getUserIdsFellows());
+        assignMemberToContest(MemberRole.CONTESTMANAGER, contestTeamBean.getUserIdsContestManagers());
     }
 
     private void assignMemberToContest(MemberRole memberRole, List<Long> userIds)
@@ -78,8 +80,40 @@ public class ContestTeamWrapper {
             throws SystemException, PortalException{
         List<ContestTeamMember> contestTeamMembers = ContestTeamMemberLocalServiceUtil.findForContest(contestId);
         for(ContestTeamMember contestTeamMember : contestTeamMembers){
+            String contestTeamMemberRole = contestTeamMember.getRole();
+            Long userId = contestTeamMember.getUserId();
+            removeUserRoleIfNotUsedInAnotherContest(userId, contestTeamMemberRole);
             ContestTeamMemberLocalServiceUtil.deleteContestTeamMember(contestTeamMember);
         }
+    }
+
+
+    private void removeUserRoleIfNotUsedInAnotherContest(Long userId, String memberRoleName){
+        try {
+            DynamicQuery queryContsetTeamMembershipsByRoleAndUserId =
+                    DynamicQueryFactoryUtil.forClass(ContestTeamMember.class)
+                            .add(PropertyFactoryUtil.forName("userId").eq(new Long(userId)))
+                            .add(PropertyFactoryUtil.forName("role").eq(new String(memberRoleName)))
+                            .setProjection(ProjectionFactoryUtil.count("id_"));
+
+            //List queryResult = ContestTeamMemberLocalServiceUtil.dynamicQuery(queryContsetTeamMembershipsByRoleAndUserId);
+            List queryResult = ContestTeamMemberLocalServiceUtil.dynamicQuery(queryContsetTeamMembershipsByRoleAndUserId,0,1);
+            ContestTeamMember contestTeamMember = (ContestTeamMember) queryResult.get(0);
+            /* TODO
+            if ( count >  0) {
+                MemberRole memberRole = MemberRole.getMember(memberRoleName);
+                Long roleId = memberRole.getRoleId();
+                RoleLocalServiceUtil.deleteUserRole(userId, roleId);
+            }*/
+/*
+            for (ListIterator<ContestTeamMember> iter = queryResult.listIterator(); iter.hasNext(); ) {
+                ContestTeamMember contestTeamMember = iter.next();
+
+            }*/
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     private void removeUserFromContestTeamMembers(Long contestId, Long userId, String memberRoleName)

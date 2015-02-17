@@ -39,6 +39,7 @@
 				<collab:teamBox title="Advisors" list="${contestWrapper.contestAdvisors}"/>
 				<collab:teamBox title="Fellows" list="${contestWrapper.contestFellows}"/>
 				<collab:teamBox title="Judges" list="${contestWrapper.contestJudges}"/>
+				<collab:teamBox title="Contest-Manager" list="${contestWrapper.contestManager}"/>
 			</div>
 		</form:form>
 		<div class="clear"><!-- --></div>

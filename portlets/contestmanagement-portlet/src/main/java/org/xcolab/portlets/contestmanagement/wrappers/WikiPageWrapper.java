@@ -8,6 +8,7 @@ import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.model.WikiPageResource;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 import com.liferay.portlet.wiki.service.WikiPageResourceLocalServiceUtil;
+import org.springframework.web.util.HtmlUtils;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 
 /**
@@ -19,15 +20,17 @@ public class WikiPageWrapper {
     private WikiPageResource wikiPageResource;
     final private String contestTitle;
     final private Contest contest;
+    final private Long loggedInUserId;
 
     final static Long WIKI_NODE_ID = 18855L;
     final static Long WIKI_GROUP_ID = 10136L;
     final static Long DEFAULT_COMPANY_ID = 10112L;
     final static Long WIKI_USER_ID  = 10144L;
 
-    public WikiPageWrapper(Contest contest) throws Exception{
+    public WikiPageWrapper(Contest contest, Long loggedInUserId) throws Exception{
         this.contest = contest;
         this.contestTitle = contest.getContestShortName();
+        this.loggedInUserId = loggedInUserId;
         initWikiPageResourceAndCreateIfNoneExistsForThisContest();
         initWikiPageAndCreateIfNoneExistsForThisContest();
     }
@@ -42,11 +45,12 @@ public class WikiPageWrapper {
     public void updateWikiPage(ContestResourcesBean updatedContestResourcesBean) throws Exception{
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
-        double currentVersion = wikiPage.getVersion();
-        double newVersion = currentVersion + 0.1;
-
-        removeHeadFlagFromCurrentWikiPage();
-        addWikiPage(newVersion, updatedResourcesContent);
+        if(!wikiPage.getContent().equals(updatedResourcesContent)) {
+            double currentVersion = wikiPage.getVersion();
+            double newVersion = currentVersion + 0.1;
+            removeHeadFlagFromCurrentWikiPage();
+            addWikiPage(newVersion, updatedResourcesContent);
+        }
     }
 
     private void initWikiPageResourceAndCreateIfNoneExistsForThisContest() throws Exception{
@@ -83,7 +87,7 @@ public class WikiPageWrapper {
         boolean minorEdit = false;
         boolean head = true;
         wikiPage = WikiPageLocalServiceUtil.addPage(
-                WIKI_USER_ID,
+                loggedInUserId,
                 WIKI_NODE_ID,
                 contestTitle,
                 version,
@@ -95,9 +99,14 @@ public class WikiPageWrapper {
                 "", "",
                 serviceContext);
 
+
         wikiPage.setResourcePrimKey(resourcePrimaryKey);
         wikiPage.persist();
         WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
+
+        String escapedWikiPageUrlLink = "/resources/-/wiki/Main/" + HtmlUtils.htmlEscape(wikiPage.getTitle());
+        //contest.setResourcesUrl(escapedWikiPageUrlLink);
+
     }
 
     private void removeHeadFlagFromCurrentWikiPage() throws Exception{

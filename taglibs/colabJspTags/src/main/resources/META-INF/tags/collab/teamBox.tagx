@@ -128,7 +128,9 @@
           document.getElementById(userListId).addEventListener("click",function(e) {
             // e.target is our targeted element.
             if(e.target &amp;&amp; e.target.nodeName == "LI") {
-              removeMemberFromList(e.target.id, e.target.children[1].innerHTML, userListId);
+              if(confirm("Do want to remove " + e.target.children[1].innerHTML + " from " + membersTitle + " ?")) {
+                removeMemberFromList(e.target.id, e.target.children[1].innerHTML, userListId);
+              }
             }
           });
 

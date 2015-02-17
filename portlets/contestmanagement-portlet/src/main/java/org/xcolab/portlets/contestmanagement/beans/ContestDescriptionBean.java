@@ -1,7 +1,6 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.*;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
@@ -33,6 +32,8 @@ public class ContestDescriptionBean implements Serializable{
     private Long planTemplateId;
     //@NotNull(message = "A schedule template must be selected.")
     private Long scheduleTemplateId;
+    //@NotNull(message = "A schedule template must be selected.")
+    private Long contestLevelId;
 
     public ContestDescriptionBean() {
     }
@@ -46,6 +47,7 @@ public class ContestDescriptionBean implements Serializable{
             contestDescription = contest.getContestDescription();
             planTemplateId = contest.getPlanTemplateId();
             scheduleTemplateId = (long) 0;
+            contestLevelId = (long) 0;
             contestLogoId = contest.getContestLogoId();
             sponsorLogoId = contest.getSponsorLogoId();
         }
@@ -59,7 +61,7 @@ public class ContestDescriptionBean implements Serializable{
         contest.setPlanTemplateId(planTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
-
+        //contest.contestLevelId(contestLevelId);
         contest.persist();
     }
 
@@ -127,4 +129,11 @@ public class ContestDescriptionBean implements Serializable{
         this.scheduleTemplateId = scheduleTemplateId;
     }
 
+    public Long getContestLevelId() {
+        return contestLevelId;
+    }
+
+    public void setContestLevelId(Long contestLevelId) {
+        this.contestLevelId = contestLevelId;
+    }
 }

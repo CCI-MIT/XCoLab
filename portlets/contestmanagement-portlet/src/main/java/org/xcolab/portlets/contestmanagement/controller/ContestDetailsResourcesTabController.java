@@ -5,6 +5,7 @@ import com.ext.portlet.model.ContestWrapper;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.wiki.NoSuchPageException;
 import com.liferay.portlet.wiki.NoSuchPageResourceException;
@@ -66,12 +67,13 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
     public String showResourcesTabController(PortletRequest request, PortletResponse response, Model model)
             throws PortalException, SystemException {
 
-        if(!tabWrapper.getCanView()) {
+        if(!tabWrapper.getCanView() || request.getRemoteUser() == null) {
             return NO_PERMISSION_TAB_VIEW;
         }
 
         try {
-            wikiPageWrapper = new WikiPageWrapper(getContest());
+            Long userLoggedInId = Long.parseLong(request.getRemoteUser());
+            wikiPageWrapper = new WikiPageWrapper(getContest(), userLoggedInId);
             setPageAttributes(request, model, tab);
             model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
             return TAB_VIEW;

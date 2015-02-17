@@ -21,7 +21,7 @@ function initializeTextEditors() {
             thiz.attr({validateLength: false});
         }
 
-        if (thiz.hasClass("rte")) {
+        if (thiz.hasClass("ckeditor_placeholder")) {
 
             var editor = CKEDITOR.replace(thiz.attr("id"));
 

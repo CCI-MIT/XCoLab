@@ -20,6 +20,7 @@ public class ContestTeamBean implements Serializable{
     private List<Long> userIdsJudges = new ArrayList<>();
     private List<Long> userIdsAdvisors = new ArrayList<>();
     private List<Long> userIdsFellows = new ArrayList<>();
+    private List<Long> userIdsContestManagers = new ArrayList<>();
     private Contest contest;
     private PortletRequest request;
 
@@ -39,6 +40,7 @@ public class ContestTeamBean implements Serializable{
                 populateJudges();
                 populateFellows();
                 populateAdvisors();
+                populateContestManagers();
             } catch (Exception e){
 
             }
@@ -50,6 +52,7 @@ public class ContestTeamBean implements Serializable{
         userIdsJudges = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsJudges");
         userIdsFellows = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsFellows");
         userIdsAdvisors = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsAdvisors");
+        userIdsContestManagers = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsContestManagers");
     }
 
     private void populateJudges() throws SystemException, PortalException{
@@ -67,6 +70,12 @@ public class ContestTeamBean implements Serializable{
     private void populateAdvisors() throws SystemException, PortalException{
         for (User advisor : ContestLocalServiceUtil.getAdvisorsForContest(contest)) {
             userIdsAdvisors.add(advisor.getUserId());
+        }
+    }
+
+    private void populateContestManagers() throws SystemException, PortalException{
+        for (User contestManager : ContestLocalServiceUtil.getContestManagersForContest(contest)) {
+            userIdsContestManagers.add(contestManager.getUserId());
         }
     }
 
@@ -100,5 +109,13 @@ public class ContestTeamBean implements Serializable{
 
     public Long getContestId() {
         return contest.getContestPK();
+    }
+
+    public List<Long> getUserIdsContestManagers() {
+        return userIdsContestManagers;
+    }
+
+    public void setUserIdsContestManagers(List<Long> userIdsContestManagers) {
+        this.userIdsContestManagers = userIdsContestManagers;
     }
 }

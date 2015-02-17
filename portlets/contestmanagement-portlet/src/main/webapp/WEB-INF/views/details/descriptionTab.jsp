@@ -42,12 +42,12 @@
 			<div class="addprophelp">Two to five words very broadly describing the contest topic, such as "Transportation Efficiency," or "Scaling Renewables in Emerging Economies". This is how the contest will be identified.</div>
 			<div class="clearfix"><!--  --></div>
 			<div class="addpropInputContainer">
-				<form:input path="contestShortName" id="contestShortName" />
+				<form:input path="contestShortName" id="contestShortName"/>
 				<div class="reg_errors"><!--  -->
 					<form:errors cssClass="alert alert-error" path="contestShortName" />
 				</div>
 				<div class="clearfix"><!-- --></div>
-				<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">80</span> characters</div>
+				<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">50</span> characters</div>
 			</div>
 		</div>
 
@@ -134,7 +134,7 @@
 			<div class="addprophelp">A short paragraph that states the specific problem the contest seeks to address and why it is important. The description is essentially a summary of the details page (see below) and typically starts by briefly outlining the opportunity and/or challenge the contest seeks to tackle and concludes by stating the contest's focus.</div>
 			<div class="clearfix"><!-- --></div>
 			<div class="addpropInputContainer">
-				<form:textarea path="contestDescription" id="contestDescription" cssClass="contestDescription" />
+				<form:textarea path="contestDescription" id="contestDescription" cssClass="ckeditor_placeholder contestDescription" />
 				<div class="reg_errors"><!--  -->
 					<form:errors cssClass="alert alert-error" path="contestDescription" />
 				</div>
@@ -184,6 +184,26 @@
 				-->
 			</div>
 		</div>
+
+		<div class="addpropbox">
+			<label>
+				<strong>Contest level</strong>
+				<a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+				Helptext dummy.
+			</label>
+			<div class="addprophelp">Helptext dummy.</div>
+			<div class="clearfix"><!-- --></div>
+			<div class="addpropInputContainer">
+				<form:select path="contestLevelId">
+					<form:option value="NONE" label="--- Select ---" />
+					<form:options items="${contestLevelSelectionItems}" itemValue="value" itemLabel="lable"/>
+				</form:select>
+				<div class="reg_errors"><!--  -->
+					<form:errors cssClass="alert alert-error" path="contestLevelId" />
+				</div>
+			</div>
+		</div>
+
 	</form:form>
 	</div>
 

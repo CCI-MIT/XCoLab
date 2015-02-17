@@ -495,6 +495,20 @@ public class ContestWrapper {
         return advisors;
     }
 
+    public List<User> getContestManager() throws PortalException, SystemException {
+        List<User> advisors = null;
+        for (ContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("ContestManager")) {
+                advisors = c.getUsers();
+            }
+        }
+        if(advisors == null) return new LinkedList<>(); //return empty list if null
+        return advisors;
+    }
+
+
+
+
     public boolean isUserAmongAdvisors(User userInQuestion) throws SystemException, PortalException {
         for (User judge : getContestAdvisors()) {
             if (judge.getUserId() == userInQuestion.getUserId()) {

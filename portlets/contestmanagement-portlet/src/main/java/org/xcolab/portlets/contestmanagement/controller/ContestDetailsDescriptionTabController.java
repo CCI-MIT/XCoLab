@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.exceptions.TabAuthorizationException;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
+import org.xcolab.portlets.contestmanagement.entities.ContestLevels;
 import org.xcolab.portlets.contestmanagement.views.ContestDetailsTabs;
-import org.xcolab.portlets.contestmanagement.utils.LabelValue;
+import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.utils.emailnotification.ContestCreationNotification;
 import org.xcolab.wrapper.TabWrapper;
 
@@ -64,6 +64,11 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     @ModelAttribute("scheduleTemplateSelectionItems")
     public List<LabelValue> populateScheduleTemplateSelectionItems(){
         return getScheduleTemplateSelectionItems();
+    }
+
+    @ModelAttribute("contestLevelSelectionItems")
+    public List<LabelValue> populatecontestLevelSelectionItems(){
+        return getContestLevelSelectionItems();
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -147,6 +152,17 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         try {
             for (PlanTemplate proposalTemplate : PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE)) {
                 selectItems.add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
+            }
+        } catch (Exception e){
+        }
+        return selectItems;
+    }
+
+    private List<LabelValue> getContestLevelSelectionItems(){
+        List<LabelValue> selectItems = new ArrayList<>();
+        try {
+            for (ContestLevels contestLevel : ContestLevels.values()) {
+                selectItems.add(new LabelValue(new Long(contestLevel.getLevel()), contestLevel.getDisplayName()));
             }
         } catch (Exception e){
         }

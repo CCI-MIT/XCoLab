@@ -673,6 +673,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getFellowsForContest(contest);
     }
 
+    @Override
+    public java.util.List<com.liferay.portal.model.User> getContestManagersForContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestManagersForContest(contest);
+    }
+
     /**
     * Returns the URL link address for the passed contest
     *

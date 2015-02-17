@@ -837,7 +837,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.ADVISOR))) {
             return roleToUserMap.get(MemberRole.ADVISOR);
         }
-
         return new ArrayList<>();
     }
 
@@ -846,7 +845,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.JUDGES))) {
             return roleToUserMap.get(MemberRole.JUDGES);
         }
-
         return new ArrayList<>();
     }
 
@@ -855,7 +853,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.FELLOW))) {
             return roleToUserMap.get(MemberRole.FELLOW);
         }
+        return new ArrayList<>();
+    }
 
+    public List<User> getContestManagersForContest(Contest contest) throws SystemException, PortalException {
+        Map<MemberRole, List<User>> roleToUserMap = getContestTeamMembersByRole(contest);
+        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.CONTESTMANAGER))) {
+            return roleToUserMap.get(MemberRole.CONTESTMANAGER);
+        }
         return new ArrayList<>();
     }
 

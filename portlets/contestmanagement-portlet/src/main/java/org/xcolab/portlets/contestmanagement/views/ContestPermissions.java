@@ -37,7 +37,6 @@ public class ContestPermissions implements TabPermissions {
     public ContestPermissions(PortletRequest request, Contest contest) throws PortalException, SystemException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
         permissionChecker = themeDisplay.getPermissionChecker();
         portletId = (String) request.getAttribute(WebKeys.PORTLET_ID);
         primKey = themeDisplay.getPortletDisplay().getResourcePK();

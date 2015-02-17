@@ -2,11 +2,9 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestWrapper;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.contestmanagement.utils.ContestResourcesHtmlParserUtil;
-import scala.Immutable;
 
 import java.io.Serializable;
 import java.util.*;
@@ -72,10 +70,13 @@ public class ContestResourcesBean implements Serializable {
     }
 
     public String getSectionsAsHtml(){
+        removeDeletedSections();
+        incooperateNewSections();
+
         StringBuilder sectionsAsHtmlString = new StringBuilder();
         String overviewSection = contestResourcesHtmlParserUtil.getOverviewSectionAsHtmlString(overviewSectionValues);
+
         sectionsAsHtmlString.append(overviewSection);
-        incooperateNewSections();
         for(SectionDefinitionBean sectionBaseDefinition : sections ){
             String sectionAsHtmlString = contestResourcesHtmlParserUtil.getSectionAsHtmlString(sectionBaseDefinition);
             sectionsAsHtmlString.append(sectionAsHtmlString);
@@ -84,17 +85,35 @@ public class ContestResourcesBean implements Serializable {
     }
 
     private void incooperateNewSections(){
-        SectionDefinitionBean sectionDefinitionBeanDummy = new SectionDefinitionBean();
+        SectionDefinitionBean templateSectionDefinitionBean = new SectionDefinitionBean();
         for(SectionDefinitionBean sectionBaseDefinition : sections ){
-            if(sectionBaseDefinition.isSectionNew() && sectionBaseDefinition.getTitle().isEmpty()) {
-                sectionDefinitionBeanDummy = sectionBaseDefinition;
+            if(sectionBaseDefinition.isTemplateSection()) {
+                templateSectionDefinitionBean = sectionBaseDefinition;
                 break;
             }
         }
-        int indexOfDummySectionBaseDefinition = sections.indexOf(sectionDefinitionBeanDummy);
-        sections.remove(sectionDefinitionBeanDummy);
+        int indexOfDummySectionBaseDefinition = sections.indexOf(templateSectionDefinitionBean);
+        sections.remove(templateSectionDefinitionBean);
         Collections.rotate(sections.subList(indexOfDummySectionBaseDefinition-1, sections.size()), -1);
-}
+    }
+
+    private void removeDeletedSections(){
+        List<SectionDefinitionBean> removedSectionDefinitions = new ArrayList<>();
+        for(SectionDefinitionBean sectionBaseDefinition : sections ){
+            if(sectionBaseDefinition.getTitle().isEmpty()
+                    && sectionBaseDefinition.getContent().isEmpty()
+                    && !sectionBaseDefinition.isTemplateSection()){
+                removedSectionDefinitions.add(sectionBaseDefinition);
+            }
+        }
+
+        for(SectionDefinitionBean removedSectionDefinition : removedSectionDefinitions) {
+            sections.remove(removedSectionDefinition);
+        }
+
+    }
+
+
     public void fillSectionsWithContent(String resourcesContent) throws Exception {
         contestResourcesHtmlParserUtil.parseDocument(resourcesContent);
         fillBaseSectionsWithContent();
@@ -141,9 +160,9 @@ public class ContestResourcesBean implements Serializable {
         }
     }
 
-    private void addEmptySectionWithDefaultsToSectionsList(){
+    private void addTemplateSectionWithDefaultsToSectionsList(){
         SectionDefinitionBean sectionDefinitionBean = new SectionDefinitionBean();
-        sectionDefinitionBean.setSectionNew(true);
+        sectionDefinitionBean.setTemplateSection(true);
         sections.add(sectionDefinitionBean);
     }
 
@@ -156,7 +175,7 @@ public class ContestResourcesBean implements Serializable {
         sections.addAll(baseSectionBottom);
         numberOfSections = sections.size();
         Collections.reverse(sections);
-        addEmptySectionWithDefaultsToSectionsList();
+        addTemplateSectionWithDefaultsToSectionsList();
     }
 
     private void createEmptySectionsList(){
