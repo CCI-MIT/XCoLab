@@ -41,7 +41,7 @@ Contest Judges
 
 If there are additional comments from the Judges, they will be included below.
 
-COMMENTS FROM JUDGES:' WHERE type_ = "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC';
+COMMENTS FROM JUDGES:' WHERE type_ = 'SCREENING_DO_NOT_ADVANCE_OFF_TOPIC';
 
 
 delete from xcolab_ContestEmailTemplate where type_="SCREENING_DO_NOT_ADVANCE_INCOMPLETE";
