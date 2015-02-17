@@ -44,8 +44,8 @@ If there are additional comments from the Judges, they will be included below.
 COMMENTS FROM JUDGES:' WHERE type_ = 'SCREENING_DO_NOT_ADVANCE_OFF_TOPIC';
 
 
-delete from xcolab_ContestEmailTemplate where type_="SCREENING_DO_NOT_ADVANCE_OFF_INCOMPLETE";
-insert into xcolab_ContestEmailTemplate (type_,subject, header, footer) values("SCREENING_DO_NOT_ADVANCE_OFF_INCOMPLETE","Your proposal in the Climate CoLab","TBD","Note: The decisions of the Judges are final. If you have questions, please contact the Climate CoLab staff admin@climatecolab.org.");
+delete from xcolab_ContestEmailTemplate where type_="SCREENING_DO_NOT_ADVANCE_INCOMPLETE";
+insert into xcolab_ContestEmailTemplate (type_,subject, header, footer) values("SCREENING_DO_NOT_ADVANCE_INCOMPLETE","Your proposal in the Climate CoLab","TBD","Note: The decisions of the Judges are final. If you have questions, please contact the Climate CoLab staff admin@climatecolab.org.");
 UPDATE xcolab_ContestEmailTemplate SET header ='
 Proposal: <proposal-title/>
 Contest:  <contest-title/>
@@ -65,7 +65,7 @@ Contest Judges
 If there are additional comments from the Judges, they will be included below.
 
 
-COMMENTS FROM JUDGES:' WHERE type_ = 'SCREENING_DO_NOT_ADVANCE_OFF_INCOMPLETE';
+COMMENTS FROM JUDGES:' WHERE type_ = 'SCREENING_DO_NOT_ADVANCE_INCOMPLETE';
 
 
 delete from xcolab_ContestEmailTemplate where type_="ADVANCING_ADVANCE_TO_SEMIFINALIST";
