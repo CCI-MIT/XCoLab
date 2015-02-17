@@ -136,6 +136,7 @@
 		<field name="contestActive" type="boolean" />
 		<field name="planTemplateId" type="long" />
 		<field name="focusAreaId" type="long" />
+		<field name="contestTier" type="long" />
 		<field name="contestLogoId" type="long" />
 		<field name="featured" type="boolean" />
 		<field name="plansOpenByDefault" type="boolean" />
@@ -730,6 +731,7 @@
 		</field>
 		<field name="characterLimit" type="int" />
 		<field name="focusAreaId" type="long" />
+		<field name="tier" type="long" />
 		<field name="locked" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.PlanSectionPlanMap">

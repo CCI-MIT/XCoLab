@@ -18,6 +18,7 @@ import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseType;
+import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.utils.emailnotification.ContestVoteNotification;
 import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
@@ -643,6 +644,20 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
 
         return listOfContests;
+    }
+
+    public List<Contest> getContestsMatchingOntologyTermsAndTier(List<OntologyTerm> ontologyTerms, ContestTier contestTier) throws PortalException, SystemException{
+        List<Contest> matchedOntologyContests = getContestsMatchingOntologyTerms(ontologyTerms);
+        List<Contest> filteredContests = new ArrayList<>(matchedOntologyContests.size());
+
+        // Filter out contests where contestTier does not match
+        for (Contest contest : matchedOntologyContests) {
+            if (contest.getContestTier() == contestTier.getTierType()) {
+                filteredContests.add(contest);
+            }
+        }
+
+        return filteredContests;
     }
 
     /**

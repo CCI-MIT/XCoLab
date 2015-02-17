@@ -52,6 +52,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("contestActive", getContestActive());
         attributes.put("planTemplateId", getPlanTemplateId());
         attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("contestTier", getContestTier());
         attributes.put("contestLogoId", getContestLogoId());
         attributes.put("featured", getFeatured());
         attributes.put("plansOpenByDefault", getPlansOpenByDefault());
@@ -165,6 +166,12 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (focusAreaId != null) {
             setFocusAreaId(focusAreaId);
+        }
+
+        Long contestTier = (Long) attributes.get("contestTier");
+
+        if (contestTier != null) {
+            setContestTier(contestTier);
         }
 
         Long contestLogoId = (Long) attributes.get("contestLogoId");
@@ -602,6 +609,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setFocusAreaId(long focusAreaId) {
         _contest.setFocusAreaId(focusAreaId);
+    }
+
+    /**
+    * Returns the contest tier of this contest.
+    *
+    * @return the contest tier of this contest
+    */
+    @Override
+    public long getContestTier() {
+        return _contest.getContestTier();
+    }
+
+    /**
+    * Sets the contest tier of this contest.
+    *
+    * @param contestTier the contest tier of this contest
+    */
+    @Override
+    public void setContestTier(long contestTier) {
+        _contest.setContestTier(contestTier);
     }
 
     /**

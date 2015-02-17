@@ -35,6 +35,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public boolean contestActive;
     public long planTemplateId;
     public long focusAreaId;
+    public long contestTier;
     public long contestLogoId;
     public boolean featured;
     public boolean plansOpenByDefault;
@@ -58,7 +59,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(69);
+        StringBundler sb = new StringBundler(71);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -88,6 +89,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(planTemplateId);
         sb.append(", focusAreaId=");
         sb.append(focusAreaId);
+        sb.append(", contestTier=");
+        sb.append(contestTier);
         sb.append(", contestLogoId=");
         sb.append(contestLogoId);
         sb.append(", featured=");
@@ -193,6 +196,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestImpl.setContestActive(contestActive);
         contestImpl.setPlanTemplateId(planTemplateId);
         contestImpl.setFocusAreaId(focusAreaId);
+        contestImpl.setContestTier(contestTier);
         contestImpl.setContestLogoId(contestLogoId);
         contestImpl.setFeatured(featured);
         contestImpl.setPlansOpenByDefault(plansOpenByDefault);
@@ -274,6 +278,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestActive = objectInput.readBoolean();
         planTemplateId = objectInput.readLong();
         focusAreaId = objectInput.readLong();
+        contestTier = objectInput.readLong();
         contestLogoId = objectInput.readLong();
         featured = objectInput.readBoolean();
         plansOpenByDefault = objectInput.readBoolean();
@@ -344,6 +349,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         objectOutput.writeBoolean(contestActive);
         objectOutput.writeLong(planTemplateId);
         objectOutput.writeLong(focusAreaId);
+        objectOutput.writeLong(contestTier);
         objectOutput.writeLong(contestLogoId);
         objectOutput.writeBoolean(featured);
         objectOutput.writeBoolean(plansOpenByDefault);

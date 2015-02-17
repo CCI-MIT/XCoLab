@@ -24,6 +24,7 @@
         <column name="contestActive" type="boolean"/>
         <column name="planTemplateId" type="long" />
         <column name="focusAreaId" type="long" />
+        <column name="contestTier" type="long" />
         <column name="contestLogoId" type="long" />
         <column name="featured" type="boolean" />
         <column name="plansOpenByDefault" type="boolean" />

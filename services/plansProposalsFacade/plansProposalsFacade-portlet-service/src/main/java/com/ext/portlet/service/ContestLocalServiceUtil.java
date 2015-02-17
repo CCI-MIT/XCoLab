@@ -558,6 +558,16 @@ public class ContestLocalServiceUtil {
         return getService().getContestsMatchingOntologyTerms(ontologyTerms);
     }
 
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTermsAndTier(
+        java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms,
+        org.xcolab.enums.ContestTier contestTier)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getContestsMatchingOntologyTermsAndTier(ontologyTerms,
+            contestTier);
+    }
+
     /**
     * This method transfers users' supports for proposals in the passed contest to a vote. If a user has only supported
     * one proposal within the passed contest, the support is automatically transferred to a vote and the user is notified

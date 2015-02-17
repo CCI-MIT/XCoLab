@@ -28,6 +28,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     private String _helpText;
     private int _characterLimit;
     private long _focusAreaId;
+    private long _tier;
     private boolean _locked;
     private BaseModel<?> _planSectionDefinitionRemoteModel;
 
@@ -76,6 +77,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         attributes.put("helpText", getHelpText());
         attributes.put("characterLimit", getCharacterLimit());
         attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("tier", getTier());
         attributes.put("locked", getLocked());
 
         return attributes;
@@ -129,6 +131,12 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
         if (focusAreaId != null) {
             setFocusAreaId(focusAreaId);
+        }
+
+        Long tier = (Long) attributes.get("tier");
+
+        if (tier != null) {
+            setTier(tier);
         }
 
         Boolean locked = (Boolean) attributes.get("locked");
@@ -315,6 +323,28 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     }
 
     @Override
+    public long getTier() {
+        return _tier;
+    }
+
+    @Override
+    public void setTier(long tier) {
+        _tier = tier;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setTier", long.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, tier);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public boolean getLocked() {
         return _locked;
     }
@@ -418,6 +448,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         clone.setHelpText(getHelpText());
         clone.setCharacterLimit(getCharacterLimit());
         clone.setFocusAreaId(getFocusAreaId());
+        clone.setTier(getTier());
         clone.setLocked(getLocked());
 
         return clone;
@@ -464,7 +495,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(21);
 
         sb.append("{id=");
         sb.append(getId());
@@ -482,6 +513,8 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         sb.append(getCharacterLimit());
         sb.append(", focusAreaId=");
         sb.append(getFocusAreaId());
+        sb.append(", tier=");
+        sb.append(getTier());
         sb.append(", locked=");
         sb.append(getLocked());
         sb.append("}");
@@ -491,7 +524,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(31);
+        StringBundler sb = new StringBundler(34);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanSectionDefinition");
@@ -528,6 +561,10 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         sb.append(
             "<column><column-name>focusAreaId</column-name><column-value><![CDATA[");
         sb.append(getFocusAreaId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>tier</column-name><column-value><![CDATA[");
+        sb.append(getTier());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>locked</column-name><column-value><![CDATA[");

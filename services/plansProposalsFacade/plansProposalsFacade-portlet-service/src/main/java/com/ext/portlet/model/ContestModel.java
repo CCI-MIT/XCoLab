@@ -256,6 +256,20 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setFocusAreaId(long focusAreaId);
 
     /**
+     * Returns the contest tier of this contest.
+     *
+     * @return the contest tier of this contest
+     */
+    public long getContestTier();
+
+    /**
+     * Sets the contest tier of this contest.
+     *
+     * @param contestTier the contest tier of this contest
+     */
+    public void setContestTier(long contestTier);
+
+    /**
      * Returns the contest logo ID of this contest.
      *
      * @return the contest logo ID of this contest

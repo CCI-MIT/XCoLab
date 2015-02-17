@@ -201,6 +201,7 @@
 		<property name="contestActive" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="planTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="contestTier" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="contestLogoId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="featured" type="com.liferay.portal.dao.orm.hibernate.BooleanType" column="featured_" />
 		<property name="plansOpenByDefault" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
@@ -806,6 +807,7 @@
 		<property name="helpText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="characterLimit" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="tier" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="locked" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.PlanSectionPlanMapImpl" table="xcolab_PlanSectionPlanMap">
