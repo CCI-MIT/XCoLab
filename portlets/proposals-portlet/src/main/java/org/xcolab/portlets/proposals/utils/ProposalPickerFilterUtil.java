@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.ext.portlet.model.PlanSectionDefinition;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
@@ -133,8 +135,10 @@ public enum ProposalPickerFilterUtil {
             try{
                 long definitionId = (Long) additionalFilterCriterion;
                 // FocusArea
-                FocusArea fa = PlanSectionDefinitionLocalServiceUtil.getFocusArea(PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(definitionId));
+                PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(definitionId);
+                FocusArea fa = PlanSectionDefinitionLocalServiceUtil.getFocusArea(planSectionDefinition);
                 // List of terms in this area
+
                 if (fa != null) {
                 	List<OntologyTerm> terms = FocusAreaLocalServiceUtil.getTerms(fa);
                     List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
@@ -142,6 +146,16 @@ public enum ProposalPickerFilterUtil {
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                         Proposal p = i.next().getLeft();
                         if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
+                    }
+                }
+                // Filter by contest tier
+                if (ContestTier.getContestTierByTierType(planSectionDefinition.getTier()) != ContestTier.NONE) {
+                    ContestTier contestTier = ContestTier.getContestTierByTierType(planSectionDefinition.getTier());
+                    List<Contest> tierFilteredContests = ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType());
+
+                    for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
+                        Proposal p = i.next().getLeft();
+                        if (!tierFilteredContests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
                     }
                 }
             } catch (Exception e){ /* LR EXCEPTIONS */ e.printStackTrace(); }

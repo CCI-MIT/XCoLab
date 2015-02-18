@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import com.ext.portlet.model.PlanSectionDefinition;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -480,21 +482,22 @@ public class ProposalPickerJSONController {
 		List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
 
 		// FocusArea
+		PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
 		FocusArea fa = PlanSectionDefinitionLocalServiceUtil
-				.getFocusArea(PlanSectionDefinitionLocalServiceUtil
-						.getPlanSectionDefinition(sectionId));
+				.getFocusArea(planSectionDefinition);
+		ContestTier contestTier = ContestTier.getContestTierByTierType(planSectionDefinition.getTier());
+
 		// List of terms in this area
 		if (fa != null) {
 
 			for (Contest c : ContestLocalServiceUtil
-					.getContestsMatchingOntologyTerms(FocusAreaLocalServiceUtil
-							.getTerms(fa))) {
+					.getContestsMatchingOntologyTermsAndTier(FocusAreaLocalServiceUtil
+							.getTerms(fa), contestTier.getTierType())) {
 				contests.add(Pair.of(new ContestWrapper(c),
 						c.getCreated() == null ? new Date(0) : c.getCreated()));
 			}
 		} else {
-			for (Contest c : ContestLocalServiceUtil.getContests(0,
-					Integer.MAX_VALUE)) {
+			for (Contest c : ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType())) {
 				contests.add(Pair.of(new ContestWrapper(c),
 						c.getCreated() == null ? new Date(0) : c.getCreated()));
 			}
@@ -508,6 +511,7 @@ public class ProposalPickerJSONController {
 			throws SystemException, PortalException {
 		List<Pair<Proposal, Date>> proposals = getFilteredSubscribedProposalsForUser(
 				userId, filterKey, sectionId);
+
 		Set<Long> includedProposals = new HashSet<>();
 		for (Pair<Proposal, Date> entry : proposals) {
 			includedProposals.add(entry.getLeft().getProposalId());
@@ -578,5 +582,4 @@ public class ProposalPickerJSONController {
 		ProposalPickerFilterUtil.ONTOLOGY.filter(proposals, sectionId);
 		return proposals;
 	}
-
 }

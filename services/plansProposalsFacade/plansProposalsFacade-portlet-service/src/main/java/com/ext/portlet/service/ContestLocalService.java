@@ -474,10 +474,34 @@ public interface ContestLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    /**
+    * Returns all contests matching the specified contest tier.
+    * Returns all contests in the case of ContestTier.NONE
+    *
+    * @param contestTierType   The specified contest tier
+    * @return A list of all Contests matching the specified contest tier
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingTier(
+        long contestTierType)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns all contests matching the specified contest tier and ontology terms.
+    * Returns all contests in the case of ContestTier.NONE
+    *
+    * @param contestTierType   The specified contest tier
+    * @return A list of all Contests matching the specified contest tier
+    * @throws PortalException
+    * @throws SystemException
+    */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTermsAndTier(
         java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms,
-        org.xcolab.enums.ContestTier contestTier)
+        long contestTierType)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

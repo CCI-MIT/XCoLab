@@ -57,6 +57,10 @@
         <finder name="Type" return-type="Collection">
             <finder-column name="PlanTypeId" />
         </finder>
+
+        <finder name="ContestTier" return-type="Collection">
+            <finder-column name="contestTier" />
+        </finder>
         
         <finder name="ContestActivecontestPrivate" return-type="Collection">
             <finder-column name="contestActive" />

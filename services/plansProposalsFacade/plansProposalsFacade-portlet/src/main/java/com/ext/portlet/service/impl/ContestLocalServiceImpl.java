@@ -646,18 +646,42 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return listOfContests;
     }
 
-    public List<Contest> getContestsMatchingOntologyTermsAndTier(List<OntologyTerm> ontologyTerms, ContestTier contestTier) throws PortalException, SystemException{
-        List<Contest> matchedOntologyContests = getContestsMatchingOntologyTerms(ontologyTerms);
-        List<Contest> filteredContests = new ArrayList<>(matchedOntologyContests.size());
+    /**
+     * Returns all contests matching the specified contest tier.
+     * Returns all contests in the case of ContestTier.NONE
+     * @param contestTierType   The specified contest tier
+     * @return                  A list of all Contests matching the specified contest tier
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public List<Contest> getContestsMatchingTier(long contestTierType) throws PortalException, SystemException {
+        if (ContestTier.getContestTierByTierType(contestTierType) == ContestTier.NONE) {
+            return contestPersistence.findAll();
+        }
+        return contestPersistence.findByContestTier(contestTierType);
+    }
 
-        // Filter out contests where contestTier does not match
-        for (Contest contest : matchedOntologyContests) {
-            if (contest.getContestTier() == contestTier.getTierType()) {
-                filteredContests.add(contest);
-            }
+    /**
+     * Returns all contests matching the specified contest tier and ontology terms.
+     * Returns all contests in the case of ContestTier.NONE
+     * @param contestTierType   The specified contest tier
+     * @return                  A list of all Contests matching the specified contest tier
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public List<Contest> getContestsMatchingOntologyTermsAndTier(List<OntologyTerm> ontologyTerms, long contestTierType) throws PortalException, SystemException{
+        List<Contest> matchedOntologyContests = getContestsMatchingOntologyTerms(ontologyTerms);
+
+        // Ignore tier filter if no contest tier has been selected
+        if (ContestTier.getContestTierByTierType(contestTierType) == ContestTier.NONE) {
+            return matchedOntologyContests;
         }
 
-        return filteredContests;
+        List<Contest> matchedTierContests = getContestsMatchingTier(contestTierType);
+
+        // Cut both lists together
+        matchedOntologyContests.retainAll(matchedTierContests);
+        return matchedOntologyContests;
     }
 
     /**

@@ -106,11 +106,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     public static long PLANTYPEID_COLUMN_BITMASK = 1L;
     public static long CONTESTACTIVE_COLUMN_BITMASK = 2L;
     public static long CONTESTPRIVATE_COLUMN_BITMASK = 4L;
-    public static long FEATURED_COLUMN_BITMASK = 8L;
-    public static long FLAG_COLUMN_BITMASK = 16L;
-    public static long FLAGTEXT_COLUMN_BITMASK = 32L;
-    public static long WEIGHT_COLUMN_BITMASK = 64L;
-    public static long CREATED_COLUMN_BITMASK = 128L;
+    public static long CONTESTTIER_COLUMN_BITMASK = 8L;
+    public static long FEATURED_COLUMN_BITMASK = 16L;
+    public static long FLAG_COLUMN_BITMASK = 32L;
+    public static long FLAGTEXT_COLUMN_BITMASK = 64L;
+    public static long WEIGHT_COLUMN_BITMASK = 128L;
+    public static long CREATED_COLUMN_BITMASK = 256L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Contest"));
     private static ClassLoader _classLoader = Contest.class.getClassLoader();
@@ -136,6 +137,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private long _planTemplateId;
     private long _focusAreaId;
     private long _contestTier;
+    private long _originalContestTier;
+    private boolean _setOriginalContestTier;
     private long _contestLogoId;
     private boolean _featured;
     private boolean _originalFeatured;
@@ -754,7 +757,19 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public void setContestTier(long contestTier) {
+        _columnBitmask |= CONTESTTIER_COLUMN_BITMASK;
+
+        if (!_setOriginalContestTier) {
+            _setOriginalContestTier = true;
+
+            _originalContestTier = _contestTier;
+        }
+
         _contestTier = contestTier;
+    }
+
+    public long getOriginalContestTier() {
+        return _originalContestTier;
     }
 
     @JSON
@@ -1207,6 +1222,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestModelImpl._originalContestActive = contestModelImpl._contestActive;
 
         contestModelImpl._setOriginalContestActive = false;
+
+        contestModelImpl._originalContestTier = contestModelImpl._contestTier;
+
+        contestModelImpl._setOriginalContestTier = false;
 
         contestModelImpl._originalFeatured = contestModelImpl._featured;
 
