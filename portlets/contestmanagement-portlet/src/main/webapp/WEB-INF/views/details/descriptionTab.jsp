@@ -21,14 +21,14 @@
 	<div class="cmsDetailsBox">
 	<collab:imageUpload uploadImageDivId="contestImage"/>
 
-	<h1>Introduction</h1>
-	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-	dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-	Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy dolor sit amet.
+	<p>Welcome! This is the contest creation tool, where you can set up and preview the contest before it goes live on the Climate CoLab site.</p>
+	<p>This first tab is where your team enters and edits the content that will be displayed on the contest homepage.</p>
+	<p>Click the tabs above to edit the other elements of the contest. Be sure to click <strong>SAVE changes</strong> before exiting a page or your content may be lost.  Once all the contest content is complete and finalized with your team, click <strong>SUBMIT</strong> to send it to the Climate CoLab staff for review before launch.</p>
+		<p>You can use the <strong>Comment</strong> feature below to communicate with your other contest team members or ask questions of the Climate CoLab staff.</p>
+
 
 	<collab:imageUpload uploadImageDivId="logoImage"/>
-	<h1>Contest description sections</h1>
+	<h2>Contest description sections</h2>
 	<form:form action="${updateContestDescriptionURL }" commandName="contestDescriptionBean" cssClass="addpropform" id="editForm" method="post">
 		<div class="reg_errors"><!--  -->
 			<form:errors cssClass="alert alert-error" path="*" />
@@ -37,7 +37,6 @@
 			<label>
 				<strong>Title</strong>
 				<a class="helpTrigger" href="javascript:;"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
-				50 characters
 			</label>
 			<div class="addprophelp">Two to five words very broadly describing the contest topic, such as "Transportation Efficiency," or "Scaling Renewables in Emerging Economies". This is how the contest will be identified.</div>
 			<div class="clearfix"><!--  --></div>
@@ -55,7 +54,6 @@
 			<label>
 				<strong>Question</strong>
 				<a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
-				140 characters
 			</label>
 			<div class="addprophelp">The key question to be answered through the contest. The most successful contest questions are concise and worded with language accessible to the public. </div>
 			<div class="clearfix"><!-- --></div>
@@ -73,10 +71,9 @@
 
 		<div class="addpropbox blue">
 			<label>
-                <span><strong>Contest image</strong><br />
-                <em>optional</em></span>
+               <strong>Contest image</strong>
 			</label>
-			<div class="addprophelp">The image symbolizes the contest challenge. Teams may wish to consider the message conveyed by the image; will it be a representation of the problem (an oil rig, a house devastated by a hurricane) or a vision of the solution (an abundant forest, a community working together).</div>
+			<div class="addprophelp">The image symbolizes the contest challenge. Requirements: 300x300 pixels or larger (if the image is not square, it will appear warped); format in .PNG, JPEG or .JPG; no closed copyrights attached to the image. <a href="http://climatecolab.org/resources/-/wiki/Main/Launching+the+Contest">For guidance, please click here.</a></div>
 
 			<div class="upload contestImageUpload">
 
@@ -101,10 +98,9 @@
 
 		<div class="addpropbox blue">
 			<label>
-                <span><strong>Organization/company logo</strong><br />
-                <em>optional</em></span>
+                <strong>Organization/company logo</strong>
 			</label>
-			<div class="addprophelp">horizontal version preferred, if available.</div>
+			<div class="addprophelp">If available, it is preferred to use a version of the logo that is horizontal and has a transparent background.</div>
 
 			<div class="upload logoImageUpload">
 				<div class="uploadbox" id="logoImage">
@@ -129,9 +125,8 @@
 			<label>
 				<strong>Description</strong>
 				<a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
-				1300 characters
 			</label>
-			<div class="addprophelp">A short paragraph that states the specific problem the contest seeks to address and why it is important. The description is essentially a summary of the details page (see below) and typically starts by briefly outlining the opportunity and/or challenge the contest seeks to tackle and concludes by stating the contest's focus.</div>
+			<div class="addprophelp">A short paragraph that states the specific problem the contest seeks to address and why it is important. The description is essentially a summary of the resources page (see next tab) and typically starts by briefly outlining the opportunity and/or challenge the contest seeks to tackle and concludes by stating the contest's focus.</div>
 			<div class="clearfix"><!-- --></div>
 			<div class="addpropInputContainer">
 				<form:textarea path="contestDescription" id="contestDescription" cssClass="ckeditor_placeholder contestDescription" />
@@ -149,9 +144,8 @@
 			<label>
 				<strong>Proposal template</strong>
 				<a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
-				Helptext dummy.
 			</label>
-			<div class="addprophelp">Helptext dummy.</div>
+			<div class="addprophelp">Select the proposal template associated with your contest. Templates hold the set of questions members will be asked to answer in completing a proposal. If you would like any changes to your template or need help selecting the most appropriate template, please submit a comment below for the Climate CoLab team.</div>
 			<div class="clearfix"><!-- --></div>
 			<div class="addpropInputContainer">
 				<form:select path="planTemplateId">
@@ -168,9 +162,8 @@
 			<label>
 				<strong>Schedule template</strong>
 				<a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
-				Helptext dummy.
 			</label>
-			<div class="addprophelp">Helptext dummy.</div>
+			<div class="addprophelp">Select the schedule associated with your contest. If you would like any changes to your schedule, please submit a comment below for the Climate CoLab team.</div>
 			<div class="clearfix"><!-- --></div>
 			<div class="addpropInputContainer">
 				<!--

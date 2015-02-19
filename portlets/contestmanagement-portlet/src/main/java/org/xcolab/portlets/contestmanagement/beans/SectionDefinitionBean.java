@@ -1,6 +1,12 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
+import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.PlanTemplateSection;
+import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
+
 import java.io.Serializable;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by Thomas on 2/13/2015.
@@ -9,15 +15,61 @@ public class SectionDefinitionBean implements Serializable{
 
     //@NotBlank(message = "The contest description must be at least 5 characters and not more than 140 characters.")
     //@Length(min = 5, max = 140, message = "The contest question must be at least 5 characters and not more than 140 characters.")
+    // TODO split in core bean and rest
+    private Long id;
+    private Long sectionDefinitionId;
+    private String type;
     private String title;
-    private Integer characterLimit;
+    private String defaultText;
     private String helpText;
+    private Integer characterLimit;
+    private Long focusAreaId;
+    private Long level;
     private String content;
+    private boolean locked = false;
     private boolean deletable = true;
     private boolean isSectionNew = false;
     private boolean templateSection = false;
+    private int weight;
 
     public SectionDefinitionBean() {
+    }
+
+    public SectionDefinitionBean(PlanSectionDefinition planSectionDefinition){
+        initPlanSectionDefinition(planSectionDefinition);
+    }
+
+    public SectionDefinitionBean(PlanSectionDefinition planSectionDefinition, Long planTemplateId) throws Exception{
+        initPlanSectionDefinition(planSectionDefinition);
+
+        List<PlanTemplateSection> planTemplateSections =
+                PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(planTemplateId);
+
+        // TODO very inefficient, add finder to service layer
+        for(PlanTemplateSection planTemplateSection : planTemplateSections){
+            if(planTemplateSection.getPlanSectionId() == planSectionDefinition.getId()) {
+                initPlanTemplateSection(planTemplateSection);
+                break;
+            }
+        }
+
+        initPlanSectionDefinition(planSectionDefinition);
+
+    }
+
+    private void initPlanTemplateSection(PlanTemplateSection planTemplateSection){
+        this.weight = planTemplateSection.getWeight();
+    }
+
+    private void initPlanSectionDefinition(PlanSectionDefinition planSectionDefinition){
+        this.sectionDefinitionId = planSectionDefinition.getId();
+        this.type = planSectionDefinition.getType();
+        this.title = planSectionDefinition.getTitle();
+        this.defaultText = planSectionDefinition.getDefaultText();
+        this.helpText = planSectionDefinition.getHelpText();
+        this.characterLimit = planSectionDefinition.getCharacterLimit();
+        this.focusAreaId = planSectionDefinition.getFocusAreaId();
+        this.locked = planSectionDefinition.getLocked();
     }
 
     public SectionDefinitionBean(String title) {
@@ -95,4 +147,84 @@ public class SectionDefinitionBean implements Serializable{
     public void setTemplateSection(boolean templateSection) {
         this.templateSection = templateSection;
     }
+
+    public void setDeletable(boolean deletable) {
+        this.deletable = deletable;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDefaultText() {
+        return defaultText;
+    }
+
+    public void setDefaultText(String defaultText) {
+        this.defaultText = defaultText;
+    }
+
+    public Long getFocusAreaId() {
+        return focusAreaId;
+    }
+
+    public void setFocusAreaId(Long focusAreaId) {
+        this.focusAreaId = focusAreaId;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public Long getSectionDefinitionId() {
+        return sectionDefinitionId;
+    }
+
+    public void setSectionDefinitionId(Long sectionDefinitionIdString) {
+        this.sectionDefinitionId = sectionDefinitionId;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+
+    public Long getLevel() {
+        return level;
+    }
+
+    public void setLevel(Long level) {
+        this.level = level;
+    }
+
+    public static final Comparator<SectionDefinitionBean> sectionListComparator = new MyComparator();
+
+    static class MyComparator implements Comparator<SectionDefinitionBean>{
+
+        @Override
+        public int compare(SectionDefinitionBean o1, SectionDefinitionBean o2) {
+            return o1.getWeight() - o2.getWeight();
+        }
+    }
+
 }

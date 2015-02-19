@@ -19,18 +19,14 @@
 
 
 	<div class="cmsDetailsBox">
-		<h1>Introduction</h1>
-		Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-		dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-		Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-		Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy dolor sit amet.
 
-		<h1>Ontology selection</h1>
+		<p>Each contest on the Climate CoLab has a place inside of our climate change taxonomy, which we use to organize and help people easily locate contests.  Please select where your contest falls in each of the four dimensions below.  If you have questions about where your contest best fits, please submit a comment below for the Climate CoLab team.</p>
 
 		<form action="${updateContestOntologyURL }" id="editForm" method="post">
 			<input type="hidden" name="selectedOntologyTerms" id="selectedOntologyTerms"/>
 		</form>
 
+		<h2>Contest ontology</h2>
 		<div class="contest-outline-left">
 			<div class="expand">
 				<a href="#" class="showall" style="display: inline;">Expand All</a>

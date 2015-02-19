@@ -4,7 +4,7 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	version="2.0">
-	<jsp:directive.attribute name="section" type="org.xcolab.wrapper.SectionWrapper"
+	<jsp:directive.attribute name="section" type="org.xcolab.wrapper.ProposalTemplateSectionWrapper"
 		required="true" rtexprvalue="true" description="Section which content should be displayed" />
 	
 	<c:choose>

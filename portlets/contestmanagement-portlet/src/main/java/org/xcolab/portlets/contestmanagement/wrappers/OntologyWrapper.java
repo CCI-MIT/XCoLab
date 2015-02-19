@@ -2,8 +2,6 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
-import org.springframework.ui.Model;
-import org.xcolab.wrapper.FocusAreaWrapper;
 import org.xcolab.wrapper.OntologySpaceWrapper;
 import org.xcolab.wrapper.OntologyTermWrapper;
 

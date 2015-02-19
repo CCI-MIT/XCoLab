@@ -151,7 +151,9 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         List<LabelValue> selectItems = new ArrayList<>();
         try {
             for (PlanTemplate proposalTemplate : PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE)) {
-                selectItems.add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
+                //(proposalTemplate.getBaseTemplateId() == 0  ) {
+                    selectItems.add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
+                //}
             }
         } catch (Exception e){
         }

@@ -2,6 +2,21 @@
     float: left;
 }
 
+
+.dragState{
+    background-color: #CCC!important;
+    border: 1px solid blue!important;
+}
+
+.allowDropState{
+    border: 3px solid blue!important;
+}
+
+.showAllowDropState{
+    background-color: #CCC!important;
+    border: 1px solid blue!important;
+}
+
 .fileUploadFrame input {
     opacity: 0;
     filter: alpha(opacity=0);
@@ -31,17 +46,29 @@
 }
 
 
+.cmsDetailsBox .dropzone{
+    height: 20px;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #0066b3;
+    color: #0066b3;
+}
+
 .cmsDetailsBox .addpropbox input{
     float: left;
+    height: 30px;
+}
+
+.cmsDetailsBox .addpropbox select{
+    height: 30px;
+    width: 445px;
+    font-size: 16px;
 }
 
 .cmsDetailsBox .addpropbox .addprophelp{
     width: 700px;
     color: #999;
-}
-
-.cmsDetailsBox .addpropInputContainer{
-    float:left;
 }
 
 .cmsDetailsBox .addpropInputContainer input{

@@ -12,10 +12,10 @@ import javax.portlet.PortletRequest;
  */
 public enum ContestDetailsTabs implements TabEnum{
 	ADMIN("Admin", TabPermissionAlgorithm.alwaysFalseViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
-	DESCRIPTION("Description", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
+	DESCRIPTION("Homepage", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
+	RESOURCES("Resources Page", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	TEAM("Team", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	ONTOLOGY("Ontology", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
-	RESOURCES("Resources", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	PROPOSALTEMPLATE("Proposal Template", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	ADVANCED("Advanced", TabPermissionAlgorithm.alwaysFalseViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
 

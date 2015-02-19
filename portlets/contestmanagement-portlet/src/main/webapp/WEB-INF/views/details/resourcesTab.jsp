@@ -20,13 +20,12 @@
 	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 	<div class="cmsDetailsBox">
 
-	<h1>Introduction</h1>
-	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-	dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-	Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy dolor sit amet.
+		<p>The resources page is what visitors see when they click either “See more details” or the Resources button on the contest homepage.  It provides a thorough overview of the sector or topic, key issues currently being faced, guidance on how members can focus proposals, and resources for further reading.</p>
+		<p>The sections below provide an example of how to format this page; contest teams can add new sections and/or structure it differently.</p>
+		<p>Fellows will have access to editing this page after the contest is launched.  Images and photos can be added at that point.</p>
+		<p>Sample resources pages can be found here: <a href="http://climatecolab.org/resources/-/wiki/Main/Youth+action+on+climate+change">Sample 1.</a> <a href="http://climatecolab.org/web/guest/resources/-/wiki/Main/Energy+Supply">Sample 2</a>.</p>
 
-	<h1>Resources sections</h1>
+	<h2>Resource page content</h2>
 		<div id="resourcesSections">
 			<form:form action="${updateContestResourcesURL }" commandName="contestResourcesBean"
 			 modelAttribute="contestResourcesBean" cssClass="addpropform" id="editForm" method="post">
@@ -36,12 +35,12 @@
 				</div>
 
 				<c:forEach var="section" items="${contestResourcesBean.sections}" varStatus="x" >
-					<form:hidden path="sections[${x.index}].templateSection"/>
+					<form:hidden path="sections[${x.index}].templateSection" data-form-name="templateSection"/>
 
 					<c:if test="${fn:length(contestResourcesBean.sections)-2 eq x.index}">
-						<div class="addSection" id="addSection">
+						<div class="addSection" id="addSection" name="addSection">
 							<div class="blue-button">
-								<a id="addSectionButton" href="#">ADD section</a>
+								<a id="addSectionButton" href="#addSection">ADD section</a>
 							</div>
 						</div>
 					</c:if>
@@ -49,7 +48,9 @@
 					<div class="addpropbox ${section.deletable ? 'blue deletable' : ''}"
 						style="display: ${fn:length(contestResourcesBean.sections)-1 eq x.index ? 'none' : ''}"
 						id="section${x.index}">
-						<form:hidden path="sections[${x.index}].sectionNew"/>
+						<form:hidden path="sections[${x.index}].sectionNew" data-form-name="sectionNew"/>
+						<form:hidden path="sections[${x.index}].weight" cssClass="weightInput" data-form-name="weight"/>
+
 						<c:if test="${section.deletable}">
 							<div class="deleteIcon"><!-- --></div>
 						</c:if>
@@ -57,7 +58,7 @@
 						<label>
 							<c:choose>
 								<c:when test="${section.deletable}">
-									<strong>Title:</strong><form:input path="sections[${x.index}].title"/>
+									<strong>Title:</strong><form:input path="sections[${x.index}].title" data-form-name="title"/>
 								</c:when>
 								<c:otherwise>
 									<form:hidden path="sections[${x.index}].title"/>
@@ -85,7 +86,7 @@
 							<strong>Content:</strong>
 						</c:if>
 						<div class="addpropInputContainer">
-							<form:textarea path="sections[${x.index}].content" cssClass="ckeditor_placeholder" />
+							<form:textarea path="sections[${x.index}].content" cssClass="ckeditor_placeholder" data-form-name="content" />
 							<div class="reg_errors">
 								<form:errors cssClass="alert alert-error" path="sections[${x.index}].content" />
 							</div>
@@ -147,15 +148,29 @@
 		function addNewSection(dummySectionId, newSectionId){
 			var dummySectionElement = document.getElementById("section" + dummySectionId);
 			var newSectionElement = dummySectionElement.cloneNode(true);
-			var sectionElementNames = ["sectionNew", "title", "content"];
-			var newSectionInputData = getInputData(dummySectionId, newSectionId, sectionElementNames);
 
+			var sectionElementNames = [];
+			[].forEach.call(newSectionElement.getElementsByTagName('input'), function(element) {
+				sectionElementNames.push(element.getAttribute("data-form-name"));
+			});
+
+			[].forEach.call(newSectionElement.getElementsByTagName('textarea'), function(element) {
+				sectionElementNames.push(element.getAttribute("data-form-name"));
+			});
+
+			[].forEach.call(newSectionElement.getElementsByTagName('select'), function(element) {
+				sectionElementNames.push(element.getAttribute("data-form-name"));
+			});
+
+			var newSectionInputData = getInputData(dummySectionId, newSectionId, sectionElementNames);
 			replaceDummySectionContent(newSectionElement, newSectionInputData, newSectionId );
 
 			var addSectionElement = document.getElementById("addSection");
 			document.getElementById("editForm").insertBefore(newSectionElement,addSectionElement);
 
 			setNumberOfSections(newSectionId);
+
+			initializeTextEditors();
 		}
 
 		function deleteSection(section){
@@ -170,9 +185,6 @@
 
 			$('#addSectionButton').click(function(){
 				var numberOfSections = getNumberOfSections();
-				console.log("numberOfSections", numberOfSections);
-				console.log("initialNumberOfSections", initialNumberOfSections);
-				console.log("dummySectionId", dummySectionId);
 				addNewSection(dummySectionId, numberOfSections + 1);
 			})
 

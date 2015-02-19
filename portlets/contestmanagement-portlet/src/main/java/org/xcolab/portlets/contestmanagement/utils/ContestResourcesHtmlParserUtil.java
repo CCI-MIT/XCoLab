@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class ContestResourcesHtmlParserUtil {
             if(sectionTitle.isEmpty() || ignoreSectionTitles.contains(sectionTitle)){
                 continue;
             } else if(baseSections.containsKey(sectionTitle.trim())){
-                baseSections.put(sectionTitle, sectionContent);
+                baseSections.put(sectionTitle.trim(), sectionContent);
             }
             else {
                 additionalSections.put(sectionTitle, sectionContent);
@@ -62,11 +63,11 @@ public class ContestResourcesHtmlParserUtil {
 
     private void createSections(String[] baseSectionTitles){
         createBaseSections(baseSectionTitles);
-        additionalSections = new HashMap<>();
+        additionalSections = new LinkedHashMap<>();
     }
 
     private void createBaseSections(String[] baseSectionTitles){
-        baseSections = new HashMap<>();
+        baseSections = new LinkedHashMap<>();
         for(String baseSectionTitle : baseSectionTitles) {
             baseSections.put(baseSectionTitle, "");
         }

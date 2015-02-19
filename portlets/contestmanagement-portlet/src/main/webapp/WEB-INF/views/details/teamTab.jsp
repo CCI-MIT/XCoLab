@@ -13,8 +13,8 @@
 		<portlet:param name="tab" value="TEAM" />
 		<portlet:param name="contestId" value="${contestWrapper.contestPK }" />
 		<portlet:param name="action" value="updateContestTeam" />
-		<!-- <portlet:param name="action_forwardToPage" value="teamTab" />
-		<portlet:param name="action_errorForwardToPage" value="teamTab" /> -->
+		<portlet:param name="action_forwardToPage" value="teamTab" />
+		<portlet:param name="action_errorForwardToPage" value="teamTab" />
 	</portlet:actionURL>
 
 	<script type="text/javascript">
@@ -28,18 +28,15 @@
 	</script>
 
 		<div class="cmsDetailsBox">
-		<h1>Introduction</h1>
-		Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-		dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-		Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-		Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy dolor sit amet.
-		<h1>Contest team</h1>
+			<p>Select the members of your contest team by searching for their Climate CoLab username. Please ensure each member of your team has uploaded a photo and bio to their profile.  You can register new members below, or by <a href="http://climatecolab.org/web/guest/loginregister">clicking here.</a></p>
+
+			<h2>Contest team</h2>
 		<form:form action="${updateContestTeamURL }" commandName="contestTeamBean" id="editForm" method="post">
 			<div class="teamTabContainer">
 				<collab:teamBox title="Advisors" list="${contestWrapper.contestAdvisors}"/>
 				<collab:teamBox title="Fellows" list="${contestWrapper.contestFellows}"/>
 				<collab:teamBox title="Judges" list="${contestWrapper.contestJudges}"/>
-				<collab:teamBox title="Contest-Manager" list="${contestWrapper.contestManager}"/>
+				<collab:teamBox title="Managers" list="${contestWrapper.contestManager}"/>
 			</div>
 		</form:form>
 		<div class="clear"><!-- --></div>

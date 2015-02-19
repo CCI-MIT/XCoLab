@@ -11,6 +11,8 @@ import com.liferay.portlet.wiki.service.WikiPageResourceLocalServiceUtil;
 import org.springframework.web.util.HtmlUtils;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 
+import java.net.URLEncoder;
+
 /**
  * Created by Thomas on 2/15/2015.
  */
@@ -46,8 +48,8 @@ public class WikiPageWrapper {
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
         if(!wikiPage.getContent().equals(updatedResourcesContent)) {
-            double currentVersion = wikiPage.getVersion();
-            double newVersion = currentVersion + 0.1;
+            Double currentVersion = wikiPage.getVersion() * 10;
+            double newVersion = (double) (currentVersion.intValue() + 1) / (double) 10;
             removeHeadFlagFromCurrentWikiPage();
             addWikiPage(newVersion, updatedResourcesContent);
         }
@@ -104,9 +106,8 @@ public class WikiPageWrapper {
         wikiPage.persist();
         WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
 
-        String escapedWikiPageUrlLink = "/resources/-/wiki/Main/" + HtmlUtils.htmlEscape(wikiPage.getTitle());
-        //contest.setResourcesUrl(escapedWikiPageUrlLink);
-
+        String escapedWikiPageUrlLink = "/resources/-/wiki/Main/" + URLEncoder.encode(wikiPage.getTitle());
+        contest.setResourcesUrl(escapedWikiPageUrlLink);
     }
 
     private void removeHeadFlagFromCurrentWikiPage() throws Exception{

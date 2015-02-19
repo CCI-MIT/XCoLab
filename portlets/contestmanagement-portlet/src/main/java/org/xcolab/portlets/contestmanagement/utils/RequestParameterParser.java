@@ -19,7 +19,9 @@ public class RequestParameterParser {
     private static List<Long> parseStringListToLongList(List<String> stringList) throws NumberFormatException{
         List<Long> longList = new ArrayList<>();
         for (String string : stringList) {
-            longList.add(Long.parseLong(string));
+            if(!string.isEmpty()) {
+                longList.add(Long.parseLong(string));
+            }
         }
         return longList;
     }

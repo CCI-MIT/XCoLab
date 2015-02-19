@@ -3,21 +3,21 @@ package org.xcolab.portlets.contestmanagement.entities;
 /**
  * Created by Thomas on 2/9/2015.
  */
-public class LabelValue {
+public class LabelStringValue {
     private String lable;
-    private Long value;
+    private String value;
 
-    public LabelValue(Long value, String lable){
+    public LabelStringValue(String value, String lable){
         this.value = value;
         this.lable = lable;
     }
 
 
-    public Long getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Long value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

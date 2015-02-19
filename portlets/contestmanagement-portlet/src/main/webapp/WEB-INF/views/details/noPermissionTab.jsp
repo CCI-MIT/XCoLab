@@ -8,7 +8,5 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
-	contest Team Tab will go here.
-	TODO: include registration portlet
-	<jsp:directive.include file="./footer.jspx"/>
+	You have no Permission to view or edit this tab!
 </jsp:root>

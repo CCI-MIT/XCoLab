@@ -52,7 +52,7 @@ public class ContestTeamBean implements Serializable{
         userIdsJudges = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsJudges");
         userIdsFellows = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsFellows");
         userIdsAdvisors = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsAdvisors");
-        userIdsContestManagers = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsContestManagers");
+        userIdsContestManagers = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsManagers");
     }
 
     private void populateJudges() throws SystemException, PortalException{

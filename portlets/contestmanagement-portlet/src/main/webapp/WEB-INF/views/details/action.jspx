@@ -8,12 +8,14 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
     xmlns:collab="http://climatecolab.org/tags/collab_1.0">
 
+	<portlet:resourceURL var="submitContest"/>
 	<div class="actionItems">
 		<div class="blue-button"><a href="#" id="saveChangesButton">SAVE changes</a></div>
 		<div class="blue-button">
-			<collab:contestLink contestId="${contestWrapper.contestPK}" text="SAVE changes &amp; PREVIEW contest"
+			<collab:contestLink contestId="${contestWrapper.contestPK}" text="PREVIEW contest"
 								linkId="previewContestButton" target="_blank"/>
 		</div>
+		<div class="blue-button"><a href="#" id="submitContestButton">SUBMIT contest</a></div>
 		<div class="gray-button"><a href="." id="saveChangesButton">DISCARD changes</a></div>
 	</div>
 
@@ -25,6 +27,24 @@
 			});
 			jQuery("#previewContestButton").click(function () {
 				jQuery("#editForm").submit();
+			});
+
+			jQuery("#submitContestButton").click(function () {
+
+				jQuery.ajax({
+					type: 'POST',
+					dataType: 'text',
+					url : "${submitContest}",
+					data: "contestId=${contestWrapper.contestPK}",
+					success: function(response){
+						if(response){
+							jQuery.growlUI('Success', 'The contest was successfully submitted!');
+						} else{
+							jQuery.growlUI('Error', 'There was an error while submitting the contest!');
+						}
+					}
+				});
+
 			});
 
 		});

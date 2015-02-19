@@ -1,25 +1,30 @@
 package org.xcolab.portlets.contestmanagement.controller;
 
 import com.ext.portlet.model.ContestWrapper;
+import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.util.mail.MailEngine;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
+import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
 import org.xcolab.portlets.contestmanagement.views.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestTeamWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import javax.mail.internet.InternetAddress;
+import javax.portlet.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +74,48 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
             setNotFoundErrorRenderParameter(response);
         }
     }
+
+    @ResourceMapping(value="submitContest")
+    public @ResponseBody
+    void handleSubmitContest(
+            PortletRequest request,
+            @RequestParam("contestId") Long contestId,
+            ResourceResponse response
+    ) throws Exception{
+
+        boolean success = true;
+        try {
+            User user = UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser()));
+            String subject  = "Contest draft was submitted from the new contest creation tool!";
+            String body = "Hi Laur,<br />" +
+                    "good to see you again.<br/>" +
+                    " The following contest: <br />" +
+                    "http://www.climatecolab.org/web/guest/cms/-/contestmanagement/contestId/" + contestId + "<br/>"+
+                    "was submitted by the user: " + user.getFullName() + "<br/>" +
+                    "Enjoy reviewing it! <br/>" +
+                    "Warmest, <br/>" +
+                    "your production server";
+
+            InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");
+
+            String emailRecipients = "pdeboer@mit.edu,knauert@mit.edu,lfi@mit.edu";
+            String[] recipients = emailRecipients.split(",");
+
+            InternetAddress[] addressTo = new InternetAddress[recipients.length];
+            for (int i = 0; i < recipients.length; i++) {
+                addressTo[i] = new InternetAddress(recipients[i]);
+            }
+
+            MailEngine.send(fromEmail, addressTo, subject, body, true);
+        } catch (Exception e) {
+            success = false;
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        response.setContentType("application/json");
+        response.getWriter().write(mapper.writeValueAsString(success));
+    }
+
+
 
     @RequestMapping(params = {"action=updateContestAdmin", "error=true"})
     public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
