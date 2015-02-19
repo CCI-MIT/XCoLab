@@ -128,7 +128,7 @@ public class ContestProposalTemplateWrapper {
                 planSectionDefinition.setDefaultText(sectionBaseDefinition.getDefaultText());
                 planSectionDefinition.setCharacterLimit(sectionBaseDefinition.getCharacterLimit());
                 planSectionDefinition.setHelpText(sectionBaseDefinition.getHelpText());
-                // TODO planSectionDefinition.setLevel(sectionBaseDefinition.getLevel());
+                planSectionDefinition.setTier(sectionBaseDefinition.getLevel());
                 // TODO planSectionDefinition.setFocusAreaId(sectionBaseDefinition.getFocusAreaId());
                 planSectionDefinition.persist();
                 sectionBaseDefinition.setSectionDefinitionId(planSectionDefinition.getId());
@@ -141,7 +141,6 @@ public class ContestProposalTemplateWrapper {
         removeDeletedSections();
         removeTemplacteSection();
         createSectionDefinitonsForNewSections();
-        //sortProposalTemplateSections();
 
         Long baseTemplateId =  planTemplate.getBaseTemplateId();
 
@@ -157,10 +156,6 @@ public class ContestProposalTemplateWrapper {
 
         removeExistingSectionsFromProposalTemplate();
         addSectionsToProposalTemplate();
-    }
-
-    public void sortProposalTemplateSections(){
-        Collections.sort(sections, SectionDefinitionBean.sectionListComparator );
     }
 
     private void createProposalTemplate(String title, Long baseTemplateId) throws Exception{

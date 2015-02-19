@@ -82,7 +82,7 @@ public class ContestTeamWrapper {
         for(ContestTeamMember contestTeamMember : contestTeamMembers){
             String contestTeamMemberRole = contestTeamMember.getRole();
             Long userId = contestTeamMember.getUserId();
-            removeUserRoleIfNotUsedInAnotherContest(userId, contestTeamMemberRole);
+            // TODO removeUserRoleIfNotUsedInAnotherContest(userId, contestTeamMemberRole);
             ContestTeamMemberLocalServiceUtil.deleteContestTeamMember(contestTeamMember);
         }
     }

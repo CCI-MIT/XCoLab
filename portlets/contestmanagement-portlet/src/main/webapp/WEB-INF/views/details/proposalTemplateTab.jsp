@@ -78,7 +78,7 @@
 							</div>
 							<strong>Title:</strong><form:input path="sections[${x.index}].title" data-form-name="title"/>
 							<br />
-							<strong>Character limit:</strong>
+							<span class="floatLeft"><strong>Character limit:</strong></span>
 							<form:input path="sections[${x.index}].characterLimit" data-form-name="characterLimit"/>
 						</label>
 
@@ -116,11 +116,6 @@
 	<script type="text/javascript">
 		<![CDATA[
 
-
-		function updateSectionDefinitionWithDataFromServer(sectionId, sectionDefinitionId){
-
-		}
-
 		function getSectionDefinitionFromServer(sectionDefinitionId){
 			var deferred = jQuery.Deferred();
 
@@ -148,12 +143,13 @@
 
 		function dragOver(ev) {
 			ev.preventDefault();
+			event.target.style.border = "2px dashed #ff0000 !important";
 			return false;
 		}
 
 		function dragEnter(ev) {
 			ev.target.classList.add("dragEnterState");
-			event.target.style.border = "2px dashed #ff0000 !important";
+			//event.target.style.border = "2px dashed #ff0000 !important";
 			//ev.preventDefault();
 		}
 
@@ -297,7 +293,8 @@
 			reCalculateWeights();
 		}
 
-		function deleteSection(section){
+		function deleteSection(event){
+			var section = event.target;
 			var newNumberOfSections = getNumberOfSections() - 1;
 			setNumberOfSections(newNumberOfSections);
 			var sectionElement = section.parentNode;
