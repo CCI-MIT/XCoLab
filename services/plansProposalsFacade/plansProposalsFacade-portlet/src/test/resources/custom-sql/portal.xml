@@ -1718,7 +1718,7 @@
 			)
 		]]>
 	</sql>
-	<sql id="com.liferay.utils.dao.orm.CustomSQL.countBySelectSQL">
+	<sql id="com.liferay.util.dao.orm.CustomSQL.countBySelectSQL">
 		<![CDATA[
 			SELECT
 				COUNT(*) AS COUNT_VALUE

@@ -234,6 +234,7 @@ public class MainViewController {
 			} else {
 				try {
 					completeRegistration(request, response, newAccountBean, redirect, false);
+
 				} catch (PortalException | SystemException e) {
 					e.printStackTrace();
 				} catch (Exception e) {
