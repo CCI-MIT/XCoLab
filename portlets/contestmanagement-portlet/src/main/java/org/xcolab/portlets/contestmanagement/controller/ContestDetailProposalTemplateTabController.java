@@ -56,11 +56,11 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
     }
 
     @ModelAttribute("levelSelectionItems")
-    public List<LabelValue> populatecontestLevelSelectionItems(){
+    public List<LabelValue> populateLevelSelectionItems(){
         return getContestLevelSelectionItems();
     }
 
-    @ModelAttribute("sectionTypesSelectionItems")
+    @ModelAttribute("sectionTypeSelectionItems")
     public List<LabelStringValue> populateSectionTypesSelectionItems(){
         return getSectionTypesSelectionItems();
     }

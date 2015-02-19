@@ -35,6 +35,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private boolean _contestActive;
     private long _planTemplateId;
     private long _focusAreaId;
+    private long _contestTier;
     private long _contestLogoId;
     private boolean _featured;
     private boolean _plansOpenByDefault;
@@ -109,6 +110,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("contestActive", getContestActive());
         attributes.put("planTemplateId", getPlanTemplateId());
         attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("contestTier", getContestTier());
         attributes.put("contestLogoId", getContestLogoId());
         attributes.put("featured", getFeatured());
         attributes.put("plansOpenByDefault", getPlansOpenByDefault());
@@ -222,6 +224,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (focusAreaId != null) {
             setFocusAreaId(focusAreaId);
+        }
+
+        Long contestTier = (Long) attributes.get("contestTier");
+
+        if (contestTier != null) {
+            setContestTier(contestTier);
         }
 
         Long contestLogoId = (Long) attributes.get("contestLogoId");
@@ -662,6 +670,28 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                 Method method = clazz.getMethod("setFocusAreaId", long.class);
 
                 method.invoke(_contestRemoteModel, focusAreaId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public long getContestTier() {
+        return _contestTier;
+    }
+
+    @Override
+    public void setContestTier(long contestTier) {
+        _contestTier = contestTier;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestTier", long.class);
+
+                method.invoke(_contestRemoteModel, contestTier);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -1215,6 +1245,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setContestActive(getContestActive());
         clone.setPlanTemplateId(getPlanTemplateId());
         clone.setFocusAreaId(getFocusAreaId());
+        clone.setContestTier(getContestTier());
         clone.setContestLogoId(getContestLogoId());
         clone.setFeatured(getFeatured());
         clone.setPlansOpenByDefault(getPlansOpenByDefault());
@@ -1292,7 +1323,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(69);
+        StringBundler sb = new StringBundler(71);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1322,6 +1353,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getPlanTemplateId());
         sb.append(", focusAreaId=");
         sb.append(getFocusAreaId());
+        sb.append(", contestTier=");
+        sb.append(getContestTier());
         sb.append(", contestLogoId=");
         sb.append(getContestLogoId());
         sb.append(", featured=");
@@ -1369,7 +1402,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(106);
+        StringBundler sb = new StringBundler(109);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1430,6 +1463,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>focusAreaId</column-name><column-value><![CDATA[");
         sb.append(getFocusAreaId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestTier</column-name><column-value><![CDATA[");
+        sb.append(getContestTier());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>contestLogoId</column-name><column-value><![CDATA[");

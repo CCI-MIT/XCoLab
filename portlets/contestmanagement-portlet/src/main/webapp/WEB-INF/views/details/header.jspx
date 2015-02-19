@@ -22,7 +22,8 @@
 					</c:choose>
 				</div>
 				<div class="proposal-title">
-					<h1>${contestWrapper.contestName}</h1>
+					<h1>${contestWrapper.contestShortName}</h1>
+					<h2>${contestWrapper.contestName}</h2>
 				</div>
 			</div>
 			<c:if test="${contestWrapper.contestPrivate }">

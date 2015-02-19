@@ -66,27 +66,20 @@
 						<label>
 							<strong>Section type:</strong>
 							<form:select path="sections[${x.index}].type" data-form-name="type">
-								<form:options items="${sectionTypeSelectionItems}" itemValue="lable" itemLabel="lable"/>
+								<form:option value="NONE" label="--- Select ---" />
+								<form:options items="${sectionTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
 							</form:select>
 
 							<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
 								<strong>Level:</strong>
 								<form:select path="sections[${x.index}].level" data-form-name="level">
-									<form:option value="NONE" label="--- Select ---" />
 									<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
-							<c:choose>
-								<c:when test="${section.deletable}">
-									<strong>Title:</strong><form:input path="sections[${x.index}].title" data-form-name="title"/>
-								</c:when>
-								<c:otherwise>
-									<form:hidden path="sections[${x.index}].title"/>
-									<strong>${section.title}</strong>
-								</c:otherwise>
-							</c:choose>
+							<strong>Title:</strong><form:input path="sections[${x.index}].title" data-form-name="title"/>
 							<br />
-							<strong>Character limit:</strong><form:input path="sections[${x.index}].characterLimit" data-form-name="characterLimit"/>
+							<strong>Character limit:</strong>
+							<form:input path="sections[${x.index}].characterLimit" data-form-name="characterLimit"/>
 						</label>
 
 						<div class="clearfix"><!--  --></div>
@@ -261,6 +254,7 @@
 			newSectionElement.id = newSectionId;
 			newSectionElement.setAttribute("data-section-id", newSectionId);
 			replaceInputDataByTagName(newSectionElement, newSectionInputData, 'input');
+			replaceInputDataByTagName(newSectionElement, newSectionInputData, 'select');
 			replaceInputDataByTagName(newSectionElement, newSectionInputData, 'textarea');
 		}
 
@@ -299,27 +293,30 @@
 			setNumberOfSections(newSectionId);
 
 			newSectionElement.addEventListener('change', selectTypeChangeCallback, false);
-			// TODO add click listener on image
+			newSectionElement.getElementsByClassName('deleteIcon')[0].addEventListener('click', deleteSection, false);
 			reCalculateWeights();
 		}
 
 		function deleteSection(section){
 			var newNumberOfSections = getNumberOfSections() - 1;
 			setNumberOfSections(newNumberOfSections);
-			// TODO also remove dropzone
-			console.log("section", section.parentNode);
 			var sectionElement = section.parentNode;
 			var previousDropzone = section.parentNode.previousSibling;
-			console.log("previousDropzone", previousDropzone);
-
 			document.getElementById("editForm").removeChild(previousDropzone);
 			document.getElementById("editForm").removeChild(sectionElement);
-
+			reCalculateWeights();
 		}
 
 		function selectTypeChangeCallback(event){
 				event.preventDefault();
 				var selectedSectionDefinitionId = event.target.value;
+
+				if(selectedSectionDefinitionId.indexOf("PROPOSAL") >= 0 ){
+					event.target.nextSibling.style.display = "";
+				} else {
+					event.target.nextSibling.style.display = "none";
+				}
+				/*
 				getSectionDefinitionFromServer(selectedSectionDefinitionId).done(function(jsondata){
 					var sectionDefinitionContent = JSON.parse(jsondata);
 					var reloadSectionElement = event.target.parentNode.parentNode;
@@ -336,7 +333,7 @@
 					}catch (e){
 						console.log(e);
 					}
-				});
+				});*/
 		}
 
 		function addEventListenerToSelectElement(){
@@ -353,22 +350,26 @@
 
 
 			[].forEach.call(document.getElementsByTagName('select'), function(selectElement) {
-				console.log("selectElement", selectElement);
-				console.log("data-form-name", selectElement.getAttribute("data-form-name"));
 				var dataFormName = selectElement.getAttribute("data-form-name");
 				if (dataFormName == "type") {
 					selectElement.addEventListener('change', selectTypeChangeCallback, false);
 				} else {
-					selectElement.addEventListener('change', selectTypeChangeCallback, false);
+					selectElement.addEventListener('change', function(event){
+						event.preventDefault();
+					}, false);
 				}
 			});
 
+			[].forEach.call(document.getElementsByClassName('deletable'), function(deletableSectionElements) {
+				deletableSectionElements.getElementsByClassName('deleteIcon')[0].addEventListener('click', deleteSection, false);
+			});
+
 			// TODO replace jQuery
-			jQuery('.deletable').delegate(".deleteIcon", "click", function() {
+			/*jQuery('.deletable').delegate(".deleteIcon", "click", function() {
 				if(confirm("Do want to remove this section ?")) {
 					deleteSection(this);
 				}
-			});
+			});*/
 
 		});
 		]]>

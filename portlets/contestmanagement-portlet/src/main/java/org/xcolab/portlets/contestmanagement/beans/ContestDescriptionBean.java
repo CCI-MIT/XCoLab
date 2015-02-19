@@ -33,7 +33,7 @@ public class ContestDescriptionBean implements Serializable{
     //@NotNull(message = "A schedule template must be selected.")
     private Long scheduleTemplateId;
     //@NotNull(message = "A schedule template must be selected.")
-    private Long contestLevelId;
+    private Long contestTier;
 
     public ContestDescriptionBean() {
     }
@@ -47,7 +47,7 @@ public class ContestDescriptionBean implements Serializable{
             contestDescription = contest.getContestDescription();
             planTemplateId = contest.getPlanTemplateId();
             scheduleTemplateId = (long) 0;
-            contestLevelId = (long) 0;
+            contestTier = contest.getContestTier();
             contestLogoId = contest.getContestLogoId();
             sponsorLogoId = contest.getSponsorLogoId();
         }
@@ -61,7 +61,7 @@ public class ContestDescriptionBean implements Serializable{
         contest.setPlanTemplateId(planTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
-        //contest.contestLevelId(contestLevelId);
+        contest.setContestTier(contestTier);
         contest.persist();
     }
 
@@ -129,11 +129,11 @@ public class ContestDescriptionBean implements Serializable{
         this.scheduleTemplateId = scheduleTemplateId;
     }
 
-    public Long getContestLevelId() {
-        return contestLevelId;
+    public Long getContestTier() {
+        return contestTier;
     }
 
-    public void setContestLevelId(Long contestLevelId) {
-        this.contestLevelId = contestLevelId;
+    public void setContestTier(Long contestTier) {
+        this.contestTier = contestTier;
     }
 }

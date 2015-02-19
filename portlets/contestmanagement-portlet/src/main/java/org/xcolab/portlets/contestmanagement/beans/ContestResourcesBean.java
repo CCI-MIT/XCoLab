@@ -162,6 +162,7 @@ public class ContestResourcesBean implements Serializable {
 
     private void addTemplateSectionWithDefaultsToSectionsList(){
         SectionDefinitionBean sectionDefinitionBean = new SectionDefinitionBean();
+        sectionDefinitionBean.setTemplateSection(true);
         sections.add(sectionDefinitionBean);
     }
 

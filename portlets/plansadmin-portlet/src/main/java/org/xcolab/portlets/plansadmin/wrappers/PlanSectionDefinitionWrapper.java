@@ -7,6 +7,7 @@ import java.util.List;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import com.ext.portlet.model.Contest;
 import org.apache.commons.lang.StringUtils;
 
 import com.ext.portlet.PlanSectionTypeKeys;
@@ -16,6 +17,7 @@ import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.enums.ContestTier;
 
 public class PlanSectionDefinitionWrapper implements Serializable {
 
@@ -49,6 +51,14 @@ public class PlanSectionDefinitionWrapper implements Serializable {
         definition.setFocusAreaId(fa.getId());
         PlanSectionDefinitionLocalServiceUtil.store(definition);
     }
+
+    public void tierChange(ValueChangeEvent e) throws NumberFormatException, PortalException, SystemException {
+        if (e.getNewValue() != null) {
+            ContestTier contestTier = ContestTier.getContestTierByTierType((Long) e.getNewValue());
+            definition.setFocusAreaId(contestTier.getTierType());
+            PlanSectionDefinitionLocalServiceUtil.store(definition);
+        }
+    }
     
     public void typeChanged(ValueChangeEvent e) throws NumberFormatException, PortalException, SystemException {
         definition.setType(e.getNewValue().toString());
@@ -62,8 +72,16 @@ public class PlanSectionDefinitionWrapper implements Serializable {
         }
         return ret;
     }
-    
-    
+
+    public List<SelectItem> getAvailableTiers() throws SystemException {
+        List<SelectItem> ret = new ArrayList<SelectItem>();
+
+        for (ContestTier contestTier: ContestTier.values()) {
+            ret.add(new SelectItem(contestTier.getTierType(), contestTier.getTierName()));
+        }
+        return ret;
+    }
+
     public List<SelectItem> getAvailableTypes() throws SystemException {
         List<SelectItem> ret = new ArrayList<SelectItem>();
         
@@ -80,7 +98,17 @@ public class PlanSectionDefinitionWrapper implements Serializable {
     public void setFocusAreaId(Long focusAreaId) {
         definition.setFocusAreaId(focusAreaId);
     }
-    
+
+    public Long getTier() {
+        ContestTier contestTier = ContestTier.getContestTierByTierType(definition.getTier());
+        return contestTier.getTierType();
+    }
+
+    public void setTier(Long tierType) {
+        ContestTier contestTier = ContestTier.getContestTierByTierType(tierType);
+        definition.setTier(contestTier.getTierType());
+    }
+
     public String getAdminTitle() {
         
         return definition.getAdminTitle();

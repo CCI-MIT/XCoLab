@@ -187,12 +187,12 @@
 			<div class="addprophelp">Helptext dummy.</div>
 			<div class="clearfix"><!-- --></div>
 			<div class="addpropInputContainer">
-				<form:select path="contestLevelId">
+				<form:select path="contestTier">
 					<form:option value="NONE" label="--- Select ---" />
 					<form:options items="${contestLevelSelectionItems}" itemValue="value" itemLabel="lable"/>
 				</form:select>
 				<div class="reg_errors"><!--  -->
-					<form:errors cssClass="alert alert-error" path="contestLevelId" />
+					<form:errors cssClass="alert alert-error" path="contestTier" />
 				</div>
 			</div>
 		</div>

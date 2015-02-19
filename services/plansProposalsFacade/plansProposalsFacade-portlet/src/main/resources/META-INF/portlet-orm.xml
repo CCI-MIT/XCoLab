@@ -157,6 +157,7 @@
 			<basic name="contestActive" />
 			<basic name="planTemplateId" />
 			<basic name="focusAreaId" />
+			<basic name="contestTier" />
 			<basic name="contestLogoId" />
 			<basic name="featured">
 				<column name="FEATURED_" />
@@ -1029,6 +1030,7 @@
 			<basic name="helpText" />
 			<basic name="characterLimit" />
 			<basic name="focusAreaId" />
+			<basic name="tier" />
 			<basic name="locked" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />

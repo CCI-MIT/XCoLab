@@ -75,6 +75,7 @@
            <prop key=".DataAccessException">dataAccessFailure</prop>
            <prop key=".TypeMismatchException">resourceNotFound</prop>
            <prop key=".AccessDeniedException">accessDenied</prop>
+			<prop key=".DiscussionsException">accessDenied</prop>
         </props>
     </property>
  </bean>

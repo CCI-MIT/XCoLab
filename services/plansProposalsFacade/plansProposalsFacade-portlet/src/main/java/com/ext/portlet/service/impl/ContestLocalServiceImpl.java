@@ -14,6 +14,23 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.ext.portlet.contests.ContestStatus;
+import com.google.common.collect.ImmutableSet;
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.enums.ContestPhaseType;
+import org.xcolab.enums.ContestTier;
+import org.xcolab.enums.MemberRole;
+import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
+import org.xcolab.utils.judging.ProposalRatingWrapper;
+import org.xcolab.utils.judging.ProposalReview;
+import org.xcolab.utils.judging.ProposalReviewCsvExporter;
+
+import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.NoSuchContestException;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.discussions.DiscussionActions;
+
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDebate;
 import com.ext.portlet.model.ContestPhase;
@@ -31,22 +48,6 @@ import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
-import com.google.common.collect.ImmutableSet;
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.enums.ContestPhasePromoteType;
-import org.xcolab.enums.ContestPhaseType;
-import org.xcolab.enums.MemberRole;
-import org.xcolab.utils.emailnotification.ContestVoteNotification;
-import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
-import org.xcolab.utils.judging.ProposalRatingWrapper;
-import org.xcolab.utils.judging.ProposalReview;
-import org.xcolab.utils.judging.ProposalReviewCsvExporter;
-
-import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.NoSuchContestException;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
@@ -643,6 +644,44 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
 
         return listOfContests;
+    }
+
+    /**
+     * Returns all contests matching the specified contest tier.
+     * Returns all contests in the case of ContestTier.NONE
+     * @param contestTierType   The specified contest tier
+     * @return                  A list of all Contests matching the specified contest tier
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public List<Contest> getContestsMatchingTier(long contestTierType) throws PortalException, SystemException {
+        if (ContestTier.getContestTierByTierType(contestTierType) == ContestTier.NONE) {
+            return contestPersistence.findAll();
+        }
+        return contestPersistence.findByContestTier(contestTierType);
+    }
+
+    /**
+     * Returns all contests matching the specified contest tier and ontology terms.
+     * Returns all contests in the case of ContestTier.NONE
+     * @param contestTierType   The specified contest tier
+     * @return                  A list of all Contests matching the specified contest tier
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public List<Contest> getContestsMatchingOntologyTermsAndTier(List<OntologyTerm> ontologyTerms, long contestTierType) throws PortalException, SystemException{
+        List<Contest> matchedOntologyContests = getContestsMatchingOntologyTerms(ontologyTerms);
+
+        // Ignore tier filter if no contest tier has been selected
+        if (ContestTier.getContestTierByTierType(contestTierType) == ContestTier.NONE) {
+            return matchedOntologyContests;
+        }
+
+        List<Contest> matchedTierContests = getContestsMatchingTier(contestTierType);
+
+        // Cut both lists together
+        matchedOntologyContests.retainAll(matchedTierContests);
+        return matchedOntologyContests;
     }
 
     /**

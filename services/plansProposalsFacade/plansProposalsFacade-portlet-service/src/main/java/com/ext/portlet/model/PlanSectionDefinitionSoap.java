@@ -21,6 +21,7 @@ public class PlanSectionDefinitionSoap implements Serializable {
     private String _helpText;
     private int _characterLimit;
     private long _focusAreaId;
+    private long _tier;
     private boolean _locked;
 
     public PlanSectionDefinitionSoap() {
@@ -38,6 +39,7 @@ public class PlanSectionDefinitionSoap implements Serializable {
         soapModel.setHelpText(model.getHelpText());
         soapModel.setCharacterLimit(model.getCharacterLimit());
         soapModel.setFocusAreaId(model.getFocusAreaId());
+        soapModel.setTier(model.getTier());
         soapModel.setLocked(model.getLocked());
 
         return soapModel;
@@ -152,6 +154,14 @@ public class PlanSectionDefinitionSoap implements Serializable {
 
     public void setFocusAreaId(long focusAreaId) {
         _focusAreaId = focusAreaId;
+    }
+
+    public long getTier() {
+        return _tier;
+    }
+
+    public void setTier(long tier) {
+        _tier = tier;
     }
 
     public boolean getLocked() {

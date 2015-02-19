@@ -54,7 +54,7 @@ public class ContestProposalTemplateWrapper {
         sectionDefinitionBean.setTemplateSection(true);
         sectionDefinitionBean.setTitle("");
         sectionDefinitionBean.setContent("");
-        sectionDefinitionBean.setSectionDefinitionId(201L);
+        sectionDefinitionBean.setLevel(0L);
         sections.add(sectionDefinitionBean);
     }
 
@@ -104,7 +104,7 @@ public class ContestProposalTemplateWrapper {
     public void removeDeletedSections(){
         List<SectionDefinitionBean> removedSectionDefinitions = new ArrayList<>();
         for(SectionDefinitionBean sectionBaseDefinition : sections ){
-            if(sectionBaseDefinition.getTitle().isEmpty()
+            if((sectionBaseDefinition.getTitle() == null || sectionBaseDefinition.getTitle().isEmpty())
                     && !sectionBaseDefinition.isTemplateSection()){
                 removedSectionDefinitions.add(sectionBaseDefinition);
             }

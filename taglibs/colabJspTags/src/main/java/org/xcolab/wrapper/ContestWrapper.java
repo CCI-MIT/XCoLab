@@ -287,6 +287,14 @@ public class ContestWrapper {
         contest.setWeight(weight);
     }
 
+    public long getContestTier() {
+        return contest.getContestTier();
+    }
+
+    public void setContestTier(long contestTier) {
+        contest.setContestTier(contestTier);
+    }
+
     public boolean getContestPrivate() {
         return contest.getContestPrivate();
     }

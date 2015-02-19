@@ -86,7 +86,7 @@
 							<strong>Content:</strong>
 						</c:if>
 						<div class="addpropInputContainer">
-							<form:textarea path="sections[${x.index}].content" cssClass="ckeditor_placeholder" data-form-name="content" />
+							<form:textarea path="sections[${x.index}].content" cssClass="${fn:length(contestResourcesBean.sections)-1 eq x.index ? '': 'ckeditor_placeholder'}" data-form-name="content" />
 							<div class="reg_errors">
 								<form:errors cssClass="alert alert-error" path="sections[${x.index}].content" />
 							</div>
@@ -156,6 +156,8 @@
 
 			[].forEach.call(newSectionElement.getElementsByTagName('textarea'), function(element) {
 				sectionElementNames.push(element.getAttribute("data-form-name"));
+				element.classList.remove("rteInitialized");
+				element.classList.add("ckeditor_placeholder");
 			});
 
 			[].forEach.call(newSectionElement.getElementsByTagName('select'), function(element) {

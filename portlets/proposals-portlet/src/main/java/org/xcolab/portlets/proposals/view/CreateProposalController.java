@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.view.action.AddUpdateProposalDetailsActionController;
@@ -37,9 +38,9 @@ public class CreateProposalController extends BaseProposalsController {
             @RequestParam Long contestId, @RequestParam(required=false) Long baseProposalId, 
             @RequestParam(required=false, defaultValue = "-1") int baseProposalVersion, 
             @RequestParam(required=false) Long baseContestId, Model model) 
-            throws PortalException, SystemException {
+            throws PortalException, SystemException, ProposalsAuthorizationException {
 
-        if(!proposalsContext.getPermissions(request).getCanCreate()) throw new IllegalAccessError("creation not allowed");
+        if(!proposalsContext.getPermissions(request).getCanCreate()) throw new ProposalsAuthorizationException("creation not allowed");
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         long userId = themeDisplay.getUserId();

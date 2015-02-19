@@ -92,6 +92,7 @@ create table xcolab_Contest (
 	contestActive BOOLEAN,
 	planTemplateId LONG,
 	focusAreaId LONG,
+	contestTier LONG,
 	contestLogoId LONG,
 	featured_ BOOLEAN,
 	plansOpenByDefault BOOLEAN,
@@ -620,6 +621,7 @@ create table xcolab_PlanSectionDefinition (
 	helpText TEXT null,
 	characterLimit INTEGER,
 	focusAreaId LONG,
+	tier LONG,
 	locked BOOLEAN
 );
 

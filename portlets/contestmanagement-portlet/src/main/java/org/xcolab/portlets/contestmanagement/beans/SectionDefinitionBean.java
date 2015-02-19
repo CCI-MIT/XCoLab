@@ -70,6 +70,7 @@ public class SectionDefinitionBean implements Serializable{
         this.characterLimit = planSectionDefinition.getCharacterLimit();
         this.focusAreaId = planSectionDefinition.getFocusAreaId();
         this.locked = planSectionDefinition.getLocked();
+        this.level = planSectionDefinition.getTier();
     }
 
     public SectionDefinitionBean(String title) {
@@ -196,7 +197,7 @@ public class SectionDefinitionBean implements Serializable{
         return sectionDefinitionId;
     }
 
-    public void setSectionDefinitionId(Long sectionDefinitionIdString) {
+    public void setSectionDefinitionId(Long sectionDefinitionId) {
         this.sectionDefinitionId = sectionDefinitionId;
     }
 
