@@ -41,6 +41,7 @@ public class ContestScheduleWrapper {
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.
                     createContestPhase(CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
 
+            contestPhase.setContestPK(0L);
             contestPhase.setContestPhaseType(contestPhaseBean.getContestPhaseType());
             contestPhase.setPhaseStartDate(contestPhaseBean.getPhaseStartDate());
             contestPhase.setPhaseEndDate(contestPhaseBean.getPhaseEndDate());
@@ -54,13 +55,11 @@ public class ContestScheduleWrapper {
 
     public static void createContestPhaseAccordingToContestSchedule(Contest contest) throws Exception{
         removeExistingContestPhases(contest);
-        List<ContestPhase> contestSchedulePhases = ContestPhaseLocalServiceUtil.getPhasesForContestSchedule(contest.getContestScheduleId(), contest.getContestPK());
-
+        List<ContestPhase> contestSchedulePhases = ContestPhaseLocalServiceUtil.getPhasesForContestSchedule(contest.getContestScheduleId(), 0L);
         for(ContestPhase contestPhase : contestSchedulePhases){
             contestPhase.setContestPK(contest.getContestPK());
             ContestPhaseLocalServiceUtil.addContestPhase(contestPhase);
         }
-
     }
 
     private static void removeExistingContestPhases(Contest contest) throws Exception{
@@ -72,7 +71,7 @@ public class ContestScheduleWrapper {
 
     private static List<ContestPhaseBean> createSeedDataForBasicLevelSchedule(){
         List<StartDateEndDate> phaseStartEndDatesBasicLevelSchedule  = new ArrayList<>();
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date(2015, 3, 1), new Date(2015, 5, 16)));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date(2015, 3, 6), new Date(2015, 5, 16)));
         phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date(2015, 5, 18), new Date(2015, 5, 29)));
         phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date(2015, 6, 1), new Date(2015, 6, 13)));
         phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date(2015, 6, 15), new Date(2015, 6, 26)));
@@ -82,7 +81,7 @@ public class ContestScheduleWrapper {
 
     private static List<ContestPhaseBean> createSeedDataForRegionalLevelSchedule(){
         List<StartDateEndDate> phaseStartEndDatesBasicLevelSchedule  = new ArrayList<>();
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date(2015, 3, 10), new Date(2015, 6, 6)));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date(2015, 3, 6), new Date(2015, 6, 6)));
         phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date(2015, 6, 8), new Date(2015, 7, 2)));
         phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date(2015, 7, 3), new Date(2015, 7, 15)));
         phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date(2015, 7, 16), new Date(2015, 8, 6)));

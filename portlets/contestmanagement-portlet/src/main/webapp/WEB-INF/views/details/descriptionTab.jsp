@@ -71,7 +71,7 @@
 			<label>
                <strong>Contest image</strong>
 			</label>
-			<div class="addprophelp">The image symbolizes the contest challenge. Requirements: 300x300 pixels or larger (if the image is not square, it will appear warped); format in .PNG, JPEG or .JPG; no closed copyrights attached to the image. <a href="http://climatecolab.org/resources/-/wiki/Main/Launching+the+Contest">For guidance, please click here.</a></div>
+			<div class="addprophelp">The image symbolizes the contest challenge. Requirements: 300x300 pixels or larger (if the image is not square, it will appear warped); format in .PNG, JPEG or .JPG; no closed copyrights attached to the image. <a href="http://climatecolab.org/resources/-/wiki/Main/Launching+the+Contest" target="_blank">For guidance, please click here.</a></div>
 
 			<div class="upload contestImageUpload">
 
