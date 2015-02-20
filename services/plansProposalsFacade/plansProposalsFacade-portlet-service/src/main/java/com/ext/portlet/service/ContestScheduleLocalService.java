@@ -46,22 +46,20 @@ public interface ContestScheduleLocalService extends BaseLocalService,
     /**
     * Creates a new contest schedule with the primary key. Does not add the contest schedule to the database.
     *
-    * @param ContestSchedulePK the primary key for the new contest schedule
+    * @param id the primary key for the new contest schedule
     * @return the new contest schedule
     */
-    public com.ext.portlet.model.ContestSchedule createContestSchedule(
-        long ContestSchedulePK);
+    public com.ext.portlet.model.ContestSchedule createContestSchedule(long id);
 
     /**
     * Deletes the contest schedule with the primary key from the database. Also notifies the appropriate model listeners.
     *
-    * @param ContestSchedulePK the primary key of the contest schedule
+    * @param id the primary key of the contest schedule
     * @return the contest schedule that was removed
     * @throws PortalException if a contest schedule with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ContestSchedule deleteContestSchedule(
-        long ContestSchedulePK)
+    public com.ext.portlet.model.ContestSchedule deleteContestSchedule(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -154,21 +152,19 @@ public interface ContestScheduleLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ContestSchedule fetchContestSchedule(
-        long ContestSchedulePK)
+    public com.ext.portlet.model.ContestSchedule fetchContestSchedule(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the contest schedule with the primary key.
     *
-    * @param ContestSchedulePK the primary key of the contest schedule
+    * @param id the primary key of the contest schedule
     * @return the contest schedule
     * @throws PortalException if a contest schedule with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ContestSchedule getContestSchedule(
-        long ContestSchedulePK)
+    public com.ext.portlet.model.ContestSchedule getContestSchedule(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

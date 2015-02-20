@@ -170,13 +170,12 @@ public class ContestScheduleLocalServiceClp
     }
 
     @Override
-    public com.ext.portlet.model.ContestSchedule createContestSchedule(
-        long ContestSchedulePK) {
+    public com.ext.portlet.model.ContestSchedule createContestSchedule(long id) {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName1,
-                    _methodParameterTypes1, new Object[] { ContestSchedulePK });
+                    _methodParameterTypes1, new Object[] { id });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -192,15 +191,14 @@ public class ContestScheduleLocalServiceClp
     }
 
     @Override
-    public com.ext.portlet.model.ContestSchedule deleteContestSchedule(
-        long ContestSchedulePK)
+    public com.ext.portlet.model.ContestSchedule deleteContestSchedule(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName2,
-                    _methodParameterTypes2, new Object[] { ContestSchedulePK });
+                    _methodParameterTypes2, new Object[] { id });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -437,14 +435,13 @@ public class ContestScheduleLocalServiceClp
     }
 
     @Override
-    public com.ext.portlet.model.ContestSchedule fetchContestSchedule(
-        long ContestSchedulePK)
+    public com.ext.portlet.model.ContestSchedule fetchContestSchedule(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName10,
-                    _methodParameterTypes10, new Object[] { ContestSchedulePK });
+                    _methodParameterTypes10, new Object[] { id });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -464,15 +461,14 @@ public class ContestScheduleLocalServiceClp
     }
 
     @Override
-    public com.ext.portlet.model.ContestSchedule getContestSchedule(
-        long ContestSchedulePK)
+    public com.ext.portlet.model.ContestSchedule getContestSchedule(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName11,
-                    _methodParameterTypes11, new Object[] { ContestSchedulePK });
+                    _methodParameterTypes11, new Object[] { id });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

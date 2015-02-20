@@ -44,32 +44,18 @@ public interface ContestScheduleModel extends BaseModel<ContestSchedule> {
     public void setPrimaryKey(long primaryKey);
 
     /**
-     * Returns the contest schedule p k of this contest schedule.
+     * Returns the ID of this contest schedule.
      *
-     * @return the contest schedule p k of this contest schedule
+     * @return the ID of this contest schedule
      */
-    public long getContestSchedulePK();
+    public long getId();
 
     /**
-     * Sets the contest schedule p k of this contest schedule.
+     * Sets the ID of this contest schedule.
      *
-     * @param ContestSchedulePK the contest schedule p k of this contest schedule
+     * @param id the ID of this contest schedule
      */
-    public void setContestSchedulePK(long ContestSchedulePK);
-
-    /**
-     * Returns the contest p k of this contest schedule.
-     *
-     * @return the contest p k of this contest schedule
-     */
-    public long getContestPK();
-
-    /**
-     * Sets the contest p k of this contest schedule.
-     *
-     * @param ContestPK the contest p k of this contest schedule
-     */
-    public void setContestPK(long ContestPK);
+    public void setId(long id);
 
     /**
      * Returns the name of this contest schedule.
@@ -117,25 +103,18 @@ public interface ContestScheduleModel extends BaseModel<ContestSchedule> {
     public void setStatus(String status);
 
     /**
-     * Returns the invisible of this contest schedule.
+     * Returns the base schedule ID of this contest schedule.
      *
-     * @return the invisible of this contest schedule
+     * @return the base schedule ID of this contest schedule
      */
-    public boolean getInvisible();
+    public Long getBaseScheduleId();
 
     /**
-     * Returns <code>true</code> if this contest schedule is invisible.
+     * Sets the base schedule ID of this contest schedule.
      *
-     * @return <code>true</code> if this contest schedule is invisible; <code>false</code> otherwise
+     * @param baseScheduleId the base schedule ID of this contest schedule
      */
-    public boolean isInvisible();
-
-    /**
-     * Sets whether this contest schedule is invisible.
-     *
-     * @param invisible the invisible of this contest schedule
-     */
-    public void setInvisible(boolean invisible);
+    public void setBaseScheduleId(Long baseScheduleId);
 
     @Override
     public boolean isNew();

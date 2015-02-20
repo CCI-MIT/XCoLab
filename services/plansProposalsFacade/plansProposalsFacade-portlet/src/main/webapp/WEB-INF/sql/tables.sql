@@ -91,6 +91,7 @@ create table xcolab_Contest (
 	authorId LONG,
 	contestActive BOOLEAN,
 	planTemplateId LONG,
+	contestScheduleId LONG,
 	focusAreaId LONG,
 	contestTier LONG,
 	contestLogoId LONG,
@@ -108,6 +109,7 @@ create table xcolab_Contest (
 	resourcesUrl VARCHAR(1024) null,
 	contestPrivate BOOLEAN,
 	usePermissions BOOLEAN,
+	contestCreationStatus VARCHAR(75) null,
 	defaultModelId LONG,
 	otherModels VARCHAR(75) null,
 	points DOUBLE,
@@ -144,7 +146,7 @@ create table xcolab_ContestPhase (
 	ContestPhasePK LONG not null primary key,
 	ContestPK LONG,
 	ContestPhaseType LONG,
-	ContestSchedulePK LONG,
+	contestScheduleId LONG,
 	fellowScreeningActive BOOLEAN,
 	contestPhaseAutopromote VARCHAR(75) null,
 	ContestPhaseDescriptionOverride TEXT null,
@@ -187,12 +189,11 @@ create table xcolab_ContestPhaseType (
 );
 
 create table xcolab_ContestSchedule (
-	ContestSchedulePK LONG not null primary key,
-	ContestPK LONG,
+	id_ LONG not null primary key,
 	name VARCHAR(75) null,
 	description VARCHAR(75) null,
 	status VARCHAR(75) null,
-	invisible BOOLEAN
+	baseScheduleId LONG
 );
 
 create table xcolab_ContestTeamMember (

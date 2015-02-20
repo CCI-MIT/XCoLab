@@ -156,6 +156,7 @@
 			<basic name="authorId" />
 			<basic name="contestActive" />
 			<basic name="planTemplateId" />
+			<basic name="contestScheduleId" />
 			<basic name="focusAreaId" />
 			<basic name="contestTier" />
 			<basic name="contestLogoId" />
@@ -175,6 +176,7 @@
 			<basic name="resourcesUrl" />
 			<basic name="contestPrivate" />
 			<basic name="usePermissions" />
+			<basic name="contestCreationStatus" />
 			<basic name="defaultModelId" />
 			<basic name="otherModels" />
 			<basic name="points" />
@@ -225,7 +227,7 @@
 			<id name="ContestPhasePK" />
 			<basic name="ContestPK" />
 			<basic name="ContestPhaseType" />
-			<basic name="ContestSchedulePK" />
+			<basic name="contestScheduleId" />
 			<basic name="fellowScreeningActive" />
 			<basic name="contestPhaseAutopromote" />
 			<basic name="ContestPhaseDescriptionOverride" />
@@ -300,12 +302,13 @@
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestScheduleModelImpl">
 		<attributes>
-			<id name="ContestSchedulePK" />
-			<basic name="ContestPK" />
+			<id name="id">
+				<column name="ID_" />
+			</id>
 			<basic name="name" />
 			<basic name="description" />
 			<basic name="status" />
-			<basic name="invisible" />
+			<basic name="baseScheduleId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

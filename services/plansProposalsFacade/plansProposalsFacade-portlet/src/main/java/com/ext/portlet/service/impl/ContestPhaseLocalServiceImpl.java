@@ -179,6 +179,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return contestPhasePersistence.findByContestId(contestPK);
     }
 
+    public List<ContestPhase> getPhasesForContestSchedule(long contestScheduleId, long contestPK) throws SystemException {
+        return contestPhasePersistence.findByContestScheduleId(contestScheduleId,contestPK);
+    }
+
     public ContestPhase getActivePhaseForContest(Contest contest) throws SystemException, PortalException {
         Date now = clock.now();
         try {

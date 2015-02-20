@@ -1,10 +1,11 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-import com.ext.portlet.model.*;
+
+import com.ext.portlet.model.Contest;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
+import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -30,7 +31,8 @@ public class ContestDescriptionBean implements Serializable{
 
     @NotNull(message = "A plan template must be selected.")
     private Long planTemplateId;
-    //@NotNull(message = "A schedule template must be selected.")
+
+    @NotNull(message = "A schedule template must be selected.")
     private Long scheduleTemplateId;
 
     @NotNull(message = "A contest tier must be selected.")
@@ -47,23 +49,30 @@ public class ContestDescriptionBean implements Serializable{
             contestShortName = contest.getContestShortName();
             contestDescription = contest.getContestDescription();
             planTemplateId = contest.getPlanTemplateId();
-            scheduleTemplateId = (long) 0;
+            scheduleTemplateId = contest.getContestScheduleId();
             contestTier = contest.getContestTier();
             contestLogoId = contest.getContestLogoId();
             sponsorLogoId = contest.getSponsorLogoId();
         }
     }
 
-    public void persist(Contest contest) throws PortalException, SystemException {
+    public void persist(Contest contest) throws Exception {
 
         contest.setContestName(contestName);
         contest.setContestShortName(contestShortName);
         contest.setContestDescription(contestDescription);
         contest.setPlanTemplateId(planTemplateId);
+        contest.setContestScheduleId(scheduleTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setContestTier(contestTier);
         contest.persist();
+        updateContestSchedules(contest);
+
+    }
+
+    private void updateContestSchedules(Contest contest)throws Exception{
+        ContestScheduleWrapper.createContestPhaseAccordingToContestSchedule(contest);
     }
 
     public Long getContestPK() {
@@ -137,4 +146,5 @@ public class ContestDescriptionBean implements Serializable{
     public void setContestTier(Long contestTier) {
         this.contestTier = contestTier;
     }
+
 }

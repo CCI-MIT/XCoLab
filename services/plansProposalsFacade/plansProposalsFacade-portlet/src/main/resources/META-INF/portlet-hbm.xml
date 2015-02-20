@@ -202,6 +202,7 @@
 		<property name="authorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="contestActive" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="planTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="contestScheduleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="contestTier" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="contestLogoId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -219,6 +220,7 @@
 		<property name="resourcesUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="contestPrivate" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="usePermissions" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="contestCreationStatus" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="defaultModelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="otherModels" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="points" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
@@ -257,7 +259,7 @@
 		</id>
 		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ContestPhaseType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ContestSchedulePK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="contestScheduleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="fellowScreeningActive" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="contestPhaseAutopromote" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ContestPhaseDescriptionOverride" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -306,14 +308,13 @@
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestScheduleImpl" table="xcolab_ContestSchedule">
 		<cache usage="read-write" />
-		<id name="ContestSchedulePK" type="long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="invisible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="baseScheduleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestTeamMemberImpl" table="xcolab_ContestTeamMember">
 		<cache usage="read-write" />

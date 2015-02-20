@@ -54,7 +54,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
             { "ContestPhasePK", Types.BIGINT },
             { "ContestPK", Types.BIGINT },
             { "ContestPhaseType", Types.BIGINT },
-            { "ContestSchedulePK", Types.BIGINT },
+            { "contestScheduleId", Types.BIGINT },
             { "fellowScreeningActive", Types.BOOLEAN },
             { "contestPhaseAutopromote", Types.VARCHAR },
             { "ContestPhaseDescriptionOverride", Types.VARCHAR },
@@ -68,7 +68,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
             { "updated", Types.TIMESTAMP },
             { "authorId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhase (ContestPhasePK LONG not null primary key,ContestPK LONG,ContestPhaseType LONG,ContestSchedulePK LONG,fellowScreeningActive BOOLEAN,contestPhaseAutopromote VARCHAR(75) null,ContestPhaseDescriptionOverride TEXT null,phaseActiveOverride BOOLEAN,phaseInactiveOverride BOOLEAN,PhaseStartDate DATE null,PhaseEndDate DATE null,PhaseBufferEndDated DATE null,nextStatus VARCHAR(75) null,created DATE null,updated DATE null,authorId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhase (ContestPhasePK LONG not null primary key,ContestPK LONG,ContestPhaseType LONG,contestScheduleId LONG,fellowScreeningActive BOOLEAN,contestPhaseAutopromote VARCHAR(75) null,ContestPhaseDescriptionOverride TEXT null,phaseActiveOverride BOOLEAN,phaseInactiveOverride BOOLEAN,PhaseStartDate DATE null,PhaseEndDate DATE null,PhaseBufferEndDated DATE null,nextStatus VARCHAR(75) null,created DATE null,updated DATE null,authorId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestPhase";
     public static final String ORDER_BY_JPQL = " ORDER BY contestPhase.PhaseStartDate ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestPhase.PhaseStartDate ASC";
@@ -88,8 +88,9 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     public static long PHASEENDDATE_COLUMN_BITMASK = 2L;
     public static long PHASESTARTDATE_COLUMN_BITMASK = 4L;
     public static long CONTESTPHASEAUTOPROMOTE_COLUMN_BITMASK = 8L;
-    public static long PHASEACTIVEOVERRIDE_COLUMN_BITMASK = 16L;
-    public static long PHASEINACTIVEOVERRIDE_COLUMN_BITMASK = 32L;
+    public static long CONTESTSCHEDULEID_COLUMN_BITMASK = 16L;
+    public static long PHASEACTIVEOVERRIDE_COLUMN_BITMASK = 32L;
+    public static long PHASEINACTIVEOVERRIDE_COLUMN_BITMASK = 64L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ContestPhase"));
     private static ClassLoader _classLoader = ContestPhase.class.getClassLoader();
@@ -101,7 +102,9 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     private long _originalContestPK;
     private boolean _setOriginalContestPK;
     private long _ContestPhaseType;
-    private long _ContestSchedulePK;
+    private long _contestScheduleId;
+    private long _originalContestScheduleId;
+    private boolean _setOriginalContestScheduleId;
     private boolean _fellowScreeningActive;
     private String _contestPhaseAutopromote;
     private String _originalContestPhaseAutopromote;
@@ -143,7 +146,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         model.setContestPhasePK(soapModel.getContestPhasePK());
         model.setContestPK(soapModel.getContestPK());
         model.setContestPhaseType(soapModel.getContestPhaseType());
-        model.setContestSchedulePK(soapModel.getContestSchedulePK());
+        model.setContestScheduleId(soapModel.getContestScheduleId());
         model.setFellowScreeningActive(soapModel.getFellowScreeningActive());
         model.setContestPhaseAutopromote(soapModel.getContestPhaseAutopromote());
         model.setContestPhaseDescriptionOverride(soapModel.getContestPhaseDescriptionOverride());
@@ -217,7 +220,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         attributes.put("ContestPhasePK", getContestPhasePK());
         attributes.put("ContestPK", getContestPK());
         attributes.put("ContestPhaseType", getContestPhaseType());
-        attributes.put("ContestSchedulePK", getContestSchedulePK());
+        attributes.put("contestScheduleId", getContestScheduleId());
         attributes.put("fellowScreeningActive", getFellowScreeningActive());
         attributes.put("contestPhaseAutopromote", getContestPhaseAutopromote());
         attributes.put("ContestPhaseDescriptionOverride",
@@ -255,10 +258,10 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
             setContestPhaseType(ContestPhaseType);
         }
 
-        Long ContestSchedulePK = (Long) attributes.get("ContestSchedulePK");
+        Long contestScheduleId = (Long) attributes.get("contestScheduleId");
 
-        if (ContestSchedulePK != null) {
-            setContestSchedulePK(ContestSchedulePK);
+        if (contestScheduleId != null) {
+            setContestScheduleId(contestScheduleId);
         }
 
         Boolean fellowScreeningActive = (Boolean) attributes.get(
@@ -386,13 +389,25 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
     @JSON
     @Override
-    public long getContestSchedulePK() {
-        return _ContestSchedulePK;
+    public long getContestScheduleId() {
+        return _contestScheduleId;
     }
 
     @Override
-    public void setContestSchedulePK(long ContestSchedulePK) {
-        _ContestSchedulePK = ContestSchedulePK;
+    public void setContestScheduleId(long contestScheduleId) {
+        _columnBitmask |= CONTESTSCHEDULEID_COLUMN_BITMASK;
+
+        if (!_setOriginalContestScheduleId) {
+            _setOriginalContestScheduleId = true;
+
+            _originalContestScheduleId = _contestScheduleId;
+        }
+
+        _contestScheduleId = contestScheduleId;
+    }
+
+    public long getOriginalContestScheduleId() {
+        return _originalContestScheduleId;
     }
 
     @JSON
@@ -643,7 +658,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         contestPhaseImpl.setContestPhasePK(getContestPhasePK());
         contestPhaseImpl.setContestPK(getContestPK());
         contestPhaseImpl.setContestPhaseType(getContestPhaseType());
-        contestPhaseImpl.setContestSchedulePK(getContestSchedulePK());
+        contestPhaseImpl.setContestScheduleId(getContestScheduleId());
         contestPhaseImpl.setFellowScreeningActive(getFellowScreeningActive());
         contestPhaseImpl.setContestPhaseAutopromote(getContestPhaseAutopromote());
         contestPhaseImpl.setContestPhaseDescriptionOverride(getContestPhaseDescriptionOverride());
@@ -710,6 +725,10 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
         contestPhaseModelImpl._setOriginalContestPK = false;
 
+        contestPhaseModelImpl._originalContestScheduleId = contestPhaseModelImpl._contestScheduleId;
+
+        contestPhaseModelImpl._setOriginalContestScheduleId = false;
+
         contestPhaseModelImpl._originalContestPhaseAutopromote = contestPhaseModelImpl._contestPhaseAutopromote;
 
         contestPhaseModelImpl._originalPhaseActiveOverride = contestPhaseModelImpl._phaseActiveOverride;
@@ -737,7 +756,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
         contestPhaseCacheModel.ContestPhaseType = getContestPhaseType();
 
-        contestPhaseCacheModel.ContestSchedulePK = getContestSchedulePK();
+        contestPhaseCacheModel.contestScheduleId = getContestScheduleId();
 
         contestPhaseCacheModel.fellowScreeningActive = getFellowScreeningActive();
 
@@ -826,8 +845,8 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         sb.append(getContestPK());
         sb.append(", ContestPhaseType=");
         sb.append(getContestPhaseType());
-        sb.append(", ContestSchedulePK=");
-        sb.append(getContestSchedulePK());
+        sb.append(", contestScheduleId=");
+        sb.append(getContestScheduleId());
         sb.append(", fellowScreeningActive=");
         sb.append(getFellowScreeningActive());
         sb.append(", contestPhaseAutopromote=");
@@ -878,8 +897,8 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         sb.append(getContestPhaseType());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>ContestSchedulePK</column-name><column-value><![CDATA[");
-        sb.append(getContestSchedulePK());
+            "<column><column-name>contestScheduleId</column-name><column-value><![CDATA[");
+        sb.append(getContestScheduleId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>fellowScreeningActive</column-name><column-value><![CDATA[");

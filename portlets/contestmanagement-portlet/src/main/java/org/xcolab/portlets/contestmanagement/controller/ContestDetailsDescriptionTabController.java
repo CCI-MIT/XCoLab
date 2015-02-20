@@ -2,6 +2,7 @@ package org.xcolab.portlets.contestmanagement.controller;
 
 import javax.validation.Valid;
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhaseWrapper;
 import com.ext.portlet.model.ContestSchedule;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -24,9 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
+import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestLevels;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.utils.emailnotification.ContestCreationNotification;
 import org.xcolab.wrapper.TabWrapper;
 
@@ -138,10 +141,13 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     private List<LabelValue> getScheduleTemplateSelectionItems(){
         List<LabelValue> selectItems = new ArrayList<>();
         try {
+
+            ContestScheduleWrapper.insertSeedDataToContestScheduleTableIfNotAvailable();
+
             for (ContestSchedule scheduleTemplate : ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE)) {
-                if(!scheduleTemplate.isInvisible()) {
-                    selectItems.add(new LabelValue(scheduleTemplate.getContestSchedulePK(), scheduleTemplate.getName()));
-                }
+                //if(!scheduleTemplate.isInvisible()) {
+                    selectItems.add(new LabelValue(scheduleTemplate.getId(), scheduleTemplate.getName()));
+                //}
             }
         } catch (Exception e){
         }

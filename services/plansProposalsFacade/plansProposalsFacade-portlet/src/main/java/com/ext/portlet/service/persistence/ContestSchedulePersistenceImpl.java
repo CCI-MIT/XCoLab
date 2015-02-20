@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnmodifiableList;
@@ -33,6 +34,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The persistence implementation for the contest schedule service.
@@ -76,6 +78,9 @@ public class ContestSchedulePersistenceImpl extends BasePersistenceImpl<ContestS
     private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
                 PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
     private static Log _log = LogFactoryUtil.getLog(ContestSchedulePersistenceImpl.class);
+    private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+                "id"
+            });
     private static ContestSchedule _nullContestSchedule = new ContestScheduleImpl() {
             @Override
             public Object clone() {
@@ -182,15 +187,15 @@ public class ContestSchedulePersistenceImpl extends BasePersistenceImpl<ContestS
     /**
      * Creates a new contest schedule with the primary key. Does not add the contest schedule to the database.
      *
-     * @param ContestSchedulePK the primary key for the new contest schedule
+     * @param id the primary key for the new contest schedule
      * @return the new contest schedule
      */
     @Override
-    public ContestSchedule create(long ContestSchedulePK) {
+    public ContestSchedule create(long id) {
         ContestSchedule contestSchedule = new ContestScheduleImpl();
 
         contestSchedule.setNew(true);
-        contestSchedule.setPrimaryKey(ContestSchedulePK);
+        contestSchedule.setPrimaryKey(id);
 
         return contestSchedule;
     }
@@ -198,15 +203,15 @@ public class ContestSchedulePersistenceImpl extends BasePersistenceImpl<ContestS
     /**
      * Removes the contest schedule with the primary key from the database. Also notifies the appropriate model listeners.
      *
-     * @param ContestSchedulePK the primary key of the contest schedule
+     * @param id the primary key of the contest schedule
      * @return the contest schedule that was removed
      * @throws com.ext.portlet.NoSuchContestScheduleException if a contest schedule with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ContestSchedule remove(long ContestSchedulePK)
+    public ContestSchedule remove(long id)
         throws NoSuchContestScheduleException, SystemException {
-        return remove((Serializable) ContestSchedulePK);
+        return remove((Serializable) id);
     }
 
     /**
@@ -327,12 +332,11 @@ public class ContestSchedulePersistenceImpl extends BasePersistenceImpl<ContestS
         contestScheduleImpl.setNew(contestSchedule.isNew());
         contestScheduleImpl.setPrimaryKey(contestSchedule.getPrimaryKey());
 
-        contestScheduleImpl.setContestSchedulePK(contestSchedule.getContestSchedulePK());
-        contestScheduleImpl.setContestPK(contestSchedule.getContestPK());
+        contestScheduleImpl.setId(contestSchedule.getId());
         contestScheduleImpl.setName(contestSchedule.getName());
         contestScheduleImpl.setDescription(contestSchedule.getDescription());
         contestScheduleImpl.setStatus(contestSchedule.getStatus());
-        contestScheduleImpl.setInvisible(contestSchedule.isInvisible());
+        contestScheduleImpl.setBaseScheduleId(contestSchedule.getBaseScheduleId());
 
         return contestScheduleImpl;
     }
@@ -365,15 +369,15 @@ public class ContestSchedulePersistenceImpl extends BasePersistenceImpl<ContestS
     /**
      * Returns the contest schedule with the primary key or throws a {@link com.ext.portlet.NoSuchContestScheduleException} if it could not be found.
      *
-     * @param ContestSchedulePK the primary key of the contest schedule
+     * @param id the primary key of the contest schedule
      * @return the contest schedule
      * @throws com.ext.portlet.NoSuchContestScheduleException if a contest schedule with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ContestSchedule findByPrimaryKey(long ContestSchedulePK)
+    public ContestSchedule findByPrimaryKey(long id)
         throws NoSuchContestScheduleException, SystemException {
-        return findByPrimaryKey((Serializable) ContestSchedulePK);
+        return findByPrimaryKey((Serializable) id);
     }
 
     /**
@@ -425,14 +429,13 @@ public class ContestSchedulePersistenceImpl extends BasePersistenceImpl<ContestS
     /**
      * Returns the contest schedule with the primary key or returns <code>null</code> if it could not be found.
      *
-     * @param ContestSchedulePK the primary key of the contest schedule
+     * @param id the primary key of the contest schedule
      * @return the contest schedule, or <code>null</code> if a contest schedule with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ContestSchedule fetchByPrimaryKey(long ContestSchedulePK)
-        throws SystemException {
-        return fetchByPrimaryKey((Serializable) ContestSchedulePK);
+    public ContestSchedule fetchByPrimaryKey(long id) throws SystemException {
+        return fetchByPrimaryKey((Serializable) id);
     }
 
     /**
@@ -599,6 +602,11 @@ public class ContestSchedulePersistenceImpl extends BasePersistenceImpl<ContestS
         }
 
         return count.intValue();
+    }
+
+    @Override
+    protected Set<String> getBadColumnNames() {
+        return _badColumnNames;
     }
 
     /**

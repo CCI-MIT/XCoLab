@@ -18,6 +18,6 @@ public abstract class ContestScheduleActionableDynamicQuery
 
         setClassLoader(com.ext.portlet.service.ClpSerializer.class.getClassLoader());
 
-        setPrimaryKeyPropertyName("ContestSchedulePK");
+        setPrimaryKeyPropertyName("id");
     }
 }

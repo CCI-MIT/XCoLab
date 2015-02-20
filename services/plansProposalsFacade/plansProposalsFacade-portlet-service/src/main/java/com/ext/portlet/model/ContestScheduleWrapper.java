@@ -37,28 +37,21 @@ public class ContestScheduleWrapper implements ContestSchedule,
     public Map<String, Object> getModelAttributes() {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
-        attributes.put("ContestSchedulePK", getContestSchedulePK());
-        attributes.put("ContestPK", getContestPK());
+        attributes.put("id", getId());
         attributes.put("name", getName());
         attributes.put("description", getDescription());
         attributes.put("status", getStatus());
-        attributes.put("invisible", getInvisible());
+        attributes.put("baseScheduleId", getBaseScheduleId());
 
         return attributes;
     }
 
     @Override
     public void setModelAttributes(Map<String, Object> attributes) {
-        Long ContestSchedulePK = (Long) attributes.get("ContestSchedulePK");
+        Long id = (Long) attributes.get("id");
 
-        if (ContestSchedulePK != null) {
-            setContestSchedulePK(ContestSchedulePK);
-        }
-
-        Long ContestPK = (Long) attributes.get("ContestPK");
-
-        if (ContestPK != null) {
-            setContestPK(ContestPK);
+        if (id != null) {
+            setId(id);
         }
 
         String name = (String) attributes.get("name");
@@ -79,10 +72,10 @@ public class ContestScheduleWrapper implements ContestSchedule,
             setStatus(status);
         }
 
-        Boolean invisible = (Boolean) attributes.get("invisible");
+        Long baseScheduleId = (Long) attributes.get("baseScheduleId");
 
-        if (invisible != null) {
-            setInvisible(invisible);
+        if (baseScheduleId != null) {
+            setBaseScheduleId(baseScheduleId);
         }
     }
 
@@ -107,43 +100,23 @@ public class ContestScheduleWrapper implements ContestSchedule,
     }
 
     /**
-    * Returns the contest schedule p k of this contest schedule.
+    * Returns the ID of this contest schedule.
     *
-    * @return the contest schedule p k of this contest schedule
+    * @return the ID of this contest schedule
     */
     @Override
-    public long getContestSchedulePK() {
-        return _contestSchedule.getContestSchedulePK();
+    public long getId() {
+        return _contestSchedule.getId();
     }
 
     /**
-    * Sets the contest schedule p k of this contest schedule.
+    * Sets the ID of this contest schedule.
     *
-    * @param ContestSchedulePK the contest schedule p k of this contest schedule
+    * @param id the ID of this contest schedule
     */
     @Override
-    public void setContestSchedulePK(long ContestSchedulePK) {
-        _contestSchedule.setContestSchedulePK(ContestSchedulePK);
-    }
-
-    /**
-    * Returns the contest p k of this contest schedule.
-    *
-    * @return the contest p k of this contest schedule
-    */
-    @Override
-    public long getContestPK() {
-        return _contestSchedule.getContestPK();
-    }
-
-    /**
-    * Sets the contest p k of this contest schedule.
-    *
-    * @param ContestPK the contest p k of this contest schedule
-    */
-    @Override
-    public void setContestPK(long ContestPK) {
-        _contestSchedule.setContestPK(ContestPK);
+    public void setId(long id) {
+        _contestSchedule.setId(id);
     }
 
     /**
@@ -207,33 +180,23 @@ public class ContestScheduleWrapper implements ContestSchedule,
     }
 
     /**
-    * Returns the invisible of this contest schedule.
+    * Returns the base schedule ID of this contest schedule.
     *
-    * @return the invisible of this contest schedule
+    * @return the base schedule ID of this contest schedule
     */
     @Override
-    public boolean getInvisible() {
-        return _contestSchedule.getInvisible();
+    public java.lang.Long getBaseScheduleId() {
+        return _contestSchedule.getBaseScheduleId();
     }
 
     /**
-    * Returns <code>true</code> if this contest schedule is invisible.
+    * Sets the base schedule ID of this contest schedule.
     *
-    * @return <code>true</code> if this contest schedule is invisible; <code>false</code> otherwise
+    * @param baseScheduleId the base schedule ID of this contest schedule
     */
     @Override
-    public boolean isInvisible() {
-        return _contestSchedule.isInvisible();
-    }
-
-    /**
-    * Sets whether this contest schedule is invisible.
-    *
-    * @param invisible the invisible of this contest schedule
-    */
-    @Override
-    public void setInvisible(boolean invisible) {
-        _contestSchedule.setInvisible(invisible);
+    public void setBaseScheduleId(java.lang.Long baseScheduleId) {
+        _contestSchedule.setBaseScheduleId(baseScheduleId);
     }
 
     @Override

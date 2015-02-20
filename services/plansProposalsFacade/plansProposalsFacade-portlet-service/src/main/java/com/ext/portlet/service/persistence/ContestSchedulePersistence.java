@@ -42,20 +42,20 @@ public interface ContestSchedulePersistence extends BasePersistence<ContestSched
     /**
     * Creates a new contest schedule with the primary key. Does not add the contest schedule to the database.
     *
-    * @param ContestSchedulePK the primary key for the new contest schedule
+    * @param id the primary key for the new contest schedule
     * @return the new contest schedule
     */
-    public com.ext.portlet.model.ContestSchedule create(long ContestSchedulePK);
+    public com.ext.portlet.model.ContestSchedule create(long id);
 
     /**
     * Removes the contest schedule with the primary key from the database. Also notifies the appropriate model listeners.
     *
-    * @param ContestSchedulePK the primary key of the contest schedule
+    * @param id the primary key of the contest schedule
     * @return the contest schedule that was removed
     * @throws com.ext.portlet.NoSuchContestScheduleException if a contest schedule with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ContestSchedule remove(long ContestSchedulePK)
+    public com.ext.portlet.model.ContestSchedule remove(long id)
         throws com.ext.portlet.NoSuchContestScheduleException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -66,25 +66,23 @@ public interface ContestSchedulePersistence extends BasePersistence<ContestSched
     /**
     * Returns the contest schedule with the primary key or throws a {@link com.ext.portlet.NoSuchContestScheduleException} if it could not be found.
     *
-    * @param ContestSchedulePK the primary key of the contest schedule
+    * @param id the primary key of the contest schedule
     * @return the contest schedule
     * @throws com.ext.portlet.NoSuchContestScheduleException if a contest schedule with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ContestSchedule findByPrimaryKey(
-        long ContestSchedulePK)
+    public com.ext.portlet.model.ContestSchedule findByPrimaryKey(long id)
         throws com.ext.portlet.NoSuchContestScheduleException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the contest schedule with the primary key or returns <code>null</code> if it could not be found.
     *
-    * @param ContestSchedulePK the primary key of the contest schedule
+    * @param id the primary key of the contest schedule
     * @return the contest schedule, or <code>null</code> if a contest schedule with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ContestSchedule fetchByPrimaryKey(
-        long ContestSchedulePK)
+    public com.ext.portlet.model.ContestSchedule fetchByPrimaryKey(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

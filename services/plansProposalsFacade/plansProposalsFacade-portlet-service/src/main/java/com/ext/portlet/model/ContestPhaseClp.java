@@ -25,7 +25,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
     private long _ContestPhasePK;
     private long _ContestPK;
     private long _ContestPhaseType;
-    private long _ContestSchedulePK;
+    private long _contestScheduleId;
     private boolean _fellowScreeningActive;
     private String _contestPhaseAutopromote;
     private String _ContestPhaseDescriptionOverride;
@@ -80,7 +80,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         attributes.put("ContestPhasePK", getContestPhasePK());
         attributes.put("ContestPK", getContestPK());
         attributes.put("ContestPhaseType", getContestPhaseType());
-        attributes.put("ContestSchedulePK", getContestSchedulePK());
+        attributes.put("contestScheduleId", getContestScheduleId());
         attributes.put("fellowScreeningActive", getFellowScreeningActive());
         attributes.put("contestPhaseAutopromote", getContestPhaseAutopromote());
         attributes.put("ContestPhaseDescriptionOverride",
@@ -118,10 +118,10 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
             setContestPhaseType(ContestPhaseType);
         }
 
-        Long ContestSchedulePK = (Long) attributes.get("ContestSchedulePK");
+        Long contestScheduleId = (Long) attributes.get("contestScheduleId");
 
-        if (ContestSchedulePK != null) {
-            setContestSchedulePK(ContestSchedulePK);
+        if (contestScheduleId != null) {
+            setContestScheduleId(contestScheduleId);
         }
 
         Boolean fellowScreeningActive = (Boolean) attributes.get(
@@ -270,22 +270,22 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
     }
 
     @Override
-    public long getContestSchedulePK() {
-        return _ContestSchedulePK;
+    public long getContestScheduleId() {
+        return _contestScheduleId;
     }
 
     @Override
-    public void setContestSchedulePK(long ContestSchedulePK) {
-        _ContestSchedulePK = ContestSchedulePK;
+    public void setContestScheduleId(long contestScheduleId) {
+        _contestScheduleId = contestScheduleId;
 
         if (_contestPhaseRemoteModel != null) {
             try {
                 Class<?> clazz = _contestPhaseRemoteModel.getClass();
 
-                Method method = clazz.getMethod("setContestSchedulePK",
+                Method method = clazz.getMethod("setContestScheduleId",
                         long.class);
 
-                method.invoke(_contestPhaseRemoteModel, ContestSchedulePK);
+                method.invoke(_contestPhaseRemoteModel, contestScheduleId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -649,7 +649,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         clone.setContestPhasePK(getContestPhasePK());
         clone.setContestPK(getContestPK());
         clone.setContestPhaseType(getContestPhaseType());
-        clone.setContestSchedulePK(getContestSchedulePK());
+        clone.setContestScheduleId(getContestScheduleId());
         clone.setFellowScreeningActive(getFellowScreeningActive());
         clone.setContestPhaseAutopromote(getContestPhaseAutopromote());
         clone.setContestPhaseDescriptionOverride(getContestPhaseDescriptionOverride());
@@ -716,8 +716,8 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         sb.append(getContestPK());
         sb.append(", ContestPhaseType=");
         sb.append(getContestPhaseType());
-        sb.append(", ContestSchedulePK=");
-        sb.append(getContestSchedulePK());
+        sb.append(", contestScheduleId=");
+        sb.append(getContestScheduleId());
         sb.append(", fellowScreeningActive=");
         sb.append(getFellowScreeningActive());
         sb.append(", contestPhaseAutopromote=");
@@ -768,8 +768,8 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         sb.append(getContestPhaseType());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>ContestSchedulePK</column-name><column-value><![CDATA[");
-        sb.append(getContestSchedulePK());
+            "<column><column-name>contestScheduleId</column-name><column-value><![CDATA[");
+        sb.append(getContestScheduleId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>fellowScreeningActive</column-name><column-value><![CDATA[");

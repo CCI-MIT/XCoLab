@@ -13,12 +13,11 @@ import java.util.List;
  * @generated
  */
 public class ContestScheduleSoap implements Serializable {
-    private long _ContestSchedulePK;
-    private long _ContestPK;
+    private long _id;
     private String _name;
     private String _description;
     private String _status;
-    private boolean _invisible;
+    private Long _baseScheduleId;
 
     public ContestScheduleSoap() {
     }
@@ -26,12 +25,11 @@ public class ContestScheduleSoap implements Serializable {
     public static ContestScheduleSoap toSoapModel(ContestSchedule model) {
         ContestScheduleSoap soapModel = new ContestScheduleSoap();
 
-        soapModel.setContestSchedulePK(model.getContestSchedulePK());
-        soapModel.setContestPK(model.getContestPK());
+        soapModel.setId(model.getId());
         soapModel.setName(model.getName());
         soapModel.setDescription(model.getDescription());
         soapModel.setStatus(model.getStatus());
-        soapModel.setInvisible(model.getInvisible());
+        soapModel.setBaseScheduleId(model.getBaseScheduleId());
 
         return soapModel;
     }
@@ -75,27 +73,19 @@ public class ContestScheduleSoap implements Serializable {
     }
 
     public long getPrimaryKey() {
-        return _ContestSchedulePK;
+        return _id;
     }
 
     public void setPrimaryKey(long pk) {
-        setContestSchedulePK(pk);
+        setId(pk);
     }
 
-    public long getContestSchedulePK() {
-        return _ContestSchedulePK;
+    public long getId() {
+        return _id;
     }
 
-    public void setContestSchedulePK(long ContestSchedulePK) {
-        _ContestSchedulePK = ContestSchedulePK;
-    }
-
-    public long getContestPK() {
-        return _ContestPK;
-    }
-
-    public void setContestPK(long ContestPK) {
-        _ContestPK = ContestPK;
+    public void setId(long id) {
+        _id = id;
     }
 
     public String getName() {
@@ -122,15 +112,11 @@ public class ContestScheduleSoap implements Serializable {
         _status = status;
     }
 
-    public boolean getInvisible() {
-        return _invisible;
+    public Long getBaseScheduleId() {
+        return _baseScheduleId;
     }
 
-    public boolean isInvisible() {
-        return _invisible;
-    }
-
-    public void setInvisible(boolean invisible) {
-        _invisible = invisible;
+    public void setBaseScheduleId(Long baseScheduleId) {
+        _baseScheduleId = baseScheduleId;
     }
 }

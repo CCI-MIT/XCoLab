@@ -49,17 +49,16 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
      */
     public static final String TABLE_NAME = "xcolab_ContestSchedule";
     public static final Object[][] TABLE_COLUMNS = {
-            { "ContestSchedulePK", Types.BIGINT },
-            { "ContestPK", Types.BIGINT },
+            { "id_", Types.BIGINT },
             { "name", Types.VARCHAR },
             { "description", Types.VARCHAR },
             { "status", Types.VARCHAR },
-            { "invisible", Types.BOOLEAN }
+            { "baseScheduleId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestSchedule (ContestSchedulePK LONG not null primary key,ContestPK LONG,name VARCHAR(75) null,description VARCHAR(75) null,status VARCHAR(75) null,invisible BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestSchedule (id_ LONG not null primary key,name VARCHAR(75) null,description VARCHAR(75) null,status VARCHAR(75) null,baseScheduleId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestSchedule";
-    public static final String ORDER_BY_JPQL = " ORDER BY contestSchedule.ContestSchedulePK ASC";
-    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestSchedule.ContestSchedulePK ASC";
+    public static final String ORDER_BY_JPQL = " ORDER BY contestSchedule.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestSchedule.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -76,12 +75,11 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
     private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ContestSchedule.class
         };
-    private long _ContestSchedulePK;
-    private long _ContestPK;
+    private long _id;
     private String _name;
     private String _description;
     private String _status;
-    private boolean _invisible;
+    private Long _baseScheduleId;
     private ContestSchedule _escapedModel;
 
     public ContestScheduleModelImpl() {
@@ -100,12 +98,11 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
 
         ContestSchedule model = new ContestScheduleImpl();
 
-        model.setContestSchedulePK(soapModel.getContestSchedulePK());
-        model.setContestPK(soapModel.getContestPK());
+        model.setId(soapModel.getId());
         model.setName(soapModel.getName());
         model.setDescription(soapModel.getDescription());
         model.setStatus(soapModel.getStatus());
-        model.setInvisible(soapModel.getInvisible());
+        model.setBaseScheduleId(soapModel.getBaseScheduleId());
 
         return model;
     }
@@ -133,17 +130,17 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
 
     @Override
     public long getPrimaryKey() {
-        return _ContestSchedulePK;
+        return _id;
     }
 
     @Override
     public void setPrimaryKey(long primaryKey) {
-        setContestSchedulePK(primaryKey);
+        setId(primaryKey);
     }
 
     @Override
     public Serializable getPrimaryKeyObj() {
-        return _ContestSchedulePK;
+        return _id;
     }
 
     @Override
@@ -165,28 +162,21 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
     public Map<String, Object> getModelAttributes() {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
-        attributes.put("ContestSchedulePK", getContestSchedulePK());
-        attributes.put("ContestPK", getContestPK());
+        attributes.put("id", getId());
         attributes.put("name", getName());
         attributes.put("description", getDescription());
         attributes.put("status", getStatus());
-        attributes.put("invisible", getInvisible());
+        attributes.put("baseScheduleId", getBaseScheduleId());
 
         return attributes;
     }
 
     @Override
     public void setModelAttributes(Map<String, Object> attributes) {
-        Long ContestSchedulePK = (Long) attributes.get("ContestSchedulePK");
+        Long id = (Long) attributes.get("id");
 
-        if (ContestSchedulePK != null) {
-            setContestSchedulePK(ContestSchedulePK);
-        }
-
-        Long ContestPK = (Long) attributes.get("ContestPK");
-
-        if (ContestPK != null) {
-            setContestPK(ContestPK);
+        if (id != null) {
+            setId(id);
         }
 
         String name = (String) attributes.get("name");
@@ -207,33 +197,22 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
             setStatus(status);
         }
 
-        Boolean invisible = (Boolean) attributes.get("invisible");
+        Long baseScheduleId = (Long) attributes.get("baseScheduleId");
 
-        if (invisible != null) {
-            setInvisible(invisible);
+        if (baseScheduleId != null) {
+            setBaseScheduleId(baseScheduleId);
         }
     }
 
     @JSON
     @Override
-    public long getContestSchedulePK() {
-        return _ContestSchedulePK;
+    public long getId() {
+        return _id;
     }
 
     @Override
-    public void setContestSchedulePK(long ContestSchedulePK) {
-        _ContestSchedulePK = ContestSchedulePK;
-    }
-
-    @JSON
-    @Override
-    public long getContestPK() {
-        return _ContestPK;
-    }
-
-    @Override
-    public void setContestPK(long ContestPK) {
-        _ContestPK = ContestPK;
+    public void setId(long id) {
+        _id = id;
     }
 
     @JSON
@@ -283,18 +262,13 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
 
     @JSON
     @Override
-    public boolean getInvisible() {
-        return _invisible;
+    public Long getBaseScheduleId() {
+        return _baseScheduleId;
     }
 
     @Override
-    public boolean isInvisible() {
-        return _invisible;
-    }
-
-    @Override
-    public void setInvisible(boolean invisible) {
-        _invisible = invisible;
+    public void setBaseScheduleId(Long baseScheduleId) {
+        _baseScheduleId = baseScheduleId;
     }
 
     @Override
@@ -324,12 +298,11 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
     public Object clone() {
         ContestScheduleImpl contestScheduleImpl = new ContestScheduleImpl();
 
-        contestScheduleImpl.setContestSchedulePK(getContestSchedulePK());
-        contestScheduleImpl.setContestPK(getContestPK());
+        contestScheduleImpl.setId(getId());
         contestScheduleImpl.setName(getName());
         contestScheduleImpl.setDescription(getDescription());
         contestScheduleImpl.setStatus(getStatus());
-        contestScheduleImpl.setInvisible(getInvisible());
+        contestScheduleImpl.setBaseScheduleId(getBaseScheduleId());
 
         contestScheduleImpl.resetOriginalValues();
 
@@ -383,9 +356,7 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
     public CacheModel<ContestSchedule> toCacheModel() {
         ContestScheduleCacheModel contestScheduleCacheModel = new ContestScheduleCacheModel();
 
-        contestScheduleCacheModel.ContestSchedulePK = getContestSchedulePK();
-
-        contestScheduleCacheModel.ContestPK = getContestPK();
+        contestScheduleCacheModel.id = getId();
 
         contestScheduleCacheModel.name = getName();
 
@@ -411,27 +382,25 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
             contestScheduleCacheModel.status = null;
         }
 
-        contestScheduleCacheModel.invisible = getInvisible();
+        contestScheduleCacheModel.baseScheduleId = getBaseScheduleId();
 
         return contestScheduleCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(11);
 
-        sb.append("{ContestSchedulePK=");
-        sb.append(getContestSchedulePK());
-        sb.append(", ContestPK=");
-        sb.append(getContestPK());
+        sb.append("{id=");
+        sb.append(getId());
         sb.append(", name=");
         sb.append(getName());
         sb.append(", description=");
         sb.append(getDescription());
         sb.append(", status=");
         sb.append(getStatus());
-        sb.append(", invisible=");
-        sb.append(getInvisible());
+        sb.append(", baseScheduleId=");
+        sb.append(getBaseScheduleId());
         sb.append("}");
 
         return sb.toString();
@@ -439,19 +408,15 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestSchedule");
         sb.append("</model-name>");
 
         sb.append(
-            "<column><column-name>ContestSchedulePK</column-name><column-value><![CDATA[");
-        sb.append(getContestSchedulePK());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>ContestPK</column-name><column-value><![CDATA[");
-        sb.append(getContestPK());
+            "<column><column-name>id</column-name><column-value><![CDATA[");
+        sb.append(getId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");
@@ -466,8 +431,8 @@ public class ContestScheduleModelImpl extends BaseModelImpl<ContestSchedule>
         sb.append(getStatus());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>invisible</column-name><column-value><![CDATA[");
-        sb.append(getInvisible());
+            "<column><column-name>baseScheduleId</column-name><column-value><![CDATA[");
+        sb.append(getBaseScheduleId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

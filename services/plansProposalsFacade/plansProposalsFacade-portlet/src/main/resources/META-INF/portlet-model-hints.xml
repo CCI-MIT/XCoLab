@@ -135,6 +135,7 @@
 		<field name="authorId" type="long" />
 		<field name="contestActive" type="boolean" />
 		<field name="planTemplateId" type="long" />
+		<field name="contestScheduleId" type="long" />
 		<field name="focusAreaId" type="long" />
 		<field name="contestTier" type="long" />
 		<field name="contestLogoId" type="long" />
@@ -160,6 +161,7 @@
 		</field>
 		<field name="contestPrivate" type="boolean" />
 		<field name="usePermissions" type="boolean" />
+		<field name="contestCreationStatus" type="String" />
 		<field name="defaultModelId" type="long" />
 		<field name="otherModels" type="String" />
 		<field name="points" type="double" />
@@ -194,7 +196,7 @@
 		<field name="ContestPhasePK" type="long" />
 		<field name="ContestPK" type="long" />
 		<field name="ContestPhaseType" type="long" />
-		<field name="ContestSchedulePK" type="long" />
+		<field name="contestScheduleId" type="long" />
 		<field name="fellowScreeningActive" type="boolean" />
 		<field name="contestPhaseAutopromote" type="String" />
 		<field name="ContestPhaseDescriptionOverride" type="String">
@@ -239,12 +241,11 @@
 		<field name="pointsAccessible" type="int" />
 	</model>
 	<model name="com.ext.portlet.model.ContestSchedule">
-		<field name="ContestSchedulePK" type="long" />
-		<field name="ContestPK" type="long" />
+		<field name="id" type="long" />
 		<field name="name" type="String" />
 		<field name="description" type="String" />
 		<field name="status" type="String" />
-		<field name="invisible" type="boolean" />
+		<field name="baseScheduleId" type="Long" />
 	</model>
 	<model name="com.ext.portlet.model.ContestTeamMember">
 		<field name="id" type="long" />

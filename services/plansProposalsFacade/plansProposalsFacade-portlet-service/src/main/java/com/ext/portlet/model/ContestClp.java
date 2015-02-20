@@ -34,6 +34,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private long _authorId;
     private boolean _contestActive;
     private long _planTemplateId;
+    private long _contestScheduleId;
     private long _focusAreaId;
     private long _contestTier;
     private long _contestLogoId;
@@ -51,6 +52,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private String _resourcesUrl;
     private boolean _contestPrivate;
     private boolean _usePermissions;
+    private String _contestCreationStatus;
     private long _defaultModelId;
     private String _otherModels;
     private double _points;
@@ -109,6 +111,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("authorId", getAuthorId());
         attributes.put("contestActive", getContestActive());
         attributes.put("planTemplateId", getPlanTemplateId());
+        attributes.put("contestScheduleId", getContestScheduleId());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("contestTier", getContestTier());
         attributes.put("contestLogoId", getContestLogoId());
@@ -126,6 +129,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("resourcesUrl", getResourcesUrl());
         attributes.put("contestPrivate", getContestPrivate());
         attributes.put("usePermissions", getUsePermissions());
+        attributes.put("contestCreationStatus", getContestCreationStatus());
         attributes.put("defaultModelId", getDefaultModelId());
         attributes.put("otherModels", getOtherModels());
         attributes.put("points", getPoints());
@@ -218,6 +222,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (planTemplateId != null) {
             setPlanTemplateId(planTemplateId);
+        }
+
+        Long contestScheduleId = (Long) attributes.get("contestScheduleId");
+
+        if (contestScheduleId != null) {
+            setContestScheduleId(contestScheduleId);
         }
 
         Long focusAreaId = (Long) attributes.get("focusAreaId");
@@ -321,6 +331,13 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (usePermissions != null) {
             setUsePermissions(usePermissions);
+        }
+
+        String contestCreationStatus = (String) attributes.get(
+                "contestCreationStatus");
+
+        if (contestCreationStatus != null) {
+            setContestCreationStatus(contestCreationStatus);
         }
 
         Long defaultModelId = (Long) attributes.get("defaultModelId");
@@ -648,6 +665,29 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                 Method method = clazz.getMethod("setPlanTemplateId", long.class);
 
                 method.invoke(_contestRemoteModel, planTemplateId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public long getContestScheduleId() {
+        return _contestScheduleId;
+    }
+
+    @Override
+    public void setContestScheduleId(long contestScheduleId) {
+        _contestScheduleId = contestScheduleId;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestScheduleId",
+                        long.class);
+
+                method.invoke(_contestRemoteModel, contestScheduleId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -1053,6 +1093,29 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     }
 
     @Override
+    public String getContestCreationStatus() {
+        return _contestCreationStatus;
+    }
+
+    @Override
+    public void setContestCreationStatus(String contestCreationStatus) {
+        _contestCreationStatus = contestCreationStatus;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestCreationStatus",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, contestCreationStatus);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public long getDefaultModelId() {
         return _defaultModelId;
     }
@@ -1244,6 +1307,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setAuthorId(getAuthorId());
         clone.setContestActive(getContestActive());
         clone.setPlanTemplateId(getPlanTemplateId());
+        clone.setContestScheduleId(getContestScheduleId());
         clone.setFocusAreaId(getFocusAreaId());
         clone.setContestTier(getContestTier());
         clone.setContestLogoId(getContestLogoId());
@@ -1261,6 +1325,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setResourcesUrl(getResourcesUrl());
         clone.setContestPrivate(getContestPrivate());
         clone.setUsePermissions(getUsePermissions());
+        clone.setContestCreationStatus(getContestCreationStatus());
         clone.setDefaultModelId(getDefaultModelId());
         clone.setOtherModels(getOtherModels());
         clone.setPoints(getPoints());
@@ -1323,7 +1388,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(71);
+        StringBundler sb = new StringBundler(75);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1351,6 +1416,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getContestActive());
         sb.append(", planTemplateId=");
         sb.append(getPlanTemplateId());
+        sb.append(", contestScheduleId=");
+        sb.append(getContestScheduleId());
         sb.append(", focusAreaId=");
         sb.append(getFocusAreaId());
         sb.append(", contestTier=");
@@ -1385,6 +1452,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getContestPrivate());
         sb.append(", usePermissions=");
         sb.append(getUsePermissions());
+        sb.append(", contestCreationStatus=");
+        sb.append(getContestCreationStatus());
         sb.append(", defaultModelId=");
         sb.append(getDefaultModelId());
         sb.append(", otherModels=");
@@ -1402,7 +1471,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(109);
+        StringBundler sb = new StringBundler(115);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1459,6 +1528,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>planTemplateId</column-name><column-value><![CDATA[");
         sb.append(getPlanTemplateId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestScheduleId</column-name><column-value><![CDATA[");
+        sb.append(getContestScheduleId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>focusAreaId</column-name><column-value><![CDATA[");
@@ -1527,6 +1600,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>usePermissions</column-name><column-value><![CDATA[");
         sb.append(getUsePermissions());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestCreationStatus</column-name><column-value><![CDATA[");
+        sb.append(getContestCreationStatus());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>defaultModelId</column-name><column-value><![CDATA[");

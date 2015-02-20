@@ -64,6 +64,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "authorId", Types.BIGINT },
             { "contestActive", Types.BOOLEAN },
             { "planTemplateId", Types.BIGINT },
+            { "contestScheduleId", Types.BIGINT },
             { "focusAreaId", Types.BIGINT },
             { "contestTier", Types.BIGINT },
             { "contestLogoId", Types.BIGINT },
@@ -81,13 +82,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "resourcesUrl", Types.VARCHAR },
             { "contestPrivate", Types.BOOLEAN },
             { "usePermissions", Types.BOOLEAN },
+            { "contestCreationStatus", Types.VARCHAR },
             { "defaultModelId", Types.BIGINT },
             { "otherModels", Types.VARCHAR },
             { "points", Types.DOUBLE },
             { "defaultParentPointType", Types.BIGINT },
             { "pointDistributionStrategy", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(2048) null,ContestShortName VARCHAR(1024) null,ContestDescription VARCHAR(3072) null,ContestModelDescription VARCHAR(2048) null,ContestPositionsDescription VARCHAR(2048) null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(2048) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(1024) null,flagTooltip VARCHAR(1024) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,defaultModelId LONG,otherModels VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(2048) null,ContestShortName VARCHAR(1024) null,ContestDescription VARCHAR(3072) null,ContestModelDescription VARCHAR(2048) null,ContestPositionsDescription VARCHAR(2048) null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(2048) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(1024) null,flagTooltip VARCHAR(1024) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Contest";
     public static final String ORDER_BY_JPQL = " ORDER BY contest.weight ASC, contest.created ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Contest.weight ASC, xcolab_Contest.created ASC";
@@ -135,6 +137,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private boolean _originalContestActive;
     private boolean _setOriginalContestActive;
     private long _planTemplateId;
+    private long _contestScheduleId;
     private long _focusAreaId;
     private long _contestTier;
     private long _originalContestTier;
@@ -161,6 +164,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private boolean _originalContestPrivate;
     private boolean _setOriginalContestPrivate;
     private boolean _usePermissions;
+    private String _contestCreationStatus;
     private long _defaultModelId;
     private String _otherModels;
     private double _points;
@@ -198,6 +202,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setAuthorId(soapModel.getAuthorId());
         model.setContestActive(soapModel.getContestActive());
         model.setPlanTemplateId(soapModel.getPlanTemplateId());
+        model.setContestScheduleId(soapModel.getContestScheduleId());
         model.setFocusAreaId(soapModel.getFocusAreaId());
         model.setContestTier(soapModel.getContestTier());
         model.setContestLogoId(soapModel.getContestLogoId());
@@ -215,6 +220,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setResourcesUrl(soapModel.getResourcesUrl());
         model.setContestPrivate(soapModel.getContestPrivate());
         model.setUsePermissions(soapModel.getUsePermissions());
+        model.setContestCreationStatus(soapModel.getContestCreationStatus());
         model.setDefaultModelId(soapModel.getDefaultModelId());
         model.setOtherModels(soapModel.getOtherModels());
         model.setPoints(soapModel.getPoints());
@@ -292,6 +298,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("authorId", getAuthorId());
         attributes.put("contestActive", getContestActive());
         attributes.put("planTemplateId", getPlanTemplateId());
+        attributes.put("contestScheduleId", getContestScheduleId());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("contestTier", getContestTier());
         attributes.put("contestLogoId", getContestLogoId());
@@ -309,6 +316,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("resourcesUrl", getResourcesUrl());
         attributes.put("contestPrivate", getContestPrivate());
         attributes.put("usePermissions", getUsePermissions());
+        attributes.put("contestCreationStatus", getContestCreationStatus());
         attributes.put("defaultModelId", getDefaultModelId());
         attributes.put("otherModels", getOtherModels());
         attributes.put("points", getPoints());
@@ -401,6 +409,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         if (planTemplateId != null) {
             setPlanTemplateId(planTemplateId);
+        }
+
+        Long contestScheduleId = (Long) attributes.get("contestScheduleId");
+
+        if (contestScheduleId != null) {
+            setContestScheduleId(contestScheduleId);
         }
 
         Long focusAreaId = (Long) attributes.get("focusAreaId");
@@ -504,6 +518,13 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         if (usePermissions != null) {
             setUsePermissions(usePermissions);
+        }
+
+        String contestCreationStatus = (String) attributes.get(
+                "contestCreationStatus");
+
+        if (contestCreationStatus != null) {
+            setContestCreationStatus(contestCreationStatus);
         }
 
         Long defaultModelId = (Long) attributes.get("defaultModelId");
@@ -736,6 +757,17 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     @Override
     public void setPlanTemplateId(long planTemplateId) {
         _planTemplateId = planTemplateId;
+    }
+
+    @JSON
+    @Override
+    public long getContestScheduleId() {
+        return _contestScheduleId;
+    }
+
+    @Override
+    public void setContestScheduleId(long contestScheduleId) {
+        _contestScheduleId = contestScheduleId;
     }
 
     @JSON
@@ -1027,6 +1059,21 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @JSON
     @Override
+    public String getContestCreationStatus() {
+        if (_contestCreationStatus == null) {
+            return StringPool.BLANK;
+        } else {
+            return _contestCreationStatus;
+        }
+    }
+
+    @Override
+    public void setContestCreationStatus(String contestCreationStatus) {
+        _contestCreationStatus = contestCreationStatus;
+    }
+
+    @JSON
+    @Override
     public long getDefaultModelId() {
         return _defaultModelId;
     }
@@ -1132,6 +1179,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setAuthorId(getAuthorId());
         contestImpl.setContestActive(getContestActive());
         contestImpl.setPlanTemplateId(getPlanTemplateId());
+        contestImpl.setContestScheduleId(getContestScheduleId());
         contestImpl.setFocusAreaId(getFocusAreaId());
         contestImpl.setContestTier(getContestTier());
         contestImpl.setContestLogoId(getContestLogoId());
@@ -1149,6 +1197,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setResourcesUrl(getResourcesUrl());
         contestImpl.setContestPrivate(getContestPrivate());
         contestImpl.setUsePermissions(getUsePermissions());
+        contestImpl.setContestCreationStatus(getContestCreationStatus());
         contestImpl.setDefaultModelId(getDefaultModelId());
         contestImpl.setOtherModels(getOtherModels());
         contestImpl.setPoints(getPoints());
@@ -1325,6 +1374,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         contestCacheModel.planTemplateId = getPlanTemplateId();
 
+        contestCacheModel.contestScheduleId = getContestScheduleId();
+
         contestCacheModel.focusAreaId = getFocusAreaId();
 
         contestCacheModel.contestTier = getContestTier();
@@ -1389,6 +1440,15 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         contestCacheModel.usePermissions = getUsePermissions();
 
+        contestCacheModel.contestCreationStatus = getContestCreationStatus();
+
+        String contestCreationStatus = contestCacheModel.contestCreationStatus;
+
+        if ((contestCreationStatus != null) &&
+                (contestCreationStatus.length() == 0)) {
+            contestCacheModel.contestCreationStatus = null;
+        }
+
         contestCacheModel.defaultModelId = getDefaultModelId();
 
         contestCacheModel.otherModels = getOtherModels();
@@ -1417,7 +1477,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(71);
+        StringBundler sb = new StringBundler(75);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1445,6 +1505,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getContestActive());
         sb.append(", planTemplateId=");
         sb.append(getPlanTemplateId());
+        sb.append(", contestScheduleId=");
+        sb.append(getContestScheduleId());
         sb.append(", focusAreaId=");
         sb.append(getFocusAreaId());
         sb.append(", contestTier=");
@@ -1479,6 +1541,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getContestPrivate());
         sb.append(", usePermissions=");
         sb.append(getUsePermissions());
+        sb.append(", contestCreationStatus=");
+        sb.append(getContestCreationStatus());
         sb.append(", defaultModelId=");
         sb.append(getDefaultModelId());
         sb.append(", otherModels=");
@@ -1496,7 +1560,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(109);
+        StringBundler sb = new StringBundler(115);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1553,6 +1617,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>planTemplateId</column-name><column-value><![CDATA[");
         sb.append(getPlanTemplateId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestScheduleId</column-name><column-value><![CDATA[");
+        sb.append(getContestScheduleId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>focusAreaId</column-name><column-value><![CDATA[");
@@ -1621,6 +1689,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>usePermissions</column-name><column-value><![CDATA[");
         sb.append(getUsePermissions());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestCreationStatus</column-name><column-value><![CDATA[");
+        sb.append(getContestCreationStatus());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>defaultModelId</column-name><column-value><![CDATA[");

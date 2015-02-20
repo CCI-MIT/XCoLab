@@ -41,7 +41,7 @@ public class ContestPhaseWrapper implements ContestPhase,
         attributes.put("ContestPhasePK", getContestPhasePK());
         attributes.put("ContestPK", getContestPK());
         attributes.put("ContestPhaseType", getContestPhaseType());
-        attributes.put("ContestSchedulePK", getContestSchedulePK());
+        attributes.put("contestScheduleId", getContestScheduleId());
         attributes.put("fellowScreeningActive", getFellowScreeningActive());
         attributes.put("contestPhaseAutopromote", getContestPhaseAutopromote());
         attributes.put("ContestPhaseDescriptionOverride",
@@ -79,10 +79,10 @@ public class ContestPhaseWrapper implements ContestPhase,
             setContestPhaseType(ContestPhaseType);
         }
 
-        Long ContestSchedulePK = (Long) attributes.get("ContestSchedulePK");
+        Long contestScheduleId = (Long) attributes.get("contestScheduleId");
 
-        if (ContestSchedulePK != null) {
-            setContestSchedulePK(ContestSchedulePK);
+        if (contestScheduleId != null) {
+            setContestScheduleId(contestScheduleId);
         }
 
         Boolean fellowScreeningActive = (Boolean) attributes.get(
@@ -244,23 +244,23 @@ public class ContestPhaseWrapper implements ContestPhase,
     }
 
     /**
-    * Returns the contest schedule p k of this contest phase.
+    * Returns the contest schedule ID of this contest phase.
     *
-    * @return the contest schedule p k of this contest phase
+    * @return the contest schedule ID of this contest phase
     */
     @Override
-    public long getContestSchedulePK() {
-        return _contestPhase.getContestSchedulePK();
+    public long getContestScheduleId() {
+        return _contestPhase.getContestScheduleId();
     }
 
     /**
-    * Sets the contest schedule p k of this contest phase.
+    * Sets the contest schedule ID of this contest phase.
     *
-    * @param ContestSchedulePK the contest schedule p k of this contest phase
+    * @param contestScheduleId the contest schedule ID of this contest phase
     */
     @Override
-    public void setContestSchedulePK(long ContestSchedulePK) {
-        _contestPhase.setContestSchedulePK(ContestSchedulePK);
+    public void setContestScheduleId(long contestScheduleId) {
+        _contestPhase.setContestScheduleId(contestScheduleId);
     }
 
     /**

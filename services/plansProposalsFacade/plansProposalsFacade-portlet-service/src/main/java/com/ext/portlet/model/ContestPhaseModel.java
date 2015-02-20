@@ -88,18 +88,18 @@ public interface ContestPhaseModel extends BaseModel<ContestPhase> {
     public void setContestPhaseType(long ContestPhaseType);
 
     /**
-     * Returns the contest schedule p k of this contest phase.
+     * Returns the contest schedule ID of this contest phase.
      *
-     * @return the contest schedule p k of this contest phase
+     * @return the contest schedule ID of this contest phase
      */
-    public long getContestSchedulePK();
+    public long getContestScheduleId();
 
     /**
-     * Sets the contest schedule p k of this contest phase.
+     * Sets the contest schedule ID of this contest phase.
      *
-     * @param ContestSchedulePK the contest schedule p k of this contest phase
+     * @param contestScheduleId the contest schedule ID of this contest phase
      */
-    public void setContestSchedulePK(long ContestSchedulePK);
+    public void setContestScheduleId(long contestScheduleId);
 
     /**
      * Returns the fellow screening active of this contest phase.

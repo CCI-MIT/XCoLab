@@ -20,12 +20,11 @@ import java.util.Map;
 
 public class ContestScheduleClp extends BaseModelImpl<ContestSchedule>
     implements ContestSchedule {
-    private long _ContestSchedulePK;
-    private long _ContestPK;
+    private long _id;
     private String _name;
     private String _description;
     private String _status;
-    private boolean _invisible;
+    private Long _baseScheduleId;
     private BaseModel<?> _contestScheduleRemoteModel;
 
     public ContestScheduleClp() {
@@ -43,17 +42,17 @@ public class ContestScheduleClp extends BaseModelImpl<ContestSchedule>
 
     @Override
     public long getPrimaryKey() {
-        return _ContestSchedulePK;
+        return _id;
     }
 
     @Override
     public void setPrimaryKey(long primaryKey) {
-        setContestSchedulePK(primaryKey);
+        setId(primaryKey);
     }
 
     @Override
     public Serializable getPrimaryKeyObj() {
-        return _ContestSchedulePK;
+        return _id;
     }
 
     @Override
@@ -65,28 +64,21 @@ public class ContestScheduleClp extends BaseModelImpl<ContestSchedule>
     public Map<String, Object> getModelAttributes() {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
-        attributes.put("ContestSchedulePK", getContestSchedulePK());
-        attributes.put("ContestPK", getContestPK());
+        attributes.put("id", getId());
         attributes.put("name", getName());
         attributes.put("description", getDescription());
         attributes.put("status", getStatus());
-        attributes.put("invisible", getInvisible());
+        attributes.put("baseScheduleId", getBaseScheduleId());
 
         return attributes;
     }
 
     @Override
     public void setModelAttributes(Map<String, Object> attributes) {
-        Long ContestSchedulePK = (Long) attributes.get("ContestSchedulePK");
+        Long id = (Long) attributes.get("id");
 
-        if (ContestSchedulePK != null) {
-            setContestSchedulePK(ContestSchedulePK);
-        }
-
-        Long ContestPK = (Long) attributes.get("ContestPK");
-
-        if (ContestPK != null) {
-            setContestPK(ContestPK);
+        if (id != null) {
+            setId(id);
         }
 
         String name = (String) attributes.get("name");
@@ -107,52 +99,29 @@ public class ContestScheduleClp extends BaseModelImpl<ContestSchedule>
             setStatus(status);
         }
 
-        Boolean invisible = (Boolean) attributes.get("invisible");
+        Long baseScheduleId = (Long) attributes.get("baseScheduleId");
 
-        if (invisible != null) {
-            setInvisible(invisible);
+        if (baseScheduleId != null) {
+            setBaseScheduleId(baseScheduleId);
         }
     }
 
     @Override
-    public long getContestSchedulePK() {
-        return _ContestSchedulePK;
+    public long getId() {
+        return _id;
     }
 
     @Override
-    public void setContestSchedulePK(long ContestSchedulePK) {
-        _ContestSchedulePK = ContestSchedulePK;
+    public void setId(long id) {
+        _id = id;
 
         if (_contestScheduleRemoteModel != null) {
             try {
                 Class<?> clazz = _contestScheduleRemoteModel.getClass();
 
-                Method method = clazz.getMethod("setContestSchedulePK",
-                        long.class);
+                Method method = clazz.getMethod("setId", long.class);
 
-                method.invoke(_contestScheduleRemoteModel, ContestSchedulePK);
-            } catch (Exception e) {
-                throw new UnsupportedOperationException(e);
-            }
-        }
-    }
-
-    @Override
-    public long getContestPK() {
-        return _ContestPK;
-    }
-
-    @Override
-    public void setContestPK(long ContestPK) {
-        _ContestPK = ContestPK;
-
-        if (_contestScheduleRemoteModel != null) {
-            try {
-                Class<?> clazz = _contestScheduleRemoteModel.getClass();
-
-                Method method = clazz.getMethod("setContestPK", long.class);
-
-                method.invoke(_contestScheduleRemoteModel, ContestPK);
+                method.invoke(_contestScheduleRemoteModel, id);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -226,26 +195,21 @@ public class ContestScheduleClp extends BaseModelImpl<ContestSchedule>
     }
 
     @Override
-    public boolean getInvisible() {
-        return _invisible;
+    public Long getBaseScheduleId() {
+        return _baseScheduleId;
     }
 
     @Override
-    public boolean isInvisible() {
-        return _invisible;
-    }
-
-    @Override
-    public void setInvisible(boolean invisible) {
-        _invisible = invisible;
+    public void setBaseScheduleId(Long baseScheduleId) {
+        _baseScheduleId = baseScheduleId;
 
         if (_contestScheduleRemoteModel != null) {
             try {
                 Class<?> clazz = _contestScheduleRemoteModel.getClass();
 
-                Method method = clazz.getMethod("setInvisible", boolean.class);
+                Method method = clazz.getMethod("setBaseScheduleId", Long.class);
 
-                method.invoke(_contestScheduleRemoteModel, invisible);
+                method.invoke(_contestScheduleRemoteModel, baseScheduleId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -321,12 +285,11 @@ public class ContestScheduleClp extends BaseModelImpl<ContestSchedule>
     public Object clone() {
         ContestScheduleClp clone = new ContestScheduleClp();
 
-        clone.setContestSchedulePK(getContestSchedulePK());
-        clone.setContestPK(getContestPK());
+        clone.setId(getId());
         clone.setName(getName());
         clone.setDescription(getDescription());
         clone.setStatus(getStatus());
-        clone.setInvisible(getInvisible());
+        clone.setBaseScheduleId(getBaseScheduleId());
 
         return clone;
     }
@@ -372,20 +335,18 @@ public class ContestScheduleClp extends BaseModelImpl<ContestSchedule>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(11);
 
-        sb.append("{ContestSchedulePK=");
-        sb.append(getContestSchedulePK());
-        sb.append(", ContestPK=");
-        sb.append(getContestPK());
+        sb.append("{id=");
+        sb.append(getId());
         sb.append(", name=");
         sb.append(getName());
         sb.append(", description=");
         sb.append(getDescription());
         sb.append(", status=");
         sb.append(getStatus());
-        sb.append(", invisible=");
-        sb.append(getInvisible());
+        sb.append(", baseScheduleId=");
+        sb.append(getBaseScheduleId());
         sb.append("}");
 
         return sb.toString();
@@ -393,19 +354,15 @@ public class ContestScheduleClp extends BaseModelImpl<ContestSchedule>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestSchedule");
         sb.append("</model-name>");
 
         sb.append(
-            "<column><column-name>ContestSchedulePK</column-name><column-value><![CDATA[");
-        sb.append(getContestSchedulePK());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>ContestPK</column-name><column-value><![CDATA[");
-        sb.append(getContestPK());
+            "<column><column-name>id</column-name><column-value><![CDATA[");
+        sb.append(getId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");
@@ -420,8 +377,8 @@ public class ContestScheduleClp extends BaseModelImpl<ContestSchedule>
         sb.append(getStatus());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>invisible</column-name><column-value><![CDATA[");
-        sb.append(getInvisible());
+            "<column><column-name>baseScheduleId</column-name><column-value><![CDATA[");
+        sb.append(getBaseScheduleId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

@@ -20,29 +20,26 @@ import java.io.ObjectOutput;
  */
 public class ContestScheduleCacheModel implements CacheModel<ContestSchedule>,
     Externalizable {
-    public long ContestSchedulePK;
-    public long ContestPK;
+    public long id;
     public String name;
     public String description;
     public String status;
-    public boolean invisible;
+    public Long baseScheduleId;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(11);
 
-        sb.append("{ContestSchedulePK=");
-        sb.append(ContestSchedulePK);
-        sb.append(", ContestPK=");
-        sb.append(ContestPK);
+        sb.append("{id=");
+        sb.append(id);
         sb.append(", name=");
         sb.append(name);
         sb.append(", description=");
         sb.append(description);
         sb.append(", status=");
         sb.append(status);
-        sb.append(", invisible=");
-        sb.append(invisible);
+        sb.append(", baseScheduleId=");
+        sb.append(baseScheduleId);
         sb.append("}");
 
         return sb.toString();
@@ -52,8 +49,7 @@ public class ContestScheduleCacheModel implements CacheModel<ContestSchedule>,
     public ContestSchedule toEntityModel() {
         ContestScheduleImpl contestScheduleImpl = new ContestScheduleImpl();
 
-        contestScheduleImpl.setContestSchedulePK(ContestSchedulePK);
-        contestScheduleImpl.setContestPK(ContestPK);
+        contestScheduleImpl.setId(id);
 
         if (name == null) {
             contestScheduleImpl.setName(StringPool.BLANK);
@@ -73,7 +69,7 @@ public class ContestScheduleCacheModel implements CacheModel<ContestSchedule>,
             contestScheduleImpl.setStatus(status);
         }
 
-        contestScheduleImpl.setInvisible(invisible);
+        contestScheduleImpl.setBaseScheduleId(baseScheduleId);
 
         contestScheduleImpl.resetOriginalValues();
 
@@ -82,19 +78,17 @@ public class ContestScheduleCacheModel implements CacheModel<ContestSchedule>,
 
     @Override
     public void readExternal(ObjectInput objectInput) throws IOException {
-        ContestSchedulePK = objectInput.readLong();
-        ContestPK = objectInput.readLong();
+        id = objectInput.readLong();
         name = objectInput.readUTF();
         description = objectInput.readUTF();
         status = objectInput.readUTF();
-        invisible = objectInput.readBoolean();
+        baseScheduleId = objectInput.readLong();
     }
 
     @Override
     public void writeExternal(ObjectOutput objectOutput)
         throws IOException {
-        objectOutput.writeLong(ContestSchedulePK);
-        objectOutput.writeLong(ContestPK);
+        objectOutput.writeLong(id);
 
         if (name == null) {
             objectOutput.writeUTF(StringPool.BLANK);
@@ -114,6 +108,6 @@ public class ContestScheduleCacheModel implements CacheModel<ContestSchedule>,
             objectOutput.writeUTF(status);
         }
 
-        objectOutput.writeBoolean(invisible);
+        objectOutput.writeLong(baseScheduleId);
     }
 }

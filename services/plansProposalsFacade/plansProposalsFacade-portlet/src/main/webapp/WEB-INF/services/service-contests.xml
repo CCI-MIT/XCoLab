@@ -23,6 +23,8 @@
         <column name="authorId" type="long" />
         <column name="contestActive" type="boolean"/>
         <column name="planTemplateId" type="long" />
+        <column name="contestScheduleId" type="long" />
+
         <column name="focusAreaId" type="long" />
         <column name="contestTier" type="long" />
         <column name="contestLogoId" type="long" />
@@ -43,6 +45,7 @@
         <column name="resourcesUrl" type="String" />
         <column name="contestPrivate" type="boolean" />
         <column name="usePermissions" type="boolean" />
+        <column name="contestCreationStatus" type="String" />
         <column name="defaultModelId" type="long" />
         <column name="otherModels" type="String" />
         <column name="points" type="double" />
@@ -115,7 +118,7 @@
         <column name="ContestPhasePK" type="long" primary="true" />
         <column name="ContestPK" type="long"/>
         <column name="ContestPhaseType" type="long" />
-        <column name="ContestSchedulePK" type="long"/>
+        <column name="contestScheduleId" type="long"/>
         <column name="fellowScreeningActive" type="boolean" />
         <column name="contestPhaseAutopromote" type="String" />
         <column name="ContestPhaseDescriptionOverride" type="String"/>
@@ -139,9 +142,15 @@
             <finder-column name="PhaseEndDate" comparator="&gt;=" />
         </finder>
         
+        <finder name="ContestScheduleId" return-type="Collection">
+            <finder-column name="contestScheduleId"/>
+            <finder-column name="ContestPK"/>
+        </finder>
+
         <finder name="ContestId" return-type="Collection">
             <finder-column name="ContestPK"/>
         </finder>
+
         <finder name="PhaseActiveOverride" return-type="Collection">
             <finder-column name="ContestPK" />
             <finder-column name="phaseActiveOverride" />
@@ -183,14 +192,12 @@
       </entity>
 
     <entity name="ContestSchedule" local-service="true" remote-service="true">
-        <column name="ContestSchedulePK" type="long" primary="true" />
-        <column name="ContestPK" type="long"/>
+        <column name="id" type="long" primary="true" />
         <column name="name" type="String" />
         <column name="description" type="String" />
         <column name="status" type="String" />
-        <column name="invisible" type="boolean" />
+        <column name="baseScheduleId" type="Long" />
     </entity>
-
 
     <entity name="ContestTeamMember"  local-service="true">
         <column name="id" type="long" primary="true" />

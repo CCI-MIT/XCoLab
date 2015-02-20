@@ -25,7 +25,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
     public long ContestPhasePK;
     public long ContestPK;
     public long ContestPhaseType;
-    public long ContestSchedulePK;
+    public long contestScheduleId;
     public boolean fellowScreeningActive;
     public String contestPhaseAutopromote;
     public String ContestPhaseDescriptionOverride;
@@ -49,8 +49,8 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         sb.append(ContestPK);
         sb.append(", ContestPhaseType=");
         sb.append(ContestPhaseType);
-        sb.append(", ContestSchedulePK=");
-        sb.append(ContestSchedulePK);
+        sb.append(", contestScheduleId=");
+        sb.append(contestScheduleId);
         sb.append(", fellowScreeningActive=");
         sb.append(fellowScreeningActive);
         sb.append(", contestPhaseAutopromote=");
@@ -87,7 +87,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         contestPhaseImpl.setContestPhasePK(ContestPhasePK);
         contestPhaseImpl.setContestPK(ContestPK);
         contestPhaseImpl.setContestPhaseType(ContestPhaseType);
-        contestPhaseImpl.setContestSchedulePK(ContestSchedulePK);
+        contestPhaseImpl.setContestScheduleId(contestScheduleId);
         contestPhaseImpl.setFellowScreeningActive(fellowScreeningActive);
 
         if (contestPhaseAutopromote == null) {
@@ -154,7 +154,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         ContestPhasePK = objectInput.readLong();
         ContestPK = objectInput.readLong();
         ContestPhaseType = objectInput.readLong();
-        ContestSchedulePK = objectInput.readLong();
+        contestScheduleId = objectInput.readLong();
         fellowScreeningActive = objectInput.readBoolean();
         contestPhaseAutopromote = objectInput.readUTF();
         ContestPhaseDescriptionOverride = objectInput.readUTF();
@@ -175,7 +175,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         objectOutput.writeLong(ContestPhasePK);
         objectOutput.writeLong(ContestPK);
         objectOutput.writeLong(ContestPhaseType);
-        objectOutput.writeLong(ContestSchedulePK);
+        objectOutput.writeLong(contestScheduleId);
         objectOutput.writeBoolean(fellowScreeningActive);
 
         if (contestPhaseAutopromote == null) {

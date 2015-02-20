@@ -5846,6 +5846,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setAuthorId(contest.getAuthorId());
         contestImpl.setContestActive(contest.isContestActive());
         contestImpl.setPlanTemplateId(contest.getPlanTemplateId());
+        contestImpl.setContestScheduleId(contest.getContestScheduleId());
         contestImpl.setFocusAreaId(contest.getFocusAreaId());
         contestImpl.setContestTier(contest.getContestTier());
         contestImpl.setContestLogoId(contest.getContestLogoId());
@@ -5863,6 +5864,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setResourcesUrl(contest.getResourcesUrl());
         contestImpl.setContestPrivate(contest.isContestPrivate());
         contestImpl.setUsePermissions(contest.isUsePermissions());
+        contestImpl.setContestCreationStatus(contest.getContestCreationStatus());
         contestImpl.setDefaultModelId(contest.getDefaultModelId());
         contestImpl.setOtherModels(contest.getOtherModels());
         contestImpl.setPoints(contest.getPoints());

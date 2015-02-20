@@ -734,27 +734,27 @@ public abstract class ContestScheduleLocalServiceBaseImpl
     /**
      * Creates a new contest schedule with the primary key. Does not add the contest schedule to the database.
      *
-     * @param ContestSchedulePK the primary key for the new contest schedule
+     * @param id the primary key for the new contest schedule
      * @return the new contest schedule
      */
     @Override
-    public ContestSchedule createContestSchedule(long ContestSchedulePK) {
-        return contestSchedulePersistence.create(ContestSchedulePK);
+    public ContestSchedule createContestSchedule(long id) {
+        return contestSchedulePersistence.create(id);
     }
 
     /**
      * Deletes the contest schedule with the primary key from the database. Also notifies the appropriate model listeners.
      *
-     * @param ContestSchedulePK the primary key of the contest schedule
+     * @param id the primary key of the contest schedule
      * @return the contest schedule that was removed
      * @throws PortalException if a contest schedule with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Indexable(type = IndexableType.DELETE)
     @Override
-    public ContestSchedule deleteContestSchedule(long ContestSchedulePK)
+    public ContestSchedule deleteContestSchedule(long id)
         throws PortalException, SystemException {
-        return contestSchedulePersistence.remove(ContestSchedulePK);
+        return contestSchedulePersistence.remove(id);
     }
 
     /**
@@ -865,23 +865,23 @@ public abstract class ContestScheduleLocalServiceBaseImpl
     }
 
     @Override
-    public ContestSchedule fetchContestSchedule(long ContestSchedulePK)
+    public ContestSchedule fetchContestSchedule(long id)
         throws SystemException {
-        return contestSchedulePersistence.fetchByPrimaryKey(ContestSchedulePK);
+        return contestSchedulePersistence.fetchByPrimaryKey(id);
     }
 
     /**
      * Returns the contest schedule with the primary key.
      *
-     * @param ContestSchedulePK the primary key of the contest schedule
+     * @param id the primary key of the contest schedule
      * @return the contest schedule
      * @throws PortalException if a contest schedule with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ContestSchedule getContestSchedule(long ContestSchedulePK)
+    public ContestSchedule getContestSchedule(long id)
         throws PortalException, SystemException {
-        return contestSchedulePersistence.findByPrimaryKey(ContestSchedulePK);
+        return contestSchedulePersistence.findByPrimaryKey(id);
     }
 
     @Override

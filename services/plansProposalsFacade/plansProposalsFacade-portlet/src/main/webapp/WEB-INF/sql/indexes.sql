@@ -38,6 +38,7 @@ create index IX_19E93261 on xcolab_ContestPhase (ContestPK, invisible);
 create index IX_9F1D3B81 on xcolab_ContestPhase (ContestPK, phaseActiveOverride);
 create index IX_4F735B66 on xcolab_ContestPhase (ContestPK, phaseInactiveOverride);
 create index IX_1BB9EC37 on xcolab_ContestPhase (contestPhaseAutopromote);
+create index IX_D9B6142C on xcolab_ContestPhase (contestScheduleId, ContestPK);
 
 create index IX_D97B920F on xcolab_ContestPhaseColumn (ContestPhasePK);
 
