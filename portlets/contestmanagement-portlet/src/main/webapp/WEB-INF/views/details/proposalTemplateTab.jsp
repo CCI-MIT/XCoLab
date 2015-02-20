@@ -44,7 +44,7 @@
 					<div class="dropzone" ondrop="drop(event)" style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
 						 ondragenter="dragEnter(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)"
 							data-bind-id="${x.index}"
-							id="dropzone${x.index}"><span class="counter" style="float: left;">Position # ${x.index +1}</span><span style="float:right">Drag section and drop it here ...</span></div>
+							id="dropzone${x.index}"><span class="counter" style="float: left;">Position # ${x.index +1}</span><span style="float:right">To change order drag a section and drop it on any of these areas.</span></div>
 
 					<div class="addpropbox ${section.deletable ? 'blue deletable' : ''} ${section.type}"
 						style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
@@ -132,26 +132,26 @@
 			return deferred;
 		}
 
-		function dragEnd(event) {
-			//event.target.style.border = "none";
-			//ev.target.classList.remove("allowDropState");
+		function dragEnd(ev) {
+			ev.target.classList.remove("dragState");
+
+			[].forEach.call(document.getElementsByClassName('dropzone'), function (element) {
+				element.classList.remove("showAllowDropState");
+				element.classList.remove("allowDropState");
+			});
 		}
 
 		function dragLeave(ev){
 			ev.target.classList.remove("allowDropState");
-			//ev.preventDefault();
 		}
 
 		function dragOver(ev) {
 			ev.preventDefault();
-			//event.target.style.border = "2px dashed #ff0000 !important";
 			return false;
 		}
 
 		function dragEnter(ev) {
 			ev.target.classList.add("allowDropState");
-			//event.target.style.border = "2px dashed #ff0000 !important";
-			//ev.preventDefault();
 		}
 
 		function dragStart(ev) {
@@ -159,39 +159,47 @@
 			ev.target.classList.add("dragState");
 
 			[].forEach.call(document.getElementsByClassName('dropzone'), function(element) {
-				element.classList.add("showAllowDropState");
+
+				if(!ev.target.previousSibling.isEqualNode(element)) {
+					element.classList.add("showAllowDropState");
+				}
 			});
 		}
 
 		function drop(ev) {
 
+			var targetDropzoneElement = ev.target;
+			var targetParentElement = targetDropzoneElement.parentNode;
+
 			var srcElementId = ev.dataTransfer.getData("srcElementId");
-			var targetParent = ev.target.parentNode;
 			var srcSectionElement = document.getElementById(srcElementId);
-			var toDropzoneElement =  ev.target.nextSibling;
-			var dropzoneElementNextToElementSibling = toDropzoneElement.nextSibling;
+			var srcSectionDropzoneElement = srcSectionElement.previousSibling;
 
-			if(!srcSectionElement.isEqualNode(srcSectionElement)) {
-				console.log("toDropzoneElement", toDropzoneElement);
-				console.log("dropzoneElementNextToElementSibling", dropzoneElementNextToElementSibling);
-				console.log("dropzoneElementPerviousToElementSibling", toDropzoneElement.previousSibling);
+			if(!srcSectionElement.previousSibling.isEqualNode(targetDropzoneElement)) {
 
-				targetParent.insertBefore(srcSectionElement, toDropzoneElement);
-				targetParent.insertBefore(dropzoneElementNextToElementSibling, toDropzoneElement);
+				var posTargetDropzone = parseInt(targetDropzoneElement.getAttribute("data-bind-id"))+2;
+				var posSectionElement = parseInt(srcSectionElement.getElementsByClassName("weightInput")[0].value);
 
+				if(posTargetDropzone < posSectionElement) {
+					targetParentElement.insertBefore(srcSectionElement, targetDropzoneElement);
+					targetParentElement.insertBefore(srcSectionDropzoneElement, srcSectionElement);
+				} else {
 
-				[].forEach.call(document.getElementsByClassName('dropzone'), function (element) {
-					element.classList.remove("showAllowDropState");
-					element.classList.remove("allowDropState");
-				});
-
-				[].forEach.call(document.getElementsByClassName('addpropbox'), function (element) {
-					console.log("addpropbox -> element", element);
-					element.classList.remove("dragState");
-				});
-
+					var targetDropzoneElementBelow = ev.target.nextSibling.nextSibling;
+					targetParentElement.insertBefore(srcSectionElement, targetDropzoneElementBelow);
+					targetParentElement.insertBefore(srcSectionDropzoneElement, srcSectionElement);
+				}
 				reCalculateWeights();
 			}
+
+			[].forEach.call(document.getElementsByClassName('dropzone'), function (element) {
+				element.classList.remove("showAllowDropState");
+				element.classList.remove("allowDropState");
+			});
+
+			[].forEach.call(document.getElementsByClassName('addpropbox'), function (element) {
+				element.classList.remove("dragState");
+			});
 
 			ev.preventDefault();
 			return false;
