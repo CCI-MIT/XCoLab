@@ -21,12 +21,14 @@
 	<div class="cmsDetailsBox">
 	<collab:imageUpload uploadImageDivId="contestImage"/>
 
-	<p>Welcome! This is the contest creation tool, where you can set up and preview the contest before it goes live on the Climate CoLab site.</p>
-	<p>This first tab is where your team enters and edits the content that will be displayed on the contest homepage.</p>
-	<p>Click the tabs above to edit the other elements of the contest. Be sure to click <strong>SAVE changes</strong> before exiting a page or your content may be lost.  Once all the contest content is complete and finalized with your team, click <strong>SUBMIT</strong> to send it to the Climate CoLab staff for review before launch.</p><p>You can use the <strong>Comment</strong> feature below to communicate with your other contest team members or ask questions of the Climate CoLab staff.</p>
+		<p>Welcome! This is the contest creation tool, where you can set up and preview the contest before it goes live on the Climate CoLab site.</p>
+		<p>This first tab is where your team enters and edits the content that will be displayed on the contest homepage.</p>
+		<p>Click the tabs above to edit the other elements of the contest. Be sure to click <strong>SAVE changes</strong> before exiting a page, or submitting a comment, or your content may be lost. <br/>
+		Once all the contest content is complete and finalized with your team, click <strong>SUBMIT</strong> to send it to the Climate CoLab staff for review before launch.</p>
+		<p>You can use the <strong>Comment</strong> feature below to communicate with your other contest team members or ask questions of the Climate CoLab staff.</p>
 
 	<collab:imageUpload uploadImageDivId="logoImage"/>
-	<h2>Contest description sections</h2>
+	<h2>Homepage content</h2>
 	<form:form action="${updateContestDescriptionURL }" commandName="contestDescriptionBean" cssClass="addpropform" id="editForm" method="post">
 		<div class="reg_errors"><!--  -->
 			<form:errors cssClass="alert alert-error" path="*" />
@@ -164,15 +166,12 @@
 			<div class="addprophelp">Select the schedule associated with your contest. If you would like any changes to your schedule, please submit a comment below for the Climate CoLab team.</div>
 			<div class="clearfix"><!-- --></div>
 			<div class="addpropInputContainer">
-				<!--
-				<form:select path="scheduleTemplateId">
-					<form:option value="NONE" label="Select" />
-					<form:options items="${scheduleTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
-				</form:select>
-				<div class="reg_errors">
-					<form:errors cssClass="alert alert-error" path="scheduleTemplateId" />
-				</div>
-				-->
+			<form:select path="scheduleTemplateId">
+				<form:options items="${scheduleTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
+			</form:select>
+			<div class="reg_errors">
+				<form:errors cssClass="alert alert-error" path="scheduleTemplateId" />
+			</div>
 			</div>
 		</div>
 
@@ -180,13 +179,11 @@
 			<label>
 				<strong>Contest level</strong>
 				<a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
-				Helptext dummy.
 			</label>
-			<div class="addprophelp">Helptext dummy.</div>
+			<div class="addprophelp">Select the level associated with your contest. If you have questions on which level to select, please submit a comment below for the Climate CoLab team.</div>
 			<div class="clearfix"><!-- --></div>
 			<div class="addpropInputContainer">
 				<form:select path="contestTier">
-					<form:option value="NONE" label="--- Select ---" />
 					<form:options items="${contestLevelSelectionItems}" itemValue="value" itemLabel="lable"/>
 				</form:select>
 				<div class="reg_errors"><!--  -->

@@ -39,6 +39,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -156,11 +157,12 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
 
     private List<LabelValue> getProposalTemplateSelectionItems(){
         List<LabelValue> selectItems = new ArrayList<>();
+        List<Long> excludedList = Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L, 1300201L, 1300302L, 1300401L, 1300601L, 1300602L);
         try {
             for (PlanTemplate proposalTemplate : PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE)) {
-                //(proposalTemplate.getBaseTemplateId() == 0  ) {
+                if(!excludedList.contains(proposalTemplate.getId())) {
                     selectItems.add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
-                //}
+                }
             }
         } catch (Exception e){
         }

@@ -22,17 +22,21 @@
 	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 	<div class="cmsDetailsBox">
 
-	<h1>Introduction</h1>
-	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-	dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-	Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy dolor sit amet.
+	<p>Templates hold the set of questions members will be asked to answer in completing a proposal.<br/>
+		If you would like any changes to your template, please submit a comment below for the Climate CoLab team.
+	</p>
 
-	<h1>Resources sections</h1>
+		<h2>Proposal template sections</h2>
 		<div id="resourcesSections">
 
 			<form:form action="${updateContestProposalTemplateURL }" commandName="contestProposalTemplateWrapper"
 			 cssClass="addpropform" id="editForm" method="post">
+
+				<strong>Template name:</strong>
+				<form:input path="templateName"/>
+				<div class="reg_errors"><!--  -->
+					<form:errors cssClass="alert alert-error" path="templateName" />
+				</div>
 
 				<form:hidden path="numberOfSections"/>
 				<div class="reg_errors"><!--  -->

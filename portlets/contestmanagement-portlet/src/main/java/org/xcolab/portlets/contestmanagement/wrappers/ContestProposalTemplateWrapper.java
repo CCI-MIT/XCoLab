@@ -5,7 +5,6 @@ import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.*;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
 
 import java.util.ArrayList;
@@ -19,7 +18,8 @@ public class ContestProposalTemplateWrapper {
     private List<SectionDefinitionBean> sections;
     private Long forkedPlanTemplateId;
     private Integer numberOfSections; // TODO check might remove?
-    private  PlanTemplate planTemplate;
+    private PlanTemplate planTemplate;
+    private String templateName;
     private Contest contest;
     private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
@@ -37,6 +37,7 @@ public class ContestProposalTemplateWrapper {
     public void init(Contest contest) throws Exception{
         this.contest = contest;
         this.planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
+        this.templateName = planTemplate.getName();
     }
 
     private void populateExistingProposalTemplateSections() throws Exception{
@@ -84,6 +85,14 @@ public class ContestProposalTemplateWrapper {
 
     public void setNumberOfSections(int numberOfSections) {
         this.numberOfSections = numberOfSections;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
     }
 
     private void removeTemplacteSection(){
@@ -152,11 +161,25 @@ public class ContestProposalTemplateWrapper {
         if(baseTemplateId == 0){
             String contestTitle = contest.getContestShortName();
             String baseProposalTemplateTitle = planTemplate.getName();
-            String newProposalTemplateTitle = "Base template - " + baseProposalTemplateTitle + "- adapted for contest: " + contestTitle;
+            String newProposalTemplateTitle;
+
+            if(templateName.equals(baseProposalTemplateTitle)){
+                newProposalTemplateTitle = "Base template - " + baseProposalTemplateTitle + "- adapted for contest: " + contestTitle;
+
+            } else {
+                newProposalTemplateTitle = templateName;
+            }
+
             createProposalTemplate(newProposalTemplateTitle, planTemplate.getId());
             Long newPlanTemplateId = planTemplate.getId();
             contest.setPlanTemplateId(newPlanTemplateId);
             contest.persist();
+        }
+
+        if(!planTemplate.getName().equals(templateName)){
+            planTemplate.setName(templateName);
+            planTemplate.persist();
+            PlanTemplateLocalServiceUtil.updatePlanTemplate(planTemplate);
         }
 
         removeExistingSectionsFromProposalTemplate();

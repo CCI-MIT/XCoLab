@@ -20,8 +20,8 @@ public class ContestScheduleWrapper {
 
     public static void insertSeedDataToContestScheduleTableIfNotAvailable() throws Exception{
         if(!isContestSchedulesAvailable()){
-            insertSeedDataToContestScheduleTable("Tier 1 (Basic)", createSeedDataForBasicLevelSchedule());
-            insertSeedDataToContestScheduleTable("Tier 2 (Regional)", createSeedDataForRegionalLevelSchedule());
+            insertSeedDataToContestScheduleTable("2015 Schedule: sector", createSeedDataForBasicLevelSchedule());
+            insertSeedDataToContestScheduleTable("2015 Schedule: regional & global", createSeedDataForRegionalLevelSchedule());
         }
     }
 
