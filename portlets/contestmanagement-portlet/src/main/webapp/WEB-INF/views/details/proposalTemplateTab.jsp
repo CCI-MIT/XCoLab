@@ -133,22 +133,23 @@
 		}
 
 		function dragEnd(event) {
-			event.target.style.border = "none";
+			//event.target.style.border = "none";
+			//ev.target.classList.remove("allowDropState");
 		}
 
 		function dragLeave(ev){
-			ev.target.classList.remove("dragEnterState");
+			ev.target.classList.remove("allowDropState");
 			//ev.preventDefault();
 		}
 
 		function dragOver(ev) {
 			ev.preventDefault();
-			event.target.style.border = "2px dashed #ff0000 !important";
+			//event.target.style.border = "2px dashed #ff0000 !important";
 			return false;
 		}
 
 		function dragEnter(ev) {
-			ev.target.classList.add("dragEnterState");
+			ev.target.classList.add("allowDropState");
 			//event.target.style.border = "2px dashed #ff0000 !important";
 			//ev.preventDefault();
 		}
@@ -158,7 +159,7 @@
 			ev.target.classList.add("dragState");
 
 			[].forEach.call(document.getElementsByClassName('dropzone'), function(element) {
-				element.classList.add("showdragEnterState");
+				element.classList.add("showAllowDropState");
 			});
 		}
 
@@ -170,19 +171,27 @@
 			var toDropzoneElement =  ev.target.nextSibling;
 			var dropzoneElementNextToElementSibling = toDropzoneElement.nextSibling;
 
-			targetParent.insertBefore(srcSectionElement, toDropzoneElement);
-			targetParent.insertBefore(dropzoneElementNextToElementSibling, toDropzoneElement);
+			if(!srcSectionElement.isEqualNode(srcSectionElement)) {
+				console.log("toDropzoneElement", toDropzoneElement);
+				console.log("dropzoneElementNextToElementSibling", dropzoneElementNextToElementSibling);
+				console.log("dropzoneElementPerviousToElementSibling", toDropzoneElement.previousSibling);
 
-			[].forEach.call(document.getElementsByClassName('dropzone'), function(element) {
-				element.classList.remove("dragEnterState");
-				element.classList.remove("showdragEnterState");
-			});
+				targetParent.insertBefore(srcSectionElement, toDropzoneElement);
+				targetParent.insertBefore(dropzoneElementNextToElementSibling, toDropzoneElement);
 
-			[].forEach.call(document.getElementsByClassName('addpropbox'), function(element) {
-				element.classList.remove("dragState");
-			});
 
-			reCalculateWeights();
+				[].forEach.call(document.getElementsByClassName('dropzone'), function (element) {
+					element.classList.remove("showAllowDropState");
+					element.classList.remove("allowDropState");
+				});
+
+				[].forEach.call(document.getElementsByClassName('addpropbox'), function (element) {
+					console.log("addpropbox -> element", element);
+					element.classList.remove("dragState");
+				});
+
+				reCalculateWeights();
+			}
 
 			ev.preventDefault();
 			return false;
@@ -290,18 +299,21 @@
 
 			newSectionElement.addEventListener('change', selectTypeChangeCallback, false);
 			newSectionElement.getElementsByClassName('deleteIcon')[0].addEventListener('click', deleteSection, false);
+
 			reCalculateWeights();
 		}
 
 		function deleteSection(event){
-			var section = event.target;
-			var newNumberOfSections = getNumberOfSections() - 1;
-			setNumberOfSections(newNumberOfSections);
-			var sectionElement = section.parentNode;
-			var previousDropzone = section.parentNode.previousSibling;
-			document.getElementById("editForm").removeChild(previousDropzone);
-			document.getElementById("editForm").removeChild(sectionElement);
-			reCalculateWeights();
+			if(confirm("Do you want to remove this section ?")) {
+				var section = event.target;
+				var newNumberOfSections = getNumberOfSections() - 1;
+				setNumberOfSections(newNumberOfSections);
+				var sectionElement = section.parentNode;
+				var previousDropzone = section.parentNode.previousSibling;
+				document.getElementById("editForm").removeChild(previousDropzone);
+				document.getElementById("editForm").removeChild(sectionElement);
+				reCalculateWeights();
+			}
 		}
 
 		function selectTypeChangeCallback(event){

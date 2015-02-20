@@ -3,6 +3,7 @@ package org.xcolab.portlets.contestmanagement.controller;
 import javax.validation.Valid;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestSchedule;
+import com.ext.portlet.model.ContestWrapper;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
@@ -95,7 +96,8 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     public void updateDescriptionTabController(ActionRequest request, Model model, ActionResponse response,
                                              @Valid ContestDescriptionBean updatedContestDescriptionBean,
                                              BindingResult result) {
-        boolean createNew = false;
+
+        boolean createNew = getCreateNewContestParameteFromRequest(request);
 
         if(!tabWrapper.getCanEdit()) {
             setNoPermissionErrorRenderParameter(response);

@@ -191,7 +191,7 @@
 			})
 
 			jQuery('.deletable').delegate(".deleteIcon", "click", function() {
-				if(confirm("Do want to remove this section ?")) {
+				if(confirm("Do you want to remove this section ?")) {
 					deleteSection(this);
 				}
 			});

@@ -29,14 +29,13 @@
 
 		<div class="cmsDetailsBox">
 			<p>Select the members of your contest team by searching for their Climate CoLab username. Please ensure each member of your team has uploaded a photo and bio to their profile.  You can register new members below, or by <a href="http://climatecolab.org/web/guest/loginregister">clicking here.</a></p>
-
 			<h2>Contest team</h2>
 		<form:form action="${updateContestTeamURL }" commandName="contestTeamBean" id="editForm" method="post">
 			<div class="teamTabContainer">
 				<collab:teamBox title="Advisors" list="${contestWrapper.contestAdvisors}"/>
 				<collab:teamBox title="Fellows" list="${contestWrapper.contestFellows}"/>
 				<collab:teamBox title="Judges" list="${contestWrapper.contestJudges}"/>
-				<collab:teamBox title="Managers" list="${contestWrapper.contestManager}"/>
+				<!-- <collab:teamBox title="Managers" list="${contestWrapper.contestManager}"/> -->
 			</div>
 		</form:form>
 		<div class="clear"><!-- --></div>

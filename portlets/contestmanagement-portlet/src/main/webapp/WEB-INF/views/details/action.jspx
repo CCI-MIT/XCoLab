@@ -8,7 +8,8 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
     xmlns:collab="http://climatecolab.org/tags/collab_1.0">
 
-	<portlet:resourceURL var="submitContest"/>
+	<portlet:resourceURL var="submitContest" id="submitContest"/>
+
 	<div class="actionItems">
 		<div class="blue-button"><a href="#" id="saveChangesButton">SAVE changes</a></div>
 		<div class="blue-button">
@@ -37,6 +38,7 @@
 					url : "${submitContest}",
 					data: "contestId=${contestWrapper.contestPK}",
 					success: function(response){
+						console.log("response", response);
 						if(response){
 							jQuery.growlUI('Success', 'The contest was successfully submitted!');
 						} else{

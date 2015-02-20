@@ -65,26 +65,6 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
         return getSectionTypesSelectionItems();
     }
 
-    /*
-    @ModelAttribute("sectionTypeSelectionItems")
-    public List<LabelValue> populateSectionDefinitionSelectionItems(PortletRequest request) throws PortalException, SystemException {
-        List<LabelValue> selectItems = new ArrayList<>();
-        Long index = 0L;
-        try {
-            for (PlanSectionDefinition planSectionDefinition : PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinitions(0, Integer.MAX_VALUE)) {
-                if(!planSectionDefinition.getLocked()) {
-                    selectItems.add(new LabelValue(planSectionDefinition.getId(), planSectionDefinition.getType() +" "+  planSectionDefinition.getTitle()));
-                }
-                if(!planSectionDefinition.getType().isEmpty() && !selectItems.contains(planSectionDefinition.getType().trim())){
-                    selectItems.add(new LabelValue(index, planSectionDefinition.getType().trim()));
-                    index++;
-                }
-            }
-        } catch (Exception e){
-        }
-        return selectItems;
-    }*/
-
     @RequestMapping(params = "tab=PROPOSALTEMPLATE")
     public String showResourcesTabController(PortletRequest request, PortletResponse response, Model model)
             throws PortalException, SystemException {
@@ -112,7 +92,6 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
         }
 
         if (result.hasErrors()) {
-            //updatedContestProposalTemplateWrapper.sortProposalTemplateSections();
             //updatedContestProposalTemplateWrapper.removeDeletedSections();
             setErrorRenderParameter(response, "updateContestProposalTemplate");
             return;
@@ -121,8 +100,6 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
         try{
             updatedContestProposalTemplateWrapper.init(getContest());
             updatedContestProposalTemplateWrapper.updateNewProposalTemplateSections();
-
-            //contestProposalTemplateWrapper.removeExistingSectionsFromProposalTemplateId();
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
             e.printStackTrace();

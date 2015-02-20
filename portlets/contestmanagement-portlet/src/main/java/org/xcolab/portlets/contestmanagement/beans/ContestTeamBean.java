@@ -40,7 +40,7 @@ public class ContestTeamBean implements Serializable{
                 populateJudges();
                 populateFellows();
                 populateAdvisors();
-                populateContestManagers();
+                //populateContestManagers();
             } catch (Exception e){
 
             }
@@ -52,7 +52,7 @@ public class ContestTeamBean implements Serializable{
         userIdsJudges = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsJudges");
         userIdsFellows = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsFellows");
         userIdsAdvisors = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsAdvisors");
-        userIdsContestManagers = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsManagers");
+        //userIdsContestManagers = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsManagers");
     }
 
     private void populateJudges() throws SystemException, PortalException{

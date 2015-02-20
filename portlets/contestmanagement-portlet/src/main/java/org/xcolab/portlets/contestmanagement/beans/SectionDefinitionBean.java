@@ -18,14 +18,14 @@ public class SectionDefinitionBean implements Serializable{
     // TODO split in core bean and rest
     private Long id;
     private Long sectionDefinitionId;
-    private String type;
-    private String title;
-    private String defaultText;
-    private String helpText;
-    private Integer characterLimit;
+    private String type = "";
+    private String title = "";
+    private String defaultText = "";
+    private String helpText = "";
+    private Integer characterLimit = 200;
     private Long focusAreaId;
     private Long level;
-    private String content;
+    private String content = "";
     private boolean locked = false;
     private boolean deletable = true;
     private boolean isSectionNew = false;

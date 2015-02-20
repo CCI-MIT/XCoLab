@@ -23,7 +23,7 @@
 				</div>
 				<div class="proposal-title">
 					<h1>${contestWrapper.contestShortName}</h1>
-					<h2>${contestWrapper.contestName}</h2>
+					<span class="floatLeft clearLeft"><h3>${contestWrapper.contestName}</h3></span>
 				</div>
 			</div>
 			<c:if test="${contestWrapper.contestPrivate }">

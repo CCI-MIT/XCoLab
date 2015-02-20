@@ -5,8 +5,7 @@
 
     <route>
         <pattern>/createContest</pattern>
-        <generated-parameter name="tab">description</generated-parameter>
-        <generated-parameter name="create">true</generated-parameter>
+        <generated-parameter name="createContest">true</generated-parameter>
     </route>
 
     <route>

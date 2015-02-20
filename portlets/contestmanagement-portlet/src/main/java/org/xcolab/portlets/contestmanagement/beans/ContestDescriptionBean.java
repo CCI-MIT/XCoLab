@@ -19,20 +19,21 @@ public class ContestDescriptionBean implements Serializable{
     private Long contestLogoId;
     private Long sponsorLogoId;
 
-    @NotBlank(message = "The contest description must be at least 5 characters and not more than 140 characters.")
     @Length(min = 5, max = 140, message = "The contest question must be at least 5 characters and not more than 140 characters.")
     private String contestName;
-    @NotBlank(message = "The contest name must be at least 5 characters and not more than 50 characters.")
+
     @Length(min = 5, max = 50, message = "The contest name must be at least 5 characters and not more than 50 characters.")
     private String contestShortName;
-    @NotBlank(message = "The contest description must be at least 5 characters and not more than 1300 characters.")
+
     @Length(min = 5, max = 1300, message = "The contest description must be at least 5 characters and not more than 1300 characters.")
     private String contestDescription;
+
     @NotNull(message = "A plan template must be selected.")
     private Long planTemplateId;
     //@NotNull(message = "A schedule template must be selected.")
     private Long scheduleTemplateId;
-    //@NotNull(message = "A schedule template must be selected.")
+
+    @NotNull(message = "A contest tier must be selected.")
     private Long contestTier;
 
     public ContestDescriptionBean() {

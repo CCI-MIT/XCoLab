@@ -78,7 +78,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
     @ResourceMapping(value="submitContest")
     public @ResponseBody
     void handleSubmitContest(
-            PortletRequest request,
+            ResourceRequest request,
             @RequestParam("contestId") Long contestId,
             ResourceResponse response
     ) throws Exception{

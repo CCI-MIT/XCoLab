@@ -1,17 +1,14 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.*;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionUtil;
+import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.dao.orm.*;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
-import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,6 +21,7 @@ public class ContestProposalTemplateWrapper {
     private Integer numberOfSections; // TODO check might remove?
     private  PlanTemplate planTemplate;
     private Contest contest;
+    private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
     public ContestProposalTemplateWrapper(){
     }
@@ -115,35 +113,42 @@ public class ContestProposalTemplateWrapper {
         }
     }
 
-    public void createSectionDefinitonsForNewSections() throws Exception{
-
+    public void createSectionDefinitionsForNewSections() throws Exception{
         List<SectionDefinitionBean> removedSectionDefinitions = new ArrayList<>();
         for(SectionDefinitionBean sectionBaseDefinition : sections ){
             if(sectionBaseDefinition.getSectionDefinitionId() == null){
-                PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.
-                        createPlanSectionDefinition(CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName()));
-
-                planSectionDefinition.setType(sectionBaseDefinition.getType());
-                planSectionDefinition.setTitle(sectionBaseDefinition.getTitle());
-                planSectionDefinition.setDefaultText(sectionBaseDefinition.getDefaultText());
-                planSectionDefinition.setCharacterLimit(sectionBaseDefinition.getCharacterLimit());
-                planSectionDefinition.setHelpText(sectionBaseDefinition.getHelpText());
-                planSectionDefinition.setTier(sectionBaseDefinition.getLevel());
-                // TODO planSectionDefinition.setFocusAreaId(sectionBaseDefinition.getFocusAreaId());
-                planSectionDefinition.persist();
-                sectionBaseDefinition.setSectionDefinitionId(planSectionDefinition.getId());
+                createPlanSectionDefinitionFromSectionDefinitionBean(sectionBaseDefinition);
             }
         }
+    }
 
+    private void createPlanSectionDefinitionFromSectionDefinitionBean(SectionDefinitionBean sectionBaseDefinition) throws Exception{
+        PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.
+                createPlanSectionDefinition(CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName()));
+        setPlanSectionDefinitionFromSectionDefinitionBean(planSectionDefinition, sectionBaseDefinition);
+
+        planSectionDefinition.persist();
+        sectionBaseDefinition.setSectionDefinitionId(planSectionDefinition.getId());
+    }
+
+    private void setPlanSectionDefinitionFromSectionDefinitionBean
+            (PlanSectionDefinition planSectionDefinition, SectionDefinitionBean sectionDefinitionBean){
+        planSectionDefinition.setType(sectionDefinitionBean.getType());
+        planSectionDefinition.setTitle(sectionDefinitionBean.getTitle());
+        planSectionDefinition.setDefaultText(sectionDefinitionBean.getDefaultText());
+        planSectionDefinition.setCharacterLimit(sectionDefinitionBean.getCharacterLimit());
+        planSectionDefinition.setHelpText(sectionDefinitionBean.getHelpText());
+        planSectionDefinition.setTier(sectionDefinitionBean.getLevel());
+        // TODO planSectionDefinition.setFocusAreaId(sectionBaseDefinition.getFocusAreaId());
     }
 
     public void updateNewProposalTemplateSections() throws Exception{
         removeDeletedSections();
         removeTemplacteSection();
-        createSectionDefinitonsForNewSections();
+        createSectionDefinitionsForNewSections();
 
+        // TODO check basetemplate is not null !!!
         Long baseTemplateId =  planTemplate.getBaseTemplateId();
-
         if(baseTemplateId == 0){
             String contestTitle = contest.getContestShortName();
             String baseProposalTemplateTitle = planTemplate.getName();
@@ -167,8 +172,65 @@ public class ContestProposalTemplateWrapper {
 
     private void addSectionsToProposalTemplate() throws Exception{
         for(SectionDefinitionBean sectionDefinitionBean: sections) {
+            if(isSectionDifferentFromItsDefinition(sectionDefinitionBean)) {
+                updateSectionOrCreateNewIfPartOfBaseTemplate(sectionDefinitionBean);
+            }
             createPlanTemplateSection(sectionDefinitionBean);
         }
+    }
+
+    private boolean isSectionDifferentFromItsDefinition(SectionDefinitionBean sectionDefinitionBean){
+        boolean isSectionDifferentFromDefinition = false;
+        try {
+            PlanSectionDefinition planSectionDefinition =
+                    PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionDefinitionBean.getSectionDefinitionId());
+
+            isSectionDifferentFromDefinition = !(
+                    planSectionDefinition.getTitle().equalsIgnoreCase(sectionDefinitionBean.getTitle()) &&
+                    planSectionDefinition.getType().equalsIgnoreCase(sectionDefinitionBean.getType()) &&
+                    planSectionDefinition.getDefaultText().equalsIgnoreCase(sectionDefinitionBean.getDefaultText()) &&
+                    planSectionDefinition.getHelpText().equalsIgnoreCase(sectionDefinitionBean.getHelpText()) &&
+                    planSectionDefinition.getCharacterLimit() == sectionDefinitionBean.getCharacterLimit());
+            /*Map<String, Object> stringObjectMap = planSectionDefinition.getModelAttributes();
+            for(Map.Entry<String, Object> entry : stringObjectMap.entrySet()){
+            }*/
+
+        } catch(Exception e){
+        }
+        return isSectionDifferentFromDefinition;
+    }
+
+    private void updateSectionOrCreateNewIfPartOfBaseTemplate(SectionDefinitionBean sectionDefinitionBean) throws Exception{
+        if(planTemplate.getBaseTemplateId() == 0 || isSectionIdPartOfBaseProposalTemplate(sectionDefinitionBean)){
+            createPlanSectionDefinitionFromSectionDefinitionBean(sectionDefinitionBean);
+        } else {
+            updatePlanSectionDefinition(sectionDefinitionBean);
+        }
+    }
+
+    private boolean isSectionIdPartOfBaseProposalTemplate(SectionDefinitionBean sectionDefinitionBean) throws Exception{
+        ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
+                ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
+
+        DynamicQuery queryCountSectionIdInBaseProposalTemplate =
+                DynamicQueryFactoryUtil.forClass(PlanTemplateSection.class, portletClassLoader)
+                        .add(PropertyFactoryUtil.forName("planTemplateId").eq(new Long(planTemplate.getBaseTemplateId())))
+                        .add(PropertyFactoryUtil.forName("planSectionId").eq(new Long(sectionDefinitionBean.getSectionDefinitionId())))
+                        .setProjection(ProjectionFactoryUtil.count("planTemplateId"));
+
+        List queryResult = PlanTemplateSectionLocalServiceUtil.dynamicQuery(queryCountSectionIdInBaseProposalTemplate);
+        Long sectionCount = (Long) queryResult.get(0);
+        return sectionCount > 0;
+    }
+
+    private void updatePlanSectionDefinition(SectionDefinitionBean sectionDefinitionBean) throws Exception{
+
+        PlanSectionDefinition planSectionDefinition =
+                PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionDefinitionBean.getId());
+
+        setPlanSectionDefinitionFromSectionDefinitionBean(planSectionDefinition, sectionDefinitionBean);
+        planSectionDefinition.persist();
+        PlanSectionDefinitionLocalServiceUtil.updatePlanSectionDefinition(planSectionDefinition);
     }
 
     private void createPlanTemplateSection(SectionDefinitionBean sectionDefinitionBean) throws Exception{

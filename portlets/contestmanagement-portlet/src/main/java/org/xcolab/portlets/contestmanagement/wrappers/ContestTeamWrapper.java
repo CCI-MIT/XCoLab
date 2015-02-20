@@ -4,6 +4,7 @@ import com.ext.portlet.model.ContestTeamMember;
 import com.ext.portlet.model.ContestTeamMemberWrapper;
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
@@ -27,6 +28,7 @@ public class ContestTeamWrapper {
 
     private ContestTeamBean contestTeamBean;
     private Long contestId;
+    private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
     public ContestTeamWrapper(ContestTeamBean contestTeamBean){
         this.contestTeamBean = contestTeamBean;
@@ -82,55 +84,34 @@ public class ContestTeamWrapper {
         for(ContestTeamMember contestTeamMember : contestTeamMembers){
             String contestTeamMemberRole = contestTeamMember.getRole();
             Long userId = contestTeamMember.getUserId();
-            // TODO removeUserRoleIfNotUsedInAnotherContest(userId, contestTeamMemberRole);
             ContestTeamMemberLocalServiceUtil.deleteContestTeamMember(contestTeamMember);
+            removeUserRoleIfNotUsedInAnotherContest(userId, contestTeamMemberRole);
         }
     }
 
 
     private void removeUserRoleIfNotUsedInAnotherContest(Long userId, String memberRoleName){
         try {
-            DynamicQuery queryContsetTeamMembershipsByRoleAndUserId =
-                    DynamicQueryFactoryUtil.forClass(ContestTeamMember.class)
+            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
+                    ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
+
+            DynamicQuery queryContestTeamMembershipsByRoleAndUserId =
+                    DynamicQueryFactoryUtil.forClass(ContestTeamMember.class, portletClassLoader)
                             .add(PropertyFactoryUtil.forName("userId").eq(new Long(userId)))
                             .add(PropertyFactoryUtil.forName("role").eq(new String(memberRoleName)))
-                            .setProjection(ProjectionFactoryUtil.count("id_"));
+                            .setProjection(ProjectionFactoryUtil.count("role"));
 
-            //List queryResult = ContestTeamMemberLocalServiceUtil.dynamicQuery(queryContsetTeamMembershipsByRoleAndUserId);
-            List queryResult = ContestTeamMemberLocalServiceUtil.dynamicQuery(queryContsetTeamMembershipsByRoleAndUserId,0,1);
-            ContestTeamMember contestTeamMember = (ContestTeamMember) queryResult.get(0);
-            /* TODO
-            if ( count >  0) {
+            List queryResult = ContestTeamMemberLocalServiceUtil.dynamicQuery(queryContestTeamMembershipsByRoleAndUserId);
+            Long roleCount =  (Long) queryResult.get(0);
+
+            if ( roleCount ==  0 ) {
                 MemberRole memberRole = MemberRole.getMember(memberRoleName);
                 Long roleId = memberRole.getRoleId();
                 RoleLocalServiceUtil.deleteUserRole(userId, roleId);
-            }*/
-/*
-            for (ListIterator<ContestTeamMember> iter = queryResult.listIterator(); iter.hasNext(); ) {
-                ContestTeamMember contestTeamMember = iter.next();
-
-            }*/
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
 
-    }
-
-    private void removeUserFromContestTeamMembers(Long contestId, Long userId, String memberRoleName)
-            throws PortalException, SystemException{
-
-        /*DynamicQuery queryContestTeamMemberByRoleAndUserIdAndContestId =
-                DynamicQueryFactoryUtil.forClass(ContestTeamMember.class)
-                        .add(PropertyFactoryUtil.forName("userId").eq(new Long(userId)))
-                        .add(PropertyFactoryUtil.forName("role").eq(new String(memberRoleName)));*/
-
-
-        DynamicQuery subQuery = DynamicQueryFactoryUtil.forClass(ContestTeamMember.class)
-                .add(PropertyFactoryUtil.forName("id_").isNotEmpty())
-                .setProjection(ProjectionFactoryUtil.max("id_"));
-
-        List queryResult = ContestTeamMemberLocalServiceUtil.dynamicQuery(subQuery,0,1);
-        ContestTeamMember contestTeamMember = (ContestTeamMember) queryResult.get(0);
-        ContestTeamMemberLocalServiceUtil.deleteContestTeamMember(contestTeamMember);
     }
 }

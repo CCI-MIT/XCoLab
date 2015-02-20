@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.omg.CORBA.NO_PERMISSION;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.views.ContestDetailsTabs;
@@ -26,7 +27,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     protected TabWrapper tabWrapper;
 
     static final String NO_PERMISSION_TAB_VIEW = "details/noPermissionTab";
-    static final String NOT_FOUND_TAB_VIEW = "details/notFound";
+    static final String NOT_FOUND_TAB_VIEW = "notFound";
 
     @ModelAttribute("tabs")
     @Override
@@ -44,12 +45,10 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
             Long contestId = getContestIdFromRequest(request);
             if (contestId != null) {
                 contest = ContestLocalServiceUtil.getContest(contestId);
-            } else {
-                // TODO 10144L is admin id, check what we want to have here
-                contest = ContestLocalServiceUtil.createNewContest(10144L, "created contest");
+                contestWrapper = new ContestWrapper(contest);
+                return contestWrapper;
             }
-            contestWrapper = new ContestWrapper(contest);
-           return contestWrapper;
+            throw new Exception("No contest id provided.Severe.");
         } catch (Exception e){
         }
         return null;
@@ -67,6 +66,11 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     public static Long getContestIdFromRequest(PortletRequest request){
         String contestIdParameter = request.getParameter("contestId");
         return Long.parseLong(contestIdParameter);
+    }
+
+    public static boolean getCreateNewContestParameteFromRequest(PortletRequest request){
+        String createContestParameter = request.getParameter("createContest");
+        return Boolean.parseBoolean(createContestParameter);
     }
 
     public Contest getContest() {

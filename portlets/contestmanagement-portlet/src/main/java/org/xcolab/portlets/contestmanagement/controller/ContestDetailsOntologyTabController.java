@@ -79,6 +79,8 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
             Long focusAreaId = contest.getFocusAreaId();
             if(focusAreaId == null || focusAreaId <= 0) {
                 FocusArea focusArea = FocusAreaLocalServiceUtil.createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
+                focusArea.persist();
+                FocusAreaLocalServiceUtil.updateFocusArea(focusArea);
                 focusAreaId = focusArea.getId();
                 contest.setFocusAreaId(focusAreaId);
                 contest.persist();
