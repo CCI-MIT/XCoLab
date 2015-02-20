@@ -294,7 +294,7 @@ public class UserProfileController {
 
         if (updatedUserBean.getFirstName() != null
                 && !updatedUserBean.getFirstName().equals(currentUserProfile.getUserBean().getFirstName())) {
-            validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
+            validator.validate(updatedUserBean, result);
             if (!result.hasErrors()) {
                 currentUserProfile.getUser().setFirstName(updatedUserBean.getFirstName());
                 changedUserPart = true;
