@@ -33,8 +33,8 @@ public class ContestPhaseBean {
         this.contestPhaseType = contestPhaseType;
     }
 
-    public ContestPhaseBean(Long contestPhasePK, Date phaseStartDate) {
-        this.contestPhasePK = contestPhasePK;
+    public ContestPhaseBean(Long contestPhaseType, Date phaseStartDate) {
+        this.contestPhaseType = contestPhaseType;
         this.phaseStartDate = phaseStartDate;
     }
 

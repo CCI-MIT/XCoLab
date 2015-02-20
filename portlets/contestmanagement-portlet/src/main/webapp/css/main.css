@@ -6,6 +6,12 @@
     clear: left;
 }
 
+.inputTitleLeft{
+    float: left;
+    line-height: 30px;
+    padding-right: 10px;
+}
+
 .fileUploadFrame input {
     opacity: 0;
     filter: alpha(opacity=0);

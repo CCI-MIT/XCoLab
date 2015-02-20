@@ -23,8 +23,7 @@
 
 		<p>Welcome! This is the contest creation tool, where you can set up and preview the contest before it goes live on the Climate CoLab site.</p>
 		<p>This first tab is where your team enters and edits the content that will be displayed on the contest homepage.</p>
-		<p>Click the tabs above to edit the other elements of the contest. Be sure to click <strong>SAVE changes</strong> before exiting a page, or submitting a comment, or your content may be lost. <br/>
-		Once all the contest content is complete and finalized with your team, click <strong>SUBMIT</strong> to send it to the Climate CoLab staff for review before launch.</p>
+		<p>Click the tabs above to edit the other elements of the contest. Be sure to click <strong>SAVE changes</strong> before exiting a page, or submitting a comment, or your content may be lost. Once all the contest content is complete and finalized with your team, click <strong>SUBMIT</strong> to send it to the Climate CoLab staff for review before launch.</p>
 		<p>You can use the <strong>Comment</strong> feature below to communicate with your other contest team members or ask questions of the Climate CoLab staff.</p>
 
 	<collab:imageUpload uploadImageDivId="logoImage"/>

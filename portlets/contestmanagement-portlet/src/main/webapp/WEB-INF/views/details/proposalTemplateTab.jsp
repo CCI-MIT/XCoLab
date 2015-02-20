@@ -32,15 +32,17 @@
 			<form:form action="${updateContestProposalTemplateURL }" commandName="contestProposalTemplateWrapper"
 			 cssClass="addpropform" id="editForm" method="post">
 
-				<strong>Template name:</strong>
-				<form:input path="templateName"/>
-				<div class="reg_errors"><!--  -->
-					<form:errors cssClass="alert alert-error" path="templateName" />
-				</div>
-
 				<form:hidden path="numberOfSections"/>
 				<div class="reg_errors"><!--  -->
 					<form:errors cssClass="alert alert-error" path="*" />
+				</div>
+
+				<div class="addpropbox">
+					<strong class="inputTitleLeft">Template name:</strong>
+					<form:input path="templateName"/>
+					<div class="reg_errors"><!--  -->
+						<form:errors cssClass="alert alert-error" path="templateName" />
+					</div>
 				</div>
 
 				<c:forEach var="section" items="${contestProposalTemplateWrapper.sections}" varStatus="x" >

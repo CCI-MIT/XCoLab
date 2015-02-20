@@ -37,7 +37,6 @@ public class ContestProposalTemplateWrapper {
     public void init(Contest contest) throws Exception{
         this.contest = contest;
         this.planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
-        this.templateName = planTemplate.getName();
     }
 
     private void populateExistingProposalTemplateSections() throws Exception{
@@ -88,6 +87,7 @@ public class ContestProposalTemplateWrapper {
     }
 
     public String getTemplateName() {
+        this.templateName = planTemplate.getName();
         return templateName;
     }
 
