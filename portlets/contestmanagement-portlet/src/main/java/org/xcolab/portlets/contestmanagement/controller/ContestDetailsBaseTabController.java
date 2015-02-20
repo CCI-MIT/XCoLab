@@ -5,13 +5,11 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import org.omg.CORBA.NO_PERMISSION;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.interfaces.TabEnum;
-import org.xcolab.portlets.contestmanagement.views.ContestDetailsTabs;
+import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
 

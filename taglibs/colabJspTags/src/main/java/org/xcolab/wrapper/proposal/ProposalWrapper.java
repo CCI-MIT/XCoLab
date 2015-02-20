@@ -18,7 +18,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
-import org.xcolab.utils.ProposalAttributeUtil;
+import org.xcolab.commons.utils.ProposalAttributeUtil;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,14 +1,7 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -17,12 +10,9 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabPermissions;
-import org.xcolab.portlets.contestmanagement.views.ContestPermissions;
-import org.xcolab.wrapper.ContestPhaseWrapper;
 import org.xcolab.wrapper.ContestWrapper;
 
 import javax.portlet.PortletRequest;

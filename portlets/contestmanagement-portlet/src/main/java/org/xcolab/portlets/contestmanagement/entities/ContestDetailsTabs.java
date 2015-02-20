@@ -1,4 +1,4 @@
-package org.xcolab.portlets.contestmanagement.views;
+package org.xcolab.portlets.contestmanagement.entities;
 
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabEnum;

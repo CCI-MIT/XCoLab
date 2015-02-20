@@ -5,6 +5,7 @@ import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+import org.xcolab.enums.MemberRole;
 
 import java.util.*;
 
@@ -490,6 +491,19 @@ public class ContestWrapper {
             }
         }
         return contestTeamMembersByRole;
+    }
+
+    public boolean getHasUserRoleInContest(User userInQuestion, String role) throws Exception{
+
+        for (ContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase(role)) {
+                for(User user : c.getUsers()){
+                    if(user.equals(userInQuestion)) return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public List<User> getContestAdvisors() throws PortalException, SystemException {

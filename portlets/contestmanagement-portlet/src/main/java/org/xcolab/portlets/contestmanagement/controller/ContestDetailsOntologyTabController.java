@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.utils.RequestParameterParser;
-import org.xcolab.portlets.contestmanagement.views.ContestDetailsTabs;
+import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.wrappers.OntologyWrapper;
 import org.xcolab.wrapper.TabWrapper;
 

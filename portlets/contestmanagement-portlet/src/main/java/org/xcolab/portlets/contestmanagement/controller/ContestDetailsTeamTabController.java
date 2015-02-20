@@ -1,27 +1,18 @@
 package org.xcolab.portlets.contestmanagement.controller;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestTeamMember;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.enums.MemberRole;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
-import org.xcolab.portlets.contestmanagement.views.ContestDetailsTabs;
+import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestTeamWrapper;
-import org.xcolab.wrapper.ContestTeamRoleWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.ActionRequest;
@@ -29,7 +20,6 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller

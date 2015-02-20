@@ -208,19 +208,37 @@ public class ContestProposalTemplateWrapper {
         }
     }
 
-    private boolean isSectionIdPartOfBaseProposalTemplate(SectionDefinitionBean sectionDefinitionBean) throws Exception{
+    private boolean isSectionIdPartOfBaseProposalTemplateOld(SectionDefinitionBean sectionDefinitionBean) throws Exception{
         ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
                 ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
 
+        Long planTemplateId = new Long(planTemplate.getBaseTemplateId());
+        Long planSectionId = new Long(sectionDefinitionBean.getSectionDefinitionId());
+        // TODO check why class not found exception occurs,
+        // for now this function is replaced by isSectionIdPartOfBaseProposalTemplate
         DynamicQuery queryCountSectionIdInBaseProposalTemplate =
                 DynamicQueryFactoryUtil.forClass(PlanTemplateSection.class, portletClassLoader)
-                        .add(PropertyFactoryUtil.forName("planTemplateId").eq(new Long(planTemplate.getBaseTemplateId())))
-                        .add(PropertyFactoryUtil.forName("planSectionId").eq(new Long(sectionDefinitionBean.getSectionDefinitionId())))
+                        .add(PropertyFactoryUtil.forName("planTemplateId").eq(planTemplateId))
+                        .add(PropertyFactoryUtil.forName("planSectionId").eq(planSectionId))
                         .setProjection(ProjectionFactoryUtil.count("planTemplateId"));
 
         List queryResult = PlanTemplateSectionLocalServiceUtil.dynamicQuery(queryCountSectionIdInBaseProposalTemplate);
         Long sectionCount = (Long) queryResult.get(0);
         return sectionCount > 0;
+    }
+
+    private boolean isSectionIdPartOfBaseProposalTemplate(SectionDefinitionBean sectionDefinitionBean) throws Exception{
+        boolean isSectionIdPartOfBaseProposalTemplate = false;
+        Long planTemplateId = planTemplate.getBaseTemplateId();
+        Long planSectionId = sectionDefinitionBean.getSectionDefinitionId();
+        List<PlanTemplateSection> planTemplateSections = PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(planTemplateId);
+        for(PlanTemplateSection planTemplateSection : planTemplateSections){
+            if(planSectionId.equals(planTemplateSection.getPlanSectionId())){
+                isSectionIdPartOfBaseProposalTemplate = true;
+            }
+
+        }
+        return isSectionIdPartOfBaseProposalTemplate;
     }
 
     private void updatePlanSectionDefinition(SectionDefinitionBean sectionDefinitionBean) throws Exception{

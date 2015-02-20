@@ -1,8 +1,6 @@
 package org.xcolab.portlets.contestmanagement.controller;
 
 import com.ext.portlet.model.ContestWrapper;
-import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -17,16 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.interfaces.TabEnum;
-import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
-import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
-import org.xcolab.portlets.contestmanagement.views.ContestDetailsTabs;
-import org.xcolab.portlets.contestmanagement.wrappers.ContestTeamWrapper;
+import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.mail.internet.InternetAddress;
 import javax.portlet.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("view")

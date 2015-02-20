@@ -1,4 +1,4 @@
-package org.xcolab.utils;
+package org.xcolab.commons.utils;
 
 
 import com.ext.portlet.service.ProposalLocalServiceUtil;

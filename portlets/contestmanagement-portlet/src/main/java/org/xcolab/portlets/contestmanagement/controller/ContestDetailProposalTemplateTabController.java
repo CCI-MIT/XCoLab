@@ -1,37 +1,26 @@
 package org.xcolab.portlets.contestmanagement.controller;
 
 import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.model.PlanTemplate;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.interfaces.TabEnum;
-import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
-import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestLevels;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.entities.SectionTypes;
-import org.xcolab.portlets.contestmanagement.views.ContestDetailsTabs;
+import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestProposalTemplateWrapper;
-import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.*;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +34,6 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
 
     static final private TabEnum tab = ContestDetailsTabs.PROPOSALTEMPLATE;
     static final private String TAB_VIEW = "details/proposalTemplateTab";
-    private ContestProposalTemplateWrapper contestProposalTemplateWrapper;
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -74,7 +62,7 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
         }
 
         try {
-            contestProposalTemplateWrapper = new ContestProposalTemplateWrapper(getContest());
+            ContestProposalTemplateWrapper contestProposalTemplateWrapper = new ContestProposalTemplateWrapper(getContest());
             model.addAttribute("contestProposalTemplateWrapper", contestProposalTemplateWrapper);
             return TAB_VIEW;
         } catch (Exception e){

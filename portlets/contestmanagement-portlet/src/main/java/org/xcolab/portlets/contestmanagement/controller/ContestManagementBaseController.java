@@ -27,27 +27,27 @@ public class ContestManagementBaseController {
 
     @RequestMapping(params = "createContest=true")
     public String createContestController(PortletRequest request, Model model, PortletResponse response) {
-
+        String view = "notFound";
         try {
-
             ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
             PermissionChecker portletPermissionChecker = themeDisplay.getPermissionChecker();
-            Long groupId = themeDisplay.getScopeGroupId();
             User currentUser = themeDisplay.getUser();
 
-            if (currentUser.isDefaultUser()) return "notFound";
+            if(!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
+                Contest contest = ContestLocalServiceUtil.createNewContest(10144L, "created contest");
+                contest.setContestActive(false);
+                contest.persist();
+                // TODO for now there is always a template preselected
+                contest.setPlanTemplateId(201L);
+                String newContestLink = "/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/DESCRIPTION";
+                model.addAttribute("newContestLink", newContestLink);
+                view = "newContestCreated";
+            }
 
-
-            Contest contest = ContestLocalServiceUtil.createNewContest(10144L, "created contest");
-            contest.setContestActive(false);
-            contest.persist();
-            String newContestLink = "/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/DESCRIPTION";
-            model.addAttribute("newContestLink", newContestLink);
-            return "newContestCreated";
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return "notFound";
+        return view;
     }
 }
