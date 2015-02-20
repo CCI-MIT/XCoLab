@@ -1,6 +1,7 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.Contest;
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.wiki.NoSuchPageException;
 import com.liferay.portlet.wiki.NoSuchPageResourceException;
@@ -29,6 +30,7 @@ public class WikiPageWrapper {
     final static Long DEFAULT_COMPANY_ID = 10112L;
     final static Long WIKI_USER_ID  = 10144L;
 
+
     public WikiPageWrapper(Contest contest, Long loggedInUserId) throws Exception{
         this.contest = contest;
         this.contestTitle = contest.getContestShortName();
@@ -55,6 +57,35 @@ public class WikiPageWrapper {
         }
     }
 
+    public static void updateWikiPageTitleIfExists(String oldTitle, String newTitle) throws Exception{
+        if(isWikiPageCreatedForContest(oldTitle)){
+            WikiPageResource wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WIKI_NODE_ID, oldTitle);
+            try {
+                WikiPage wikiPage = WikiPageLocalServiceUtil.getPage(wikiPageResource.getResourcePrimKey());
+                wikiPage.setTitle(newTitle);
+                wikiPage.persist();
+                WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
+            } catch (NoSuchPageException e){
+                // no page, nothing to update
+            } finally {
+                wikiPageResource.setTitle(newTitle);
+                wikiPageResource.persist();
+                WikiPageResourceLocalServiceUtil.updateWikiPageResource(wikiPageResource);
+
+            }
+        }
+    }
+
+    private static boolean isWikiPageCreatedForContest(String oldTitle) throws Exception{
+        boolean isWikiPageCreatedForContest = false;
+        try {
+            WikiPageResourceLocalServiceUtil.getPageResource(WIKI_NODE_ID, oldTitle);
+            isWikiPageCreatedForContest = true;
+        } catch(NoSuchPageResourceException e){
+        }
+        return isWikiPageCreatedForContest;
+    }
+
     private void initWikiPageResourceAndCreateIfNoneExistsForThisContest() throws Exception{
         try {
             wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WIKI_NODE_ID, contestTitle);
@@ -71,23 +102,36 @@ public class WikiPageWrapper {
         try {
             wikiPage = WikiPageLocalServiceUtil.getPage(wikiPageResource.getResourcePrimKey());
         } catch(NoSuchPageException e){
-            createWikiPage();
+            //createWikiPage();
+            addWikiPage((double) 1, "");
         }
     }
 
     private void createWikiPage() throws Exception {
-        double version = 1;
-        String content = "";
-        addWikiPage(version, content);
+        if(wikiPageResource == null) initWikiPageResourceAndCreateIfNoneExistsForThisContest();
+        Long resourcePrimaryKey = wikiPageResource.getPrimaryKey();
+        wikiPage = WikiPageLocalServiceUtil.createWikiPage(CounterLocalServiceUtil.increment(WikiPage.class.getName()));
+        wikiPage.setUserId(loggedInUserId);
+        wikiPage.setNodeId(WIKI_NODE_ID);
+        wikiPage.setTitle(contestTitle);
+        wikiPage.setFormat("html");
+        wikiPage.setResourcePrimKey(resourcePrimaryKey);
+        wikiPage.persist();
+        WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
+
+        updateContestResourceUrl();
     }
+
 
     private void addWikiPage(double version, String content) throws Exception{
         ServiceContext serviceContext = new ServiceContext();
-        if(wikiPageResource != null) initWikiPageResourceAndCreateIfNoneExistsForThisContest();
+        if(wikiPageResource == null) initWikiPageResourceAndCreateIfNoneExistsForThisContest();
+
         Long resourcePrimaryKey = wikiPageResource.getPrimaryKey();
         String summary = "";
         boolean minorEdit = false;
         boolean head = true;
+
         wikiPage = WikiPageLocalServiceUtil.addPage(
                 loggedInUserId,
                 WIKI_NODE_ID,
@@ -100,13 +144,16 @@ public class WikiPageWrapper {
                 head,
                 "", "",
                 serviceContext);
-
-
+        wikiPage.setGroupId(WIKI_GROUP_ID);
         wikiPage.setResourcePrimKey(resourcePrimaryKey);
         wikiPage.persist();
         WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
 
-        String escapedWikiPageUrlLink = "/resources/-/wiki/Main/" + URLEncoder.encode(wikiPage.getTitle());
+        updateContestResourceUrl();
+    }
+
+    private void updateContestResourceUrl(){
+        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPage.getTitle());
         contest.setResourcesUrl(escapedWikiPageUrlLink);
     }
 

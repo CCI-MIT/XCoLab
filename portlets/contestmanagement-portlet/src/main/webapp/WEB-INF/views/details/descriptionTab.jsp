@@ -148,7 +148,6 @@
 			<div class="clearfix"><!-- --></div>
 			<div class="addpropInputContainer">
 				<form:select path="planTemplateId">
-					<form:option value="NONE" label="--- Select ---" />
 					<form:options items="${proposalTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
 				</form:select>
 				<div class="reg_errors"><!--  -->

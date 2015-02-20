@@ -213,7 +213,7 @@ public class ContestResourcesBean implements Serializable {
         overviewSectionValues.put("Question:", contest.getContestName());
         overviewSectionValues.put("Submit proposals:", "http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK());
         overviewSectionValues.put("Deadline:", proposalSubmissionEndDate);
-        overviewSectionValues.put("Rules:", "All entrants must agree to the <a href='#'>2014 Contest Rule</a>.");
+        overviewSectionValues.put("Rules:", "All entrants must agree to the 2015 Contest Rules.");
     }
 }
 

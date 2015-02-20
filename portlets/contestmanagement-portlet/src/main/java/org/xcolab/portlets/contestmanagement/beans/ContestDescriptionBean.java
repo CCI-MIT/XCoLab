@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
+import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -58,6 +59,8 @@ public class ContestDescriptionBean implements Serializable{
 
     public void persist(Contest contest) throws Exception {
 
+        String oldContestTitle = contest.getContestShortName();
+        String newContestTitle = contestShortName;
         contest.setContestName(contestName);
         contest.setContestShortName(contestShortName);
         contest.setContestDescription(contestDescription);
@@ -68,6 +71,7 @@ public class ContestDescriptionBean implements Serializable{
         contest.setContestTier(contestTier);
         contest.persist();
         updateContestSchedules(contest);
+        WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
 
     }
 

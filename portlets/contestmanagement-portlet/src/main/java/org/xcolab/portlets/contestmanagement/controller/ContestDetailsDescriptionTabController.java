@@ -115,7 +115,6 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         try{
             // TODO check Input
             updatedContestDescriptionBean.persist(getContest());
-
             if (createNew) {
                 ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
                 Contest contest = ContestLocalServiceUtil.getContest(updatedContestDescriptionBean.getContestPK());
@@ -142,13 +141,9 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     private List<LabelValue> getScheduleTemplateSelectionItems(){
         List<LabelValue> selectItems = new ArrayList<>();
         try {
-
             ContestScheduleWrapper.insertSeedDataToContestScheduleTableIfNotAvailable();
-
             for (ContestSchedule scheduleTemplate : ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE)) {
-                //if(!scheduleTemplate.isInvisible()) {
-                    selectItems.add(new LabelValue(scheduleTemplate.getId(), scheduleTemplate.getName()));
-                //}
+                selectItems.add(new LabelValue(scheduleTemplate.getId(), scheduleTemplate.getName()));
             }
         } catch (Exception e){
         }

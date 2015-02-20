@@ -38,7 +38,7 @@ public class ContestManagementBaseController {
                 contest.setContestActive(false);
                 contest.persist();
                 // TODO for now there is always a template preselected
-                contest.setPlanTemplateId(201L);
+                contest.setPlanTemplateId(102L);
                 String newContestLink = "/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/DESCRIPTION";
                 model.addAttribute("newContestLink", newContestLink);
                 view = "newContestCreated";
