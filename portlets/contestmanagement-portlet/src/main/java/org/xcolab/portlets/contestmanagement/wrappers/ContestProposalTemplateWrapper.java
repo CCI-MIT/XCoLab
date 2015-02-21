@@ -87,7 +87,9 @@ public class ContestProposalTemplateWrapper {
     }
 
     public String getTemplateName() {
-        this.templateName = planTemplate.getName();
+        if(planTemplate != null && planTemplate.getName() != null) {
+            this.templateName = planTemplate.getName();
+        }
         return templateName;
     }
 
@@ -156,30 +158,41 @@ public class ContestProposalTemplateWrapper {
         removeTemplacteSection();
         createSectionDefinitionsForNewSections();
 
-        // TODO check basetemplate is not null !!!
-        Long baseTemplateId =  planTemplate.getBaseTemplateId();
-        if(baseTemplateId == 0){
-            String contestTitle = contest.getContestShortName();
-            String baseProposalTemplateTitle = planTemplate.getName();
-            String newProposalTemplateTitle;
+        if(planTemplate != null) {
+            Long baseTemplateId = planTemplate.getBaseTemplateId();
+            if (baseTemplateId == 0) {
+                String contestTitle = contest.getContestShortName();
+                String baseProposalTemplateTitle = planTemplate.getName();
+                String newProposalTemplateTitle;
 
-            if(templateName.equals(baseProposalTemplateTitle)){
-                newProposalTemplateTitle = "Base template - " + baseProposalTemplateTitle + "- adapted for contest: " + contestTitle;
+                if (templateName.equals(baseProposalTemplateTitle)) {
+                    newProposalTemplateTitle = "Base template - " + baseProposalTemplateTitle + "- adapted for contest: " + contestTitle;
 
-            } else {
-                newProposalTemplateTitle = templateName;
+                } else {
+                    newProposalTemplateTitle = templateName;
+                }
+
+                createProposalTemplate(newProposalTemplateTitle, planTemplate.getId());
+                Long newPlanTemplateId = planTemplate.getId();
+                contest.setPlanTemplateId(newPlanTemplateId);
+                contest.persist();
             }
 
-            createProposalTemplate(newProposalTemplateTitle, planTemplate.getId());
+            if (!planTemplate.getName().equals(templateName)) {
+                planTemplate.setName(templateName);
+                planTemplate.persist();
+                PlanTemplateLocalServiceUtil.updatePlanTemplate(planTemplate);
+            }
+        } else {
+            // TODO remove duplicates
+            String newProposalTemplateTitle = "Template for: " + contest.getContestShortName();
+            if(!templateName.isEmpty()){
+                newProposalTemplateTitle = templateName;
+            }
+            createProposalTemplate(newProposalTemplateTitle, 0L);
             Long newPlanTemplateId = planTemplate.getId();
             contest.setPlanTemplateId(newPlanTemplateId);
             contest.persist();
-        }
-
-        if(!planTemplate.getName().equals(templateName)){
-            planTemplate.setName(templateName);
-            planTemplate.persist();
-            PlanTemplateLocalServiceUtil.updatePlanTemplate(planTemplate);
         }
 
         removeExistingSectionsFromProposalTemplate();

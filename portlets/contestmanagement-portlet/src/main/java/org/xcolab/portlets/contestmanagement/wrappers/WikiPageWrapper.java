@@ -1,6 +1,7 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.wiki.NoSuchPageException;
@@ -152,9 +153,11 @@ public class WikiPageWrapper {
         updateContestResourceUrl();
     }
 
-    private void updateContestResourceUrl(){
+    private void updateContestResourceUrl() throws Exception{
         String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPage.getTitle());
         contest.setResourcesUrl(escapedWikiPageUrlLink);
+        contest.persist();
+        ContestLocalServiceUtil.updateContest(contest);
     }
 
     private void removeHeadFlagFromCurrentWikiPage() throws Exception{

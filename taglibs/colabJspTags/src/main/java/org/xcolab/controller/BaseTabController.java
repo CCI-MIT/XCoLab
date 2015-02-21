@@ -22,7 +22,6 @@ public abstract class BaseTabController extends BaseController {
 
     @ModelAttribute("tabContext")
     public TabContext getTabContext() {
-        System.out.print("tabContext");
         return tabContext;
     }
 
