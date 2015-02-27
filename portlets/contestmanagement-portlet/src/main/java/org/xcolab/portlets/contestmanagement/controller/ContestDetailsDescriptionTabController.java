@@ -23,10 +23,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.enums.ContestTier;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
-import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
-import org.xcolab.portlets.contestmanagement.entities.ContestLevels;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
@@ -167,8 +166,8 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     private List<LabelValue> getContestLevelSelectionItems(){
         List<LabelValue> selectItems = new ArrayList<>();
         try {
-            for (ContestLevels contestLevel : ContestLevels.values()) {
-                selectItems.add(new LabelValue(new Long(contestLevel.getLevel()), contestLevel.getDisplayName()));
+            for (ContestTier contestLevel : ContestTier.values()) {
+                selectItems.add(new LabelValue(new Long(contestLevel.getTierType()), contestLevel.getTierName()));
             }
         } catch (Exception e){
         }

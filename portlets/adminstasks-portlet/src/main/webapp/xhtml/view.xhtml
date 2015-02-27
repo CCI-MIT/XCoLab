@@ -53,6 +53,14 @@
                         <li><ice:commandButton action="#{adminTask.addJoinedActivityToRequiredUsers}" value="Add joined Activity where missing" /></li>
                     </ul>
                 </ice:panelTab>
+
+                <ice:panelTab label="Contest launches">
+                    <ul>
+                        <li><ice:outputLink value="/web/guest/cms/-/contestmanagement/create2015Contests">
+                            <ice:outputText value="Launch 2015 basic contests"/>
+                        </ice:outputLink></li>
+                    </ul>
+                </ice:panelTab>
                 <ice:panelTab label="all activities">
                     <ice:dataExporter for="activityData"
                                       type="csv"

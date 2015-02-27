@@ -9,6 +9,11 @@
     </route>
 
     <route>
+        <pattern>/create2015Contests</pattern>
+        <generated-parameter name="create2015Contests">true</generated-parameter>
+    </route>
+
+    <route>
         <pattern>/contestId/{contestId}</pattern>
         <generated-parameter name="tab">DESCRIPTION</generated-parameter>
         <generated-parameter name="contestId">{contestId}</generated-parameter>

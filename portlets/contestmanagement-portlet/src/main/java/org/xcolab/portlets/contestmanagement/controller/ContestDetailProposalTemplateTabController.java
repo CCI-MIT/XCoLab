@@ -10,9 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.enums.ContestTier;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
-import org.xcolab.portlets.contestmanagement.entities.ContestLevels;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.entities.SectionTypes;
@@ -118,8 +118,8 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
     private List<LabelValue> getContestLevelSelectionItems(){
         List<LabelValue> selectItems = new ArrayList<>();
         try {
-            for (ContestLevels contestLevel : ContestLevels.values()) {
-                selectItems.add(new LabelValue(new Long(contestLevel.getLevel()), contestLevel.getDisplayName()));
+            for (ContestTier contestLevel : ContestTier.values()) {
+                selectItems.add(new LabelValue(new Long(contestLevel.getTierType()), contestLevel.getTierName()));
             }
         } catch (Exception e){
         }

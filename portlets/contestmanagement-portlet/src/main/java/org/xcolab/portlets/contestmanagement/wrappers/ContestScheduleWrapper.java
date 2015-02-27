@@ -18,11 +18,14 @@ import java.util.List;
  */
 public class ContestScheduleWrapper {
 
+    public static final String CONTEST_SCHEDULE_2015_SECTOR_LABEL = "2015 Schedule: sector";
+    public static final String CONTEST_SCHEDULE_2015_REGIONAL_LABEL = "2015 Schedule: regional & global";
+    public static final String CONTEST_SCHEDULE_2015_GLOBAL_LABEL = "2015 Schedule: regional & global";
 
     public static void insertSeedDataToContestScheduleTableIfNotAvailable() throws Exception{
         if(!isContestSchedulesAvailable()){
-            insertSeedDataToContestScheduleTable("2015 Schedule: sector", createSeedDataForBasicLevelSchedule());
-            insertSeedDataToContestScheduleTable("2015 Schedule: regional & global", createSeedDataForRegionalLevelSchedule());
+            insertSeedDataToContestScheduleTable(CONTEST_SCHEDULE_2015_SECTOR_LABEL, createSeedDataForBasicLevelSchedule());
+            insertSeedDataToContestScheduleTable(CONTEST_SCHEDULE_2015_REGIONAL_LABEL, createSeedDataForRegionalLevelSchedule());
         }
     }
 

@@ -26,11 +26,13 @@
 					<span class="floatLeft clearLeft"><h3>${contestWrapper.contestName}</h3></span>
 				</div>
 			</div>
+			<!--
 			<c:if test="${contestWrapper.contestPrivate }">
 				<h3 class='portlet-msg-error'>
 					This contest has been deleted!
 				</h3>
 			</c:if>
+			-->
 			<div class="prop-tabs">
 				<ul>
 					<c:forEach var="singleTab" items="${tabs}">

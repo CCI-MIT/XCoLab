@@ -5,10 +5,10 @@ package org.xcolab.enums;
  */
 public enum ContestTier {
     NONE(0L, "None"),
-    BASIC(1L, "Basic contest"),
-    REGION_SECTOR(2L, "Region-sector contest"),
-    REGION_AGGREGATE(3L, "Region-aggregate contest"),
-    GLOBAL(4L, "Global contest");
+    BASIC(1L, "Tier I"),
+    REGION_SECTOR(2L, "Tier II (region-sector)"),
+    REGION_AGGREGATE(3L, "Tier III (region)"),
+    GLOBAL(4L, "Tier IV (global)");
 
     public long getTierType() {
         return tierType;
