@@ -211,6 +211,7 @@
 
 <br/>
 <div class="users-pagination">
+    <c:if test="${pagesCount gt 0}">
 <table>
 	<tbody>
 	<tr>
@@ -281,7 +282,7 @@
 	</tr>
 	</tbody>
 </table>
-
+    </c:if>
 </div>
 
 </jsp:root>

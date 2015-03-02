@@ -27,81 +27,93 @@ public class MembersController {
     @RequestMapping
     public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage, @RequestParam(value = "page", required = false) Long pageParam, @RequestParam(value="memberCategory", required = false) String memberCategoryParam, Model model) throws SystemException, PortalException {
 
-        //Pagination
-
         int page=1;
         if (pageParam!=null)
             page = pageParam.intValue();
-        int firstUser = 1;
 
-        int usersCount = UserLocalServiceUtil.getUsersCount();
-        int pagesCount = usersCount / USERS_PER_PAGE;
         int startPage = 1;
         if (page - 5 > 0)
-        startPage=page - 5;
-        int endPage = pagesCount;
-        if (startPage + 10<pagesCount)
-            endPage=startPage+10;
+            startPage=page - 5;
 
+        int firstUser = 0;
         if (page > 1)
-            firstUser = ((page-1) * USERS_PER_PAGE)+1;
+            firstUser = (page-1) * USERS_PER_PAGE;
 
-        int endUser = (firstUser+USERS_PER_PAGE)-1;
+        int endUser = firstUser+USERS_PER_PAGE;
 
         List<User_> dBUsers = null;
 
         String filter = "%";
         String filterParam = request.getParameter("filter");
-        if (filterParam!=null){
-            filter = "%"+filterParam+"%";
+        if (filterParam!=null) {
+            filter = "%" + filterParam + "%";
             sortFilterPage.setFilter(filterParam);
         }
+        int usersCount;
+        int pagesCount;
+        int endPage;
 
-        if (memberCategoryParam==null || memberCategoryParam.compareTo("")==0)
-        if (sortFilterPage.getSortColumn()!=null)
+        if (memberCategoryParam==null || memberCategoryParam.compareTo("")==0) {
 
-            switch (sortFilterPage.getSortColumn()) {
-                case "USER_NAME":
-                    if (sortFilterPage.isSortAscending())
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser, filter);
-                    else
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDesc(firstUser, endUser, filter);
-                    break;
-
-                case "ACTIVITY":
-                    if (sortFilterPage.isSortAscending())
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAsc(firstUser, endUser, filter);
-                    else
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDesc(firstUser, endUser, filter);
-                    break;
-
-                case "CATEGORY":
-                    if (sortFilterPage.isSortAscending())
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameAsc(firstUser, endUser, filter);
-                    else
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameDesc(firstUser, endUser, filter);
-                    break;
-
-                case "MEMBER_SINCE":
-                    if (sortFilterPage.isSortAscending())
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAsc(firstUser, endUser, filter);
-                    else
-                        dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDesc(firstUser, endUser, filter);
-                    break;
+            if (filterParam!=null){
+                usersCount = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(0, Integer.MAX_VALUE, filter).size();
             }
-        else {
-            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser, filter);
-            sortFilterPage.setSortColumn("USER_NAME");
-            sortFilterPage.setSortAscending(true);
+            else
+                usersCount = UserLocalServiceUtil.getUsersCount();
+
+            pagesCount = (int)Math.ceil((double)usersCount/(double)USERS_PER_PAGE);
+
+
+            endPage = pagesCount;
+            if (startPage + 10<pagesCount)
+                endPage=startPage+10;
+
+            if (sortFilterPage.getSortColumn() != null)
+
+                switch (sortFilterPage.getSortColumn()) {
+                    case "USER_NAME":
+                        if (sortFilterPage.isSortAscending())
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser, filter);
+                        else
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDesc(firstUser, endUser, filter);
+                        break;
+
+                    case "ACTIVITY":
+                        if (sortFilterPage.isSortAscending())
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAsc(firstUser, endUser, filter);
+                        else
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDesc(firstUser, endUser, filter);
+                        break;
+
+                    case "CATEGORY":
+                        if (sortFilterPage.isSortAscending())
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameAsc(firstUser, endUser, filter);
+                        else
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByRoleNameDesc(firstUser, endUser, filter);
+                        break;
+
+                    case "MEMBER_SINCE":
+                        if (sortFilterPage.isSortAscending())
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAsc(firstUser, endUser, filter);
+                        else
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDesc(firstUser, endUser, filter);
+                        break;
+                }
+            else {
+                dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser, filter);
+                sortFilterPage.setSortColumn("USER_NAME");
+                sortFilterPage.setSortAscending(true);
+            }
         }
-
         else {
 
-            // Pagination
+            //Pagination
 
             usersCount = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(0, Integer.MAX_VALUE, filter, memberCategoryParam).size();
-            pagesCount = usersCount / USERS_PER_PAGE;
-            endPage = startPage + 10<pagesCount? startPage+10:pagesCount;
+            pagesCount = (int)Math.ceil((double)usersCount/(double)USERS_PER_PAGE);
+            endPage = pagesCount;
+            if (startPage + 10<pagesCount)
+                endPage=startPage+10;
 
             //Filtering by category
 
