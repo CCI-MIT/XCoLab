@@ -265,6 +265,19 @@ input.comm_butt[type="submit"]:focus
     position: relative;
  }
 
+.addpropbox.evaluation .commentor {
+    float: left;
+}
+
+.addpropbox.evaluation .the-comment {
+    padding-bottom: 40px;
+    padding-top: 10px;
+    display: table-footer-group;
+}
+
+.addpropbox.evaluation .the-comment li {
+    background: none;
+}
 
  .about-left ul li a:hover, .about-left ul li.c a {
     background: #F2F1E9;

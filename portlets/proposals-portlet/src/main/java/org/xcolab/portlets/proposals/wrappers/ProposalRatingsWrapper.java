@@ -1,9 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalRating;
-import com.ext.portlet.model.ProposalRatingType;
-import com.ext.portlet.model.ProposalRatingValue;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -23,6 +21,7 @@ import java.util.ArrayList;
 public class ProposalRatingsWrapper {
     private List<ProposalRatingWrapper> proposalRatings;
     private User author;
+    private String comment;
 
     public ProposalRatingsWrapper(long authorId, List<ProposalRating> proposalRatings) throws SystemException, PortalException {
         this(UserLocalServiceUtil.getUser(authorId), proposalRatings);
@@ -51,12 +50,20 @@ public class ProposalRatingsWrapper {
     }
 
     public String getComment() {
-        for (ProposalRatingWrapper r : proposalRatings) {
-            if (r.unwrap().isCommentEnabled()) {
-                return r.unwrap().getComment();
+        if(comment != null){
+            return comment;
+        } else {
+            for (ProposalRatingWrapper r : proposalRatings) {
+                if (r.unwrap().isCommentEnabled()) {
+                    return r.unwrap().getComment();
+                }
             }
+            return "";
         }
-        return "";
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public String getCommentEscaped() {
@@ -64,6 +71,21 @@ public class ProposalRatingsWrapper {
         comment = StringEscapeUtils.escapeHtml(comment);
         comment = comment.replaceAll("\n", "<br>");
         return comment;
+    }
+
+    public String getContestPhase(){
+        String contestPhaseTitle = "";
+        try {
+            for (ProposalRatingWrapper r : proposalRatings) {
+                Long contestPhaseId = r.unwrap().getContestPhaseId();
+                ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
+                contestPhaseTitle = ContestPhaseLocalServiceUtil.getName(contestPhase);
+                break;
+            }
+        } catch (Exception e){
+
+        }
+        return contestPhaseTitle;
     }
 
     public boolean isReviewComplete() {

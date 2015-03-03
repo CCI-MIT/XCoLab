@@ -32,8 +32,7 @@
 		<portlet:param name="action" value="update" />
 	</portlet:actionURL>
 
-
-	<form style="margin-top: 20px;" action="/userprofile-portlet/fileUploadServlet" method="post"
+	<form style="margin-top: 20px;" action="/fileUpload" method="post"
 		  enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
 		<input type="file" name="file" id="portraitUploadInput" />
 	</form>

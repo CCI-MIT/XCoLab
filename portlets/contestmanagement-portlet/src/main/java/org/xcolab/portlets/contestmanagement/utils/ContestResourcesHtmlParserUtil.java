@@ -104,13 +104,14 @@ public class ContestResourcesHtmlParserUtil {
 
     public static String getOverviewSectionAsHtmlString(HashMap<String,String> overviewContent){
         StringBuilder overviewSectionAsHtmlString = new StringBuilder();
-        Element sectionTitle = createElementWithTextContent("h2", "Overview");
+        Element sectionTitle = createElementWithTextContent(SECTION_DELIMITER_TAG, "Overview");
         overviewSectionAsHtmlString.append(sectionTitle);
         for(String overviewSectionContentLine : overviewContent.keySet()){
+            Element body = createElementWithTextContent("p", "");
             Element head = createElementWithTextContent("strong", overviewSectionContentLine);
-            Element body =  createElementWithTextContent("p", overviewContent.get(overviewSectionContentLine));
-            overviewSectionAsHtmlString.append(head);
-            overviewSectionAsHtmlString.append(body);
+            body.appendChild(head);
+            body.appendChild(Jsoup.parse(overviewContent.get(overviewSectionContentLine)).body());
+            overviewSectionAsHtmlString.append(body.toString());
         }
         return overviewSectionAsHtmlString.toString();
     }

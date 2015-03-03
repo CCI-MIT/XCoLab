@@ -28,10 +28,8 @@
 	</script>
 
 		<div class="cmsDetailsBox">
-			<p>Select the members of your contest team by searching for their Climate CoLab username.
-				Please ensure each member of your team has uploaded a photo and bio to their profile.
-				You can register new members by <a href="http://climatecolab.org/web/guest/loginregister" target="_blank">clicking here.</a>
-				<i>(After registering new members you have to reload this page. You won't be able to select before that)</i>
+			<p>Search by username to select contest team members.<a href="http://climatecolab.org/web/guest/loginregister" target="_blank">Register new members by clicking here.</a>
+				<i>(Click SAVE and reload this page to find newly registered members.)</i>
 			</p>
 			<h2>Contest team</h2>
 		<form:form action="${updateContestTeamURL }" commandName="contestTeamBean" id="editForm" method="post">
