@@ -8,5 +8,7 @@
 	<jsp:directive.attribute name="text" type="java.lang.String" required="true" rtexprvalue="true" description="Link text" />
 	<jsp:directive.attribute name="hashString" type="java.lang.String" required="false" rtexprvalue="true" description="Sash string" />
 	<jsp:directive.attribute name="escape" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Sash string" />
-	<a href="/web/guest/plans/-/plans/contestId/${contestId }${empty hashString ? '' : '#'}${hashString}"><c:out value="${text }" escapeXml="${escape ? true : false }" /></a>
+	<jsp:directive.attribute name="linkId" type="java.lang.String" required="false" rtexprvalue="true" description="HTML id" />
+
+	<a href="/web/guest/plans/-/plans/contestId/${contestId }${empty hashString ? '' : '#'}${hashString}" id="${linkId}"><c:out value="${text }" escapeXml="${escape ? true : false }" /></a>
 </jsp:root>

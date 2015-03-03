@@ -253,11 +253,13 @@
                 <div class="gray-button">
                     <c:choose>
                         <c:when test="${proposal.currentVersion > 0 }">
-                            <collab:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="DISCARD changes" />
+                            <collab:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }"
+                                                 linkId="discardChangesButton" text="DISCARD changes" />
                         </c:when>
                         <c:otherwise>
                             <!--  proposal creation, return to contest proposals page on discard -->
-                            <proposalsPortlet:contestLink contestId="${contest.contestPK }" text="DISCARD changes" />
+                            <proposalsPortlet:contestLink contestId="${contest.contestPK }" linkId="discardChangesButton"
+                                                          text="DISCARD changes" />
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -276,6 +278,8 @@
 	<jsp:directive.include file="./proposalDetails/proposalPicker_widget.jspx" />
 
     <script type="text/javascript">
+        var submitTimer;
+
         jQuery("#fileUploadInput").change(function() {
             jQuery("#fileUploadForm").submit();
             jQuery("#proposalImage").block({message: "", css: {"font-size":"12px", margin: "0px", padding: 0}});
@@ -308,15 +312,17 @@
 
         function closeAcceptTosPopup() {
             jQuery("#acceptTosPopup").fadeOut("fast");
-
+            enableButtons();
         }
 
         function tosAcceptedSave() {
             jQuery("#acceptTosPopup").fadeOut("fast");
+            disableButtons(true);
             saveIfValid();
         }
 
         function saveIfValid() {
+            disableButtons();
             if (validatePlanEditForm()) {
                 disableDirtyCheck();
                 jQuery("#editForm").submit();
@@ -331,9 +337,11 @@
 
             jQuery("#saveChangesButton").click(function() {
                 if (${proposal.proposalId > 0}) {
+                    disableButtons(true);
                     saveIfValid();
                 }
                 else {
+                    disableButtons(false);
                     showAcceptTosPopup();
                 }
             });
@@ -343,6 +351,21 @@
 
             enableDirtyCheck();
         });
+
+        function enableButtons() {
+            jQuery("#saveChangesButton,#discardChangesButton").parent().removeClass("button-disabled");
+        }
+        
+        function disableButtons(withTimeout) {
+            var buttons = jQuery("#saveChangesButton,#discardChangesButton");
+            buttons.parent().addClass("button-disabled");
+
+            if (withTimeout) {
+                setTimeout(function () {
+                    buttons.parent().removeClass("button-disabled");
+                }, 5000);
+            }
+        }
     </script>
 <div id="copyProposalContainer" style="display: none;">
     <div class="popup-wrap p1" id="copyProposalPopup">
