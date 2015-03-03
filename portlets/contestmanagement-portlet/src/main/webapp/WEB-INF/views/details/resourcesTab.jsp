@@ -20,9 +20,7 @@
 	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 	<div class="cmsDetailsBox">
 
-		<p>The resources page is what visitors see when they click either “See more details” or the Resources button on the contest homepage.  It provides a thorough overview of the sector or topic, key issues currently being faced, guidance on how members can focus proposals, and resources for further reading.</p>
-		<p>The sections below provide an example of how to format this page; contest teams can add new sections and/or structure it differently.</p>
-		<p>Fellows will have access to editing this page after the contest is launched.  Images and photos can be added at that point.</p>
+		<p>The resources page is what visitors see when they click either "Read more" or the Resources button on the contest homepage. It provides a thorough overview of the sector or topic, key issues currently being faced, guidance on how members can focus proposals, and resources for further reading.</p>
 		<p>Sample resources pages can be found here: <a href="http://climatecolab.org/resources/-/wiki/Main/Youth+action+on+climate+change">Sample 1.</a> <a href="http://climatecolab.org/web/guest/resources/-/wiki/Main/Energy+Supply">Sample 2</a>.</p>
 
 	<h2>Resource page content</h2>

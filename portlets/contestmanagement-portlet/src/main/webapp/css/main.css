@@ -21,8 +21,13 @@
     z-index: 100000;
 }
 
-.uploadWidget {
+
+.uploadWidget.optional{
     background: url(/proposals-portlet/img/image_upload-button.png) no-repeat;
+}
+
+.uploadWidget {
+    background: url(/proposals-portlet/img/image_upload_not_optional-button.png) no-repeat;
     width: 219px;
     height: 30px;
     margin-top: 12px;

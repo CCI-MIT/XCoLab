@@ -21,8 +21,6 @@ import java.util.Map;
 @RequestMapping("view")
 public class ContestManagementBaseController {
 
-
-
     // TODO: to be done when Laur is ready
     private static final String REGION_CONTESTS_2015_JSON = "";
 

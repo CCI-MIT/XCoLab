@@ -1,9 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalRating;
-import com.ext.portlet.model.ProposalRatingType;
-import com.ext.portlet.model.ProposalRatingValue;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -64,6 +62,21 @@ public class ProposalRatingsWrapper {
         comment = StringEscapeUtils.escapeHtml(comment);
         comment = comment.replaceAll("\n", "<br>");
         return comment;
+    }
+
+    public String getContestPhase(){
+        String contestPhaseTitle = "";
+        try {
+            for (ProposalRatingWrapper r : proposalRatings) {
+                Long contestPhaseId = r.unwrap().getContestPhaseId();
+                ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
+                contestPhaseTitle = ContestPhaseLocalServiceUtil.getName(contestPhase);
+                break;
+            }
+        } catch (Exception e){
+
+        }
+        return contestPhaseTitle;
     }
 
     public boolean isReviewComplete() {

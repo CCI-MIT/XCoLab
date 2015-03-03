@@ -14,18 +14,26 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	<div id="content">
 
-		proposalRatingComments
+
+		<!-- TODO
+		<h2>Public judging</h2>
+		proposalRatingComments should go here
+		-->
 
 		<c:choose>
 			<c:when test="${showDiscussion}">
-				<div class="addpropbox">
-					<proposalsPortlet:proposalRatingComments showRating="true" proposalRatingsWrappers="${judgeAverageRating}" proposalId="${proposalId}" />
+				<h2>Judging results</h2>
+				<div class="addpropbox evaluation">
+					<proposalsPortlet:proposalRatingComments showRating="true" showPhase="true"
+															 proposalRatingsWrappers="${judgeAverageRating}"
+															 proposalId="${proposalId}" />
 				</div>
 
+				<h2>Discussion area</h2>
 				<discussionsTagFiles:discussionComments discussionId="${discussionId }" />
 			</c:when>
 			<c:otherwise>
-				The judging decisisons will be visible once a decision was made.
+				The judging decisions will be visible once a decision was made.
 			</c:otherwise>
 		</c:choose>
 

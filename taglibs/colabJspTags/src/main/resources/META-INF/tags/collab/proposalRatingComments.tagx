@@ -13,6 +13,7 @@
     <jsp:directive.attribute name="proposalRatingsWrappers" type="java.util.Collection" required="true" rtexprvalue="true" description="ProposalRatings" />
     <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="true" rtexprvalue="true" description="Proposal ID" />
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />
+    <jsp:directive.attribute name="showPhase" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Phase for this Rating should be displayed or not" />
 
     <div class="comments">
         <c:forEach var="wrapper" items="${proposalRatingsWrappers}" varStatus="status">
@@ -34,6 +35,11 @@
                     </div>
                     <div class="the-comment">
                         <div class="content">
+                            <c:if test="${showPhase}">
+                                <strong>Contest phase:</strong>
+                                ${wrapper.contestPhase}
+                            </c:if>
+
                             <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
                                 <strong>Rating:</strong>
                                 <ul>

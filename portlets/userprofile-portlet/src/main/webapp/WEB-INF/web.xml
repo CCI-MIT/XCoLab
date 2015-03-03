@@ -12,16 +12,6 @@
         <servlet-class>org.springframework.web.servlet.ViewRendererServlet</servlet-class>
     </servlet>
 
-    <servlet>
-        <servlet-name>fileUploadServlet</servlet-name>
-        <servlet-class>org.xcolab.portlets.userprofile.utils.FileUploadServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>fileUploadServlet</servlet-name>
-        <url-pattern>/fileUploadServlet</url-pattern>
-    </servlet-mapping>
-
  	<servlet-mapping>
         <servlet-name>ViewRendererServlet</servlet-name>
         <url-pattern>/WEB-INF/servlet/view</url-pattern>

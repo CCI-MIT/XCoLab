@@ -7,6 +7,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.contestmanagement.utils.ContestResourcesHtmlParserUtil;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -199,21 +201,24 @@ public class ContestResourcesBean implements Serializable {
         createEmptySectionsList();
     }
 
-    public void fillOverviewSectionContent(Contest contest) throws SystemException{
+    public void fillOverviewSectionContent(Contest contest) throws SystemException, ParseException{
         List<ContestPhase> contestPhaseList = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
         String proposalSubmissionEndDate = "";
         for(ContestPhase contestPhase: contestPhaseList){
             Long contestPhaseType = contestPhase.getContestPhaseType();
             if(contestPhaseType == 1L){
-                proposalSubmissionEndDate = contestPhase.getPhaseEndDate().toString();
+                SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMM dd, yyyy 'at' HH:mm:ss a zzzz");
+                formatter.setTimeZone(TimeZone.getTimeZone("EST"));
+                proposalSubmissionEndDate = formatter.format(contestPhase.getPhaseEndDate());
                 break;
             }
         }
         overviewSectionValues = new HashMap<>();
         overviewSectionValues.put("Question:", contest.getContestName());
-        overviewSectionValues.put("Submit proposals:", "http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK());
+        overviewSectionValues.put("Submit proposals:", "<a href=\"http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK()+"\">http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK() + "</a>");
+        overviewSectionValues.put("Rules:", "All entrants must agree to the <a href=\"http://climatecolab.org/web/guest/resources/-/wiki/Main/Contest+rules\">2015 Contest Rules.</a>");
         overviewSectionValues.put("Deadline:", proposalSubmissionEndDate);
-        overviewSectionValues.put("Rules:", "All entrants must agree to the 2015 Contest Rules.");
+        overviewSectionValues.put("Judging Criteria & Prizes:", "See below.");
     }
 }
 

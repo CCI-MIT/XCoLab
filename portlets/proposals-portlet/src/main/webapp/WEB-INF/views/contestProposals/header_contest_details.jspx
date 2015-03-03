@@ -37,7 +37,7 @@
         <div class="fixed-position-container">
             <div class="fixed-position-inner-relative">
                 <div class="description">
-                    <p>${contest.contestDescription }</p>
+                    <p>${contest.contestDescription } <a href="${contest.resourcesUrl}">Read more ...</a></p>
                     <c:if test="${contest.hasFocusArea }">
                         <table style="width: 100%; table-layout: fixed;">
                             <tr>

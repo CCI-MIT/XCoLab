@@ -1,12 +1,9 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
+import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -18,14 +15,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
+import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import javax.portlet.PortletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("view")
@@ -46,16 +42,17 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
                 Long proposalId = proposalsContext.getProposal(request).getProposalId();
                 Long contestId = proposalsContext.getContestPhase(request).getContestPK();
 
-                List<ProposalRating> ratings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposalId, contestId);
-                List<ProposalRatingsWrapper> judgeAverageRating = calculateJudgesAverageRating(wrapProposalRatings(ratings));
+                List<ProposalRatingsWrapper> judgeAverageRating = getJudgesAverageRating(contestId, proposalId);
 
                 model.addAttribute("discussionId", discussionId);
                 model.addAttribute("showDiscussion", true);
+                model.addAttribute("isJudgeReadOnly", true);
                 model.addAttribute("judgeAverageRating", judgeAverageRating);
                 model.addAttribute("authorId", proposalsContext.getProposal(request).getAuthorId());
                 model.addAttribute("proposalId", proposalId);
             }
         } catch (Exception e){
+            e.printStackTrace();
             model.addAttribute("showDiscussion", false);
         }
 
@@ -63,6 +60,62 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
         return "proposalDiscussion";
     }
 
+
+    private List<ProposalRatingsWrapper> getJudgesAverageRating(Long contestId, Long proposalId) throws Exception{
+        List<ProposalRatingsWrapper> wrappers = new ArrayList<ProposalRatingsWrapper>();
+        List<ContestPhase> contestPhases =  ContestPhaseLocalServiceUtil.getPhasesForContest(contestId);
+
+        User user = UserLocalServiceUtil.getDefaultUser(10112L);
+        Long userId = 10144L; //user.getUserId();
+
+        for(ContestPhase contestPhase : contestPhases){
+            if(contestPhase.isFellowScreeningActive()) {
+                List<ProposalRating> judgeRatingsForProposal = ProposalRatingLocalServiceUtil
+                        .getJudgeRatingsForProposal(proposalId, contestPhase.getContestPhasePK());
+
+                List<Long> judgeIds = new ArrayList<>();
+
+                if (judgeRatingsForProposal.size() > 0) {
+                    Map<Long, List<ProposalRating>> map = new HashMap<>();
+                    Map<Long, List<Long>> averageRatingList = new HashMap<>();
+                    map.put(userId, new ArrayList<ProposalRating>());
+
+                    for (ProposalRating r : judgeRatingsForProposal) {
+                        Long ratingAverageIndex = r.getRatingValueId() / 5L;
+                        if(!averageRatingList.containsKey(ratingAverageIndex)){
+                            averageRatingList.put(ratingAverageIndex, new ArrayList<Long>());
+                        }
+                        Long currentRating = r.getRatingValueId();
+                        averageRatingList.get(ratingAverageIndex).add(currentRating);
+                        if(!judgeIds.contains(r.getUserId())) {
+                            judgeIds.add(r.getUserId());
+                        }
+                    }
+
+                    for (Long averageRatingsIndex : averageRatingList.keySet()) {
+                        Long sumRating = 0L;
+                        for(Long averageRating : averageRatingList.get(averageRatingsIndex) ){
+                            sumRating = sumRating + averageRating;
+                        }
+                        Long averageRating = sumRating / averageRatingList.get(averageRatingsIndex).size();
+                        ProposalRating proposalRating = judgeRatingsForProposal.get(averageRatingsIndex.intValue());
+                        proposalRating.setRatingValueId(averageRating);
+                        proposalRating.setUserId(userId);
+                        Proposal proposal =  ProposalLocalServiceUtil.getProposal(proposalId);
+                        ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
+                        proposalRating.setComment(commentHelper.getAdvancingComment());
+                        map.get(userId).add(proposalRating);
+                    }
+
+                    List<ProposalRating> userRatings = map.get(userId);
+                    ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, userRatings);
+                    wrappers.add(wrapper);
+                }
+            }
+
+        }
+        return wrappers;
+    }
 
     private static List<ProposalRatingsWrapper> wrapProposalRatings(List<ProposalRating> ratings) throws SystemException, PortalException {
         List<ProposalRatingsWrapper> wrappers = new ArrayList<ProposalRatingsWrapper>();
@@ -80,17 +133,20 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
             ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, userRatings);
             wrappers.add(wrapper);
         }
-
         return wrappers;
     }
 
     private List<ProposalRatingsWrapper> calculateJudgesAverageRating(List<ProposalRatingsWrapper> proposalRatingsWrappers)
+    //private List<ProposalRatingsWrapper> calculateJudgesAverageRating(List<ProposalRating> ratings)
     throws SystemException, PortalException{
         List<ProposalRatingsWrapper> averageWrapper = new ArrayList<ProposalRatingsWrapper>();
         //List<ProposalRating> userRatings =  new HashMap<Long, List<ProposalRating>>();
-        User user = UserLocalServiceUtil.getDefaultUser(10112L);
 
-        for(ProposalRatingsWrapper individualJudgeRating : proposalRatingsWrappers){
+
+        for(ProposalRatingWrapper individualJudgeRating : proposalRatingsWrappers.get(1).getRatings()){
+            individualJudgeRating.getRatingTypeId();
+            individualJudgeRating.getRatingTypeLabel();
+            individualJudgeRating.getRatingValueName();
         }
 
         //ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(user, userRatings);
