@@ -270,7 +270,7 @@ input.comm_butt[type="submit"]:focus
 }
 
 .addpropbox.evaluation .the-comment {
-    padding-bottom: 20px;
+    padding-bottom: 40px;
     padding-top: 10px;
     display: table-footer-group;
 }

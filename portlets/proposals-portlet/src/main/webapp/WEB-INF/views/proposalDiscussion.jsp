@@ -14,13 +14,11 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	<div id="content">
 
-
-		<!-- TODO
-		<h2>Public judging</h2>
-		proposalRatingComments should go here
-		-->
+		<h2>Proposal rating function for every colab user</h2>
+		tbd
 
 		<c:choose>
+			<!-- TODO clarify when to show what -->
 			<c:when test="${showDiscussion}">
 				<h2>Judging results</h2>
 				<div class="addpropbox evaluation">

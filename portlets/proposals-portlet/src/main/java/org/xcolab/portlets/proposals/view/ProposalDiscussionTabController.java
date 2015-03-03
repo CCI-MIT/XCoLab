@@ -6,9 +6,11 @@ import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,7 @@ import java.util.*;
 public class ProposalDiscussionTabController extends BaseProposalTabController {
     @Autowired
     private ProposalsContext proposalsContext;
+    private boolean isUserAdmin = false;
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_DISCUSSION"})
     public String showDiscussion(PortletRequest request, Model model)
@@ -50,6 +53,11 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
                 model.addAttribute("judgeAverageRating", judgeAverageRating);
                 model.addAttribute("authorId", proposalsContext.getProposal(request).getAuthorId());
                 model.addAttribute("proposalId", proposalId);
+
+                ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+                if (themeDisplay.getPermissionChecker().isOmniadmin()){
+                    isUserAdmin = true;
+                }
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -65,10 +73,11 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
         List<ProposalRatingsWrapper> wrappers = new ArrayList<ProposalRatingsWrapper>();
         List<ContestPhase> contestPhases =  ContestPhaseLocalServiceUtil.getPhasesForContest(contestId);
 
-        User user = UserLocalServiceUtil.getDefaultUser(10112L);
-        Long userId = 10144L; //user.getUserId();
+        // TODO this is the Admin Id, replace with what Laur and Patrick decide to use
+        Long userId = 10144L;
 
         for(ContestPhase contestPhase : contestPhases){
+
             if(contestPhase.isFellowScreeningActive()) {
                 List<ProposalRating> judgeRatingsForProposal = ProposalRatingLocalServiceUtil
                         .getJudgeRatingsForProposal(proposalId, contestPhase.getContestPhasePK());
@@ -101,57 +110,20 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
                         ProposalRating proposalRating = judgeRatingsForProposal.get(averageRatingsIndex.intValue());
                         proposalRating.setRatingValueId(averageRating);
                         proposalRating.setUserId(userId);
-                        Proposal proposal =  ProposalLocalServiceUtil.getProposal(proposalId);
-                        ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
-                        proposalRating.setComment(commentHelper.getAdvancingComment());
                         map.get(userId).add(proposalRating);
                     }
 
                     List<ProposalRating> userRatings = map.get(userId);
                     ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, userRatings);
+                    Proposal proposal =  ProposalLocalServiceUtil.getProposal(proposalId);
+                    ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
+                    wrapper.setComment(commentHelper.getAdvancingComment());
                     wrappers.add(wrapper);
                 }
             }
 
         }
         return wrappers;
-    }
-
-    private static List<ProposalRatingsWrapper> wrapProposalRatings(List<ProposalRating> ratings) throws SystemException, PortalException {
-        List<ProposalRatingsWrapper> wrappers = new ArrayList<ProposalRatingsWrapper>();
-        Map<Long, List<ProposalRating>> map = new HashMap<Long, List<ProposalRating>>();
-
-        for (ProposalRating r : ratings) {
-            if (map.get(r.getUserId()) == null) {
-                map.put(r.getUserId(), new ArrayList<ProposalRating>());
-            }
-            map.get(r.getUserId()).add(r);
-        }
-
-        for (Long userId : map.keySet()) {
-            List<ProposalRating> userRatings = map.get(userId);
-            ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, userRatings);
-            wrappers.add(wrapper);
-        }
-        return wrappers;
-    }
-
-    private List<ProposalRatingsWrapper> calculateJudgesAverageRating(List<ProposalRatingsWrapper> proposalRatingsWrappers)
-    //private List<ProposalRatingsWrapper> calculateJudgesAverageRating(List<ProposalRating> ratings)
-    throws SystemException, PortalException{
-        List<ProposalRatingsWrapper> averageWrapper = new ArrayList<ProposalRatingsWrapper>();
-        //List<ProposalRating> userRatings =  new HashMap<Long, List<ProposalRating>>();
-
-
-        for(ProposalRatingWrapper individualJudgeRating : proposalRatingsWrappers.get(1).getRatings()){
-            individualJudgeRating.getRatingTypeId();
-            individualJudgeRating.getRatingTypeLabel();
-            individualJudgeRating.getRatingValueName();
-        }
-
-        //ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(user, userRatings);
-       // averageWrapper.add(wrapper);
-        return averageWrapper;
     }
 
     private boolean isPhaseStatusClosedOrOpenForSubmission(PortletRequest request
@@ -169,12 +141,12 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
         boolean judge = false;
 
         try {
+            // TODO this only checks for the Role but not whether the user has this role in this contest
             judge = RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.JUDGES.getRoleId());
             fellow = RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.FELLOW.getRoleId());
         } catch (SystemException e) {
             e.printStackTrace();
         }
-
         return fellow || judge;
     }
 
@@ -191,7 +163,7 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
     }
 
     private boolean isUserAllowToAddComments(User user, Proposal proposal){
-        return isUserFellowOrJudge(user) || isUserProposalAuthorOrTeamMember(user, proposal);
+        return isUserFellowOrJudge(user) || isUserProposalAuthorOrTeamMember(user, proposal) || isUserAdmin;
     }
     
 }

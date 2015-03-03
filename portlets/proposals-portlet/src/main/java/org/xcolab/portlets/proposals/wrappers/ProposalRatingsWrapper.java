@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class ProposalRatingsWrapper {
     private List<ProposalRatingWrapper> proposalRatings;
     private User author;
+    private String comment;
 
     public ProposalRatingsWrapper(long authorId, List<ProposalRating> proposalRatings) throws SystemException, PortalException {
         this(UserLocalServiceUtil.getUser(authorId), proposalRatings);
@@ -49,12 +50,20 @@ public class ProposalRatingsWrapper {
     }
 
     public String getComment() {
-        for (ProposalRatingWrapper r : proposalRatings) {
-            if (r.unwrap().isCommentEnabled()) {
-                return r.unwrap().getComment();
+        if(comment != null){
+            return comment;
+        } else {
+            for (ProposalRatingWrapper r : proposalRatings) {
+                if (r.unwrap().isCommentEnabled()) {
+                    return r.unwrap().getComment();
+                }
             }
+            return "";
         }
-        return "";
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public String getCommentEscaped() {
