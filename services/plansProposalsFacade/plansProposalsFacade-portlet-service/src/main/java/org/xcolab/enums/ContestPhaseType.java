@@ -9,6 +9,7 @@ public enum ContestPhaseType {
     FINALIST_SELECTION(11, "Finalist selection"),
     PROPOSAL_REVISION(12, "Proposal revision"),
     SELECTION_OF_WINNERS(13, "Selection of winners"),
+    SELECTION_OF_WINNERS_NEW(20, "Selection of winners"),/* seems to be equivalent to 13 and 20*/
     COMPLETED(14, "Complete"),
     WINNERS_SELECTION(15, "Winners selection"); /* seems to be equivalent to 13 */
 

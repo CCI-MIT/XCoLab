@@ -698,7 +698,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         ContestPhase lastOrActivePhase = contestLocalService.getActiveOrLastPhase(contestLocalService.getContest(contest.getContestPK()));
         // Vote is only possible in Winner Selection phase
         if (lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS.getTypeId() &&
-                lastOrActivePhase.getContestPhaseType() != ContestPhaseType.WINNERS_SELECTION.getTypeId()) {
+                lastOrActivePhase.getContestPhaseType() != ContestPhaseType.WINNERS_SELECTION.getTypeId() &&
+                lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS_NEW.getTypeId()) {
             return;
         }
         
