@@ -103,11 +103,11 @@ We encourage you to keep developing your work. Transfer it to the Climate CoLab 
 
 We hope you will stay involved in the Climate CoLab community.  Please support and comment on proposals that have been named Finalists and vote for which proposal you would like to be nominated as the contest''s Popular Choice Winner.
 
-Keep up the great work.  And thank you again for being a part of this mission to harness the world’s collective efforts to develop and share innovative climate change solutions.
+Keep up the great work.  And thank you again for being a part of this mission to harness the world''s collective efforts to develop and share innovative climate change solutions.
 
 The <contest-title/> Judging Panel
 
-If there are specific comments from the Judges, they will be included below and on your proposal’s comments page.
+If there are specific comments from the Judges, they will be included below and on your proposal''s comments page.
 
 COMMENTS FROM JUDGES:' WHERE type_ = 'ADVANCING_DO_NOT_ADVANCE';
 
@@ -143,13 +143,13 @@ See complete voting rules: http://www.climatecolab.org/resources/-/wiki/Main/con
 PROMOTING YOUR PROPOSAL
 The Climate CoLab and Fellows teams will be promoting the contest during the voting period, and we encourage you to invite your colleagues, networks and communities to vote as well.  
 
-Follow the Climate CoLab on Facebook (www.facebook.comc/climatecolab) and Twitter (www.twitter.com/climatecolab), where we''ll be posting about contests.  
+Follow the Climate CoLab on Facebook (www.facebook.com/climatecolab) and Twitter (www.twitter.com/climatecolab), where we''ll be posting about contests.  
 
 Add the Twitter and Facebook hashtag #climatevote in your posts and tag us @ClimateCoLab. For more information and guidance about sharing proposals over social media, check out our Social Media Guide: http://climatecolab.org/fellows/-/wiki/Main/Social+Media+Guide.
 
 For questions about the voting period, please contact Laur Fisher at admin@climatecolab.org. 
 
 
-If there are specific comments from the Judges, they will be included below and on your proposal’s comments page.
+If there are specific comments from the Judges, they will be included below and on your proposal''s comments page.
 
 COMMENTS FROM JUDGES:' WHERE type_ = 'ADVANCING_ADVANCE_TO_SEMIFINALIST';

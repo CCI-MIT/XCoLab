@@ -1272,8 +1272,13 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         String commentBody = reviewContentHelper.getPromotionComment(false);
         //only post comment if it is not empty.
         if (commentBody != null && !commentBody.trim().equals("")) {
+
             Long discussionId = getDiscussionIdAndGenerateIfNull(proposal);
             DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
+            DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
+
+            // TODO the following two lines are only temporary until the evaluation tab will be online!!!
+            discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
             DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
         }
     }
