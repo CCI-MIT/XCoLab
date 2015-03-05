@@ -123,7 +123,10 @@ public class ContestDescriptionBean implements Serializable{
     }
 
     public String getContestDescription() {
+        if(contestDescription != null) {
         return "<p>" + contestDescription + "</p>";
+        }
+        return contestDescription;
     }
 
     public void setContestDescription(String contestDescription) {
