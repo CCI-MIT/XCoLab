@@ -82,8 +82,10 @@ public class ContestResourcesBean implements Serializable {
 
         sectionsAsHtmlString.append(overviewSection);
         for(SectionDefinitionBean sectionBaseDefinition : sections ){
-            String sectionAsHtmlString = contestResourcesHtmlParserUtil.getSectionAsHtmlString(sectionBaseDefinition);
-            sectionsAsHtmlString.append(sectionAsHtmlString);
+            if(!sectionBaseDefinition.getContent().isEmpty()) {
+                String sectionAsHtmlString = contestResourcesHtmlParserUtil.getSectionAsHtmlString(sectionBaseDefinition);
+                sectionsAsHtmlString.append(sectionAsHtmlString);
+            }
         }
         return sectionsAsHtmlString.toString();
     }
