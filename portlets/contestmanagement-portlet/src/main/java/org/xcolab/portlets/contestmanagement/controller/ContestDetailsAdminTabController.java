@@ -45,7 +45,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
             return NO_PERMISSION_TAB_VIEW;
         }
 
-        setPageAttributes(request, model, ContestDetailsTabs.TEAM);
+        setPageAttributes(request, model, tab);
         model.addAttribute("contestAdminBean", new ContestWrapper(getContest()));
         return TAB_VIEW;
     }

@@ -106,13 +106,14 @@ public class ContestResourcesHtmlParserUtil {
         StringBuilder overviewSectionAsHtmlString = new StringBuilder();
         Element sectionTitle = createElementWithTextContent(SECTION_DELIMITER_TAG, "Overview");
         overviewSectionAsHtmlString.append(sectionTitle);
+        overviewSectionAsHtmlString.append("<p>");
         for(String overviewSectionContentLine : overviewContent.keySet()){
-            Element body = createElementWithTextContent("p", "");
             Element head = createElementWithTextContent("strong", overviewSectionContentLine);
-            body.appendChild(head);
-            body.appendChild(Jsoup.parse(overviewContent.get(overviewSectionContentLine)).body());
-            overviewSectionAsHtmlString.append(body.toString());
+            overviewSectionAsHtmlString.append(head);
+            overviewSectionAsHtmlString.append(Jsoup.parse(overviewContent.get(overviewSectionContentLine)).body());
+            overviewSectionAsHtmlString.append("<br/>");
         }
+        overviewSectionAsHtmlString.append("</p>");
         return overviewSectionAsHtmlString.toString();
     }
 

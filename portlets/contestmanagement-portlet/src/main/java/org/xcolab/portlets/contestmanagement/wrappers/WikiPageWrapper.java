@@ -61,20 +61,28 @@ public class WikiPageWrapper {
     public static void updateWikiPageTitleIfExists(String oldTitle, String newTitle) throws Exception{
         if(isWikiPageCreatedForContest(oldTitle)){
             WikiPageResource wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WIKI_NODE_ID, oldTitle);
+            WikiPage wikiPage;
             try {
-                WikiPage wikiPage = WikiPageLocalServiceUtil.getPage(wikiPageResource.getResourcePrimKey());
-                wikiPage.setTitle(newTitle);
-                wikiPage.persist();
-                WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
+                wikiPage = WikiPageLocalServiceUtil.getPage(wikiPageResource.getResourcePrimKey());
+                updateWikiPageResourceTitle(wikiPageResource, newTitle);
+                updateWikiPageTitle(wikiPage, wikiPageResource, newTitle);
             } catch (NoSuchPageException e){
-                // no page, nothing to update
-            } finally {
-                wikiPageResource.setTitle(newTitle);
-                wikiPageResource.persist();
-                WikiPageResourceLocalServiceUtil.updateWikiPageResource(wikiPageResource);
-
+                updateWikiPageResourceTitle(wikiPageResource, newTitle);
             }
         }
+    }
+
+    private static void updateWikiPageTitle(WikiPage wikiPage, WikiPageResource wikiPageResource, String newTitle) throws Exception{
+        wikiPage.setTitle(newTitle);
+        wikiPage.setResourcePrimKey(wikiPageResource.getResourcePrimKey());
+        wikiPage.persist();
+        WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
+    }
+
+    private static void updateWikiPageResourceTitle(WikiPageResource wikiPageResource, String newTitle) throws Exception{
+        wikiPageResource.setTitle(newTitle);
+        wikiPageResource.persist();
+        WikiPageResourceLocalServiceUtil.updateWikiPageResource(wikiPageResource);
     }
 
     private static boolean isWikiPageCreatedForContest(String oldTitle) throws Exception{
@@ -154,7 +162,10 @@ public class WikiPageWrapper {
     }
 
     private void updateContestResourceUrl() throws Exception{
-        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPage.getTitle());
+        updateContestResourceUrl(contest, wikiPage.getTitle());
+    }
+    public static void updateContestResourceUrl(Contest contest, String wikiPageTitle) throws Exception{
+        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPageTitle);
         contest.setResourcesUrl(escapedWikiPageUrlLink);
         contest.persist();
         ContestLocalServiceUtil.updateContest(contest);

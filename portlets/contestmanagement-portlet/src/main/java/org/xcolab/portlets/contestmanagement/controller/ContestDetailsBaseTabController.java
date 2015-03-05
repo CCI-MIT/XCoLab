@@ -66,7 +66,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         return Long.parseLong(contestIdParameter);
     }
 
-    public static boolean getCreateNewContestParameteFromRequest(PortletRequest request){
+    public static boolean getCreateNewContestParameterFromRequest(PortletRequest request){
         String createContestParameter = request.getParameter("createContest");
         return Boolean.parseBoolean(createContestParameter);
     }
@@ -95,6 +95,10 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         this.contestWrapper = contestWrapper;
     }
 
+    public void setSuccessRenderRedirect (ActionResponse response, String tabName) throws Exception{
+        response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/" + tabName);
+    }
+
     public void setErrorRenderParameter(ActionResponse response, String errorActionParameter){
         response.setRenderParameter("error", "true");
         response.setRenderParameter("action", errorActionParameter);
@@ -105,10 +109,6 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
 
     public void setNotFoundErrorRenderParameter(ActionResponse response){
         setErrorRenderParameter(response, "showNotFound");
-    }
-
-    public void setSuccessRenderRedirect (ActionResponse response, String tabName) throws Exception{
-        response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/" + tabName);
     }
 
 }

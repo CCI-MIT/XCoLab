@@ -4,6 +4,7 @@
   version="2.0">
 
   <jsp:directive.attribute name="uploadImageDivId" type="java.lang.String" required="true" rtexprvalue="true" description="uploadImageDivId" />
+  <jsp:directive.attribute name="keepFormat" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Should the image be cropped to square" />
 
   <c:set var="fileUploadInputId" value="${uploadImageDivId}Input"/>
   <c:set var="fileUploadInputForm" value="${fileUploadInputId}Form"/>
@@ -11,6 +12,9 @@
 
   <form action="/fileUpload" method="post" enctype="multipart/form-data"
         target="_${fileUploadInputFrame}" id="${fileUploadInputForm}" class="fileUploadFrame">
+  <c:if test="${keepFormat}">
+    <input type="hidden" name="keepFormat"  value="true" />
+  </c:if>
     <input type="file" name="file" id="${fileUploadInputId}" />
   </form>
 

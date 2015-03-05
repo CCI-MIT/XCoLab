@@ -2,7 +2,6 @@ package org.xcolab.portlets.contestmanagement.controller;
 
 import javax.validation.Valid;
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhaseWrapper;
 import com.ext.portlet.model.ContestSchedule;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -70,7 +69,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     }
 
     @ModelAttribute("contestLevelSelectionItems")
-    public List<LabelValue> populatecontestLevelSelectionItems(){
+    public List<LabelValue> populateContestLevelSelectionItems(){
         return getContestLevelSelectionItems();
     }
 
@@ -99,7 +98,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
                                              @Valid ContestDescriptionBean updatedContestDescriptionBean,
                                              BindingResult result) {
 
-        boolean createNew = getCreateNewContestParameteFromRequest(request);
+        boolean createNew = getCreateNewContestParameterFromRequest(request);
 
         if(!tabWrapper.getCanEdit()) {
             setNoPermissionErrorRenderParameter(response);

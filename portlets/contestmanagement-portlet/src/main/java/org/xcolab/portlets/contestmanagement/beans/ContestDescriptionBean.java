@@ -5,6 +5,9 @@ import com.ext.portlet.model.Contest;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 
@@ -72,7 +75,7 @@ public class ContestDescriptionBean implements Serializable{
         contest.persist();
         updateContestSchedules(contest);
         WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
-
+        WikiPageWrapper.updateContestResourceUrl(contest, newContestTitle);
     }
 
     private void updateContestSchedules(Contest contest)throws Exception{
@@ -120,11 +123,13 @@ public class ContestDescriptionBean implements Serializable{
     }
 
     public String getContestDescription() {
-        return contestDescription;
+        return "<p>" + contestDescription + "</p>";
     }
 
     public void setContestDescription(String contestDescription) {
-        this.contestDescription = contestDescription;
+        Document document = Jsoup.parse(contestDescription);
+        Element descriptionElement = document.select("p").first();
+        this.contestDescription = descriptionElement.html();
     }
 
     public Long getPlanTemplateId() {

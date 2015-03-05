@@ -19,9 +19,9 @@
 
 	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 	<div class="cmsDetailsBox">
-	<collab:imageUpload uploadImageDivId="contestImage"/>
+	<collab:imageUpload uploadImageDivId="contestImage" />
 		<p>*Be sure to click <strong>SAVE changes</strong> before exiting a tab or submitting a comment for the contest team, or your content may be lost.</p>
-	<collab:imageUpload uploadImageDivId="logoImage"/>
+	<collab:imageUpload uploadImageDivId="logoImage" keepFormat="true"/>
 	<h2>Homepage content</h2>
 	<form:form action="${updateContestDescriptionURL }" commandName="contestDescriptionBean" cssClass="addpropform" id="editForm" method="post">
 		<div class="reg_errors"><!--  -->

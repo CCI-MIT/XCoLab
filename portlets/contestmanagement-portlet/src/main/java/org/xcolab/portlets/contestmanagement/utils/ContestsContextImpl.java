@@ -19,12 +19,12 @@ import javax.portlet.PortletRequest;
 
 @Component
 public class ContestsContextImpl implements TabContext {
-    private static final String PROPOSALS_ATTRIBUTE_PREFIX = "_proposalsProtlet_";
-    private static final String CONTEXT_INITIALIZED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contextInitialized";
-    private static final String PERMISSIONS_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "permissions";
-    private static final String CONTEST_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contest";
-    private static final String USER_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "user";
-    private static final String CONTEST_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestWrapped";
+    private static final String CONTEXT_ATTRIBUTE_PREFIX = "_proposalsPortlet_";
+    private static final String CONTEXT_INITIALIZED_ATTRIBUTE = CONTEXT_ATTRIBUTE_PREFIX + "contextInitialized";
+    private static final String PERMISSIONS_ATTRIBUTE = CONTEXT_ATTRIBUTE_PREFIX + "permissions";
+    private static final String CONTEST_ATTRIBUTE = CONTEXT_ATTRIBUTE_PREFIX + "contest";
+    private static final String USER_ATTRIBUTE = CONTEXT_ATTRIBUTE_PREFIX + "user";
+    private static final String CONTEST_WRAPPED_ATTRIBUTE = CONTEXT_ATTRIBUTE_PREFIX + "contestWrapped";
     private static final String CONTEST_ID_PARAM = "contestId";
 
     public ContestsContextImpl() {
@@ -64,20 +64,24 @@ public class ContestsContextImpl implements TabContext {
     }
     
     private void init(PortletRequest request) throws PortalException, SystemException {
-        final Long contestId = (Long) ParamUtil.getLong(request, CONTEST_ID_PARAM);
-        Contest contest = ContestLocalServiceUtil.getContest(contestId);
-        
-        if (contest != null) {
-            request.setAttribute(CONTEST_ATTRIBUTE,contest);
-            request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contest));
+
+        try {
+            final Long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
+            Contest contest = ContestLocalServiceUtil.getContest(contestId);
+
+            if (contest != null) {
+                request.setAttribute(CONTEST_ATTRIBUTE, contest);
+                request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contest));
+                request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestPermissions(request, contest));
+            }
+
+            ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+            request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
+            request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
+
+        } catch (Exception e){
+            request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, false);
         }
-
-        request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestPermissions(request, contest));
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
-        request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
-
-        
     }
     
     private final static Log _log = LogFactoryUtil.getLog(ContestsContextImpl.class);

@@ -84,21 +84,21 @@ public class ContestScheduleWrapper {
 
     private static List<ContestPhaseBean> createSeedDataForBasicLevelSchedule(){
         List<StartDateEndDate> phaseStartEndDatesBasicLevelSchedule  = new ArrayList<>();
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("3/6/15 8:00:00 PM"), new Date("5/16/15 7:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("5/18/15 8:00:00 PM"), new Date("5/29/15 7:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("6/1/15 8:00:00 PM"), new Date("6/13/15 7:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("6/15/15 8:00:00 PM"), new Date("6/26/15 7:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("7/1/15 8:00:00 PM"), new Date("7/31/15 7:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("3/6/15 12:00:00 AM"), new Date("5/16/15 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("5/18/15 12:00:00 AM"), new Date("5/29/15 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("6/1/15 12:00:00 AM"), new Date("6/13/15 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("6/15/15 12:00:00 AM"), new Date("6/26/15 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("7/1/15 12:00:00 AM"), new Date("7/31/15 11:59:59 PM")));
         return createPhasesFromStartEndDates(phaseStartEndDatesBasicLevelSchedule);
     }
 
     private static List<ContestPhaseBean> createSeedDataForRegionalLevelSchedule(){
         List<StartDateEndDate> phaseStartEndDatesBasicLevelSchedule  = new ArrayList<>();
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("3/6/15 8:00:00 PM"), new Date("6/6/15 7:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("6/6/15 8:00:00 PM"), new Date("2/7/15 7:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("7/3/15 8:00:00 PM"), new Date("7/15/15 7:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("7/16/15 8:00:00 PM"), new Date("8/6/15 7:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("8/3/15 8:00:00 PM"), new Date("9/1/15 7:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("3/6/15 12:00:00 AM"), new Date("6/6/15 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("6/6/15 12:00:00 AM"), new Date("2/7/15 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("7/3/15 12:00:00 AM"), new Date("7/15/15 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("7/16/15 12:00:00 AM"), new Date("8/6/15 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new Date("8/3/15 12:00:00 AM"), new Date("9/1/15 11:59:59 PM")));
         return createPhasesFromStartEndDates(phaseStartEndDatesBasicLevelSchedule);
     }
 

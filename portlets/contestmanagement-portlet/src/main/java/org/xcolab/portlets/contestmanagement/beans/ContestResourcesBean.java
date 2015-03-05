@@ -213,10 +213,10 @@ public class ContestResourcesBean implements Serializable {
                 break;
             }
         }
-        overviewSectionValues = new HashMap<>();
+        overviewSectionValues = new LinkedHashMap<>();
         overviewSectionValues.put("Question:", contest.getContestName());
-        overviewSectionValues.put("Submit proposals:", "<a href=\"http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK()+"\">http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK() + "</a>");
-        overviewSectionValues.put("Rules:", "All entrants must agree to the <a href=\"http://climatecolab.org/web/guest/resources/-/wiki/Main/Contest+rules\">2015 Contest Rules.</a>");
+        overviewSectionValues.put("Submit proposals:", "<a href=\"http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK() + "\" target=\"_blank\">http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK() + "</a>");
+        overviewSectionValues.put("Rules:", "All entrants must agree to the <a href=\"http://climatecolab.org/web/guest/resources/-/wiki/Main/Contest+rules\" target=\"_blank\">2015 Contest Rules.</a> and <a href=\"http://climatecolab.org/web/guest/resources/-/wiki/Main/Terms+of+use\" target=\"_blank\">Terms of Use.</a>");
         overviewSectionValues.put("Deadline:", proposalSubmissionEndDate);
         overviewSectionValues.put("Judging Criteria & Prizes:", "See below.");
     }

@@ -37,9 +37,13 @@ public class FileUploadFilter implements Filter {
 				ServletFileUpload fileUpload = new ServletFileUpload();
 				FileItemIterator items = fileUpload.getItemIterator(request);
 
+				Boolean keepFormat = false;
 				while (items.hasNext()) {
 					FileItemStream item = items.next();
-
+					if(item.isFormField() && item.getFieldName().equals("keepFormat")){
+						keepFormat = true;
+						continue;
+					}
 					if (!item.isFormField()
 							&& item.getContentType().contains("image")) {
 						// currently we support only images
@@ -50,7 +54,9 @@ public class FileUploadFilter implements Filter {
 						is = item.openStream();
 
 						byte[] imgBArr = IOUtils.toByteArray(is);
-						imgBArr = resizeAndCropImage(imgBArr);
+						if(!keepFormat){
+							imgBArr = resizeAndCropImage(imgBArr);
+						}
 						
 						//Image img = ImageLocalServiceUtil..getImage(imgBArr);
 						Image img = ImageLocalServiceUtil.createImage(imageId);

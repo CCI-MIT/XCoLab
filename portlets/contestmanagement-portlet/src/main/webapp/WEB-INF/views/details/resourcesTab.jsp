@@ -21,7 +21,7 @@
 	<div class="cmsDetailsBox">
 
 		<p>The resources page is what visitors see when they click either "Read more" or the Resources button on the contest homepage. It provides a thorough overview of the sector or topic, key issues currently being faced, guidance on how members can focus proposals, and resources for further reading.</p>
-		<p>Sample resources pages can be found here: <a href="http://climatecolab.org/resources/-/wiki/Main/Youth+action+on+climate+change">Sample 1.</a> <a href="http://climatecolab.org/web/guest/resources/-/wiki/Main/Energy+Supply">Sample 2</a>.</p>
+		<p>Sample resources pages can be found here: <a href="http://climatecolab.org/resources/-/wiki/Main/Youth+action+on+climate+change">Sample 1. </a><a href="http://climatecolab.org/web/guest/resources/-/wiki/Main/Energy+Supply">Sample 2</a>.</p>
 
 	<h2>Resource page content</h2>
 		<div id="resourcesSections">
