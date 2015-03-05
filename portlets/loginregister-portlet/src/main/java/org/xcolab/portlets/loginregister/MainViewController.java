@@ -208,33 +208,7 @@ public class MainViewController {
 
 		return "view";
 	}
-
-    /*/**
-     * This method simply handles requests send to the registerUser Path without more specific attributes, suach as the action=add attribute.
-     * The necessity of this were the handling of numerous user generated exceptions
-     *
-     * @param request
-     * @param model
-     * @param response
-     * @param newAccountBean
-     * @param result
-     * @param redirect
-     *//*
-    @RequestMapping(params = "isRegistering=true")
-    public void handleError(ActionRequest request, Model model,
-                             ActionResponse response, @Valid CreateUserBean newAccountBean,
-                             BindingResult result,
-                             @RequestParam(required = false) String redirect) {
-        try {
-            if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
-                response.sendRedirect(redirect);
-            }
-
-            response.sendRedirect("/");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
+    
 	@RequestMapping(params = "action=add")
 	public void registerUser(ActionRequest request, Model model,
 			ActionResponse response, @Valid CreateUserBean newAccountBean,
