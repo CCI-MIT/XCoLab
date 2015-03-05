@@ -133,7 +133,9 @@ public class MainViewController {
 			return "signedIn_logout";
 		} else {
 
-			model.addAttribute("redirect", HtmlUtil.escape(redirect));
+            if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
+                model.addAttribute("redirect", HtmlUtil.escape(redirect));
+            }
 
             // append SSO attributes
             CreateUserBean userBean = new CreateUserBean();
@@ -199,12 +201,40 @@ public class MainViewController {
 			result.addError(new ObjectError("createUserBean",
 					"Invalid words in captcha field"));
 		}
-		
-		model.addAttribute("redirect", HtmlUtil.escape(redirect));
+
+        if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
+            model.addAttribute("redirect", HtmlUtil.escape(redirect));
+        }
 
 		return "view";
 	}
 
+    /*/**
+     * This method simply handles requests send to the registerUser Path without more specific attributes, suach as the action=add attribute.
+     * The necessity of this were the handling of numerous user generated exceptions
+     *
+     * @param request
+     * @param model
+     * @param response
+     * @param newAccountBean
+     * @param result
+     * @param redirect
+     *//*
+    @RequestMapping(params = "isRegistering=true")
+    public void handleError(ActionRequest request, Model model,
+                             ActionResponse response, @Valid CreateUserBean newAccountBean,
+                             BindingResult result,
+                             @RequestParam(required = false) String redirect) {
+        try {
+            if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
+                response.sendRedirect(redirect);
+            }
+
+            response.sendRedirect("/");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
 	@RequestMapping(params = "action=add")
 	public void registerUser(ActionRequest request, Model model,
 			ActionResponse response, @Valid CreateUserBean newAccountBean,
@@ -230,7 +260,9 @@ public class MainViewController {
 				SessionErrors.clear(request);
 				response.setRenderParameter("error", "true");
 				response.setRenderParameter("recaptchaError", "true");
-                response.setRenderParameter("redirect", HtmlUtil.escape(redirect));
+                if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
+                    model.addAttribute("redirect", HtmlUtil.escape(redirect));
+                }
 			} else {
 				try {
 					completeRegistration(request, response, newAccountBean, redirect, false);
@@ -244,8 +276,10 @@ public class MainViewController {
 			}
 		} else {
 			response.setRenderParameter("error", "true");
-            response.setRenderParameter("redirect", HtmlUtil.escape(redirect));
-		}        
+            if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
+                model.addAttribute("redirect", HtmlUtil.escape(redirect));
+            }
+		}
         SessionErrors.clear(request);
         SessionMessages.clear(request);
 	}
