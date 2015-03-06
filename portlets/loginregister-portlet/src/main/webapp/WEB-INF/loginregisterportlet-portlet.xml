@@ -30,5 +30,14 @@
     	</property>
 	</bean>
 
+    <bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver" p:defaultErrorView="uncaughtException">
+        <property name="exceptionMappings">
+            <props>
+                <prop key=".NoHandlerFoundException">SSO/error</prop>
+            </props>
+        </property>
+    </bean>
+
 	<mvc:annotation-driven/>
+
 </beans>
