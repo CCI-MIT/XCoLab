@@ -12,7 +12,7 @@
 
   <portlet:actionURL var="removeSubscriptionURL">
     <portlet:param name="action" value="removeSubscription" />
-    <portlet:param name="userId" value="${currentUser.userId}" />
+    <portlet:param name="userId" value="${currentUserProfile.userId}" />
   </portlet:actionURL>
 
 
@@ -21,7 +21,7 @@
           src="/climatecolab-theme/images/arrow.gif" width="8" height="8" /> <a
           href="/web/guest/members">Members</a> <img
           src="/climatecolab-theme/images/arrow.gif" width="8" height="8" /> <a
-          href="/web/guest/member/-/member/userId/${currentUser.userId}">${userBean.screenName}</a>
+          href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
     <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />Manage Subscriptions
   </div>
 
@@ -31,7 +31,7 @@
 
           <div class="comm_disc-head">
             <h1>Subscribed activities</h1>
-            <div class="comm_info-left subscriptions"><span>${currentUser.userSubscriptions.subscriptionsCount}</span> Subscriptions</div>
+            <div class="comm_info-left subscriptions"><span>${currentUserProfile.userSubscriptions.subscriptionsCount}</span> Subscriptions</div>
           </div>
 
         <form:form commandName="userSubscriptions" id="removeSubscriptionsForm" method="post" action="${removeSubscriptionURL}">
@@ -71,20 +71,20 @@
         <div class="comm_list">
           <h3>Display</h3>
           <ul>
-            <li class="${currentUser.userSubscriptions.typeFilterName == null ? 'c' : ''}">
-              <subscriptions:subscriptionsPaginationFilterLink userId="${currentUser.userId}" typeFilter="null" text="Show All Subscriptions"/>
+            <li class="${currentUserProfile.userSubscriptions.typeFilterName == null ? 'c' : ''}">
+              <subscriptions:subscriptionsPaginationFilterLink userId="${currentUserProfile.userId}" typeFilter="null" text="Show All Subscriptions"/>
             </li>
-            <li class="${currentUser.userSubscriptions.typeFilterName == 'DISCUSSION' ? 'c' : ''}">
-              <subscriptions:subscriptionsPaginationFilterLink userId="${currentUser.userId}" typeFilter="DISCUSSION" text="Discussions"/>
+            <li class="${currentUserProfile.userSubscriptions.typeFilterName == 'DISCUSSION' ? 'c' : ''}">
+              <subscriptions:subscriptionsPaginationFilterLink userId="${currentUserProfile.userId}" typeFilter="DISCUSSION" text="Discussions"/>
             </li>
-            <li class="${currentUser.userSubscriptions.typeFilterName == 'PLAN' ? 'c' : ''}">
-              <subscriptions:subscriptionsPaginationFilterLink userId="${currentUser.userId}" typeFilter="PLAN" text="Proposals"/>
+            <li class="${currentUserProfile.userSubscriptions.typeFilterName == 'PLAN' ? 'c' : ''}">
+              <subscriptions:subscriptionsPaginationFilterLink userId="${currentUserProfile.userId}" typeFilter="PLAN" text="Proposals"/>
             </li>
           </ul>
           <h3>Settings</h3>
           <ul>
             <li>
-              <a href="/web/guest/member/-/member/userId/${currentUser.userId}/page/edit">Manage your email notification settings</a>
+              <a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/edit">Manage your email notification settings</a>
             </li>
           </ul>
         </div>
