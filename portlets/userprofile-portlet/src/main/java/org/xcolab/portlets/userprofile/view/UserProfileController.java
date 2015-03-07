@@ -87,6 +87,10 @@ public class UserProfileController {
         try{
             populateUserWrapper(request, model, userId);
             if (currentUserProfile.isViewingOwnProfile()) {
+                if (currentUserProfile.isViewingOwnProfile()) {
+                    model.addAttribute("newsletterBean",
+                            new NewsletterBean(currentUserProfile.getUserBean().getEmailStored(), request));
+                }
                 return "editUserProfile";
             }
         } catch(Exception e){
@@ -202,13 +206,13 @@ public class UserProfileController {
         boolean eMailChanged = false;
 
         Long loggedInUserId = Long.parseLong(request.getRemoteUser());
-        if(loggedInUserId != updatedUserBean.getUserId()){
+        if(!loggedInUserId.equals(updatedUserBean.getUserId())){
             response.sendRedirect("/web/guest/member/-/member/userId/" + updatedUserBean.getUserId());
         }
         try {
             populateUserWrapper(request, model, request.getRemoteUser());
         } catch(Exception e){
-            _log.warn("Could not create user profile for " + loggedInUserId);
+            _log.warn("Could not update user profile for " + loggedInUserId);
             response.sendRedirect("/web/guest/member/-/member/userId/" + loggedInUserId);
         }
 
@@ -345,11 +349,6 @@ public class UserProfileController {
             model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
             model.addAttribute("userBean", currentUserProfile.getUserBean());
             model.addAttribute("messageBean", new MessageBean());
-
-            if (currentUserProfile.isViewingOwnProfile()) {
-                model.addAttribute("newsletterBean",
-                        new NewsletterBean(currentUserProfile.getUserBean().getEmailStored(), request));
-            }
         }
     }
 
