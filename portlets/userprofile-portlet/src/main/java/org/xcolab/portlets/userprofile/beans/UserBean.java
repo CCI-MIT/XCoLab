@@ -68,17 +68,21 @@ public class UserBean implements Serializable{
 	@Length(min = 0, max = 300)
 	private String country;
 
+	private Long userId;
 	private Long imageId;
 	private boolean isFemale;
 	private boolean sendEmailOnMessage;
 	private boolean sendEmailOnActivity;
 	private boolean sendDailyEmailOnActivity;
 
+	private static final long DEFAULT_COMPANY_ID = 10112L;
+
 	public UserBean(){
 	}
 
 	public UserBean(User user) throws PortalException, SystemException {
 
+		userId = user.getUserId();
 		screenName = user.getScreenName();
 		firstName = user.getFirstName();
 		lastName = user.getLastName();
@@ -90,7 +94,7 @@ public class UserBean implements Serializable{
 				CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
 				user.getUserId(), StringPool.BLANK));
 
-		shortBio = ExpandoValueLocalServiceUtil.getData(User.class.getName(),
+		shortBio = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID, User.class.getName(),
 				CommunityConstants.EXPANDO, CommunityConstants.BIO,
 				user.getUserId(), StringPool.BLANK);
 
@@ -214,6 +218,14 @@ public class UserBean implements Serializable{
 	public boolean getSendDailyEmailOnActivity() { return sendDailyEmailOnActivity; }
 
 	public void setSendDailyEmailOnActivity(boolean send) { sendDailyEmailOnActivity = send; }
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
 	@Override
 	public String toString() {
