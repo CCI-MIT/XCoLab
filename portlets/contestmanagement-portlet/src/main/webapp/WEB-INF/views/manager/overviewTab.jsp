@@ -19,6 +19,7 @@
 		<portlet:param name="action_forwardToPage" value="overviewTab" />
 		<portlet:param name="action_errorForwardToPage" value="overviewTab" />
 		<portlet:param name="tab" value="OVERVIEW" />
+		<portlet:param name="manager" value="true" />
 		<portlet:param name="action" value="updateContestOverview" />
 	</portlet:actionURL>
 
