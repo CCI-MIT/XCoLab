@@ -2,6 +2,10 @@
     float: left;
 }
 
+.floatRight{
+    float: right;
+}
+
 .clearLeft{
     clear: left;
 }
@@ -228,4 +232,120 @@ li.ui-menu-item .ui-state-focus {
     padding-bottom: 0px;
 }
 
+.cmsDetailsBox .contestOverview {
+    table-layout:fixed;
+    margin: inherit;
+    padding: inherit;
+    margin-top: 30px;
+}
 
+.cmsDetailsBox .contestOverview .extraSmallColumn {
+    width: 25px;
+}
+
+.cmsDetailsBox .contestOverview .smallColumn {
+    width: 100px;
+}
+
+.cmsDetailsBox .contestOverview .mediumColumn {
+    width: 200px;
+}
+
+.cmsDetailsBox .contestOverview .wideColumn {
+    width: 300px;
+}
+
+.cmsDetailsBox .contestOverview tr {
+    white-space: nowrap;
+    line-height: 30px;
+    cursor: move;
+    height: 30px;
+    background-color: #f2f1e9;
+    display: table-row;
+    margin-bottom: 0px;
+    border-bottom: 5px solid white;
+    transition: 0.3s ease-out 0s;
+    padding: inherit;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cmsDetailsBox .contestOverview .blue tr  {
+    background-color: #e7f1f5;
+}
+
+.cmsDetailsBox .contestOverview tr.blue.drag {
+    transform: scale(0.9);
+}
+
+.cmsDetailsBox .contestOverview tr.drag{
+    transform: scale(0.9);
+    border-bottom: 5px solid white;
+}
+
+.cmsDetailsBox .contestOverview tr.allowDrop{
+    transition: 0.3s ease-out 0s;
+    border-top: 34px solid rgba(255, 255, 255, 1);
+}
+
+.cmsDetailsBox .contestOverview td {
+    border-collapse: collapse;
+    vertical-align: middle;
+    text-align: center;
+    line-height: inherit;
+}
+
+.cmsDetailsBox .contestOverview th {
+    vertical-align: middle;
+    text-align: center;
+    line-height: 30px;
+}
+
+.rotate{
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+
+    /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+    -webkit-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    -o-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+
+    /* Should be unset in IE9+ I think. */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+#massMessage input{
+    width: 100%;
+    font-size: medium;
+    line-height: 30px;
+}
+#massMessage textarea {
+    width: 100%;
+    font-size: medium;
+    min-height: 60px;
+}
+
+#selectedMassAction{
+    font-size: large;
+    line-height: 27px;
+}
+
+#contestsFilterSelect{
+    font-size: large;
+    line-height: 27px;
+}
+
+.outerVerticalCenter{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.innerVerticalCenter {
+    display: inline-block;
+}

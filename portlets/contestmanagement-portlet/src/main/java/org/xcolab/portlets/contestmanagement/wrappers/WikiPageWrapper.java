@@ -165,7 +165,7 @@ public class WikiPageWrapper {
         updateContestResourceUrl(contest, wikiPage.getTitle());
     }
     public static void updateContestResourceUrl(Contest contest, String wikiPageTitle) throws Exception{
-        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPageTitle);
+        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPageTitle,"UTF-8");
         contest.setResourcesUrl(escapedWikiPageUrlLink);
         contest.persist();
         ContestLocalServiceUtil.updateContest(contest);

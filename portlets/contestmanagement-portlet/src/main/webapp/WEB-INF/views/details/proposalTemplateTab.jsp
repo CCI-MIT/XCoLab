@@ -47,8 +47,8 @@
 
 				<c:forEach var="section" items="${contestProposalTemplateWrapper.sections}" varStatus="x" >
 
-					<div class="dropzone" ondrop="drop(event)" style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
-						 ondragenter="dragEnter(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)"
+					<div class="dropzone" style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
+						 ondrop="drop(event)" ondragenter="dragEnter(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)"
 							data-bind-id="${x.index}"
 							id="dropzone${x.index}"><span class="counter" style="float: left;">Position # ${x.index +1}</span><span style="float:right">To change order drag a section and drop it on any of these areas.</span></div>
 

@@ -25,4 +25,11 @@
         <generated-parameter name="contestId">{contestId}</generated-parameter>
     </route>
 
+    <route>
+        <pattern>/manager/tab/{tab}</pattern>
+        <generated-parameter name="tab">{tab}</generated-parameter>
+        <generated-parameter name="manager">true</generated-parameter>
+    </route>
+
+
 </routes>

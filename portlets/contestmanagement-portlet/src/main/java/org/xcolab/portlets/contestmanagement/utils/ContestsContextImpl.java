@@ -26,6 +26,7 @@ public class ContestsContextImpl implements TabContext {
     private static final String USER_ATTRIBUTE = CONTEXT_ATTRIBUTE_PREFIX + "user";
     private static final String CONTEST_WRAPPED_ATTRIBUTE = CONTEXT_ATTRIBUTE_PREFIX + "contestWrapped";
     private static final String CONTEST_ID_PARAM = "contestId";
+    private static final String CONTEST_MANAGEMENT_PARAM = "manager";
 
     public ContestsContextImpl() {
     }
@@ -66,13 +67,18 @@ public class ContestsContextImpl implements TabContext {
     private void init(PortletRequest request) throws PortalException, SystemException {
 
         try {
-            final Long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
-            Contest contest = ContestLocalServiceUtil.getContest(contestId);
+            final Boolean mangerView = ParamUtil.getBoolean(request, CONTEST_MANAGEMENT_PARAM);
+            if(mangerView){
+                request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestManagementPermissions(request));
+            } else {
+                final Long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
+                Contest contest = ContestLocalServiceUtil.getContest(contestId);
 
-            if (contest != null) {
-                request.setAttribute(CONTEST_ATTRIBUTE, contest);
-                request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contest));
-                request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestPermissions(request, contest));
+                if (contest != null) {
+                    request.setAttribute(CONTEST_ATTRIBUTE, contest);
+                    request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contest));
+                    request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestPermissions(request, contest));
+                }
             }
 
             ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
