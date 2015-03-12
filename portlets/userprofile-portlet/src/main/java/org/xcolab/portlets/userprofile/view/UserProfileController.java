@@ -1,6 +1,5 @@
 package org.xcolab.portlets.userprofile.view;
 
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.*;
 
@@ -25,7 +24,6 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
-import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -170,6 +168,8 @@ public class UserProfileController {
         try {
             populateUserWrapper(request, model, userId);
             if (currentUserProfile.isViewingOwnProfile()) {
+                model.addAttribute("newsletterBean",
+                        new NewsletterBean(currentUserProfile.getUserBean().getEmailStored(), request));
                 return "editUserProfile";
             }
         } catch (Exception e) {
@@ -325,8 +325,8 @@ public class UserProfileController {
             if (eMailChanged) {
                 updatedUserBean.setEmailStored(updatedUserBean.getEmail());
                 try {
-                    sendUpatedEmail(currentUserProfile.getUser());
-                } catch(AddressException | MailEngineException e){
+                    sendUpdatedEmail(currentUserProfile.getUser());
+                } catch(Exception e){
                     _log.warn("Sending eMail confirmation after email change failed for userId: " + currentUserProfile.getUser().getUserId());
                     _log.warn(e);
                 }
@@ -459,7 +459,7 @@ public class UserProfileController {
         return existing;
     }
 
-    private void sendUpatedEmail(User user) throws AddressException, MailEngineException {
+    private void sendUpdatedEmail(User user) throws Exception{
         String messageSubject = "Your email address on the Climate CoLab has been updated";
         String messageBody = "Dear " + user.getFirstName() + ",\n" +
                 "\n" +
@@ -473,13 +473,11 @@ public class UserProfileController {
                 "Thank you for engaging on the Climate CoLab!\n";
 
         InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
-
         InternetAddress[] addressTo = {new InternetAddress(user.getEmailAddress())};
 
         InternetAddress replyTo[] = {addressFrom};
-
-        MailEngine.send(addressFrom, addressTo, null, null, null,
-                messageSubject, messageBody, false, replyTo, null, null);
+            MailEngine.send(addressFrom, addressTo, null, null, null,
+                    messageSubject, messageBody, false, replyTo, null, null);
     }
 
 
