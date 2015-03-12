@@ -25,6 +25,12 @@
 	<import class="com.ext.portlet.model.EmailList" />
 	<import class="com.ext.portlet.model.FocusArea" />
 	<import class="com.ext.portlet.model.FocusAreaOntologyTerm" />
+	<import class="com.ext.portlet.model.ImpactDefaultSeries" />
+	<import class="com.ext.portlet.model.ImpactDefaultSeriesData" />
+	<import class="com.ext.portlet.model.ImpactIteration" />
+	<import class="com.ext.portlet.model.ImpactTemplateFocusAreaList" />
+	<import class="com.ext.portlet.model.ImpactTemplateMaxFocusArea" />
+	<import class="com.ext.portlet.model.ImpactTemplateSeries" />
 	<import class="com.ext.portlet.model.LandingPage" />
 	<import class="com.ext.portlet.model.LoginLog" />
 	<import class="com.ext.portlet.model.Message" />
@@ -404,6 +410,53 @@
 			<key-property name="ontologyTermId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
 		<property name="order" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="order_" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactDefaultSeriesImpl" table="xcolab_ImpactDefaultSeries">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ImpactDefaultSeriesPK">
+			<key-property name="seriesId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		</composite-id>
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="visible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactDefaultSeriesDataImpl" table="xcolab_ImpactDefaultSeriesData">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPK">
+			<key-property name="seriesId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="year" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+			<key-property name="value" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
+		</composite-id>
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactIterationImpl" table="xcolab_ImpactIteration">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ImpactIterationPK">
+			<key-property name="iterationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="year" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		</composite-id>
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactTemplateFocusAreaListImpl" table="xcolab_ImpactTemplateFocusAreaList">
+		<cache usage="read-write" />
+		<id name="focusAreaListId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactTemplateMaxFocusAreaImpl" table="xcolab_ImpactTemplateMaxFocusArea">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPK">
+			<key-property name="focusAreaListId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
+	</class>
+	<class name="com.ext.portlet.model.impl.ImpactTemplateSeriesImpl" table="xcolab_ImpactTemplateSeries">
+		<cache usage="read-write" />
+		<id name="seriesId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="iterationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.LandingPageImpl" table="xcolab_LandingPage">
 		<cache usage="read-write" />
@@ -904,6 +957,8 @@
 		</id>
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="baseTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="impactSeriesTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="focusAreaListTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.PlanTemplateSectionImpl" table="xcolab_PlanTemplateSection">
 		<cache usage="read-write" />

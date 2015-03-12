@@ -16,6 +16,8 @@ public class PlanTemplateSoap implements Serializable {
     private long _id;
     private String _name;
     private Long _baseTemplateId;
+    private Long _impactSeriesTemplateId;
+    private Long _focusAreaListTemplateId;
 
     public PlanTemplateSoap() {
     }
@@ -26,6 +28,8 @@ public class PlanTemplateSoap implements Serializable {
         soapModel.setId(model.getId());
         soapModel.setName(model.getName());
         soapModel.setBaseTemplateId(model.getBaseTemplateId());
+        soapModel.setImpactSeriesTemplateId(model.getImpactSeriesTemplateId());
+        soapModel.setFocusAreaListTemplateId(model.getFocusAreaListTemplateId());
 
         return soapModel;
     }
@@ -96,5 +100,21 @@ public class PlanTemplateSoap implements Serializable {
 
     public void setBaseTemplateId(Long baseTemplateId) {
         _baseTemplateId = baseTemplateId;
+    }
+
+    public Long getImpactSeriesTemplateId() {
+        return _impactSeriesTemplateId;
+    }
+
+    public void setImpactSeriesTemplateId(Long impactSeriesTemplateId) {
+        _impactSeriesTemplateId = impactSeriesTemplateId;
+    }
+
+    public Long getFocusAreaListTemplateId() {
+        return _focusAreaListTemplateId;
+    }
+
+    public void setFocusAreaListTemplateId(Long focusAreaListTemplateId) {
+        _focusAreaListTemplateId = focusAreaListTemplateId;
     }
 }

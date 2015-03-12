@@ -23,6 +23,8 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
     private long _id;
     private String _name;
     private Long _baseTemplateId;
+    private Long _impactSeriesTemplateId;
+    private Long _focusAreaListTemplateId;
     private BaseModel<?> _planTemplateRemoteModel;
 
     public PlanTemplateClp() {
@@ -65,6 +67,8 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
         attributes.put("id", getId());
         attributes.put("name", getName());
         attributes.put("baseTemplateId", getBaseTemplateId());
+        attributes.put("impactSeriesTemplateId", getImpactSeriesTemplateId());
+        attributes.put("focusAreaListTemplateId", getFocusAreaListTemplateId());
 
         return attributes;
     }
@@ -87,6 +91,20 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
 
         if (baseTemplateId != null) {
             setBaseTemplateId(baseTemplateId);
+        }
+
+        Long impactSeriesTemplateId = (Long) attributes.get(
+                "impactSeriesTemplateId");
+
+        if (impactSeriesTemplateId != null) {
+            setImpactSeriesTemplateId(impactSeriesTemplateId);
+        }
+
+        Long focusAreaListTemplateId = (Long) attributes.get(
+                "focusAreaListTemplateId");
+
+        if (focusAreaListTemplateId != null) {
+            setFocusAreaListTemplateId(focusAreaListTemplateId);
         }
     }
 
@@ -150,6 +168,52 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
                 Method method = clazz.getMethod("setBaseTemplateId", Long.class);
 
                 method.invoke(_planTemplateRemoteModel, baseTemplateId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public Long getImpactSeriesTemplateId() {
+        return _impactSeriesTemplateId;
+    }
+
+    @Override
+    public void setImpactSeriesTemplateId(Long impactSeriesTemplateId) {
+        _impactSeriesTemplateId = impactSeriesTemplateId;
+
+        if (_planTemplateRemoteModel != null) {
+            try {
+                Class<?> clazz = _planTemplateRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setImpactSeriesTemplateId",
+                        Long.class);
+
+                method.invoke(_planTemplateRemoteModel, impactSeriesTemplateId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public Long getFocusAreaListTemplateId() {
+        return _focusAreaListTemplateId;
+    }
+
+    @Override
+    public void setFocusAreaListTemplateId(Long focusAreaListTemplateId) {
+        _focusAreaListTemplateId = focusAreaListTemplateId;
+
+        if (_planTemplateRemoteModel != null) {
+            try {
+                Class<?> clazz = _planTemplateRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setFocusAreaListTemplateId",
+                        Long.class);
+
+                method.invoke(_planTemplateRemoteModel, focusAreaListTemplateId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -226,6 +290,8 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
         clone.setId(getId());
         clone.setName(getName());
         clone.setBaseTemplateId(getBaseTemplateId());
+        clone.setImpactSeriesTemplateId(getImpactSeriesTemplateId());
+        clone.setFocusAreaListTemplateId(getFocusAreaListTemplateId());
 
         return clone;
     }
@@ -271,7 +337,7 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(11);
 
         sb.append("{id=");
         sb.append(getId());
@@ -279,6 +345,10 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
         sb.append(getName());
         sb.append(", baseTemplateId=");
         sb.append(getBaseTemplateId());
+        sb.append(", impactSeriesTemplateId=");
+        sb.append(getImpactSeriesTemplateId());
+        sb.append(", focusAreaListTemplateId=");
+        sb.append(getFocusAreaListTemplateId());
         sb.append("}");
 
         return sb.toString();
@@ -286,7 +356,7 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanTemplate");
@@ -303,6 +373,14 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
         sb.append(
             "<column><column-name>baseTemplateId</column-name><column-value><![CDATA[");
         sb.append(getBaseTemplateId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>impactSeriesTemplateId</column-name><column-value><![CDATA[");
+        sb.append(getImpactSeriesTemplateId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>focusAreaListTemplateId</column-name><column-value><![CDATA[");
+        sb.append(getFocusAreaListTemplateId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

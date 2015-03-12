@@ -40,6 +40,8 @@ public class PlanTemplateWrapper implements PlanTemplate,
         attributes.put("id", getId());
         attributes.put("name", getName());
         attributes.put("baseTemplateId", getBaseTemplateId());
+        attributes.put("impactSeriesTemplateId", getImpactSeriesTemplateId());
+        attributes.put("focusAreaListTemplateId", getFocusAreaListTemplateId());
 
         return attributes;
     }
@@ -62,6 +64,20 @@ public class PlanTemplateWrapper implements PlanTemplate,
 
         if (baseTemplateId != null) {
             setBaseTemplateId(baseTemplateId);
+        }
+
+        Long impactSeriesTemplateId = (Long) attributes.get(
+                "impactSeriesTemplateId");
+
+        if (impactSeriesTemplateId != null) {
+            setImpactSeriesTemplateId(impactSeriesTemplateId);
+        }
+
+        Long focusAreaListTemplateId = (Long) attributes.get(
+                "focusAreaListTemplateId");
+
+        if (focusAreaListTemplateId != null) {
+            setFocusAreaListTemplateId(focusAreaListTemplateId);
         }
     }
 
@@ -143,6 +159,47 @@ public class PlanTemplateWrapper implements PlanTemplate,
     @Override
     public void setBaseTemplateId(java.lang.Long baseTemplateId) {
         _planTemplate.setBaseTemplateId(baseTemplateId);
+    }
+
+    /**
+    * Returns the impact series template ID of this plan template.
+    *
+    * @return the impact series template ID of this plan template
+    */
+    @Override
+    public java.lang.Long getImpactSeriesTemplateId() {
+        return _planTemplate.getImpactSeriesTemplateId();
+    }
+
+    /**
+    * Sets the impact series template ID of this plan template.
+    *
+    * @param impactSeriesTemplateId the impact series template ID of this plan template
+    */
+    @Override
+    public void setImpactSeriesTemplateId(java.lang.Long impactSeriesTemplateId) {
+        _planTemplate.setImpactSeriesTemplateId(impactSeriesTemplateId);
+    }
+
+    /**
+    * Returns the focus area list template ID of this plan template.
+    *
+    * @return the focus area list template ID of this plan template
+    */
+    @Override
+    public java.lang.Long getFocusAreaListTemplateId() {
+        return _planTemplate.getFocusAreaListTemplateId();
+    }
+
+    /**
+    * Sets the focus area list template ID of this plan template.
+    *
+    * @param focusAreaListTemplateId the focus area list template ID of this plan template
+    */
+    @Override
+    public void setFocusAreaListTemplateId(
+        java.lang.Long focusAreaListTemplateId) {
+        _planTemplate.setFocusAreaListTemplateId(focusAreaListTemplateId);
     }
 
     @Override
