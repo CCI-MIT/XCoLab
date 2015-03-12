@@ -214,7 +214,6 @@ public class UserProfileController {
         }
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
-            currentUserProfile.setUserBean(updatedUserBean);
             populateUserWrapper(currentUserProfile, model);
 
         if (updatedUserBean.getPassword() != null  && updatedUserBean.getPassword().trim().length() > 0) {
