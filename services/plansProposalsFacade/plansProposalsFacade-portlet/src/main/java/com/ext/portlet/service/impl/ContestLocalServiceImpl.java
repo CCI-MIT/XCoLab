@@ -14,6 +14,15 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.ext.portlet.contests.ContestStatus;
+import com.ext.portlet.model.ImpactIteration;
+import com.ext.portlet.model.ImpactTemplateFocusAreaList;
+import com.ext.portlet.model.ImpactTemplateMaxFocusArea;
+import com.ext.portlet.model.ImpactTemplateSeries;
+import com.ext.portlet.service.ImpactIterationLocalServiceUtil;
+import com.ext.portlet.service.ImpactTemplateFocusAreaListLocalServiceUtil;
+import com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalServiceUtil;
+import com.ext.portlet.service.PlanTemplateLocalService;
+import com.ext.portlet.service.persistence.ImpactTemplateSeriesUtil;
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
@@ -1057,5 +1066,29 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             }
         }
         return null;
+    }
+
+    // Proposal impact implementation
+
+    public ImpactTemplateSeries getContestImpactTemplateSeries(Contest contest) throws SystemException, PortalException {
+        PlanTemplate planTemplate = PlanTemplateLocalServiceUtil.getPlanTemplate(contest.getPlanTemplateId());
+        ImpactTemplateSeries impactTemplateSeries = ImpactTemplateSeriesUtil.findByPrimaryKey(planTemplate.getImpactSeriesTemplateId());
+
+        return impactTemplateSeries;
+    }
+
+    public List<ImpactIteration> getContestImpactIterations(Contest contest) throws PortalException, SystemException {
+        ImpactTemplateSeries impactSeries = getContestImpactTemplateSeries(contest);
+        return impactIterationPersistence.findByiterationId(impactSeries.getIterationId());
+    }
+
+    public ImpactTemplateFocusAreaList getContestImpactFocusAreaList(Contest contest) throws SystemException, PortalException {
+        PlanTemplate planTemplate = PlanTemplateLocalServiceUtil.getPlanTemplate(contest.getPlanTemplateId());
+        return ImpactTemplateFocusAreaListLocalServiceUtil.getImpactTemplateFocusAreaList(planTemplate.getFocusAreaListTemplateId());
+    }
+
+    public List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) throws PortalException, SystemException {
+        ImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);
+        return impactTemplateMaxFocusAreaPersistence.findByfocusAreaListId(focusAreaList.getFocusAreaListId());
     }
 }

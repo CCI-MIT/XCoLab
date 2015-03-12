@@ -23,10 +23,12 @@ public class PlanTemplateCacheModel implements CacheModel<PlanTemplate>,
     public long id;
     public String name;
     public Long baseTemplateId;
+    public Long impactSeriesTemplateId;
+    public Long focusAreaListTemplateId;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(11);
 
         sb.append("{id=");
         sb.append(id);
@@ -34,6 +36,10 @@ public class PlanTemplateCacheModel implements CacheModel<PlanTemplate>,
         sb.append(name);
         sb.append(", baseTemplateId=");
         sb.append(baseTemplateId);
+        sb.append(", impactSeriesTemplateId=");
+        sb.append(impactSeriesTemplateId);
+        sb.append(", focusAreaListTemplateId=");
+        sb.append(focusAreaListTemplateId);
         sb.append("}");
 
         return sb.toString();
@@ -52,6 +58,8 @@ public class PlanTemplateCacheModel implements CacheModel<PlanTemplate>,
         }
 
         planTemplateImpl.setBaseTemplateId(baseTemplateId);
+        planTemplateImpl.setImpactSeriesTemplateId(impactSeriesTemplateId);
+        planTemplateImpl.setFocusAreaListTemplateId(focusAreaListTemplateId);
 
         planTemplateImpl.resetOriginalValues();
 
@@ -63,6 +71,8 @@ public class PlanTemplateCacheModel implements CacheModel<PlanTemplate>,
         id = objectInput.readLong();
         name = objectInput.readUTF();
         baseTemplateId = objectInput.readLong();
+        impactSeriesTemplateId = objectInput.readLong();
+        focusAreaListTemplateId = objectInput.readLong();
     }
 
     @Override
@@ -77,5 +87,7 @@ public class PlanTemplateCacheModel implements CacheModel<PlanTemplate>,
         }
 
         objectOutput.writeLong(baseTemplateId);
+        objectOutput.writeLong(impactSeriesTemplateId);
+        objectOutput.writeLong(focusAreaListTemplateId);
     }
 }

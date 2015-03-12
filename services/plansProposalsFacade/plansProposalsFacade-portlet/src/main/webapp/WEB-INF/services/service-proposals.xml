@@ -228,6 +228,7 @@
         <column name="proposalRatings" type="Collection" entity="ProposalRating" mapping-key="ratingValueId"/>
     </entity>
 
+	<!-- Proposal impact -->
 
 
 </service-builder>

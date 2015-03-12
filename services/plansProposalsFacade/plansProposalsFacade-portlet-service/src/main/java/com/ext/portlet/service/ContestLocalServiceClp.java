@@ -154,6 +154,14 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private String[] _methodParameterTypes72;
     private String _methodName73;
     private String[] _methodParameterTypes73;
+    private String _methodName74;
+    private String[] _methodParameterTypes74;
+    private String _methodName75;
+    private String[] _methodParameterTypes75;
+    private String _methodName76;
+    private String[] _methodParameterTypes76;
+    private String _methodName77;
+    private String[] _methodParameterTypes77;
 
     public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -476,6 +484,22 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _methodName73 = "getPointsAccessibleForActivePhaseOfContest";
 
         _methodParameterTypes73 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName74 = "getContestImpactTemplateSeries";
+
+        _methodParameterTypes74 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName75 = "getContestImpactIterations";
+
+        _methodParameterTypes75 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName76 = "getContestImpactFocusAreaList";
+
+        _methodParameterTypes76 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName77 = "getContestImpactFocusAreas";
+
+        _methodParameterTypes77 = new String[] { "com.ext.portlet.model.Contest" };
     }
 
     @Override
@@ -2706,5 +2730,127 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
 
         return (java.lang.Integer) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.ext.portlet.model.ImpactTemplateSeries getContestImpactTemplateSeries(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName74,
+                    _methodParameterTypes74,
+                    new Object[] { ClpSerializer.translateInput(contest) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ImpactTemplateSeries) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ImpactIteration> getContestImpactIterations(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName75,
+                    _methodParameterTypes75,
+                    new Object[] { ClpSerializer.translateInput(contest) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ImpactIteration>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.ext.portlet.model.ImpactTemplateFocusAreaList getContestImpactFocusAreaList(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName76,
+                    _methodParameterTypes76,
+                    new Object[] { ClpSerializer.translateInput(contest) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ImpactTemplateFocusAreaList) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(
+        com.ext.portlet.model.Contest contest) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName77,
+                    _methodParameterTypes77,
+                    new Object[] { ClpSerializer.translateInput(contest) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea>) ClpSerializer.translateOutput(returnObj);
     }
 }

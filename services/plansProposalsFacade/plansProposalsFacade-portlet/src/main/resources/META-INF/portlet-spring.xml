@@ -84,6 +84,24 @@
 	<bean id="com.ext.portlet.service.FocusAreaOntologyTermLocalService" class="com.ext.portlet.service.impl.FocusAreaOntologyTermLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.FocusAreaOntologyTermService" class="com.ext.portlet.service.impl.FocusAreaOntologyTermServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence" class="com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ImpactDefaultSeriesLocalService" class="com.ext.portlet.service.impl.ImpactDefaultSeriesLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ImpactDefaultSeriesService" class="com.ext.portlet.service.impl.ImpactDefaultSeriesServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ImpactDefaultSeriesPersistence" class="com.ext.portlet.service.persistence.ImpactDefaultSeriesPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ImpactDefaultSeriesDataLocalService" class="com.ext.portlet.service.impl.ImpactDefaultSeriesDataLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ImpactDefaultSeriesDataService" class="com.ext.portlet.service.impl.ImpactDefaultSeriesDataServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPersistence" class="com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ImpactIterationLocalService" class="com.ext.portlet.service.impl.ImpactIterationLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ImpactIterationService" class="com.ext.portlet.service.impl.ImpactIterationServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ImpactIterationPersistence" class="com.ext.portlet.service.persistence.ImpactIterationPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ImpactTemplateFocusAreaListLocalService" class="com.ext.portlet.service.impl.ImpactTemplateFocusAreaListLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ImpactTemplateFocusAreaListService" class="com.ext.portlet.service.impl.ImpactTemplateFocusAreaListServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ImpactTemplateFocusAreaListPersistence" class="com.ext.portlet.service.persistence.ImpactTemplateFocusAreaListPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalService" class="com.ext.portlet.service.impl.ImpactTemplateMaxFocusAreaLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ImpactTemplateMaxFocusAreaService" class="com.ext.portlet.service.impl.ImpactTemplateMaxFocusAreaServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPersistence" class="com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ImpactTemplateSeriesLocalService" class="com.ext.portlet.service.impl.ImpactTemplateSeriesLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ImpactTemplateSeriesService" class="com.ext.portlet.service.impl.ImpactTemplateSeriesServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistence" class="com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.LandingPageLocalService" class="com.ext.portlet.service.impl.LandingPageLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.LandingPageService" class="com.ext.portlet.service.impl.LandingPageServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.LandingPagePersistence" class="com.ext.portlet.service.persistence.LandingPagePersistenceImpl" parent="basePersistence" />

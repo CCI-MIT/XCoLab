@@ -51,9 +51,11 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
     public static final Object[][] TABLE_COLUMNS = {
             { "id_", Types.BIGINT },
             { "name", Types.VARCHAR },
-            { "baseTemplateId", Types.BIGINT }
+            { "baseTemplateId", Types.BIGINT },
+            { "impactSeriesTemplateId", Types.BIGINT },
+            { "focusAreaListTemplateId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanTemplate (id_ LONG not null primary key,name VARCHAR(1024) null,baseTemplateId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanTemplate (id_ LONG not null primary key,name VARCHAR(1024) null,baseTemplateId LONG,impactSeriesTemplateId LONG,focusAreaListTemplateId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanTemplate";
     public static final String ORDER_BY_JPQL = " ORDER BY planTemplate.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanTemplate.id_ ASC";
@@ -76,6 +78,8 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
     private long _id;
     private String _name;
     private Long _baseTemplateId;
+    private Long _impactSeriesTemplateId;
+    private Long _focusAreaListTemplateId;
     private PlanTemplate _escapedModel;
 
     public PlanTemplateModelImpl() {
@@ -97,6 +101,8 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         model.setId(soapModel.getId());
         model.setName(soapModel.getName());
         model.setBaseTemplateId(soapModel.getBaseTemplateId());
+        model.setImpactSeriesTemplateId(soapModel.getImpactSeriesTemplateId());
+        model.setFocusAreaListTemplateId(soapModel.getFocusAreaListTemplateId());
 
         return model;
     }
@@ -158,6 +164,8 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         attributes.put("id", getId());
         attributes.put("name", getName());
         attributes.put("baseTemplateId", getBaseTemplateId());
+        attributes.put("impactSeriesTemplateId", getImpactSeriesTemplateId());
+        attributes.put("focusAreaListTemplateId", getFocusAreaListTemplateId());
 
         return attributes;
     }
@@ -180,6 +188,20 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
 
         if (baseTemplateId != null) {
             setBaseTemplateId(baseTemplateId);
+        }
+
+        Long impactSeriesTemplateId = (Long) attributes.get(
+                "impactSeriesTemplateId");
+
+        if (impactSeriesTemplateId != null) {
+            setImpactSeriesTemplateId(impactSeriesTemplateId);
+        }
+
+        Long focusAreaListTemplateId = (Long) attributes.get(
+                "focusAreaListTemplateId");
+
+        if (focusAreaListTemplateId != null) {
+            setFocusAreaListTemplateId(focusAreaListTemplateId);
         }
     }
 
@@ -220,6 +242,28 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         _baseTemplateId = baseTemplateId;
     }
 
+    @JSON
+    @Override
+    public Long getImpactSeriesTemplateId() {
+        return _impactSeriesTemplateId;
+    }
+
+    @Override
+    public void setImpactSeriesTemplateId(Long impactSeriesTemplateId) {
+        _impactSeriesTemplateId = impactSeriesTemplateId;
+    }
+
+    @JSON
+    @Override
+    public Long getFocusAreaListTemplateId() {
+        return _focusAreaListTemplateId;
+    }
+
+    @Override
+    public void setFocusAreaListTemplateId(Long focusAreaListTemplateId) {
+        _focusAreaListTemplateId = focusAreaListTemplateId;
+    }
+
     @Override
     public ExpandoBridge getExpandoBridge() {
         return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
@@ -250,6 +294,8 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         planTemplateImpl.setId(getId());
         planTemplateImpl.setName(getName());
         planTemplateImpl.setBaseTemplateId(getBaseTemplateId());
+        planTemplateImpl.setImpactSeriesTemplateId(getImpactSeriesTemplateId());
+        planTemplateImpl.setFocusAreaListTemplateId(getFocusAreaListTemplateId());
 
         planTemplateImpl.resetOriginalValues();
 
@@ -315,12 +361,16 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
 
         planTemplateCacheModel.baseTemplateId = getBaseTemplateId();
 
+        planTemplateCacheModel.impactSeriesTemplateId = getImpactSeriesTemplateId();
+
+        planTemplateCacheModel.focusAreaListTemplateId = getFocusAreaListTemplateId();
+
         return planTemplateCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(11);
 
         sb.append("{id=");
         sb.append(getId());
@@ -328,6 +378,10 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         sb.append(getName());
         sb.append(", baseTemplateId=");
         sb.append(getBaseTemplateId());
+        sb.append(", impactSeriesTemplateId=");
+        sb.append(getImpactSeriesTemplateId());
+        sb.append(", focusAreaListTemplateId=");
+        sb.append(getFocusAreaListTemplateId());
         sb.append("}");
 
         return sb.toString();
@@ -335,7 +389,7 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanTemplate");
@@ -352,6 +406,14 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         sb.append(
             "<column><column-name>baseTemplateId</column-name><column-value><![CDATA[");
         sb.append(getBaseTemplateId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>impactSeriesTemplateId</column-name><column-value><![CDATA[");
+        sb.append(getImpactSeriesTemplateId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>focusAreaListTemplateId</column-name><column-value><![CDATA[");
+        sb.append(getFocusAreaListTemplateId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

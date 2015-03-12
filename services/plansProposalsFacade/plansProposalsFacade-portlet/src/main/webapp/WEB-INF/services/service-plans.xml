@@ -506,6 +506,8 @@
         <column name="id" type="long" primary="true" />
         <column name="name" type="String" />
         <column name="baseTemplateId" type="Long" />
+        <column name="impactSeriesTemplateId" type="Long" />
+        <column name="focusAreaListTemplateId" type="Long" />
     </entity>
     
     <entity name="PlanTemplateSection" local-service="true">
