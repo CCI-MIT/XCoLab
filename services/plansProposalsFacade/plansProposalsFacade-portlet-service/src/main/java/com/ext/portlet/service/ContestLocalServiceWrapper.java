@@ -784,7 +784,9 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 
     @Override
     public java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(
-        com.ext.portlet.model.Contest contest) {
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestImpactFocusAreas(contest);
     }
 
