@@ -1,6 +1,11 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.NoSuchImpactDefaultSeriesDataException;
+import com.ext.portlet.model.ImpactDefaultSeriesData;
 import com.ext.portlet.service.base.ImpactDefaultSeriesDataLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the impact default series data local service.
@@ -18,9 +23,12 @@ import com.ext.portlet.service.base.ImpactDefaultSeriesDataLocalServiceBaseImpl;
  */
 public class ImpactDefaultSeriesDataLocalServiceImpl
     extends ImpactDefaultSeriesDataLocalServiceBaseImpl {
-    /*
-     * NOTE FOR DEVELOPERS:
-     *
-     * Never reference this interface directly. Always use {@link com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil} to access the impact default series data local service.
-     */
+
+    public List<ImpactDefaultSeriesData> getDefaultSeriesDataBySeriesId(long seriesId) throws SystemException {
+        return impactDefaultSeriesDataPersistence.findBySeriesId(seriesId);
+    }
+
+    public ImpactDefaultSeriesData getDefaultSeriesDataBySeriesIdAndYear(long seriesId, int year) throws SystemException, NoSuchImpactDefaultSeriesDataException {
+        return impactDefaultSeriesDataPersistence.findBySeriesIdAndYear(seriesId, year);
+    }
 }

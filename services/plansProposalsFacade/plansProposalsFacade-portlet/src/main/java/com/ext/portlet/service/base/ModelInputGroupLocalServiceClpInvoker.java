@@ -41,14 +41,10 @@ public class ModelInputGroupLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName624;
-    private String[] _methodParameterTypes624;
-    private String _methodName625;
-    private String[] _methodParameterTypes625;
-    private String _methodName630;
-    private String[] _methodParameterTypes630;
-    private String _methodName631;
-    private String[] _methodParameterTypes631;
+    private String _methodName626;
+    private String[] _methodParameterTypes626;
+    private String _methodName627;
+    private String[] _methodParameterTypes627;
     private String _methodName632;
     private String[] _methodParameterTypes632;
     private String _methodName633;
@@ -57,6 +53,10 @@ public class ModelInputGroupLocalServiceClpInvoker {
     private String[] _methodParameterTypes634;
     private String _methodName635;
     private String[] _methodParameterTypes635;
+    private String _methodName636;
+    private String[] _methodParameterTypes636;
+    private String _methodName637;
+    private String[] _methodParameterTypes637;
 
     public ModelInputGroupLocalServiceClpInvoker() {
         _methodName0 = "addModelInputGroup";
@@ -141,47 +141,47 @@ public class ModelInputGroupLocalServiceClpInvoker {
                 "com.ext.portlet.model.ModelInputGroup"
             };
 
-        _methodName624 = "getBeanIdentifier";
+        _methodName626 = "getBeanIdentifier";
 
-        _methodParameterTypes624 = new String[] {  };
+        _methodParameterTypes626 = new String[] {  };
 
-        _methodName625 = "setBeanIdentifier";
+        _methodName627 = "setBeanIdentifier";
 
-        _methodParameterTypes625 = new String[] { "java.lang.String" };
+        _methodParameterTypes627 = new String[] { "java.lang.String" };
 
-        _methodName630 = "getInputGroups";
+        _methodName632 = "getInputGroups";
 
-        _methodParameterTypes630 = new String[] {
+        _methodParameterTypes632 = new String[] {
                 "edu.mit.cci.roma.client.Simulation"
             };
 
-        _methodName631 = "getChildGroups";
-
-        _methodParameterTypes631 = new String[] {
-                "com.ext.portlet.model.ModelInputGroup"
-            };
-
-        _methodName632 = "getInputItems";
-
-        _methodParameterTypes632 = new String[] {
-                "com.ext.portlet.model.ModelInputGroup"
-            };
-
-        _methodName633 = "getParent";
+        _methodName633 = "getChildGroups";
 
         _methodParameterTypes633 = new String[] {
                 "com.ext.portlet.model.ModelInputGroup"
             };
 
-        _methodName634 = "getModel";
+        _methodName634 = "getInputItems";
 
         _methodParameterTypes634 = new String[] {
                 "com.ext.portlet.model.ModelInputGroup"
             };
 
-        _methodName635 = "getMetaData";
+        _methodName635 = "getParent";
 
         _methodParameterTypes635 = new String[] {
+                "com.ext.portlet.model.ModelInputGroup"
+            };
+
+        _methodName636 = "getModel";
+
+        _methodParameterTypes636 = new String[] {
+                "com.ext.portlet.model.ModelInputGroup"
+            };
+
+        _methodName637 = "getMetaData";
+
+        _methodParameterTypes637 = new String[] {
                 "com.ext.portlet.model.ModelInputGroup"
             };
     }
@@ -275,45 +275,45 @@ public class ModelInputGroupLocalServiceClpInvoker {
             return ModelInputGroupLocalServiceUtil.updateModelInputGroup((com.ext.portlet.model.ModelInputGroup) arguments[0]);
         }
 
-        if (_methodName624.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes624, parameterTypes)) {
+        if (_methodName626.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes626, parameterTypes)) {
             return ModelInputGroupLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName625.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes625, parameterTypes)) {
+        if (_methodName627.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes627, parameterTypes)) {
             ModelInputGroupLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName630.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes630, parameterTypes)) {
-            return ModelInputGroupLocalServiceUtil.getInputGroups((edu.mit.cci.roma.client.Simulation) arguments[0]);
-        }
-
-        if (_methodName631.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes631, parameterTypes)) {
-            return ModelInputGroupLocalServiceUtil.getChildGroups((com.ext.portlet.model.ModelInputGroup) arguments[0]);
-        }
-
         if (_methodName632.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
-            return ModelInputGroupLocalServiceUtil.getInputItems((com.ext.portlet.model.ModelInputGroup) arguments[0]);
+            return ModelInputGroupLocalServiceUtil.getInputGroups((edu.mit.cci.roma.client.Simulation) arguments[0]);
         }
 
         if (_methodName633.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
-            return ModelInputGroupLocalServiceUtil.getParent((com.ext.portlet.model.ModelInputGroup) arguments[0]);
+            return ModelInputGroupLocalServiceUtil.getChildGroups((com.ext.portlet.model.ModelInputGroup) arguments[0]);
         }
 
         if (_methodName634.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes634, parameterTypes)) {
-            return ModelInputGroupLocalServiceUtil.getModel((com.ext.portlet.model.ModelInputGroup) arguments[0]);
+            return ModelInputGroupLocalServiceUtil.getInputItems((com.ext.portlet.model.ModelInputGroup) arguments[0]);
         }
 
         if (_methodName635.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes635, parameterTypes)) {
+            return ModelInputGroupLocalServiceUtil.getParent((com.ext.portlet.model.ModelInputGroup) arguments[0]);
+        }
+
+        if (_methodName636.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes636, parameterTypes)) {
+            return ModelInputGroupLocalServiceUtil.getModel((com.ext.portlet.model.ModelInputGroup) arguments[0]);
+        }
+
+        if (_methodName637.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes637, parameterTypes)) {
             return ModelInputGroupLocalServiceUtil.getMetaData((com.ext.portlet.model.ModelInputGroup) arguments[0]);
         }
 

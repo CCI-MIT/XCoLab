@@ -278,6 +278,22 @@ public class ImpactDefaultSeriesDataLocalServiceWrapper
             parameterTypes, arguments);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.ImpactDefaultSeriesData> getDefaultSeriesDataBySeriesId(
+        long seriesId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _impactDefaultSeriesDataLocalService.getDefaultSeriesDataBySeriesId(seriesId);
+    }
+
+    @Override
+    public com.ext.portlet.model.ImpactDefaultSeriesData getDefaultSeriesDataBySeriesIdAndYear(
+        long seriesId, int year)
+        throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _impactDefaultSeriesDataLocalService.getDefaultSeriesDataBySeriesIdAndYear(seriesId,
+            year);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

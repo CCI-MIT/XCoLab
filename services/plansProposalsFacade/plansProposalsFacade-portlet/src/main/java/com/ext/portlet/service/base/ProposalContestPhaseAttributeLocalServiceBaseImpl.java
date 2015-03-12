@@ -87,6 +87,7 @@ import com.ext.portlet.service.persistence.PointTypePersistence;
 import com.ext.portlet.service.persistence.PointsDistributionConfigurationPersistence;
 import com.ext.portlet.service.persistence.PointsPersistence;
 import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
+import com.ext.portlet.service.persistence.ProposalAttributeFinder;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
@@ -663,6 +664,8 @@ public abstract class ProposalContestPhaseAttributeLocalServiceBaseImpl
     protected com.ext.portlet.service.ProposalAttributeService proposalAttributeService;
     @BeanReference(type = ProposalAttributePersistence.class)
     protected ProposalAttributePersistence proposalAttributePersistence;
+    @BeanReference(type = ProposalAttributeFinder.class)
+    protected ProposalAttributeFinder proposalAttributeFinder;
     @BeanReference(type = com.ext.portlet.service.ProposalAttributeTypeLocalService.class)
     protected com.ext.portlet.service.ProposalAttributeTypeLocalService proposalAttributeTypeLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalAttributeTypeService.class)
@@ -5926,6 +5929,25 @@ public abstract class ProposalContestPhaseAttributeLocalServiceBaseImpl
     public void setProposalAttributePersistence(
         ProposalAttributePersistence proposalAttributePersistence) {
         this.proposalAttributePersistence = proposalAttributePersistence;
+    }
+
+    /**
+     * Returns the proposal attribute finder.
+     *
+     * @return the proposal attribute finder
+     */
+    public ProposalAttributeFinder getProposalAttributeFinder() {
+        return proposalAttributeFinder;
+    }
+
+    /**
+     * Sets the proposal attribute finder.
+     *
+     * @param proposalAttributeFinder the proposal attribute finder
+     */
+    public void setProposalAttributeFinder(
+        ProposalAttributeFinder proposalAttributeFinder) {
+        this.proposalAttributeFinder = proposalAttributeFinder;
     }
 
     /**

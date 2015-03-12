@@ -235,4 +235,15 @@ public interface ImpactDefaultSeriesLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ImpactDefaultSeries> getAllImpactDefaultSeriesWithFocusArea(
+        com.ext.portlet.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ImpactDefaultSeries getImpactDefaultSeriesWithFocusAreaAndName(
+        com.ext.portlet.model.FocusArea focusArea, java.lang.String name)
+        throws com.ext.portlet.NoSuchImpactDefaultSeriesException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

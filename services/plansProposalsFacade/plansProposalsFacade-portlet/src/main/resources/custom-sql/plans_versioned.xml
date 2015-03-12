@@ -149,16 +149,5 @@
             ORDER BY SORT_COLUMNS_PLACEHOLDER
         ]]>
     </sql>
-    
-    <sql id="com.ext.portlet.service.persistence.PlanItemFinderImpl.getLatestPlanVersion">
-        <![CDATA[
-            SELECT 
-                xcolab_PlanItem.*
-            FROM 
-                xcolab_PlanItem 
-            WHERE 
-                planId = ? 
-            ORDER BY version DESC
-        ]]>
-    </sql>
+
 </custom-sql>

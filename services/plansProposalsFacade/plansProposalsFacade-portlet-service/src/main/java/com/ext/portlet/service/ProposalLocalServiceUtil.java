@@ -1311,6 +1311,12 @@ public class ProposalLocalServiceUtil {
         return getService().getLatestProposalContest(proposalId);
     }
 
+    public static java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getImpactProposalAttributes(proposal);
+    }
+
     public static void clearService() {
         _service = null;
     }

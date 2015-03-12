@@ -458,6 +458,7 @@
 			<basic name="description" />
 			<basic name="focusAreaId" />
 			<basic name="visible" />
+			<basic name="editable" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -468,7 +469,7 @@
 		<attributes>
 			<id name="seriesId" />
 			<id name="year" />
-			<id name="value" />
+			<basic name="value" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

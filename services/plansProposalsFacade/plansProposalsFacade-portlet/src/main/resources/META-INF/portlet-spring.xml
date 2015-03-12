@@ -276,6 +276,7 @@
 	<bean id="com.ext.portlet.service.ProposalAttributeLocalService" class="com.ext.portlet.service.impl.ProposalAttributeLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalAttributeService" class="com.ext.portlet.service.impl.ProposalAttributeServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalAttributePersistence" class="com.ext.portlet.service.persistence.ProposalAttributePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.persistence.ProposalAttributeFinder" class="com.ext.portlet.service.persistence.ProposalAttributeFinderImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ProposalAttributeTypeLocalService" class="com.ext.portlet.service.impl.ProposalAttributeTypeLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalAttributeTypeService" class="com.ext.portlet.service.impl.ProposalAttributeTypeServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalAttributeTypePersistence" class="com.ext.portlet.service.persistence.ProposalAttributeTypePersistenceImpl" parent="basePersistence" />

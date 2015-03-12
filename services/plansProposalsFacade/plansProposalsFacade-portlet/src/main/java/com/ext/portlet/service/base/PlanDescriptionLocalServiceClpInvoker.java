@@ -41,14 +41,10 @@ public class PlanDescriptionLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName624;
-    private String[] _methodParameterTypes624;
-    private String _methodName625;
-    private String[] _methodParameterTypes625;
-    private String _methodName630;
-    private String[] _methodParameterTypes630;
-    private String _methodName631;
-    private String[] _methodParameterTypes631;
+    private String _methodName626;
+    private String[] _methodParameterTypes626;
+    private String _methodName627;
+    private String[] _methodParameterTypes627;
     private String _methodName632;
     private String[] _methodParameterTypes632;
     private String _methodName633;
@@ -65,6 +61,10 @@ public class PlanDescriptionLocalServiceClpInvoker {
     private String[] _methodParameterTypes638;
     private String _methodName639;
     private String[] _methodParameterTypes639;
+    private String _methodName640;
+    private String[] _methodParameterTypes640;
+    private String _methodName641;
+    private String[] _methodParameterTypes641;
 
     public PlanDescriptionLocalServiceClpInvoker() {
         _methodName0 = "addPlanDescription";
@@ -149,64 +149,64 @@ public class PlanDescriptionLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanDescription"
             };
 
-        _methodName624 = "getBeanIdentifier";
+        _methodName626 = "getBeanIdentifier";
 
-        _methodParameterTypes624 = new String[] {  };
+        _methodParameterTypes626 = new String[] {  };
 
-        _methodName625 = "setBeanIdentifier";
+        _methodName627 = "setBeanIdentifier";
 
-        _methodParameterTypes625 = new String[] { "java.lang.String" };
+        _methodParameterTypes627 = new String[] { "java.lang.String" };
 
-        _methodName630 = "createPlanDescription";
+        _methodName632 = "createPlanDescription";
 
-        _methodParameterTypes630 = new String[] {
+        _methodParameterTypes632 = new String[] {
                 "com.ext.portlet.model.PlanItem", "java.lang.String"
             };
 
-        _methodName631 = "createPlanDescription";
+        _methodName633 = "createPlanDescription";
 
-        _methodParameterTypes631 = new String[] {
+        _methodParameterTypes633 = new String[] {
                 "com.ext.portlet.model.PlanItem", "java.lang.String", "boolean"
             };
 
-        _methodName632 = "getCurrentForPlan";
-
-        _methodParameterTypes632 = new String[] { "com.ext.portlet.model.PlanItem" };
-
-        _methodName633 = "getForPlan";
-
-        _methodParameterTypes633 = new String[] { "com.ext.portlet.model.PlanItem" };
-
-        _methodName634 = "getAllForPlan";
+        _methodName634 = "getCurrentForPlan";
 
         _methodParameterTypes634 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName635 = "createNewVersionForPlan";
+        _methodName635 = "getForPlan";
 
         _methodParameterTypes635 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName636 = "createNewVersionForPlan";
+        _methodName636 = "getAllForPlan";
 
-        _methodParameterTypes636 = new String[] {
+        _methodParameterTypes636 = new String[] { "com.ext.portlet.model.PlanItem" };
+
+        _methodName637 = "createNewVersionForPlan";
+
+        _methodParameterTypes637 = new String[] { "com.ext.portlet.model.PlanItem" };
+
+        _methodName638 = "createNewVersionForPlan";
+
+        _methodParameterTypes638 = new String[] {
                 "com.ext.portlet.model.PlanItem", "boolean"
             };
 
-        _methodName637 = "createNewVersionForPlanFrom";
+        _methodName639 = "createNewVersionForPlanFrom";
 
-        _methodParameterTypes637 = new String[] {
+        _methodParameterTypes639 = new String[] {
                 "com.ext.portlet.model.PlanItem",
                 "com.ext.portlet.model.PlanDescription", "boolean"
             };
 
-        _methodName638 = "store";
+        _methodName640 = "store";
 
-        _methodParameterTypes638 = new String[] {
+        _methodParameterTypes640 = new String[] {
                 "com.ext.portlet.model.PlanDescription"
             };
 
-        _methodName639 = "getUpdateAuthor";
+        _methodName641 = "getUpdateAuthor";
 
-        _methodParameterTypes639 = new String[] {
+        _methodParameterTypes641 = new String[] {
                 "com.ext.portlet.model.PlanDescription"
             };
     }
@@ -300,73 +300,73 @@ public class PlanDescriptionLocalServiceClpInvoker {
             return PlanDescriptionLocalServiceUtil.updatePlanDescription((com.ext.portlet.model.PlanDescription) arguments[0]);
         }
 
-        if (_methodName624.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes624, parameterTypes)) {
+        if (_methodName626.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes626, parameterTypes)) {
             return PlanDescriptionLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName625.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes625, parameterTypes)) {
+        if (_methodName627.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes627, parameterTypes)) {
             PlanDescriptionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName630.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes630, parameterTypes)) {
+        if (_methodName632.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
             return PlanDescriptionLocalServiceUtil.createPlanDescription((com.ext.portlet.model.PlanItem) arguments[0],
                 (java.lang.String) arguments[1]);
         }
 
-        if (_methodName631.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes631, parameterTypes)) {
+        if (_methodName633.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
             return PlanDescriptionLocalServiceUtil.createPlanDescription((com.ext.portlet.model.PlanItem) arguments[0],
                 (java.lang.String) arguments[1],
                 ((Boolean) arguments[2]).booleanValue());
         }
 
-        if (_methodName632.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
-            return PlanDescriptionLocalServiceUtil.getCurrentForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
-        }
-
-        if (_methodName633.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
-            return PlanDescriptionLocalServiceUtil.getForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
-        }
-
         if (_methodName634.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes634, parameterTypes)) {
-            return PlanDescriptionLocalServiceUtil.getAllForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
+            return PlanDescriptionLocalServiceUtil.getCurrentForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
         if (_methodName635.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes635, parameterTypes)) {
-            return PlanDescriptionLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
+            return PlanDescriptionLocalServiceUtil.getForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
         if (_methodName636.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes636, parameterTypes)) {
-            return PlanDescriptionLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0],
-                ((Boolean) arguments[1]).booleanValue());
+            return PlanDescriptionLocalServiceUtil.getAllForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
         if (_methodName637.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes637, parameterTypes)) {
+            return PlanDescriptionLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
+        }
+
+        if (_methodName638.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+            return PlanDescriptionLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0],
+                ((Boolean) arguments[1]).booleanValue());
+        }
+
+        if (_methodName639.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
             return PlanDescriptionLocalServiceUtil.createNewVersionForPlanFrom((com.ext.portlet.model.PlanItem) arguments[0],
                 (com.ext.portlet.model.PlanDescription) arguments[1],
                 ((Boolean) arguments[2]).booleanValue());
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName640.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes640, parameterTypes)) {
             PlanDescriptionLocalServiceUtil.store((com.ext.portlet.model.PlanDescription) arguments[0]);
 
             return null;
         }
 
-        if (_methodName639.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+        if (_methodName641.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes641, parameterTypes)) {
             return PlanDescriptionLocalServiceUtil.getUpdateAuthor((com.ext.portlet.model.PlanDescription) arguments[0]);
         }
 

@@ -278,6 +278,22 @@ public class ImpactDefaultSeriesLocalServiceWrapper
             parameterTypes, arguments);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.ImpactDefaultSeries> getAllImpactDefaultSeriesWithFocusArea(
+        com.ext.portlet.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _impactDefaultSeriesLocalService.getAllImpactDefaultSeriesWithFocusArea(focusArea);
+    }
+
+    @Override
+    public com.ext.portlet.model.ImpactDefaultSeries getImpactDefaultSeriesWithFocusAreaAndName(
+        com.ext.portlet.model.FocusArea focusArea, java.lang.String name)
+        throws com.ext.portlet.NoSuchImpactDefaultSeriesException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _impactDefaultSeriesLocalService.getImpactDefaultSeriesWithFocusAreaAndName(focusArea,
+            name);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

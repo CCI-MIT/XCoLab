@@ -420,14 +420,15 @@
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="visible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="editable" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ImpactDefaultSeriesDataImpl" table="xcolab_ImpactDefaultSeriesData">
 		<cache usage="read-write" />
 		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPK">
 			<key-property name="seriesId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="year" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-			<key-property name="value" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		</composite-id>
+		<property name="value" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ImpactIterationImpl" table="xcolab_ImpactIteration">
 		<cache usage="read-write" />

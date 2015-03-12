@@ -42,6 +42,7 @@ public class ImpactDefaultSeriesWrapper implements ImpactDefaultSeries,
         attributes.put("description", getDescription());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("visible", getVisible());
+        attributes.put("editable", getEditable());
 
         return attributes;
     }
@@ -76,6 +77,12 @@ public class ImpactDefaultSeriesWrapper implements ImpactDefaultSeries,
 
         if (visible != null) {
             setVisible(visible);
+        }
+
+        Boolean editable = (Boolean) attributes.get("editable");
+
+        if (editable != null) {
+            setEditable(editable);
         }
     }
 
@@ -208,6 +215,36 @@ public class ImpactDefaultSeriesWrapper implements ImpactDefaultSeries,
     @Override
     public void setVisible(boolean visible) {
         _impactDefaultSeries.setVisible(visible);
+    }
+
+    /**
+    * Returns the editable of this impact default series.
+    *
+    * @return the editable of this impact default series
+    */
+    @Override
+    public boolean getEditable() {
+        return _impactDefaultSeries.getEditable();
+    }
+
+    /**
+    * Returns <code>true</code> if this impact default series is editable.
+    *
+    * @return <code>true</code> if this impact default series is editable; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isEditable() {
+        return _impactDefaultSeries.isEditable();
+    }
+
+    /**
+    * Sets whether this impact default series is editable.
+    *
+    * @param editable the editable of this impact default series
+    */
+    @Override
+    public void setEditable(boolean editable) {
+        _impactDefaultSeries.setEditable(editable);
     }
 
     @Override

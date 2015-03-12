@@ -308,6 +308,16 @@ public class FocusAreaLocalServiceWrapper implements FocusAreaLocalService,
         _focusAreaLocalService.tagClass(focusArea, clasz, pk);
     }
 
+    @Override
+    public com.ext.portlet.model.OntologyTerm getOntologyTermFromFocusAreaWithOntologySpace(
+        com.ext.portlet.model.FocusArea focusArea,
+        com.ext.portlet.model.OntologySpace ontologySpace)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _focusAreaLocalService.getOntologyTermFromFocusAreaWithOntologySpace(focusArea,
+            ontologySpace);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

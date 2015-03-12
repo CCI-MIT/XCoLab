@@ -77,7 +77,7 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
         new FinderPath(ImpactTemplateMaxFocusAreaModelImpl.ENTITY_CACHE_ENABLED,
             ImpactTemplateMaxFocusAreaModelImpl.FINDER_CACHE_ENABLED,
             ImpactTemplateMaxFocusAreaImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByfocusAreaListId",
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByFocusAreaListId",
             new String[] {
                 Long.class.getName(),
                 
@@ -88,13 +88,13 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
         new FinderPath(ImpactTemplateMaxFocusAreaModelImpl.ENTITY_CACHE_ENABLED,
             ImpactTemplateMaxFocusAreaModelImpl.FINDER_CACHE_ENABLED,
             ImpactTemplateMaxFocusAreaImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByfocusAreaListId",
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFocusAreaListId",
             new String[] { Long.class.getName() },
             ImpactTemplateMaxFocusAreaModelImpl.FOCUSAREALISTID_COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_FOCUSAREALISTID = new FinderPath(ImpactTemplateMaxFocusAreaModelImpl.ENTITY_CACHE_ENABLED,
             ImpactTemplateMaxFocusAreaModelImpl.FINDER_CACHE_ENABLED,
             Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "countByfocusAreaListId", new String[] { Long.class.getName() });
+            "countByFocusAreaListId", new String[] { Long.class.getName() });
     private static final String _FINDER_COLUMN_FOCUSAREALISTID_FOCUSAREALISTID_2 =
         "impactTemplateMaxFocusArea.id.focusAreaListId = ?";
     private static final String _SQL_SELECT_IMPACTTEMPLATEMAXFOCUSAREA = "SELECT impactTemplateMaxFocusArea FROM ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea";
@@ -139,9 +139,9 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<ImpactTemplateMaxFocusArea> findByfocusAreaListId(
+    public List<ImpactTemplateMaxFocusArea> findByFocusAreaListId(
         long focusAreaListId) throws SystemException {
-        return findByfocusAreaListId(focusAreaListId, QueryUtil.ALL_POS,
+        return findByFocusAreaListId(focusAreaListId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
     }
 
@@ -159,9 +159,9 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<ImpactTemplateMaxFocusArea> findByfocusAreaListId(
+    public List<ImpactTemplateMaxFocusArea> findByFocusAreaListId(
         long focusAreaListId, int start, int end) throws SystemException {
-        return findByfocusAreaListId(focusAreaListId, start, end, null);
+        return findByFocusAreaListId(focusAreaListId, start, end, null);
     }
 
     /**
@@ -179,7 +179,7 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<ImpactTemplateMaxFocusArea> findByfocusAreaListId(
+    public List<ImpactTemplateMaxFocusArea> findByFocusAreaListId(
         long focusAreaListId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         boolean pagination = true;
@@ -285,10 +285,10 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactTemplateMaxFocusArea findByfocusAreaListId_First(
+    public ImpactTemplateMaxFocusArea findByFocusAreaListId_First(
         long focusAreaListId, OrderByComparator orderByComparator)
         throws NoSuchImpactTemplateMaxFocusAreaException, SystemException {
-        ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea = fetchByfocusAreaListId_First(focusAreaListId,
+        ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea = fetchByFocusAreaListId_First(focusAreaListId,
                 orderByComparator);
 
         if (impactTemplateMaxFocusArea != null) {
@@ -316,10 +316,10 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactTemplateMaxFocusArea fetchByfocusAreaListId_First(
+    public ImpactTemplateMaxFocusArea fetchByFocusAreaListId_First(
         long focusAreaListId, OrderByComparator orderByComparator)
         throws SystemException {
-        List<ImpactTemplateMaxFocusArea> list = findByfocusAreaListId(focusAreaListId,
+        List<ImpactTemplateMaxFocusArea> list = findByFocusAreaListId(focusAreaListId,
                 0, 1, orderByComparator);
 
         if (!list.isEmpty()) {
@@ -339,10 +339,10 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactTemplateMaxFocusArea findByfocusAreaListId_Last(
+    public ImpactTemplateMaxFocusArea findByFocusAreaListId_Last(
         long focusAreaListId, OrderByComparator orderByComparator)
         throws NoSuchImpactTemplateMaxFocusAreaException, SystemException {
-        ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea = fetchByfocusAreaListId_Last(focusAreaListId,
+        ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea = fetchByFocusAreaListId_Last(focusAreaListId,
                 orderByComparator);
 
         if (impactTemplateMaxFocusArea != null) {
@@ -370,16 +370,16 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactTemplateMaxFocusArea fetchByfocusAreaListId_Last(
+    public ImpactTemplateMaxFocusArea fetchByFocusAreaListId_Last(
         long focusAreaListId, OrderByComparator orderByComparator)
         throws SystemException {
-        int count = countByfocusAreaListId(focusAreaListId);
+        int count = countByFocusAreaListId(focusAreaListId);
 
         if (count == 0) {
             return null;
         }
 
-        List<ImpactTemplateMaxFocusArea> list = findByfocusAreaListId(focusAreaListId,
+        List<ImpactTemplateMaxFocusArea> list = findByFocusAreaListId(focusAreaListId,
                 count - 1, count, orderByComparator);
 
         if (!list.isEmpty()) {
@@ -400,7 +400,7 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactTemplateMaxFocusArea[] findByfocusAreaListId_PrevAndNext(
+    public ImpactTemplateMaxFocusArea[] findByFocusAreaListId_PrevAndNext(
         ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK,
         long focusAreaListId, OrderByComparator orderByComparator)
         throws NoSuchImpactTemplateMaxFocusAreaException, SystemException {
@@ -413,13 +413,13 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
 
             ImpactTemplateMaxFocusArea[] array = new ImpactTemplateMaxFocusAreaImpl[3];
 
-            array[0] = getByfocusAreaListId_PrevAndNext(session,
+            array[0] = getByFocusAreaListId_PrevAndNext(session,
                     impactTemplateMaxFocusArea, focusAreaListId,
                     orderByComparator, true);
 
             array[1] = impactTemplateMaxFocusArea;
 
-            array[2] = getByfocusAreaListId_PrevAndNext(session,
+            array[2] = getByFocusAreaListId_PrevAndNext(session,
                     impactTemplateMaxFocusArea, focusAreaListId,
                     orderByComparator, false);
 
@@ -431,7 +431,7 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
         }
     }
 
-    protected ImpactTemplateMaxFocusArea getByfocusAreaListId_PrevAndNext(
+    protected ImpactTemplateMaxFocusArea getByFocusAreaListId_PrevAndNext(
         Session session, ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea,
         long focusAreaListId, OrderByComparator orderByComparator,
         boolean previous) {
@@ -535,9 +535,9 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public void removeByfocusAreaListId(long focusAreaListId)
+    public void removeByFocusAreaListId(long focusAreaListId)
         throws SystemException {
-        for (ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea : findByfocusAreaListId(
+        for (ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea : findByFocusAreaListId(
                 focusAreaListId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(impactTemplateMaxFocusArea);
         }
@@ -551,7 +551,7 @@ public class ImpactTemplateMaxFocusAreaPersistenceImpl
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public int countByfocusAreaListId(long focusAreaListId)
+    public int countByFocusAreaListId(long focusAreaListId)
         throws SystemException {
         FinderPath finderPath = FINDER_PATH_COUNT_BY_FOCUSAREALISTID;
 

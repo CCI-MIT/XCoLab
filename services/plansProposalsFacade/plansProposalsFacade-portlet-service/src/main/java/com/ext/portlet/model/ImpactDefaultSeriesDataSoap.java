@@ -73,13 +73,12 @@ public class ImpactDefaultSeriesDataSoap implements Serializable {
     }
 
     public ImpactDefaultSeriesDataPK getPrimaryKey() {
-        return new ImpactDefaultSeriesDataPK(_seriesId, _year, _value);
+        return new ImpactDefaultSeriesDataPK(_seriesId, _year);
     }
 
     public void setPrimaryKey(ImpactDefaultSeriesDataPK pk) {
         setSeriesId(pk.seriesId);
         setYear(pk.year);
-        setValue(pk.value);
     }
 
     public long getSeriesId() {

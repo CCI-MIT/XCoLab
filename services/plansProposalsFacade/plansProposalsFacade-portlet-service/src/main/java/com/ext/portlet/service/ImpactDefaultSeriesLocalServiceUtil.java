@@ -263,6 +263,20 @@ public class ImpactDefaultSeriesLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static java.util.List<com.ext.portlet.model.ImpactDefaultSeries> getAllImpactDefaultSeriesWithFocusArea(
+        com.ext.portlet.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAllImpactDefaultSeriesWithFocusArea(focusArea);
+    }
+
+    public static com.ext.portlet.model.ImpactDefaultSeries getImpactDefaultSeriesWithFocusAreaAndName(
+        com.ext.portlet.model.FocusArea focusArea, java.lang.String name)
+        throws com.ext.portlet.NoSuchImpactDefaultSeriesException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getImpactDefaultSeriesWithFocusAreaAndName(focusArea, name);
+    }
+
     public static void clearService() {
         _service = null;
     }

@@ -41,12 +41,12 @@ public class MessagingUserPreferencesLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName624;
-    private String[] _methodParameterTypes624;
-    private String _methodName625;
-    private String[] _methodParameterTypes625;
-    private String _methodName630;
-    private String[] _methodParameterTypes630;
+    private String _methodName626;
+    private String[] _methodParameterTypes626;
+    private String _methodName627;
+    private String[] _methodParameterTypes627;
+    private String _methodName632;
+    private String[] _methodParameterTypes632;
 
     public MessagingUserPreferencesLocalServiceClpInvoker() {
         _methodName0 = "addMessagingUserPreferences";
@@ -131,17 +131,17 @@ public class MessagingUserPreferencesLocalServiceClpInvoker {
                 "com.ext.portlet.model.MessagingUserPreferences"
             };
 
-        _methodName624 = "getBeanIdentifier";
+        _methodName626 = "getBeanIdentifier";
 
-        _methodParameterTypes624 = new String[] {  };
+        _methodParameterTypes626 = new String[] {  };
 
-        _methodName625 = "setBeanIdentifier";
+        _methodName627 = "setBeanIdentifier";
 
-        _methodParameterTypes625 = new String[] { "java.lang.String" };
+        _methodParameterTypes627 = new String[] { "java.lang.String" };
 
-        _methodName630 = "findByUser";
+        _methodName632 = "findByUser";
 
-        _methodParameterTypes630 = new String[] { "long" };
+        _methodParameterTypes632 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -233,20 +233,20 @@ public class MessagingUserPreferencesLocalServiceClpInvoker {
             return MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences((com.ext.portlet.model.MessagingUserPreferences) arguments[0]);
         }
 
-        if (_methodName624.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes624, parameterTypes)) {
+        if (_methodName626.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes626, parameterTypes)) {
             return MessagingUserPreferencesLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName625.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes625, parameterTypes)) {
+        if (_methodName627.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes627, parameterTypes)) {
             MessagingUserPreferencesLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName630.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes630, parameterTypes)) {
+        if (_methodName632.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
             return MessagingUserPreferencesLocalServiceUtil.findByUser(((Long) arguments[0]).longValue());
         }
 

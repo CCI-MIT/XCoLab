@@ -12,141 +12,57 @@
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
 
+    <portlet:resourceURL var="impactGetDefaultSeries" id="proposalPicker">
+        <portlet:param name="type" value="@@REPLACE-TYPE@@" />
+        <portlet:param name="filterKey" value="@@REPLACE-FILTERKEY@@" />
+        <portlet:param name="filterText" value="@@REPLACE-FILTERTEXT@@" />
+        <portlet:param name="start" value="@@REPLACE-START@@" />
+        <portlet:param name="end" value="@@REPLACE-END@@" />
+        <portlet:param name="sortColumn" value="@@REPLACE-SORTCOLOMN@@" />
+        <portlet:param name="sortOrder" value="@@REPLACE-SORTORDER@@" />
+        <portlet:param name="sectionId" value="@@REPLACE-SECTIONID@@" />
+        <portlet:param name="contestPK" value="@@REPLACE-CONTESTPK@@" />
+    </portlet:resourceURL>
+
+    <script>
+        var proposalPickerURL = '${proposalPickerURL}';
+    </script>
+
     <div id="content">
-        <liferay-ui:success key="membershipRequestSent" message="Membership request sent" />
-        <liferay-ui:success key="memberInviteSent" message="Membership invitation sent" />
 
-        <liferay-ui:error key="memberInviteRecipientError" message="The specified invitee is invalid." />
-        <div class="headline prophead" style="position: relative;">
-            <h2>
-                <span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? 'member' : 'members'}
-            </h2>
-            <c:if test="${!proposalsPermissions.isTeamMember and !proposalsPermissions.userHasOpenMembershipRequest}">
-                <div class="prop-butt-popover">
-                    <img src="/climatecolab-theme/images/icon-request-membership.png"
-                         width="24" height="22" alt="request membership" class="request-membership-icon"/>
-
-
-                    <portlet:actionURL var="requestMembershipURL">
-                        <portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
-                        <portlet:param name="contestId" value="${contest.contestPK }" />
-                        <portlet:param name="planId" value="${proposal.proposalId }" />
-                        <portlet:param name="action" value="requestMembership" />
-                    </portlet:actionURL>
-
-                    <form:form id="requestMembershipForm" action="${requestMembershipURL }" method="post" commandName="requestMembershipBean" style="float:left;">
-                        <div class="requestMembershipDIV">
-                            <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" onfocus="this.value=''" value="Optional comment" style="display:none;"/>
-                            <form:errors cssClass="alert alert-error" path="requestComment" />
-                            <div id="requestButtons">
-                                <div class="blue-button" style="display:block;">
-                                    <a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>
-                                </div>
-                            </div>
-                        </div>
-                    </form:form>
-                </div>
-            </c:if>
-            <c:if test="${proposalsPermissions.isTeamMember}">
-                <div class="prop-butt-popover">
-                    <img src="/climatecolab-theme/images/icon-request-membership.png"
-                         width="24" height="22" alt="request membership" class="request-membership-icon"/>
-
-
-                    <portlet:actionURL var="inviteMemberURL">
-                        <portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
-                        <portlet:param name="contestId" value="${contest.contestPK }" />
-                        <portlet:param name="planId" value="${proposal.proposalId }" />
-                        <portlet:param name="action" value="inviteMember" />
-                    </portlet:actionURL>
-
-                    <portlet:resourceURL id="inviteMembers-validateRecipient" var="inviteMemberValidationURL">
-                    </portlet:resourceURL>
-
-                    <form:form id="requestInviteForm" action="${inviteMemberURL }" method="post" commandName="requestMembershipInviteBean" style="float:left;">
-                        <div class="requestMembershipDIV">
-                            <form:textarea id="invite-recipient" cssClass="requestComment" path="inviteRecipient" placeholder="Enter screen name or last name" style="display:none;"/>
-                            <div id="invite-member-validation-url" style="display: none">${inviteMemberValidationURL}</div>
-                            <form:textarea id="invite-comment" cssClass="requestComment" path="inviteComment" placeholder="Optional comment" style="display:none;"/>
-                            <!--<form:errors cssClass="alert alert-error" path="requestComment" />-->
-                            <div id="requestButtons">
-                                <div class="blue-button" style="display:block;">
-                                    <a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>
-                                </div>
-                            </div>
-                        </div>
-                    </form:form>
-                </div>
-            </c:if>
-
-
-        </div>
-        <table class="contributors">
-            <c:forEach var="member" items="${proposal.members }" varStatus="status">
-
-                <tr class="${status.index mod 2 > 0 ? 'even' : 'odd'}">
-                    <td><proposalsPortlet:proposalTeamMember member="${member }" /></td>
-                    <td>${member.memberType }</td>
-                    <c:if test="${proposalsPermissions.canManageUsers}">
-                    	<td>
-                    		<c:if test="${member.memberType != 'Owner'}">
-                				<portlet:actionURL var="removeUserFromTeam">
-                    				<portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
-	                    			<portlet:param name="contestId" value="${contest.contestPK }" />
-    	                			<portlet:param name="planId" value="${proposal.proposalId }" />
-        	            			<portlet:param name="action" value="removeUserFromTeam" />
-            	        			<portlet:param name="member" value="${member.userId}" />
-                				</portlet:actionURL>
-                			
-                    	        <a href="${removeUserFromTeam }">Remove</a>
-                        	</c:if>
-	                    </td>
-                    </c:if>
+        <table>
+            <tr>
+                <th>Sector</th><th>Region</th>
+                <c:forEach var="impactIteration" items="${impactIterations}"><th>${impactIteration.year}</th></c:forEach>
+            </tr>
+            <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
+                <tr class="impact-series-clickable">
+                    <td style="visibility: hidden;">${index.index}</td>
+                    <td>${impactSeries.whatTerm.name}</td>
+                    <td>${impactSeries.whereTerm.name}</td>
+                    <c:forEach var="impactIteration" items="${impactIterations}">
+                        <td>${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
+                    </c:forEach>
                 </tr>
             </c:forEach>
         </table>
 
+        <table id="impact-series-edit" style="display: none;">
 
-        <div class="headline propsubhead">
-            <h2>
-                <span>${fn:length(proposal.supporters)}</span> ${fn:length(proposal.supporters) == 1 ? 'supporter' : 'supporters' }
-            </h2>
-            <c:if test="${proposalsPermissions.canSeeSupportButton or proposalsPermissions.canSeeUnsupportButton  }">
-                <portlet:actionURL var="supportProposalActionURL">
-                    <portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
-                    <portlet:param name="contestId" value="${contest.contestPK }" />
-                    <portlet:param name="planId" value="${proposal.proposalId }" />
-                    <portlet:param name="proposalId" value="${proposal.proposalId }" />
-                    <portlet:param name="action" value="supportProposalAction" />
-                </portlet:actionURL>
-                <div class="prop-butt">
-                    <img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="support proposal" />
-                    <div class="blue-button">
-                        <a href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-                                ${proposalsPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
-                        </a>
-                    </div>
-                </div>
-            </c:if>
-        </div>
-        <c:if test="${not empty proposal.supporters }">
-            <table class="contributors">
-                <c:forEach var="supporter" items="${proposal.supporters }" varStatus="status" step="2">
-                    <tr class="${(status.index / 2) mod 2 > 0 ? 'even' : 'odd'}">
-                        <td><proposalsPortlet:userLinkSimple userId="${supporter.userId}" text="${supporter.screenName}" /></td>
-                        <td>
-                            <c:if test="${fn:length(proposal.supporters) > status.index}">
-                                <proposalsPortlet:userLinkSimple userId="${proposal.supporters[status.index+1].userId}" text="${proposal.supporters[status.index+1].screenName}" />
-                            </c:if>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </table>
-        </c:if>
-
-
-
-
+        </table>
 
     </div>
+
+    <script>
+        jQuery(document).ready(function() {
+            $('.impact-series-clickable').click(function() {
+
+            });
+        });
+
+        function impactSeriesClicked() {
+            var rowIndex = $(this).children().first().text();
+
+        }
+    </script>
 </jsp:root>

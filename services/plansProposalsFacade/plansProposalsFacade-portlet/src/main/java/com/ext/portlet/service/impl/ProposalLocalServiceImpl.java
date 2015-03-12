@@ -1569,4 +1569,17 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public Contest getLatestProposalContest(long proposalId) throws PortalException, SystemException {
     	return contestLocalService.getContest(this.getLatestProposalContestPhase(proposalId).getContestPK());
     }
+
+    public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) throws SystemException {
+        // TODO clean up
+        /*final DynamicQuery proposalAttributesQuery = DynamicQueryFactoryUtil.forClass(ProposalAttribute.class, "proposalAttributes");
+        proposalAttributesQuery.add(PropertyFactoryUtil.forName("proposalAttributes.proposalId").eq(proposal.getProposalId()));
+        proposalAttributesQuery.add(PropertyFactoryUtil.forName("proposalAttributes.version").ge(proposal.getCurrentVersion()));
+        proposalAttributesQuery.add(PropertyFactoryUtil.forName("proposalAttributes.versionWhenCreated").le(proposal.getCurrentVersion()));
+        proposalAttributesQuery.add(RestrictionsFactoryUtil.ilike("proposalAttributes.name", "IMPACT_%"));
+
+        return dynamicQuery(proposalAttributesQuery);*/
+        return proposalAttributeFinder.findByProposalIdVersionGreaterThanVersionWhenCreatedLessThanNameLikeImpact(proposal.getProposalId(),
+                proposal.getCurrentVersion(), proposal.getCurrentVersion());
+    }
 }

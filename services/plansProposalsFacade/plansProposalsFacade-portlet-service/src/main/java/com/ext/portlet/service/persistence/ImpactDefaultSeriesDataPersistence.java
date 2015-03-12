@@ -30,7 +30,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @return the matching impact default series datas
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.ImpactDefaultSeriesData> findByseriesId(
+    public java.util.List<com.ext.portlet.model.ImpactDefaultSeriesData> findBySeriesId(
         long seriesId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -47,7 +47,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @return the range of matching impact default series datas
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.ImpactDefaultSeriesData> findByseriesId(
+    public java.util.List<com.ext.portlet.model.ImpactDefaultSeriesData> findBySeriesId(
         long seriesId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -65,7 +65,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @return the ordered range of matching impact default series datas
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.ImpactDefaultSeriesData> findByseriesId(
+    public java.util.List<com.ext.portlet.model.ImpactDefaultSeriesData> findBySeriesId(
         long seriesId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -79,7 +79,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException if a matching impact default series data could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ImpactDefaultSeriesData findByseriesId_First(
+    public com.ext.portlet.model.ImpactDefaultSeriesData findBySeriesId_First(
         long seriesId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException,
@@ -93,7 +93,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @return the first matching impact default series data, or <code>null</code> if a matching impact default series data could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ImpactDefaultSeriesData fetchByseriesId_First(
+    public com.ext.portlet.model.ImpactDefaultSeriesData fetchBySeriesId_First(
         long seriesId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -107,7 +107,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException if a matching impact default series data could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ImpactDefaultSeriesData findByseriesId_Last(
+    public com.ext.portlet.model.ImpactDefaultSeriesData findBySeriesId_Last(
         long seriesId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException,
@@ -121,7 +121,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @return the last matching impact default series data, or <code>null</code> if a matching impact default series data could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ImpactDefaultSeriesData fetchByseriesId_Last(
+    public com.ext.portlet.model.ImpactDefaultSeriesData fetchBySeriesId_Last(
         long seriesId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -136,7 +136,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException if a impact default series data with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ImpactDefaultSeriesData[] findByseriesId_PrevAndNext(
+    public com.ext.portlet.model.ImpactDefaultSeriesData[] findBySeriesId_PrevAndNext(
         ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK, long seriesId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException,
@@ -148,7 +148,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @param seriesId the series ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByseriesId(long seriesId)
+    public void removeBySeriesId(long seriesId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -158,7 +158,70 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @return the number of matching impact default series datas
     * @throws SystemException if a system exception occurred
     */
-    public int countByseriesId(long seriesId)
+    public int countBySeriesId(long seriesId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the impact default series data where seriesId = &#63; and year = &#63; or throws a {@link com.ext.portlet.NoSuchImpactDefaultSeriesDataException} if it could not be found.
+    *
+    * @param seriesId the series ID
+    * @param year the year
+    * @return the matching impact default series data
+    * @throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException if a matching impact default series data could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ImpactDefaultSeriesData findBySeriesIdAndYear(
+        long seriesId, int year)
+        throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the impact default series data where seriesId = &#63; and year = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param seriesId the series ID
+    * @param year the year
+    * @return the matching impact default series data, or <code>null</code> if a matching impact default series data could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ImpactDefaultSeriesData fetchBySeriesIdAndYear(
+        long seriesId, int year)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the impact default series data where seriesId = &#63; and year = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param seriesId the series ID
+    * @param year the year
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching impact default series data, or <code>null</code> if a matching impact default series data could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ImpactDefaultSeriesData fetchBySeriesIdAndYear(
+        long seriesId, int year, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes the impact default series data where seriesId = &#63; and year = &#63; from the database.
+    *
+    * @param seriesId the series ID
+    * @param year the year
+    * @return the impact default series data that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ImpactDefaultSeriesData removeBySeriesIdAndYear(
+        long seriesId, int year)
+        throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of impact default series datas where seriesId = &#63; and year = &#63;.
+    *
+    * @param seriesId the series ID
+    * @param year the year
+    * @return the number of matching impact default series datas
+    * @throws SystemException if a system exception occurred
+    */
+    public int countBySeriesIdAndYear(long seriesId, int year)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

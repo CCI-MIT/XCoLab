@@ -41,14 +41,10 @@ public class DiscussionMessageLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName624;
-    private String[] _methodParameterTypes624;
-    private String _methodName625;
-    private String[] _methodParameterTypes625;
-    private String _methodName630;
-    private String[] _methodParameterTypes630;
-    private String _methodName631;
-    private String[] _methodParameterTypes631;
+    private String _methodName626;
+    private String[] _methodParameterTypes626;
+    private String _methodName627;
+    private String[] _methodParameterTypes627;
     private String _methodName632;
     private String[] _methodParameterTypes632;
     private String _methodName633;
@@ -95,6 +91,10 @@ public class DiscussionMessageLocalServiceClpInvoker {
     private String[] _methodParameterTypes653;
     private String _methodName654;
     private String[] _methodParameterTypes654;
+    private String _methodName655;
+    private String[] _methodParameterTypes655;
+    private String _methodName656;
+    private String[] _methodParameterTypes656;
 
     public DiscussionMessageLocalServiceClpInvoker() {
         _methodName0 = "addDiscussionMessage";
@@ -179,150 +179,150 @@ public class DiscussionMessageLocalServiceClpInvoker {
                 "com.ext.portlet.model.DiscussionMessage"
             };
 
-        _methodName624 = "getBeanIdentifier";
+        _methodName626 = "getBeanIdentifier";
 
-        _methodParameterTypes624 = new String[] {  };
+        _methodParameterTypes626 = new String[] {  };
 
-        _methodName625 = "setBeanIdentifier";
+        _methodName627 = "setBeanIdentifier";
 
-        _methodParameterTypes625 = new String[] { "java.lang.String" };
+        _methodParameterTypes627 = new String[] { "java.lang.String" };
 
-        _methodName630 = "getThreadsByCategory";
-
-        _methodParameterTypes630 = new String[] { "long" };
-
-        _methodName631 = "getThreadMessages";
-
-        _methodParameterTypes631 = new String[] { "long" };
-
-        _methodName632 = "getThreadMessagesCount";
+        _methodName632 = "getThreadsByCategory";
 
         _methodParameterTypes632 = new String[] { "long" };
 
-        _methodName633 = "getThreadByThreadId";
+        _methodName633 = "getThreadMessages";
 
         _methodParameterTypes633 = new String[] { "long" };
 
-        _methodName634 = "addThread";
+        _methodName634 = "getThreadMessagesCount";
 
-        _methodParameterTypes634 = new String[] {
+        _methodParameterTypes634 = new String[] { "long" };
+
+        _methodName635 = "getThreadByThreadId";
+
+        _methodParameterTypes635 = new String[] { "long" };
+
+        _methodName636 = "addThread";
+
+        _methodParameterTypes636 = new String[] {
                 "long", "long", "java.lang.String", "java.lang.String",
                 "com.liferay.portal.model.User"
             };
 
-        _methodName635 = "addMessage";
+        _methodName637 = "addMessage";
 
-        _methodParameterTypes635 = new String[] {
+        _methodParameterTypes637 = new String[] {
                 "long", "long", "long", "java.lang.String", "java.lang.String",
                 "com.liferay.portal.model.User"
             };
 
-        _methodName636 = "search";
+        _methodName638 = "search";
 
-        _methodParameterTypes636 = new String[] { "java.lang.String", "long" };
+        _methodParameterTypes638 = new String[] { "java.lang.String", "long" };
 
-        _methodName637 = "getMessageByMessageId";
-
-        _methodParameterTypes637 = new String[] { "long" };
-
-        _methodName638 = "reIndex";
-
-        _methodParameterTypes638 = new String[] {  };
-
-        _methodName639 = "reIndex";
+        _methodName639 = "getMessageByMessageId";
 
         _methodParameterTypes639 = new String[] { "long" };
 
-        _methodName640 = "getThreadMessages";
+        _methodName640 = "reIndex";
 
-        _methodParameterTypes640 = new String[] {
-                "com.ext.portlet.model.DiscussionMessage"
-            };
+        _methodParameterTypes640 = new String[] {  };
 
-        _methodName641 = "getThreadMessagesCount";
+        _methodName641 = "reIndex";
 
-        _methodParameterTypes641 = new String[] {
-                "com.ext.portlet.model.DiscussionMessage"
-            };
+        _methodParameterTypes641 = new String[] { "long" };
 
-        _methodName642 = "store";
+        _methodName642 = "getThreadMessages";
 
         _methodParameterTypes642 = new String[] {
                 "com.ext.portlet.model.DiscussionMessage"
             };
 
-        _methodName643 = "addThreadMessage";
+        _methodName643 = "getThreadMessagesCount";
 
         _methodParameterTypes643 = new String[] {
-                "com.ext.portlet.model.DiscussionMessage", "java.lang.String",
-                "java.lang.String", "com.liferay.portal.model.User"
+                "com.ext.portlet.model.DiscussionMessage"
             };
 
-        _methodName644 = "getAuthor";
+        _methodName644 = "store";
 
         _methodParameterTypes644 = new String[] {
                 "com.ext.portlet.model.DiscussionMessage"
             };
 
-        _methodName645 = "getLastActivityAuthor";
+        _methodName645 = "addThreadMessage";
 
         _methodParameterTypes645 = new String[] {
-                "com.ext.portlet.model.DiscussionMessage"
+                "com.ext.portlet.model.DiscussionMessage", "java.lang.String",
+                "java.lang.String", "com.liferay.portal.model.User"
             };
 
-        _methodName646 = "delete";
+        _methodName646 = "getAuthor";
 
         _methodParameterTypes646 = new String[] {
                 "com.ext.portlet.model.DiscussionMessage"
             };
 
-        _methodName647 = "update";
+        _methodName647 = "getLastActivityAuthor";
 
         _methodParameterTypes647 = new String[] {
-                "com.ext.portlet.model.DiscussionMessage", "java.lang.String",
-                "java.lang.String"
+                "com.ext.portlet.model.DiscussionMessage"
             };
 
-        _methodName648 = "getCategory";
+        _methodName648 = "delete";
 
         _methodParameterTypes648 = new String[] {
                 "com.ext.portlet.model.DiscussionMessage"
             };
 
-        _methodName649 = "getCategoryGroup";
+        _methodName649 = "update";
 
         _methodParameterTypes649 = new String[] {
-                "com.ext.portlet.model.DiscussionMessage"
+                "com.ext.portlet.model.DiscussionMessage", "java.lang.String",
+                "java.lang.String"
             };
 
-        _methodName650 = "getThread";
+        _methodName650 = "getCategory";
 
         _methodParameterTypes650 = new String[] {
                 "com.ext.portlet.model.DiscussionMessage"
             };
 
-        _methodName651 = "getFlags";
+        _methodName651 = "getCategoryGroup";
 
         _methodParameterTypes651 = new String[] {
                 "com.ext.portlet.model.DiscussionMessage"
             };
 
-        _methodName652 = "addFlag";
+        _methodName652 = "getThread";
 
         _methodParameterTypes652 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName653 = "getFlags";
+
+        _methodParameterTypes653 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName654 = "addFlag";
+
+        _methodParameterTypes654 = new String[] {
                 "com.ext.portlet.model.DiscussionMessage", "java.lang.String",
                 "java.lang.String", "com.liferay.portal.model.User"
             };
 
-        _methodName653 = "removeFlag";
+        _methodName655 = "removeFlag";
 
-        _methodParameterTypes653 = new String[] {
+        _methodParameterTypes655 = new String[] {
                 "com.ext.portlet.model.DiscussionMessage", "java.lang.String"
             };
 
-        _methodName654 = "hasFlag";
+        _methodName656 = "hasFlag";
 
-        _methodParameterTypes654 = new String[] { "long", "java.lang.String" };
+        _methodParameterTypes656 = new String[] { "long", "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -414,40 +414,40 @@ public class DiscussionMessageLocalServiceClpInvoker {
             return DiscussionMessageLocalServiceUtil.updateDiscussionMessage((com.ext.portlet.model.DiscussionMessage) arguments[0]);
         }
 
-        if (_methodName624.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes624, parameterTypes)) {
+        if (_methodName626.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes626, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName625.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes625, parameterTypes)) {
+        if (_methodName627.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes627, parameterTypes)) {
             DiscussionMessageLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName630.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes630, parameterTypes)) {
-            return DiscussionMessageLocalServiceUtil.getThreadsByCategory(((Long) arguments[0]).longValue());
-        }
-
-        if (_methodName631.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes631, parameterTypes)) {
-            return DiscussionMessageLocalServiceUtil.getThreadMessages(((Long) arguments[0]).longValue());
-        }
-
         if (_methodName632.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
-            return DiscussionMessageLocalServiceUtil.getThreadMessagesCount(((Long) arguments[0]).longValue());
+            return DiscussionMessageLocalServiceUtil.getThreadsByCategory(((Long) arguments[0]).longValue());
         }
 
         if (_methodName633.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
-            return DiscussionMessageLocalServiceUtil.getThreadByThreadId(((Long) arguments[0]).longValue());
+            return DiscussionMessageLocalServiceUtil.getThreadMessages(((Long) arguments[0]).longValue());
         }
 
         if (_methodName634.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes634, parameterTypes)) {
+            return DiscussionMessageLocalServiceUtil.getThreadMessagesCount(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName635.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes635, parameterTypes)) {
+            return DiscussionMessageLocalServiceUtil.getThreadByThreadId(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName636.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes636, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.addThread(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -455,8 +455,8 @@ public class DiscussionMessageLocalServiceClpInvoker {
                 (com.liferay.portal.model.User) arguments[4]);
         }
 
-        if (_methodName635.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes635, parameterTypes)) {
+        if (_methodName637.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes637, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.addMessage(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
@@ -465,103 +465,103 @@ public class DiscussionMessageLocalServiceClpInvoker {
                 (com.liferay.portal.model.User) arguments[5]);
         }
 
-        if (_methodName636.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes636, parameterTypes)) {
+        if (_methodName638.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.search((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName637.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes637, parameterTypes)) {
+        if (_methodName639.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.getMessageByMessageId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName640.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes640, parameterTypes)) {
             DiscussionMessageLocalServiceUtil.reIndex();
 
             return null;
         }
 
-        if (_methodName639.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+        if (_methodName641.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes641, parameterTypes)) {
             DiscussionMessageLocalServiceUtil.reIndex(((Long) arguments[0]).longValue());
 
             return null;
         }
 
-        if (_methodName640.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes640, parameterTypes)) {
+        if (_methodName642.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes642, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.getThreadMessages((com.ext.portlet.model.DiscussionMessage) arguments[0]);
         }
 
-        if (_methodName641.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes641, parameterTypes)) {
+        if (_methodName643.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes643, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.getThreadMessagesCount((com.ext.portlet.model.DiscussionMessage) arguments[0]);
         }
 
-        if (_methodName642.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes642, parameterTypes)) {
+        if (_methodName644.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
             DiscussionMessageLocalServiceUtil.store((com.ext.portlet.model.DiscussionMessage) arguments[0]);
 
             return null;
         }
 
-        if (_methodName643.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes643, parameterTypes)) {
+        if (_methodName645.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.addThreadMessage((com.ext.portlet.model.DiscussionMessage) arguments[0],
                 (java.lang.String) arguments[1],
                 (java.lang.String) arguments[2],
                 (com.liferay.portal.model.User) arguments[3]);
         }
 
-        if (_methodName644.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
+        if (_methodName646.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes646, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.getAuthor((com.ext.portlet.model.DiscussionMessage) arguments[0]);
         }
 
-        if (_methodName645.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
+        if (_methodName647.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes647, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.getLastActivityAuthor((com.ext.portlet.model.DiscussionMessage) arguments[0]);
         }
 
-        if (_methodName646.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes646, parameterTypes)) {
+        if (_methodName648.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes648, parameterTypes)) {
             DiscussionMessageLocalServiceUtil.delete((com.ext.portlet.model.DiscussionMessage) arguments[0]);
 
             return null;
         }
 
-        if (_methodName647.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes647, parameterTypes)) {
+        if (_methodName649.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes649, parameterTypes)) {
             DiscussionMessageLocalServiceUtil.update((com.ext.portlet.model.DiscussionMessage) arguments[0],
                 (java.lang.String) arguments[1], (java.lang.String) arguments[2]);
 
             return null;
         }
 
-        if (_methodName648.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes648, parameterTypes)) {
-            return DiscussionMessageLocalServiceUtil.getCategory((com.ext.portlet.model.DiscussionMessage) arguments[0]);
-        }
-
-        if (_methodName649.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes649, parameterTypes)) {
-            return DiscussionMessageLocalServiceUtil.getCategoryGroup((com.ext.portlet.model.DiscussionMessage) arguments[0]);
-        }
-
         if (_methodName650.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes650, parameterTypes)) {
-            return DiscussionMessageLocalServiceUtil.getThread((com.ext.portlet.model.DiscussionMessage) arguments[0]);
+            return DiscussionMessageLocalServiceUtil.getCategory((com.ext.portlet.model.DiscussionMessage) arguments[0]);
         }
 
         if (_methodName651.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes651, parameterTypes)) {
-            return DiscussionMessageLocalServiceUtil.getFlags((com.ext.portlet.model.DiscussionMessage) arguments[0]);
+            return DiscussionMessageLocalServiceUtil.getCategoryGroup((com.ext.portlet.model.DiscussionMessage) arguments[0]);
         }
 
         if (_methodName652.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes652, parameterTypes)) {
+            return DiscussionMessageLocalServiceUtil.getThread((com.ext.portlet.model.DiscussionMessage) arguments[0]);
+        }
+
+        if (_methodName653.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes653, parameterTypes)) {
+            return DiscussionMessageLocalServiceUtil.getFlags((com.ext.portlet.model.DiscussionMessage) arguments[0]);
+        }
+
+        if (_methodName654.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes654, parameterTypes)) {
             DiscussionMessageLocalServiceUtil.addFlag((com.ext.portlet.model.DiscussionMessage) arguments[0],
                 (java.lang.String) arguments[1],
                 (java.lang.String) arguments[2],
@@ -570,16 +570,16 @@ public class DiscussionMessageLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName653.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes653, parameterTypes)) {
+        if (_methodName655.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes655, parameterTypes)) {
             DiscussionMessageLocalServiceUtil.removeFlag((com.ext.portlet.model.DiscussionMessage) arguments[0],
                 (java.lang.String) arguments[1]);
 
             return null;
         }
 
-        if (_methodName654.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes654, parameterTypes)) {
+        if (_methodName656.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes656, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.hasFlag(((Long) arguments[0]).longValue(),
                 (java.lang.String) arguments[1]);
         }

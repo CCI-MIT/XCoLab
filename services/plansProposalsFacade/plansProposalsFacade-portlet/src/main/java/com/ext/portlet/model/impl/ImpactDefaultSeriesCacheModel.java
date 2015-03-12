@@ -25,10 +25,11 @@ public class ImpactDefaultSeriesCacheModel implements CacheModel<ImpactDefaultSe
     public String description;
     public long focusAreaId;
     public boolean visible;
+    public boolean editable;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{seriesId=");
         sb.append(seriesId);
@@ -40,6 +41,8 @@ public class ImpactDefaultSeriesCacheModel implements CacheModel<ImpactDefaultSe
         sb.append(focusAreaId);
         sb.append(", visible=");
         sb.append(visible);
+        sb.append(", editable=");
+        sb.append(editable);
         sb.append("}");
 
         return sb.toString();
@@ -65,6 +68,7 @@ public class ImpactDefaultSeriesCacheModel implements CacheModel<ImpactDefaultSe
 
         impactDefaultSeriesImpl.setFocusAreaId(focusAreaId);
         impactDefaultSeriesImpl.setVisible(visible);
+        impactDefaultSeriesImpl.setEditable(editable);
 
         impactDefaultSeriesImpl.resetOriginalValues();
 
@@ -78,6 +82,7 @@ public class ImpactDefaultSeriesCacheModel implements CacheModel<ImpactDefaultSe
         description = objectInput.readUTF();
         focusAreaId = objectInput.readLong();
         visible = objectInput.readBoolean();
+        editable = objectInput.readBoolean();
     }
 
     @Override
@@ -99,5 +104,6 @@ public class ImpactDefaultSeriesCacheModel implements CacheModel<ImpactDefaultSe
 
         objectOutput.writeLong(focusAreaId);
         objectOutput.writeBoolean(visible);
+        objectOutput.writeBoolean(editable);
     }
 }

@@ -338,6 +338,7 @@
 		<field name="description" type="String" />
 		<field name="focusAreaId" type="long" />
 		<field name="visible" type="boolean" />
+		<field name="editable" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ImpactDefaultSeriesData">
 		<field name="seriesId" type="long" />

@@ -45,6 +45,10 @@ public class ImpactDefaultSeriesLocalServiceClp
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
+    private String _methodName19;
+    private String[] _methodParameterTypes19;
+    private String _methodName20;
+    private String[] _methodParameterTypes20;
 
     public ImpactDefaultSeriesLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -147,6 +151,16 @@ public class ImpactDefaultSeriesLocalServiceClp
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
+
+        _methodName19 = "getAllImpactDefaultSeriesWithFocusArea";
+
+        _methodParameterTypes19 = new String[] { "com.ext.portlet.model.FocusArea" };
+
+        _methodName20 = "getImpactDefaultSeriesWithFocusAreaAndName";
+
+        _methodParameterTypes20 = new String[] {
+                "com.ext.portlet.model.FocusArea", "java.lang.String"
+            };
     }
 
     @Override
@@ -679,5 +693,70 @@ public class ImpactDefaultSeriesLocalServiceClp
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ImpactDefaultSeries> getAllImpactDefaultSeriesWithFocusArea(
+        com.ext.portlet.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName19,
+                    _methodParameterTypes19,
+                    new Object[] { ClpSerializer.translateInput(focusArea) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ImpactDefaultSeries>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.ext.portlet.model.ImpactDefaultSeries getImpactDefaultSeriesWithFocusAreaAndName(
+        com.ext.portlet.model.FocusArea focusArea, java.lang.String name)
+        throws com.ext.portlet.NoSuchImpactDefaultSeriesException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20,
+                    new Object[] {
+                        ClpSerializer.translateInput(focusArea),
+                        
+                    ClpSerializer.translateInput(name)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.ext.portlet.NoSuchImpactDefaultSeriesException) {
+                throw (com.ext.portlet.NoSuchImpactDefaultSeriesException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ImpactDefaultSeries) ClpSerializer.translateOutput(returnObj);
     }
 }

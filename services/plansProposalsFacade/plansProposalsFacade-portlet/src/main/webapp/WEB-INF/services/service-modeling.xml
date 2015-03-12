@@ -203,7 +203,7 @@
         <column name="iterationId" type="long" primary="true" />
         <column name="year" type="int" primary="true"/>
 
-        <finder name="iterationId" return-type="Collection">
+        <finder name="IterationId" return-type="Collection">
             <finder-column name="iterationId"/>
         </finder>
     </entity>
@@ -219,7 +219,7 @@
         <column name="focusAreaListId" type="long" primary="true" />
         <column name="focusAreaId" type="long" primary="true" />
 
-        <finder name="focusAreaListId" return-type="Collection">
+        <finder name="FocusAreaListId" return-type="Collection">
             <finder-column name="focusAreaListId"/>
         </finder>
     </entity>
@@ -230,19 +230,36 @@
         <column name="description" type="String" />
         <column name="focusAreaId" type="long" />
         <column name="visible" type="boolean" />
+        <column name="editable" type="boolean" />
 
-        <finder name="seriesId" return-type="Collection">
+        <finder name="SeriesId" return-type="Collection">
             <finder-column name="seriesId"/>
+        </finder>
+        <finder name="SeriesIdAndEditable" return-type="Collection">
+            <finder-column name="seriesId"/>
+            <finder-column name="editable"/>
+        </finder>
+        <finder name="FocusAreaId" return-type="Collection">
+            <finder-column name="focusAreaId"/>
+        </finder>
+        <finder name="FocusAreaIdAndName" return-type="ImpactDefaultSeries">
+            <finder-column name="focusAreaId"/>
+            <finder-column name="name"/>
         </finder>
     </entity>
 
     <entity name="ImpactDefaultSeriesData" local-service="true">
         <column name="seriesId" type="long" primary="true" />
         <column name="year" type="int" primary="true" />
-        <column name="value" type="double" primary="true" />
+        <column name="value" type="double" />
 
-        <finder name="seriesId" return-type="Collection">
+        <finder name="SeriesId" return-type="Collection">
             <finder-column name="seriesId"/>
+        </finder>
+
+        <finder name="SeriesIdAndYear" return-type="ImpactDefaultSeriesData">
+            <finder-column name="seriesId"/>
+            <finder-column name="year"/>
         </finder>
     </entity>
 

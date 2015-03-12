@@ -75,7 +75,7 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
         new FinderPath(ImpactIterationModelImpl.ENTITY_CACHE_ENABLED,
             ImpactIterationModelImpl.FINDER_CACHE_ENABLED,
             ImpactIterationImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-            "findByiterationId",
+            "findByIterationId",
             new String[] {
                 Long.class.getName(),
                 
@@ -86,12 +86,12 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
         new FinderPath(ImpactIterationModelImpl.ENTITY_CACHE_ENABLED,
             ImpactIterationModelImpl.FINDER_CACHE_ENABLED,
             ImpactIterationImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByiterationId",
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByIterationId",
             new String[] { Long.class.getName() },
             ImpactIterationModelImpl.ITERATIONID_COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_ITERATIONID = new FinderPath(ImpactIterationModelImpl.ENTITY_CACHE_ENABLED,
             ImpactIterationModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByiterationId",
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByIterationId",
             new String[] { Long.class.getName() });
     private static final String _FINDER_COLUMN_ITERATIONID_ITERATIONID_2 = "impactIteration.id.iterationId = ?";
     private static final String _SQL_SELECT_IMPACTITERATION = "SELECT impactIteration FROM ImpactIteration impactIteration";
@@ -135,9 +135,9 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<ImpactIteration> findByiterationId(long iterationId)
+    public List<ImpactIteration> findByIterationId(long iterationId)
         throws SystemException {
-        return findByiterationId(iterationId, QueryUtil.ALL_POS,
+        return findByIterationId(iterationId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
     }
 
@@ -155,9 +155,9 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<ImpactIteration> findByiterationId(long iterationId, int start,
+    public List<ImpactIteration> findByIterationId(long iterationId, int start,
         int end) throws SystemException {
-        return findByiterationId(iterationId, start, end, null);
+        return findByIterationId(iterationId, start, end, null);
     }
 
     /**
@@ -175,7 +175,7 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<ImpactIteration> findByiterationId(long iterationId, int start,
+    public List<ImpactIteration> findByIterationId(long iterationId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         boolean pagination = true;
         FinderPath finderPath = null;
@@ -276,10 +276,10 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactIteration findByiterationId_First(long iterationId,
+    public ImpactIteration findByIterationId_First(long iterationId,
         OrderByComparator orderByComparator)
         throws NoSuchImpactIterationException, SystemException {
-        ImpactIteration impactIteration = fetchByiterationId_First(iterationId,
+        ImpactIteration impactIteration = fetchByIterationId_First(iterationId,
                 orderByComparator);
 
         if (impactIteration != null) {
@@ -307,9 +307,9 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactIteration fetchByiterationId_First(long iterationId,
+    public ImpactIteration fetchByIterationId_First(long iterationId,
         OrderByComparator orderByComparator) throws SystemException {
-        List<ImpactIteration> list = findByiterationId(iterationId, 0, 1,
+        List<ImpactIteration> list = findByIterationId(iterationId, 0, 1,
                 orderByComparator);
 
         if (!list.isEmpty()) {
@@ -329,10 +329,10 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactIteration findByiterationId_Last(long iterationId,
+    public ImpactIteration findByIterationId_Last(long iterationId,
         OrderByComparator orderByComparator)
         throws NoSuchImpactIterationException, SystemException {
-        ImpactIteration impactIteration = fetchByiterationId_Last(iterationId,
+        ImpactIteration impactIteration = fetchByIterationId_Last(iterationId,
                 orderByComparator);
 
         if (impactIteration != null) {
@@ -360,15 +360,15 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactIteration fetchByiterationId_Last(long iterationId,
+    public ImpactIteration fetchByIterationId_Last(long iterationId,
         OrderByComparator orderByComparator) throws SystemException {
-        int count = countByiterationId(iterationId);
+        int count = countByIterationId(iterationId);
 
         if (count == 0) {
             return null;
         }
 
-        List<ImpactIteration> list = findByiterationId(iterationId, count - 1,
+        List<ImpactIteration> list = findByIterationId(iterationId, count - 1,
                 count, orderByComparator);
 
         if (!list.isEmpty()) {
@@ -389,7 +389,7 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactIteration[] findByiterationId_PrevAndNext(
+    public ImpactIteration[] findByIterationId_PrevAndNext(
         ImpactIterationPK impactIterationPK, long iterationId,
         OrderByComparator orderByComparator)
         throws NoSuchImpactIterationException, SystemException {
@@ -402,12 +402,12 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
 
             ImpactIteration[] array = new ImpactIterationImpl[3];
 
-            array[0] = getByiterationId_PrevAndNext(session, impactIteration,
+            array[0] = getByIterationId_PrevAndNext(session, impactIteration,
                     iterationId, orderByComparator, true);
 
             array[1] = impactIteration;
 
-            array[2] = getByiterationId_PrevAndNext(session, impactIteration,
+            array[2] = getByIterationId_PrevAndNext(session, impactIteration,
                     iterationId, orderByComparator, false);
 
             return array;
@@ -418,7 +418,7 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
         }
     }
 
-    protected ImpactIteration getByiterationId_PrevAndNext(Session session,
+    protected ImpactIteration getByIterationId_PrevAndNext(Session session,
         ImpactIteration impactIteration, long iterationId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
@@ -521,8 +521,8 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public void removeByiterationId(long iterationId) throws SystemException {
-        for (ImpactIteration impactIteration : findByiterationId(iterationId,
+    public void removeByIterationId(long iterationId) throws SystemException {
+        for (ImpactIteration impactIteration : findByIterationId(iterationId,
                 QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(impactIteration);
         }
@@ -536,7 +536,7 @@ public class ImpactIterationPersistenceImpl extends BasePersistenceImpl<ImpactIt
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public int countByiterationId(long iterationId) throws SystemException {
+    public int countByIterationId(long iterationId) throws SystemException {
         FinderPath finderPath = FINDER_PATH_COUNT_BY_ITERATIONID;
 
         Object[] finderArgs = new Object[] { iterationId };

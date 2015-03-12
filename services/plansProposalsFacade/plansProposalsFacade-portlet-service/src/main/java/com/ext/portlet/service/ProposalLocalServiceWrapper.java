@@ -1372,6 +1372,13 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         return _proposalLocalService.getLatestProposalContest(proposalId);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getImpactProposalAttributes(proposal);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

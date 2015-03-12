@@ -1079,7 +1079,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public List<ImpactIteration> getContestImpactIterations(Contest contest) throws PortalException, SystemException {
         ImpactTemplateSeries impactSeries = getContestImpactTemplateSeries(contest);
-        return impactIterationPersistence.findByiterationId(impactSeries.getIterationId());
+        return impactIterationPersistence.findByIterationId(impactSeries.getIterationId());
     }
 
     public ImpactTemplateFocusAreaList getContestImpactFocusAreaList(Contest contest) throws SystemException, PortalException {
@@ -1089,6 +1089,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) throws PortalException, SystemException {
         ImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);
-        return impactTemplateMaxFocusAreaPersistence.findByfocusAreaListId(focusAreaList.getFocusAreaListId());
+        return impactTemplateMaxFocusAreaPersistence.findByFocusAreaListId(focusAreaList.getFocusAreaListId());
     }
 }

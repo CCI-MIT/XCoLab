@@ -41,14 +41,10 @@ public class PlanPositionsLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName624;
-    private String[] _methodParameterTypes624;
-    private String _methodName625;
-    private String[] _methodParameterTypes625;
-    private String _methodName630;
-    private String[] _methodParameterTypes630;
-    private String _methodName631;
-    private String[] _methodParameterTypes631;
+    private String _methodName626;
+    private String[] _methodParameterTypes626;
+    private String _methodName627;
+    private String[] _methodParameterTypes627;
     private String _methodName632;
     private String[] _methodParameterTypes632;
     private String _methodName633;
@@ -63,6 +59,10 @@ public class PlanPositionsLocalServiceClpInvoker {
     private String[] _methodParameterTypes637;
     private String _methodName638;
     private String[] _methodParameterTypes638;
+    private String _methodName639;
+    private String[] _methodParameterTypes639;
+    private String _methodName640;
+    private String[] _methodParameterTypes640;
 
     public PlanPositionsLocalServiceClpInvoker() {
         _methodName0 = "addPlanPositions";
@@ -147,57 +147,57 @@ public class PlanPositionsLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanPositions"
             };
 
-        _methodName624 = "getBeanIdentifier";
+        _methodName626 = "getBeanIdentifier";
 
-        _methodParameterTypes624 = new String[] {  };
+        _methodParameterTypes626 = new String[] {  };
 
-        _methodName625 = "setBeanIdentifier";
+        _methodName627 = "setBeanIdentifier";
 
-        _methodParameterTypes625 = new String[] { "java.lang.String" };
+        _methodParameterTypes627 = new String[] { "java.lang.String" };
 
-        _methodName630 = "getCurrentForPlan";
-
-        _methodParameterTypes630 = new String[] { "com.ext.portlet.model.PlanItem" };
-
-        _methodName631 = "createPlanPositions";
-
-        _methodParameterTypes631 = new String[] { "com.ext.portlet.model.PlanItem" };
-
-        _methodName632 = "getAllForPlan";
+        _methodName632 = "getCurrentForPlan";
 
         _methodParameterTypes632 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName633 = "createNewVersionForPlan";
+        _methodName633 = "createPlanPositions";
 
         _methodParameterTypes633 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName634 = "createNewVersionForPlan";
+        _methodName634 = "getAllForPlan";
 
-        _methodParameterTypes634 = new String[] {
+        _methodParameterTypes634 = new String[] { "com.ext.portlet.model.PlanItem" };
+
+        _methodName635 = "createNewVersionForPlan";
+
+        _methodParameterTypes635 = new String[] { "com.ext.portlet.model.PlanItem" };
+
+        _methodName636 = "createNewVersionForPlan";
+
+        _methodParameterTypes636 = new String[] {
                 "com.ext.portlet.model.PlanItem", "boolean"
             };
 
-        _methodName635 = "getPositionsIds";
-
-        _methodParameterTypes635 = new String[] {
-                "com.ext.portlet.model.PlanPositions"
-            };
-
-        _methodName636 = "store";
-
-        _methodParameterTypes636 = new String[] {
-                "com.ext.portlet.model.PlanPositions"
-            };
-
-        _methodName637 = "setPositionsIds";
+        _methodName637 = "getPositionsIds";
 
         _methodParameterTypes637 = new String[] {
+                "com.ext.portlet.model.PlanPositions"
+            };
+
+        _methodName638 = "store";
+
+        _methodParameterTypes638 = new String[] {
+                "com.ext.portlet.model.PlanPositions"
+            };
+
+        _methodName639 = "setPositionsIds";
+
+        _methodParameterTypes639 = new String[] {
                 "com.ext.portlet.model.PlanPositions", "java.util.List"
             };
 
-        _methodName638 = "getUpdateAuthor";
+        _methodName640 = "getUpdateAuthor";
 
-        _methodParameterTypes638 = new String[] {
+        _methodParameterTypes640 = new String[] {
                 "com.ext.portlet.model.PlanPositions"
             };
     }
@@ -291,66 +291,66 @@ public class PlanPositionsLocalServiceClpInvoker {
             return PlanPositionsLocalServiceUtil.updatePlanPositions((com.ext.portlet.model.PlanPositions) arguments[0]);
         }
 
-        if (_methodName624.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes624, parameterTypes)) {
+        if (_methodName626.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes626, parameterTypes)) {
             return PlanPositionsLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName625.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes625, parameterTypes)) {
+        if (_methodName627.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes627, parameterTypes)) {
             PlanPositionsLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName630.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes630, parameterTypes)) {
-            return PlanPositionsLocalServiceUtil.getCurrentForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
-        }
-
-        if (_methodName631.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes631, parameterTypes)) {
-            return PlanPositionsLocalServiceUtil.createPlanPositions((com.ext.portlet.model.PlanItem) arguments[0]);
-        }
-
         if (_methodName632.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
-            return PlanPositionsLocalServiceUtil.getAllForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
+            return PlanPositionsLocalServiceUtil.getCurrentForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
         if (_methodName633.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
-            return PlanPositionsLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
+            return PlanPositionsLocalServiceUtil.createPlanPositions((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
         if (_methodName634.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes634, parameterTypes)) {
-            return PlanPositionsLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0],
-                ((Boolean) arguments[1]).booleanValue());
+            return PlanPositionsLocalServiceUtil.getAllForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
         if (_methodName635.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes635, parameterTypes)) {
-            return PlanPositionsLocalServiceUtil.getPositionsIds((com.ext.portlet.model.PlanPositions) arguments[0]);
+            return PlanPositionsLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
         if (_methodName636.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes636, parameterTypes)) {
+            return PlanPositionsLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0],
+                ((Boolean) arguments[1]).booleanValue());
+        }
+
+        if (_methodName637.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes637, parameterTypes)) {
+            return PlanPositionsLocalServiceUtil.getPositionsIds((com.ext.portlet.model.PlanPositions) arguments[0]);
+        }
+
+        if (_methodName638.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
             PlanPositionsLocalServiceUtil.store((com.ext.portlet.model.PlanPositions) arguments[0]);
 
             return null;
         }
 
-        if (_methodName637.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes637, parameterTypes)) {
+        if (_methodName639.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
             PlanPositionsLocalServiceUtil.setPositionsIds((com.ext.portlet.model.PlanPositions) arguments[0],
                 (java.util.List<java.lang.Long>) arguments[1]);
 
             return null;
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName640.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes640, parameterTypes)) {
             return PlanPositionsLocalServiceUtil.getUpdateAuthor((com.ext.portlet.model.PlanPositions) arguments[0]);
         }
 

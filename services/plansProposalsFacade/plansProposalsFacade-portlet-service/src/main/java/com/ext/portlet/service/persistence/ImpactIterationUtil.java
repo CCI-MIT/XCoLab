@@ -105,10 +105,10 @@ public class ImpactIterationUtil {
     * @return the matching impact iterations
     * @throws SystemException if a system exception occurred
     */
-    public static java.util.List<com.ext.portlet.model.ImpactIteration> findByiterationId(
+    public static java.util.List<com.ext.portlet.model.ImpactIteration> findByIterationId(
         long iterationId)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByiterationId(iterationId);
+        return getPersistence().findByIterationId(iterationId);
     }
 
     /**
@@ -124,10 +124,10 @@ public class ImpactIterationUtil {
     * @return the range of matching impact iterations
     * @throws SystemException if a system exception occurred
     */
-    public static java.util.List<com.ext.portlet.model.ImpactIteration> findByiterationId(
+    public static java.util.List<com.ext.portlet.model.ImpactIteration> findByIterationId(
         long iterationId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByiterationId(iterationId, start, end);
+        return getPersistence().findByIterationId(iterationId, start, end);
     }
 
     /**
@@ -144,12 +144,12 @@ public class ImpactIterationUtil {
     * @return the ordered range of matching impact iterations
     * @throws SystemException if a system exception occurred
     */
-    public static java.util.List<com.ext.portlet.model.ImpactIteration> findByiterationId(
+    public static java.util.List<com.ext.portlet.model.ImpactIteration> findByIterationId(
         long iterationId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByiterationId(iterationId, start, end, orderByComparator);
+                   .findByIterationId(iterationId, start, end, orderByComparator);
     }
 
     /**
@@ -161,13 +161,13 @@ public class ImpactIterationUtil {
     * @throws com.ext.portlet.NoSuchImpactIterationException if a matching impact iteration could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ImpactIteration findByiterationId_First(
+    public static com.ext.portlet.model.ImpactIteration findByIterationId_First(
         long iterationId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactIterationException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByiterationId_First(iterationId, orderByComparator);
+                   .findByIterationId_First(iterationId, orderByComparator);
     }
 
     /**
@@ -178,12 +178,12 @@ public class ImpactIterationUtil {
     * @return the first matching impact iteration, or <code>null</code> if a matching impact iteration could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ImpactIteration fetchByiterationId_First(
+    public static com.ext.portlet.model.ImpactIteration fetchByIterationId_First(
         long iterationId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .fetchByiterationId_First(iterationId, orderByComparator);
+                   .fetchByIterationId_First(iterationId, orderByComparator);
     }
 
     /**
@@ -195,13 +195,13 @@ public class ImpactIterationUtil {
     * @throws com.ext.portlet.NoSuchImpactIterationException if a matching impact iteration could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ImpactIteration findByiterationId_Last(
+    public static com.ext.portlet.model.ImpactIteration findByIterationId_Last(
         long iterationId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactIterationException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByiterationId_Last(iterationId, orderByComparator);
+                   .findByIterationId_Last(iterationId, orderByComparator);
     }
 
     /**
@@ -212,12 +212,12 @@ public class ImpactIterationUtil {
     * @return the last matching impact iteration, or <code>null</code> if a matching impact iteration could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ImpactIteration fetchByiterationId_Last(
+    public static com.ext.portlet.model.ImpactIteration fetchByIterationId_Last(
         long iterationId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .fetchByiterationId_Last(iterationId, orderByComparator);
+                   .fetchByIterationId_Last(iterationId, orderByComparator);
     }
 
     /**
@@ -230,13 +230,13 @@ public class ImpactIterationUtil {
     * @throws com.ext.portlet.NoSuchImpactIterationException if a impact iteration with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ImpactIteration[] findByiterationId_PrevAndNext(
+    public static com.ext.portlet.model.ImpactIteration[] findByIterationId_PrevAndNext(
         ImpactIterationPK impactIterationPK, long iterationId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactIterationException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByiterationId_PrevAndNext(impactIterationPK,
+                   .findByIterationId_PrevAndNext(impactIterationPK,
             iterationId, orderByComparator);
     }
 
@@ -246,9 +246,9 @@ public class ImpactIterationUtil {
     * @param iterationId the iteration ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByiterationId(long iterationId)
+    public static void removeByIterationId(long iterationId)
         throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByiterationId(iterationId);
+        getPersistence().removeByIterationId(iterationId);
     }
 
     /**
@@ -258,9 +258,9 @@ public class ImpactIterationUtil {
     * @return the number of matching impact iterations
     * @throws SystemException if a system exception occurred
     */
-    public static int countByiterationId(long iterationId)
+    public static int countByIterationId(long iterationId)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByiterationId(iterationId);
+        return getPersistence().countByIterationId(iterationId);
     }
 
     /**

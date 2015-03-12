@@ -20,6 +20,7 @@ public class ImpactDefaultSeriesSoap implements Serializable {
     private String _description;
     private long _focusAreaId;
     private boolean _visible;
+    private boolean _editable;
 
     public ImpactDefaultSeriesSoap() {
     }
@@ -32,6 +33,7 @@ public class ImpactDefaultSeriesSoap implements Serializable {
         soapModel.setDescription(model.getDescription());
         soapModel.setFocusAreaId(model.getFocusAreaId());
         soapModel.setVisible(model.getVisible());
+        soapModel.setEditable(model.getEditable());
 
         return soapModel;
     }
@@ -126,5 +128,17 @@ public class ImpactDefaultSeriesSoap implements Serializable {
 
     public void setVisible(boolean visible) {
         _visible = visible;
+    }
+
+    public boolean getEditable() {
+        return _editable;
+    }
+
+    public boolean isEditable() {
+        return _editable;
+    }
+
+    public void setEditable(boolean editable) {
+        _editable = editable;
     }
 }

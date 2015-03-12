@@ -50,9 +50,10 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
             { "name", Types.VARCHAR },
             { "description", Types.VARCHAR },
             { "focusAreaId", Types.BIGINT },
-            { "visible", Types.BOOLEAN }
+            { "visible", Types.BOOLEAN },
+            { "editable", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ImpactDefaultSeries (seriesId LONG not null,name VARCHAR(75) not null,description VARCHAR(75) null,focusAreaId LONG,visible BOOLEAN,primary key (seriesId, name))";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ImpactDefaultSeries (seriesId LONG not null,name VARCHAR(75) not null,description VARCHAR(75) null,focusAreaId LONG,visible BOOLEAN,editable BOOLEAN,primary key (seriesId, name))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ImpactDefaultSeries";
     public static final String ORDER_BY_JPQL = " ORDER BY impactDefaultSeries.id.seriesId ASC, impactDefaultSeries.id.name ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ImpactDefaultSeries.seriesId ASC, xcolab_ImpactDefaultSeries.name ASC";
@@ -68,8 +69,10 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
     public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.ImpactDefaultSeries"),
             true);
-    public static long SERIESID_COLUMN_BITMASK = 1L;
-    public static long NAME_COLUMN_BITMASK = 2L;
+    public static long EDITABLE_COLUMN_BITMASK = 1L;
+    public static long FOCUSAREAID_COLUMN_BITMASK = 2L;
+    public static long NAME_COLUMN_BITMASK = 4L;
+    public static long SERIESID_COLUMN_BITMASK = 8L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ImpactDefaultSeries"));
     private static ClassLoader _classLoader = ImpactDefaultSeries.class.getClassLoader();
@@ -80,9 +83,15 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
     private long _originalSeriesId;
     private boolean _setOriginalSeriesId;
     private String _name;
+    private String _originalName;
     private String _description;
     private long _focusAreaId;
+    private long _originalFocusAreaId;
+    private boolean _setOriginalFocusAreaId;
     private boolean _visible;
+    private boolean _editable;
+    private boolean _originalEditable;
+    private boolean _setOriginalEditable;
     private long _columnBitmask;
     private ImpactDefaultSeries _escapedModel;
 
@@ -107,6 +116,7 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
         model.setDescription(soapModel.getDescription());
         model.setFocusAreaId(soapModel.getFocusAreaId());
         model.setVisible(soapModel.getVisible());
+        model.setEditable(soapModel.getEditable());
 
         return model;
     }
@@ -172,6 +182,7 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
         attributes.put("description", getDescription());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("visible", getVisible());
+        attributes.put("editable", getEditable());
 
         return attributes;
     }
@@ -206,6 +217,12 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
 
         if (visible != null) {
             setVisible(visible);
+        }
+
+        Boolean editable = (Boolean) attributes.get("editable");
+
+        if (editable != null) {
+            setEditable(editable);
         }
     }
 
@@ -244,7 +261,17 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
 
     @Override
     public void setName(String name) {
+        _columnBitmask |= NAME_COLUMN_BITMASK;
+
+        if (_originalName == null) {
+            _originalName = _name;
+        }
+
         _name = name;
+    }
+
+    public String getOriginalName() {
+        return GetterUtil.getString(_originalName);
     }
 
     @JSON
@@ -270,7 +297,19 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
 
     @Override
     public void setFocusAreaId(long focusAreaId) {
+        _columnBitmask |= FOCUSAREAID_COLUMN_BITMASK;
+
+        if (!_setOriginalFocusAreaId) {
+            _setOriginalFocusAreaId = true;
+
+            _originalFocusAreaId = _focusAreaId;
+        }
+
         _focusAreaId = focusAreaId;
+    }
+
+    public long getOriginalFocusAreaId() {
+        return _originalFocusAreaId;
     }
 
     @JSON
@@ -287,6 +326,34 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
     @Override
     public void setVisible(boolean visible) {
         _visible = visible;
+    }
+
+    @JSON
+    @Override
+    public boolean getEditable() {
+        return _editable;
+    }
+
+    @Override
+    public boolean isEditable() {
+        return _editable;
+    }
+
+    @Override
+    public void setEditable(boolean editable) {
+        _columnBitmask |= EDITABLE_COLUMN_BITMASK;
+
+        if (!_setOriginalEditable) {
+            _setOriginalEditable = true;
+
+            _originalEditable = _editable;
+        }
+
+        _editable = editable;
+    }
+
+    public boolean getOriginalEditable() {
+        return _originalEditable;
     }
 
     public long getColumnBitmask() {
@@ -312,6 +379,7 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
         impactDefaultSeriesImpl.setDescription(getDescription());
         impactDefaultSeriesImpl.setFocusAreaId(getFocusAreaId());
         impactDefaultSeriesImpl.setVisible(getVisible());
+        impactDefaultSeriesImpl.setEditable(getEditable());
 
         impactDefaultSeriesImpl.resetOriginalValues();
 
@@ -359,6 +427,16 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
 
         impactDefaultSeriesModelImpl._setOriginalSeriesId = false;
 
+        impactDefaultSeriesModelImpl._originalName = impactDefaultSeriesModelImpl._name;
+
+        impactDefaultSeriesModelImpl._originalFocusAreaId = impactDefaultSeriesModelImpl._focusAreaId;
+
+        impactDefaultSeriesModelImpl._setOriginalFocusAreaId = false;
+
+        impactDefaultSeriesModelImpl._originalEditable = impactDefaultSeriesModelImpl._editable;
+
+        impactDefaultSeriesModelImpl._setOriginalEditable = false;
+
         impactDefaultSeriesModelImpl._columnBitmask = 0;
     }
 
@@ -388,12 +466,14 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
 
         impactDefaultSeriesCacheModel.visible = getVisible();
 
+        impactDefaultSeriesCacheModel.editable = getEditable();
+
         return impactDefaultSeriesCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{seriesId=");
         sb.append(getSeriesId());
@@ -405,6 +485,8 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
         sb.append(getFocusAreaId());
         sb.append(", visible=");
         sb.append(getVisible());
+        sb.append(", editable=");
+        sb.append(getEditable());
         sb.append("}");
 
         return sb.toString();
@@ -412,7 +494,7 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ImpactDefaultSeries");
@@ -437,6 +519,10 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
         sb.append(
             "<column><column-name>visible</column-name><column-value><![CDATA[");
         sb.append(getVisible());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>editable</column-name><column-value><![CDATA[");
+        sb.append(getEditable());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

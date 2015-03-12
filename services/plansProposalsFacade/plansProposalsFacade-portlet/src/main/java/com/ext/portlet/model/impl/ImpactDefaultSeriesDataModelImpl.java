@@ -49,10 +49,10 @@ public class ImpactDefaultSeriesDataModelImpl extends BaseModelImpl<ImpactDefaul
             { "year", Types.INTEGER },
             { "value", Types.DOUBLE }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ImpactDefaultSeriesData (seriesId LONG not null,year INTEGER not null,value DOUBLE not null,primary key (seriesId, year, value))";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ImpactDefaultSeriesData (seriesId LONG not null,year INTEGER not null,value DOUBLE,primary key (seriesId, year))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ImpactDefaultSeriesData";
-    public static final String ORDER_BY_JPQL = " ORDER BY impactDefaultSeriesData.id.seriesId ASC, impactDefaultSeriesData.id.year ASC, impactDefaultSeriesData.id.value ASC";
-    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ImpactDefaultSeriesData.seriesId ASC, xcolab_ImpactDefaultSeriesData.year ASC, xcolab_ImpactDefaultSeriesData.value ASC";
+    public static final String ORDER_BY_JPQL = " ORDER BY impactDefaultSeriesData.id.seriesId ASC, impactDefaultSeriesData.id.year ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ImpactDefaultSeriesData.seriesId ASC, xcolab_ImpactDefaultSeriesData.year ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -67,7 +67,6 @@ public class ImpactDefaultSeriesDataModelImpl extends BaseModelImpl<ImpactDefaul
             true);
     public static long SERIESID_COLUMN_BITMASK = 1L;
     public static long YEAR_COLUMN_BITMASK = 2L;
-    public static long VALUE_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ImpactDefaultSeriesData"));
     private static ClassLoader _classLoader = ImpactDefaultSeriesData.class.getClassLoader();
@@ -78,6 +77,8 @@ public class ImpactDefaultSeriesDataModelImpl extends BaseModelImpl<ImpactDefaul
     private long _originalSeriesId;
     private boolean _setOriginalSeriesId;
     private int _year;
+    private int _originalYear;
+    private boolean _setOriginalYear;
     private double _value;
     private long _columnBitmask;
     private ImpactDefaultSeriesData _escapedModel;
@@ -129,19 +130,18 @@ public class ImpactDefaultSeriesDataModelImpl extends BaseModelImpl<ImpactDefaul
 
     @Override
     public ImpactDefaultSeriesDataPK getPrimaryKey() {
-        return new ImpactDefaultSeriesDataPK(_seriesId, _year, _value);
+        return new ImpactDefaultSeriesDataPK(_seriesId, _year);
     }
 
     @Override
     public void setPrimaryKey(ImpactDefaultSeriesDataPK primaryKey) {
         setSeriesId(primaryKey.seriesId);
         setYear(primaryKey.year);
-        setValue(primaryKey.value);
     }
 
     @Override
     public Serializable getPrimaryKeyObj() {
-        return new ImpactDefaultSeriesDataPK(_seriesId, _year, _value);
+        return new ImpactDefaultSeriesDataPK(_seriesId, _year);
     }
 
     @Override
@@ -222,7 +222,19 @@ public class ImpactDefaultSeriesDataModelImpl extends BaseModelImpl<ImpactDefaul
 
     @Override
     public void setYear(int year) {
+        _columnBitmask |= YEAR_COLUMN_BITMASK;
+
+        if (!_setOriginalYear) {
+            _setOriginalYear = true;
+
+            _originalYear = _year;
+        }
+
         _year = year;
+    }
+
+    public int getOriginalYear() {
+        return _originalYear;
     }
 
     @JSON
@@ -303,6 +315,10 @@ public class ImpactDefaultSeriesDataModelImpl extends BaseModelImpl<ImpactDefaul
         impactDefaultSeriesDataModelImpl._originalSeriesId = impactDefaultSeriesDataModelImpl._seriesId;
 
         impactDefaultSeriesDataModelImpl._setOriginalSeriesId = false;
+
+        impactDefaultSeriesDataModelImpl._originalYear = impactDefaultSeriesDataModelImpl._year;
+
+        impactDefaultSeriesDataModelImpl._setOriginalYear = false;
 
         impactDefaultSeriesDataModelImpl._columnBitmask = 0;
     }

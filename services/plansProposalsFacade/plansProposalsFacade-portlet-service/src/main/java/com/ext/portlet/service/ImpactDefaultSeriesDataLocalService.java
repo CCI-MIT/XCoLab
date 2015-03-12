@@ -235,4 +235,15 @@ public interface ImpactDefaultSeriesDataLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ImpactDefaultSeriesData> getDefaultSeriesDataBySeriesId(
+        long seriesId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ImpactDefaultSeriesData getDefaultSeriesDataBySeriesIdAndYear(
+        long seriesId, int year)
+        throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

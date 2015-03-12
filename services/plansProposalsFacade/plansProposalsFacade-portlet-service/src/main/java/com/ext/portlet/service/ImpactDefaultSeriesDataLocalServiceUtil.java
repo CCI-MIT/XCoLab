@@ -268,6 +268,19 @@ public class ImpactDefaultSeriesDataLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static java.util.List<com.ext.portlet.model.ImpactDefaultSeriesData> getDefaultSeriesDataBySeriesId(
+        long seriesId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getDefaultSeriesDataBySeriesId(seriesId);
+    }
+
+    public static com.ext.portlet.model.ImpactDefaultSeriesData getDefaultSeriesDataBySeriesIdAndYear(
+        long seriesId, int year)
+        throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getDefaultSeriesDataBySeriesIdAndYear(seriesId, year);
+    }
+
     public static void clearService() {
         _service = null;
     }

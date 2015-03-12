@@ -170,6 +170,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private String[] _methodParameterTypes80;
     private String _methodName81;
     private String[] _methodParameterTypes81;
+    private String _methodName82;
+    private String[] _methodParameterTypes82;
 
     public ProposalLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -560,6 +562,10 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         _methodName81 = "getLatestProposalContest";
 
         _methodParameterTypes81 = new String[] { "long" };
+
+        _methodName82 = "getImpactProposalAttributes";
+
+        _methodParameterTypes82 = new String[] { "com.ext.portlet.model.Proposal" };
     }
 
     @Override
@@ -3190,5 +3196,33 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         }
 
         return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName82,
+                    _methodParameterTypes82,
+                    new Object[] { ClpSerializer.translateInput(proposal) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ProposalAttribute>) ClpSerializer.translateOutput(returnObj);
     }
 }

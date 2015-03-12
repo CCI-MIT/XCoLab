@@ -109,10 +109,10 @@ public class ImpactTemplateMaxFocusAreaUtil {
     * @return the matching impact template max focus areas
     * @throws SystemException if a system exception occurred
     */
-    public static java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea> findByfocusAreaListId(
+    public static java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea> findByFocusAreaListId(
         long focusAreaListId)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByfocusAreaListId(focusAreaListId);
+        return getPersistence().findByFocusAreaListId(focusAreaListId);
     }
 
     /**
@@ -128,11 +128,11 @@ public class ImpactTemplateMaxFocusAreaUtil {
     * @return the range of matching impact template max focus areas
     * @throws SystemException if a system exception occurred
     */
-    public static java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea> findByfocusAreaListId(
+    public static java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea> findByFocusAreaListId(
         long focusAreaListId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByfocusAreaListId(focusAreaListId, start, end);
+                   .findByFocusAreaListId(focusAreaListId, start, end);
     }
 
     /**
@@ -149,12 +149,12 @@ public class ImpactTemplateMaxFocusAreaUtil {
     * @return the ordered range of matching impact template max focus areas
     * @throws SystemException if a system exception occurred
     */
-    public static java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea> findByfocusAreaListId(
+    public static java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea> findByFocusAreaListId(
         long focusAreaListId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByfocusAreaListId(focusAreaListId, start, end,
+                   .findByFocusAreaListId(focusAreaListId, start, end,
             orderByComparator);
     }
 
@@ -167,13 +167,13 @@ public class ImpactTemplateMaxFocusAreaUtil {
     * @throws com.ext.portlet.NoSuchImpactTemplateMaxFocusAreaException if a matching impact template max focus area could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ImpactTemplateMaxFocusArea findByfocusAreaListId_First(
+    public static com.ext.portlet.model.ImpactTemplateMaxFocusArea findByFocusAreaListId_First(
         long focusAreaListId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactTemplateMaxFocusAreaException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByfocusAreaListId_First(focusAreaListId,
+                   .findByFocusAreaListId_First(focusAreaListId,
             orderByComparator);
     }
 
@@ -185,12 +185,12 @@ public class ImpactTemplateMaxFocusAreaUtil {
     * @return the first matching impact template max focus area, or <code>null</code> if a matching impact template max focus area could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ImpactTemplateMaxFocusArea fetchByfocusAreaListId_First(
+    public static com.ext.portlet.model.ImpactTemplateMaxFocusArea fetchByFocusAreaListId_First(
         long focusAreaListId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .fetchByfocusAreaListId_First(focusAreaListId,
+                   .fetchByFocusAreaListId_First(focusAreaListId,
             orderByComparator);
     }
 
@@ -203,13 +203,13 @@ public class ImpactTemplateMaxFocusAreaUtil {
     * @throws com.ext.portlet.NoSuchImpactTemplateMaxFocusAreaException if a matching impact template max focus area could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ImpactTemplateMaxFocusArea findByfocusAreaListId_Last(
+    public static com.ext.portlet.model.ImpactTemplateMaxFocusArea findByFocusAreaListId_Last(
         long focusAreaListId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactTemplateMaxFocusAreaException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByfocusAreaListId_Last(focusAreaListId,
+                   .findByFocusAreaListId_Last(focusAreaListId,
             orderByComparator);
     }
 
@@ -221,12 +221,12 @@ public class ImpactTemplateMaxFocusAreaUtil {
     * @return the last matching impact template max focus area, or <code>null</code> if a matching impact template max focus area could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ImpactTemplateMaxFocusArea fetchByfocusAreaListId_Last(
+    public static com.ext.portlet.model.ImpactTemplateMaxFocusArea fetchByFocusAreaListId_Last(
         long focusAreaListId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .fetchByfocusAreaListId_Last(focusAreaListId,
+                   .fetchByFocusAreaListId_Last(focusAreaListId,
             orderByComparator);
     }
 
@@ -240,14 +240,14 @@ public class ImpactTemplateMaxFocusAreaUtil {
     * @throws com.ext.portlet.NoSuchImpactTemplateMaxFocusAreaException if a impact template max focus area with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ImpactTemplateMaxFocusArea[] findByfocusAreaListId_PrevAndNext(
+    public static com.ext.portlet.model.ImpactTemplateMaxFocusArea[] findByFocusAreaListId_PrevAndNext(
         ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK,
         long focusAreaListId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactTemplateMaxFocusAreaException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByfocusAreaListId_PrevAndNext(impactTemplateMaxFocusAreaPK,
+                   .findByFocusAreaListId_PrevAndNext(impactTemplateMaxFocusAreaPK,
             focusAreaListId, orderByComparator);
     }
 
@@ -257,9 +257,9 @@ public class ImpactTemplateMaxFocusAreaUtil {
     * @param focusAreaListId the focus area list ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByfocusAreaListId(long focusAreaListId)
+    public static void removeByFocusAreaListId(long focusAreaListId)
         throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByfocusAreaListId(focusAreaListId);
+        getPersistence().removeByFocusAreaListId(focusAreaListId);
     }
 
     /**
@@ -269,9 +269,9 @@ public class ImpactTemplateMaxFocusAreaUtil {
     * @return the number of matching impact template max focus areas
     * @throws SystemException if a system exception occurred
     */
-    public static int countByfocusAreaListId(long focusAreaListId)
+    public static int countByFocusAreaListId(long focusAreaListId)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByfocusAreaListId(focusAreaListId);
+        return getPersistence().countByFocusAreaListId(focusAreaListId);
     }
 
     /**

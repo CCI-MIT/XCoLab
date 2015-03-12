@@ -124,6 +124,27 @@ public interface ImpactDefaultSeriesModel extends BaseModel<ImpactDefaultSeries>
      */
     public void setVisible(boolean visible);
 
+    /**
+     * Returns the editable of this impact default series.
+     *
+     * @return the editable of this impact default series
+     */
+    public boolean getEditable();
+
+    /**
+     * Returns <code>true</code> if this impact default series is editable.
+     *
+     * @return <code>true</code> if this impact default series is editable; <code>false</code> otherwise
+     */
+    public boolean isEditable();
+
+    /**
+     * Sets whether this impact default series is editable.
+     *
+     * @param editable the editable of this impact default series
+     */
+    public void setEditable(boolean editable);
+
     @Override
     public boolean isNew();
 

@@ -26,6 +26,7 @@ public class ImpactDefaultSeriesClp extends BaseModelImpl<ImpactDefaultSeries>
     private String _description;
     private long _focusAreaId;
     private boolean _visible;
+    private boolean _editable;
     private BaseModel<?> _impactDefaultSeriesRemoteModel;
 
     public ImpactDefaultSeriesClp() {
@@ -71,6 +72,7 @@ public class ImpactDefaultSeriesClp extends BaseModelImpl<ImpactDefaultSeries>
         attributes.put("description", getDescription());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("visible", getVisible());
+        attributes.put("editable", getEditable());
 
         return attributes;
     }
@@ -105,6 +107,12 @@ public class ImpactDefaultSeriesClp extends BaseModelImpl<ImpactDefaultSeries>
 
         if (visible != null) {
             setVisible(visible);
+        }
+
+        Boolean editable = (Boolean) attributes.get("editable");
+
+        if (editable != null) {
+            setEditable(editable);
         }
     }
 
@@ -223,6 +231,33 @@ public class ImpactDefaultSeriesClp extends BaseModelImpl<ImpactDefaultSeries>
         }
     }
 
+    @Override
+    public boolean getEditable() {
+        return _editable;
+    }
+
+    @Override
+    public boolean isEditable() {
+        return _editable;
+    }
+
+    @Override
+    public void setEditable(boolean editable) {
+        _editable = editable;
+
+        if (_impactDefaultSeriesRemoteModel != null) {
+            try {
+                Class<?> clazz = _impactDefaultSeriesRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setEditable", boolean.class);
+
+                method.invoke(_impactDefaultSeriesRemoteModel, editable);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getImpactDefaultSeriesRemoteModel() {
         return _impactDefaultSeriesRemoteModel;
     }
@@ -297,6 +332,7 @@ public class ImpactDefaultSeriesClp extends BaseModelImpl<ImpactDefaultSeries>
         clone.setDescription(getDescription());
         clone.setFocusAreaId(getFocusAreaId());
         clone.setVisible(getVisible());
+        clone.setEditable(getEditable());
 
         return clone;
     }
@@ -336,7 +372,7 @@ public class ImpactDefaultSeriesClp extends BaseModelImpl<ImpactDefaultSeries>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{seriesId=");
         sb.append(getSeriesId());
@@ -348,6 +384,8 @@ public class ImpactDefaultSeriesClp extends BaseModelImpl<ImpactDefaultSeries>
         sb.append(getFocusAreaId());
         sb.append(", visible=");
         sb.append(getVisible());
+        sb.append(", editable=");
+        sb.append(getEditable());
         sb.append("}");
 
         return sb.toString();
@@ -355,7 +393,7 @@ public class ImpactDefaultSeriesClp extends BaseModelImpl<ImpactDefaultSeries>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ImpactDefaultSeries");
@@ -380,6 +418,10 @@ public class ImpactDefaultSeriesClp extends BaseModelImpl<ImpactDefaultSeries>
         sb.append(
             "<column><column-name>visible</column-name><column-value><![CDATA[");
         sb.append(getVisible());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>editable</column-name><column-value><![CDATA[");
+        sb.append(getEditable());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

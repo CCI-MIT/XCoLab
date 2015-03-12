@@ -276,14 +276,15 @@ create table xcolab_ImpactDefaultSeries (
 	description VARCHAR(75) null,
 	focusAreaId LONG,
 	visible BOOLEAN,
+	editable BOOLEAN,
 	primary key (seriesId, name)
 );
 
 create table xcolab_ImpactDefaultSeriesData (
 	seriesId LONG not null,
 	year INTEGER not null,
-	value DOUBLE not null,
-	primary key (seriesId, year, value)
+	value DOUBLE,
+	primary key (seriesId, year)
 );
 
 create table xcolab_ImpactIteration (

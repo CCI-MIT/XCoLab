@@ -74,7 +74,7 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_SERIESID = new FinderPath(ImpactDefaultSeriesDataModelImpl.ENTITY_CACHE_ENABLED,
             ImpactDefaultSeriesDataModelImpl.FINDER_CACHE_ENABLED,
             ImpactDefaultSeriesDataImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByseriesId",
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBySeriesId",
             new String[] {
                 Long.class.getName(),
                 
@@ -85,14 +85,28 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
         new FinderPath(ImpactDefaultSeriesDataModelImpl.ENTITY_CACHE_ENABLED,
             ImpactDefaultSeriesDataModelImpl.FINDER_CACHE_ENABLED,
             ImpactDefaultSeriesDataImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByseriesId",
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySeriesId",
             new String[] { Long.class.getName() },
             ImpactDefaultSeriesDataModelImpl.SERIESID_COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_SERIESID = new FinderPath(ImpactDefaultSeriesDataModelImpl.ENTITY_CACHE_ENABLED,
             ImpactDefaultSeriesDataModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByseriesId",
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySeriesId",
             new String[] { Long.class.getName() });
     private static final String _FINDER_COLUMN_SERIESID_SERIESID_2 = "impactDefaultSeriesData.id.seriesId = ?";
+    public static final FinderPath FINDER_PATH_FETCH_BY_SERIESIDANDYEAR = new FinderPath(ImpactDefaultSeriesDataModelImpl.ENTITY_CACHE_ENABLED,
+            ImpactDefaultSeriesDataModelImpl.FINDER_CACHE_ENABLED,
+            ImpactDefaultSeriesDataImpl.class, FINDER_CLASS_NAME_ENTITY,
+            "fetchBySeriesIdAndYear",
+            new String[] { Long.class.getName(), Integer.class.getName() },
+            ImpactDefaultSeriesDataModelImpl.SERIESID_COLUMN_BITMASK |
+            ImpactDefaultSeriesDataModelImpl.YEAR_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_SERIESIDANDYEAR = new FinderPath(ImpactDefaultSeriesDataModelImpl.ENTITY_CACHE_ENABLED,
+            ImpactDefaultSeriesDataModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countBySeriesIdAndYear",
+            new String[] { Long.class.getName(), Integer.class.getName() });
+    private static final String _FINDER_COLUMN_SERIESIDANDYEAR_SERIESID_2 = "impactDefaultSeriesData.id.seriesId = ? AND ";
+    private static final String _FINDER_COLUMN_SERIESIDANDYEAR_YEAR_2 = "impactDefaultSeriesData.id.year = ?";
     private static final String _SQL_SELECT_IMPACTDEFAULTSERIESDATA = "SELECT impactDefaultSeriesData FROM ImpactDefaultSeriesData impactDefaultSeriesData";
     private static final String _SQL_SELECT_IMPACTDEFAULTSERIESDATA_WHERE = "SELECT impactDefaultSeriesData FROM ImpactDefaultSeriesData impactDefaultSeriesData WHERE ";
     private static final String _SQL_COUNT_IMPACTDEFAULTSERIESDATA = "SELECT COUNT(impactDefaultSeriesData) FROM ImpactDefaultSeriesData impactDefaultSeriesData";
@@ -135,9 +149,9 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<ImpactDefaultSeriesData> findByseriesId(long seriesId)
+    public List<ImpactDefaultSeriesData> findBySeriesId(long seriesId)
         throws SystemException {
-        return findByseriesId(seriesId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+        return findBySeriesId(seriesId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
     }
 
@@ -155,9 +169,9 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<ImpactDefaultSeriesData> findByseriesId(long seriesId,
+    public List<ImpactDefaultSeriesData> findBySeriesId(long seriesId,
         int start, int end) throws SystemException {
-        return findByseriesId(seriesId, start, end, null);
+        return findBySeriesId(seriesId, start, end, null);
     }
 
     /**
@@ -175,7 +189,7 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public List<ImpactDefaultSeriesData> findByseriesId(long seriesId,
+    public List<ImpactDefaultSeriesData> findBySeriesId(long seriesId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         boolean pagination = true;
@@ -277,10 +291,10 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactDefaultSeriesData findByseriesId_First(long seriesId,
+    public ImpactDefaultSeriesData findBySeriesId_First(long seriesId,
         OrderByComparator orderByComparator)
         throws NoSuchImpactDefaultSeriesDataException, SystemException {
-        ImpactDefaultSeriesData impactDefaultSeriesData = fetchByseriesId_First(seriesId,
+        ImpactDefaultSeriesData impactDefaultSeriesData = fetchBySeriesId_First(seriesId,
                 orderByComparator);
 
         if (impactDefaultSeriesData != null) {
@@ -308,9 +322,9 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactDefaultSeriesData fetchByseriesId_First(long seriesId,
+    public ImpactDefaultSeriesData fetchBySeriesId_First(long seriesId,
         OrderByComparator orderByComparator) throws SystemException {
-        List<ImpactDefaultSeriesData> list = findByseriesId(seriesId, 0, 1,
+        List<ImpactDefaultSeriesData> list = findBySeriesId(seriesId, 0, 1,
                 orderByComparator);
 
         if (!list.isEmpty()) {
@@ -330,10 +344,10 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactDefaultSeriesData findByseriesId_Last(long seriesId,
+    public ImpactDefaultSeriesData findBySeriesId_Last(long seriesId,
         OrderByComparator orderByComparator)
         throws NoSuchImpactDefaultSeriesDataException, SystemException {
-        ImpactDefaultSeriesData impactDefaultSeriesData = fetchByseriesId_Last(seriesId,
+        ImpactDefaultSeriesData impactDefaultSeriesData = fetchBySeriesId_Last(seriesId,
                 orderByComparator);
 
         if (impactDefaultSeriesData != null) {
@@ -361,15 +375,15 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactDefaultSeriesData fetchByseriesId_Last(long seriesId,
+    public ImpactDefaultSeriesData fetchBySeriesId_Last(long seriesId,
         OrderByComparator orderByComparator) throws SystemException {
-        int count = countByseriesId(seriesId);
+        int count = countBySeriesId(seriesId);
 
         if (count == 0) {
             return null;
         }
 
-        List<ImpactDefaultSeriesData> list = findByseriesId(seriesId,
+        List<ImpactDefaultSeriesData> list = findBySeriesId(seriesId,
                 count - 1, count, orderByComparator);
 
         if (!list.isEmpty()) {
@@ -390,7 +404,7 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ImpactDefaultSeriesData[] findByseriesId_PrevAndNext(
+    public ImpactDefaultSeriesData[] findBySeriesId_PrevAndNext(
         ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK, long seriesId,
         OrderByComparator orderByComparator)
         throws NoSuchImpactDefaultSeriesDataException, SystemException {
@@ -403,12 +417,12 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
 
             ImpactDefaultSeriesData[] array = new ImpactDefaultSeriesDataImpl[3];
 
-            array[0] = getByseriesId_PrevAndNext(session,
+            array[0] = getBySeriesId_PrevAndNext(session,
                     impactDefaultSeriesData, seriesId, orderByComparator, true);
 
             array[1] = impactDefaultSeriesData;
 
-            array[2] = getByseriesId_PrevAndNext(session,
+            array[2] = getBySeriesId_PrevAndNext(session,
                     impactDefaultSeriesData, seriesId, orderByComparator, false);
 
             return array;
@@ -419,7 +433,7 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
         }
     }
 
-    protected ImpactDefaultSeriesData getByseriesId_PrevAndNext(
+    protected ImpactDefaultSeriesData getBySeriesId_PrevAndNext(
         Session session, ImpactDefaultSeriesData impactDefaultSeriesData,
         long seriesId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
@@ -522,8 +536,8 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public void removeByseriesId(long seriesId) throws SystemException {
-        for (ImpactDefaultSeriesData impactDefaultSeriesData : findByseriesId(
+    public void removeBySeriesId(long seriesId) throws SystemException {
+        for (ImpactDefaultSeriesData impactDefaultSeriesData : findBySeriesId(
                 seriesId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(impactDefaultSeriesData);
         }
@@ -537,7 +551,7 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public int countByseriesId(long seriesId) throws SystemException {
+    public int countBySeriesId(long seriesId) throws SystemException {
         FinderPath finderPath = FINDER_PATH_COUNT_BY_SERIESID;
 
         Object[] finderArgs = new Object[] { seriesId };
@@ -581,6 +595,229 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
     }
 
     /**
+     * Returns the impact default series data where seriesId = &#63; and year = &#63; or throws a {@link com.ext.portlet.NoSuchImpactDefaultSeriesDataException} if it could not be found.
+     *
+     * @param seriesId the series ID
+     * @param year the year
+     * @return the matching impact default series data
+     * @throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException if a matching impact default series data could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ImpactDefaultSeriesData findBySeriesIdAndYear(long seriesId, int year)
+        throws NoSuchImpactDefaultSeriesDataException, SystemException {
+        ImpactDefaultSeriesData impactDefaultSeriesData = fetchBySeriesIdAndYear(seriesId,
+                year);
+
+        if (impactDefaultSeriesData == null) {
+            StringBundler msg = new StringBundler(6);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("seriesId=");
+            msg.append(seriesId);
+
+            msg.append(", year=");
+            msg.append(year);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchImpactDefaultSeriesDataException(msg.toString());
+        }
+
+        return impactDefaultSeriesData;
+    }
+
+    /**
+     * Returns the impact default series data where seriesId = &#63; and year = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param seriesId the series ID
+     * @param year the year
+     * @return the matching impact default series data, or <code>null</code> if a matching impact default series data could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ImpactDefaultSeriesData fetchBySeriesIdAndYear(long seriesId,
+        int year) throws SystemException {
+        return fetchBySeriesIdAndYear(seriesId, year, true);
+    }
+
+    /**
+     * Returns the impact default series data where seriesId = &#63; and year = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param seriesId the series ID
+     * @param year the year
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching impact default series data, or <code>null</code> if a matching impact default series data could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ImpactDefaultSeriesData fetchBySeriesIdAndYear(long seriesId,
+        int year, boolean retrieveFromCache) throws SystemException {
+        Object[] finderArgs = new Object[] { seriesId, year };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_SERIESIDANDYEAR,
+                    finderArgs, this);
+        }
+
+        if (result instanceof ImpactDefaultSeriesData) {
+            ImpactDefaultSeriesData impactDefaultSeriesData = (ImpactDefaultSeriesData) result;
+
+            if ((seriesId != impactDefaultSeriesData.getSeriesId()) ||
+                    (year != impactDefaultSeriesData.getYear())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(4);
+
+            query.append(_SQL_SELECT_IMPACTDEFAULTSERIESDATA_WHERE);
+
+            query.append(_FINDER_COLUMN_SERIESIDANDYEAR_SERIESID_2);
+
+            query.append(_FINDER_COLUMN_SERIESIDANDYEAR_YEAR_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(seriesId);
+
+                qPos.add(year);
+
+                List<ImpactDefaultSeriesData> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_SERIESIDANDYEAR,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "ImpactDefaultSeriesDataPersistenceImpl.fetchBySeriesIdAndYear(long, int, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    ImpactDefaultSeriesData impactDefaultSeriesData = list.get(0);
+
+                    result = impactDefaultSeriesData;
+
+                    cacheResult(impactDefaultSeriesData);
+
+                    if ((impactDefaultSeriesData.getSeriesId() != seriesId) ||
+                            (impactDefaultSeriesData.getYear() != year)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_SERIESIDANDYEAR,
+                            finderArgs, impactDefaultSeriesData);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_SERIESIDANDYEAR,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (ImpactDefaultSeriesData) result;
+        }
+    }
+
+    /**
+     * Removes the impact default series data where seriesId = &#63; and year = &#63; from the database.
+     *
+     * @param seriesId the series ID
+     * @param year the year
+     * @return the impact default series data that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ImpactDefaultSeriesData removeBySeriesIdAndYear(long seriesId,
+        int year)
+        throws NoSuchImpactDefaultSeriesDataException, SystemException {
+        ImpactDefaultSeriesData impactDefaultSeriesData = findBySeriesIdAndYear(seriesId,
+                year);
+
+        return remove(impactDefaultSeriesData);
+    }
+
+    /**
+     * Returns the number of impact default series datas where seriesId = &#63; and year = &#63;.
+     *
+     * @param seriesId the series ID
+     * @param year the year
+     * @return the number of matching impact default series datas
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countBySeriesIdAndYear(long seriesId, int year)
+        throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_SERIESIDANDYEAR;
+
+        Object[] finderArgs = new Object[] { seriesId, year };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_COUNT_IMPACTDEFAULTSERIESDATA_WHERE);
+
+            query.append(_FINDER_COLUMN_SERIESIDANDYEAR_SERIESID_2);
+
+            query.append(_FINDER_COLUMN_SERIESIDANDYEAR_YEAR_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(seriesId);
+
+                qPos.add(year);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Caches the impact default series data in the entity cache if it is enabled.
      *
      * @param impactDefaultSeriesData the impact default series data
@@ -590,6 +827,12 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
         EntityCacheUtil.putResult(ImpactDefaultSeriesDataModelImpl.ENTITY_CACHE_ENABLED,
             ImpactDefaultSeriesDataImpl.class,
             impactDefaultSeriesData.getPrimaryKey(), impactDefaultSeriesData);
+
+        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_SERIESIDANDYEAR,
+            new Object[] {
+                impactDefaultSeriesData.getSeriesId(),
+                impactDefaultSeriesData.getYear()
+            }, impactDefaultSeriesData);
 
         impactDefaultSeriesData.resetOriginalValues();
     }
@@ -649,6 +892,8 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        clearUniqueFindersCache(impactDefaultSeriesData);
     }
 
     @Override
@@ -661,6 +906,64 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
             EntityCacheUtil.removeResult(ImpactDefaultSeriesDataModelImpl.ENTITY_CACHE_ENABLED,
                 ImpactDefaultSeriesDataImpl.class,
                 impactDefaultSeriesData.getPrimaryKey());
+
+            clearUniqueFindersCache(impactDefaultSeriesData);
+        }
+    }
+
+    protected void cacheUniqueFindersCache(
+        ImpactDefaultSeriesData impactDefaultSeriesData) {
+        if (impactDefaultSeriesData.isNew()) {
+            Object[] args = new Object[] {
+                    impactDefaultSeriesData.getSeriesId(),
+                    impactDefaultSeriesData.getYear()
+                };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_SERIESIDANDYEAR,
+                args, Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_SERIESIDANDYEAR,
+                args, impactDefaultSeriesData);
+        } else {
+            ImpactDefaultSeriesDataModelImpl impactDefaultSeriesDataModelImpl = (ImpactDefaultSeriesDataModelImpl) impactDefaultSeriesData;
+
+            if ((impactDefaultSeriesDataModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_SERIESIDANDYEAR.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        impactDefaultSeriesData.getSeriesId(),
+                        impactDefaultSeriesData.getYear()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_SERIESIDANDYEAR,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_SERIESIDANDYEAR,
+                    args, impactDefaultSeriesData);
+            }
+        }
+    }
+
+    protected void clearUniqueFindersCache(
+        ImpactDefaultSeriesData impactDefaultSeriesData) {
+        ImpactDefaultSeriesDataModelImpl impactDefaultSeriesDataModelImpl = (ImpactDefaultSeriesDataModelImpl) impactDefaultSeriesData;
+
+        Object[] args = new Object[] {
+                impactDefaultSeriesData.getSeriesId(),
+                impactDefaultSeriesData.getYear()
+            };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_SERIESIDANDYEAR, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_SERIESIDANDYEAR, args);
+
+        if ((impactDefaultSeriesDataModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_SERIESIDANDYEAR.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    impactDefaultSeriesDataModelImpl.getOriginalSeriesId(),
+                    impactDefaultSeriesDataModelImpl.getOriginalYear()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_SERIESIDANDYEAR,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_SERIESIDANDYEAR,
+                args);
         }
     }
 
@@ -823,6 +1126,9 @@ public class ImpactDefaultSeriesDataPersistenceImpl extends BasePersistenceImpl<
         EntityCacheUtil.putResult(ImpactDefaultSeriesDataModelImpl.ENTITY_CACHE_ENABLED,
             ImpactDefaultSeriesDataImpl.class,
             impactDefaultSeriesData.getPrimaryKey(), impactDefaultSeriesData);
+
+        clearUniqueFindersCache(impactDefaultSeriesData);
+        cacheUniqueFindersCache(impactDefaultSeriesData);
 
         return impactDefaultSeriesData;
     }

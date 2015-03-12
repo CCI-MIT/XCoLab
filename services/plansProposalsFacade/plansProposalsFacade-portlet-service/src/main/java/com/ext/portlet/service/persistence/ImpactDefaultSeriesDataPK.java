@@ -10,15 +10,13 @@ public class ImpactDefaultSeriesDataPK implements Comparable<ImpactDefaultSeries
     Serializable {
     public long seriesId;
     public int year;
-    public double value;
 
     public ImpactDefaultSeriesDataPK() {
     }
 
-    public ImpactDefaultSeriesDataPK(long seriesId, int year, double value) {
+    public ImpactDefaultSeriesDataPK(long seriesId, int year) {
         this.seriesId = seriesId;
         this.year = year;
-        this.value = value;
     }
 
     public long getSeriesId() {
@@ -35,14 +33,6 @@ public class ImpactDefaultSeriesDataPK implements Comparable<ImpactDefaultSeries
 
     public void setYear(int year) {
         this.year = year;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
     }
 
     @Override
@@ -77,18 +67,6 @@ public class ImpactDefaultSeriesDataPK implements Comparable<ImpactDefaultSeries
             return value;
         }
 
-        if (value < pk.value) {
-            value = -1;
-        } else if (value > pk.value) {
-            value = 1;
-        } else {
-            value = 0;
-        }
-
-        if (value != 0) {
-            return value;
-        }
-
         return 0;
     }
 
@@ -104,8 +82,7 @@ public class ImpactDefaultSeriesDataPK implements Comparable<ImpactDefaultSeries
 
         ImpactDefaultSeriesDataPK pk = (ImpactDefaultSeriesDataPK) obj;
 
-        if ((seriesId == pk.seriesId) && (year == pk.year) &&
-                (value == pk.value)) {
+        if ((seriesId == pk.seriesId) && (year == pk.year)) {
             return true;
         } else {
             return false;
@@ -114,13 +91,12 @@ public class ImpactDefaultSeriesDataPK implements Comparable<ImpactDefaultSeries
 
     @Override
     public int hashCode() {
-        return (String.valueOf(seriesId) + String.valueOf(year) +
-        String.valueOf(value)).hashCode();
+        return (String.valueOf(seriesId) + String.valueOf(year)).hashCode();
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(10);
 
         sb.append(StringPool.OPEN_CURLY_BRACE);
 
@@ -133,12 +109,6 @@ public class ImpactDefaultSeriesDataPK implements Comparable<ImpactDefaultSeries
         sb.append("year");
         sb.append(StringPool.EQUAL);
         sb.append(year);
-
-        sb.append(StringPool.COMMA);
-        sb.append(StringPool.SPACE);
-        sb.append("value");
-        sb.append(StringPool.EQUAL);
-        sb.append(value);
 
         sb.append(StringPool.CLOSE_CURLY_BRACE);
 

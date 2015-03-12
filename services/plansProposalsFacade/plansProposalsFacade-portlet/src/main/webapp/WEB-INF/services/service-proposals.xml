@@ -193,6 +193,11 @@
     	<finder return-type="Collection" name="ContestPhaseId">
     		<finder-column name="contestPhaseId" />
     	</finder>
+
+		<finder return-type="Collection" name="ContestPhaseIdAndProposalId">
+			<finder-column name="contestPhaseId" />
+			<finder-column name="proposalId" />
+		</finder>
     </entity>
     
     <entity name="ProposalContestPhaseAttributeType" local-service="true" >

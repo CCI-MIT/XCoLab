@@ -41,19 +41,18 @@ public class ImpactDefaultSeriesDataClp extends BaseModelImpl<ImpactDefaultSerie
 
     @Override
     public ImpactDefaultSeriesDataPK getPrimaryKey() {
-        return new ImpactDefaultSeriesDataPK(_seriesId, _year, _value);
+        return new ImpactDefaultSeriesDataPK(_seriesId, _year);
     }
 
     @Override
     public void setPrimaryKey(ImpactDefaultSeriesDataPK primaryKey) {
         setSeriesId(primaryKey.seriesId);
         setYear(primaryKey.year);
-        setValue(primaryKey.value);
     }
 
     @Override
     public Serializable getPrimaryKeyObj() {
-        return new ImpactDefaultSeriesDataPK(_seriesId, _year, _value);
+        return new ImpactDefaultSeriesDataPK(_seriesId, _year);
     }
 
     @Override
