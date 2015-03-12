@@ -8,6 +8,7 @@ import com.ext.portlet.model.Message;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -128,17 +129,17 @@ public class
         if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
 
         userSubscriptions = new UserSubscriptionsWrapper(user);
-
-
         supportedPlans.clear();
         userActivities.clear();
         userProposals.clear();
         for (Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
             ProposalSupporter ps = (ProposalSupporter) o;
             try {
+                Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(ps.getProposalId());
                 supportedPlans.add(new SupportedPlanWrapper(ps));
-            } catch (PortalException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                _log.warn("Could not add supported plan with id: " + ps.getProposalId());
+                //e.printStackTrace();
             }
         }
 
