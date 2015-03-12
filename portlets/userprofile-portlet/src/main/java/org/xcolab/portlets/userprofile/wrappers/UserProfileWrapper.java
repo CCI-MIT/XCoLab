@@ -76,7 +76,8 @@ public class
 
     private final static Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
 
-    public UserProfileWrapper(Long userId, PortletRequest request) throws PortalException, SystemException {
+    public UserProfileWrapper(String userIdString, PortletRequest request) throws PortalException, SystemException {
+        Long userId = Long.parseLong(userIdString);
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         user = UserLocalServiceUtil.getUser(userId);
         if (user.isActive()) {
