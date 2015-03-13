@@ -1,17 +1,42 @@
 package org.xcolab.portlets.proposals.view;
 
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.model.ImpactDefaultSeries;
+import com.ext.portlet.model.ImpactDefaultSeriesData;
+import com.ext.portlet.model.ImpactIteration;
+import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
+import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
+import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
+import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kmang on 12/03/15.
@@ -24,20 +49,125 @@ public class ProposalImpactJSONController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    @ResourceMapping("proposalPicker")
-    public void proposalPicker(
+    @ResourceMapping("proposalImpactGetSectors")
+    public void proposalImpactGetSectors(
             ResourceRequest request,
-            ResourceResponse response,
-            @RequestParam(value = "type", required = false) String requestType,
-            @RequestParam(value = "filterKey", required = false) String filterType,
-            @RequestParam(required = false) String filterText,
-            @RequestParam(required = false) int start,
-            @RequestParam(required = false) int end,
-            @RequestParam(required = false) String sortOrder,
-            @RequestParam(required = false) String sortColumn,
-            @RequestParam(required = false) Long sectionId,
-            @RequestParam(required = false) long contestPK) throws IOException,
+            ResourceResponse response) throws IOException,
             SystemException, PortalException {
 
+        Map<OntologyTerm, List<OntologyTerm>> ontologyMap = getOntologyMap(request);
+        List<OntologyTerm> sectorTerms = new ArrayList<>(ontologyMap.keySet());
+        Collections.sort(sectorTerms, new Comparator<OntologyTerm>() {
+            @Override
+            public int compare(OntologyTerm o1, OntologyTerm o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+
+        response.getPortletOutputStream().write(ontologyTermListToJSONArray(sectorTerms).toString().getBytes());
+    }
+
+    @ResourceMapping("proposalImpactGetRegionsForSector")
+    public void proposalImpactGetRegionsForSector(
+            ResourceRequest request,
+            ResourceResponse response,
+            @RequestParam(value = "sectorTermId", required = true) Long sectorTermId) throws IOException,
+            SystemException, PortalException {
+
+        Map<OntologyTerm, List<OntologyTerm>> ontologyMap = getOntologyMap(request);
+
+        List<OntologyTerm> regionTerms = ontologyMap.get(OntologyTermLocalServiceUtil.getOntologyTerm(sectorTermId));
+        response.getPortletOutputStream().write(ontologyTermListToJSONArray(regionTerms).toString().getBytes());
+    }
+
+    @ResourceMapping("proposalImpactGetDataSeries")
+    public void proposalImpactGetDataSeries(
+            ResourceRequest request,
+            ResourceResponse response,
+            @RequestParam(value = "sectorTermId", required = true) Long sectorTermId,
+            @RequestParam(value = "regionTermId", required = true) Long regionTermId) throws IOException,
+            SystemException, PortalException {
+
+        Contest contest = proposalsContext.getContest(request);
+        OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(sectorTermId);
+        OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionTermId);
+
+        ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
+        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+        FocusArea selectedFocusArea = impactSeriesList.getFocusAreaForTerms(sectorOntologyTerm, regionOntologyTerm);
+
+        // Get default serieses
+        List<ImpactDefaultSeries> impactDefaultSerieses =
+                ImpactDefaultSeriesLocalServiceUtil.getAllImpactDefaultSeriesWithFocusArea(selectedFocusArea);
+
+        // Create a impact series with all data series for one sector-region pair
+        ProposalImpactSeries impactSeries = new ProposalImpactSeries(selectedFocusArea, impactIterations);
+        List<ProposalAttribute> impactProposalAttributes =
+                ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
+
+        for (ImpactDefaultSeries defaultSeries : impactDefaultSerieses) {
+            boolean foundEnteredData = false;
+
+            // Look for already entered data
+            if (defaultSeries.isEditable()) {
+                // TODO write a separate finder for the proposal attribute that is being searched
+                for (ProposalAttribute attribute : impactProposalAttributes) {
+                    if (attribute.getName().equals(defaultSeries.getName())) {
+                        foundEnteredData = true;
+                        impactSeries.addSeriesValueWithType(attribute.getName(), (int)attribute.getNumericValue(), attribute.getRealValue());
+                    }
+                }
+
+                // Use default data if not entered
+                // todo do we need that?
+                if (!foundEnteredData) {
+                    List<ImpactDefaultSeriesData> defaultSeriesDataList =
+                            ImpactDefaultSeriesDataLocalServiceUtil.getDefaultSeriesDataBySeriesId(defaultSeries.getSeriesId());
+                    impactSeries.addSeriesWithType(defaultSeries.getName(), defaultSeriesDataList, true);
+                }
+            }
+        }
+        response.getPortletOutputStream().write(impactSeries.toJSONObject().toString().getBytes());
+    }
+
+    private JSONArray ontologyTermListToJSONArray(List<OntologyTerm> terms) {
+        JSONArray array = JSONFactoryUtil.createJSONArray();
+
+        if (Validator.isNull(terms)) {
+            return array;
+        }
+
+        for (OntologyTerm term: terms) {
+            JSONObject termJson = JSONFactoryUtil.createJSONObject();
+            termJson.put("id", term.getId());
+            termJson.put("name", term.getName());
+            array.put(termJson);
+        }
+
+        return array;
+    }
+
+
+
+    private Map<OntologyTerm, List<OntologyTerm>> getOntologyMap(ResourceRequest request) throws SystemException, PortalException {
+        Contest contest = proposalsContext.getContest(request);
+
+        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+        List<ProposalAttribute> impactProposalAttributes =
+                ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
+        ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(impactProposalAttributes, impactIterations);
+        return ProposalImpactUtil.calculateAvailableOntologyMap(contest, proposalImpactSeriesList.getImpactSerieses());
+    }
+
+    private ProposalImpactSeriesList getProposalImpactSeriesList(ResourceRequest request) throws SystemException, PortalException {
+        Contest contest = proposalsContext.getContest(request);
+        ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+
+        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+
+        // All filled out impact series
+        List<ProposalAttribute> impactProposalAttributes =
+                ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
+        return new ProposalImpactSeriesList(impactProposalAttributes, impactIterations);
     }
 }

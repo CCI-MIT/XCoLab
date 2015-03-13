@@ -11,6 +11,7 @@ import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
+import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,23 +26,31 @@ public class ProposalImpactUtil {
     private static final long WHAT_ONTOLOGY_SPACE_ID = 103;
     private static final long WHERE_ONTOLOGY_SPACE_ID = 104;
 
-    public static Map<OntologyTerm, List<OntologyTerm>> calculateOntologyMap(Contest contest) throws SystemException, PortalException {
+    // TODO cache this map somehow
+    public static Map<OntologyTerm, List<OntologyTerm>> calculateAvailableOntologyMap(Contest contest,
+                     List<ProposalImpactSeries> impactSerieses) throws SystemException, PortalException {
+
         Map<OntologyTerm, List<OntologyTerm>> ontologyTermMap = new HashMap<>();
+        Map<Long, Boolean> impactSeriesAvailableMap = getImpactSeriesAvailableMap(impactSerieses);
 
         List<ImpactTemplateMaxFocusArea> impactFocusAreas = ContestLocalServiceUtil.getContestImpactFocusAreas(contest);
 
         for (ImpactTemplateMaxFocusArea impactFocusArea : impactFocusAreas) {
             FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(impactFocusArea.getFocusAreaId());
-            OntologyTerm whatTerm = getWhatTerm(focusArea);
-            OntologyTerm whereTerm = getWhereTerm(focusArea);
 
-            List<OntologyTerm> whereTerms = ontologyTermMap.get(whatTerm);
-            if (Validator.isNull(whereTerms)) {
-                whereTerms = new ArrayList<OntologyTerm>();
-                ontologyTermMap.put(whatTerm, whereTerms);
+            // Only consider focus areas where we did not have a filled out impact series
+            if (Validator.isNull(impactSeriesAvailableMap.get(focusArea.getId()))) {
+                OntologyTerm whatTerm = getWhatTerm(focusArea);
+                OntologyTerm whereTerm = getWhereTerm(focusArea);
+
+                List<OntologyTerm> whereTerms = ontologyTermMap.get(whatTerm);
+                if (Validator.isNull(whereTerms)) {
+                    whereTerms = new ArrayList<OntologyTerm>();
+                    ontologyTermMap.put(whatTerm, whereTerms);
+                }
+
+                whereTerms.add(whereTerm);
             }
-
-            whereTerms.add(whereTerm);
         }
 
         return ontologyTermMap;
@@ -58,5 +67,18 @@ public class ProposalImpactUtil {
     private static OntologyTerm getTermWithSpaceId(FocusArea focusArea, long spaceId) throws SystemException, PortalException {
         OntologySpace space = OntologySpaceLocalServiceUtil.getOntologySpace(spaceId);
         return FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
+    }
+
+    private static Map<Long, Boolean> getImpactSeriesAvailableMap(List<ProposalImpactSeries> impactSerieses) {
+        Map<Long, Boolean> impactSeriesAvailableMap = new HashMap<>(impactSerieses.size());
+        if (Validator.isNull(impactSerieses)) {
+            return impactSeriesAvailableMap;
+        }
+
+        for (ProposalImpactSeries series : impactSerieses) {
+            impactSeriesAvailableMap.put(series.getFocusArea().getId(), true);
+        }
+
+        return impactSeriesAvailableMap;
     }
 }

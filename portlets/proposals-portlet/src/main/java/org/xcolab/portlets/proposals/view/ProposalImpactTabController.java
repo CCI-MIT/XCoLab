@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.NoSuchImpactTemplateSeriesException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ImpactIteration;
 import com.ext.portlet.model.OntologyTerm;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,14 +50,14 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
         model.addAttribute("impactIterations", impactIterations);
 
-        Map<OntologyTerm, List<OntologyTerm>> ontologyMap = ProposalImpactUtil.calculateOntologyMap(contest);
-        model.addAttribute("sectorTerms", sortByName(ontologyMap.keySet()));
-
         // All filled out impact series
         List<ProposalAttribute> impactProposalAttributes =
                 ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
         ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(impactProposalAttributes, impactIterations);
-        model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactDefaultSerieses());
+        model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
+
+        Map<OntologyTerm, List<OntologyTerm>> ontologyMap = ProposalImpactUtil.calculateAvailableOntologyMap(contest, proposalImpactSeriesList.getImpactSerieses());
+        model.addAttribute("sectorTerms", sortByName(ontologyMap.keySet()));
 
         return "proposalImpact";
     }
