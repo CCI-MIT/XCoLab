@@ -119,9 +119,10 @@ public class ProposalImpactSeries {
             ImpactDefaultSeries defaultSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, seriesType);
 
             JSONObject series = JSONFactoryUtil.createJSONObject();
+            series.put("name", defaultSeries.getName());
             series.put("description", defaultSeries.getDescription());
             series.put("editable", defaultSeries.isEditable());
-            series.put("values", seriesValues.toJSONObect());
+            series.put("values", seriesValues.toJSONArrayWithIteration(impactIterations));
             serieses.put(defaultSeries.getName(), series);
         }
 
@@ -195,6 +196,19 @@ public class ProposalImpactSeries {
             }
 
             return jsonObject;
+        }
+
+        public JSONArray toJSONArrayWithIteration(List<ImpactIteration> iterations) {
+            JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+            for (ImpactIteration iteration : iterations) {
+                JSONObject jsonValue = JSONFactoryUtil.createJSONObject();
+                jsonValue.put("year", iteration.getYear());
+                jsonValue.put("value", yearToValueMap.get(iteration.getYear()));
+                jsonArray.put(jsonValue);
+            }
+
+            return jsonArray;
         }
     }
 }

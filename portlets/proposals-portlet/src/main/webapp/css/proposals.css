@@ -507,3 +507,42 @@ table.judgingForm {
 }
 
 /* Impact tab */
+
+#impact table td, #impact table th {
+    padding: 10px;
+}
+
+#impact th.blue-text {
+    color: #30a3fb;
+}
+
+#impact .blue-bg {
+    font-size: 13px;
+    color: white;
+    background: #30a3fb;
+    border: 1px white solid;
+}
+
+#impact .impact-value {
+    background-color: #E4EAF4;
+    font-weight: bold;
+    text-align: center;
+}
+
+#impact tr .selected {
+    border: 2px solid #8e8d8a;
+}
+
+#impact tr select {
+    margin: 0px;
+}
+
+#impact input {
+    width: 40px;
+    text-align: center;
+    padding: 5px;
+}
+
+#impact .shaded-bg {
+    background: url(../images/pattern-6x6-blue.png);
+}

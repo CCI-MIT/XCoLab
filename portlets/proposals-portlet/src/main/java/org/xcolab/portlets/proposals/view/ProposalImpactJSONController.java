@@ -88,6 +88,10 @@ public class ProposalImpactJSONController {
             @RequestParam(value = "regionTermId", required = true) Long regionTermId) throws IOException,
             SystemException, PortalException {
 
+        if (sectorTermId == 0 || regionTermId == 0) {
+            return;
+        }
+
         Contest contest = proposalsContext.getContest(request);
         OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(sectorTermId);
         OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionTermId);
