@@ -23,15 +23,24 @@
         <portlet:param name="regionTermId" value="@@REPLACE-REGION_TERM_ID@@" />
     </portlet:resourceURL>
 
+    <portlet:resourceURL var="saveDataSeriesURL" id="proposalImpactSaveDataSeries">
+        <portlet:param name="focusAreaId" value="@@REPLACE-FOCUS_AREA_ID@@" />
+    </portlet:resourceURL>
+
     <script>
         // Placeholder strings
         var SECTOR_TERM_ID_PLACEHOLDER = "SECTOR_TERM_ID";
         var REGION_TERM_ID_PLACEHOLDER = "REGION_TERM_ID";
+        var FOCUS_AREA_ID_PLACEHOLDER = "FOCUS_AREA_ID";
+
+        var IMPACT_REDUCTION_PLACEHOLDER = "IMPACT_REDUCTION";
+        var IMPACT_ADOPTION_RATE_PLACEHOLDER = "IMPACT_ADOPTION_RATE";
 
         // URL strings
         var getSectorsURL = '${getSectorsURL}';
         var getRegionsForSectorURL = '${getRegionsForSectorURL}';
         var getDataSeriesURL = '${getDataSeriesURL}';
+        var saveDataSeriesURL = '${saveDataSeriesURL}';
     </script>
 
     <!-- HTML templates -->
@@ -45,7 +54,14 @@
                     <td class="shaded-bg"><span class="series-value">{{this.value}}</span></td>
                 {{/if}}
             {{/each}}
+            <td> </td>
         </tr>
+    </script>
+
+    <script id="impactSeriesSaveButtonTemplate" type="text/x-handlebars-template">
+        <div class="edit-prop-butts">
+            <a id="impact-edit-save-button" href="javascript:;">Save</a>
+        </div>
     </script>
 
     <!-- Content -->
@@ -164,6 +180,7 @@
                 var sectorTermElement = oldEditingRow.find('td.sector select').children(':selected');
                 var regionTermElement = oldEditingRow.find('td.region select').children(':selected');
 
+                // Reset select elements
                 console.log("selected indexes " + sectorTermElement.attr('value') + "; " + regionTermElement.attr('value'));
                 var sectorSpan = $(document.createElement("span"));
                 sectorSpan.attr('id', sectorTermElement.attr('value'));
@@ -230,15 +247,15 @@
 
         function recalculateEditSeriesValues() {
             var bauValues = $('table#impact-series-edit #impact-edit-row-BAU td span.series-value');
-            var reductionValues = $('table#impact-series-edit #impact-edit-row-IMPACT_REDUCTION input.series-value');
-            var adoptionValues = $('table#impact-series-edit #impact-edit-row-IMPACT_ADOPTION_RATE input.series-value');
+            var reductionValues = $('table#impact-series-edit #impact-edit-row-'+ IMPACT_REDUCTION_PLACEHOLDER +' input.series-value');
+            var adoptionValues = $('table#impact-series-edit #impact-edit-row-'+ IMPACT_ADOPTION_RATE_PLACEHOLDER + ' input.series-value');
             var resultValues = $('table#impact-series-edit #impact-edit-row-RESULT td span.series-value');
 
             for (var i = 0; i &lt; bauValues.size(); i++) {
                 console.log("bau " + parseFloat($(bauValues[i]).text()) + "; reduction " + parseFloat($(reductionValues[i]).attr('value')) +
                             "; adoption " + parseFloat($(adoptionValues[i]).attr('value')));
                 var resultValue = parseFloat($(bauValues[i]).text()) * (1.0 - parseFloat($(reductionValues[i]).attr('value')) * 0.01 *
-                        parseFloat($(adoptionValues[i]).attr('value')) * 0.01);
+                        parseFloat($(adoptionValues[i]).attr('value')) * 0.01).toFixed(2);;
                 $(resultValues[i]).text('' + resultValue);
             }
         }
@@ -280,6 +297,43 @@
                 editTable.append(tableRow);
                 console.log("result json: " + JSON.stringify(dataSeries));
 
+                // Save button
+                $('table#impact-series-edit tr#impact-edit-row-RESULT').append(jQuery(impactSeriesSaveButtonTemplate({})));
+                var url = replaceImpactURLPlaceholders(saveDataSeriesURL, [FOCUS_AREA_ID_PLACEHOLDER], [data.focusAreaId]);
+
+                var reductionData = {};
+                var adoptionData = {};
+                $('a#impact-edit-save-button').click(function() {
+                    $.each($('tr#impact-edit-row-' + IMPACT_REDUCTION_PLACEHOLDER+ ' input'), function(idx) {
+                        reductionData[$(this).attr('name')] = $(this).attr('value');
+                    });
+                    $.each($('tr#impact-edit-row-' + IMPACT_ADOPTION_RATE_PLACEHOLDER+ ' input'), function(idx) {
+                        adoptionData[$(this).attr('name')] = $(this).attr('value');
+                    });
+
+                    var postJson = {};
+                    postJson[IMPACT_REDUCTION_PLACEHOLDER] = reductionData;
+                    postJson[IMPACT_ADOPTION_RATE_PLACEHOLDER] = adoptionData;
+
+                    $.post(url, {"json" : JSON.stringify(postJson)}, function(response) {
+                        console.log(response.success);
+                        if (!response.success) {
+                            alert("Could not process request");
+                        } else {
+                            toggleEditMode(currentEditingRowIndex);
+
+                            var resultValues = $('table#impact-series-edit #impact-edit-row-RESULT td span.series-value');
+                            for (var i = 0; i &lt; resultValues.length; i++) {
+                                var valueCell = ($('tr#impact-row-'+currentEditingRowIndex + ' td.impact-value')[i])
+                                valueCell.text($(resultValues[i]).text());
+
+                                console.log("Set value " + valueCell.text() + " for index " + i);
+                            }
+                        }
+                    });
+                });
+
+
                 // Register input event handler
                 $('table#impact-series-edit input').on('blur', function() {
                     recalculateEditSeriesValues();
@@ -290,5 +344,6 @@
         }
 
         var impactSeriesEditTableRowTemplate = Handlebars.compile($("#impactSeriesEditTableRowTemplate").html());
+        var impactSeriesSaveButtonTemplate = Handlebars.compile($("#impactSeriesSaveButtonTemplate").html());
     </script>
 </jsp:root>

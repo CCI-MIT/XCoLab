@@ -24,6 +24,7 @@ import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
 import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
 import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
+import org.xcolab.utils.ProposalAttributeDetectUpdateAlgorithm;
 import org.xcolab.utils.UrlBuilder;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
@@ -341,7 +342,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // if it is the one that we are changing then leave old one as it is and
         // create new one for new proposal version
         for (ProposalAttribute attribute : currentProposalAttributes) {
-            if (!attributeName.equals(attribute.getName()) || additionalId != attribute.getAdditionalId()) {
+            ProposalAttributeDetectUpdateAlgorithm updateAlgorithm = new ProposalAttributeDetectUpdateAlgorithm(attribute);
+            if (!updateAlgorithm.hasBeenUpdated(attributeName, additionalId, numericValue, realValue)) {
                 // clone the attribute and set its version to the new value
                 attribute.setVersion(newVersion);
                 proposalAttributeLocalService.updateProposalAttribute(attribute);

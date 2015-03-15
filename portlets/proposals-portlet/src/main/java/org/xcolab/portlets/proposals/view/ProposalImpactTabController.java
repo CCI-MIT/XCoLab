@@ -53,7 +53,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         // All filled out impact series
         List<ProposalAttribute> impactProposalAttributes =
                 ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
-        ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(impactProposalAttributes, impactIterations);
+        ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(impactProposalAttributes, contest, proposal.getWrapped());
         model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
 
         Map<OntologyTerm, List<OntologyTerm>> ontologyMap = ProposalImpactUtil.calculateAvailableOntologyMap(contest, proposalImpactSeriesList.getImpactSerieses());

@@ -1,10 +1,12 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.ImpactDefaultSeries;
 import com.ext.portlet.model.ImpactIteration;
 import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
@@ -27,7 +29,7 @@ import java.util.Map;
 public class ProposalImpactSeriesList {
     private List<ProposalImpactSeries> impactSerieses;
 
-    public ProposalImpactSeriesList(List<ProposalAttribute> proposalImpactAttributes, List<ImpactIteration> impactIterations)
+    public ProposalImpactSeriesList(List<ProposalAttribute> proposalImpactAttributes, Contest contest, Proposal proposal)
             throws PortalException, SystemException {
 
         Map<Long, ProposalImpactSeries> focusAreaIdToImpactSeriesMap = new HashMap<>();
@@ -37,7 +39,7 @@ public class ProposalImpactSeriesList {
             FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(attribute.getAdditionalId());
             ProposalImpactSeries impactSeries = focusAreaIdToImpactSeriesMap.get(focusArea.getId()); // additionalId = focusAreaId
             if (Validator.isNull(impactSeries)) {
-                impactSeries = new ProposalImpactSeries(focusArea, impactIterations);
+                impactSeries = new ProposalImpactSeries(contest, proposal, focusArea);
                 focusAreaIdToImpactSeriesMap.put(focusArea.getId(), impactSeries);
             }
 

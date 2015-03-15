@@ -6,19 +6,27 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.NoSuchImpactDefaultSeriesException;
 import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.ImpactDefaultSeries;
 import com.ext.portlet.model.ImpactDefaultSeriesData;
 import com.ext.portlet.model.ImpactIteration;
 import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
+import com.ext.portlet.service.ImpactIterationLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.persistence.ImpactIterationUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 
 import java.util.HashMap;
@@ -38,6 +46,7 @@ public class ProposalImpactSeries {
     private OntologyTerm whatTerm;
     private OntologyTerm whereTerm;
     private FocusArea focusArea;
+    private Proposal proposal;
     private Map<String, ProposalImpactSeriesValues> seriesTypeToSeriesMap;
     private Map<String, Boolean> seriesTypeToEditableMap;
 
@@ -45,24 +54,34 @@ public class ProposalImpactSeries {
 
     private ProposalImpactSeriesValues resultValues;
 
-    public ProposalImpactSeries(Map<String, ProposalImpactSeriesValues> seriesYearValuesMap,
-                                Map<String, Boolean> seriesTypeToEditableMap,
-                                List<ImpactIteration> impactIterations,
-                                FocusArea focusArea) throws SystemException, PortalException {
-        this.seriesTypeToSeriesMap = seriesYearValuesMap;
-        this.seriesTypeToEditableMap = seriesTypeToEditableMap;
-        this.impactIterations = impactIterations;
+    public ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea) throws SystemException, PortalException {
+        this.seriesTypeToSeriesMap = new HashMap<>();
+        this.seriesTypeToEditableMap = new HashMap<>();
         this.focusArea = focusArea;
+        this.proposal = proposal;
         this.whatTerm = ProposalImpactUtil.getWhatTerm(focusArea);
         this.whereTerm = ProposalImpactUtil.getWhereTerm(focusArea);
 
+        this.impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
         // Retrieve static serieses
         bauSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_BAU_KEY);
         addSeriesWithType(bauSeries, false);
     }
 
-    public ProposalImpactSeries(FocusArea focusArea, List<ImpactIteration> impactIterations) throws PortalException, SystemException {
-        this(new HashMap<String, ProposalImpactSeriesValues>(), new HashMap<String, Boolean>(), impactIterations, focusArea);
+    public ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea, JSONObject json) throws PortalException, SystemException {
+        this(contest, proposal, focusArea);
+
+        for (ImpactDefaultSeries defaultSeries : ImpactDefaultSeriesLocalServiceUtil.getAllImpactDefaultSeriesWithFocusArea(focusArea)) {
+            if (!defaultSeries.isEditable()) {
+                continue;
+            }
+
+            seriesTypeToEditableMap.put(defaultSeries.getName(), true);
+            JSONObject seriesValues = json.getJSONObject(defaultSeries.getName());
+            for (ImpactIteration iteration : impactIterations) {
+                addSeriesValueWithType(defaultSeries.getName(), iteration.getYear(), seriesValues.getDouble(iteration.getYear()+""));
+            }
+        }
     }
 
     public void addSeriesValueWithType(String seriesType, int year, double value) {
@@ -106,6 +125,20 @@ public class ProposalImpactSeries {
 
     public boolean getIsEditableForSeriesType(String seriesType) {
         return seriesTypeToEditableMap.get(seriesType);
+    }
+
+    public void persistWithAuthor(User author) throws SystemException, PortalException {
+        // Persist all editable attributes
+        for (String seriesType : seriesTypeToEditableMap.keySet()) {
+            if (seriesTypeToEditableMap.get(seriesType)) {
+                ProposalImpactSeriesValues seriesValues = this.seriesTypeToSeriesMap.get(seriesType);
+                for (ImpactIteration iteration : impactIterations) {
+                    ProposalLocalServiceUtil.setAttribute(author.getUserId(), proposal.getProposalId(), seriesType,
+                            focusArea.getId(), "", iteration.getYear(), seriesValues.getValueForYear(iteration.getYear()));
+                }
+
+            }
+        }
     }
 
     public JSONObject toJSONObject() throws SystemException, NoSuchImpactDefaultSeriesException {

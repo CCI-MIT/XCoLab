@@ -1,13 +1,16 @@
 package org.xcolab.portlets.proposals.view;
 
+import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.ImpactDefaultSeries;
 import com.ext.portlet.model.ImpactDefaultSeriesData;
 import com.ext.portlet.model.ImpactIteration;
 import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
@@ -18,11 +21,13 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
@@ -97,7 +102,6 @@ public class ProposalImpactJSONController {
         OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionTermId);
 
         ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
-        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
         FocusArea selectedFocusArea = impactSeriesList.getFocusAreaForTerms(sectorOntologyTerm, regionOntologyTerm);
 
         // Get default serieses
@@ -105,7 +109,7 @@ public class ProposalImpactJSONController {
                 ImpactDefaultSeriesLocalServiceUtil.getAllImpactDefaultSeriesWithFocusArea(selectedFocusArea);
 
         // Create a impact series with all data series for one sector-region pair
-        ProposalImpactSeries impactSeries = new ProposalImpactSeries(selectedFocusArea, impactIterations);
+        ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), selectedFocusArea);
         List<ProposalAttribute> impactProposalAttributes =
                 ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
 
@@ -134,6 +138,35 @@ public class ProposalImpactJSONController {
         response.getPortletOutputStream().write(impactSeries.toJSONObject().toString().getBytes());
     }
 
+    @ResourceMapping("proposalImpactSaveDataSeries")
+    public void proposalImpactSaveDataSeries(
+            ResourceRequest request,
+            ResourceResponse response,
+            @RequestParam(value = "focusAreaId", required = true) Long focusAreaId) throws IOException,
+            SystemException, PortalException {
+
+
+        JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+
+        if (!permissions.getCanEdit()) {
+            responseJSON.put("success", false);
+            response.getPortletOutputStream().write(responseJSON.toString().getBytes());
+            return;
+        }
+
+        FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
+        Contest contest = proposalsContext.getContest(request);
+        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+
+        JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
+        ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), focusArea, requestJson);
+        impactSeries.persistWithAuthor(proposalsContext.getUser(request));
+
+        responseJSON.put("success", true);
+        response.getPortletOutputStream().write(responseJSON.toString().getBytes());
+    }
+
     private JSONArray ontologyTermListToJSONArray(List<OntologyTerm> terms) {
         JSONArray array = JSONFactoryUtil.createJSONArray();
 
@@ -155,11 +188,12 @@ public class ProposalImpactJSONController {
 
     private Map<OntologyTerm, List<OntologyTerm>> getOntologyMap(ResourceRequest request) throws SystemException, PortalException {
         Contest contest = proposalsContext.getContest(request);
+        Proposal proposal = proposalsContext.getProposal(request);
 
         List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
         List<ProposalAttribute> impactProposalAttributes =
                 ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
-        ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(impactProposalAttributes, impactIterations);
+        ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(impactProposalAttributes, contest, proposal);
         return ProposalImpactUtil.calculateAvailableOntologyMap(contest, proposalImpactSeriesList.getImpactSerieses());
     }
 
@@ -172,6 +206,6 @@ public class ProposalImpactJSONController {
         // All filled out impact series
         List<ProposalAttribute> impactProposalAttributes =
                 ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
-        return new ProposalImpactSeriesList(impactProposalAttributes, impactIterations);
+        return new ProposalImpactSeriesList(impactProposalAttributes, contest, proposal.getWrapped());
     }
 }
