@@ -40,9 +40,9 @@
             <td>{{series.description}}</td>
             {{#each series.values}}
                 {{#if ../series.editable}}
-                    <td><input type="text" name="{{this.year}}" value="{{this.value}}" />%</td>
+                    <td><input type="text" name="{{this.year}}" value="{{this.value}}" class="series-value"/><span>%</span></td>
                 {{else}}
-                    <td class="shaded-bg">{{this.value}}</td>
+                    <td class="shaded-bg"><span class="series-value">{{this.value}}</span></td>
                 {{/if}}
             {{/each}}
         </tr>
@@ -54,14 +54,14 @@
             <table>
                 <tr>
                     <th class="blue-text">Sector</th><th class="blue-text">Region</th>
-                    <c:forEach var="impactIteration" items="${impactIterations}"><th class="impact-value">${impactIteration.year}</th></c:forEach>
+                    <c:forEach var="impactIteration" items="${impactIterations}"><th class="blue-bg" style="text-align: center;">${impactIteration.year}</th></c:forEach>
                 </tr>
                 <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
                     <tr class="impact-series-clickable" id="impact-row-${index.index}">
-                        <td class="sector"><span id="${impactSeries.whatTerm.id}">${impactSeries.whatTerm.name}</span></td>
-                        <td class="region"><span id="${impactSeries.whereTerm.id}">${impactSeries.whereTerm.name}</span></td>
+                        <td class="sector blue-bg"><span id="${impactSeries.whatTerm.id}">${impactSeries.whatTerm.name}</span></td>
+                        <td class="region blue-bg"><span id="${impactSeries.whereTerm.id}">${impactSeries.whereTerm.name}</span></td>
                         <c:forEach var="impactIteration" items="${impactIterations}">
-                            <td>${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
+                            <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
                         </c:forEach>
                     </tr>
                 </c:forEach>
@@ -228,8 +228,19 @@
             regionTerm.remove();
         }
 
-        function recalcuateEditSeriesValues() {
-            $('table#impact-series-edit
+        function recalculateEditSeriesValues() {
+            var bauValues = $('table#impact-series-edit #impact-edit-row-BAU td span.series-value');
+            var reductionValues = $('table#impact-series-edit #impact-edit-row-IMPACT_REDUCTION input.series-value');
+            var adoptionValues = $('table#impact-series-edit #impact-edit-row-IMPACT_ADOPTION_RATE input.series-value');
+            var resultValues = $('table#impact-series-edit #impact-edit-row-RESULT td span.series-value');
+
+            for (var i = 0; i &lt; bauValues.size(); i++) {
+                console.log("bau " + parseFloat($(bauValues[i]).text()) + "; reduction " + parseFloat($(reductionValues[i]).attr('value')) +
+                            "; adoption " + parseFloat($(adoptionValues[i]).attr('value')));
+                var resultValue = parseFloat($(bauValues[i]).text()) * (1.0 - parseFloat($(reductionValues[i]).attr('value')) * 0.01 *
+                        parseFloat($(adoptionValues[i]).attr('value')) * 0.01);
+                $(resultValues[i]).text('' + resultValue);
+            }
         }
         /* Replace the URL placeholders with actual values */
         function replaceImpactURLPlaceholders(rawUrl, ids, values){
@@ -262,6 +273,19 @@
                 tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                 editTable.append(tableRow);
                 console.log("adoption series"  + dataSeries);
+
+                dataSeries = {"name": "RESULT", "description": "Proposal impact [tCO2] (with partial adoption)", "editable": false,
+                "values": dataSeries.values};
+                tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
+                editTable.append(tableRow);
+                console.log("result json: " + JSON.stringify(dataSeries));
+
+                // Register input event handler
+                $('table#impact-series-edit input').on('blur', function() {
+                    recalculateEditSeriesValues();
+                })
+
+                recalculateEditSeriesValues();
             });
         }
 

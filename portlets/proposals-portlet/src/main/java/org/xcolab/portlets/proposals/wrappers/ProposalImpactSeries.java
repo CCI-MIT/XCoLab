@@ -150,7 +150,7 @@ public class ProposalImpactSeries {
             double reductionRate = seriesTypeToSeriesMap.get(ProposalAttributeKeys.IMPACT_REDUCTION).getValueForYear(currentYear);
             double adoptionRate = seriesTypeToSeriesMap.get(ProposalAttributeKeys.IMPACT_ADOPTION_RATE).getValueForYear(currentYear);
 
-            resultValues.putSeriesValue(currentYear, (bauValue * (1.0 - reductionRate * adoptionRate)));
+            resultValues.putSeriesValue(currentYear, (bauValue * (1.0 - reductionRate * 0.01 * adoptionRate * 0.01)));
         }
     }
 

@@ -510,6 +510,7 @@ table.judgingForm {
 
 #impact table td, #impact table th {
     padding: 10px;
+    max-width: 200px;
 }
 
 #impact th.blue-text {
@@ -529,20 +530,26 @@ table.judgingForm {
     text-align: center;
 }
 
-#impact tr .selected {
+#impact tr.selected {
     border: 2px solid #8e8d8a;
 }
 
 #impact tr select {
     margin: 0px;
+    width: 220px;
 }
 
 #impact input {
-    width: 40px;
+    width: 30px;
     text-align: center;
     padding: 5px;
 }
 
 #impact .shaded-bg {
-    background: url(../images/pattern-6x6-blue.png);
+    text-align: center;
+}
+
+#impact table#impact-series-edit span {
+    margin: 0 auto;
+    padding-left: 5px;
 }
