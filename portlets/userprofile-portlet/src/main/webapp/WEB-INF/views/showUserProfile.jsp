@@ -39,9 +39,9 @@
 		</div>
 		<div class="comm_member" style="margin-top: 0;">
 
-			<c:if test="${currentUserProfile.attendsConference}">
+            <!-- <c:if test="${currentUserProfile.attendsConference}">
 				<a href="/web/guest/conference2014" class="attendingConference"><img src="/climatecolab-theme/images/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
-			</c:if>
+			</c:if> -->
 
 			<div class="badge-container">
 				<c:forEach var="badge" items="${currentUserProfile.badges}">
