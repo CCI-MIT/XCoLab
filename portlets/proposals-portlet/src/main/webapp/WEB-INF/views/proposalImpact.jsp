@@ -64,6 +64,16 @@
         </div>
     </script>
 
+    <script id="impactSeriesNewTableRowTemplate" type="text/x-handlebars-template">
+        <tr class="impact-series-clickable" id="impact-row-{{series.rowIndex}}">
+            <td class="sector blue-bg"><span id="{{series.sectorTerm.id}}">{{series.sectorTerm.name}}</span></td>
+            <td class="region blue-bg"><span id="{{series.regionTerm.id}}">{{series.regionTerm.name}}</span></td>
+            {{#each series.resultValues}}
+                <td class="impact-value">{{this}}</td>
+            {{/each}}
+        </tr>
+    </script>
+
     <!-- Content -->
     <div id="content">
         <div id="impact">
@@ -112,6 +122,10 @@
 
 
     <script>
+        var editedFocusArea = 0;
+        var userInputOccurred = false;
+        var currentEditingRowIndex = -1;
+
         jQuery(document).ready(function() {
             registerEventHandler();
 
@@ -120,59 +134,29 @@
         });
 
         function registerEventHandler() {
-            $('.impact-series-clickable').click(function() {
+            $('tr.impact-series-clickable').click(function() {
                 console.log("clicked row " + $(this).attr('id'));
                 toggleEditMode($(this));
             });
 
+            $('tr#impact-series-new').click(function() {
+                if (currentEditingRowIndex != -1) {
+                    toggleEditMode($('tr#impact-row-' + currentEditingRowIndex));
+                }
+                console.log("click");
+            });
+
             // Change value in new series sector dropdown
-            $('tr#impact-series-new .sector').children('select').on('change', function() {
-                var sectorTermId = $(this).val();
-                if (sectorTermId == 0) {
-                    return;
-                }
-
-                if (sectorTermId != 0) {
-                    var url = replaceImpactURLPlaceholders(getRegionsForSectorURL, [SECTOR_TERM_ID_PLACEHOLDER], [sectorTermId]);
-                    $.getJSON(url, { get_param: 'value' }, function(data) {
-                        var regionSelect = $('#impact-series-new > td.region > select');
-                        regionSelect.empty();
-                        regionSelect.append('<option value="' + 0 + '">Select region</option>');
-                        console.log("data " + data);
-
-                        $.each(data, function(index, attr) {
-                            console.log("each " + attr);
-                            regionSelect.append('<option value="' + attr.id + '">' + attr.name + '</option>');
-                            //addToProposalPickerTable(attr,even);
-                            //even = ! even;
-                        });
-                    });
-                }
-            });
-
-            // Change value in new series region dropdown
-            $('tr#impact-series-new .region').children('select').on('change', function() {
-                var sectorTermId = $('tr#impact-series-new .sector').children('select').val();
-                var regionTermId = $(this).val();
-
-                if (sectorTermId == 0 || regionTermId == 0) {
-                    return;
-                }
-
-                var url = replaceImpactURLPlaceholders(getDataSeriesURL,
-                        [SECTOR_TERM_ID_PLACEHOLDER, REGION_TERM_ID_PLACEHOLDER],
-                        [sectorTermId, regionTermId]);
-
-                console.log("load data series with URL " + url);
-                loadSeriesEditData(url);
-            });
+            registerDropdownEventListener($('tr#impact-series-new .sector').children('select'), $('tr#impact-series-new .region').children('select'));
         }
 
-        var currentEditingRowIndex = -1;
         function toggleEditMode(row) {
             var rowIndex = row.attr('id').substring("impact-row-".length);
             row.addClass("selected");
 
+            $('tr#impact-series-new select').prop('disabled', true);
+
+            // Another row has already been edited
             if (currentEditingRowIndex != -1) {
                 var oldEditingRow = $('tr#impact-row-' + currentEditingRowIndex);
                 oldEditingRow.removeClass("selected");
@@ -182,15 +166,15 @@
 
                 // Reset select elements
                 console.log("selected indexes " + sectorTermElement.attr('value') + "; " + regionTermElement.attr('value'));
-                var sectorSpan = $(document.createElement("span"));
+                var sectorSpan = oldEditingRow.find('td.sector span')
                 sectorSpan.attr('id', sectorTermElement.attr('value'));
                 sectorSpan.text(sectorTermElement.text());
-                oldEditingRow.find('td.sector').append(sectorSpan);
+                sectorSpan.show();
 
-                var regionSpan = $(document.createElement("span"));
+                var regionSpan = oldEditingRow.find('td.region span')
                 regionSpan.attr('id', regionTermElement.attr('value'));
                 regionSpan.text(regionTermElement.text());
-                oldEditingRow.find('td.region').append(regionSpan);
+                regionSpan.show();
 
                 oldEditingRow.find('td.sector select').remove();
                 oldEditingRow.find('td.region select').remove();
@@ -200,6 +184,9 @@
                 currentEditingRowIndex = -1;
                 $('table#impact-series-edit').slideUp();
                 row.removeClass("selected");
+                userInputOccurred = false;
+
+                $('tr#impact-series-new select').prop('disabled', false);
                 return;
             }
 
@@ -234,6 +221,8 @@
                 }
             });
 
+            registerDropdownEventListener(sectorSelect, regionSelect);
+
             var url = replaceImpactURLPlaceholders(getDataSeriesURL,
                     [SECTOR_TERM_ID_PLACEHOLDER, REGION_TERM_ID_PLACEHOLDER],
                     [sectorTerm.attr('id'), regionTerm.attr('id')]);
@@ -241,8 +230,8 @@
             loadSeriesEditData(url);
             $('table#impact-series-edit').slideDown();
 
-            sectorTerm.remove();
-            regionTerm.remove();
+            sectorTerm.hide();
+            regionTerm.hide();
         }
 
         function recalculateEditSeriesValues() {
@@ -254,8 +243,9 @@
             for (var i = 0; i &lt; bauValues.size(); i++) {
                 console.log("bau " + parseFloat($(bauValues[i]).text()) + "; reduction " + parseFloat($(reductionValues[i]).attr('value')) +
                             "; adoption " + parseFloat($(adoptionValues[i]).attr('value')));
-                var resultValue = parseFloat($(bauValues[i]).text()) * (1.0 - parseFloat($(reductionValues[i]).attr('value')) * 0.01 *
-                        parseFloat($(adoptionValues[i]).attr('value')) * 0.01).toFixed(2);;
+                var resultValue = (parseFloat($(bauValues[i]).text()) * (1.0 - parseFloat($(reductionValues[i]).attr('value')) * 0.01 *
+                        parseFloat($(adoptionValues[i]).attr('value')) * 0.01)).toFixed(2);
+                console.log("resultValue: " + resultValue);
                 $(resultValues[i]).text('' + resultValue);
             }
         }
@@ -271,25 +261,37 @@
 
         function loadSeriesEditData(url) {
             $.getJSON(url, { get_param: 'value' }, function(data) {
+                editedFocusArea = data.focusAreaId;
+
+                if (userInputOccurred) {
+                    var reductionSeriesHTML = $('table#impact-series-edit tr#impact-edit-row-' + data.serieses.IMPACT_REDUCTION.name).html();
+                    var adoptionSeriesHTML = $('table#impact-series-edit tr#impact-edit-row-' + data.serieses.IMPACT_ADOPTION_RATE.name).html();
+                }
                 var editTable = $('table#impact-series-edit');
                 editTable.empty();
 
                 console.log("json: " + JSON.stringify(data));
                 var dataSeries = data.serieses.BAU;
-                console.log("json: " + JSON.stringify(dataSeries));
                 var tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                 editTable.append(tableRow);
                 console.log("bau series"  + dataSeries);
 
-                dataSeries = data.serieses.IMPACT_REDUCTION;
-                tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
-                editTable.append(tableRow);
-                console.log("reduction series"  + dataSeries);
+                // Restore entered data if needed
+                if (userInputOccurred) {
+                    editTable.append(reductionSeriesHTML);
+                    editTable.append(adoptionSeriesHTML);
+                } else {
+                    dataSeries = data.serieses.IMPACT_REDUCTION;
+                    tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
+                    console.log("Reduction: " + JSON.stringify(dataSeries));
+                    editTable.append(tableRow);
+                    console.log("reduction series"  + dataSeries);
 
-                dataSeries = data.serieses.IMPACT_ADOPTION_RATE;
-                tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
-                editTable.append(tableRow);
-                console.log("adoption series"  + dataSeries);
+                    dataSeries = data.serieses.IMPACT_ADOPTION_RATE;
+                    tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
+                    editTable.append(tableRow);
+                    console.log("adoption series"  + dataSeries);
+                }
 
                 dataSeries = {"name": "RESULT", "description": "Proposal impact [tCO2] (with partial adoption)", "editable": false,
                 "values": dataSeries.values};
@@ -299,43 +301,12 @@
 
                 // Save button
                 $('table#impact-series-edit tr#impact-edit-row-RESULT').append(jQuery(impactSeriesSaveButtonTemplate({})));
-                var url = replaceImpactURLPlaceholders(saveDataSeriesURL, [FOCUS_AREA_ID_PLACEHOLDER], [data.focusAreaId]);
-
-                var reductionData = {};
-                var adoptionData = {};
-                $('a#impact-edit-save-button').click(function() {
-                    $.each($('tr#impact-edit-row-' + IMPACT_REDUCTION_PLACEHOLDER+ ' input'), function(idx) {
-                        reductionData[$(this).attr('name')] = $(this).attr('value');
-                    });
-                    $.each($('tr#impact-edit-row-' + IMPACT_ADOPTION_RATE_PLACEHOLDER+ ' input'), function(idx) {
-                        adoptionData[$(this).attr('name')] = $(this).attr('value');
-                    });
-
-                    var postJson = {};
-                    postJson[IMPACT_REDUCTION_PLACEHOLDER] = reductionData;
-                    postJson[IMPACT_ADOPTION_RATE_PLACEHOLDER] = adoptionData;
-
-                    $.post(url, {"json" : JSON.stringify(postJson)}, function(response) {
-                        console.log(response.success);
-                        if (!response.success) {
-                            alert("Could not process request");
-                        } else {
-                            toggleEditMode(currentEditingRowIndex);
-
-                            var resultValues = $('table#impact-series-edit #impact-edit-row-RESULT td span.series-value');
-                            for (var i = 0; i &lt; resultValues.length; i++) {
-                                var valueCell = ($('tr#impact-row-'+currentEditingRowIndex + ' td.impact-value')[i])
-                                valueCell.text($(resultValues[i]).text());
-
-                                console.log("Set value " + valueCell.text() + " for index " + i);
-                            }
-                        }
-                    });
-                });
+                $('a#impact-edit-save-button').click(saveDataSeries);
 
 
                 // Register input event handler
                 $('table#impact-series-edit input').on('blur', function() {
+                    userInputOccurred = true;
                     recalculateEditSeriesValues();
                 })
 
@@ -343,7 +314,119 @@
             });
         }
 
+        function registerDropdownEventListener(sectorDropdownElement, regionDropdownElement) {
+            sectorDropdownElement.click(function(event) {event.stopPropagation();});
+            regionDropdownElement.click(function(event) {event.stopPropagation();});
+
+            sectorDropdownElement.on('change', function() {
+                $('a#impact-edit-save-button').parent().addClass("button-disabled");
+                var sectorTermId = $(this).val();
+                if (sectorTermId == 0) {
+                    return;
+                }
+
+                if (sectorTermId != 0) {
+                    var url = replaceImpactURLPlaceholders(getRegionsForSectorURL, [SECTOR_TERM_ID_PLACEHOLDER], [sectorTermId]);
+                    $.getJSON(url, { get_param: 'value' }, function(data) {
+                        regionDropdownElement.empty();
+                        regionDropdownElement.append('<option value="' + 0 + '">Select region</option>');
+                        console.log("data " + data);
+
+                        // Add selected item, if editing an existing row
+                        if (currentEditingRowIndex != -1) {
+                            var currentSectorSpan = $('tr#impact-row-' + currentEditingRowIndex + ' td.sector span');
+                            var currentRegionSpan = $('tr#impact-row-' + currentEditingRowIndex + ' td.region span');
+                            // Match old selection of sector -> show selected region option
+                            if (sectorDropdownElement.val() == currentSectorSpan.attr('id')) {
+                                regionDropdownElement.append('<option value="' + currentRegionSpan.attr('id') + '">' + currentRegionSpan.text() + '</option>');
+                            }
+                        }
+                        $.each(data, function(index, attr) {
+                            console.log("each " + attr);
+                            regionDropdownElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
+                            //addToProposalPickerTable(attr,even);
+                            //even = ! even;
+                        });
+                    });
+                }
+            });
+
+        regionDropdownElement.on('change', function() {
+            var sectorTermId = sectorDropdownElement.val();
+            var regionTermId = $(this).val();
+            $('a#impact-edit-save-button').parent().addClass("button-disabled");
+
+            if (sectorTermId == 0 || regionTermId == 0) {
+                return;
+            }
+
+            console.log("url " + getDataSeriesURL);
+            var url = replaceImpactURLPlaceholders(getDataSeriesURL,
+                    [SECTOR_TERM_ID_PLACEHOLDER, REGION_TERM_ID_PLACEHOLDER],
+                    [sectorTermId, regionTermId]);
+
+            console.log("load data series with URL " + url);
+            loadSeriesEditData(url);
+            $('table#impact-series-edit').slideDown();
+            });
+        }
+
+        function saveDataSeries() {
+            var url = replaceImpactURLPlaceholders(saveDataSeriesURL, [FOCUS_AREA_ID_PLACEHOLDER], [data.focusAreaId]);
+
+            var reductionData = {};
+            var adoptionData = {};
+
+            $.each($('tr#impact-edit-row-' + IMPACT_REDUCTION_PLACEHOLDER+ ' input'), function(idx) {
+                reductionData[$(this).attr('name')] = $(this).attr('value');
+            });
+            $.each($('tr#impact-edit-row-' + IMPACT_ADOPTION_RATE_PLACEHOLDER+ ' input'), function(idx) {
+                adoptionData[$(this).attr('name')] = $(this).attr('value');
+            });
+
+            var postJson = {};
+            postJson[IMPACT_REDUCTION_PLACEHOLDER] = reductionData;
+            postJson[IMPACT_ADOPTION_RATE_PLACEHOLDER] = adoptionData;
+
+            $.post(url, {"json" : JSON.stringify(postJson)}, function(response) {
+                console.log(JSON.stringify(response));
+                if (!response.success) {
+                    alert("Could not process request");
+                } else {
+                    var resultValues = $('table#impact-series-edit #impact-edit-row-RESULT td span.series-value');
+
+                    // Editing a new series
+                    if (currentEditingRowIndex == -1) {
+                        var sectorSelect = $('tr#impact-series-new .sector select');
+                        var regionSelect = $('tr#impact-series-new .region select');
+                        var seriesData = {"sectorTerm" : {"id": sectorSelect.val(), "name" : sectorSelect.find('option:selected').text()},
+                            "regionTerm" : {"id": regionSelect.val(), "name" : regionSelect.find('option:selected').text()},
+                            "rowIndex": $('tr.impact-series-clickable').size(),
+                            "resultValues" : []};
+
+                        $.each(resultValues, function(idx) {
+                            seriesData.resultValues.append($(this).text());
+                        });
+
+                        jQuery(impactSeriesNewTableRowTemplate({series: seriesData})).insertBefore('tr#impact-series-new');
+                        $('tr#impact-series-new').slideUp();
+                    }
+
+                    // Editing an existing series
+                    else {
+                        for (var i = 0; i &lt; resultValues.length; i++) {
+                            var valueCell = ($('tr#impact-row-'+currentEditingRowIndex + ' td.impact-value')[i])
+                            valueCell.text($(resultValues[i]).text());
+
+                            console.log("Set value " + valueCell.text() + " for index " + i);
+                        }
+                    }
+                }
+            });
+        }
+
         var impactSeriesEditTableRowTemplate = Handlebars.compile($("#impactSeriesEditTableRowTemplate").html());
         var impactSeriesSaveButtonTemplate = Handlebars.compile($("#impactSeriesSaveButtonTemplate").html());
+        var impactSeriesNewTableRowTemplate = Handlebars.compile($('#impactSeriesNewTableRowTemplate').html());
     </script>
 </jsp:root>

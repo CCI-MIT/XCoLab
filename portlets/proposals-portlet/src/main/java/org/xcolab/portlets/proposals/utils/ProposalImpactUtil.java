@@ -26,9 +26,14 @@ public class ProposalImpactUtil {
     private static final long WHAT_ONTOLOGY_SPACE_ID = 103;
     private static final long WHERE_ONTOLOGY_SPACE_ID = 104;
 
+    private Contest contest;
+
+    public ProposalImpactUtil(Contest contest) {
+        this.contest = contest;
+    }
+
     // TODO cache this map somehow
-    public static Map<OntologyTerm, List<OntologyTerm>> calculateAvailableOntologyMap(Contest contest,
-                     List<ProposalImpactSeries> impactSerieses) throws SystemException, PortalException {
+    public Map<OntologyTerm, List<OntologyTerm>> calculateAvailableOntologyMap(List<ProposalImpactSeries> impactSerieses) throws SystemException, PortalException {
 
         Map<OntologyTerm, List<OntologyTerm>> ontologyTermMap = new HashMap<>();
         Map<Long, Boolean> impactSeriesAvailableMap = getImpactSeriesAvailableMap(impactSerieses);
@@ -54,6 +59,22 @@ public class ProposalImpactUtil {
         }
 
         return ontologyTermMap;
+    }
+
+    public FocusArea getFocusAreaAssociatedWithTerms(OntologyTerm whatTerm, OntologyTerm whereTerm) throws SystemException, PortalException {
+        List<ImpactTemplateMaxFocusArea> impactFocusAreas = ContestLocalServiceUtil.getContestImpactFocusAreas(contest);
+
+        for (ImpactTemplateMaxFocusArea impactFocusArea : impactFocusAreas) {
+            FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(impactFocusArea.getFocusAreaId());
+
+            if (getWhatTerm(focusArea).getId() == whatTerm.getId() &&
+                    getWhereTerm(focusArea).getId() == whereTerm.getId()) {
+
+                return focusArea;
+            }
+        }
+
+        return null;
     }
 
     public static OntologyTerm getWhatTerm(FocusArea focusArea) throws PortalException, SystemException {

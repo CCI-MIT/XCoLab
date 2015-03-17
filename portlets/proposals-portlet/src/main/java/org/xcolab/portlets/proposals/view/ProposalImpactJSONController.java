@@ -102,7 +102,7 @@ public class ProposalImpactJSONController {
         OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionTermId);
 
         ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
-        FocusArea selectedFocusArea = impactSeriesList.getFocusAreaForTerms(sectorOntologyTerm, regionOntologyTerm);
+        FocusArea selectedFocusArea = new ProposalImpactUtil(contest).getFocusAreaAssociatedWithTerms(sectorOntologyTerm, regionOntologyTerm);
 
         // Get default serieses
         List<ImpactDefaultSeries> impactDefaultSerieses =
@@ -110,6 +110,7 @@ public class ProposalImpactJSONController {
 
         // Create a impact series with all data series for one sector-region pair
         ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), selectedFocusArea);
+        // TODO create query to filter by additionalId?
         List<ProposalAttribute> impactProposalAttributes =
                 ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
 
@@ -120,14 +121,13 @@ public class ProposalImpactJSONController {
             if (defaultSeries.isEditable()) {
                 // TODO write a separate finder for the proposal attribute that is being searched
                 for (ProposalAttribute attribute : impactProposalAttributes) {
-                    if (attribute.getName().equals(defaultSeries.getName())) {
+                    if (attribute.getName().equals(defaultSeries.getName()) && attribute.getAdditionalId() == selectedFocusArea.getId()) {
                         foundEnteredData = true;
                         impactSeries.addSeriesValueWithType(attribute.getName(), (int)attribute.getNumericValue(), attribute.getRealValue());
                     }
                 }
 
                 // Use default data if not entered
-                // todo do we need that?
                 if (!foundEnteredData) {
                     List<ImpactDefaultSeriesData> defaultSeriesDataList =
                             ImpactDefaultSeriesDataLocalServiceUtil.getDefaultSeriesDataBySeriesId(defaultSeries.getSeriesId());
@@ -194,7 +194,7 @@ public class ProposalImpactJSONController {
         List<ProposalAttribute> impactProposalAttributes =
                 ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
         ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(impactProposalAttributes, contest, proposal);
-        return ProposalImpactUtil.calculateAvailableOntologyMap(contest, proposalImpactSeriesList.getImpactSerieses());
+        return new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
     }
 
     private ProposalImpactSeriesList getProposalImpactSeriesList(ResourceRequest request) throws SystemException, PortalException {

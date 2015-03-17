@@ -56,7 +56,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(impactProposalAttributes, contest, proposal.getWrapped());
         model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
 
-        Map<OntologyTerm, List<OntologyTerm>> ontologyMap = ProposalImpactUtil.calculateAvailableOntologyMap(contest, proposalImpactSeriesList.getImpactSerieses());
+        Map<OntologyTerm, List<OntologyTerm>> ontologyMap = new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
         model.addAttribute("sectorTerms", sortByName(ontologyMap.keySet()));
 
         return "proposalImpact";
