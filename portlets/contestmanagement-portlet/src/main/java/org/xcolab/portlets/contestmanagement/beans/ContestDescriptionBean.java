@@ -2,8 +2,6 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 
 import com.ext.portlet.model.Contest;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,6 +10,7 @@ import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -19,6 +18,7 @@ import java.io.Serializable;
  */
 public class ContestDescriptionBean implements Serializable{
     private static final long serialVersionUID = 1L;
+    private static final String NO_SPECIAL_CHAR_REGEX ="^[a-zA-Z0-9äöüÄÖÜ]*$";
 
     private Long ContestPK;
     private Long contestLogoId;
@@ -27,10 +27,12 @@ public class ContestDescriptionBean implements Serializable{
     @Length(min = 5, max = 140, message = "The contest question must be at least 5 characters and not more than 140 characters.")
     private String contestName;
 
-    @Length(min = 5, max = 50, message = "The contest name must be at least 5 characters and not more than 50 characters.")
+    @Length(min = 5, max = 50, message = "The contest title must be at least 5 characters and not more than 50 characters.")
+    @Pattern(regexp = NO_SPECIAL_CHAR_REGEX, message = "The contest title must not cotain special characters.")
     private String contestShortName;
 
     @Length(min = 5, max = 1300, message = "The contest description must be at least 5 characters and not more than 1300 characters.")
+
     private String contestDescription;
 
     @NotNull(message = "A plan template must be selected.")
@@ -130,9 +132,13 @@ public class ContestDescriptionBean implements Serializable{
     }
 
     public void setContestDescription(String contestDescription) {
-        Document document = Jsoup.parse(contestDescription);
-        Element descriptionElement = document.select("p").first();
-        this.contestDescription = descriptionElement.html();
+        if(!contestDescription.isEmpty()) {
+            Document document = Jsoup.parse(contestDescription);
+            Element descriptionElement = document.select("p").first();
+            this.contestDescription = descriptionElement.html();
+        } else {
+            this.contestDescription = contestDescription;
+        }
     }
 
     public Long getPlanTemplateId() {

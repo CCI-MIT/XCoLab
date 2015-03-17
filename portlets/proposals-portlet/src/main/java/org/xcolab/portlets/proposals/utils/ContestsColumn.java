@@ -154,7 +154,11 @@ public enum ContestsColumn {
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
             try {
-                return o2.getLastPhase().getPhaseReferenceDate().compareTo(o1.getLastPhase().getPhaseReferenceDate());
+                if(o2.getLastPhase() != null && o1.getLastPhase() != null) {
+                    return o2.getLastPhase().getPhaseReferenceDate().compareTo(o1.getLastPhase().getPhaseReferenceDate());
+                } else if(o2.getLastPhase() == null){
+                    return 1;
+                }
             } catch (PortalException | SystemException e) {
                 e.printStackTrace();
             }

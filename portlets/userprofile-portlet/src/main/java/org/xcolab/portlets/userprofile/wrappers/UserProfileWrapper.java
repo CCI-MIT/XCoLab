@@ -8,6 +8,7 @@ import com.ext.portlet.model.Message;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -76,7 +77,8 @@ public class
 
     private final static Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
 
-    public UserProfileWrapper(Long userId, PortletRequest request) throws PortalException, SystemException {
+    public UserProfileWrapper(String userIdString, PortletRequest request) throws PortalException, SystemException {
+        Long userId = Long.parseLong(userIdString);
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         user = UserLocalServiceUtil.getUser(userId);
         if (user.isActive()) {
@@ -127,17 +129,17 @@ public class
         if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
 
         userSubscriptions = new UserSubscriptionsWrapper(user);
-
-
         supportedPlans.clear();
         userActivities.clear();
         userProposals.clear();
         for (Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
             ProposalSupporter ps = (ProposalSupporter) o;
             try {
+                Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(ps.getProposalId());
                 supportedPlans.add(new SupportedPlanWrapper(ps));
-            } catch (PortalException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                _log.warn("Could not add supported plan with id: " + ps.getProposalId());
+                //e.printStackTrace();
             }
         }
 

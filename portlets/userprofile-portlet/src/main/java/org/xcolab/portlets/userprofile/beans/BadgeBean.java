@@ -10,6 +10,8 @@ import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.portlets.userprofile.entity.Badge;
 
 import java.io.Serializable;
@@ -27,7 +29,7 @@ import java.util.List;
 public class BadgeBean implements Serializable{
 
     private static final long serialVersionUID = 1L;
-
+    private final static Log _log = LogFactoryUtil.getLog(BadgeBean.class);
     private long userID; // USER the Badges belong to
     private List<Badge> badges;
 
@@ -43,22 +45,21 @@ public class BadgeBean implements Serializable{
 
 
     private void fetchBadges() throws SystemException,PortalException{
-        List<Proposal> proposals;
-
         // Iterate over all plans
         for(Proposal p : ProposalLocalServiceUtil.getProposals(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
             if (!ProposalLocalServiceUtil.isUserAMember(p.getProposalId(),userID)) continue;
-            ContestPhaseRibbonType ribbon = getRibbonType(p);
-            int planRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
-
-            if (planRibbon > 0) {
-                // Plan won a contest
-                try {
+            try {
+                ContestPhaseRibbonType ribbon = getRibbonType(p);
+                int planRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
+                if (planRibbon > 0) {
+                    // Plan won a contest
                     String badgeText = ribbon.getHoverText();
                     long contestId = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestPK();
                     String planTitle =  ProposalLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0).getStringValue();
                     badges.add(new Badge(planRibbon, badgeText, p.getProposalId(), planTitle, contestId));
-                } catch (Exception e) { }
+                }
+            } catch (Exception e) {
+                _log.warn("Could nod add badge to user profile view for userId: " + userID + " and proposalId: " + p.getProposalId(), e);
             }
         }
     }
