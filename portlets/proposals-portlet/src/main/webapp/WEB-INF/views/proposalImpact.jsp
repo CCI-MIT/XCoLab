@@ -450,7 +450,8 @@
                         });
 
                         jQuery(impactSeriesNewTableRowTemplate({series: seriesData})).insertBefore('tr#impact-series-new');
-                        $('a.impact-delete-row-button').click(deleteSeriesRow);
+                        registerEventHandler();
+                        
                         $('table#impact-series-edit').slideUp();
                     }
 
@@ -469,8 +470,8 @@
                     }
 
                     editedFocusArea = 0;
-                    $(this).parents('td').children('span.spinner-area').spin(false);
                 }
+                $(this).parents('td').children('span.spinner-area').spin(false);
             });
         }
 
