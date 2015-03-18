@@ -70,6 +70,7 @@ create index IX_6E3A15E8 on xcolab_ImpactDefaultSeries (seriesId);
 create index IX_D1CD440 on xcolab_ImpactDefaultSeries (seriesId, editable);
 
 create index IX_E8941CB2 on xcolab_ImpactDefaultSeriesData (seriesId);
+create index IX_97B70823 on xcolab_ImpactDefaultSeriesData (seriesId, year);
 
 create index IX_512E56E1 on xcolab_ImpactIteration (iterationId);
 

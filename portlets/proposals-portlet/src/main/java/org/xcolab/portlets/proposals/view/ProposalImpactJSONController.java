@@ -167,6 +167,33 @@ public class ProposalImpactJSONController {
         response.getPortletOutputStream().write(responseJSON.toString().getBytes());
     }
 
+    @ResourceMapping("proposalImpactDeleteDataSeries")
+    public void proposalImpactDeleteDataSeries(
+            ResourceRequest request,
+            ResourceResponse response,
+            @RequestParam(value = "focusAreaId", required = true) Long focusAreaId) throws IOException,
+            SystemException, PortalException {
+
+        JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+
+        if (!permissions.getCanEdit()) {
+            responseJSON.put("success", false);
+            response.getPortletOutputStream().write(responseJSON.toString().getBytes());
+            return;
+        }
+
+        FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
+        Proposal proposal = proposalsContext.getProposal(request);
+
+        for (ProposalAttribute proposalAttribute : ProposalLocalServiceUtil.getImpactProposalAttributes(proposal, focusArea)) {
+            ProposalLocalServiceUtil.removeAttribute(proposalsContext.getUser(request).getUserId(), proposalAttribute);
+        }
+
+        responseJSON.put("success", true);
+        response.getPortletOutputStream().write(responseJSON.toString().getBytes());
+    }
+
     private JSONArray ontologyTermListToJSONArray(List<OntologyTerm> terms) {
         JSONArray array = JSONFactoryUtil.createJSONArray();
 

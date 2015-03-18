@@ -641,6 +641,41 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
+    *
+    * @param authorId
+    * @param attributeToDelete
+    * @param publishActivity
+    * @throws SystemException
+    * @throws PortalException
+    */
+    @Override
+    public void removeAttribute(long authorId,
+        com.ext.portlet.model.ProposalAttribute attributeToDelete,
+        boolean publishActivity)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.removeAttribute(authorId, attributeToDelete,
+            publishActivity);
+    }
+
+    /**
+    * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
+    *
+    * @param authorId
+    * @param attributeToDelete
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Override
+    public void removeAttribute(long authorId,
+        com.ext.portlet.model.ProposalAttribute attributeToDelete)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.removeAttribute(authorId, attributeToDelete);
+    }
+
+    /**
     * <p>Returns a list of all proposal version descriptors.</p>
     *
     * @param proposalId id of a proposal
@@ -1377,6 +1412,15 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         com.ext.portlet.model.Proposal proposal)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.getImpactProposalAttributes(proposal);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getImpactProposalAttributes(proposal,
+            focusArea);
     }
 
     /**

@@ -546,6 +546,34 @@ public interface ProposalLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
+    *
+    * @param authorId
+    * @param attributeToDelete
+    * @param publishActivity
+    * @throws SystemException
+    * @throws PortalException
+    */
+    public void removeAttribute(long authorId,
+        com.ext.portlet.model.ProposalAttribute attributeToDelete,
+        boolean publishActivity)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
+    *
+    * @param authorId
+    * @param attributeToDelete
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public void removeAttribute(long authorId,
+        com.ext.portlet.model.ProposalAttribute attributeToDelete)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * <p>Returns a list of all proposal version descriptors.</p>
     *
     * @param proposalId id of a proposal
@@ -1157,5 +1185,11 @@ public interface ProposalLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
         com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.FocusArea focusArea)
         throws com.liferay.portal.kernel.exception.SystemException;
 }

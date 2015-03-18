@@ -47,17 +47,22 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
 
-        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
-        model.addAttribute("impactIterations", impactIterations);
+        // TODO handle error here
+        try {
+            List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+            model.addAttribute("impactIterations", impactIterations);
 
-        // All filled out impact series
-        List<ProposalAttribute> impactProposalAttributes =
-                ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
-        ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(impactProposalAttributes, contest, proposal.getWrapped());
-        model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
+            // All filled out impact series
+            List<ProposalAttribute> impactProposalAttributes =
+                    ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
+            ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(impactProposalAttributes, contest, proposal.getWrapped());
+            model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
 
-        Map<OntologyTerm, List<OntologyTerm>> ontologyMap = new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
-        model.addAttribute("sectorTerms", sortByName(ontologyMap.keySet()));
+            Map<OntologyTerm, List<OntologyTerm>> ontologyMap = new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
+            model.addAttribute("sectorTerms", sortByName(ontologyMap.keySet()));
+        } catch (PortalException e) {
+            _log.error("Error retrieving impact serieses for contest with contest ID " + contest.getContestPK(), e);
+        }
 
         return "proposalImpact";
     }

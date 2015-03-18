@@ -27,6 +27,10 @@
         <portlet:param name="focusAreaId" value="@@REPLACE-FOCUS_AREA_ID@@" />
     </portlet:resourceURL>
 
+    <portlet:resourceURL var="deleteDataSeriesURL" id="proposalImpactDeleteDataSeries">
+        <portlet:param name="focusAreaId" value="@@REPLACE-FOCUS_AREA_ID@@" />
+    </portlet:resourceURL>
+
     <script>
         // Placeholder strings
         var SECTOR_TERM_ID_PLACEHOLDER = "SECTOR_TERM_ID";
@@ -41,6 +45,7 @@
         var getRegionsForSectorURL = '${getRegionsForSectorURL}';
         var getDataSeriesURL = '${getDataSeriesURL}';
         var saveDataSeriesURL = '${saveDataSeriesURL}';
+        var deleteDataSeriesURL = '${deleteDataSeriesURL}';
     </script>
 
     <!-- HTML templates -->
@@ -71,6 +76,9 @@
             {{#each series.resultValues}}
                 <td class="impact-value">{{this}}</td>
             {{/each}}
+            <td><div class="edit-prop-butts">
+                <a class="impact-delete-row-button" id="{{series.focusAreaId}}" href="javascript:;">Remove</a>
+            </div></td>
         </tr>
     </script>
 
@@ -89,6 +97,7 @@
                         <c:forEach var="impactIteration" items="${impactIterations}">
                             <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
                         </c:forEach>
+                        <td><div class="edit-prop-butts"><a class="impact-delete-row-button" id="${impactSeries.focusArea.id}" href="javascript:;">Remove</a></div></td>
                     </tr>
                 </c:forEach>
                 <!-- New impact series -->
@@ -114,7 +123,7 @@
 
             <table id="impact-series-edit" class="clearfix" style="display: none;">
                 <tr>
-                    <td>dummy</td>
+                    <td></td>
                 </tr>
             </table>
         </div>
@@ -143,8 +152,9 @@
                 if (currentEditingRowIndex != -1) {
                     toggleEditMode($('tr#impact-row-' + currentEditingRowIndex));
                 }
-                console.log("click");
             });
+
+            $('a.impact-delete-row-button').click(deleteSeriesRow);
 
             // Change value in new series sector dropdown
             registerDropdownEventListener($('tr#impact-series-new .sector').children('select'), $('tr#impact-series-new .region').children('select'));
@@ -185,6 +195,7 @@
                 $('table#impact-series-edit').slideUp();
                 row.removeClass("selected");
                 userInputOccurred = false;
+                editedFocusArea = 0;
 
                 $('tr#impact-series-new select').prop('disabled', false);
                 return;
@@ -301,11 +312,20 @@
 
                 // Save button
                 $('table#impact-series-edit tr#impact-edit-row-RESULT').append(jQuery(impactSeriesSaveButtonTemplate({})));
+                editedFocusArea = data.focusAreaId;
                 $('a#impact-edit-save-button').click(saveDataSeries);
 
 
                 // Register input event handler
                 $('table#impact-series-edit input').on('blur', function() {
+                    // check valid input
+                    var floatValue = parseFloat($(this).attr('value'));
+                    if (floatValue &lt; 0) {
+                        $(this).attr('value', "0");
+                    } else if (floatValue &gt; 100) {
+                        $(this).attr('value', "100");
+                    }
+
                     userInputOccurred = true;
                     recalculateEditSeriesValues();
                 })
@@ -368,11 +388,16 @@
             console.log("load data series with URL " + url);
             loadSeriesEditData(url);
             $('table#impact-series-edit').slideDown();
+            // userInputOccurred = true;
             });
         }
 
         function saveDataSeries() {
-            var url = replaceImpactURLPlaceholders(saveDataSeriesURL, [FOCUS_AREA_ID_PLACEHOLDER], [data.focusAreaId]);
+            if (!userInputOccurred) {
+                return;
+            }
+
+            var url = replaceImpactURLPlaceholders(saveDataSeriesURL, [FOCUS_AREA_ID_PLACEHOLDER], [editedFocusArea]);
 
             var reductionData = {};
             var adoptionData = {};
@@ -389,8 +414,9 @@
             postJson[IMPACT_ADOPTION_RATE_PLACEHOLDER] = adoptionData;
 
             $.post(url, {"json" : JSON.stringify(postJson)}, function(response) {
-                console.log(JSON.stringify(response));
-                if (!response.success) {
+                responseData = JSON.parse(response);
+                console.log("responseData " + responseData);
+                if (!responseData.success) {
                     alert("Could not process request");
                 } else {
                     var resultValues = $('table#impact-series-edit #impact-edit-row-RESULT td span.series-value');
@@ -402,26 +428,65 @@
                         var seriesData = {"sectorTerm" : {"id": sectorSelect.val(), "name" : sectorSelect.find('option:selected').text()},
                             "regionTerm" : {"id": regionSelect.val(), "name" : regionSelect.find('option:selected').text()},
                             "rowIndex": $('tr.impact-series-clickable').size(),
-                            "resultValues" : []};
+                            "resultValues" : [],
+                            "focusAreaId" : editedFocusArea};
 
+                        console.log("series data " + JSON.stringify(seriesData));
                         $.each(resultValues, function(idx) {
-                            seriesData.resultValues.append($(this).text());
+                            seriesData.resultValues.push($(this).text());
                         });
 
                         jQuery(impactSeriesNewTableRowTemplate({series: seriesData})).insertBefore('tr#impact-series-new');
-                        $('tr#impact-series-new').slideUp();
+                        $('a.impact-delete-row-button').click(deleteSeriesRow);
+                        $('table#impact-series-edit').slideUp();
                     }
 
                     // Editing an existing series
                     else {
+                        console.log("else");
                         for (var i = 0; i &lt; resultValues.length; i++) {
-                            var valueCell = ($('tr#impact-row-'+currentEditingRowIndex + ' td.impact-value')[i])
+                            var valueCell = $($('tr#impact-row-'+currentEditingRowIndex + ' td.impact-value')[i]);
+                            console.log("get valueCell with index " + i);
                             valueCell.text($(resultValues[i]).text());
 
                             console.log("Set value " + valueCell.text() + " for index " + i);
                         }
+
+                        toggleEditMode($('tr#impact-row-'+currentEditingRowIndex));
                     }
+
+                    editedFocusArea = 0;
                 }
+            });
+        }
+
+        function deleteSeriesRow(event) {
+            event.stopPropagation();
+            console.log('focus area id ' + $(this).attr('id'));
+            var url = replaceImpactURLPlaceholders(deleteDataSeriesURL, [FOCUS_AREA_ID_PLACEHOLDER], [$(this).attr('id')]);
+            console.log("delete url " + url);
+            var row = $(this).parents('tr.impact-series-clickable');
+            $.post(url, {}, function(response) {
+                var responseData = JSON.parse(response);
+                if (!responseData.success) {
+                    alert("Could not delete row");
+                } else {
+                    row.slideUp("normal", function(){ row.remove(); });
+                }
+
+                // Reload available sector terms
+                var sectorSelectElement = $('tr#impact-series-new td.sector select');
+                sectorSelectElement.empty();
+                sectorSelectElement.append('<option value="0" selected="selected">Select sector</option>');
+
+                $.getJSON(getSectorsURL, { get_param: 'value' }, function(data) {
+                    console.log("get sector data " + data);
+                    if (data != null) {
+                        $.each(data, function(index, attr) {
+                            sectorSelectElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
+                        });
+                    }
+                });
             });
         }
 

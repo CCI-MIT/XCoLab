@@ -14,8 +14,10 @@ import java.util.regex.Pattern;
 import javax.mail.internet.AddressException;
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.model.FocusArea;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
+import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
 import org.xcolab.proposals.events.ProposalMemberAddedEvent;
 import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
@@ -561,6 +563,60 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 "additionalId: " + additionalId + "]");
 
         return attribute.get(0);
+    }
+
+    /**
+     * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
+     * @param authorId
+     * @param attributeToDelete
+     * @param publishActivity
+     * @throws SystemException
+     * @throws PortalException
+     */
+    public void removeAttribute(long authorId, ProposalAttribute attributeToDelete, boolean publishActivity) throws SystemException, PortalException {
+        Proposal proposal = getProposal(attributeToDelete.getProposalId());
+
+        int currentVersion = proposal.getCurrentVersion();
+        int newVersion = currentVersion + 1;
+
+        // find attributes for current version of a proposal
+        List<ProposalAttribute> currentProposalAttributes = proposalAttributePersistence.findByProposalIdVersion(
+                proposal.getProposalId(), currentVersion);
+
+        // for each attribute, if it isn't the one that we are deleting, simply
+        // update it to the most recent version
+        for (ProposalAttribute attribute : currentProposalAttributes) {
+            ProposalAttributeDetectUpdateAlgorithm updateAlgorithm = new ProposalAttributeDetectUpdateAlgorithm(attribute);
+            if (attribute.getId() != attributeToDelete.getId()) {
+                // clone the attribute and set its version to the new value
+                attribute.setVersion(newVersion);
+                proposalAttributeLocalService.updateProposalAttribute(attribute);
+            }
+        }
+
+        Date now = new Date();
+        proposal.setCurrentVersion(newVersion);
+        proposal.setUpdatedDate(now);
+
+        // create newly created version descriptor
+        createPlanVersionDescription(authorId, attributeToDelete.getProposalId(), newVersion, attributeToDelete.getName(), attributeToDelete.getAdditionalId(), now);
+        updateProposal(proposal);
+
+        if (publishActivity)
+            eventBus.post(new ProposalAttributeRemovedEvent(proposal, userLocalService.getUser(authorId),
+                    attributeToDelete.getName(), attributeToDelete));
+    }
+
+    /**
+     * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
+     *
+     * @param authorId
+     * @param attributeToDelete
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public void removeAttribute(long authorId, ProposalAttribute attributeToDelete) throws PortalException, SystemException {
+        removeAttribute(authorId, attributeToDelete, true);
     }
 
     /**
@@ -1575,5 +1631,15 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) throws SystemException {
         return proposalAttributeFinder.findByProposalIdVersionGreaterThanVersionWhenCreatedLessThanNameLikeImpact(proposal.getProposalId(),
                 proposal.getCurrentVersion(), proposal.getCurrentVersion());
+    }
+
+    public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal, FocusArea focusArea) throws SystemException {
+        List<ProposalAttribute> filteredProposalAttributes = new ArrayList<>();
+        for (ProposalAttribute attribute : getImpactProposalAttributes(proposal)) {
+            if (attribute.getAdditionalId() == focusArea.getId()) {
+                filteredProposalAttributes.add(attribute);
+            }
+        }
+        return filteredProposalAttributes;
     }
 }
