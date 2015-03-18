@@ -28,7 +28,7 @@ public class ContestDescriptionBean implements Serializable{
     private String contestName;
 
     @Length(min = 5, max = 50, message = "The contest title must be at least 5 characters and not more than 50 characters.")
-    @Pattern(regexp = NO_SPECIAL_CHAR_REGEX, message = "The contest title must not cotain special characters.")
+    @Pattern(regexp = NO_SPECIAL_CHAR_REGEX, message = "The contest title must not contain special characters.")
     private String contestShortName;
 
     @Length(min = 5, max = 1300, message = "The contest description must be at least 5 characters and not more than 1300 characters.")

@@ -9,11 +9,13 @@
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
 
-	<c:if test="${massActionSuccess}">
+	<c:if test="${not empty sessionScope.massActionSuccess }">
 		<script type="text/javascript" >
-			updateSuccess();
+			jQuery.growlUI('SUCCESS', "${sessionScope.massActionSuccess}");
 		</script>
 	</c:if>
+
+	<c:remove var="massActionSuccess" scope="session" />
 
 	<portlet:actionURL var="updateContestOverviewURL">
 		<portlet:param name="action_forwardToPage" value="overviewTab" />
@@ -24,7 +26,6 @@
 	</portlet:actionURL>
 
 	<div class="cmsDetailsBox">
-		<h1>${testAttribute}</h1>
 		<div class="floatRight outerVerticalCenter">
 			<div class="innerVerticalCenter floatLeft">
 				<h3>Filter: </h3>
@@ -38,16 +39,15 @@
 			</div>
 		</div>
 
-		<h2>Tick contests and select a mass action: </h2>
 		<form:form action="${updateContestOverviewURL }" commandName="contestOverviewWrapper" id="editForm" method="post">
 			<div class="outerVerticalCenter">
-				<div class="blue-button innerVerticalCenter" >
-					<a href="#" onclick="document.getElementById('editForm').submit()">SAVE order / EXECUTE action</a>
-				</div>
 				<div class="innerVerticalCenter">
 					<form:select path="selectedMassAction" id="selectedMassAction">
 						<form:options items="${massActionsItems}" itemValue="value" itemLabel="lable"/>
 					</form:select>
+				</div>
+				<div class="blue-button innerVerticalCenter" >
+					<a href="#" onclick="document.getElementById('editForm').submit()">SUBMIT</a>
 				</div>
 			</div>
 			<div id="massMessage" style="display: none;">
@@ -61,7 +61,8 @@
 					<col span="2" class="extraSmallColumn"/>
 					<col span="1" class="wideColumn"/>
 					<col span="1" class="mediumColumn"/>
-					<col span="11" class="extraSmallColumn"/>
+					<col span="9" class="extraSmallColumn"/>
+					<col span="1" class="smallColumn"/>
 				<thead>
 					<tr>
 						<th><input type="checkbox" id="selectAllCheckbox"/>
@@ -73,12 +74,11 @@
 						<th class="rotate">Private</th>
 						<th class="rotate">Featured</th>
 						<th class="rotate">Subscribed</th>
-						<th class="rotate"># of Judges</th>
-						<th class="rotate"># of Advisors</th>
-						<th class="rotate"># of Fellows</th>
-						<th class="rotate"># of Proposals</th>
-						<th class="rotate"># of Comments</th>
-						<th class="rotate"></th>
+						<th class="rotate">Judges</th>
+						<th class="rotate">Advisors</th>
+						<th class="rotate">Fellows</th>
+						<th class="rotate">Proposals</th>
+						<th class="rotate">Comments</th>
 						<th class="rotate"></th>
 					</tr>
 				</thead>
@@ -104,7 +104,10 @@
 												cssClass="weightInput" data-form-name="weight" />
 												 <span>${contestWrapper.weight}</span>
 								</td>
-								<td >${contestWrapper.contestShortName}</td>
+								<td >
+									<collab:contestLink contestId="${contestWrapper.contestPK}" text="${contestWrapper.contestShortName}"
+														target="_blank"/>
+								</td>
 								<td >${contestWrapper.activePhase.name}</td>
 								<td><form:checkbox path="contestWrappers[${x.index}].contestActive" disabled="true" /></td>
 								<td><form:checkbox path="contestWrappers[${x.index}].contestPrivate" disabled="true" /></td>
@@ -115,7 +118,11 @@
 								<td>${fn:length(contestWrapper.contestFellows)} </td>
 								<td>${contestWrapper.proposalsCount} </td>
 								<td>${contestWrapper.commentsCount} </td>
-								<td colspan="2"></td>
+								<td>
+									<div class="blue-button innerVerticalCenter" >
+										<a href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+									</div>
+								</td>
 							</tr>
 					</c:forEach>
 				</tbody>

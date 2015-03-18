@@ -110,6 +110,22 @@ public class ContestOverviewWrapper {
         }
     }
 
+    public String getSelectedMassActionTitle() throws Exception {
+        String selectedMassActionTitle = "";
+        Long selectedMassActionAbsolute = Math.abs(selectedMassAction.longValue());
+        for (ContestMassActions contestMassAction : ContestMassActions.values()) {
+            if (selectedMassActionAbsolute == contestMassAction.ordinal()) {
+                if (selectedMassAction.longValue() < 0) {
+                    selectedMassActionTitle = contestMassAction.getReverseActionDisplayName();
+                } else {
+                    selectedMassActionTitle = contestMassAction.getActionDisplayName();
+                }
+                break;
+            }
+        }
+        return selectedMassActionTitle;
+    }
+
     public void executeMassActionIfSelected(PortletRequest request) throws Exception{
         if(selectedMassAction != 0){
             Method massActionMethod = getSelectedMassActionMethod(selectedMassAction);

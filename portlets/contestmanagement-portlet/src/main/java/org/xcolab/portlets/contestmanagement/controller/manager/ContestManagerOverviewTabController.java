@@ -15,6 +15,7 @@ import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.*;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +73,9 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
         try {
             updateContestOverviewWrapper.persistOrder();
             updateContestOverviewWrapper.executeMassActionIfSelected(request);
+            PortletSession session = request.getPortletSession();
+            String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
+            session.setAttribute("massActionSuccess" , massActionTitle, PortletSession.APPLICATION_SCOPE);
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
             setNotFoundErrorRenderParameter(response);
