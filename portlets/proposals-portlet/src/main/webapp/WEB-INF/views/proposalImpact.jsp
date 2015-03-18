@@ -59,7 +59,7 @@
                     <td class="shaded-bg"><span class="series-value">{{this.value}}</span></td>
                 {{/if}}
             {{/each}}
-            <td> </td>
+            <td>&#160;</td>
         </tr>
     </script>
 
@@ -67,6 +67,7 @@
         <div class="edit-prop-butts">
             <a id="impact-edit-save-button" href="javascript:;">Save</a>
         </div>
+        <span class="spinner-area">&#160;</span>
     </script>
 
     <script id="impactSeriesNewTableRowTemplate" type="text/x-handlebars-template">
@@ -97,7 +98,12 @@
                         <c:forEach var="impactIteration" items="${impactIterations}">
                             <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
                         </c:forEach>
-                        <td><div class="edit-prop-butts"><a class="impact-delete-row-button" id="${impactSeries.focusArea.id}" href="javascript:;">Remove</a></div></td>
+                        <td>
+                            <div class="edit-prop-butts">
+                                <a class="impact-delete-row-button" id="${impactSeries.focusArea.id}" href="javascript:;">Remove</a>
+                            </div>
+                            <span class="spinner-area">&#160;</span>
+                        </td>
                     </tr>
                 </c:forEach>
                 <!-- New impact series -->
@@ -117,7 +123,7 @@
                             <option value="0" selected="selected">Select sector first</option>
                         </select>
                     </td>
-                    <td class="iteration-value"> </td>
+                    <td class="spinner-area"> </td>
                 </tr>
             </table>
 
@@ -213,6 +219,9 @@
 
             sectorSelect.append('<option selected="selected" value="' + sectorTerm.attr('id') + '">' + sectorTerm.text()+ '</option>');
             regionSelect.append('<option selected="selected" value="' + regionTerm.attr('id') + '">' + regionTerm.text() + '</option>');
+
+
+            $('tr#impact-series-new td.spinner-area').spin('small');
             $.getJSON(getSectorsURL, { get_param: 'value' }, function(data) {
                 console.log("get sector data " + data);
                 if (data != null) {
@@ -230,6 +239,7 @@
                         regionSelect.append('<option value="' + attr.id + '">' + attr.name + '</option>');
                     });
                 }
+                $('tr#impact-series-new td.spinner-area').spin(false);
             });
 
             registerDropdownEventListener(sectorSelect, regionSelect);
@@ -271,6 +281,7 @@
         }
 
         function loadSeriesEditData(url) {
+            $($('table#impact-series-edit > tr > td')[1]).parent().children('span.spinner-area').spin('small');
             $.getJSON(url, { get_param: 'value' }, function(data) {
                 editedFocusArea = data.focusAreaId;
 
@@ -311,7 +322,7 @@
                 console.log("result json: " + JSON.stringify(dataSeries));
 
                 // Save button
-                $('table#impact-series-edit tr#impact-edit-row-RESULT').append(jQuery(impactSeriesSaveButtonTemplate({})));
+                $('table#impact-series-edit tr#impact-edit-row-RESULT td').last().append(jQuery(impactSeriesSaveButtonTemplate({})));
                 editedFocusArea = data.focusAreaId;
                 $('a#impact-edit-save-button').click(saveDataSeries);
 
@@ -331,6 +342,7 @@
                 })
 
                 recalculateEditSeriesValues();
+                $($('table#impact-series-edit > tr > td')[1]).parent().children('span.spinner-area').spin(false);
             });
         }
 
@@ -413,6 +425,7 @@
             postJson[IMPACT_REDUCTION_PLACEHOLDER] = reductionData;
             postJson[IMPACT_ADOPTION_RATE_PLACEHOLDER] = adoptionData;
 
+            $(this).parents('td').children('span.spinner-area').spin('small');
             $.post(url, {"json" : JSON.stringify(postJson)}, function(response) {
                 responseData = JSON.parse(response);
                 console.log("responseData " + responseData);
@@ -456,6 +469,7 @@
                     }
 
                     editedFocusArea = 0;
+                    $(this).parents('td').children('span.spinner-area').spin(false);
                 }
             });
         }
@@ -466,6 +480,8 @@
             var url = replaceImpactURLPlaceholders(deleteDataSeriesURL, [FOCUS_AREA_ID_PLACEHOLDER], [$(this).attr('id')]);
             console.log("delete url " + url);
             var row = $(this).parents('tr.impact-series-clickable');
+
+            $(this).parents('td').children('span.spinner-area').spin('small');
             $.post(url, {}, function(response) {
                 var responseData = JSON.parse(response);
                 if (!responseData.success) {
@@ -486,6 +502,8 @@
                             sectorSelectElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
                         });
                     }
+
+                    $(this).parents('td').children('span.spinner-area').spin(false);
                 });
             });
         }
