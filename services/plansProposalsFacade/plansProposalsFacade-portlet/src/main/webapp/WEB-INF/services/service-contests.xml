@@ -23,7 +23,10 @@
         <column name="authorId" type="long" />
         <column name="contestActive" type="boolean"/>
         <column name="planTemplateId" type="long" />
+        <column name="contestScheduleId" type="long" />
+
         <column name="focusAreaId" type="long" />
+        <column name="contestTier" type="long" />
         <column name="contestLogoId" type="long" />
         <column name="featured" type="boolean" />
         <column name="plansOpenByDefault" type="boolean" />
@@ -42,6 +45,7 @@
         <column name="resourcesUrl" type="String" />
         <column name="contestPrivate" type="boolean" />
         <column name="usePermissions" type="boolean" />
+        <column name="contestCreationStatus" type="String" />
         <column name="defaultModelId" type="long" />
         <column name="otherModels" type="String" />
         <column name="points" type="double" />
@@ -55,6 +59,10 @@
         
         <finder name="Type" return-type="Collection">
             <finder-column name="PlanTypeId" />
+        </finder>
+
+        <finder name="ContestTier" return-type="Collection">
+            <finder-column name="contestTier" />
         </finder>
         
         <finder name="ContestActivecontestPrivate" return-type="Collection">
@@ -110,6 +118,7 @@
         <column name="ContestPhasePK" type="long" primary="true" />
         <column name="ContestPK" type="long"/>
         <column name="ContestPhaseType" type="long" />
+        <column name="contestScheduleId" type="long"/>
         <column name="fellowScreeningActive" type="boolean" />
         <column name="contestPhaseAutopromote" type="String" />
         <column name="ContestPhaseDescriptionOverride" type="String"/>
@@ -117,6 +126,7 @@
         <column name="phaseInactiveOverride" type="boolean" />
         <column name="PhaseStartDate" type="Date" />
         <column name="PhaseEndDate" type="Date" />
+        <column name="PhaseBufferEndDated" type="Date" />
         <column name="nextStatus" type="String" />
         <column name="created" type="Date" />
         <column name="updated" type="Date" />
@@ -132,9 +142,15 @@
             <finder-column name="PhaseEndDate" comparator="&gt;=" />
         </finder>
         
+        <finder name="ContestScheduleId" return-type="Collection">
+            <finder-column name="contestScheduleId"/>
+            <finder-column name="ContestPK"/>
+        </finder>
+
         <finder name="ContestId" return-type="Collection">
             <finder-column name="ContestPK"/>
         </finder>
+
         <finder name="PhaseActiveOverride" return-type="Collection">
             <finder-column name="ContestPK" />
             <finder-column name="phaseActiveOverride" />
@@ -153,6 +169,8 @@
         <column name="name" type="String" />
         <column name="description" type="String" />
         <column name="status" type="String" />
+        <column name="fellowScreeningActiveDefault" type="boolean" />
+        <column name="contestPhaseAutopromoteDefault" type="String" />
         <column name="invisible" type="boolean" />
         <column name="pointsAccessible" type="int" />
       </entity>
@@ -163,8 +181,7 @@
         <column name="columnName" type="String" />
         <column name="columnWeight" type="int" />
         <column name="defaultSort" type="boolean" />
-        
-        
+
         <order>
             <order-column name="columnWeight" />
         </order>
@@ -173,8 +190,16 @@
             <finder-column name="ContestPhasePK" />
         </finder>
       </entity>
-      
-      <entity name="ContestTeamMember"  local-service="true">
+
+    <entity name="ContestSchedule" local-service="true" remote-service="true">
+        <column name="id" type="long" primary="true" />
+        <column name="name" type="String" />
+        <column name="description" type="String" />
+        <column name="status" type="String" />
+        <column name="baseScheduleId" type="Long" />
+    </entity>
+
+    <entity name="ContestTeamMember"  local-service="true">
         <column name="id" type="long" primary="true" />
         <column name="contestId" type="long" />
         <column name="userId" type="long" />
@@ -195,7 +220,18 @@
         <column name="header" type="String" />
         <column name="footer" type="String" />
     </entity>
-    
+
+    <entity name="ContestDiscussion" local-service="true">
+        <column name="DiscussionId" type="long" primary="true"/>
+        <column name="ContestId" type="long" />
+        <column name="Tab" type="String" />
+
+        <finder name="ContestIdAndTab" return-type="DiscussionId">
+            <finder-column name="ContestId"/>
+            <finder-column name="Tab"/>
+        </finder>
+    </entity>
+
     <exceptions>
 
         <exception>NoSuchContestPhase</exception>

@@ -1288,6 +1288,13 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
             contestPhase);
     }
 
+    @Override
+    public java.lang.Long getDiscussionIdAndGenerateIfNull(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getDiscussionIdAndGenerateIfNull(proposal);
+    }
+
     /**
     * Returns the URL link address for the passed proposal and contest
     *

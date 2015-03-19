@@ -13,6 +13,7 @@ import javax.faces.model.SelectItem;
 
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
+import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.plansadmin.Helper;
 
 import com.icesoft.faces.component.inputfile.InputFile;
@@ -174,6 +175,15 @@ public class ContestWrapper {
 		return ret;
 	}
 
+	public List<SelectItem> getAvailableContestTiers() throws SystemException {
+		List<SelectItem> ret = new ArrayList<SelectItem>();
+
+		for (ContestTier contestTier: ContestTier.values()) {
+			ret.add(new SelectItem(contestTier.getTierType(), contestTier.getTierName()));
+		}
+		return ret;
+	}
+
 	public void planTemplateChange(ValueChangeEvent e)
 			throws NumberFormatException, PortalException, SystemException {
 		Long id = 0L;
@@ -199,6 +209,17 @@ public class ContestWrapper {
 		}
 
 		contest.setFocusAreaId(id);
+		ContestLocalServiceUtil.store(contest);
+	}
+
+	public void contestTierChange(ValueChangeEvent e)
+			throws NumberFormatException, PortalException, SystemException {
+		ContestTier contestTier = ContestTier.NONE;
+		if (e.getNewValue() != null) {
+			contestTier = ContestTier.getContestTierByTierType((Long)e.getNewValue());
+		}
+
+		contest.setContestTier(contestTier.getTierType());
 		ContestLocalServiceUtil.store(contest);
 	}
 

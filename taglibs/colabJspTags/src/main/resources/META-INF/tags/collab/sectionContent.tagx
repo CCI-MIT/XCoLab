@@ -1,0 +1,70 @@
+<jsp:root 
+	xmlns:c="http://java.sun.com/jsp/jstl/core" 
+	xmlns:jsp="http://java.sun.com/JSP/Page"  
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	version="2.0">
+	<jsp:directive.attribute name="section" type="org.xcolab.wrapper.ProposalTemplateSectionWrapper"
+		required="true" rtexprvalue="true" description="Section which content should be displayed" />
+	
+	<c:choose>
+		<c:when test="${section.type == 'ONTOLOGY_REFERENCE' }">
+			<c:set var="term" value="${section.numericValueAsOntologyTerm }" />
+			<c:choose>
+				<c:when test="${empty term  }">
+					Value not set.
+				</c:when>
+				<c:when test="${empty term.descriptionUrl}">
+					${term.name }
+				</c:when>
+				<c:otherwise>
+					<a href="${term.descriptionUrl}">${term.name }</a>
+				</c:otherwise>
+			</c:choose>
+		</c:when>
+        <c:when test="${section.type == 'PROPOSAL_REFERENCE' }">
+            <c:set var="p" value="${section.numericValueAsProposal }" />
+            <c:choose>
+                <c:when test="${empty p  }">
+                    Value not set.
+                </c:when>
+                <c:otherwise>
+                    <collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}" />
+                </c:otherwise>
+            </c:choose>
+        </c:when>
+        <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
+            <c:set var="pl" value="${section.stringValueAsProposalArray }" />
+            <c:choose>
+                <c:when test="${empty pl  }">
+                    Value not set.
+                </c:when>
+                <c:otherwise>
+                    <c:forEach var="p" items="${pl}">
+                        <li><collab:proposalLink proposalId="${p.proposalId}" contestId="${p.contest.contestPK}" text="${p.name}" /></li>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
+        </c:when>
+		<c:when test="${section.type == 'IMAGE' }">
+			<c:set var="pl" value="${section.stringValueAsProposalArray }" />
+			<c:choose>
+				<c:when test="${empty pl  }">
+					Value not set.
+				</c:when>
+				<c:otherwise>
+					<c:forEach var="p" items="${pl}">
+						<li><collab:proposalLink proposalId="${p.proposalId}" contestId="${p.contest.contestPK}" text="${p.name}" /></li>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</c:when>
+
+		<c:otherwise>
+			<p>${section.contentFormatted }</p>
+		</c:otherwise>
+	</c:choose>
+	
+	
+	
+</jsp:root>

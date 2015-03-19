@@ -32,8 +32,7 @@
 		<portlet:param name="action" value="update" />
 	</portlet:actionURL>
 
-
-	<form style="margin-top: 20px;" action="/userprofile-portlet/fileUploadServlet" method="post"
+	<form style="margin-top: 20px;" action="/fileUpload" method="post"
 		  enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
 		<input type="file" name="file" id="portraitUploadInput" />
 	</form>
@@ -48,6 +47,7 @@
 	<form:form autocomplete="off" id="updateUserProfileForm"
 			   action="${updateUserProfileForm}" commandName="userBean" method="post">
 		<div id="main" class="userprofile">
+			<form:hidden path="userId"/>
 			<div class="reg_errors"><!--  --></div>
 			<form:errors cssClass="alert alert-error" />
 
@@ -110,7 +110,7 @@
 							<th class="b">Member Since</th>
 							<td class="l">
 								&#160;
-								<fmt:formatDate value="${currentUser.joinDate}" type="date" dateStyle="medium" timeZone="America/New_York" />
+								<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="medium" timeZone="America/New_York" />
 							</td>
 						</tr>
 						-->
@@ -207,7 +207,7 @@
 				<div class="blue-button">
 					<a href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Save</a>
 				</div>
-				<div class="blue-button"><a href="/web/guest/member/-/member/userId/${currentUser.userId}">Cancel</a></div>
+				<div class="blue-button"><a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">Cancel</a></div>
 			</div>
 		</div> <!-- /main -->
 
@@ -282,7 +282,7 @@
 				<tr class="colabRow">
 					<td>
 						<c:choose>
-							<c:when test="${currentUser.hasFacebookId}">
+							<c:when test="${currentUserProfile.hasFacebookId}">
 								<input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
 									   value="true" checked="checked" onClick="unlinkFacebookSSO();" />
 							</c:when>
@@ -300,7 +300,7 @@
 				<tr class="colabRow">
 					<td>
 						<c:choose>
-							<c:when test="${currentUser.hasOpenId}">
+							<c:when test="${currentUserProfile.hasOpenId}">
 								<input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
 									   value="true" checked="checked" onClick="unlinkGoogleSSO();" />
 							</c:when>
@@ -338,6 +338,7 @@
 
 	<script type="text/javascript">
 		jQuery("#portraitUploadInput").change(function() {
+			console.log("Start Upload.");
 			jQuery("#fileUploadForm").submit();
 			jQuery("#userPortrait").block({
 				message : "Sending message"
@@ -345,32 +346,34 @@
 
 		});
 
+		function isJSONavailable(){
+			return typeof JSON === 'object' &amp;&amp; typeof JSON.parse === 'function';
+		}
+		function updateProfilePictureId (imageId){
+			jQuery("#userPortrait").attr("src","/image/contest?img_id=" + imageId);
+			jQuery("#userRegistrationImageId").val(imageId);
+		}
+
 		jQuery("#fileUploadFrame").load(
 				function() {
 					try {
-						console.log("jQuery(this).contents()", jQuery(this).contents());
-
-						var imageIdPos = jQuery(this).contents().text().indexOf('{"imageId":')
-
-						if (imageIdPos > 0) {
-
-							var response = eval("("
-							+ jQuery(this).contents().text().substring(imageIdPos) + ")");
-
-							//console.log("response -> ", response);
-							jQuery("#userPortrait").attr("src",
-									"/image/contest?img_id=" + response.imageId);
-							//console.log("#userPortrait.src -> ", response.imageId);
-							jQuery("#userPortrait").unblock();
-
-							jQuery("#userRegistrationImageId")
-									.val(response.imageId);
+						if(jQuery(this).contents().text()) {
+							var response;
+							if (isJSONavailable()) {
+								response = JSON.parse(jQuery(this).contents().text());
+							} else {
+								response = eval("(" + jQuery(this).contents().text() + ")");
+							}
+							if (response.hasOwnProperty("imageId") &amp;&amp; response.imageId > 0) {
+								updateProfilePictureId(response.imageId);
+								jQuery("#userPortrait").unblock();
+								jQuery.growlUI('', 'Profile image uploaded, press save to store!');
+							}
 						}
-
 					}
 					catch (e) {
-						// ignore
-						console.log("fileUploadFrame error",e);
+						jQuery.growlUI('', 'Profile image upload failed!');
+						//console.log("fileUploadFrame error",e);
 					}
 
 				});
@@ -649,32 +652,6 @@
 					jQuery("#hasOpenId").attr('checked', true);
 				}
 			});
-		}
-
-		function sendAjaxToServer(updateUrl, formData){
-
-			var deferred = jQuery.Deferred();
-
-			jQuery.ajax({
-				type: 'POST',
-				url: updateUrl,
-				dataType: 'text',
-				data: formData,
-				success: function(response){
-					var responseStatus  = JSON.parse(response);
-					if(responseStatus.hasOwnProperty("success") &amp;&amp; responseStatus.success) {
-						deferred.resolve(true);
-					} else{
-						deferred.resolve(false);
-					}
-				},
-				error: function(xhr, status, error){
-					deferred.resolve(false);
-				}
-			});
-
-			return deferred;
-
 		}
 
 	</script>

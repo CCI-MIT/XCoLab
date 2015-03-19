@@ -46,6 +46,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
         attributes.put("helpText", getHelpText());
         attributes.put("characterLimit", getCharacterLimit());
         attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("tier", getTier());
         attributes.put("locked", getLocked());
 
         return attributes;
@@ -99,6 +100,12 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
 
         if (focusAreaId != null) {
             setFocusAreaId(focusAreaId);
+        }
+
+        Long tier = (Long) attributes.get("tier");
+
+        if (tier != null) {
+            setTier(tier);
         }
 
         Boolean locked = (Boolean) attributes.get("locked");
@@ -286,6 +293,26 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     @Override
     public void setFocusAreaId(long focusAreaId) {
         _planSectionDefinition.setFocusAreaId(focusAreaId);
+    }
+
+    /**
+    * Returns the tier of this plan section definition.
+    *
+    * @return the tier of this plan section definition
+    */
+    @Override
+    public long getTier() {
+        return _planSectionDefinition.getTier();
+    }
+
+    /**
+    * Sets the tier of this plan section definition.
+    *
+    * @param tier the tier of this plan section definition
+    */
+    @Override
+    public void setTier(long tier) {
+        _planSectionDefinition.setTier(tier);
     }
 
     /**

@@ -56,10 +56,14 @@ public class ContestsIndexController extends BaseProposalsController {
                     throws PortalException, SystemException {
         if (viewType == null) {
             // view type wasn't set
-            for (Cookie cookie: request.getCookies()) {
-                if (cookie.getName().equals(COOKIE_VIEW_TYPE)) {
-                    viewType = cookie.getValue();
-                } 
+            try{
+                for (Cookie cookie: request.getCookies()) {
+                    if (cookie.getName().equals(COOKIE_VIEW_TYPE)) {
+                        viewType = cookie.getValue();
+                    }
+                }
+            } catch (Exception e){
+                // User has cookies disabled
             }
         }
         else {

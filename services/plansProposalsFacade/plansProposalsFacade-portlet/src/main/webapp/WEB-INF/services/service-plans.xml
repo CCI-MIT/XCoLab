@@ -440,6 +440,7 @@
         <column name="helpText" type="String" />
         <column name="characterLimit" type="int" />
         <column name="focusAreaId" type="long" />
+        <column name="tier" type="long" />
         <column name="locked" type="boolean" />
     </entity>
     
@@ -504,6 +505,7 @@
     <entity name="PlanTemplate" local-service="true">
         <column name="id" type="long" primary="true" />
         <column name="name" type="String" />
+        <column name="baseTemplateId" type="Long" />
     </entity>
     
     <entity name="PlanTemplateSection" local-service="true">

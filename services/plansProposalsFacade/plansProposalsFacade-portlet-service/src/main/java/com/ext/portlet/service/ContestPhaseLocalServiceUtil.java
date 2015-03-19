@@ -334,6 +334,13 @@ public class ContestPhaseLocalServiceUtil {
         return getService().getPhasesForContest(contestPK);
     }
 
+    public static java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestSchedule(
+        long contestScheduleId, long contestPK)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getPhasesForContestSchedule(contestScheduleId, contestPK);
+    }
+
     public static com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,

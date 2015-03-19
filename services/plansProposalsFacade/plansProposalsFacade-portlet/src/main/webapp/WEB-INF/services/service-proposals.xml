@@ -16,6 +16,7 @@
     	<column name="authorId" type="long" />
     	<column name="visible" type="boolean" />
     	<column name="discussionId" type="long" />
+		<column name="resultsDiscussionId" type="long" />
     	<column name="judgeDiscussionId" type="long" />
     	<column name="fellowDiscussionId" type="long" />
     	<column name="advisorDiscussionId" type="long" />

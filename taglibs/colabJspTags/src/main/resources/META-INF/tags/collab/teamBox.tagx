@@ -1,0 +1,195 @@
+<jsp:root
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+        version="2.0">
+  <jsp:directive.attribute name="title" type="java.lang.String" required="true" rtexprvalue="true" description="Link text" />
+  <jsp:directive.attribute name="list" type="java.util.List" required="true" rtexprvalue="true" description="List of members" />
+
+  <c:set var="inputBox" value="userSelectorInput${title}"/>
+  <c:set var="pleaseChooseFromList" value="pleaseChooseFromList${title}" />
+  <c:set var="unknownUsersContainer" value="unknownUsersContainer${title}"/>
+  <c:set var="userList" value="userList${title}"/>
+  <c:set var="memberList" value="userIds${title}"/>
+  <c:set var="unsavedStar" value="unsavedStar${title}"/>
+
+  <div class="addpropbox  teamBox">
+    <div class="teamMemberHeader">
+      <h2>${title}</h2>
+      <img id="${unsavedStar}" src="/climatecolab-theme/images/reg-star.png" width="10" height="9" align="texttop" style="display: none;" />
+    </div>
+    <div class="teamMemberAdd">
+      <input id="${inputBox}" type="text" class="profile_input teamMembers" />
+      <div class="clear"><!-- --></div>
+      <div id="${pleaseChooseFromList}" style="display: none;" class="alert alert-error">Please choose a user from list.</div>
+      <div class="clear"><!-- --></div>
+      <div id="${unknownUsersContainer}"  style="display: none;" class="alert alert-error">Unknown users: <ul></ul></div>
+    </div>
+    <div class="teamMemberListing">
+      <input type="hidden" name="${memberList}" id="${memberList}"/>
+      <ul id="${userList}">
+        <c:forEach var="member" items="${list}">
+          <li id="${member.userId}">
+            <span class="portrait">
+              <collab:userPortrait portraitId="${member.portraitId}" height="40" width="40" screenName="${member.screenName}"/>
+            </span>
+            <span class="name">${member.firstName} ${member.lastName}</span>
+          </li>
+        </c:forEach>
+      </ul>
+    </div>
+  </div>
+
+    <script type="text/javascript">
+    (function() {
+
+      var userSelectorInput = "#"+"${inputBox}";
+      var userListId = "${userList}";
+      var unsavedStarTitle = "${unsavedStar}";
+      var membersTitle = "${title}";
+      var members = [];
+      var memberList = "${memberList}";
+
+      <c:forEach var="member" items="${list}">
+        members.push(usersMap["${member.screenName}"]);
+      </c:forEach>
+
+      function updateMemberList(){
+        jQuery("#"+memberList).val(members);
+        console.log("members",members);
+      }
+
+      function removeMemberFromList(userId, userName, userListId){
+        var elementIndex = members.indexOf(userId);
+        members.splice(elementIndex, 1);
+        jQuery("#"+memberList).val(members);
+        jQuery("#"+userListId +" #" +userId).remove();
+        jQuery.growlUI('',userName + ' was removed from ' + membersTitle);
+        jQuery("#"+unsavedStarTitle).show();
+        updateMemberList();
+      }
+
+      function addUserToList(userId, screenName, userListId){
+
+        var newLiElement = document.createElement("li");
+        newLiElement.setAttribute("id",userId);
+
+        var spanPortrait = document.createElement("span");
+        spanPortrait.className="portrait";
+        var imgPortrait = document.createElement("img");
+        imgPortrait.height = "40";
+        imgPortrait.width = "40";
+        var imageSrc ="/image/user_male_portrait?screenName=" + screenName + "&amp;companyId=10112";
+        imgPortrait.setAttribute("src", imageSrc);
+        spanPortrait.appendChild(imgPortrait);
+
+        var spanName = document.createElement("span");
+        spanName.className="name";
+        var userName = document.createTextNode(screenName);
+        spanName.appendChild(userName);
+
+        newLiElement.appendChild(spanPortrait);
+        newLiElement.appendChild(spanName);
+
+        var unsavedStarImage = document.createElement("img");
+        unsavedStarImage.height = "7";
+        unsavedStarImage.width = "7";
+        unsavedStarImage.align= "texttop";
+        var imageSrcStar ="/climatecolab-theme/images/reg-star.png";
+        unsavedStarImage.setAttribute("src", imageSrcStar);
+
+        newLiElement.appendChild(unsavedStarImage);
+
+        document.getElementById(userListId).appendChild(newLiElement);
+        document.getElementById(unsavedStarTitle).style.display="";
+
+        // Make the element fully transparent.
+        newLiElement.style.opacity = 0;
+        // Make sure the initial state is applied.
+        window.getComputedStyle(newLiElement).opacity;
+        // Fade it in.
+        newLiElement.style.opacity = 1;
+
+        updateMemberList();
+      }
+
+      function initSearchMemberForm(usersMapParam) {
+        usersMap = usersMapParam;
+        console.log("members",members);
+        jQuery("#"+memberList).val(members);
+
+        jQuery(userSelectorInput).focus(function () {
+          jQuery(${pleaseChooseFromList}).hide();
+        });
+
+        try {
+
+          // locate your element and add the Click Event Listener
+          document.getElementById(userListId).addEventListener("click",function(e) {
+            // e.target is our targeted element.
+            if(e.target &amp;&amp; e.target.nodeName == "LI") {
+              if(confirm("Do want to remove " + e.target.children[1].innerHTML + " from " + membersTitle + " ?")) {
+                removeMemberFromList(e.target.id, e.target.children[1].innerHTML, userListId);
+              }
+            }
+          });
+
+          $(userSelectorInput)
+            // don't navigate away from the field on tab when selecting an item
+                  .bind("keydown", function (event) {
+                    if (event.keyCode === $.ui.keyCode.TAB &amp;&amp;
+                            $(this).data("ui-autocomplete").menu.active) {
+                      event.preventDefault();
+                    }
+                  })
+                  .autocomplete({
+                    minLength: 0,
+                    source: function (request, response) {
+                      // delegate back to autocomplete, but extract the last term
+                      response($.ui.autocomplete.filter(
+                              userNames, request.term));
+                    },
+                    focus: function () {
+                      // prevent value inserted on focus
+                      return false;
+                    },
+                    select: function (event, ui) {
+
+                      var userId = usersMap[jQuery.trim(ui.item.value)];
+                      if(members.indexOf(userId) == -1) {
+                        members.push(userId);
+                        addUserToList(userId, ui.item.value, userListId);
+                      }
+
+                      this.value = "";
+                      return false;
+                    }
+                  });
+        }
+        catch (e) {
+          alert(e);
+        }
+
+        jQuery('.teamMembers').keypress(function (e) {
+          var code = (e.keyCode ? e.keyCode : e.which);
+          if (code == 13) {
+            // enter pressed ignore
+            return false;
+          }
+
+        });
+
+      }
+
+      jQuery(document).ready(function() {
+        initSearchMemberForm(usersMap);
+      });
+
+    }());
+
+  </script>
+
+
+
+
+</jsp:root>

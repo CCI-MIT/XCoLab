@@ -15,12 +15,12 @@
     <name>xcolab-portlets portlets parent pom</name>
     <version>1.0-SNAPSHOT</version>
 
-
     <modules>
         <module>proposals-portlet</module>
         <module>discussions-portlet</module>
         <module>adminstasks-portlet</module>
         <module>contactform-portlet</module>
+        <module>contestmanagement-portlet</module>
         <module>members-portlet</module>
         <module>userprofile-portlet</module>
         <module>contests-portlet</module>

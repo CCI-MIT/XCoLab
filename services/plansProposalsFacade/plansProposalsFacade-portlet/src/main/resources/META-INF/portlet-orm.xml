@@ -156,7 +156,9 @@
 			<basic name="authorId" />
 			<basic name="contestActive" />
 			<basic name="planTemplateId" />
+			<basic name="contestScheduleId" />
 			<basic name="focusAreaId" />
+			<basic name="contestTier" />
 			<basic name="contestLogoId" />
 			<basic name="featured">
 				<column name="FEATURED_" />
@@ -174,6 +176,7 @@
 			<basic name="resourcesUrl" />
 			<basic name="contestPrivate" />
 			<basic name="usePermissions" />
+			<basic name="contestCreationStatus" />
 			<basic name="defaultModelId" />
 			<basic name="otherModels" />
 			<basic name="points" />
@@ -191,6 +194,16 @@
 			</id>
 			<basic name="debateId" />
 			<basic name="ContestPK" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ContestDiscussionModelImpl">
+		<attributes>
+			<id name="DiscussionId" />
+			<basic name="ContestId" />
+			<basic name="Tab" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -214,6 +227,7 @@
 			<id name="ContestPhasePK" />
 			<basic name="ContestPK" />
 			<basic name="ContestPhaseType" />
+			<basic name="contestScheduleId" />
 			<basic name="fellowScreeningActive" />
 			<basic name="contestPhaseAutopromote" />
 			<basic name="ContestPhaseDescriptionOverride" />
@@ -223,6 +237,9 @@
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="PhaseEndDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="PhaseBufferEndDated">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="nextStatus" />
@@ -274,8 +291,24 @@
 			<basic name="name" />
 			<basic name="description" />
 			<basic name="status" />
+			<basic name="fellowScreeningActiveDefault" />
+			<basic name="contestPhaseAutopromoteDefault" />
 			<basic name="invisible" />
 			<basic name="pointsAccessible" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ContestScheduleModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="name" />
+			<basic name="description" />
+			<basic name="status" />
+			<basic name="baseScheduleId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -1000,6 +1033,7 @@
 			<basic name="helpText" />
 			<basic name="characterLimit" />
 			<basic name="focusAreaId" />
+			<basic name="tier" />
 			<basic name="locked" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
@@ -1098,6 +1132,7 @@
 				<column name="ID_" />
 			</id>
 			<basic name="name" />
+			<basic name="baseTemplateId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -1249,6 +1284,7 @@
 			<basic name="authorId" />
 			<basic name="visible" />
 			<basic name="discussionId" />
+			<basic name="resultsDiscussionId" />
 			<basic name="judgeDiscussionId" />
 			<basic name="fellowDiscussionId" />
 			<basic name="advisorDiscussionId" />
@@ -1556,6 +1592,10 @@
 		<table name="xcolab_ContestDebate" />
 		<attributes />
 	</entity>
+	<entity class="com.ext.portlet.model.impl.ContestDiscussionImpl" name="ContestDiscussion">
+		<table name="xcolab_ContestDiscussion" />
+		<attributes />
+	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestEmailTemplateImpl" name="ContestEmailTemplate">
 		<table name="xcolab_ContestEmailTemplate" />
 		<attributes />
@@ -1574,6 +1614,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestPhaseTypeImpl" name="ContestPhaseType">
 		<table name="xcolab_ContestPhaseType" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ContestScheduleImpl" name="ContestSchedule">
+		<table name="xcolab_ContestSchedule" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestTeamMemberImpl" name="ContestTeamMember">

@@ -149,6 +149,7 @@
     <route>
         <pattern>/contestId/{contestId}/planId/{planId}/tab/{tab}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
+        <generated-parameter name="tab">{tab}</generated-parameter>
         <generated-parameter name="contestId">{contestId}</generated-parameter>
         <generated-parameter name="planId">{planId}</generated-parameter>
     </route>
@@ -156,6 +157,7 @@
 	<route>
         <pattern>/contestId/{contestId}/planId/{planId}/version/{version}/tab/{tab}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
+        <generated-parameter name="tab">{tab}</generated-parameter>
         <generated-parameter name="contestId">{contestId}</generated-parameter>
         <generated-parameter name="version">{version}</generated-parameter>
         <generated-parameter name="planId">{planId}</generated-parameter>
@@ -164,6 +166,7 @@
     <route>
         <pattern>/contestId/{contestId}/planId/{planId}/tab/{tab}/edit</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
+        <generated-parameter name="tab">{tab}</generated-parameter>
         <generated-parameter name="contestId">{contestId}</generated-parameter>
         <generated-parameter name="planId">{planId}</generated-parameter>
         <generated-parameter name="edit">true</generated-parameter>
@@ -181,6 +184,7 @@
     <route>
         <pattern>/contestId/{contestId}/phaseId/{phaseId}/planId/{planId}/tab/{tab}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
+        <generated-parameter name="tab">{tab}</generated-parameter>
         <generated-parameter name="contestId">{contestId}</generated-parameter>
         <generated-parameter name="planId">{planId}</generated-parameter>
         <generated-parameter name="phaseId">{phaseId}</generated-parameter>

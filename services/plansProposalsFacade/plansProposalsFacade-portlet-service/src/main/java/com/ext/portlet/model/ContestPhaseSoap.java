@@ -17,6 +17,7 @@ public class ContestPhaseSoap implements Serializable {
     private long _ContestPhasePK;
     private long _ContestPK;
     private long _ContestPhaseType;
+    private long _contestScheduleId;
     private boolean _fellowScreeningActive;
     private String _contestPhaseAutopromote;
     private String _ContestPhaseDescriptionOverride;
@@ -24,6 +25,7 @@ public class ContestPhaseSoap implements Serializable {
     private boolean _phaseInactiveOverride;
     private Date _PhaseStartDate;
     private Date _PhaseEndDate;
+    private Date _PhaseBufferEndDated;
     private String _nextStatus;
     private Date _created;
     private Date _updated;
@@ -38,6 +40,7 @@ public class ContestPhaseSoap implements Serializable {
         soapModel.setContestPhasePK(model.getContestPhasePK());
         soapModel.setContestPK(model.getContestPK());
         soapModel.setContestPhaseType(model.getContestPhaseType());
+        soapModel.setContestScheduleId(model.getContestScheduleId());
         soapModel.setFellowScreeningActive(model.getFellowScreeningActive());
         soapModel.setContestPhaseAutopromote(model.getContestPhaseAutopromote());
         soapModel.setContestPhaseDescriptionOverride(model.getContestPhaseDescriptionOverride());
@@ -45,6 +48,7 @@ public class ContestPhaseSoap implements Serializable {
         soapModel.setPhaseInactiveOverride(model.getPhaseInactiveOverride());
         soapModel.setPhaseStartDate(model.getPhaseStartDate());
         soapModel.setPhaseEndDate(model.getPhaseEndDate());
+        soapModel.setPhaseBufferEndDated(model.getPhaseBufferEndDated());
         soapModel.setNextStatus(model.getNextStatus());
         soapModel.setCreated(model.getCreated());
         soapModel.setUpdated(model.getUpdated());
@@ -121,6 +125,14 @@ public class ContestPhaseSoap implements Serializable {
         _ContestPhaseType = ContestPhaseType;
     }
 
+    public long getContestScheduleId() {
+        return _contestScheduleId;
+    }
+
+    public void setContestScheduleId(long contestScheduleId) {
+        _contestScheduleId = contestScheduleId;
+    }
+
     public boolean getFellowScreeningActive() {
         return _fellowScreeningActive;
     }
@@ -188,6 +200,14 @@ public class ContestPhaseSoap implements Serializable {
 
     public void setPhaseEndDate(Date PhaseEndDate) {
         _PhaseEndDate = PhaseEndDate;
+    }
+
+    public Date getPhaseBufferEndDated() {
+        return _PhaseBufferEndDated;
+    }
+
+    public void setPhaseBufferEndDated(Date PhaseBufferEndDated) {
+        _PhaseBufferEndDated = PhaseBufferEndDated;
     }
 
     public String getNextStatus() {

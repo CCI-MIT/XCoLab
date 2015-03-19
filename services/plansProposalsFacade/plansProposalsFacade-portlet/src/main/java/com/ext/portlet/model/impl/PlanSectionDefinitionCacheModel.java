@@ -28,11 +28,12 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
     public String helpText;
     public int characterLimit;
     public long focusAreaId;
+    public long tier;
     public boolean locked;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(21);
 
         sb.append("{id=");
         sb.append(id);
@@ -50,6 +51,8 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
         sb.append(characterLimit);
         sb.append(", focusAreaId=");
         sb.append(focusAreaId);
+        sb.append(", tier=");
+        sb.append(tier);
         sb.append(", locked=");
         sb.append(locked);
         sb.append("}");
@@ -95,6 +98,7 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
 
         planSectionDefinitionImpl.setCharacterLimit(characterLimit);
         planSectionDefinitionImpl.setFocusAreaId(focusAreaId);
+        planSectionDefinitionImpl.setTier(tier);
         planSectionDefinitionImpl.setLocked(locked);
 
         planSectionDefinitionImpl.resetOriginalValues();
@@ -112,6 +116,7 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
         helpText = objectInput.readUTF();
         characterLimit = objectInput.readInt();
         focusAreaId = objectInput.readLong();
+        tier = objectInput.readLong();
         locked = objectInput.readBoolean();
     }
 
@@ -152,6 +157,7 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
 
         objectOutput.writeInt(characterLimit);
         objectOutput.writeLong(focusAreaId);
+        objectOutput.writeLong(tier);
         objectOutput.writeBoolean(locked);
     }
 }

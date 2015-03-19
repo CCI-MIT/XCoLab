@@ -91,7 +91,9 @@ create table xcolab_Contest (
 	authorId LONG,
 	contestActive BOOLEAN,
 	planTemplateId LONG,
+	contestScheduleId LONG,
 	focusAreaId LONG,
+	contestTier LONG,
 	contestLogoId LONG,
 	featured_ BOOLEAN,
 	plansOpenByDefault BOOLEAN,
@@ -107,6 +109,7 @@ create table xcolab_Contest (
 	resourcesUrl VARCHAR(1024) null,
 	contestPrivate BOOLEAN,
 	usePermissions BOOLEAN,
+	contestCreationStatus VARCHAR(75) null,
 	defaultModelId LONG,
 	otherModels VARCHAR(75) null,
 	points DOUBLE,
@@ -120,6 +123,18 @@ create table xcolab_ContestDebate (
 	ContestPK LONG
 );
 
+create table xcolab_ContestDiscussion (
+	DiscussionId LONG not null primary key,
+	ContestId LONG,
+	Tab VARCHAR(75) null
+);
+
+create table xcolab_ContestDiscussions (
+	DiscussionId LONG not null primary key,
+	ContestId LONG,
+	Tab VARCHAR(75) null
+);
+
 create table xcolab_ContestEmailTemplate (
 	type_ VARCHAR(75) not null primary key,
 	subject TEXT null,
@@ -131,6 +146,7 @@ create table xcolab_ContestPhase (
 	ContestPhasePK LONG not null primary key,
 	ContestPK LONG,
 	ContestPhaseType LONG,
+	contestScheduleId LONG,
 	fellowScreeningActive BOOLEAN,
 	contestPhaseAutopromote VARCHAR(75) null,
 	ContestPhaseDescriptionOverride TEXT null,
@@ -138,6 +154,7 @@ create table xcolab_ContestPhase (
 	phaseInactiveOverride BOOLEAN,
 	PhaseStartDate DATE null,
 	PhaseEndDate DATE null,
+	PhaseBufferEndDated DATE null,
 	nextStatus VARCHAR(75) null,
 	created DATE null,
 	updated DATE null,
@@ -165,8 +182,18 @@ create table xcolab_ContestPhaseType (
 	name VARCHAR(1024) null,
 	description TEXT null,
 	status VARCHAR(75) null,
+	fellowScreeningActiveDefault BOOLEAN,
+	contestPhaseAutopromoteDefault VARCHAR(75) null,
 	invisible BOOLEAN,
 	pointsAccessible INTEGER
+);
+
+create table xcolab_ContestSchedule (
+	id_ LONG not null primary key,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null,
+	status VARCHAR(75) null,
+	baseScheduleId LONG
 );
 
 create table xcolab_ContestTeamMember (
@@ -595,6 +622,7 @@ create table xcolab_PlanSectionDefinition (
 	helpText TEXT null,
 	characterLimit INTEGER,
 	focusAreaId LONG,
+	tier LONG,
 	locked BOOLEAN
 );
 
@@ -616,7 +644,8 @@ create table xcolab_PlanTeamHistory (
 
 create table xcolab_PlanTemplate (
 	id_ LONG not null primary key,
-	name VARCHAR(1024) null
+	name VARCHAR(1024) null,
+	baseTemplateId LONG
 );
 
 create table xcolab_PlanTemplateSection (
@@ -747,6 +776,7 @@ create table xcolab_Proposal (
 	authorId LONG,
 	visible BOOLEAN,
 	discussionId LONG,
+	resultsDiscussionId LONG,
 	judgeDiscussionId LONG,
 	fellowDiscussionId LONG,
 	advisorDiscussionId LONG,

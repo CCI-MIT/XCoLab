@@ -57,9 +57,10 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
             { "helpText", Types.CLOB },
             { "characterLimit", Types.INTEGER },
             { "focusAreaId", Types.BIGINT },
+            { "tier", Types.BIGINT },
             { "locked", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionDefinition (id_ LONG not null primary key,type_ VARCHAR(75) null,adminTitle VARCHAR(1024) null,title VARCHAR(1024) null,defaultText TEXT null,helpText TEXT null,characterLimit INTEGER,focusAreaId LONG,locked BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionDefinition (id_ LONG not null primary key,type_ VARCHAR(75) null,adminTitle VARCHAR(1024) null,title VARCHAR(1024) null,defaultText TEXT null,helpText TEXT null,characterLimit INTEGER,focusAreaId LONG,tier LONG,locked BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanSectionDefinition";
     public static final String ORDER_BY_JPQL = " ORDER BY planSectionDefinition.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanSectionDefinition.id_ ASC";
@@ -87,6 +88,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
     private String _helpText;
     private int _characterLimit;
     private long _focusAreaId;
+    private long _tier;
     private boolean _locked;
     private PlanSectionDefinition _escapedModel;
 
@@ -115,6 +117,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         model.setHelpText(soapModel.getHelpText());
         model.setCharacterLimit(soapModel.getCharacterLimit());
         model.setFocusAreaId(soapModel.getFocusAreaId());
+        model.setTier(soapModel.getTier());
         model.setLocked(soapModel.getLocked());
 
         return model;
@@ -183,6 +186,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         attributes.put("helpText", getHelpText());
         attributes.put("characterLimit", getCharacterLimit());
         attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("tier", getTier());
         attributes.put("locked", getLocked());
 
         return attributes;
@@ -236,6 +240,12 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
         if (focusAreaId != null) {
             setFocusAreaId(focusAreaId);
+        }
+
+        Long tier = (Long) attributes.get("tier");
+
+        if (tier != null) {
+            setTier(tier);
         }
 
         Boolean locked = (Boolean) attributes.get("locked");
@@ -355,6 +365,17 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
     @JSON
     @Override
+    public long getTier() {
+        return _tier;
+    }
+
+    @Override
+    public void setTier(long tier) {
+        _tier = tier;
+    }
+
+    @JSON
+    @Override
     public boolean getLocked() {
         return _locked;
     }
@@ -404,6 +425,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         planSectionDefinitionImpl.setHelpText(getHelpText());
         planSectionDefinitionImpl.setCharacterLimit(getCharacterLimit());
         planSectionDefinitionImpl.setFocusAreaId(getFocusAreaId());
+        planSectionDefinitionImpl.setTier(getTier());
         planSectionDefinitionImpl.setLocked(getLocked());
 
         planSectionDefinitionImpl.resetOriginalValues();
@@ -504,6 +526,8 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
         planSectionDefinitionCacheModel.focusAreaId = getFocusAreaId();
 
+        planSectionDefinitionCacheModel.tier = getTier();
+
         planSectionDefinitionCacheModel.locked = getLocked();
 
         return planSectionDefinitionCacheModel;
@@ -511,7 +535,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(21);
 
         sb.append("{id=");
         sb.append(getId());
@@ -529,6 +553,8 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         sb.append(getCharacterLimit());
         sb.append(", focusAreaId=");
         sb.append(getFocusAreaId());
+        sb.append(", tier=");
+        sb.append(getTier());
         sb.append(", locked=");
         sb.append(getLocked());
         sb.append("}");
@@ -538,7 +564,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(31);
+        StringBundler sb = new StringBundler(34);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanSectionDefinition");
@@ -575,6 +601,10 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         sb.append(
             "<column><column-name>focusAreaId</column-name><column-value><![CDATA[");
         sb.append(getFocusAreaId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>tier</column-name><column-value><![CDATA[");
+        sb.append(getTier());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>locked</column-name><column-value><![CDATA[");

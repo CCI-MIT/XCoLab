@@ -1,27 +1,33 @@
 function clearSendMessageForm() {
-    jQuery(
-        ".sendMessagePopup .popuplogin_input, .sendMessagePopup textarea")
-        .val('');
+    jQuery(".sendMessagePopup, .popuplogin_input, .sendMessagePopup textarea").val('');
 }
 
 function lockSendMessageForm() {
-    jQuery("#messageForm").submit();
     jQuery(".sendMessagePopup").block({
         message : "Sending message"
     });
 }
 
+function unblockSendMessageForm() {
+    jQuery(".sendMessagePopup").unblock();
+}
+
 function updateSuccess(){
-    jQuery.growlUI('','User profile updated successfully');
+    jQuery.growlUI('','User profile updated successfully.');
 }
 
 function updateError(){
-    jQuery.growlUI('','Erros occured while updating profile');
+    jQuery.growlUI('','Errors occurred while updating profile.');
 }
 
 function messageSent() {
-    jQuery.growlUI('','Message has been sent');
+    jQuery.growlUI('', 'Message has been sent.');
 }
+
+function messageNotSent() {
+    jQuery.growlUI('','Message has NOT been sent.');
+}
+
 function limitExceeded() {
     jQuery.growlUI('Please try again tomorrow.','Your daily message limit has been reached.');
 }
@@ -66,4 +72,33 @@ function selectAllSubscriptions() {
 
 function unSelectAllSubscriptions() {
     jQuery(".subscriptionSelect").prop('checked', false);
+}
+
+
+function sendAjaxToServer(serverUrl, formData){
+
+    var deferred = jQuery.Deferred();
+
+    jQuery.ajax({
+        type: 'POST',
+        url: serverUrl,
+        dataType: 'text',
+        data: formData,
+        success: function(response){
+            var responseStatus  = JSON.parse(response);
+            if(responseStatus.hasOwnProperty("success")){
+                if(responseStatus.hasOwnProperty("error")){
+                    deferred.resolve(responseStatus.error);
+                } else{
+                    deferred.resolve(responseStatus.success);
+                }
+            }
+        },
+        error: function(xhr, status, error){
+            deferred.resolve(false);
+        }
+    });
+
+    return deferred;
+
 }

@@ -50,9 +50,10 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
     public static final String TABLE_NAME = "xcolab_PlanTemplate";
     public static final Object[][] TABLE_COLUMNS = {
             { "id_", Types.BIGINT },
-            { "name", Types.VARCHAR }
+            { "name", Types.VARCHAR },
+            { "baseTemplateId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanTemplate (id_ LONG not null primary key,name VARCHAR(1024) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanTemplate (id_ LONG not null primary key,name VARCHAR(1024) null,baseTemplateId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanTemplate";
     public static final String ORDER_BY_JPQL = " ORDER BY planTemplate.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanTemplate.id_ ASC";
@@ -74,6 +75,7 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         };
     private long _id;
     private String _name;
+    private Long _baseTemplateId;
     private PlanTemplate _escapedModel;
 
     public PlanTemplateModelImpl() {
@@ -94,6 +96,7 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
 
         model.setId(soapModel.getId());
         model.setName(soapModel.getName());
+        model.setBaseTemplateId(soapModel.getBaseTemplateId());
 
         return model;
     }
@@ -154,6 +157,7 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
 
         attributes.put("id", getId());
         attributes.put("name", getName());
+        attributes.put("baseTemplateId", getBaseTemplateId());
 
         return attributes;
     }
@@ -170,6 +174,12 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
 
         if (name != null) {
             setName(name);
+        }
+
+        Long baseTemplateId = (Long) attributes.get("baseTemplateId");
+
+        if (baseTemplateId != null) {
+            setBaseTemplateId(baseTemplateId);
         }
     }
 
@@ -197,6 +207,17 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
     @Override
     public void setName(String name) {
         _name = name;
+    }
+
+    @JSON
+    @Override
+    public Long getBaseTemplateId() {
+        return _baseTemplateId;
+    }
+
+    @Override
+    public void setBaseTemplateId(Long baseTemplateId) {
+        _baseTemplateId = baseTemplateId;
     }
 
     @Override
@@ -228,6 +249,7 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
 
         planTemplateImpl.setId(getId());
         planTemplateImpl.setName(getName());
+        planTemplateImpl.setBaseTemplateId(getBaseTemplateId());
 
         planTemplateImpl.resetOriginalValues();
 
@@ -291,17 +313,21 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
             planTemplateCacheModel.name = null;
         }
 
+        planTemplateCacheModel.baseTemplateId = getBaseTemplateId();
+
         return planTemplateCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(7);
 
         sb.append("{id=");
         sb.append(getId());
         sb.append(", name=");
         sb.append(getName());
+        sb.append(", baseTemplateId=");
+        sb.append(getBaseTemplateId());
         sb.append("}");
 
         return sb.toString();
@@ -309,7 +335,7 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(10);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanTemplate");
@@ -322,6 +348,10 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");
         sb.append(getName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>baseTemplateId</column-name><column-value><![CDATA[");
+        sb.append(getBaseTemplateId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

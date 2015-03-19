@@ -1,7 +1,6 @@
 package org.xcolab.hooks.climatecolab.utils;
 
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -38,9 +37,13 @@ public class FileUploadFilter implements Filter {
 				ServletFileUpload fileUpload = new ServletFileUpload();
 				FileItemIterator items = fileUpload.getItemIterator(request);
 
+				Boolean keepFormat = false;
 				while (items.hasNext()) {
 					FileItemStream item = items.next();
-
+					if(item.isFormField() && item.getFieldName().equals("keepFormat")){
+						keepFormat = true;
+						continue;
+					}
 					if (!item.isFormField()
 							&& item.getContentType().contains("image")) {
 						// currently we support only images
@@ -51,7 +54,9 @@ public class FileUploadFilter implements Filter {
 						is = item.openStream();
 
 						byte[] imgBArr = IOUtils.toByteArray(is);
-						imgBArr = resizeAndCropImage(imgBArr);
+						if(!keepFormat){
+							imgBArr = resizeAndCropImage(imgBArr);
+						}
 						
 						//Image img = ImageLocalServiceUtil..getImage(imgBArr);
 						Image img = ImageLocalServiceUtil.createImage(imageId);
@@ -101,7 +106,7 @@ public class FileUploadFilter implements Filter {
 		int w = img.getWidth();
 		int h = img.getHeight();
 
-		int cropSize = 0;
+		int cropSize;
 		int cropX = 0;
 		int cropY = 0;
 
@@ -113,20 +118,14 @@ public class FileUploadFilter implements Filter {
 			cropY = (h - w) / 2;
 		}
 
-		BufferedImage cropedImage = img.getSubimage(cropX, cropY, cropSize,
-				cropSize);
-
-		int imgType = BufferedImage.TYPE_4BYTE_ABGR;
-		if (img.getType() != BufferedImage.TYPE_CUSTOM) {
-			imgType = img.getType();
-		}
-
-		BufferedImage dimg = new BufferedImage(newW, newH, imgType);
+		BufferedImage cropedImage = img.getSubimage(cropX, cropY, cropSize, cropSize);
+		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = dimg.createGraphics();
-		//g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-		//		RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g.drawImage(cropedImage, 0, 0, newW, newH, 0, 0, cropSize, cropSize,
-				null);
+		g.setComposite(AlphaComposite.Clear);
+		g.fillRect(0,0,newW, newH);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.setComposite(AlphaComposite.Src);
+		g.drawImage(cropedImage, 0, 0, newW, newH, 0, 0, cropSize, cropSize, null);
 		g.dispose();
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();

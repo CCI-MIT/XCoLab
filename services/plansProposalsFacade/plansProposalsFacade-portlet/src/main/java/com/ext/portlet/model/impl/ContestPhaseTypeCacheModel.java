@@ -24,12 +24,14 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
     public String name;
     public String description;
     public String status;
+    public boolean fellowScreeningActiveDefault;
+    public String contestPhaseAutopromoteDefault;
     public boolean invisible;
     public int pointsAccessible;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(17);
 
         sb.append("{id=");
         sb.append(id);
@@ -39,6 +41,10 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
         sb.append(description);
         sb.append(", status=");
         sb.append(status);
+        sb.append(", fellowScreeningActiveDefault=");
+        sb.append(fellowScreeningActiveDefault);
+        sb.append(", contestPhaseAutopromoteDefault=");
+        sb.append(contestPhaseAutopromoteDefault);
         sb.append(", invisible=");
         sb.append(invisible);
         sb.append(", pointsAccessible=");
@@ -72,6 +78,14 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
             contestPhaseTypeImpl.setStatus(status);
         }
 
+        contestPhaseTypeImpl.setFellowScreeningActiveDefault(fellowScreeningActiveDefault);
+
+        if (contestPhaseAutopromoteDefault == null) {
+            contestPhaseTypeImpl.setContestPhaseAutopromoteDefault(StringPool.BLANK);
+        } else {
+            contestPhaseTypeImpl.setContestPhaseAutopromoteDefault(contestPhaseAutopromoteDefault);
+        }
+
         contestPhaseTypeImpl.setInvisible(invisible);
         contestPhaseTypeImpl.setPointsAccessible(pointsAccessible);
 
@@ -86,6 +100,8 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
         name = objectInput.readUTF();
         description = objectInput.readUTF();
         status = objectInput.readUTF();
+        fellowScreeningActiveDefault = objectInput.readBoolean();
+        contestPhaseAutopromoteDefault = objectInput.readUTF();
         invisible = objectInput.readBoolean();
         pointsAccessible = objectInput.readInt();
     }
@@ -111,6 +127,14 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(status);
+        }
+
+        objectOutput.writeBoolean(fellowScreeningActiveDefault);
+
+        if (contestPhaseAutopromoteDefault == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(contestPhaseAutopromoteDefault);
         }
 
         objectOutput.writeBoolean(invisible);

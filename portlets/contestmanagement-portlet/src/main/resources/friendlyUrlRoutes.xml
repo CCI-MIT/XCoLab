@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.1.0//EN"
+        "http://www.liferay.com/dtd/liferay-friendly-url-routes_6_1_0.dtd">
+<routes>
+
+    <route>
+        <pattern>/createContest</pattern>
+        <generated-parameter name="createContest">true</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/create2015Contests</pattern>
+        <generated-parameter name="create2015Contests">true</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}</pattern>
+        <generated-parameter name="tab">DESCRIPTION</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}/tab/{tab}</pattern>
+        <generated-parameter name="tab">{tab}</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/manager/tab/{tab}</pattern>
+        <generated-parameter name="tab">{tab}</generated-parameter>
+        <generated-parameter name="manager">true</generated-parameter>
+    </route>
+
+
+</routes>

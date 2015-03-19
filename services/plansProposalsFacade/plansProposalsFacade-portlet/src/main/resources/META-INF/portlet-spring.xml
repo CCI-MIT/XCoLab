@@ -39,6 +39,9 @@
 	<bean id="com.ext.portlet.service.ContestDebateLocalService" class="com.ext.portlet.service.impl.ContestDebateLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestDebateService" class="com.ext.portlet.service.impl.ContestDebateServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestDebatePersistence" class="com.ext.portlet.service.persistence.ContestDebatePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ContestDiscussionLocalService" class="com.ext.portlet.service.impl.ContestDiscussionLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ContestDiscussionService" class="com.ext.portlet.service.impl.ContestDiscussionServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ContestDiscussionPersistence" class="com.ext.portlet.service.persistence.ContestDiscussionPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ContestEmailTemplateLocalService" class="com.ext.portlet.service.impl.ContestEmailTemplateLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestEmailTemplateService" class="com.ext.portlet.service.impl.ContestEmailTemplateServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestEmailTemplatePersistence" class="com.ext.portlet.service.persistence.ContestEmailTemplatePersistenceImpl" parent="basePersistence" />
@@ -54,6 +57,9 @@
 	<bean id="com.ext.portlet.service.ContestPhaseTypeLocalService" class="com.ext.portlet.service.impl.ContestPhaseTypeLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestPhaseTypeService" class="com.ext.portlet.service.impl.ContestPhaseTypeServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestPhaseTypePersistence" class="com.ext.portlet.service.persistence.ContestPhaseTypePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ContestScheduleLocalService" class="com.ext.portlet.service.impl.ContestScheduleLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ContestScheduleService" class="com.ext.portlet.service.impl.ContestScheduleServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ContestSchedulePersistence" class="com.ext.portlet.service.persistence.ContestSchedulePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ContestTeamMemberLocalService" class="com.ext.portlet.service.impl.ContestTeamMemberLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestTeamMemberService" class="com.ext.portlet.service.impl.ContestTeamMemberServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestTeamMemberPersistence" class="com.ext.portlet.service.persistence.ContestTeamMemberPersistenceImpl" parent="basePersistence" />

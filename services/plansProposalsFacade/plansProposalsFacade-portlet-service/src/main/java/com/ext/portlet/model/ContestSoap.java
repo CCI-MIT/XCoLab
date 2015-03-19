@@ -27,7 +27,9 @@ public class ContestSoap implements Serializable {
     private long _authorId;
     private boolean _contestActive;
     private long _planTemplateId;
+    private long _contestScheduleId;
     private long _focusAreaId;
+    private long _contestTier;
     private long _contestLogoId;
     private boolean _featured;
     private boolean _plansOpenByDefault;
@@ -43,6 +45,7 @@ public class ContestSoap implements Serializable {
     private String _resourcesUrl;
     private boolean _contestPrivate;
     private boolean _usePermissions;
+    private String _contestCreationStatus;
     private long _defaultModelId;
     private String _otherModels;
     private double _points;
@@ -68,7 +71,9 @@ public class ContestSoap implements Serializable {
         soapModel.setAuthorId(model.getAuthorId());
         soapModel.setContestActive(model.getContestActive());
         soapModel.setPlanTemplateId(model.getPlanTemplateId());
+        soapModel.setContestScheduleId(model.getContestScheduleId());
         soapModel.setFocusAreaId(model.getFocusAreaId());
+        soapModel.setContestTier(model.getContestTier());
         soapModel.setContestLogoId(model.getContestLogoId());
         soapModel.setFeatured(model.getFeatured());
         soapModel.setPlansOpenByDefault(model.getPlansOpenByDefault());
@@ -84,6 +89,7 @@ public class ContestSoap implements Serializable {
         soapModel.setResourcesUrl(model.getResourcesUrl());
         soapModel.setContestPrivate(model.getContestPrivate());
         soapModel.setUsePermissions(model.getUsePermissions());
+        soapModel.setContestCreationStatus(model.getContestCreationStatus());
         soapModel.setDefaultModelId(model.getDefaultModelId());
         soapModel.setOtherModels(model.getOtherModels());
         soapModel.setPoints(model.getPoints());
@@ -246,12 +252,28 @@ public class ContestSoap implements Serializable {
         _planTemplateId = planTemplateId;
     }
 
+    public long getContestScheduleId() {
+        return _contestScheduleId;
+    }
+
+    public void setContestScheduleId(long contestScheduleId) {
+        _contestScheduleId = contestScheduleId;
+    }
+
     public long getFocusAreaId() {
         return _focusAreaId;
     }
 
     public void setFocusAreaId(long focusAreaId) {
         _focusAreaId = focusAreaId;
+    }
+
+    public long getContestTier() {
+        return _contestTier;
+    }
+
+    public void setContestTier(long contestTier) {
+        _contestTier = contestTier;
     }
 
     public long getContestLogoId() {
@@ -388,6 +410,14 @@ public class ContestSoap implements Serializable {
 
     public void setUsePermissions(boolean usePermissions) {
         _usePermissions = usePermissions;
+    }
+
+    public String getContestCreationStatus() {
+        return _contestCreationStatus;
+    }
+
+    public void setContestCreationStatus(String contestCreationStatus) {
+        _contestCreationStatus = contestCreationStatus;
     }
 
     public long getDefaultModelId() {

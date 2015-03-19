@@ -10,9 +10,10 @@ public enum MemberCategory {
     EXPERT("Experts"),
     JUDGES("Judges"),
     STAFF("Staff", "Moderator"),
-    MODERATOR("Staff");
-    
-    
+    MODERATOR("Staff"),
+    CONTESTMANAGER("Contest Manager");
+
+
     private final String[] roleNames;
 
    

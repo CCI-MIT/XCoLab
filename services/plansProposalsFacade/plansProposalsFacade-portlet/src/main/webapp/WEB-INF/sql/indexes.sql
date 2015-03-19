@@ -24,8 +24,13 @@ create index IX_C09FE3B3 on xcolab_Contest (contestActive, flagText);
 create index IX_7D5C9136 on xcolab_Contest (contestActive, flagText, contestPrivate);
 create index IX_DF091CF8 on xcolab_Contest (contestActive, flagText, privateContest);
 create index IX_FC5EA30B on xcolab_Contest (contestActive, privateContest);
+create index IX_168D6722 on xcolab_Contest (contestTier);
 
 create index IX_379DF74A on xcolab_ContestDebate (ContestPK);
+
+create index IX_DD06DA92 on xcolab_ContestDiscussion (ContestId, Tab);
+
+create index IX_4DF8F0B9 on xcolab_ContestDiscussions (ContestId, Tab);
 
 create index IX_ED61C03C on xcolab_ContestPhase (ContestPK);
 create index IX_2BA2B787 on xcolab_ContestPhase (ContestPK, PhaseStartDate, PhaseEndDate);
@@ -33,6 +38,7 @@ create index IX_19E93261 on xcolab_ContestPhase (ContestPK, invisible);
 create index IX_9F1D3B81 on xcolab_ContestPhase (ContestPK, phaseActiveOverride);
 create index IX_4F735B66 on xcolab_ContestPhase (ContestPK, phaseInactiveOverride);
 create index IX_1BB9EC37 on xcolab_ContestPhase (contestPhaseAutopromote);
+create index IX_D9B6142C on xcolab_ContestPhase (contestScheduleId, ContestPK);
 
 create index IX_D97B920F on xcolab_ContestPhaseColumn (ContestPhasePK);
 

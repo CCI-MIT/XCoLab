@@ -72,6 +72,20 @@ public interface PlanTemplateModel extends BaseModel<PlanTemplate> {
      */
     public void setName(String name);
 
+    /**
+     * Returns the base template ID of this plan template.
+     *
+     * @return the base template ID of this plan template
+     */
+    public Long getBaseTemplateId();
+
+    /**
+     * Sets the base template ID of this plan template.
+     *
+     * @param baseTemplateId the base template ID of this plan template
+     */
+    public void setBaseTemplateId(Long baseTemplateId);
+
     @Override
     public boolean isNew();
 

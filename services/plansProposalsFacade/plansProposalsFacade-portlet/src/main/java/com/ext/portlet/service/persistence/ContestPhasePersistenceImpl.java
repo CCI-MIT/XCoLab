@@ -96,6 +96,33 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
         "contestPhase.PhaseStartDate <= ? AND ";
     private static final String _FINDER_COLUMN_CONTESTIDSTARTEND_PHASEENDDATE_1 = "contestPhase.PhaseEndDate >= NULL";
     private static final String _FINDER_COLUMN_CONTESTIDSTARTEND_PHASEENDDATE_2 = "contestPhase.PhaseEndDate >= ?";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_CONTESTSCHEDULEID =
+        new FinderPath(ContestPhaseModelImpl.ENTITY_CACHE_ENABLED,
+            ContestPhaseModelImpl.FINDER_CACHE_ENABLED, ContestPhaseImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByContestScheduleId",
+            new String[] {
+                Long.class.getName(), Long.class.getName(),
+                
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
+            });
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTSCHEDULEID =
+        new FinderPath(ContestPhaseModelImpl.ENTITY_CACHE_ENABLED,
+            ContestPhaseModelImpl.FINDER_CACHE_ENABLED, ContestPhaseImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "findByContestScheduleId",
+            new String[] { Long.class.getName(), Long.class.getName() },
+            ContestPhaseModelImpl.CONTESTSCHEDULEID_COLUMN_BITMASK |
+            ContestPhaseModelImpl.CONTESTPK_COLUMN_BITMASK |
+            ContestPhaseModelImpl.PHASESTARTDATE_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_CONTESTSCHEDULEID = new FinderPath(ContestPhaseModelImpl.ENTITY_CACHE_ENABLED,
+            ContestPhaseModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countByContestScheduleId",
+            new String[] { Long.class.getName(), Long.class.getName() });
+    private static final String _FINDER_COLUMN_CONTESTSCHEDULEID_CONTESTSCHEDULEID_2 =
+        "contestPhase.contestScheduleId = ? AND ";
+    private static final String _FINDER_COLUMN_CONTESTSCHEDULEID_CONTESTPK_2 = "contestPhase.ContestPK = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_CONTESTID =
         new FinderPath(ContestPhaseModelImpl.ENTITY_CACHE_ENABLED,
             ContestPhaseModelImpl.FINDER_CACHE_ENABLED, ContestPhaseImpl.class,
@@ -804,6 +831,500 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
                 if (bindPhaseEndDate) {
                     qPos.add(CalendarUtil.getTimestamp(PhaseEndDate));
                 }
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
+     * Returns all the contest phases where contestScheduleId = &#63; and ContestPK = &#63;.
+     *
+     * @param contestScheduleId the contest schedule ID
+     * @param ContestPK the contest p k
+     * @return the matching contest phases
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ContestPhase> findByContestScheduleId(long contestScheduleId,
+        long ContestPK) throws SystemException {
+        return findByContestScheduleId(contestScheduleId, ContestPK,
+            QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the contest phases where contestScheduleId = &#63; and ContestPK = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param contestScheduleId the contest schedule ID
+     * @param ContestPK the contest p k
+     * @param start the lower bound of the range of contest phases
+     * @param end the upper bound of the range of contest phases (not inclusive)
+     * @return the range of matching contest phases
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ContestPhase> findByContestScheduleId(long contestScheduleId,
+        long ContestPK, int start, int end) throws SystemException {
+        return findByContestScheduleId(contestScheduleId, ContestPK, start,
+            end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the contest phases where contestScheduleId = &#63; and ContestPK = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param contestScheduleId the contest schedule ID
+     * @param ContestPK the contest p k
+     * @param start the lower bound of the range of contest phases
+     * @param end the upper bound of the range of contest phases (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching contest phases
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ContestPhase> findByContestScheduleId(long contestScheduleId,
+        long ContestPK, int start, int end, OrderByComparator orderByComparator)
+        throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTSCHEDULEID;
+            finderArgs = new Object[] { contestScheduleId, ContestPK };
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_CONTESTSCHEDULEID;
+            finderArgs = new Object[] {
+                    contestScheduleId, ContestPK,
+                    
+                    start, end, orderByComparator
+                };
+        }
+
+        List<ContestPhase> list = (List<ContestPhase>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if ((list != null) && !list.isEmpty()) {
+            for (ContestPhase contestPhase : list) {
+                if ((contestScheduleId != contestPhase.getContestScheduleId()) ||
+                        (ContestPK != contestPhase.getContestPK())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
+        if (list == null) {
+            StringBundler query = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(4 +
+                        (orderByComparator.getOrderByFields().length * 3));
+            } else {
+                query = new StringBundler(4);
+            }
+
+            query.append(_SQL_SELECT_CONTESTPHASE_WHERE);
+
+            query.append(_FINDER_COLUMN_CONTESTSCHEDULEID_CONTESTSCHEDULEID_2);
+
+            query.append(_FINDER_COLUMN_CONTESTSCHEDULEID_CONTESTPK_2);
+
+            if (orderByComparator != null) {
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+            } else
+             if (pagination) {
+                query.append(ContestPhaseModelImpl.ORDER_BY_JPQL);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(contestScheduleId);
+
+                qPos.add(ContestPK);
+
+                if (!pagination) {
+                    list = (List<ContestPhase>) QueryUtil.list(q, getDialect(),
+                            start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<ContestPhase>(list);
+                } else {
+                    list = (List<ContestPhase>) QueryUtil.list(q, getDialect(),
+                            start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Returns the first contest phase in the ordered set where contestScheduleId = &#63; and ContestPK = &#63;.
+     *
+     * @param contestScheduleId the contest schedule ID
+     * @param ContestPK the contest p k
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching contest phase
+     * @throws com.ext.portlet.NoSuchContestPhaseException if a matching contest phase could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ContestPhase findByContestScheduleId_First(long contestScheduleId,
+        long ContestPK, OrderByComparator orderByComparator)
+        throws NoSuchContestPhaseException, SystemException {
+        ContestPhase contestPhase = fetchByContestScheduleId_First(contestScheduleId,
+                ContestPK, orderByComparator);
+
+        if (contestPhase != null) {
+            return contestPhase;
+        }
+
+        StringBundler msg = new StringBundler(6);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("contestScheduleId=");
+        msg.append(contestScheduleId);
+
+        msg.append(", ContestPK=");
+        msg.append(ContestPK);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchContestPhaseException(msg.toString());
+    }
+
+    /**
+     * Returns the first contest phase in the ordered set where contestScheduleId = &#63; and ContestPK = &#63;.
+     *
+     * @param contestScheduleId the contest schedule ID
+     * @param ContestPK the contest p k
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching contest phase, or <code>null</code> if a matching contest phase could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ContestPhase fetchByContestScheduleId_First(long contestScheduleId,
+        long ContestPK, OrderByComparator orderByComparator)
+        throws SystemException {
+        List<ContestPhase> list = findByContestScheduleId(contestScheduleId,
+                ContestPK, 0, 1, orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the last contest phase in the ordered set where contestScheduleId = &#63; and ContestPK = &#63;.
+     *
+     * @param contestScheduleId the contest schedule ID
+     * @param ContestPK the contest p k
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching contest phase
+     * @throws com.ext.portlet.NoSuchContestPhaseException if a matching contest phase could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ContestPhase findByContestScheduleId_Last(long contestScheduleId,
+        long ContestPK, OrderByComparator orderByComparator)
+        throws NoSuchContestPhaseException, SystemException {
+        ContestPhase contestPhase = fetchByContestScheduleId_Last(contestScheduleId,
+                ContestPK, orderByComparator);
+
+        if (contestPhase != null) {
+            return contestPhase;
+        }
+
+        StringBundler msg = new StringBundler(6);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("contestScheduleId=");
+        msg.append(contestScheduleId);
+
+        msg.append(", ContestPK=");
+        msg.append(ContestPK);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchContestPhaseException(msg.toString());
+    }
+
+    /**
+     * Returns the last contest phase in the ordered set where contestScheduleId = &#63; and ContestPK = &#63;.
+     *
+     * @param contestScheduleId the contest schedule ID
+     * @param ContestPK the contest p k
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching contest phase, or <code>null</code> if a matching contest phase could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ContestPhase fetchByContestScheduleId_Last(long contestScheduleId,
+        long ContestPK, OrderByComparator orderByComparator)
+        throws SystemException {
+        int count = countByContestScheduleId(contestScheduleId, ContestPK);
+
+        if (count == 0) {
+            return null;
+        }
+
+        List<ContestPhase> list = findByContestScheduleId(contestScheduleId,
+                ContestPK, count - 1, count, orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the contest phases before and after the current contest phase in the ordered set where contestScheduleId = &#63; and ContestPK = &#63;.
+     *
+     * @param ContestPhasePK the primary key of the current contest phase
+     * @param contestScheduleId the contest schedule ID
+     * @param ContestPK the contest p k
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the previous, current, and next contest phase
+     * @throws com.ext.portlet.NoSuchContestPhaseException if a contest phase with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ContestPhase[] findByContestScheduleId_PrevAndNext(
+        long ContestPhasePK, long contestScheduleId, long ContestPK,
+        OrderByComparator orderByComparator)
+        throws NoSuchContestPhaseException, SystemException {
+        ContestPhase contestPhase = findByPrimaryKey(ContestPhasePK);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            ContestPhase[] array = new ContestPhaseImpl[3];
+
+            array[0] = getByContestScheduleId_PrevAndNext(session,
+                    contestPhase, contestScheduleId, ContestPK,
+                    orderByComparator, true);
+
+            array[1] = contestPhase;
+
+            array[2] = getByContestScheduleId_PrevAndNext(session,
+                    contestPhase, contestScheduleId, ContestPK,
+                    orderByComparator, false);
+
+            return array;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    protected ContestPhase getByContestScheduleId_PrevAndNext(Session session,
+        ContestPhase contestPhase, long contestScheduleId, long ContestPK,
+        OrderByComparator orderByComparator, boolean previous) {
+        StringBundler query = null;
+
+        if (orderByComparator != null) {
+            query = new StringBundler(6 +
+                    (orderByComparator.getOrderByFields().length * 6));
+        } else {
+            query = new StringBundler(3);
+        }
+
+        query.append(_SQL_SELECT_CONTESTPHASE_WHERE);
+
+        query.append(_FINDER_COLUMN_CONTESTSCHEDULEID_CONTESTSCHEDULEID_2);
+
+        query.append(_FINDER_COLUMN_CONTESTSCHEDULEID_CONTESTPK_2);
+
+        if (orderByComparator != null) {
+            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+            if (orderByConditionFields.length > 0) {
+                query.append(WHERE_AND);
+            }
+
+            for (int i = 0; i < orderByConditionFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByConditionFields[i]);
+
+                if ((i + 1) < orderByConditionFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
+                    } else {
+                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN);
+                    } else {
+                        query.append(WHERE_LESSER_THAN);
+                    }
+                }
+            }
+
+            query.append(ORDER_BY_CLAUSE);
+
+            String[] orderByFields = orderByComparator.getOrderByFields();
+
+            for (int i = 0; i < orderByFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByFields[i]);
+
+                if ((i + 1) < orderByFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC_HAS_NEXT);
+                    } else {
+                        query.append(ORDER_BY_DESC_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC);
+                    } else {
+                        query.append(ORDER_BY_DESC);
+                    }
+                }
+            }
+        } else {
+            query.append(ContestPhaseModelImpl.ORDER_BY_JPQL);
+        }
+
+        String sql = query.toString();
+
+        Query q = session.createQuery(sql);
+
+        q.setFirstResult(0);
+        q.setMaxResults(2);
+
+        QueryPos qPos = QueryPos.getInstance(q);
+
+        qPos.add(contestScheduleId);
+
+        qPos.add(ContestPK);
+
+        if (orderByComparator != null) {
+            Object[] values = orderByComparator.getOrderByConditionValues(contestPhase);
+
+            for (Object value : values) {
+                qPos.add(value);
+            }
+        }
+
+        List<ContestPhase> list = q.list();
+
+        if (list.size() == 2) {
+            return list.get(1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Removes all the contest phases where contestScheduleId = &#63; and ContestPK = &#63; from the database.
+     *
+     * @param contestScheduleId the contest schedule ID
+     * @param ContestPK the contest p k
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByContestScheduleId(long contestScheduleId, long ContestPK)
+        throws SystemException {
+        for (ContestPhase contestPhase : findByContestScheduleId(
+                contestScheduleId, ContestPK, QueryUtil.ALL_POS,
+                QueryUtil.ALL_POS, null)) {
+            remove(contestPhase);
+        }
+    }
+
+    /**
+     * Returns the number of contest phases where contestScheduleId = &#63; and ContestPK = &#63;.
+     *
+     * @param contestScheduleId the contest schedule ID
+     * @param ContestPK the contest p k
+     * @return the number of matching contest phases
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByContestScheduleId(long contestScheduleId, long ContestPK)
+        throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_CONTESTSCHEDULEID;
+
+        Object[] finderArgs = new Object[] { contestScheduleId, ContestPK };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_COUNT_CONTESTPHASE_WHERE);
+
+            query.append(_FINDER_COLUMN_CONTESTSCHEDULEID_CONTESTSCHEDULEID_2);
+
+            query.append(_FINDER_COLUMN_CONTESTSCHEDULEID_CONTESTPK_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(contestScheduleId);
+
+                qPos.add(ContestPK);
 
                 count = (Long) q.uniqueResult();
 
@@ -2975,6 +3496,29 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
         }
         else {
             if ((contestPhaseModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTSCHEDULEID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        contestPhaseModelImpl.getOriginalContestScheduleId(),
+                        contestPhaseModelImpl.getOriginalContestPK()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTSCHEDULEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTSCHEDULEID,
+                    args);
+
+                args = new Object[] {
+                        contestPhaseModelImpl.getContestScheduleId(),
+                        contestPhaseModelImpl.getContestPK()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTSCHEDULEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTSCHEDULEID,
+                    args);
+            }
+
+            if ((contestPhaseModelImpl.getColumnBitmask() &
                     FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTID.getColumnBitmask()) != 0) {
                 Object[] args = new Object[] {
                         contestPhaseModelImpl.getOriginalContestPK()
@@ -3080,6 +3624,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
         contestPhaseImpl.setContestPhasePK(contestPhase.getContestPhasePK());
         contestPhaseImpl.setContestPK(contestPhase.getContestPK());
         contestPhaseImpl.setContestPhaseType(contestPhase.getContestPhaseType());
+        contestPhaseImpl.setContestScheduleId(contestPhase.getContestScheduleId());
         contestPhaseImpl.setFellowScreeningActive(contestPhase.isFellowScreeningActive());
         contestPhaseImpl.setContestPhaseAutopromote(contestPhase.getContestPhaseAutopromote());
         contestPhaseImpl.setContestPhaseDescriptionOverride(contestPhase.getContestPhaseDescriptionOverride());
@@ -3087,6 +3632,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
         contestPhaseImpl.setPhaseInactiveOverride(contestPhase.isPhaseInactiveOverride());
         contestPhaseImpl.setPhaseStartDate(contestPhase.getPhaseStartDate());
         contestPhaseImpl.setPhaseEndDate(contestPhase.getPhaseEndDate());
+        contestPhaseImpl.setPhaseBufferEndDated(contestPhase.getPhaseBufferEndDated());
         contestPhaseImpl.setNextStatus(contestPhase.getNextStatus());
         contestPhaseImpl.setCreated(contestPhase.getCreated());
         contestPhaseImpl.setUpdated(contestPhase.getUpdated());

@@ -497,3 +497,11 @@ table.judgingForm {
     padding: inherit!important;
     background: none!important;
 }
+
+.button-disabled {
+    opacity: 0.5;
+}
+
+.button-disabled a {
+    pointer-events: none;
+}

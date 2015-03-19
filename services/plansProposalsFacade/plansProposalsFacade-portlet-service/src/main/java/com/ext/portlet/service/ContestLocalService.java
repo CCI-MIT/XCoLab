@@ -475,6 +475,37 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Returns all contests matching the specified contest tier.
+    * Returns all contests in the case of ContestTier.NONE
+    *
+    * @param contestTierType   The specified contest tier
+    * @return A list of all Contests matching the specified contest tier
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingTier(
+        long contestTierType)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns all contests matching the specified contest tier and ontology terms.
+    * Returns all contests in the case of ContestTier.NONE
+    *
+    * @param contestTierType   The specified contest tier
+    * @return A list of all Contests matching the specified contest tier
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTermsAndTier(
+        java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms,
+        long contestTierType)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * This method transfers users' supports for proposals in the passed contest to a vote. If a user has only supported
     * one proposal within the passed contest, the support is automatically transferred to a vote and the user is notified
     * about this action. If the user supports more than one proposal in the passed contest, a message is sent to the user
@@ -511,6 +542,12 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.liferay.portal.model.User> getAdvisorsForContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.liferay.portal.model.User> getJudgesForContest(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -518,6 +555,12 @@ public interface ContestLocalService extends BaseLocalService,
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.liferay.portal.model.User> getFellowsForContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.liferay.portal.model.User> getContestManagersForContest(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;

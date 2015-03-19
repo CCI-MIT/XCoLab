@@ -77,6 +77,11 @@
            <ice:selectOneMenu valueChangeListener="#{planSectionDefinitionsAdmin.edited.focusAreaChange}" value="#{planSectionDefinitionsAdmin.edited.focusAreaId}" >
              <f:selectItems value="#{planSectionDefinitionsAdmin.edited.availableFocusAreas}" />
            </ice:selectOneMenu>
+
+            <ice:outputLabel value="Contest tier" />
+            <ice:selectOneMenu valueChangeListener="#{planSectionDefinitionsAdmin.edited.tierChange}" value="#{planSectionDefinitionsAdmin.edited.tier}" >
+                <f:selectItems value="#{planSectionDefinitionsAdmin.edited.availableTiers}" />
+            </ice:selectOneMenu>
            
            
            <ice:outputLabel value="Locked" />

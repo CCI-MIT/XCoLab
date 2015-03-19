@@ -13,8 +13,9 @@ public enum MemberRole {
     JUDGES(1251483L, "Judges", "Judge"),
     STAFF(31704L, "Staff", "Moderator", "Administrator"),
     MODERATOR(31213L, "Staff"),
-    CATALYST(1430078L, "Catalyst");
-    
+    CATALYST(1430078L, "Catalyst"),
+    CONTESTMANAGER(1950101L, "Contest Manager");
+
     
     private final String[] roleNames;
     private Long roleId;

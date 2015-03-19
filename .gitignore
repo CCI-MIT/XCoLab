@@ -52,3 +52,5 @@ rebel.xml
 #sitemonitor
 /other/site-monitor/src/main/resources/siteMonitor-config.xml
 atlassian-ide-plugin.xml
+portlets/userprofile-portlet/src/test/
+portlets/userprofile-portlet/test/

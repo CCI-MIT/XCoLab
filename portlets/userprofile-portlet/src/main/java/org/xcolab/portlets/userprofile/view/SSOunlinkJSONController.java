@@ -39,7 +39,7 @@ public class SSOunlinkJSONController extends JSONHelper{
             successStatus = false;
         }
 
-        this.writeResultResponseJSON(successStatus, response);
+        this.writeSuccessResultResponseJSON(successStatus, response);
     }
 
     @ResourceMapping("unlinkGoogleSSO")
@@ -56,7 +56,7 @@ public class SSOunlinkJSONController extends JSONHelper{
             successStatus = false;
         }
 
-        this.writeResultResponseJSON(successStatus, response);
+        this.writeSuccessResultResponseJSON(successStatus, response);
 
     }
 

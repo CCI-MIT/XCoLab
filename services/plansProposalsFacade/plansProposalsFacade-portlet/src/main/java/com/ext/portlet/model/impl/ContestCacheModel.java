@@ -34,7 +34,9 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public long authorId;
     public boolean contestActive;
     public long planTemplateId;
+    public long contestScheduleId;
     public long focusAreaId;
+    public long contestTier;
     public long contestLogoId;
     public boolean featured;
     public boolean plansOpenByDefault;
@@ -50,6 +52,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public String resourcesUrl;
     public boolean contestPrivate;
     public boolean usePermissions;
+    public String contestCreationStatus;
     public long defaultModelId;
     public String otherModels;
     public double points;
@@ -58,7 +61,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(69);
+        StringBundler sb = new StringBundler(75);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -86,8 +89,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(contestActive);
         sb.append(", planTemplateId=");
         sb.append(planTemplateId);
+        sb.append(", contestScheduleId=");
+        sb.append(contestScheduleId);
         sb.append(", focusAreaId=");
         sb.append(focusAreaId);
+        sb.append(", contestTier=");
+        sb.append(contestTier);
         sb.append(", contestLogoId=");
         sb.append(contestLogoId);
         sb.append(", featured=");
@@ -118,6 +125,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(contestPrivate);
         sb.append(", usePermissions=");
         sb.append(usePermissions);
+        sb.append(", contestCreationStatus=");
+        sb.append(contestCreationStatus);
         sb.append(", defaultModelId=");
         sb.append(defaultModelId);
         sb.append(", otherModels=");
@@ -192,7 +201,9 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestImpl.setAuthorId(authorId);
         contestImpl.setContestActive(contestActive);
         contestImpl.setPlanTemplateId(planTemplateId);
+        contestImpl.setContestScheduleId(contestScheduleId);
         contestImpl.setFocusAreaId(focusAreaId);
+        contestImpl.setContestTier(contestTier);
         contestImpl.setContestLogoId(contestLogoId);
         contestImpl.setFeatured(featured);
         contestImpl.setPlansOpenByDefault(plansOpenByDefault);
@@ -236,6 +247,13 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
         contestImpl.setContestPrivate(contestPrivate);
         contestImpl.setUsePermissions(usePermissions);
+
+        if (contestCreationStatus == null) {
+            contestImpl.setContestCreationStatus(StringPool.BLANK);
+        } else {
+            contestImpl.setContestCreationStatus(contestCreationStatus);
+        }
+
         contestImpl.setDefaultModelId(defaultModelId);
 
         if (otherModels == null) {
@@ -273,7 +291,9 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         authorId = objectInput.readLong();
         contestActive = objectInput.readBoolean();
         planTemplateId = objectInput.readLong();
+        contestScheduleId = objectInput.readLong();
         focusAreaId = objectInput.readLong();
+        contestTier = objectInput.readLong();
         contestLogoId = objectInput.readLong();
         featured = objectInput.readBoolean();
         plansOpenByDefault = objectInput.readBoolean();
@@ -289,6 +309,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         resourcesUrl = objectInput.readUTF();
         contestPrivate = objectInput.readBoolean();
         usePermissions = objectInput.readBoolean();
+        contestCreationStatus = objectInput.readUTF();
         defaultModelId = objectInput.readLong();
         otherModels = objectInput.readUTF();
         points = objectInput.readDouble();
@@ -343,7 +364,9 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         objectOutput.writeLong(authorId);
         objectOutput.writeBoolean(contestActive);
         objectOutput.writeLong(planTemplateId);
+        objectOutput.writeLong(contestScheduleId);
         objectOutput.writeLong(focusAreaId);
+        objectOutput.writeLong(contestTier);
         objectOutput.writeLong(contestLogoId);
         objectOutput.writeBoolean(featured);
         objectOutput.writeBoolean(plansOpenByDefault);
@@ -387,6 +410,13 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
         objectOutput.writeBoolean(contestPrivate);
         objectOutput.writeBoolean(usePermissions);
+
+        if (contestCreationStatus == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(contestCreationStatus);
+        }
+
         objectOutput.writeLong(defaultModelId);
 
         if (otherModels == null) {

@@ -9,12 +9,14 @@ import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.BalloonTextPersistence;
 import com.ext.portlet.service.persistence.BalloonUserTrackingPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
+import com.ext.portlet.service.persistence.ContestDiscussionPersistence;
 import com.ext.portlet.service.persistence.ContestEmailTemplatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
 import com.ext.portlet.service.persistence.ContestPhasePersistence;
 import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
 import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
+import com.ext.portlet.service.persistence.ContestSchedulePersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
@@ -186,6 +188,12 @@ public abstract class PlanPropertyFilterLocalServiceBaseImpl
     protected com.ext.portlet.service.ContestDebateService contestDebateService;
     @BeanReference(type = ContestDebatePersistence.class)
     protected ContestDebatePersistence contestDebatePersistence;
+    @BeanReference(type = com.ext.portlet.service.ContestDiscussionLocalService.class)
+    protected com.ext.portlet.service.ContestDiscussionLocalService contestDiscussionLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestDiscussionService.class)
+    protected com.ext.portlet.service.ContestDiscussionService contestDiscussionService;
+    @BeanReference(type = ContestDiscussionPersistence.class)
+    protected ContestDiscussionPersistence contestDiscussionPersistence;
     @BeanReference(type = com.ext.portlet.service.ContestEmailTemplateLocalService.class)
     protected com.ext.portlet.service.ContestEmailTemplateLocalService contestEmailTemplateLocalService;
     @BeanReference(type = com.ext.portlet.service.ContestEmailTemplateService.class)
@@ -216,6 +224,12 @@ public abstract class PlanPropertyFilterLocalServiceBaseImpl
     protected com.ext.portlet.service.ContestPhaseTypeService contestPhaseTypeService;
     @BeanReference(type = ContestPhaseTypePersistence.class)
     protected ContestPhaseTypePersistence contestPhaseTypePersistence;
+    @BeanReference(type = com.ext.portlet.service.ContestScheduleLocalService.class)
+    protected com.ext.portlet.service.ContestScheduleLocalService contestScheduleLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestScheduleService.class)
+    protected com.ext.portlet.service.ContestScheduleService contestScheduleService;
+    @BeanReference(type = ContestSchedulePersistence.class)
+    protected ContestSchedulePersistence contestSchedulePersistence;
     @BeanReference(type = com.ext.portlet.service.ContestTeamMemberLocalService.class)
     protected com.ext.portlet.service.ContestTeamMemberLocalService contestTeamMemberLocalService;
     @BeanReference(type = com.ext.portlet.service.ContestTeamMemberService.class)
@@ -1407,6 +1421,63 @@ public abstract class PlanPropertyFilterLocalServiceBaseImpl
     }
 
     /**
+     * Returns the contest discussion local service.
+     *
+     * @return the contest discussion local service
+     */
+    public com.ext.portlet.service.ContestDiscussionLocalService getContestDiscussionLocalService() {
+        return contestDiscussionLocalService;
+    }
+
+    /**
+     * Sets the contest discussion local service.
+     *
+     * @param contestDiscussionLocalService the contest discussion local service
+     */
+    public void setContestDiscussionLocalService(
+        com.ext.portlet.service.ContestDiscussionLocalService contestDiscussionLocalService) {
+        this.contestDiscussionLocalService = contestDiscussionLocalService;
+    }
+
+    /**
+     * Returns the contest discussion remote service.
+     *
+     * @return the contest discussion remote service
+     */
+    public com.ext.portlet.service.ContestDiscussionService getContestDiscussionService() {
+        return contestDiscussionService;
+    }
+
+    /**
+     * Sets the contest discussion remote service.
+     *
+     * @param contestDiscussionService the contest discussion remote service
+     */
+    public void setContestDiscussionService(
+        com.ext.portlet.service.ContestDiscussionService contestDiscussionService) {
+        this.contestDiscussionService = contestDiscussionService;
+    }
+
+    /**
+     * Returns the contest discussion persistence.
+     *
+     * @return the contest discussion persistence
+     */
+    public ContestDiscussionPersistence getContestDiscussionPersistence() {
+        return contestDiscussionPersistence;
+    }
+
+    /**
+     * Sets the contest discussion persistence.
+     *
+     * @param contestDiscussionPersistence the contest discussion persistence
+     */
+    public void setContestDiscussionPersistence(
+        ContestDiscussionPersistence contestDiscussionPersistence) {
+        this.contestDiscussionPersistence = contestDiscussionPersistence;
+    }
+
+    /**
      * Returns the contest email template local service.
      *
      * @return the contest email template local service
@@ -1689,6 +1760,63 @@ public abstract class PlanPropertyFilterLocalServiceBaseImpl
     public void setContestPhaseTypePersistence(
         ContestPhaseTypePersistence contestPhaseTypePersistence) {
         this.contestPhaseTypePersistence = contestPhaseTypePersistence;
+    }
+
+    /**
+     * Returns the contest schedule local service.
+     *
+     * @return the contest schedule local service
+     */
+    public com.ext.portlet.service.ContestScheduleLocalService getContestScheduleLocalService() {
+        return contestScheduleLocalService;
+    }
+
+    /**
+     * Sets the contest schedule local service.
+     *
+     * @param contestScheduleLocalService the contest schedule local service
+     */
+    public void setContestScheduleLocalService(
+        com.ext.portlet.service.ContestScheduleLocalService contestScheduleLocalService) {
+        this.contestScheduleLocalService = contestScheduleLocalService;
+    }
+
+    /**
+     * Returns the contest schedule remote service.
+     *
+     * @return the contest schedule remote service
+     */
+    public com.ext.portlet.service.ContestScheduleService getContestScheduleService() {
+        return contestScheduleService;
+    }
+
+    /**
+     * Sets the contest schedule remote service.
+     *
+     * @param contestScheduleService the contest schedule remote service
+     */
+    public void setContestScheduleService(
+        com.ext.portlet.service.ContestScheduleService contestScheduleService) {
+        this.contestScheduleService = contestScheduleService;
+    }
+
+    /**
+     * Returns the contest schedule persistence.
+     *
+     * @return the contest schedule persistence
+     */
+    public ContestSchedulePersistence getContestSchedulePersistence() {
+        return contestSchedulePersistence;
+    }
+
+    /**
+     * Sets the contest schedule persistence.
+     *
+     * @param contestSchedulePersistence the contest schedule persistence
+     */
+    public void setContestSchedulePersistence(
+        ContestSchedulePersistence contestSchedulePersistence) {
+        this.contestSchedulePersistence = contestSchedulePersistence;
     }
 
     /**

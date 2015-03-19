@@ -20,6 +20,24 @@ public interface ProposalTabActivityCountAlgorithm {
         }
     };
 
+
+    public static ProposalTabActivityCountAlgorithm discussionCommentsCount = new ProposalTabActivityCountAlgorithm() {
+
+        @Override
+        public int getActivityCount(ProposalsContext context, PortletRequest request) {
+            try {
+                return (int) context.getProposalWrapped(request).getDiscussionCommentsCount();
+            } catch (PortalException e) {
+                _log.error("can't get comments count for a proposal", e);
+            } catch (SystemException e) {
+                _log.error("can't get comments count for a proposal", e);
+            }
+            return 0;
+        }
+        private Log _log = LogFactoryUtil.getLog(ProposalTabActivityCountAlgorithm.class);
+    };
+
+
     public static ProposalTabActivityCountAlgorithm commentsCount = new ProposalTabActivityCountAlgorithm() {
         
         @Override

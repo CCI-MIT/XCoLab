@@ -15,7 +15,7 @@
           src="/climatecolab-theme/images/arrow.gif" width="8" height="8" /> <a
           href="/web/guest/members">Members</a> <img
           src="/climatecolab-theme/images/arrow.gif" width="8" height="8" /> <a
-          href="/web/guest/member/-/member/userId/${currentUser.userId}">${userBean.screenName}</a>
+          href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
     <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />Subscriptions
   </div>
 
@@ -23,13 +23,13 @@
 
     <div class="main_long">
         <h1>Subscribed activities</h1>
-        <c:if test="${currentUser.viewingOwnProfile}">
+        <c:if test="${currentUserProfile.viewingOwnProfile}">
           <div class="profile_action">
             <div class="blue-button">
-              <a href="/web/guest/member/-/member/userId/${currentUser.userId}/page/subscriptionsManage">MANAGE</a>
+              <a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/subscriptionsManage">MANAGE</a>
             </div>
               <div class="blue-button">
-                  <a href="/web/guest/member/-/member/userId/${currentUser.userId}">BACK TO PROFILE</a>
+                  <a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">BACK TO PROFILE</a>
               </div>
           </div>
         </c:if>
@@ -41,9 +41,9 @@
             </tr>
           </thead>
           <tbody>
-            <c:forEach  var="activity" items="${currentUser.subscribedActivities}"
-                        begin="${(currentUser.subscriptionsPaginationPageId-1) * currentUser.subscriptionsPageSize}"
-                        end="${currentUser.subscriptionsPaginationPageId * currentUser.subscriptionsPageSize}">
+            <c:forEach  var="activity" items="${currentUserProfile.subscribedActivities}"
+                        begin="${(currentUserProfile.subscriptionsPaginationPageId-1) * currentUserProfile.subscriptionsPageSize}"
+                        end="${currentUserProfile.subscriptionsPaginationPageId * currentUserProfile.subscriptionsPageSize}">
               <tr class="colabRow">
                 <td>${activity.body}</td>
                 <td><fmt:formatDate value="${activity.createdDate}" type="both" timeStyle="short" dateStyle="medium" timeZone="America/New_York" /></td>
@@ -63,7 +63,7 @@
               <tr>
                 <td>
                   <span class="page">
-                  Page ${currentUser.subscriptionsPaginationPageId} of ${currentUser.subscriptionsPaginationPageMax}
+                  Page ${currentUserProfile.subscriptionsPaginationPageId} of ${currentUserProfile.subscriptionsPaginationPageMax}
                   </span>
                 </td>
                 <td class="paginatorControls">
@@ -73,9 +73,9 @@
                         <form:form method="post" action="${paginationActionUrl}">
                           <td><input type="submit" name="paginationAction" value="First" class=" comm_controlsScrBtn btn-info" /></td>
                           <td><input type="submit" name="paginationAction" value="&lt;Previous" class="comm_controlsScrBtn btn-info"/></td>
-                            <pagination:pageNavigation  userId="${currentUser.userId}"
-                                                        pageId="${currentUser.subscriptionsPaginationPageId}"
-                                                        maxPageId="${currentUser.subscriptionsPaginationPageMax}" />
+                            <pagination:pageNavigation  userId="${currentUserProfile.userId}"
+                                                        pageId="${currentUserProfile.subscriptionsPaginationPageId}"
+                                                        maxPageId="${currentUserProfile.subscriptionsPaginationPageMax}" />
                           <td><input type="submit" name="paginationAction" value="Next&gt;" class="comm_controlsScrBtn btn-info"/></td>
                           <td><input type="submit" name="paginationAction" value="Last" class="comm_controlsScrBtn btn-info" /></td>
                         </form:form>

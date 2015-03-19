@@ -41,6 +41,7 @@ public class ContestPhaseWrapper implements ContestPhase,
         attributes.put("ContestPhasePK", getContestPhasePK());
         attributes.put("ContestPK", getContestPK());
         attributes.put("ContestPhaseType", getContestPhaseType());
+        attributes.put("contestScheduleId", getContestScheduleId());
         attributes.put("fellowScreeningActive", getFellowScreeningActive());
         attributes.put("contestPhaseAutopromote", getContestPhaseAutopromote());
         attributes.put("ContestPhaseDescriptionOverride",
@@ -49,6 +50,7 @@ public class ContestPhaseWrapper implements ContestPhase,
         attributes.put("phaseInactiveOverride", getPhaseInactiveOverride());
         attributes.put("PhaseStartDate", getPhaseStartDate());
         attributes.put("PhaseEndDate", getPhaseEndDate());
+        attributes.put("PhaseBufferEndDated", getPhaseBufferEndDated());
         attributes.put("nextStatus", getNextStatus());
         attributes.put("created", getCreated());
         attributes.put("updated", getUpdated());
@@ -75,6 +77,12 @@ public class ContestPhaseWrapper implements ContestPhase,
 
         if (ContestPhaseType != null) {
             setContestPhaseType(ContestPhaseType);
+        }
+
+        Long contestScheduleId = (Long) attributes.get("contestScheduleId");
+
+        if (contestScheduleId != null) {
+            setContestScheduleId(contestScheduleId);
         }
 
         Boolean fellowScreeningActive = (Boolean) attributes.get(
@@ -122,6 +130,12 @@ public class ContestPhaseWrapper implements ContestPhase,
 
         if (PhaseEndDate != null) {
             setPhaseEndDate(PhaseEndDate);
+        }
+
+        Date PhaseBufferEndDated = (Date) attributes.get("PhaseBufferEndDated");
+
+        if (PhaseBufferEndDated != null) {
+            setPhaseBufferEndDated(PhaseBufferEndDated);
         }
 
         String nextStatus = (String) attributes.get("nextStatus");
@@ -227,6 +241,26 @@ public class ContestPhaseWrapper implements ContestPhase,
     @Override
     public void setContestPhaseType(long ContestPhaseType) {
         _contestPhase.setContestPhaseType(ContestPhaseType);
+    }
+
+    /**
+    * Returns the contest schedule ID of this contest phase.
+    *
+    * @return the contest schedule ID of this contest phase
+    */
+    @Override
+    public long getContestScheduleId() {
+        return _contestPhase.getContestScheduleId();
+    }
+
+    /**
+    * Sets the contest schedule ID of this contest phase.
+    *
+    * @param contestScheduleId the contest schedule ID of this contest phase
+    */
+    @Override
+    public void setContestScheduleId(long contestScheduleId) {
+        _contestPhase.setContestScheduleId(contestScheduleId);
     }
 
     /**
@@ -399,6 +433,26 @@ public class ContestPhaseWrapper implements ContestPhase,
     @Override
     public void setPhaseEndDate(java.util.Date PhaseEndDate) {
         _contestPhase.setPhaseEndDate(PhaseEndDate);
+    }
+
+    /**
+    * Returns the phase buffer end dated of this contest phase.
+    *
+    * @return the phase buffer end dated of this contest phase
+    */
+    @Override
+    public java.util.Date getPhaseBufferEndDated() {
+        return _contestPhase.getPhaseBufferEndDated();
+    }
+
+    /**
+    * Sets the phase buffer end dated of this contest phase.
+    *
+    * @param PhaseBufferEndDated the phase buffer end dated of this contest phase
+    */
+    @Override
+    public void setPhaseBufferEndDated(java.util.Date PhaseBufferEndDated) {
+        _contestPhase.setPhaseBufferEndDated(PhaseBufferEndDated);
     }
 
     /**

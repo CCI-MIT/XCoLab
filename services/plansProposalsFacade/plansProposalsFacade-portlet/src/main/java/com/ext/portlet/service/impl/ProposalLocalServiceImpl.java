@@ -204,18 +204,26 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposal.setCreateDate(new Date());
 
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
+
         // create discussions
         DiscussionCategoryGroup proposalDiscussion = discussionCategoryGroupLocalService
                 .createDiscussionCategoryGroup("Proposal " + proposalId + " main discussion");
 
         proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contestPhase.getContestPK(), proposalId));
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(proposalDiscussion);
-
         proposal.setDiscussionId(proposalDiscussion.getId());
+
+        DiscussionCategoryGroup resultsDiscussion = discussionCategoryGroupLocalService
+                .createDiscussionCategoryGroup("Proposal " + proposalId + " results discussion");
+        resultsDiscussion.setIsQuiet(true);
+
+        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(resultsDiscussion);
+        proposal.setResultsDiscussionId(resultsDiscussion.getId());
 
         DiscussionCategoryGroup judgesDiscussion = discussionCategoryGroupLocalService
                 .createDiscussionCategoryGroup("Proposal " + proposalId + " judges discussion");
         judgesDiscussion.setIsQuiet(true);
+
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(judgesDiscussion);
         proposal.setJudgeDiscussionId(judgesDiscussion.getId());
 
@@ -1264,10 +1272,35 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         String commentBody = reviewContentHelper.getPromotionComment(false);
         //only post comment if it is not empty.
         if (commentBody != null && !commentBody.trim().equals("")) {
-            DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
+
+            Long discussionId = getDiscussionIdAndGenerateIfNull(proposal);
+            DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
+            DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
+
+            // TODO the following two lines are only temporary until the evaluation tab will be online!!!
+            discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
             DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
         }
     }
+
+    public Long getDiscussionIdAndGenerateIfNull(Proposal proposal) throws SystemException{
+
+        Long discussionId = proposal.getResultsDiscussionId();
+
+        if(discussionId == null || discussionId == 0) {
+
+            DiscussionCategoryGroup resultsDiscussion = DiscussionCategoryGroupLocalServiceUtil.
+                    createDiscussionCategoryGroup("Proposal " + proposal.getProposalId() + " results discussion");
+            resultsDiscussion.setIsQuiet(true);
+            DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(resultsDiscussion);
+            proposal.setResultsDiscussionId(resultsDiscussion.getId());
+            proposal.persist();
+            discussionId = proposal.getResultsDiscussionId();
+        }
+
+        return discussionId;
+    }
+
 
     private List<Long> getMemberUserIds(Proposal proposal) throws PortalException, SystemException {
         List<Long> recipientIds = new ArrayList<>();

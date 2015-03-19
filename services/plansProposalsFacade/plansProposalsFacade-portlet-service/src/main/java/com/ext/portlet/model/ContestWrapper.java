@@ -51,7 +51,9 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("authorId", getAuthorId());
         attributes.put("contestActive", getContestActive());
         attributes.put("planTemplateId", getPlanTemplateId());
+        attributes.put("contestScheduleId", getContestScheduleId());
         attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("contestTier", getContestTier());
         attributes.put("contestLogoId", getContestLogoId());
         attributes.put("featured", getFeatured());
         attributes.put("plansOpenByDefault", getPlansOpenByDefault());
@@ -67,6 +69,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("resourcesUrl", getResourcesUrl());
         attributes.put("contestPrivate", getContestPrivate());
         attributes.put("usePermissions", getUsePermissions());
+        attributes.put("contestCreationStatus", getContestCreationStatus());
         attributes.put("defaultModelId", getDefaultModelId());
         attributes.put("otherModels", getOtherModels());
         attributes.put("points", getPoints());
@@ -161,10 +164,22 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
             setPlanTemplateId(planTemplateId);
         }
 
+        Long contestScheduleId = (Long) attributes.get("contestScheduleId");
+
+        if (contestScheduleId != null) {
+            setContestScheduleId(contestScheduleId);
+        }
+
         Long focusAreaId = (Long) attributes.get("focusAreaId");
 
         if (focusAreaId != null) {
             setFocusAreaId(focusAreaId);
+        }
+
+        Long contestTier = (Long) attributes.get("contestTier");
+
+        if (contestTier != null) {
+            setContestTier(contestTier);
         }
 
         Long contestLogoId = (Long) attributes.get("contestLogoId");
@@ -256,6 +271,13 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (usePermissions != null) {
             setUsePermissions(usePermissions);
+        }
+
+        String contestCreationStatus = (String) attributes.get(
+                "contestCreationStatus");
+
+        if (contestCreationStatus != null) {
+            setContestCreationStatus(contestCreationStatus);
         }
 
         Long defaultModelId = (Long) attributes.get("defaultModelId");
@@ -585,6 +607,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     }
 
     /**
+    * Returns the contest schedule ID of this contest.
+    *
+    * @return the contest schedule ID of this contest
+    */
+    @Override
+    public long getContestScheduleId() {
+        return _contest.getContestScheduleId();
+    }
+
+    /**
+    * Sets the contest schedule ID of this contest.
+    *
+    * @param contestScheduleId the contest schedule ID of this contest
+    */
+    @Override
+    public void setContestScheduleId(long contestScheduleId) {
+        _contest.setContestScheduleId(contestScheduleId);
+    }
+
+    /**
     * Returns the focus area ID of this contest.
     *
     * @return the focus area ID of this contest
@@ -602,6 +644,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setFocusAreaId(long focusAreaId) {
         _contest.setFocusAreaId(focusAreaId);
+    }
+
+    /**
+    * Returns the contest tier of this contest.
+    *
+    * @return the contest tier of this contest
+    */
+    @Override
+    public long getContestTier() {
+        return _contest.getContestTier();
+    }
+
+    /**
+    * Sets the contest tier of this contest.
+    *
+    * @param contestTier the contest tier of this contest
+    */
+    @Override
+    public void setContestTier(long contestTier) {
+        _contest.setContestTier(contestTier);
     }
 
     /**
@@ -942,6 +1004,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setUsePermissions(boolean usePermissions) {
         _contest.setUsePermissions(usePermissions);
+    }
+
+    /**
+    * Returns the contest creation status of this contest.
+    *
+    * @return the contest creation status of this contest
+    */
+    @Override
+    public java.lang.String getContestCreationStatus() {
+        return _contest.getContestCreationStatus();
+    }
+
+    /**
+    * Sets the contest creation status of this contest.
+    *
+    * @param contestCreationStatus the contest creation status of this contest
+    */
+    @Override
+    public void setContestCreationStatus(java.lang.String contestCreationStatus) {
+        _contest.setContestCreationStatus(contestCreationStatus);
     }
 
     /**

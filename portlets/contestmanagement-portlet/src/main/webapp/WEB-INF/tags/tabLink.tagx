@@ -1,0 +1,27 @@
+<jsp:root 
+  xmlns:c="http://java.sun.com/jsp/jstl/core" 
+  xmlns:jsp="http://java.sun.com/JSP/Page"  
+  version="2.0">
+  <jsp:directive.attribute name="defaultTab" type="java.lang.Boolean" required="true" rtexprvalue="true" description="it this the default tab" />
+  <jsp:directive.attribute name="tabName" type="java.lang.String" required="true" rtexprvalue="true" description="Tab display name" />
+  <jsp:directive.attribute name="tabDisplayName" type="java.lang.String" required="true" rtexprvalue="true" description="Tab display name" />
+  <jsp:directive.attribute name="contestId" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest id" />
+  <jsp:directive.attribute name="activityCount" type="java.lang.Long" required="true" rtexprvalue="true" description="Link text" />
+
+  <c:choose>
+    <c:when test="${defaultTab}">
+      <c:set var="proposalURL" value="/web/guest/cms/-/contestmanagement/contestId/${contestId}" />
+    </c:when>
+    <c:otherwise>
+      <c:set var="proposalURL" value="/web/guest/cms/-/contestmanagement/contestId/${contestId}/tab/${tabName}" />
+    </c:otherwise>
+  </c:choose>
+
+  <a href="${proposalURL}">
+    ${tabDisplayName}
+    <c:if test="${sactivityCount > 0}">
+      <div>${activityCount}</div>
+    </c:if>
+  </a>
+
+</jsp:root>

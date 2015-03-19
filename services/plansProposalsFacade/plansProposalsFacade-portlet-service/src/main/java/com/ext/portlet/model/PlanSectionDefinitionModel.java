@@ -161,6 +161,20 @@ public interface PlanSectionDefinitionModel extends BaseModel<PlanSectionDefinit
     public void setFocusAreaId(long focusAreaId);
 
     /**
+     * Returns the tier of this plan section definition.
+     *
+     * @return the tier of this plan section definition
+     */
+    public long getTier();
+
+    /**
+     * Sets the tier of this plan section definition.
+     *
+     * @param tier the tier of this plan section definition
+     */
+    public void setTier(long tier);
+
+    /**
      * Returns the locked of this plan section definition.
      *
      * @return the locked of this plan section definition

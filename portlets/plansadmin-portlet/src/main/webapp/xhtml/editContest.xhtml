@@ -88,7 +88,11 @@
            <ice:selectOneMenu valueChangeListener="#{contestsAdmin.editedContest.planFocusAreaChange}" value="#{contestsAdmin.editedContest.contest.focusAreaId}">
              <f:selectItems value="#{contestsAdmin.editedContest.availableFocusAreas}" />
            </ice:selectOneMenu>
-           
+
+            <ice:outputLabel value="Contest tier" />
+            <ice:selectOneMenu valueChangeListener="#{contestsAdmin.editedContest.contestTierChange}" value="#{contestsAdmin.editedContest.contest.contestTier}">
+                <f:selectItems value="#{contestsAdmin.editedContest.availableContestTiers}" />
+            </ice:selectOneMenu>
            
            <ice:outputLabel value="Active" />
            <ice:selectBooleanCheckbox value="#{contestsAdmin.editedContest.contestActive}" />

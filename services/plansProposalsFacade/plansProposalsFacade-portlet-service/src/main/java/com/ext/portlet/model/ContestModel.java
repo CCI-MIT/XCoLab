@@ -242,6 +242,20 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setPlanTemplateId(long planTemplateId);
 
     /**
+     * Returns the contest schedule ID of this contest.
+     *
+     * @return the contest schedule ID of this contest
+     */
+    public long getContestScheduleId();
+
+    /**
+     * Sets the contest schedule ID of this contest.
+     *
+     * @param contestScheduleId the contest schedule ID of this contest
+     */
+    public void setContestScheduleId(long contestScheduleId);
+
+    /**
      * Returns the focus area ID of this contest.
      *
      * @return the focus area ID of this contest
@@ -254,6 +268,20 @@ public interface ContestModel extends BaseModel<Contest> {
      * @param focusAreaId the focus area ID of this contest
      */
     public void setFocusAreaId(long focusAreaId);
+
+    /**
+     * Returns the contest tier of this contest.
+     *
+     * @return the contest tier of this contest
+     */
+    public long getContestTier();
+
+    /**
+     * Sets the contest tier of this contest.
+     *
+     * @param contestTier the contest tier of this contest
+     */
+    public void setContestTier(long contestTier);
 
     /**
      * Returns the contest logo ID of this contest.
@@ -497,6 +525,21 @@ public interface ContestModel extends BaseModel<Contest> {
      * @param usePermissions the use permissions of this contest
      */
     public void setUsePermissions(boolean usePermissions);
+
+    /**
+     * Returns the contest creation status of this contest.
+     *
+     * @return the contest creation status of this contest
+     */
+    @AutoEscape
+    public String getContestCreationStatus();
+
+    /**
+     * Sets the contest creation status of this contest.
+     *
+     * @param contestCreationStatus the contest creation status of this contest
+     */
+    public void setContestCreationStatus(String contestCreationStatus);
 
     /**
      * Returns the default model ID of this contest.

@@ -25,6 +25,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
     public long ContestPhasePK;
     public long ContestPK;
     public long ContestPhaseType;
+    public long contestScheduleId;
     public boolean fellowScreeningActive;
     public String contestPhaseAutopromote;
     public String ContestPhaseDescriptionOverride;
@@ -32,6 +33,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
     public boolean phaseInactiveOverride;
     public long PhaseStartDate;
     public long PhaseEndDate;
+    public long PhaseBufferEndDated;
     public String nextStatus;
     public long created;
     public long updated;
@@ -39,7 +41,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(29);
+        StringBundler sb = new StringBundler(33);
 
         sb.append("{ContestPhasePK=");
         sb.append(ContestPhasePK);
@@ -47,6 +49,8 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         sb.append(ContestPK);
         sb.append(", ContestPhaseType=");
         sb.append(ContestPhaseType);
+        sb.append(", contestScheduleId=");
+        sb.append(contestScheduleId);
         sb.append(", fellowScreeningActive=");
         sb.append(fellowScreeningActive);
         sb.append(", contestPhaseAutopromote=");
@@ -61,6 +65,8 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         sb.append(PhaseStartDate);
         sb.append(", PhaseEndDate=");
         sb.append(PhaseEndDate);
+        sb.append(", PhaseBufferEndDated=");
+        sb.append(PhaseBufferEndDated);
         sb.append(", nextStatus=");
         sb.append(nextStatus);
         sb.append(", created=");
@@ -81,6 +87,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         contestPhaseImpl.setContestPhasePK(ContestPhasePK);
         contestPhaseImpl.setContestPK(ContestPK);
         contestPhaseImpl.setContestPhaseType(ContestPhaseType);
+        contestPhaseImpl.setContestScheduleId(contestScheduleId);
         contestPhaseImpl.setFellowScreeningActive(fellowScreeningActive);
 
         if (contestPhaseAutopromote == null) {
@@ -108,6 +115,13 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
             contestPhaseImpl.setPhaseEndDate(null);
         } else {
             contestPhaseImpl.setPhaseEndDate(new Date(PhaseEndDate));
+        }
+
+        if (PhaseBufferEndDated == Long.MIN_VALUE) {
+            contestPhaseImpl.setPhaseBufferEndDated(null);
+        } else {
+            contestPhaseImpl.setPhaseBufferEndDated(new Date(
+                    PhaseBufferEndDated));
         }
 
         if (nextStatus == null) {
@@ -140,6 +154,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         ContestPhasePK = objectInput.readLong();
         ContestPK = objectInput.readLong();
         ContestPhaseType = objectInput.readLong();
+        contestScheduleId = objectInput.readLong();
         fellowScreeningActive = objectInput.readBoolean();
         contestPhaseAutopromote = objectInput.readUTF();
         ContestPhaseDescriptionOverride = objectInput.readUTF();
@@ -147,6 +162,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         phaseInactiveOverride = objectInput.readBoolean();
         PhaseStartDate = objectInput.readLong();
         PhaseEndDate = objectInput.readLong();
+        PhaseBufferEndDated = objectInput.readLong();
         nextStatus = objectInput.readUTF();
         created = objectInput.readLong();
         updated = objectInput.readLong();
@@ -159,6 +175,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         objectOutput.writeLong(ContestPhasePK);
         objectOutput.writeLong(ContestPK);
         objectOutput.writeLong(ContestPhaseType);
+        objectOutput.writeLong(contestScheduleId);
         objectOutput.writeBoolean(fellowScreeningActive);
 
         if (contestPhaseAutopromote == null) {
@@ -177,6 +194,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         objectOutput.writeBoolean(phaseInactiveOverride);
         objectOutput.writeLong(PhaseStartDate);
         objectOutput.writeLong(PhaseEndDate);
+        objectOutput.writeLong(PhaseBufferEndDated);
 
         if (nextStatus == null) {
             objectOutput.writeUTF(StringPool.BLANK);

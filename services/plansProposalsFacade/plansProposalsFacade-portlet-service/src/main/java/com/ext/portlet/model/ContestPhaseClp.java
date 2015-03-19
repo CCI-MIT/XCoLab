@@ -25,6 +25,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
     private long _ContestPhasePK;
     private long _ContestPK;
     private long _ContestPhaseType;
+    private long _contestScheduleId;
     private boolean _fellowScreeningActive;
     private String _contestPhaseAutopromote;
     private String _ContestPhaseDescriptionOverride;
@@ -32,6 +33,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
     private boolean _phaseInactiveOverride;
     private Date _PhaseStartDate;
     private Date _PhaseEndDate;
+    private Date _PhaseBufferEndDated;
     private String _nextStatus;
     private Date _created;
     private Date _updated;
@@ -78,6 +80,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         attributes.put("ContestPhasePK", getContestPhasePK());
         attributes.put("ContestPK", getContestPK());
         attributes.put("ContestPhaseType", getContestPhaseType());
+        attributes.put("contestScheduleId", getContestScheduleId());
         attributes.put("fellowScreeningActive", getFellowScreeningActive());
         attributes.put("contestPhaseAutopromote", getContestPhaseAutopromote());
         attributes.put("ContestPhaseDescriptionOverride",
@@ -86,6 +89,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         attributes.put("phaseInactiveOverride", getPhaseInactiveOverride());
         attributes.put("PhaseStartDate", getPhaseStartDate());
         attributes.put("PhaseEndDate", getPhaseEndDate());
+        attributes.put("PhaseBufferEndDated", getPhaseBufferEndDated());
         attributes.put("nextStatus", getNextStatus());
         attributes.put("created", getCreated());
         attributes.put("updated", getUpdated());
@@ -112,6 +116,12 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
 
         if (ContestPhaseType != null) {
             setContestPhaseType(ContestPhaseType);
+        }
+
+        Long contestScheduleId = (Long) attributes.get("contestScheduleId");
+
+        if (contestScheduleId != null) {
+            setContestScheduleId(contestScheduleId);
         }
 
         Boolean fellowScreeningActive = (Boolean) attributes.get(
@@ -159,6 +169,12 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
 
         if (PhaseEndDate != null) {
             setPhaseEndDate(PhaseEndDate);
+        }
+
+        Date PhaseBufferEndDated = (Date) attributes.get("PhaseBufferEndDated");
+
+        if (PhaseBufferEndDated != null) {
+            setPhaseBufferEndDated(PhaseBufferEndDated);
         }
 
         String nextStatus = (String) attributes.get("nextStatus");
@@ -247,6 +263,29 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
                         long.class);
 
                 method.invoke(_contestPhaseRemoteModel, ContestPhaseType);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public long getContestScheduleId() {
+        return _contestScheduleId;
+    }
+
+    @Override
+    public void setContestScheduleId(long contestScheduleId) {
+        _contestScheduleId = contestScheduleId;
+
+        if (_contestPhaseRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestPhaseRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestScheduleId",
+                        long.class);
+
+                method.invoke(_contestPhaseRemoteModel, contestScheduleId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -430,6 +469,29 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
     }
 
     @Override
+    public Date getPhaseBufferEndDated() {
+        return _PhaseBufferEndDated;
+    }
+
+    @Override
+    public void setPhaseBufferEndDated(Date PhaseBufferEndDated) {
+        _PhaseBufferEndDated = PhaseBufferEndDated;
+
+        if (_contestPhaseRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestPhaseRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPhaseBufferEndDated",
+                        Date.class);
+
+                method.invoke(_contestPhaseRemoteModel, PhaseBufferEndDated);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public String getNextStatus() {
         return _nextStatus;
     }
@@ -587,6 +649,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         clone.setContestPhasePK(getContestPhasePK());
         clone.setContestPK(getContestPK());
         clone.setContestPhaseType(getContestPhaseType());
+        clone.setContestScheduleId(getContestScheduleId());
         clone.setFellowScreeningActive(getFellowScreeningActive());
         clone.setContestPhaseAutopromote(getContestPhaseAutopromote());
         clone.setContestPhaseDescriptionOverride(getContestPhaseDescriptionOverride());
@@ -594,6 +657,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         clone.setPhaseInactiveOverride(getPhaseInactiveOverride());
         clone.setPhaseStartDate(getPhaseStartDate());
         clone.setPhaseEndDate(getPhaseEndDate());
+        clone.setPhaseBufferEndDated(getPhaseBufferEndDated());
         clone.setNextStatus(getNextStatus());
         clone.setCreated(getCreated());
         clone.setUpdated(getUpdated());
@@ -644,7 +708,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(29);
+        StringBundler sb = new StringBundler(33);
 
         sb.append("{ContestPhasePK=");
         sb.append(getContestPhasePK());
@@ -652,6 +716,8 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         sb.append(getContestPK());
         sb.append(", ContestPhaseType=");
         sb.append(getContestPhaseType());
+        sb.append(", contestScheduleId=");
+        sb.append(getContestScheduleId());
         sb.append(", fellowScreeningActive=");
         sb.append(getFellowScreeningActive());
         sb.append(", contestPhaseAutopromote=");
@@ -666,6 +732,8 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         sb.append(getPhaseStartDate());
         sb.append(", PhaseEndDate=");
         sb.append(getPhaseEndDate());
+        sb.append(", PhaseBufferEndDated=");
+        sb.append(getPhaseBufferEndDated());
         sb.append(", nextStatus=");
         sb.append(getNextStatus());
         sb.append(", created=");
@@ -681,7 +749,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(46);
+        StringBundler sb = new StringBundler(52);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhase");
@@ -698,6 +766,10 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         sb.append(
             "<column><column-name>ContestPhaseType</column-name><column-value><![CDATA[");
         sb.append(getContestPhaseType());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestScheduleId</column-name><column-value><![CDATA[");
+        sb.append(getContestScheduleId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>fellowScreeningActive</column-name><column-value><![CDATA[");
@@ -726,6 +798,10 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         sb.append(
             "<column><column-name>PhaseEndDate</column-name><column-value><![CDATA[");
         sb.append(getPhaseEndDate());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>PhaseBufferEndDated</column-name><column-value><![CDATA[");
+        sb.append(getPhaseBufferEndDated());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>nextStatus</column-name><column-value><![CDATA[");

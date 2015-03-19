@@ -31,19 +31,45 @@
 	</attribute>
   	
   </tag>
-  
-   
-  <tag-file>
-    <description>Contest link</description>
-    <name>contestLink</name>
-    <path>/META-INF/tags/collab/contestLink.tagx</path>
-  </tag-file>
-  
-  <tag-file>
-    <description>Sort arrow</description>
-    <name>sortArrow</name>
-    <path>/META-INF/tags/collab/sortArrow.tagx</path>
-  </tag-file>
+
+    <tag-file>
+        <description>Contest link</description>
+        <name>contestLink</name>
+        <path>/META-INF/tags/collab/contestLink.tagx</path>
+    </tag-file>
+
+    <tag-file>
+        <description>Discussion Comments</description>
+        <name>discussionComments</name>
+        <path>/META-INF/tags/collab/discussionComments.tagx</path>
+    </tag-file>
+
+    <tag-file>
+        <description>Image upload</description>
+        <name>imageUpload</name>
+        <path>/META-INF/tags/collab/imageUpload.tagx</path>
+    </tag-file>
+
+    <tag-file>
+        <description>outline_ontologyTermWithChildren</description>
+        <name>outline_ontologyTermWithChildren</name>
+        <path>/META-INF/tags/collab/outline_ontologyTermWithChildren.tagx</path>
+    </tag-file>
+
+
+
+
+    <tag-file>
+        <description>Team Box</description>
+        <name>teamBox</name>
+        <path>/META-INF/tags/collab/teamBox.tagx</path>
+    </tag-file>
+
+      <tag-file>
+        <description>Sort arrow</description>
+        <name>sortArrow</name>
+        <path>/META-INF/tags/collab/sortArrow.tagx</path>
+      </tag-file>
 
     <tag-file>
         <description>Proposal Link</description>
@@ -58,17 +84,27 @@
     </tag-file>
 
     <tag-file>
+        <description>Date and Time Formatter</description>
+        <name>dateTime</name>
+        <path>/META-INF/tags/collab/dateTime.tagx</path>
+    </tag-file>
+
+    <tag-file>
         <description>User Link Simple</description>
         <name>userLinkSimple</name>
         <path>/META-INF/tags/collab/userLinkSimple.tagx</path>
     </tag-file>
 
-
+    <tag-file>
+        <description>User Portrait</description>
+        <name>userPortrait</name>
+        <path>/META-INF/tags/collab/userPortrait.tagx</path>
+    </tag-file>
 
     <tag-file>
-        <description>Date and Time Formatter</description>
-        <name>dateTime</name>
-        <path>/META-INF/tags/collab/dateTime.tagx</path>
+        <description>User Portrait Select Option</description>
+        <name>userPortraitSelectOption</name>
+        <path>/META-INF/tags/collab/userPortraitSelectOption.tagx</path>
     </tag-file>
 
 </taglib>  

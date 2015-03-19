@@ -38,7 +38,7 @@ public class MessageSettingsJSONController extends JSONHelper{
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
         boolean result = updateSendEmailOnMessageSettings(request, messageSetting);
-        this.writeResultResponseJSON(result, response);
+        this.writeSuccessResultResponseJSON(result, response);
     }
 
     @ResourceMapping("updateUserSendEmailOnActivitySettings")
@@ -51,7 +51,7 @@ public class MessageSettingsJSONController extends JSONHelper{
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
         boolean result = updateSendEmailOnActivitySettings(request,messageSetting);
-        this.writeResultResponseJSON(result, response);
+        this.writeSuccessResultResponseJSON(result, response);
     }
 
     @ResourceMapping("updateUserSendDailyEmailOnActivitySettings")
@@ -64,7 +64,7 @@ public class MessageSettingsJSONController extends JSONHelper{
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
         boolean result = updateSendDailyEmailOnActivitySettings(request, messageSetting);
-        this.writeResultResponseJSON(result, response);
+        this.writeSuccessResultResponseJSON(result, response);
     }
 
     private boolean updateSendEmailOnMessageSettings(PortletRequest request, boolean messageSetting) {
