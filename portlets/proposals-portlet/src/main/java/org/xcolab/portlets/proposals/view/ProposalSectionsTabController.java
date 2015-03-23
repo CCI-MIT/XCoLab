@@ -1,10 +1,9 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.*;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,11 @@ import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.*;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("view")
@@ -98,7 +98,27 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request));
         JudgeProposalFeedbackBean judgeProposalBean = new JudgeProposalFeedbackBean(proposalJudgeWrapper);
-        judgeProposalBean.setContestPhaseId(proposalsContext.getContestPhase(request).getContestPhasePK());
+        Long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+        Long userId = proposalsContext.getUser(request).getUserId();
+        judgeProposalBean.setContestPhaseId(contestPhaseId);
+
+        //find existing ratings
+        List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
+                userId,
+                proposalId,
+                contestPhaseId);
+
+        if (!existingRatings.isEmpty()) {
+            Map<Long, String> existingJudgeRating = new LinkedHashMap<>();
+            Long index = 1L;
+            for (ProposalRating proposalRating : existingRatings) {
+                existingJudgeRating.put(index, "" + proposalRating.getRatingValueId());
+                index++;
+            }
+            String existingComment = existingRatings.get(0).getComment();
+            judgeProposalBean.setRatingValues(existingJudgeRating);
+            judgeProposalBean.setComment(existingComment);
+        }
         model.addAttribute("judgeProposalBean", judgeProposalBean);
 
         return "proposalDetails";
