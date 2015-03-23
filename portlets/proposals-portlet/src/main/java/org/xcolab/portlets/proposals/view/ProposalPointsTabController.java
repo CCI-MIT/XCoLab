@@ -55,7 +55,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
             PointTypeWrapper parentPointType = new PointTypeWrapper(contestParentPointType);
 
-            List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId());
+            List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
             List<ProposalWrapper> subProposalsWrapped = new ArrayList<ProposalWrapper>();
             for (Proposal p: subProposals) {
                 subProposalsWrapped.add(new ProposalWrapper(p));

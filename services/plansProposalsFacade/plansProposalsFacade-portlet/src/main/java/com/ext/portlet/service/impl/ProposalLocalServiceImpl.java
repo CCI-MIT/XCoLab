@@ -1484,59 +1484,62 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         String link = "/web/guest/plans/-/plans/contestId/%d/phaseId/%d/planId/%d";
         return String.format(link, contest.getContestPK(), contestPhase.getContestPhasePK(), proposal.getProposalId());
     }
-    
+
     /**
      * Returns list of proposals referenced by given proposal
-     * @param proposalId      The proposal for which subproposals should be returned
+     * @param proposalId                        The proposal for which subproposals should be returned
+     * @param includeProposalsInSameContest     Specifies whether linked proposals in the same contest as the passed proposal
+     *                                          should be included in the result or not
      * @return collection of referenced proposals
      */
-    public List<Proposal> getSubproposals(long proposalId) throws SystemException, PortalException {
-    	Set<Long> detectedIds = new HashSet<Long>();
-    	
-    	
-    	for (ProposalAttribute attribute: getAttributes(proposalId)) {
-    		
-    		if (attribute.getName().equals(ProposalAttributeKeys.SECTION)) {
-    			PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
-    			
-    			if (StringUtils.isBlank(psd.getType())) {
-    				continue;
-    			}
-    		
-    			PlanSectionTypeKeys type = PlanSectionTypeKeys.valueOf(psd.getType());
-    			switch (type) {
-    			case PROPOSAL_REFERENCE:
-        			detectedIds.add(attribute.getNumericValue());
-        			break;
-    			case PROPOSAL_LIST_REFERENCE:
-                    String[] referencedProposals = attribute.getStringValue().split(",");
-                    for (int i = 0; i < referencedProposals.length; i++) {
-                    	detectedIds.add(Long.parseLong(referencedProposals[i]));
-                    }
-                    break;
-    			case PROPOSAL_LIST_TEXT_REFERENCE:
-    				Pattern proposalLinkPattern = Pattern.compile("(href=|https?://).*?/plans/-/plans/contestId/(\\d*)/planId/(\\d*)");
-    				Matcher m = proposalLinkPattern.matcher(attribute.getStringValue());
-    				while (m.find()) {
-    					detectedIds.add(Long.parseLong(m.group(3)));
-    				}
-    				break;
-    			}
-    		}
-    	}
+    public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest) throws SystemException, PortalException {
+        Set<Long> detectedIds = new HashSet<Long>();
 
-    	List<Proposal> proposals = new ArrayList<Proposal>();
-    	for (Long subProposalId: detectedIds) {
+
+        for (ProposalAttribute attribute: getAttributes(proposalId)) {
+
+            if (attribute.getName().equals(ProposalAttributeKeys.SECTION)) {
+                PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
+
+                if (StringUtils.isBlank(psd.getType())) {
+                    continue;
+                }
+
+                PlanSectionTypeKeys type = PlanSectionTypeKeys.valueOf(psd.getType());
+                switch (type) {
+                    case PROPOSAL_REFERENCE:
+                        detectedIds.add(attribute.getNumericValue());
+                        break;
+                    case PROPOSAL_LIST_REFERENCE:
+                        String[] referencedProposals = attribute.getStringValue().split(",");
+                        for (int i = 0; i < referencedProposals.length; i++) {
+                            detectedIds.add(Long.parseLong(referencedProposals[i]));
+                        }
+                        break;
+                    case PROPOSAL_LIST_TEXT_REFERENCE:
+                        Pattern proposalLinkPattern = Pattern.compile("(href=|https?://).*?/plans/-/plans/contestId/(\\d*)/planId/(\\d*)");
+                        Matcher m = proposalLinkPattern.matcher(attribute.getStringValue());
+                        while (m.find()) {
+                            detectedIds.add(Long.parseLong(m.group(3)));
+                        }
+                        break;
+                }
+            }
+        }
+
+        List<Proposal> proposals = new ArrayList<Proposal>();
+        for (Long subProposalId: detectedIds) {
             Proposal p = getProposal(subProposalId);
             if (p != null) {
-                //do not allow subproposals to be in the same contest as the current proposal. this saves a lot of headaches regarding transitive loops
-                if (!getLatestProposalContest(proposalId).equals(getLatestProposalContest(subProposalId))) {
+                //do not allow subproposals to be in the same contest as the current proposal if specified.
+                // this saves a lot of headaches regarding transitive loops
+                if (includeProposalsInSameContest || !getLatestProposalContest(proposalId).equals(getLatestProposalContest(subProposalId))) {
                     proposals.add(p);
                 }
             }
 
-    	}
-    	return proposals;
+        }
+        return proposals;
     }
 
     /**
