@@ -366,7 +366,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         _methodName36 = "removeAttribute";
 
         _methodParameterTypes36 = new String[] {
-                "long", "com.ext.portlet.model.ProposalAttribute", "long"
+                "long", "com.ext.portlet.model.ProposalAttribute"
             };
 
         _methodName37 = "getProposalVersions";
@@ -571,7 +571,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         _methodName81 = "getSubproposals";
 
-        _methodParameterTypes81 = new String[] { "long" };
+        _methodParameterTypes81 = new String[] { "long", "boolean" };
 
         _methodName82 = "getLatestProposalContestPhase";
 
@@ -3198,14 +3198,15 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
     @Override
     public java.util.List<com.ext.portlet.model.Proposal> getSubproposals(
-        long proposalId)
+        long proposalId, boolean includeProposalsInSameContest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName81,
-                    _methodParameterTypes81, new Object[] { proposalId });
+                    _methodParameterTypes81,
+                    new Object[] { proposalId, includeProposalsInSameContest });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

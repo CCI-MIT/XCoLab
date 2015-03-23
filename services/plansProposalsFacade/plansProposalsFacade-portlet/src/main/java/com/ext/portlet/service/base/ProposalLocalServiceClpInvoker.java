@@ -367,7 +367,7 @@ public class ProposalLocalServiceClpInvoker {
         _methodName650 = "removeAttribute";
 
         _methodParameterTypes650 = new String[] {
-                "long", "com.ext.portlet.model.ProposalAttribute", "long"
+                "long", "com.ext.portlet.model.ProposalAttribute"
             };
 
         _methodName651 = "getProposalVersions";
@@ -574,7 +574,7 @@ public class ProposalLocalServiceClpInvoker {
 
         _methodName700 = "getSubproposals";
 
-        _methodParameterTypes700 = new String[] { "long" };
+        _methodParameterTypes700 = new String[] { "long", "boolean" };
 
         _methodName701 = "getLatestProposalContestPhase";
 
@@ -1146,7 +1146,8 @@ public class ProposalLocalServiceClpInvoker {
 
         if (_methodName700.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes700, parameterTypes)) {
-            return ProposalLocalServiceUtil.getSubproposals(((Long) arguments[0]).longValue());
+            return ProposalLocalServiceUtil.getSubproposals(((Long) arguments[0]).longValue(),
+                ((Boolean) arguments[1]).booleanValue());
         }
 
         if (_methodName701.equals(name) &&

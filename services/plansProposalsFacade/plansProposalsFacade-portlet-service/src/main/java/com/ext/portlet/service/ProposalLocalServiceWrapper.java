@@ -1364,15 +1364,18 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * Returns list of proposals referenced by given proposal
     *
-    * @param proposalId      The proposal for which subproposals should be returned
+    * @param proposalId                        The proposal for which subproposals should be returned
+    * @param includeProposalsInSameContest     Specifies whether linked proposals in the same contest as the passed proposal
+    should be included in the result or not
     * @return collection of referenced proposals
     */
     @Override
     public java.util.List<com.ext.portlet.model.Proposal> getSubproposals(
-        long proposalId)
+        long proposalId, boolean includeProposalsInSameContest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _proposalLocalService.getSubproposals(proposalId);
+        return _proposalLocalService.getSubproposals(proposalId,
+            includeProposalsInSameContest);
     }
 
     /**

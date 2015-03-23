@@ -214,7 +214,10 @@ public class UserProfileController {
         }
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
-            populateUserWrapper(currentUserProfile, model);
+            model.addAttribute("currentUserProfile", currentUserProfile);
+            model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
+            model.addAttribute("messageBean", new MessageBean());
+            model.addAttribute("userBean", updatedUserBean);
 
         if (updatedUserBean.getPassword() != null  && updatedUserBean.getPassword().trim().length() > 0) {
             if(isPasswordMatchingExistingPassword(currentUserProfile, updatedUserBean.getCurrentPassword().trim())){
