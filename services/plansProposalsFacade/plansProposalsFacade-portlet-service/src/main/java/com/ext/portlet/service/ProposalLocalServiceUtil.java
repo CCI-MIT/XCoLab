@@ -1360,6 +1360,19 @@ public class ProposalLocalServiceUtil {
         return getService().getImpactProposalAttributes(proposal, focusArea);
     }
 
+    /**
+    * Returns all focus areas, for which entered proposal impact data is available
+    *
+    * @param proposal
+    * @return
+    */
+    public static java.util.List<com.ext.portlet.model.FocusArea> getImpactProposalFocusAreas(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getImpactProposalFocusAreas(proposal);
+    }
+
     public static void clearService() {
         _service = null;
     }

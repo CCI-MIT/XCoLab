@@ -10,6 +10,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
@@ -29,28 +30,19 @@ import java.util.Map;
 public class ProposalImpactSeriesList {
     private List<ProposalImpactSeries> impactSerieses;
 
-    public ProposalImpactSeriesList(List<ProposalAttribute> proposalImpactAttributes, Contest contest, Proposal proposal)
+    public ProposalImpactSeriesList(Proposal proposal) throws SystemException, PortalException {
+        this (ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId()), proposal);
+    }
+
+    public ProposalImpactSeriesList(Contest contest, Proposal proposal)
             throws PortalException, SystemException {
 
-        Map<Long, ProposalImpactSeries> focusAreaIdToImpactSeriesMap = new HashMap<>();
-
-        for (ProposalAttribute attribute : proposalImpactAttributes) {
+        this.impactSerieses = new ArrayList<ProposalImpactSeries>();
+        for (FocusArea focusArea : ProposalLocalServiceUtil.getImpactProposalFocusAreas(proposal)) {
             // Get the impact series for the respective focus area
-            FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(attribute.getAdditionalId());
-            ProposalImpactSeries impactSeries = focusAreaIdToImpactSeriesMap.get(focusArea.getId()); // additionalId = focusAreaId
-            if (Validator.isNull(impactSeries)) {
-                impactSeries = new ProposalImpactSeries(contest, proposal, focusArea);
-                focusAreaIdToImpactSeriesMap.put(focusArea.getId(), impactSeries);
-            }
-
-            // Add impact series value for the specified impact type (BAU,...)
-            int year = (int)attribute.getNumericValue();
-            double value = attribute.getRealValue();
-            String impactSeriesName = attribute.getName();
-            impactSeries.addSeriesValueWithType(impactSeriesName, year, value);
+            this.impactSerieses.add(new ProposalImpactSeries(contest, proposal, focusArea));
         }
 
-        this.impactSerieses = new ArrayList<ProposalImpactSeries>(focusAreaIdToImpactSeriesMap.values());
         Collections.sort(impactSerieses, new Comparator<ProposalImpactSeries>() {
             // Sort by whatTerm name and whereTerm name
             @Override
@@ -80,5 +72,39 @@ public class ProposalImpactSeriesList {
         }
 
         return null;
+    }
+
+    /**
+     * Returns a map containing aggregated proposal impact series values of all sector-region pairs of a proposal
+     *
+     * @param seriesTypes           seriesTypes that are being calculated
+     * @return                      A map containing a ProposalImpactSeriesValues object for each impact series type
+     * @throws SystemException
+     * @throws PortalException
+     */
+    public Map<String, ProposalImpactSeriesValues> getAggregatedSeriesValues(List<String> seriesTypes) throws SystemException, PortalException {
+        Map<String, ProposalImpactSeriesValues> seriesTypeToSeriesSumMap = new HashMap<>(seriesTypes.size());
+
+        for (String seriesType : seriesTypes) {
+            seriesTypeToSeriesSumMap.put(seriesType, new ProposalImpactSeriesValues());
+        }
+        seriesTypeToSeriesSumMap.put(ProposalImpactSeries.SERIES_TYPE_RESULT_KEY, new ProposalImpactSeriesValues());
+
+        for (ProposalImpactSeries impactSeries : impactSerieses) {
+            for (String seriesType : seriesTypes) {
+                ProposalImpactSeriesValues integratedSeriesValues = seriesTypeToSeriesSumMap.get(seriesType);
+                ProposalImpactSeriesValues impactSeriesValues = impactSeries.getSeriesValuesForType(seriesType);
+
+                // Add up all the impact series values
+                integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
+            }
+
+            // Aggregate result impact series
+            ProposalImpactSeriesValues integratedSeriesValues = seriesTypeToSeriesSumMap.get(ProposalImpactSeries.SERIES_TYPE_RESULT_KEY);
+            ProposalImpactSeriesValues impactSeriesValues = impactSeries.getResultSeriesValues();
+            integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
+        }
+
+        return seriesTypeToSeriesSumMap;
     }
 }

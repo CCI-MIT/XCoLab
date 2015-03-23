@@ -104,37 +104,9 @@ public class ProposalImpactJSONController {
         ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
         FocusArea selectedFocusArea = new ProposalImpactUtil(contest).getFocusAreaAssociatedWithTerms(sectorOntologyTerm, regionOntologyTerm);
 
-        // Get default serieses
-        List<ImpactDefaultSeries> impactDefaultSerieses =
-                ImpactDefaultSeriesLocalServiceUtil.getAllImpactDefaultSeriesWithFocusArea(selectedFocusArea);
-
         // Create a impact series with all data series for one sector-region pair
         ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), selectedFocusArea);
-        // TODO create query to filter by additionalId?
-        List<ProposalAttribute> impactProposalAttributes =
-                ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
 
-        for (ImpactDefaultSeries defaultSeries : impactDefaultSerieses) {
-            boolean foundEnteredData = false;
-
-            // Look for already entered data
-            if (defaultSeries.isEditable()) {
-                // TODO write a separate finder for the proposal attribute that is being searched
-                for (ProposalAttribute attribute : impactProposalAttributes) {
-                    if (attribute.getName().equals(defaultSeries.getName()) && attribute.getAdditionalId() == selectedFocusArea.getId()) {
-                        foundEnteredData = true;
-                        impactSeries.addSeriesValueWithType(attribute.getName(), (int)attribute.getNumericValue(), attribute.getRealValue());
-                    }
-                }
-
-                // Use default data if not entered
-                if (!foundEnteredData) {
-                    List<ImpactDefaultSeriesData> defaultSeriesDataList =
-                            ImpactDefaultSeriesDataLocalServiceUtil.getDefaultSeriesDataBySeriesId(defaultSeries.getSeriesId());
-                    impactSeries.addSeriesWithType(defaultSeries.getName(), defaultSeriesDataList, true);
-                }
-            }
-        }
         response.getPortletOutputStream().write(impactSeries.toJSONObject().toString().getBytes());
     }
 
@@ -217,10 +189,7 @@ public class ProposalImpactJSONController {
         Contest contest = proposalsContext.getContest(request);
         Proposal proposal = proposalsContext.getProposal(request);
 
-        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
-        List<ProposalAttribute> impactProposalAttributes =
-                ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
-        ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(impactProposalAttributes, contest, proposal);
+        ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(contest, proposal);
         return new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
     }
 
@@ -228,11 +197,6 @@ public class ProposalImpactJSONController {
         Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
 
-        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
-
-        // All filled out impact series
-        List<ProposalAttribute> impactProposalAttributes =
-                ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
-        return new ProposalImpactSeriesList(impactProposalAttributes, contest, proposal.getWrapped());
+        return new ProposalImpactSeriesList(contest, proposal.getWrapped());
     }
 }

@@ -178,6 +178,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private String[] _methodParameterTypes84;
     private String _methodName85;
     private String[] _methodParameterTypes85;
+    private String _methodName86;
+    private String[] _methodParameterTypes86;
 
     public ProposalLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -591,6 +593,10 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.FocusArea"
             };
+
+        _methodName86 = "getImpactProposalFocusAreas";
+
+        _methodParameterTypes86 = new String[] { "com.ext.portlet.model.Proposal" };
     }
 
     @Override
@@ -3352,5 +3358,38 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         }
 
         return (java.util.List<com.ext.portlet.model.ProposalAttribute>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.FocusArea> getImpactProposalFocusAreas(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName86,
+                    _methodParameterTypes86,
+                    new Object[] { ClpSerializer.translateInput(proposal) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.FocusArea>) ClpSerializer.translateOutput(returnObj);
     }
 }

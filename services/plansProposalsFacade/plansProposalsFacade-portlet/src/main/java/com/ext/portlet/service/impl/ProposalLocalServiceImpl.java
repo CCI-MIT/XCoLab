@@ -15,6 +15,7 @@ import javax.mail.internet.AddressException;
 import javax.portlet.PortletRequest;
 
 import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
@@ -1566,9 +1567,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 PlanSectionTypeKeys type = PlanSectionTypeKeys.valueOf(psd.getType());
                 switch (type) {
                     case PROPOSAL_REFERENCE:
-                        detectedIds.add(attribute.getNumericValue());
+                        if (attribute.getNumericValue() != 0) {
+                            detectedIds.add(attribute.getNumericValue());
+                        }
                         break;
                     case PROPOSAL_LIST_REFERENCE:
+                        if (Validator.isNull(attribute.getStringValue())) {
+                            break;
+                        }
                         String[] referencedProposals = attribute.getStringValue().split(",");
                         for (int i = 0; i < referencedProposals.length; i++) {
                             detectedIds.add(Long.parseLong(referencedProposals[i]));
@@ -1644,5 +1650,25 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             }
         }
         return filteredProposalAttributes;
+    }
+
+    /**
+     * Returns all focus areas, for which entered proposal impact data is available
+     *
+     * @param proposal
+     * @return
+     */
+    public List<FocusArea> getImpactProposalFocusAreas(Proposal proposal) throws SystemException, PortalException {
+        Set<Long> focusAreaIdSet = new HashSet<>();
+        List<FocusArea> impactSeriesFocusAreas = new ArrayList<>();
+
+        for (ProposalAttribute attribute : getImpactProposalAttributes(proposal)) {
+            if (!focusAreaIdSet.contains(attribute.getAdditionalId())) {
+                focusAreaIdSet.add(attribute.getAdditionalId());
+                impactSeriesFocusAreas.add(FocusAreaLocalServiceUtil.getFocusArea(attribute.getAdditionalId()));
+            }
+        }
+
+        return impactSeriesFocusAreas;
     }
 }

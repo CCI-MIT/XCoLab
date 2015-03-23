@@ -179,6 +179,8 @@ public class ProposalLocalServiceClpInvoker {
     private String[] _methodParameterTypes703;
     private String _methodName704;
     private String[] _methodParameterTypes704;
+    private String _methodName705;
+    private String[] _methodParameterTypes705;
 
     public ProposalLocalServiceClpInvoker() {
         _methodName0 = "addProposal";
@@ -594,6 +596,10 @@ public class ProposalLocalServiceClpInvoker {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.FocusArea"
             };
+
+        _methodName705 = "getImpactProposalFocusAreas";
+
+        _methodParameterTypes705 = new String[] { "com.ext.portlet.model.Proposal" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -1169,6 +1175,11 @@ public class ProposalLocalServiceClpInvoker {
                 Arrays.deepEquals(_methodParameterTypes704, parameterTypes)) {
             return ProposalLocalServiceUtil.getImpactProposalAttributes((com.ext.portlet.model.Proposal) arguments[0],
                 (com.ext.portlet.model.FocusArea) arguments[1]);
+        }
+
+        if (_methodName705.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes705, parameterTypes)) {
+            return ProposalLocalServiceUtil.getImpactProposalFocusAreas((com.ext.portlet.model.Proposal) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

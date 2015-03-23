@@ -5,13 +5,16 @@ import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.ImpactTemplateMaxFocusArea;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
+import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
 
 import java.util.ArrayList;
 import java.util.HashMap;

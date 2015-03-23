@@ -1427,6 +1427,20 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * Returns all focus areas, for which entered proposal impact data is available
+    *
+    * @param proposal
+    * @return
+    */
+    @Override
+    public java.util.List<com.ext.portlet.model.FocusArea> getImpactProposalFocusAreas(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getImpactProposalFocusAreas(proposal);
+    }
+
+    /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ProposalLocalService getWrappedProposalLocalService() {
