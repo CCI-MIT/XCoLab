@@ -554,7 +554,7 @@ public class ProposalLocalServiceClpInvoker {
 
         _methodName660 = "getSubproposals";
 
-        _methodParameterTypes660 = new String[] { "long" };
+        _methodParameterTypes660 = new String[] { "long", "boolean" };
 
         _methodName661 = "getLatestProposalContestPhase";
 
@@ -1098,7 +1098,8 @@ public class ProposalLocalServiceClpInvoker {
 
         if (_methodName660.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes660, parameterTypes)) {
-            return ProposalLocalServiceUtil.getSubproposals(((Long) arguments[0]).longValue());
+            return ProposalLocalServiceUtil.getSubproposals(((Long) arguments[0]).longValue(),
+                ((Boolean) arguments[1]).booleanValue());
         }
 
         if (_methodName661.equals(name) &&

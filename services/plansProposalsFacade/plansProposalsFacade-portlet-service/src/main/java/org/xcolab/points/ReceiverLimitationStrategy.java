@@ -105,7 +105,7 @@ public enum ReceiverLimitationStrategy {
 				PointType pointType, DistributionStrategy distributionStrategy) throws SystemException, PortalException {
 			List<PointsTarget> targets = new ArrayList<PointsTarget>();
 			
-			Collection<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId());
+			Collection<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
 			Set<Long> proposalIds = new HashSet<Long>();
 			for (Proposal p: subProposals) {
                 if (p.getProposalId() != proposal.getProposalId()) {
