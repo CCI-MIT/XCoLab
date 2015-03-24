@@ -77,9 +77,12 @@
             {{#each series.resultValues}}
                 <td class="impact-value">{{this}}</td>
             {{/each}}
-            <td><div class="edit-prop-butts">
-                <a class="impact-delete-row-button" id="{{series.focusAreaId}}" href="javascript:;">Remove</a>
-            </div></td>
+            <td>
+                <div class="edit-prop-butts">
+                    <a class="impact-delete-row-button" id="{{series.focusAreaId}}" href="javascript:;">Remove</a>
+                </div>
+                <span class="spinner-area">&#160;</span>
+            </td>
         </tr>
     </script>
 
