@@ -551,7 +551,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         _methodName79 = "getSubproposals";
 
-        _methodParameterTypes79 = new String[] { "long" };
+        _methodParameterTypes79 = new String[] { "long", "boolean" };
 
         _methodName80 = "getLatestProposalContestPhase";
 
@@ -3098,14 +3098,15 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
     @Override
     public java.util.List<com.ext.portlet.model.Proposal> getSubproposals(
-        long proposalId)
+        long proposalId, boolean includeProposalsInSameContest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName79,
-                    _methodParameterTypes79, new Object[] { proposalId });
+                    _methodParameterTypes79,
+                    new Object[] { proposalId, includeProposalsInSameContest });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
