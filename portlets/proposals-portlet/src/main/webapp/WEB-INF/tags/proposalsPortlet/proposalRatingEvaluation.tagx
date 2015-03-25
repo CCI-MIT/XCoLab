@@ -30,8 +30,10 @@
                             ${rating.ratingValueName}
                         </li>
                     </c:forEach>
+                    <br/>
                 </ul>
             </c:if>
+
             <p>
                 <strong>Judges Comments</strong><br/>
                 <span class="comment-wrapper">${wrapper.commentEscaped}</span>
