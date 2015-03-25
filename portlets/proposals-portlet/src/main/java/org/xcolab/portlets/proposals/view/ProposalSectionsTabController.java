@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -120,6 +121,14 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             judgeProposalBean.setComment(existingComment);
         }
         model.addAttribute("judgeProposalBean", judgeProposalBean);
+
+        Proposal proposal = proposalsContext.getProposal(request);
+        List<Proposal> linkedProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
+        List<ProposalWrapper> linkedProposalsWrappers = new ArrayList<>();
+        for (Proposal linkedProposal: linkedProposals){
+            linkedProposalsWrappers.add(new ProposalWrapper(linkedProposal));
+        }
+        model.addAttribute("linkedProposalList", linkedProposalsWrappers);
 
         return "proposalDetails";
     }
