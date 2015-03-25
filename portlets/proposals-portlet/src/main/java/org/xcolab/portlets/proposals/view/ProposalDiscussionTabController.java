@@ -46,6 +46,7 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
                 Long contestId = proposalsContext.getContestPhase(request).getContestPK();
 
                 List<ProposalRatingsWrapper> judgeAverageRating = getJudgesAverageRating(contestId, proposalId);
+                Collections.reverse(judgeAverageRating);
 
                 model.addAttribute("discussionId", discussionId);
                 model.addAttribute("showDiscussion", true);
