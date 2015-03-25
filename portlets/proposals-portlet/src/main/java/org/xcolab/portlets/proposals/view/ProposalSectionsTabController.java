@@ -4,6 +4,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -18,7 +19,9 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.*;
 
 import javax.portlet.PortletRequest;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -100,6 +103,14 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         JudgeProposalFeedbackBean judgeProposalBean = new JudgeProposalFeedbackBean(proposalJudgeWrapper);
         judgeProposalBean.setContestPhaseId(proposalsContext.getContestPhase(request).getContestPhasePK());
         model.addAttribute("judgeProposalBean", judgeProposalBean);
+
+        Proposal proposal = proposalsContext.getProposal(request);
+        List<Proposal> linkedProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
+        List<ProposalWrapper> linkedProposalsWrappers = new ArrayList<>();
+        for (Proposal linkedProposal: linkedProposals){
+            linkedProposalsWrappers.add(new ProposalWrapper(linkedProposal));
+        }
+        model.addAttribute("linkedProposalList", linkedProposalsWrappers);
 
         return "proposalDetails";
     }
