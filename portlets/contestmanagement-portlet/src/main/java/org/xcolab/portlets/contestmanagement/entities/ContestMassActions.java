@@ -18,9 +18,9 @@ public enum ContestMassActions{
     REPORT_PEOPLE_IN_CURRENT_PHASE("Generate report of contributors in active phase", ContestMassActionMethods.class, "reportOfPeopleInCurrentPhase"),
     DELETE("Delete contest", ContestMassActionMethods.class, "deleteContest"),
     ACTIVE("Active", "Prior", ContestWrapper.class,"setContestActive"),
-    PRIVATE("Hide", "Unhide", ContestWrapper.class, "setContestPrivate"),
+    PRIVATE("Private", "Public", ContestWrapper.class, "setContestPrivate"),
     FEATURED("Feature", "Remove feature", ContestWrapper.class, "setFeatured"),
-    SUBSCRIBE("Subscribe to activity", "Unsubscribe to activity", ContestMassActionMethods.class, "changeSubscriptionStatus");
+    SUBSCRIBE("Subscribe to activity", "Unsubscribe from activity", ContestMassActionMethods.class, "changeSubscriptionStatus");
 
     private Log _log = LogFactoryUtil.getLog(ContestMassActions.class);
     private final String actionDisplayName;

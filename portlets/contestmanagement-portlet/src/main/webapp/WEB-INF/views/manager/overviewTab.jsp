@@ -9,14 +9,6 @@
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
 
-	<c:if test="${not empty sessionScope.massActionSuccess }">
-		<script type="text/javascript" >
-			jQuery.growlUI('SUCCESS', "${sessionScope.massActionSuccess}");
-		</script>
-	</c:if>
-
-	<c:remove var="massActionSuccess" scope="session" />
-
 	<portlet:actionURL var="updateContestOverviewURL">
 		<portlet:param name="action_forwardToPage" value="overviewTab" />
 		<portlet:param name="action_errorForwardToPage" value="overviewTab" />

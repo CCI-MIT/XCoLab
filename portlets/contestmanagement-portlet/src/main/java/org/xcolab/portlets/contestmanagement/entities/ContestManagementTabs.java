@@ -8,9 +8,9 @@ import javax.portlet.PortletRequest;
  * Created by Thomas on 2/9/2015.
  */
 public enum ContestManagementTabs implements TabEnum{
-		OVERVIEW("Contests overview", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
+		OVERVIEW("Contests overview", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	//PHASES("Phase types", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
-	//SCHEDULES("Schedules", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
+	SCHEDULES("Schedules", TabPermissionAlgorithm.adminOnlyViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
 	//PROPOSALTEMPLATES("Proposal Templates", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
 
 	private final String displayName;

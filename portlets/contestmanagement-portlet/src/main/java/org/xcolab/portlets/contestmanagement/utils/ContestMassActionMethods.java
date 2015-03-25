@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class ContestMassActionMethods {
 
-    private static final Long ADMIN_ID = 10144L;
+    private static final Long CLIMATE_COLAB_TEAM_USER_ID = 1431053L;
 
     public static void sendMassMessage(Long contestPK, Object massMessageWrapperObject, PortletRequest request) throws Exception{
         MassMessageBean massMessageBean = (MassMessageBean) massMessageWrapperObject;
@@ -48,10 +48,9 @@ public class ContestMassActionMethods {
         String messageSubject = massMessageBean.getSubject();
         String messageBody = massMessageBean.getBody();
         MessageUtil.sendMessage(messageSubject, messageBody,
-                ADMIN_ID, ADMIN_ID, recipientIds, request);
+                CLIMATE_COLAB_TEAM_USER_ID, CLIMATE_COLAB_TEAM_USER_ID, recipientIds, request);
 
-        // TODO check whether we want email notification {
-        /*
+        /* Enable this for email notifications
         InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
         InternetAddress replyTo[] = {addressFrom};
         MailEngine.send(addressFrom, (InternetAddress[]) recipientAddresses.toArray(), null, null, null,
