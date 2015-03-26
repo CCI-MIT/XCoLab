@@ -17,6 +17,13 @@
 		<portlet:param name="action" value="updateContestOverview" />
 	</portlet:actionURL>
 
+	<portlet:resourceURL var="getExport" id="getExport">
+		<portlet:param name="action_forwardToPage" value="overviewTab" />
+		<portlet:param name="action_errorForwardToPage" value="overviewTab" />
+		<portlet:param name="tab" value="OVERVIEW" />
+		<portlet:param name="manager" value="true" />
+	</portlet:resourceURL>
+
 	<div class="cmsDetailsBox">
 		<div class="floatRight outerVerticalCenter">
 			<div class="innerVerticalCenter floatLeft">
@@ -39,7 +46,7 @@
 					</form:select>
 				</div>
 				<div class="blue-button innerVerticalCenter" >
-					<a href="#" onclick="document.getElementById('editForm').submit()">SUBMIT</a>
+					<a href="#" id="submitButton" target="_blank">SUBMIT</a>
 				</div>
 			</div>
 			<div id="massMessage" style="display: none;">
@@ -85,11 +92,13 @@
 								ondragleave="dragLeave(event)"
 								id = "${contestWrapper.contestPK}"
 								data-filter-attribute="${contestWrapper.contestActive ? 'active' : 'prior'}"
-								class = "${x.index %2==0 ? 'blue' : ''}">
+								class = "${x.index %2==0 ? 'blue' : ''}"
+								data-filter-visible="true"
+									>
 								<form:hidden path="contestWrappers[${x.index}].contestPK"
 											 data-form-name="contestPK" />
 								<td>
-									<form:checkbox path="selectedContest[${x.index}]" cssClass="checkbox" />
+									<form:checkbox path="selectedContest[${x.index}]" cssClass="checkbox"/>
 								</td>
 								<td>
 									<form:hidden path="contestWrappers[${x.index}].weight"
@@ -98,7 +107,7 @@
 								</td>
 								<td >
 									<collab:contestLink contestId="${contestWrapper.contestPK}" text="${contestWrapper.contestShortName}"
-														target="_blank"/>
+														/>
 								</td>
 								<td >${contestWrapper.activePhase.name}</td>
 								<td><form:checkbox path="contestWrappers[${x.index}].contestActive" disabled="true" /></td>
@@ -130,14 +139,41 @@
 
 		jQuery('document').ready(function(){
 			var dropDownElement = document.getElementById("selectedMassAction");
+			var editFormElement = document.getElementById('editForm');
+			var MASS_MESSAGE_SELECT_ID = 1;
+			var REPORT_SELECT_ID = 3;
+			var actionURL = "${updateContestOverviewURL }";
+			var resourceURL = "${getExport }";
+
 			dropDownElement.addEventListener("change", function(ev){
 				var massMessageDiv = document.getElementById("massMessage");
-				if(ev.target.value == 1){
+				var editFormElement = document.getElementById("editForm");
+				var selectedDropDownId = ev.target.value;
+
+				if(selectedDropDownId == REPORT_SELECT_ID){
+					editFormElement.action = resourceURL;
+				} else {
+					editFormElement.action = actionURL;
+				}
+
+				if(selectedDropDownId == MASS_MESSAGE_SELECT_ID){
 					massMessageDiv.style.display = '';
 				} else{
 					massMessageDiv.style.display = 'none';
 				}
 			})
+
+			var submitButtonElement = document.getElementById("submitButton");
+			submitButtonElement.addEventListener("click", function(){
+				editFormElement.submit();
+				/*var selectedDropDownId = dropDownElement.value;
+				if(selectedDropDownId == REPORT_SELECT_ID){
+					sendGetReportRequestToServer();
+				} else {
+					editFormElement.submit();
+				}*/
+			})
+
 
 			var contestsFilterSelectElement = document.getElementById("contestsFilterSelect");
 			contestsFilterSelectElement.addEventListener("change", function(){
@@ -146,20 +182,35 @@
 			})
 
 			var selectAllCheckboxElement = document.getElementById("selectAllCheckbox");
-
 			selectAllCheckboxElement.addEventListener("change", function (ev) {
-			var selectAllChecked = selectAllCheckboxElement.checked;
+				var selectAllChecked = selectAllCheckboxElement.checked;
 				var contestsTableBody = document.getElementsByTagName('tbody')[0];
 				[].forEach.call(contestsTableBody.getElementsByClassName("checkbox"), function (element) {
-					if(selectAllChecked) {
-						element.checked = true;
-					} else {
-						element.checked = false;
+					var parentRow = getClosest(element, "tr");
+					if( parentRow.getAttribute("data-filter-visible")  === 'true'){
+						if (selectAllChecked) {
+							element.checked = true;
+						} else {
+							element.checked = false;
+						}
 					}
 				});
 			});
 
 		});
+
+		function sendGetReportRequestToServer(){
+			var editFormElement = document.getElementById('editForm');
+			jQuery.ajax({
+				type: 'POST',
+				url: resourceURL,
+				data: jQuery(editFormElement).serialize(),
+				success: function(response){
+				},
+				error: function(xhr, status, error){
+				}
+			});
+		}
 
 		function showContestsWithDataAttributeFilter(dataFilterAttribute){
 			var contestsTableBody = document.getElementsByTagName('tbody')[0];
@@ -167,8 +218,10 @@
 				var elementDataFilterAttribute =  element.getAttribute("data-filter-attribute");
 				if(dataFilterAttribute === "all" || elementDataFilterAttribute === dataFilterAttribute ){
 					element.style.display = "";
+					element.setAttribute("data-filter-visible", "true");
 				} else {
 					element.style.display = "none";
+					element.setAttribute("data-filter-visible", "false");
 				}
 			});
 		}

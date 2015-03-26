@@ -6,6 +6,8 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
@@ -14,8 +16,11 @@ import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 
 import javax.mail.internet.InternetAddress;
 import javax.portlet.PortletRequest;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,24 +28,46 @@ import java.util.List;
  */
 public class ContestMassActionMethods {
 
+    private final static Log _log = LogFactoryUtil.getLog(ContestMassActionMethods.class);
     private static final Long CLIMATE_COLAB_TEAM_USER_ID = 1431053L;
+    private static final List<String> CSV_EXPORT_HEADER =
+            Arrays.asList("Contest", "Proposal Title", "Proposal Link", "Username", "First Name",
+                    "Last Name", "Email Address", "Role", "Last phase");
 
-    public static void sendMassMessage(Long contestPK, Object massMessageWrapperObject, PortletRequest request) throws Exception{
+    public static void reportOfPeopleInCurrentPhase(List<Long> contestList, Object ResourceResponseObject, PortletRequest request) throws Exception{
+
+        ResourceResponse response = (ResourceResponse) ResourceResponseObject;
+        CsvExportUtil csvExportUtil = new CsvExportUtil();
+        csvExportUtil.addRowToExportData(CSV_EXPORT_HEADER);
+
+        for(Long contestId : contestList){
+            try {
+                List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
+                csvExportUtil.addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase);
+            } catch (Exception e){
+                _log.warn("Failed to export data for csv: ", e);
+            }
+        }
+
+        csvExportUtil.initiateDownload("reportOfPeopleInCurrentPhase", request, response);
+
+    }
+    public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject, PortletRequest request) throws Exception{
+
         MassMessageBean massMessageBean = (MassMessageBean) massMessageWrapperObject;
-
         List<Long> recipientIds = new ArrayList<>();
-        List<InternetAddress> recipientAddresses = new ArrayList<>();
-        Contest contest = ContestLocalServiceUtil.getContest(contestPK);
-        ContestPhase activeContestPhase = ContestLocalServiceUtil.getActivePhase(contest);
-        List<Proposal> proposalsInContestPhase =
-                ProposalLocalServiceUtil.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
+        List<InternetAddress> recipientAddresses = new  ArrayList<>();
 
-        for(Proposal proposal : proposalsInContestPhase){
-            List<User> proposalMember = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
-            for(User user : proposalMember){
-                if(!recipientIds.contains(user.getUserId())) {
-                    recipientIds.add(user.getUserId());
-                    recipientAddresses.add(new InternetAddress(user.getEmailAddress()));
+        for(Long contestId : contestList) {
+            List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
+
+            for (Proposal proposal : proposalsInActiveContestPhase) {
+                List<User> proposalMember = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
+                for (User user : proposalMember) {
+                    if (!recipientIds.contains(user.getUserId())) {
+                        recipientIds.add(user.getUserId());
+                        recipientAddresses.add(new InternetAddress(user.getEmailAddress()));
+                    }
                 }
             }
         }
@@ -60,7 +87,8 @@ public class ContestMassActionMethods {
 
     }
 
-    public static void sendSupport2VotesEmail(Long contestPK, Object tbd, PortletRequest request) throws Exception{
+    public static void sendSupport2VotesEmail(List<Long> contestList, Object tbd, PortletRequest request) throws Exception{
+        Long contestPK = contestList.get(0);
         Contest contest = ContestLocalServiceUtil.getContest(contestPK);
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(String.format("%s://%s%s", request.getScheme(), request.getServerName(),
@@ -68,12 +96,8 @@ public class ContestMassActionMethods {
         ContestLocalServiceUtil.transferSupportsToVote(contest, serviceContext);
     }
 
-    public static void reportOfPeopleInCurrentPhase(Long contestPK, Object tbd, PortletRequest request){
-        // TODO reportOfPeopleInCurrentPhase
-        System.out.println("TODO reportOfPeopleInCurrentPhase");
-    }
-
-    public static void changeSubscriptionStatus(Long contestPK, Object subscriptionStatusObject, PortletRequest request) throws Exception{
+    public static void changeSubscriptionStatus(List<Long> contestList, Object subscriptionStatusObject, PortletRequest request) throws Exception{
+        Long contestPK = contestList.get(0);
         Long loggedInUserId = PortalUtil.getUserId(request);
         Boolean subscriptionStatus = (boolean) subscriptionStatusObject;
         if(subscriptionStatus) {
@@ -83,15 +107,25 @@ public class ContestMassActionMethods {
         }
     }
 
-    public static void deleteContest(Long contestPK, Object tbd, PortletRequest request)throws Exception{
+    public static void deleteContest(List<Long> contestList, Object tbd, PortletRequest request)throws Exception{
+        Long contestPK = contestList.get(0);
         Contest contest = ContestLocalServiceUtil.getContest(contestPK);
 
         if (! ContestLocalServiceUtil.getAllPhases(contest).isEmpty()) {
             System.out.println("CONTEST HAS PHASES");
             return;
         }
-        Contest deleteContest = ContestLocalServiceUtil.deleteContest(contest);
+        // TODO check why we get an exception here
+        Contest deletedContest = ContestLocalServiceUtil.deleteContest(contest);
         //ContestLocalServiceUtil.updateContest(deleteContest);
     }
 
+
+    private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK) throws Exception{
+        Contest contest = ContestLocalServiceUtil.getContest(contestPK);
+        ContestPhase activeContestPhase = ContestLocalServiceUtil.getActivePhase(contest);
+        List<Proposal> proposalsInContestPhase =
+                ProposalLocalServiceUtil.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
+        return proposalsInContestPhase;
+    }
 }

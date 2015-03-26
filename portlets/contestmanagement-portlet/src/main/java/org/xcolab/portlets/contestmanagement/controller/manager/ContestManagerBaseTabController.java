@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.interfaces.TabEnum;
-import org.xcolab.portlets.contestmanagement.entities.ContestManagementTabs;
+import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.ActionResponse;
@@ -26,7 +26,7 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
     @ModelAttribute("tabs")
     @Override
     public List<TabWrapper> populateTabs(Model model, PortletRequest request) throws PortalException, SystemException {
-        return getAllVisibleTabsWrapped(model, request, ContestManagementTabs.values());
+        return getAllVisibleTabsWrapped(model, request, ContestManagerTabs.values());
     }
 
     @ModelAttribute("currentTabWrapped")

@@ -7,7 +7,7 @@ import javax.portlet.PortletRequest;
 /**
  * Created by Thomas on 2/9/2015.
  */
-public enum ContestManagementTabs implements TabEnum{
+public enum ContestManagerTabs implements TabEnum{
 		OVERVIEW("Contests overview", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	//PHASES("Phase types", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	SCHEDULES("Schedules", TabPermissionAlgorithm.adminOnlyViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
@@ -17,8 +17,8 @@ public enum ContestManagementTabs implements TabEnum{
 	private final TabPermissionAlgorithm tabPermissionAlgorithm;
 	private final TabActivityCountAlgorithm activitiesCountAlgorithm;
 
-	private ContestManagementTabs(String displayName, TabPermissionAlgorithm tabPermissionAlgorithm,
-								  TabActivityCountAlgorithm activitiesCountAlgorithm) {
+	private ContestManagerTabs(String displayName, TabPermissionAlgorithm tabPermissionAlgorithm,
+							   TabActivityCountAlgorithm activitiesCountAlgorithm) {
 		this.displayName = displayName;
 		this.tabPermissionAlgorithm = tabPermissionAlgorithm;
 		this.activitiesCountAlgorithm = activitiesCountAlgorithm;

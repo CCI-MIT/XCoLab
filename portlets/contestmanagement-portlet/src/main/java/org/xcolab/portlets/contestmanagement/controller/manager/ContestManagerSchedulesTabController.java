@@ -10,16 +10,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.interfaces.TabEnum;
-import org.xcolab.portlets.contestmanagement.entities.ContestManagementTabs;
-import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
+import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
-import org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,7 +24,7 @@ import java.util.List;
 public class ContestManagerSchedulesTabController extends ContestManagerBaseTabController {
 
     private final static Log _log = LogFactoryUtil.getLog(ContestManagerSchedulesTabController.class);
-    static final private TabEnum tab = ContestManagementTabs.SCHEDULES;
+    static final private TabEnum tab = ContestManagerTabs.SCHEDULES;
     static final private String TAB_VIEW = "manager/schedulesTab";
 
     @ModelAttribute("currentTabWrapped")

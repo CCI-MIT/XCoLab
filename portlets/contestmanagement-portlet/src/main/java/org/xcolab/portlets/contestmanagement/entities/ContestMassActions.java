@@ -7,6 +7,7 @@ import org.xcolab.wrapper.ContestWrapper;
 
 import javax.portlet.PortletRequest;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Created by Thomas on 2/17/2015.
@@ -48,8 +49,8 @@ public enum ContestMassActions{
         try {
             if(className == ContestWrapper.class){
                 this.method = className.getMethod(methodName, boolean.class);
-            } else {
-                this.method = className.getMethod(methodName, Long.class, Object.class, PortletRequest.class);
+            } else if(className == ContestMassActionMethods.class) {
+                this.method = className.getMethod(methodName, List.class, Object.class, PortletRequest.class);
             }
         } catch (NoSuchMethodException e){
             _log.warn("Could not find mass action method with name: " + methodName);

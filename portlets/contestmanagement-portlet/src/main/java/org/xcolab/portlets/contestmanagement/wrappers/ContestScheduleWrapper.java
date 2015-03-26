@@ -25,6 +25,9 @@ public class ContestScheduleWrapper {
     private List<ContestPhaseBean> schedulePhases;
     private ContestSchedule contestSchedule;
 
+    public ContestScheduleWrapper() {
+    }
+
     public ContestScheduleWrapper(Long scheduleId) {
         try {
             if(scheduleId != null){
@@ -68,6 +71,7 @@ public class ContestScheduleWrapper {
     }
 
     public static List<LabelValue> getScheduleTemplateSelectionItems(){
+        // TODO allow only those with same phase types!!
         List<LabelValue> selectItems = new ArrayList<>();
         try {
             ContestScheduleWrapper.insertSeedDataToContestScheduleTableIfNotAvailable();

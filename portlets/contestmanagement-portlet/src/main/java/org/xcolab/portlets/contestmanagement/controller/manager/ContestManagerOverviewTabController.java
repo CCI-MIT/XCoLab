@@ -8,16 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.interfaces.TabEnum;
-import org.xcolab.portlets.contestmanagement.entities.ContestManagementTabs;
+import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper;
-import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.*;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ import java.util.List;
 public class ContestManagerOverviewTabController extends ContestManagerBaseTabController {
 
     private final static Log _log = LogFactoryUtil.getLog(ContestManagerOverviewTabController.class);
-    static final private TabEnum tab = ContestManagementTabs.OVERVIEW;
+    static final private TabEnum tab = ContestManagerTabs.OVERVIEW;
     static final private String TAB_VIEW = "manager/overviewTab";
 
     @ModelAttribute("currentTabWrapped")
@@ -64,7 +63,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
     }
 
     @RequestMapping(params = "action=updateContestOverview")
-    public void updateTeamTabController(ActionRequest request, Model model,
+    public void updateContestOverviewTabController(ActionRequest request, Model model,
                                         @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
                                         ActionResponse response) {
 
@@ -75,7 +74,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
 
         try {
             updateContestOverviewWrapper.persistOrder();
-            updateContestOverviewWrapper.executeMassActionIfSelected(request);
+            updateContestOverviewWrapper.executeMassActionIfSelected(request, null);
             String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
             addActionSuccessMessageToSession(request, massActionTitle);
             setSuccessRenderRedirect(response, tab.getName());
@@ -84,6 +83,23 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
             setNotFoundErrorRenderParameter(response);
         }
     }
+
+    @ResourceMapping("getExport")
+    public void getExportController(ResourceRequest request, Model model,
+                                        @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
+                                        ResourceResponse response) {
+
+        if(!tabWrapper.getCanEdit()) {
+            return;
+        }
+
+        try {
+            updateContestOverviewWrapper.executeMassActionIfSelected(request, response);
+        } catch(Exception e){
+            _log.warn("export failed with: ", e);
+        }
+    }
+
 
     @RequestMapping(params = {"action=updateContestOverview", "error=true"})
     public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
