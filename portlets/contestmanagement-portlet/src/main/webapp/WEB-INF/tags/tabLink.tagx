@@ -11,10 +11,10 @@
 
   <c:choose>
     <c:when test="${managerTab}">
-      <c:set var="proposalURLPrefix" value="/web/guest/cms/-/contestmanagement/contestId/${contestId}"/>
+      <c:set var="proposalURLPrefix" value="/web/guest/cms/-/contestmanagement/manager/"/>
     </c:when>
     <c:otherwise>
-      <c:set var="proposalURLPrefix" value="/web/guest/cms/-/contestmanagement/manager/"/>
+      <c:set var="proposalURLPrefix" value="/web/guest/cms/-/contestmanagement/contestId/${contestId}"/>
     </c:otherwise>
   </c:choose>
 
