@@ -40,7 +40,7 @@ public class CsvExportUtil {
 
     private String getCSVData() throws Exception {
         StringWriter writer = new StringWriter();
-        CSVWriter csvWriter = new CSVWriter(writer,';');
+        CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
         csvWriter.writeAll(records);
         csvWriter.close();
         return writer.toString();
@@ -131,8 +131,7 @@ public class CsvExportUtil {
             String csvPayload = getCSVData();
             outputStream.write(csvPayload.getBytes());
 
-            response.setContentType("text/csv");
-            //response.setContentType("binary/octet-stream");
+            response.setContentType("application/csv");
             response.addProperty(HttpHeaders.CACHE_CONTROL, "max-age=3600, must-revalidate");
             response.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + downloadFileName + ".csv");
             response.setContentLength(outputStream.size());
