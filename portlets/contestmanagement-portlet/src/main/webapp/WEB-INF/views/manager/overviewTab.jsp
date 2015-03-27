@@ -46,7 +46,7 @@
 					</form:select>
 				</div>
 				<div class="blue-button innerVerticalCenter" >
-					<a href="#" id="submitButton" target="_blank">SUBMIT</a>
+					<a href="#" id="submitButton">SUBMIT</a>
 				</div>
 			</div>
 			<div id="massMessage" style="display: none;">
