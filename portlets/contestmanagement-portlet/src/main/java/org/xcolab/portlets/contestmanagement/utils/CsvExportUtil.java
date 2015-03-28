@@ -40,7 +40,7 @@ public class CsvExportUtil {
 
     private String getCSVData() throws Exception {
         StringWriter writer = new StringWriter();
-        CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
+        CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
         csvWriter.writeAll(records);
         csvWriter.close();
         return writer.toString();

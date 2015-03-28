@@ -88,36 +88,37 @@ public class ContestMassActionMethods {
     }
 
     public static void sendSupport2VotesEmail(List<Long> contestList, Object tbd, PortletRequest request) throws Exception{
-        Long contestPK = contestList.get(0);
-        Contest contest = ContestLocalServiceUtil.getContest(contestPK);
-        ServiceContext serviceContext = new ServiceContext();
-        serviceContext.setPortalURL(String.format("%s://%s%s", request.getScheme(), request.getServerName(),
-                request.getServerPort() != 80 ? ":" + request.getServerPort() : ""));
-        ContestLocalServiceUtil.transferSupportsToVote(contest, serviceContext);
+        for(Long contestId : contestList) {
+            Contest contest = ContestLocalServiceUtil.getContest(contestId);
+            ServiceContext serviceContext = new ServiceContext();
+            serviceContext.setPortalURL(String.format("%s://%s%s", request.getScheme(), request.getServerName(),
+                    request.getServerPort() != 80 ? ":" + request.getServerPort() : ""));
+            ContestLocalServiceUtil.transferSupportsToVote(contest, serviceContext);
+        }
     }
 
     public static void changeSubscriptionStatus(List<Long> contestList, Object subscriptionStatusObject, PortletRequest request) throws Exception{
-        Long contestPK = contestList.get(0);
         Long loggedInUserId = PortalUtil.getUserId(request);
-        Boolean subscriptionStatus = (boolean) subscriptionStatusObject;
-        if(subscriptionStatus) {
-            ContestLocalServiceUtil.subscribe(contestPK,loggedInUserId);
-        } else {
-            ContestLocalServiceUtil.unsubscribe(contestPK,loggedInUserId);
+        for(Long contestId : contestList) {
+            Boolean subscriptionStatus = (boolean) subscriptionStatusObject;
+            if (subscriptionStatus) {
+                ContestLocalServiceUtil.subscribe(contestId, loggedInUserId);
+            } else {
+                ContestLocalServiceUtil.unsubscribe(contestId, loggedInUserId);
+            }
         }
     }
 
     public static void deleteContest(List<Long> contestList, Object tbd, PortletRequest request)throws Exception{
-        Long contestPK = contestList.get(0);
-        Contest contest = ContestLocalServiceUtil.getContest(contestPK);
-
-        if (! ContestLocalServiceUtil.getAllPhases(contest).isEmpty()) {
-            System.out.println("CONTEST HAS PHASES");
-            return;
+        for(Long contestId : contestList) {
+            Contest contest = ContestLocalServiceUtil.getContest(contestId);
+            if (!ContestLocalServiceUtil.getAllPhases(contest).isEmpty()) {
+                _log.warn("Could not delete contest because it has phases!");
+                return;
+            }
+            // TODO check why we get an exception here
+            Contest deletedContest = ContestLocalServiceUtil.deleteContest(contest);
         }
-        // TODO check why we get an exception here
-        Contest deletedContest = ContestLocalServiceUtil.deleteContest(contest);
-        //ContestLocalServiceUtil.updateContest(deleteContest);
     }
 
 
