@@ -139,28 +139,20 @@ public class ContestOverviewWrapper {
                     (selectedMassAction == ContestMassActions.REPORT_PEOPLE_IN_CURRENT_PHASE.ordinal());
             Boolean isMessageMassAction =
                     (selectedMassAction == ContestMassActions.MESSAGE.ordinal());
+            Boolean isMethodFromContestWrapper =
+                    (massActionClass == ContestWrapper.class);
 
             if(isReportMassAction){
                 invokeMassActionReportMethod(massActionMethod, request, response);
             } else if(isMessageMassAction){
                 invokeMassActionMessageMethod(massActionMethod, request);
-            } else {
+            } else if (isMethodFromContestWrapper) {
+                invokeContestWrapperMethod(massActionMethod, request);
+            } else{
                 Boolean executeSetAction = (selectedMassAction > 0);
-                Boolean isMethodFromContestWrapper = (massActionClass == ContestWrapper.class);
-                for (ContestWrapper contestWrapper : contestWrappers) {
-                    int index = contestWrappers.indexOf(contestWrapper);
-                    if (selectedContest.get(index)) {
-                        if (isMethodFromContestWrapper) {
-                            massActionMethod.invoke(contestWrapper, executeSetAction);
-                            contestWrapper.persist();
-                        } else {
-                            massActionMethod.invoke(null, selectedContestIds, executeSetAction, request);
-                        }
-                    }
+                massActionMethod.invoke(null, selectedContestIds, executeSetAction, request);
                 }
             }
-
-        }
     }
 
     private void invokeMassActionReportMethod(Method massActionMethod, PortletRequest request, ResourceResponse response) throws Exception{
@@ -168,6 +160,17 @@ public class ContestOverviewWrapper {
     }
     private void invokeMassActionMessageMethod(Method massActionMethod, PortletRequest request) throws Exception{
         massActionMethod.invoke(null, selectedContestIds, massMessageBean, request);
+    }
+
+    private void invokeContestWrapperMethod(Method massActionMethod, PortletRequest request) throws Exception{
+        Boolean executeSetAction = (selectedMassAction > 0);
+        for (ContestWrapper contestWrapper : contestWrappers) {
+            int index = contestWrappers.indexOf(contestWrapper);
+            if (selectedContest.get(index)) {
+                massActionMethod.invoke(contestWrapper, executeSetAction);
+                contestWrapper.persist();
+            }
+        }
     }
 
     private List<Long> getSelectedContestIds(){
