@@ -71,6 +71,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal);
         model.addAttribute("impactSeries", integratedProposalImpactSeries);
 
+        model.addAttribute("contest", proposalsContext.getContest(request));
+
         return "integratedProposalImpact";
     }
 
