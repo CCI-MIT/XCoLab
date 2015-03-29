@@ -49,8 +49,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         Contest contest = proposalsContext.getContest(request);
 
-        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
-        model.addAttribute("impactIterations", impactIterations);
+        try {
+            List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+            model.addAttribute("impactIterations", impactIterations);
+        } catch (PortalException e) {
+            // No impact iteration associated with the contest -> return default view
+            return "proposalImpactError";
+        }
 
         switch (ContestTier.getContestTierByTierType(contest.getContestTier())) {
             case BASIC:
