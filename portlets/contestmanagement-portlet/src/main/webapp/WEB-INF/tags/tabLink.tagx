@@ -7,13 +7,23 @@
   <jsp:directive.attribute name="tabDisplayName" type="java.lang.String" required="true" rtexprvalue="true" description="Tab display name" />
   <jsp:directive.attribute name="contestId" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest id" />
   <jsp:directive.attribute name="activityCount" type="java.lang.Long" required="true" rtexprvalue="true" description="Link text" />
+  <jsp:directive.attribute name="managerTab" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Manger tab link" />
+
+  <c:choose>
+    <c:when test="${managerTab}">
+      <c:set var="proposalURLPrefix" value="/web/guest/cms/-/contestmanagement/manager"/>
+    </c:when>
+    <c:otherwise>
+      <c:set var="proposalURLPrefix" value="/web/guest/cms/-/contestmanagement/contestId/${contestId}"/>
+    </c:otherwise>
+  </c:choose>
 
   <c:choose>
     <c:when test="${defaultTab}">
-      <c:set var="proposalURL" value="/web/guest/cms/-/contestmanagement/contestId/${contestId}" />
+      <c:set var="proposalURL" value="${proposalURLPrefix}" />
     </c:when>
     <c:otherwise>
-      <c:set var="proposalURL" value="/web/guest/cms/-/contestmanagement/contestId/${contestId}/tab/${tabName}" />
+      <c:set var="proposalURL" value="${proposalURLPrefix}/tab/${tabName}" />
     </c:otherwise>
   </c:choose>
 

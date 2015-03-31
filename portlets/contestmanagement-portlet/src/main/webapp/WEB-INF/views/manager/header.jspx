@@ -24,13 +24,21 @@
 						<li class="${currentTabWrapped.name eq singleTab.name ? 'c' : ''}">
 							<cms:tabLink defaultTab="${singleTab.isDefault}" tabName="${singleTab.name}"
 										 tabDisplayName="${singleTab.displayName}" contestId="${contestWrapper.contestPK}"
-										 activityCount="${singleTab.activityCount}"/>
+										 activityCount="${singleTab.activityCount}" managerTab="true"/>
 						</li>
 					</c:forEach>
 				</ul>
 			</div>
 		</div>
 	</div>
+
+	<c:if test="${not empty sessionScope.actionSuccessMessage }">
+		<script type="text/javascript" >
+			jQuery.growlUI('SUCCESS', "${sessionScope.actionSuccessMessage}");
+		</script>
+	</c:if>
+
+	<c:remove var="actionSuccessMessage" scope="session" />
 
     <c:if test="${promptLoginWindow == 'true' }">
         <script>
