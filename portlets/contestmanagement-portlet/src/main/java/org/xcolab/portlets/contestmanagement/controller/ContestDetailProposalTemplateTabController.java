@@ -4,6 +4,8 @@ import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,7 @@ import java.util.List;
 @RequestMapping("view")
 public class ContestDetailProposalTemplateTabController extends ContestDetailsBaseTabController {
 
+    private final static Log _log = LogFactoryUtil.getLog(ContestDetailProposalTemplateTabController.class);
     static final private TabEnum tab = ContestDetailsTabs.PROPOSALTEMPLATE;
     static final private String TAB_VIEW = "details/proposalTemplateTab";
 
@@ -66,6 +69,7 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
             model.addAttribute("contestProposalTemplateWrapper", contestProposalTemplateWrapper);
             return TAB_VIEW;
         } catch (Exception e){
+            _log.warn("Could not create proposal template wrapper: ", e);
         }
         return NOT_FOUND_TAB_VIEW;
     }
@@ -90,7 +94,7 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
             updatedContestProposalTemplateWrapper.updateNewProposalTemplateSections();
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
-            e.printStackTrace();
+            _log.warn("Could not update proposal template: ", e);
             setNotFoundErrorRenderParameter(response);
         }
     }
