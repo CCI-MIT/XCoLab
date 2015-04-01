@@ -613,6 +613,21 @@ public interface ContestModel extends BaseModel<Contest> {
      */
     public void setPointDistributionStrategy(String pointDistributionStrategy);
 
+    /**
+     * Returns the email template url of this contest.
+     *
+     * @return the email template url of this contest
+     */
+    @AutoEscape
+    public String getEmailTemplateUrl();
+
+    /**
+     * Sets the email template url of this contest.
+     *
+     * @param emailTemplateUrl the email template url of this contest
+     */
+    public void setEmailTemplateUrl(String emailTemplateUrl);
+
     @Override
     public boolean isNew();
 

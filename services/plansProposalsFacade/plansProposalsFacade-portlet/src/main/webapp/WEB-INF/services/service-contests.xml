@@ -51,6 +51,7 @@
         <column name="points" type="double" />
         <column name="defaultParentPointType" type="long" />
         <column name="pointDistributionStrategy" type="String" />
+        <column name="emailTemplateUrl" type="String" />
         
         <order by="asc">
             <order-column name="weight" />

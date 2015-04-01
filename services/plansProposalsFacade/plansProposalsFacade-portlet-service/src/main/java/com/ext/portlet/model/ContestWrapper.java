@@ -76,6 +76,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("defaultParentPointType", getDefaultParentPointType());
         attributes.put("pointDistributionStrategy",
             getPointDistributionStrategy());
+        attributes.put("emailTemplateUrl", getEmailTemplateUrl());
 
         return attributes;
     }
@@ -310,6 +311,12 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (pointDistributionStrategy != null) {
             setPointDistributionStrategy(pointDistributionStrategy);
+        }
+
+        String emailTemplateUrl = (String) attributes.get("emailTemplateUrl");
+
+        if (emailTemplateUrl != null) {
+            setEmailTemplateUrl(emailTemplateUrl);
         }
     }
 
@@ -1125,6 +1132,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     public void setPointDistributionStrategy(
         java.lang.String pointDistributionStrategy) {
         _contest.setPointDistributionStrategy(pointDistributionStrategy);
+    }
+
+    /**
+    * Returns the email template url of this contest.
+    *
+    * @return the email template url of this contest
+    */
+    @Override
+    public java.lang.String getEmailTemplateUrl() {
+        return _contest.getEmailTemplateUrl();
+    }
+
+    /**
+    * Sets the email template url of this contest.
+    *
+    * @param emailTemplateUrl the email template url of this contest
+    */
+    @Override
+    public void setEmailTemplateUrl(java.lang.String emailTemplateUrl) {
+        _contest.setEmailTemplateUrl(emailTemplateUrl);
     }
 
     @Override

@@ -44,6 +44,7 @@
 			</div>
 		</div>
 
+
 		<div class="addpropbox">
 			<label>
 				<strong>Question</strong>
@@ -133,6 +134,23 @@
 				</div>
 			</div>
 		</div>
+
+        <div class="addpropbox">
+            <label>
+                <strong>Email Template URL</strong>
+                <a class="helpTrigger" href="javascript:;"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+            </label>
+            <div class="addprophelp">The corresponding wiki template URL</div>
+            <div class="clearfix"><!--  --></div>
+            <div class="addpropInputContainer">
+                <form:input path="emailTemplateUrl" id="emailTemplateUrl"/>
+                <div class="reg_errors"><!--  -->
+                    <form:errors cssClass="alert alert-error" path="emailTemplateUrl" />
+                </div>
+                <div class="clearfix"><!-- --></div>
+                <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">50</span> characters</div>
+            </div>
+        </div>
 
 		<div class="addpropbox">
 			<label>

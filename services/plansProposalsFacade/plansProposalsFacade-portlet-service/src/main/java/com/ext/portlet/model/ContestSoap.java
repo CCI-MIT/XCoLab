@@ -51,6 +51,7 @@ public class ContestSoap implements Serializable {
     private double _points;
     private long _defaultParentPointType;
     private String _pointDistributionStrategy;
+    private String _emailTemplateUrl;
 
     public ContestSoap() {
     }
@@ -95,6 +96,7 @@ public class ContestSoap implements Serializable {
         soapModel.setPoints(model.getPoints());
         soapModel.setDefaultParentPointType(model.getDefaultParentPointType());
         soapModel.setPointDistributionStrategy(model.getPointDistributionStrategy());
+        soapModel.setEmailTemplateUrl(model.getEmailTemplateUrl());
 
         return soapModel;
     }
@@ -458,5 +460,13 @@ public class ContestSoap implements Serializable {
 
     public void setPointDistributionStrategy(String pointDistributionStrategy) {
         _pointDistributionStrategy = pointDistributionStrategy;
+    }
+
+    public String getEmailTemplateUrl() {
+        return _emailTemplateUrl;
+    }
+
+    public void setEmailTemplateUrl(String emailTemplateUrl) {
+        _emailTemplateUrl = emailTemplateUrl;
     }
 }

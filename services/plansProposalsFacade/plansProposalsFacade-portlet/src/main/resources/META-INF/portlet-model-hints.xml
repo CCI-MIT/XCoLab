@@ -167,6 +167,7 @@
 		<field name="points" type="double" />
 		<field name="defaultParentPointType" type="long" />
 		<field name="pointDistributionStrategy" type="String" />
+		<field name="emailTemplateUrl" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.ContestDebate">
 		<field name="id" type="long" />
