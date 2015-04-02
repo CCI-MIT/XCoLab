@@ -33,29 +33,7 @@
                             ${role.printName}
                         </div>
                     </div>
-                    <div class="the-comment">
-                        <div class="content">
-                            <c:if test="${showPhase}">
-                                <strong>Contest phase: </strong>
-                                ${wrapper.contestPhase}<br/>
-                            </c:if>
-                            <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
-                                <strong>Rating:</strong>
-                                <ul>
-                                    <c:forEach var="rating" items="${wrapper.ratings}">
-                                    <li>
-                                        <em>${rating.ratingTypeLabel}:</em>
-                                        ${rating.ratingValueName}
-                                    </li>
-                                    </c:forEach>
-                                </ul>
-                            </c:if>
-                            <p>
-                                <strong>Comment:</strong><br/>
-                                <span class="comment-wrapper">${wrapper.commentEscaped}</span>
-                            </p>
-                        </div>
-                    </div>
+                    <proposalsPortlet:proposalRatingEvaluation showRating="true" showPhase="false" wrapper="${wrapper}"/>
                 </div>
             </discussions:getRoleName>
         </c:forEach>

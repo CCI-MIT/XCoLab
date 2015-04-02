@@ -174,7 +174,7 @@
                         <div>
                             <c:if test="${not empty contest.resourcesUrl}">
                             	<div class="button-wrapper">
-                                	<a class="detailbutton" href="${contest.resourcesUrl}" target="_blank">Resources</a>
+                                	<a class="detailbutton" href="${contest.resourcesUrl}" >Resources</a>
                                 </div>
                             </c:if>
                             <div class="button-wrapper">
