@@ -462,6 +462,10 @@ table.judgingForm {
 	overflow-y: scroll;
 }
 
+div.selected {
+    background-color: #eaf2fb;
+}
+
 .addpropbox.PROPOSAL_LIST_REFERENCE,
 .addpropbox.PROPOSAL_REFERENCE,
 .addpropbox.PROPOSAL_LIST_TEXT_REFERENCE {
