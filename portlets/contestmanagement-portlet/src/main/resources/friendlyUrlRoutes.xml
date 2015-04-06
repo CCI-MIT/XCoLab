@@ -9,8 +9,13 @@
     </route>
 
     <route>
-        <pattern>/create2015Contests</pattern>
-        <generated-parameter name="create2015Contests">true</generated-parameter>
+        <pattern>/create2015Tier1Contests</pattern>
+        <generated-parameter name="create2015Tier1Contests">true</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/create2015Tier2Contests</pattern>
+        <generated-parameter name="create2015Tier2Contests">true</generated-parameter>
     </route>
 
     <route>

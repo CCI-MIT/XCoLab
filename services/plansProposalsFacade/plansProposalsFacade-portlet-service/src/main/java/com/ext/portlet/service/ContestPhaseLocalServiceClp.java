@@ -84,6 +84,8 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
     private String[] _methodParameterTypes37;
     private String _methodName38;
     private String[] _methodParameterTypes38;
+    private String _methodName39;
+    private String[] _methodParameterTypes39;
 
     public ContestPhaseLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -271,16 +273,22 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
 
         _methodParameterTypes36 = new String[] {  };
 
-        _methodName37 = "forcePromotionOfProposalInPhase";
+        _methodName37 = "createFromContestPhase";
 
         _methodParameterTypes37 = new String[] {
+                "com.ext.portlet.model.ContestPhase"
+            };
+
+        _methodName38 = "forcePromotionOfProposalInPhase";
+
+        _methodParameterTypes38 = new String[] {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.ContestPhase"
             };
 
-        _methodName38 = "getNumberOfProposalsForJudge";
+        _methodName39 = "getNumberOfProposalsForJudge";
 
-        _methodParameterTypes38 = new String[] {
+        _methodParameterTypes39 = new String[] {
                 "com.liferay.portal.model.User",
                 "com.ext.portlet.model.ContestPhase"
             };
@@ -1329,14 +1337,42 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
     }
 
     @Override
+    public com.ext.portlet.model.ContestPhase createFromContestPhase(
+        com.ext.portlet.model.ContestPhase originalPhase)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName37,
+                    _methodParameterTypes37,
+                    new Object[] { ClpSerializer.translateInput(originalPhase) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ContestPhase) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public void forcePromotionOfProposalInPhase(
         com.ext.portlet.model.Proposal p,
         com.ext.portlet.model.ContestPhase phase)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName37,
-                _methodParameterTypes37,
+            _invokableLocalService.invokeMethod(_methodName38,
+                _methodParameterTypes38,
                 new Object[] {
                     ClpSerializer.translateInput(p),
                     
@@ -1371,8 +1407,8 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName38,
-                    _methodParameterTypes38,
+            returnObj = _invokableLocalService.invokeMethod(_methodName39,
+                    _methodParameterTypes39,
                     new Object[] {
                         ClpSerializer.translateInput(judge),
                         

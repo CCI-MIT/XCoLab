@@ -722,6 +722,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         List<Proposal> proposals = new ArrayList<>();
 
         ContestPhase lastOrActivePhase = contestLocalService.getActiveOrLastPhase(contestLocalService.getContest(contestId));
+        if (lastOrActivePhase == null) {
+            return proposals;
+        }
+
         for (Proposal2Phase proposal2Phase : proposal2PhasePersistence.findByContestPhaseId(lastOrActivePhase.getContestPhasePK())) {
             Proposal proposal = getProposal(proposal2Phase.getProposalId());
 

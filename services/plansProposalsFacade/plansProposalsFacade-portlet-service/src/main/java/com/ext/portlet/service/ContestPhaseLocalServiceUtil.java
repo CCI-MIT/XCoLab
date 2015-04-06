@@ -390,6 +390,18 @@ public class ContestPhaseLocalServiceUtil {
         getService().autoPromoteProposals();
     }
 
+    /**
+    * Creates a new contest phase object by copying all attributes of the original contest phase
+    *
+    * @param originalPhase     The contest phase to copy
+    * @return
+    */
+    public static com.ext.portlet.model.ContestPhase createFromContestPhase(
+        com.ext.portlet.model.ContestPhase originalPhase)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().createFromContestPhase(originalPhase);
+    }
+
     public static void forcePromotionOfProposalInPhase(
         com.ext.portlet.model.Proposal p,
         com.ext.portlet.model.ContestPhase phase)

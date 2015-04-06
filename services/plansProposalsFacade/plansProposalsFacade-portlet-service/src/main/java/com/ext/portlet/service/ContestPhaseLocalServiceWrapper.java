@@ -421,6 +421,19 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
         _contestPhaseLocalService.autoPromoteProposals();
     }
 
+    /**
+    * Creates a new contest phase object by copying all attributes of the original contest phase
+    *
+    * @param originalPhase     The contest phase to copy
+    * @return
+    */
+    @Override
+    public com.ext.portlet.model.ContestPhase createFromContestPhase(
+        com.ext.portlet.model.ContestPhase originalPhase)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.createFromContestPhase(originalPhase);
+    }
+
     @Override
     public void forcePromotionOfProposalInPhase(
         com.ext.portlet.model.Proposal p,
