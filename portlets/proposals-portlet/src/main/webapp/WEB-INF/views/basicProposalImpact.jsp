@@ -132,7 +132,6 @@
         </div>
     </div>
 
-
     <script>
         var editedFocusArea = 0;
         var userInputOccurred = false;

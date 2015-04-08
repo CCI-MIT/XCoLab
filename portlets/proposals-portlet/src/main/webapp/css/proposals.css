@@ -532,6 +532,7 @@ div.selected {
     background-color: #E4EAF4;
     font-weight: bold;
     text-align: center;
+    border: 1px white solid;
 }
 
 #impact tr.selected {
@@ -559,7 +560,7 @@ div.selected {
 }
 
 #impact-chart {
-    display: inline-block;
-    margin-bottom: 20px;
-    float: right;
+    display: block;
+    width: 500px;
+    margin: 0 auto 20px auto;
 }

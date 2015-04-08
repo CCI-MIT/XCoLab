@@ -16,8 +16,17 @@ import java.util.Map;
  */
 public class IntegratedProposalImpactSeries {
 
+    /*
+    Removed DDPP series for now
+    Add key ProposalImpactSeries.SERIES_TYPE_DDPP_KEY to this array to re-include this series type
+     */
     private static final String[] SERIES_TYPES = new String[] {ProposalImpactSeries.SERIES_TYPE_BAU_KEY,
-            ProposalImpactSeries.SERIES_TYPE_DDPP_KEY};
+            };
+
+    private static final String[] SERIES_TYPE_DESCRIPTIONS = new String[] {"Business as usual (BAU)",
+    };
+
+    private Map<String, String> seriesTypeToDescriptionMap;
 
     private Map<String, ProposalImpactSeriesValues> seriesTypeToAggregatedSeriesMap;
 
@@ -40,13 +49,21 @@ public class IntegratedProposalImpactSeries {
         return resultSeriesValues;
     }
 
+    public Map<String, String> getSeriesTypeToDescriptionMap() {
+        return seriesTypeToDescriptionMap;
+    }
+
     private void calculateIntegratedImpactSeries() throws SystemException, PortalException {
         List<Proposal> referencedProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
 
         seriesTypeToAggregatedSeriesMap = new HashMap<>(SERIES_TYPES.length);
+        seriesTypeToDescriptionMap = new HashMap<>(SERIES_TYPES.length);
+
         // Init series values
+        int index = 0;
         for (String seriesType : SERIES_TYPES) {
             seriesTypeToAggregatedSeriesMap.put(seriesType, new ProposalImpactSeriesValues());
+            seriesTypeToDescriptionMap.put(seriesType, SERIES_TYPE_DESCRIPTIONS[index++]);
         }
 
         // Sum over all referenced proposals

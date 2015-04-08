@@ -23,7 +23,7 @@
                 <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
                     <c:set var="seriesValues" value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}" />
                     <tr>
-                        <td class="sector blue-bg">${seriesEntry.key}</td>
+                        <td class="sector blue-bg">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
                         <c:forEach var="impactIteration" items="${impactIterations}">
                             <fmt:formatNumber var="value"
                                               value="${seriesValues.yearToValueMap[impactIteration.year]}"
@@ -46,6 +46,22 @@
     </div>
 
     <script type="text/javascript">
+        var tableColors = ['#8C7AAE','#65B868'];
+
+        $().ready(function() {
+            // Color table columns
+            console.log('ready');
+            var hitFirstRow = false;
+            $('div#impact > table tr').each(function(idx) {
+                console.log('each');
+                if (!hitFirstRow) {
+                    hitFirstRow = true;
+                } else {
+                    $(this).children('td:not(.blue-bg)').css('background-color', tableColors[idx - 1]);
+                }
+            });
+        });
+
         google.load('visualization', '1', {packages: ['corechart', 'line']});
 
         // Set a callback to run when the Google Visualization API is loaded.
@@ -94,7 +110,7 @@
             var options = {
                 title: "Total emissions of ${contest.contestShortName} (Mt CO2)",
                 titleTextStyle: {
-                    fontSize: "20"
+                    fontSize: "16"
                 },
                 hAxis: {
                     title: 'Year',
@@ -112,9 +128,10 @@
                 },
                 legend: { position: 'top' },
                 pointShape: 'circle',
-                pointSize: 10,
-                width:700,
-                height:200 * Math.max(Math.round(dataValueRange / 50.0), 2)
+                pointSize: 6,
+                colors:tableColors,
+                width:500,
+                height:125 * Math.max(Math.round(dataValueRange / 50.0), 2)
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('impact-chart'));
