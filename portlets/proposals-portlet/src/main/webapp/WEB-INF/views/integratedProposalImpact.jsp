@@ -131,7 +131,7 @@
                 pointSize: 6,
                 colors:tableColors,
                 width:500,
-                height:125 * Math.max(Math.round(dataValueRange / 50.0), 2)
+                height:150 * Math.max(Math.round(dataValueRange / 50.0), 2)
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('impact-chart'));
