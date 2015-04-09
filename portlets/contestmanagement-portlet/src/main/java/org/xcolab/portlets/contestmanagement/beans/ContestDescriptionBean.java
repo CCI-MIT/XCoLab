@@ -127,7 +127,12 @@ public class ContestDescriptionBean implements Serializable{
         this.contestShortName = contestShortName;
     }
 
-    public String getEmailTemplateUrl() {return emailTemplateUrl;}
+    public String getEmailTemplateUrl() {
+        if (emailTemplateUrl != null) {
+            return emailTemplateUrl;
+        } else
+            return "";
+    }
 
     public void setEmailTemplateUrl(String emailTemplateUrl) {this.emailTemplateUrl = emailTemplateUrl;}
 
