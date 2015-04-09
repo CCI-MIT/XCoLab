@@ -61,16 +61,16 @@ public interface TabPermissionAlgorithm {
 
         @Override
         public boolean canView(TabPermissions permissions, TabContext context, PortletRequest request) {
-            return permissions.getCanRole(MemberRole.FELLOW) || permissions.getCanRole(MemberRole.ADVISOR) || permissions.getCanStaff() || permissions.getCanAdmin();
+            return permissions.getCanRole(MemberRole.CONTESTMANAGER) || permissions.getCanRole(MemberRole.FELLOW) || permissions.getCanRole(MemberRole.ADVISOR) || permissions.getCanStaff() || permissions.getCanAdmin();
         }
         @Override
         public boolean canEdit(TabPermissions permissions, TabContext context, PortletRequest request) {
-            return permissions.getCanRole(MemberRole.FELLOW) || permissions.getCanRole(MemberRole.ADVISOR) || permissions.getCanStaff() || permissions.getCanAdmin();
+            return permissions.getCanRole(MemberRole.CONTESTMANAGER) || permissions.getCanRole(MemberRole.FELLOW) || permissions.getCanRole(MemberRole.ADVISOR) || permissions.getCanStaff() || permissions.getCanAdmin();
         }
 
         @Override
         public boolean getCanAddComment(TabPermissions permissions, TabContext context, PortletRequest request) {
-            return permissions.getCanRole(MemberRole.FELLOW) || permissions.getCanRole(MemberRole.ADVISOR) || permissions.getCanStaff() || permissions.getCanAdmin();
+            return permissions.getCanRole(MemberRole.CONTESTMANAGER) || permissions.getCanRole(MemberRole.FELLOW) || permissions.getCanRole(MemberRole.ADVISOR) || permissions.getCanStaff() || permissions.getCanAdmin();
         }
     };
 

@@ -2,10 +2,8 @@ package org.xcolab.portlets.contestmanagement.controller;
 
 import javax.validation.Valid;
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestSchedule;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -65,7 +63,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
 
     @ModelAttribute("scheduleTemplateSelectionItems")
     public List<LabelValue> populateScheduleTemplateSelectionItems(){
-        return getScheduleTemplateSelectionItems();
+        return ContestScheduleWrapper.getScheduleTemplateSelectionItems();
     }
 
     @ModelAttribute("contestLevelSelectionItems")
@@ -134,18 +132,6 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
         new ContestCreationNotification(contest, serviceContext).sendEmailNotification();
-    }
-
-    private List<LabelValue> getScheduleTemplateSelectionItems(){
-        List<LabelValue> selectItems = new ArrayList<>();
-        try {
-            ContestScheduleWrapper.insertSeedDataToContestScheduleTableIfNotAvailable();
-            for (ContestSchedule scheduleTemplate : ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE)) {
-                selectItems.add(new LabelValue(scheduleTemplate.getId(), scheduleTemplate.getName()));
-            }
-        } catch (Exception e){
-        }
-        return selectItems;
     }
 
     private List<LabelValue> getProposalTemplateSelectionItems(){
