@@ -58,6 +58,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private double _points;
     private long _defaultParentPointType;
     private String _pointDistributionStrategy;
+    private String _emailTemplateUrl;
     private BaseModel<?> _contestRemoteModel;
 
     public ContestClp() {
@@ -136,6 +137,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("defaultParentPointType", getDefaultParentPointType());
         attributes.put("pointDistributionStrategy",
             getPointDistributionStrategy());
+        attributes.put("emailTemplateUrl", getEmailTemplateUrl());
 
         return attributes;
     }
@@ -370,6 +372,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (pointDistributionStrategy != null) {
             setPointDistributionStrategy(pointDistributionStrategy);
+        }
+
+        String emailTemplateUrl = (String) attributes.get("emailTemplateUrl");
+
+        if (emailTemplateUrl != null) {
+            setEmailTemplateUrl(emailTemplateUrl);
         }
     }
 
@@ -1227,6 +1235,29 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         }
     }
 
+    @Override
+    public String getEmailTemplateUrl() {
+        return _emailTemplateUrl;
+    }
+
+    @Override
+    public void setEmailTemplateUrl(String emailTemplateUrl) {
+        _emailTemplateUrl = emailTemplateUrl;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setEmailTemplateUrl",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, emailTemplateUrl);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestRemoteModel() {
         return _contestRemoteModel;
     }
@@ -1331,6 +1362,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setPoints(getPoints());
         clone.setDefaultParentPointType(getDefaultParentPointType());
         clone.setPointDistributionStrategy(getPointDistributionStrategy());
+        clone.setEmailTemplateUrl(getEmailTemplateUrl());
 
         return clone;
     }
@@ -1388,7 +1420,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(75);
+        StringBundler sb = new StringBundler(77);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1464,6 +1496,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getDefaultParentPointType());
         sb.append(", pointDistributionStrategy=");
         sb.append(getPointDistributionStrategy());
+        sb.append(", emailTemplateUrl=");
+        sb.append(getEmailTemplateUrl());
         sb.append("}");
 
         return sb.toString();
@@ -1471,7 +1505,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(115);
+        StringBundler sb = new StringBundler(118);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1624,6 +1658,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>pointDistributionStrategy</column-name><column-value><![CDATA[");
         sb.append(getPointDistributionStrategy());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>emailTemplateUrl</column-name><column-value><![CDATA[");
+        sb.append(getEmailTemplateUrl());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

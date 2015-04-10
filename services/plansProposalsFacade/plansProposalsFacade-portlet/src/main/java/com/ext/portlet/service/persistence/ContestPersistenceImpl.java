@@ -5870,6 +5870,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setPoints(contest.getPoints());
         contestImpl.setDefaultParentPointType(contest.getDefaultParentPointType());
         contestImpl.setPointDistributionStrategy(contest.getPointDistributionStrategy());
+        contestImpl.setEmailTemplateUrl(contest.getEmailTemplateUrl());
 
         return contestImpl;
     }
