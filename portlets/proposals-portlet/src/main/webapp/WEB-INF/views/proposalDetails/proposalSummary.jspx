@@ -150,12 +150,14 @@
             ${contest.contestName}
         </div>
 
-        <div class="prop-contest">
-            <strong>Related Proposals: </strong> <br />
-            <c:forEach var="linkedProposal" items="${linkedProposalList}">
-                <collab:proposalLink proposalId="${linkedProposal.proposalId }" contestId="${linkedProposal.contestPK}" text="${linkedProposal.name }" /> <br />
-            </c:forEach>
-        </div>
+        <c:if test="${not empty linkedProposalList}">
+            <div class="prop-contest">
+                <strong>Related Proposals: </strong> <br />
+                <c:forEach var="linkedProposal" items="${linkedProposalList}">
+                    <collab:proposalLink proposalId="${linkedProposal.proposalId }" contestId="${linkedProposal.contestPK}" text="${linkedProposal.name }" /> <br />
+                </c:forEach>
+            </div>
+        </c:if>
 
         <c:if test="${proposal.proposalAttributeUtil.hasAttribute('REGION') }">
 			<div class="prop-avatar" style="font-size: 13px">
