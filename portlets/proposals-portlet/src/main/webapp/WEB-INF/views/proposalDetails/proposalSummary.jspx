@@ -154,7 +154,9 @@
             <div class="prop-contest">
                 <strong>Related Proposals: </strong> <br />
                 <c:forEach var="linkedProposal" items="${linkedProposalList}">
+                    <li>
                     <collab:proposalLink proposalId="${linkedProposal.proposalId }" contestId="${linkedProposal.contestPK}" text="${linkedProposal.name }" /> <br />
+                    </li>
                 </c:forEach>
             </div>
         </c:if>
