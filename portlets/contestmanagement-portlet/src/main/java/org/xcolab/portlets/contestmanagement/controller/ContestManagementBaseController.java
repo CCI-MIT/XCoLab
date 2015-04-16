@@ -62,8 +62,8 @@ public class ContestManagementBaseController {
         return view;
     }
 
-    @RequestMapping(params = "create2015Tier2Contests=true")
-    public String create2015Tier2ContestsController(PortletRequest request, Model model, PortletResponse response) {
+    @RequestMapping(params = "create2015Tier2And3Contests=true")
+    public String create2015Tier2And3ContestsController(PortletRequest request, Model model, PortletResponse response) {
         String view = "notFound";
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -72,7 +72,7 @@ public class ContestManagementBaseController {
 
         if(!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
 
-            Map<String, String> contestEditMap = ContestCreatorUtil.create2015Tier2Contests(themeDisplay.getPortalURL());
+            Map<String, String> contestEditMap = ContestCreatorUtil.create2015Tier2And3Contests(themeDisplay.getPortalURL());
             model.addAttribute("contestEditLinks", contestEditMap);
             model.addAttribute("success", (contestEditMap != null));
             view = "creationDone";

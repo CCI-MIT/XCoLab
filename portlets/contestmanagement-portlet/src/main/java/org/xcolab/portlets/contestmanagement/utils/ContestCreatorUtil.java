@@ -14,10 +14,13 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,41 +53,49 @@ public class ContestCreatorUtil {
             "{\"name\":\"Rural resilience\", \"contestTier\" : 1, \"contestSchedule\": 1,\"focusArea\": 0, \"ontologyTerms\":[]}\n" +
             "]";
 
-    private static final String TIER_II_CONTESTS_2015_JSON = "[\n" +
-            "{\"name\": \"Buildings in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300340,1,1300601]},\n" +
-            "{\"name\": \"Buildings in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300341,1,1300601]},\n" +
-            "{\"name\": \"Buildings in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300345,1,1300601]},\n" +
-            "{\"name\": \"Buildings in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300346,1,1300601]},\n" +
-            "{\"name\": \"Buildings in all other developed countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1311101,1,1300601]},\n" +
-            "{\"name\": \"Buildings in all other developing countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1311102,1,1300601]},\n" +
-            "\n" +
-            "{\"name\": \"Energy supply in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300340,1,1300601]},\n" +
-            "{\"name\": \"Energy supply in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300341,1,1300601]},\n" +
-            "{\"name\": \"Energy supply in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300345,1,1300601]},\n" +
-            "{\"name\": \"Energy supply in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300346,1,1300601]},\n" +
-            "{\"name\": \"Energy supply in all other developed countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1311101,1,1300601]},\n" +
-            "{\"name\": \"Energy supply in all other developing countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1311102,1,1300601]},\n" +
-            "\n" +
-            "{\"name\": \"Industry in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300340,1,1300601]},\n" +
-            "{\"name\": \"Industry in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300341,1,1300601]},\n" +
-            "{\"name\": \"Industry in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300345,1,1300601]},\n" +
-            "{\"name\": \"Industry in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300346,1,1300601]},\n" +
-            "{\"name\": \"Industry in all other developed countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1311101,1,1300601]},\n" +
-            "{\"name\": \"Industry in all other developing countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1311102,1,1300601]},\n" +
-            "\n" +
-            "{\"name\": \"Transportation in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300340,1,1300601]},\n" +
-            "{\"name\": \"Transportation in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300341,1,1300601]},\n" +
-            "{\"name\": \"Transportation in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300345,1,1300601]},\n" +
-            "{\"name\": \"Transportation in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300346,1,1300601]},\n" +
-            "{\"name\": \"Transportation in all other developed countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1311101,1,1300601]},\n" +
-            "{\"name\": \"Transportation in all other developing countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1311102,1,1300601]},\n" +
-            "\n" +
-            "{\"name\": \"Other sector in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300340,1,1300601]},\n" +
-            "{\"name\": \"Other sector in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300341,1,1300601]},\n" +
-            "{\"name\": \"Other sector in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300345,1,1300601]},\n" +
-            "{\"name\": \"Other sector in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300346,1,1300601]},\n" +
-            "{\"name\": \"Other sector in all other developed countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311101,1,1300601]},\n" +
-            "{\"name\": \"Other sector in all other developing countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311102,1,1300601]},\n" +
+    private static final String TIER_III_AND_II_CONTESTS_2015_JSON = "[\n" +
+                "{\"name\": \"United States Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300340,1,1300601], \"subContests\": [" +
+                    "{\"name\": \"Buildings in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300340,1,1300601]},\n" +
+                    "{\"name\": \"Energy Supply in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300340,1,1300601]},\n" +
+                    "{\"name\": \"Industry in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300340,1,1300601]},\n" +
+                    "{\"name\": \"Transportation in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300340,1,1300601]},\n" +
+                    "{\"name\": \"Other Sectors in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300340,1,1300601]},\n" +
+                "]},\n" +
+                "{\"name\": \"European Union Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300341,1,1300601], \"subContests\": [" +
+                    "{\"name\": \"Buildings in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300341,1,1300601]},\n" +
+                    "{\"name\": \"Energy Supply in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300341,1,1300601]},\n" +
+                    "{\"name\": \"Industry in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300341,1,1300601]},\n" +
+                    "{\"name\": \"Transportation in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300341,1,1300601]},\n" +
+                    "{\"name\": \"Other Sectors in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300341,1,1300601]},\n" +
+                "]},\n" +
+                "{\"name\": \"China Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300345,1,1300601], \"subContests\": ["  +
+                    "{\"name\": \"Buildings in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300345,1,1300601]},\n" +
+                    "{\"name\": \"Energy Supply in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300345,1,1300601]},\n" +
+                    "{\"name\": \"Industry in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300345,1,1300601]},\n" +
+                    "{\"name\": \"Transportation in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300345,1,1300601]},\n" +
+                    "{\"name\": \"Other Sectors in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300345,1,1300601]}\n" +
+                "]},\n" +
+                "{\"name\": \"India Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300346,1,1300601], \"subContests\": ["  +
+                    "{\"name\": \"Buildings in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300346,1,1300601]},\n" +
+                    "{\"name\": \"Energy Supply in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300346,1,1300601]},\n" +
+                    "{\"name\": \"Industry in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300346,1,1300601]},\n" +
+                    "{\"name\": \"Transportation in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300346,1,1300601]},\n" +
+                    "{\"name\": \"Other Sectors in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300346,1,1300601]}\n" +
+                "]},\n" +
+                "{\"name\": \"Other Developed Economies Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311101,1,1300601], \"subContests\": [" +
+                    "{\"name\": \"Buildings in Other Developed Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1311101,1,1300601]},\n" +
+                    "{\"name\": \"Energy Supply in Other Developed Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1311101,1,1300601]},\n" +
+                    "{\"name\": \"Industry in Other Developed Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1311101,1,1300601]},\n" +
+                    "{\"name\": \"Transportation in Other Developed Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1311101,1,1300601]},\n" +
+                    "{\"name\": \"Other Sectors in Other Developed Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311101,1,1300601]}\n" +
+                "]},\n" +
+                "{\"name\": \"Other Developing Economies Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311102,1,1300601], \"subContests\": [" +
+                    "{\"name\": \"Buildings in Other Developing countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1311102,1,1300601]},\n" +
+                    "{\"name\": \"Energy Supply in Other Developing Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1311102,1,1300601]},\n" +
+                    "{\"name\": \"Industry in Other Developing Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1311102,1,1300601]},\n" +
+                    "{\"name\": \"Transportation in Other Developing Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1311102,1,1300601]},\n" +
+                    "{\"name\": \"Other Sectors in Other Developing Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311102,1,1300601]}\n" +
+                "]},\n" +
             "]";
 
 
@@ -93,8 +104,8 @@ public class ContestCreatorUtil {
         return createContestsWithJSON(BASIC_CONTESTS_2015_JSON, portalBaseURL);
     }
 
-    public static Map<String, String> create2015Tier2Contests(String portalBaseURL) {
-        return createContestsWithJSON(TIER_II_CONTESTS_2015_JSON, portalBaseURL);
+    public static Map<String, String> create2015Tier2And3Contests(String portalBaseURL) {
+        return createContestsWithJSON(TIER_III_AND_II_CONTESTS_2015_JSON, portalBaseURL);
     }
 
 
@@ -111,6 +122,10 @@ public class ContestCreatorUtil {
         return "/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/DESCRIPTION";
     }
 
+    private static String getContestLink(Contest contest) {
+        return "/web/guest/plans/-/plans/contestId/" + contest.getContestPK();
+    }
+
     private static Map<String, String> createContestsWithJSON(String json, String portalBaseUrl) {
 
         JSONArray contestDataArray = null;
@@ -121,39 +136,24 @@ public class ContestCreatorUtil {
             for (int i = 0; i < contestDataArray.length(); i++) {
                 JSONObject newContestContents = contestDataArray.getJSONObject(i);
                 try {
-                    Contest newContest = createNewContest(newContestContents.getString(CONTEST_NAME_KEY));
-                    newContest.setContestTier(newContestContents.getInt(CONTEST_TIER_KEY));
-
-                    long focusAreaId = newContestContents.getLong(CONTEST_FOCUS_AREA_KEY);
-                    if (focusAreaId == 0) {
-                        JSONArray ontologyTermIds = newContestContents.getJSONArray(CONTEST_ONTOLOGY_TERMS_KEY);
-
-                        // Create new focus area with the specified ontology terms
-                        if (ontologyTermIds.length() > 0) {
-                            FocusArea focusArea = FocusAreaLocalServiceUtil.createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
-                            focusArea.setName("created by 2015 " + newContest.getContestName());
-                            focusArea.persist();
-
-                            focusAreaId = focusArea.getId();
-                            FocusAreaLocalServiceUtil.updateFocusArea(focusArea);
-
-                            for (int j = 0; j < ontologyTermIds.length(); j++) {
-                                FocusAreaOntologyTermLocalServiceUtil.addAreaTerm(focusAreaId, ontologyTermIds.getLong(j));
-                            }
-
-                            newContest.setFocusAreaId(focusArea.getId());
-                        }
-                    } else {
-                        newContest.setFocusAreaId(focusAreaId);
-                    }
-
-                    newContest.persist();
-
-                    // Install contest schedule
-                    ContestScheduleWrapper.createContestPhaseAccordingToContestSchedule(newContest, newContestContents.getLong(CONTEST_SCHEDULE_KEY));
+                    Contest newContest = createSingleContestWithJSON(newContestContents);
 
                     String absoluteURL = portalBaseUrl + getContestEditLink(newContest);
                     contestEditMap.put(newContest.getContestShortName(), absoluteURL);
+
+                    // Create sub contests, if there are any
+                    final JSONArray subContestsJson = newContestContents.getJSONArray("subContests");
+                    if (Validator.isNotNull(subContestsJson)) {
+                        List<Contest> subContests = createSubContests(subContestsJson);
+                        String descriptionTemplate = getSubContestHTMLList(subContests);
+
+                        // Add sub contests to map
+                        for (Contest subContest : subContests) {
+                            absoluteURL = portalBaseUrl + getContestEditLink(subContest);
+                            contestEditMap.put(subContest.getContestShortName(), absoluteURL);
+                        }
+                    }
+
                 } catch (Exception e) {
                     _log.error("Could not create contest with name " + newContestContents.getString(CONTEST_NAME_KEY) + ": " + e);
                     contestEditMap.put(newContestContents.getString(CONTEST_NAME_KEY), "Could not be created");
@@ -168,4 +168,57 @@ public class ContestCreatorUtil {
         return null;
     }
 
+    private static Contest createSingleContestWithJSON(JSONObject newContestContents) throws Exception {
+
+        Contest newContest = createNewContest(newContestContents.getString(CONTEST_NAME_KEY));
+        newContest.setContestTier(newContestContents.getInt(CONTEST_TIER_KEY));
+
+        long focusAreaId = newContestContents.getLong(CONTEST_FOCUS_AREA_KEY);
+        if (focusAreaId == 0) {
+            JSONArray ontologyTermIds = newContestContents.getJSONArray(CONTEST_ONTOLOGY_TERMS_KEY);
+
+            // Create new focus area with the specified ontology terms
+            if (ontologyTermIds.length() > 0) {
+                FocusArea focusArea = FocusAreaLocalServiceUtil.createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
+                focusArea.setName("created by 2015 " + newContest.getContestName());
+                focusArea.persist();
+
+                focusAreaId = focusArea.getId();
+                FocusAreaLocalServiceUtil.updateFocusArea(focusArea);
+
+                for (int j = 0; j < ontologyTermIds.length(); j++) {
+                    FocusAreaOntologyTermLocalServiceUtil.addAreaTerm(focusAreaId, ontologyTermIds.getLong(j));
+                }
+
+                newContest.setFocusAreaId(focusArea.getId());
+            }
+        } else {
+            newContest.setFocusAreaId(focusAreaId);
+        }
+
+        newContest.persist();
+
+        // Install contest schedule
+        ContestScheduleWrapper.createContestPhaseAccordingToContestSchedule(newContest, newContestContents.getLong(CONTEST_SCHEDULE_KEY));
+        return newContest;
+    }
+
+    private static List<Contest> createSubContests(JSONArray subContestsJson) throws Exception {
+        List<Contest> subContestList = new ArrayList<>(subContestsJson.length());
+        for (int j = 0; j < subContestsJson.length(); j++) {
+            subContestList.add(createSingleContestWithJSON(subContestsJson.getJSONObject(j)));
+        }
+
+        return subContestList;
+    }
+
+    private static String getSubContestHTMLList(List<Contest> subContests) {
+        StringBuilder htmlListString = new StringBuilder("<ul>");
+        // Create HTML list for all sub contests
+        for (Contest subContest : subContests) {
+            htmlListString.append("<li><a href='" + getContestLink(subContest) + "'>" + subContest.getContestShortName() + "</a></li>");
+        }
+        htmlListString.append("</ul>");
+        return htmlListString.toString();
+    }
 }
