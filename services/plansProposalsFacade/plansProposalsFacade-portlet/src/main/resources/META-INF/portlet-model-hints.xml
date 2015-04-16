@@ -985,6 +985,9 @@
 	<model name="com.ext.portlet.model.Role_">
 		<field name="roleId" type="long" />
 		<field name="name" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.RolesCategory">
+		<field name="roleId" type="long" />
 		<field name="categoryName" type="String" />
 		<field name="roleOrdinal" type="int" />
 	</model>

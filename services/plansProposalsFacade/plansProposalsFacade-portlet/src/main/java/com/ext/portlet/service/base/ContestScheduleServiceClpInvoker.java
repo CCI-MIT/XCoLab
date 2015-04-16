@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class ContestScheduleServiceClpInvoker {
-    private String _methodName572;
-    private String[] _methodParameterTypes572;
-    private String _methodName573;
-    private String[] _methodParameterTypes573;
+    private String _methodName604;
+    private String[] _methodParameterTypes604;
+    private String _methodName605;
+    private String[] _methodParameterTypes605;
 
     public ContestScheduleServiceClpInvoker() {
-        _methodName572 = "getBeanIdentifier";
+        _methodName604 = "getBeanIdentifier";
 
-        _methodParameterTypes572 = new String[] {  };
+        _methodParameterTypes604 = new String[] {  };
 
-        _methodName573 = "setBeanIdentifier";
+        _methodName605 = "setBeanIdentifier";
 
-        _methodParameterTypes573 = new String[] { "java.lang.String" };
+        _methodParameterTypes605 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName572.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes572, parameterTypes)) {
+        if (_methodName604.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes604, parameterTypes)) {
             return ContestScheduleServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName573.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes573, parameterTypes)) {
+        if (_methodName605.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes605, parameterTypes)) {
             ContestScheduleServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

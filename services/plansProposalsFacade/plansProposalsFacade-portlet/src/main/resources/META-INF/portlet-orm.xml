@@ -1458,6 +1458,14 @@
 		<attributes>
 			<id name="roleId" />
 			<basic name="name" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.RolesCategoryModelImpl">
+		<attributes>
+			<id name="roleId" />
 			<basic name="categoryName" />
 			<basic name="roleOrdinal" />
 			<transient name="modelAttributes" />
@@ -1918,6 +1926,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.Role_Impl" name="Role_">
 		<table name="xcolab_Role_" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.RolesCategoryImpl" name="RolesCategory">
+		<table name="xcolab_RolesCategory" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.SocialActivityImpl" name="SocialActivity">

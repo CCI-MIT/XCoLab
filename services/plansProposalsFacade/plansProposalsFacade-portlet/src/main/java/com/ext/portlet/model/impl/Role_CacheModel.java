@@ -21,21 +21,15 @@ import java.io.ObjectOutput;
 public class Role_CacheModel implements CacheModel<Role_>, Externalizable {
     public long roleId;
     public String name;
-    public String categoryName;
-    public int roleOrdinal;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(5);
 
         sb.append("{roleId=");
         sb.append(roleId);
         sb.append(", name=");
         sb.append(name);
-        sb.append(", categoryName=");
-        sb.append(categoryName);
-        sb.append(", roleOrdinal=");
-        sb.append(roleOrdinal);
         sb.append("}");
 
         return sb.toString();
@@ -53,14 +47,6 @@ public class Role_CacheModel implements CacheModel<Role_>, Externalizable {
             role_Impl.setName(name);
         }
 
-        if (categoryName == null) {
-            role_Impl.setCategoryName(StringPool.BLANK);
-        } else {
-            role_Impl.setCategoryName(categoryName);
-        }
-
-        role_Impl.setRoleOrdinal(roleOrdinal);
-
         role_Impl.resetOriginalValues();
 
         return role_Impl;
@@ -70,8 +56,6 @@ public class Role_CacheModel implements CacheModel<Role_>, Externalizable {
     public void readExternal(ObjectInput objectInput) throws IOException {
         roleId = objectInput.readLong();
         name = objectInput.readUTF();
-        categoryName = objectInput.readUTF();
-        roleOrdinal = objectInput.readInt();
     }
 
     @Override
@@ -84,13 +68,5 @@ public class Role_CacheModel implements CacheModel<Role_>, Externalizable {
         } else {
             objectOutput.writeUTF(name);
         }
-
-        if (categoryName == null) {
-            objectOutput.writeUTF(StringPool.BLANK);
-        } else {
-            objectOutput.writeUTF(categoryName);
-        }
-
-        objectOutput.writeInt(roleOrdinal);
     }
 }

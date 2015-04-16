@@ -73,10 +73,10 @@ public class Role_LocalServiceClpInvoker {
     private String[] _methodParameterTypes30;
     private String _methodName31;
     private String[] _methodParameterTypes31;
-    private String _methodName618;
-    private String[] _methodParameterTypes618;
-    private String _methodName619;
-    private String[] _methodParameterTypes619;
+    private String _methodName636;
+    private String[] _methodParameterTypes636;
+    private String _methodName637;
+    private String[] _methodParameterTypes637;
 
     public Role_LocalServiceClpInvoker() {
         _methodName0 = "addRole_";
@@ -226,13 +226,13 @@ public class Role_LocalServiceClpInvoker {
 
         _methodParameterTypes31 = new String[] { "long", "long[][]" };
 
-        _methodName618 = "getBeanIdentifier";
+        _methodName636 = "getBeanIdentifier";
 
-        _methodParameterTypes618 = new String[] {  };
+        _methodParameterTypes636 = new String[] {  };
 
-        _methodName619 = "setBeanIdentifier";
+        _methodName637 = "setBeanIdentifier";
 
-        _methodParameterTypes619 = new String[] { "java.lang.String" };
+        _methodParameterTypes637 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -439,13 +439,13 @@ public class Role_LocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName618.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes618, parameterTypes)) {
+        if (_methodName636.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes636, parameterTypes)) {
             return Role_LocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName619.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes619, parameterTypes)) {
+        if (_methodName637.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes637, parameterTypes)) {
             Role_LocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

@@ -94,6 +94,7 @@ import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
 import com.ext.portlet.service.persistence.Role_Persistence;
+import com.ext.portlet.service.persistence.RolesCategoryPersistence;
 import com.ext.portlet.service.persistence.SocialActivityPersistence;
 import com.ext.portlet.service.persistence.StaffMemberPersistence;
 import com.ext.portlet.service.persistence.TrackedVisitPersistence;
@@ -688,6 +689,12 @@ public abstract class PlanTemplateLocalServiceBaseImpl
     protected com.ext.portlet.service.Role_Service role_Service;
     @BeanReference(type = Role_Persistence.class)
     protected Role_Persistence role_Persistence;
+    @BeanReference(type = com.ext.portlet.service.RolesCategoryLocalService.class)
+    protected com.ext.portlet.service.RolesCategoryLocalService rolesCategoryLocalService;
+    @BeanReference(type = com.ext.portlet.service.RolesCategoryService.class)
+    protected com.ext.portlet.service.RolesCategoryService rolesCategoryService;
+    @BeanReference(type = RolesCategoryPersistence.class)
+    protected RolesCategoryPersistence rolesCategoryPersistence;
     @BeanReference(type = com.ext.portlet.service.SocialActivityLocalService.class)
     protected com.ext.portlet.service.SocialActivityLocalService socialActivityLocalService;
     @BeanReference(type = com.ext.portlet.service.SocialActivityService.class)
@@ -6155,6 +6162,63 @@ public abstract class PlanTemplateLocalServiceBaseImpl
      */
     public void setRole_Persistence(Role_Persistence role_Persistence) {
         this.role_Persistence = role_Persistence;
+    }
+
+    /**
+     * Returns the roles category local service.
+     *
+     * @return the roles category local service
+     */
+    public com.ext.portlet.service.RolesCategoryLocalService getRolesCategoryLocalService() {
+        return rolesCategoryLocalService;
+    }
+
+    /**
+     * Sets the roles category local service.
+     *
+     * @param rolesCategoryLocalService the roles category local service
+     */
+    public void setRolesCategoryLocalService(
+        com.ext.portlet.service.RolesCategoryLocalService rolesCategoryLocalService) {
+        this.rolesCategoryLocalService = rolesCategoryLocalService;
+    }
+
+    /**
+     * Returns the roles category remote service.
+     *
+     * @return the roles category remote service
+     */
+    public com.ext.portlet.service.RolesCategoryService getRolesCategoryService() {
+        return rolesCategoryService;
+    }
+
+    /**
+     * Sets the roles category remote service.
+     *
+     * @param rolesCategoryService the roles category remote service
+     */
+    public void setRolesCategoryService(
+        com.ext.portlet.service.RolesCategoryService rolesCategoryService) {
+        this.rolesCategoryService = rolesCategoryService;
+    }
+
+    /**
+     * Returns the roles category persistence.
+     *
+     * @return the roles category persistence
+     */
+    public RolesCategoryPersistence getRolesCategoryPersistence() {
+        return rolesCategoryPersistence;
+    }
+
+    /**
+     * Sets the roles category persistence.
+     *
+     * @param rolesCategoryPersistence the roles category persistence
+     */
+    public void setRolesCategoryPersistence(
+        RolesCategoryPersistence rolesCategoryPersistence) {
+        this.rolesCategoryPersistence = rolesCategoryPersistence;
     }
 
     /**

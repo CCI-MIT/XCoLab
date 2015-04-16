@@ -93,6 +93,7 @@
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
 	<import class="com.ext.portlet.model.Role_" />
+	<import class="com.ext.portlet.model.RolesCategory" />
 	<import class="com.ext.portlet.model.SocialActivity" />
 	<import class="com.ext.portlet.model.StaffMember" />
 	<import class="com.ext.portlet.model.TrackedVisit" />
@@ -1143,6 +1144,12 @@
 			<generator class="assigned" />
 		</id>
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.RolesCategoryImpl" table="xcolab_RolesCategory">
+		<cache usage="read-write" />
+		<id name="roleId" type="long">
+			<generator class="assigned" />
+		</id>
 		<property name="categoryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="roleOrdinal" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>

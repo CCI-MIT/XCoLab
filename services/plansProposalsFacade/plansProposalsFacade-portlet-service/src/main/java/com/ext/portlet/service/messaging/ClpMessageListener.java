@@ -183,6 +183,8 @@ import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteServiceUtil;
 import com.ext.portlet.service.Role_LocalServiceUtil;
 import com.ext.portlet.service.Role_ServiceUtil;
+import com.ext.portlet.service.RolesCategoryLocalServiceUtil;
+import com.ext.portlet.service.RolesCategoryServiceUtil;
 import com.ext.portlet.service.SocialActivityLocalServiceUtil;
 import com.ext.portlet.service.SocialActivityServiceUtil;
 import com.ext.portlet.service.StaffMemberLocalServiceUtil;
@@ -485,6 +487,9 @@ public class ClpMessageListener extends BaseMessageListener {
             Role_LocalServiceUtil.clearService();
 
             Role_ServiceUtil.clearService();
+            RolesCategoryLocalServiceUtil.clearService();
+
+            RolesCategoryServiceUtil.clearService();
             SocialActivityLocalServiceUtil.clearService();
 
             SocialActivityServiceUtil.clearService();

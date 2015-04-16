@@ -289,6 +289,9 @@
 	<bean id="com.ext.portlet.service.Role_LocalService" class="com.ext.portlet.service.impl.Role_LocalServiceImpl" />
 	<bean id="com.ext.portlet.service.Role_Service" class="com.ext.portlet.service.impl.Role_ServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.Role_Persistence" class="com.ext.portlet.service.persistence.Role_PersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.RolesCategoryLocalService" class="com.ext.portlet.service.impl.RolesCategoryLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.RolesCategoryService" class="com.ext.portlet.service.impl.RolesCategoryServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.RolesCategoryPersistence" class="com.ext.portlet.service.persistence.RolesCategoryPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.SocialActivityLocalService" class="com.ext.portlet.service.impl.SocialActivityLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.SocialActivityService" class="com.ext.portlet.service.impl.SocialActivityServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.SocialActivityPersistence" class="com.ext.portlet.service.persistence.SocialActivityPersistenceImpl" parent="basePersistence" />

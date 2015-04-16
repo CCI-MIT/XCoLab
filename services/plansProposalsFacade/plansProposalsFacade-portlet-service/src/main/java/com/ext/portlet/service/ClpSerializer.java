@@ -90,6 +90,7 @@ import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
 import com.ext.portlet.model.Role_Clp;
+import com.ext.portlet.model.RolesCategoryClp;
 import com.ext.portlet.model.SocialActivityClp;
 import com.ext.portlet.model.StaffMemberClp;
 import com.ext.portlet.model.TrackedVisitClp;
@@ -549,6 +550,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(Role_Clp.class.getName())) {
             return translateInputRole_(oldModel);
+        }
+
+        if (oldModelClassName.equals(RolesCategoryClp.class.getName())) {
+            return translateInputRolesCategory(oldModel);
         }
 
         if (oldModelClassName.equals(SocialActivityClp.class.getName())) {
@@ -1516,6 +1521,16 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateInputRolesCategory(BaseModel<?> oldModel) {
+        RolesCategoryClp oldClpModel = (RolesCategoryClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getRolesCategoryRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
     public static Object translateInputSocialActivity(BaseModel<?> oldModel) {
         SocialActivityClp oldClpModel = (SocialActivityClp) oldModel;
 
@@ -2026,6 +2041,11 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals("com.ext.portlet.model.impl.Role_Impl")) {
             return translateOutputRole_(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.RolesCategoryImpl")) {
+            return translateOutputRolesCategory(oldModel);
         }
 
         if (oldModelClassName.equals(
@@ -2670,6 +2690,10 @@ public class ClpSerializer {
 
         if (className.equals("com.ext.portlet.NoSuchRole_Exception")) {
             return new com.ext.portlet.NoSuchRole_Exception();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchRolesCategoryException")) {
+            return new com.ext.portlet.NoSuchRolesCategoryException();
         }
 
         if (className.equals("com.ext.portlet.NoSuchSocialActivityException")) {
@@ -3630,6 +3654,16 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setRole_RemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputRolesCategory(BaseModel<?> oldModel) {
+        RolesCategoryClp newModel = new RolesCategoryClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setRolesCategoryRemoteModel(oldModel);
 
         return newModel;
     }

@@ -41,10 +41,10 @@ public class ContestScheduleLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName588;
-    private String[] _methodParameterTypes588;
-    private String _methodName589;
-    private String[] _methodParameterTypes589;
+    private String _methodName620;
+    private String[] _methodParameterTypes620;
+    private String _methodName621;
+    private String[] _methodParameterTypes621;
 
     public ContestScheduleLocalServiceClpInvoker() {
         _methodName0 = "addContestSchedule";
@@ -129,13 +129,13 @@ public class ContestScheduleLocalServiceClpInvoker {
                 "com.ext.portlet.model.ContestSchedule"
             };
 
-        _methodName588 = "getBeanIdentifier";
+        _methodName620 = "getBeanIdentifier";
 
-        _methodParameterTypes588 = new String[] {  };
+        _methodParameterTypes620 = new String[] {  };
 
-        _methodName589 = "setBeanIdentifier";
+        _methodName621 = "setBeanIdentifier";
 
-        _methodParameterTypes589 = new String[] { "java.lang.String" };
+        _methodParameterTypes621 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -227,13 +227,13 @@ public class ContestScheduleLocalServiceClpInvoker {
             return ContestScheduleLocalServiceUtil.updateContestSchedule((com.ext.portlet.model.ContestSchedule) arguments[0]);
         }
 
-        if (_methodName588.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes588, parameterTypes)) {
+        if (_methodName620.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes620, parameterTypes)) {
             return ContestScheduleLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName589.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes589, parameterTypes)) {
+        if (_methodName621.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes621, parameterTypes)) {
             ContestScheduleLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

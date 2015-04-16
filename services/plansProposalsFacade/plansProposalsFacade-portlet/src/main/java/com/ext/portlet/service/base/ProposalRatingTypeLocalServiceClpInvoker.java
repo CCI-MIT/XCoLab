@@ -41,14 +41,14 @@ public class ProposalRatingTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName602;
-    private String[] _methodParameterTypes602;
-    private String _methodName603;
-    private String[] _methodParameterTypes603;
-    private String _methodName608;
-    private String[] _methodParameterTypes608;
-    private String _methodName609;
-    private String[] _methodParameterTypes609;
+    private String _methodName620;
+    private String[] _methodParameterTypes620;
+    private String _methodName621;
+    private String[] _methodParameterTypes621;
+    private String _methodName626;
+    private String[] _methodParameterTypes626;
+    private String _methodName627;
+    private String[] _methodParameterTypes627;
 
     public ProposalRatingTypeLocalServiceClpInvoker() {
         _methodName0 = "addProposalRatingType";
@@ -133,21 +133,21 @@ public class ProposalRatingTypeLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalRatingType"
             };
 
-        _methodName602 = "getBeanIdentifier";
+        _methodName620 = "getBeanIdentifier";
 
-        _methodParameterTypes602 = new String[] {  };
+        _methodParameterTypes620 = new String[] {  };
 
-        _methodName603 = "setBeanIdentifier";
+        _methodName621 = "setBeanIdentifier";
 
-        _methodParameterTypes603 = new String[] { "java.lang.String" };
+        _methodParameterTypes621 = new String[] { "java.lang.String" };
 
-        _methodName608 = "getRatingTypesForJudges";
+        _methodName626 = "getRatingTypesForJudges";
 
-        _methodParameterTypes608 = new String[] {  };
+        _methodParameterTypes626 = new String[] {  };
 
-        _methodName609 = "getRatingTypesForFellows";
+        _methodName627 = "getRatingTypesForFellows";
 
-        _methodParameterTypes609 = new String[] {  };
+        _methodParameterTypes627 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -239,25 +239,25 @@ public class ProposalRatingTypeLocalServiceClpInvoker {
             return ProposalRatingTypeLocalServiceUtil.updateProposalRatingType((com.ext.portlet.model.ProposalRatingType) arguments[0]);
         }
 
-        if (_methodName602.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes602, parameterTypes)) {
+        if (_methodName620.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes620, parameterTypes)) {
             return ProposalRatingTypeLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName603.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes603, parameterTypes)) {
+        if (_methodName621.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes621, parameterTypes)) {
             ProposalRatingTypeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName608.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes608, parameterTypes)) {
+        if (_methodName626.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes626, parameterTypes)) {
             return ProposalRatingTypeLocalServiceUtil.getRatingTypesForJudges();
         }
 
-        if (_methodName609.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes609, parameterTypes)) {
+        if (_methodName627.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes627, parameterTypes)) {
             return ProposalRatingTypeLocalServiceUtil.getRatingTypesForFellows();
         }
 

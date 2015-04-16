@@ -880,7 +880,11 @@ create table xcolab_ProposalVote (
 
 create table xcolab_Role_ (
 	roleId LONG not null primary key,
-	name VARCHAR(75) null,
+	name VARCHAR(75) null
+);
+
+create table xcolab_RolesCategory (
+	roleId LONG not null primary key,
 	categoryName VARCHAR(75) null,
 	roleOrdinal INTEGER
 );
