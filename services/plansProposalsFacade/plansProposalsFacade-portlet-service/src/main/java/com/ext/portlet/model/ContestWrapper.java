@@ -77,6 +77,9 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("pointDistributionStrategy",
             getPointDistributionStrategy());
         attributes.put("emailTemplateUrl", getEmailTemplateUrl());
+        attributes.put("show_in_tile_view", getShow_in_tile_view());
+        attributes.put("show_in_list_view", getShow_in_list_view());
+        attributes.put("show_in_outline_view", getShow_in_outline_view());
 
         return attributes;
     }
@@ -317,6 +320,27 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (emailTemplateUrl != null) {
             setEmailTemplateUrl(emailTemplateUrl);
+        }
+
+        Boolean show_in_tile_view = (Boolean) attributes.get(
+                "show_in_tile_view");
+
+        if (show_in_tile_view != null) {
+            setShow_in_tile_view(show_in_tile_view);
+        }
+
+        Boolean show_in_list_view = (Boolean) attributes.get(
+                "show_in_list_view");
+
+        if (show_in_list_view != null) {
+            setShow_in_list_view(show_in_list_view);
+        }
+
+        Boolean show_in_outline_view = (Boolean) attributes.get(
+                "show_in_outline_view");
+
+        if (show_in_outline_view != null) {
+            setShow_in_outline_view(show_in_outline_view);
         }
     }
 
@@ -1152,6 +1176,96 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setEmailTemplateUrl(java.lang.String emailTemplateUrl) {
         _contest.setEmailTemplateUrl(emailTemplateUrl);
+    }
+
+    /**
+    * Returns the show_in_tile_view of this contest.
+    *
+    * @return the show_in_tile_view of this contest
+    */
+    @Override
+    public boolean getShow_in_tile_view() {
+        return _contest.getShow_in_tile_view();
+    }
+
+    /**
+    * Returns <code>true</code> if this contest is show_in_tile_view.
+    *
+    * @return <code>true</code> if this contest is show_in_tile_view; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isShow_in_tile_view() {
+        return _contest.isShow_in_tile_view();
+    }
+
+    /**
+    * Sets whether this contest is show_in_tile_view.
+    *
+    * @param show_in_tile_view the show_in_tile_view of this contest
+    */
+    @Override
+    public void setShow_in_tile_view(boolean show_in_tile_view) {
+        _contest.setShow_in_tile_view(show_in_tile_view);
+    }
+
+    /**
+    * Returns the show_in_list_view of this contest.
+    *
+    * @return the show_in_list_view of this contest
+    */
+    @Override
+    public boolean getShow_in_list_view() {
+        return _contest.getShow_in_list_view();
+    }
+
+    /**
+    * Returns <code>true</code> if this contest is show_in_list_view.
+    *
+    * @return <code>true</code> if this contest is show_in_list_view; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isShow_in_list_view() {
+        return _contest.isShow_in_list_view();
+    }
+
+    /**
+    * Sets whether this contest is show_in_list_view.
+    *
+    * @param show_in_list_view the show_in_list_view of this contest
+    */
+    @Override
+    public void setShow_in_list_view(boolean show_in_list_view) {
+        _contest.setShow_in_list_view(show_in_list_view);
+    }
+
+    /**
+    * Returns the show_in_outline_view of this contest.
+    *
+    * @return the show_in_outline_view of this contest
+    */
+    @Override
+    public boolean getShow_in_outline_view() {
+        return _contest.getShow_in_outline_view();
+    }
+
+    /**
+    * Returns <code>true</code> if this contest is show_in_outline_view.
+    *
+    * @return <code>true</code> if this contest is show_in_outline_view; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isShow_in_outline_view() {
+        return _contest.isShow_in_outline_view();
+    }
+
+    /**
+    * Sets whether this contest is show_in_outline_view.
+    *
+    * @param show_in_outline_view the show_in_outline_view of this contest
+    */
+    @Override
+    public void setShow_in_outline_view(boolean show_in_outline_view) {
+        _contest.setShow_in_outline_view(show_in_outline_view);
     }
 
     @Override

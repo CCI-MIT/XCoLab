@@ -12,7 +12,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
   	<div class="contestsContainer">
   		<div>
 			<c:forEach var="contest" items="${contestsSorted.contestsFeatured }" varStatus="status">
-				<proposalsPortlet:contestGridElement contest="${contest }" index="${status.index}" />
+                <c:if test="${contest.show_in_tile_view}">
+				    <proposalsPortlet:contestGridElement contest="${contest }" index="${status.index}" />
+                </c:if>
 			</c:forEach>
 		</div>
 
@@ -22,7 +24,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 
   		<div>
 			<c:forEach var="contest" items="${contestsSorted.contestsNormal }" varStatus="status">
-				<proposalsPortlet:contestGridElement contest="${contest }" index="${status.index}" />
+                <c:if test="${contest.show_in_tile_view}">
+				    <proposalsPortlet:contestGridElement contest="${contest }" index="${status.index}" />
+                </c:if>
 			</c:forEach>
 		</div>
 	</div>

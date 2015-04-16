@@ -99,6 +99,67 @@ public class ContestWrapper {
 
     public void setEmailTemplateUrl(String emailTemplateUrl){contest.setEmailTemplateUrl(emailTemplateUrl);}
 
+    public boolean getShow_in_tile_view(){
+        Boolean contestShowInTileView =  (Boolean) contest.getShow_in_tile_view();
+
+        if (contestShowInTileView != null) {
+            return contest.getShow_in_tile_view();
+        }
+        else {
+            contest.setShow_in_tile_view(true);
+            return true;
+        }
+    }
+
+    public boolean isShow_in_tile_view(){
+        return contest.isShow_in_tile_view();
+    }
+
+    public void setShow_in_tile_view(boolean show_in_tile_view){
+        contest.setShow_in_tile_view(show_in_tile_view);
+    }
+
+    public boolean getShow_in_list_view(){
+        Boolean contestShowInListView =  (Boolean) contest.getShow_in_list_view();
+
+        if (contestShowInListView != null) {
+            return contest.getShow_in_list_view();
+        }
+        else {
+            contest.setShow_in_list_view(true);
+            return true;
+        }
+    }
+
+    public boolean isShow_in_list_view(){
+        return contest.isShow_in_list_view();
+    }
+
+    public void setShow_in_list_view(boolean show_in_list_view){
+        contest.setShow_in_list_view(show_in_list_view);
+    }
+
+    public boolean getShow_in_outline_view(){
+        Boolean contestShowInOutlineView =  (Boolean) contest.getShow_in_outline_view();
+
+        if (contestShowInOutlineView != null) {
+            return contest.getShow_in_outline_view();
+        }
+        else {
+            contest.setShow_in_tile_view(true);
+            return true;
+        }
+
+    }
+
+    public boolean isShow_in_outline_view(){
+        return contest.isShow_in_outline_view();
+    }
+
+    public void setShow_in_outline_view(boolean show_in_outline_view){
+        contest.setShow_in_outline_view(show_in_outline_view);
+    }
+
     public void resetOriginalValues() {
         contest.resetOriginalValues();
     }
