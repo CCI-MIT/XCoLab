@@ -33,7 +33,11 @@
                     </tr>
                 </c:forEach>
                 <tr>
-                    <td class="sector">Selected proposal portfolio sum</td>
+                    <c:choose>
+                        <c:when test="${empty proposal.team}"><td class="sector">${proposal.author.screenName}'s proposal</td></c:when>
+                        <c:otherwise><td class="sector">${proposal.team}'s proposal</td></c:otherwise>
+                    </c:choose>
+
                     <c:forEach var="impactIteration" items="${impactIterations}">
                         <fmt:formatNumber var="value"
                                           value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
@@ -42,6 +46,10 @@
                     </c:forEach>
                 </tr>
             </table>
+            <div style="text-align: center;">
+                <h3 style="margin-top: 50px;">Coming soon:</h3><h4>a list with the emission reduction estimates of all proposals included in this plan.</h4>
+            </div>
+
         </div>
     </div>
 
