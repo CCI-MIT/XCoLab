@@ -1,25 +1,5 @@
 package org.xcolab.portlets.redballoon.web.action;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.UUID;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
-import javax.validation.Valid;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.portlets.redballoon.utils.BalloonUtils;
-import org.xcolab.portlets.redballoon.web.beans.UserEmailBean;
-
 import com.ext.portlet.model.BalloonLink;
 import com.ext.portlet.model.BalloonText;
 import com.ext.portlet.model.BalloonUserTracking;
@@ -30,12 +10,30 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.portlets.redballoon.utils.BalloonUtils;
+import org.xcolab.portlets.redballoon.web.beans.UserEmailBean;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Date;
+import java.util.UUID;
 
 @RequestMapping("view")
 @Controller
 public class ProcessUserEmailAction {
 	
-	private final static String BALLOON_LINK_PATTERN = "/socialnetworkprize";
+	private final static String BALLOON_LINK_PATTERN = "/socialnetworkprize2015";
 
 	private final static String FROM_ADDRESS = "no-reply@climatecolab.org";	
 
@@ -69,7 +67,7 @@ public class ProcessUserEmailAction {
 				
 			BalloonLinkLocalServiceUtil.addBalloonLink(link);
 			sendNotificationEmail(request, but, link);
-			response.sendRedirect("/socialnetworkprize/-/link/" + link.getUuid());
+			response.sendRedirect("/socialnetworkprize2015/-/link/" + link.getUuid());
 			
 		}
 	}
