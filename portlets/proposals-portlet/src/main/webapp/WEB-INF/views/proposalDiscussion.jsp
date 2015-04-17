@@ -14,18 +14,19 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	<div id="content">
 
-		<h2>Proposal rating function for every colab user</h2>
-		tbd
+		<!-- <h2>Proposal rating function for every colab user</h2>
+		tbd -->
 
 		<c:choose>
 			<!-- TODO clarify when to show what -->
 			<c:when test="${showDiscussion}">
-				<h2>Judging results</h2>
-				<div class="addpropbox evaluation">
-					<proposalsPortlet:proposalRatingComments showRating="true" showPhase="true"
-															 proposalRatingsWrappers="${judgeAverageRating}"
-															 proposalId="${proposalId}" />
-				</div>
+                    <c:forEach var="ratingWrapper" items="${judgeAverageRating}">
+                        <h2>${ratingWrapper.contestPhase}</h2>
+                        <div class="addpropbox evaluation">
+                        <proposalsPortlet:proposalRatingEvaluation showRating="true" showPhase="false"
+                                                                   wrapper="${ratingWrapper}"/>
+                        </div>
+                    </c:forEach>
 
 				<h2>Discussion area</h2>
 				<discussionsTagFiles:discussionComments discussionId="${discussionId }" />

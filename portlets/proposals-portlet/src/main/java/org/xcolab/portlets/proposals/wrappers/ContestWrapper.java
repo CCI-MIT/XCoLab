@@ -14,6 +14,7 @@ public class ContestWrapper {
     private static final String WHAT = "what";
     private static final String WHO = "who";
     private static final String HOW = "how";
+    private static final String EMAIL_TEMPLATE_URL = "/web/guest/generic-advancing-email-template";
     private final static Map<Long, FocusArea> faCache = new HashMap<Long, FocusArea>();
     private Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<String, List<OntologyTerm>>();
     private Map<String, String> ontologyJoinedNames = new HashMap<String, String>();
@@ -88,6 +89,15 @@ public class ContestWrapper {
     public void setContestModelDescription(String ContestModelDescription) {
         contest.setContestModelDescription(ContestModelDescription);
     }
+
+    public String getEmailTemplateUrl() {
+        if (contest.getEmailTemplateUrl().isEmpty()) {
+            return EMAIL_TEMPLATE_URL;
+        } else
+            return contest.getEmailTemplateUrl();
+    }
+
+    public void setEmailTemplateUrl(String emailTemplateUrl){contest.setEmailTemplateUrl(emailTemplateUrl);}
 
     public void resetOriginalValues() {
         contest.resetOriginalValues();

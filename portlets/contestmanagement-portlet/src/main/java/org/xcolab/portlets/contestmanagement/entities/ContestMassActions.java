@@ -7,6 +7,7 @@ import org.xcolab.wrapper.ContestWrapper;
 
 import javax.portlet.PortletRequest;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Created by Thomas on 2/17/2015.
@@ -18,9 +19,9 @@ public enum ContestMassActions{
     REPORT_PEOPLE_IN_CURRENT_PHASE("Generate report of contributors in active phase", ContestMassActionMethods.class, "reportOfPeopleInCurrentPhase"),
     DELETE("Delete contest", ContestMassActionMethods.class, "deleteContest"),
     ACTIVE("Active", "Prior", ContestWrapper.class,"setContestActive"),
-    PRIVATE("Hide", "Unhide", ContestWrapper.class, "setContestPrivate"),
+    PRIVATE("Private", "Public", ContestWrapper.class, "setContestPrivate"),
     FEATURED("Feature", "Remove feature", ContestWrapper.class, "setFeatured"),
-    SUBSCRIBE("Subscribe to activity", "Unsubscribe to activity", ContestMassActionMethods.class, "changeSubscriptionStatus");
+    SUBSCRIBE("Subscribe to activity", "Unsubscribe from activity", ContestMassActionMethods.class, "changeSubscriptionStatus");
 
     private Log _log = LogFactoryUtil.getLog(ContestMassActions.class);
     private final String actionDisplayName;
@@ -48,8 +49,8 @@ public enum ContestMassActions{
         try {
             if(className == ContestWrapper.class){
                 this.method = className.getMethod(methodName, boolean.class);
-            } else {
-                this.method = className.getMethod(methodName, Long.class, Object.class, PortletRequest.class);
+            } else if(className == ContestMassActionMethods.class) {
+                this.method = className.getMethod(methodName, List.class, Object.class, PortletRequest.class);
             }
         } catch (NoSuchMethodException e){
             _log.warn("Could not find mass action method with name: " + methodName);

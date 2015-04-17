@@ -114,7 +114,8 @@ create table xcolab_Contest (
 	otherModels VARCHAR(75) null,
 	points DOUBLE,
 	defaultParentPointType LONG,
-	pointDistributionStrategy VARCHAR(75) null
+	pointDistributionStrategy VARCHAR(75) null,
+	emailTemplateUrl VARCHAR(75) null
 );
 
 create table xcolab_ContestDebate (

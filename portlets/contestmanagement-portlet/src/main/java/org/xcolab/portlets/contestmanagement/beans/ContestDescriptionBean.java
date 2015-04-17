@@ -18,17 +18,18 @@ import java.io.Serializable;
  */
 public class ContestDescriptionBean implements Serializable{
     private static final long serialVersionUID = 1L;
-    private static final String NO_SPECIAL_CHAR_REGEX ="^[a-zA-Z0-9äöüÄÖÜ]*$";
+    private static final String NO_SPECIAL_CHAR_REGEX ="^[a-zA-Z0-9äöüÄÖÜ?! ]*$";
 
     private Long ContestPK;
     private Long contestLogoId;
     private Long sponsorLogoId;
+    private String emailTemplateUrl;
 
     @Length(min = 5, max = 140, message = "The contest question must be at least 5 characters and not more than 140 characters.")
     private String contestName;
 
     @Length(min = 5, max = 50, message = "The contest title must be at least 5 characters and not more than 50 characters.")
-    @Pattern(regexp = NO_SPECIAL_CHAR_REGEX, message = "The contest title must not cotain special characters.")
+    @Pattern(regexp = NO_SPECIAL_CHAR_REGEX, message = "The contest title must not contain special characters.")
     private String contestShortName;
 
     @Length(min = 5, max = 1300, message = "The contest description must be at least 5 characters and not more than 1300 characters.")
@@ -58,6 +59,7 @@ public class ContestDescriptionBean implements Serializable{
             scheduleTemplateId = contest.getContestScheduleId();
             contestTier = contest.getContestTier();
             contestLogoId = contest.getContestLogoId();
+            emailTemplateUrl = contest.getEmailTemplateUrl();
             sponsorLogoId = contest.getSponsorLogoId();
         }
     }
@@ -65,23 +67,41 @@ public class ContestDescriptionBean implements Serializable{
     public void persist(Contest contest) throws Exception {
 
         String oldContestTitle = contest.getContestShortName();
-        String newContestTitle = contestShortName;
+        updateContestDescription(contest);
+        updateContestSchedules(contest, scheduleTemplateId);
+        updateContestWiki(contest, oldContestTitle);
+
+    }
+
+
+    private void updateContestDescription(Contest contest) throws Exception{
+
         contest.setContestName(contestName);
+        contest.setEmailTemplateUrl(emailTemplateUrl);
         contest.setContestShortName(contestShortName);
         contest.setContestDescription(contestDescription);
         contest.setPlanTemplateId(planTemplateId);
-        contest.setContestScheduleId(scheduleTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setContestTier(contestTier);
         contest.persist();
-        updateContestSchedules(contest);
-        WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
-        WikiPageWrapper.updateContestResourceUrl(contest, newContestTitle);
+
     }
 
-    private void updateContestSchedules(Contest contest)throws Exception{
-        ContestScheduleWrapper.createContestPhaseAccordingToContestSchedule(contest);
+    private void updateContestWiki(Contest contest, String oldContestTitle) throws Exception{
+        String newContestTitle = contest.getContestShortName();
+        if(!oldContestTitle.equals(newContestTitle)) {
+            WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
+            WikiPageWrapper.updateContestResourceUrl(contest, newContestTitle);
+        }
+
+    }
+
+    private void updateContestSchedules(Contest contest, Long scheduleTemplateId)throws Exception{
+        Long oldScheduleTemplateId = contest.getContestScheduleId();
+        if(!oldScheduleTemplateId.equals(scheduleTemplateId)) {
+            ContestScheduleWrapper.updateContestPhaseAccordingToContestSchedule(contest, scheduleTemplateId);
+        }
     }
 
     public Long getContestPK() {
@@ -123,6 +143,16 @@ public class ContestDescriptionBean implements Serializable{
     public void setContestShortName(String contestShortName) {
         this.contestShortName = contestShortName;
     }
+
+    public String getEmailTemplateUrl() {
+        if (emailTemplateUrl != null) {
+            return emailTemplateUrl;
+        } else
+            return "";
+    }
+
+    public void setEmailTemplateUrl(String emailTemplateUrl) {this.emailTemplateUrl = emailTemplateUrl;}
+
 
     public String getContestDescription() {
         if(contestDescription != null) {

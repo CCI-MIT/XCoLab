@@ -131,6 +131,8 @@
                     <span class="clearfix"></span>
                     <a class="addthis_button_email" id="addThisButton3" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
                     <span class="clearfix"></span>
+                    <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
+                    <span class="clearfix"></span>
                 </div>
             </div>
         </div>
@@ -172,7 +174,7 @@
                         <div>
                             <c:if test="${not empty contest.resourcesUrl}">
                             	<div class="button-wrapper">
-                                	<a class="detailbutton" href="${contest.resourcesUrl}" target="_blank">Resources</a>
+                                	<a class="detailbutton" href="${contest.resourcesUrl}" >Resources</a>
                                 </div>
                             </c:if>
                             <div class="button-wrapper">

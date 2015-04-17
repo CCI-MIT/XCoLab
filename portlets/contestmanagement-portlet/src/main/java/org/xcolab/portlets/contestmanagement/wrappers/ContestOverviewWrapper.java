@@ -5,9 +5,11 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
+import org.xcolab.portlets.contestmanagement.utils.ContestMassActionMethods;
 import org.xcolab.wrapper.ContestWrapper;
 
 import javax.portlet.PortletRequest;
+import javax.portlet.ResourceResponse;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ public class ContestOverviewWrapper {
     private List<ContestWrapper> contestWrappers;
     private Long selectedMassAction;
     private List<Boolean> selectedContest;
+    private List<Long> selectedContestIds;
     private List<Boolean> subscribedToContest;
     private MassMessageBean massMessageBean;
     private Long userId;
@@ -110,29 +113,75 @@ public class ContestOverviewWrapper {
         }
     }
 
-    public void executeMassActionIfSelected(PortletRequest request) throws Exception{
-        if(selectedMassAction != 0){
-            Method massActionMethod = getSelectedMassActionMethod(selectedMassAction);
-            Boolean isMethodFromContestWrapper = (massActionMethod.getDeclaringClass() == ContestWrapper.class);
-            Boolean executeSetAction = (selectedMassAction > 0);
-
-            for(ContestWrapper contestWrapper : contestWrappers){
-                int index = contestWrappers.indexOf(contestWrapper);
-
-                if(selectedContest.get(index)) {
-                    if(isMethodFromContestWrapper) {
-                        massActionMethod.invoke(contestWrapper, executeSetAction);
-                        contestWrapper.persist();
-                    } else {
-                        if(selectedMassAction == ContestMassActions.MESSAGE.ordinal()){
-                            massActionMethod.invoke(null, contestWrapper.getContestPK(), massMessageBean, request);
-                        } else {
-                            massActionMethod.invoke(null, contestWrapper.getContestPK(), executeSetAction, request);
-                        }
-                    }
+    public String getSelectedMassActionTitle() throws Exception {
+        String selectedMassActionTitle = "";
+        Long selectedMassActionAbsolute = Math.abs(selectedMassAction.longValue());
+        for (ContestMassActions contestMassAction : ContestMassActions.values()) {
+            if (selectedMassActionAbsolute == contestMassAction.ordinal()) {
+                if (selectedMassAction.longValue() < 0) {
+                    selectedMassActionTitle = contestMassAction.getReverseActionDisplayName();
+                } else {
+                    selectedMassActionTitle = contestMassAction.getActionDisplayName();
                 }
+                break;
             }
         }
+        return selectedMassActionTitle;
+    }
+
+    public void executeMassActionIfSelected(PortletRequest request, ResourceResponse response) throws Exception{
+        if(selectedMassAction != 0) {
+            Method massActionMethod = getSelectedMassActionMethod(selectedMassAction);
+            Class massActionClass = massActionMethod.getDeclaringClass();
+            selectedContestIds = getSelectedContestIds();
+
+            Boolean isReportMassAction =
+                    (selectedMassAction == ContestMassActions.REPORT_PEOPLE_IN_CURRENT_PHASE.ordinal());
+            Boolean isMessageMassAction =
+                    (selectedMassAction == ContestMassActions.MESSAGE.ordinal());
+            Boolean isMethodFromContestWrapper =
+                    (massActionClass == ContestWrapper.class);
+
+            if(isReportMassAction){
+                invokeMassActionReportMethod(massActionMethod, request, response);
+            } else if(isMessageMassAction){
+                invokeMassActionMessageMethod(massActionMethod, request);
+            } else if (isMethodFromContestWrapper) {
+                invokeContestWrapperMethod(massActionMethod, request);
+            } else{
+                Boolean executeSetAction = (selectedMassAction > 0);
+                massActionMethod.invoke(null, selectedContestIds, executeSetAction, request);
+                }
+            }
+    }
+
+    private void invokeMassActionReportMethod(Method massActionMethod, PortletRequest request, ResourceResponse response) throws Exception{
+        massActionMethod.invoke(null, selectedContestIds, response, request);
+    }
+    private void invokeMassActionMessageMethod(Method massActionMethod, PortletRequest request) throws Exception{
+        massActionMethod.invoke(null, selectedContestIds, massMessageBean, request);
+    }
+
+    private void invokeContestWrapperMethod(Method massActionMethod, PortletRequest request) throws Exception{
+        Boolean executeSetAction = (selectedMassAction > 0);
+        for (ContestWrapper contestWrapper : contestWrappers) {
+            int index = contestWrappers.indexOf(contestWrapper);
+            if (selectedContest.get(index)) {
+                massActionMethod.invoke(contestWrapper, executeSetAction);
+                contestWrapper.persist();
+            }
+        }
+    }
+
+    private List<Long> getSelectedContestIds(){
+        List<Long> contestIds = new ArrayList<>();
+        for (ContestWrapper contestWrapper : contestWrappers) {
+            int index = contestWrappers.indexOf(contestWrapper);
+            if (selectedContest.get(index)) {
+                contestIds.add(contestWrapper.getContestPK());
+            }
+        }
+        return contestIds;
     }
 
     private Method getSelectedMassActionMethod(Long selectedMassAction ){

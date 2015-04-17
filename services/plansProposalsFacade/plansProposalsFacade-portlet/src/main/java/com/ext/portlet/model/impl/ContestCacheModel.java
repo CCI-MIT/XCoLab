@@ -58,10 +58,11 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public double points;
     public long defaultParentPointType;
     public String pointDistributionStrategy;
+    public String emailTemplateUrl;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(75);
+        StringBundler sb = new StringBundler(77);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -137,6 +138,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(defaultParentPointType);
         sb.append(", pointDistributionStrategy=");
         sb.append(pointDistributionStrategy);
+        sb.append(", emailTemplateUrl=");
+        sb.append(emailTemplateUrl);
         sb.append("}");
 
         return sb.toString();
@@ -271,6 +274,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             contestImpl.setPointDistributionStrategy(pointDistributionStrategy);
         }
 
+        if (emailTemplateUrl == null) {
+            contestImpl.setEmailTemplateUrl(StringPool.BLANK);
+        } else {
+            contestImpl.setEmailTemplateUrl(emailTemplateUrl);
+        }
+
         contestImpl.resetOriginalValues();
 
         return contestImpl;
@@ -315,6 +324,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         points = objectInput.readDouble();
         defaultParentPointType = objectInput.readLong();
         pointDistributionStrategy = objectInput.readUTF();
+        emailTemplateUrl = objectInput.readUTF();
     }
 
     @Override
@@ -432,6 +442,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(pointDistributionStrategy);
+        }
+
+        if (emailTemplateUrl == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(emailTemplateUrl);
         }
     }
 }

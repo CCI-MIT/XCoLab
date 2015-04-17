@@ -14,12 +14,15 @@
 
         <c:choose>
             <c:when test="${proposalsPermissions.canAdminAll or proposal.judgeReviewStatus.statusValue > 0}">
+
+
                 <portlet:actionURL var="saveJudgingFeedbackURL">
                     <portlet:param name="action_forwardToPage" value="proposalDetails"/>
                     <portlet:param name="contestId" value="${contest.contestPK }"/>
                     <portlet:param name="planId" value="${proposal.proposalId }"/>
                     <portlet:param name="action" value="saveJudgingFeedback"/>
                 </portlet:actionURL>
+
                 <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalBean">
                     <form:hidden path="contestPhaseId" />
                     <form:hidden path="screeningUserId" id="judgeUserId"/>
@@ -54,7 +57,10 @@
                     <div class="form-errors"><!--  -->
                         <form:errors cssClass="alert alert-error" path="comment" />
                     </div>
+
+
                     <form:textarea path="comment" cssClass="commentbox" style="width:100%;" placeholder="Write your review here..." />
+
 
                     <div class="clearfix" style="width: 100%;">
                         <div class="blue-button" style="display:block; float:right; margin-top: 10px;">

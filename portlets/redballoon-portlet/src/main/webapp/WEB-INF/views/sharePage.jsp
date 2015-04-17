@@ -35,7 +35,7 @@ ${balloonText.textBeforeShareButtons }
 					addthis:title="${balloonText.twitterSubject }"
 					addthis:description="${balloonText.twitterDescription }"
 					addthis:url="${shareLink}/twitter"><!--  --></a>
-					
+
 				<a class="addthis_button_email" id="addThisButton2"
 					addthis:title="Be a part of the solution in the MIT @ClimateCoLab or spread the word to win some of the $2,000 #SocialNetworkPrize"
 					addthis:url="${shareLink}/email"><!--  --></a>

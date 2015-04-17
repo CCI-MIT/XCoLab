@@ -1,16 +1,5 @@
 package org.xcolab.portlets.redballoon.utils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import org.xcolab.portlets.redballoon.BalloonCookie;
-
 import com.ext.portlet.NoSuchBalloonUserTrackingException;
 import com.ext.portlet.model.BalloonLink;
 import com.ext.portlet.model.BalloonText;
@@ -27,11 +16,20 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+import org.xcolab.portlets.redballoon.BalloonCookie;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class BalloonUtils {
 	
 	private static Random rand = new Random();
-	private final static String SHARE_LINK_PATTERN = "%s/socialnetworkprize/-/link/%s";
+	private final static String SHARE_LINK_PATTERN = "%s/socialnetworkprize2015/-/link/%s";
 	private final static Log _log = LogFactoryUtil.getLog(BalloonUtils.class);
 	
 	public static BalloonUserTracking getBalloonUserTracking(PortletRequest request, PortletResponse response, 

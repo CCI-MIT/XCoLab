@@ -182,6 +182,7 @@
 			<basic name="points" />
 			<basic name="defaultParentPointType" />
 			<basic name="pointDistributionStrategy" />
+			<basic name="emailTemplateUrl" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
