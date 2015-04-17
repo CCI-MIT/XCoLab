@@ -12,7 +12,7 @@
 	
 	<table class="contestlist table">
 		<c:forEach var="contest" items="${contests }">
-            <c:if test="${contest.show_in_list_view}">
+            <c:if test="${contest.showInListView}">
                 <tr>
                     <td class="column contestName" style="${proposalsPermissions.canJudgeActions ? 'width: 263px;' : ''}">
                         <div class="contestFlag">

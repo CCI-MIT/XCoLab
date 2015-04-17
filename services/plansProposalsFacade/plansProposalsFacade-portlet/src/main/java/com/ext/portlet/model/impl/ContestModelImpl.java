@@ -587,6 +587,9 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         if (show_in_tile_view != null) {
             setShow_in_tile_view(show_in_tile_view);
         }
+        else {
+            setShow_in_tile_view(true);
+        }
 
         Boolean show_in_list_view = (Boolean) attributes.get(
                 "show_in_list_view");
@@ -594,12 +597,18 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         if (show_in_list_view != null) {
             setShow_in_list_view(show_in_list_view);
         }
+        else {
+            setShow_in_list_view(true);
+        }
 
         Boolean show_in_outline_view = (Boolean) attributes.get(
                 "show_in_outline_view");
 
         if (show_in_outline_view != null) {
             setShow_in_outline_view(show_in_outline_view);
+        }
+        else {
+            setShow_in_outline_view(true);
         }
     }
 

@@ -99,7 +99,7 @@ public class ContestWrapper {
 
     public void setEmailTemplateUrl(String emailTemplateUrl){contest.setEmailTemplateUrl(emailTemplateUrl);}
 
-    public boolean getShow_in_tile_view(){
+    public boolean getShowInTileView(){
         Boolean contestShowInTileView =  (Boolean) contest.getShow_in_tile_view();
 
         if (contestShowInTileView != null) {
@@ -111,15 +111,15 @@ public class ContestWrapper {
         }
     }
 
-    public boolean isShow_in_tile_view(){
+    public boolean isShowInTileView(){
         return contest.isShow_in_tile_view();
     }
 
-    public void setShow_in_tile_view(boolean show_in_tile_view){
-        contest.setShow_in_tile_view(show_in_tile_view);
+    public void setShowInTileView(boolean showInTileView){
+        contest.setShow_in_tile_view(showInTileView);
     }
 
-    public boolean getShow_in_list_view(){
+    public boolean getShowInListView(){
         Boolean contestShowInListView =  (Boolean) contest.getShow_in_list_view();
 
         if (contestShowInListView != null) {
@@ -131,15 +131,15 @@ public class ContestWrapper {
         }
     }
 
-    public boolean isShow_in_list_view(){
+    public boolean isShowInListView(){
         return contest.isShow_in_list_view();
     }
 
-    public void setShow_in_list_view(boolean show_in_list_view){
-        contest.setShow_in_list_view(show_in_list_view);
+    public void setShowInListView(boolean showInListView){
+        contest.setShow_in_list_view(showInListView);
     }
 
-    public boolean getShow_in_outline_view(){
+    public boolean getShowInOutlineView(){
         Boolean contestShowInOutlineView =  (Boolean) contest.getShow_in_outline_view();
 
         if (contestShowInOutlineView != null) {
@@ -152,12 +152,12 @@ public class ContestWrapper {
 
     }
 
-    public boolean isShow_in_outline_view(){
+    public boolean isShowInOutlineView(){
         return contest.isShow_in_outline_view();
     }
 
-    public void setShow_in_outline_view(boolean show_in_outline_view){
-        contest.setShow_in_outline_view(show_in_outline_view);
+    public void setShowInOutlineView(boolean showInOutlineView){
+        contest.setShow_in_outline_view(showInOutlineView);
     }
 
     public void resetOriginalValues() {
