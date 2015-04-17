@@ -89,48 +89,68 @@
     <!-- Content -->
     <div id="content">
         <div id="impact">
-            <table>
-                <tr>
-                    <th class="blue-text">Sector</th><th class="blue-text">Region</th>
-                    <c:forEach var="impactIteration" items="${impactIterations}"><th class="blue-bg" style="text-align: center;">${impactIteration.year}</th></c:forEach>
-                </tr>
-                <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
-                    <tr class="impact-series-clickable" id="impact-row-${index.index}">
-                        <td class="sector blue-bg"><span id="${impactSeries.whatTerm.id}">${impactSeries.whatTerm.name}</span></td>
-                        <td class="region blue-bg"><span id="${impactSeries.whereTerm.id}">${impactSeries.whereTerm.name}</span></td>
-                        <c:forEach var="impactIteration" items="${impactIterations}">
-                            <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
+            <c:choose>
+                <!-- Don't show table if no data is available and if user cannot edit -->
+                <c:when test="${not proposalsPermissions.canEdit and empty impactSerieses}">
+                    <h3>No data available yet.</h3>
+                </c:when>
+                <c:otherwise>
+                    <table>
+                        <tr>
+                            <th class="blue-text">Sector</th><th class="blue-text">Region</th>
+                            <c:forEach var="impactIteration" items="${impactIterations}"><th class="blue-bg" style="text-align: center;">${impactIteration.year}</th></c:forEach>
+                        </tr>
+                        <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
+                            <tr class="impact-series-clickable" id="impact-row-${index.index}">
+                                <td class="sector blue-bg"><span id="${impactSeries.whatTerm.id}">${impactSeries.whatTerm.name}</span></td>
+                                <td class="region blue-bg"><span id="${impactSeries.whereTerm.id}">${impactSeries.whereTerm.name}</span></td>
+                                <c:forEach var="impactIteration" items="${impactIterations}">
+                                    <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
+                                </c:forEach>
+                                <c:if test="${proposalsPermissions.canEdit}">
+                                    <td>
+                                        <div class="edit-prop-butts">
+                                            <a class="impact-delete-row-button" id="${impactSeries.focusArea.id}" href="javascript:;">Remove</a>
+                                        </div>
+                                    </td>
+                                    <td><span class="spinner-area">&#160;</span></td>
+                                </c:if>
+                            </tr>
                         </c:forEach>
-                        <td>
-                            <div class="edit-prop-butts">
-                                <a class="impact-delete-row-button" id="${impactSeries.focusArea.id}" href="javascript:;">Remove</a>
-                            </div>
-                        </td>
-                        <td><span class="spinner-area">&#160;</span></td>
-                    </tr>
-                </c:forEach>
-                <!-- New impact series -->
-                <tr id="impact-series-new">
-                    <td class="sector blue-bg">
-                        <select>
-                            <option value="0" selected="selected">Select sector</option>
-                            <c:forEach var="sectorTermEntry" items="${sectorTerms}">
-                                <option value="${sectorTermEntry.id}">
-                                        ${sectorTermEntry.name}
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td class="region blue-bg">
-                        <select>
-                            <option value="0" selected="selected">Select sector first</option>
-                        </select>
-                    </td>
-                    <td class="spinner-area"> </td>
-                </tr>
-            </table>
+                        <c:if test="${proposalsPermissions.canEdit}">
+                            <!-- New impact series -->
+                            <tr id="impact-series-new">
+                                <td class="sector blue-bg">
+                                    <select>
+                                        <option value="0" selected="selected">Select sector</option>
+                                        <c:forEach var="sectorTermEntry" items="${sectorTerms}">
+                                            <option value="${sectorTermEntry.id}">
+                                                    ${sectorTermEntry.name}
+                                            </option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                                <td class="region blue-bg">
+                                    <select>
+                                        <option value="0" selected="selected">Select sector first</option>
+                                    </select>
+                                </td>
+                                <td class="spinner-area"> </td>
+                            </tr>
+                        </c:if>
+                    </table>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
+
+    <c:if test="${not proposalsPermissions.canEdit}">
+        <script>
+            $().ready(function() {
+                $('tr.impact-series-clickable').removeClass('impact-series-clickable');
+            });
+        </script>
+    </c:if>
 
     <script>
         var editedFocusArea = 0;

@@ -23,7 +23,7 @@
                 <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
                     <c:set var="seriesValues" value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}" />
                     <tr>
-                        <td class="sector blue-bg">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
+                        <td class="sector">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
                         <c:forEach var="impactIteration" items="${impactIterations}">
                             <fmt:formatNumber var="value"
                                               value="${seriesValues.yearToValueMap[impactIteration.year]}"
@@ -33,7 +33,7 @@
                     </tr>
                 </c:forEach>
                 <tr>
-                    <td class="sector blue-bg">Selected proposal portfolio sum</td>
+                    <td class="sector">Selected proposal portfolio sum</td>
                     <c:forEach var="impactIteration" items="${impactIterations}">
                         <fmt:formatNumber var="value"
                                           value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
@@ -57,7 +57,7 @@
                 if (!hitFirstRow) {
                     hitFirstRow = true;
                 } else {
-                    $(this).children('td:not(.blue-bg)').css('background-color', tableColors[idx - 1]);
+                    $(this).children('td.sector').css('background-color', tableColors[idx - 1]);
                 }
             });
         });

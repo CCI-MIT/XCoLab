@@ -94,9 +94,11 @@ public class ContestDescriptionBean implements Serializable{
 
     }
 
-    private void updateContestSchedules(Contest contest, Long scheduleTemplateId)throws Exception{
+    private void updateContestSchedules(Contest contest, Long scheduleTemplateId) throws Exception{
         Long oldScheduleTemplateId = contest.getContestScheduleId();
-        if(!oldScheduleTemplateId.equals(scheduleTemplateId)) {
+
+        // Schedule with id = 0 is "None", that is no change in the contest phases
+        if(scheduleTemplateId != 0 && !oldScheduleTemplateId.equals(scheduleTemplateId)) {
             ContestScheduleWrapper.updateContestPhaseAccordingToContestSchedule(contest, scheduleTemplateId);
         }
     }
