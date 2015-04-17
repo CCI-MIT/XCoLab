@@ -3,13 +3,11 @@
  */
 package org.xcolab.portlets.redballoon;
 
+import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-
-import javax.servlet.http.Cookie;
 
 /**
  * @author pdeboer
@@ -26,7 +24,7 @@ public class BalloonCookie implements Serializable {
     private String uuid;
     private String extraDataLogged;
 
-    public static final String COOKIE_NAME = "climatecolabBalloonCookie";
+    public static final String COOKIE_NAME = "climatecolabBalloonCookie2015";
 
     /**
 	 * 

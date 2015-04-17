@@ -23,6 +23,7 @@ public class ContestDescriptionBean implements Serializable{
     private Long ContestPK;
     private Long contestLogoId;
     private Long sponsorLogoId;
+    private String emailTemplateUrl;
 
     @Length(min = 5, max = 140, message = "The contest question must be at least 5 characters and not more than 140 characters.")
     private String contestName;
@@ -58,6 +59,7 @@ public class ContestDescriptionBean implements Serializable{
             scheduleTemplateId = contest.getContestScheduleId();
             contestTier = contest.getContestTier();
             contestLogoId = contest.getContestLogoId();
+            emailTemplateUrl = contest.getEmailTemplateUrl();
             sponsorLogoId = contest.getSponsorLogoId();
         }
     }
@@ -75,6 +77,7 @@ public class ContestDescriptionBean implements Serializable{
     private void updateContestDescription(Contest contest) throws Exception{
 
         contest.setContestName(contestName);
+        contest.setEmailTemplateUrl(emailTemplateUrl);
         contest.setContestShortName(contestShortName);
         contest.setContestDescription(contestDescription);
         contest.setPlanTemplateId(planTemplateId);
@@ -142,6 +145,16 @@ public class ContestDescriptionBean implements Serializable{
     public void setContestShortName(String contestShortName) {
         this.contestShortName = contestShortName;
     }
+
+    public String getEmailTemplateUrl() {
+        if (emailTemplateUrl != null) {
+            return emailTemplateUrl;
+        } else
+            return "";
+    }
+
+    public void setEmailTemplateUrl(String emailTemplateUrl) {this.emailTemplateUrl = emailTemplateUrl;}
+
 
     public String getContestDescription() {
         if(contestDescription != null) {

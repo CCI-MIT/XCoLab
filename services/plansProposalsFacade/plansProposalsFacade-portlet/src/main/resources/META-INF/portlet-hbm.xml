@@ -232,6 +232,7 @@
 		<property name="points" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="defaultParentPointType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="pointDistributionStrategy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="emailTemplateUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestDebateImpl" table="xcolab_ContestDebate">
 		<cache usage="read-write" />
