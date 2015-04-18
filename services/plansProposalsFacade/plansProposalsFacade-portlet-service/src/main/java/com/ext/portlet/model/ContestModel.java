@@ -628,6 +628,69 @@ public interface ContestModel extends BaseModel<Contest> {
      */
     public void setEmailTemplateUrl(String emailTemplateUrl);
 
+    /**
+     * Returns the show_in_tile_view of this contest.
+     *
+     * @return the show_in_tile_view of this contest
+     */
+    public boolean getShow_in_tile_view();
+
+    /**
+     * Returns <code>true</code> if this contest is show_in_tile_view.
+     *
+     * @return <code>true</code> if this contest is show_in_tile_view; <code>false</code> otherwise
+     */
+    public boolean isShow_in_tile_view();
+
+    /**
+     * Sets whether this contest is show_in_tile_view.
+     *
+     * @param show_in_tile_view the show_in_tile_view of this contest
+     */
+    public void setShow_in_tile_view(boolean show_in_tile_view);
+
+    /**
+     * Returns the show_in_list_view of this contest.
+     *
+     * @return the show_in_list_view of this contest
+     */
+    public boolean getShow_in_list_view();
+
+    /**
+     * Returns <code>true</code> if this contest is show_in_list_view.
+     *
+     * @return <code>true</code> if this contest is show_in_list_view; <code>false</code> otherwise
+     */
+    public boolean isShow_in_list_view();
+
+    /**
+     * Sets whether this contest is show_in_list_view.
+     *
+     * @param show_in_list_view the show_in_list_view of this contest
+     */
+    public void setShow_in_list_view(boolean show_in_list_view);
+
+    /**
+     * Returns the show_in_outline_view of this contest.
+     *
+     * @return the show_in_outline_view of this contest
+     */
+    public boolean getShow_in_outline_view();
+
+    /**
+     * Returns <code>true</code> if this contest is show_in_outline_view.
+     *
+     * @return <code>true</code> if this contest is show_in_outline_view; <code>false</code> otherwise
+     */
+    public boolean isShow_in_outline_view();
+
+    /**
+     * Sets whether this contest is show_in_outline_view.
+     *
+     * @param show_in_outline_view the show_in_outline_view of this contest
+     */
+    public void setShow_in_outline_view(boolean show_in_outline_view);
+
     @Override
     public boolean isNew();
 

@@ -320,6 +320,9 @@ public class ContestCreatorUtil {
     public static Contest createNewContest(String contestShortName) throws SystemException, PortalException {
         Contest contest = ContestLocalServiceUtil.createNewContest(10144L, contestShortName);
         contest.setContestPrivate(true);
+        contest.setShow_in_tile_view(true);
+        contest.setShow_in_list_view(true);
+        contest.setShow_in_outline_view(true);
         // TODO for now there is always a template preselected
         contest.setPlanTemplateId(102L);
         contest.persist();

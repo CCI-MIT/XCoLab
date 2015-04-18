@@ -115,7 +115,10 @@ create table xcolab_Contest (
 	points DOUBLE,
 	defaultParentPointType LONG,
 	pointDistributionStrategy VARCHAR(75) null,
-	emailTemplateUrl VARCHAR(75) null
+	emailTemplateUrl VARCHAR(75) null,
+	show_in_tile_view BOOLEAN,
+	show_in_list_view BOOLEAN,
+	show_in_outline_view BOOLEAN
 );
 
 create table xcolab_ContestDebate (

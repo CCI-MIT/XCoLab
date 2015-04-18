@@ -198,43 +198,47 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		}
 		var contestsCount = 0;
 		<c:forEach var="contest" items="${contests}">
-			contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId}, 
-					proposalsCount: ${contest.proposalsCount}, contestLink: '<proposalsPortlet:contestLink contestId="${contest.contestPK }" text="visit" />', 
-					contestUrl: '/web/guest/plans/-/plans/contestId/${contest.contestPK}', created: ${contest.createdTime}, active: ${contest.contestActive}};
-			contests[${contest.contestPK}] = contest;
-			contestsCount++;
-			
-			focusArea = focusAreas[${contest.focusAreaId}];
-			
-			for (var idx in focusArea.terms) {
-				addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
-				ontologyTerms[focusArea.terms[idx]].space.contests.push(contest);
-			}
+            <c:if test="${contest.showInOutlineView}">
+                contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
+                        proposalsCount: ${contest.proposalsCount}, contestLink: '<proposalsPortlet:contestLink contestId="${contest.contestPK }" text="visit" />',
+                        contestUrl: '/web/guest/plans/-/plans/contestId/${contest.contestPK}', created: ${contest.createdTime}, active: ${contest.contestActive}};
+                contests[${contest.contestPK}] = contest;
+                contestsCount++;
+
+                focusArea = focusAreas[${contest.focusAreaId}];
+
+                for (var idx in focusArea.terms) {
+                    addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
+                    ontologyTerms[focusArea.terms[idx]].space.contests.push(contest);
+                }
+            </c:if>
 		</c:forEach>
 
 		<c:forEach var="contest" items="${otherContests}">
-			otherContest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId}, 
-					proposalsCount: ${contest.proposalsCount}, contestLink: '<proposalsPortlet:contestLink contestId="${contest.contestPK }" text="visit" />'};
-			otherContests[${contest.contestPK}] = otherContest;
-			focusArea = focusAreas[${contest.focusAreaId}];
-			
-			for (var idx in focusArea.terms) {
-				addContestToTermAndParents(0, otherContest, ontologyTerms[focusArea.terms[idx]], true);
-				ontologyTerms[focusArea.terms[idx]].space.otherContests.push(contest);
-			}
-			
+            <c:if test="${contest.showInOutlineView}">
+                otherContest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
+                        proposalsCount: ${contest.proposalsCount}, contestLink: '<proposalsPortlet:contestLink contestId="${contest.contestPK }" text="visit" />'};
+                otherContests[${contest.contestPK}] = otherContest;
+                focusArea = focusAreas[${contest.focusAreaId}];
+
+                for (var idx in focusArea.terms) {
+                    addContestToTermAndParents(0, otherContest, ontologyTerms[focusArea.terms[idx]], true);
+                    ontologyTerms[focusArea.terms[idx]].space.otherContests.push(contest);
+                }
+            </c:if>
 		</c:forEach>
 
 		<c:forEach var="contest" items="${otherContests}">
-			otherContest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId}, 
-					proposalsCount: ${contest.proposalsCount}, contestLink: '<proposalsPortlet:contestLink contestId="${contest.contestPK }" text="visit" />'};
-			otherContests[${contest.contestPK}] = otherContest;
-			focusArea = focusAreas[${contest.focusAreaId}];
-			
-			for (var idx in focusArea.terms) {
-				addContestToTermAndParents(otherContest, ontologyTerms[focusArea.terms[idx]], true);
-			}
-			
+            <c:if test="${contest.showInOutlineView}">
+                otherContest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
+                        proposalsCount: ${contest.proposalsCount}, contestLink: '<proposalsPortlet:contestLink contestId="${contest.contestPK }" text="visit" />'};
+                otherContests[${contest.contestPK}] = otherContest;
+                focusArea = focusAreas[${contest.focusAreaId}];
+
+                for (var idx in focusArea.terms) {
+                    addContestToTermAndParents(otherContest, ontologyTerms[focusArea.terms[idx]], true);
+                }
+            </c:if>
 		</c:forEach>
 		</script>
 		<script>

@@ -99,6 +99,67 @@ public class ContestWrapper {
 
     public void setEmailTemplateUrl(String emailTemplateUrl){contest.setEmailTemplateUrl(emailTemplateUrl);}
 
+    public boolean getShowInTileView(){
+        Boolean contestShowInTileView =  (Boolean) contest.getShow_in_tile_view();
+
+        if (contestShowInTileView != null) {
+            return contest.getShow_in_tile_view();
+        }
+        else {
+            contest.setShow_in_tile_view(true);
+            return true;
+        }
+    }
+
+    public boolean isShowInTileView(){
+        return contest.isShow_in_tile_view();
+    }
+
+    public void setShowInTileView(boolean showInTileView){
+        contest.setShow_in_tile_view(showInTileView);
+    }
+
+    public boolean getShowInListView(){
+        Boolean contestShowInListView =  (Boolean) contest.getShow_in_list_view();
+
+        if (contestShowInListView != null) {
+            return contest.getShow_in_list_view();
+        }
+        else {
+            contest.setShow_in_list_view(true);
+            return true;
+        }
+    }
+
+    public boolean isShowInListView(){
+        return contest.isShow_in_list_view();
+    }
+
+    public void setShowInListView(boolean showInListView){
+        contest.setShow_in_list_view(showInListView);
+    }
+
+    public boolean getShowInOutlineView(){
+        Boolean contestShowInOutlineView =  (Boolean) contest.getShow_in_outline_view();
+
+        if (contestShowInOutlineView != null) {
+            return contest.getShow_in_outline_view();
+        }
+        else {
+            contest.setShow_in_tile_view(true);
+            return true;
+        }
+
+    }
+
+    public boolean isShowInOutlineView(){
+        return contest.isShow_in_outline_view();
+    }
+
+    public void setShowInOutlineView(boolean showInOutlineView){
+        contest.setShow_in_outline_view(showInOutlineView);
+    }
+
     public void resetOriginalValues() {
         contest.resetOriginalValues();
     }
