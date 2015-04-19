@@ -36,6 +36,15 @@ public class ProposalImpactUtil {
     }
 
     // TODO cache this map somehow
+
+    /**
+     * Returns a map that maps from a region (WHERE) OntologyTerm to all sector (WHAT) OntologyTerms that are still available
+     *
+     * @param impactSerieses        A list of impact series objects
+     * @return                      A map with region terms as keys and a list of sector terms as values
+     * @throws SystemException
+     * @throws PortalException
+     */
     public Map<OntologyTerm, List<OntologyTerm>> calculateAvailableOntologyMap(List<ProposalImpactSeries> impactSerieses) throws SystemException, PortalException {
 
         Map<OntologyTerm, List<OntologyTerm>> ontologyTermMap = new HashMap<>();
@@ -51,13 +60,13 @@ public class ProposalImpactUtil {
                 OntologyTerm whatTerm = getWhatTerm(focusArea);
                 OntologyTerm whereTerm = getWhereTerm(focusArea);
 
-                List<OntologyTerm> whereTerms = ontologyTermMap.get(whatTerm);
-                if (Validator.isNull(whereTerms)) {
-                    whereTerms = new ArrayList<OntologyTerm>();
-                    ontologyTermMap.put(whatTerm, whereTerms);
+                List<OntologyTerm> whatTerms = ontologyTermMap.get(whereTerm);
+                if (Validator.isNull(whatTerms)) {
+                    whatTerms = new ArrayList<OntologyTerm>();
+                    ontologyTermMap.put(whereTerm, whatTerms);
                 }
 
-                whereTerms.add(whereTerm);
+                whatTerms.add(whatTerm);
             }
         }
 

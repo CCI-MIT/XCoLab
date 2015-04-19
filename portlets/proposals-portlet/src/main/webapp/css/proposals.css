@@ -536,12 +536,26 @@ div.selected {
 }
 
 #impact tr.selected {
-    border: 2px solid #8e8d8a;
+    background-color: #e0e0e0;
 }
 
 #impact tr select {
     margin: 0px;
     width: 202px;
+}
+
+#impact table#impact-summary {
+    min-height: 150px;
+    max-height: 400px;
+}
+
+#impact table#impact-summary tbody {
+    max-height: 350px;
+    overflow: auto;
+}
+
+#impact #impact-series-detail {
+    margin-top: 30px;
 }
 
 #impact input {
