@@ -67,6 +67,7 @@
             If you have input on the template, please send it in a&#160;<a href="/web/guest/feedback" target="_blank">feedback message</a>.
             To save your proposal, you must agree to the&#160;<a href="/web/guest/resources/-/wiki/Main/Contest+Rules" target="_blank">Contest rules</a>
             and&#160;<a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
+            Please note, the website will timeout after 30 minutes on this page.  Please save all proposal content offline before clicking PUBLISH or else it may be lost.
         </p>
     </div> <!-- /headline -->
 
