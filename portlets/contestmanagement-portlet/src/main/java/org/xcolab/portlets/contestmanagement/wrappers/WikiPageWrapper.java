@@ -10,7 +10,6 @@ import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.model.WikiPageResource;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 import com.liferay.portlet.wiki.service.WikiPageResourceLocalServiceUtil;
-import org.springframework.web.util.HtmlUtils;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 
 import java.net.URLEncoder;
@@ -34,10 +33,15 @@ public class WikiPageWrapper {
 
     public WikiPageWrapper(Contest contest, Long loggedInUserId) throws Exception{
         this.contest = contest;
-        this.contestTitle = contest.getContestShortName();
+        String contestTitle = contest.getContestShortName();
+        this.contestTitle = removeSpecialChars(contestTitle);
         this.loggedInUserId = loggedInUserId;
         initWikiPageResourceAndCreateIfNoneExistsForThisContest();
         initWikiPageAndCreateIfNoneExistsForThisContest();
+    }
+
+    private static String removeSpecialChars(String stringToHaveColoRemoved){
+        return stringToHaveColoRemoved.replace(":", "").replace("'","").replace("’",":");
     }
 
     public ContestResourcesBean getContestResourcesBean() throws Exception{
@@ -58,8 +62,10 @@ public class WikiPageWrapper {
         }
     }
 
-    public static void updateWikiPageTitleIfExists(String oldTitle, String newTitle) throws Exception{
-        if(isWikiPageCreatedForContest(oldTitle)){
+    public static void updateWikiPageTitleIfExists(String oldTitleRaw, String newTitleRaw) throws Exception{
+        String oldTitle = removeSpecialChars(oldTitleRaw);
+        String newTitle = removeSpecialChars(newTitleRaw);
+        if(isWikiPageCreatedForContest(removeSpecialChars(oldTitle))){
             WikiPageResource wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WIKI_NODE_ID, oldTitle);
             WikiPage wikiPage;
             try {
@@ -164,8 +170,10 @@ public class WikiPageWrapper {
     private void updateContestResourceUrl() throws Exception{
         updateContestResourceUrl(contest, wikiPage.getTitle());
     }
+
     public static void updateContestResourceUrl(Contest contest, String wikiPageTitle) throws Exception{
-        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPageTitle,"UTF-8");
+        String wikiPageTitleWithoutColon = removeSpecialChars(wikiPageTitle);
+        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPageTitleWithoutColon,"UTF-8");
         contest.setResourcesUrl(escapedWikiPageUrlLink);
         contest.persist();
         ContestLocalServiceUtil.updateContest(contest);

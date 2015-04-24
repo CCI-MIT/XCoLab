@@ -40,7 +40,7 @@
 					<form:errors cssClass="alert alert-error" path="contestShortName" />
 				</div>
 				<div class="clearfix"><!-- --></div>
-				<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">50</span> characters</div>
+				<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">60</span> characters</div>
 			</div>
 		</div>
 

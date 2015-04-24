@@ -29,6 +29,7 @@ import com.liferay.portal.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.xcolab.enums.ContestTier;
+import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 
 import java.util.ArrayList;
@@ -469,15 +470,17 @@ public class ContestCreatorUtil {
     }
 
 
-    public static Contest createNewContest(String contestShortName) throws SystemException, PortalException {
+    public static Contest createNewContest(String contestShortName) throws Exception {
         Contest contest = ContestLocalServiceUtil.createNewContest(10144L, contestShortName);
         contest.setContestPrivate(true);
-//        contest.setShow_in_tile_view(true);
-//        contest.setShow_in_list_view(true);
-//        contest.setShow_in_outline_view(true);
+        contest.setShow_in_tile_view(true);
+        contest.setShow_in_list_view(true);
+        contest.setShow_in_outline_view(true);
+
         // TODO for now there is always a template preselected
         contest.setPlanTemplateId(102L);
         contest.persist();
+
         return contest;
     }
 
@@ -551,7 +554,8 @@ public class ContestCreatorUtil {
 
     private static Contest createSingleContestWithJSON(JSONObject newContestContents) throws Exception {
 
-        Contest newContest = createNewContest(newContestContents.getString(CONTEST_NAME_KEY));
+        String contestTitle = newContestContents.getString(CONTEST_NAME_KEY);
+        Contest newContest = createNewContest(contestTitle);
         newContest.setContestName(newContestContents.getString(CONTEST_QUESTION_KEY));
         newContest.setContestDescription(newContestContents.getString(CONTEST_DESCRIPTION_KEY));
         newContest.setContestTier(newContestContents.getInt(CONTEST_TIER_KEY));
@@ -577,11 +581,28 @@ public class ContestCreatorUtil {
             newContest.setFocusAreaId(focusAreaId);
         }
 
+        int contestTier = newContestContents.getInt(CONTEST_TIER_KEY);
+        boolean isContestTierLevel2 = (contestTier == 2);
+        if(isContestTierLevel2){
+            newContest.setShow_in_tile_view(false);
+            newContest.setShow_in_list_view(false);
+        }
+
         newContest.persist();
 
-        // Install contest schedule
-        ContestScheduleWrapper.createContestPhaseAccordingToContestSchedule(newContest, newContestContents.getLong(CONTEST_SCHEDULE_KEY));
+        Long contestScheduleTemplateId = newContestContents.getLong(CONTEST_SCHEDULE_KEY);
+        createContestPhases(newContest, contestScheduleTemplateId);
+        createContestWikiPage(newContest);
+
         return newContest;
+    }
+
+    private static void createContestWikiPage(Contest contest) throws Exception{
+        ContestDescriptionBean.updateContestWiki(contest, "");
+    }
+
+    private static void createContestPhases(Contest contest, Long contestScheduleTemplateId) throws Exception{
+        ContestScheduleWrapper.createContestPhaseAccordingToContestSchedule(contest, contestScheduleTemplateId);
     }
 
     private static List<Contest> createSubContests(JSONArray subContestsJson) throws Exception {

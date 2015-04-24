@@ -66,6 +66,7 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
             model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
             return TAB_VIEW;
         } catch (Exception e){
+            e.printStackTrace();
         }
         return NOT_FOUND_TAB_VIEW;
     }
