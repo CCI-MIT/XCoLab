@@ -40,8 +40,8 @@ public class WikiPageWrapper {
         initWikiPageAndCreateIfNoneExistsForThisContest();
     }
 
-    private static String removeSpecialChars(String stringToHaveColoRemoved){
-        return stringToHaveColoRemoved.replace(":", "").replace("'","").replace("’",":");
+    private static String removeSpecialChars(String stringToHaveSpecialCharacterRemoved){
+        return stringToHaveSpecialCharacterRemoved.replace(":", "");
     }
 
     public ContestResourcesBean getContestResourcesBean() throws Exception{
