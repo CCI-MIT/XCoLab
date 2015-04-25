@@ -248,12 +248,6 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getName();
     }
 
-    public void promoteProposal(long proposalId, long nextPhaseId) throws SystemException, PortalException {
-        _log.info("WARNING: promoteProposal(long, long) is deprecated. Use promoteProposal(long, long, long) instead.");
-        promoteProposal(proposalId, nextPhaseId, 0);
-
-    }
-
     public void promoteProposal(long proposalId, long nextPhaseId, long currentPhaseId) throws SystemException, PortalException {
     	try {
         	// check if proposal isn't already associated with requested phase
@@ -357,11 +351,12 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                             continue;
                         }
 
-                        promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
+                        promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
                     }
 
                     // update phase for which promotion was done (mark it as
                     // "promotion done")
+                    phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     updateContestPhase(phase);
 
                     // if transition is to voting phase
@@ -404,7 +399,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                         // Decide about the promotion
                         if (didJudgeDecideToPromote(p, phase)) {
                             System.out.println("Promote proposal "+p.getProposalId());
-                            promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
+                            promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
                         }
 
                         proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);

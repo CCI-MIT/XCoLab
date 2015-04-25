@@ -392,8 +392,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         if (show_in_tile_view != null) {
             setShow_in_tile_view(show_in_tile_view);
         }
-        else
-            setShow_in_tile_view(true);
 
         Boolean show_in_list_view = (Boolean) attributes.get(
                 "show_in_list_view");

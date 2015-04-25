@@ -393,13 +393,6 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     @Override
-    public void promoteProposal(long proposalId, long nextPhaseId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _contestPhaseLocalService.promoteProposal(proposalId, nextPhaseId);
-    }
-
-    @Override
     public void promoteProposal(long proposalId, long nextPhaseId,
         long currentPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
