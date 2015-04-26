@@ -54,7 +54,7 @@ public class ProposalImpactSeries {
     private Map<String, Boolean> seriesTypeToEditableMap;
 
     private ImpactDefaultSeries bauSeries;
-    private ImpactDefaultSeries ddppSeries;
+//    private ImpactDefaultSeries ddppSeries;
 
     private ProposalImpactSeriesValues resultValues;
 
@@ -71,8 +71,8 @@ public class ProposalImpactSeries {
         bauSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_BAU_KEY);
         addSeriesWithType(bauSeries, false);
 
-        ddppSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_DDPP_KEY);
-        addSeriesWithType(ddppSeries, false);
+//        ddppSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_DDPP_KEY);
+//        addSeriesWithType(ddppSeries, false);
 
         if (loadData) {
             loadEditableData();

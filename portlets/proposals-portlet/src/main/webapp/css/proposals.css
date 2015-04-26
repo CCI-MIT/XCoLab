@@ -578,3 +578,17 @@ div.selected {
     width: 500px;
     margin: 0 auto 20px auto;
 }
+
+#impact-series-detail div#new-series select {
+    margin-right: 10px;
+    height: 32px;
+}
+
+#impact-series-detail div#header {
+    padding-top: 15px;
+}
+
+#impact-series-detail div#header h3 {
+    margin-right: 10px;
+    display: inline-block;
+}
