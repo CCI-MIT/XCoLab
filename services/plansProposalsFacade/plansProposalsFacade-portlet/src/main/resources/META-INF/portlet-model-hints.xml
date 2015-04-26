@@ -345,7 +345,9 @@
 	<model name="com.ext.portlet.model.ImpactDefaultSeries">
 		<field name="seriesId" type="long" />
 		<field name="name" type="String" />
-		<field name="description" type="String" />
+		<field name="description" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
 		<field name="focusAreaId" type="long" />
 		<field name="visible" type="boolean" />
 		<field name="editable" type="boolean" />
