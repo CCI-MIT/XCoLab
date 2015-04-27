@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.enums.ContestTier;
+import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.IntegratedProposalImpactSeries;
@@ -84,6 +85,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        
+        // TODO remove this code once impact tab has officially launched
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        // If not admin or fellow return "error view"
+        if (!(permissions.getCanAdminAll() || permissions.getCanFellowActions())) {
+            return "proposalImpactError";
+        }
 
         // TODO handle error here
         try {
