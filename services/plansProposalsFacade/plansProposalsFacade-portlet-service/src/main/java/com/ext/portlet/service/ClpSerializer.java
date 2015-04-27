@@ -23,6 +23,12 @@ import com.ext.portlet.model.DiscussionMessageFlagClp;
 import com.ext.portlet.model.EmailListClp;
 import com.ext.portlet.model.FocusAreaClp;
 import com.ext.portlet.model.FocusAreaOntologyTermClp;
+import com.ext.portlet.model.ImpactDefaultSeriesClp;
+import com.ext.portlet.model.ImpactDefaultSeriesDataClp;
+import com.ext.portlet.model.ImpactIterationClp;
+import com.ext.portlet.model.ImpactTemplateFocusAreaListClp;
+import com.ext.portlet.model.ImpactTemplateMaxFocusAreaClp;
+import com.ext.portlet.model.ImpactTemplateSeriesClp;
 import com.ext.portlet.model.LandingPageClp;
 import com.ext.portlet.model.LoginLogClp;
 import com.ext.portlet.model.MessageClp;
@@ -269,6 +275,32 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(FocusAreaOntologyTermClp.class.getName())) {
             return translateInputFocusAreaOntologyTerm(oldModel);
+        }
+
+        if (oldModelClassName.equals(ImpactDefaultSeriesClp.class.getName())) {
+            return translateInputImpactDefaultSeries(oldModel);
+        }
+
+        if (oldModelClassName.equals(ImpactDefaultSeriesDataClp.class.getName())) {
+            return translateInputImpactDefaultSeriesData(oldModel);
+        }
+
+        if (oldModelClassName.equals(ImpactIterationClp.class.getName())) {
+            return translateInputImpactIteration(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    ImpactTemplateFocusAreaListClp.class.getName())) {
+            return translateInputImpactTemplateFocusAreaList(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    ImpactTemplateMaxFocusAreaClp.class.getName())) {
+            return translateInputImpactTemplateMaxFocusArea(oldModel);
+        }
+
+        if (oldModelClassName.equals(ImpactTemplateSeriesClp.class.getName())) {
+            return translateInputImpactTemplateSeries(oldModel);
         }
 
         if (oldModelClassName.equals(LandingPageClp.class.getName())) {
@@ -801,6 +833,71 @@ public class ClpSerializer {
         FocusAreaOntologyTermClp oldClpModel = (FocusAreaOntologyTermClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getFocusAreaOntologyTermRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputImpactDefaultSeries(
+        BaseModel<?> oldModel) {
+        ImpactDefaultSeriesClp oldClpModel = (ImpactDefaultSeriesClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getImpactDefaultSeriesRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputImpactDefaultSeriesData(
+        BaseModel<?> oldModel) {
+        ImpactDefaultSeriesDataClp oldClpModel = (ImpactDefaultSeriesDataClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getImpactDefaultSeriesDataRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputImpactIteration(BaseModel<?> oldModel) {
+        ImpactIterationClp oldClpModel = (ImpactIterationClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getImpactIterationRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputImpactTemplateFocusAreaList(
+        BaseModel<?> oldModel) {
+        ImpactTemplateFocusAreaListClp oldClpModel = (ImpactTemplateFocusAreaListClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getImpactTemplateFocusAreaListRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputImpactTemplateMaxFocusArea(
+        BaseModel<?> oldModel) {
+        ImpactTemplateMaxFocusAreaClp oldClpModel = (ImpactTemplateMaxFocusAreaClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getImpactTemplateMaxFocusAreaRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputImpactTemplateSeries(
+        BaseModel<?> oldModel) {
+        ImpactTemplateSeriesClp oldClpModel = (ImpactTemplateSeriesClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getImpactTemplateSeriesRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1645,6 +1742,36 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ImpactDefaultSeriesImpl")) {
+            return translateOutputImpactDefaultSeries(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ImpactDefaultSeriesDataImpl")) {
+            return translateOutputImpactDefaultSeriesData(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ImpactIterationImpl")) {
+            return translateOutputImpactIteration(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ImpactTemplateFocusAreaListImpl")) {
+            return translateOutputImpactTemplateFocusAreaList(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ImpactTemplateMaxFocusAreaImpl")) {
+            return translateOutputImpactTemplateMaxFocusArea(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ImpactTemplateSeriesImpl")) {
+            return translateOutputImpactTemplateSeries(oldModel);
+        }
+
+        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.LandingPageImpl")) {
             return translateOutputLandingPage(oldModel);
         }
@@ -2302,6 +2429,35 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchFocusAreaOntologyTermException();
         }
 
+        if (className.equals(
+                    "com.ext.portlet.NoSuchImpactDefaultSeriesException")) {
+            return new com.ext.portlet.NoSuchImpactDefaultSeriesException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchImpactDefaultSeriesDataException")) {
+            return new com.ext.portlet.NoSuchImpactDefaultSeriesDataException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchImpactIterationException")) {
+            return new com.ext.portlet.NoSuchImpactIterationException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchImpactTemplateFocusAreaListException")) {
+            return new com.ext.portlet.NoSuchImpactTemplateFocusAreaListException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchImpactTemplateMaxFocusAreaException")) {
+            return new com.ext.portlet.NoSuchImpactTemplateMaxFocusAreaException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchImpactTemplateSeriesException")) {
+            return new com.ext.portlet.NoSuchImpactTemplateSeriesException();
+        }
+
         if (className.equals("com.ext.portlet.NoSuchLandingPageException")) {
             return new com.ext.portlet.NoSuchLandingPageException();
         }
@@ -2842,6 +2998,71 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setFocusAreaOntologyTermRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputImpactDefaultSeries(
+        BaseModel<?> oldModel) {
+        ImpactDefaultSeriesClp newModel = new ImpactDefaultSeriesClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setImpactDefaultSeriesRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputImpactDefaultSeriesData(
+        BaseModel<?> oldModel) {
+        ImpactDefaultSeriesDataClp newModel = new ImpactDefaultSeriesDataClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setImpactDefaultSeriesDataRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputImpactIteration(BaseModel<?> oldModel) {
+        ImpactIterationClp newModel = new ImpactIterationClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setImpactIterationRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputImpactTemplateFocusAreaList(
+        BaseModel<?> oldModel) {
+        ImpactTemplateFocusAreaListClp newModel = new ImpactTemplateFocusAreaListClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setImpactTemplateFocusAreaListRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputImpactTemplateMaxFocusArea(
+        BaseModel<?> oldModel) {
+        ImpactTemplateMaxFocusAreaClp newModel = new ImpactTemplateMaxFocusAreaClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setImpactTemplateMaxFocusAreaRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputImpactTemplateSeries(
+        BaseModel<?> oldModel) {
+        ImpactTemplateSeriesClp newModel = new ImpactTemplateSeriesClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setImpactTemplateSeriesRemoteModel(oldModel);
 
         return newModel;
     }

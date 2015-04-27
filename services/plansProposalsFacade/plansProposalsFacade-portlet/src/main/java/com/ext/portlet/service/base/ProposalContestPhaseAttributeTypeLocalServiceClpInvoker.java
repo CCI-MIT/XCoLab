@@ -41,10 +41,10 @@ public class ProposalContestPhaseAttributeTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName588;
-    private String[] _methodParameterTypes588;
-    private String _methodName589;
-    private String[] _methodParameterTypes589;
+    private String _methodName626;
+    private String[] _methodParameterTypes626;
+    private String _methodName627;
+    private String[] _methodParameterTypes627;
 
     public ProposalContestPhaseAttributeTypeLocalServiceClpInvoker() {
         _methodName0 = "addProposalContestPhaseAttributeType";
@@ -129,13 +129,13 @@ public class ProposalContestPhaseAttributeTypeLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalContestPhaseAttributeType"
             };
 
-        _methodName588 = "getBeanIdentifier";
+        _methodName626 = "getBeanIdentifier";
 
-        _methodParameterTypes588 = new String[] {  };
+        _methodParameterTypes626 = new String[] {  };
 
-        _methodName589 = "setBeanIdentifier";
+        _methodName627 = "setBeanIdentifier";
 
-        _methodParameterTypes589 = new String[] { "java.lang.String" };
+        _methodParameterTypes627 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -227,13 +227,13 @@ public class ProposalContestPhaseAttributeTypeLocalServiceClpInvoker {
             return ProposalContestPhaseAttributeTypeLocalServiceUtil.updateProposalContestPhaseAttributeType((com.ext.portlet.model.ProposalContestPhaseAttributeType) arguments[0]);
         }
 
-        if (_methodName588.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes588, parameterTypes)) {
+        if (_methodName626.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes626, parameterTypes)) {
             return ProposalContestPhaseAttributeTypeLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName589.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes589, parameterTypes)) {
+        if (_methodName627.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes627, parameterTypes)) {
             ProposalContestPhaseAttributeTypeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

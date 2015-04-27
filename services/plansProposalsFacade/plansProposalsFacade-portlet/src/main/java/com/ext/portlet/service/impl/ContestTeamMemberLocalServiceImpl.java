@@ -39,7 +39,7 @@ public class ContestTeamMemberLocalServiceImpl
 
     
     public ContestTeamMember addContestTeamMember(Long userId, Long contestPk, String role) throws SystemException {
-        ContestTeamMember member = new ContestTeamMemberImpl();
+        ContestTeamMember member = ContestTeamMemberLocalServiceUtil.createContestTeamMember(CounterLocalServiceUtil.increment(ContestTeamMember.class.getName()));
         member.setUserId(userId);
         member.setContestId(contestPk);
         member.setRole(role);

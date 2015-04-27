@@ -49,6 +49,8 @@ public class PlanSectionDefinitionLocalServiceClp
     private String[] _methodParameterTypes19;
     private String _methodName20;
     private String[] _methodParameterTypes20;
+    private String _methodName21;
+    private String[] _methodParameterTypes21;
 
     public PlanSectionDefinitionLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -154,6 +156,12 @@ public class PlanSectionDefinitionLocalServiceClp
 
         _methodParameterTypes20 = new String[] {
                 "com.ext.portlet.model.PlanSectionDefinition"
+            };
+
+        _methodName21 = "getPlanSectionDefinition";
+
+        _methodParameterTypes21 = new String[] {
+                "com.ext.portlet.model.FocusArea", "java.lang.String", "long"
             };
     }
 
@@ -730,5 +738,40 @@ public class PlanSectionDefinitionLocalServiceClp
         }
 
         return (com.ext.portlet.model.FocusArea) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.ext.portlet.model.PlanSectionDefinition getPlanSectionDefinition(
+        com.ext.portlet.model.FocusArea focusArea, java.lang.String type,
+        long contestTierType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName21,
+                    _methodParameterTypes21,
+                    new Object[] {
+                        ClpSerializer.translateInput(focusArea),
+                        
+                    ClpSerializer.translateInput(type),
+                        
+                    contestTierType
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.PlanSectionDefinition) ClpSerializer.translateOutput(returnObj);
     }
 }

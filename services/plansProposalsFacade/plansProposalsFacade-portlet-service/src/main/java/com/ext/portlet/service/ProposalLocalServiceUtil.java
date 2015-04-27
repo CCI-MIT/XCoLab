@@ -625,6 +625,39 @@ public class ProposalLocalServiceUtil {
     }
 
     /**
+    * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
+    *
+    * @param authorId
+    * @param attributeToDelete
+    * @param publishActivity
+    * @throws SystemException
+    * @throws PortalException
+    */
+    public static void removeAttribute(long authorId,
+        com.ext.portlet.model.ProposalAttribute attributeToDelete,
+        boolean publishActivity)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService()
+            .removeAttribute(authorId, attributeToDelete, publishActivity);
+    }
+
+    /**
+    * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
+    *
+    * @param authorId
+    * @param attributeToDelete
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static void removeAttribute(long authorId,
+        com.ext.portlet.model.ProposalAttribute attributeToDelete)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().removeAttribute(authorId, attributeToDelete);
+    }
+
+    /**
     * <p>Returns a list of all proposal version descriptors.</p>
     *
     * @param proposalId id of a proposal
@@ -1312,6 +1345,32 @@ public class ProposalLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getLatestProposalContest(proposalId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getImpactProposalAttributes(proposal);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getImpactProposalAttributes(proposal, focusArea);
+    }
+
+    /**
+    * Returns all focus areas, for which entered proposal impact data is available
+    *
+    * @param proposal
+    * @return
+    */
+    public static java.util.List<com.ext.portlet.model.FocusArea> getImpactProposalFocusAreas(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getImpactProposalFocusAreas(proposal);
     }
 
     public static void clearService() {

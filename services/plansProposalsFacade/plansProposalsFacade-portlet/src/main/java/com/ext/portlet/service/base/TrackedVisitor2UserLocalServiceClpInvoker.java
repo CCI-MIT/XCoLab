@@ -41,14 +41,14 @@ public class TrackedVisitor2UserLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName588;
-    private String[] _methodParameterTypes588;
-    private String _methodName589;
-    private String[] _methodParameterTypes589;
-    private String _methodName594;
-    private String[] _methodParameterTypes594;
-    private String _methodName595;
-    private String[] _methodParameterTypes595;
+    private String _methodName626;
+    private String[] _methodParameterTypes626;
+    private String _methodName627;
+    private String[] _methodParameterTypes627;
+    private String _methodName632;
+    private String[] _methodParameterTypes632;
+    private String _methodName633;
+    private String[] _methodParameterTypes633;
 
     public TrackedVisitor2UserLocalServiceClpInvoker() {
         _methodName0 = "addTrackedVisitor2User";
@@ -133,21 +133,21 @@ public class TrackedVisitor2UserLocalServiceClpInvoker {
                 "com.ext.portlet.model.TrackedVisitor2User"
             };
 
-        _methodName588 = "getBeanIdentifier";
+        _methodName626 = "getBeanIdentifier";
 
-        _methodParameterTypes588 = new String[] {  };
+        _methodParameterTypes626 = new String[] {  };
 
-        _methodName589 = "setBeanIdentifier";
+        _methodName627 = "setBeanIdentifier";
 
-        _methodParameterTypes589 = new String[] { "java.lang.String" };
+        _methodParameterTypes627 = new String[] { "java.lang.String" };
 
-        _methodName594 = "findUuidForUserId";
+        _methodName632 = "findUuidForUserId";
 
-        _methodParameterTypes594 = new String[] { "long" };
+        _methodParameterTypes632 = new String[] { "long" };
 
-        _methodName595 = "addIfNotExists";
+        _methodName633 = "addIfNotExists";
 
-        _methodParameterTypes595 = new String[] { "java.lang.String", "long" };
+        _methodParameterTypes633 = new String[] { "java.lang.String", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -239,25 +239,25 @@ public class TrackedVisitor2UserLocalServiceClpInvoker {
             return TrackedVisitor2UserLocalServiceUtil.updateTrackedVisitor2User((com.ext.portlet.model.TrackedVisitor2User) arguments[0]);
         }
 
-        if (_methodName588.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes588, parameterTypes)) {
+        if (_methodName626.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes626, parameterTypes)) {
             return TrackedVisitor2UserLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName589.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes589, parameterTypes)) {
+        if (_methodName627.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes627, parameterTypes)) {
             TrackedVisitor2UserLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName594.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes594, parameterTypes)) {
+        if (_methodName632.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
             return TrackedVisitor2UserLocalServiceUtil.findUuidForUserId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName595.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes595, parameterTypes)) {
+        if (_methodName633.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
             return TrackedVisitor2UserLocalServiceUtil.addIfNotExists((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue());
         }

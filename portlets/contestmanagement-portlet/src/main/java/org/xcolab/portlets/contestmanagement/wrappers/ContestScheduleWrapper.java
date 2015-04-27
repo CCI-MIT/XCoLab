@@ -125,9 +125,6 @@ public class ContestScheduleWrapper {
 
     }
 
-    public static void createContestPhaseAccordingToContestSchedule(Contest contest, Long oldScheduleTemplateId) throws Exception {
-
-    }
 
     public static void updateContestPhaseAccordingToContestSchedule(Contest contest, Long scheduleTemplateId) throws Exception{
 
@@ -180,6 +177,18 @@ public class ContestScheduleWrapper {
         removeContestPhases(oldContestPhases);
         contest.setContestScheduleId(scheduleTemplateId);
         contest.persist();
+    }
+
+    public static void createContestPhaseAccordingToContestSchedule(Contest contest, Long newScheduleTemplateId) throws Exception {
+        // Delete all old associated phases if there are some
+        removeContestPhases(ContestLocalServiceUtil.getAllPhases(contest));
+
+        List<ContestPhase> contestSchedulePhases = ContestPhaseLocalServiceUtil.getPhasesForContestSchedule(newScheduleTemplateId, 0L);
+        for(ContestPhase contestSchedulePhase : contestSchedulePhases){
+            ContestPhase newContestPhase = ContestPhaseLocalServiceUtil.createFromContestPhase(contestSchedulePhase);
+            newContestPhase.setContestPK(contest.getContestPK());
+            newContestPhase.persist();
+        }
     }
 
     private static void populateContestPhaseTypeIdPhaseId(Contest contest, Map<Long, Long> contestPhaseTypeIdPhaseIdMap) throws Exception{

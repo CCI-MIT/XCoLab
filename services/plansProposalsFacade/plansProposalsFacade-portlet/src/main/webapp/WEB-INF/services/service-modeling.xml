@@ -189,7 +189,79 @@
         </finder>
 
     </entity>
-    
+
+    <!-- Proposal impact -->
+    <entity name="ImpactTemplateSeries" local-service="true">
+        <column name="seriesId" type="long" primary="true" />
+        <column name="iterationId" type="long"/>
+        <column name="name" type="String" />
+
+        <column name="impactIterations" type="Collection" entity="ImpactIteration" mapping-key="iterationId"/>
+    </entity>
+
+    <entity name="ImpactIteration" local-service="true">
+        <column name="iterationId" type="long" primary="true" />
+        <column name="year" type="int" primary="true"/>
+
+        <finder name="IterationId" return-type="Collection">
+            <finder-column name="iterationId"/>
+        </finder>
+    </entity>
+
+    <entity name="ImpactTemplateFocusAreaList" local-service="true">
+        <column name="focusAreaListId" type="long" primary="true" />
+        <column name="name" type="String" />
+
+        <column name="impactFocusAreas" type="Collection" entity="ImpactTemplateMaxFocusArea" mapping-key="focusAreaListId"/>
+    </entity>
+
+    <entity name="ImpactTemplateMaxFocusArea" local-service="true">
+        <column name="focusAreaListId" type="long" primary="true" />
+        <column name="focusAreaId" type="long" primary="true" />
+
+        <finder name="FocusAreaListId" return-type="Collection">
+            <finder-column name="focusAreaListId"/>
+        </finder>
+    </entity>
+
+    <entity name="ImpactDefaultSeries" local-service="true">
+        <column name="seriesId" type="long" primary="true" />
+        <column name="name" type="String" primary="true" />
+        <column name="description" type="String" />
+        <column name="focusAreaId" type="long" />
+        <column name="visible" type="boolean" />
+        <column name="editable" type="boolean" />
+
+        <finder name="SeriesId" return-type="Collection">
+            <finder-column name="seriesId"/>
+        </finder>
+        <finder name="SeriesIdAndEditable" return-type="Collection">
+            <finder-column name="seriesId"/>
+            <finder-column name="editable"/>
+        </finder>
+        <finder name="FocusAreaId" return-type="Collection">
+            <finder-column name="focusAreaId"/>
+        </finder>
+        <finder name="FocusAreaIdAndName" return-type="ImpactDefaultSeries">
+            <finder-column name="focusAreaId"/>
+            <finder-column name="name"/>
+        </finder>
+    </entity>
+
+    <entity name="ImpactDefaultSeriesData" local-service="true">
+        <column name="seriesId" type="long" primary="true" />
+        <column name="year" type="int" primary="true" />
+        <column name="value" type="double" />
+
+        <finder name="SeriesId" return-type="Collection">
+            <finder-column name="seriesId"/>
+        </finder>
+
+        <finder name="SeriesIdAndYear" return-type="ImpactDefaultSeriesData">
+            <finder-column name="seriesId"/>
+            <finder-column name="year"/>
+        </finder>
+    </entity>
 
 
 
@@ -197,7 +269,7 @@
 
 
 
-<exceptions>
+    <exceptions>
 <exception>ModelName</exception>
 <exception>NoSuchModelPosition</exception>
 <exception>NoSuchModel</exception>

@@ -441,15 +441,7 @@ public class ProposalWrapper {
             return;
         }
         try {
-            List<ProposalContestPhaseAttribute> phaseAttributes = ProposalContestPhaseAttributeLocalServiceUtil.getAllContestPhaseAttributes(contestPhase.getContestPhasePK());
-
-            // set phase attributes
-            List<ProposalContestPhaseAttribute> attributes = new ArrayList<>();
-            for (ProposalContestPhaseAttribute attribute: phaseAttributes) {
-                if (attribute.getProposalId() == proposal.getProposalId()) {
-                    attributes.add(attribute);
-                }
-            }
+            List<ProposalContestPhaseAttribute> attributes = ProposalContestPhaseAttributeLocalServiceUtil.getAllContestPhaseProposalAttributes(contestPhase.getContestPhasePK(), proposal.getProposalId());
             setContestPhaseAttributes(attributes);
         } catch (NoSuchProposalContestPhaseAttributeException e) {
             e.printStackTrace();

@@ -25,6 +25,12 @@ import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
 import com.ext.portlet.service.persistence.EmailListPersistence;
 import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
 import com.ext.portlet.service.persistence.FocusAreaPersistence;
+import com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPersistence;
+import com.ext.portlet.service.persistence.ImpactDefaultSeriesPersistence;
+import com.ext.portlet.service.persistence.ImpactIterationPersistence;
+import com.ext.portlet.service.persistence.ImpactTemplateFocusAreaListPersistence;
+import com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPersistence;
+import com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistence;
 import com.ext.portlet.service.persistence.LandingPagePersistence;
 import com.ext.portlet.service.persistence.LoginLogPersistence;
 import com.ext.portlet.service.persistence.MessagePersistence;
@@ -81,6 +87,7 @@ import com.ext.portlet.service.persistence.PointTypePersistence;
 import com.ext.portlet.service.persistence.PointsDistributionConfigurationPersistence;
 import com.ext.portlet.service.persistence.PointsPersistence;
 import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
+import com.ext.portlet.service.persistence.ProposalAttributeFinder;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
@@ -259,6 +266,42 @@ public abstract class PlanTemplateSectionServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.FocusAreaOntologyTermService focusAreaOntologyTermService;
     @BeanReference(type = FocusAreaOntologyTermPersistence.class)
     protected FocusAreaOntologyTermPersistence focusAreaOntologyTermPersistence;
+    @BeanReference(type = com.ext.portlet.service.ImpactDefaultSeriesLocalService.class)
+    protected com.ext.portlet.service.ImpactDefaultSeriesLocalService impactDefaultSeriesLocalService;
+    @BeanReference(type = com.ext.portlet.service.ImpactDefaultSeriesService.class)
+    protected com.ext.portlet.service.ImpactDefaultSeriesService impactDefaultSeriesService;
+    @BeanReference(type = ImpactDefaultSeriesPersistence.class)
+    protected ImpactDefaultSeriesPersistence impactDefaultSeriesPersistence;
+    @BeanReference(type = com.ext.portlet.service.ImpactDefaultSeriesDataLocalService.class)
+    protected com.ext.portlet.service.ImpactDefaultSeriesDataLocalService impactDefaultSeriesDataLocalService;
+    @BeanReference(type = com.ext.portlet.service.ImpactDefaultSeriesDataService.class)
+    protected com.ext.portlet.service.ImpactDefaultSeriesDataService impactDefaultSeriesDataService;
+    @BeanReference(type = ImpactDefaultSeriesDataPersistence.class)
+    protected ImpactDefaultSeriesDataPersistence impactDefaultSeriesDataPersistence;
+    @BeanReference(type = com.ext.portlet.service.ImpactIterationLocalService.class)
+    protected com.ext.portlet.service.ImpactIterationLocalService impactIterationLocalService;
+    @BeanReference(type = com.ext.portlet.service.ImpactIterationService.class)
+    protected com.ext.portlet.service.ImpactIterationService impactIterationService;
+    @BeanReference(type = ImpactIterationPersistence.class)
+    protected ImpactIterationPersistence impactIterationPersistence;
+    @BeanReference(type = com.ext.portlet.service.ImpactTemplateFocusAreaListLocalService.class)
+    protected com.ext.portlet.service.ImpactTemplateFocusAreaListLocalService impactTemplateFocusAreaListLocalService;
+    @BeanReference(type = com.ext.portlet.service.ImpactTemplateFocusAreaListService.class)
+    protected com.ext.portlet.service.ImpactTemplateFocusAreaListService impactTemplateFocusAreaListService;
+    @BeanReference(type = ImpactTemplateFocusAreaListPersistence.class)
+    protected ImpactTemplateFocusAreaListPersistence impactTemplateFocusAreaListPersistence;
+    @BeanReference(type = com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalService.class)
+    protected com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalService impactTemplateMaxFocusAreaLocalService;
+    @BeanReference(type = com.ext.portlet.service.ImpactTemplateMaxFocusAreaService.class)
+    protected com.ext.portlet.service.ImpactTemplateMaxFocusAreaService impactTemplateMaxFocusAreaService;
+    @BeanReference(type = ImpactTemplateMaxFocusAreaPersistence.class)
+    protected ImpactTemplateMaxFocusAreaPersistence impactTemplateMaxFocusAreaPersistence;
+    @BeanReference(type = com.ext.portlet.service.ImpactTemplateSeriesLocalService.class)
+    protected com.ext.portlet.service.ImpactTemplateSeriesLocalService impactTemplateSeriesLocalService;
+    @BeanReference(type = com.ext.portlet.service.ImpactTemplateSeriesService.class)
+    protected com.ext.portlet.service.ImpactTemplateSeriesService impactTemplateSeriesService;
+    @BeanReference(type = ImpactTemplateSeriesPersistence.class)
+    protected ImpactTemplateSeriesPersistence impactTemplateSeriesPersistence;
     @BeanReference(type = com.ext.portlet.service.LandingPageLocalService.class)
     protected com.ext.portlet.service.LandingPageLocalService landingPageLocalService;
     @BeanReference(type = com.ext.portlet.service.LandingPageService.class)
@@ -607,6 +650,8 @@ public abstract class PlanTemplateSectionServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.ProposalAttributeService proposalAttributeService;
     @BeanReference(type = ProposalAttributePersistence.class)
     protected ProposalAttributePersistence proposalAttributePersistence;
+    @BeanReference(type = ProposalAttributeFinder.class)
+    protected ProposalAttributeFinder proposalAttributeFinder;
     @BeanReference(type = com.ext.portlet.service.ProposalAttributeTypeLocalService.class)
     protected com.ext.portlet.service.ProposalAttributeTypeLocalService proposalAttributeTypeLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalAttributeTypeService.class)
@@ -2009,6 +2054,348 @@ public abstract class PlanTemplateSectionServiceBaseImpl extends BaseServiceImpl
     public void setFocusAreaOntologyTermPersistence(
         FocusAreaOntologyTermPersistence focusAreaOntologyTermPersistence) {
         this.focusAreaOntologyTermPersistence = focusAreaOntologyTermPersistence;
+    }
+
+    /**
+     * Returns the impact default series local service.
+     *
+     * @return the impact default series local service
+     */
+    public com.ext.portlet.service.ImpactDefaultSeriesLocalService getImpactDefaultSeriesLocalService() {
+        return impactDefaultSeriesLocalService;
+    }
+
+    /**
+     * Sets the impact default series local service.
+     *
+     * @param impactDefaultSeriesLocalService the impact default series local service
+     */
+    public void setImpactDefaultSeriesLocalService(
+        com.ext.portlet.service.ImpactDefaultSeriesLocalService impactDefaultSeriesLocalService) {
+        this.impactDefaultSeriesLocalService = impactDefaultSeriesLocalService;
+    }
+
+    /**
+     * Returns the impact default series remote service.
+     *
+     * @return the impact default series remote service
+     */
+    public com.ext.portlet.service.ImpactDefaultSeriesService getImpactDefaultSeriesService() {
+        return impactDefaultSeriesService;
+    }
+
+    /**
+     * Sets the impact default series remote service.
+     *
+     * @param impactDefaultSeriesService the impact default series remote service
+     */
+    public void setImpactDefaultSeriesService(
+        com.ext.portlet.service.ImpactDefaultSeriesService impactDefaultSeriesService) {
+        this.impactDefaultSeriesService = impactDefaultSeriesService;
+    }
+
+    /**
+     * Returns the impact default series persistence.
+     *
+     * @return the impact default series persistence
+     */
+    public ImpactDefaultSeriesPersistence getImpactDefaultSeriesPersistence() {
+        return impactDefaultSeriesPersistence;
+    }
+
+    /**
+     * Sets the impact default series persistence.
+     *
+     * @param impactDefaultSeriesPersistence the impact default series persistence
+     */
+    public void setImpactDefaultSeriesPersistence(
+        ImpactDefaultSeriesPersistence impactDefaultSeriesPersistence) {
+        this.impactDefaultSeriesPersistence = impactDefaultSeriesPersistence;
+    }
+
+    /**
+     * Returns the impact default series data local service.
+     *
+     * @return the impact default series data local service
+     */
+    public com.ext.portlet.service.ImpactDefaultSeriesDataLocalService getImpactDefaultSeriesDataLocalService() {
+        return impactDefaultSeriesDataLocalService;
+    }
+
+    /**
+     * Sets the impact default series data local service.
+     *
+     * @param impactDefaultSeriesDataLocalService the impact default series data local service
+     */
+    public void setImpactDefaultSeriesDataLocalService(
+        com.ext.portlet.service.ImpactDefaultSeriesDataLocalService impactDefaultSeriesDataLocalService) {
+        this.impactDefaultSeriesDataLocalService = impactDefaultSeriesDataLocalService;
+    }
+
+    /**
+     * Returns the impact default series data remote service.
+     *
+     * @return the impact default series data remote service
+     */
+    public com.ext.portlet.service.ImpactDefaultSeriesDataService getImpactDefaultSeriesDataService() {
+        return impactDefaultSeriesDataService;
+    }
+
+    /**
+     * Sets the impact default series data remote service.
+     *
+     * @param impactDefaultSeriesDataService the impact default series data remote service
+     */
+    public void setImpactDefaultSeriesDataService(
+        com.ext.portlet.service.ImpactDefaultSeriesDataService impactDefaultSeriesDataService) {
+        this.impactDefaultSeriesDataService = impactDefaultSeriesDataService;
+    }
+
+    /**
+     * Returns the impact default series data persistence.
+     *
+     * @return the impact default series data persistence
+     */
+    public ImpactDefaultSeriesDataPersistence getImpactDefaultSeriesDataPersistence() {
+        return impactDefaultSeriesDataPersistence;
+    }
+
+    /**
+     * Sets the impact default series data persistence.
+     *
+     * @param impactDefaultSeriesDataPersistence the impact default series data persistence
+     */
+    public void setImpactDefaultSeriesDataPersistence(
+        ImpactDefaultSeriesDataPersistence impactDefaultSeriesDataPersistence) {
+        this.impactDefaultSeriesDataPersistence = impactDefaultSeriesDataPersistence;
+    }
+
+    /**
+     * Returns the impact iteration local service.
+     *
+     * @return the impact iteration local service
+     */
+    public com.ext.portlet.service.ImpactIterationLocalService getImpactIterationLocalService() {
+        return impactIterationLocalService;
+    }
+
+    /**
+     * Sets the impact iteration local service.
+     *
+     * @param impactIterationLocalService the impact iteration local service
+     */
+    public void setImpactIterationLocalService(
+        com.ext.portlet.service.ImpactIterationLocalService impactIterationLocalService) {
+        this.impactIterationLocalService = impactIterationLocalService;
+    }
+
+    /**
+     * Returns the impact iteration remote service.
+     *
+     * @return the impact iteration remote service
+     */
+    public com.ext.portlet.service.ImpactIterationService getImpactIterationService() {
+        return impactIterationService;
+    }
+
+    /**
+     * Sets the impact iteration remote service.
+     *
+     * @param impactIterationService the impact iteration remote service
+     */
+    public void setImpactIterationService(
+        com.ext.portlet.service.ImpactIterationService impactIterationService) {
+        this.impactIterationService = impactIterationService;
+    }
+
+    /**
+     * Returns the impact iteration persistence.
+     *
+     * @return the impact iteration persistence
+     */
+    public ImpactIterationPersistence getImpactIterationPersistence() {
+        return impactIterationPersistence;
+    }
+
+    /**
+     * Sets the impact iteration persistence.
+     *
+     * @param impactIterationPersistence the impact iteration persistence
+     */
+    public void setImpactIterationPersistence(
+        ImpactIterationPersistence impactIterationPersistence) {
+        this.impactIterationPersistence = impactIterationPersistence;
+    }
+
+    /**
+     * Returns the impact template focus area list local service.
+     *
+     * @return the impact template focus area list local service
+     */
+    public com.ext.portlet.service.ImpactTemplateFocusAreaListLocalService getImpactTemplateFocusAreaListLocalService() {
+        return impactTemplateFocusAreaListLocalService;
+    }
+
+    /**
+     * Sets the impact template focus area list local service.
+     *
+     * @param impactTemplateFocusAreaListLocalService the impact template focus area list local service
+     */
+    public void setImpactTemplateFocusAreaListLocalService(
+        com.ext.portlet.service.ImpactTemplateFocusAreaListLocalService impactTemplateFocusAreaListLocalService) {
+        this.impactTemplateFocusAreaListLocalService = impactTemplateFocusAreaListLocalService;
+    }
+
+    /**
+     * Returns the impact template focus area list remote service.
+     *
+     * @return the impact template focus area list remote service
+     */
+    public com.ext.portlet.service.ImpactTemplateFocusAreaListService getImpactTemplateFocusAreaListService() {
+        return impactTemplateFocusAreaListService;
+    }
+
+    /**
+     * Sets the impact template focus area list remote service.
+     *
+     * @param impactTemplateFocusAreaListService the impact template focus area list remote service
+     */
+    public void setImpactTemplateFocusAreaListService(
+        com.ext.portlet.service.ImpactTemplateFocusAreaListService impactTemplateFocusAreaListService) {
+        this.impactTemplateFocusAreaListService = impactTemplateFocusAreaListService;
+    }
+
+    /**
+     * Returns the impact template focus area list persistence.
+     *
+     * @return the impact template focus area list persistence
+     */
+    public ImpactTemplateFocusAreaListPersistence getImpactTemplateFocusAreaListPersistence() {
+        return impactTemplateFocusAreaListPersistence;
+    }
+
+    /**
+     * Sets the impact template focus area list persistence.
+     *
+     * @param impactTemplateFocusAreaListPersistence the impact template focus area list persistence
+     */
+    public void setImpactTemplateFocusAreaListPersistence(
+        ImpactTemplateFocusAreaListPersistence impactTemplateFocusAreaListPersistence) {
+        this.impactTemplateFocusAreaListPersistence = impactTemplateFocusAreaListPersistence;
+    }
+
+    /**
+     * Returns the impact template max focus area local service.
+     *
+     * @return the impact template max focus area local service
+     */
+    public com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalService getImpactTemplateMaxFocusAreaLocalService() {
+        return impactTemplateMaxFocusAreaLocalService;
+    }
+
+    /**
+     * Sets the impact template max focus area local service.
+     *
+     * @param impactTemplateMaxFocusAreaLocalService the impact template max focus area local service
+     */
+    public void setImpactTemplateMaxFocusAreaLocalService(
+        com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalService impactTemplateMaxFocusAreaLocalService) {
+        this.impactTemplateMaxFocusAreaLocalService = impactTemplateMaxFocusAreaLocalService;
+    }
+
+    /**
+     * Returns the impact template max focus area remote service.
+     *
+     * @return the impact template max focus area remote service
+     */
+    public com.ext.portlet.service.ImpactTemplateMaxFocusAreaService getImpactTemplateMaxFocusAreaService() {
+        return impactTemplateMaxFocusAreaService;
+    }
+
+    /**
+     * Sets the impact template max focus area remote service.
+     *
+     * @param impactTemplateMaxFocusAreaService the impact template max focus area remote service
+     */
+    public void setImpactTemplateMaxFocusAreaService(
+        com.ext.portlet.service.ImpactTemplateMaxFocusAreaService impactTemplateMaxFocusAreaService) {
+        this.impactTemplateMaxFocusAreaService = impactTemplateMaxFocusAreaService;
+    }
+
+    /**
+     * Returns the impact template max focus area persistence.
+     *
+     * @return the impact template max focus area persistence
+     */
+    public ImpactTemplateMaxFocusAreaPersistence getImpactTemplateMaxFocusAreaPersistence() {
+        return impactTemplateMaxFocusAreaPersistence;
+    }
+
+    /**
+     * Sets the impact template max focus area persistence.
+     *
+     * @param impactTemplateMaxFocusAreaPersistence the impact template max focus area persistence
+     */
+    public void setImpactTemplateMaxFocusAreaPersistence(
+        ImpactTemplateMaxFocusAreaPersistence impactTemplateMaxFocusAreaPersistence) {
+        this.impactTemplateMaxFocusAreaPersistence = impactTemplateMaxFocusAreaPersistence;
+    }
+
+    /**
+     * Returns the impact template series local service.
+     *
+     * @return the impact template series local service
+     */
+    public com.ext.portlet.service.ImpactTemplateSeriesLocalService getImpactTemplateSeriesLocalService() {
+        return impactTemplateSeriesLocalService;
+    }
+
+    /**
+     * Sets the impact template series local service.
+     *
+     * @param impactTemplateSeriesLocalService the impact template series local service
+     */
+    public void setImpactTemplateSeriesLocalService(
+        com.ext.portlet.service.ImpactTemplateSeriesLocalService impactTemplateSeriesLocalService) {
+        this.impactTemplateSeriesLocalService = impactTemplateSeriesLocalService;
+    }
+
+    /**
+     * Returns the impact template series remote service.
+     *
+     * @return the impact template series remote service
+     */
+    public com.ext.portlet.service.ImpactTemplateSeriesService getImpactTemplateSeriesService() {
+        return impactTemplateSeriesService;
+    }
+
+    /**
+     * Sets the impact template series remote service.
+     *
+     * @param impactTemplateSeriesService the impact template series remote service
+     */
+    public void setImpactTemplateSeriesService(
+        com.ext.portlet.service.ImpactTemplateSeriesService impactTemplateSeriesService) {
+        this.impactTemplateSeriesService = impactTemplateSeriesService;
+    }
+
+    /**
+     * Returns the impact template series persistence.
+     *
+     * @return the impact template series persistence
+     */
+    public ImpactTemplateSeriesPersistence getImpactTemplateSeriesPersistence() {
+        return impactTemplateSeriesPersistence;
+    }
+
+    /**
+     * Sets the impact template series persistence.
+     *
+     * @param impactTemplateSeriesPersistence the impact template series persistence
+     */
+    public void setImpactTemplateSeriesPersistence(
+        ImpactTemplateSeriesPersistence impactTemplateSeriesPersistence) {
+        this.impactTemplateSeriesPersistence = impactTemplateSeriesPersistence;
     }
 
     /**
@@ -5305,6 +5692,25 @@ public abstract class PlanTemplateSectionServiceBaseImpl extends BaseServiceImpl
     public void setProposalAttributePersistence(
         ProposalAttributePersistence proposalAttributePersistence) {
         this.proposalAttributePersistence = proposalAttributePersistence;
+    }
+
+    /**
+     * Returns the proposal attribute finder.
+     *
+     * @return the proposal attribute finder
+     */
+    public ProposalAttributeFinder getProposalAttributeFinder() {
+        return proposalAttributeFinder;
+    }
+
+    /**
+     * Sets the proposal attribute finder.
+     *
+     * @param proposalAttributeFinder the proposal attribute finder
+     */
+    public void setProposalAttributeFinder(
+        ProposalAttributeFinder proposalAttributeFinder) {
+        this.proposalAttributeFinder = proposalAttributeFinder;
     }
 
     /**

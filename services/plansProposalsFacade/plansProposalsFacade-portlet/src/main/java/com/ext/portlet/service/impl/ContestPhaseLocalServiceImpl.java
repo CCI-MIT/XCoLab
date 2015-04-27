@@ -24,6 +24,7 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -247,12 +248,6 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getName();
     }
 
-    public void promoteProposal(long proposalId, long nextPhaseId) throws SystemException, PortalException {
-        _log.info("WARNING: promoteProposal(long, long) is deprecated. Use promoteProposal(long, long, long) instead.");
-        promoteProposal(proposalId, nextPhaseId, 0);
-
-    }
-
     public void promoteProposal(long proposalId, long nextPhaseId, long currentPhaseId) throws SystemException, PortalException {
     	try {
         	// check if proposal isn't already associated with requested phase
@@ -356,11 +351,12 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                             continue;
                         }
 
-                        promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
+                        promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
                     }
 
                     // update phase for which promotion was done (mark it as
                     // "promotion done")
+                    phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     updateContestPhase(phase);
 
                     // if transition is to voting phase
@@ -403,7 +399,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                         // Decide about the promotion
                         if (didJudgeDecideToPromote(p, phase)) {
                             System.out.println("Promote proposal "+p.getProposalId());
-                            promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
+                            promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
                         }
 
                         proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
@@ -426,6 +422,33 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 }
             }
         }
+    }
+
+    /**
+     * Creates a new contest phase object by copying all attributes of the original contest phase
+     * @param originalPhase     The contest phase to copy
+     * @return
+     */
+    public ContestPhase createFromContestPhase(ContestPhase originalPhase) throws SystemException {
+        ContestPhase newPhase = createContestPhase(CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
+
+        newPhase.setContestPK(originalPhase.getContestPK());
+        newPhase.setPhaseStartDate(originalPhase.getPhaseStartDate());
+        newPhase.setPhaseEndDate(originalPhase.getPhaseEndDate());
+        newPhase.setContestScheduleId(originalPhase.getContestScheduleId());
+        newPhase.setContestPhaseType(originalPhase.getContestPhaseType());
+        newPhase.setContestScheduleId(originalPhase.getContestScheduleId());
+        newPhase.setFellowScreeningActive(originalPhase.getFellowScreeningActive());
+        newPhase.setContestPhaseAutopromote(originalPhase.getContestPhaseAutopromote());
+        newPhase.setContestPhaseDescriptionOverride(originalPhase.getContestPhaseDescriptionOverride());
+        newPhase.setPhaseBufferEndDated(originalPhase.getPhaseBufferEndDated());
+        newPhase.setNextStatus(originalPhase.getNextStatus());
+        newPhase.setCreated(new Date());
+        newPhase.setUpdated(new Date());
+        newPhase.setAuthorId(originalPhase.getAuthorId());
+
+        addContestPhase(newPhase);
+        return newPhase;
     }
 
     private boolean proposalIsVisible(Proposal p, ContestPhase phase) {
