@@ -42,7 +42,7 @@ import java.util.Set;
 public class ProposalImpactSeries {
     // Static value field names
     public static final String SERIES_TYPE_BAU_KEY = "BAU";
-    public static final String SERIES_TYPE_DDPP_KEY = "DDPP";
+//    public static final String SERIES_TYPE_DDPP_KEY = "DDPP";
     public static final String SERIES_TYPE_RESULT_KEY = "RESULT";
 
     private List<ImpactIteration> impactIterations;
@@ -71,8 +71,8 @@ public class ProposalImpactSeries {
         bauSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_BAU_KEY);
         addSeriesWithType(bauSeries, false);
 
-        ddppSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_DDPP_KEY);
-        addSeriesWithType(ddppSeries, false);
+//        ddppSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_DDPP_KEY);
+//        addSeriesWithType(ddppSeries, false);
 
         if (loadData) {
             loadEditableData();
