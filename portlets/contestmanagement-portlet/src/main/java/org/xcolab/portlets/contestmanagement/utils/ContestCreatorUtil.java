@@ -1,9 +1,7 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestTeamMember;
 import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.PlanSection;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -22,13 +20,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.UserGroupRole;
-import com.liferay.portal.service.RoleLocalService;
-import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.service.UserGroupLocalServiceUtil;
-import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 
@@ -602,7 +593,7 @@ public class ContestCreatorUtil {
     }
 
     private static void createContestPhases(Contest contest, Long contestScheduleTemplateId) throws Exception{
-        ContestScheduleWrapper.createContestPhaseAccordingToContestSchedule(contest, contestScheduleTemplateId);
+        ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleTemplateId);
     }
 
     private static List<Contest> createSubContests(JSONArray subContestsJson) throws Exception {

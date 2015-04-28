@@ -3,11 +3,9 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
 import org.hibernate.validator.constraints.Length;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
+import org.xcolab.wrapper.ContestWrapper;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -68,9 +66,8 @@ public class ContestDescriptionBean implements Serializable{
 
         String oldContestTitle = contest.getContestShortName();
         updateContestDescription(contest);
-        updateContestSchedules(contest, scheduleTemplateId);
+        updateContestSchedule(contest, scheduleTemplateId);
         updateContestWiki(contest, oldContestTitle);
-
     }
 
 
@@ -97,12 +94,20 @@ public class ContestDescriptionBean implements Serializable{
 
     }
 
-    public static void updateContestSchedules(Contest contest, Long scheduleTemplateId) throws Exception{
+    public static void updateContestSchedule(Contest contest, Long contestScheduleId) throws Exception{
         Long oldScheduleTemplateId = contest.getContestScheduleId();
+        boolean noScheduleSelected = contestScheduleId.equals(0);
 
-        // Schedule with id = 0 is "None", that is no change in the contest phases
-        if(scheduleTemplateId != 0 && !oldScheduleTemplateId.equals(scheduleTemplateId)) {
-            ContestScheduleWrapper.updateContestPhaseAccordingToContestSchedule(contest, scheduleTemplateId);
+        if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
+            ContestWrapper contestWrapper = new ContestWrapper(contest);
+            boolean proposalsInContest = contestWrapper.getProposalsCount() > 0;
+            if(proposalsInContest) {
+                ContestScheduleWrapper.updateContestPhasesAccordingToContestSchedule(contest, contestScheduleId);
+            }   else{
+                ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleId);
+            }
+            contest.setContestScheduleId(contestScheduleId);
+            contest.persist();
         }
     }
 

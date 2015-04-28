@@ -321,6 +321,13 @@ public class FocusAreaOntologyTermLocalServiceWrapper
         return _focusAreaOntologyTermLocalService.getArea(faot);
     }
 
+    @Override
+    public java.util.List<java.lang.Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(
+        long focusAreaId, long ontologySpaceId) throws java.lang.Exception {
+        return _focusAreaOntologyTermLocalService.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(focusAreaId,
+            ontologySpaceId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

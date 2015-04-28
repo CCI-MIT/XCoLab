@@ -7,6 +7,8 @@ import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.utils.RequestParameterParser;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
+import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.OntologyWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
@@ -31,6 +34,7 @@ import java.util.List;
 @RequestMapping("view")
 public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabController {
 
+    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsOntologyTabController.class);
     static final private TabEnum tab = ContestDetailsTabs.ONTOLOGY;
     static final private String TAB_VIEW = "details/ontologyTab";
 
@@ -66,7 +70,7 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
     public void updateOntologyTabController(ActionRequest request, Model model, ActionResponse response) {
 
         if(!tabWrapper.getCanEdit()) {
-            setNoPermissionErrorRenderParameter(response);
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
 
@@ -96,8 +100,9 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
 
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
-            e.printStackTrace();
-            setNotFoundErrorRenderParameter(response);
+            _log.warn("Update contest overview failed with: ", e);
+            _log.warn(e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
 

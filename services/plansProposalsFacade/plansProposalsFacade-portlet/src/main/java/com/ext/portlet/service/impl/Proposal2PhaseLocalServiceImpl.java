@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
-
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal2Phase;
@@ -15,7 +13,6 @@ import com.ext.portlet.service.base.Proposal2PhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.UserLocalServiceUtil;
 /**
  * The implementation of the proposal2 phase local service.
  *
@@ -70,13 +67,26 @@ public class Proposal2PhaseLocalServiceImpl
         if (proposal2Phases.isEmpty()) {
             throw new SystemException("Proposal " + proposalId + " isn't associated with any contest");
         }
+
+        int newestVersion = 0;
+        long newestVersionContestPhaseId = 0;
+
         for (Proposal2Phase p2p : proposal2Phases){
             if (p2p.getVersionTo() == -1){
                 ContestPhase phase = contestPhaseLocalService.getContestPhase(p2p.getContestPhaseId());
                 return contestLocalService.getContest(phase.getContestPK());
+            } else if(p2p.getVersionTo() > newestVersion){
+                newestVersion = p2p.getVersionTo();
+                newestVersionContestPhaseId = p2p.getContestPhaseId();
             }
         }
-        throw new SystemException("Proposal " + proposalId + " has no active association.");
+
+        if(newestVersion != 0 && newestVersionContestPhaseId != 0){
+            ContestPhase phase = contestPhaseLocalService.getContestPhase(newestVersionContestPhaseId);
+            return contestLocalService.getContest(phase.getContestPK());
+        } else {
+            throw new SystemException("Proposal " + proposalId + " has no active association.");
+        }
     }
 
     public Proposal2Phase getForVersion(ProposalVersion proposalVersion) throws SystemException, PortalException {

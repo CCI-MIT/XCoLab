@@ -57,5 +57,5 @@ public class OntologySpaceLocalServiceImpl
     public List<OntologyTerm> getTopTerms(OntologySpace space) throws SystemException {
         return OntologyTermLocalServiceUtil.findByParentIdSpaceId(0L, space.getId());
     }
-    
+
 }

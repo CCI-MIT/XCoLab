@@ -7,6 +7,8 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -25,8 +27,10 @@ import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.utils.emailnotification.ContestCreationNotification;
+import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.ActionRequest;
@@ -46,10 +50,12 @@ import java.util.List;
 @RequestMapping("view")
 public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTabController {
 
-    @Autowired
-    private Validator validator;
+    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsDescriptionTabController.class);
     static final private TabEnum tab = ContestDetailsTabs.DESCRIPTION;
     static final private String TAB_VIEW = "details/descriptionTab";
+
+    @Autowired
+    private Validator validator;
 
     @InitBinder("contestDescriptionBean")
     public void initBinder(WebDataBinder binder) {
@@ -61,14 +67,14 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return getProposalTemplateSelectionItems();
     }
 
-    @ModelAttribute("scheduleTemplateSelectionItems")
-    public List<LabelValue> populateScheduleTemplateSelectionItems(){
-        return ContestScheduleWrapper.getScheduleTemplateSelectionItems();
-    }
-
     @ModelAttribute("contestLevelSelectionItems")
     public List<LabelValue> populateContestLevelSelectionItems(){
         return getContestLevelSelectionItems();
+    }
+
+    @ModelAttribute("scheduleTemplateSelectionItems")
+    public List<LabelValue> populateScheduleSelectionItems(){
+        return getContestScheduleSelectionItems();
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -87,7 +93,8 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             return NO_PERMISSION_TAB_VIEW;
         }
         setPageAttributes(request, model, tab);
-        model.addAttribute("contestDescriptionBean", new ContestDescriptionBean(getContest()));
+        Contest contest = getContest();
+        model.addAttribute("contestDescriptionBean", new ContestDescriptionBean(contest));
         return TAB_VIEW;
     }
 
@@ -99,12 +106,12 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         boolean createNew = getCreateNewContestParameterFromRequest(request);
 
         if(!tabWrapper.getCanEdit()) {
-            setNoPermissionErrorRenderParameter(response);
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
 
         if (result.hasErrors()) {
-            setErrorRenderParameter(response, "updateContestDetails");
+            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestDetails");
             return;
         }
 
@@ -118,7 +125,9 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             }
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
-            setNotFoundErrorRenderParameter(response);
+            _log.warn("Update contest description failed with: ", e);
+            _log.warn(e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
 
     }
@@ -157,6 +166,21 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         } catch (Exception e){
         }
         return selectItems;
+    }
+
+    private List<LabelValue> getContestScheduleSelectionItems(){
+        List<LabelValue> scheduleTemplateSelectionItems = new ArrayList<>();
+        try {
+            Contest contest = getContest();
+            ContestWrapper contestWrapper = new ContestWrapper(contest);
+            Long existingContestScheduleId = contest.getContestScheduleId();
+            Boolean isContestExistingProposalsCountNotNull = contestWrapper.getProposalsCount() > 0;
+            scheduleTemplateSelectionItems =
+                    ContestScheduleWrapper.getScheduleTemplateSelectionItems(existingContestScheduleId, isContestExistingProposalsCountNotNull);
+        } catch (Exception e){
+            _log.warn("Could not get contest schedule selection items: " + e);
+        }
+        return scheduleTemplateSelectionItems;
     }
 
 }

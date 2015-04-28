@@ -564,3 +564,24 @@ div.selected {
     width: 500px;
     margin: 0 auto 20px auto;
 }
+
+.subcontests .title {
+    font-size: 16px;
+    color:#66af45;
+}
+
+.subcontests ul{
+    margin-left: 0px;
+    width:550px;
+    overflow:hidden;
+}
+.subcontests li{
+    margin-left: 0px;
+    width:46%;
+    line-height:1.5em;
+    float:left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+}

@@ -150,7 +150,6 @@
 				<c:forEach var="proposal" items="${currentUserProfile.proposals}">
 					<tr class="colabRow">
 						<td>
-
 							<collab:planLink planId="${proposal.planId}"
 											 contestId="${proposal.contestId}"
 											 text="${proposal.proposalName}" />

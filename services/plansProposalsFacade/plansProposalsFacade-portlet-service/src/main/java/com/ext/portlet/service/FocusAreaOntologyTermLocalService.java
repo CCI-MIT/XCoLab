@@ -262,4 +262,8 @@ public interface FocusAreaOntologyTermLocalService extends BaseLocalService,
         com.ext.portlet.model.FocusAreaOntologyTerm faot)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<java.lang.Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(
+        long focusAreaId, long ontologySpaceId) throws java.lang.Exception;
 }
