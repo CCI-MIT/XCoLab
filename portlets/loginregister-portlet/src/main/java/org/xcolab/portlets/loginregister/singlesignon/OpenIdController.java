@@ -105,8 +105,8 @@ public class OpenIdController {
             JSONObject json = new GoogleAuthHelper(themeDisplay.getPortalURL() + SSOKeys.OPEN_ID_RESPONSE_URL).getUserInfoJson(authCode);
 
             String openId = json.getString("openid_id");
-            String firstName = json.getString("given_name");
-            String lastName = json.getString("family_name");
+            String firstName = json.getString("given_name").replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
+            String lastName = json.getString("family_name").replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
             String emailAddress = json.getString("email");
             String profilePicURL = json.getString("picture");
 
