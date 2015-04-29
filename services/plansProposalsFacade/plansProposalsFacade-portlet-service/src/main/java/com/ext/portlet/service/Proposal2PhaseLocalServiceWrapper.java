@@ -308,11 +308,34 @@ public class Proposal2PhaseLocalServiceWrapper
     }
 
     @Override
+    public int getLatestProposalVersionInActiveContest(
+        java.lang.Long proposalId) throws java.lang.Exception {
+        return _proposal2PhaseLocalService.getLatestProposalVersionInActiveContest(proposalId);
+    }
+
+    @Override
+    public com.ext.portlet.model.ContestPhase getLatestContestPhaseInActiveContest(
+        java.lang.Long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposal2PhaseLocalService.getLatestContestPhaseInActiveContest(proposalId);
+    }
+
+    @Override
     public com.ext.portlet.model.Contest getCurrentContestForProposal(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _proposal2PhaseLocalService.getCurrentContestForProposal(proposalId);
+    }
+
+    @Override
+    public com.ext.portlet.model.Proposal2Phase getForVersion(
+        java.lang.Long proposalId, int proposalVersionId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposal2PhaseLocalService.getForVersion(proposalId,
+            proposalVersionId);
     }
 
     @Override

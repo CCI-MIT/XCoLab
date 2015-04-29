@@ -1115,6 +1115,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         List<Long> focusAreaOntologyTermIds =
                 FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(focusAreaId, ontologySpaceId);
 
-        return getContestsByTierLevelAndOntologyTermIds(contestTier, focusAreaOntologyTermIds);
+        return getContestsByTierLevelAndOntologyTermIds(lowerContestTier, focusAreaOntologyTermIds);
     }
 }

@@ -256,8 +256,24 @@ public interface Proposal2PhaseLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getLatestProposalVersionInActiveContest(
+        java.lang.Long proposalId) throws java.lang.Exception;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ContestPhase getLatestContestPhaseInActiveContest(
+        java.lang.Long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.Contest getCurrentContestForProposal(
         long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.Proposal2Phase getForVersion(
+        java.lang.Long proposalId, int proposalVersionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

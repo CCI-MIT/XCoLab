@@ -60,6 +60,12 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
     private String[] _methodParameterTypes25;
     private String _methodName26;
     private String[] _methodParameterTypes26;
+    private String _methodName27;
+    private String[] _methodParameterTypes27;
+    private String _methodName28;
+    private String[] _methodParameterTypes28;
+    private String _methodName29;
+    private String[] _methodParameterTypes29;
 
     public Proposal2PhaseLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -179,23 +185,35 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
 
         _methodParameterTypes22 = new String[] { "long" };
 
-        _methodName23 = "getCurrentContestForProposal";
+        _methodName23 = "getLatestProposalVersionInActiveContest";
 
-        _methodParameterTypes23 = new String[] { "long" };
+        _methodParameterTypes23 = new String[] { "java.lang.Long" };
 
-        _methodName24 = "getForVersion";
+        _methodName24 = "getLatestContestPhaseInActiveContest";
 
-        _methodParameterTypes24 = new String[] {
-                "com.ext.portlet.model.ProposalVersion"
-            };
+        _methodParameterTypes24 = new String[] { "java.lang.Long" };
 
-        _methodName25 = "getContestPhasesForProposal";
+        _methodName25 = "getCurrentContestForProposal";
 
         _methodParameterTypes25 = new String[] { "long" };
 
-        _methodName26 = "getActiveContestPhasesForProposal";
+        _methodName26 = "getForVersion";
 
-        _methodParameterTypes26 = new String[] { "long" };
+        _methodParameterTypes26 = new String[] { "java.lang.Long", "int" };
+
+        _methodName27 = "getForVersion";
+
+        _methodParameterTypes27 = new String[] {
+                "com.ext.portlet.model.ProposalVersion"
+            };
+
+        _methodName28 = "getContestPhasesForProposal";
+
+        _methodParameterTypes28 = new String[] { "long" };
+
+        _methodName29 = "getActiveContestPhasesForProposal";
+
+        _methodParameterTypes29 = new String[] { "long" };
     }
 
     @Override
@@ -845,6 +863,66 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
     }
 
     @Override
+    public int getLatestProposalVersionInActiveContest(
+        java.lang.Long proposalId) throws java.lang.Exception {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23,
+                    new Object[] { ClpSerializer.translateInput(proposalId) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof java.lang.Exception) {
+                throw (java.lang.Exception) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Integer) returnObj).intValue();
+    }
+
+    @Override
+    public com.ext.portlet.model.ContestPhase getLatestContestPhaseInActiveContest(
+        java.lang.Long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24,
+                    new Object[] { ClpSerializer.translateInput(proposalId) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ContestPhase) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public com.ext.portlet.model.Contest getCurrentContestForProposal(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -852,8 +930,8 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName23,
-                    _methodParameterTypes23, new Object[] { proposalId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -878,14 +956,51 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
 
     @Override
     public com.ext.portlet.model.Proposal2Phase getForVersion(
+        java.lang.Long proposalId, int proposalVersionId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName26,
+                    _methodParameterTypes26,
+                    new Object[] {
+                        ClpSerializer.translateInput(proposalId),
+                        
+                    proposalVersionId
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.ext.portlet.model.Proposal2Phase getForVersion(
         com.ext.portlet.model.ProposalVersion proposalVersion)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName24,
-                    _methodParameterTypes24,
+            returnObj = _invokableLocalService.invokeMethod(_methodName27,
+                    _methodParameterTypes27,
                     new Object[] { ClpSerializer.translateInput(proposalVersion) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -916,8 +1031,8 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName25,
-                    _methodParameterTypes25, new Object[] { proposalId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName28,
+                    _methodParameterTypes28, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -944,8 +1059,8 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName26,
-                    _methodParameterTypes26, new Object[] { proposalId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName29,
+                    _methodParameterTypes29, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

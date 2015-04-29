@@ -150,9 +150,11 @@
 				<c:forEach var="proposal" items="${currentUserProfile.proposals}">
 					<tr class="colabRow">
 						<td>
-							<collab:planLink planId="${proposal.planId}"
-											 contestId="${proposal.contestId}"
-											 text="${proposal.proposalName}" />
+							<c:if test="${proposal.proposalInActiveContest}">
+								<collab:planLink planId="${proposal.planId}"
+												 contestId="${proposal.contestId}"
+												 text="${proposal.proposalName}" />
+							</c:if>
 						</td>
 						<td style="text-align: right;"><fmt:formatDate value="${proposal.proposalCreationDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
 					</tr>
