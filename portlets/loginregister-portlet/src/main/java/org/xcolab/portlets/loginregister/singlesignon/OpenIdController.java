@@ -161,7 +161,7 @@ public class OpenIdController {
                         session.setAttribute(SSOKeys.SSO_EMAIL, emailAddress);
                         // Screenname = email prefix until @ character
                         String screenName = emailAddress.substring(0, emailAddress.indexOf(CharPool.AT));
-                        screenName = screenName.replaceAll("[^a-zA-Z0-9]","");
+                        screenName = screenName.replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
                         session.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
                     }
                     if (Validator.isNotNull(firstName)) session.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName);
