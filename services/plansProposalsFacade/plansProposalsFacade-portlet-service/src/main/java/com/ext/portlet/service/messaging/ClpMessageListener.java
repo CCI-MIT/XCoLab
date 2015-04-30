@@ -47,6 +47,18 @@ import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermServiceUtil;
 import com.ext.portlet.service.FocusAreaServiceUtil;
+import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
+import com.ext.portlet.service.ImpactDefaultSeriesDataServiceUtil;
+import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
+import com.ext.portlet.service.ImpactDefaultSeriesServiceUtil;
+import com.ext.portlet.service.ImpactIterationLocalServiceUtil;
+import com.ext.portlet.service.ImpactIterationServiceUtil;
+import com.ext.portlet.service.ImpactTemplateFocusAreaListLocalServiceUtil;
+import com.ext.portlet.service.ImpactTemplateFocusAreaListServiceUtil;
+import com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalServiceUtil;
+import com.ext.portlet.service.ImpactTemplateMaxFocusAreaServiceUtil;
+import com.ext.portlet.service.ImpactTemplateSeriesLocalServiceUtil;
+import com.ext.portlet.service.ImpactTemplateSeriesServiceUtil;
 import com.ext.portlet.service.LandingPageLocalServiceUtil;
 import com.ext.portlet.service.LandingPageServiceUtil;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
@@ -283,6 +295,24 @@ public class ClpMessageListener extends BaseMessageListener {
             FocusAreaOntologyTermLocalServiceUtil.clearService();
 
             FocusAreaOntologyTermServiceUtil.clearService();
+            ImpactDefaultSeriesLocalServiceUtil.clearService();
+
+            ImpactDefaultSeriesServiceUtil.clearService();
+            ImpactDefaultSeriesDataLocalServiceUtil.clearService();
+
+            ImpactDefaultSeriesDataServiceUtil.clearService();
+            ImpactIterationLocalServiceUtil.clearService();
+
+            ImpactIterationServiceUtil.clearService();
+            ImpactTemplateFocusAreaListLocalServiceUtil.clearService();
+
+            ImpactTemplateFocusAreaListServiceUtil.clearService();
+            ImpactTemplateMaxFocusAreaLocalServiceUtil.clearService();
+
+            ImpactTemplateMaxFocusAreaServiceUtil.clearService();
+            ImpactTemplateSeriesLocalServiceUtil.clearService();
+
+            ImpactTemplateSeriesServiceUtil.clearService();
             LandingPageLocalServiceUtil.clearService();
 
             LandingPageServiceUtil.clearService();

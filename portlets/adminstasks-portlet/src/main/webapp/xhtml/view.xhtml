@@ -47,7 +47,6 @@
                         <li><ice:commandButton action="#{adminTask.upPlanAttributeIdCounter}" value="Up plan attribute id counter" /></li>
                         <li><ice:commandButton action="#{adminTask.copyProposalsToCompletedPhase}" value="Copy proposals to completed phase" /></li>
                         <li><ice:commandButton action="#{adminTask.autopromoteProposals}" value="Run autopromote task on past contest phases" /></li>
-                        <li><ice:commandButton action="#{adminTask.promoteProposal}" value="Promote single proposal" /></li>
                         <li><ice:commandButton action="#{adminTask.dataBean.interpretActivities}" value="Interpret activities" /></li>
                         <li><ice:commandButton action="#{adminTask.triggerSupportsToVote}" value="Send Emails to cast supports2votes (active contests)" /></li>
                         <li><ice:commandButton action="#{adminTask.addJoinedActivityToRequiredUsers}" value="Add joined Activity where missing" /></li>
@@ -56,8 +55,11 @@
 
                 <ice:panelTab label="Contest launches">
                     <ul>
-                        <li><ice:outputLink value="/web/guest/cms/-/contestmanagement/create2015Contests">
+                        <li><ice:outputLink value="/web/guest/cms/-/contestmanagement/create2015Tier1Contests">
                             <ice:outputText value="Launch 2015 basic contests"/>
+                        </ice:outputLink></li>
+                        <li><ice:outputLink value="/web/guest/cms/-/contestmanagement/create2015Tier2And3Contests">
+                            <ice:outputText value="Launch 2015 Tier II and III contests"/>
                         </ice:outputLink></li>
                     </ul>
                 </ice:panelTab>

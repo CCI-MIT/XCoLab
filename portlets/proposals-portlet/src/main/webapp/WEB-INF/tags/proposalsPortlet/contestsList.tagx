@@ -12,100 +12,102 @@
 	
 	<table class="contestlist table">
 		<c:forEach var="contest" items="${contests }">
-			<tr>
-				<td class="column contestName" style="${proposalsPermissions.canJudgeActions ? 'width: 263px;' : ''}">
-            		<div class="contestFlag">
-            			<c:if test="${not empty contest.flagText }">
-            				<span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
-                    		<c:if test="${not empty contest.flagTooltip}">
-                        		<div class="tooltip">${contest.flagTooltip}<div class="tt-arrow"><!--  --></div></div>
-                        	</c:if>
-                		</c:if>
-                		<collab:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName}:" />
-                		${contest.contestName}
-            		</div>
-            	</td>
-            	<td class="column contestProposalsCount g">
-        			${contest.proposalsCount}
-        		</td>
-        		<td class="column contestCommentsCount">
-        			<c:choose>
-        				<c:when test="${contest.activePhase.canVote }">
-        					${contest.votesCount}
-        				</c:when>
-        				<c:otherwise>
-        					${contest.totalCommentsCount}
-        				</c:otherwise>
-        			</c:choose>
-        		</td>
-        		<td class="column contestWhat g">
-        			<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what }" />
-        		</td>
-        		<td class="column contestWhere">
-        			<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where }" />
-        		</td>
-        		<td class="column contestWho g">
-                    <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who }"/>
-                </td>
-        		<td class="column contestHow g">
-                    <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.how }"/>
-                </td>
-
-
-                <c:if test="${proposalsPermissions.canJudgeActions}">
+            <c:if test="${contest.showInListView}">
+                <tr>
+                    <td class="column contestName" style="${proposalsPermissions.canJudgeActions ? 'width: 263px;' : ''}">
+                        <div class="contestFlag">
+                            <c:if test="${not empty contest.flagText }">
+                                <span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
+                                <c:if test="${not empty contest.flagTooltip}">
+                                    <div class="tooltip">${contest.flagTooltip}<div class="tt-arrow"><!--  --></div></div>
+                                </c:if>
+                            </c:if>
+                            <collab:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName}:" />
+                            ${contest.contestName}
+                        </div>
+                    </td>
+                    <td class="column contestProposalsCount g">
+                        ${contest.proposalsCount}
+                    </td>
                     <td class="column contestCommentsCount">
-                   <span class="fieldWithTooltip">
-                    <c:choose>
-                        <c:when test="${not contest.judgeStatus}">
-                            <img src="/climatecolab-theme/images/icon_question-x.png"/>
-                        </c:when>
-                        <c:otherwise>
-                            <img src="/climatecolab-theme/images/icon_question-chk.png"/>
-                        </c:otherwise>
-                    </c:choose>
-                    </span>
-
-                        <div class="tooltip">
-                            <c:choose>
-                                <c:when test="${not contest.judgeStatus}">
-                                    Judge's decision incomplete.
-                                </c:when>
-                                <c:otherwise>
-                                    Judge's decision completed.
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
+                        <c:choose>
+                            <c:when test="${contest.activePhase.canVote }">
+                                ${contest.votesCount}
+                            </c:when>
+                            <c:otherwise>
+                                ${contest.totalCommentsCount}
+                            </c:otherwise>
+                        </c:choose>
                     </td>
-                    <td class="column contestCommentsCount g">
+                    <td class="column contestWhat g">
+                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what }" />
+                    </td>
+                    <td class="column contestWhere">
+                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where }" />
+                    </td>
+                    <td class="column contestWho g">
+                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who }"/>
+                    </td>
+                    <td class="column contestHow g">
+                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.how }"/>
+                    </td>
 
-                        <c:if test="${proposalsPermissions.canFellowActions}">
-                        <span class="fieldWithTooltip">
-                            <c:choose>
-                                <c:when test="${not contest.screeningStatus.statusValue}">
-                                    <img src="/climatecolab-theme/images/icon_question-x.png"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <img src="/climatecolab-theme/images/icon_question-chk.png"/>
-                                </c:otherwise>
-                            </c:choose>
+
+                    <c:if test="${proposalsPermissions.canJudgeActions}">
+                        <td class="column contestCommentsCount">
+                       <span class="fieldWithTooltip">
+                        <c:choose>
+                            <c:when test="${not contest.judgeStatus}">
+                                <img src="/climatecolab-theme/images/icon_question-x.png"/>
+                            </c:when>
+                            <c:otherwise>
+                                <img src="/climatecolab-theme/images/icon_question-chk.png"/>
+                            </c:otherwise>
+                        </c:choose>
                         </span>
-                        <div class="tooltip">
-                            <c:choose>
-                                <c:when test="${not contest.screeningStatus.statusValue}">
-                                    Fellow screening incomplete.
-                                </c:when>
-                                <c:otherwise>
-                                    Fellow screening completed.
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-                        </c:if>
 
-                    </td>
-                </c:if>
+                            <div class="tooltip">
+                                <c:choose>
+                                    <c:when test="${not contest.judgeStatus}">
+                                        Judge's decision incomplete.
+                                    </c:when>
+                                    <c:otherwise>
+                                        Judge's decision completed.
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </td>
+                        <td class="column contestCommentsCount g">
+
+                            <c:if test="${proposalsPermissions.canFellowActions}">
+                            <span class="fieldWithTooltip">
+                                <c:choose>
+                                    <c:when test="${not contest.screeningStatus.statusValue}">
+                                        <img src="/climatecolab-theme/images/icon_question-x.png"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="/climatecolab-theme/images/icon_question-chk.png"/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+                            <div class="tooltip">
+                                <c:choose>
+                                    <c:when test="${not contest.screeningStatus.statusValue}">
+                                        Fellow screening incomplete.
+                                    </c:when>
+                                    <c:otherwise>
+                                        Fellow screening completed.
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                            </c:if>
+
+                        </td>
+                    </c:if>
 
 
-            </tr>
+                </tr>
+            </c:if>
 		</c:forEach>
 	</table>
 </jsp:root>

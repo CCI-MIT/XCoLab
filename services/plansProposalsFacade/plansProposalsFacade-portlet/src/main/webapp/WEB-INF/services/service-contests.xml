@@ -52,6 +52,9 @@
         <column name="defaultParentPointType" type="long" />
         <column name="pointDistributionStrategy" type="String" />
         <column name="emailTemplateUrl" type="String" />
+        <column name="show_in_tile_view" type="boolean" />
+        <column name="show_in_list_view" type="boolean" />
+        <column name="show_in_outline_view" type="boolean" />
         
         <order by="asc">
             <order-column name="weight" />

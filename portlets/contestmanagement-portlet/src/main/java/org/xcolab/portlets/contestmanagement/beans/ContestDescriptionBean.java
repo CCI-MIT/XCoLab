@@ -3,11 +3,9 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
 import org.hibernate.validator.constraints.Length;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
+import org.xcolab.wrapper.ContestWrapper;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -18,7 +16,7 @@ import java.io.Serializable;
  */
 public class ContestDescriptionBean implements Serializable{
     private static final long serialVersionUID = 1L;
-    private static final String NO_SPECIAL_CHAR_REGEX ="^[a-zA-Z0-9äöüÄÖÜ?! ]*$";
+    private static final String NO_SPECIAL_CHAR_REGEX ="^[a-zA-Z:'’0-9äöüÄÖÜ?! ]*$";
 
     private Long ContestPK;
     private Long contestLogoId;
@@ -28,7 +26,7 @@ public class ContestDescriptionBean implements Serializable{
     @Length(min = 5, max = 140, message = "The contest question must be at least 5 characters and not more than 140 characters.")
     private String contestName;
 
-    @Length(min = 5, max = 50, message = "The contest title must be at least 5 characters and not more than 50 characters.")
+    @Length(min = 5, max = 60, message = "The contest title must be at least 5 characters and not more than 60 characters.")
     @Pattern(regexp = NO_SPECIAL_CHAR_REGEX, message = "The contest title must not contain special characters.")
     private String contestShortName;
 
@@ -68,9 +66,8 @@ public class ContestDescriptionBean implements Serializable{
 
         String oldContestTitle = contest.getContestShortName();
         updateContestDescription(contest);
-        updateContestSchedules(contest, scheduleTemplateId);
+        updateContestSchedule(contest, scheduleTemplateId);
         updateContestWiki(contest, oldContestTitle);
-
     }
 
 
@@ -88,7 +85,7 @@ public class ContestDescriptionBean implements Serializable{
 
     }
 
-    private void updateContestWiki(Contest contest, String oldContestTitle) throws Exception{
+    public static void updateContestWiki(Contest contest, String oldContestTitle) throws Exception{
         String newContestTitle = contest.getContestShortName();
         if(!oldContestTitle.equals(newContestTitle)) {
             WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
@@ -97,10 +94,20 @@ public class ContestDescriptionBean implements Serializable{
 
     }
 
-    private void updateContestSchedules(Contest contest, Long scheduleTemplateId)throws Exception{
+    public static void updateContestSchedule(Contest contest, Long contestScheduleId) throws Exception{
         Long oldScheduleTemplateId = contest.getContestScheduleId();
-        if(!oldScheduleTemplateId.equals(scheduleTemplateId)) {
-            ContestScheduleWrapper.updateContestPhaseAccordingToContestSchedule(contest, scheduleTemplateId);
+        boolean noScheduleSelected = contestScheduleId.equals(0);
+
+        if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
+            ContestWrapper contestWrapper = new ContestWrapper(contest);
+            boolean proposalsInContest = contestWrapper.getProposalsCount() > 0;
+            if(proposalsInContest) {
+                ContestScheduleWrapper.updateContestPhasesAccordingToContestSchedule(contest, contestScheduleId);
+            }   else{
+                ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleId);
+            }
+            contest.setContestScheduleId(contestScheduleId);
+            contest.persist();
         }
     }
 
@@ -156,19 +163,41 @@ public class ContestDescriptionBean implements Serializable{
 
     public String getContestDescription() {
         if(contestDescription != null) {
-        return "<p>" + contestDescription + "</p>";
+        //return "<p>" + contestDescription + "</p>";
+        return contestDescription;
         }
         return contestDescription;
     }
 
     public void setContestDescription(String contestDescription) {
+
+        /*
         if(!contestDescription.isEmpty()) {
+
+            String contestDescriptionWithoutPTag = contestDescription.replace("<p>", "").replace("</p>","<br/>");
+            this.contestDescription  = contestDescriptionWithoutPTag;
+
             Document document = Jsoup.parse(contestDescription);
-            Element descriptionElement = document.select("p").first();
+            Element bodyElement = document.body();
+            Element lastElement = bodyElement.lastElementSibling();
+
+            for(Element element : bodyElement.getAllElements()){
+                this.contestDescription += element.html();
+            }
+
+            Element descriptionElement = document.select("p").last();
+
+            for(Element descriptionSection : document.select("p")){
+                this.contestDescription += "<br/>";
+                this.contestDescription += descriptionSection.html();
+            }
             this.contestDescription = descriptionElement.html();
+
         } else {
             this.contestDescription = contestDescription;
-        }
+        }*/
+
+        this.contestDescription = contestDescription;
     }
 
     public Long getPlanTemplateId() {

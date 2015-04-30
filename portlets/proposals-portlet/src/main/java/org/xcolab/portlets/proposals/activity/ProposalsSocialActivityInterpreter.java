@@ -31,6 +31,7 @@ implements ICollabActivityInterpreter {
     
     public ProposalsSocialActivityInterpreter() {
         feedGenerators.put(ProposalActivityKeys.ATTRIBUTE_UPDATE, new DefaultFeedEntryGenerator("Proposal updated", "updated proposal"));
+        feedGenerators.put(ProposalActivityKeys.ATTRIBUTE_REMOVE, new DefaultFeedEntryGenerator("Proposal updated", "updated proposal"));
         feedGenerators.put(ProposalActivityKeys.PROPOSAL_CREATE, new DefaultFeedEntryGenerator("Created proposal", "created proposal"));
         feedGenerators.put(ProposalActivityKeys.SUPPORTER_ADD, new DefaultFeedEntryGenerator("New proposal supporter", "is supporting proposal"));
         feedGenerators.put(ProposalActivityKeys.SUPPORTER_REMOVE, new DefaultFeedEntryGenerator("New proposal supporter", "retracted support for proposal"));

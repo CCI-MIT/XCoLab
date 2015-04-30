@@ -17,4 +17,5 @@ public class FocusAreaOntologyTermImpl extends FocusAreaOntologyTermBaseImpl {
      */
     public FocusAreaOntologyTermImpl() {
     }
+
 }

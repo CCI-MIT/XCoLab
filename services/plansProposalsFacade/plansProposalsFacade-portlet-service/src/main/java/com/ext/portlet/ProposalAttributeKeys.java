@@ -27,4 +27,10 @@ public class ProposalAttributeKeys {
     public static final String REGION = "REGION";
     public static final String SUBREGION = "SUBREGION";
     public static final String REGION_ECONOMY = "REGION_ECONOMY";
+
+    /**
+     * modelling impact tab
+     */
+    public static final String IMPACT_REDUCTION = "IMPACT_REDUCTION";
+    public static final String IMPACT_ADOPTION_RATE= "IMPACT_ADOPTION_RATE";
 }

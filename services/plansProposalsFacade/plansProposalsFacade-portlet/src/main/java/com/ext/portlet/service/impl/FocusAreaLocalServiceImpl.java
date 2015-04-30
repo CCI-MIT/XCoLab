@@ -7,6 +7,7 @@ import java.util.List;
 import com.ext.portlet.NoSuchOntologyTermException;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
+import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
@@ -88,6 +89,16 @@ public class FocusAreaLocalServiceImpl extends FocusAreaLocalServiceBaseImpl {
         for (OntologyTerm t: getTerms(focusArea)) {
             OntologyTermLocalServiceUtil.tagClass(t, clasz, pk);
         }
+    }
+
+    public OntologyTerm getOntologyTermFromFocusAreaWithOntologySpace(FocusArea focusArea, OntologySpace ontologySpace) throws SystemException, PortalException {
+        for (OntologyTerm term : getTerms(focusArea)) {
+            if (term.getOntologySpaceId() == ontologySpace.getId()) {
+                return term;
+            }
+        }
+
+        return null;
     }
 
 }

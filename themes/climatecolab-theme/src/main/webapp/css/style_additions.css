@@ -1614,3 +1614,7 @@ div#p_p_id_145_ {
 #p_p_id_145_ .dropdown ul li span:hover {
     color: black;
 }
+
+#impact .shaded-bg {
+    background: url(../images/pattern-6x6-blue.png);
+}

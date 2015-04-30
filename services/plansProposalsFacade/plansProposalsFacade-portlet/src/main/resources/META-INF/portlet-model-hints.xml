@@ -168,6 +168,15 @@
 		<field name="defaultParentPointType" type="long" />
 		<field name="pointDistributionStrategy" type="String" />
 		<field name="emailTemplateUrl" type="String" />
+		<field name="show_in_tile_view" type="boolean">
+			<hint name="default-value">true</hint>
+		</field>
+		<field name="show_in_list_view" type="boolean">
+			<hint name="default-value">true</hint>
+		</field>
+		<field name="show_in_outline_view" type="boolean">
+			<hint name="default-value">true</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.ContestDebate">
 		<field name="id" type="long" />
@@ -332,6 +341,36 @@
 		<field name="focusAreaId" type="long" />
 		<field name="ontologyTermId" type="long" />
 		<field name="order" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactDefaultSeries">
+		<field name="seriesId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="focusAreaId" type="long" />
+		<field name="visible" type="boolean" />
+		<field name="editable" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactDefaultSeriesData">
+		<field name="seriesId" type="long" />
+		<field name="year" type="int" />
+		<field name="value" type="double" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactIteration">
+		<field name="iterationId" type="long" />
+		<field name="year" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactTemplateFocusAreaList">
+		<field name="focusAreaListId" type="long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactTemplateMaxFocusArea">
+		<field name="focusAreaListId" type="long" />
+		<field name="focusAreaId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactTemplateSeries">
+		<field name="seriesId" type="long" />
+		<field name="iterationId" type="long" />
+		<field name="name" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.LandingPage">
 		<field name="id" type="long" />
@@ -805,6 +844,8 @@
 			<hint name="max-length">1024</hint>
 		</field>
 		<field name="baseTemplateId" type="Long" />
+		<field name="impactSeriesTemplateId" type="Long" />
+		<field name="focusAreaListTemplateId" type="Long" />
 	</model>
 	<model name="com.ext.portlet.model.PlanTemplateSection">
 		<field name="planTemplateId" type="long" />

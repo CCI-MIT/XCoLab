@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import java.util.*;
-
-import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -98,6 +96,67 @@ public class ContestWrapper {
     }
 
     public void setEmailTemplateUrl(String emailTemplateUrl){contest.setEmailTemplateUrl(emailTemplateUrl);}
+
+    public boolean getShowInTileView(){
+        Boolean contestShowInTileView =  (Boolean) contest.getShow_in_tile_view();
+
+        if (contestShowInTileView != null) {
+            return contest.getShow_in_tile_view();
+        }
+        else {
+            contest.setShow_in_tile_view(true);
+            return true;
+        }
+    }
+
+    public boolean isShowInTileView(){
+        return contest.isShow_in_tile_view();
+    }
+
+    public void setShowInTileView(boolean showInTileView){
+        contest.setShow_in_tile_view(showInTileView);
+    }
+
+    public boolean getShowInListView(){
+        Boolean contestShowInListView =  (Boolean) contest.getShow_in_list_view();
+
+        if (contestShowInListView != null) {
+            return contest.getShow_in_list_view();
+        }
+        else {
+            contest.setShow_in_list_view(true);
+            return true;
+        }
+    }
+
+    public boolean isShowInListView(){
+        return contest.isShow_in_list_view();
+    }
+
+    public void setShowInListView(boolean showInListView){
+        contest.setShow_in_list_view(showInListView);
+    }
+
+    public boolean getShowInOutlineView(){
+        Boolean contestShowInOutlineView =  (Boolean) contest.getShow_in_outline_view();
+
+        if (contestShowInOutlineView != null) {
+            return contest.getShow_in_outline_view();
+        }
+        else {
+            contest.setShow_in_tile_view(true);
+            return true;
+        }
+
+    }
+
+    public boolean isShowInOutlineView(){
+        return contest.isShow_in_outline_view();
+    }
+
+    public void setShowInOutlineView(boolean showInOutlineView){
+        contest.setShow_in_outline_view(showInOutlineView);
+    }
 
     public void resetOriginalValues() {
         contest.resetOriginalValues();
@@ -385,6 +444,46 @@ public class ContestWrapper {
         	return "";
         }
         return ontologyJoinedName;
+    }
+
+    public boolean getShowSubContests(){
+        return contest.getContestTier() == 3;
+    }
+
+    public List<Contest> getSubContests() throws Exception{
+
+        long ONTOLOGY_SPACE_ID_WHERE = 104L;
+        //long ONTOLOGY_SPACE_ID_WHO = 102L;
+        //long ONTOLOGY_SPACE_ID_WHAT = 103L;
+        //long ONTOLOGY_SPACE_ID_HOW = 103L;
+        return ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
+
+        /*
+        List<Contest> subContests = new ArrayList<>();
+
+        if (getShowSubContests()){
+            return
+            long focusAreaId = contest.getFocusAreaId();
+            long contestTier = contest.getContestTier();
+            long lowerContestTier = contestTier - 1;
+
+            if(lowerContestTier < 1) {
+                new Exception("Contest " + contest.getContestPK() + " has no sub-contests!" );
+            }
+
+            //long ontologyTermId = getOntologyTermIdForFocusAreaAndSpaceId(focusAreaId, ONTOLOGY_SPACE_ID_WHERE);
+            //List<Long> focusAreaOntologyTermIds = getFocusAreaOntologyTermsByOntologyTermId(ontologyTermId);
+
+
+            DynamicQuery getContestsByTierLevelAndOntologyTermIds =
+            DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
+                    .add(PropertyFactoryUtil.forName("contestTier").eq(lowerContestTier))
+                    .add(PropertyFactoryUtil.forName("focusAreaId").in(focusAreaOntologyTermIds));
+
+            subContests = ContestLocalServiceUtil.dynamicQuery(retrieveContestsByTierLevelAndOntologyTermIds);
+        }
+
+        return subContests;*/
     }
 
     public Long getVotingPhasePK() throws PortalException, SystemException {

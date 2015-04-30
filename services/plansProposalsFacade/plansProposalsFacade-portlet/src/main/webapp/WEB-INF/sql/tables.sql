@@ -115,7 +115,10 @@ create table xcolab_Contest (
 	points DOUBLE,
 	defaultParentPointType LONG,
 	pointDistributionStrategy VARCHAR(75) null,
-	emailTemplateUrl VARCHAR(75) null
+	emailTemplateUrl VARCHAR(75) null,
+	show_in_tile_view BOOLEAN,
+	show_in_list_view BOOLEAN,
+	show_in_outline_view BOOLEAN
 );
 
 create table xcolab_ContestDebate (
@@ -269,6 +272,46 @@ create table xcolab_FocusAreaOntologyTerm (
 	ontologyTermId LONG not null,
 	order_ INTEGER,
 	primary key (focusAreaId, ontologyTermId)
+);
+
+create table xcolab_ImpactDefaultSeries (
+	seriesId LONG not null,
+	name VARCHAR(75) not null,
+	description VARCHAR(75) null,
+	focusAreaId LONG,
+	visible BOOLEAN,
+	editable BOOLEAN,
+	primary key (seriesId, name)
+);
+
+create table xcolab_ImpactDefaultSeriesData (
+	seriesId LONG not null,
+	year INTEGER not null,
+	value DOUBLE,
+	primary key (seriesId, year)
+);
+
+create table xcolab_ImpactIteration (
+	iterationId LONG not null,
+	year INTEGER not null,
+	primary key (iterationId, year)
+);
+
+create table xcolab_ImpactTemplateFocusAreaList (
+	focusAreaListId LONG not null primary key,
+	name VARCHAR(75) null
+);
+
+create table xcolab_ImpactTemplateMaxFocusArea (
+	focusAreaListId LONG not null,
+	focusAreaId LONG not null,
+	primary key (focusAreaListId, focusAreaId)
+);
+
+create table xcolab_ImpactTemplateSeries (
+	seriesId LONG not null primary key,
+	iterationId LONG,
+	name VARCHAR(75) null
 );
 
 create table xcolab_LandingPage (
@@ -646,7 +689,9 @@ create table xcolab_PlanTeamHistory (
 create table xcolab_PlanTemplate (
 	id_ LONG not null primary key,
 	name VARCHAR(1024) null,
-	baseTemplateId LONG
+	baseTemplateId LONG,
+	impactSeriesTemplateId LONG,
+	focusAreaListTemplateId LONG
 );
 
 create table xcolab_PlanTemplateSection (

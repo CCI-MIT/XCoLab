@@ -164,7 +164,19 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
             throws NoSuchProposalContestPhaseAttributeException, SystemException {
         return proposalContestPhaseAttributePersistence.findByContestPhaseId(contestPhaseId);
     }
-    
+
+    /**
+     * <p>Returns all contest phase attributes</p>
+     * @param contestPhaseId id of a phase
+     * @return proposal phase attributes
+     * @throws NoSuchProposalContestPhaseAttributeException if there is no attribute with given name
+     * @throws SystemException in case of lr error
+     */
+    public List<ProposalContestPhaseAttribute> getAllContestPhaseProposalAttributes(long contestPhaseId, long proposalId)
+            throws NoSuchProposalContestPhaseAttributeException, SystemException {
+        return proposalContestPhaseAttributePersistence.findByContestPhaseIdAndProposalId(contestPhaseId, proposalId);
+    }
+
     /**
      * <p>Sets numeric value for contest phase attribute, sets default values to other "values" - 0 and null where applicable</p>
      * 

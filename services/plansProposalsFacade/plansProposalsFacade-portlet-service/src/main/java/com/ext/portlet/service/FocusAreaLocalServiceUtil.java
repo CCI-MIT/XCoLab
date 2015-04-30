@@ -292,6 +292,16 @@ public class FocusAreaLocalServiceUtil {
         getService().tagClass(focusArea, clasz, pk);
     }
 
+    public static com.ext.portlet.model.OntologyTerm getOntologyTermFromFocusAreaWithOntologySpace(
+        com.ext.portlet.model.FocusArea focusArea,
+        com.ext.portlet.model.OntologySpace ontologySpace)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getOntologyTermFromFocusAreaWithOntologySpace(focusArea,
+            ontologySpace);
+    }
+
     public static void clearService() {
         _service = null;
     }

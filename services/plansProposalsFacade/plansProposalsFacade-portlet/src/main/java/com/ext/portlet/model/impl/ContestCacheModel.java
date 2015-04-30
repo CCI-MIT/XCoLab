@@ -59,10 +59,13 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public long defaultParentPointType;
     public String pointDistributionStrategy;
     public String emailTemplateUrl;
+    public boolean show_in_tile_view;
+    public boolean show_in_list_view;
+    public boolean show_in_outline_view;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(77);
+        StringBundler sb = new StringBundler(83);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -140,6 +143,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(pointDistributionStrategy);
         sb.append(", emailTemplateUrl=");
         sb.append(emailTemplateUrl);
+        sb.append(", show_in_tile_view=");
+        sb.append(show_in_tile_view);
+        sb.append(", show_in_list_view=");
+        sb.append(show_in_list_view);
+        sb.append(", show_in_outline_view=");
+        sb.append(show_in_outline_view);
         sb.append("}");
 
         return sb.toString();
@@ -280,6 +289,10 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             contestImpl.setEmailTemplateUrl(emailTemplateUrl);
         }
 
+        contestImpl.setShow_in_tile_view(show_in_tile_view);
+        contestImpl.setShow_in_list_view(show_in_list_view);
+        contestImpl.setShow_in_outline_view(show_in_outline_view);
+
         contestImpl.resetOriginalValues();
 
         return contestImpl;
@@ -325,6 +338,9 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         defaultParentPointType = objectInput.readLong();
         pointDistributionStrategy = objectInput.readUTF();
         emailTemplateUrl = objectInput.readUTF();
+        show_in_tile_view = objectInput.readBoolean();
+        show_in_list_view = objectInput.readBoolean();
+        show_in_outline_view = objectInput.readBoolean();
     }
 
     @Override
@@ -449,5 +465,9 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         } else {
             objectOutput.writeUTF(emailTemplateUrl);
         }
+
+        objectOutput.writeBoolean(show_in_tile_view);
+        objectOutput.writeBoolean(show_in_list_view);
+        objectOutput.writeBoolean(show_in_outline_view);
     }
 }

@@ -86,6 +86,34 @@ public interface PlanTemplateModel extends BaseModel<PlanTemplate> {
      */
     public void setBaseTemplateId(Long baseTemplateId);
 
+    /**
+     * Returns the impact series template ID of this plan template.
+     *
+     * @return the impact series template ID of this plan template
+     */
+    public Long getImpactSeriesTemplateId();
+
+    /**
+     * Sets the impact series template ID of this plan template.
+     *
+     * @param impactSeriesTemplateId the impact series template ID of this plan template
+     */
+    public void setImpactSeriesTemplateId(Long impactSeriesTemplateId);
+
+    /**
+     * Returns the focus area list template ID of this plan template.
+     *
+     * @return the focus area list template ID of this plan template
+     */
+    public Long getFocusAreaListTemplateId();
+
+    /**
+     * Sets the focus area list template ID of this plan template.
+     *
+     * @param focusAreaListTemplateId the focus area list template ID of this plan template
+     */
+    public void setFocusAreaListTemplateId(Long focusAreaListTemplateId);
+
     @Override
     public boolean isNew();
 

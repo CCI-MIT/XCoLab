@@ -274,6 +274,24 @@ public class PlanSectionDefinitionLocalServiceUtil {
         return getService().getFocusArea(psd);
     }
 
+    /**
+    * Returns a PlanSectionDefinition objects which match a given FocusArea, PlanSectionDefinition type and ContestTier
+    * If there are multiple matches, returns the first match only.
+    *
+    * @param focusArea         The focusArea which should be matched
+    * @param type              The PlanSectionDefinition type which should be matched
+    * @param contestTierType   The Contest tier type which should be matched
+    * @return The matched PlanSectionDefinition object or null, if it does not exist
+    * @throws SystemException
+    */
+    public static com.ext.portlet.model.PlanSectionDefinition getPlanSectionDefinition(
+        com.ext.portlet.model.FocusArea focusArea, java.lang.String type,
+        long contestTierType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getPlanSectionDefinition(focusArea, type, contestTierType);
+    }
+
     public static void clearService() {
         _service = null;
     }

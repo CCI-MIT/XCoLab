@@ -14,8 +14,11 @@ import java.util.regex.Pattern;
 import javax.mail.internet.AddressException;
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
+import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
 import org.xcolab.proposals.events.ProposalMemberAddedEvent;
 import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
@@ -24,6 +27,7 @@ import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
 import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
 import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
+import org.xcolab.utils.ProposalAttributeDetectUpdateAlgorithm;
 import org.xcolab.utils.UrlBuilder;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
@@ -341,7 +345,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // if it is the one that we are changing then leave old one as it is and
         // create new one for new proposal version
         for (ProposalAttribute attribute : currentProposalAttributes) {
-            if (!attributeName.equals(attribute.getName()) || additionalId != attribute.getAdditionalId()) {
+            ProposalAttributeDetectUpdateAlgorithm updateAlgorithm = new ProposalAttributeDetectUpdateAlgorithm(attribute);
+            if (!updateAlgorithm.hasBeenUpdated(attributeName, additionalId, numericValue, realValue)) {
                 // clone the attribute and set its version to the new value
                 attribute.setVersion(newVersion);
                 proposalAttributeLocalService.updateProposalAttribute(attribute);
@@ -562,6 +567,60 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     }
 
     /**
+     * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
+     * @param authorId
+     * @param attributeToDelete
+     * @param publishActivity
+     * @throws SystemException
+     * @throws PortalException
+     */
+    public void removeAttribute(long authorId, ProposalAttribute attributeToDelete, boolean publishActivity) throws SystemException, PortalException {
+        Proposal proposal = getProposal(attributeToDelete.getProposalId());
+
+        int currentVersion = proposal.getCurrentVersion();
+        int newVersion = currentVersion + 1;
+
+        // find attributes for current version of a proposal
+        List<ProposalAttribute> currentProposalAttributes = proposalAttributePersistence.findByProposalIdVersion(
+                proposal.getProposalId(), currentVersion);
+
+        // for each attribute, if it isn't the one that we are deleting, simply
+        // update it to the most recent version
+        for (ProposalAttribute attribute : currentProposalAttributes) {
+            ProposalAttributeDetectUpdateAlgorithm updateAlgorithm = new ProposalAttributeDetectUpdateAlgorithm(attribute);
+            if (attribute.getId() != attributeToDelete.getId()) {
+                // clone the attribute and set its version to the new value
+                attribute.setVersion(newVersion);
+                proposalAttributeLocalService.updateProposalAttribute(attribute);
+            }
+        }
+
+        Date now = new Date();
+        proposal.setCurrentVersion(newVersion);
+        proposal.setUpdatedDate(now);
+
+        // create newly created version descriptor
+        createPlanVersionDescription(authorId, attributeToDelete.getProposalId(), newVersion, attributeToDelete.getName(), attributeToDelete.getAdditionalId(), now);
+        updateProposal(proposal);
+
+        if (publishActivity)
+            eventBus.post(new ProposalAttributeRemovedEvent(proposal, userLocalService.getUser(authorId),
+                    attributeToDelete.getName(), attributeToDelete));
+    }
+
+    /**
+     * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
+     *
+     * @param authorId
+     * @param attributeToDelete
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public void removeAttribute(long authorId, ProposalAttribute attributeToDelete) throws PortalException, SystemException {
+        removeAttribute(authorId, attributeToDelete, true);
+    }
+
+    /**
      * <p>Returns a list of all proposal version descriptors.</p>
      *
      * @param proposalId id of a proposal
@@ -663,6 +722,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         List<Proposal> proposals = new ArrayList<>();
 
         ContestPhase lastOrActivePhase = contestLocalService.getActiveOrLastPhase(contestLocalService.getContest(contestId));
+        if (lastOrActivePhase == null) {
+            return proposals;
+        }
+
         for (Proposal2Phase proposal2Phase : proposal2PhasePersistence.findByContestPhaseId(lastOrActivePhase.getContestPhasePK())) {
             Proposal proposal = getProposal(proposal2Phase.getProposalId());
 
@@ -1508,9 +1571,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 PlanSectionTypeKeys type = PlanSectionTypeKeys.valueOf(psd.getType());
                 switch (type) {
                     case PROPOSAL_REFERENCE:
-                        detectedIds.add(attribute.getNumericValue());
+                        if (attribute.getNumericValue() != 0) {
+                            detectedIds.add(attribute.getNumericValue());
+                        }
                         break;
                     case PROPOSAL_LIST_REFERENCE:
+                        if (Validator.isNull(attribute.getStringValue())) {
+                            break;
+                        }
                         String[] referencedProposals = attribute.getStringValue().split(",");
                         for (int i = 0; i < referencedProposals.length; i++) {
                             detectedIds.add(Long.parseLong(referencedProposals[i]));
@@ -1571,5 +1639,40 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     public Contest getLatestProposalContest(long proposalId) throws PortalException, SystemException {
     	return contestLocalService.getContest(this.getLatestProposalContestPhase(proposalId).getContestPK());
+    }
+
+    public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) throws SystemException {
+        return proposalAttributeFinder.findByProposalIdVersionGreaterThanVersionWhenCreatedLessThanNameLikeImpact(proposal.getProposalId(),
+                proposal.getCurrentVersion(), proposal.getCurrentVersion());
+    }
+
+    public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal, FocusArea focusArea) throws SystemException {
+        List<ProposalAttribute> filteredProposalAttributes = new ArrayList<>();
+        for (ProposalAttribute attribute : getImpactProposalAttributes(proposal)) {
+            if (attribute.getAdditionalId() == focusArea.getId()) {
+                filteredProposalAttributes.add(attribute);
+            }
+        }
+        return filteredProposalAttributes;
+    }
+
+    /**
+     * Returns all focus areas, for which entered proposal impact data is available
+     *
+     * @param proposal
+     * @return
+     */
+    public List<FocusArea> getImpactProposalFocusAreas(Proposal proposal) throws SystemException, PortalException {
+        Set<Long> focusAreaIdSet = new HashSet<>();
+        List<FocusArea> impactSeriesFocusAreas = new ArrayList<>();
+
+        for (ProposalAttribute attribute : getImpactProposalAttributes(proposal)) {
+            if (!focusAreaIdSet.contains(attribute.getAdditionalId())) {
+                focusAreaIdSet.add(attribute.getAdditionalId());
+                impactSeriesFocusAreas.add(FocusAreaLocalServiceUtil.getFocusArea(attribute.getAdditionalId()));
+            }
+        }
+
+        return impactSeriesFocusAreas;
     }
 }

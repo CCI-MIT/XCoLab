@@ -462,6 +462,10 @@ table.judgingForm {
 	overflow-y: scroll;
 }
 
+div.selected {
+    background-color: #eaf2fb;
+}
+
 .addpropbox.PROPOSAL_LIST_REFERENCE,
 .addpropbox.PROPOSAL_REFERENCE,
 .addpropbox.PROPOSAL_LIST_TEXT_REFERENCE {
@@ -504,4 +508,80 @@ table.judgingForm {
 
 .button-disabled a {
     pointer-events: none;
+}
+
+/* Impact tab */
+
+#impact table td, #impact table th {
+    padding: 10px;
+    max-width: 200px;
+}
+
+#impact th.blue-text {
+    color: #30a3fb;
+}
+
+#impact .blue-bg {
+    font-size: 13px;
+    color: white;
+    background: #30a3fb;
+    border: 1px white solid;
+}
+
+#impact .impact-value {
+    background-color: #E4EAF4;
+    font-weight: bold;
+    text-align: center;
+    border: 1px white solid;
+}
+
+#impact tr.selected {
+    border: 2px solid #8e8d8a;
+}
+
+#impact tr select {
+    margin: 0px;
+    width: 202px;
+}
+
+#impact input {
+    width: 30px;
+    text-align: center;
+    padding: 5px;
+}
+
+#impact .shaded-bg {
+    text-align: center;
+}
+
+#impact table#impact-series-edit span {
+    margin: 0 auto;
+    padding-left: 5px;
+}
+
+#impact-chart {
+    display: block;
+    width: 500px;
+    margin: 0 auto 20px auto;
+}
+
+.subcontests .title {
+    font-size: 16px;
+    color:#66af45;
+}
+
+.subcontests ul{
+    margin-left: 0px;
+    width:550px;
+    overflow:hidden;
+}
+.subcontests li{
+    margin-left: 0px;
+    width:46%;
+    line-height:1.5em;
+    float:left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
 }

@@ -12,6 +12,9 @@
 		
 	<bean id="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeUpdateHandler" 
 		class="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeUpdateHandler" />
+
+	<bean id="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeRemoveHandler"
+		  class="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeRemoveHandler" />
 		
 	<bean id="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityCreateHandler"
 		class="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityCreateHandler" />

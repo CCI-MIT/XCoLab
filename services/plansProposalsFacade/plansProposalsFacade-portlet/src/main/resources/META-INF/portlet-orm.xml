@@ -183,6 +183,9 @@
 			<basic name="defaultParentPointType" />
 			<basic name="pointDistributionStrategy" />
 			<basic name="emailTemplateUrl" />
+			<basic name="show_in_tile_view" />
+			<basic name="show_in_list_view" />
+			<basic name="show_in_outline_view" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -446,6 +449,70 @@
 			<basic name="order">
 				<column name="ORDER_" />
 			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ImpactDefaultSeriesModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ImpactDefaultSeriesPK" />
+		<attributes>
+			<id name="seriesId" />
+			<id name="name" />
+			<basic name="description" />
+			<basic name="focusAreaId" />
+			<basic name="visible" />
+			<basic name="editable" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ImpactDefaultSeriesDataModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPK" />
+		<attributes>
+			<id name="seriesId" />
+			<id name="year" />
+			<basic name="value" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ImpactIterationModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ImpactIterationPK" />
+		<attributes>
+			<id name="iterationId" />
+			<id name="year" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ImpactTemplateFocusAreaListModelImpl">
+		<attributes>
+			<id name="focusAreaListId" />
+			<basic name="name" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ImpactTemplateMaxFocusAreaModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPK" />
+		<attributes>
+			<id name="focusAreaListId" />
+			<id name="focusAreaId" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ImpactTemplateSeriesModelImpl">
+		<attributes>
+			<id name="seriesId" />
+			<basic name="iterationId" />
+			<basic name="name" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -1134,6 +1201,8 @@
 			</id>
 			<basic name="name" />
 			<basic name="baseTemplateId" />
+			<basic name="impactSeriesTemplateId" />
+			<basic name="focusAreaListTemplateId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -1659,6 +1728,30 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.FocusAreaOntologyTermImpl" name="FocusAreaOntologyTerm">
 		<table name="xcolab_FocusAreaOntologyTerm" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ImpactDefaultSeriesImpl" name="ImpactDefaultSeries">
+		<table name="xcolab_ImpactDefaultSeries" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ImpactDefaultSeriesDataImpl" name="ImpactDefaultSeriesData">
+		<table name="xcolab_ImpactDefaultSeriesData" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ImpactIterationImpl" name="ImpactIteration">
+		<table name="xcolab_ImpactIteration" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ImpactTemplateFocusAreaListImpl" name="ImpactTemplateFocusAreaList">
+		<table name="xcolab_ImpactTemplateFocusAreaList" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ImpactTemplateMaxFocusAreaImpl" name="ImpactTemplateMaxFocusArea">
+		<table name="xcolab_ImpactTemplateMaxFocusArea" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ImpactTemplateSeriesImpl" name="ImpactTemplateSeries">
+		<table name="xcolab_ImpactTemplateSeries" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.LandingPageImpl" name="LandingPage">

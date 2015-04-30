@@ -44,4 +44,17 @@
 		]]>
     </sql>
 
+    <sql id="com.ext.portlet.service.persistence.ProposalAttributeFinderImpl.findByProposalIdVersionGreaterThanVersionWhenCreatedLessThanNameLikeImpact">
+        <![CDATA[
+			SELECT
+                pa.*
+            FROM
+                xcolab_ProposalAttribute pa
+            WHERE
+                pa.proposalId = ? AND
+                pa.version >= ? AND
+                pa.versionWhenCreated <= ? AND
+                pa.name LIKE "IMPACT_%"
+		]]>
+    </sql>
 </custom-sql>

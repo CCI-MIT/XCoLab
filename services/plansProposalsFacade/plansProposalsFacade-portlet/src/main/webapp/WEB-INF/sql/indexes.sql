@@ -64,6 +64,18 @@ create index IX_B61888D4 on xcolab_FocusArea (name);
 
 create index IX_CE67B1A0 on xcolab_FocusAreaOntologyTerm (focusAreaId);
 
+create index IX_7343D8EE on xcolab_ImpactDefaultSeries (focusAreaId);
+create index IX_89A73E2D on xcolab_ImpactDefaultSeries (focusAreaId, name);
+create index IX_6E3A15E8 on xcolab_ImpactDefaultSeries (seriesId);
+create index IX_D1CD440 on xcolab_ImpactDefaultSeries (seriesId, editable);
+
+create index IX_E8941CB2 on xcolab_ImpactDefaultSeriesData (seriesId);
+create index IX_97B70823 on xcolab_ImpactDefaultSeriesData (seriesId, year);
+
+create index IX_512E56E1 on xcolab_ImpactIteration (iterationId);
+
+create index IX_E0F07F11 on xcolab_ImpactTemplateMaxFocusArea (focusAreaListId);
+
 create index IX_9DF5C6F0 on xcolab_Message (fromId);
 
 create index IX_E4B60412 on xcolab_MessageRecipientStatus (messageId);
@@ -197,6 +209,7 @@ create index IX_4941177 on xcolab_ProposalAttribute (proposalId, version, versio
 create index IX_F612A28C on xcolab_ProposalAttribute (proposalId, version, versionWhenCreated, name, additionalId);
 
 create index IX_159C0FC9 on xcolab_ProposalContestPhaseAttribute (contestPhaseId);
+create index IX_EAA7A52A on xcolab_ProposalContestPhaseAttribute (contestPhaseId, proposalId);
 create index IX_68DFE42A on xcolab_ProposalContestPhaseAttribute (proposalId, contestPhaseId);
 create index IX_8F351DBF on xcolab_ProposalContestPhaseAttribute (proposalId, contestPhaseId, name, additionalId);
 
