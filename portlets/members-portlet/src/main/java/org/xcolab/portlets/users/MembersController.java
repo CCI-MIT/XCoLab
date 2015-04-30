@@ -68,7 +68,7 @@ public class MembersController {
             if (startPage + 10<pagesCount)
                 endPage=startPage+10;
 
-            if (sortFilterPage.getSortColumn() != null)
+            if (sortFilterPage.getSortColumn() != null) {
 
                 switch (sortFilterPage.getSortColumn()) {
                     case "USER_NAME":
@@ -99,10 +99,14 @@ public class MembersController {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDesc(firstUser, endUser, filter);
                         break;
                 }
+
+                request.getPortletSession().setAttribute("previousSortColumn", sortFilterPage.getSortColumn());
+                request.getPortletSession().setAttribute("previousSortOrder", sortFilterPage.isSortAscending());
+            }
             else {
-                dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser, filter);
-                sortFilterPage.setSortColumn("USER_NAME");
-                sortFilterPage.setSortAscending(true);
+                dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDesc(firstUser, endUser, filter);
+                sortFilterPage.setSortColumn("ACTIVITY");
+                sortFilterPage.setSortAscending(false);
             }
         }
         else {
@@ -149,9 +153,9 @@ public class MembersController {
                         break;
                 }
             else {
-                dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
-                sortFilterPage.setSortColumn("USER_NAME");
-                sortFilterPage.setSortAscending(true);
+                dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
+                sortFilterPage.setSortColumn("ACTIVITY");
+                sortFilterPage.setSortAscending(false);
             }
 
         }

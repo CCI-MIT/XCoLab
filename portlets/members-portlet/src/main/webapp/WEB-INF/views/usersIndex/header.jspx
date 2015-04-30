@@ -80,19 +80,20 @@
 		<div>
 
 			<div class="users-filter" style="position: relative;">
-				<portlet:renderURL var="filterURL" />
+				<portlet:renderURL var="filterURL">
+				<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
+				<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+					<portlet:param name="memberCategory" value="${memberCategory}" />
+				</portlet:renderURL>
 				<form action="${filterURL }" id="filterUsersForm" method="post">
+					<input class="comm_search" type="text" value="${sortFilterPage.filter }" placeholder="Filter users" name="filter" />
+					<div class="blue-button">
+						<a href="javascript:document.forms[2].submit();">Search</a>
+					</div>
+
 					<!--
-					<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
-					-->
-					<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
-					<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
-					<input type="hidden" name="memberCategory" value="${memberCategory}" />
-					<input type="text" id="userFilterInput" value="${sortFilterPage.filter }" placeholder="Filter users" name="filter" />
-					<c:if test="${not empty sortFilterPage.filter }">
-						<a href="javascript:;" id="usersFilterClear">&#160;</a>
-					</c:if>
 					<input class="comm_submit" type="submit" id="usersFilterSubmit" name="submit" value="Search" />
+					-->
 				</form>
 			</div>
 
