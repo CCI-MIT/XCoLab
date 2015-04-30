@@ -71,9 +71,9 @@ public class Proposal2PhaseLocalServiceImpl
 
         for (Proposal2Phase p2p : proposal2Phases){
             long contestPhaseId = p2p.getContestPhaseId();
-            if (p2p.getVersionTo() == -1 && isContestPhaseInActiveContest(contestPhaseId)){
+            if (p2p.getVersionTo() == -1 && isContestPhaseValidInContest(contestPhaseId)){
                 return -1;
-            } else if(p2p.getVersionTo() > newestVersion && isContestPhaseInActiveContest(contestPhaseId)){
+            } else if(p2p.getVersionTo() > newestVersion && isContestPhaseValidInContest(contestPhaseId)){
                 newestVersion = p2p.getVersionTo();
             }
         }
@@ -85,7 +85,7 @@ public class Proposal2PhaseLocalServiceImpl
         }
 
     }
-    public ContestPhase getLatestContestPhaseInActiveContest(Long proposalId) throws SystemException, PortalException{
+    public ContestPhase getLatestContestPhaseInContest(Long proposalId) throws SystemException, PortalException{
         int newestVersion = 0;
         long newestVersionContestPhaseId = 0;
 
@@ -96,9 +96,9 @@ public class Proposal2PhaseLocalServiceImpl
 
         for (Proposal2Phase p2p : proposal2Phases){
             long contestPhaseId = p2p.getContestPhaseId();
-            if (p2p.getVersionTo() == -1 && isContestPhaseInActiveContest(contestPhaseId)){
+            if (p2p.getVersionTo() == -1 && isContestPhaseValidInContest(contestPhaseId)){
                 return contestPhaseLocalService.getContestPhase(contestPhaseId);
-            } else if(p2p.getVersionTo() > newestVersion && isContestPhaseInActiveContest(contestPhaseId)){
+            } else if(p2p.getVersionTo() > newestVersion && isContestPhaseValidInContest(contestPhaseId)){
                 newestVersion = p2p.getVersionTo();
                 newestVersionContestPhaseId = contestPhaseId;
             }
@@ -113,14 +113,19 @@ public class Proposal2PhaseLocalServiceImpl
     }
 
     public Contest getCurrentContestForProposal(long proposalId) throws SystemException, PortalException {
-        ContestPhase contestPhase = getLatestContestPhaseInActiveContest(proposalId);
+        ContestPhase contestPhase = getLatestContestPhaseInContest(proposalId);
         return contestLocalService.getContest(contestPhase.getContestPK());
     }
 
-    private boolean isContestPhaseInActiveContest(long contestPhaseId) throws SystemException, PortalException{
-        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-        Contest contest = contestLocalService.getContest(contestPhase.getContestPK());
-        return contest.getContestActive();
+    private boolean isContestPhaseValidInContest(long contestPhaseId){
+        boolean isContestPhaseValidInContest = true;
+        try {
+            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
+            contestLocalService.getContest(contestPhase.getContestPK());
+        } catch (Exception e){
+            isContestPhaseValidInContest = false;
+        }
+        return isContestPhaseValidInContest;
     }
 
     public Proposal2Phase getForVersion(Long proposalId, int proposalVersionId) throws SystemException, PortalException {

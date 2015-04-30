@@ -187,7 +187,7 @@ public class Proposal2PhaseLocalServiceClpInvoker {
 
         _methodParameterTypes636 = new String[] { "java.lang.Long" };
 
-        _methodName637 = "getLatestContestPhaseInActiveContest";
+        _methodName637 = "getLatestContestPhaseInContest";
 
         _methodParameterTypes637 = new String[] { "java.lang.Long" };
 
@@ -347,7 +347,7 @@ public class Proposal2PhaseLocalServiceClpInvoker {
 
         if (_methodName637.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes637, parameterTypes)) {
-            return Proposal2PhaseLocalServiceUtil.getLatestContestPhaseInActiveContest((java.lang.Long) arguments[0]);
+            return Proposal2PhaseLocalServiceUtil.getLatestContestPhaseInContest((java.lang.Long) arguments[0]);
         }
 
         if (_methodName638.equals(name) &&

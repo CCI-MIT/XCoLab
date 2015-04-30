@@ -260,7 +260,7 @@ public interface Proposal2PhaseLocalService extends BaseLocalService,
         java.lang.Long proposalId) throws java.lang.Exception;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ContestPhase getLatestContestPhaseInActiveContest(
+    public com.ext.portlet.model.ContestPhase getLatestContestPhaseInContest(
         java.lang.Long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;

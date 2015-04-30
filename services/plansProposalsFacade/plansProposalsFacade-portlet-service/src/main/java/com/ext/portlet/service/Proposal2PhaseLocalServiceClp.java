@@ -189,7 +189,7 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
 
         _methodParameterTypes23 = new String[] { "java.lang.Long" };
 
-        _methodName24 = "getLatestContestPhaseInActiveContest";
+        _methodName24 = "getLatestContestPhaseInContest";
 
         _methodParameterTypes24 = new String[] { "java.lang.Long" };
 
@@ -890,7 +890,7 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
     }
 
     @Override
-    public com.ext.portlet.model.ContestPhase getLatestContestPhaseInActiveContest(
+    public com.ext.portlet.model.ContestPhase getLatestContestPhaseInContest(
         java.lang.Long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {

@@ -314,11 +314,11 @@ public class Proposal2PhaseLocalServiceWrapper
     }
 
     @Override
-    public com.ext.portlet.model.ContestPhase getLatestContestPhaseInActiveContest(
+    public com.ext.portlet.model.ContestPhase getLatestContestPhaseInContest(
         java.lang.Long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _proposal2PhaseLocalService.getLatestContestPhaseInActiveContest(proposalId);
+        return _proposal2PhaseLocalService.getLatestContestPhaseInContest(proposalId);
     }
 
     @Override
