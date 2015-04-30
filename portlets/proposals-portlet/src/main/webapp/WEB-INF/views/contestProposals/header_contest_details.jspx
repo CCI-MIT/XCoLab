@@ -186,7 +186,7 @@
                     <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
                         <div class="subcontests">
                             <c:if test="${contest.showSubContests}">
-                                <span class="title">Proposal referenced from the following subcontest:</span>
+                                <span class="title">To create your plan, combine proposals from these sector workspaces:</span>
                                 <ul>
                                     <c:forEach items="${contest.subContests}" var="subContest">
                                         <li>

@@ -6,6 +6,11 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	<div class="headline formmargin">
+		<div style="position: relative;">
+			<c:if test="${showContestManagementLink}">
+				<a href="/web/guest/cms/-/contestmanagement/manager/tab/OVERVIEW" target="_blank">Go to Contest Management Tool</a>
+			</c:if>
+		</div>
 		<h1>Contests</h1>
 		<portlet:renderURL var="changeToListViewTypeURL">
 			<portlet:param name="viewType" value="LIST" />
@@ -105,7 +110,6 @@
         			</c:if>
 	            </form>
     	    </div>
-
         <portlet:actionURL var="suggestContestURL">
             <portlet:param name="action" value="suggestContest" />
         </portlet:actionURL>

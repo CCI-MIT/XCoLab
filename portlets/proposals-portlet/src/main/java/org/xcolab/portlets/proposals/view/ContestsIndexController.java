@@ -12,6 +12,11 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.Cookie;
 
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.security.permission.PermissionCheckerUtil;
+import com.liferay.portal.security.permission.PermissionThreadLocal;
+import com.liferay.portal.util.PortalUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,6 +98,10 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showActiveContests", showActiveContests);
         model.addAttribute("showAllContests", showAllContests);
+
+        PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
+        boolean showContestManagementLink = permissionChecker.isOmniadmin();
+        model.addAttribute("showContestManagementLink", showContestManagementLink);
 
         setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
         
