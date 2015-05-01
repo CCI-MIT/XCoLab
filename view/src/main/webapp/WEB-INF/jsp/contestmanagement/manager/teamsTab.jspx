@@ -3,6 +3,7 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
     
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -78,6 +79,38 @@
                     <div>
                         <strong class="inputTitleLeft">Team members:</strong>
                     </div>
+
+                    <div class="clearfix"><!-- --></div>
+
+                    <table class="table-striped" id="teammembers">
+                        <c:forEach var="member" items="${teamBean.members}" varStatus="status">
+                            <tr class="${status.index mod 2 > 0 ? 'even' : 'odd'}">
+                                <td>
+                                    <xcolab:userPortrait portraitId="${member.portraitId}" memberId="${member.userId}"
+                                                         width="42" height="42"/>
+                                    <xcolab:userLinkSimple memberId="${member.userId }" text="${member.displayName }" />
+                                    <!--<proposalsPortlet:proposalTeamMember member="${member }" />-->
+                                </td>
+                                <td style="vertical-align: middle">
+                                    <a class="js-PostLink" data-url="TEAMS/${teamId}/removeMember/${member.id_}">Remove</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        <tr class="${teamBean.members.size() mod 2 > 0 ? 'even' : 'odd'}">
+                            <td style="height: 42px; vertical-align: middle;">
+                                <label for="add-member">Add member:</label>
+                                <input type="text" name="add-member" id="add-member" />
+                            </td>
+                            <td />
+                        </tr>
+                    </table>
+                    <!--<div>-->
+                        <!--<c:forEach var="member" items="${teamBean.members}">-->
+                            <!--<ul>-->
+                                <!--<li>${member.fullName} (${member.screenName})</li>-->
+                            <!--</ul>-->
+                        <!--</c:forEach>-->
+                    <!--</div>-->
                 </div>
             </form:form>
         </c:if>
@@ -90,6 +123,26 @@
 
         jQuery(function () {
             bindElementSelectChange();
+        });
+
+        // jQuery autocomplete
+        $(function() {
+            var cache = {};
+            var $recipientInput = $( "#add-member" );
+            $recipientInput.autocomplete({
+                minLength: 3,
+                source: "/api/members/getUserByScreenName",
+                select: function (event, ui) {
+                    var userId = ui.item.id; //currentUserMap[jQuery.trim(ui.item.value)]; //userMap
+                    console.log(userId);
+                    this.value = "";
+                    return false;
+                }
+            });
+
+            $recipientInput.bind("autocompleteselect", "select", function(event) {
+
+            });
         });
 
         function bindElementSelectChange() {

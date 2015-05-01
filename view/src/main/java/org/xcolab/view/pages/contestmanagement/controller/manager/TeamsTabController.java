@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.html.LabelStringValue;
@@ -25,6 +28,7 @@ import org.xcolab.view.pages.contestmanagement.wrappers.PlatformTeamBean;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +44,7 @@ public class TeamsTabController extends AbstractTabController {
 
     private static final String CONTEST_TEAM_BEAN_ATTRIBUTE_KEY = "teamBean";
 
-    private List<PlatformTeam> teams = getMockTeamList();
+    private List<PlatformTeam> teams;
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -90,9 +94,18 @@ public class TeamsTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
+        if (this.teams == null) {
+            this.teams = getMockTeamList();
+        }
+
         Long teamId = -1L;
+        PlatformTeam team = null;
+        if (elementId == null) {
+            team = this.teams.get(0);
+        } else {
+            team = getTeamWithId(elementId);
+        }
         if (!this.teams.isEmpty() && !model.containsAttribute(CONTEST_TEAM_BEAN_ATTRIBUTE_KEY)) {
-            PlatformTeam team = this.teams.get(0);
             model.addAttribute(CONTEST_TEAM_BEAN_ATTRIBUTE_KEY, new PlatformTeamBean(team));
             teamId = team.getId_();
         }
@@ -102,6 +115,27 @@ public class TeamsTabController extends AbstractTabController {
         return TAB_VIEW;
     }
 
+    @PostMapping("tab/TEAMS/{teamId}/removeMember/{memberId}")
+    public void removeMember(HttpServletRequest request,
+            HttpServletResponse response, Model model, Member member,
+            @PathVariable long teamId, @PathVariable long memberId) throws IOException {
+        if (!tabWrapper.getCanView()) {
+            response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(teamId));
+            return;
+        }
+
+        PlatformTeam team = getTeamWithId(teamId);
+        try {
+            Member teamMember = MembersClient.getMember(memberId);
+            team.getMembers().remove(teamMember);
+        } catch (MemberNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(teamId));
+
+    }
+
     private Long getFirstTeamId() {
         final List<PlatformTeam> teams = this.teams;
 //                ContestClientUtil.getAllContestSchedules();
@@ -109,6 +143,17 @@ public class TeamsTabController extends AbstractTabController {
             return teams.get(0).getId_();
         }
         return -1L;
+    }
+
+    private PlatformTeam getTeamWithId(long teamId) {
+        PlatformTeam team = null;
+        for (PlatformTeam curTeam : teams) {
+            if (curTeam.getId_().equals(teamId)) {
+                team = curTeam;
+                break;
+            }
+        }
+        return team;
     }
 
     private List<LabelValue> getAllTeamItems() {
@@ -128,8 +173,18 @@ public class TeamsTabController extends AbstractTabController {
         team2.setName("Team Dos");
         team3.setName("Team Tres");
         team1.setMembers(new ArrayList<>());
-        team1.setMembers(new ArrayList<>());
-        team1.setMembers(new ArrayList<>());
+        team2.setMembers(new ArrayList<>());
+        team3.setMembers(new ArrayList<>());
+        try {
+            Member aleks = MembersClient.getMember(2666734);
+            Member schwanzo = MembersClient.getMember(2666735);
+            Member schmibo = MembersClient.getMember(2666736);
+            team1.getMembers().add(aleks);
+            team1.getMembers().add(schwanzo);
+            team1.getMembers().add(schmibo);
+        } catch (MemberNotFoundException e) {
+            e.printStackTrace();
+        }
         teams.add(team1);
         teams.add(team2);
         teams.add(team3);
