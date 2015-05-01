@@ -2,6 +2,8 @@ package org.xcolab.portlets.contestmanagement.controller;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
+import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
@@ -30,13 +33,13 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabController {
 
-    @Autowired
-    private Validator validator;
+    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsResourcesTabController.class);
     static final private TabEnum tab = ContestDetailsTabs.RESOURCES;
     static final private String TAB_VIEW = "details/resourcesTab";
 
+    @Autowired
+    private Validator validator;
     private WikiPageWrapper wikiPageWrapper;
-
 
     @InitBinder("contestResourcesBean")
     public void initBinder(WebDataBinder binder) {
@@ -76,12 +79,12 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
                                              @ModelAttribute ContestResourcesBean updatedContestResourcesBean, BindingResult result) {
 
         if(!tabWrapper.getCanEdit()) {
-            setNoPermissionErrorRenderParameter(response);
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
 
         if (result.hasErrors()) {
-            setErrorRenderParameter(response, "updateContestResources");
+            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestResources");
             return;
         }
 
@@ -89,8 +92,9 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
             wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
-            e.printStackTrace();
-            setNotFoundErrorRenderParameter(response);
+            _log.warn("Update contest resources failed with: ", e);
+            _log.warn(e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
 

@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import java.util.*;
-
-import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -446,6 +444,46 @@ public class ContestWrapper {
         	return "";
         }
         return ontologyJoinedName;
+    }
+
+    public boolean getShowSubContests(){
+        return contest.getContestTier() == 3;
+    }
+
+    public List<Contest> getSubContests() throws Exception{
+
+        long ONTOLOGY_SPACE_ID_WHERE = 104L;
+        //long ONTOLOGY_SPACE_ID_WHO = 102L;
+        //long ONTOLOGY_SPACE_ID_WHAT = 103L;
+        //long ONTOLOGY_SPACE_ID_HOW = 103L;
+        return ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
+
+        /*
+        List<Contest> subContests = new ArrayList<>();
+
+        if (getShowSubContests()){
+            return
+            long focusAreaId = contest.getFocusAreaId();
+            long contestTier = contest.getContestTier();
+            long lowerContestTier = contestTier - 1;
+
+            if(lowerContestTier < 1) {
+                new Exception("Contest " + contest.getContestPK() + " has no sub-contests!" );
+            }
+
+            //long ontologyTermId = getOntologyTermIdForFocusAreaAndSpaceId(focusAreaId, ONTOLOGY_SPACE_ID_WHERE);
+            //List<Long> focusAreaOntologyTermIds = getFocusAreaOntologyTermsByOntologyTermId(ontologyTermId);
+
+
+            DynamicQuery getContestsByTierLevelAndOntologyTermIds =
+            DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
+                    .add(PropertyFactoryUtil.forName("contestTier").eq(lowerContestTier))
+                    .add(PropertyFactoryUtil.forName("focusAreaId").in(focusAreaOntologyTermIds));
+
+            subContests = ContestLocalServiceUtil.dynamicQuery(retrieveContestsByTierLevelAndOntologyTermIds);
+        }
+
+        return subContests;*/
     }
 
     public Long getVotingPhasePK() throws PortalException, SystemException {

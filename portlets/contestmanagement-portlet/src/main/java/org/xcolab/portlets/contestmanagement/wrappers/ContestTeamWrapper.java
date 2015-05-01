@@ -1,7 +1,7 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.ContestTeamMember;
-import com.ext.portlet.model.ContestTeamMemberWrapper;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -16,10 +16,7 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by Thomas on 2/12/2015.
@@ -36,7 +33,7 @@ public class ContestTeamWrapper {
     }
 
     public void updateContestTeamMembers()
-            throws SystemException, PortalException {
+            throws Exception {
         removeAllContestTeamMembersForContest();
         assignMemberToContest(MemberRole.JUDGES, contestTeamBean.getUserIdsJudges());
         assignMemberToContest(MemberRole.ADVISOR, contestTeamBean.getUserIdsAdvisors());
@@ -45,9 +42,10 @@ public class ContestTeamWrapper {
     }
 
     private void assignMemberToContest(MemberRole memberRole, List<Long> userIds)
-            throws SystemException, PortalException {
-        asssignMemberWithRoleToContest(memberRole, userIds);
+            throws Exception{
+        assignMemberWithRoleToContest(memberRole, userIds);
         assignMemberRoleToUser(memberRole, userIds);
+        subscribeUserToContest(userIds);
     }
 
     private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds)
@@ -60,7 +58,7 @@ public class ContestTeamWrapper {
         }
     }
 
-    private void asssignMemberWithRoleToContest(MemberRole memberRole, List<Long> userIds)
+    private void assignMemberWithRoleToContest(MemberRole memberRole, List<Long> userIds)
             throws SystemException, PortalException {
         String memberRoleName = memberRole.getPrintName();
         if (memberRole == MemberRole.JUDGES) memberRoleName = "Judge"; // TODO change in config file
@@ -112,6 +110,11 @@ public class ContestTeamWrapper {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
 
+    private void subscribeUserToContest(List<Long> userIds) throws Exception{
+        for (Long userId : userIds) {
+            ContestLocalServiceUtil.subscribe(contestId, userId);
+        }
     }
 }

@@ -57,6 +57,8 @@ public class FocusAreaOntologyTermLocalServiceClp
     private String[] _methodParameterTypes23;
     private String _methodName24;
     private String[] _methodParameterTypes24;
+    private String _methodName25;
+    private String[] _methodParameterTypes25;
 
     public FocusAreaOntologyTermLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -193,6 +195,10 @@ public class FocusAreaOntologyTermLocalServiceClp
         _methodParameterTypes24 = new String[] {
                 "com.ext.portlet.model.FocusAreaOntologyTerm"
             };
+
+        _methodName25 = "getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId";
+
+        _methodParameterTypes25 = new String[] { "long", "long" };
     }
 
     @Override
@@ -906,5 +912,32 @@ public class FocusAreaOntologyTermLocalServiceClp
         }
 
         return (com.ext.portlet.model.FocusArea) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<java.lang.Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(
+        long focusAreaId, long ontologySpaceId) throws java.lang.Exception {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25,
+                    new Object[] { focusAreaId, ontologySpaceId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof java.lang.Exception) {
+                throw (java.lang.Exception) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
     }
 }

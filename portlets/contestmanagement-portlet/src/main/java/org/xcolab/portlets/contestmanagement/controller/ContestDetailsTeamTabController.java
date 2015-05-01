@@ -2,6 +2,8 @@ package org.xcolab.portlets.contestmanagement.controller;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
+import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestTeamWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
@@ -26,8 +29,9 @@ import java.util.List;
 @RequestMapping("view")
 public class ContestDetailsTeamTabController extends ContestDetailsBaseTabController {
 
-    static final private TabEnum tab = ContestDetailsTabs.TEAM;
-    static final private String TAB_VIEW = "details/teamTab";
+    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsTeamTabController.class);
+    private static final TabEnum tab = ContestDetailsTabs.TEAM;
+    private static final String TAB_VIEW = "details/teamTab";
 
     @ModelAttribute("usersList")
     public List<User> populateUsers() throws SystemException {
@@ -69,7 +73,7 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
     public void updateTeamTabController(ActionRequest request, Model model, ActionResponse response) {
 
         if(!tabWrapper.getCanEdit()) {
-            setNoPermissionErrorRenderParameter(response);
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
 
@@ -79,7 +83,9 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
             contestTeamWrapper.updateContestTeamMembers();
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
-            setNotFoundErrorRenderParameter(response);
+            _log.warn("Update contest team failed with: ", e);
+            _log.warn(e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
 

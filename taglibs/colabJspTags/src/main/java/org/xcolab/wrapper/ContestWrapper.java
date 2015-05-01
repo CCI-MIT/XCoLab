@@ -4,12 +4,15 @@ import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import org.xcolab.enums.MemberRole;
 
 import java.util.*;
 
 public class ContestWrapper {
+    private final static Log _log = LogFactoryUtil.getLog(ContestWrapper.class);
     private static final String WHERE = "where";
     private static final String WHAT = "what";
     private static final String WHO = "who";
@@ -483,7 +486,11 @@ public class ContestWrapper {
                     roleUsers = new ArrayList<User>();
                     teamRoleUsersMap.put(ctm.getRole(), roleUsers);
                 }
-                roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
+                try {
+                    roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
+                } catch(Exception e){
+                    _log.warn("Could not add user role: " + e);
+                }
             }
 
             for (String role : teamRoleUsersMap.keySet()) {

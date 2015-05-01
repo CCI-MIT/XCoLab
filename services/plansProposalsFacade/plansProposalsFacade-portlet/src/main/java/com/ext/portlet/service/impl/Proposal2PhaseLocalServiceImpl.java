@@ -4,18 +4,16 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
-
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.Proposal2PhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.UserLocalServiceUtil;
 /**
  * The implementation of the proposal2 phase local service.
  *
@@ -54,9 +52,7 @@ public class Proposal2PhaseLocalServiceImpl
  		*/
         return p2p;
     }
-    
-    
-    
+
     public Proposal2Phase getByProposalIdContestPhaseId(long proposalId, long contestPhaseId) throws PortalException, SystemException {
         return getProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
     }
@@ -64,19 +60,78 @@ public class Proposal2PhaseLocalServiceImpl
     public List<Proposal2Phase> getByProposalId(long proposalId) throws PortalException, SystemException {
     	return proposal2PhasePersistence.findByProposalId(proposalId);
     }
-    
-    public Contest getCurrentContestForProposal(long proposalId) throws SystemException, PortalException {
+
+    public int getLatestProposalVersionInActiveContest(Long proposalId) throws Exception{
+        int newestVersion = 0;
+
         List<Proposal2Phase> proposal2Phases = proposal2PhasePersistence.findByProposalId(proposalId);
         if (proposal2Phases.isEmpty()) {
             throw new SystemException("Proposal " + proposalId + " isn't associated with any contest");
         }
+
         for (Proposal2Phase p2p : proposal2Phases){
-            if (p2p.getVersionTo() == -1){
-                ContestPhase phase = contestPhaseLocalService.getContestPhase(p2p.getContestPhaseId());
-                return contestLocalService.getContest(phase.getContestPK());
+            long contestPhaseId = p2p.getContestPhaseId();
+            if (p2p.getVersionTo() == -1 && isContestPhaseValidInContest(contestPhaseId)){
+                return -1;
+            } else if(p2p.getVersionTo() > newestVersion && isContestPhaseValidInContest(contestPhaseId)){
+                newestVersion = p2p.getVersionTo();
             }
         }
-        throw new SystemException("Proposal " + proposalId + " has no active association.");
+
+        if(newestVersion != 0){
+            return newestVersion;
+        } else {
+            throw new SystemException("Proposal " + proposalId + " has no active association.");
+        }
+
+    }
+    public ContestPhase getLatestContestPhaseInContest(Long proposalId) throws SystemException, PortalException{
+        int newestVersion = 0;
+        long newestVersionContestPhaseId = 0;
+
+        List<Proposal2Phase> proposal2Phases = proposal2PhasePersistence.findByProposalId(proposalId);
+        if (proposal2Phases.isEmpty()) {
+            throw new SystemException("Proposal " + proposalId + " isn't associated with any contest");
+        }
+
+        for (Proposal2Phase p2p : proposal2Phases){
+            long contestPhaseId = p2p.getContestPhaseId();
+            if (p2p.getVersionTo() == -1 && isContestPhaseValidInContest(contestPhaseId)){
+                return contestPhaseLocalService.getContestPhase(contestPhaseId);
+            } else if(p2p.getVersionTo() > newestVersion && isContestPhaseValidInContest(contestPhaseId)){
+                newestVersion = p2p.getVersionTo();
+                newestVersionContestPhaseId = contestPhaseId;
+            }
+        }
+
+        if(newestVersion != 0 && newestVersionContestPhaseId != 0){
+            return contestPhaseLocalService.getContestPhase(newestVersionContestPhaseId);
+        } else {
+            throw new SystemException("Proposal " + proposalId + " has no active association.");
+        }
+
+    }
+
+    public Contest getCurrentContestForProposal(long proposalId) throws SystemException, PortalException {
+        ContestPhase contestPhase = getLatestContestPhaseInContest(proposalId);
+        return contestLocalService.getContest(contestPhase.getContestPK());
+    }
+
+    private boolean isContestPhaseValidInContest(long contestPhaseId){
+        boolean isContestPhaseValidInContest = true;
+        try {
+            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
+            contestLocalService.getContest(contestPhase.getContestPK());
+        } catch (Exception e){
+            isContestPhaseValidInContest = false;
+        }
+        return isContestPhaseValidInContest;
+    }
+
+    public Proposal2Phase getForVersion(Long proposalId, int proposalVersionId) throws SystemException, PortalException {
+        ProposalVersion proposalVersion =
+                ProposalVersionLocalServiceUtil.getByProposalIdVersion(proposalId, proposalVersionId);
+        return getForVersion(proposalVersion);
     }
 
     public Proposal2Phase getForVersion(ProposalVersion proposalVersion) throws SystemException, PortalException {
