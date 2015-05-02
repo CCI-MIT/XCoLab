@@ -524,15 +524,39 @@ div.selected {
 #impact .blue-bg {
     font-size: 13px;
     color: white;
-    background: #30a3fb;
-    border: 1px white solid;
+    background: #a7d4db;
+    border: 2px white solid;
 }
 
 #impact .impact-value {
-    background-color: #E4EAF4;
     font-weight: bold;
     text-align: center;
-    border: 1px white solid;
+    border-left: 2px black solid;
+    border-right: 2px black solid;
+}
+
+#impact #summary-body tr,
+#impact table#impact-summary thead,
+#impact-series-detail table#edit-table tr {
+    border-left: 2px black solid;
+}
+
+#impact #summary-body tr,
+#impact table#impact-summary thead {
+    border-right: 2px black solid;
+}
+
+#impact #impact-summary #impact-new-series-row td,
+#impact-series-detail table#edit-table thead th {
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+}
+
+#impact #impact-summary tr#impact-new-series-row,
+#impact-series-detail table#edit-table tbody,
+#impact-series-detail table#edit-table tbody
+{
+    border-bottom: 2px solid black;
 }
 
 #impact tr.selected {
@@ -564,7 +588,7 @@ div.selected {
     padding: 5px;
 }
 
-#impact .shaded-bg {
+#impact td.shaded-bg {
     text-align: center;
 }
 
@@ -579,13 +603,21 @@ div.selected {
     margin: 0 auto 20px auto;
 }
 
+#impact-series-detail div#new-series {
+    vertical-align: middle;
+    display: table-cell;
+}
+
 #impact-series-detail div#new-series select {
-    margin-right: 10px;
+    margin-right: 15px;
+    width: 21.5%;
     height: 32px;
 }
 
 #impact-series-detail div#header {
     padding-top: 15px;
+    vertical-align: middle;
+    display: table-cell;
 }
 
 #impact-series-detail div#header h3 {
