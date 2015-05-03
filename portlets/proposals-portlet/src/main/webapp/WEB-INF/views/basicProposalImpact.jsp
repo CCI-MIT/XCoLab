@@ -172,13 +172,13 @@
                             <div id="header" class="shaded-bg" style="display: none">
                                 <h3 id="region-title"><!-- --></h3>
                                 <h3 id="sector-title"><!-- --></h3>
-                                <div class="blue-button" style="float:right; margin-right: 20px;">
+                                <div class="blue-button disabled" style="float:right; margin-right: 20px;">
                                     <a id="delete-button" href="javascript:;">Delete</a>
                                 </div>
                                 <div style="float:right; margin-right: 5px;" class="blue-button">
                                     <a id="save-button" href="javascript:;">Save</a>
                                 </div>
-                                <div id="author-info" style="margin-top: 2px; ">
+                                <div id="author-info" style="margin-top: 2px; display: none;">
                                     <strong>Last saved:</strong>&#160; <span id="author-name"><!-- --></span> on <span id="save-date"><!-- --></span>
                                 </div>
                             </div>
@@ -186,7 +186,7 @@
 
                         <table id="edit-table">
                             <thead>
-                                <tr>
+                                <tr style="display: none;">
                                     <th style="width: 45%"><!-- --></th>
                                     <c:forEach var="impactIteration" items="${impactIterations}">
                                         <th style="width: ${55.0 / fn:length(impactIterations)}%"><!-- --></th>
@@ -293,12 +293,13 @@
                 userInputOccurred = false;
                 editedFocusArea = 0;
                 currentEditingRowIndex = ROW_INDEX_NONE_SELECTED;
+                $('#delete-button').parent().addClass('disabled');
 
                 return;
             }
 
             currentEditingRowIndex = rowIndex;
-
+            $('#delete-button').parent().removeClass('disabled');
             // Set detail table header
             var sectorTerm = row.find('td.sector > span');
             var regionTerm = row.find('td.region > span');
@@ -341,7 +342,9 @@
         }
 
         function loadSeriesEditData(url) {
+            setDetailViewSpinnerMode(true);
             $.getJSON(url, { get_param: 'value' }, function(data) {
+                setDetailViewSpinnerMode(false);
                 editedFocusArea = data.focusAreaId;
 
                 // Delete old edit rows
@@ -399,6 +402,11 @@
                     $('div#author-info').hide();
                 }
 
+                // Disable save button for unchanged new serieses
+                if (currentEditingRowIndex == ROW_INDEX_NONE_SELECTED) {
+                    $('a#save-button').parent().addClass('disabled');
+                }
+
                 // Register input event handler
                 $('#impact table tr.impact-edit-row input').on('blur', function() {
                     // check valid input
@@ -410,6 +418,7 @@
                     }
 
                     userInputOccurred = true;
+                    $('a#save-button').parent().removeClass('disabled')
                     recalculateEditSeriesValues();
                 });
 
@@ -422,7 +431,7 @@
             regionDropdownElement.click(function(event) {event.stopPropagation();});
 
             regionDropdownElement.on('change', function() {
-                $('#impact a#continue-button').addClass('disabled');
+                $('#impact a#continue-button').parent().addClass('disabled');
 
                 var regionTermId = $(this).val();
                 console.log("region term selected: " + regionTermId);
@@ -432,7 +441,9 @@
 
                 // Get sector terms
                 var url = replaceImpactURLPlaceholders(getSectorsForRegionURL, [REGION_TERM_ID_PLACEHOLDER], [regionTermId]);
+                setDetailViewSpinnerMode(true);
                 $.getJSON(url, { get_param: 'value' }, function(data) {
+                    setDetailViewSpinnerMode(false);
                     sectorDropdownElement.empty();
                     sectorDropdownElement.append('<option value="' + 0 + '">Select sector</option>');
                     console.log("data " + data);
@@ -445,7 +456,7 @@
             });
 
             sectorDropdownElement.on('change', function() {
-                $('#impact a#continue-button').addClass('disabled');
+                $('#impact a#continue-button').parent().addClass('disabled');
                 var sectorTermId = sectorDropdownElement.val();
                 var regionTermId = regionDropdownElement.val();
 
@@ -453,6 +464,28 @@
                 if (sectorTermId &gt; 0 &amp;&amp; regionTermId &gt; 0) {
                     $('#impact a#continue-button').parent().removeClass('disabled');
                 }
+            });
+        }
+
+        function loadRegionTerms() {
+            var regionDropdownElement = $('div#new-series select#region');
+
+            var sectorDropdownElement = $('div#new-series select#sector');
+            sectorDropdownElement.empty();
+            sectorDropdownElement.append('<option value="' + 0 + '">Select region first</option>');
+
+            var url = replaceImpactURLPlaceholders(getRegionsURL, [], []);
+            setDetailViewSpinnerMode(true);
+            $.getJSON(url, { get_param: 'value' }, function(data) {
+                setDetailViewSpinnerMode(false);
+                regionDropdownElement.empty();
+                regionDropdownElement.append('<option value="' + 0 + '">Select region</option>');
+                console.log("data " + data);
+
+                $.each(data, function(index, attr) {
+                    console.log("each " + attr);
+                    regionDropdownElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
+                });
             });
         }
 
@@ -478,12 +511,11 @@
             postJson[IMPACT_REDUCTION_PLACEHOLDER] = reductionData;
             postJson[IMPACT_ADOPTION_RATE_PLACEHOLDER] = adoptionData;
 
-            $(this).parents('td').children('span.spinner-area').spin('small');
+            setDetailViewSpinnerMode(true);
             $.post(url, {"json" : JSON.stringify(postJson)}, function(response) {
                 responseData = JSON.parse(response);
                 console.log("responseData " + responseData);
                 if (!responseData.success) {
-                    $('tr.impact-edit-row span.spinner-area').spin(false);
                     alert("Could not process request");
                 } else {
                     var resultValues = $('div#impact-series-detail table#edit-table #impact-edit-row-RESULT td span');
@@ -502,7 +534,8 @@
                     disableEditMode();
                     editedFocusArea = 0;
                 }
-                $(this).parents('td').children('span.spinner-area').spin(false);
+
+                setDetailViewSpinnerMode(false);
             });
         }
 
@@ -513,6 +546,7 @@
             // Toggle new series view
             setShowNewSeries(!newSeriesModeEnabled);
             newSeriesModeEnabled = !newSeriesModeEnabled;
+
         }
 
         function continueButtonClicked(event) {
@@ -524,9 +558,10 @@
                     [newSectorTermId, newRegionTermId]);
 
             console.log("load data series with URL " + url);
-            loadSeriesEditData(url);
 
             showEditTable();
+            loadSeriesEditData(url);
+
             // Replace detail header
             $('div#impact-series-detail #header h3#region-title').text($('div#new-series select#region option:selected').text());
             $('div#impact-series-detail #header h3#sector-title').text($('div#new-series select#sector option:selected').text());
@@ -540,6 +575,8 @@
                 $('div#impact-series-detail div#new-series').fadeIn();
                 $('div#impact-series-detail div#header').hide();
                 $('div#impact-series-detail table#edit-table').fadeOut();
+
+                loadRegionTerms();
             } else {
                 $('div#impact-series-detail').fadeOut();
 
@@ -568,6 +605,25 @@
             $('div#impact-series-detail table#edit-table').fadeOut();
         }
 
+        function setDetailViewSpinnerMode(on) {
+            if (on) {
+                $('#impact-series-detail').addClass('disabled');
+                $('#impact-series-detail input').attr('disabled', 'disabled');
+                $('#impact-series-detail a').parent().addClass('button-disabled');
+                $('#impact-summary tr').addClass('disabled');
+
+                $('#impact-series-detail div#header').spin('large');
+                $('#impact-series-detail div#new-series').spin('large');
+            } else {
+                $('#impact-series-detail').removeClass('disabled');
+                $('#impact-series-detail input').removeAttr('disabled');
+                $('#impact-series-detail a').parent().removeClass('button-disabled');
+                $('#impact-summary  tr').removeClass('disabled');
+
+                $('#impact-series-detail div#header').spin(false);
+                $('#impact-series-detail div#new-series').spin(false);
+            }
+        }
         function insertNewSeries(resultValues) {
 
             var regionTermName = $('div#impact-series-detail h3#region-title').text();
@@ -618,13 +674,15 @@
                 var row = getSelectedOverviewTableRow();
                 console.log("row: " + row.html());
 
-                // $(this).parents('td').children('span.spinner-area').spin('small');
+                setDetailViewSpinnerMode(true);
                 $.post(url, {}, function(response) {
                     var responseData = JSON.parse(response);
+                    setDetailViewSpinnerMode(false);
                     if (!responseData.success) {
                         alert("Could not delete row");
                     } else {
                         row.fadeOut("normal", function(){ row.remove(); });
+                        dismissDetailView();
 
                         // Reload available sector terms
                         var regionsSelectElement = $('div#impact-series-detail div#new-series select#region');

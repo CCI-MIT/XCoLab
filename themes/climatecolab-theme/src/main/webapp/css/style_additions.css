@@ -1622,3 +1622,7 @@ div#p_p_id_145_ {
 .centered {
     text-align: center;
 }
+
+.disabled {
+    opacity: 0.3;
+}

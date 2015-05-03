@@ -506,9 +506,11 @@ div.selected {
     opacity: 0.5;
 }
 
-.button-disabled a {
+.button-disabled a,
+.disabled {
     pointer-events: none;
 }
+
 
 /* Impact tab */
 
@@ -627,4 +629,13 @@ div.selected {
     height: 10px;
     background-color: #ffffff;
     border: 1px solid #000000;
+}
+
+div.spinner {
+    left: 50% !important;
+    top: 20px !important;
+}
+
+#impact-summary tr {
+    opacity: 1.0;
 }
