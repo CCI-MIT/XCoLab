@@ -101,7 +101,7 @@ public class ProposalImpactJSONController {
         OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(sectorTermId);
         OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionTermId);
 
-        ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
+       // ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
         FocusArea selectedFocusArea = new ProposalImpactUtil(contest).getFocusAreaAssociatedWithTerms(sectorOntologyTerm, regionOntologyTerm);
 
         // Create a impact series with all data series for one sector-region pair

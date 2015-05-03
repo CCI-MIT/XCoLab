@@ -532,29 +532,27 @@ div.selected {
     font-weight: bold;
     text-align: center;
     border-left: 2px black solid;
+}
+
+#impact :not(tr:last-child) .impact-value {
     border-right: 2px black solid;
 }
 
-#impact #summary-body tr,
-#impact table#impact-summary thead,
 #impact-series-detail table#edit-table tr {
     border-left: 2px black solid;
 }
 
-#impact #summary-body tr,
-#impact table#impact-summary thead {
-    border-right: 2px black solid;
-}
-
-#impact #impact-summary #impact-new-series-row td,
-#impact-series-detail table#edit-table thead th {
+#impact-series-detail table#edit-table thead th,
+#impact table#impact-summary,
+#impact-series-detail table#edit-table
+{
     border-left: 2px solid black;
     border-right: 2px solid black;
 }
 
-#impact #impact-summary tr#impact-new-series-row,
 #impact-series-detail table#edit-table tbody,
-#impact-series-detail table#edit-table tbody
+#impact-series-detail table#edit-table tbody,
+#impact table#impact-summary
 {
     border-bottom: 2px solid black;
 }
@@ -576,10 +574,6 @@ div.selected {
 #impact table#impact-summary tbody {
     max-height: 350px;
     overflow: auto;
-}
-
-#impact #impact-series-detail {
-    margin-top: 30px;
 }
 
 #impact input {
@@ -623,4 +617,14 @@ div.selected {
 #impact-series-detail div#header h3 {
     margin-right: 10px;
     display: inline-block;
+}
+
+#impact div#sgrip{
+    bottom: -5px;
+    left: 50%;
+
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
 }

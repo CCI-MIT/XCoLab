@@ -56,9 +56,15 @@
             </td>
             {{#each series.values}}
                 {{#if ../series.editable}}
-                    <td class="impact-value"><input type="text" name="{{this.year}}" value="{{this.value}}" class="series-value"/></td>
+                    <td class="impact-value">
+                        <input type="text" name="{{this.year}}" value="{{this.value}}" class="series-value"/>
+                        <!-- Using % as unit, since we only use it till now; may need refinement in the future -->
+                        <span style="margin-left: 3px">%</span>
+                    </td>
                 {{else}}
-                    <td class="impact-value"><span class="series-value">{{this.value}}</span></td>
+                    <td class="impact-value">
+                        <span class="series-value">{{this.value}}</span>
+                    </td>
                 {{/if}}
             {{/each}}
         </tr>
@@ -80,6 +86,11 @@
             {{/each}}
         </tr>
     </script>
+
+    <script id="impactSeriesAuthorTemplate" type="text/x-handlebars-template">
+        <a href="/web/guest/member/-/member/userId/{{author.userId}}">{{author.name}}</a>
+    </script>
+
 
     <!-- Content -->
     <div id="content">
@@ -134,6 +145,7 @@
                             </tr>
                             </tbody>
                         </c:if>
+                        <div class="ui-resizable-handle" id="sgrip"><!-- --></div>
                     </table>
                     <div id="impact-series-detail" style="display:none">
                         <!-- New impact series -->
@@ -165,6 +177,9 @@
                                 </div>
                                 <div style="float:right; margin-right: 5px;" class="blue-button">
                                     <a id="save-button" href="javascript:;">Save</a>
+                                </div>
+                                <div id="author-info" style="margin-top: 2px; ">
+                                    <strong>Last saved:</strong>&#160; <span id="author-name"><!-- --></span> on <span id="save-date"><!-- --></span>
                                 </div>
                             </div>
                         </div>
@@ -210,9 +225,29 @@
         jQuery(document).ready(function() {
             registerEventHandler();
 
+            // Init dependencies
             $('table#impact-summary').scrolltable({
                 maxHeight: 300
             });
+
+            // Hack
+            $('table#impact-summary div.st-body-scroll').css('max-height', '308px');
+
+            // Format numbers
+            $('tbody#summary-body td.impact-value').each(function(idx) {
+                var formattedNumber = numeral(parseFloat($(this).text())).format('0,0[.]00');
+                $(this).text(formattedNumber);
+            });
+
+            var sgrip = $('div#sgrip');
+            $('table#impact-summary').append(sgrip);
+            $('table#impact-summary table.st-body-scroll').resizable({
+                handles: {
+                    's': '#sgrip'
+                }
+            });
+
+            $('table#impact-summary div.st-body-scroll').append(sgrip);
         });
 
         function registerEventHandler() {
@@ -287,9 +322,9 @@
             var resultValues = $('#impact table tr#impact-edit-row-RESULT td span');
 
             for (var i = 0; i &lt; bauValues.size(); i++) {
-                console.log("bau " + parseFloat($(bauValues[i]).text()) + "; reduction " + parseFloat($(reductionValues[i]).attr('value')) +
+                console.log("bau " + numeral().unformat($(bauValues[i]).text()) + "; reduction " + parseFloat($(reductionValues[i]).attr('value')) +
                             "; adoption " + parseFloat($(adoptionValues[i]).attr('value')));
-                var resultValue = (parseFloat($(bauValues[i]).text()) * (1.0 - parseFloat($(reductionValues[i]).attr('value')) * 0.01 *
+                var resultValue = (numeral().unformat($(bauValues[i]).text()) * (1.0 - parseFloat($(reductionValues[i]).attr('value')) * 0.01 *
                         parseFloat($(adoptionValues[i]).attr('value')) * 0.01)).toFixed(2);
                 console.log("resultValue: " + resultValue);
                 $(resultValues[i]).text('' + resultValue);
@@ -317,6 +352,9 @@
                 console.log("json: " + JSON.stringify(data));
                 var dataSeries = data.serieses.BAU;
                 var tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
+                tableRow.find('span.series-value').each(function(idx) {
+                    $(this).text(numeral($(this).text()).format('0,0[.]00'))
+                });
                 editTable.append(tableRow);
                 console.log("bau series"  + dataSeries);
 
@@ -324,21 +362,42 @@
                 dataSeries = data.serieses.IMPACT_REDUCTION;
                 tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                 console.log("Reduction: " + JSON.stringify(dataSeries));
+                tableRow.find('span.series-value').each(function(idx) {
+                    $(this).text(numeral($(this).text()).format('0,0[.]00'))
+                });
                 editTable.append(tableRow);
                 console.log("reduction series"  + dataSeries);
 
                 dataSeries = data.serieses.IMPACT_ADOPTION_RATE;
                 tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
+                tableRow.find('span.series-value').each(function(idx) {
+                    $(this).text(numeral($(this).text()).format('0,0[.]00'))
+                });
                 editTable.append(tableRow);
                 console.log("adoption series"  + dataSeries);
 
                 dataSeries = {"name": "RESULT", "description": "Estimated emission reduction from this proposal [GtCO2e]", "editable": false,
                 "values": dataSeries.values};
                 tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
+                tableRow.find('span.series-value').each(function(idx) {
+                    $(this).text(numeral(parseFloat($(this).text())).format('0,0[.]00'));
+                });
+                tableRow.addClass("selected");
                 editTable.append(tableRow);
                 console.log("result json: " + JSON.stringify(dataSeries));
 
                 editedFocusArea = data.focusAreaId;
+
+                if (data.author != undefined) {
+                    $('div#author-info').show();
+                    // Set header fields
+                    var authorNameHtml = jQuery(impactSeriesAuthorTemplate({author: data.author}));
+                    $('div#impact-series-detail div#header span#author-name').html(authorNameHtml);
+                    $('div#impact-series-detail div#header span#save-date').text(data.updateDate);
+
+                } else {
+                    $('div#author-info').hide();
+                }
 
                 // Register input event handler
                 $('#impact table tr.impact-edit-row input').on('blur', function() {
@@ -479,13 +538,13 @@
                 $('div#impact-series-detail').fadeIn();
 
                 $('div#impact-series-detail div#new-series').fadeIn();
-                $('div#impact-series-detail div#header').fadeOut();
+                $('div#impact-series-detail div#header').hide();
                 $('div#impact-series-detail table#edit-table').fadeOut();
             } else {
                 $('div#impact-series-detail').fadeOut();
 
                 $('div#impact-series-detail div#new-series').fadeOut();
-                $('div#impact-series-detail div#header').fadeOut();
+                $('div#impact-series-detail div#header').hide();
                 $('div#impact-series-detail table#edit-table').fadeOut();
             }
 
@@ -494,7 +553,7 @@
         function showEditTable() {
             $('div#impact-series-detail').fadeIn();
 
-            $('div#impact-series-detail div#new-series').fadeOut();
+            $('div#impact-series-detail div#new-series').hide();
             $('div#impact-series-detail div#header').fadeIn();
             $('div#impact-series-detail table#edit-table').fadeIn();
         }
@@ -504,7 +563,7 @@
                 $(this).find('#edit-table tbody').empty();
 
             });
-            $('div#impact-series-detail div#new-series').fadeIn();
+            $('div#impact-series-detail div#new-series').hide();
             $('div#impact-series-detail div#header').fadeOut();
             $('div#impact-series-detail table#edit-table').fadeOut();
         }
@@ -602,5 +661,6 @@
         var impactSeriesEditTableRowTemplate = Handlebars.compile($("#impactSeriesEditTableRowTemplate").html());
         var impactSeriesSaveButtonTemplate = Handlebars.compile($("#impactSeriesSaveButtonTemplate").html());
         var impactSeriesNewTableRowTemplate = Handlebars.compile($('#impactSeriesNewTableRowTemplate').html());
+        var impactSeriesAuthorTemplate = Handlebars.compile($('#impactSeriesAuthorTemplate').html());
     </script>
 </jsp:root>

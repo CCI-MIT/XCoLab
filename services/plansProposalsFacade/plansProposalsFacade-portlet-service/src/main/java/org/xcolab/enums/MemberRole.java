@@ -14,7 +14,8 @@ public enum MemberRole {
     STAFF(31704L, "Staff", "Moderator", "Administrator"),
     MODERATOR(31213L, "Staff"),
     CATALYST(1430078L, "Catalyst"),
-    CONTESTMANAGER(1950101L, "Contest Manager");
+    CONTESTMANAGER(1950101L, "Contest Manager"),
+    IMPACT_ASSESSMENT_FELLOW(1975251L, "Impact Assessment Fellow");
 
     
     private final String[] roleNames;
