@@ -638,4 +638,24 @@ div.spinner {
 
 #impact-summary tr {
     opacity: 1.0;
+
+.subcontests .title {
+    font-size: 16px;
+    color:#66af45;
+}
+
+.subcontests ul{
+    margin-left: 0px;
+    width:550px;
+    overflow:hidden;
+}
+.subcontests li{
+    margin-left: 0px;
+    width:46%;
+    line-height:1.5em;
+    float:left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
 }

@@ -97,7 +97,8 @@
         <div id="impact">
             <c:choose>
                 <!-- Don't show table if no data is available and if user cannot edit -->
-                <c:when test="${not proposalsPermissions.canEdit and empty impactSerieses}">
+                <!-- TODO change this back to proposalsPermission.canEdit when officially launching the feature -->
+                <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (empty impactSerieses)}">
                     <h3>No data available yet.</h3>
                 </c:when>
                 <c:otherwise>
@@ -204,7 +205,8 @@
         </div>
     </div>
 
-    <c:if test="${not proposalsPermissions.canEdit}">
+    <!-- TODO remove fellow permission -->
+    <c:if test="${not proposalsPermissions.canEdit and not proposalsPermissions.canFellowActions}">
         <script>
             $().ready(function() {
                 $('tr.impact-series-clickable').removeClass('impact-series-clickable');

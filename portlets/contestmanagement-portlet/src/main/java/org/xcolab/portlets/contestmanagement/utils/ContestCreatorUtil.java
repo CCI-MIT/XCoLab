@@ -2,10 +2,10 @@ package org.xcolab.portlets.contestmanagement.utils;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.PlanSection;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
@@ -20,8 +20,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.theme.ThemeDisplay;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 
 import java.util.ArrayList;
@@ -38,10 +37,17 @@ public class ContestCreatorUtil {
     private static Log _log = LogFactoryUtil.getLog(ContestCreatorUtil.class);
 
     private static final String CONTEST_NAME_KEY = "name";
+    private static final String CONTEST_QUESTION_KEY = "question";
+    private static final String CONTEST_DESCRIPTION_KEY = "description";
     private static final String CONTEST_TIER_KEY = "contestTier";
     private static final String CONTEST_FOCUS_AREA_KEY = "focusArea";
     private static final String CONTEST_ONTOLOGY_TERMS_KEY = "ontologyTerms";
     private static final String CONTEST_SCHEDULE_KEY = "contestSchedule";
+    private static final String CONTEST_FELLOWS_KEY = "fellows";
+    private static final String CONTEST_LOGO_ID_KEY = "contestLogoId";
+
+    private static final String FELLOW_ROLE_NAME = "Fellow";
+
 
     private static final String BASIC_CONTESTS_2015_JSON = "[\n" +
             "{\"name\": \"Adaptation\", \"contestTier\" : 1, \"contestSchedule\": 1,\"focusArea\": 801, \"ontologyTerms\":[]},\n" +
@@ -61,48 +67,76 @@ public class ContestCreatorUtil {
 
     private static final String TIER_III_AND_II_CONTESTS_2015_JSON = "[\n" +
                 // All Tier III contests
-                "{\"name\": \"United States Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300340,1,1300601], " +
+                "{\"name\": \"United States’ Climate Action Plan\", " +
+                "\"question\": \"What should be the United States’ plan to address climate change?\"," +
+                "\"description\": \"This contest seeks broad, coherent visions for what the United States should do about climate change. To do so, combine proposals from other Climate CoLab contests (both current and past) to develop integrated plans that include all sectors of the United States' economy: energy, transportation, industry, buildings and others. You can also work with our <a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#IAFellows' target='blank_'>Impact Assessment Fellows</a> to estimate the overall greenhouse gas emission reductions that would result from the actions you propose. Plans will be evaluated on how well they bring different proposals together to articulate a comprehensive plan for how the United States can effectively address climate change. \"," +
+                "\"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300340,1,1300601], " +
+                "\"fellows\" : [1280958,1430005], \"contestLogoId\": 1249210," +
                 // US Tier III plan template
                 "\"planTemplate\" : {\"name\" : \"Tier III US Contest\", \"sections\" : [" +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for the energy sector?\", \"adminTitle\" : \"Tier III US Energy sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
-                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the energy sector.\", " +
+                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the energy sector. Don’t see a plan you want to use? Create one in the sector workspace (see links on the contest homepage) and link it here.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [409,1300340,3,1300601]," +
                     "\"tier\" : 2}," +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for the transportation sector?\", \"adminTitle\" : \"Tier III US Transportation sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
-                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the transportation sector.\", " +
+                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the transportation sector. Don’t see a plan you want to use? Create one in the sector workspace (see links on the contest homepage) and link it here.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300379,1300340,3,1300601]," +
                     "\"tier\" : 2}," +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for the industrial sector?\", \"adminTitle\" : \"Tier III US Industrial sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
-                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the industrial sector.\", " +
+                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the industrial sector. Don’t see a plan you want to use? Create one in the sector workspace (see links on the contest homepage) and link it here.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300382,1300340,3,1300601]," +
                     "\"tier\" : 2}," +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for the buildings sector?\", \"adminTitle\" : \"Tier III US Buildings sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
-                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the buildings sector.\", " +
+                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the building sector. Don’t see a plan you want to use? Create one in the sector workspace (see links on the contest homepage) and link it here.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300378,1300340,3,1300601]," +
                     "\"tier\" : 2}," +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III US Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
-                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in other sectors, such as agriculture, aquaculture, livestock, forestry, and waste management.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1300340,3,1300601]," +
+                    "\"helpText\" : \"a.\tSelect one plan to represent the actions that should be taken in sectors not represented above, such as agriculture, forestry, other land use, and waste management.  Don’t see a plan you want to use?  Create one in the sector workspace (see links on the contest homepage) and link it here.\", " +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1300340,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
-                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301507}, {\"id\": 207}, {\"id\": 208}, {\"id\": 1300909}, {\"id\": 210}" +
+                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
                 "]}," +
                 // US Tier III sub contests
                 "\"subContests\": [" +
-                    "{\"name\": \"Buildings in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300340,1,1300601]},\n" +
-                    "{\"name\": \"Energy Supply in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300340,1,1300601]},\n" +
-                    "{\"name\": \"Industry in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300340,1,1300601]},\n" +
-                    "{\"name\": \"Transportation in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300340,1,1300601]},\n" +
-                    "{\"name\": \"Other Sectors in the United States\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300340,1,1300601]},\n" +
+                    "{\"name\": \"United States: Building Sector Plan\", " +
+                        "\"question\": \"How should the United States address climate change in the building sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the United States collectively should address climate change in its building sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<br/><br/>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300340,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249204},\n" +
+                    "{\"name\": \"United States: Energy Sector Plan\", " +
+                        "\"question\": \"How should the United States address climate change in the energy sector?\","+
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the United States collectively should address climate change in its energy sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300340,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249206},\n" +
+                    "{\"name\": \"United States: Industry Sector Plan\", " +
+                        "\"question\": \"How should the United States address climate change in the industry sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the United States collectively should address climate change in its industry sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300340,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249207},\n" +
+                    "{\"name\": \"United States: Transportation Sector Plan\", " +
+                        "\"question\": \"How should the United States address climate change in the transportation sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the United States collectively should address climate change in its transportation sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300340,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249208},\n" +
+                    "{\"name\": \"United States: Other Sectors Plan\", " +
+                        "\"question\": \"How should the United States address climate change in other sectors?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the United States collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong><strong>will only be evaluated if they are included in a regional plan.</strong></strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1300340,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209},\n" +
                 "]},\n" +
                 // ##################### US Tier III done #####################
 
-                "{\"name\": \"European Union Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300341,1,1300601], " +
+                "{\"name\": \"Europe’s Climate Action Plan\", " +
+                "\"question\": \"What should be the Europe’s plan to address climate change?\"," +
+                "\"description\": \"This contest seeks broad, coherent visions for what the Europe should do about climate change. To do so, combine proposals from other Climate CoLab contests (both current and past) to develop integrated plans that include all sectors of the Europe\u0027s economy: energy, transportation, industry, buildings and others. You can also work with our <a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#IAFellows' target='blank_'>Impact Assessment Fellows</a> to estimate the overall greenhouse gas emission reductions that would result from the actions you propose. Plans will be evaluated on how well they bring different proposals together to articulate a comprehensive plan for how the Europe can effectively address climate change. \"," +
+                "\"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300341,1,1300601], " +
+                "\"fellows\" : [1972027,1971911],\"contestLogoId\": 1249211," +
                 // EU Tier III plan template
                 "\"planTemplate\" : {\"name\" : \"Tier III EU Contest\", \"sections\" : [" +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for the energy sector?\", \"adminTitle\" : \"Tier III EU Energy sector single proposal picker\"," +
@@ -122,28 +156,50 @@ public class ContestCreatorUtil {
                     "\"tier\" : 2}," +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for the buildings sector?\", \"adminTitle\" : \"Tier III EU Buildings sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
-                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the buildings sector.\", " +
+                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the building sector.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300378,1300341,3,1300601]," +
                     "\"tier\" : 2}," +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III EU Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in other sectors, such as agriculture, aquaculture, livestock, forestry, and waste management.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1300341,3,1300601]," +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1300341,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
-                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301507}, {\"id\": 207}, {\"id\": 208}, {\"id\": 1300909}, {\"id\": 210}" +
+                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
                 "]}," +
                 // EU Tier III sub contests
                 "\"subContests\": [" +
-                    "{\"name\": \"Buildings in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300341,1,1300601]},\n" +
-                    "{\"name\": \"Energy Supply in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300341,1,1300601]},\n" +
-                    "{\"name\": \"Industry in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300341,1,1300601]},\n" +
-                    "{\"name\": \"Transportation in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300341,1,1300601]},\n" +
-                    "{\"name\": \"Other Sectors in the European Union\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300341,1,1300601]},\n" +
+                    "{\"name\": \"Europe: Building Sector Plan\", " +
+                        "\"question\": \"How should the Europe address climate change in the building sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the Europe collectively should address climate change in its building sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300341,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249204},\n" +
+                    "{\"name\": \"Europe: Energy Sector Plan\", " +
+                        "\"question\": \"How should the Europe address climate change in the energy sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the Europe collectively should address climate change in its energy sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+            "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300341,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249206},\n" +
+                    "{\"name\": \"Europe: Industry Sector Plan\", " +
+                        "\"question\": \"How should the Europe address climate change in the industry sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the Europe collectively should address climate change in its industry sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300341,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249207},\n" +
+                    "{\"name\": \"Europe: Transportation Sector Plan\", " +
+                        "\"question\": \"How should the Europe address climate change in the transportation sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the Europe collectively should address climate change in its transportation sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300341,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249208},\n" +
+                    "{\"name\": \"Europe: Other Sectors Plan\", " +
+                        "\"question\": \"How should the Europe address climate change in other sectors?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how Europe collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong>will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1300341,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209},\n" +
                 "]},\n" +
                 // ##################### EU Tier III done #####################
 
-                "{\"name\": \"China Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300345,1,1300601], " +
+                "{\"name\": \"China’s Climate Action Plan\", " +
+                "\"question\": \"What should be China’s plan to address climate change?\"," +
+                "\"description\": \"This contest seeks broad, coherent visions for what China should do about climate change. To do so, combine proposals from other Climate CoLab contests (both current and past) to develop integrated plans that include all sectors of China\u0027s economy: energy, transportation, industry, buildings and others. You can also work with our <a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#IAFellows' target='blank_'>Impact Assessment Fellows</a> to estimate the overall greenhouse gas emission reductions that would result from the actions you propose. Plans will be evaluated on how well they bring different proposals together to articulate a comprehensive plan for how China can effectively address climate change. \"," +
+                "\"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300345,1,1300601], \"contestLogoId\": 1249212," +
                 // China Tier III plan template
                 "\"planTemplate\" : {\"name\" : \"Tier III China Contest\", \"sections\" : [" +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for the energy sector?\", \"adminTitle\" : \"Tier III China Energy sector single proposal picker\"," +
@@ -163,29 +219,52 @@ public class ContestCreatorUtil {
                     "\"tier\" : 2}," +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for the buildings sector?\", \"adminTitle\" : \"Tier III China Buildings sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
-                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the buildings sector.\", " +
+                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the building sector.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300378,1300345,3,1300601]," +
                     "\"tier\" : 2}," +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III China Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in other sectors, such as agriculture, aquaculture, livestock, forestry, and waste management.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1300345,3,1300601]," +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1300345,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
-                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301507}, {\"id\": 207}, {\"id\": 208}, {\"id\": 1300909}, {\"id\": 210}" +
+                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
                 "]}," +
                 // China Tier III sub contests
                 "\"subContests\": ["  +
-                    "{\"name\": \"Buildings in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300345,1,1300601]},\n" +
-                    "{\"name\": \"Energy Supply in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300345,1,1300601]},\n" +
-                    "{\"name\": \"Industry in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300345,1,1300601]},\n" +
-                    "{\"name\": \"Transportation in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300345,1,1300601]},\n" +
-                    "{\"name\": \"Other Sectors in China\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300345,1,1300601]}\n" +
+                    "{\"name\": \"China: Building Sector Plan\", " +
+                        "\"question\": \"How should China address climate change in the building sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how China collectively should address climate change in its building sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300345,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249204},\n" +
+                    "{\"name\": \"China: Energy Sector Plan\", " +
+                        "\"question\": \"How should China address climate change in the energy sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how China collectively should address climate change in its energy sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300345,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249206},\n" +
+                    "{\"name\": \"China: Industry Sector Plan\", " +
+                        "\"question\": \"How should China address climate change in the industry sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how China collectively should address climate change in its industry sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300345,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249207},\n" +
+                    "{\"name\": \"China: Transportation Sector Plan\", " +
+                        "\"question\": \"How should China address climate change in the transportation sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how China collectively should address climate change in its transportation sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300345,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249208},\n" +
+                    "{\"name\": \"China: Other Sectors Plan\", " +
+                        "\"question\": \"How should China address climate change in the other sectors?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how China collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong>will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1300345,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
                 "]},\n" +
                 // ##################### China Tier III done #####################
 
 
-                "{\"name\": \"India Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300346,1,1300601], " +
+                "{\"name\": \"India’s Climate Action Plan\", " +
+                "\"question\": \"What should be India’s plan to address climate change?\"," +
+                "\"description\": \"This contest seeks broad, coherent visions for what India should do about climate change. To do so, combine proposals from other Climate CoLab contests (both current and past) to develop integrated plans that include all sectors of India\u0027s economy: energy, transportation, industry, buildings and others. You can also work with our <a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#IAFellows' target='blank_'>Impact Assessment Fellows</a> to estimate the overall greenhouse gas emission reductions that would result from the actions you propose. Plans will be evaluated on how well they bring different proposals together to articulate a comprehensive plan for how India can effectively address climate change. \"," +
+                "\"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300346,1,1300601], " +
+                "\"fellows\" : [1415452,1967956],\"contestLogoId\": 1249213," +
                 "\"planTemplate\" : {\"name\" : \"Tier III India Contest\", \"sections\" : [" +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for the energy sector?\", \"adminTitle\" : \"Tier III India Energy sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
@@ -204,106 +283,171 @@ public class ContestCreatorUtil {
                     "\"tier\" : 2}," +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for the buildings sector?\", \"adminTitle\" : \"Tier III India Buildings sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
-                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the buildings sector.\", " +
+                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the building sector.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300378,1300346,3,1300601]," +
                     "\"tier\" : 2}," +
                     "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III India Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in other sectors, such as agriculture, aquaculture, livestock, forestry, and waste management.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1300346,3,1300601]," +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1300346,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
-                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301507}, {\"id\": 207}, {\"id\": 208}, {\"id\": 1300909}, {\"id\": 210}" +
+                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
                 "]}," +
                 // India Tier III sub contests
                 "\"subContests\": ["  +
-                    "{\"name\": \"Buildings in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300346,1,1300601]},\n" +
-                    "{\"name\": \"Energy Supply in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300346,1,1300601]},\n" +
-                    "{\"name\": \"Industry in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300346,1,1300601]},\n" +
-                    "{\"name\": \"Transportation in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300346,1,1300601]},\n" +
-                    "{\"name\": \"Other Sectors in India\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300346,1,1300601]}\n" +
+                    "{\"name\": \"India: Building Sector Plan\", " +
+                        "\"question\": \"How should India address climate change in the building sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how India collectively should address climate change in its building sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1300346,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249204},\n" +
+                    "{\"name\": \"India: Energy Sector Plan\", " +
+                        "\"question\": \"How should India address climate change in the energy sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how India collectively should address climate change in its energy sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1300346,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249206},\n" +
+                    "{\"name\": \"India: Industry Sector Plan\", " +
+                        "\"question\": \"How should India address climate change in the industry sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how India collectively should address climate change in its industry sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1300346,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249207},\n" +
+                    "{\"name\": \"India: Transportation Sector Plan\", " +
+                        "\"question\": \"How should India address climate change in the transportation sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how India collectively should address climate change in its transportation sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1300346,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249208},\n" +
+                    "{\"name\": \"India: Other Sectors Plan\", " +
+                        "\"question\": \"How should India address climate change in the other sectors?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how India collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong>will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1300346,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
                 "]},\n" +
                 // ##################### India Tier III done #####################
 
-                "{\"name\": \"Other Developed Economies Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311101,1,1300601], " +
-                "\"planTemplate\" : {\"name\" : \"Tier III Other Developed Economies Contest\", \"sections\" : [" +
-                    "{\"id\": 0, \"title\" : \"Which plan do you select for the energy sector?\", \"adminTitle\" : \"Tier III Other Developed Economies Energy sector single proposal picker\"," +
+                "{\"name\": \"Other Developed Countries’ Climate Action Plan\", " +
+                "\"question\": \"What should be the Other Developed Countries’ plan to address climate change?\"," +
+                "\"description\": \"This contest seeks broad, coherent visions for what the Other Developed Countries should do about climate change. To do so, combine proposals from other Climate CoLab contests (both current and past) to develop integrated plans that include all sectors of the Other Developed Countries' economy: energy, transportation, industry, buildings and others. You can also work with our <a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#IAFellows' target='blank_'>Impact Assessment Fellows</a> to estimate the overall greenhouse gas emission reductions that would result from the actions you propose. Plans will be evaluated on how well they bring different proposals together to articulate a comprehensive plan for how the Other Developed Countries can effectively address climate change. \"," +
+                "\"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311101,1,1300601], " +
+                "\"fellows\" : [1419380,1480691],\"contestLogoId\": 1249214," +
+                "\"planTemplate\" : {\"name\" : \"Tier III Other Developed Countries Contest\", \"sections\" : [" +
+                    "{\"id\": 0, \"title\" : \"Which plan do you select for the energy sector?\", \"adminTitle\" : \"Tier III Other Developed Countries Energy sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in the energy sector.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [409,1311101,3,1300601]," +
                     "\"tier\" : 2}," +
-                    "{\"id\": 0, \"title\" : \"Which plan do you select for the transportation sector?\", \"adminTitle\" : \"Tier III Other Developed Economies Transportation sector single proposal picker\"," +
+                    "{\"id\": 0, \"title\" : \"Which plan do you select for the transportation sector?\", \"adminTitle\" : \"Tier III Other Developed Countries Transportation sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in the transportation sector.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300379,1311101,3,1300601]," +
                     "\"tier\" : 2}," +
-                    "{\"id\": 0, \"title\" : \"Which plan do you select for the industrial sector?\", \"adminTitle\" : \"Tier III Other Developed Economies Industrial sector single proposal picker\"," +
+                    "{\"id\": 0, \"title\" : \"Which plan do you select for the industrial sector?\", \"adminTitle\" : \"Tier III Other Developed Countries Industrial sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in the industrial sector.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300382,1311101,3,1300601]," +
                     "\"tier\" : 2}," +
-                    "{\"id\": 0, \"title\" : \"Which plan do you select for the buildings sector?\", \"adminTitle\" : \"Tier III Other Developed Economies Buildings sector single proposal picker\"," +
+                    "{\"id\": 0, \"title\" : \"Which plan do you select for the buildings sector?\", \"adminTitle\" : \"Tier III Other Developed Countries Buildings sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
-                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the buildings sector.\", " +
+                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the building sector.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300378,1311101,3,1300601]," +
                     "\"tier\" : 2}," +
-                    "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III Other Developed Economies Other sectors single proposal picker\"," +
+                    "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III Other Developed Countries Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in other sectors, such as agriculture, aquaculture, livestock, forestry, and waste management.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1311101,3,1300601]," +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1311101,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
-                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301507}, {\"id\": 207}, {\"id\": 208}, {\"id\": 1300909}, {\"id\": 210}" +
+                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
                 "]}," +
-                // Other Developed Economies Tier III sub contests
+                // Other Developed Countries Tier III sub contests
                 "\"subContests\": [" +
-                    "{\"name\": \"Buildings in Other Developed Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1311101,1,1300601]},\n" +
-                    "{\"name\": \"Energy Supply in Other Developed Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1311101,1,1300601]},\n" +
-                    "{\"name\": \"Industry in Other Developed Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1311101,1,1300601]},\n" +
-                    "{\"name\": \"Transportation in Other Developed Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1311101,1,1300601]},\n" +
-                    "{\"name\": \"Other Sectors in Other Developed Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311101,1,1300601]}\n" +
+                    "{\"name\": \"Other Developed Countries: Building Sector Plan\", " +
+                        "\"question\": \"How should Other Developed Countries address climate change in the building sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how Other Developed Countries collectively should address climate change in its building sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1311101,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249204},\n" +
+                    "{\"name\": \"Other Developed Countries: Energy Sector Plan\", " +
+                        "\"question\": \"How should Other Developed Countries address climate change in the energy sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how Other Developed Countries collectively should address climate change in its energy sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1311101,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249206},\n" +
+                    "{\"name\": \"Other Developed Countries: Industry Sector Plan\", " +
+                        "\"question\": \"How should Other Developed Countries address climate change in the industry sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how Other Developed Countries collectively should address climate change in its industry sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1311101,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249207},\n" +
+                    "{\"name\": \"Other Developed Countries: Transportation Sector Plan\", " +
+                        "\"question\": \"How should Other Developed Countries address climate change in the transportation sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how Other Developed Countries collectively should address climate change in its transportation sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1311101,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249208},\n" +
+                    "{\"name\": \"Other Developed Countries: Other Sectors Plan\", " +
+                        "\"question\": \"How should Other Developed Countries address climate change in the other sectors?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the Other Developed Countries collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong>will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1311101,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
                 "]},\n" +
-                // ##################### Other developed economies Tier III done #####################
+                // ##################### Other Developed Countries Tier III done #####################
 
-                "{\"name\": \"Other Developing Economies Plan\", \"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311102,1,1300601], " +
-                "\"planTemplate\" : {\"name\" : \"Tier III Other Developing Economies Contest\", \"sections\" :[" +
-                    "{\"id\": 0, \"title\" : \"Which plan do you select for the energy sector?\", \"adminTitle\" : \"Tier III Other Developing Economies Energy sector single proposal picker\"," +
+                "{\"name\": \"Other Developing Countries’ Climate Action Plan\", " +
+                "\"question\": \"What should be the Other Developing Countries’ plan to address climate change?\"," +
+                "\"description\": \"This contest seeks broad, coherent visions for what the Other Developing Countries should do about climate change. To do so, combine proposals from other Climate CoLab contests (both current and past) to develop integrated plans that include all sectors of the Other Developing Countries\u0027 economy: energy, transportation, industry, buildings and others. You can also work with our <a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#IAFellows' target='blank_'>Impact Assessment Fellows</a> to estimate the overall greenhouse gas emission reductions that would result from the actions you propose. Plans will be evaluated on how well they bring different proposals together to articulate a comprehensive plan for how the Other Developing Countries can effectively address climate change. \"," +
+                "\"contestTier\": 3, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311102,1,1300601], " +
+                "\"fellows\" : [1976511,170781,1420797],\"contestLogoId\": 1249215," +
+                "\"planTemplate\" : {\"name\" : \"Tier III Other Developing Countries Contest\", \"sections\" :[" +
+                    "{\"id\": 0, \"title\" : \"Which plan do you select for the energy sector?\", \"adminTitle\" : \"Tier III Other Developing Countries Energy sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in the energy sector.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [409,1311102,3,1300601]," +
                     "\"tier\" : 2}," +
-                    "{\"id\": 0, \"title\" : \"Which plan do you select for the transportation sector?\", \"adminTitle\" : \"Tier III Other Developing Economies Transportation sector single proposal picker\"," +
+                    "{\"id\": 0, \"title\" : \"Which plan do you select for the transportation sector?\", \"adminTitle\" : \"Tier III Other Developing Countries Transportation sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in the transportation sector.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300379,1311102,3,1300601]," +
                     "\"tier\" : 2}," +
-                    "{\"id\": 0, \"title\" : \"Which plan do you select for the industrial sector?\", \"adminTitle\" : \"Tier III Other Developing Economies Industrial sector single proposal picker\"," +
+                    "{\"id\": 0, \"title\" : \"Which plan do you select for the industrial sector?\", \"adminTitle\" : \"Tier III Other Developing Countries Industrial sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in the industrial sector.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300382,1311102,3,1300601]," +
                     "\"tier\" : 2}," +
-                    "{\"id\": 0, \"title\" : \"Which plan do you select for the buildings sector?\", \"adminTitle\" : \"Tier III Other Developing Economies Buildings sector single proposal picker\"," +
+                    "{\"id\": 0, \"title\" : \"Which plan do you select for the buildings sector?\", \"adminTitle\" : \"Tier III Other Developing Countries Buildings sector single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
-                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the buildings sector.\", " +
+                    "\"helpText\" : \"Select one plan to represent the actions that should be taken in the building sector.\", " +
                     "\"focusArea\" : 0, \"ontologyTerms\" : [1300378,1311102,3,1300601]," +
                     "\"tier\" : 2}," +
-                    "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III Other Developing Economies Other sectors single proposal picker\"," +
+                    "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III Other Developing Countries Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in other sectors, such as agriculture, aquaculture, livestock, forestry, and waste management.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1311102,3,1300601]," +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1311102,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
-                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301507}, {\"id\": 207}, {\"id\": 208}, {\"id\": 1300909}, {\"id\": 210}" +
+                    "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
                 "]}," +
-                // Other Developed Economies Tier III sub contests
+                // Other Developed Countries Tier III sub contests
                 "\"subContests\": [" +
-                    "{\"name\": \"Buildings in Other Developing countries\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1311102,1,1300601]},\n" +
-                    "{\"name\": \"Energy Supply in Other Developing Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1311102,1,1300601]},\n" +
-                    "{\"name\": \"Industry in Other Developing Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1311102,1,1300601]},\n" +
-                    "{\"name\": \"Transportation in Other Developing Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1311102,1,1300601]},\n" +
-                    "{\"name\": \"Other Sectors in Other Developing Economies\", \"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311102,1,1300601]}\n" +
+                    "{\"name\": \"Other Developing Countries: Building Sector Plan\", " +
+                        "\"question\": \"How should Other Developing Countries address climate change in the building sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how Other Developing Countries collectively should address climate change in its building sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300378,1311102,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249204},\n" +
+                    "{\"name\": \"Other Developing Countries: Energy Sector Plan\", " +
+                        "\"question\": \"How should Other Developing Countries address climate change in the energy sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how Other Developing Countries collectively should address climate change in its energy sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [409,1311102,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249206},\n" +
+                    "{\"name\": \"Other Developing Countries: Industry Sector Plan\", " +
+                        "\"question\": \"How should Other Developing Countries address climate change in the industry sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how Other Developing Countries collectively should address climate change in its industry sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300382,1311102,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249207},\n" +
+                    "{\"name\": \"Other Developing Countries: Transportation Sector Plan\", " +
+                        "\"question\": \"How should Other Developing Countries address climate change in the transportation sector?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how Other Developing Countries collectively should address climate change in its transportation sector. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p>" +
+                        "<p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level. </p><p><strong>Please note that, unlike a contest, proposals submitted in this workspace will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300379,1311102,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249208},\n" +
+                    "{\"name\": \"Other Developing Countries: Other Sectors Plan\", " +
+                        "\"question\": \"How should Other Developing Countries address climate change in the other sectors?\"," +
+                        "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the Other Developing Countries collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong>will only be evaluated if they are included in a regional plan.</strong></p>\"," +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1311102,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
                 "]},\n" +
-                // ##################### Other developing economies Tier III done #####################
+                // ##################### Other Developing Countries Tier III done #####################
             "]";
 
 
@@ -317,15 +461,17 @@ public class ContestCreatorUtil {
     }
 
 
-    public static Contest createNewContest(String contestShortName) throws SystemException, PortalException {
+    public static Contest createNewContest(String contestShortName) throws Exception {
         Contest contest = ContestLocalServiceUtil.createNewContest(10144L, contestShortName);
         contest.setContestPrivate(true);
         contest.setShow_in_tile_view(true);
         contest.setShow_in_list_view(true);
         contest.setShow_in_outline_view(true);
+
         // TODO for now there is always a template preselected
         contest.setPlanTemplateId(102L);
         contest.persist();
+
         return contest;
     }
 
@@ -352,9 +498,19 @@ public class ContestCreatorUtil {
                     String absoluteURL = portalBaseUrl + getContestEditLink(newContest);
                     contestEditMap.put(newContest.getContestShortName(), absoluteURL);
 
-                    // Set planTemplate
-                    PlanTemplate contestPlanTemplate = createPlanTemplateWithJson(newContestContents.getJSONObject("planTemplate"), newContest);
-                    newContest.setPlanTemplateId(contestPlanTemplate.getId());
+                    // Set planTemplate (try to get a JSON object from planTemplate, for the case that a new one has to be created)
+                    // Else just use the passed planTemplateId
+                    try {
+                        PlanTemplate contestPlanTemplate = createPlanTemplateWithJson(newContestContents.getJSONObject("planTemplate"), newContest);
+                        newContest.setPlanTemplateId(contestPlanTemplate.getId());
+                    } catch (Exception e) {
+                        try {
+                            newContest.setPlanTemplateId(newContestContents.getLong("planTemplate"));
+                        } catch (Exception e2) {
+                            _log.error("Could not set the planTemplate for contest " + newContest.getContestPK(), e2);
+                        }
+                    }
+
                     newContest.persist();
 
                     // Create sub contests, if there are any
@@ -362,7 +518,7 @@ public class ContestCreatorUtil {
                     if (Validator.isNotNull(subContestsJson)) {
                         List<Contest> subContests = createSubContests(subContestsJson);
                         String descriptionTemplate = getSubContestHTMLList(subContests);
-                        newContest.setContestDescription("&lt;Enter description here&gt; <br/><br/> " + descriptionTemplate);
+                        newContest.setContestDescription(newContest.getContestDescription() + " <br/><br/> " + descriptionTemplate);
                         newContest.persist();
 
                         // Add sub contests to map
@@ -389,9 +545,18 @@ public class ContestCreatorUtil {
 
     private static Contest createSingleContestWithJSON(JSONObject newContestContents) throws Exception {
 
-        Contest newContest = createNewContest(newContestContents.getString(CONTEST_NAME_KEY));
+        String contestTitle = newContestContents.getString(CONTEST_NAME_KEY);
+        Contest newContest = createNewContest(contestTitle);
+        newContest.setContestName(newContestContents.getString(CONTEST_QUESTION_KEY));
+        newContest.setContestDescription(newContestContents.getString(CONTEST_DESCRIPTION_KEY));
         newContest.setContestTier(newContestContents.getInt(CONTEST_TIER_KEY));
         newContest.setContestScheduleId(newContestContents.getLong(CONTEST_SCHEDULE_KEY));
+        newContest.setContestLogoId(newContestContents.getLong(CONTEST_LOGO_ID_KEY));
+
+        JSONArray fellowArray = newContestContents.getJSONArray(CONTEST_FELLOWS_KEY);
+        if (Validator.isNotNull(fellowArray) && fellowArray.length() > 0) {
+            addFellows(newContest, newContestContents.getJSONArray(CONTEST_FELLOWS_KEY));
+        }
 
         long focusAreaId = newContestContents.getLong(CONTEST_FOCUS_AREA_KEY);
         if (focusAreaId == 0) {
@@ -407,11 +572,28 @@ public class ContestCreatorUtil {
             newContest.setFocusAreaId(focusAreaId);
         }
 
+        int contestTier = newContestContents.getInt(CONTEST_TIER_KEY);
+        boolean isContestTierLevel2 = (contestTier == 2);
+        if(isContestTierLevel2){
+            newContest.setShow_in_tile_view(false);
+            newContest.setShow_in_list_view(false);
+        }
+
         newContest.persist();
 
-        // Install contest schedule
-        ContestScheduleWrapper.createContestPhaseAccordingToContestSchedule(newContest, newContestContents.getLong(CONTEST_SCHEDULE_KEY));
+        Long contestScheduleTemplateId = newContestContents.getLong(CONTEST_SCHEDULE_KEY);
+        createContestPhases(newContest, contestScheduleTemplateId);
+        createContestWikiPage(newContest);
+
         return newContest;
+    }
+
+    private static void createContestWikiPage(Contest contest) throws Exception{
+        ContestDescriptionBean.updateContestWiki(contest, "");
+    }
+
+    private static void createContestPhases(Contest contest, Long contestScheduleTemplateId) throws Exception{
+        ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleTemplateId);
     }
 
     private static List<Contest> createSubContests(JSONArray subContestsJson) throws Exception {
@@ -520,5 +702,16 @@ public class ContestCreatorUtil {
         newSection.persist();
 
         return newSection;
+    }
+
+    private static void addFellows(Contest contest, JSONArray fellowsJson) {
+        for (int i = 0; i < fellowsJson.length(); i++) {
+            long userId = fellowsJson.getLong(i);
+            try {
+                ContestTeamMemberLocalServiceUtil.addContestTeamMember(userId, contest.getContestPK(), FELLOW_ROLE_NAME);
+            } catch (SystemException e) {
+                _log.error("Could not add user with ID " + userId + " to fellows of contest with ID " + contest.getContestPK());
+            }
+        }
     }
 }

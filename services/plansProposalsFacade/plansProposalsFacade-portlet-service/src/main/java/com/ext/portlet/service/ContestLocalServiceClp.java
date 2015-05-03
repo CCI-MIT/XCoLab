@@ -162,6 +162,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private String[] _methodParameterTypes76;
     private String _methodName77;
     private String[] _methodParameterTypes77;
+    private String _methodName78;
+    private String[] _methodParameterTypes78;
 
     public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -500,6 +502,12 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _methodName77 = "getContestImpactFocusAreas";
 
         _methodParameterTypes77 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName78 = "getSubContestsByOntologySpaceId";
+
+        _methodParameterTypes78 = new String[] {
+                "com.ext.portlet.model.Contest", "java.lang.Long"
+            };
     }
 
     @Override
@@ -2862,5 +2870,37 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
 
         return (java.util.List<com.ext.portlet.model.ImpactTemplateMaxFocusArea>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
+        com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
+        throws java.lang.Exception {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName78,
+                    _methodParameterTypes78,
+                    new Object[] {
+                        ClpSerializer.translateInput(contest),
+                        
+                    ClpSerializer.translateInput(ontologySpaceId)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof java.lang.Exception) {
+                throw (java.lang.Exception) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.Contest>) ClpSerializer.translateOutput(returnObj);
     }
 }

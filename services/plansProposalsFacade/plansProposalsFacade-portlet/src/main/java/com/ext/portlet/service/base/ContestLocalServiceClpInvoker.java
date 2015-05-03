@@ -163,6 +163,8 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes696;
     private String _methodName697;
     private String[] _methodParameterTypes697;
+    private String _methodName699;
+    private String[] _methodParameterTypes699;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -499,6 +501,12 @@ public class ContestLocalServiceClpInvoker {
         _methodName697 = "getContestImpactFocusAreas";
 
         _methodParameterTypes697 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName699 = "getSubContestsByOntologySpaceId";
+
+        _methodParameterTypes699 = new String[] {
+                "com.ext.portlet.model.Contest", "java.lang.Long"
+            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -926,6 +934,12 @@ public class ContestLocalServiceClpInvoker {
         if (_methodName697.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes697, parameterTypes)) {
             return ContestLocalServiceUtil.getContestImpactFocusAreas((com.ext.portlet.model.Contest) arguments[0]);
+        }
+
+        if (_methodName699.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes699, parameterTypes)) {
+            return ContestLocalServiceUtil.getSubContestsByOntologySpaceId((com.ext.portlet.model.Contest) arguments[0],
+                (java.lang.Long) arguments[1]);
         }
 
         throw new UnsupportedOperationException();

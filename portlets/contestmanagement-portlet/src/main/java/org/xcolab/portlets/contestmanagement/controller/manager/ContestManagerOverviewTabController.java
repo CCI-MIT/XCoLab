@@ -13,6 +13,7 @@ import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
@@ -68,7 +69,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
                                         ActionResponse response) {
 
         if(!tabWrapper.getCanEdit()) {
-            setNoPermissionErrorRenderParameter(response);
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
 
@@ -76,11 +77,12 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
             updateContestOverviewWrapper.persistOrder();
             updateContestOverviewWrapper.executeMassActionIfSelected(request, null);
             String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
-            addActionSuccessMessageToSession(request, massActionTitle);
+            SetRenderParameterUtil.addActionSuccessMessageToSession(request, massActionTitle);
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
-            _log.warn("update contest overview failed with: ", e);
-            setNotFoundErrorRenderParameter(response);
+            _log.warn("Update contest overview failed with: ", e);
+            _log.warn(e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
 
@@ -96,7 +98,8 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
         try {
             updateContestOverviewWrapper.executeMassActionIfSelected(request, response);
         } catch(Exception e){
-            _log.warn("export failed with: ", e);
+            _log.warn("Export failed with: ", e);
+            _log.warn(e);
         }
     }
 

@@ -19,6 +19,7 @@ import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.entities.SectionTypes;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
+import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestProposalTemplateWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
@@ -79,13 +80,13 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
                                              @ModelAttribute ContestProposalTemplateWrapper updatedContestProposalTemplateWrapper, BindingResult result) {
 
         if(!tabWrapper.getCanEdit()) {
-            setNoPermissionErrorRenderParameter(response);
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
 
         if (result.hasErrors()) {
             //updatedContestProposalTemplateWrapper.removeDeletedSections();
-            setErrorRenderParameter(response, "updateContestProposalTemplate");
+            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestProposalTemplate");
             return;
         }
 
@@ -94,8 +95,9 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
             updatedContestProposalTemplateWrapper.updateNewProposalTemplateSections();
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
-            _log.warn("Could not update proposal template: ", e);
-            setNotFoundErrorRenderParameter(response);
+            _log.warn("Update proposal template failed with: ", e);
+            _log.warn(e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
 

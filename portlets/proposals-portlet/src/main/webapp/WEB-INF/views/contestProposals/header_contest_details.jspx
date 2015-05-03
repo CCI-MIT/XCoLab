@@ -182,6 +182,23 @@
                             </div>
                         </div>
                     </td>
+
+                    <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
+                        <div class="subcontests">
+                            <c:if test="${contest.showSubContests}">
+                                <span class="title">To create your plan, combine proposals from these sector workspaces:</span>
+                                <ul>
+                                    <c:forEach items="${contest.subContests}" var="subContest">
+                                        <li>
+                                            <span>
+                                            <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
+                                            </span>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </c:if>
+                        </div>
+                    </td>
                 </tr>
             </table>
         </div>

@@ -57,6 +57,8 @@ public class FocusAreaOntologyTermLocalServiceClpInvoker {
     private String[] _methodParameterTypes636;
     private String _methodName637;
     private String[] _methodParameterTypes637;
+    private String _methodName638;
+    private String[] _methodParameterTypes638;
 
     public FocusAreaOntologyTermLocalServiceClpInvoker() {
         _methodName0 = "addFocusAreaOntologyTerm";
@@ -190,6 +192,10 @@ public class FocusAreaOntologyTermLocalServiceClpInvoker {
         _methodParameterTypes637 = new String[] {
                 "com.ext.portlet.model.FocusAreaOntologyTerm"
             };
+
+        _methodName638 = "getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId";
+
+        _methodParameterTypes638 = new String[] { "long", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -329,6 +335,12 @@ public class FocusAreaOntologyTermLocalServiceClpInvoker {
         if (_methodName637.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes637, parameterTypes)) {
             return FocusAreaOntologyTermLocalServiceUtil.getArea((com.ext.portlet.model.FocusAreaOntologyTerm) arguments[0]);
+        }
+
+        if (_methodName638.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+            return FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
         }
 
         throw new UnsupportedOperationException();

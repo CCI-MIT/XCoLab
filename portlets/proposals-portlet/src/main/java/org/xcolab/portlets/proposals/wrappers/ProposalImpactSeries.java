@@ -53,7 +53,7 @@ import java.util.TimeZone;
 public class ProposalImpactSeries {
     // Static value field names
     public static final String SERIES_TYPE_BAU_KEY = "BAU";
-    public static final String SERIES_TYPE_DDPP_KEY = "DDPP";
+//    public static final String SERIES_TYPE_DDPP_KEY = "DDPP";
     public static final String SERIES_TYPE_RESULT_KEY = "RESULT";
 
     private List<ImpactIteration> impactIterations;
