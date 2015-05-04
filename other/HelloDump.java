@@ -37,7 +37,9 @@ public class HelloDump {
                             }
                         }
                         for (String n : listOfValues) {
-                            if (sb.length() > 0) sb.append(',');
+                            if (sb.length() > 0) {
+                                sb.append(',');
+                            }
                             sb.append(n);
                         }
                         pr.println(sb.toString());
