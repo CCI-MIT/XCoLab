@@ -25,10 +25,14 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
@@ -81,6 +85,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      * contest phase local service.
      */
     private final static Log _log = LogFactoryUtil.getLog(ContestPhaseLocalServiceImpl.class);
+    private static final Long DEFAULT_CONTEST_ID_FOR_SCHEDULE = 0L;
     private static final String SERVER_PORT_PROPS_KEY = "climatecolab.server.port";
     private Clock clock = new ClockImpl();
 
@@ -180,8 +185,23 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return contestPhasePersistence.findByContestId(contestPK);
     }
 
-    public List<ContestPhase> getPhasesForContestSchedule(long contestScheduleId, long contestPK) throws SystemException {
-        return contestPhasePersistence.findByContestScheduleId(contestScheduleId,contestPK);
+    public List<ContestPhase> getPhasesForContestScheduleId(long contestScheduleId) throws SystemException {
+        return contestPhasePersistence.findByContestScheduleId(contestScheduleId, DEFAULT_CONTEST_ID_FOR_SCHEDULE);
+    }
+
+    public List<ContestPhase> getPhasesForContestScheduleIdAndContest(long contestScheduleId, long contestPK) throws SystemException {
+        return contestPhasePersistence.findByContestScheduleId(contestScheduleId, contestPK);
+    }
+
+    public List<ContestPhase> getPhasesForContestScheduleIdAndPhaseType(long contestScheduleId, long contestPhaseType) throws SystemException {
+
+        DynamicQuery queryPhasesForContestScheduleIdAndPhaseType =
+                DynamicQueryFactoryUtil.forClass(ContestPhase.class, PortletClassLoaderUtil.getClassLoader())
+                        .add(PropertyFactoryUtil.forName("contestScheduleId").eq(contestScheduleId))
+                        .add(PropertyFactoryUtil.forName("contestPhaseType").eq(contestPhaseType));
+
+        return ContestPhaseLocalServiceUtil.dynamicQuery(queryPhasesForContestScheduleIdAndPhaseType);
+
     }
 
     public ContestPhase getActivePhaseForContest(Contest contest) throws SystemException, PortalException {

@@ -358,11 +358,26 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestSchedule(
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleId(
+        long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getPhasesForContestScheduleId(contestScheduleId);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndContest(
         long contestScheduleId, long contestPK)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestPhaseLocalService.getPhasesForContestSchedule(contestScheduleId,
+        return _contestPhaseLocalService.getPhasesForContestScheduleIdAndContest(contestScheduleId,
             contestPK);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndPhaseType(
+        long contestScheduleId, long contestPhaseType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getPhasesForContestScheduleIdAndPhaseType(contestScheduleId,
+            contestPhaseType);
     }
 
     @Override
