@@ -95,6 +95,12 @@
     <!-- Content -->
     <div id="content">
         <div id="impact">
+            <div style="margin-bottom: 15px">
+                <strong>How will this proposal reduce greenhouse gas emissions? </strong>The proposal authors can use the tools below or work with the
+                <a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Impact+Assessment+Fellows">Impact Assessment Fellows</a>
+                to estimate the greenhouse gas (GHG) reductions the proposal will cause in different economic sectors around the world.
+                Once calculated, the top table will show the GHG emissions reductions from 2020 to 2050 for that sector and region.
+            </div>
             <c:choose>
                 <!-- Don't show table if no data is available and if user cannot edit -->
                 <!-- TODO change this back to proposalsPermission.canEdit when officially launching the feature -->
@@ -164,7 +170,7 @@
                                         </c:forEach>
                                     </select>
                                     <select id="sector">
-                                        <option value="0" selected="selected">Select region first</option>
+                                        <option value="0" selected="selected">Select sector</option>
                                     </select>
                                     <div class="blue-button disabled">
                                         <a id="continue-button" href="javascript:;">Add</a>
@@ -208,13 +214,22 @@
     </div>
 
     <!-- TODO remove fellow permission -->
-    <c:if test="${not proposalsPermissions.canEdit and not proposalsPermissions.canFellowActions}">
-        <script>
-            $().ready(function() {
-                $('tr.impact-series-clickable').removeClass('impact-series-clickable');
-            });
-        </script>
-    </c:if>
+    <c:choose>
+        <c:when test="${not proposalsPermissions.canEdit and not proposalsPermissions.canFellowActions}">
+            <script>
+                $().ready(function() {
+                    $('tr.impact-series-clickable').removeClass('impact-series-clickable');
+                });
+            </script>
+        </c:when>
+        <c:otherwise>
+            <script>
+                $().ready(function() {
+                    newSeriesRowClicked();
+                });
+            </script>
+        </c:otherwise>
+    </c:choose>
 
     <script>
         var ROW_INDEX_NONE_SELECTED = -1;
@@ -236,13 +251,15 @@
 
             // Hack
             $('table#impact-summary div.st-body-scroll').css('max-height', '308px');
+            // Fix table width
+            $('table#impact-summary .st-head-table').css('width', $('table#impact-summary .st-body-scroll').css('width'))
 
-            // Format numbers
-            $('tbody#summary-body td.impact-value').each(function(idx) {
-                var formattedNumber = numeral(parseFloat($(this).text())).format('0,0[.]00');
-                $(this).text(formattedNumber);
+            // Format summary-tables's impact values
+            $('table#impact-summary tbody#summary-body td.impact-value').each(function(idx) {
+                $(this).text(numeral($(this).text()).format('0,0.00'));
             });
 
+            /*
             var sgrip = $('div#sgrip');
             $('table#impact-summary').append(sgrip);
             $('table#impact-summary table.st-body-scroll').resizable({
@@ -252,6 +269,7 @@
             });
 
             $('table#impact-summary div.st-body-scroll').append(sgrip);
+            */
         });
 
         function registerEventHandler() {
@@ -302,6 +320,7 @@
                 return;
             }
 
+            $('tr#impact-new-series-row').removeClass('selected');
             currentEditingRowIndex = rowIndex;
             $('#delete-button').parent().removeClass('disabled');
             // Set detail table header
@@ -327,11 +346,8 @@
             var resultValues = $('#impact table tr#impact-edit-row-RESULT td span');
 
             for (var i = 0; i &lt; bauValues.size(); i++) {
-                console.log("bau " + numeral().unformat($(bauValues[i]).text()) + "; reduction " + parseFloat($(reductionValues[i]).attr('value')) +
-                            "; adoption " + parseFloat($(adoptionValues[i]).attr('value')));
-                var resultValue = (numeral().unformat($(bauValues[i]).text()) * (1.0 - parseFloat($(reductionValues[i]).attr('value')) * 0.01 *
-                        parseFloat($(adoptionValues[i]).attr('value')) * 0.01)).toFixed(2);
-                console.log("resultValue: " + resultValue);
+                var resultValue = numeral((numeral().unformat($(bauValues[i]).text()) * (parseFloat($(reductionValues[i]).attr('value')) * 0.01 *
+                        parseFloat($(adoptionValues[i]).attr('value')) * 0.01))).format('0,0.00');
                 $(resultValues[i]).text('' + resultValue);
             }
         }
@@ -360,7 +376,7 @@
                 var dataSeries = data.serieses.BAU;
                 var tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                 tableRow.find('span.series-value').each(function(idx) {
-                    $(this).text(numeral($(this).text()).format('0,0[.]00'))
+                    $(this).text(numeral($(this).text()).format('0,0.00'))
                 });
                 editTable.append(tableRow);
                 console.log("bau series"  + dataSeries);
@@ -370,7 +386,7 @@
                 tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                 console.log("Reduction: " + JSON.stringify(dataSeries));
                 tableRow.find('span.series-value').each(function(idx) {
-                    $(this).text(numeral($(this).text()).format('0,0[.]00'))
+                    $(this).text(numeral($(this).text()).format('0,0.00'))
                 });
                 editTable.append(tableRow);
                 console.log("reduction series"  + dataSeries);
@@ -378,7 +394,7 @@
                 dataSeries = data.serieses.IMPACT_ADOPTION_RATE;
                 tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                 tableRow.find('span.series-value').each(function(idx) {
-                    $(this).text(numeral($(this).text()).format('0,0[.]00'))
+                    $(this).text(numeral($(this).text()).format('0,0.00'))
                 });
                 editTable.append(tableRow);
                 console.log("adoption series"  + dataSeries);
@@ -387,7 +403,7 @@
                 "values": dataSeries.values};
                 tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                 tableRow.find('span.series-value').each(function(idx) {
-                    $(this).text(numeral(parseFloat($(this).text())).format('0,0[.]00'));
+                    $(this).text(numeral(parseFloat($(this).text())).format('0,0.00'));
                 });
                 tableRow.addClass("selected");
                 editTable.append(tableRow);
@@ -440,22 +456,26 @@
                 var regionTermId = $(this).val();
                 console.log("region term selected: " + regionTermId);
                 if (regionTermId == 0) {
+                    clearDropdown(sectorDropdownElement, "Select sector");
+                    sectorDropdownElement.attr('disabled', 'disabled');
                     return;
                 }
 
                 // Get sector terms
                 var url = replaceImpactURLPlaceholders(getSectorsForRegionURL, [REGION_TERM_ID_PLACEHOLDER], [regionTermId]);
                 setDetailViewSpinnerMode(true);
+                $('div#new-series select#sector').attr('disabled', 'disabled');
+
                 $.getJSON(url, { get_param: 'value' }, function(data) {
                     setDetailViewSpinnerMode(false);
-                    sectorDropdownElement.empty();
-                    sectorDropdownElement.append('<option value="' + 0 + '">Select sector</option>');
-                    console.log("data " + data);
+                    clearDropdown(sectorDropdownElement, "Select sector");
 
                     $.each(data, function(index, attr) {
-                        console.log("each " + attr);
                         sectorDropdownElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
                     });
+
+                    sectorDropdownElement.removeAttr('disabled');
+                    sectorDropdownElement.focus();
                 });
             });
 
@@ -464,11 +484,16 @@
                 var sectorTermId = sectorDropdownElement.val();
                 var regionTermId = regionDropdownElement.val();
 
-                console.log("hit");
                 if (sectorTermId &gt; 0 &amp;&amp; regionTermId &gt; 0) {
                     $('#impact a#continue-button').parent().removeClass('disabled');
+                    $('#impact a#continue-button').focus();
                 }
             });
+        }
+
+        function clearDropdown(dropdownElement, defaultOptionString) {
+            dropdownElement.empty();
+            dropdownElement.append('<option value="' + 0 + '">' + defaultOptionString + '</option>');
         }
 
         function loadRegionTerms() {
@@ -476,7 +501,7 @@
 
             var sectorDropdownElement = $('div#new-series select#sector');
             sectorDropdownElement.empty();
-            sectorDropdownElement.append('<option value="' + 0 + '">Select region first</option>');
+            sectorDropdownElement.append('<option value="' + 0 + '">Select sector</option>');
 
             var url = replaceImpactURLPlaceholders(getRegionsURL, [], []);
             setDetailViewSpinnerMode(true);
@@ -570,6 +595,8 @@
             $('div#impact-series-detail #header h3#region-title').text($('div#new-series select#region option:selected').text());
             $('div#impact-series-detail #header h3#sector-title').text($('div#new-series select#sector option:selected').text());
             // userInputOccurred = true;
+
+            $('#delete-button').parent().removeClass('disabled');
         }
 
         function setShowNewSeries(shouldShow) {
@@ -581,8 +608,13 @@
                 $('div#impact-series-detail table#edit-table').fadeOut();
 
                 loadRegionTerms();
+
+                $('tr#impact-new-series-row').addClass('selected');
+                $('div#new-series select#region').focus();
+                $('div#new-series select#sector').attr('disabled', 'disabled');
             } else {
                 $('div#impact-series-detail').fadeOut();
+                $('tr#impact-new-series-row').removeClass('selected');
 
                 $('div#impact-series-detail div#new-series').fadeOut();
                 $('div#impact-series-detail div#header').hide();
@@ -646,7 +678,7 @@
             var newRow = jQuery(impactSeriesNewTableRowTemplate({series: seriesData}));
             var overviewTableRows = $('table#impact-summary tr.impact-series-clickable');
             if (overviewTableRows.length == 0) {
-                $('table#impact-summary').append(newRow);
+                $('tbody#summary-body').append(newRow);
             } else {
                 newRow.insertAfter(overviewTableRows[overviewTableRows.length - 1]);
             }
@@ -704,6 +736,9 @@
                 });
 
                 currentEditingRowIndex = ROW_INDEX_NONE_SELECTED;
+            } else {
+                dismissDetailView();
+                $('tr#impact-new-series-row').removeClass('selected');
             }
         }
 

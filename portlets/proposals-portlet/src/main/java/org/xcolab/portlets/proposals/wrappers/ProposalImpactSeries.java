@@ -284,7 +284,7 @@ public class ProposalImpactSeries {
             double adoptionRate = seriesTypeToSeriesMap.get(ProposalAttributeKeys.IMPACT_ADOPTION_RATE).getValueForYear(currentYear);
 
             // Round to 2 decimal digits
-            double resultValue = Math.round((bauValue * (1.0 - reductionRate * 0.01 * adoptionRate * 0.01)) * 100.0) / 100.0;
+            double resultValue = Math.round((bauValue * (reductionRate * 0.01 * adoptionRate * 0.01)) * 100.0) / 100.0;
             resultValues.putSeriesValue(currentYear, resultValue);
         }
     }

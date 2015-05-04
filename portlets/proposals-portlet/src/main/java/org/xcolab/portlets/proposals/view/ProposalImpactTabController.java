@@ -21,6 +21,7 @@ import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.IntegratedProposalImpactSeries;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
+import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
@@ -58,6 +59,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             return "proposalImpactError";
         }
 
+        setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
         switch (ContestTier.getContestTierByTierType(contest.getContestTier())) {
             case BASIC:
                 return showImpactTabBasicProposal(request, model);
