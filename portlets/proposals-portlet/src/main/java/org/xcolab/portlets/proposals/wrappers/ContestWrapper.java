@@ -144,7 +144,7 @@ public class ContestWrapper {
             return contest.getShow_in_outline_view();
         }
         else {
-            contest.setShow_in_tile_view(true);
+            contest.setShow_in_outline_view(true);
             return true;
         }
 
