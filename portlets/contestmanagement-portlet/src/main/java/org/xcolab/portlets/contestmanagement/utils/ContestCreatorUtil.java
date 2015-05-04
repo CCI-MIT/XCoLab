@@ -97,7 +97,7 @@ public class ContestCreatorUtil {
                     "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III US Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"a.\tSelect one plan to represent the actions that should be taken in sectors not represented above, such as agriculture, forestry, other land use, and waste management.  Don’t see a plan you want to use?  Create one in the sector workspace (see links on the contest homepage) and link it here.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1300340,3,1300601]," +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1300340,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
                     "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
@@ -128,7 +128,7 @@ public class ContestCreatorUtil {
                     "{\"name\": \"United States: Other Sectors Plan\", " +
                         "\"question\": \"How should the United States address climate change in other sectors?\"," +
                         "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the United States collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong><strong>will only be evaluated if they are included in a regional plan.</strong></strong></p>\"," +
-                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300340,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209},\n" +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1300340,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209},\n" +
                 "]},\n" +
                 // ##################### US Tier III done #####################
 
@@ -162,7 +162,7 @@ public class ContestCreatorUtil {
                     "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III EU Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in other sectors, such as agriculture, aquaculture, livestock, forestry, and waste management.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1300341,3,1300601]," +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1300341,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
                     "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
@@ -192,7 +192,7 @@ public class ContestCreatorUtil {
                     "{\"name\": \"Europe: Other Sectors Plan\", " +
                         "\"question\": \"How should the Europe address climate change in other sectors?\"," +
                         "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how Europe collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong>will only be evaluated if they are included in a regional plan.</strong></p>\"," +
-                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300341,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209},\n" +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1300341,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209},\n" +
                 "]},\n" +
                 // ##################### EU Tier III done #####################
 
@@ -225,7 +225,7 @@ public class ContestCreatorUtil {
                     "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III China Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in other sectors, such as agriculture, aquaculture, livestock, forestry, and waste management.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1300345,3,1300601]," +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1300345,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
                     "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
@@ -255,7 +255,7 @@ public class ContestCreatorUtil {
                     "{\"name\": \"China: Other Sectors Plan\", " +
                         "\"question\": \"How should China address climate change in the other sectors?\"," +
                         "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how China collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong>will only be evaluated if they are included in a regional plan.</strong></p>\"," +
-                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300345,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1300345,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
                 "]},\n" +
                 // ##################### China Tier III done #####################
 
@@ -289,7 +289,7 @@ public class ContestCreatorUtil {
                     "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III India Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in other sectors, such as agriculture, aquaculture, livestock, forestry, and waste management.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1300346,3,1300601]," +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1300346,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
                     "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
@@ -319,7 +319,7 @@ public class ContestCreatorUtil {
                     "{\"name\": \"India: Other Sectors Plan\", " +
                         "\"question\": \"How should India address climate change in the other sectors?\"," +
                         "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how India collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong>will only be evaluated if they are included in a regional plan.</strong></p>\"," +
-                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1300346,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1300346,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
                 "]},\n" +
                 // ##################### India Tier III done #####################
 
@@ -352,7 +352,7 @@ public class ContestCreatorUtil {
                     "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III Other Developed Countries Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in other sectors, such as agriculture, aquaculture, livestock, forestry, and waste management.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1311101,3,1300601]," +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1311101,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
                     "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
@@ -382,7 +382,7 @@ public class ContestCreatorUtil {
                     "{\"name\": \"Other Developed Countries: Other Sectors Plan\", " +
                         "\"question\": \"How should Other Developed Countries address climate change in the other sectors?\"," +
                         "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the Other Developed Countries collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong>will only be evaluated if they are included in a regional plan.</strong></p>\"," +
-                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311101,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1311101,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
                 "]},\n" +
                 // ##################### Other Developed Countries Tier III done #####################
 
@@ -415,7 +415,7 @@ public class ContestCreatorUtil {
                     "{\"id\": 0, \"title\" : \"Which plan do you select for other sectors?\", \"adminTitle\" : \"Tier III Other Developing Countries Other sectors single proposal picker\"," +
                     "\"type\" : \"PROPOSAL_REFERENCE\"," +
                     "\"helpText\" : \"Select one plan to represent the actions that should be taken in other sectors, such as agriculture, aquaculture, livestock, forestry, and waste management.\", " +
-                    "\"focusArea\" : 0, \"ontologyTerms\" : [2,1311102,3,1300601]," +
+                    "\"focusArea\" : 0, \"ontologyTerms\" : [1300359,1311102,3,1300601]," +
                     "\"tier\" : 2}," +
                     // Other sections
                     "{\"id\": 1301502},{\"id\": 1301504},{\"id\": 1301601},{\"id\": 1301602},{\"id\": 1301505},{\"id\": 1301506},{\"id\": 1301603}, {\"id\": 1301604}, {\"id\": 1301605}, {\"id\": 1301606}" +
@@ -445,7 +445,7 @@ public class ContestCreatorUtil {
                     "{\"name\": \"Other Developing Countries: Other Sectors Plan\", " +
                         "\"question\": \"How should Other Developing Countries address climate change in the other sectors?\"," +
                         "\"description\": \"<p>In this workspace, you can combine proposals from Climate CoLab contests, as well as from outside the Climate CoLab, to develop plans for how the Other Developing Countries collectively should address climate change in agriculture, forestry, and other land use; and waste management. You can also estimate the overall greenhouse gas emission reductions that would result from the collection of actions you propose.</p><p>In addition to being completed pieces on their own, proposals submitted here will serve as building blocks for the development of plans on a regional and global level, and <strong>will only be evaluated if they are included in a regional plan.</strong></p>\"," +
-                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [2,1311102,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
+                        "\"contestTier\": 2, \"contestSchedule\": 3, \"focusArea\": 0, \"ontologyTerms\": [1300359,1311102,1,1300601], \"planTemplate\" : 1301201, \"contestLogoId\": 1249209}\n" +
                 "]},\n" +
                 // ##################### Other Developing Countries Tier III done #####################
             "]";

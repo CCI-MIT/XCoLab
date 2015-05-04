@@ -830,6 +830,9 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .blue-button:hover {background:url(../images/button-blue-left-hover.png) no-repeat left top;}
 .blue-button:hover a, .blue-button a:hover{background:url(../images/button-blue-right-hover.png) no-repeat right top;}
 
+.blue-button.disabled { opacity: 0.4;}
+.blue-button.disabled a { pointer-events: none;}
+
 .gray-button {background:url(../images/button-gray-left.png) no-repeat left top; padding-left:11px; height:41px; width:auto; display:inline-block; line-height:normal;}
 .gray-button a {background:url(../images/button-gray-right.png) no-repeat right top; padding:10px 21px 0 8px; height:31px; font-size:16px; font-weight:700; color:#fff; text-shadow:1px 1px 0 #114c65; display:inline-block;}
 /* .gray-button a:hover {color:#000; text-shadow:1px 1px 0 #ccc;} */

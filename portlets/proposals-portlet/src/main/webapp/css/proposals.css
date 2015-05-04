@@ -506,9 +506,11 @@ div.selected {
     opacity: 0.5;
 }
 
-.button-disabled a {
+.button-disabled a,
+.disabled {
     pointer-events: none;
 }
+
 
 /* Impact tab */
 
@@ -524,24 +526,56 @@ div.selected {
 #impact .blue-bg {
     font-size: 13px;
     color: white;
-    background: #30a3fb;
-    border: 1px white solid;
+    background: #a7d4db;
+    border: 2px white solid;
 }
 
 #impact .impact-value {
-    background-color: #E4EAF4;
     font-weight: bold;
     text-align: center;
-    border: 1px white solid;
+    border-left: 2px black solid;
+}
+
+#impact :not(tr:last-child) .impact-value {
+    border-right: 2px black solid;
+}
+
+#impact-series-detail table#edit-table tr {
+    border-left: 2px black solid;
+}
+
+#impact-series-detail table#edit-table thead th,
+#impact table#impact-summary,
+#impact-series-detail table#edit-table
+{
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+}
+
+#impact-series-detail table#edit-table tbody,
+#impact-series-detail table#edit-table tbody,
+#impact table#impact-summary
+{
+    border-bottom: 2px solid black;
 }
 
 #impact tr.selected {
-    border: 2px solid #8e8d8a;
+    background-color: #e0e0e0;
 }
 
 #impact tr select {
     margin: 0px;
     width: 202px;
+}
+
+#impact table#impact-summary {
+    min-height: 150px;
+    max-height: 400px;
+}
+
+#impact table#impact-summary tbody {
+    max-height: 350px;
+    overflow: auto;
 }
 
 #impact input {
@@ -550,7 +584,7 @@ div.selected {
     padding: 5px;
 }
 
-#impact .shaded-bg {
+#impact td.shaded-bg {
     text-align: center;
 }
 
@@ -564,6 +598,46 @@ div.selected {
     width: 500px;
     margin: 0 auto 20px auto;
 }
+
+#impact-series-detail div#new-series {
+    vertical-align: middle;
+    display: table-cell;
+}
+
+#impact-series-detail div#new-series select {
+    margin-right: 15px;
+    width: 21.5%;
+    height: 32px;
+}
+
+#impact-series-detail div#header {
+    padding-top: 15px;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+#impact-series-detail div#header h3 {
+    margin-right: 10px;
+    display: inline-block;
+}
+
+#impact div#sgrip{
+    bottom: -5px;
+    left: 50%;
+
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+}
+
+div.spinner {
+    left: 50% !important;
+    top: 20px !important;
+}
+
+#impact-summary tr {
+    opacity: 1.0;
 
 .subcontests .title {
     font-size: 16px;

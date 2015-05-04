@@ -277,7 +277,7 @@ create table xcolab_FocusAreaOntologyTerm (
 create table xcolab_ImpactDefaultSeries (
 	seriesId LONG not null,
 	name VARCHAR(75) not null,
-	description VARCHAR(75) null,
+	description VARCHAR(1000) null,
 	focusAreaId LONG,
 	visible BOOLEAN,
 	editable BOOLEAN,

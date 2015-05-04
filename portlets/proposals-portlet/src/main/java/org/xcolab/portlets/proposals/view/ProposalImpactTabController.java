@@ -73,6 +73,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private String showImpactTabIntegratedProposal(PortletRequest request, Model model)
             throws PortalException, SystemException {
 
+        // TODO remove this code once impact tab has officially launched
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        // If not admin or fellow return "error view"
+        if (!(permissions.getCanAdminAll() || permissions.getCanFellowActions())) {
+            return "proposalImpactError";
+        }
+
         Proposal proposal = proposalsContext.getProposal(request);
         IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal);
         model.addAttribute("impactSeries", integratedProposalImpactSeries);
@@ -105,7 +112,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
 
             Map<OntologyTerm, List<OntologyTerm>> ontologyMap = new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
-            model.addAttribute("sectorTerms", sortByName(ontologyMap.keySet()));
+            model.addAttribute("regionTerms", sortByName(ontologyMap.keySet()));
 
             model.addAttribute("proposalsPermissions", proposalsContext.getPermissions(request));
         } catch (PortalException e) {
