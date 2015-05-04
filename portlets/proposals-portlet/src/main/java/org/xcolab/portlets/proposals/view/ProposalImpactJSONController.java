@@ -62,12 +62,6 @@ public class ProposalImpactJSONController {
 
         Map<OntologyTerm, List<OntologyTerm>> ontologyMap = getOntologyMap(request);
         List<OntologyTerm> regionTerms = new ArrayList<>(ontologyMap.keySet());
-        Collections.sort(regionTerms, new Comparator<OntologyTerm>() {
-            @Override
-            public int compare(OntologyTerm o1, OntologyTerm o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
 
         response.getPortletOutputStream().write(ontologyTermListToJSONArray(regionTerms).toString().getBytes());
     }
@@ -173,6 +167,18 @@ public class ProposalImpactJSONController {
             return array;
         }
 
+        // Sort by order and id, which reflects the order in the outline view
+        Collections.sort(terms, new Comparator<OntologyTerm>() {
+            @Override
+            public int compare(OntologyTerm o1, OntologyTerm o2) {
+                if (o1.getOrder_() == o2.getOrder_()) {
+                    return (int)(o1.getId() - o2.getId());
+                } else {
+                    return (int)(o1.getOrder_() - o2.getOrder_());
+                }
+
+            }
+        });
         for (OntologyTerm term: terms) {
             JSONObject termJson = JSONFactoryUtil.createJSONObject();
             termJson.put("id", term.getId());
