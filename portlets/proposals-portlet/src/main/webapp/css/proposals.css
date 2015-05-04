@@ -568,11 +568,6 @@ div.selected {
     width: 202px;
 }
 
-#impact table#impact-summary {
-    min-height: 150px;
-    max-height: 400px;
-}
-
 #impact table#impact-summary tbody {
     max-height: 350px;
     overflow: auto;

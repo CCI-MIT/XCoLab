@@ -146,7 +146,9 @@
                             </tr>
                             </tbody>
                         </c:if>
-                        <div class="ui-resizable-handle" id="sgrip"><!-- --></div>
+                        <!--<div class="ui-resizable-handle" id="sgrip"> -->
+                            <!-- -->
+                        <!-- </div> -->
                     </table>
                     <div id="impact-series-detail" style="display:none">
                         <!-- New impact series -->
