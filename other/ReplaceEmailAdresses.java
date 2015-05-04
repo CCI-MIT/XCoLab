@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 
-public class HelloDump {
+public class ReplaceEmailAdresses {
 
     /**
      * @param args
