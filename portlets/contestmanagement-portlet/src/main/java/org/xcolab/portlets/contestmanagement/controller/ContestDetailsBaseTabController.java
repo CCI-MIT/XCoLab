@@ -99,16 +99,23 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/" + tabName);
     }
 
-    public void setErrorRenderParameter(ActionResponse response, String errorActionParameter){
+    /*
+    public static void setErrorRenderParameter(ActionResponse response, String errorActionParameter){
         response.setRenderParameter("error", "true");
         response.setRenderParameter("action", errorActionParameter);
     }
-    public void setNoPermissionErrorRenderParameter(ActionResponse response){
+
+    public static void setNotFoundErrorRenderParameter(ActionResponse response, String errorActionParameter){
+        response.setRenderParameter("error", "true");
+        response.setRenderParameter("action", errorActionParameter);
+    }
+
+    public static void setNoPermissionErrorRenderParameter(ActionResponse response){
         setErrorRenderParameter(response, "showNoPermission");
     }
 
-    public void setNotFoundErrorRenderParameter(ActionResponse response){
+    public static void setNotFoundErrorRenderParameter(ActionResponse response){
         setErrorRenderParameter(response, "showNotFound");
-    }
+    }*/
 
 }

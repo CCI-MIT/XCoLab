@@ -16,10 +16,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.enums.ContestTier;
+import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.IntegratedProposalImpactSeries;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
+import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
@@ -57,6 +59,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             return "proposalImpactError";
         }
 
+        setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
         switch (ContestTier.getContestTierByTierType(contest.getContestTier())) {
             case BASIC:
                 return showImpactTabBasicProposal(request, model);
@@ -72,6 +75,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private String showImpactTabIntegratedProposal(PortletRequest request, Model model)
             throws PortalException, SystemException {
 
+        // TODO remove this code once impact tab has officially launched
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        // If not admin or fellow return "error view"
+        if (!(permissions.getCanAdminAll() || permissions.getCanFellowActions())) {
+            return "proposalImpactError";
+        }
+
         Proposal proposal = proposalsContext.getProposal(request);
         IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal);
         model.addAttribute("impactSeries", integratedProposalImpactSeries);
@@ -84,6 +94,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        
+        // TODO remove this code once impact tab has officially launched
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        // If not admin or fellow return "error view"
+        if (!(permissions.getCanAdminAll() || permissions.getCanFellowActions())) {
+            return "proposalImpactError";
+        }
 
         // TODO handle error here
         try {
@@ -97,7 +114,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
 
             Map<OntologyTerm, List<OntologyTerm>> ontologyMap = new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
-            model.addAttribute("sectorTerms", sortByName(ontologyMap.keySet()));
+            model.addAttribute("regionTerms", sortByName(ontologyMap.keySet()));
 
             model.addAttribute("proposalsPermissions", proposalsContext.getPermissions(request));
         } catch (PortalException e) {

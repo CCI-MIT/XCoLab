@@ -3,6 +3,8 @@ package org.xcolab.portlets.contestmanagement.controller;
 import com.ext.portlet.model.ContestWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
+import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.mail.internet.InternetAddress;
@@ -25,6 +28,7 @@ import javax.portlet.*;
 @RequestMapping("view")
 public class ContestDetailsAdminTabController extends ContestDetailsBaseTabController {
 
+    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsAdminTabController.class);
     static final private TabEnum tab = ContestDetailsTabs.ADMIN;
     static final private String TAB_VIEW = "details/adminTab";
 
@@ -56,7 +60,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
                                         ActionResponse response) {
 
         if(!tabWrapper.getCanEdit()) {
-            setNoPermissionErrorRenderParameter(response);
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
 
@@ -64,7 +68,9 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
             updateContestAdminBean.persist();
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
-            setNotFoundErrorRenderParameter(response);
+            _log.warn("Update contest admin failed with: ", e);
+            _log.warn(e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
 

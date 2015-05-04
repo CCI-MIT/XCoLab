@@ -790,6 +790,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getContestImpactFocusAreas(contest);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
+        com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
+        throws java.lang.Exception {
+        return _contestLocalService.getSubContestsByOntologySpaceId(contest,
+            ontologySpaceId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

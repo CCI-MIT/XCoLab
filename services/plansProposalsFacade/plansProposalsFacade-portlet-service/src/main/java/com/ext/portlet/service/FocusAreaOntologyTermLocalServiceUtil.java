@@ -302,6 +302,13 @@ public class FocusAreaOntologyTermLocalServiceUtil {
         return getService().getArea(faot);
     }
 
+    public static java.util.List<java.lang.Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(
+        long focusAreaId, long ontologySpaceId) throws java.lang.Exception {
+        return getService()
+                   .getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(focusAreaId,
+            ontologySpaceId);
+    }
+
     public static void clearService() {
         _service = null;
     }

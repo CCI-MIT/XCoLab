@@ -34,6 +34,9 @@ public class ErrorReporting implements Filter {
         String userScreenName = "no user was logged in";
         try {
             userScreenName = PortalUtil.getUser(request).getScreenName();
+            if(email.isEmpty()) {
+                email = PortalUtil.getUser(request).getEmailAddress();
+            }
         }
         catch(Exception e){
             // Couldn't find user or no user is logged in
@@ -47,6 +50,7 @@ public class ErrorReporting implements Filter {
                 messageBuilder.append("<p><strong>Please notify user once we have a fix for the bug:</strong><br/>");
                 messageBuilder.append(email + "</p>");
             }
+            messageBuilder.append("<p><strong>Exception should be added to the exception list:</strong><br>https://climatecolab.atlassian.net/wiki/display/COLAB/Exception+list</p>");
             messageBuilder.append(URLDecoder.decode(stackTrace, "UTF-8"));
             sendMessage("Error Report from User", messageBuilder.toString());
         }

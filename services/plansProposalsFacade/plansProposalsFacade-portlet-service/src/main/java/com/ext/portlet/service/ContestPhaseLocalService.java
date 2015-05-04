@@ -296,8 +296,18 @@ public interface ContestPhaseLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestSchedule(
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleId(
+        long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndContest(
         long contestScheduleId, long contestPK)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndPhaseType(
+        long contestScheduleId, long contestPhaseType)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

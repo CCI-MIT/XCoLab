@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
-import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.*;
-import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -33,11 +32,6 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
-    }
-
-    @ModelAttribute("scheduleTemplateSelectionItems")
-    public List<LabelValue> populateScheduleTemplateSelectionItems(){
-        return ContestScheduleWrapper.getScheduleTemplateSelectionItems();
     }
 
     @RequestMapping(params = "tab=SCHEDULES")
@@ -60,16 +54,18 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
                                         ActionResponse response) {
 
         if(!tabWrapper.getCanEdit()) {
-            setNoPermissionErrorRenderParameter(response);
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
 
         try {
             updateContestScheduleWrapper.persist();
-            addActionSuccessMessageToSession(request);
+            SetRenderParameterUtil.addActionSuccessMessageToSession(request);
             setSuccessRenderRedirect(response, tab.getName());
         } catch(Exception e){
-            setNotFoundErrorRenderParameter(response);
+            _log.warn("Update contest schedule failed with: ", e);
+            _log.warn(e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
 

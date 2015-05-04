@@ -1,61 +1,12 @@
 package org.xcolab.portlets.admintasks;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-
+import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.Activity.LoginRegisterActivityKeys;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.service.ProposalLocalServiceWrapper;
-import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.search.SearchException;
-import com.liferay.portal.model.*;
-import com.liferay.portal.service.*;
-import com.liferay.util.mail.MailEngineException;
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.portlets.admintasks.data.DataBean;
-import org.xcolab.portlets.admintasks.migration.DataIntegrityChecker;
-import org.xcolab.portlets.admintasks.migration.DataMigrator;
-import org.xcolab.portlets.admintasks.migration.persistence.OldPersistenceQueries;
-import org.xcolab.utils.UrlBuilder;
-
-import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.discussions.DiscussionActions;
-import com.ext.portlet.model.BalloonUserTracking;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.model.PlanItem;
-import com.ext.portlet.model.PlanItemGroup;
-import com.ext.portlet.model.PlanSection;
-import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
-import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.icesoft.faces.async.render.SessionRenderer;
@@ -71,9 +22,14 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.*;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.service.*;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
@@ -81,8 +37,21 @@ import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceU
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
-
 import edu.emory.mathcs.backport.java.util.Collections;
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.portlets.admintasks.data.DataBean;
+import org.xcolab.portlets.admintasks.migration.DataIntegrityChecker;
+import org.xcolab.portlets.admintasks.migration.DataMigrator;
+import org.xcolab.portlets.admintasks.migration.persistence.OldPersistenceQueries;
+import org.xcolab.utils.UrlBuilder;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import java.util.*;
 
 public class AdminTasksBean {
 	private Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
@@ -870,16 +839,6 @@ public class AdminTasksBean {
 			 */
 		}
 
-	}
-
-	public void promoteProposal() {
-		try {
-			ContestPhaseLocalServiceUtil.promoteProposal(2583, 1300001);
-		} catch (PortalException e) {
-			e.printStackTrace();
-		} catch (SystemException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void migrateDBSchema() {

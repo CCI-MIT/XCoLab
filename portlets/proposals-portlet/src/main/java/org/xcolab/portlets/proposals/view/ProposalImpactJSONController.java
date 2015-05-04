@@ -54,35 +54,35 @@ public class ProposalImpactJSONController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    @ResourceMapping("proposalImpactGetSectors")
-    public void proposalImpactGetSectors(
+    @ResourceMapping("proposalImpactGetRegions")
+    public void proposalImpactGetRegions(
             ResourceRequest request,
             ResourceResponse response) throws IOException,
             SystemException, PortalException {
 
         Map<OntologyTerm, List<OntologyTerm>> ontologyMap = getOntologyMap(request);
-        List<OntologyTerm> sectorTerms = new ArrayList<>(ontologyMap.keySet());
-        Collections.sort(sectorTerms, new Comparator<OntologyTerm>() {
+        List<OntologyTerm> regionTerms = new ArrayList<>(ontologyMap.keySet());
+        Collections.sort(regionTerms, new Comparator<OntologyTerm>() {
             @Override
             public int compare(OntologyTerm o1, OntologyTerm o2) {
                 return o1.getName().compareTo(o2.getName());
             }
         });
 
-        response.getPortletOutputStream().write(ontologyTermListToJSONArray(sectorTerms).toString().getBytes());
+        response.getPortletOutputStream().write(ontologyTermListToJSONArray(regionTerms).toString().getBytes());
     }
 
-    @ResourceMapping("proposalImpactGetRegionsForSector")
-    public void proposalImpactGetRegionsForSector(
+    @ResourceMapping("proposalImpactGetSectorsForRegion")
+    public void proposalImpactGetSectorForRegions(
             ResourceRequest request,
             ResourceResponse response,
-            @RequestParam(value = "sectorTermId", required = true) Long sectorTermId) throws IOException,
+            @RequestParam(value = "regionTermId", required = true) Long regionTermId) throws IOException,
             SystemException, PortalException {
 
         Map<OntologyTerm, List<OntologyTerm>> ontologyMap = getOntologyMap(request);
 
-        List<OntologyTerm> regionTerms = ontologyMap.get(OntologyTermLocalServiceUtil.getOntologyTerm(sectorTermId));
-        response.getPortletOutputStream().write(ontologyTermListToJSONArray(regionTerms).toString().getBytes());
+        List<OntologyTerm> sectorTerms = ontologyMap.get(OntologyTermLocalServiceUtil.getOntologyTerm(regionTermId));
+        response.getPortletOutputStream().write(ontologyTermListToJSONArray(sectorTerms).toString().getBytes());
     }
 
     @ResourceMapping("proposalImpactGetDataSeries")
@@ -101,7 +101,7 @@ public class ProposalImpactJSONController {
         OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(sectorTermId);
         OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionTermId);
 
-        ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
+       // ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
         FocusArea selectedFocusArea = new ProposalImpactUtil(contest).getFocusAreaAssociatedWithTerms(sectorOntologyTerm, regionOntologyTerm);
 
         // Create a impact series with all data series for one sector-region pair
@@ -121,7 +121,7 @@ public class ProposalImpactJSONController {
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
-        if (!permissions.getCanEdit()) {
+        if (!permissions.getCanEdit() && !permissions.getCanFellowActions()) {
             responseJSON.put("success", false);
             response.getPortletOutputStream().write(responseJSON.toString().getBytes());
             return;
@@ -149,7 +149,7 @@ public class ProposalImpactJSONController {
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
-        if (!permissions.getCanEdit()) {
+        if (!permissions.getCanEdit() && !permissions.getCanFellowActions()) {
             responseJSON.put("success", false);
             response.getPortletOutputStream().write(responseJSON.toString().getBytes());
             return;

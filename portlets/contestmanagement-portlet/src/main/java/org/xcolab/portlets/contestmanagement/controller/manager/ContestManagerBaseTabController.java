@@ -20,7 +20,6 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
     protected TabWrapper tabWrapper;
 
     static final String NO_PERMISSION_TAB_VIEW = "details/noPermissionTab";
-    private final String DEFAULT_SUCCESS_MESSAGE = "Changes saved!";
     static final String NOT_FOUND_TAB_VIEW = "notFound";
 
     @ModelAttribute("tabs")
@@ -52,27 +51,6 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
 
     public void setSuccessRenderRedirect (ActionResponse response, String tabName) throws Exception{
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName);
-    }
-
-    public void setErrorRenderParameter(ActionResponse response, String errorActionParameter){
-        response.setRenderParameter("error", "true");
-        response.setRenderParameter("action", errorActionParameter);
-    }
-    public void setNoPermissionErrorRenderParameter(ActionResponse response){
-        setErrorRenderParameter(response, "showNoPermission");
-    }
-
-    public void setNotFoundErrorRenderParameter(ActionResponse response){
-        setErrorRenderParameter(response, "showNotFound");
-    }
-
-    public void addActionSuccessMessageToSession(PortletRequest request, String successMessage){
-        PortletSession session = request.getPortletSession();
-        session.setAttribute("actionSuccessMessage" , successMessage, PortletSession.APPLICATION_SCOPE);
-    }
-
-    public void addActionSuccessMessageToSession(PortletRequest request){
-        addActionSuccessMessageToSession(request, DEFAULT_SUCCESS_MESSAGE);
     }
 
 }
