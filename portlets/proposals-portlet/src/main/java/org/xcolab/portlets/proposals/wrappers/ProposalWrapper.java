@@ -403,6 +403,7 @@ public class ProposalWrapper {
         try {
             return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

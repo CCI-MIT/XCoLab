@@ -42,6 +42,26 @@
                             <a href="${contest.resourcesUrl}" target="_blank" >Read more ...</a>
                         </c:if>
                     </p>
+                    <c:if test="${contest.showSubContests}">
+                    <table>
+                        <tr>
+                            <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
+                                <div class="subcontests">
+                                    <span class="title">To create your plan, combine proposals from these sector workspaces:</span>
+                                    <ul>
+                                        <c:forEach items="${contest.subContests}" var="subContest">
+                                            <li>
+                                        <span>
+                                        <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
+                                        </span>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    </c:if>
                     <c:if test="${contest.hasFocusArea }">
                         <table style="width: 100%; table-layout: fixed;">
                             <tr>
@@ -180,23 +200,6 @@
                             <div class="button-wrapper">
                                 <a class="detailbutton"	href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion</a><c:if test="${contest.commentsCount > 0}"> <div class="discussion-button-badge">${contest.commentsCount}</div></c:if>
                             </div>
-                        </div>
-                    </td>
-
-                    <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
-                        <div class="subcontests">
-                            <c:if test="${contest.showSubContests}">
-                                <span class="title">To create your plan, combine proposals from these sector workspaces:</span>
-                                <ul>
-                                    <c:forEach items="${contest.subContests}" var="subContest">
-                                        <li>
-                                            <span>
-                                            <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
-                                            </span>
-                                        </li>
-                                    </c:forEach>
-                                </ul>
-                            </c:if>
                         </div>
                     </td>
                 </tr>

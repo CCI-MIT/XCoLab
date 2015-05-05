@@ -94,6 +94,12 @@
 	text-align: center;
 }
 
+.datetimepicker{
+	text-align: center;
+	margin-top: 5px;
+	width: 95%;
+}
+
 .xdsoft_datetimepicker .xdsoft_label i,
 .xdsoft_datetimepicker .xdsoft_prev,
 .xdsoft_datetimepicker .xdsoft_next,

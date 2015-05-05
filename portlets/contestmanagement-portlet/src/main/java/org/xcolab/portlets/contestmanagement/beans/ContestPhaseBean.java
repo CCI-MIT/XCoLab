@@ -67,7 +67,6 @@ public class ContestPhaseBean {
         }
     }
 
-
     public ContestPhaseBean( Long contestPhaseType, Date phaseStartDate, Date phaseEndDate, String contestPhaseAutopromote,  Boolean fellowScreeningActive) {
         this.phaseStartDate = phaseStartDate;
         this.phaseEndDate = phaseEndDate;
@@ -137,16 +136,21 @@ public class ContestPhaseBean {
         return phaseEndDateFormatted;
     }
 
+    public void setPhaseEndDateFormatted(String phaseEndDateFormatted){
+        if(phaseEndDateFormatted != null){
+            try {
+                this.phaseEndDate = dateFormat.parse(phaseEndDateFormatted);
+            } catch(Exception e){
+            }
+        }
+    }
+
     public Date getPhaseEndDate() {
         return phaseEndDate;
     }
 
     public void setPhaseEndDate(Date phaseEndDate) {
         this.phaseEndDate = phaseEndDate;
-    }
-
-    public void setPhaseEndDate(String phaseEndDate) throws Exception{
-        this.phaseEndDate = dateFormat.parse(phaseEndDate);
     }
 
     public Date getPhaseBufferEndDated() {
@@ -187,5 +191,13 @@ public class ContestPhaseBean {
             isPhaseBufferEndDateAfterPhaseEndDate = (this.phaseBufferEndDated.after(this.phaseEndDate));
         }
         return isPhaseBufferEndDateAfterPhaseEndDate;
+    }
+
+    public Long getContestScheduleId() {
+        return contestScheduleId;
+    }
+
+    public void setContestScheduleId(Long contestScheduleId) {
+        this.contestScheduleId = contestScheduleId;
     }
 }

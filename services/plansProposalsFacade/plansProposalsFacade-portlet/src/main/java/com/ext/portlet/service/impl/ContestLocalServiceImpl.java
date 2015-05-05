@@ -1100,7 +1100,17 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                     .add(PropertyFactoryUtil.forName("contestTier").eq(contestTier))
                     .add(PropertyFactoryUtil.forName("focusAreaId").in(focusAreaOntologyTermIds));
 
-        return ContestLocalServiceUtil.dynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
+        return contestPersistence.findWithDynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
+    }
+
+    public List<Contest> getContestsByContestScheduleId(Long contestScheduleId) throws Exception{
+
+        DynamicQuery queryContestsByTierLevelAndOntologyTermIds =
+                DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
+                        .add(PropertyFactoryUtil.forName("contestScheduleId").eq(contestScheduleId))
+                        .add(PropertyFactoryUtil.forName("ContestPK").ne(0L));
+
+        return contestPersistence.findWithDynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
     }
 
     public List<Contest> getSubContestsByOntologySpaceId(Contest contest, Long ontologySpaceId) throws Exception{

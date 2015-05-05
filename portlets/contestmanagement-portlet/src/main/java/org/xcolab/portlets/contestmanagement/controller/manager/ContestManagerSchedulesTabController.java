@@ -1,5 +1,8 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -14,9 +17,11 @@ import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
+import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.*;
+import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -35,21 +40,30 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
     }
 
     @RequestMapping(params = "tab=SCHEDULES")
-    public String showAdminTabController(PortletRequest request, PortletResponse response, Model model,
+    public String showScheduleTabController(PortletRequest request, PortletResponse response, Model model,
                                          @RequestParam(value = "elementId", required = false) Long elementId)
             throws PortalException, SystemException {
 
         if(!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
+
+        try{
+            Long scheduleId = elementId != null ? elementId : getFirstScheduleId();
+            model.addAttribute("contestScheduleWrapper", new ContestScheduleWrapper(scheduleId));
+            model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(scheduleId));
+        } catch (Exception e){
+            _log.warn("Show contest schedule failed with: ", e);
+            _log.warn(e);
+            return NOT_FOUND_TAB_VIEW;
+        }
+
         setPageAttributes(request, model, tab);
-        model.addAttribute("contestScheduleWrapper", new ContestScheduleWrapper(elementId));
-        model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(elementId));
         return TAB_VIEW;
     }
 
     @RequestMapping(params = "action=updateContestSchedule")
-    public void updateTeamTabController(ActionRequest request, Model model,
+    public void updateScheduleTabController(ActionRequest request, Model model,
                                         @ModelAttribute ContestScheduleWrapper updateContestScheduleWrapper,
                                         ActionResponse response) {
 
@@ -61,7 +75,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         try {
             updateContestScheduleWrapper.persist();
             SetRenderParameterUtil.addActionSuccessMessageToSession(request);
-            setSuccessRenderRedirect(response, tab.getName());
+            setSuccessRenderRedirect(response, tab.getName(), updateContestScheduleWrapper.getScheduleId());
         } catch(Exception e){
             _log.warn("Update contest schedule failed with: ", e);
             _log.warn(e);
@@ -74,4 +88,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         return TAB_VIEW;
     }
 
+    private Long getFirstScheduleId()throws Exception{
+        return ContestScheduleLocalServiceUtil.getContestSchedules(0,Integer.MAX_VALUE).get(0).getId();
+    }
 }

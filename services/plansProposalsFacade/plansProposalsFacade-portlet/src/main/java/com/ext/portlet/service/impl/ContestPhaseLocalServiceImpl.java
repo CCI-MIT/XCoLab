@@ -198,9 +198,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         DynamicQuery queryPhasesForContestScheduleIdAndPhaseType =
                 DynamicQueryFactoryUtil.forClass(ContestPhase.class, PortletClassLoaderUtil.getClassLoader())
                         .add(PropertyFactoryUtil.forName("contestScheduleId").eq(contestScheduleId))
-                        .add(PropertyFactoryUtil.forName("contestPhaseType").eq(contestPhaseType));
+                        .add(PropertyFactoryUtil.forName("ContestPhaseType").eq(contestPhaseType));
 
-        return ContestPhaseLocalServiceUtil.dynamicQuery(queryPhasesForContestScheduleIdAndPhaseType);
+        return contestPhasePersistence.findWithDynamicQuery(queryPhasesForContestScheduleIdAndPhaseType);
 
     }
 

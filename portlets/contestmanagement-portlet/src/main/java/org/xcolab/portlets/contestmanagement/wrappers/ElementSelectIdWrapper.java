@@ -14,6 +14,7 @@ public class ElementSelectIdWrapper {
 
     public ElementSelectIdWrapper(Long elementId) {
         this.elementId = elementId;
+        selectionItems = ContestScheduleWrapper.getAllScheduleTemplateSelectionItems();
     }
 
     public Long getElementId() {
