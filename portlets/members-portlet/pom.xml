@@ -130,7 +130,7 @@
 			<groupId>com.liferay.portal</groupId>
 			<artifactId>util-taglib</artifactId>
 			<version>${liferay.version}</version>
-			<!-- <scope>provided</scope>-->
+			<scope>provided</scope>
 		</dependency>
 		
         <dependency>
