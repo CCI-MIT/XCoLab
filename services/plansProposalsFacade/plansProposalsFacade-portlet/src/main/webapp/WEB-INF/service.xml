@@ -25,4 +25,5 @@
     <service-builder-import file="services/service-login.xml" />
     <service-builder-import file="services/service-staffmembers.xml" />
     <service-builder-import file="services/service-points.xml" />
+    <service-builder-import file="services/service-users.xml" />
 </service-builder>

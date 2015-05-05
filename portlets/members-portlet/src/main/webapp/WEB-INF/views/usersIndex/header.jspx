@@ -1,0 +1,103 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
+	<div id="bread" class="pro">
+		<a href="/web/guest/community">Community</a>&#160; <img
+			src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />&#160;
+		<a href="/web/guest/members">Members</a>
+	</div>
+
+	<!-- HELP DIVS -->
+	<div class="help" id="help1" style="display: none;">
+		<div class="helptop">
+			<span>Registration and Contacting Members</span>
+			<div class="closehelp">
+				<a href="javascript:;" onclick="jQuery.cookie('climatecolab_hide_members_msg', 'true'); jQuery('#help1').hide()"><img
+						src="/climatecolab-theme/images/help_close.png" width="20"
+						height="20" alt="X" /></a>
+			</div>
+		</div>
+		<div class="helptext">
+			Anyone in the world can become a Member of the Climate CoLab
+			community by&#160;<a href="/web/guest/loginregister">registering</a>
+			on the site. Send a message to a member by clicking on the screen
+			name below to open their profile and then selecting "Send message."
+		</div>
+		<script>
+			if (!jQuery.cookie("climatecolab_hide_members_msg")) jQuery("#help1").show();
+		</script>
+	</div>
+
+	<c:if test="${memberCategory == 'Staff'}">
+		<p>The Climate CoLab staff includes researchers affiliated with
+			the <a href="http://www.climatecolab.org/web/guest/resources/-/wiki/Main/Project%20staff" target="_blank">MIT Center for Collective Intelligence</a>. Members of the staff
+			work together to develop a long-term vision for the CoLab and
+			oversee its day-to-day operations.</p>
+	</c:if>
+
+	<!-- HELP DIVS -->
+	<c:if test="${memberCategory == 'Expert'}">
+		<p>
+			A group of world renowned experts, who serve on the Climate CoLab’s
+			&#160; <a href="/web/guest/resources/-/wiki/Main/Expert+Council">Expert
+			Council</a> and &#160; <a
+				href="/web/guest/resources/-/wiki/Main/Expert%20advisory%20board">Expert
+			Advisory Board</a> are a key part of the community.
+		</p>
+	</c:if>
+
+	<!-- HELP DIVS -->
+	<c:if test="${memberCategory == 'Fellow'}">
+		<p>
+			Climate CoLab <a
+				href="/web/guest/resources/-/wiki/Main/Climate%20Colab%20Fellows">Fellows</a>
+			are graduate students and professionals who coordinate CoLab
+			contest activity by undertaking outreach, commenting on proposals,
+			and managing the judging process.
+		</p>
+	</c:if>
+
+	<!-- HELP DIVS -->
+	<c:if test="${memberCategory == 'Advisor'}">
+		<p>
+			Climate CoLab <a
+				href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Advisors">Advisors</a>
+			are experts who provide overall guidance to CoLab contests by
+			defining topics, recruiting Judges, and communicating results to
+			key stakeholders.
+		</p>
+	</c:if>
+
+	<div class="comm_disc-head">
+		<div class="comm_info-left members">
+        	<span>${usersCount}</span> Members
+		</div>
+		<div>
+
+			<div class="users-filter" style="position: relative;">
+				<portlet:renderURL var="filterURL">
+				<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
+				<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+					<portlet:param name="memberCategory" value="${memberCategory}" />
+				</portlet:renderURL>
+				<form action="${filterURL }" id="filterUsersForm" method="post">
+					<input class="comm_search" type="text" value="${sortFilterPage.filter }" placeholder="Filter users" name="filter" />
+					<div class="blue-button">
+						<a href="javascript:document.forms[2].submit();">Search</a>
+					</div>
+
+					<!--
+					<input class="comm_submit" type="submit" id="usersFilterSubmit" name="submit" value="Search" />
+					-->
+				</form>
+			</div>
+
+		</div>
+	</div>
+
+</jsp:root>

@@ -387,7 +387,7 @@ ul#blogArchives li {list-style: none; margin-bottom: 10px; background: none;}
 /** COMMUNITY **/
 
 /* community - discussions */
-.comm_disc-head { margin:0px 0 10px 0; height:40px; }
+.comm_disc-head { margin:0px 10px 10px 0; height:40px; }
 .comm_disc-title { float:left; width:330px;}
 #main.full .comm_disc-title { float:left; width:630px;}
 #main .comm_disc-title h2 { margin:0; }
