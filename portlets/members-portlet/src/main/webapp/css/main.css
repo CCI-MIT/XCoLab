@@ -1,7 +1,19 @@
+/*
+ * Copyright (c) 2010. M.I.T. All Rights Reserved
+ * Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+ * or the license.txt file included in this distribution for the full text of the license.
+ */
+
 table.activityFeed {
     width:100%
 }
 
+
+
+
+table td.activity-body {
+    padding-bottom:15px;
+}
 
 table.activityFeed td {
     vertical-align:top;
@@ -12,6 +24,7 @@ table.activityFeed td {
 table.activityFeed th {
     background: #E3DFD7;
     padding-top:15px;
+    padding-bottom:5px;
 
 }
 
@@ -29,61 +42,8 @@ table.activityFeed td.activity {
 }
 
 h2.feedTitle {
-    font-family:Helvetica, sans-serif;
-    font-size:1.2em;
-    color:#009ebb;
-    font-weight:bold;
-    margin-bottom:20px;
 
 }
 
 
 
-.community .colab .iceCmdSrtHdr .column-hoverDesc {
-	width: 10px;
-    height: 10px;
-    display: block;
-    margin-top: auto;
-    margin-left: 5px;
-	
-    background: url(/climatecolab-theme/images/sort-arrow-down_on.gif) no-repeat center;
-}
-
-.community .colab .iceCmdSrtHdr .column-hoverAsc {
-    width: 10px;
-    height: 10px;
-    display: block;
-    margin-top: auto;
-    margin-left: 5px;
-    
-    background: url(/climatecolab-theme/images/sort-arrow-up_on.gif) no-repeat center;
-}
-
-
-#content .membersCategories .c a {
-	color: #333;
-	cursor: default;
-}
-
-.comm_info-large {
-	position: relative;
-}
-
-#clearSearchBox {
-    position: absolute;
-    right: 175px;
-    background: #bbb;
-    border-radius: 5px;
-    font-size: 10px;
-    display: block;
-    width: 12px;
-    height: 12px;
-    text-align: center;
-    color: #fff;
-    top: 12px;
-    cursor: pointer;
-}
-
-#clearSearchBox:hover {
-	background: #aaa;
-}

@@ -6,6 +6,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.NoSuchImpactDefaultSeriesException;
 import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.ProposalImpactAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.ImpactDefaultSeries;
@@ -32,6 +33,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.enums.MemberRoleChoiceAlgorithm;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
+import org.xcolab.portlets.proposals.utils.ProposalImpactValueFilterAlgorithm;
 
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
@@ -164,8 +166,9 @@ public class ProposalImpactSeries {
             if (seriesTypeToEditableMap.get(seriesType)) {
                 ProposalImpactSeriesValues seriesValues = this.seriesTypeToSeriesMap.get(seriesType);
                 for (ImpactIteration iteration : impactIterations) {
+                    double filteredValue = ProposalImpactValueFilterAlgorithm.filterValueForImpactSeriesType(seriesValues.getValueForYear(iteration.getYear()), seriesType);
                     ProposalLocalServiceUtil.setAttribute(author.getUserId(), proposal.getProposalId(), seriesType,
-                            focusArea.getId(), "", iteration.getYear(), seriesValues.getValueForYear(iteration.getYear()));
+                            focusArea.getId(), "", iteration.getYear(), filteredValue);
                 }
 
             }
@@ -280,11 +283,11 @@ public class ProposalImpactSeries {
                     ImpactDefaultSeriesDataLocalServiceUtil.getDefaultSeriesDataBySeriesIdAndYear(bauSeries.getSeriesId(),
                             (int) currentYear).getValue();
 
-            double reductionRate = seriesTypeToSeriesMap.get(ProposalAttributeKeys.IMPACT_REDUCTION).getValueForYear(currentYear);
-            double adoptionRate = seriesTypeToSeriesMap.get(ProposalAttributeKeys.IMPACT_ADOPTION_RATE).getValueForYear(currentYear);
+            double reductionRate = seriesTypeToSeriesMap.get(ProposalImpactAttributeKeys.IMPACT_REDUCTION).getValueForYear(currentYear);
+            double adoptionRate = seriesTypeToSeriesMap.get(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE).getValueForYear(currentYear);
 
             // Round to 2 decimal digits
-            double resultValue = Math.round((bauValue * (1.0 - reductionRate * 0.01 * adoptionRate * 0.01)) * 100.0) / 100.0;
+            double resultValue = Math.round((bauValue * (reductionRate * 0.01 * adoptionRate * 0.01)) * 100.0) / 100.0;
             resultValues.putSeriesValue(currentYear, resultValue);
         }
     }

@@ -526,7 +526,7 @@ div.selected {
 #impact .blue-bg {
     font-size: 13px;
     color: white;
-    background: #a7d4db;
+    background: #30a3fb;
     border: 2px white solid;
 }
 
@@ -639,6 +639,15 @@ div.spinner {
     padding-top: 5px;
 }
 
+select[disabled] {
+    opacity: 0.5;
+}
+
+tr.impact-series-clickable:hover,
+tr#impact-new-series-row:hover {
+    background-color: #eaf2fb;
+}
+
 .subcontests .title {
     font-size: 16px;
     color:#66af45;
@@ -659,3 +668,4 @@ div.spinner {
     white-space: nowrap;
     display: inline-block;
 }
+

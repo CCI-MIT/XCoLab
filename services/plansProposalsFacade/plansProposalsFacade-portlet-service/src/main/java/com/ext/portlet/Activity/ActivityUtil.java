@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
@@ -51,18 +52,17 @@ public class ActivityUtil {
     }
 
     public static List<SocialActivity> retrieveWindowedActivities(int start, int end) throws SystemException, PortalException {
-    	return retrieveWindowedActivities(start, end, false);
+        return retrieveWindowedActivities(start, end, false);
     }
-    
+
     public static List<SocialActivity> retrieveWindowedActivities(int start, int end, boolean showAdmin) throws SystemException, PortalException {
         Hits hits;
-    	if (showAdmin) {
+        if (showAdmin) {
             hits = getAllAggregatedActivitySearchResults(start, end);
-    	}
-    	else {
+        } else {
             List<Long> administratorsIds = getAdministratorIds();
-    		hits = getAggregatedActivitySearchResultsExcludingUsers(administratorsIds, start, end);
-    	}
+            hits = getAggregatedActivitySearchResultsExcludingUsers(administratorsIds, start, end);
+        }
 
         return retrieveAggregatedSocialActivities(hits);
     }
@@ -176,8 +176,7 @@ public class ActivityUtil {
             for (SocialActivity socialActivity : socialActivities) {
                 if (curMin == null || socialActivity.getCreateDate() - curMin.getCreateDate() < AGGREGATION_TIME_WINDOW) {
                     curMin = socialActivity;
-                }
-                else {
+                } else {
                     aggregatedActivities.add(curMin);
                     curMin = socialActivity;
                 }
@@ -243,10 +242,25 @@ public class ActivityUtil {
         Role r = RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, ADMINISTRATOR_ROLE_NAME);
 
         List<Long> administratorsIds = new ArrayList<Long>();
-        for (long userId: UserLocalServiceUtil.getRoleUserIds(r.getRoleId())) {
+        for (long userId : UserLocalServiceUtil.getRoleUserIds(r.getRoleId())) {
             administratorsIds.add(userId);
         }
 
         return administratorsIds;
     }
+
+    public static HashMap<Long,Integer> getUsersActivityCount() throws SystemException, PortalException {
+
+        List<User> liferayUsers = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
+        HashMap<Long, Integer> activityCounts = new HashMap<Long, Integer>();
+
+        for(User u:liferayUsers)
+        {
+            Long userId = u.getUserId();
+            activityCounts.put(userId, SocialActivityLocalServiceUtil.getUserActivitiesCount(userId));
+        }
+
+        return activityCounts;
+
+}
 }

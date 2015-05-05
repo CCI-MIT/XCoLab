@@ -98,9 +98,14 @@
 	<import class="com.ext.portlet.model.ProposalSupporter" />
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
+	<import class="com.ext.portlet.model.Role_" />
+	<import class="com.ext.portlet.model.RolesCategory" />
+	<import class="com.ext.portlet.model.SocialActivity" />
 	<import class="com.ext.portlet.model.StaffMember" />
 	<import class="com.ext.portlet.model.TrackedVisit" />
 	<import class="com.ext.portlet.model.TrackedVisitor2User" />
+	<import class="com.ext.portlet.model.User_" />
+	<import class="com.ext.portlet.model.Users_Roles" />
 	<class name="com.ext.portlet.model.impl.ActivitySubscriptionImpl" table="xcolab_ActivitySubscription">
 		<cache usage="read-write" />
 		<id name="pk" type="long">
@@ -1193,6 +1198,28 @@
 		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 	</class>
+	<class name="com.ext.portlet.model.impl.Role_Impl" table="xcolab_Role_">
+		<cache usage="read-write" />
+		<id name="roleId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.RolesCategoryImpl" table="xcolab_RolesCategory">
+		<cache usage="read-write" />
+		<id name="roleId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="categoryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="roleOrdinal" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.SocialActivityImpl" table="xcolab_SocialActivity">
+		<cache usage="read-write" />
+		<id name="activityId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
 	<class name="com.ext.portlet.model.impl.StaffMemberImpl" table="xcolab_StaffMember">
 		<cache usage="read-write" />
 		<id name="id" column="id_" type="long">
@@ -1231,5 +1258,20 @@
 		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.User_Impl" table="xcolab_User_">
+		<cache usage="read-write" />
+		<id name="userId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="screenName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.Users_RolesImpl" table="xcolab_Users_Roles">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.Users_RolesPK">
+			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="roleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
 	</class>
 </hibernate-mapping>

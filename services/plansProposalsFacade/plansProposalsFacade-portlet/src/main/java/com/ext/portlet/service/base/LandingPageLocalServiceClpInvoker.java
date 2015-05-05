@@ -41,14 +41,14 @@ public class LandingPageLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName626;
-    private String[] _methodParameterTypes626;
-    private String _methodName627;
-    private String[] _methodParameterTypes627;
-    private String _methodName632;
-    private String[] _methodParameterTypes632;
-    private String _methodName633;
-    private String[] _methodParameterTypes633;
+    private String _methodName658;
+    private String[] _methodParameterTypes658;
+    private String _methodName659;
+    private String[] _methodParameterTypes659;
+    private String _methodName664;
+    private String[] _methodParameterTypes664;
+    private String _methodName665;
+    private String[] _methodParameterTypes665;
 
     public LandingPageLocalServiceClpInvoker() {
         _methodName0 = "addLandingPage";
@@ -133,23 +133,23 @@ public class LandingPageLocalServiceClpInvoker {
                 "com.ext.portlet.model.LandingPage"
             };
 
-        _methodName626 = "getBeanIdentifier";
+        _methodName658 = "getBeanIdentifier";
 
-        _methodParameterTypes626 = new String[] {  };
+        _methodParameterTypes658 = new String[] {  };
 
-        _methodName627 = "setBeanIdentifier";
+        _methodName659 = "setBeanIdentifier";
 
-        _methodParameterTypes627 = new String[] { "java.lang.String" };
+        _methodParameterTypes659 = new String[] { "java.lang.String" };
 
-        _methodName632 = "createNewLandingPage";
+        _methodName664 = "createNewLandingPage";
 
-        _methodParameterTypes632 = new String[] {
+        _methodParameterTypes664 = new String[] {
                 "java.lang.String", "java.lang.String"
             };
 
-        _methodName633 = "store";
+        _methodName665 = "store";
 
-        _methodParameterTypes633 = new String[] {
+        _methodParameterTypes665 = new String[] {
                 "com.ext.portlet.model.LandingPage"
             };
     }
@@ -243,26 +243,26 @@ public class LandingPageLocalServiceClpInvoker {
             return LandingPageLocalServiceUtil.updateLandingPage((com.ext.portlet.model.LandingPage) arguments[0]);
         }
 
-        if (_methodName626.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes626, parameterTypes)) {
+        if (_methodName658.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes658, parameterTypes)) {
             return LandingPageLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName627.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes627, parameterTypes)) {
+        if (_methodName659.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes659, parameterTypes)) {
             LandingPageLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName632.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
+        if (_methodName664.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes664, parameterTypes)) {
             return LandingPageLocalServiceUtil.createNewLandingPage((java.lang.String) arguments[0],
                 (java.lang.String) arguments[1]);
         }
 
-        if (_methodName633.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
+        if (_methodName665.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes665, parameterTypes)) {
             LandingPageLocalServiceUtil.store((com.ext.portlet.model.LandingPage) arguments[0]);
 
             return null;

@@ -105,8 +105,8 @@ public class OpenIdController {
             JSONObject json = new GoogleAuthHelper(themeDisplay.getPortalURL() + SSOKeys.OPEN_ID_RESPONSE_URL).getUserInfoJson(authCode);
 
             String openId = json.getString("openid_id");
-            String firstName = json.getString("given_name");
-            String lastName = json.getString("family_name");
+            String firstName = json.getString("given_name").replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
+            String lastName = json.getString("family_name").replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
             String emailAddress = json.getString("email");
             String profilePicURL = json.getString("picture");
 
@@ -161,7 +161,7 @@ public class OpenIdController {
                         session.setAttribute(SSOKeys.SSO_EMAIL, emailAddress);
                         // Screenname = email prefix until @ character
                         String screenName = emailAddress.substring(0, emailAddress.indexOf(CharPool.AT));
-                        screenName = screenName.replaceAll("[^a-zA-Z0-9]","");
+                        screenName = screenName.replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
                         session.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
                     }
                     if (Validator.isNotNull(firstName)) session.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName);
