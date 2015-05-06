@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class PointTypeServiceClpInvoker {
-    private String _methodName610;
-    private String[] _methodParameterTypes610;
-    private String _methodName611;
-    private String[] _methodParameterTypes611;
+    private String _methodName642;
+    private String[] _methodParameterTypes642;
+    private String _methodName643;
+    private String[] _methodParameterTypes643;
 
     public PointTypeServiceClpInvoker() {
-        _methodName610 = "getBeanIdentifier";
+        _methodName642 = "getBeanIdentifier";
 
-        _methodParameterTypes610 = new String[] {  };
+        _methodParameterTypes642 = new String[] {  };
 
-        _methodName611 = "setBeanIdentifier";
+        _methodName643 = "setBeanIdentifier";
 
-        _methodParameterTypes611 = new String[] { "java.lang.String" };
+        _methodParameterTypes643 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName610.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes610, parameterTypes)) {
+        if (_methodName642.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes642, parameterTypes)) {
             return PointTypeServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName611.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes611, parameterTypes)) {
+        if (_methodName643.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes643, parameterTypes)) {
             PointTypeServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

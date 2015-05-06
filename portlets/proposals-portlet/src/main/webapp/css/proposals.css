@@ -634,6 +634,10 @@ div.spinner {
 #impact-summary tr {
     opacity: 1.0;
 }
+.subcontests{
+    padding-bottom: 30px;
+    padding-top: 5px;
+}
 
 select[disabled] {
     opacity: 0.5;
@@ -651,12 +655,12 @@ tr#impact-new-series-row:hover {
 
 .subcontests ul{
     margin-left: 0px;
-    width:550px;
+    width: 100%;
     overflow:hidden;
 }
 .subcontests li{
     margin-left: 0px;
-    width:46%;
+    width:49%;
     line-height:1.5em;
     float:left;
     text-overflow: ellipsis;

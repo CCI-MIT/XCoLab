@@ -51,13 +51,13 @@
     <!-- HTML templates -->
     <script id="impactSeriesEditTableRowTemplate" type="text/x-handlebars-template">
         <tr id="impact-edit-row-{{series.name}}" class="impact-edit-row">
-            <td>{{series.description}}
+            <td width="45%">{{series.description}}
                 <div class="addprophelp"><!-- Todo replace dummy text {{series.helpText}}--> dummy text </div>
             </td>
             {{#each series.values}}
                 {{#if ../series.editable}}
                     <td class="impact-value">
-                        <input type="text" name="{{this.year}}" value="{{this.value}}" class="series-value"/>
+                        <input type="text" name="{{this.year}}" value="{{this.value}}" class="series-value" onClick="this.setSelectionRange(0, this.value.length)"/>
                         <!-- Using % as unit, since we only use it till now; may need refinement in the future -->
                         <span style="margin-left: 3px">%</span>
                     </td>
@@ -431,9 +431,19 @@
                 $('#impact table tr.impact-edit-row input').on('blur', function() {
                     // check valid input
                     var floatValue = parseFloat($(this).attr('value'));
-                    if (floatValue &lt; 0) {
-                        $(this).attr('value', "0");
-                    } else if (floatValue &gt; 100) {
+
+                    //  descendant from IMPACT_REDUCTION edit row -> allow negative values
+                    if ($(this).parents('#impact-edit-row-IMPACT_REDUCTION').length > 0) {
+                        if (floatValue &lt; -100.0) {
+                            $(this).attr('value', "-100");
+                        }
+                    } else {
+                        if (floatValue &lt; 0) {
+                            $(this).attr('value', "0");
+                        }
+                    }
+
+                    if (floatValue &gt; 100) {
                         $(this).attr('value', "100");
                     }
 

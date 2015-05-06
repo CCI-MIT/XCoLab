@@ -53,4 +53,7 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName);
     }
 
+    public void setSuccessRenderRedirect (ActionResponse response, String tabName, Long elementId) throws Exception{
+        response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName + "/elementId/" + elementId);
+    }
 }

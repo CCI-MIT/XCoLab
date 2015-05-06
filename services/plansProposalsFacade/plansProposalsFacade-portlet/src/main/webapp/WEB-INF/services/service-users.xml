@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2013. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
+<service-builder package-path="com.ext.portlet.users">
+
+    <entity name="Role_" local-service="true">
+        <column name="roleId" type="long" primary="true" />
+        <column name="name" type="String" />
+        <!--
+        <column name="categoryName" type="String" />
+        <column name="roleOrdinal" type="int"/>
+        -->
+        <column name="users" type="Collection" entity="User_" mapping-table="Users_Roles" />
+    </entity>
+
+    <entity name="RolesCategory" local-service="true">
+        <column name="roleId" type="long" primary="true"/>
+        <column name="categoryName" type="String"/>
+        <column name="roleOrdinal" type="int"/>
+    </entity>
+
+    <entity name="SocialActivity" local-service="true">
+    	<column name="activityId" type="long" primary="true" />
+    	<column name="userId" type="long" />
+    </entity>
+
+    <entity name="User_" local-service="true">
+        <column name="userId" type="long" primary="true" />
+        <column name="createDate" type="Date" />
+        <column name="screenName" type="String" />
+        <column name="roles" type="Collection" entity="Role_" mapping-table="Users_Roles" />
+        <finder return-type="Collection" name="UserId">
+            <finder-column name="userId" />
+        </finder>
+    </entity>
+
+    <entity name="Users_Roles" local-service="true">
+        <column name="userId" type="long" primary="true" />
+        <column name="roleId" type="long" primary="true" />
+    </entity>
+
+</service-builder>

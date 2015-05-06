@@ -1,6 +1,6 @@
 package org.xcolab.utils;
 
-import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.ProposalImpactAttributeKeys;
 import com.ext.portlet.model.ProposalAttribute;
 
 import java.util.HashMap;
@@ -37,8 +37,8 @@ public class ProposalAttributeDetectUpdateAlgorithm {
         this.attributeNameToAlgorithmMap = new HashMap<>();
 
         // Init maps
-        attributeNameToAlgorithmMap.put(ProposalAttributeKeys.IMPACT_REDUCTION, PROPOSAL_IMPACT_ATTRIBUTE_UPDATE);
-        attributeNameToAlgorithmMap.put(ProposalAttributeKeys.IMPACT_ADOPTION_RATE, PROPOSAL_IMPACT_ATTRIBUTE_UPDATE);
+        attributeNameToAlgorithmMap.put(ProposalImpactAttributeKeys.IMPACT_REDUCTION, PROPOSAL_IMPACT_ATTRIBUTE_UPDATE);
+        attributeNameToAlgorithmMap.put(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE, PROPOSAL_IMPACT_ATTRIBUTE_UPDATE);
     }
 
     public boolean hasBeenUpdated(String attributeName, long additionalId, long numericValue, double realValue) {

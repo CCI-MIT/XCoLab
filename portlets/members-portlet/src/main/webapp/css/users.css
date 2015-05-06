@@ -1,0 +1,29 @@
+/** userss list **/
+.userslist.table .column.screenName {
+	width: 345px;
+}
+
+.userslist.table .column.screenName .usersFlag {
+	position: relative;
+}
+
+/*
+.userslist.table .column.usersActivityCount {
+	width: 31px;
+}
+
+.userslist.table .column.usersCommentsCount {
+	width: 35px;
+}
+*/
+.userslist.table .column.usersActivityCount {
+	width: 105px;
+}
+
+.userslist.table .column.usersCategory {
+	width: 105px;
+}
+
+.userslist.table .column.usersSeniority {
+	width: 105px;
+}

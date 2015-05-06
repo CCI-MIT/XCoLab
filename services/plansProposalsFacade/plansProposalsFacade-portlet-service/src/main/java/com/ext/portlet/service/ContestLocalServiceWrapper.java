@@ -791,6 +791,12 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByContestScheduleId(
+        java.lang.Long contestScheduleId) throws java.lang.Exception {
+        return _contestLocalService.getContestsByContestScheduleId(contestScheduleId);
+    }
+
+    @Override
     public java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
         com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
         throws java.lang.Exception {

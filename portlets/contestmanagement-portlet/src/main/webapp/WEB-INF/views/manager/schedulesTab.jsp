@@ -22,7 +22,7 @@
 		<portlet:param name="action_errorForwardToPage" value="schedulesTab" />
 		<portlet:param name="tab" value="SCHEDULES" />
 		<portlet:param name="manager" value="true" />
-		<portlet:param name="elementId" value="true" />
+		<portlet:param name="elementId" value="${contestScheduleWrapper.scheduleId}" />
 		<portlet:param name="action" value="updateContestSchedule" />
 	</portlet:actionURL>
 
@@ -33,7 +33,7 @@
 				<strong class="inputTitleLeft">Schedule template:</strong>
 				<div class="addpropInputContainer">
 					<form:select path="elementId" id="changeContestScheduleSelect" cssClass="wideLargeInput">
-						<form:options items="${scheduleTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
+						<form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value" itemLabel="lable"/>
 					</form:select>
 					<div class="reg_errors">
 						<form:errors cssClass="alert alert-error" path="elementId" />
@@ -43,6 +43,7 @@
 		</form:form>
 
 		<form:form action="${updateContestScheduleURL }" commandName="contestScheduleWrapper" id="editForm" method="post">
+			<form:hidden path="scheduleId"/>
 			<div class="addpropbox">
 				<strong class="inputTitleLeft">Schedule name:</strong>
 				<form:input path="scheduleName" cssClass="wideLargeInput"/>
@@ -52,23 +53,25 @@
 
 				<div class="outerVerticalCenter floatRight">
 					<div class="blue-button innerVerticalCenter" >
-						<a href="#" onclick="document.getElementById('editForm').submit()">SAVE changes</a>
+						<a href="#" onclick="document.getElementById('editForm').submit()">SAVE changes to name/phases</a>
 					</div>
 				</div>
 			</div>
 
+			<div class="addpropbox">
+				<strong class="inputTitleLeft">Contest phase for this schedule:</strong>
 			<table class="contestOverview">
-					<col span="2" class="extraSmallColumn"/>
-					<col span="1" class="wideColumn"/>
 					<col span="1" class="extraSmallColumn"/>
+					<col span="1" class="wideColumn"/>
+					<!-- <col span="1" class="extraSmallColumn"/> -->
 					<col span="2" class="mediumColumn"/>
 				<thead>
-					<tr>
-						<th><input type="checkbox" id="selectAllCheckbox"/>
-						</th>
+					<tr style="cursor: default;">
+						<!-- <th><input type="checkbox" id="selectAllCheckbox"/>
+						</th> -->
 						<th>#</th>
 						<th>Phase Type</th>
-						<th>Buffer</th>
+						<!-- <th>Buffer</th> -->
 						<th>Start Date</th>
 						<th>End Date</th>
 					</tr>
@@ -83,18 +86,22 @@
 								ondragenter="dragEnter(event)"
 								ondragover="dragOver(event)"
 								ondragleave="dragLeave(event)"
+								style="cursor: default;"
 								id = "${schedulePhases.contestSchedulePK}">
 
-								<form:hidden path="schedulePhases[${x.index}].contestSchedulePK"
-											 data-form-name="contestSchedulePK" />
+								<form:hidden path="schedulePhases[${x.index}].contestScheduleId"
+											 data-form-name="contestScheduleId" />
 
-								<td ><input type="checkbox"/></td>
+								<form:hidden path="schedulePhases[${x.index}].contestPhaseType"
+											 data-form-name="contestPhaseType" />
+
+								<!-- <td ><input type="checkbox"/></td> -->
 								<td >${x.index + 1}</td>
 								<td >${schedulePhase.contestPhaseTypeTitle}</td>
 
-								<td>
+								<!-- <td>
 									<form:checkbox path="schedulePhases[${x.index}].hasBuffer"
-												   data-select-attribute="hasBufferCheckbox"/></td>
+												   data-select-attribute="hasBufferCheckbox"/></td> -->
 								<td>
 									<fmt:formatDate value="${schedulePhase.phaseStartDate}"
 													pattern="MM/dd/yyyy HH:mm"
@@ -123,8 +130,41 @@
 					</c:forEach>
 				</tbody>
 			</table>
-
+		</div>
 		</form:form>
+
+
+		<div class="addpropbox" style="margin-top: 20px;">
+			<strong class="inputTitleLeft">Contests using this schedule:</strong>
+			<table class="contestOverview">
+				<col span="1" class="extraSmallColumn"/>
+				<col span="1" class="wideColumn" style="text-align: left;"/>
+				<col span="1" class="smallColumn"/>
+				<col span="1" class="smallColumn"/>
+				<thead>
+				<tr style="cursor: default;">
+					<th>#</th>
+					<th>Title</th>
+					<th>Tier</th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${contestScheduleWrapper.contestsUsingSelectedSchedule}" var="contestWrapper" varStatus="x">
+						<tr style="cursor: default;">
+							<td >${x.index + 1}</td>
+							<td ><collab:contestLink contestId="${contestWrapper.contestPK}" text="${contestWrapper.contestShortName}"/></td>
+							<td>Tier ${contestWrapper.contestTier}</td>
+							<td>
+								<div class="blue-button innerVerticalCenter" >
+									<a href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+								</div>
+							</td>
+						</tr>
+					</c:forEach>
+					</tbody>
+			</table>
+		</div>
 	</div>
 
 	<script type="text/javascript">

@@ -44,6 +44,7 @@ public class StaffMembersPreferences implements Serializable {
         categories.put(12, "Fellows 2012 & 2013");
         categories.put(13, "Catalysts");
         categories.put(14, "Fellows 2015");
+        categories.put(15, "Impact Assessment Fellows 2015");
 
     }
 

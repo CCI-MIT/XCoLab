@@ -165,6 +165,8 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes697;
     private String _methodName699;
     private String[] _methodParameterTypes699;
+    private String _methodName700;
+    private String[] _methodParameterTypes700;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -502,9 +504,13 @@ public class ContestLocalServiceClpInvoker {
 
         _methodParameterTypes697 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName699 = "getSubContestsByOntologySpaceId";
+        _methodName699 = "getContestsByContestScheduleId";
 
-        _methodParameterTypes699 = new String[] {
+        _methodParameterTypes699 = new String[] { "java.lang.Long" };
+
+        _methodName700 = "getSubContestsByOntologySpaceId";
+
+        _methodParameterTypes700 = new String[] {
                 "com.ext.portlet.model.Contest", "java.lang.Long"
             };
     }
@@ -938,6 +944,11 @@ public class ContestLocalServiceClpInvoker {
 
         if (_methodName699.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes699, parameterTypes)) {
+            return ContestLocalServiceUtil.getContestsByContestScheduleId((java.lang.Long) arguments[0]);
+        }
+
+        if (_methodName700.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes700, parameterTypes)) {
             return ContestLocalServiceUtil.getSubContestsByOntologySpaceId((com.ext.portlet.model.Contest) arguments[0],
                 (java.lang.Long) arguments[1]);
         }
