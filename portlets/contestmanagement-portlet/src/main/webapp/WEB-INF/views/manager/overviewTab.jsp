@@ -24,6 +24,18 @@
 		<portlet:param name="manager" value="true" />
 	</portlet:resourceURL>
 
+
+
+	<div class="cmsDetailsBox">
+		<div style="margin-bottom: 40px;">
+			<div class="floatRight outerVerticalCenter">
+				<div class="blue-button innerVerticalCenter" >
+					<a href="/web/guest/cms/-/contestmanagement/createContest" target="_blank">Create new Contest</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<div class="cmsDetailsBox">
 		<div class="floatRight outerVerticalCenter">
 			<div class="innerVerticalCenter floatLeft">
