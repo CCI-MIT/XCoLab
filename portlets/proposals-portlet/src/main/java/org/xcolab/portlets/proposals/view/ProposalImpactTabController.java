@@ -138,6 +138,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private boolean hasImpactTabPermission(PortletRequest request) throws SystemException, PortalException{
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         // If not admin or fellow or IAF return false
-        return !(permissions.getCanAdminAll() || permissions.getCanFellowActions() || permissions.getCanIAFActions() || permissions.getCanIAFActions());
+        return (permissions.getCanAdminAll() || permissions.getCanFellowActions() || permissions.getCanIAFActions());
     }
 }

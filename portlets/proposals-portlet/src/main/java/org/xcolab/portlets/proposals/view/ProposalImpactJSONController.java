@@ -115,7 +115,7 @@ public class ProposalImpactJSONController {
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
-        if (!permissions.getCanEdit() && !permissions.getCanFellowActions()) {
+        if (!permissions.getCanEdit() && !permissions.getCanFellowActions() && !permissions.getCanIAFActions()) {
             responseJSON.put("success", false);
             response.getPortletOutputStream().write(responseJSON.toString().getBytes());
             return;
@@ -143,7 +143,7 @@ public class ProposalImpactJSONController {
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
-        if (!permissions.getCanEdit() && !permissions.getCanFellowActions()) {
+        if (!permissions.getCanEdit() && !permissions.getCanFellowActions() && !permissions.getCanIAFActions()) {
             responseJSON.put("success", false);
             response.getPortletOutputStream().write(responseJSON.toString().getBytes());
             return;
