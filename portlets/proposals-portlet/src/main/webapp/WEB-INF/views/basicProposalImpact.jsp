@@ -52,7 +52,9 @@
     <script id="impactSeriesEditTableRowTemplate" type="text/x-handlebars-template">
         <tr id="impact-edit-row-{{series.name}}" class="impact-edit-row">
             <td width="45%">{{series.description}}
-                <div class="addprophelp"><!-- Todo replace dummy text {{series.helpText}}--> dummy text </div>
+                <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+                <div class="addprophelp"><!-- --></div>
+                <div class="clearfix"><!-- --></div>
             </td>
             {{#each series.values}}
                 {{#if ../series.editable}}
@@ -113,7 +115,18 @@
                             <tr>
                                 <th style="width: 22.5%;"><!-- --></th>
                                 <th style="width: 22.5%;"><!-- --></th>
-                                <th class="blue-bg" style="width: 55%; text-align: center">Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]</th>
+                                <th class="blue-bg" style="width: 55%; text-align: center">
+                                    Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
+                                    <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+                                    <div class="addprophelp" style="color:white;">
+                                        This table shows a summary of the emission reductions for all sectors and regions
+                                        you submitted, in gigatons of carbon dioxide (CO2) equivalent (GtCO2e), for each decade listed.
+                                        <a href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">
+                                            Click here for more information.
+                                        </a>
+                                    </div>
+                                    <div class="clearfix"><!-- --></div>
+                                </th>
                             </tr>
                         </thead>
                     </table>
@@ -124,8 +137,6 @@
                                 <c:forEach var="impactIteration" items="${impactIterations}">
                                     <th class="blue-bg" style="text-align: center; width: ${55.0 / fn:length(impactIterations)}%">
                                         ${impactIteration.year}
-                                        <div class="addprophelp"><!-- Todo replace dummy text --> help text</div>
-                                        <div class="clearfix"><!-- --></div>
                                     </th>
                                 </c:forEach>
                             </tr>
@@ -241,6 +252,23 @@
         var newRegionTermId = 0;
         var newSectorTermId = 0;
 
+        // Help text constants
+        var helpTextMap =
+        {   "BAU" : <![CDATA["This data shows this region and sector’s predicted emissions \"if future development " +
+                "trends follow those of the past and no changes in policies take place\" (IPCC 2014), what is called " +
+                "\"business as usual\", or BAU. " +
+                "<a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#BAU'>" +
+                "Click here for more information on how these were calculated.<a>"]]>,
+            "IMPACT_REDUCTION" : <![CDATA["If your proposal were fully successful and all possible users used it, enter the percentage " +
+                "that your proposal would reduce emissions in this region and sector, compared to business as usual (BAU). " +
+                "<a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#fullyadopted'>" +
+                "Click here for more.<a>"]]>,
+            "IMPACT_ADOPTION_RATE" : <![CDATA["How rapidly will your proposal be adopted?  Enter reasonable estimates for the percentage " +
+                "of all possible users who would actually adopt your proposal in different years.  " +
+                "<a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#adoptionrate'>" +
+                "Click here for more.<a>"]]>
+        };
+
         jQuery(document).ready(function() {
             registerEventHandler();
 
@@ -268,6 +296,7 @@
                 }
             });
 
+
             $('table#impact-summary div.st-body-scroll').append(sgrip);
             */
         });
@@ -286,6 +315,15 @@
 
             // Change value in new series sector dropdown
             registerDropdownEventListener($('div#new-series select#region'), $('div#new-series select#sector'));
+            registerHelpEventHandler();
+        }
+
+        function registerHelpEventHandler() {
+            jQuery("#impact .helpTrigger").off("click");
+            jQuery("#impact .helpTrigger").click(function() {
+                var trigger = jQuery(this);
+                trigger.parent().find(".addprophelp").slideToggle("fast");
+            });
         }
 
         function disableEditMode() {
@@ -364,95 +402,113 @@
         function loadSeriesEditData(url) {
             setDetailViewSpinnerMode(true);
             $.getJSON(url, { get_param: 'value' }, function(data) {
-                setDetailViewSpinnerMode(false);
-                editedFocusArea = data.focusAreaId;
+                console.log("success " + data.success);
+                if (data.success === false) {
 
-                // Delete old edit rows
-                var editTable = $('div#impact-series-detail table#edit-table tbody');
-                editTable.empty();
-
-                // Add new rows
-                console.log("json: " + JSON.stringify(data));
-                var dataSeries = data.serieses.BAU;
-                var tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
-                tableRow.find('span.series-value').each(function(idx) {
-                    $(this).text(numeral($(this).text()).format('0,0.00'))
-                });
-                editTable.append(tableRow);
-                console.log("bau series"  + dataSeries);
-
-
-                dataSeries = data.serieses.IMPACT_REDUCTION;
-                tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
-                console.log("Reduction: " + JSON.stringify(dataSeries));
-                tableRow.find('span.series-value').each(function(idx) {
-                    $(this).text(numeral($(this).text()).format('0,0.00'))
-                });
-                editTable.append(tableRow);
-                console.log("reduction series"  + dataSeries);
-
-                dataSeries = data.serieses.IMPACT_ADOPTION_RATE;
-                tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
-                tableRow.find('span.series-value').each(function(idx) {
-                    $(this).text(numeral($(this).text()).format('0,0.00'))
-                });
-                editTable.append(tableRow);
-                console.log("adoption series"  + dataSeries);
-
-                dataSeries = {"name": "RESULT", "description": "Estimated emission reduction from this proposal [GtCO2e]", "editable": false,
-                "values": dataSeries.values};
-                tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
-                tableRow.find('span.series-value').each(function(idx) {
-                    $(this).text(numeral(parseFloat($(this).text())).format('0,0.00'));
-                });
-                tableRow.addClass("selected");
-                editTable.append(tableRow);
-                console.log("result json: " + JSON.stringify(dataSeries));
-
-                editedFocusArea = data.focusAreaId;
-
-                if (data.author != undefined) {
-                    $('div#author-info').show();
-                    // Set header fields
-                    var authorNameHtml = jQuery(impactSeriesAuthorTemplate({author: data.author}));
-                    $('div#impact-series-detail div#header span#author-name').html(authorNameHtml);
-                    $('div#impact-series-detail div#header span#save-date').text(data.updateDate);
-
+                    alert("Could not retrieve series data. Please contact the Administrator");
+                    setDetailViewSpinnerMode(false);
+                    dismissDetailView();
                 } else {
-                    $('div#author-info').hide();
-                }
+                    setDetailViewSpinnerMode(false);
+                    editedFocusArea = data.focusAreaId;
 
-                // Disable save button for unchanged new serieses
-                if (currentEditingRowIndex == ROW_INDEX_NONE_SELECTED) {
-                    $('a#save-button').parent().addClass('disabled');
-                }
+                    // Delete old edit rows
+                    var editTable = $('div#impact-series-detail table#edit-table tbody');
+                    editTable.empty();
 
-                // Register input event handler
-                $('#impact table tr.impact-edit-row input').on('blur', function() {
-                    // check valid input
-                    var floatValue = parseFloat($(this).attr('value'));
+                    // Add new rows
+                    console.log("json: " + JSON.stringify(data));
+                    var dataSeries = data.serieses.BAU;
+                    var tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
+                    tableRow.find('.addprophelp').html(helpTextMap.BAU);
+                    tableRow.find('span.series-value').each(function (idx) {
+                        $(this).text(numeral($(this).text()).format('0,0.00'))
+                    });
+                    editTable.append(tableRow);
+                    console.log("bau series" + dataSeries);
 
-                    //  descendant from IMPACT_REDUCTION edit row -> allow negative values
-                    if ($(this).parents('#impact-edit-row-IMPACT_REDUCTION').length > 0) {
-                        if (floatValue &lt; -100.0) {
-                            $(this).attr('value', "-100");
-                        }
+
+                    dataSeries = data.serieses.IMPACT_REDUCTION;
+                    tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
+                    tableRow.find('.addprophelp').html(helpTextMap.IMPACT_REDUCTION);
+                    console.log("Reduction: " + JSON.stringify(dataSeries));
+                    tableRow.find('span.series-value').each(function (idx) {
+                        $(this).text(numeral($(this).text()).format('0,0.00'))
+                    });
+                    editTable.append(tableRow);
+                    console.log("reduction series" + dataSeries);
+
+                    dataSeries = data.serieses.IMPACT_ADOPTION_RATE;
+                    tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
+                    tableRow.find('.addprophelp').html(helpTextMap.IMPACT_ADOPTION_RATE);
+                    tableRow.find('span.series-value').each(function (idx) {
+                        $(this).text(numeral($(this).text()).format('0,0.00'))
+                    });
+                    editTable.append(tableRow);
+                    console.log("adoption series" + dataSeries);
+
+                    dataSeries = {
+                        "name": "RESULT",
+                        "description": "Estimated emission reduction from this proposal [GtCO2e]",
+                        "editable": false,
+                        "values": dataSeries.values
+                    };
+                    tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
+                    tableRow.find('.helpTrigger').hide();
+                    tableRow.find('span.series-value').each(function (idx) {
+                        $(this).text(numeral(parseFloat($(this).text())).format('0,0.00'));
+                    });
+                    tableRow.addClass("selected");
+                    editTable.append(tableRow);
+                    registerHelpEventHandler();
+
+                    console.log("result json: " + JSON.stringify(dataSeries));
+
+                    editedFocusArea = data.focusAreaId;
+
+                    if (data.author != undefined) {
+                        $('div#author-info').show();
+                        // Set header fields
+                        var authorNameHtml = jQuery(impactSeriesAuthorTemplate({author: data.author}));
+                        $('div#impact-series-detail div#header span#author-name').html(authorNameHtml);
+                        $('div#impact-series-detail div#header span#save-date').text(data.updateDate);
+
                     } else {
-                        if (floatValue &lt; 0) {
-                            $(this).attr('value', "0");
+                        $('div#author-info').hide();
+                    }
+
+                    // Disable save button for unchanged new serieses
+                    if (currentEditingRowIndex == ROW_INDEX_NONE_SELECTED) {
+                        $('a#save-button').parent().addClass('disabled');
+                    }
+
+                    // Register input event handler
+                    $('#impact table tr.impact-edit-row input').on('blur', function () {
+                        // check valid input
+                        var floatValue = parseFloat($(this).attr('value'));
+
+                        //  descendant from IMPACT_REDUCTION edit row -> allow negative values
+                        if ($(this).parents('#impact-edit-row-IMPACT_REDUCTION').length > 0) {
+                            if (floatValue &lt; -100.0) {
+                                $(this).attr('value', "-100");
+                            }
+                        } else {
+                            if (floatValue &lt; 0) {
+                                $(this).attr('value', "0");
+                            }
                         }
-                    }
 
-                    if (floatValue &gt; 100) {
-                        $(this).attr('value', "100");
-                    }
+                        if (floatValue &gt; 100) {
+                            $(this).attr('value', "100");
+                        }
 
-                    userInputOccurred = true;
-                    $('a#save-button').parent().removeClass('disabled')
+                        userInputOccurred = true;
+                        $('a#save-button').parent().removeClass('disabled')
+                        recalculateEditSeriesValues();
+                    });
+
                     recalculateEditSeriesValues();
-                });
-
-                recalculateEditSeriesValues();
+                }
             });
         }
 
@@ -552,10 +608,11 @@
 
             setDetailViewSpinnerMode(true);
             $.post(url, {"json" : JSON.stringify(postJson)}, function(response) {
+                console.log("responseData " + response);
                 responseData = JSON.parse(response);
                 console.log("responseData " + responseData);
-                if (!responseData.success) {
-                    alert("Could not process request");
+                if (responseData.success === false) {
+                    alert("Could not process request. Please contact the Administrator");
                 } else {
                     var resultValues = $('div#impact-series-detail table#edit-table #impact-edit-row-RESULT td span');
 
@@ -724,8 +781,8 @@
                 $.post(url, {}, function(response) {
                     var responseData = JSON.parse(response);
                     setDetailViewSpinnerMode(false);
-                    if (!responseData.success) {
-                        alert("Could not delete row");
+                    if (responseData.success === false) {
+                        alert("Could not delete row. Please contact the Administrator");
                     } else {
                         row.fadeOut("normal", function(){ row.remove(); });
                         dismissDetailView();

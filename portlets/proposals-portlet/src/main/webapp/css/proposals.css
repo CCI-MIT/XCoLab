@@ -626,6 +626,12 @@ div.selected {
     border: 1px solid #000000;
 }
 
+#impact div.addprophelp {
+    text-align: left;
+    font-weight: normal;
+    width: 90%;
+}
+
 div.spinner {
     left: 50% !important;
     top: 20px !important;

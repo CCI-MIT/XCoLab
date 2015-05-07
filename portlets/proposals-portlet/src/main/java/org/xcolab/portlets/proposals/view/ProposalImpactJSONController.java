@@ -20,6 +20,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("view")
 public class ProposalImpactJSONController {
+
+    private final static Log _log = LogFactoryUtil.getLog(ProposalImpactTabController.class);
 
     @Autowired
     private ProposalsContext proposalsContext;
@@ -91,17 +95,24 @@ public class ProposalImpactJSONController {
             return;
         }
 
-        Contest contest = proposalsContext.getContest(request);
-        OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(sectorTermId);
-        OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionTermId);
+        try {
+            Contest contest = proposalsContext.getContest(request);
+            OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(sectorTermId);
+            OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionTermId);
 
-       // ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
-        FocusArea selectedFocusArea = new ProposalImpactUtil(contest).getFocusAreaAssociatedWithTerms(sectorOntologyTerm, regionOntologyTerm);
+            // ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
+            FocusArea selectedFocusArea = new ProposalImpactUtil(contest).getFocusAreaAssociatedWithTerms(sectorOntologyTerm, regionOntologyTerm);
 
-        // Create a impact series with all data series for one sector-region pair
-        ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), selectedFocusArea);
+            // Create a impact series with all data series for one sector-region pair
+            ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), selectedFocusArea);
 
-        response.getPortletOutputStream().write(impactSeries.toJSONObject().toString().getBytes());
+            response.getPortletOutputStream().write(impactSeries.toJSONObject().toString().getBytes());
+        } catch (Exception e) {
+            _log.error("Could not load impact series for contestId " + proposalsContext.getContest(request).getContestPK(), e);
+            JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
+            responseJSON.put("success", false);
+            response.getPortletOutputStream().write(responseJSON.toString().getBytes());
+        }
     }
 
     @ResourceMapping("proposalImpactSaveDataSeries")
@@ -126,8 +137,15 @@ public class ProposalImpactJSONController {
         List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
 
         JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
-        ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), focusArea, requestJson);
-        impactSeries.persistWithAuthor(proposalsContext.getUser(request));
+        try {
+            ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), focusArea, requestJson);
+            impactSeries.persistWithAuthor(proposalsContext.getUser(request));
+        } catch (SystemException e) {
+            _log.warn(e.getMessage(), e);
+            responseJSON.put("success", false);
+            response.getPortletOutputStream().write(responseJSON.toString().getBytes());
+            return;
+        }
 
         responseJSON.put("success", true);
         response.getPortletOutputStream().write(responseJSON.toString().getBytes());
