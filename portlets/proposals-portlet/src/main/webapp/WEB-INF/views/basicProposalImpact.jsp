@@ -121,7 +121,7 @@
                                     <div class="addprophelp" style="color:white;">
                                         This table shows a summary of the emission reductions for all sectors and regions
                                         you submitted, in gigatons of carbon dioxide (CO2) equivalent (GtCO2e), for each decade listed.
-                                        <a href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">
+                                        <a style="color: rgb(85, 26, 139)" href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">
                                             Click here for more information.
                                         </a>
                                     </div>
