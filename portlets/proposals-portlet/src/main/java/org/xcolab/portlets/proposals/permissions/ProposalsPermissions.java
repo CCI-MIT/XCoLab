@@ -6,6 +6,8 @@ import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.*;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.portal.model.MembershipRequestConstants;
+import org.xcolab.enums.MemberRole;
+import org.xcolab.enums.MemberRoleChoiceAlgorithm;
 import org.xcolab.portlets.proposals.utils.ProposalsActions;
 
 import com.ext.portlet.contests.ContestStatus;
@@ -261,6 +263,17 @@ public class ProposalsPermissions {
         } catch (Exception e) { return false; }
         return permissionChecker.hasPermission(contestGroupId, portletId, primKey, ProposalsActions.CAN_JUDGE_ACTIONS) || getCanAdminAll();
     }
+
+    public boolean getCanIAFActions() {
+        boolean canIAFAction = false;
+        try {
+            MemberRole memberRole = MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm.getHighestMemberRoleForUser(user);
+            canIAFAction = (memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW);
+        } catch (Exception e){
+        }
+        return canIAFAction;
+    }
+
 
 
     public boolean getCanAdminJudgeActions() {

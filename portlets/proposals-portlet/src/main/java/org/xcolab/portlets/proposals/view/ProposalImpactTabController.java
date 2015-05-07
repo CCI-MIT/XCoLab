@@ -76,9 +76,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
 
         // TODO remove this code once impact tab has officially launched
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        // If not admin or fellow return "error view"
-        if (!(permissions.getCanAdminAll() || permissions.getCanFellowActions())) {
+        if (!hasImpactTabPermission(request)) {
             return "proposalImpactError";
         }
 
@@ -94,11 +92,9 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
-        
+
         // TODO remove this code once impact tab has officially launched
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        // If not admin or fellow return "error view"
-        if (!(permissions.getCanAdminAll() || permissions.getCanFellowActions())) {
+        if (!hasImpactTabPermission(request)) {
             return "proposalImpactError";
         }
 
@@ -137,5 +133,11 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         });
 
         return list;
+    }
+
+    private boolean hasImpactTabPermission(PortletRequest request) throws SystemException, PortalException{
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        // If not admin or fellow or IAF return false
+        return (permissions.getCanAdminAll() || permissions.getCanFellowActions() || permissions.getCanIAFActions());
     }
 }
