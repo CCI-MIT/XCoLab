@@ -102,6 +102,7 @@
                 <a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Impact+Assessment+Fellows">Impact Assessment Fellows</a>
                 to estimate the greenhouse gas (GHG) reductions the proposal will cause in different economic sectors around the world.
                 Once calculated, the top table will show the GHG emissions reductions from 2020 to 2050 for that sector and region.
+                <a target="_blank" href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">Need help?</a>
             </div>
             <c:choose>
                 <!-- Don't show table if no data is available and if user cannot edit -->
@@ -121,7 +122,7 @@
                                     <div class="addprophelp" style="color:white;">
                                         This table shows a summary of the emission reductions for all sectors and regions
                                         you submitted, in gigatons of carbon dioxide (CO2) equivalent (GtCO2e), for each decade listed.
-                                        <a style="color: rgb(85, 26, 139)" href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">
+                                        <a target='_blank' style="color: rgb(85, 26, 139)" href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">
                                             Click here for more information.
                                         </a>
                                     </div>
@@ -257,15 +258,15 @@
         {   "BAU" : <![CDATA["This data shows this region and sector’s predicted emissions \"if future development " +
                 "trends follow those of the past and no changes in policies take place\" (IPCC 2014), what is called " +
                 "\"business as usual\", or BAU. " +
-                "<a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#BAU'>" +
+                "<a target='_blank' href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#BAU'>" +
                 "Click here for more information on how these were calculated.<a>"]]>,
             "IMPACT_REDUCTION" : <![CDATA["If your proposal were fully successful and all possible users used it, enter the percentage " +
                 "that your proposal would reduce emissions in this region and sector, compared to business as usual (BAU). " +
-                "<a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#fullyadopted'>" +
+                "<a target='_blank' href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#fullyadopted'>" +
                 "Click here for more.<a>"]]>,
             "IMPACT_ADOPTION_RATE" : <![CDATA["How rapidly will your proposal be adopted?  Enter reasonable estimates for the percentage " +
                 "of all possible users who would actually adopt your proposal in different years.  " +
-                "<a href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#adoptionrate'>" +
+                "<a target='_blank' href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#adoptionrate'>" +
                 "Click here for more.<a>"]]>
         };
 
