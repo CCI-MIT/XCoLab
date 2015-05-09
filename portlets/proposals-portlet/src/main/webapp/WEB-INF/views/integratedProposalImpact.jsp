@@ -58,10 +58,8 @@
 
         $().ready(function() {
             // Color table columns
-            console.log('ready');
             var hitFirstRow = false;
             $('div#impact > table tr').each(function(idx) {
-                console.log('each');
                 if (!hitFirstRow) {
                     hitFirstRow = true;
                 } else {
@@ -114,7 +112,6 @@
 
             var dataValueRange = maxValue - minValue;
 
-            console.log("max val: " + (maxValue + Math.max((Math.round(dataValueRange / 100.0) + 1) * 5, 5)));
             var options = {
                 title: "Total emissions of ${contest.contestShortName} (Mt CO2)",
                 titleTextStyle: {

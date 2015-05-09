@@ -106,7 +106,6 @@
             </div>
             <c:choose>
                 <!-- Don't show table if no data is available and if user cannot edit -->
-                <!-- TODO change this back to proposalsPermission.canEdit when officially launching the feature -->
                 <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (not proposalsPermissions.canIAFActions) and (empty impactSerieses)}">
                     <h3>No data available yet.</h3>
                 </c:when>
@@ -225,9 +224,8 @@
         </div>
     </div>
 
-    <!-- TODO remove fellow permission -->
     <c:choose>
-        <c:when test="${not proposalsPermissions.canEdit and not proposalsPermissions.canFellowActions}">
+        <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (not proposalsPermissions.canIAFActions) and (empty impactSerieses)}">
             <script>
                 $().ready(function() {
                     $('tr.impact-series-clickable').removeClass('impact-series-clickable');
@@ -304,7 +302,6 @@
 
         function registerEventHandler() {
             $('tr.impact-series-clickable').click(function() {
-                console.log("clicked row " + $(this).attr('id'));
                 toggleEditMode($(this));
             });
 
@@ -332,7 +329,6 @@
                 toggleEditMode(getSelectedOverviewTableRow());
             } else {
                 dismissDetailView();
-                //$('div#impact-series-detail').fadeOut('normal');
                 userInputOccurred = false;
             }
         }
@@ -371,7 +367,6 @@
             var url = replaceImpactURLPlaceholders(getDataSeriesURL,
                     [SECTOR_TERM_ID_PLACEHOLDER, REGION_TERM_ID_PLACEHOLDER],
                     [sectorTerm.attr('id'), regionTerm.attr('id')]);
-            console.log("load data series with url: " + url);
             loadSeriesEditData(url, row);
 
             // Show tables
@@ -403,7 +398,6 @@
         function loadSeriesEditData(url) {
             setDetailViewSpinnerMode(true);
             $.getJSON(url, { get_param: 'value' }, function(data) {
-                console.log("success " + data.success);
                 if (data.success === false) {
 
                     alert("Could not retrieve series data. Please contact the Administrator");
@@ -418,7 +412,6 @@
                     editTable.empty();
 
                     // Add new rows
-                    console.log("json: " + JSON.stringify(data));
                     var dataSeries = data.serieses.BAU;
                     var tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                     tableRow.find('.addprophelp').html(helpTextMap.BAU);
@@ -426,18 +419,15 @@
                         $(this).text(numeral($(this).text()).format('0,0.00'))
                     });
                     editTable.append(tableRow);
-                    console.log("bau series" + dataSeries);
 
 
                     dataSeries = data.serieses.IMPACT_REDUCTION;
                     tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                     tableRow.find('.addprophelp').html(helpTextMap.IMPACT_REDUCTION);
-                    console.log("Reduction: " + JSON.stringify(dataSeries));
                     tableRow.find('span.series-value').each(function (idx) {
                         $(this).text(numeral($(this).text()).format('0,0.00'))
                     });
                     editTable.append(tableRow);
-                    console.log("reduction series" + dataSeries);
 
                     dataSeries = data.serieses.IMPACT_ADOPTION_RATE;
                     tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
@@ -446,7 +436,6 @@
                         $(this).text(numeral($(this).text()).format('0,0.00'))
                     });
                     editTable.append(tableRow);
-                    console.log("adoption series" + dataSeries);
 
                     dataSeries = {
                         "name": "RESULT",
@@ -463,7 +452,6 @@
                     editTable.append(tableRow);
                     registerHelpEventHandler();
 
-                    console.log("result json: " + JSON.stringify(dataSeries));
 
                     editedFocusArea = data.focusAreaId;
 
@@ -521,7 +509,6 @@
                 $('#impact a#continue-button').parent().addClass('disabled');
 
                 var regionTermId = $(this).val();
-                console.log("region term selected: " + regionTermId);
                 if (regionTermId == 0) {
                     clearDropdown(sectorDropdownElement, "Select sector");
                     sectorDropdownElement.attr('disabled', 'disabled');
@@ -576,11 +563,9 @@
                 setDetailViewSpinnerMode(false);
                 regionDropdownElement.empty();
                 regionDropdownElement.append('<option value="' + 0 + '">Select region</option>');
-                console.log("data " + data);
 
                 $.each(data, function(index, attr) {
-                    console.log("each " + attr);
-                    regionDropdownElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
+                	regionDropdownElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
                 });
             });
         }
@@ -609,10 +594,8 @@
 
             setDetailViewSpinnerMode(true);
             $.post(url, {"json" : JSON.stringify(postJson)}, function(response) {
-                console.log("responseData " + response);
-                responseData = JSON.parse(response);
-                console.log("responseData " + responseData);
-                if (responseData.success === false) {
+            	responseData = JSON.parse(response);
+            	if (responseData.success === false) {
                     alert("Could not process request. Please contact the Administrator");
                 } else {
                     var resultValues = $('div#impact-series-detail table#edit-table #impact-edit-row-RESULT td span');
@@ -624,8 +607,7 @@
 
                     // Editing an existing series
                     else {
-                        console.log("else");
-                        updateSeriesValues(resultValues);
+                    	updateSeriesValues(resultValues);
                     }
 
                     disableEditMode();
@@ -649,12 +631,10 @@
         function continueButtonClicked(event) {
             newRegionTermId = $('div#new-series select#region').val();
             newSectorTermId = $('div#new-series select#sector').val();
-            console.log("url " + getDataSeriesURL);
             var url = replaceImpactURLPlaceholders(getDataSeriesURL,
                     [SECTOR_TERM_ID_PLACEHOLDER, REGION_TERM_ID_PLACEHOLDER],
                     [newSectorTermId, newRegionTermId]);
 
-            console.log("load data series with URL " + url);
 
             showEditTable();
             loadSeriesEditData(url);
@@ -738,7 +718,6 @@
                 "resultValues" : [],
                 "focusAreaId" : editedFocusArea};
 
-            //console.log("series data " + JSON.stringify(seriesData));
             $.each(resultValues, function(idx) {
                 seriesData.resultValues.push($(this).text());
             });
@@ -759,10 +738,8 @@
         function updateSeriesValues(resultValues) {
             for (var i = 0; i &lt; resultValues.length; i++) {
                 var valueCell = $($('tr#impact-row-'+currentEditingRowIndex + ' td.impact-value')[i]);
-                console.log("get valueCell with index " + i);
                 valueCell.text($(resultValues[i]).text());
 
-                console.log("Set value " + valueCell.text() + " for index " + i);
             }
         }
         function deleteSeriesRow(event) {
@@ -772,11 +749,8 @@
                 });
 
                 event.stopPropagation();
-                console.log('focus area id ' + editedFocusArea);
                 var url = replaceImpactURLPlaceholders(deleteDataSeriesURL, [FOCUS_AREA_ID_PLACEHOLDER], [editedFocusArea]);
-                console.log("delete url " + url);
                 var row = getSelectedOverviewTableRow();
-                console.log("row: " + row.html());
 
                 setDetailViewSpinnerMode(true);
                 $.post(url, {}, function(response) {
@@ -793,8 +767,7 @@
                         regionsSelectElement.empty();
                         regionsSelectElement.append('<option value="0" selected="selected">Select region</option>');
                         $.getJSON(getRegionsURL, { get_param: 'value' }, function(data) {
-                            console.log("get regions data " + data);
-                            if (data != null) {
+                        	if (data != null) {
                                 $.each(data, function(index, attr) {
                                     regionsSelectElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
                                 });
@@ -811,8 +784,7 @@
         }
 
         function getOverviewTableRowWithIndex(index) {
-            console.log('tr#impact-row-' + index);
-            return $('tr#impact-row-' + index);
+        	return $('tr#impact-row-' + index);
         }
 
         function getIndexFromTableRow(row) {
