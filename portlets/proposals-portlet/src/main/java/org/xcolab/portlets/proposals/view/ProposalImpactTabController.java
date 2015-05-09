@@ -93,12 +93,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
 
-        // TODO remove this code once impact tab has officially launched
-        if (!hasImpactTabPermission(request)) {
-            return "proposalImpactError";
-        }
-
-        // TODO handle error here
         try {
             List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);

@@ -155,8 +155,8 @@
                         <c:if test="${proposalsPermissions.canEdit}">
                             <tbody>
                             <tr id="impact-new-series-row">
-                                <td class="region" style="border-right: none;"><span><![CDATA[&lt;new region&gt;]]></span></td>
-                                <td class="sector" style="border-left: none;"><span><![CDATA[&lt;new sector&gt;]]></span></td>
+                                <td class="region" style="border-right: none; width: 22.5%;"><span><![CDATA[&lt;new region&gt;]]></span></td>
+                                <td class="sector" style="border-left: none; width: 22.5%"><span><![CDATA[&lt;new sector&gt;]]></span></td>
                                 <c:forEach var="impactIteration" items="${impactIterations}">
                                     <td class="impact-value"><!-- --></td>
                                 </c:forEach>
@@ -330,6 +330,7 @@
             } else {
                 dismissDetailView();
                 userInputOccurred = false;
+                $('#impact tr.selected').removeClass('selected');
             }
         }
 
@@ -375,16 +376,41 @@
 
         function recalculateEditSeriesValues() {
             var bauValues = $('#impact table tr#impact-edit-row-BAU td span');
-            var reductionValues = $('#impact table tr#impact-edit-row-'+ IMPACT_REDUCTION_PLACEHOLDER +' input');
-            var adoptionValues = $('#impact table tr#impact-edit-row-'+ IMPACT_ADOPTION_RATE_PLACEHOLDER + ' input');
+            var reductionValueElements = $('#impact table tr#impact-edit-row-'+ IMPACT_REDUCTION_PLACEHOLDER +' input');
+            var adoptionValueElements = $('#impact table tr#impact-edit-row-'+ IMPACT_ADOPTION_RATE_PLACEHOLDER + ' input');
             var resultValues = $('#impact table tr#impact-edit-row-RESULT td span');
 
+            $('a#save-button').parent().removeClass('disabled');
+
             for (var i = 0; i &lt; bauValues.size(); i++) {
-                var resultValue = numeral((numeral().unformat($(bauValues[i]).text()) * (parseFloat($(reductionValues[i]).attr('value')) * 0.01 *
-                        parseFloat($(adoptionValues[i]).attr('value')) * 0.01))).format('0,0.00');
-                $(resultValues[i]).text('' + resultValue);
+                var reductionValue = parseFloat($(reductionValueElements[i]).attr('value').replace(',', '.'));
+                var adoptionValue = parseFloat($(adoptionValueElements[i]).attr('value').replace(',', '.'));
+
+                var isValid = integrityCheckSeriesValue($(reductionValueElements[i]), reductionValue);
+                isValid = isValid &amp;&amp; integrityCheckSeriesValue($(adoptionValueElements[i]), adoptionValue);
+
+                if (isValid) {
+                    var resultValue = numeral((numeral().unformat($(bauValues[i]).text()) * (reductionValue * 0.01 *
+                    adoptionValue * 0.01))).format('0,0.00');
+                    $(resultValues[i]).text('' + resultValue);
+                } else {
+                    $(resultValues[i]).text('' + numeral(0.0).format('0,0.00'))
+                }
+
             }
         }
+
+        function integrityCheckSeriesValue(inputField, value) {
+            if (isNaN(value)) {
+                inputField.addClass('error');
+                $('a#save-button').parent().addClass('disabled');
+                return false;
+            } else {
+                inputField.removeClass('error');
+                return true;
+            }
+        }
+
         /* Replace the URL placeholders with actual values */
         function replaceImpactURLPlaceholders(rawUrl, ids, values){
             var url = rawUrl;
