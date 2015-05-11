@@ -1,7 +1,7 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.model.ContestPhaseType;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
+import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
-import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -37,6 +38,11 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
+    }
+
+    @ModelAttribute("contestPhaseTypesSelectionItems")
+    public List<LabelValue> populateContestPhaseTypesSelectionItems(){
+        return getContestPhaseTypesSelectionItems();
     }
 
     @RequestMapping(params = "tab=SCHEDULES")
@@ -90,5 +96,19 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
 
     private Long getFirstScheduleId()throws Exception{
         return ContestScheduleLocalServiceUtil.getContestSchedules(0,Integer.MAX_VALUE).get(0).getId();
+    }
+
+    private List<LabelValue> getContestPhaseTypesSelectionItems(){
+        List<LabelValue> contestPhaseTypesSelectionItems = new ArrayList<>();
+        try {
+
+            List<ContestPhaseType> contestPhases = ContestPhaseTypeLocalServiceUtil.getContestPhaseTypes(0, Integer.MAX_VALUE);
+            for(ContestPhaseType contestPhaseType : contestPhases){
+                contestPhaseTypesSelectionItems.add(new LabelValue(contestPhaseType.getId(), contestPhaseType.getName()));
+            }
+        } catch (Exception e){
+            _log.warn("Could not get contest phase types selection items: " + e);
+        }
+        return contestPhaseTypesSelectionItems;
     }
 }

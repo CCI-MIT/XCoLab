@@ -71,6 +71,10 @@
     font-size: 16px;
 }
 
+.cmsDetailsBox .addpropbox select.autoWidth{
+    width: auto;
+}
+
 .cmsDetailsBox .addpropbox .wideLargeInput{
     height: 30px;
     width: 445px;
@@ -169,6 +173,12 @@
     width: 22px;
     height: 22px;
 }
+.cmsDetailsBox .contestPhases .deleteIcon {
+    right: 0px;
+    top: 0px;
+}
+
+
 .cmsDetailsBox .addpropbox.teamBox{
     float: left;
     margin-right: 20px;

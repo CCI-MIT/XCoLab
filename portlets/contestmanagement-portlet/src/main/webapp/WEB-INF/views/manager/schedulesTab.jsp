@@ -44,27 +44,40 @@
 
 		<form:form action="${updateContestScheduleURL }" commandName="contestScheduleWrapper" id="editForm" method="post">
 			<form:hidden path="scheduleId"/>
+			<form:hidden path="createNew" id="createNewFlag"/>
 			<div class="addpropbox">
 				<strong class="inputTitleLeft">Schedule name:</strong>
 				<form:input path="scheduleName" cssClass="wideLargeInput"/>
 				<div class="reg_errors"><!--  -->
 					<form:errors cssClass="alert alert-error" path="scheduleName" />
 				</div>
-
 				<div class="outerVerticalCenter floatRight">
 					<div class="blue-button innerVerticalCenter" >
-						<a href="#" onclick="document.getElementById('editForm').submit()">SAVE changes to name/phases</a>
+						<a href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
+					</div>
+				</div>
+				<div class="outerVerticalCenter floatRight">
+					<div class="blue-button innerVerticalCenter" >
+						<a href="#" onclick="saveExistingSchedule()">SAVE changes</a>
 					</div>
 				</div>
 			</div>
 
 			<div class="addpropbox">
-				<strong class="inputTitleLeft">Contest phase for this schedule:</strong>
+				<strong class="inputTitleLeft">Contest phases for this schedule:</strong>
+
+				<div class="outerVerticalCenter floatRight">
+					<div class="blue-button innerVerticalCenter" >
+						<a href="#" onclick="addContestPhase(event)">Add contest phase</a>
+					</div>
+				</div>
+
 			<table class="contestOverview">
 					<col span="1" class="extraSmallColumn"/>
 					<col span="1" class="wideColumn"/>
 					<!-- <col span="1" class="extraSmallColumn"/> -->
 					<col span="2" class="mediumColumn"/>
+					<col span="1" class="extraSmallColumn"/>
 				<thead>
 					<tr style="cursor: default;">
 						<!-- <th><input type="checkbox" id="selectAllCheckbox"/>
@@ -74,9 +87,10 @@
 						<!-- <th>Buffer</th> -->
 						<th>Start Date</th>
 						<th>End Date</th>
+						<th></th>
 					</tr>
 				</thead>
-				<tbody id="contestOverviewBody">
+				<tbody id="contestOverviewBody" class="contestPhases">
 					<c:set var="dateTimePickerIndex" value="0"/>
 					<c:forEach var="schedulePhase" items="${contestScheduleWrapper.schedulePhases}" varStatus="x" >
 							<tr draggable="true"
@@ -86,18 +100,24 @@
 								ondragenter="dragEnter(event)"
 								ondragover="dragOver(event)"
 								ondragleave="dragLeave(event)"
-								style="cursor: default;"
-								id = "${schedulePhases.contestSchedulePK}">
+								id = "${schedulePhase.contestSchedulePK}"
+								data-form-index = "${x.index + 1}"
+								style="cursor: default; display: ${fn:length(contestScheduleWrapper.schedulePhases)-1 eq x.index ? 'none' : ''}"
+								data-filter-attribute="${fn:length(contestScheduleWrapper.schedulePhases)-1 eq x.index ? 'dummyPhase' : ''}"
+									>
 
-								<form:hidden path="schedulePhases[${x.index}].contestScheduleId"
-											 data-form-name="contestScheduleId" />
-
-								<form:hidden path="schedulePhases[${x.index}].contestPhaseType"
-											 data-form-name="contestPhaseType" />
+								<form:hidden path="schedulePhases[${x.index}].contestScheduleId" data-form-name="contestScheduleId" />
+								<form:hidden path="schedulePhases[${x.index}].contestPhasePK" data-form-name="contestPhasePK" />
+								<form:hidden path="schedulePhases[${x.index}].contestPK" data-form-name="contestPK" />
+								<form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted" data-form-name="contestPhaseDeleted" />
 
 								<!-- <td ><input type="checkbox"/></td> -->
-								<td >${x.index + 1}</td>
-								<td >${schedulePhase.contestPhaseTypeTitle}</td>
+								<td data-form-attribute="indexLable">${x.index + 1}</td>
+								<td >
+									<form:select path="schedulePhases[${x.index}].contestPhaseType" class="autoWidth">
+										<form:options items="${contestPhaseTypesSelectionItems}" itemValue="value" itemLabel="lable"/>
+									</form:select>
+								</td>
 
 								<!-- <td>
 									<form:checkbox path="schedulePhases[${x.index}].hasBuffer"
@@ -121,6 +141,9 @@
 												data-index-attribute="${dateTimePickerIndex + 1}"
 												data-select-attribute="datetimepicker"
 											/>
+								</td>
+								<td>
+									<div class="deleteIcon"><!-- --></div>
 								</td>
 								<c:if test="${schedulePhase.hasBuffer}">
 										<tr>show buffer row</tr>
@@ -152,7 +175,7 @@
 				<tbody>
 					<c:forEach items="${contestScheduleWrapper.contestsUsingSelectedSchedule}" var="contestWrapper" varStatus="x">
 						<tr style="cursor: default;">
-							<td >${x.index + 1}</td>
+							<td data-form-name="index">${x.index + 1}</td>
 							<td ><collab:contestLink contestId="${contestWrapper.contestPK}" text="${contestWrapper.contestShortName}"/></td>
 							<td>Tier ${contestWrapper.contestTier}</td>
 							<td>
@@ -174,29 +197,9 @@
 
 		jQuery('document').ready(function(){
 
-			jQuery('.datetimepicker').datetimepicker({
-				lazyInit: true,
-				weeks: true,
-				format: 'm/d/Y H:i',
-				onChangeDateTime: function(dateTimePickerDateString, inst) {
-					console.log
-					var dateTimePickerIndex = inst[0].getAttribute("data-index-attribute");
-					var nexDateTimePickerIndex = parseInt(dateTimePickerIndex) + 1;
-					var nextDateTimePicker = document.querySelectorAll('[data-index-attribute="' + nexDateTimePickerIndex + '"]');
-					nextDateTimePicker = nextDateTimePicker[0];
-					if(nextDateTimePicker.value != undefined) {
-						try {
-							var nextDateTimePickerDate = new Date(nextDateTimePicker.value);
-							var dateTimePickerDate = new Date(dateTimePickerDateString);
-							if(dateTimePickerDate > nextDateTimePickerDate){
-								nextDateTimePicker.value = dateTimePickerDate.dateFormat('m/d/Y H:i');
-							}
-						} catch (e){
-							console.log("Couldn't parse nextDateTimePickerDate", e);
-						}
-					}
-				}});
+			initDateTimePicker();
 
+			bindDeleteClickEvents();
 
 			var hasBufferCheckboxElements = document.querySelectorAll('[data-select-attribute="hasBufferCheckbox"]');
 			[].forEach.call(hasBufferCheckboxElements, function(element){
@@ -213,30 +216,11 @@
 				window.location="/web/guest/cms/-/contestmanagement/manager/tab/SCHEDULES/elementId/" + selectedScheduleId;
 			})
 
-			var selectAllCheckboxElement = document.getElementById("selectAllCheckbox");
-			selectAllCheckboxElement.addEventListener("change", function () {
-			var selectAllChecked = selectAllCheckboxElement.checked;
-				var contestsTableBody = document.getElementById('contestOverviewBody');
-				[].forEach.call(contestsTableBody.getElementsByClassName("checkbox"), function (element) {
-					if(selectAllChecked) {
-						element.checked = true;
-					} else {
-						element.checked = false;
-					}
-				});
-			});
-
 		});
 
-		function showContestsWithDataAttributeFilter(dataFilterAttribute){
-			var contestsTableBody = document.getElementById('contestOverviewBody');
-			[].forEach.call(contestsTableBody.getElementsByTagName('tr'), function (element) {
-				var elementDataFilterAttribute =  element.getAttribute("data-filter-attribute");
-				if(dataFilterAttribute === "all" || elementDataFilterAttribute === dataFilterAttribute ){
-					element.style.display = "";
-				} else {
-					element.style.display = "none";
-				}
+		function bindDeleteClickEvents(){
+			[].forEach.call(document.getElementsByClassName('deleteIcon'), function(deletableSectionElements) {
+				deletableSectionElements.addEventListener('click', deleteContestPhase, false);
 			});
 		}
 
@@ -274,6 +258,8 @@
 			ev.dataTransfer.setData("srcElementId", ev.target.id);
 			var srcElementId = ev.dataTransfer.getData("srcElementId");
 			ev.target.classList.add("drag");
+			console.log("drop -> srcElementId", ev.target.id);
+			console.log("drop -> ev.target", ev.target);
 		}
 
 		function drop(ev) {
@@ -281,35 +267,44 @@
 			var srcElementId = ev.dataTransfer.getData("srcElementId");
 			var srcElement = document.getElementById(srcElementId);
 
+
 			var targetRow = getClosest(ev.target, "tr")
 			var targetParentElement = targetRow.parentNode;
+
+			console.log("drop -> srcElementId", srcElementId);
+			console.log("drop -> srcElement", srcElement);
+			console.log("drop -> targetRow", targetRow);
+			console.log("drop -> targetParentElement", targetParentElement);
+
 			targetParentElement.insertBefore(srcElement, targetRow)
 
-			reCalculateWeights();
+			reCalculateIndex();
 
 			ev.stopPropagation(); // Stops some browsers from redirecting.
 			ev.preventDefault();
 			return false;
 		}
 
-		function reCalculateWeights(){
+		function reCalculateIndex(){
 		var firstElementInList = document.getElementById("contestOverviewBody");
 		var nextElementInList = firstElementInList.firstChild;
 		var index = 0;
+			var dataFormNameAttribute="data-form-index";
 		do {
-			if (filter("weightInput", nextElementInList)){
+			if (filter(dataFormNameAttribute, nextElementInList)){
 				index++;
-				var weightInput = nextElementInList.getElementsByClassName("weightInput")[0];
-				var weightInputLable = weightInput.nextSibling;
-				weightInput.value = index;
-				weightInputLable.innerHTML = index;
+				var dataFormIndex = nextElementInList.getAttribute(dataFormNameAttribute);
+				var dataFormIndexLable = nextElementInList.querySelector("");
+
+				dataFormIndex.value = index;
+				indexInput.innerHTML = index;
 			}
 		} while (nextElementInList = nextElementInList.nextSibling)
 
 		}
 
-		function filter(className, element){
-			return element.getElementsByClassName(className)[0] != undefined;
+		function filter(attribute, element){
+			return element.getAttribute(attribute)!= undefined;
 		}
 
 		function getClosest(el, tag) {
@@ -326,6 +321,76 @@
 			return null;
 		}
 
+		function deleteContestPhase(event){
+			if(confirm("Do you want to remove this contestPhase ?")) {
+				var contestPhaseRow = getClosest(event.target, "tr");
+				contestPhaseRow.style.display = "none";
+				var contestPhaseDeletedElement = contestPhaseRow.querySelectorAll("[data-form-name=contestPhaseDeleted]")[0];
+				contestPhaseDeletedElement.value = true;
+				reCalculateIndex();
+			}
+		}
+
+		function addContestPhase(event){
+			event.preventDefault();
+
+			var contestPhasesListNode = document.getElementById("contestOverviewBody");
+			var dummyContestPhaseRow = document.querySelectorAll("[data-filter-attribute=dummyPhase]")[0];
+			var newContestPhaseRow = dummyContestPhaseRow.cloneNode(true);
+			newContestPhaseRow.style.display = "";
+			newContestPhaseRow.setAttribute("id", "-1");
+			newContestPhaseRow.setAttribute("data-filter-attribute","");
+			newContestPhaseRow.getElementsByClassName('deleteIcon')[0].addEventListener('click', deleteContestPhase, false);
+
+			var contestPhasePKElement = newContestPhaseRow.querySelectorAll("[data-form-name=contestPhasePK]")[0];
+			contestPhasePKElement.value = -1;
+
+			contestPhasesListNode.appendChild(newContestPhaseRow);
+			initDateTimePicker();
+		}
+
+		function saveExistingSchedule(){
+			document.getElementById('createNewFlag').value = false;
+			removeLastContestPhases();
+			document.getElementById('editForm').submit();
+		}
+
+		function saveAsNewSchedule(){
+			document.getElementById('createNewFlag').value = true;
+			removeLastContestPhases();
+			document.getElementById('editForm').submit();
+		}
+
+		function removeLastContestPhases(){
+			var dummyContestPhaseRow = document.querySelectorAll("[data-filter-attribute=dummyPhase]")[0];
+			dummyContestPhaseRow.remove();
+		}
+
+		function initDateTimePicker(){
+
+			jQuery('.datetimepicker').datetimepicker({
+				lazyInit: true,
+				weeks: true,
+				format: 'm/d/Y H:i',
+				onChangeDateTime: function(dateTimePickerDateString, inst) {
+					var dateTimePickerIndex = inst[0].getAttribute("data-index-attribute");
+					var nexDateTimePickerIndex = parseInt(dateTimePickerIndex) + 1;
+					var nextDateTimePicker = document.querySelectorAll('[data-index-attribute="' + nexDateTimePickerIndex + '"]');
+					nextDateTimePicker = nextDateTimePicker[0];
+					if(nextDateTimePicker.value != undefined) {
+						try {
+							var nextDateTimePickerDate = new Date(nextDateTimePicker.value);
+							var dateTimePickerDate = new Date(dateTimePickerDateString);
+							if(dateTimePickerDate > nextDateTimePickerDate){
+								nextDateTimePicker.value = dateTimePickerDate.dateFormat('m/d/Y H:i');
+							}
+						} catch (e){
+							console.log("Couldn't parse nextDateTimePickerDate", e);
+						}
+					}
+				}});
+
+		}
 		//}());
 		]]>
 	</script>

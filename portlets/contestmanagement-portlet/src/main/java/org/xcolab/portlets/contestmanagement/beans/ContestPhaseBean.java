@@ -39,6 +39,7 @@ public class ContestPhaseBean {
     private String contestPhaseAutopromote = "";
 
     private ContestPhaseType contestPhaseTypeObj;
+    private boolean contestPhaseDeleted = false;
 
     public ContestPhaseBean(){
 
@@ -55,7 +56,6 @@ public class ContestPhaseBean {
         this.phaseBufferEndDated = contestPhase.getPhaseBufferEndDated();
         this.fellowScreeningActive = contestPhase.getFellowScreeningActive();
         this.contestPhaseAutopromote = contestPhase.getContestPhaseAutopromote();
-        this.contestPhaseType = contestPhase.getContestPhaseType();
         this.contestPhaseDescriptionOverride = contestPhase.getContestPhaseDescriptionOverride();
         this.phaseActiveOverride = contestPhase.getPhaseActiveOverride();
         this.phaseInactiveOverride = contestPhase.getPhaseInactiveOverride();
@@ -199,5 +199,54 @@ public class ContestPhaseBean {
 
     public void setContestScheduleId(Long contestScheduleId) {
         this.contestScheduleId = contestScheduleId;
+    }
+
+    public boolean isContestPhaseDeleted() {
+        return contestPhaseDeleted;
+    }
+
+    public void setContestPhaseDeleted(boolean contestPhaseDeleted) {
+        this.contestPhaseDeleted = contestPhaseDeleted;
+    }
+
+    public void persist() throws Exception{
+        if(contestPhasePK.equals(-1L)){
+            createNewContestPhase();
+        }
+
+        if(contestPhaseDeleted){
+            deleteContestPhase();
+        } else {
+            persistContestPhase();
+        }
+    }
+    
+    private void createNewContestPhase() throws Exception {
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.createContestPhase(CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
+        contestPhase.persist();
+        contestPhasePK = contestPhase.getContestPhasePK();
+    }
+
+    private void  persistContestPhase() throws Exception{
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
+        contestPhase.setContestPK(contestPK);
+        contestPhase.setContestPhaseType(contestPhaseType);
+        contestPhase.setContestScheduleId(contestScheduleId);
+        contestPhase.setPhaseStartDate(phaseStartDate);
+        contestPhase.setPhaseEndDate(phaseEndDate);
+        contestPhase.setPhaseBufferEndDated(phaseBufferEndDated);
+        contestPhase.setFellowScreeningActive(fellowScreeningActive);
+        contestPhase.setContestPhaseAutopromote(contestPhaseAutopromote);
+        contestPhase.setContestPhaseDescriptionOverride(contestPhaseDescriptionOverride);
+        contestPhase.setPhaseActiveOverride(phaseActiveOverride);
+        contestPhase.setPhaseInactiveOverride(phaseInactiveOverride);
+        contestPhase.setNextStatus(nextStatus);
+        contestPhase.persist();
+        ContestPhaseLocalServiceUtil.updateContestPhase(contestPhase);
+    }
+
+    private void deleteContestPhase() throws Exception{
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
+        ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
     }
 }

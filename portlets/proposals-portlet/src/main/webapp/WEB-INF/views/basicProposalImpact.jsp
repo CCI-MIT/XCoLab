@@ -215,7 +215,7 @@
 
     <!-- TODO remove fellow permission -->
     <c:choose>
-        <c:when test="${not proposalsPermissions.canEdit and not proposalsPermissions.canFellowActions}">
+        <c:when test="${not proposalsPermissions.canEdit and not proposalsPermissions.canFellowActions and not proposalsPermissions.canIAFActions}">
             <script>
                 $().ready(function() {
                     $('tr.impact-series-clickable').removeClass('impact-series-clickable');
