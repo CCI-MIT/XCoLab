@@ -108,6 +108,9 @@ public class ProposalImpactSeries {
             seriesTypeToEditableMap.put(defaultSeries.getName(), true);
             JSONObject seriesValues = json.getJSONObject(defaultSeries.getName());
             for (ImpactIteration iteration : impactIterations) {
+                if (Double.isNaN(seriesValues.getDouble(iteration.getYear()+""))) {
+                    throw new SystemException("Could not parse value for year " + iteration.getYear());
+                }
                 addSeriesValueWithType(defaultSeries.getName(), iteration.getYear(), seriesValues.getDouble(iteration.getYear()+""));
             }
         }
@@ -215,6 +218,7 @@ public class ProposalImpactSeries {
             iterations.put(impactIteration.getYear());
         }
         returnObject.put("iterations", iterations);
+        returnObject.put("success", true);
 
         return returnObject;
     }
