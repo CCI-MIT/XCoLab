@@ -50,6 +50,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
 
         Contest contest = proposalsContext.getContest(request);
+        setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
 
         try {
             List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
@@ -59,7 +60,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             return "proposalImpactError";
         }
 
-        setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
+
         switch (ContestTier.getContestTierByTierType(contest.getContestTier())) {
             case BASIC:
                 return showImpactTabBasicProposal(request, model);

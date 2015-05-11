@@ -14,42 +14,49 @@
     <!-- Content -->
     <div id="content">
         <div id="impact">
-            <div id="impact-chart">&#160;</div>
-            <table>
-                <tr>
-                    <td>&#160;</td>
-                    <c:forEach var="impactIteration" items="${impactIterations}"><th class="blue-bg" style="text-align: center;">${impactIteration.year}</th></c:forEach>
-                </tr>
-                <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
-                    <c:set var="seriesValues" value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}" />
-                    <tr>
-                        <td class="sector">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
-                        <c:forEach var="impactIteration" items="${impactIterations}">
-                            <fmt:formatNumber var="value"
-                                              value="${seriesValues.yearToValueMap[impactIteration.year]}"
-                                              maxFractionDigits="2" />
-                            <td class="impact-value">${value}</td>
+            <c:choose>
+                <!-- Don't show table if no data is available and if user cannot edit -->
+                <c:when test="${impactSeries.emptySeries}">
+                    <h3>No data available yet.</h3>
+                </c:when>
+                <c:otherwise>
+                    <div id="impact-chart">&#160;</div>
+                    <table>
+                        <tr>
+                            <td>&#160;</td>
+                            <c:forEach var="impactIteration" items="${impactIterations}"><th class="blue-bg" style="text-align: center;">${impactIteration.year}</th></c:forEach>
+                        </tr>
+                        <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
+                            <c:set var="seriesValues" value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}" />
+                            <tr>
+                                <td class="sector">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
+                                <c:forEach var="impactIteration" items="${impactIterations}">
+                                    <fmt:formatNumber var="value"
+                                                      value="${seriesValues.yearToValueMap[impactIteration.year]}"
+                                                      maxFractionDigits="2" />
+                                    <td class="impact-value">${value}</td>
+                                </c:forEach>
+                            </tr>
                         </c:forEach>
-                    </tr>
-                </c:forEach>
-                <tr>
-                    <c:choose>
-                        <c:when test="${empty proposal.team}"><td class="sector">${proposal.author.screenName}'s proposal</td></c:when>
-                        <c:otherwise><td class="sector">${proposal.team}'s proposal</td></c:otherwise>
-                    </c:choose>
+                        <tr>
+                            <c:choose>
+                                <c:when test="${empty proposal.team}"><td class="sector">${proposal.author.screenName}'s proposal</td></c:when>
+                                <c:otherwise><td class="sector">${proposal.team}'s proposal</td></c:otherwise>
+                            </c:choose>
 
-                    <c:forEach var="impactIteration" items="${impactIterations}">
-                        <fmt:formatNumber var="value"
-                                          value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
-                                          maxFractionDigits="2" />
-                        <td class="impact-value">${value}</td>
-                    </c:forEach>
-                </tr>
-            </table>
-            <div style="text-align: center;">
-                <h3 style="margin-top: 50px;">Coming soon:</h3><h4>a list with the emission reduction estimates of all proposals included in this plan.</h4>
-            </div>
-
+                            <c:forEach var="impactIteration" items="${impactIterations}">
+                                <fmt:formatNumber var="value"
+                                                  value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
+                                                  maxFractionDigits="2" />
+                                <td class="impact-value">${value}</td>
+                            </c:forEach>
+                        </tr>
+                    </table>
+                    <div style="text-align: center;">
+                        <h3 style="margin-top: 50px;">Coming soon:</h3><h4>a list with the emission reduction estimates of all proposals included in this plan.</h4>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 
