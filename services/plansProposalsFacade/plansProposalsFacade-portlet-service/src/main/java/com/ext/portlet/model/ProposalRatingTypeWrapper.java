@@ -41,6 +41,7 @@ public class ProposalRatingTypeWrapper implements ProposalRatingType,
         attributes.put("label", getLabel());
         attributes.put("description", getDescription());
         attributes.put("judgeType", getJudgeType());
+        attributes.put("isActive", getIsActive());
 
         return attributes;
     }
@@ -69,6 +70,12 @@ public class ProposalRatingTypeWrapper implements ProposalRatingType,
 
         if (judgeType != null) {
             setJudgeType(judgeType);
+        }
+
+        Boolean isActive = (Boolean) attributes.get("isActive");
+
+        if (isActive != null) {
+            setIsActive(isActive);
         }
     }
 
@@ -170,6 +177,36 @@ public class ProposalRatingTypeWrapper implements ProposalRatingType,
     @Override
     public void setJudgeType(int judgeType) {
         _proposalRatingType.setJudgeType(judgeType);
+    }
+
+    /**
+    * Returns the is active of this proposal rating type.
+    *
+    * @return the is active of this proposal rating type
+    */
+    @Override
+    public boolean getIsActive() {
+        return _proposalRatingType.getIsActive();
+    }
+
+    /**
+    * Returns <code>true</code> if this proposal rating type is is active.
+    *
+    * @return <code>true</code> if this proposal rating type is is active; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isIsActive() {
+        return _proposalRatingType.isIsActive();
+    }
+
+    /**
+    * Sets whether this proposal rating type is is active.
+    *
+    * @param isActive the is active of this proposal rating type
+    */
+    @Override
+    public void setIsActive(boolean isActive) {
+        _proposalRatingType.setIsActive(isActive);
     }
 
     @Override

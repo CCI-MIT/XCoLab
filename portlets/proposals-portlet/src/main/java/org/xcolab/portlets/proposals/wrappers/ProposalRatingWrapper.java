@@ -43,6 +43,16 @@ public class ProposalRatingWrapper {
             return "";
         }
     }
+
+    public boolean getIsActive()
+    {
+        ProposalRatingType ratingType = this.getRatingType();
+        if (ratingType != null) {
+            return ratingType.getIsActive();
+        } else {
+            return true;
+        }
+    }
     public Long getRatingTypeId() {
         ProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {

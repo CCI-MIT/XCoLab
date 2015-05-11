@@ -101,6 +101,27 @@ public interface ProposalRatingTypeModel extends BaseModel<ProposalRatingType> {
      */
     public void setJudgeType(int judgeType);
 
+    /**
+     * Returns the is active of this proposal rating type.
+     *
+     * @return the is active of this proposal rating type
+     */
+    public boolean getIsActive();
+
+    /**
+     * Returns <code>true</code> if this proposal rating type is is active.
+     *
+     * @return <code>true</code> if this proposal rating type is is active; <code>false</code> otherwise
+     */
+    public boolean isIsActive();
+
+    /**
+     * Sets whether this proposal rating type is is active.
+     *
+     * @param isActive the is active of this proposal rating type
+     */
+    public void setIsActive(boolean isActive);
+
     @Override
     public boolean isNew();
 

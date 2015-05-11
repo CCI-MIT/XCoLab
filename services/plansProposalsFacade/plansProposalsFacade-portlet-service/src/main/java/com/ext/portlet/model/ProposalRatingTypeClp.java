@@ -24,6 +24,7 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
     private String _label;
     private String _description;
     private int _judgeType;
+    private boolean _isActive;
     private BaseModel<?> _proposalRatingTypeRemoteModel;
 
     public ProposalRatingTypeClp() {
@@ -67,6 +68,7 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
         attributes.put("label", getLabel());
         attributes.put("description", getDescription());
         attributes.put("judgeType", getJudgeType());
+        attributes.put("isActive", getIsActive());
 
         return attributes;
     }
@@ -95,6 +97,12 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
 
         if (judgeType != null) {
             setJudgeType(judgeType);
+        }
+
+        Boolean isActive = (Boolean) attributes.get("isActive");
+
+        if (isActive != null) {
+            setIsActive(isActive);
         }
     }
 
@@ -180,6 +188,33 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
                 Method method = clazz.getMethod("setJudgeType", int.class);
 
                 method.invoke(_proposalRatingTypeRemoteModel, judgeType);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public boolean getIsActive() {
+        return _isActive;
+    }
+
+    @Override
+    public boolean isIsActive() {
+        return _isActive;
+    }
+
+    @Override
+    public void setIsActive(boolean isActive) {
+        _isActive = isActive;
+
+        if (_proposalRatingTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _proposalRatingTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setIsActive", boolean.class);
+
+                method.invoke(_proposalRatingTypeRemoteModel, isActive);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -277,6 +312,7 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
         clone.setLabel(getLabel());
         clone.setDescription(getDescription());
         clone.setJudgeType(getJudgeType());
+        clone.setIsActive(getIsActive());
 
         return clone;
     }
@@ -322,7 +358,7 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(11);
 
         sb.append("{id=");
         sb.append(getId());
@@ -332,6 +368,8 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
         sb.append(getDescription());
         sb.append(", judgeType=");
         sb.append(getJudgeType());
+        sb.append(", isActive=");
+        sb.append(getIsActive());
         sb.append("}");
 
         return sb.toString();
@@ -339,7 +377,7 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(16);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ProposalRatingType");
@@ -360,6 +398,10 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
         sb.append(
             "<column><column-name>judgeType</column-name><column-value><![CDATA[");
         sb.append(getJudgeType());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>isActive</column-name><column-value><![CDATA[");
+        sb.append(getIsActive());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

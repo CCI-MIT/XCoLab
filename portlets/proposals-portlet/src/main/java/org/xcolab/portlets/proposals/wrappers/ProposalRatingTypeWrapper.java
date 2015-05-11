@@ -35,4 +35,9 @@ public class ProposalRatingTypeWrapper {
         return this.proposalRatingType.getDescription();
     }
 
+    public boolean getIsActive()
+    {
+        return this.proposalRatingType.getIsActive();
+    }
+
 }

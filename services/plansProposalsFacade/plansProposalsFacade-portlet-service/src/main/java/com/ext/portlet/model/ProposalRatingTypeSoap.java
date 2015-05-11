@@ -17,6 +17,7 @@ public class ProposalRatingTypeSoap implements Serializable {
     private String _label;
     private String _description;
     private int _judgeType;
+    private boolean _isActive;
 
     public ProposalRatingTypeSoap() {
     }
@@ -28,6 +29,7 @@ public class ProposalRatingTypeSoap implements Serializable {
         soapModel.setLabel(model.getLabel());
         soapModel.setDescription(model.getDescription());
         soapModel.setJudgeType(model.getJudgeType());
+        soapModel.setIsActive(model.getIsActive());
 
         return soapModel;
     }
@@ -109,5 +111,17 @@ public class ProposalRatingTypeSoap implements Serializable {
 
     public void setJudgeType(int judgeType) {
         _judgeType = judgeType;
+    }
+
+    public boolean getIsActive() {
+        return _isActive;
+    }
+
+    public boolean isIsActive() {
+        return _isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        _isActive = isActive;
     }
 }
