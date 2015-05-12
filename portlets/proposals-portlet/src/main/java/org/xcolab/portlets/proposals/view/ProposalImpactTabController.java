@@ -63,7 +63,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         switch (ContestTier.getContestTierByTierType(contest.getContestTier())) {
             case BASIC:
-                return showImpactTabBasicProposal(request, model);
+                // return showImpactTabBasicProposal(request, model);
             case REGION_SECTOR:
             case REGION_AGGREGATE:
             case GLOBAL:
@@ -76,7 +76,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private String showImpactTabIntegratedProposal(PortletRequest request, Model model)
             throws PortalException, SystemException {
 
-        // TODO remove this code once impact tab has officially launched
         if (!hasImpactTabPermission(request)) {
             return "proposalImpactError";
         }
