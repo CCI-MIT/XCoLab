@@ -277,7 +277,6 @@ li.ui-menu-item .ui-state-focus {
 .cmsDetailsBox .contestOverview tr {
     white-space: nowrap;
     line-height: 30px;
-    cursor: move;
     height: 30px;
     background-color: #f2f1e9;
     display: table-row;
@@ -287,6 +286,10 @@ li.ui-menu-item .ui-state-focus {
     padding: inherit;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.cmsDetailsBox .contestOverview tr.draggable {
+    cursor: move;
 }
 
 .cmsDetailsBox .contestOverview .blue tr  {

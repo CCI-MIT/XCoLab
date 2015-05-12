@@ -67,7 +67,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             case REGION_SECTOR:
             case REGION_AGGREGATE:
             case GLOBAL:
-                return showImpactTabIntegratedProposal(request, model);
+                // return showImpactTabIntegratedProposal(request, model);
             default:
                 return "proposalImpactError";
         }

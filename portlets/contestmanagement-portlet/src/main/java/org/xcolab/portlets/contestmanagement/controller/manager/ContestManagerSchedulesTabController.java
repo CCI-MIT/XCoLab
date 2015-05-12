@@ -1,6 +1,7 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
 import com.ext.portlet.model.ContestPhaseType;
+import com.ext.portlet.model.ContestSchedule;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -9,12 +10,14 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
@@ -68,13 +71,55 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         return TAB_VIEW;
     }
 
-    @RequestMapping(params = "action=updateContestSchedule")
-    public void updateScheduleTabController(ActionRequest request, Model model,
-                                        @ModelAttribute ContestScheduleWrapper updateContestScheduleWrapper,
-                                        ActionResponse response) {
+
+    @RequestMapping(params = "action=createContestSchedule")
+    public void createNewScheduleTabController(ActionRequest request, Model model, ActionResponse response) {
 
         if(!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
+            return;
+        }
+
+        try {
+            ContestSchedule newContestSchedule = ContestCreatorUtil.createNewSchedule();
+            setSuccessRenderRedirect(response, tab.getName(), newContestSchedule.getId());
+        } catch(Exception e){
+                _log.warn("Create contest schedule failed with: ", e);
+                SetRenderParameterUtil.setExceptionRenderParameter(response, e);
+            }
+    }
+
+    @RequestMapping(params = "action=deleteContestSchedule")
+    public void deleteScheduleTabController(ActionRequest request, Model model,
+                                            @RequestParam(value = "scheduleId", required = true) Long scheduleId,
+                                            ActionResponse response) {
+
+        if(!tabWrapper.getCanEdit()) {
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
+            return;
+        }
+        try {
+            ContestScheduleWrapper.deleteContestSchedule(scheduleId);
+            setSuccessRenderRedirect(response, tab.getName(), getFirstScheduleId());
+        } catch(Exception e){
+            _log.warn("Delete contest schedule failed with: ", e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
+        }
+    }
+
+    @RequestMapping(params = "action=updateContestSchedule")
+    public void updateScheduleTabController(ActionRequest request, Model model,
+                                        @ModelAttribute ContestScheduleWrapper updateContestScheduleWrapper,
+                                        BindingResult result, ActionResponse response) {
+
+        if(!tabWrapper.getCanEdit()) {
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
+            return;
+        }
+
+        if (result.hasErrors()) {
+            model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(updateContestScheduleWrapper.getScheduleId()));
+            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestSchedule");
             return;
         }
 
@@ -84,7 +129,6 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
             setSuccessRenderRedirect(response, tab.getName(), updateContestScheduleWrapper.getScheduleId());
         } catch(Exception e){
             _log.warn("Update contest schedule failed with: ", e);
-            _log.warn(e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
@@ -101,14 +145,14 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
     private List<LabelValue> getContestPhaseTypesSelectionItems(){
         List<LabelValue> contestPhaseTypesSelectionItems = new ArrayList<>();
         try {
-
             List<ContestPhaseType> contestPhases = ContestPhaseTypeLocalServiceUtil.getContestPhaseTypes(0, Integer.MAX_VALUE);
             for(ContestPhaseType contestPhaseType : contestPhases){
                 contestPhaseTypesSelectionItems.add(new LabelValue(contestPhaseType.getId(), contestPhaseType.getName()));
             }
         } catch (Exception e){
-            _log.warn("Could not get contest phase types selection items: " + e);
+            _log.warn("Could not get contest phase types selection items: " , e);
         }
         return contestPhaseTypesSelectionItems;
     }
+
 }
