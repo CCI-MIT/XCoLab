@@ -9,7 +9,8 @@
     <jsp:directive.attribute name="ratingValuesPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to values" />
 
     <c:forEach var="type" items="${ratingTypes}">
-        <c:if test="${(type.isActive) || (not empty type.ratingValues)}">
+        <c:set var="valueId" value="${ratingValuesPath}[${type.id}]" />
+        <c:if test="${(rating.isActive) || (not empty valueId)}">
             <div>
                     <h5 class="fieldWithTooltip tooltipAbove">
                         <a>${type.label}</a>

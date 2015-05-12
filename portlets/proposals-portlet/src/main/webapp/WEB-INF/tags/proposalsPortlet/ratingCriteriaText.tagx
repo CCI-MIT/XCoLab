@@ -8,7 +8,7 @@
     <jsp:directive.attribute name="ratingTypes" type="java.util.Collection" required="true" rtexprvalue="true" description="List of ProposalRatingType" />
 
     <c:forEach var="type" items="${ratingTypes}">
-        <c:if test="${(type.isActive) || (not empty type.ratingValues)}">
+        <c:if test="${(type.isActive)}">
             <h3>
                 <a>${type.label}</a>
             </h3>
