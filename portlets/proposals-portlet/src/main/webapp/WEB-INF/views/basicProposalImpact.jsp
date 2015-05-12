@@ -99,7 +99,7 @@
         <div id="impact">
             <div style="margin-bottom: 15px">
                 <strong>How will this proposal reduce greenhouse gas emissions? </strong>The proposal authors can use the tools below or work with the
-                <a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Impact+Assessment+Fellows">Impact Assessment Fellows</a>
+                <a target="_blank" href="/impact_fellows">Impact Assessment Fellows</a>
                 to estimate the greenhouse gas (GHG) reductions the proposal will cause in different economic sectors around the world.
                 Once calculated, the top table will show the GHG emissions reductions from 2020 to 2050 for that sector and region.
                 <a target="_blank" href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">Need help?</a>
