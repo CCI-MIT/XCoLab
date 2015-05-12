@@ -2,13 +2,12 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.model.ContestSchedule;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +17,9 @@ import java.util.Date;
  */
 public class ContestPhaseBean {
 
+
+    public static final Long CREATE_PHASE_CONTEST_PK = -1L;
+
     private Long contestSchedulePK;
     private Long contestPhasePK;
     private Long contestPK;
@@ -26,7 +28,9 @@ public class ContestPhaseBean {
     private final static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
     @DateTimeFormat(pattern="MM/dd/yyyy hh:mm")
+    @NotNull(message = "Phase start date must not be empty.")
     private Date phaseStartDate;
+
     @DateTimeFormat(pattern="MM/dd/yyyy hh:mm")
     private Date phaseEndDate;
     private Date phaseBufferEndDated;
@@ -210,7 +214,8 @@ public class ContestPhaseBean {
     }
 
     public void persist() throws Exception{
-        if(contestPhasePK.equals(-1L)){
+
+        if(contestPhasePK.equals(CREATE_PHASE_CONTEST_PK)){
             createNewContestPhase();
         }
 
