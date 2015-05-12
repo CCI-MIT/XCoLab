@@ -133,7 +133,7 @@
                     <table id="impact-summary">
                         <thead>
                             <tr>
-                                <th class="blue-bg" style="width: 22.5%;">Sector</th><th class="blue-bg" style="width: 22.5%;">Region</th>
+                                <th class="blue-bg" style="width: 22.5%;">Region</th><th class="blue-bg" style="width: 22.5%;">Sector</th>
                                 <c:forEach var="impactIteration" items="${impactIterations}">
                                     <th class="blue-bg" style="text-align: center; width: ${55.0 / fn:length(impactIterations)}%">
                                         ${impactIteration.year}
