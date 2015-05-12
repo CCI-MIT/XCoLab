@@ -96,20 +96,16 @@
             <c:forEach var="impactIteration" items="${impactIterations}">
                 var dataRow = ["${impactIteration.year}"];
 
-            <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
-                <c:set var="seriesValues" value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}" />
-                <fmt:formatNumber var="value"
-                value="${seriesValues.yearToValueMap[impactIteration.year]}"
-                maxFractionDigits="2" />
+                <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
+                    <c:set var="seriesValues" value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}" />
+                    <c:set var="value" value="${seriesValues.yearToValueMap[impactIteration.year]}" />
 
-                dataRow.push(${value});
-                minValue = Math.min(minValue, ${value});
-                maxValue = Math.max(maxValue, ${value});
-            </c:forEach>
+                    dataRow.push(${value});
+                    minValue = Math.min(minValue, ${value});
+                    maxValue = Math.max(maxValue, ${value});
+                </c:forEach>
 
-                <fmt:formatNumber var="value"
-                value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
-                maxFractionDigits="2" />
+                <c:set var="value" value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}" />
 
                 dataRow.push(${value});
                 data.addRow(dataRow);
@@ -143,7 +139,7 @@
                 pointSize: 6,
                 colors:tableColors,
                 width:500,
-                height:150 * Math.max(Math.round(dataValueRange / 50.0), 2)
+                height:Math.min(150 * Math.max(Math.round(dataValueRange / 50.0), 2), 600.0)
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('impact-chart'));
