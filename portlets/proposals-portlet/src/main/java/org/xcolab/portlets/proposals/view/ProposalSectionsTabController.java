@@ -102,6 +102,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         Long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
         Long userId = proposalsContext.getUser(request).getUserId();
         judgeProposalBean.setContestPhaseId(contestPhaseId);
+        Boolean hideThoroughness = false;
 
         //find existing ratings
         List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
@@ -110,6 +111,9 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                 contestPhaseId);
 
         if (!existingRatings.isEmpty()) {
+            if ((existingRatings.size() %5) != 0){
+                hideThoroughness = true;
+            }
             Map<Long, String> existingJudgeRating = new LinkedHashMap<>();
             Long index = 1L;
             for (ProposalRating proposalRating : existingRatings) {
@@ -120,6 +124,10 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             judgeProposalBean.setRatingValues(existingJudgeRating);
             judgeProposalBean.setComment(existingComment);
         }
+        else{
+            hideThoroughness = true;
+        }
+        model.addAttribute("hideThoroughness", hideThoroughness);
         model.addAttribute("judgeProposalBean", judgeProposalBean);
 
         Proposal proposal = proposalsContext.getProposal(request);

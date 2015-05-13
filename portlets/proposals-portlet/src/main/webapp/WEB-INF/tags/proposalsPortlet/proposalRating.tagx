@@ -6,11 +6,12 @@
         xmlns:form="http://www.springframework.org/tags/form"
         version="2.0">
     <jsp:directive.attribute name="ratingTypes" type="java.util.Collection" required="true" rtexprvalue="true" description="List of ProposalRatingTypeWrapper" />
+    <jsp:directive.attribute name="hideThoroughness" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the rating criteria Thoroughness should be displayed or not" />
     <jsp:directive.attribute name="ratingValuesPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to values" />
 
     <c:forEach var="type" items="${ratingTypes}">
         <c:set var="valueId" value="${ratingValuesPath}[${type.id}]" />
-        <c:if test="${(rating.isActive) || (not empty valueId)}">
+        <c:if test="${(type.label != 'Thoroughness') || (!hideThoroughness)}">
             <div>
                     <h5 class="fieldWithTooltip tooltipAbove">
                         <a>${type.label}</a>

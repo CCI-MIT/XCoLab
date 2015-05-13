@@ -73,7 +73,7 @@
                     <h3 style="display: inline-block">Evaluation Criteria</h3>
 
                     <h2>Evaluation Criteria</h2>
-                    <proposalsPortlet:ratingCriteriaText ratingTypes="${judgeProposalBean.ratingTypes}"/>
+                    <proposalsPortlet:ratingCriteriaText ratingTypes="${judgeProposalBean.ratingTypes}" hideThoroughness="${hideThoroughness}"/>
                 </div>
             </c:when>
         </c:choose>

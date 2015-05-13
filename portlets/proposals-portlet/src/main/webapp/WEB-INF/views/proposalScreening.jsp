@@ -145,7 +145,7 @@
 
                             <div style="float: left; padding-left: 30px;"><h5>Least (1)</h5></div> <div style="text-align: right; padding-right: 30px;"><h5>Most (4)</h5></div>
                             <br/>
-                            <proposalsPortlet:proposalRating ratingTypes="${fellowProposalScreeningBean.ratingTypes}" ratingValuesPath="ratingValues" />
+                            <proposalsPortlet:proposalRating ratingTypes="${fellowProposalScreeningBean.ratingTypes}" ratingValuesPath="ratingValues" hideThoroughness="${hideThoroughness}" />
 
                             <h4>Rating comment:</h4>
                             <i>Your comment will be visible to other Fellows and Judges only.</i>
@@ -171,7 +171,7 @@
         <div class="judging_right">
             <div class="addpropbox">
                 <h2>Evaluation Criteria</h2>
-                <proposalsPortlet:ratingCriteriaText ratingTypes="${fellowProposalScreeningBean.ratingTypes}"/>
+                <proposalsPortlet:ratingCriteriaText ratingTypes="${fellowProposalScreeningBean.ratingTypes}" hideThoroughness="${hideThoroughness}"/>
             </div>
         </div>
 

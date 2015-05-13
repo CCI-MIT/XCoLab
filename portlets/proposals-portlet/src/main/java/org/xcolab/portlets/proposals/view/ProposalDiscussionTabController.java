@@ -76,22 +76,27 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
 
         // TODO this is the Admin Id, replace with what Laur and Patrick decide to use
         Long userId = 10144L;
+        Long amountOfCriteria = 5L;
 
         for(ContestPhase contestPhase : contestPhases){
 
             if(contestPhase.isFellowScreeningActive()) {
                 List<ProposalRating> judgeRatingsForProposal = ProposalRatingLocalServiceUtil
                         .getJudgeRatingsForProposal(proposalId, contestPhase.getContestPhasePK());
+                int judgeRatingsSize = judgeRatingsForProposal.size();
+                if ((judgeRatingsSize %5) != 0){
+                    amountOfCriteria = 4L;
+                }
 
                 List<Long> judgeIds = new ArrayList<>();
 
-                if (judgeRatingsForProposal.size() > 0) {
+                if (judgeRatingsSize > 0) {
                     Map<Long, List<ProposalRating>> map = new HashMap<>();
                     Map<Long, List<Long>> averageRatingList = new HashMap<>();
                     map.put(userId, new ArrayList<ProposalRating>());
 
                     for (ProposalRating r : judgeRatingsForProposal) {
-                        Long ratingAverageIndex = r.getRatingValueId() / 5L;
+                        Long ratingAverageIndex = r.getRatingValueId() / amountOfCriteria;
                         if(!averageRatingList.containsKey(ratingAverageIndex)){
                             averageRatingList.put(ratingAverageIndex, new ArrayList<Long>());
                         }
