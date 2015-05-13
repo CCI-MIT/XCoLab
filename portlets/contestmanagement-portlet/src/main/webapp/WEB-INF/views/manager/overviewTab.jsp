@@ -24,6 +24,18 @@
 		<portlet:param name="manager" value="true" />
 	</portlet:resourceURL>
 
+
+
+	<div class="cmsDetailsBox">
+		<div style="margin-bottom: 40px;">
+			<div class="floatRight outerVerticalCenter">
+				<div class="blue-button innerVerticalCenter" >
+					<a href="/web/guest/cms/-/contestmanagement/createContest" target="_blank">Create new Contest</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<div class="cmsDetailsBox">
 		<div class="floatRight outerVerticalCenter">
 			<div class="innerVerticalCenter floatLeft">
@@ -92,7 +104,7 @@
 								ondragleave="dragLeave(event)"
 								id = "${contestWrapper.contestPK}"
 								data-filter-attribute="${contestWrapper.contestActive ? 'active' : 'prior'}"
-								class = "${x.index %2==0 ? 'blue' : ''}"
+								class = "${x.index %2==0 ? 'blue' : ''} draggable"
 								data-filter-visible="true"
 									>
 								<form:hidden path="contestWrappers[${x.index}].contestPK"

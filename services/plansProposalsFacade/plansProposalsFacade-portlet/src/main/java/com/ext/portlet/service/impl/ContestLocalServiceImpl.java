@@ -2,16 +2,7 @@ package com.ext.portlet.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.ImpactIteration;
@@ -129,6 +120,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestLocalServiceUtil} to access the contest local service.
      */
 
+    public static final List<Long> ANY_TERM_IDS = Arrays.asList(1L,2L,3L, 1300601L);
     public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on contest %s";
     private Random rand = new Random();
 
@@ -612,10 +604,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     public List<Contest> getContestsMatchingOntologyTerms(List<OntologyTerm> ontologyTerms) throws PortalException, SystemException{
+
         // remove terms that are root elements
         for (Iterator<OntologyTerm> i = ontologyTerms.iterator(); i.hasNext();){
             OntologyTerm o = i.next();
-            if (o.getParentId() == 0) i.remove();
+            if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getParentId())) i.remove();
         }
         Long[][] terms = new Long[ontologyTerms.size()][];
         // get all child elements and add id's to array

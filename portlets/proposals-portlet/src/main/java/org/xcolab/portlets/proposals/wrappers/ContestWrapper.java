@@ -144,7 +144,7 @@ public class ContestWrapper {
             return contest.getShow_in_outline_view();
         }
         else {
-            contest.setShow_in_tile_view(true);
+            contest.setShow_in_outline_view(true);
             return true;
         }
 
@@ -457,33 +457,6 @@ public class ContestWrapper {
         //long ONTOLOGY_SPACE_ID_WHAT = 103L;
         //long ONTOLOGY_SPACE_ID_HOW = 103L;
         return ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
-
-        /*
-        List<Contest> subContests = new ArrayList<>();
-
-        if (getShowSubContests()){
-            return
-            long focusAreaId = contest.getFocusAreaId();
-            long contestTier = contest.getContestTier();
-            long lowerContestTier = contestTier - 1;
-
-            if(lowerContestTier < 1) {
-                new Exception("Contest " + contest.getContestPK() + " has no sub-contests!" );
-            }
-
-            //long ontologyTermId = getOntologyTermIdForFocusAreaAndSpaceId(focusAreaId, ONTOLOGY_SPACE_ID_WHERE);
-            //List<Long> focusAreaOntologyTermIds = getFocusAreaOntologyTermsByOntologyTermId(ontologyTermId);
-
-
-            DynamicQuery getContestsByTierLevelAndOntologyTermIds =
-            DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
-                    .add(PropertyFactoryUtil.forName("contestTier").eq(lowerContestTier))
-                    .add(PropertyFactoryUtil.forName("focusAreaId").in(focusAreaOntologyTermIds));
-
-            subContests = ContestLocalServiceUtil.dynamicQuery(retrieveContestsByTierLevelAndOntologyTermIds);
-        }
-
-        return subContests;*/
     }
 
     public Long getVotingPhasePK() throws PortalException, SystemException {

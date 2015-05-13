@@ -579,6 +579,10 @@ div.selected {
     padding: 5px;
 }
 
+#impact input.error {
+    border: 2px solid red;
+}
+
 #impact td.shaded-bg {
     text-align: center;
 }
@@ -626,6 +630,12 @@ div.selected {
     border: 1px solid #000000;
 }
 
+#impact div.addprophelp {
+    text-align: left;
+    font-weight: normal;
+    width: 90%;
+}
+
 div.spinner {
     left: 50% !important;
     top: 20px !important;
@@ -636,7 +646,7 @@ div.spinner {
 }
 .subcontests{
     padding-bottom: 30px;
-    padding-top: 5px;
+    padding-top: 20px;
 }
 
 select[disabled] {
