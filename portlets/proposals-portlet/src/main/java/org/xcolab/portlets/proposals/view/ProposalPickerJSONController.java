@@ -1,18 +1,15 @@
 package org.xcolab.portlets.proposals.view;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-
-import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,27 +23,10 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.ActivitySubscription;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.model.ProposalSupporter;
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * User: patrickhiesel Date: 03/12/13 Time: 09:46
@@ -124,7 +104,7 @@ public class ProposalPickerJSONController {
 			SystemException, PortalException {
 
 		List<Pair<ContestWrapper, Date>> contests = getFilteredContests(
-				filterType, sectionId);
+				filterType, sectionId, request);
 
 		if (filterText != null && filterText.length() > 0)
 			ProposalPickerFilterUtil.TEXTBASED.filterContests(contests,
@@ -146,13 +126,13 @@ public class ProposalPickerJSONController {
 
 	/**
 	 * Methode is used to fill the counting bubbles for each tab
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 */
 	@ResourceMapping("proposalPickerCounter")
 	public void proposalPickerCounter(ResourceRequest request,
-			ResourceResponse response) throws IOException, SystemException,
+									  ResourceResponse response) throws IOException, SystemException,
 			PortalException {
 		String filterType = request.getParameter("filterKey");
 		long sectionId = Long.parseLong(request.getParameter("sectionId"));
@@ -178,7 +158,7 @@ public class ProposalPickerJSONController {
 	}
 
 	private String getJSONObjectMapping(List<Pair<Proposal, Date>> proposals,
-			int totalNumberOfProposals) throws SystemException, PortalException {
+										int totalNumberOfProposals) throws SystemException, PortalException {
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
 
@@ -257,12 +237,12 @@ public class ProposalPickerJSONController {
 	}
 
 	private void sortList(String sortOrder, String sortColumn,
-			List<Pair<Proposal, Date>> proposals) {
+						  List<Pair<Proposal, Date>> proposals) {
 		if (sortColumn.equalsIgnoreCase("Contest")) {
 			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
 				@Override
 				public int compare(Pair<Proposal, Date> o1,
-						Pair<Proposal, Date> o2) {
+								   Pair<Proposal, Date> o2) {
 					try {
 						return Proposal2PhaseLocalServiceUtil
 								.getCurrentContestForProposal(
@@ -283,7 +263,7 @@ public class ProposalPickerJSONController {
 			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
 				@Override
 				public int compare(Pair<Proposal, Date> o1,
-						Pair<Proposal, Date> o2) {
+								   Pair<Proposal, Date> o2) {
 					try {
 						return ProposalLocalServiceUtil
 								.getAttribute(o1.getLeft().getProposalId(),
@@ -303,7 +283,7 @@ public class ProposalPickerJSONController {
 			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
 				@Override
 				public int compare(Pair<Proposal, Date> o1,
-						Pair<Proposal, Date> o2) {
+								   Pair<Proposal, Date> o2) {
 					try {
 						ProposalAttribute t1 = ProposalLocalServiceUtil
 								.getAttribute(o1.getLeft().getProposalId(),
@@ -331,7 +311,7 @@ public class ProposalPickerJSONController {
 			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
 				@Override
 				public int compare(Pair<Proposal, Date> o1,
-						Pair<Proposal, Date> o2) {
+								   Pair<Proposal, Date> o2) {
 					return o1.getRight().compareTo(o2.getRight());
 				}
 			});
@@ -339,7 +319,7 @@ public class ProposalPickerJSONController {
 			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
 				@Override
 				public int compare(Pair<Proposal, Date> o1,
-						Pair<Proposal, Date> o2) {
+								   Pair<Proposal, Date> o2) {
 					try {
 						return ProposalLocalServiceUtil.getSupportersCount(o1
 								.getLeft().getProposalId()) - ProposalLocalServiceUtil
@@ -355,7 +335,7 @@ public class ProposalPickerJSONController {
 			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
 				@Override
 				public int compare(Pair<Proposal, Date> o1,
-						Pair<Proposal, Date> o2) {
+								   Pair<Proposal, Date> o2) {
 					try {
 						return (int) (ProposalLocalServiceUtil
 								.getCommentsCount(o1.getLeft().getProposalId()) - ProposalLocalServiceUtil
@@ -373,11 +353,11 @@ public class ProposalPickerJSONController {
 	}
 
 	private void sortContestsList(String sortOrder, String sortColumn,
-			List<Pair<ContestWrapper, Date>> contests) {
+								  List<Pair<ContestWrapper, Date>> contests) {
 		Comparator<Pair<ContestWrapper, Date>> contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
 			@Override
 			public int compare(Pair<ContestWrapper, Date> o1,
-					Pair<ContestWrapper, Date> o2) {
+							   Pair<ContestWrapper, Date> o2) {
 				try {
 					return (int) (o1.getLeft().getProposalsCount() - o2
 							.getLeft().getProposalsCount());
@@ -391,7 +371,7 @@ public class ProposalPickerJSONController {
 				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
 					@Override
 					public int compare(Pair<ContestWrapper, Date> o1,
-							Pair<ContestWrapper, Date> o2) {
+									   Pair<ContestWrapper, Date> o2) {
 						return o1.getLeft().getContestShortName()
 								.compareTo(o2.getLeft().getContestShortName());
 					}
@@ -401,7 +381,7 @@ public class ProposalPickerJSONController {
 				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
 					@Override
 					public int compare(Pair<ContestWrapper, Date> o1,
-							Pair<ContestWrapper, Date> o2) {
+									   Pair<ContestWrapper, Date> o2) {
 						try {
 							return (int) (o1.getLeft().getTotalCommentsCount() - o2
 									.getLeft().getTotalCommentsCount());
@@ -415,7 +395,7 @@ public class ProposalPickerJSONController {
 				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
 					@Override
 					public int compare(Pair<ContestWrapper, Date> o1,
-							Pair<ContestWrapper, Date> o2) {
+									   Pair<ContestWrapper, Date> o2) {
 						try {
 							return o1.getLeft().getWhatName()
 									.compareTo(o2.getLeft().getWhatName());
@@ -429,7 +409,7 @@ public class ProposalPickerJSONController {
 				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
 					@Override
 					public int compare(Pair<ContestWrapper, Date> o1,
-							Pair<ContestWrapper, Date> o2) {
+									   Pair<ContestWrapper, Date> o2) {
 						try {
 							return o1.getLeft().getWhereName()
 									.compareTo(o2.getLeft().getWhereName());
@@ -443,7 +423,7 @@ public class ProposalPickerJSONController {
 				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
 					@Override
 					public int compare(Pair<ContestWrapper, Date> o1,
-							Pair<ContestWrapper, Date> o2) {
+									   Pair<ContestWrapper, Date> o2) {
 						try {
 							return o1.getLeft().getWhoName()
 									.compareTo(o2.getLeft().getWhoName());
@@ -457,7 +437,7 @@ public class ProposalPickerJSONController {
 				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
 					@Override
 					public int compare(Pair<ContestWrapper, Date> o1,
-							Pair<ContestWrapper, Date> o2) {
+									   Pair<ContestWrapper, Date> o2) {
 						try {
 							return o1.getLeft().getHowName()
 									.compareTo(o2.getLeft().getHowName());
@@ -477,22 +457,33 @@ public class ProposalPickerJSONController {
 	}
 
 	private List<Pair<ContestWrapper, Date>> getFilteredContests(
-			String filterKey, long sectionId) throws SystemException,
+			String filterKey, long sectionId, ResourceRequest request) throws SystemException,
 			PortalException {
 		List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
 
 		// FocusArea
 		PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
-		FocusArea fa = PlanSectionDefinitionLocalServiceUtil
-				.getFocusArea(planSectionDefinition);
+
+		FocusArea fa = PlanSectionDefinitionLocalServiceUtil.getFocusArea(planSectionDefinition);
+		List<OntologyTerm> terms = new LinkedList<>();
+		if (planSectionDefinition.getFocusAreaId() < 0) {
+			//if we did not specify the focus area on the field definition, let's use the one of the contest
+			fa = FocusAreaLocalServiceUtil.getFocusArea(proposalsContext.getContest(request).getFocusAreaId());
+
+			//we can then add every additional term of the inverted focusArea to adapt it to our setting
+			FocusArea additionalTerms = FocusAreaLocalServiceUtil.getFocusArea(-1 * planSectionDefinition.getFocusAreaId());
+			if (additionalTerms != null) {
+				terms.addAll(FocusAreaLocalServiceUtil.getTerms(additionalTerms));
+			}
+		}
+		terms.addAll(FocusAreaLocalServiceUtil.getTerms(fa));
+
 		ContestTier contestTier = ContestTier.getContestTierByTierType(planSectionDefinition.getTier());
 
 		// List of terms in this area
-		if (fa != null) {
-
+		if (terms.size() > 0) {
 			for (Contest c : ContestLocalServiceUtil
-					.getContestsMatchingOntologyTermsAndTier(FocusAreaLocalServiceUtil
-							.getTerms(fa), contestTier.getTierType())) {
+					.getContestsMatchingOntologyTermsAndTier(terms, contestTier.getTierType())) {
 				contests.add(Pair.of(new ContestWrapper(c),
 						c.getCreated() == null ? new Date(0) : c.getCreated()));
 			}
