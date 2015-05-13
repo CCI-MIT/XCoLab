@@ -63,7 +63,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         switch (ContestTier.getContestTierByTierType(contest.getContestTier())) {
             case BASIC:
-                // return showImpactTabBasicProposal(request, model);
+                return showImpactTabBasicProposal(request, model);
             case REGION_SECTOR:
             case REGION_AGGREGATE:
             case GLOBAL:
