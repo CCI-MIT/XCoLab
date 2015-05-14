@@ -2,13 +2,12 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.model.ContestSchedule;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +17,9 @@ import java.util.Date;
  */
 public class ContestPhaseBean {
 
+
+    public static final Long CREATE_PHASE_CONTEST_PK = -1L;
+
     private Long contestSchedulePK;
     private Long contestPhasePK;
     private Long contestPK;
@@ -26,7 +28,9 @@ public class ContestPhaseBean {
     private final static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
     @DateTimeFormat(pattern="MM/dd/yyyy hh:mm")
+    @NotNull(message = "Phase start date must not be empty.")
     private Date phaseStartDate;
+
     @DateTimeFormat(pattern="MM/dd/yyyy hh:mm")
     private Date phaseEndDate;
     private Date phaseBufferEndDated;
@@ -39,6 +43,7 @@ public class ContestPhaseBean {
     private String contestPhaseAutopromote = "";
 
     private ContestPhaseType contestPhaseTypeObj;
+    private boolean contestPhaseDeleted = false;
 
     public ContestPhaseBean(){
 
@@ -55,7 +60,6 @@ public class ContestPhaseBean {
         this.phaseBufferEndDated = contestPhase.getPhaseBufferEndDated();
         this.fellowScreeningActive = contestPhase.getFellowScreeningActive();
         this.contestPhaseAutopromote = contestPhase.getContestPhaseAutopromote();
-        this.contestPhaseType = contestPhase.getContestPhaseType();
         this.contestPhaseDescriptionOverride = contestPhase.getContestPhaseDescriptionOverride();
         this.phaseActiveOverride = contestPhase.getPhaseActiveOverride();
         this.phaseInactiveOverride = contestPhase.getPhaseInactiveOverride();
@@ -199,5 +203,55 @@ public class ContestPhaseBean {
 
     public void setContestScheduleId(Long contestScheduleId) {
         this.contestScheduleId = contestScheduleId;
+    }
+
+    public boolean isContestPhaseDeleted() {
+        return contestPhaseDeleted;
+    }
+
+    public void setContestPhaseDeleted(boolean contestPhaseDeleted) {
+        this.contestPhaseDeleted = contestPhaseDeleted;
+    }
+
+    public void persist() throws Exception{
+
+        if(contestPhasePK.equals(CREATE_PHASE_CONTEST_PK)){
+            createNewContestPhase();
+        }
+
+        if(contestPhaseDeleted){
+            deleteContestPhase();
+        } else {
+            persistContestPhase();
+        }
+    }
+    
+    private void createNewContestPhase() throws Exception {
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.createContestPhase(CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
+        contestPhase.persist();
+        contestPhasePK = contestPhase.getContestPhasePK();
+    }
+
+    private void  persistContestPhase() throws Exception{
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
+        contestPhase.setContestPK(contestPK);
+        contestPhase.setContestPhaseType(contestPhaseType);
+        contestPhase.setContestScheduleId(contestScheduleId);
+        contestPhase.setPhaseStartDate(phaseStartDate);
+        contestPhase.setPhaseEndDate(phaseEndDate);
+        contestPhase.setPhaseBufferEndDated(phaseBufferEndDated);
+        contestPhase.setFellowScreeningActive(fellowScreeningActive);
+        contestPhase.setContestPhaseAutopromote(contestPhaseAutopromote);
+        contestPhase.setContestPhaseDescriptionOverride(contestPhaseDescriptionOverride);
+        contestPhase.setPhaseActiveOverride(phaseActiveOverride);
+        contestPhase.setPhaseInactiveOverride(phaseInactiveOverride);
+        contestPhase.setNextStatus(nextStatus);
+        contestPhase.persist();
+        ContestPhaseLocalServiceUtil.updateContestPhase(contestPhase);
+    }
+
+    private void deleteContestPhase() throws Exception{
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
+        ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
     }
 }

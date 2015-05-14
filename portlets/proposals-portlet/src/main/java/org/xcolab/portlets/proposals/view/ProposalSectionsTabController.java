@@ -17,6 +17,7 @@ import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.*;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalRatingTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
@@ -25,6 +26,9 @@ import java.util.*;
 @Controller
 @RequestMapping("view")
 public class ProposalSectionsTabController extends BaseProposalTabController {
+    Boolean hideThoroughness = true;
+    List<Long> thoroughnessValueIds = new ArrayList<Long>();
+
 
     @Autowired
     private ProposalsContext proposalsContext;
@@ -44,6 +48,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         //findEntitiesAndPopulateModel(proposalId, contestId, phaseId, model);
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
+        createThoroughnessIdCollection();
         
         if (move) {
         	// get base proposal from base contest
@@ -102,7 +107,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         Long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
         Long userId = proposalsContext.getUser(request).getUserId();
         judgeProposalBean.setContestPhaseId(contestPhaseId);
-        Boolean hideThoroughness = false;
+
 
         //find existing ratings
         List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
@@ -111,8 +116,19 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                 contestPhaseId);
 
         if (!existingRatings.isEmpty()) {
-            if ((existingRatings.size() %5) != 0){
-                hideThoroughness = true;
+            //if ((existingRatings.size() %5) != 0)
+            for (ProposalRating judgingCriteria: existingRatings){
+                if (thoroughnessValueIds.contains(judgingCriteria.getRatingValueId())) {
+                    hideThoroughness = false; //isActive auf true setzen!
+                    //List <ProposalRatingTypeWrapper> proposalRatingTypeWrappers = judgeProposalBean.getRatingTypes();
+                    //proposalRatingTypeWrappers.get(4).setIsActive(true);
+                    for (ProposalRatingTypeWrapper proposalRatingTypeWrapper : judgeProposalBean.getRatingTypes()){
+                        if (proposalRatingTypeWrapper.getLabel().equals("Thoroughness")){
+                            proposalRatingTypeWrapper.setIsActive(true);
+                        }
+                    }
+                    break;
+                }
             }
             Map<Long, String> existingJudgeRating = new LinkedHashMap<>();
             Long index = 1L;
@@ -125,7 +141,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             judgeProposalBean.setComment(existingComment);
         }
         else{
-            hideThoroughness = true;
+            //hideThoroughness = true;
         }
         model.addAttribute("hideThoroughness", hideThoroughness);
         model.addAttribute("judgeProposalBean", judgeProposalBean);
@@ -139,5 +155,16 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("linkedProposalList", linkedProposalsWrappers);
 
         return "proposalDetails";
+    }
+
+    private void createThoroughnessIdCollection(){
+        thoroughnessValueIds.add(16L);
+        thoroughnessValueIds.add(17L);
+        thoroughnessValueIds.add(18L);
+        thoroughnessValueIds.add(19L);
+        thoroughnessValueIds.add(41L);
+        thoroughnessValueIds.add(42L);
+        thoroughnessValueIds.add(43L);
+        thoroughnessValueIds.add(44L);
     }
 }

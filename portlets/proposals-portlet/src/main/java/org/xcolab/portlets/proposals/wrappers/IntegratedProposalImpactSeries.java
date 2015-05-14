@@ -53,6 +53,10 @@ public class IntegratedProposalImpactSeries {
         return seriesTypeToDescriptionMap;
     }
 
+    public boolean getEmptySeries() {
+        return this.resultSeriesValues.isEmpty();
+    }
+
     private void calculateIntegratedImpactSeries() throws SystemException, PortalException {
         List<Proposal> referencedProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
 

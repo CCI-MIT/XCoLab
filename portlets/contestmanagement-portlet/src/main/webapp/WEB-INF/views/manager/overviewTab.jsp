@@ -104,7 +104,7 @@
 								ondragleave="dragLeave(event)"
 								id = "${contestWrapper.contestPK}"
 								data-filter-attribute="${contestWrapper.contestActive ? 'active' : 'prior'}"
-								class = "${x.index %2==0 ? 'blue' : ''}"
+								class = "${x.index %2==0 ? 'blue' : ''} draggable"
 								data-filter-visible="true"
 									>
 								<form:hidden path="contestWrappers[${x.index}].contestPK"

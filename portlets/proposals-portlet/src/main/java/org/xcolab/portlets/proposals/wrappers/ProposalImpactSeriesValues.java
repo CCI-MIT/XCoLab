@@ -71,4 +71,8 @@ public class ProposalImpactSeriesValues {
 
         return jsonArray;
     }
+
+    public boolean isEmpty() {
+        return yearToValueMap.isEmpty();
+    }
 }

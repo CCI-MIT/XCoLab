@@ -40,4 +40,8 @@ public class ProposalRatingTypeWrapper {
         return this.proposalRatingType.getIsActive();
     }
 
+    public void setIsActive(boolean isActive){
+        this.proposalRatingType.setIsActive(isActive);
+    }
+
 }
