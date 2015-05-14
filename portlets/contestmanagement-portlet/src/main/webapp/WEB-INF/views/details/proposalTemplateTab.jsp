@@ -246,58 +246,14 @@
 			document.getElementById("numberOfSections").value = numberOfSections.toString();
 		}
 
-		function createFormInputsIdReplacements(oldSectionElementId, newSectionElementId, sectionElementNames){
-			var formInputData = [];
-			var sectionPrefix = "sections";
-			for (var i = 0; i < sectionElementNames.length; i++) {
-				var sectionDummyInputId = sectionPrefix + oldSectionElementId + "." + sectionElementNames[i];
-				var sectionInputId = sectionPrefix + newSectionElementId + "." + sectionElementNames[i];
-				var sectionInputName = sectionPrefix + "[" + newSectionElementId + "]." + sectionElementNames[i];
-				formInputData[sectionDummyInputId] = {id: sectionInputId, name: sectionInputName};
-				formInputData[sectionDummyInputId] = {id: sectionInputId, name: sectionInputName};
-			}
-			return formInputData;
-		}
-
-		function replaceInputDataByTagName(newSectionElement, newSectionInputData, tagName){
-			var sectionFormInputs = newSectionElement.getElementsByTagName(tagName);
-			for (var i = 0; i < sectionFormInputs.length; i++) {
-					var sectionInputData = newSectionInputData[sectionFormInputs[i].id];
-					sectionFormInputs[i].id = sectionInputData.id;
-					sectionFormInputs[i].name = sectionInputData.name;
-			}
-		}
-
-		function replaceSectionFormIds(newSectionElement, newSectionInputData, newSectionId){
-			newSectionElement.style.display = "";
-			newSectionElement.id = newSectionId;
-			newSectionElement.setAttribute("data-section-id", newSectionId);
-			replaceInputDataByTagName(newSectionElement, newSectionInputData, 'input');
-			replaceInputDataByTagName(newSectionElement, newSectionInputData, 'select');
-			replaceInputDataByTagName(newSectionElement, newSectionInputData, 'textarea');
-		}
-
 		function addNewSection(templateSectionId, newSectionId){
 			var templateSectionElement = document.getElementById("section" + templateSectionId);
 
 			var newDropzoneElement = templateSectionElement.previousSibling.cloneNode(true);
 			var newSectionElement = templateSectionElement.cloneNode(true);
 
-			var sectionElementNames = [];
-			[].forEach.call(newSectionElement.getElementsByTagName('input'), function(element) {
-				sectionElementNames.push(element.getAttribute("data-form-name"));
-			});
-
-			[].forEach.call(newSectionElement.getElementsByTagName('textarea'), function(element) {
-				sectionElementNames.push(element.getAttribute("data-form-name"));
-			});
-
-			[].forEach.call(newSectionElement.getElementsByTagName('select'), function(element) {
-				sectionElementNames.push(element.getAttribute("data-form-name"));
-			});
-
-
-			var newSectionInputData = createFormInputsIdReplacements(templateSectionId, newSectionId, sectionElementNames);
+			var sectionElementNames = extractInputElementsInNode(newSectionElement);
+			var newSectionInputData = createFormInputsIdReplacements(templateSectionId, newSectionId, sectionElementNames, "sections");
 			replaceSectionFormIds(newSectionElement, newSectionInputData, newSectionId );
 
 			var addSectionElement = document.getElementById("addSection");

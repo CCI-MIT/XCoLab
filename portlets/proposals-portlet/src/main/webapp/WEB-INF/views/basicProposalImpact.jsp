@@ -7,28 +7,28 @@
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:liferay-ui="http://liferay.com/tld/ui"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-    <jsp:directive.include file="./init.jspx" />
+    <jsp:directive.include file="./init.jspx"/>
 
-    <jsp:directive.include file="./proposalDetails/header.jspx" />
+    <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
     <portlet:resourceURL var="getRegionsUrl" id="proposalImpactGetRegions">
     </portlet:resourceURL>
 
     <portlet:resourceURL var="getSectorsForRegionURL" id="proposalImpactGetSectorsForRegion">
-        <portlet:param name="regionTermId" value="@@REPLACE-REGION_TERM_ID@@" />
+        <portlet:param name="regionTermId" value="@@REPLACE-REGION_TERM_ID@@"/>
     </portlet:resourceURL>
 
     <portlet:resourceURL var="getDataSeriesURL" id="proposalImpactGetDataSeries">
-        <portlet:param name="sectorTermId" value="@@REPLACE-SECTOR_TERM_ID@@" />
-        <portlet:param name="regionTermId" value="@@REPLACE-REGION_TERM_ID@@" />
+        <portlet:param name="sectorTermId" value="@@REPLACE-SECTOR_TERM_ID@@"/>
+        <portlet:param name="regionTermId" value="@@REPLACE-REGION_TERM_ID@@"/>
     </portlet:resourceURL>
 
     <portlet:resourceURL var="saveDataSeriesURL" id="proposalImpactSaveDataSeries">
-        <portlet:param name="focusAreaId" value="@@REPLACE-FOCUS_AREA_ID@@" />
+        <portlet:param name="focusAreaId" value="@@REPLACE-FOCUS_AREA_ID@@"/>
     </portlet:resourceURL>
 
     <portlet:resourceURL var="deleteDataSeriesURL" id="proposalImpactDeleteDataSeries">
-        <portlet:param name="focusAreaId" value="@@REPLACE-FOCUS_AREA_ID@@" />
+        <portlet:param name="focusAreaId" value="@@REPLACE-FOCUS_AREA_ID@@"/>
     </portlet:resourceURL>
 
     <script>
@@ -52,22 +52,25 @@
     <script id="impactSeriesEditTableRowTemplate" type="text/x-handlebars-template">
         <tr id="impact-edit-row-{{series.name}}" class="impact-edit-row">
             <td width="45%">{{series.description}}
-                <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+                <a href="javascript:;" class="helpTrigger"><img
+                        src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+
                 <div class="addprophelp"><!-- --></div>
                 <div class="clearfix"><!-- --></div>
             </td>
             {{#each series.values}}
-                {{#if ../series.editable}}
-                    <td class="impact-value">
-                        <input type="text" name="{{this.year}}" value="{{this.value}}" class="series-value" onClick="this.setSelectionRange(0, this.value.length)"/>
-                        <!-- Using % as unit, since we only use it till now; may need refinement in the future -->
-                        <span style="margin-left: 3px">%</span>
-                    </td>
-                {{else}}
-                    <td class="impact-value">
-                        <span class="series-value">{{this.value}}</span>
-                    </td>
-                {{/if}}
+            {{#if ../series.editable}}
+            <td class="impact-value">
+                <input type="text" name="{{this.year}}" value="{{this.value}}" class="series-value"
+                       onClick="this.setSelectionRange(0, this.value.length)"/>
+                <!-- Using % as unit, since we only use it till now; may need refinement in the future -->
+                <span style="margin-left: 3px">%</span>
+            </td>
+            {{else}}
+            <td class="impact-value">
+                <span class="series-value">{{this.value}}</span>
+            </td>
+            {{/if}}
             {{/each}}
         </tr>
     </script>
@@ -84,7 +87,7 @@
             <td class="region"><span id="{{series.regionTerm.id}}">{{series.regionTerm.name}}</span></td>
             <td class="sector"><span id="{{series.sectorTerm.id}}">{{series.sectorTerm.name}}</span></td>
             {{#each series.resultValues}}
-                <td class="impact-value">{{this}}</td>
+            <td class="impact-value">{{this}}</td>
             {{/each}}
         </tr>
     </script>
@@ -97,67 +100,86 @@
     <!-- Content -->
     <div id="content">
         <div id="impact">
-            <div style="margin-bottom: 15px">
-                <strong>How will this proposal reduce greenhouse gas emissions? </strong>The proposal authors can use the tools below or work with the
-                <a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Impact+Assessment+Fellows">Impact Assessment Fellows</a>
-                to estimate the greenhouse gas (GHG) reductions the proposal will cause in different economic sectors around the world.
-                Once calculated, the top table will show the GHG emissions reductions from 2020 to 2050 for that sector and region.
-                <a target="_blank" href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">Need help?</a>
+            <div style="margin-bottom: 15px;text-align:justify !important;">
+                <div style="margin-left:10px;float:right;"><img
+                        src="http://climatecolab.org/documents/10136/0/Beta+indicator/c09c2c4d-a35d-478e-a0fa-b35619ced45f?t=1431525997197"
+                        style="
+    width: 55px;
+" /></div>
+                <strong>How will this proposal reduce greenhouse gas emissions? </strong>The proposal authors can use
+                the tools below or work with the
+                <a target="_blank" href="/impact_fellows">Impact Assessment Fellows</a>
+                to estimate the greenhouse gas (GHG) reductions the proposal will cause in different economic sectors
+                around the world.
+                Once calculated, the top table will show the GHG emissions reductions from 2020 to 2050 for that sector
+                and region.
+                <a target="_blank" href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">Need
+                    help?</a>
             </div>
             <c:choose>
                 <!-- Don't show table if no data is available and if user cannot edit -->
-                <!-- TODO change this back to proposalsPermission.canEdit when officially launching the feature -->
                 <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (not proposalsPermissions.canIAFActions) and (empty impactSerieses)}">
                     <h3>No data available yet.</h3>
                 </c:when>
                 <c:otherwise>
                     <table>
                         <thead>
-                            <tr>
-                                <th style="width: 22.5%;"><!-- --></th>
-                                <th style="width: 22.5%;"><!-- --></th>
-                                <th class="blue-bg" style="width: 55%; text-align: center">
-                                    Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
-                                    <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
-                                    <div class="addprophelp" style="color:white;">
-                                        This table shows a summary of the emission reductions for all sectors and regions
-                                        you submitted, in gigatons of carbon dioxide (CO2) equivalent (GtCO2e), for each decade listed.
-                                        <a target='_blank' style="color: rgb(85, 26, 139)" href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">
-                                            Click here for more information.
-                                        </a>
-                                    </div>
-                                    <div class="clearfix"><!-- --></div>
-                                </th>
-                            </tr>
+                        <tr>
+                            <th style="width: 22.5%;"><!-- --></th>
+                            <th style="width: 22.5%;"><!-- --></th>
+                            <th class="blue-bg" style="width: 55%; text-align: center">
+                                Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
+                                <a href="javascript:;" class="helpTrigger"><img
+                                        src="/climatecolab-theme/images/icon-addprop-question.png" width="15"
+                                        height="15"/></a><br/>
+
+                                <div class="addprophelp" style="color:white;">
+                                    This table shows a summary of the emission reductions for all sectors and regions
+                                    you submitted, in gigatons of carbon dioxide (CO2) equivalent (GtCO2e), for each
+                                    decade listed.
+                                    <a target='_blank' style="color: rgb(85, 26, 139)"
+                                       href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">
+                                        Click here for more information.
+                                    </a>
+                                </div>
+                                <div class="clearfix"><!-- --></div>
+                            </th>
+                        </tr>
                         </thead>
                     </table>
                     <table id="impact-summary">
                         <thead>
-                            <tr>
-                                <th class="blue-bg" style="width: 22.5%;">Sector</th><th class="blue-bg" style="width: 22.5%;">Region</th>
-                                <c:forEach var="impactIteration" items="${impactIterations}">
-                                    <th class="blue-bg" style="text-align: center; width: ${55.0 / fn:length(impactIterations)}%">
+                        <tr>
+                            <th class="blue-bg" style="width: 22.5%;">Region</th>
+                            <th class="blue-bg" style="width: 22.5%;">Sector</th>
+                            <c:forEach var="impactIteration" items="${impactIterations}">
+                                <th class="blue-bg"
+                                    style="text-align: center; width: ${55.0 / fn:length(impactIterations)}%">
                                         ${impactIteration.year}
-                                    </th>
-                                </c:forEach>
-                            </tr>
+                                </th>
+                            </c:forEach>
+                        </tr>
                         </thead>
                         <tbody id="summary-body">
-                            <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
-                                <tr class="impact-series-clickable" id="impact-row-${index.index}">
-                                    <td class="region"><span id="${impactSeries.whereTerm.id}">${impactSeries.whereTerm.name}</span></td>
-                                    <td class="sector"><span id="${impactSeries.whatTerm.id}">${impactSeries.whatTerm.name}</span></td>
-                                    <c:forEach var="impactIteration" items="${impactIterations}">
-                                        <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
-                                    </c:forEach>
-                                </tr>
-                            </c:forEach>
+                        <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
+                            <tr class="impact-series-clickable" id="impact-row-${index.index}">
+                                <td class="region"><span
+                                        id="${impactSeries.whereTerm.id}">${impactSeries.whereTerm.name}</span></td>
+                                <td class="sector"><span
+                                        id="${impactSeries.whatTerm.id}">${impactSeries.whatTerm.name}</span></td>
+                                <c:forEach var="impactIteration" items="${impactIterations}">
+                                    <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
+                                </c:forEach>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                         <c:if test="${proposalsPermissions.canEdit}">
                             <tbody>
                             <tr id="impact-new-series-row">
-                                <td class="region" style="border-right: none;"><span><![CDATA[&lt;new region&gt;]]></span></td>
-                                <td class="sector" style="border-left: none;"><span><![CDATA[&lt;new sector&gt;]]></span></td>
+                                <td class="region" style="border-right: none; width: 22.5%;"><span><![CDATA[&lt;new region&gt;]]></span>
+                                </td>
+                                <td class="sector" style="border-left: none; width: 22.5%"><span><![CDATA[&lt;new sector&gt;]]></span>
+                                </td>
                                 <c:forEach var="impactIteration" items="${impactIterations}">
                                     <td class="impact-value"><!-- --></td>
                                 </c:forEach>
@@ -165,7 +187,7 @@
                             </tbody>
                         </c:if>
                         <!--<div class="ui-resizable-handle" id="sgrip"> -->
-                            <!-- -->
+                        <!-- -->
                         <!-- </div> -->
                     </table>
                     <div id="impact-series-detail" style="display:none">
@@ -184,6 +206,7 @@
                                     <select id="sector">
                                         <option value="0" selected="selected">Select sector</option>
                                     </select>
+
                                     <div class="blue-button disabled">
                                         <a id="continue-button" href="javascript:;">Add</a>
                                     </div>
@@ -192,7 +215,9 @@
                             </div>
                             <div id="header" class="shaded-bg" style="display: none">
                                 <h3 id="region-title"><!-- --></h3>
+
                                 <h3 id="sector-title"><!-- --></h3>
+
                                 <div class="blue-button disabled" style="float:right; margin-right: 20px;">
                                     <a id="delete-button" href="javascript:;">Delete</a>
                                 </div>
@@ -200,22 +225,23 @@
                                     <a id="save-button" href="javascript:;">Save</a>
                                 </div>
                                 <div id="author-info" style="margin-top: 2px; display: none;">
-                                    <strong>Last saved:</strong>&#160; <span id="author-name"><!-- --></span> on <span id="save-date"><!-- --></span>
+                                    <strong>Last saved:</strong>&#160; <span id="author-name"><!-- --></span> on <span
+                                        id="save-date"><!-- --></span>
                                 </div>
                             </div>
                         </div>
 
                         <table id="edit-table">
                             <thead>
-                                <tr style="display: none;">
-                                    <th style="width: 45%"><!-- --></th>
-                                    <c:forEach var="impactIteration" items="${impactIterations}">
-                                        <th style="width: ${55.0 / fn:length(impactIterations)}%"><!-- --></th>
-                                    </c:forEach>
-                                </tr>
+                            <tr style="display: none;">
+                                <th style="width: 45%"><!-- --></th>
+                                <c:forEach var="impactIteration" items="${impactIterations}">
+                                    <th style="width: ${55.0 / fn:length(impactIterations)}%"><!-- --></th>
+                                </c:forEach>
+                            </tr>
                             </thead>
                             <tbody>
-                                <!-- -->
+                            <!-- -->
                             </tbody>
                         </table>
                     </div>
@@ -225,18 +251,17 @@
         </div>
     </div>
 
-    <!-- TODO remove fellow permission -->
     <c:choose>
-        <c:when test="${not proposalsPermissions.canEdit and not proposalsPermissions.canFellowActions}">
+        <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (not proposalsPermissions.canIAFActions) and (empty impactSerieses)}">
             <script>
-                $().ready(function() {
+                $().ready(function () {
                     $('tr.impact-series-clickable').removeClass('impact-series-clickable');
                 });
             </script>
         </c:when>
         <c:otherwise>
             <script>
-                $().ready(function() {
+                $().ready(function () {
                     newSeriesRowClicked();
                 });
             </script>
@@ -255,22 +280,31 @@
 
         // Help text constants
         var helpTextMap =
-        {   "BAU" : <![CDATA["This data shows this region and sector’s predicted emissions \"if future development " +
-                "trends follow those of the past and no changes in policies take place\" (IPCC 2014), what is called " +
-                "\"business as usual\", or BAU. " +
-                "<a target='_blank' href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#BAU'>" +
-                "Click here for more information on how these were calculated.<a>"]]>,
-            "IMPACT_REDUCTION" : <![CDATA["If your proposal were fully successful and all possible users used it, enter the percentage " +
-                "that your proposal would reduce emissions in this region and sector, compared to business as usual (BAU). " +
-                "<a target='_blank' href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#fullyadopted'>" +
-                "Click here for more.<a>"]]>,
-            "IMPACT_ADOPTION_RATE" : <![CDATA["How rapidly will your proposal be adopted?  Enter reasonable estimates for the percentage " +
-                "of all possible users who would actually adopt your proposal in different years.  " +
-                "<a target='_blank' href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#adoptionrate'>" +
-                "Click here for more.<a>"]]>
-        };
+        {
+            "BAU": <![CDATA["This data shows this region and sector’s predicted emissions \"if future development " +
+            "trends follow those of the past and no changes in policies take place\" (IPCC 2014), what is called " +
+            "\"business as usual\", or BAU. " +
+            "<a target='_blank' href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#BAU'>" +
+            "Click here for more information on how these were calculated.<a>"
+        ]]>,
+        "IMPACT_REDUCTION"
+        : <![CDATA[
+        "If your proposal were fully successful and all possible users used it, enter the percentage " +
+        "that your proposal would reduce emissions in this region and sector, compared to business as usual (BAU). " +
+        "<a target='_blank' href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#fullyadopted'>" +
+        "Click here for more.<a>"
+        ]]>,
+        "IMPACT_ADOPTION_RATE"
+        : <![CDATA[
+        "How rapidly will your proposal be adopted?  Enter reasonable estimates for the percentage " +
+        "of all possible users who would actually adopt your proposal in different years.  " +
+        "<a target='_blank' href='/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan#adoptionrate'>" +
+        "Click here for more.<a>"
+        ]]>
+        }
+        ;
 
-        jQuery(document).ready(function() {
+        jQuery(document).ready(function () {
             registerEventHandler();
 
             // Init dependencies
@@ -284,27 +318,26 @@
             $('table#impact-summary .st-head-table').css('width', $('table#impact-summary .st-body-scroll').css('width'))
 
             // Format summary-tables's impact values
-            $('table#impact-summary tbody#summary-body td.impact-value').each(function(idx) {
+            $('table#impact-summary tbody#summary-body td.impact-value').each(function (idx) {
                 $(this).text(numeral($(this).text()).format('0,0.00'));
             });
 
             /*
-            var sgrip = $('div#sgrip');
-            $('table#impact-summary').append(sgrip);
-            $('table#impact-summary table.st-body-scroll').resizable({
-                handles: {
-                    's': '#sgrip'
-                }
-            });
+             var sgrip = $('div#sgrip');
+             $('table#impact-summary').append(sgrip);
+             $('table#impact-summary table.st-body-scroll').resizable({
+             handles: {
+             's': '#sgrip'
+             }
+             });
 
 
-            $('table#impact-summary div.st-body-scroll').append(sgrip);
-            */
+             $('table#impact-summary div.st-body-scroll').append(sgrip);
+             */
         });
 
         function registerEventHandler() {
-            $('tr.impact-series-clickable').click(function() {
-                console.log("clicked row " + $(this).attr('id'));
+            $('tr.impact-series-clickable').click(function () {
                 toggleEditMode($(this));
             });
 
@@ -321,7 +354,7 @@
 
         function registerHelpEventHandler() {
             jQuery("#impact .helpTrigger").off("click");
-            jQuery("#impact .helpTrigger").click(function() {
+            jQuery("#impact .helpTrigger").click(function () {
                 var trigger = jQuery(this);
                 trigger.parent().find(".addprophelp").slideToggle("fast");
             });
@@ -332,8 +365,8 @@
                 toggleEditMode(getSelectedOverviewTableRow());
             } else {
                 dismissDetailView();
-                //$('div#impact-series-detail').fadeOut('normal');
                 userInputOccurred = false;
+                $('#impact tr.selected').removeClass('selected');
             }
         }
 
@@ -371,7 +404,6 @@
             var url = replaceImpactURLPlaceholders(getDataSeriesURL,
                     [SECTOR_TERM_ID_PLACEHOLDER, REGION_TERM_ID_PLACEHOLDER],
                     [sectorTerm.attr('id'), regionTerm.attr('id')]);
-            console.log("load data series with url: " + url);
             loadSeriesEditData(url, row);
 
             // Show tables
@@ -380,18 +412,43 @@
 
         function recalculateEditSeriesValues() {
             var bauValues = $('#impact table tr#impact-edit-row-BAU td span');
-            var reductionValues = $('#impact table tr#impact-edit-row-'+ IMPACT_REDUCTION_PLACEHOLDER +' input');
-            var adoptionValues = $('#impact table tr#impact-edit-row-'+ IMPACT_ADOPTION_RATE_PLACEHOLDER + ' input');
+            var reductionValueElements = $('#impact table tr#impact-edit-row-' + IMPACT_REDUCTION_PLACEHOLDER + ' input');
+            var adoptionValueElements = $('#impact table tr#impact-edit-row-' + IMPACT_ADOPTION_RATE_PLACEHOLDER + ' input');
             var resultValues = $('#impact table tr#impact-edit-row-RESULT td span');
 
+            $('a#save-button').parent().removeClass('disabled');
+
             for (var i = 0; i &lt; bauValues.size(); i++) {
-                var resultValue = numeral((numeral().unformat($(bauValues[i]).text()) * (parseFloat($(reductionValues[i]).attr('value')) * 0.01 *
-                        parseFloat($(adoptionValues[i]).attr('value')) * 0.01))).format('0,0.00');
-                $(resultValues[i]).text('' + resultValue);
+                var reductionValue = parseFloat($(reductionValueElements[i]).attr('value').replace(',', '.'));
+                var adoptionValue = parseFloat($(adoptionValueElements[i]).attr('value').replace(',', '.'));
+
+                var isValid = integrityCheckSeriesValue($(reductionValueElements[i]), reductionValue);
+                isValid = isValid &amp;&amp; integrityCheckSeriesValue($(adoptionValueElements[i]), adoptionValue);
+
+                if (isValid) {
+                    var resultValue = numeral((numeral().unformat($(bauValues[i]).text()) * (reductionValue * 0.01 *
+                    adoptionValue * 0.01))).format('0,0.00');
+                    $(resultValues[i]).text('' + resultValue);
+                } else {
+                    $(resultValues[i]).text('' + numeral(0.0).format('0,0.00'))
+                }
+
             }
         }
+
+        function integrityCheckSeriesValue(inputField, value) {
+            if (isNaN(value)) {
+                inputField.addClass('error');
+                $('a#save-button').parent().addClass('disabled');
+                return false;
+            } else {
+                inputField.removeClass('error');
+                return true;
+            }
+        }
+
         /* Replace the URL placeholders with actual values */
-        function replaceImpactURLPlaceholders(rawUrl, ids, values){
+        function replaceImpactURLPlaceholders(rawUrl, ids, values) {
             var url = rawUrl;
             for (var i = 0; i &lt; ids.length; i++) {
                 url = url.replace('%40%40REPLACE-' + ids[i] + '%40%40', values[i]);
@@ -402,8 +459,7 @@
 
         function loadSeriesEditData(url) {
             setDetailViewSpinnerMode(true);
-            $.getJSON(url, { get_param: 'value' }, function(data) {
-                console.log("success " + data.success);
+            $.getJSON(url, {get_param: 'value'}, function (data) {
                 if (data.success === false) {
 
                     alert("Could not retrieve series data. Please contact the Administrator");
@@ -418,7 +474,6 @@
                     editTable.empty();
 
                     // Add new rows
-                    console.log("json: " + JSON.stringify(data));
                     var dataSeries = data.serieses.BAU;
                     var tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                     tableRow.find('.addprophelp').html(helpTextMap.BAU);
@@ -426,18 +481,15 @@
                         $(this).text(numeral($(this).text()).format('0,0.00'))
                     });
                     editTable.append(tableRow);
-                    console.log("bau series" + dataSeries);
 
 
                     dataSeries = data.serieses.IMPACT_REDUCTION;
                     tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                     tableRow.find('.addprophelp').html(helpTextMap.IMPACT_REDUCTION);
-                    console.log("Reduction: " + JSON.stringify(dataSeries));
                     tableRow.find('span.series-value').each(function (idx) {
                         $(this).text(numeral($(this).text()).format('0,0.00'))
                     });
                     editTable.append(tableRow);
-                    console.log("reduction series" + dataSeries);
 
                     dataSeries = data.serieses.IMPACT_ADOPTION_RATE;
                     tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
@@ -446,7 +498,6 @@
                         $(this).text(numeral($(this).text()).format('0,0.00'))
                     });
                     editTable.append(tableRow);
-                    console.log("adoption series" + dataSeries);
 
                     dataSeries = {
                         "name": "RESULT",
@@ -463,7 +514,6 @@
                     editTable.append(tableRow);
                     registerHelpEventHandler();
 
-                    console.log("result json: " + JSON.stringify(dataSeries));
 
                     editedFocusArea = data.focusAreaId;
 
@@ -514,14 +564,17 @@
         }
 
         function registerDropdownEventListener(regionDropdownElement, sectorDropdownElement) {
-            sectorDropdownElement.click(function(event) {event.stopPropagation();});
-            regionDropdownElement.click(function(event) {event.stopPropagation();});
+            sectorDropdownElement.click(function (event) {
+                event.stopPropagation();
+            });
+            regionDropdownElement.click(function (event) {
+                event.stopPropagation();
+            });
 
-            regionDropdownElement.on('change', function() {
+            regionDropdownElement.on('change', function () {
                 $('#impact a#continue-button').parent().addClass('disabled');
 
                 var regionTermId = $(this).val();
-                console.log("region term selected: " + regionTermId);
                 if (regionTermId == 0) {
                     clearDropdown(sectorDropdownElement, "Select sector");
                     sectorDropdownElement.attr('disabled', 'disabled');
@@ -533,11 +586,11 @@
                 setDetailViewSpinnerMode(true);
                 $('div#new-series select#sector').attr('disabled', 'disabled');
 
-                $.getJSON(url, { get_param: 'value' }, function(data) {
+                $.getJSON(url, {get_param: 'value'}, function (data) {
                     setDetailViewSpinnerMode(false);
                     clearDropdown(sectorDropdownElement, "Select sector");
 
-                    $.each(data, function(index, attr) {
+                    $.each(data, function (index, attr) {
                         sectorDropdownElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
                     });
 
@@ -546,7 +599,7 @@
                 });
             });
 
-            sectorDropdownElement.on('change', function() {
+            sectorDropdownElement.on('change', function () {
                 $('#impact a#continue-button').parent().addClass('disabled');
                 var sectorTermId = sectorDropdownElement.val();
                 var regionTermId = regionDropdownElement.val();
@@ -572,14 +625,12 @@
 
             var url = replaceImpactURLPlaceholders(getRegionsURL, [], []);
             setDetailViewSpinnerMode(true);
-            $.getJSON(url, { get_param: 'value' }, function(data) {
+            $.getJSON(url, {get_param: 'value'}, function (data) {
                 setDetailViewSpinnerMode(false);
                 regionDropdownElement.empty();
                 regionDropdownElement.append('<option value="' + 0 + '">Select region</option>');
-                console.log("data " + data);
 
-                $.each(data, function(index, attr) {
-                    console.log("each " + attr);
+                $.each(data, function (index, attr) {
                     regionDropdownElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
                 });
             });
@@ -596,10 +647,10 @@
             var reductionData = {};
             var adoptionData = {};
 
-            $.each($('tr#impact-edit-row-' + IMPACT_REDUCTION_PLACEHOLDER+ ' input'), function(idx) {
+            $.each($('tr#impact-edit-row-' + IMPACT_REDUCTION_PLACEHOLDER + ' input'), function (idx) {
                 reductionData[$(this).attr('name')] = $(this).attr('value');
             });
-            $.each($('tr#impact-edit-row-' + IMPACT_ADOPTION_RATE_PLACEHOLDER+ ' input'), function(idx) {
+            $.each($('tr#impact-edit-row-' + IMPACT_ADOPTION_RATE_PLACEHOLDER + ' input'), function (idx) {
                 adoptionData[$(this).attr('name')] = $(this).attr('value');
             });
 
@@ -608,10 +659,8 @@
             postJson[IMPACT_ADOPTION_RATE_PLACEHOLDER] = adoptionData;
 
             setDetailViewSpinnerMode(true);
-            $.post(url, {"json" : JSON.stringify(postJson)}, function(response) {
-                console.log("responseData " + response);
+            $.post(url, {"json": JSON.stringify(postJson)}, function (response) {
                 responseData = JSON.parse(response);
-                console.log("responseData " + responseData);
                 if (responseData.success === false) {
                     alert("Could not process request. Please contact the Administrator");
                 } else {
@@ -624,7 +673,6 @@
 
                     // Editing an existing series
                     else {
-                        console.log("else");
                         updateSeriesValues(resultValues);
                     }
 
@@ -649,12 +697,10 @@
         function continueButtonClicked(event) {
             newRegionTermId = $('div#new-series select#region').val();
             newSectorTermId = $('div#new-series select#sector').val();
-            console.log("url " + getDataSeriesURL);
             var url = replaceImpactURLPlaceholders(getDataSeriesURL,
                     [SECTOR_TERM_ID_PLACEHOLDER, REGION_TERM_ID_PLACEHOLDER],
                     [newSectorTermId, newRegionTermId]);
 
-            console.log("load data series with URL " + url);
 
             showEditTable();
             loadSeriesEditData(url);
@@ -700,7 +746,7 @@
         }
 
         function dismissDetailView() {
-            $('div#impact-series-detail').fadeOut('normal', function() {
+            $('div#impact-series-detail').fadeOut('normal', function () {
                 $(this).find('#edit-table tbody').empty();
 
             });
@@ -732,14 +778,15 @@
 
             var regionTermName = $('div#impact-series-detail h3#region-title').text();
             var sectorTermName = $('div#impact-series-detail h3#sector-title').text();
-            var seriesData = {"sectorTerm" : {"id": newSectorTermId, "name" : sectorTermName},
-                "regionTerm" : {"id": newRegionTermId, "name" : regionTermName},
+            var seriesData = {
+                "sectorTerm": {"id": newSectorTermId, "name": sectorTermName},
+                "regionTerm": {"id": newRegionTermId, "name": regionTermName},
                 "rowIndex": $('tr.impact-series-clickable').size(),
-                "resultValues" : [],
-                "focusAreaId" : editedFocusArea};
+                "resultValues": [],
+                "focusAreaId": editedFocusArea
+            };
 
-            //console.log("series data " + JSON.stringify(seriesData));
-            $.each(resultValues, function(idx) {
+            $.each(resultValues, function (idx) {
                 seriesData.resultValues.push($(this).text());
             });
             // Insert new row
@@ -751,51 +798,47 @@
                 newRow.insertAfter(overviewTableRows[overviewTableRows.length - 1]);
             }
 
-            newRow.click(function() {
+            newRow.click(function () {
                 toggleEditMode($(this));
             });
         }
 
         function updateSeriesValues(resultValues) {
             for (var i = 0; i &lt; resultValues.length; i++) {
-                var valueCell = $($('tr#impact-row-'+currentEditingRowIndex + ' td.impact-value')[i]);
-                console.log("get valueCell with index " + i);
+                var valueCell = $($('tr#impact-row-' + currentEditingRowIndex + ' td.impact-value')[i]);
                 valueCell.text($(resultValues[i]).text());
 
-                console.log("Set value " + valueCell.text() + " for index " + i);
             }
         }
         function deleteSeriesRow(event) {
             if (currentEditingRowIndex != ROW_INDEX_NONE_SELECTED) {
-                $('#impact table tr.impact-edit-row').fadeOut('normal', function() {
+                $('#impact table tr.impact-edit-row').fadeOut('normal', function () {
                     $(this).remove();
                 });
 
                 event.stopPropagation();
-                console.log('focus area id ' + editedFocusArea);
                 var url = replaceImpactURLPlaceholders(deleteDataSeriesURL, [FOCUS_AREA_ID_PLACEHOLDER], [editedFocusArea]);
-                console.log("delete url " + url);
                 var row = getSelectedOverviewTableRow();
-                console.log("row: " + row.html());
 
                 setDetailViewSpinnerMode(true);
-                $.post(url, {}, function(response) {
+                $.post(url, {}, function (response) {
                     var responseData = JSON.parse(response);
                     setDetailViewSpinnerMode(false);
                     if (responseData.success === false) {
                         alert("Could not delete row. Please contact the Administrator");
                     } else {
-                        row.fadeOut("normal", function(){ row.remove(); });
+                        row.fadeOut("normal", function () {
+                            row.remove();
+                        });
                         dismissDetailView();
 
                         // Reload available sector terms
                         var regionsSelectElement = $('div#impact-series-detail div#new-series select#region');
                         regionsSelectElement.empty();
                         regionsSelectElement.append('<option value="0" selected="selected">Select region</option>');
-                        $.getJSON(getRegionsURL, { get_param: 'value' }, function(data) {
-                            console.log("get regions data " + data);
+                        $.getJSON(getRegionsURL, {get_param: 'value'}, function (data) {
                             if (data != null) {
-                                $.each(data, function(index, attr) {
+                                $.each(data, function (index, attr) {
                                     regionsSelectElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
                                 });
                             }
@@ -811,7 +854,6 @@
         }
 
         function getOverviewTableRowWithIndex(index) {
-            console.log('tr#impact-row-' + index);
             return $('tr#impact-row-' + index);
         }
 

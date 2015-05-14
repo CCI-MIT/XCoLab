@@ -162,6 +162,72 @@ function resizeAllTextareas(){
     });
 }
 
+function extractInputElementsInNode(node){
+    var sectionElementNames =[];
+
+    [].forEach.call(node.getElementsByTagName('input'), function(element) {
+        sectionElementNames.push(element.getAttribute("data-form-name"));
+    });
+
+    [].forEach.call(node.getElementsByTagName('textarea'), function(element) {
+        sectionElementNames.push(element.getAttribute("data-form-name"));
+    });
+
+    [].forEach.call(node.getElementsByTagName('select'), function(element) {
+        sectionElementNames.push(element.getAttribute("data-form-name"));
+    });
+
+    return sectionElementNames;
+}
+
+function createFormInputsIdReplacements(oldSectionElementId, newSectionElementId, sectionElementNames, sectionPrefix){
+    var formInputData = [];
+    for (var i = 0; i < sectionElementNames.length; i++) {
+        var sectionDummyInputId = sectionPrefix + oldSectionElementId + "." + sectionElementNames[i];
+        var sectionInputId = sectionPrefix + newSectionElementId + "." + sectionElementNames[i];
+        var sectionInputName = sectionPrefix + "[" + newSectionElementId + "]." + sectionElementNames[i];
+        formInputData[sectionDummyInputId] = {id: sectionInputId, name: sectionInputName};
+    }
+    return formInputData;
+}
+
+function replaceInputDataByTagName(newSectionElement, newSectionInputData, tagName){
+    var sectionFormInputs = newSectionElement.getElementsByTagName(tagName);
+    for (var i = 0; i < sectionFormInputs.length; i++) {
+        var sectionInputData = newSectionInputData[sectionFormInputs[i].id];
+        console.log(" sectionFormInputs[i].id", sectionFormInputs[i]);
+        sectionFormInputs[i].id = sectionInputData.id;
+        sectionFormInputs[i].name = sectionInputData.name;
+    }
+}
+
+function replaceSectionFormIds(newSectionElement, newSectionInputData, newSectionId){
+    newSectionElement.style.display = "";
+
+    if(newSectionId != undefined) {
+        console.log("newSectionId", newSectionId);
+        newSectionElement.id = newSectionId;
+        newSectionElement.setAttribute("data-section-id", newSectionId);
+    }
+    replaceInputDataByTagName(newSectionElement, newSectionInputData, 'input');
+    replaceInputDataByTagName(newSectionElement, newSectionInputData, 'select');
+    replaceInputDataByTagName(newSectionElement, newSectionInputData, 'textarea');
+}
+
+
+function getClosest(el, tag) {
+    // this is necessary since nodeName is always in upper case
+    tag = tag.toUpperCase();
+    do {
+        if (el.nodeName === tag) {
+            // tag name is found! let's return it. :)
+            return el;
+        }
+    } while (el = el.parentNode);
+
+    // not found :(
+    return null;
+}
 
 jQuery(function() {
 
@@ -170,10 +236,6 @@ jQuery(function() {
         trigger.parent().parent().find(".addprophelp").slideToggle("fast");
     });
 
-    initTooltips();
-
     initializeTextEditors();
-
     resizeAllTextareas();
-
 });

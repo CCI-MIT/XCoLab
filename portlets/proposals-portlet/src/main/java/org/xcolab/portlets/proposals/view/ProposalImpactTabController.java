@@ -50,6 +50,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
 
         Contest contest = proposalsContext.getContest(request);
+        setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
 
         try {
             List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
@@ -59,14 +60,14 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             return "proposalImpactError";
         }
 
-        setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
+
         switch (ContestTier.getContestTierByTierType(contest.getContestTier())) {
             case BASIC:
                 return showImpactTabBasicProposal(request, model);
             case REGION_SECTOR:
             case REGION_AGGREGATE:
             case GLOBAL:
-                return showImpactTabIntegratedProposal(request, model);
+                // return showImpactTabIntegratedProposal(request, model);
             default:
                 return "proposalImpactError";
         }
@@ -75,7 +76,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private String showImpactTabIntegratedProposal(PortletRequest request, Model model)
             throws PortalException, SystemException {
 
-        // TODO remove this code once impact tab has officially launched
         if (!hasImpactTabPermission(request)) {
             return "proposalImpactError";
         }
@@ -93,12 +93,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
 
-        // TODO remove this code once impact tab has officially launched
-        if (!hasImpactTabPermission(request)) {
-            return "proposalImpactError";
-        }
-
-        // TODO handle error here
         try {
             List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
