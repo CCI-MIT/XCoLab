@@ -5,7 +5,7 @@ public enum MemberCategory {
 	ALL("All"),
     MEMBER("User"),
     CATALYST("Catalyst"),
-    FELLOW("Fellow"),
+    FELLOW("Fellow", "Impact Assessment Fellow"),
     ADVISOR("Advisor"),
     EXPERT("Experts"),
     JUDGES("Judges"),
