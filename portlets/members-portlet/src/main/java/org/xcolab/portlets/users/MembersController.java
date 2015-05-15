@@ -14,6 +14,7 @@ import org.xcolab.commons.beans.SortFilterPage;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.portlets.users.utils.MemberCategory;
 import org.xcolab.portlets.users.utils.MemberItem;
 
 import java.util.*;
@@ -53,6 +54,8 @@ public class MembersController {
         int pagesCount;
         int endPage;
 
+        List<MemberItem> users = new ArrayList<MemberItem>();
+
         if (memberCategoryParam==null || memberCategoryParam.compareTo("")==0) {
 
             if (filterParam!=null){
@@ -60,13 +63,6 @@ public class MembersController {
             }
             else
                 usersCount = UserLocalServiceUtil.getUsersCount();
-
-            pagesCount = (int)Math.ceil((double)usersCount/(double)USERS_PER_PAGE);
-
-
-            endPage = pagesCount;
-            if (startPage + 10<pagesCount)
-                endPage=startPage+10;
 
             if (sortFilterPage.getSortColumn() != null) {
 
@@ -108,12 +104,34 @@ public class MembersController {
                 sortFilterPage.setSortColumn("ACTIVITY");
                 sortFilterPage.setSortAscending(false);
             }
-        }
-        else {
+
+            for (User_ user : dBUsers)
+            {
+                MemberItem memberItem = new MemberItem(user,memberCategoryParam);
+                if (memberItem.getCategory()!= MemberCategory.STAFF)
+                    users.add(memberItem);
+
+                    else
+                    usersCount--;
+
+            }
 
             //Pagination
 
-            usersCount = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(0, Integer.MAX_VALUE, filter, memberCategoryParam).size();
+            pagesCount = (int)Math.ceil((double)usersCount/(double)USERS_PER_PAGE);
+
+            endPage = pagesCount;
+            if (startPage + 10<pagesCount)
+                endPage=startPage+10;
+
+        }
+        else {
+
+            String memberCategoryFilter="%" + memberCategoryParam + "%";
+
+            //Pagination
+
+            usersCount = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(0, Integer.MAX_VALUE, filter, memberCategoryFilter).size();
             pagesCount = (int)Math.ceil((double)usersCount/(double)USERS_PER_PAGE);
             endPage = pagesCount;
             if (startPage + 10<pagesCount)
@@ -126,45 +144,44 @@ public class MembersController {
                 {
                     case "USER_NAME":
                         if (sortFilterPage.isSortAscending())
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         else
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         break;
 
                     case "ACTIVITY":
                         if (sortFilterPage.isSortAscending())
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         else
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         break;
 
                     case "CATEGORY":
                         if (sortFilterPage.isSortAscending())
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser,endUser,filter,memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser,endUser,filter,memberCategoryFilter);
                         else
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser,endUser,filter,memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser,endUser,filter,memberCategoryFilter);
                         break;
 
                     case "MEMBER_SINCE":
                         if (sortFilterPage.isSortAscending())
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser,endUser,filter,memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser,endUser,filter,memberCategoryFilter);
                         else
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDescFilteredByCategory(firstUser,endUser,filter,memberCategoryParam);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDescFilteredByCategory(firstUser,endUser,filter,memberCategoryFilter);
                         break;
                 }
             else {
-                dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryParam);
+                dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                 sortFilterPage.setSortColumn("ACTIVITY");
                 sortFilterPage.setSortAscending(false);
             }
 
-        }
+            for (User_ user : dBUsers)
+            {
+                MemberItem memberItem = new MemberItem(user,memberCategoryParam);
+                users.add(memberItem);
+            }
 
-        List<MemberItem> users = new ArrayList<MemberItem>();
-        for (User_ user : dBUsers)
-        {
-            MemberItem memberItem = new MemberItem(user,memberCategoryParam);
-            users.add(memberItem);
         }
 
         model.addAttribute("pageNumber", page);

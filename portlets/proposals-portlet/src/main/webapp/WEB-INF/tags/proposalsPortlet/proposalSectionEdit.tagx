@@ -70,9 +70,6 @@
 
 
 			<c:otherwise>
-                <c:if test="${section.type == 'PROPOSAL_LIST_TEXT_REFERENCE' }">
-                    <span class="proposalListTextReference">(Please copy&amp;paste links to referenced proposals right into the textfield)</span>
-                </c:if>
 				<form:textarea cssClass="rte" data-section-type="${section.type }" cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]" />
 				<c:if test="${section.characterLimit gt 0}">
                     <div class="clearfix"><!-- --></div>

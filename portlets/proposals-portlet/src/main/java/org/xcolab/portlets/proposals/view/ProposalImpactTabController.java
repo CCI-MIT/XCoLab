@@ -76,7 +76,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private String showImpactTabIntegratedProposal(PortletRequest request, Model model)
             throws PortalException, SystemException {
 
-        // TODO remove this code once impact tab has officially launched
         if (!hasImpactTabPermission(request)) {
             return "proposalImpactError";
         }
