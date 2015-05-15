@@ -23,6 +23,7 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
+import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import java.io.IOException;
@@ -62,17 +63,17 @@ public class ProposalPickerJSONController {
 
 		if (requestType.equalsIgnoreCase("subscriptionsAndSupporting")) {
 			proposals = getFilteredSubscribedSupportingProposalsForUser(
-					Long.parseLong(user), filterType, sectionId);
+					Long.parseLong(user), filterType, sectionId, request);
 		} else if (requestType.equalsIgnoreCase("subscriptions")) {
 			proposals = getFilteredSubscribedProposalsForUser(
-					Long.parseLong(user), filterType, sectionId);
+					Long.parseLong(user), filterType, sectionId, request);
 		} else if (requestType.equalsIgnoreCase("supporting")) {
 			proposals = getFilteredSupportingProposalsForUser(
-					Long.parseLong(user), filterType, sectionId);
+					Long.parseLong(user), filterType, sectionId, request);
 		} else if (requestType.equalsIgnoreCase("all")
 				|| requestType.equalsIgnoreCase("contests")) {
 			proposals = getFilteredAllProposalsForUser(Long.parseLong(user),
-					filterType, sectionId, contestPK);
+					filterType, sectionId, contestPK, request);
 		}
 
 		if (filterText != null && filterText.length() > 0)
@@ -139,13 +140,13 @@ public class ProposalPickerJSONController {
 		long userId = Long.parseLong(request.getRemoteUser());
 
 		int numberOfSubscriptions = getFilteredSubscribedProposalsForUser(
-				userId, filterType, sectionId).size();
+				userId, filterType, sectionId, request).size();
 		int numberOfSupporting = getFilteredSupportingProposalsForUser(userId,
-				filterType, sectionId).size();
+				filterType, sectionId, request).size();
 		int numberOfProposals = getFilteredAllProposalsForUser(userId,
-				filterType, sectionId, 0L).size();
+				filterType, sectionId, 0L, request).size();
 		int numberOfSubscriptionsSupporting = getFilteredSubscribedSupportingProposalsForUser(
-				userId, filterType, sectionId).size();
+				userId, filterType, sectionId, request).size();
 
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		wrapper.put("numberOfSubscriptions", numberOfSubscriptions);
@@ -459,11 +460,11 @@ public class ProposalPickerJSONController {
 	private List<Pair<ContestWrapper, Date>> getFilteredContests(
 			String filterKey, long sectionId, ResourceRequest request) throws SystemException,
 			PortalException {
+
 		List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
 
 		// FocusArea
 		PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
-
 		FocusArea fa = PlanSectionDefinitionLocalServiceUtil.getFocusArea(planSectionDefinition);
 		List<OntologyTerm> terms = new LinkedList<>();
 		if (planSectionDefinition.getFocusAreaId() < 0) {
@@ -476,7 +477,10 @@ public class ProposalPickerJSONController {
 				terms.addAll(FocusAreaLocalServiceUtil.getTerms(additionalTerms));
 			}
 		}
-		terms.addAll(FocusAreaLocalServiceUtil.getTerms(fa));
+
+		if(fa != null) {
+			terms.addAll(FocusAreaLocalServiceUtil.getTerms(fa));
+		}
 
 		ContestTier contestTier = ContestTier.getContestTierByTierType(planSectionDefinition.getTier());
 
@@ -498,17 +502,17 @@ public class ProposalPickerJSONController {
 	}
 
 	private List<Pair<Proposal, Date>> getFilteredSubscribedSupportingProposalsForUser(
-			long userId, String filterKey, long sectionId)
+			long userId, String filterKey, long sectionId, PortletRequest request)
 			throws SystemException, PortalException {
 		List<Pair<Proposal, Date>> proposals = getFilteredSubscribedProposalsForUser(
-				userId, filterKey, sectionId);
+				userId, filterKey, sectionId, request);
 
 		Set<Long> includedProposals = new HashSet<>();
 		for (Pair<Proposal, Date> entry : proposals) {
 			includedProposals.add(entry.getLeft().getProposalId());
 		}
 		for (Pair<Proposal, Date> entry : getFilteredSupportingProposalsForUser(
-				userId, filterKey, sectionId)) {
+				userId, filterKey, sectionId, request)) {
 			if (includedProposals.contains(entry.getLeft().getProposalId()))
 				continue;
 			proposals.add(entry);
@@ -518,7 +522,7 @@ public class ProposalPickerJSONController {
 	}
 
 	private List<Pair<Proposal, Date>> getFilteredSubscribedProposalsForUser(
-			long userId, String filterKey, long sectionId)
+			long userId, String filterKey, long sectionId, PortletRequest request)
 			throws SystemException, PortalException {
 		List<Pair<Proposal, Date>> proposals = new ArrayList<>();
 		List<ActivitySubscription> activitySubscriptions = ActivitySubscriptionLocalServiceUtil
@@ -534,11 +538,15 @@ public class ProposalPickerJSONController {
 		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
 				proposals);
 		ProposalPickerFilterUtil.ONTOLOGY.filter(proposals, sectionId);
+		if(request != null) {
+			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(proposalsContext.getContest(request).getFocusAreaId());
+			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, contestFocusArea.getId());
+		}
 		return proposals;
 	}
 
 	private List<Pair<Proposal, Date>> getFilteredSupportingProposalsForUser(
-			long userId, String filterKey, long sectionId)
+			long userId, String filterKey, long sectionId, PortletRequest request)
 			throws SystemException, PortalException {
 		List<Pair<Proposal, Date>> proposals = new ArrayList<>();
 		for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil
@@ -550,11 +558,16 @@ public class ProposalPickerJSONController {
 		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
 				proposals);
 		ProposalPickerFilterUtil.ONTOLOGY.filter(proposals, sectionId);
+
+		if(request != null) {
+			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(proposalsContext.getContest(request).getFocusAreaId());
+			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, contestFocusArea.getId());
+		}
 		return proposals;
 	}
 
 	private List<Pair<Proposal, Date>> getFilteredAllProposalsForUser(
-			long userId, String filterKey, long sectionId, Long contestPK)
+			long userId, String filterKey, long sectionId, Long contestPK, PortletRequest request)
 			throws SystemException, PortalException {
 		List<Pair<Proposal, Date>> proposals = new ArrayList<>();
 		List<Proposal> proposalsRaw = null;
@@ -570,7 +583,12 @@ public class ProposalPickerJSONController {
 		}
 		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
 				proposals);
+
 		ProposalPickerFilterUtil.ONTOLOGY.filter(proposals, sectionId);
+		if(request != null) {
+			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(proposalsContext.getContest(request).getFocusAreaId());
+			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, contestFocusArea.getId());
+		}
 		return proposals;
 	}
 }

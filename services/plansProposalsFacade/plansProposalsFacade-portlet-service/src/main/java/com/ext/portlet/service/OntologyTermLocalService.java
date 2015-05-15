@@ -288,4 +288,9 @@ public interface OntologyTermLocalService extends BaseLocalService,
     public java.util.List<java.lang.Long> findTagedIdsForClass(
         com.ext.portlet.model.OntologyTerm ontologyTerm, java.lang.Class clasz)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
+        java.lang.Long focusAreaId, java.lang.Long ontologyTermId)
+        throws java.lang.Exception;
 }

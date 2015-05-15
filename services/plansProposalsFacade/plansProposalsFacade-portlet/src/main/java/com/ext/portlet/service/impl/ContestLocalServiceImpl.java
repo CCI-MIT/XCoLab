@@ -608,7 +608,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         // remove terms that are root elements
         for (Iterator<OntologyTerm> i = ontologyTerms.iterator(); i.hasNext();){
             OntologyTerm o = i.next();
-            if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getParentId())) i.remove();
+            if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) i.remove();
         }
         Long[][] terms = new Long[ontologyTerms.size()][];
         // get all child elements and add id's to array
