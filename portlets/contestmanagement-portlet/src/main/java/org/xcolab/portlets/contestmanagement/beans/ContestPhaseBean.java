@@ -50,7 +50,6 @@ public class ContestPhaseBean {
     }
 
     public ContestPhaseBean(ContestPhase contestPhase){
-        // TODO just use the ContestPhaseWrapper and put the constructor in a static helper
         this.contestPhasePK = contestPhase.getContestPhasePK();
         this.contestPK = contestPhase.getContestPK();
         this.contestPhaseType = contestPhase.getContestPhaseType();

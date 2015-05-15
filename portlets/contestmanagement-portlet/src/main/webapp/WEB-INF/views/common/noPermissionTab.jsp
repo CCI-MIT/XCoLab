@@ -6,17 +6,8 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-	<jsp:directive.include file="init.jspx" />
-
-	<h1>Exception occured!</h1>
-	<c:select>
-		<c:when test="${not empty sessionScope.exceptionMessage }">
-			<p>${sessionScope.exceptionMessage}</p>
-			<c:remove var="exceptionMessage" scope="session" />
-		</c:when>
-		<c:when test="${exceptionMessage}">
-			<p>${exceptionMessage}</p>
-		</c:when>
-	</c:select>
-
+	<jsp:directive.include file="../init.jspx" />
+	<jsp:directive.include file="../details/header.jspx"/>
+	<h2>Access denied</h2>
+	<p>You are not logged into your account or do not have the correct permissions to access this page. Please login and try again.</p>
 </jsp:root>

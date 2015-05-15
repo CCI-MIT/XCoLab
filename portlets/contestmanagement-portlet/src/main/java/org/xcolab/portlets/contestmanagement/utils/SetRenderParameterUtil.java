@@ -42,4 +42,17 @@ public class SetRenderParameterUtil {
         response.setRenderParameter("error", "true");
         response.setRenderParameter("action", errorActionParameter);
     }
+
+    public static void setSuccessRenderRedirectDetailsTab (ActionResponse response, Long contestPK, String tabName) throws Exception{
+        response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId/" + contestPK + "/tab/" + tabName);
+    }
+
+    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName) throws Exception{
+        response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName);
+    }
+
+    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName, Long elementId) throws Exception{
+        response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName + "/elementId/" + elementId);
+    }
+
 }

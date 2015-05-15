@@ -315,6 +315,18 @@ public class ContestWrapper {
         contest.setResourcesUrl(resourcesUrl);
     }
 
+    public Boolean getShow_in_list_view(){ return contest.getShow_in_list_view();}
+
+    public void setShow_in_list_view(boolean show_in_list_view){ contest.setShow_in_list_view(show_in_list_view);}
+
+    public Boolean getShow_in_tile_view(){ return contest.getShow_in_tile_view();}
+
+    public void setShow_in_tile_view(boolean show_in_tile_view){ contest.setShow_in_tile_view(show_in_tile_view);}
+
+    public Boolean getShow_in_outline_view(){ return contest.getShow_in_outline_view();}
+
+    public void setShow_in_outline_view(boolean show_in_tile_view){ contest.setShow_in_outline_view(show_in_tile_view);}
+
     public long getProposalsCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getProposalsCount(contest);
     }

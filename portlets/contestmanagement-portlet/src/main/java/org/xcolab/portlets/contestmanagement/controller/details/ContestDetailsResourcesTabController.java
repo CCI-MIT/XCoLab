@@ -1,4 +1,4 @@
-package org.xcolab.portlets.contestmanagement.controller;
+package org.xcolab.portlets.contestmanagement.controller.details;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -90,7 +90,7 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
 
         try{
             wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
-            setSuccessRenderRedirect(response, tab.getName());
+            SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
         } catch(Exception e){
             _log.warn("Update contest resources failed with: ", e);
             _log.warn(e);

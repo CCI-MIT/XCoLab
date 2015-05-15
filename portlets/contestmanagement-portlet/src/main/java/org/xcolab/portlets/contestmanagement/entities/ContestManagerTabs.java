@@ -10,8 +10,8 @@ import javax.portlet.PortletRequest;
 public enum ContestManagerTabs implements TabEnum{
 		OVERVIEW("Contests overview", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	//PHASES("Phase types", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
-	SCHEDULES("Schedules", TabPermissionAlgorithm.adminOnlyViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
-	//PROPOSALTEMPLATES("Proposal Templates", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
+	SCHEDULES("Schedules", TabPermissionAlgorithm.adminOnlyViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
+	PROPOSALTEMPLATES("Proposal Templates", TabPermissionAlgorithm.adminOnlyViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
 
 	private final String displayName;
 	private final TabPermissionAlgorithm tabPermissionAlgorithm;

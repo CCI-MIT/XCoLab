@@ -7,9 +7,18 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	<jsp:directive.include file="../init.jspx" />
-	<jsp:directive.include file="./header.jspx"/>
+	<jsp:directive.include file="../details/header.jspx"/>
 
 	<portlet:resourceURL var="getSectionDefinition" id="getSectionDefinition" />
+
+	<portlet:actionURL var="changeContestPlanTemplateURL">
+		<portlet:param name="action_forwardToPage" value="schedulesTab" />
+		<portlet:param name="action_errorForwardToPage" value="schedulesTab" />
+		<portlet:param name="tab" value="SCHEDULES" />
+		<portlet:param name="manager" value="true" />
+		<portlet:param name="elementId" value="${contestProposalTemplateWrapper.planTemplate.id}" />
+		<portlet:param name="action" value="updateContestSchedule" />
+	</portlet:actionURL>
 
 	<portlet:actionURL var="updateContestProposalTemplateURL">
 		<portlet:param name="action_forwardToPage" value="proposalTemplateTab" />
@@ -21,6 +30,21 @@
 
 	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 	<div class="cmsDetailsBox">
+
+		<form:form action="${changeContestPlanTemplateURL }" commandName="elementSelectIdWrapper" id="selectForm" method="post">
+			<div class="addpropbox">
+				<strong class="inputTitleLeft">Schedule template:</strong>
+				<div class="addpropInputContainer">
+					<form:select path="elementId" id="changeContestScheduleSelect" cssClass="wideLargeInput">
+						<form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value" itemLabel="lable"/>
+					</form:select>
+					<div class="reg_errors">
+						<form:errors cssClass="alert alert-error" path="elementId" />
+					</div>
+				</div>
+			</div>
+		</form:form>
+
 
 	<p>Templates hold the set of questions members will be asked to answer in completing a proposal.<br/>
 		If you would like any changes to your template, please submit a comment below for the Climate CoLab team.
@@ -122,6 +146,44 @@
 	<script type="text/javascript">
 		<![CDATA[
 
+		jQuery('document').ready(function(){
+			bindDeleteClicks();
+			bindAddSectionClick();
+			bindMassActionSelectChange();
+			bindContestScheduleSelectChange();
+		});
+
+
+		function bindDeleteClicks(){
+			[].forEach.call(document.getElementsByClassName('deletable'), function(deletableSectionElements) {
+				deletableSectionElements.getElementsByClassName('deleteIcon')[0].addEventListener('click', deleteSection, false);
+			});
+		}
+
+		function bindAddSectionClick(){
+			var initialNumberOfSections = getNumberOfSections();
+			var addSectionButtonElement = document.getElementById("addSectionButton");
+
+			addSectionButtonElement.addEventListener("click", function(event) {
+				var numberOfSections = getNumberOfSections();
+				addNewSection(initialNumberOfSections, numberOfSections + 1);
+			});
+		}
+
+		function bindMassActionSelectChange(){
+			[].forEach.call(document.getElementsByTagName('select'), function(selectElement) {
+				var dataFormName = selectElement.getAttribute("data-form-name");
+				if (dataFormName == "type") {
+					selectElement.addEventListener('change', selectTypeChangeCallback, false);
+				} else {
+					selectElement.addEventListener('change', function(event){
+						event.preventDefault();
+					}, false);
+				}
+			});
+		}
+
+
 		function getSectionDefinitionFromServer(sectionDefinitionId){
 			var deferred = jQuery.Deferred();
 
@@ -140,7 +202,6 @@
 
 		function dragEnd(ev) {
 			ev.target.classList.remove("dragState");
-
 			[].forEach.call(document.getElementsByClassName('dropzone'), function (element) {
 				element.classList.remove("showAllowDropState");
 				element.classList.remove("allowDropState");
@@ -163,9 +224,7 @@
 		function dragStart(ev) {
 			ev.dataTransfer.setData("srcElementId", ev.target.id);
 			ev.target.classList.add("dragState");
-
 			[].forEach.call(document.getElementsByClassName('dropzone'), function(element) {
-
 				if(!ev.target.previousSibling.isEqualNode(element)) {
 					element.classList.add("showAllowDropState");
 				}
@@ -315,45 +374,18 @@
 				});*/
 		}
 
-		function addEventListenerToSelectElement(){
 
+		function bindContestScheduleSelectChange(){
+			var dropDownElement = document.getElementById("changeContestScheduleSelect");
+			dropDownElement.addEventListener("change", function(ev){
+				var selectedScheduleId = ev.target.value;
+				window.location="/web/guest/cms/-/contestmanagement/manager/tab/PROPOSALTEMPLATES/elementId/" + selectedScheduleId;
+			})
 		}
-		jQuery(function() {
-			var initialNumberOfSections = getNumberOfSections();
-			var dummySectionId = initialNumberOfSections -1;
 
-			document.getElementById("addSectionButton").addEventListener("click",function(){
-				var numberOfSections = getNumberOfSections();
-				addNewSection(dummySectionId, numberOfSections + 1);
-			});
-
-
-			[].forEach.call(document.getElementsByTagName('select'), function(selectElement) {
-				var dataFormName = selectElement.getAttribute("data-form-name");
-				if (dataFormName == "type") {
-					selectElement.addEventListener('change', selectTypeChangeCallback, false);
-				} else {
-					selectElement.addEventListener('change', function(event){
-						event.preventDefault();
-					}, false);
-				}
-			});
-
-			[].forEach.call(document.getElementsByClassName('deletable'), function(deletableSectionElements) {
-				deletableSectionElements.getElementsByClassName('deleteIcon')[0].addEventListener('click', deleteSection, false);
-			});
-
-			// TODO replace jQuery
-			/*jQuery('.deletable').delegate(".deleteIcon", "click", function() {
-				if(confirm("Do want to remove this section ?")) {
-					deleteSection(this);
-				}
-			});*/
-
-		});
 		]]>
 	</script>
 
 
-	<jsp:directive.include file="./footer.jspx"/>
+	<jsp:directive.include file="../details/footer.jspx"/>
 </jsp:root>

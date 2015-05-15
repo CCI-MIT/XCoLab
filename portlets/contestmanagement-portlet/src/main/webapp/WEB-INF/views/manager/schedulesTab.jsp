@@ -255,6 +255,7 @@
 					var checked = ev.target.checked;
 					console.log("click -> ev", ev);
 					console.log("click -> ev.target", ev.target);
+					// TODO implement buffer
 				});
 			});
 		}

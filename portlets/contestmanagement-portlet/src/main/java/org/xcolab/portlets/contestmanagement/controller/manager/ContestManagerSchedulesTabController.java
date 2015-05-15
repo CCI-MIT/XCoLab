@@ -60,7 +60,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         try{
             Long scheduleId = elementId != null ? elementId : getFirstScheduleId();
             model.addAttribute("contestScheduleWrapper", new ContestScheduleWrapper(scheduleId));
-            model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(scheduleId));
+            model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(scheduleId, ContestScheduleWrapper.getAllScheduleTemplateSelectionItems()));
         } catch (Exception e){
             _log.warn("Show contest schedule failed with: ", e);
             _log.warn(e);
@@ -82,7 +82,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
 
         try {
             ContestSchedule newContestSchedule = ContestCreatorUtil.createNewSchedule();
-            setSuccessRenderRedirect(response, tab.getName(), newContestSchedule.getId());
+            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), newContestSchedule.getId());
         } catch(Exception e){
                 _log.warn("Create contest schedule failed with: ", e);
                 SetRenderParameterUtil.setExceptionRenderParameter(response, e);
@@ -100,7 +100,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         }
         try {
             ContestScheduleWrapper.deleteContestSchedule(scheduleId);
-            setSuccessRenderRedirect(response, tab.getName(), getFirstScheduleId());
+            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), getFirstScheduleId());
         } catch(Exception e){
             _log.warn("Delete contest schedule failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
@@ -118,7 +118,9 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         }
 
         if (result.hasErrors()) {
-            model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(updateContestScheduleWrapper.getScheduleId()));
+            model.addAttribute("elementSelectIdWrapper",
+                    new ElementSelectIdWrapper(updateContestScheduleWrapper.getScheduleId(),
+                            ContestScheduleWrapper.getAllScheduleTemplateSelectionItems()));
             SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestSchedule");
             return;
         }
@@ -126,7 +128,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         try {
             updateContestScheduleWrapper.persist();
             SetRenderParameterUtil.addActionSuccessMessageToSession(request);
-            setSuccessRenderRedirect(response, tab.getName(), updateContestScheduleWrapper.getScheduleId());
+            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), updateContestScheduleWrapper.getScheduleId());
         } catch(Exception e){
             _log.warn("Update contest schedule failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
