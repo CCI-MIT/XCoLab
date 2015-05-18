@@ -83,20 +83,16 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
             if(contestPhase.isFellowScreeningActive()) {
                 List<ProposalRating> judgeRatingsForProposal = ProposalRatingLocalServiceUtil
                         .getJudgeRatingsForProposal(proposalId, contestPhase.getContestPhasePK());
-                int judgeRatingsSize = judgeRatingsForProposal.size();
-                if ((judgeRatingsSize %5) != 0){
-                    amountOfCriteria = 4L;
-                }
 
                 List<Long> judgeIds = new ArrayList<>();
 
-                if (judgeRatingsSize > 0) {
+                if (judgeRatingsForProposal.size() > 0) {
                     Map<Long, List<ProposalRating>> map = new HashMap<>();
                     Map<Long, List<Long>> averageRatingList = new HashMap<>();
                     map.put(userId, new ArrayList<ProposalRating>());
 
                     for (ProposalRating r : judgeRatingsForProposal) {
-                        Long ratingAverageIndex = r.getRatingValueId() / amountOfCriteria;
+                        Long ratingAverageIndex = r.getRatingValueId() / 5L;
                         if(!averageRatingList.containsKey(ratingAverageIndex)){
                             averageRatingList.put(ratingAverageIndex, new ArrayList<Long>());
                         }
