@@ -6,10 +6,9 @@
         xmlns:form="http://www.springframework.org/tags/form"
         version="2.0">
     <jsp:directive.attribute name="ratingTypes" type="java.util.Collection" required="true" rtexprvalue="true" description="List of ProposalRatingType" />
-    <jsp:directive.attribute name="hideThoroughness" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the rating criteria Thoroughness should be displayed or not" />
 
     <c:forEach var="type" items="${ratingTypes}">
-        <c:if test="${(type.label != 'Thoroughness') || (!hideThoroughness)}">
+        <c:if test="${(type.isActive)}">
             <h3>
                 <a>${type.label}</a>
             </h3>

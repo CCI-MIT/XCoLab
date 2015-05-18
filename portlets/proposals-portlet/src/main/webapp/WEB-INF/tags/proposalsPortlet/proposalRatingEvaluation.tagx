@@ -25,7 +25,7 @@
                 <strong>Judges Ratings</strong>
                 <ul>
                     <c:forEach var="rating" items="${wrapper.ratings}">
-                        <c:if test="${(rating.isActive) || (not empty rating.ratingValueName)}">
+                        <c:if test="${rating.isActive}">
                             <li>
                                 <em>${rating.ratingTypeLabel}:</em>
                                 ${rating.ratingValueName}
