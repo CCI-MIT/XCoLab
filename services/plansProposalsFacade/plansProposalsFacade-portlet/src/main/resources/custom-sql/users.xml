@@ -2,25 +2,25 @@
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameAsc'>
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.screenName ASC
+			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.screenName ASC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameAscFilteredByCategory'>
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.screenName ASC
+			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.screenName ASC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameDesc'>
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.screenName DESC
+			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.screenName DESC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameDescFilteredByCategory'>
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.screenName DESC
+			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.screenName DESC
 		]]>
     </sql>
 
@@ -34,12 +34,12 @@ FROM User_ u
         FROM Users_Roles ur
 	INNER JOIN xcolab_RolesCategory r
 ON ur.roleId = r.roleId
+WHERE r.categoryName not like '%Staff%'
         GROUP BY ur.userId
     ) b ON u.userId = b.userId
 INNER JOIN xcolab_RolesCategory r
 ON r.roleOrdinal = b.roleOrdinal
 WHERE u.screenName like ? or u.firstName like ? or u.lastName like ?
-AND r.categoryName not like '%Staff%'
 ORDER BY r.categoryName ASC
 		]]>
     </sql>
@@ -54,61 +54,61 @@ FROM User_ u
         FROM Users_Roles ur
 	INNER JOIN xcolab_RolesCategory r
 ON ur.roleId = r.roleId
-        GROUP BY ur.userId
+WHERE r.categoryName not like '%Staff%'
+GROUP BY ur.userId
     ) b ON u.userId = b.userId
 INNER JOIN xcolab_RolesCategory r
 ON r.roleOrdinal = b.roleOrdinal
 WHERE u.screenName like ? or u.firstName like ? or u.lastName like ?
-AND r.categoryName not like '%Staff%'
 ORDER BY r.categoryName DESC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceAsc'>
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.createDate ASC
+			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.createDate ASC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceAscFilteredByCategory'>
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.createDate ASC
+			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.createDate ASC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceDesc'>
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.createDate DESC
+			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.createDate DESC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceDescFilteredByCategory'>
         <![CDATA[
-			SELECT * FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.createDate DESC
+			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.createDate DESC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountAsc'>
         <![CDATA[
-			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY activityCount ASC
+			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY activityCount ASC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountAscFilteredByCategory'>
         <![CDATA[
-			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY activityCount ASC
+			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY activityCount ASC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountDesc'>
         <![CDATA[
-			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY activityCount DESC
+			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY activityCount DESC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountDescFilteredByCategory'>
         <![CDATA[
-			SELECT *, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY activityCount DESC
+			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY activityCount DESC
 		]]>
     </sql>
 
