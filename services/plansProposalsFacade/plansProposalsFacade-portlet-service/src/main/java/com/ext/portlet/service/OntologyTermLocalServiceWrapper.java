@@ -364,6 +364,14 @@ public class OntologyTermLocalServiceWrapper implements OntologyTermLocalService
             clasz);
     }
 
+    @Override
+    public java.lang.Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
+        java.lang.Long focusAreaId, java.lang.Long ontologyTermId)
+        throws java.lang.Exception {
+        return _ontologyTermLocalService.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId,
+            ontologyTermId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
