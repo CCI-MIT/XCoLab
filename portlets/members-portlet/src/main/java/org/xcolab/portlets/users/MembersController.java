@@ -14,6 +14,7 @@ import org.xcolab.commons.beans.SortFilterPage;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.portlets.users.utils.MemberCategory;
 import org.xcolab.portlets.users.utils.MemberItem;
 
 import java.util.*;
@@ -53,6 +54,8 @@ public class MembersController {
         int pagesCount;
         int endPage;
 
+        List<MemberItem> users = new ArrayList<MemberItem>();
+
         if (memberCategoryParam==null || memberCategoryParam.compareTo("")==0) {
 
             if (filterParam!=null){
@@ -60,13 +63,6 @@ public class MembersController {
             }
             else
                 usersCount = UserLocalServiceUtil.getUsersCount();
-
-            pagesCount = (int)Math.ceil((double)usersCount/(double)USERS_PER_PAGE);
-
-
-            endPage = pagesCount;
-            if (startPage + 10<pagesCount)
-                endPage=startPage+10;
 
             if (sortFilterPage.getSortColumn() != null) {
 
@@ -108,6 +104,26 @@ public class MembersController {
                 sortFilterPage.setSortColumn("ACTIVITY");
                 sortFilterPage.setSortAscending(false);
             }
+
+            for (User_ user : dBUsers)
+            {
+                MemberItem memberItem = new MemberItem(user,memberCategoryParam);
+                if (memberItem.getCategory()!= MemberCategory.STAFF)
+                    users.add(memberItem);
+
+                    else
+                    usersCount--;
+
+            }
+
+            //Pagination
+
+            pagesCount = (int)Math.ceil((double)usersCount/(double)USERS_PER_PAGE);
+
+            endPage = pagesCount;
+            if (startPage + 10<pagesCount)
+                endPage=startPage+10;
+
         }
         else {
 
@@ -160,13 +176,12 @@ public class MembersController {
                 sortFilterPage.setSortAscending(false);
             }
 
-        }
+            for (User_ user : dBUsers)
+            {
+                MemberItem memberItem = new MemberItem(user,memberCategoryParam);
+                users.add(memberItem);
+            }
 
-        List<MemberItem> users = new ArrayList<MemberItem>();
-        for (User_ user : dBUsers)
-        {
-            MemberItem memberItem = new MemberItem(user,memberCategoryParam);
-            users.add(memberItem);
         }
 
         model.addAttribute("pageNumber", page);

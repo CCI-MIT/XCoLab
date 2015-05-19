@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.utils;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import com.ext.portlet.model.PlanSectionDefinition;
 import org.apache.commons.lang.StringUtils;
@@ -133,19 +131,38 @@ public enum ProposalPickerFilterUtil {
         @Override
         public void filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             try{
+
                 long definitionId = (Long) additionalFilterCriterion;
+
                 // FocusArea
                 PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(definitionId);
                 FocusArea fa = PlanSectionDefinitionLocalServiceUtil.getFocusArea(planSectionDefinition);
+                List<OntologyTerm> terms = new LinkedList<>();
+                if (planSectionDefinition.getFocusAreaId() < 0) {
+                    //we can then add every additional term of the inverted focusArea to adapt it to our setting
+                    FocusArea additionalTerms = FocusAreaLocalServiceUtil.getFocusArea(-1 * planSectionDefinition.getFocusAreaId());
+                    if (additionalTerms != null) {
+                        terms.addAll(FocusAreaLocalServiceUtil.getTerms(additionalTerms));
+                    }
+                } else if(fa != null) {
+                    terms.addAll(FocusAreaLocalServiceUtil.getTerms(fa));
+                }
+
+                HashSet<OntologyTerm> uniqueTerms = new HashSet();
+                uniqueTerms.addAll(terms);
+                terms.clear();
+                terms.addAll(uniqueTerms);
+
                 // List of terms in this area
-
-                if (fa != null) {
-                	List<OntologyTerm> terms = FocusAreaLocalServiceUtil.getTerms(fa);
+                if (terms.size() > 0) {
                     List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
-
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                         Proposal p = i.next().getLeft();
-                        if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
+                        try {
+                            if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
+                        } catch (Exception e){
+                            i.remove();
+                        }
                     }
                 }
                 // Filter by contest tier
@@ -155,7 +172,12 @@ public enum ProposalPickerFilterUtil {
 
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                         Proposal p = i.next().getLeft();
-                        if (!tierFilteredContests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
+                        try {
+                            if (!tierFilteredContests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId())))
+                                i.remove();
+                        } catch (Exception e){
+                                i.remove();
+                        }
                     }
                 }
             } catch (Exception e){ /* LR EXCEPTIONS */ e.printStackTrace(); }
@@ -167,6 +189,38 @@ public enum ProposalPickerFilterUtil {
 			// do nothing
 			
 		}
+    }),ONTOLOGY_FOCUS_AREA(new ProposalPickerFilter() {
+        @Override
+        public void filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
+            try{
+
+                long focusAreaId = (Long) additionalFilterCriterion;
+                // FocusArea
+                FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
+                List<OntologyTerm> terms = new LinkedList<>();
+                terms.addAll(FocusAreaLocalServiceUtil.getTerms(fa));
+
+                // List of terms in this area
+                if (terms.size() > 0) {
+                    List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
+                    for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
+                        Proposal p = i.next().getLeft();
+                        try {
+                            if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
+                        } catch (Exception e){
+                            i.remove();
+                        }
+                    }
+                }
+            } catch (Exception e){ /* LR EXCEPTIONS */ e.printStackTrace(); }
+        }
+
+        @Override
+        public void filterContests(List<Pair<ContestWrapper, Date>> proposals,
+                                   Object additionalFilterCriterion) {
+            // do nothing
+
+        }
     });
 
     private final ProposalPickerFilter proposalPickerFilter;

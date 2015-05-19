@@ -1,4 +1,4 @@
-package org.xcolab.portlets.contestmanagement.controller;
+package org.xcolab.portlets.contestmanagement.controller.common;
 
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
@@ -12,9 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.controller.BaseTabController;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
+import org.xcolab.portlets.contestmanagement.controller.details.ContestDetailsBaseTabController;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.entities.SectionTypes;
@@ -30,22 +32,17 @@ import java.util.List;
 /**
  * Created by Thomas on 2/13/2015.
  */
+public abstract class ContestProposalTemplateTabController extends BaseTabController {
 
-@Controller
-@RequestMapping("view")
-public class ContestDetailProposalTemplateTabController extends ContestDetailsBaseTabController {
+    private final static Log _log = LogFactoryUtil.getLog(ContestProposalTemplateTabController.class);
+    static final public String TAB_VIEW = "common/proposalTemplateTab";
+    static final public String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
+    static final public String NOT_FOUND_TAB_VIEW = "common/notFound";
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestDetailProposalTemplateTabController.class);
-    static final private TabEnum tab = ContestDetailsTabs.PROPOSALTEMPLATE;
-    static final private String TAB_VIEW = "details/proposalTemplateTab";
+    protected TabWrapper tabWrapper;
 
     @ModelAttribute("currentTabWrapped")
-    @Override
-    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException{
-        tabWrapper = new TabWrapper(tab, request, tabContext);
-        request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
-        return tabWrapper;
-    }
+    public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException;
 
     @ModelAttribute("levelSelectionItems")
     public List<LabelValue> populateLevelSelectionItems(){
@@ -55,55 +52,6 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
     @ModelAttribute("sectionTypeSelectionItems")
     public List<LabelStringValue> populateSectionTypesSelectionItems(){
         return getSectionTypesSelectionItems();
-    }
-
-    @RequestMapping(params = "tab=PROPOSALTEMPLATE")
-    public String showResourcesTabController(PortletRequest request, PortletResponse response, Model model)
-            throws PortalException, SystemException {
-
-        if(!tabWrapper.getCanView() || request.getRemoteUser() == null) {
-            return NO_PERMISSION_TAB_VIEW;
-        }
-
-        try {
-            ContestProposalTemplateWrapper contestProposalTemplateWrapper = new ContestProposalTemplateWrapper(getContest());
-            model.addAttribute("contestProposalTemplateWrapper", contestProposalTemplateWrapper);
-            return TAB_VIEW;
-        } catch (Exception e){
-            _log.warn("Could not create proposal template wrapper: ", e);
-        }
-        return NOT_FOUND_TAB_VIEW;
-    }
-
-    @RequestMapping(params = "action=updateContestProposalTemplate")
-    public void updateResourcesTabController(ActionRequest request, Model model, ActionResponse response,
-                                             @ModelAttribute ContestProposalTemplateWrapper updatedContestProposalTemplateWrapper, BindingResult result) {
-
-        if(!tabWrapper.getCanEdit()) {
-            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-            return;
-        }
-
-        if (result.hasErrors()) {
-            //updatedContestProposalTemplateWrapper.removeDeletedSections();
-            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestProposalTemplate");
-            return;
-        }
-
-        try{
-            updatedContestProposalTemplateWrapper.init(getContest());
-            updatedContestProposalTemplateWrapper.updateNewProposalTemplateSections();
-            setSuccessRenderRedirect(response, tab.getName());
-        } catch(Exception e){
-            _log.warn("Update proposal template failed with: ", e);
-            _log.warn(e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-        }
-    }
-
-    @RequestMapping(params = {"action=updateContestProposalTemplate", "error=true"})
-    public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
-        return TAB_VIEW;
     }
 
     @ResourceMapping(value="getSectionDefinition")
@@ -141,6 +89,10 @@ public class ContestDetailProposalTemplateTabController extends ContestDetailsBa
         } catch (Exception e){
         }
         return selectItems;
+    }
+
+    public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
+            throws PortalException, SystemException {
     }
 
 }

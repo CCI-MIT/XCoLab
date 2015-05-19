@@ -1,4 +1,4 @@
-package org.xcolab.portlets.contestmanagement.controller;
+package org.xcolab.portlets.contestmanagement.controller.details;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
@@ -98,7 +98,7 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
                 FocusAreaOntologyTermLocalServiceUtil.addAreaTerm(focusAreaId, ontologyTerm);
             }
 
-            setSuccessRenderRedirect(response, tab.getName());
+            SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
         } catch(Exception e){
             _log.warn("Update contest overview failed with: ", e);
             _log.warn(e);

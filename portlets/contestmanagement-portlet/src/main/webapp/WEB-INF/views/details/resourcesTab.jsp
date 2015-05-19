@@ -106,6 +106,12 @@
 
 	<script type="text/javascript">
 		<![CDATA[
+
+		jQuery('document').ready(function(){
+			bindAddSectionClick();
+			bindDeleteClickEvents(deleteSection);
+		});
+
 		function getNumberOfSections(){
 			return parseInt(document.getElementById("numberOfSections").value);
 		}
@@ -174,27 +180,29 @@
 		}
 
 		function deleteSection(section){
-			var newNumberOfSections = getNumberOfSections() - 1;
-			setNumberOfSections(newNumberOfSections);
-			jQuery(section).closest(".addpropbox").remove();
+			if(confirm("Do you want to remove this section ?")) {
+				var newNumberOfSections = getNumberOfSections() - 1;
+				setNumberOfSections(newNumberOfSections);
+				getClosest(section, "tr").remove();
+			}
 		}
 
-		jQuery(function() {
+		function bindDeleteClickEvents(){
+			[].forEach.call(document.getElementsByClassName('deleteIcon'), function(deletableSectionElements) {
+				deletableSectionElements.addEventListener('click', deleteSection, false);
+			});
+		}
+
+		function bindAddSectionClick(){
 			var initialNumberOfSections = getNumberOfSections();
 			var dummySectionId = initialNumberOfSections;
-
-			$('#addSectionButton').click(function(){
+			var addSectionButtonElement = document.getElementById("addSectionButton");
+			addSectionButtonElement.addEventListener("click", function(event) {
 				var numberOfSections = getNumberOfSections();
 				addNewSection(dummySectionId, numberOfSections + 1);
-			})
-
-			jQuery('.deletable').delegate(".deleteIcon", "click", function() {
-				if(confirm("Do you want to remove this section ?")) {
-					deleteSection(this);
-				}
 			});
+		}
 
-		});
 		]]>
 	</script>
 

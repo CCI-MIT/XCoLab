@@ -608,7 +608,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         // remove terms that are root elements
         for (Iterator<OntologyTerm> i = ontologyTerms.iterator(); i.hasNext();){
             OntologyTerm o = i.next();
-            if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getParentId())) i.remove();
+
+            if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) i.remove();
+
         }
         Long[][] terms = new Long[ontologyTerms.size()][];
         // get all child elements and add id's to array
@@ -1105,6 +1107,17 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
         return contestPersistence.findWithDynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
     }
+
+    public List<Contest> getContestsByPlanTemplateId(Long planTemplateId) throws Exception{
+
+        DynamicQuery queryContestsByPlanTemplateId =
+                DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
+                        .add(PropertyFactoryUtil.forName("planTemplateId").eq(planTemplateId))
+                        .add(PropertyFactoryUtil.forName("ContestPK").ne(0L));
+
+        return contestPersistence.findWithDynamicQuery(queryContestsByPlanTemplateId);
+    }
+
 
     public List<Contest> getSubContestsByOntologySpaceId(Contest contest, Long ontologySpaceId) throws Exception{
         long focusAreaId = contest.getFocusAreaId();

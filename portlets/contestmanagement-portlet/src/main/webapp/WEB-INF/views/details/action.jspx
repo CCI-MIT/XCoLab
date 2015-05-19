@@ -11,7 +11,7 @@
 	<portlet:resourceURL var="submitContest" id="submitContest"/>
 
 	<div class="actionItems">
-		<div class="blue-button"><a href="#" id="saveChangesButton">SAVE changes</a></div>
+		<div class="blue-button"><a href="#" id="saveChangesButton">SAVE ${currentTabWrapped.elementType}</a></div>
 		<div class="blue-button">
 			<collab:contestLink contestId="${contestWrapper.contestPK}" text="PREVIEW contest"
 								linkId="previewContestButton" target="_blank"/>
@@ -21,8 +21,9 @@
 	</div>
 
 	<script type="text/javascript">
+	<![CDATA[
 	(function() {
-		jQuery(function() {
+		jQuery('document').ready(function(){
 			jQuery("#saveChangesButton").click(function () {
 				jQuery("#editForm").submit();
 			});
@@ -36,9 +37,8 @@
 					type: 'POST',
 					dataType: 'text',
 					url : "${submitContest}",
-					data: "contestId=${contestWrapper.contestPK}",
+					data: "contestId=${contestWrapper.contestPK}&tab=${currentTabWrapped.name}",
 					success: function(response){
-						console.log("response", response);
 						if(response){
 							jQuery.growlUI('Success', 'The contest was successfully submitted!');
 						} else{
@@ -51,5 +51,7 @@
 
 		});
 	}());
+
+	]]>
 	</script>
 </jsp:root>

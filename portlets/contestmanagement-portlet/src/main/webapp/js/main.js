@@ -229,6 +229,10 @@ function getClosest(el, tag) {
     return null;
 }
 
+function filter(className, element){
+    return element.getElementsByClassName(className)[0] != undefined;
+}
+
 jQuery(function() {
 
     jQuery(".addpropform .helpTrigger").click(function() {

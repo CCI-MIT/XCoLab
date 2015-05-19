@@ -55,6 +55,8 @@ public class PlanTemplateSectionLocalServiceClpInvoker {
     private String[] _methodParameterTypes667;
     private String _methodName668;
     private String[] _methodParameterTypes668;
+    private String _methodName669;
+    private String[] _methodParameterTypes669;
 
     public PlanTemplateSectionLocalServiceClpInvoker() {
         _methodName0 = "addPlanTemplateSection";
@@ -159,27 +161,31 @@ public class PlanTemplateSectionLocalServiceClpInvoker {
 
         _methodParameterTypes664 = new String[] { "java.lang.Long" };
 
-        _methodName665 = "addPlanTemplateSection";
+        _methodName665 = "findByPlanSectionDefinitionId";
 
-        _methodParameterTypes665 = new String[] {
+        _methodParameterTypes665 = new String[] { "java.lang.Long" };
+
+        _methodName666 = "addPlanTemplateSection";
+
+        _methodParameterTypes666 = new String[] {
                 "java.lang.Long", "java.lang.Long", "int"
             };
 
-        _methodName666 = "removePlanTemplateSection";
+        _methodName667 = "removePlanTemplateSection";
 
-        _methodParameterTypes666 = new String[] {
+        _methodParameterTypes667 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName667 = "store";
+        _methodName668 = "store";
 
-        _methodParameterTypes667 = new String[] {
+        _methodParameterTypes668 = new String[] {
                 "com.ext.portlet.model.PlanTemplateSection"
             };
 
-        _methodName668 = "remove";
+        _methodName669 = "remove";
 
-        _methodParameterTypes668 = new String[] {
+        _methodParameterTypes669 = new String[] {
                 "com.ext.portlet.model.PlanTemplateSection"
             };
     }
@@ -292,28 +298,33 @@ public class PlanTemplateSectionLocalServiceClpInvoker {
 
         if (_methodName665.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes665, parameterTypes)) {
+            return PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId((java.lang.Long) arguments[0]);
+        }
+
+        if (_methodName666.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes666, parameterTypes)) {
             return PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1],
                 ((Integer) arguments[2]).intValue());
         }
 
-        if (_methodName666.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes666, parameterTypes)) {
+        if (_methodName667.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes667, parameterTypes)) {
             PlanTemplateSectionLocalServiceUtil.removePlanTemplateSection((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
 
             return null;
         }
 
-        if (_methodName667.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes667, parameterTypes)) {
+        if (_methodName668.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes668, parameterTypes)) {
             PlanTemplateSectionLocalServiceUtil.store((com.ext.portlet.model.PlanTemplateSection) arguments[0]);
 
             return null;
         }
 
-        if (_methodName668.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes668, parameterTypes)) {
+        if (_methodName669.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes669, parameterTypes)) {
             PlanTemplateSectionLocalServiceUtil.remove((com.ext.portlet.model.PlanTemplateSection) arguments[0]);
 
             return null;

@@ -338,6 +338,14 @@ public class OntologyTermLocalServiceUtil {
         return getService().findTagedIdsForClass(ontologyTerm, clasz);
     }
 
+    public static java.lang.Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
+        java.lang.Long focusAreaId, java.lang.Long ontologyTermId)
+        throws java.lang.Exception {
+        return getService()
+                   .isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId,
+            ontologyTermId);
+    }
+
     public static void clearService() {
         _service = null;
     }
