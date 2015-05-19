@@ -42,6 +42,7 @@
                             <a href="${contest.resourcesUrl}" target="_blank" >Read more ...</a>
                         </c:if>
                     </p>
+
                     <c:if test="${contest.showSubContests}">
                     <table>
                         <tr>
@@ -62,6 +63,20 @@
                         </tr>
                     </table>
                     </c:if>
+
+                    <c:if test="${contest.showParentContest}">
+                        <table>
+                            <tr>
+                                <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
+                                    <div class="subcontests">
+                                        <span class="title">Parent contest: </span>
+                                        <a href="/web/guest/plans/-/plans/contestId/${contest.ParentContest.contestPK}">${contest.ParentContest.contestShortName}</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </c:if>
+
                     <c:if test="${contest.hasFocusArea }">
                         <table style="width: 100%; table-layout: fixed;">
                             <tr>

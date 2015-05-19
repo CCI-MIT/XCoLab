@@ -8,6 +8,13 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
 public class ContestWrapper {
+
+    private static final long ONTOLOGY_SPACE_ID_WHERE = 104L;
+    private static final long ONTOLOGY_SPACE_ID_WHO = 102L;
+    private static final long ONTOLOGY_SPACE_ID_WHAT = 103L;
+    private static final long ONTOLOGY_SPACE_ID_HOW = 103L;
+    private static final long CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS = 3L;
+
     private static final String WHERE = "where";
     private static final String WHAT = "what";
     private static final String WHO = "who";
@@ -447,16 +454,21 @@ public class ContestWrapper {
     }
 
     public boolean getShowSubContests(){
-        return contest.getContestTier() == 3;
+        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS;
+    }
+    public boolean getShowParentContest(){
+        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS-1;
     }
 
     public List<Contest> getSubContests() throws Exception{
-
-        long ONTOLOGY_SPACE_ID_WHERE = 104L;
-        //long ONTOLOGY_SPACE_ID_WHO = 102L;
-        //long ONTOLOGY_SPACE_ID_WHAT = 103L;
-        //long ONTOLOGY_SPACE_ID_HOW = 103L;
         return ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
+    }
+
+    public Contest getParentContest() throws Exception{
+        List<Long> focusAreaOntologyTermIds =
+                FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(contest.getFocusAreaId(), ONTOLOGY_SPACE_ID_WHERE);
+        List<Contest> contests = ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds(contest.getContestTier(), focusAreaOntologyTermIds);
+        return contests.get(0);
     }
 
     public Long getVotingPhasePK() throws PortalException, SystemException {
