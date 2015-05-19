@@ -47,6 +47,10 @@ public class TabWrapper {
         return tab.getDisplayName();
     }
 
+    public String getElementType()  {
+        return tab.getElementType();
+    }
+
     public boolean getIsDefault() {
         return tab.getIsDefault();
     }

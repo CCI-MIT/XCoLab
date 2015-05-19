@@ -78,20 +78,23 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
     void handleSubmitContest(
             ResourceRequest request,
             @RequestParam("contestId") Long contestId,
+            @RequestParam("tab") String tab,
             ResourceResponse response
     ) throws Exception{
 
         boolean success = true;
         try {
+            String contestUrl = "http://www.climatecolab.org/web/guest/cms/-/contestmanagement/contestId/" + contestId;
+            if(!tab.isEmpty()){
+                contestUrl += "/tab/" + tab;
+            }
+            contestUrl += "<br/>";
+
             User user = UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser()));
             String subject  = "Contest draft was submitted from the new contest creation tool!";
-            String body = "Hi Laur,<br />" +
-                    "the following contest: <br />" +
-                    "http://www.climatecolab.org/web/guest/cms/-/contestmanagement/contestId/" + contestId + "<br/>"+
-                    "was submitted by the user: " + user.getFullName() + "<br/>" +
-                    "Enjoy reviewing it! <br/>" +
-                    "Warmest, <br/>" +
-                    "your production server";
+            String body = "The following contest: <br />" +
+                    contestUrl +
+                    "was submitted by the user: " + user.getFullName() + "<br/>";
 
             InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");
 

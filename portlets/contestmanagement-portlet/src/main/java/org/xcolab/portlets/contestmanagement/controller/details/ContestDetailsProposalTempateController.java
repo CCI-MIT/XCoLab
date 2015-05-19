@@ -65,6 +65,7 @@ public class ContestDetailsProposalTempateController extends ContestProposalTemp
         return tabWrapper;
     }
 
+
     @RequestMapping(params = "tab=PROPOSALTEMPLATE")
     public String showProposalTemplateTabController(PortletRequest request, PortletResponse response, Model model)
             throws PortalException, SystemException {
@@ -107,5 +108,10 @@ public class ContestDetailsProposalTempateController extends ContestProposalTemp
             _log.warn(e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
+    }
+
+    @RequestMapping(params = {"action=updateContestProposalTemplate", "error=true"})
+    public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
+        return TAB_VIEW;
     }
 }

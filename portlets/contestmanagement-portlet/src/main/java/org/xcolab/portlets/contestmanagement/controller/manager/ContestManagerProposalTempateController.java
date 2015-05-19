@@ -1,8 +1,6 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
+import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -16,14 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.controller.common.ContestProposalTemplateTabController;
-import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
-import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestProposalTemplateWrapper;
-import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
-import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.ActionRequest;
@@ -45,7 +39,7 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
     @ModelAttribute("tabs")
     @Override
     public List<TabWrapper> populateTabs(Model model, PortletRequest request) throws PortalException, SystemException {
-        return getAllVisibleTabsWrapped(model, request, ContestDetailsTabs.values());
+        return getAllVisibleTabsWrapped(model, request, ContestManagerTabs.values());
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -55,6 +49,7 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
     }
+
 
     @RequestMapping(params = "tab=PROPOSALTEMPLATES")
     public String showProposalTemplatesTabController(PortletRequest request, PortletResponse response, Model model,
@@ -70,6 +65,7 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
             ContestProposalTemplateWrapper contestProposalTemplateWrapper = new ContestProposalTemplateWrapper(planTemplateId);
             model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId, ContestProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
             model.addAttribute("contestProposalTemplateWrapper", contestProposalTemplateWrapper);
+            model.addAttribute("elementId", planTemplateId);
             return ContestProposalTemplateTabController.TAB_VIEW;
         } catch (Exception e){
             _log.warn("Could not create proposal template wrapper: ", e);
@@ -78,7 +74,42 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
     }
 
 
-    @RequestMapping(params = "action=updateContestProposalTemplate")
+    @RequestMapping(params = "action=createPROPOSALTEMPLATES")
+    public void createNewScheduleTabController(ActionRequest request, Model model, ActionResponse response) {
+
+        if(!tabWrapper.getCanEdit()) {
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
+            return;
+        }
+
+        try {
+            PlanTemplate newTemplate = ContestProposalTemplateWrapper.createNewTemplate();
+            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), newTemplate.getId());
+        } catch(Exception e){
+            _log.warn("Create proposal template failed with: ", e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
+        }
+    }
+
+    @RequestMapping(params = "action=deletePROPOSALTEMPLATES")
+    public void deleteScheduleTabController(ActionRequest request, Model model,
+                                            @RequestParam(value = "elementId", required = true) Long elementId,
+                                            ActionResponse response) {
+
+        if(!tabWrapper.getCanEdit()) {
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
+            return;
+        }
+        try {
+            ContestProposalTemplateWrapper.deleteTemplate(elementId);
+            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), getFirstPlanTemplateId());
+        } catch(Exception e){
+            _log.warn("Delete proposal template failed with: ", e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
+        }
+    }
+
+    @RequestMapping(params = {"action=updatePROPOSALTEMPLATES", "manager=true"})
     public void updateProposalTemplatesTabController(ActionRequest request, Model model, ActionResponse response,
                                                     @ModelAttribute ContestProposalTemplateWrapper updatedContestProposalTemplateWrapper, BindingResult result) {
 
@@ -96,14 +127,20 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
         }
 
         try{
-            updatedContestProposalTemplateWrapper.updateNewProposalTemplateSections();
-            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName());
+            updatedContestProposalTemplateWrapper.setUpdateExistingTemplate(true);
+            updatedContestProposalTemplateWrapper.persist();
+            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), updatedContestProposalTemplateWrapper.getPlanTemplateId());
         } catch(Exception e){
             _log.warn("Update proposal template failed with: ", e);
-            _log.warn(e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
+
+    @RequestMapping(params = {"action=updatePROPOSALTEMPLATES", "error=true", "manager=true"})
+    public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
+        return TAB_VIEW;
+    }
+
 
     private Long getFirstPlanTemplateId()throws Exception{
         return PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE).get(0).getId();

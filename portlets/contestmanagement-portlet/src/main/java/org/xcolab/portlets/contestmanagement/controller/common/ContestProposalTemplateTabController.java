@@ -54,11 +54,6 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return getSectionTypesSelectionItems();
     }
 
-    @RequestMapping(params = {"action=updateContestProposalTemplate", "error=true"})
-    public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
-        return TAB_VIEW;
-    }
-
     @ResourceMapping(value="getSectionDefinition")
     public @ResponseBody
     void getSectionDefinition(
