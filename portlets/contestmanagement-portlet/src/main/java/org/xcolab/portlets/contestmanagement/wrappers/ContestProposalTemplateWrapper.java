@@ -153,7 +153,7 @@ public class ContestProposalTemplateWrapper {
     }
 
     private static boolean isPlanTemplateSectionUsedInTemplate(Long planSectionDefinitionId) throws Exception{
-        List<PlanTemplateSection> planTemplateSections = PlanTemplateLocalServiceUtil.findByPlanSectionDefinitionId(planSectionDefinitionId);
+        List<PlanTemplateSection> planTemplateSections = PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId(planSectionDefinitionId);
         return !planTemplateSections.isEmpty();
     }
 
@@ -242,7 +242,7 @@ public class ContestProposalTemplateWrapper {
             duplicateExistingPlanTemplate();
         } else{
             // TODO write sectionId update
-            removeExistingSectionsFromProposalTemplateIfNotUsedInAnotherTemplate();
+            deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate(planTemplate);
         }
 
         addSectionsToProposalTemplate();
@@ -315,7 +315,7 @@ public class ContestProposalTemplateWrapper {
         }
 
         // TODO write sectionId update
-        removeExistingSectionsFromProposalTemplateIfNotUsedInAnotherTemplate();
+        deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate(planTemplate);
         addSectionsToProposalTemplate();
     }
 
