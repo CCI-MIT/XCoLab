@@ -6,14 +6,17 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-	<jsp:directive.include file="init.jspx" />
+	<jsp:directive.include file="../init.jspx" />
 
-	<h1>Congratulations!</h1>
-	<p></p>
-	<p></p>
-	<h2>You have just created a new contest.</h2>
-	<p></p>
-	<p></p>
-	<h2><a href="${newContestLink}">Click here to start editing!</a></h2>
+	<h1>Exception occured!</h1>
+	<c:select>
+		<c:when test="${not empty sessionScope.exceptionMessage }">
+			<p>${sessionScope.exceptionMessage}</p>
+			<c:remove var="exceptionMessage" scope="session" />
+		</c:when>
+		<c:when test="${exceptionMessage}">
+			<p>${exceptionMessage}</p>
+		</c:when>
+	</c:select>
 
 </jsp:root>

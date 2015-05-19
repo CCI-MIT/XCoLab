@@ -1,4 +1,4 @@
-package org.xcolab.portlets.contestmanagement.controller;
+package org.xcolab.portlets.contestmanagement.controller.details;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -81,7 +81,7 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
             ContestTeamBean contestTeamBeam = new ContestTeamBean(request, getContest());
             ContestTeamWrapper contestTeamWrapper = new ContestTeamWrapper(contestTeamBeam);
             contestTeamWrapper.updateContestTeamMembers();
-            setSuccessRenderRedirect(response, tab.getName());
+            SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
         } catch(Exception e){
             _log.warn("Update contest team failed with: ", e);
             _log.warn(e);

@@ -100,7 +100,7 @@ public class ContestScheduleWrapper {
     public void setScheduleId(Long contestScheduleId){
         try{
             initContestSchedule(contestScheduleId);
-             initContestsUsingSelectedSchedule(contestScheduleId);
+            initContestsUsingSelectedSchedule(contestScheduleId);
         } catch (Exception e){
         }
     }

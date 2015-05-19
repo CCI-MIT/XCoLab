@@ -625,6 +625,10 @@ public interface ContestLocalService extends BaseLocalService,
         java.lang.Long contestScheduleId) throws java.lang.Exception;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByPlanTemplateId(
+        java.lang.Long planTemplateId) throws java.lang.Exception;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
         com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
         throws java.lang.Exception;

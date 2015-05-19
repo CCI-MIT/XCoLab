@@ -8,24 +8,30 @@ import javax.portlet.PortletRequest;
  * Created by Thomas on 2/9/2015.
  */
 public enum ContestManagerTabs implements TabEnum{
-		OVERVIEW("Contests overview", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
-	//PHASES("Phase types", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
-	SCHEDULES("Schedules", TabPermissionAlgorithm.adminOnlyViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
-	//PROPOSALTEMPLATES("Proposal Templates", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
+		OVERVIEW("Contests overview", "Contests", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
+	//PHASES("Phase types", "", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
+	SCHEDULES("Schedules", "schedule", TabPermissionAlgorithm.adminOnlyViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
+	PROPOSALTEMPLATES("Proposal Templates", "template", TabPermissionAlgorithm.adminOnlyViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
 
 	private final String displayName;
+	private final String elementType;
 	private final TabPermissionAlgorithm tabPermissionAlgorithm;
 	private final TabActivityCountAlgorithm activitiesCountAlgorithm;
 
-	private ContestManagerTabs(String displayName, TabPermissionAlgorithm tabPermissionAlgorithm,
+	private ContestManagerTabs(String displayName, String elementType, TabPermissionAlgorithm tabPermissionAlgorithm,
 							   TabActivityCountAlgorithm activitiesCountAlgorithm) {
 		this.displayName = displayName;
 		this.tabPermissionAlgorithm = tabPermissionAlgorithm;
 		this.activitiesCountAlgorithm = activitiesCountAlgorithm;
+		this.elementType = elementType;
 	}
 
 	public String getDisplayName() {
 		return displayName;
+	}
+
+	public String getElementType() {
+		return elementType;
 	}
 
 	public String getName() {

@@ -7,7 +7,13 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	<jsp:directive.include file="../init.jspx" />
-	<jsp:directive.include file="./header.jspx"/>
-	<h2>Access denied</h2>
-	<p>You are not logged into your account or do not have the correct permissions to access this page. Please login and try again.</p>
+
+	<h1>Congratulations!</h1>
+	<p></p>
+	<p></p>
+	<h2>You have just created a new contest.</h2>
+	<p></p>
+	<p></p>
+	<h2><a href="${newContestLink}">Click here to start editing!</a></h2>
+
 </jsp:root>

@@ -166,8 +166,6 @@ interface ProposalTabCanAccessAlgorithm {
                 boolean isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm =
                         OntologyTermLocalServiceUtil.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId, ADAPTATION_ONTOLOGY_TERM_ID);
 
-                isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm = false; // TODO check why it's not working
-                // Only show tab for contests which have their contest tier set to != None
                 if ((contest != null && contest.getContestTier() != ContestTier.NONE.getTierType() &&
                         !isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
                     return true;

@@ -78,7 +78,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
             updateContestOverviewWrapper.executeMassActionIfSelected(request, null);
             String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
             SetRenderParameterUtil.addActionSuccessMessageToSession(request, massActionTitle);
-            setSuccessRenderRedirect(response, tab.getName());
+            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName());
         } catch(Exception e){
             _log.warn("Update contest overview failed with: ", e);
             _log.warn(e);

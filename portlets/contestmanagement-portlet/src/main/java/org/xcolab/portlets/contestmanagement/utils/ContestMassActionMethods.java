@@ -36,6 +36,7 @@ public class ContestMassActionMethods {
 
     public static void reportOfPeopleInCurrentPhase(List<Long> contestList, Object ResourceResponseObject, PortletRequest request) throws Exception{
 
+        String exportFileName ="reportOfPeopleInCurrentPhase";
         ResourceResponse response = (ResourceResponse) ResourceResponseObject;
         CsvExportUtil csvExportUtil = new CsvExportUtil();
         csvExportUtil.addRowToExportData(CSV_EXPORT_HEADER);
@@ -43,13 +44,14 @@ public class ContestMassActionMethods {
         for(Long contestId : contestList){
             try {
                 List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
-                csvExportUtil.addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase);
+                ContestPhase activeContestPhase = ContestLocalServiceUtil.getActivePhase(ContestLocalServiceUtil.getContest(contestId));
+                csvExportUtil.addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
             } catch (Exception e){
                 _log.warn("Failed to export data for csv: ", e);
             }
         }
 
-        csvExportUtil.initiateDownload("reportOfPeopleInCurrentPhase", request, response);
+        csvExportUtil.initiateDownload(exportFileName, request, response);
 
     }
     public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject, PortletRequest request) throws Exception{
