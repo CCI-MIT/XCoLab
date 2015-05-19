@@ -70,6 +70,8 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
     private String[] _methodParameterTypes30;
     private String _methodName31;
     private String[] _methodParameterTypes31;
+    private String _methodName32;
+    private String[] _methodParameterTypes32;
 
     public OntologyTermLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -239,6 +241,12 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
 
         _methodParameterTypes31 = new String[] {
                 "com.ext.portlet.model.OntologyTerm", "java.lang.Class"
+            };
+
+        _methodName32 = "isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId";
+
+        _methodParameterTypes32 = new String[] {
+                "java.lang.Long", "java.lang.Long"
             };
     }
 
@@ -1136,5 +1144,37 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
         }
 
         return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.lang.Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
+        java.lang.Long focusAreaId, java.lang.Long ontologyTermId)
+        throws java.lang.Exception {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName32,
+                    _methodParameterTypes32,
+                    new Object[] {
+                        ClpSerializer.translateInput(focusAreaId),
+                        
+                    ClpSerializer.translateInput(ontologyTermId)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof java.lang.Exception) {
+                throw (java.lang.Exception) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.Boolean) ClpSerializer.translateOutput(returnObj);
     }
 }

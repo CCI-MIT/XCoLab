@@ -71,6 +71,8 @@ public class OntologyTermLocalServiceClpInvoker {
     private String[] _methodParameterTypes675;
     private String _methodName676;
     private String[] _methodParameterTypes676;
+    private String _methodName677;
+    private String[] _methodParameterTypes677;
 
     public OntologyTermLocalServiceClpInvoker() {
         _methodName0 = "addOntologyTerm";
@@ -237,6 +239,12 @@ public class OntologyTermLocalServiceClpInvoker {
 
         _methodParameterTypes676 = new String[] {
                 "com.ext.portlet.model.OntologyTerm", "java.lang.Class"
+            };
+
+        _methodName677 = "isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId";
+
+        _methodParameterTypes677 = new String[] {
+                "java.lang.Long", "java.lang.Long"
             };
     }
 
@@ -416,6 +424,12 @@ public class OntologyTermLocalServiceClpInvoker {
                 Arrays.deepEquals(_methodParameterTypes676, parameterTypes)) {
             return OntologyTermLocalServiceUtil.findTagedIdsForClass((com.ext.portlet.model.OntologyTerm) arguments[0],
                 (java.lang.Class) arguments[1]);
+        }
+
+        if (_methodName677.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes677, parameterTypes)) {
+            return OntologyTermLocalServiceUtil.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId((java.lang.Long) arguments[0],
+                (java.lang.Long) arguments[1]);
         }
 
         throw new UnsupportedOperationException();

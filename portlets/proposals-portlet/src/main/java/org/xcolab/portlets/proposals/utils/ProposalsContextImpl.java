@@ -1,14 +1,5 @@
 package org.xcolab.portlets.proposals.utils;
 
-import javax.portlet.PortletRequest;
-
-import com.liferay.portal.service.UserLocalServiceUtil;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Component;
-import org.xcolab.enums.MemberRole;
-import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.wrappers.*;
-
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -25,7 +16,14 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import org.springframework.stereotype.Component;
+import org.xcolab.enums.MemberRole;
+import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
+import org.xcolab.portlets.proposals.wrappers.*;
+
+import javax.portlet.PortletRequest;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
@@ -125,7 +123,7 @@ public class ProposalsContextImpl implements ProposalsContext {
         request.removeAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
     }
     
-    private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clasz) throws PortalException, SystemException {
+    private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clazz) throws PortalException, SystemException {
         Object contextInitialized =  request.getAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
         if (contextInitialized == null) {
             init(request);
