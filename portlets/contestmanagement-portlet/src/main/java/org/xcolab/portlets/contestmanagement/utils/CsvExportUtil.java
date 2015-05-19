@@ -56,28 +56,31 @@ public class CsvExportUtil {
         records.add(rowData);
     }
 
-    public void addProposalAndAuthorDetailsToExportData(List<Proposal> proposals) throws Exception{
+    public void addProposalAndAuthorDetailsToExportData(List<Proposal> proposals, ContestPhase contestPhase) throws Exception{
 
-        try {
-            for (Proposal proposal : proposals) {
-                List<String[]> proposalAndAuthorDetailsRows = generateProposalAndAuthorDetailsRows(proposal);
-                records.addAll(proposalAndAuthorDetailsRows);
+        for (Proposal proposal : proposals) {
+            try {
+            List<String[]> proposalAndAuthorDetailsRows = generateProposalAndAuthorDetailsRows(proposal, contestPhase);
+            records.addAll(proposalAndAuthorDetailsRows);
+            } catch (Exception e){
+                _log.warn("Failed to export data for csv: ", e);
             }
-        } catch (Exception e){
-            _log.warn("Failed to export data for csv: ", e);
         }
 
     }
 
-    private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal) throws Exception{
+    private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal, ContestPhase contestPhase) throws Exception{
         List<String[]> proposalExportData = new ArrayList<>();
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
-        Long contestId = proposalWrapper.getContestPK();
+        Proposal2Phase proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+        // TODO find another way to get the latest version in a contest when it is indicated as -1
+        int proposalVersionInContestPhase = proposal2Phase.getVersionTo() == -1 ? proposal2Phase.getVersionFrom() : proposal2Phase.getVersionTo();
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, proposalVersionInContestPhase);
+        Long contestId = contestPhase.getContestPK();
         Contest contest = ContestLocalServiceUtil.getContest(contestId);
         String contestTitle = contest.getContestShortName();
         String proposalTitle = proposalWrapper.getName();
         String proposalLink = URL_DOMAIN + proposalWrapper.getProposalURL();
-        String lastPhaseTitle = getLastContestPhaseForProposal(proposal);
+        String lastPhaseTitle = getContestPhaseTitle(contestPhase);
 
         List<ProposalTeamMemberWrapper> proposalTeam = proposalWrapper.getMembers();
         for(ProposalTeamMemberWrapper teamMemberWrapper : proposalTeam){
@@ -87,15 +90,19 @@ public class CsvExportUtil {
         return proposalExportData;
     }
 
+    private String getContestPhaseTitle(ContestPhase contestPhase) throws Exception{
+        Long contestPhaseTypeId = contestPhase.getContestPhaseType();
+        ContestPhaseType contestPhaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseTypeId);
+        return contestPhaseType.getName();
+    }
+
     private String getLastContestPhaseForProposal(Proposal proposal) throws Exception{
         ProposalVersion proposalVersion =
                 ProposalVersionLocalServiceUtil.getByProposalIdVersion(proposal.getProposalId(), proposal.getCurrentVersion());
         Proposal2Phase proposal2Phase = Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion);
         Long contestPhaseId = proposal2Phase.getContestPhaseId();
         ContestPhase contestPhase =  ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-        Long contestPhaseTypeId = contestPhase.getContestPhaseType();
-        ContestPhaseType contestPhaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseTypeId);
-        return contestPhaseType.getName();
+        return getContestPhaseTitle(contestPhase);
     }
 
     private String[] generateProposalAndUserDetailsRow(String contestTitle, String proposalTitle,

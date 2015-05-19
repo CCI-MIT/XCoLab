@@ -75,7 +75,7 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
 
 
     @RequestMapping(params = "action=createPROPOSALTEMPLATES")
-    public void createNewScheduleTabController(ActionRequest request, Model model, ActionResponse response) {
+    public void createNewProposalTemplateTabController(ActionRequest request, Model model, ActionResponse response) {
 
         if(!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
@@ -92,7 +92,7 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
     }
 
     @RequestMapping(params = "action=deletePROPOSALTEMPLATES")
-    public void deleteScheduleTabController(ActionRequest request, Model model,
+    public void deleteProposalTemplateTabController(ActionRequest request, Model model,
                                             @RequestParam(value = "elementId", required = true) Long elementId,
                                             ActionResponse response) {
 
