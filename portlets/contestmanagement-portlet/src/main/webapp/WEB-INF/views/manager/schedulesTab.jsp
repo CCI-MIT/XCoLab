@@ -40,11 +40,29 @@
 		<portlet:param name="action" value="createContestSchedule" />
 	</portlet:actionURL>
 
-	<form action="${deleteContestScheduleURL}" id="deleteElementForm" method="post" style="visibility: hidden;" >
+	<portlet:actionURL var="deleteContestScheduleURL">
+		<portlet:param name="action_forwardToPage" value="schedulesTab" />
+		<portlet:param name="action_errorForwardToPage" value="schedulesTab" />
+		<portlet:param name="tab" value="SCHEDULES" />
+		<portlet:param name="scheduleId" value="${contestScheduleWrapper.scheduleId}" />
+		<portlet:param name="manager" value="true" />
+		<portlet:param name="action" value="deleteContestSchedule" />
+	</portlet:actionURL>
+
+	<portlet:actionURL var="createContestScheduleURL">
+		<portlet:param name="action_forwardToPage" value="schedulesTab" />
+		<portlet:param name="action_errorForwardToPage" value="schedulesTab" />
+		<portlet:param name="tab" value="SCHEDULES" />
+		<portlet:param name="manager" value="true" />
+		<portlet:param name="action" value="createContestSchedule" />
+	</portlet:actionURL>
+
+	<form action="${deleteContestScheduleURL}" id="deleteScheduleForm" method="post" style="visibility: hidden;" >
 		<!-- -->
 	</form>
 
-	<form action="${createContestScheduleURL}" id="createNewElementForm" method="post" style="visibility: hidden;" >
+	<form action="${createContestScheduleURL}" id="createScheduleForm" method="post" style="visibility: hidden;" >
+
 		<!-- -->
 	</form>
 
@@ -58,10 +76,12 @@
 					<a href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
 				</div>
 				<div class="blue-button innerVerticalCenter" >
-					<a href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
+
+					<a href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
 				</div>
 				<div class="blue-button innerVerticalCenter" >
-					<a href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
+					<a href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
+
 				</div>
 			</div>
 		</div>
@@ -71,7 +91,9 @@
 		<div class="reg_errors"><!--  -->
 			<form:errors cssClass="alert alert-error" path="*" />
 		</div>
-		<form:form action="${changeElementURL }" commandName="elementSelectIdWrapper" id="selectForm" method="post">
+
+		<form:form action="${changeContestScheduleURL }" commandName="elementSelectIdWrapper" id="selectForm" method="post">
+
 			<div class="addpropbox">
 				<strong class="inputTitleLeft">Schedule template:</strong>
 				<div class="addpropInputContainer">
@@ -87,7 +109,9 @@
 
 		<form:form action="${updateContestScheduleURL }" commandName="contestScheduleWrapper" id="editForm" method="post">
 			<form:hidden path="scheduleId"/>
-			<form:hidden path="createNew" id="createNew"/>
+
+			<form:hidden path="createNew" id="createNewFlag"/>
+
 			<div class="addpropbox">
 				<strong class="inputTitleLeft">Schedule name:</strong>
 				<form:input path="scheduleName" cssClass="wideLargeInput"/>
@@ -179,7 +203,9 @@
 		</form:form>
 	</div>
 
+
 	<div class="cmsDetailsBox">
+
 		<div class="addpropbox" style="margin-top: 20px;">
 			<strong class="inputTitleLeft">Contests using this schedule:</strong>
 			<table class="contestOverview">
@@ -260,7 +286,9 @@
 		}
 
 		function bindContestScheduleSelectChange(){
-			var dropDownElement = document.getElementById("changeElementSelect");
+
+			var dropDownElement = document.getElementById("changeContestScheduleSelect");
+
 			dropDownElement.addEventListener("change", function(ev){
 				var selectedScheduleId = ev.target.value;
 				window.location="/web/guest/cms/-/contestmanagement/manager/tab/SCHEDULES/elementId/" + selectedScheduleId;
@@ -353,23 +381,29 @@
 		}
 
 		function saveExistingSchedule(){
-			document.getElementById('createNew').value = false;
+
+			document.getElementById('createNewFlag').value = false;
+
 			removeDummyContestPhases();
 			document.getElementById('editForm').submit();
 		}
 
 		function saveAsNewSchedule(){
-			document.getElementById('createNew').value = true;
+
+			document.getElementById('createNewFlag').value = true;
+
 			removeDummyContestPhases();
 			document.getElementById('editForm').submit();
 		}
 
 		function submitCreateScheduleForm(){
-			document.getElementById('createNewElementForm').submit();
+
+			document.getElementById('createScheduleForm').submit();
 		}
 
 		function submitDeleteScheduleForm(){
-			document.getElementById('deleteElementForm').submit();
+			document.getElementById('deleteScheduleForm').submit();
+
 		}
 
 		]]>

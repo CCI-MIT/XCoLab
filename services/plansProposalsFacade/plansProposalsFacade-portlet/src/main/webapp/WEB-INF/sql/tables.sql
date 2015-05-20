@@ -888,7 +888,8 @@ create table xcolab_ProposalRatingType (
 	id_ LONG not null primary key,
 	label VARCHAR(75) null,
 	description TEXT null,
-	judgeType INTEGER
+	judgeType INTEGER,
+	isActive BOOLEAN
 );
 
 create table xcolab_ProposalRatingValue (

@@ -8,9 +8,11 @@ import java.util.Map;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.ext.portlet.NoSuchMessagingIgnoredRecipientsException;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -43,6 +45,7 @@ import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 
 @Controller
 @RequestMapping(value = "view", params = "isLoggingIn=true")
@@ -69,6 +72,10 @@ public class LoginController {
         redirect = Helper.removeParamFromRequestStr(redirect, "isSigningIn");
         redirect = Helper.removeParamFromRequestStr(redirect, "isRegistering");
         redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
+
+        //if (redirect == null || redirect.trim().length() == 0) {
+            redirect = PortalUtil.getHttpServletRequest(request).getHeader("referer");
+        //}
 
         User user = null;
         try {
@@ -129,6 +136,7 @@ public class LoginController {
             } catch (NoSuchMessagingIgnoredRecipientsException e) { /* Case is fine, user is not in ignored rec. list */  }
             catch (SystemException e ) { _log.error("System exception while trying to log user in", e); }
         }
+
         
         if (!SessionErrors.isEmpty(request)) {
             // url parameters
@@ -155,7 +163,7 @@ public class LoginController {
         				but = buts.get(0);
         			}
         		}
-        		
+
         		if (but != null && user != null && but.getUserId() != user.getUserId()) {
         			but.setUserId(user.getUserId());
         			BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
@@ -169,7 +177,7 @@ public class LoginController {
         		// ignore
 			}
         }
-        
+
         response.sendRedirect(redirect);
     }
     

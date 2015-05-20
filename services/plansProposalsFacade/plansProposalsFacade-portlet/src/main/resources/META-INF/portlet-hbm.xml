@@ -1159,6 +1159,7 @@
 		<property name="label" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="judgeType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="isActive" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalRatingValueImpl" table="xcolab_ProposalRatingValue">
 		<cache usage="read-write" />

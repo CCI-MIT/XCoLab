@@ -1460,6 +1460,7 @@
 			<basic name="label" />
 			<basic name="description" />
 			<basic name="judgeType" />
+			<basic name="isActive" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
