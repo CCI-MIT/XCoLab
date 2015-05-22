@@ -32,7 +32,7 @@
 				<discussionsTagFiles:discussionComments discussionId="${discussionId }" />
 			</c:when>
 			<c:otherwise>
-				The judging decisions will be visible once a decision was made.
+				The results of the judging period will be visible here.
 			</c:otherwise>
 		</c:choose>
 
