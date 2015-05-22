@@ -293,4 +293,8 @@ public interface Proposal2PhaseLocalService extends BaseLocalService,
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Proposal2Phase> getByContestPhaseId(
+        long contestPhaseId) throws java.lang.Exception;
 }

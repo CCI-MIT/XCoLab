@@ -169,10 +169,8 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes731;
     private String _methodName732;
     private String[] _methodParameterTypes732;
-
     private String _methodName733;
     private String[] _methodParameterTypes733;
-
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -508,7 +506,7 @@ public class ContestLocalServiceClpInvoker {
 
         _methodName729 = "getContestImpactFocusAreas";
 
-
+        _methodParameterTypes729 = new String[] { "com.ext.portlet.model.Contest" };
 
         _methodName730 = "getContestsByTierLevelAndOntologyTermIds";
 
@@ -527,7 +525,6 @@ public class ContestLocalServiceClpInvoker {
         _methodName733 = "getSubContestsByOntologySpaceId";
 
         _methodParameterTypes733 = new String[] {
-
                 "com.ext.portlet.model.Contest", "java.lang.Long"
             };
     }
@@ -972,13 +969,11 @@ public class ContestLocalServiceClpInvoker {
 
         if (_methodName732.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes732, parameterTypes)) {
-
             return ContestLocalServiceUtil.getContestsByPlanTemplateId((java.lang.Long) arguments[0]);
         }
 
         if (_methodName733.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes733, parameterTypes)) {
-
             return ContestLocalServiceUtil.getSubContestsByOntologySpaceId((com.ext.portlet.model.Contest) arguments[0],
                 (java.lang.Long) arguments[1]);
         }

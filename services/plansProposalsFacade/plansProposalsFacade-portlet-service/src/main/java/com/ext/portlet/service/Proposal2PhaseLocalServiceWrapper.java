@@ -361,6 +361,12 @@ public class Proposal2PhaseLocalServiceWrapper
         return _proposal2PhaseLocalService.getActiveContestPhasesForProposal(proposalId);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal2Phase> getByContestPhaseId(
+        long contestPhaseId) throws java.lang.Exception {
+        return _proposal2PhaseLocalService.getByContestPhaseId(contestPhaseId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

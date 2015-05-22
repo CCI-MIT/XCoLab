@@ -336,6 +336,11 @@ public class Proposal2PhaseLocalServiceUtil {
         return getService().getActiveContestPhasesForProposal(proposalId);
     }
 
+    public static java.util.List<com.ext.portlet.model.Proposal2Phase> getByContestPhaseId(
+        long contestPhaseId) throws java.lang.Exception {
+        return getService().getByContestPhaseId(contestPhaseId);
+    }
+
     public static void clearService() {
         _service = null;
     }

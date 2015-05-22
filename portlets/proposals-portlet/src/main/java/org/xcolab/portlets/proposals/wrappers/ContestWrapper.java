@@ -457,7 +457,7 @@ public class ContestWrapper {
         return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS;
     }
     public boolean getShowParentContest(){
-        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS-1;
+        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS - 1;
     }
 
     public List<Contest> getSubContests() throws Exception{
@@ -467,7 +467,7 @@ public class ContestWrapper {
     public Contest getParentContest() throws Exception{
         List<Long> focusAreaOntologyTermIds =
                 FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(contest.getFocusAreaId(), ONTOLOGY_SPACE_ID_WHERE);
-        List<Contest> contests = ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds(contest.getContestTier(), focusAreaOntologyTermIds);
+        List<Contest> contests = ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
         return contests.get(0);
     }
 
