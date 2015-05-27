@@ -9,7 +9,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
@@ -37,7 +35,7 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
             throws PortalException, SystemException  {
 
         try {
-            if(isPhaseStatusClosedOrOpenForSubmission(request)) {
+            if(isPhaseStatusOpenForSubmission(request)) {
                 model.addAttribute("showDiscussion", false);
             } else {
                 Long discussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposalsContext.getProposal(request));
@@ -76,7 +74,6 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
 
         // TODO this is the Admin Id, replace with what Laur and Patrick decide to use
         Long userId = 10144L;
-        Long amountOfCriteria = 5L;
 
         for(ContestPhase contestPhase : contestPhases){
 
@@ -128,14 +125,17 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
         return wrappers;
     }
 
-    private boolean isPhaseStatusClosedOrOpenForSubmission(PortletRequest request
+    private boolean isPhaseStatusOpenForSubmission(PortletRequest request
     ) throws SystemException, PortalException {
         Long contestPhaseType = proposalsContext.getContestPhase(request).getContestPhaseType();
+
         boolean phaseStatusOpenForSubmission =
                 ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseType).getStatus().equalsIgnoreCase("OPEN_FOR_SUBMISSION");
-        boolean phaseStatusClosed =
-                ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseType).getStatus().equalsIgnoreCase("CLOSED");
-        return phaseStatusOpenForSubmission || phaseStatusClosed;
+
+        boolean phaseStatusSemiFinal =
+                ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseType).getName().equalsIgnoreCase("Semi-Finalist selection");
+
+        return phaseStatusOpenForSubmission || phaseStatusSemiFinal;
     }
 
     private boolean isUserFellowOrJudge(User user){

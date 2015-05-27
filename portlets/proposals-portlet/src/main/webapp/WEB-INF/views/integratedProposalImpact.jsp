@@ -80,7 +80,7 @@
         var tableColors = ['#8C7AAE','#65B868'];
 
         $().ready(function() {
-            
+
             // Color table columns
             var hitFirstRow = false;
             $('div#impact > table tr').each(function(idx) {
