@@ -15,13 +15,11 @@ import org.xcolab.wrapper.proposal.ProposalTeamMemberWrapper;
 import org.xcolab.wrapper.proposal.ProposalWrapper;
 
 import javax.portlet.*;
-import javax.sound.sampled.Port;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -43,7 +41,8 @@ public class CsvExportUtil {
         CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
         csvWriter.writeAll(records);
         csvWriter.close();
-        return writer.toString();
+        String separatorIndicationForExcel =  "sep=" + CSVWriter.DEFAULT_SEPARATOR + CSVWriter.DEFAULT_LINE_END;
+        return separatorIndicationForExcel + writer.toString();
     }
 
     public void addRowToExportData(List<String> rowData){
@@ -72,13 +71,11 @@ public class CsvExportUtil {
     private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal, ContestPhase contestPhase) throws Exception{
         List<String[]> proposalExportData = new ArrayList<>();
         Proposal2Phase proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-        // TODO find another way to get the latest version in a contest when it is indicated as -1
-        int proposalVersionInContestPhase = proposal2Phase.getVersionTo() == -1 ? proposal2Phase.getVersionFrom() : proposal2Phase.getVersionTo();
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, proposalVersionInContestPhase);
+        ProposalWrapper proposalWrapper = getProposalWithLatestVersionInContestPhase(proposal2Phase, proposal);
         Long contestId = contestPhase.getContestPK();
         Contest contest = ContestLocalServiceUtil.getContest(contestId);
-        String contestTitle = contest.getContestShortName();
-        String proposalTitle = proposalWrapper.getName();
+        String contestTitle = normalizeApostrophes(contest.getContestShortName());
+        String proposalTitle = normalizeApostrophes(proposalWrapper.getName());
         String proposalLink = URL_DOMAIN + proposalWrapper.getProposalURL();
         String lastPhaseTitle = getContestPhaseTitle(contestPhase);
 
@@ -90,7 +87,18 @@ public class CsvExportUtil {
         return proposalExportData;
     }
 
-    private String getContestPhaseTitle(ContestPhase contestPhase) throws Exception{
+    private static ProposalWrapper getProposalWithLatestVersionInContestPhase(Proposal2Phase proposal2Phase, Proposal proposal){
+        if(proposal2Phase.getVersionTo() == -1 || proposal2Phase.getVersionFrom() == 0){
+            return new ProposalWrapper(proposal);
+        }
+        return new ProposalWrapper(proposal, proposal2Phase.getVersionTo());
+    }
+
+    private static String normalizeApostrophes(String stringToBeCleaned){
+        return stringToBeCleaned.replace("`","'").replace("’","'");
+    }
+
+    private static String getContestPhaseTitle(ContestPhase contestPhase) throws Exception{
         Long contestPhaseTypeId = contestPhase.getContestPhaseType();
         ContestPhaseType contestPhaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseTypeId);
         return contestPhaseType.getName();
