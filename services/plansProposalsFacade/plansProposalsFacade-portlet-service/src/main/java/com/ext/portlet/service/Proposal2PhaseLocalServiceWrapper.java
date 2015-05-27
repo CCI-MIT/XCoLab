@@ -330,6 +330,17 @@ public class Proposal2PhaseLocalServiceWrapper
     }
 
     @Override
+    public boolean isContestPhaseOfProposal2PhaseValidInContest(
+        com.ext.portlet.model.Proposal2Phase proposal2Phase) {
+        return _proposal2PhaseLocalService.isContestPhaseOfProposal2PhaseValidInContest(proposal2Phase);
+    }
+
+    @Override
+    public boolean isContestPhaseValidInContest(long contestPhaseId) {
+        return _proposal2PhaseLocalService.isContestPhaseValidInContest(contestPhaseId);
+    }
+
+    @Override
     public com.ext.portlet.model.Proposal2Phase getForVersion(
         java.lang.Long proposalId, int proposalVersionId)
         throws com.liferay.portal.kernel.exception.PortalException,

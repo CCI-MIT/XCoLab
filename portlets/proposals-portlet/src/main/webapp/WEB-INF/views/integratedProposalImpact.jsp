@@ -40,10 +40,9 @@
                         </c:forEach>
                         <tr>
                             <c:choose>
-                                <c:when test="${empty proposal.team}"><td class="sector">${proposal.author.screenName}'s proposal</td></c:when>
-                                <c:otherwise><td class="sector">${proposal.team}'s proposal</td></c:otherwise>
+                                <c:when test="${empty proposal.team}"><td class="sector">${proposal.author.screenName}'s proposal (Selected proposal portfolio sum)</td></c:when>
+                                <c:otherwise><td class="sector">${proposal.team}'s proposal (Selected proposal portfolio sum)</td></c:otherwise>
                             </c:choose>
-
                             <c:forEach var="impactIteration" items="${impactIterations}">
                                 <fmt:formatNumber var="value"
                                                   value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
@@ -51,19 +50,37 @@
                                 <td class="impact-value">${value}</td>
                             </c:forEach>
                         </tr>
+                        <tr>
+                            <c:choose>
+                                <c:when test="${empty proposal.team}"><td class="sector" colspan="5">${proposal.author.screenName}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:when>
+                                <c:otherwise><td class="sector" colspan="5">${proposal.team}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:otherwise>
+                            </c:choose>
+                        </tr>
+                        <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
+                            <tr class="impact-series-clickable" id="impact-row-${index.index}">
+                                <td class="region">
+                                    ${impactSeries.proposalWrapper.name}
+                                    <span
+                                        id="${impactSeries.whereTerm.id}">(region: ${impactSeries.whereTerm.name}, </span>
+                                    <span
+                                        id="${impactSeries.whatTerm.id}">sector: ${impactSeries.whatTerm.name})</span></td>
+                                <c:forEach var="impactIteration" items="${impactIterations}">
+                                    <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
+                                </c:forEach>
+                            </tr>
+                        </c:forEach>
                     </table>
-                    <div style="text-align: center;">
-                        <h3 style="margin-top: 50px;">Coming soon:</h3><h4>a list with the emission reduction estimates of all proposals included in this plan.</h4>
-                    </div>
                 </c:otherwise>
             </c:choose>
         </div>
     </div>
 
     <script type="text/javascript">
+        //var tableColors = palette('tol-seq', 10);
         var tableColors = ['#8C7AAE','#65B868'];
 
         $().ready(function() {
+            
             // Color table columns
             var hitFirstRow = false;
             $('div#impact > table tr').each(function(idx) {
@@ -73,6 +90,7 @@
                     $(this).children('td.sector').css('background-color', tableColors[idx - 1]);
                 }
             });
+
         });
 
         google.load('visualization', '1', {packages: ['corechart', 'line']});
