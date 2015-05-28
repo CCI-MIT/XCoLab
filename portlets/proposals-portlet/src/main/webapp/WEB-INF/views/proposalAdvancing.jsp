@@ -148,7 +148,7 @@
             <div class="addpropbox">
                 <h2>Evaluation criteria</h2>
 
-                <proposalsPortlet:ratingCriteriaText ratingTypes="${proposalAdvancingBean.ratingTypes}"/>
+                <proposalsPortlet:ratingCriteriaText ratingTypes="${proposalAdvancingBean.ratingTypes}" />
                 </div>
         </div>
         <div class="judging_comments">

@@ -85,6 +85,7 @@ table.simulation .leftContent, table.simulation .right-content {
 
 .model_description .brand.EMF27, .model_description .brand.EMF  {
 	background: url(../img/emf_logo.png) no-repeat !important;
+    content:url('https://www.climateinteractive.org/');
 	width: 154px;
 	height: 50px;
 	float: right;

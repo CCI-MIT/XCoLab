@@ -264,6 +264,16 @@ public class ProposalsPermissions {
         return permissionChecker.hasPermission(contestGroupId, portletId, primKey, ProposalsActions.CAN_JUDGE_ACTIONS) || getCanAdminAll();
     }
 
+    public boolean getCanContestManagerActions() {
+        boolean canContestManagerActions = false;
+        try {
+            MemberRole memberRole = MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm.getHighestMemberRoleForUser(user);
+            canContestManagerActions = (memberRole == MemberRole.CONTESTMANAGER || memberRole == MemberRole.STAFF);
+        } catch (Exception e){
+        }
+        return canContestManagerActions;
+    }
+
     public boolean getCanIAFActions() {
         boolean canIAFAction = false;
         try {

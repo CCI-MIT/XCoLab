@@ -19,8 +19,8 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
 
     protected TabWrapper tabWrapper;
 
-    static final String NO_PERMISSION_TAB_VIEW = "details/noPermissionTab";
-    static final String NOT_FOUND_TAB_VIEW = "notFound";
+    static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
+    static final String NOT_FOUND_TAB_VIEW = "common/notFound";
 
     @ModelAttribute("tabs")
     @Override
@@ -34,7 +34,6 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
 
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
             throws PortalException, SystemException {
-
         String pageTitle = "Contest Management Tool";
         String pageSubTitle = tab.getDisplayName() + " - " + pageTitle;
         String pageDescription = "Contest details for " + pageTitle;
@@ -49,11 +48,4 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
         this.tabWrapper = tabWrapper;
     }
 
-    public void setSuccessRenderRedirect (ActionResponse response, String tabName) throws Exception{
-        response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName);
-    }
-
-    public void setSuccessRenderRedirect (ActionResponse response, String tabName, Long elementId) throws Exception{
-        response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName + "/elementId/" + elementId);
-    }
 }

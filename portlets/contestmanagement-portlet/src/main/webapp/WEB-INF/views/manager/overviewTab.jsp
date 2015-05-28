@@ -96,12 +96,6 @@
 				<tbody id="contestOverviewBody">
 					<c:forEach var="contestWrapper" items="${contestOverviewWrapper.contestWrappers}" varStatus="x" >
 							<tr draggable="true"
-								ondragend="dragEnd(event)"
-								ondragstart="dragStart(event)"
-								ondrop="drop(event)"
-								ondragenter="dragEnter(event)"
-								ondragover="dragOver(event)"
-								ondragleave="dragLeave(event)"
 								id = "${contestWrapper.contestPK}"
 								data-filter-attribute="${contestWrapper.contestActive ? 'active' : 'prior'}"
 								class = "${x.index %2==0 ? 'blue' : ''} draggable"
@@ -147,16 +141,22 @@
 	<script type="text/javascript">
 		<![CDATA[
 
-		//(function(){
+		var MASS_MESSAGE_SELECT_ID = 1;
+		var REPORT_SELECT_ID = 3;
+		var actionURL = "${updateContestOverviewURL }";
+		var resourceURL = "${getExport }";
 
 		jQuery('document').ready(function(){
-			var dropDownElement = document.getElementById("selectedMassAction");
-			var editFormElement = document.getElementById('editForm');
-			var MASS_MESSAGE_SELECT_ID = 1;
-			var REPORT_SELECT_ID = 3;
-			var actionURL = "${updateContestOverviewURL }";
-			var resourceURL = "${getExport }";
+			bindMassActionChange();
+			bindSelectAllClick();
+			bindFormSubmits();
+			bindFilterSelectChange();
+			bindDragDropEvents();
+		});
 
+		function bindMassActionChange(){
+
+			var dropDownElement = document.getElementById("selectedMassAction");
 			dropDownElement.addEventListener("change", function(ev){
 				var massMessageDiv = document.getElementById("massMessage");
 				var editFormElement = document.getElementById("editForm");
@@ -174,25 +174,9 @@
 					massMessageDiv.style.display = 'none';
 				}
 			})
+		}
 
-			var submitButtonElement = document.getElementById("submitButton");
-			submitButtonElement.addEventListener("click", function(){
-				editFormElement.submit();
-				/*var selectedDropDownId = dropDownElement.value;
-				if(selectedDropDownId == REPORT_SELECT_ID){
-					sendGetReportRequestToServer();
-				} else {
-					editFormElement.submit();
-				}*/
-			})
-
-
-			var contestsFilterSelectElement = document.getElementById("contestsFilterSelect");
-			contestsFilterSelectElement.addEventListener("change", function(){
-				var selectedFilterAttribute = contestsFilterSelectElement.value;
-				showContestsWithDataAttributeFilter(selectedFilterAttribute);
-			})
-
+		function bindSelectAllClick(){
 			var selectAllCheckboxElement = document.getElementById("selectAllCheckbox");
 			selectAllCheckboxElement.addEventListener("change", function (ev) {
 				var selectAllChecked = selectAllCheckboxElement.checked;
@@ -208,8 +192,37 @@
 					}
 				});
 			});
+		}
 
-		});
+		function bindFormSubmits(){
+			var editFormElement = document.getElementById('editForm');
+			var submitButtonElement = document.getElementById("submitButton");
+			submitButtonElement.addEventListener("click", function(){
+				editFormElement.submit();
+			})
+		}
+
+		function bindFilterSelectChange(){
+			var contestsFilterSelectElement = document.getElementById("contestsFilterSelect");
+			contestsFilterSelectElement.addEventListener("change", function(){
+				var selectedFilterAttribute = contestsFilterSelectElement.value;
+				showContestsWithDataAttributeFilter(selectedFilterAttribute);
+			})
+		}
+
+		function bindDragDropEvents(){
+
+			[].forEach.call(document.getElementsByTagName("tr"), function (rowElement) {
+				console.log("rowElement", rowElement);
+				rowElement.addEventListener("dragend", dragEnd);
+				rowElement.addEventListener("dragstart", dragStart);
+				rowElement.addEventListener("drop", drop);
+				rowElement.addEventListener("dragenter", dragEnter);
+				rowElement.addEventListener("dragover", dragOver);
+				rowElement.addEventListener("dragleave", dragLeave);
+			} )
+
+		}
 
 		function sendGetReportRequestToServer(){
 			var editFormElement = document.getElementById('editForm');
@@ -238,90 +251,63 @@
 			});
 		}
 
-		function dragEnd(ev) {
-			ev.target.classList.remove("drag");
-
+		function dragEnd(event) {
+			event.target.classList.remove("drag");
 			[].forEach.call(document.getElementsByTagName('tr'), function (element) {
 				element.classList.remove("allowDrop");
 			});
 		}
 
-		function dragLeave(ev){
-
-			var targetRow = getClosest(ev.target, "tr")
+		function dragLeave(event){
+			var targetRow = getClosest(event.target, "tr")
 			targetRow.classList.remove("allowDrop");
-
-			//var srcElementId = ev.dataTransfer.getData("srcElementId");
-			//var srcElementPreviewId = srcElementPreview.id + "Preview";
-			//var srcElementPreview = document.getElementById(srcElementPreviewId)
-			//srcElementPreview.parentNode.removeChild(srcElementPreview);
 		}
 
-		function dragOver(ev) {
-			ev.preventDefault();
+		function dragOver(event) {
+			event.preventDefault();
 			return false;
 		}
 
-		function dragEnter(ev) {
-			var targetRow = getClosest(ev.target, "tr")
+		function dragEnter(event) {
+			var targetRow = getClosest(event.target, "tr")
 			targetRow.classList.add("allowDrop");
 		}
 
-		function dragStart(ev) {
-			ev.target.style.visibility = "none";
-			ev.dataTransfer.setData("srcElementId", ev.target.id);
-			var srcElementId = ev.dataTransfer.getData("srcElementId");
-			ev.target.classList.add("drag");
+		function dragStart(event) {
+			console.log("start drag", event);
+			event.target.style.visibility = "none";
+			event.dataTransfer.setData("srcElementId", event.target.id);
+			var srcElementId = event.dataTransfer.getData("srcElementId");
+			event.target.classList.add("drag");
 		}
 
-		function drop(ev) {
+		function drop(event) {
 
-			var srcElementId = ev.dataTransfer.getData("srcElementId");
+			var srcElementId = event.dataTransfer.getData("srcElementId");
 			var srcElement = document.getElementById(srcElementId);
-
-			var targetRow = getClosest(ev.target, "tr")
+			var targetRow = getClosest(event.target, "tr")
 			var targetParentElement = targetRow.parentNode;
 			targetParentElement.insertBefore(srcElement, targetRow)
 
 			reCalculateWeights();
-
-			ev.stopPropagation(); // Stops some browsers from redirecting.
-			ev.preventDefault();
+			event.stopPropagation(); // Stops some browsers from redirecting.
+			event.preventDefault();
 			return false;
 		}
 
 		function reCalculateWeights(){
-		var firstElementInList = document.getElementById("contestOverviewBody");
-		var nextElementInList = firstElementInList.firstChild;
-		var index = 0;
-		do {
-			if (filter("weightInput", nextElementInList)){
-				index++;
-				var weightInput = nextElementInList.getElementsByClassName("weightInput")[0];
-				var weightInputLable = weightInput.nextSibling;
-				weightInput.value = index;
-				weightInputLable.innerHTML = index;
-			}
-		} while (nextElementInList = nextElementInList.nextSibling)
-
-		}
-
-		function filter(className, element){
-			return element.getElementsByClassName(className)[0] != undefined;
-		}
-
-		function getClosest(el, tag) {
-			// this is necessary since nodeName is always in upper case
-			tag = tag.toUpperCase();
+			var firstElementInList = document.getElementById("contestOverviewBody");
+			var nextElementInList = firstElementInList.firstChild;
+			var index = 0;
 			do {
-				if (el.nodeName === tag) {
-					// tag name is found! let's return it. :)
-					return el;
+				if (filter("weightInput", nextElementInList)){
+					index++;
+					var weightInput = nextElementInList.getElementsByClassName("weightInput")[0];
+					var weightInputLable = weightInput.nextSibling;
+					weightInput.value = index;
+					weightInputLable.innerHTML = index;
 				}
-			} while (el = el.parentNode);
-
-			// not found :(
-			return null;
+			} while (nextElementInList = nextElementInList.nextSibling)
 		}
 
 		//}());

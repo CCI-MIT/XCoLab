@@ -76,6 +76,7 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
 
         // TODO this is the Admin Id, replace with what Laur and Patrick decide to use
         Long userId = 10144L;
+        Long amountOfCriteria = 5L;
 
         for(ContestPhase contestPhase : contestPhases){
 

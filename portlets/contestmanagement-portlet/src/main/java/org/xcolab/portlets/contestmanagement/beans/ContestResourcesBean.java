@@ -211,7 +211,12 @@ public class ContestResourcesBean implements Serializable {
             if(contestPhaseType == 1L){
                 SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMM dd, yyyy 'at' HH:mm:ss a zzzz");
                 formatter.setTimeZone(TimeZone.getTimeZone("EST"));
-                proposalSubmissionEndDate = formatter.format(contestPhase.getPhaseEndDate());
+                boolean phaseHasNoEnd = (contestPhase.getPhaseEndDate() == null);
+                if(phaseHasNoEnd){
+                    proposalSubmissionEndDate = "This contest has no deadline.";
+                } else {
+                    proposalSubmissionEndDate = formatter.format(contestPhase.getPhaseEndDate());
+                }
                 break;
             }
         }

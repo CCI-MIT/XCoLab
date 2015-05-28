@@ -48,10 +48,10 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("emailTemplates", bean.getEmailTemplateBean().getEmailTemplates());
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
-        List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK()));
+
+        List<ProposalRating> judgeRatingsUnWrapped = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
+        List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(judgeRatingsUnWrapped);
         List<ProposalRatingsWrapper> judgeRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK()));
-
-
         boolean isFrozen = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK(),
@@ -84,18 +84,19 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         Map<Long, List<ProposalRating>> map = new HashMap<Long, List<ProposalRating>>();
 
         for (ProposalRating r : ratings) {
-            if (map.get(r.getUserId()) == null) {
-                map.put(r.getUserId(), new ArrayList<ProposalRating>());
+
+                if (map.get(r.getUserId()) == null) {
+                    map.put(r.getUserId(), new ArrayList<ProposalRating>());
+                }
+                map.get(r.getUserId()).add(r);
             }
-            map.get(r.getUserId()).add(r);
-        }
 
-        for (Long userId : map.keySet()) {
-            List<ProposalRating> userRatings = map.get(userId);
-            ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, userRatings);
-            wrappers.add(wrapper);
-        }
+            for (Long userId : map.keySet()) {
+                List<ProposalRating> userRatings = map.get(userId);
+                ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, userRatings);
+                wrappers.add(wrapper);
 
+        }
         return wrappers;
     }
     
@@ -119,6 +120,8 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
                 0
         );
+        List<ProposalRating> judgeRatingsUnWrapped = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
+
         FellowProposalScreeningBean bean = new FellowProposalScreeningBean(proposalFellowWrapper);
         bean.setContestPhaseId(contestPhase.getContestPhasePK());
 

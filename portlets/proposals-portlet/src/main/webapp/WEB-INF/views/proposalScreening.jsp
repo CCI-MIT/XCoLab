@@ -171,7 +171,7 @@
         <div class="judging_right">
             <div class="addpropbox">
                 <h2>Evaluation Criteria</h2>
-                <proposalsPortlet:ratingCriteriaText ratingTypes="${fellowProposalScreeningBean.ratingTypes}"/>
+                <proposalsPortlet:ratingCriteriaText ratingTypes="${fellowProposalScreeningBean.ratingTypes}" />
             </div>
         </div>
 

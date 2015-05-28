@@ -100,7 +100,7 @@ public class ContestScheduleWrapper {
     public void setScheduleId(Long contestScheduleId){
         try{
             initContestSchedule(contestScheduleId);
-             initContestsUsingSelectedSchedule(contestScheduleId);
+            initContestsUsingSelectedSchedule(contestScheduleId);
         } catch (Exception e){
         }
     }
@@ -286,11 +286,10 @@ public class ContestScheduleWrapper {
 
     public static void updateContestPhasesAccordingToContestSchedule(Contest contest, Long scheduleTemplateId) throws Exception{
 
-        List<Proposal> proposalList = ProposalLocalServiceUtil.getProposalsInContest(contest.getContestPK());
         List<ContestPhase> oldContestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(contest.getContestPK());
         List<ContestPhase> newContestPhases = new ArrayList<>();
 
-        Map<Long, Long> oldContestPhaseIdToNewContestPhaseIdMap = new LinkedHashMap<>();
+        //Map<Long, Long> oldContestPhaseIdToNewContestPhaseIdMap = new LinkedHashMap<>();
         Map<Long, Long> oldContestPhaseTypeIdPhaseIdMap = new LinkedHashMap<>();
         populateContestPhaseTypeIdPhaseId(contest, oldContestPhaseTypeIdPhaseIdMap);
 
@@ -315,10 +314,15 @@ public class ContestScheduleWrapper {
             newContestPhases.add(contestPhase);
 
             Long newContestPhaseId = contestPhaseNew.getContestPhasePK();
-            oldContestPhaseIdToNewContestPhaseIdMap.put(oldContestPhaseId, newContestPhaseId);
+            updateContestPhaseIdForAllProposal2PhaseMatchingContestPhaseId(oldContestPhaseId, newContestPhaseId);
+
+            //oldContestPhaseIdToNewContestPhaseIdMap.put(oldContestPhaseId, newContestPhaseId);
         }
 
-        for(Proposal proposal : proposalList){
+        /*
+        List<Proposal> proposalInThisContest = ProposalLocalServiceUtil.getProposalsInContest(contest.getContestPK());
+
+        for(Proposal proposal : proposalInThisContest){
             Long proposalId = proposal.getProposalId();
             List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByProposalId(proposalId);
             for(Proposal2Phase proposal2Phase : proposal2Phases){
@@ -330,8 +334,20 @@ public class ContestScheduleWrapper {
                 }
             }
         }
+        */
 
         removeContestPhases(oldContestPhases);
+    }
+
+    public static void updateContestPhaseIdForAllProposal2PhaseMatchingContestPhaseId
+            (Long oldContestPhaseId, Long newContestPhaseId) throws Exception{
+        List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByContestPhaseId(oldContestPhaseId);
+        for(Proposal2Phase proposal2Phase : proposal2Phases){
+            if(newContestPhaseId != null) {
+                proposal2Phase.setContestPhaseId(newContestPhaseId);
+                Proposal2PhaseLocalServiceUtil.updateProposal2Phase(proposal2Phase);
+            }
+        }
     }
 
     public static void createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(Contest contest, Long newScheduleTemplateId) throws Exception {

@@ -163,10 +163,14 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes728;
     private String _methodName729;
     private String[] _methodParameterTypes729;
+    private String _methodName730;
+    private String[] _methodParameterTypes730;
     private String _methodName731;
     private String[] _methodParameterTypes731;
     private String _methodName732;
     private String[] _methodParameterTypes732;
+    private String _methodName733;
+    private String[] _methodParameterTypes733;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -504,13 +508,23 @@ public class ContestLocalServiceClpInvoker {
 
         _methodParameterTypes729 = new String[] { "com.ext.portlet.model.Contest" };
 
+        _methodName730 = "getContestsByTierLevelAndOntologyTermIds";
+
+        _methodParameterTypes730 = new String[] {
+                "java.lang.Long", "java.util.List"
+            };
+
         _methodName731 = "getContestsByContestScheduleId";
 
         _methodParameterTypes731 = new String[] { "java.lang.Long" };
 
-        _methodName732 = "getSubContestsByOntologySpaceId";
+        _methodName732 = "getContestsByPlanTemplateId";
 
-        _methodParameterTypes732 = new String[] {
+        _methodParameterTypes732 = new String[] { "java.lang.Long" };
+
+        _methodName733 = "getSubContestsByOntologySpaceId";
+
+        _methodParameterTypes733 = new String[] {
                 "com.ext.portlet.model.Contest", "java.lang.Long"
             };
     }
@@ -942,6 +956,12 @@ public class ContestLocalServiceClpInvoker {
             return ContestLocalServiceUtil.getContestImpactFocusAreas((com.ext.portlet.model.Contest) arguments[0]);
         }
 
+        if (_methodName730.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes730, parameterTypes)) {
+            return ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds((java.lang.Long) arguments[0],
+                (java.util.List<java.lang.Long>) arguments[1]);
+        }
+
         if (_methodName731.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes731, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsByContestScheduleId((java.lang.Long) arguments[0]);
@@ -949,6 +969,11 @@ public class ContestLocalServiceClpInvoker {
 
         if (_methodName732.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes732, parameterTypes)) {
+            return ContestLocalServiceUtil.getContestsByPlanTemplateId((java.lang.Long) arguments[0]);
+        }
+
+        if (_methodName733.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes733, parameterTypes)) {
             return ContestLocalServiceUtil.getSubContestsByOntologySpaceId((com.ext.portlet.model.Contest) arguments[0],
                 (java.lang.Long) arguments[1]);
         }

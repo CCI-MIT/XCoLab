@@ -997,6 +997,7 @@
 			<hint name="max-length">10000</hint>
 		</field>
 		<field name="judgeType" type="int" />
+		<field name="isActive" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalRatingValue">
 		<field name="id" type="long" />

@@ -67,6 +67,8 @@ public class Proposal2PhaseLocalServiceClpInvoker {
     private String[] _methodParameterTypes674;
     private String _methodName675;
     private String[] _methodParameterTypes675;
+    private String _methodName676;
+    private String[] _methodParameterTypes676;
 
     public Proposal2PhaseLocalServiceClpInvoker() {
         _methodName0 = "addProposal2Phase";
@@ -212,6 +214,10 @@ public class Proposal2PhaseLocalServiceClpInvoker {
         _methodName675 = "getActiveContestPhasesForProposal";
 
         _methodParameterTypes675 = new String[] { "long" };
+
+        _methodName676 = "getByContestPhaseId";
+
+        _methodParameterTypes676 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -374,6 +380,11 @@ public class Proposal2PhaseLocalServiceClpInvoker {
         if (_methodName675.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes675, parameterTypes)) {
             return Proposal2PhaseLocalServiceUtil.getActiveContestPhasesForProposal(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName676.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes676, parameterTypes)) {
+            return Proposal2PhaseLocalServiceUtil.getByContestPhaseId(((Long) arguments[0]).longValue());
         }
 
         throw new UnsupportedOperationException();

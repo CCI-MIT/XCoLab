@@ -6,6 +6,6 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-	<jsp:directive.include file="init.jspx" />
+	<jsp:directive.include file="../init.jspx" />
 	The requested page was not found.
 </jsp:root>

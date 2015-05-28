@@ -46,4 +46,9 @@ public abstract class BaseTabController extends BaseController {
         return availableTabs;
     }
 
+    public static Long getContestIdFromRequest(PortletRequest request){
+        String contestIdParameter = request.getParameter("contestId");
+        return Long.parseLong(contestIdParameter);
+    }
+
 }

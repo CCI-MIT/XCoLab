@@ -1,8 +1,11 @@
 package com.ext.portlet.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.ext.portlet.model.FocusAreaOntologyTerm;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.OntologyTermEntity;
@@ -10,6 +13,7 @@ import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermEntityLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalService;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.base.OntologyTermLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -136,5 +140,27 @@ public class OntologyTermLocalServiceImpl
         Long classNameId = ClassNameLocalServiceUtil.getClassNameId(clasz);
         
         return OntologyTermEntityLocalServiceUtil.findTagedIdsForClass(ontologyTerm.getId(), clasz);
+    }
+
+
+    public Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(Long focusAreaId, Long ontologyTermId) throws Exception{
+
+        OntologyTerm ontologyParentTerm = OntologyTermLocalServiceUtil.getOntologyTerm(ontologyTermId);
+        List<OntologyTerm> ontologyTermList = OntologyTermLocalServiceUtil.getAllDescendantTerms(ontologyParentTerm);
+        ontologyTermList.add(ontologyParentTerm);
+        List<FocusAreaOntologyTerm> focusAreaOntologyTerms = FocusAreaOntologyTermLocalServiceUtil.findTermsByFocusArea(focusAreaId);
+
+        Set<Long> ontologyTermIds = new HashSet<>();
+
+        for(OntologyTerm ontologyTerm : ontologyTermList) {
+            ontologyTermIds.add(ontologyTerm.getId());
+        }
+
+        for (FocusAreaOntologyTerm focusAreaOntologyTerm : focusAreaOntologyTerms) {
+            if (ontologyTermIds.contains(focusAreaOntologyTerm.getOntologyTermId())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

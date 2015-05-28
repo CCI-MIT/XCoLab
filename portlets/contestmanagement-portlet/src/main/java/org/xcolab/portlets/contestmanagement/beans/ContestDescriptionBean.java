@@ -70,47 +70,6 @@ public class ContestDescriptionBean implements Serializable{
         updateContestWiki(contest, oldContestTitle);
     }
 
-
-    private void updateContestDescription(Contest contest) throws Exception{
-
-        contest.setContestName(contestName);
-        contest.setEmailTemplateUrl(emailTemplateUrl);
-        contest.setContestShortName(contestShortName);
-        contest.setContestDescription(contestDescription);
-        contest.setPlanTemplateId(planTemplateId);
-        contest.setContestLogoId(contestLogoId);
-        contest.setSponsorLogoId(sponsorLogoId);
-        contest.setContestTier(contestTier);
-        contest.persist();
-
-    }
-
-    public static void updateContestWiki(Contest contest, String oldContestTitle) throws Exception{
-        String newContestTitle = contest.getContestShortName();
-        if(!oldContestTitle.equals(newContestTitle)) {
-            WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
-            WikiPageWrapper.updateContestResourceUrl(contest, newContestTitle);
-        }
-
-    }
-
-    public static void updateContestSchedule(Contest contest, Long contestScheduleId) throws Exception{
-        Long oldScheduleTemplateId = contest.getContestScheduleId();
-        boolean noScheduleSelected = contestScheduleId.equals(0);
-
-        if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
-            ContestWrapper contestWrapper = new ContestWrapper(contest);
-            boolean proposalsInContest = contestWrapper.getProposalsCount() > 0;
-            if(proposalsInContest) {
-                ContestScheduleWrapper.updateContestPhasesAccordingToContestSchedule(contest, contestScheduleId);
-            }   else{
-                ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleId);
-            }
-            contest.setContestScheduleId(contestScheduleId);
-            contest.persist();
-        }
-    }
-
     public Long getContestPK() {
         return ContestPK;
     }
@@ -171,7 +130,7 @@ public class ContestDescriptionBean implements Serializable{
 
     public void setContestDescription(String contestDescription) {
 
-        /*
+        /* TODO find a solution for the Read more ... <p> issue
         if(!contestDescription.isEmpty()) {
 
             String contestDescriptionWithoutPTag = contestDescription.replace("<p>", "").replace("</p>","<br/>");
@@ -224,4 +183,40 @@ public class ContestDescriptionBean implements Serializable{
         this.contestTier = contestTier;
     }
 
+    private void updateContestDescription(Contest contest) throws Exception{
+        contest.setContestName(contestName);
+        contest.setEmailTemplateUrl(emailTemplateUrl);
+        contest.setContestShortName(contestShortName);
+        contest.setContestDescription(contestDescription);
+        contest.setPlanTemplateId(planTemplateId);
+        contest.setContestLogoId(contestLogoId);
+        contest.setSponsorLogoId(sponsorLogoId);
+        contest.setContestTier(contestTier);
+        contest.persist();
+    }
+
+    public static void updateContestWiki(Contest contest, String oldContestTitle) throws Exception{
+        String newContestTitle = contest.getContestShortName();
+        if(!oldContestTitle.equals(newContestTitle)) {
+            WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
+            WikiPageWrapper.updateContestResourceUrl(contest, newContestTitle);
+        }
+    }
+
+    public static void updateContestSchedule(Contest contest, Long contestScheduleId) throws Exception{
+        Long oldScheduleTemplateId = contest.getContestScheduleId();
+        boolean noScheduleSelected = contestScheduleId.equals(0);
+
+        if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
+            ContestWrapper contestWrapper = new ContestWrapper(contest);
+            boolean proposalsInContest = contestWrapper.getProposalsCount() > 0;
+            if(proposalsInContest) {
+                ContestScheduleWrapper.updateContestPhasesAccordingToContestSchedule(contest, contestScheduleId);
+            }   else{
+                ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleId);
+            }
+            contest.setContestScheduleId(contestScheduleId);
+            contest.persist();
+        }
+    }
 }

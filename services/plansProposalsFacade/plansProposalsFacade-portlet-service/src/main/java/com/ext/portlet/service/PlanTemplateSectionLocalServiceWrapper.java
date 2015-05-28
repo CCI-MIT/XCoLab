@@ -286,6 +286,12 @@ public class PlanTemplateSectionLocalServiceWrapper
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.PlanTemplateSection> findByPlanSectionDefinitionId(
+        java.lang.Long planSectionDefinitionId) throws java.lang.Exception {
+        return _planTemplateSectionLocalService.findByPlanSectionDefinitionId(planSectionDefinitionId);
+    }
+
+    @Override
     public com.ext.portlet.model.PlanTemplateSection addPlanTemplateSection(
         java.lang.Long planTemplateId, java.lang.Long sectionId, int weight)
         throws com.liferay.portal.kernel.exception.SystemException {

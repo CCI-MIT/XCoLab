@@ -221,6 +221,7 @@
         <column name="label" type="String" />
         <column name="description" type="String" />
         <column name="judgeType" type="int" />
+        <column name="isActive" type="boolean" />
         <column name="proposalRatingValues" type="Collection" entity="ProposalRatingValue" mapping-key="ratingTypeId"/>
     </entity>
     <entity name="ProposalRatingValue" local-service="true">

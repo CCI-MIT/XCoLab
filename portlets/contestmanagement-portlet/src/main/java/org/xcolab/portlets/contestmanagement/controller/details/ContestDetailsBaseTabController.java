@@ -1,4 +1,4 @@
-package org.xcolab.portlets.contestmanagement.controller;
+package org.xcolab.portlets.contestmanagement.controller.details;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -24,8 +24,8 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     private ContestWrapper contestWrapper;
     protected TabWrapper tabWrapper;
 
-    static final String NO_PERMISSION_TAB_VIEW = "details/noPermissionTab";
-    static final String NOT_FOUND_TAB_VIEW = "notFound";
+    public static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
+    public static final String NOT_FOUND_TAB_VIEW = "common/notFound";
 
     @ModelAttribute("tabs")
     @Override
@@ -61,15 +61,12 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         setSeoTexts(request, pageTitle, pageSubTitle, pageDescription);
     }
 
-    public static Long getContestIdFromRequest(PortletRequest request){
-        String contestIdParameter = request.getParameter("contestId");
-        return Long.parseLong(contestIdParameter);
-    }
-
     public static boolean getCreateNewContestParameterFromRequest(PortletRequest request){
         String createContestParameter = request.getParameter("createContest");
         return Boolean.parseBoolean(createContestParameter);
     }
+
+    public Long getContestPK(){ return contest.getContestPK();}
 
     public Contest getContest() {
         return contest;
@@ -94,28 +91,5 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     public void setContestWrapper(ContestWrapper contestWrapper) {
         this.contestWrapper = contestWrapper;
     }
-
-    public void setSuccessRenderRedirect (ActionResponse response, String tabName) throws Exception{
-        response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/" + tabName);
-    }
-
-    /*
-    public static void setErrorRenderParameter(ActionResponse response, String errorActionParameter){
-        response.setRenderParameter("error", "true");
-        response.setRenderParameter("action", errorActionParameter);
-    }
-
-    public static void setNotFoundErrorRenderParameter(ActionResponse response, String errorActionParameter){
-        response.setRenderParameter("error", "true");
-        response.setRenderParameter("action", errorActionParameter);
-    }
-
-    public static void setNoPermissionErrorRenderParameter(ActionResponse response){
-        setErrorRenderParameter(response, "showNoPermission");
-    }
-
-    public static void setNotFoundErrorRenderParameter(ActionResponse response){
-        setErrorRenderParameter(response, "showNotFound");
-    }*/
 
 }

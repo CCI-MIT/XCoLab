@@ -621,8 +621,18 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
+        java.lang.Long contestTier,
+        java.util.List<java.lang.Long> focusAreaOntologyTermIds)
+        throws java.lang.Exception;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getContestsByContestScheduleId(
         java.lang.Long contestScheduleId) throws java.lang.Exception;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByPlanTemplateId(
+        java.lang.Long planTemplateId) throws java.lang.Exception;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(

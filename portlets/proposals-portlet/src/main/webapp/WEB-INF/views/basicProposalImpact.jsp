@@ -252,7 +252,7 @@
     </div>
 
     <c:choose>
-        <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (not proposalsPermissions.canIAFActions) and (empty impactSerieses)}">
+        <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (not proposalsPermissions.canIAFActions) or (empty impactSerieses)}">
             <script>
                 $().ready(function () {
                     $('tr.impact-series-clickable').removeClass('impact-series-clickable');
