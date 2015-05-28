@@ -268,7 +268,7 @@ public class ProposalsPermissions {
         boolean canContestManagerActions = false;
         try {
             MemberRole memberRole = MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm.getHighestMemberRoleForUser(user);
-            canContestManagerActions = (memberRole == MemberRole.CONTESTMANAGER);
+            canContestManagerActions = (memberRole == MemberRole.CONTESTMANAGER || memberRole == MemberRole.STAFF);
         } catch (Exception e){
         }
         return canContestManagerActions;
