@@ -202,7 +202,7 @@ public class JudgeProposalActionController {
         User currentUser = proposalsContext.getUser(request);
         // Security handling
         if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
-                !permissions.getCanAdminAll() && !permissions.getCanJudgeActions()) {
+                !permissions.getCanAdminAll() && !permissions.getCanJudgeActions() && !permissions.getCanContestManagerActions()) {
             return;
         }
 
