@@ -1088,7 +1088,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
 
-    private List<Contest> getContestsByTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTermIds) throws Exception{
+    public List<Contest> getContestsByTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTermIds) throws Exception{
 
         DynamicQuery queryContestsByTierLevelAndOntologyTermIds =
             DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())

@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
+import au.com.bytecode.opencsv.CSVWriter;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
@@ -202,7 +203,7 @@ public class JudgeProposalActionController {
         User currentUser = proposalsContext.getUser(request);
         // Security handling
         if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
-                !permissions.getCanAdminAll() && !permissions.getCanJudgeActions()) {
+                !permissions.getCanAdminAll() && !permissions.getCanJudgeActions() && !permissions.getCanContestManagerActions()) {
             return;
         }
 
@@ -214,8 +215,11 @@ public class JudgeProposalActionController {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             String csvPayload = ContestLocalServiceUtil.getProposalJudgeReviewCsv(proposalsContext.getContest(request),
                     proposalsContext.getContestPhase(request), serviceContext);
+
+            String separatorIndicationForExcel =  "sep=" + CSVWriter.DEFAULT_SEPARATOR + CSVWriter.DEFAULT_LINE_END;
+            csvPayload = separatorIndicationForExcel + csvPayload;
             outputStream.write(csvPayload.getBytes());
-            response.setContentType("text/csv");
+            response.setContentType("application/csv");
             response.addProperty(HttpHeaders.CACHE_CONTROL, "max-age=3600, must-revalidate");
             response.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=export.csv");
 

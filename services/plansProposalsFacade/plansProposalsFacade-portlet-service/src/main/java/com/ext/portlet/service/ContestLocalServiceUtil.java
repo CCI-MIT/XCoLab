@@ -728,6 +728,15 @@ public class ContestLocalServiceUtil {
         return getService().getContestImpactFocusAreas(contest);
     }
 
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
+        java.lang.Long contestTier,
+        java.util.List<java.lang.Long> focusAreaOntologyTermIds)
+        throws java.lang.Exception {
+        return getService()
+                   .getContestsByTierLevelAndOntologyTermIds(contestTier,
+            focusAreaOntologyTermIds);
+    }
+
     public static java.util.List<com.ext.portlet.model.Contest> getContestsByContestScheduleId(
         java.lang.Long contestScheduleId) throws java.lang.Exception {
         return getService().getContestsByContestScheduleId(contestScheduleId);

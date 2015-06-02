@@ -110,10 +110,8 @@ public class MembersController {
                 MemberItem memberItem = new MemberItem(user,memberCategoryParam);
                 if (memberItem.getCategory()!= MemberCategory.STAFF)
                     users.add(memberItem);
-
-                    else
+                else
                     usersCount--;
-
             }
 
             //Pagination
@@ -123,7 +121,6 @@ public class MembersController {
             endPage = pagesCount;
             if (startPage + 10<pagesCount)
                 endPage=startPage+10;
-
         }
         else {
 

@@ -12,6 +12,10 @@ import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.Proposal2PhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 /**
@@ -173,4 +177,12 @@ public class Proposal2PhaseLocalServiceImpl
         }
         return ret;
     }
+
+    public List<Proposal2Phase> getByContestPhaseId(long contestPhaseId) throws Exception{
+        final DynamicQuery contestPhasesByContestPhaseId = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
+        contestPhasesByContestPhaseId.setProjection(ProjectionFactoryUtil.property("phaseProposalIds.primaryKey.proposalId"));
+        contestPhasesByContestPhaseId.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
+        return dynamicQuery(contestPhasesByContestPhaseId);
+    }
+
 }
