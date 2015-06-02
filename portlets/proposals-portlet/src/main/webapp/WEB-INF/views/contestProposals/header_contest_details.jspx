@@ -50,58 +50,11 @@
                                     <span class="title">To create your plan, combine proposals from these sector workspaces:</span>
                                     <ul>
                                         <c:forEach items="${contest.subContests}" var="subContest">
-                                            <c:if test="${fn:containsIgnoreCase(subContest.contestShortName, 'Energy')}">
-                                                <li>
-                                                <span>
-                                                    <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
-                                                </span>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                        <c:forEach items="${contest.subContests}" var="subContest">
-                                            <c:if test="${fn:containsIgnoreCase(subContest.contestShortName, 'Building')}">
-                                                <li>
-                                                <span>
-                                                    <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
-                                                </span>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                        <c:forEach items="${contest.subContests}" var="subContest">
-                                            <c:if test="${fn:containsIgnoreCase(subContest.contestShortName, 'Transportation')}">
-                                                <li>
-                                                <span>
-                                                    <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
-                                                </span>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                        <c:forEach items="${contest.subContests}" var="subContest">
-                                            <c:if test="${fn:containsIgnoreCase(subContest.contestShortName, 'Other')}">
-                                                <li>
-                                                <span>
-                                                    <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
-                                                </span>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                        <c:forEach items="${contest.subContests}" var="subContest">
-                                            <c:if test="${fn:containsIgnoreCase(subContest.contestShortName, 'Industry')}">
-                                                <li>
-                                                <span>
-                                                    <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
-                                                </span>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                        <c:forEach items="${contest.subContests}" var="subContest">
-                                            <c:if test="${fn:containsIgnoreCase(subContest.contestShortName, 'Adaptation')}">
-                                                <li>
-                                                <span>
-                                                    <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
-                                                </span>
-                                                </li>
-                                            </c:if>
+                                            <li>
+                                        <span>
+                                        <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
+                                        </span>
+                                            </li>
                                         </c:forEach>
                                     </ul>
                                 </div>

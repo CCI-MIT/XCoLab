@@ -456,7 +456,14 @@ public class ContestWrapper {
         //long ONTOLOGY_SPACE_ID_WHO = 102L;
         //long ONTOLOGY_SPACE_ID_WHAT = 103L;
         //long ONTOLOGY_SPACE_ID_HOW = 103L;
-        return ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
+        List <Contest> subContests = ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
+        Collections.sort(subContests, new Comparator<Contest>() {
+            @Override
+            public int compare(Contest c1, Contest c2) {
+                return c1.getWeight() - c2.getWeight();
+            }
+        });
+        return subContests;
     }
 
     public Long getVotingPhasePK() throws PortalException, SystemException {
