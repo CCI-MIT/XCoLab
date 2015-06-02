@@ -121,7 +121,12 @@ public class Proposal2PhaseLocalServiceImpl
         return contestLocalService.getContest(contestPhase.getContestPK());
     }
 
-    private boolean isContestPhaseValidInContest(long contestPhaseId){
+    public boolean isContestPhaseOfProposal2PhaseValidInContest(Proposal2Phase proposal2Phase){
+        long contestPhaseId = proposal2Phase.getContestPhaseId();
+        return isContestPhaseValidInContest(contestPhaseId);
+    }
+
+    public boolean isContestPhaseValidInContest(long contestPhaseId){
         boolean isContestPhaseValidInContest = true;
         try {
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);

@@ -14,7 +14,6 @@
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />
     <jsp:directive.attribute name="showPhase" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Phase for this Rating should be displayed or not" />
 
-
     <div class="the-comment">
         <div class="content">
             <c:if test="${showPhase}">
@@ -22,20 +21,32 @@
                 ${wrapper.contestPhase}<br/>
             </c:if>
             <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
-                <strong>Judges Ratings <a href="/web/guest/resources/-/wiki/Main/contest+rules#Howwillproposalsbejudged" target="_blank">?</a></strong>
-                <ul>
+                <strong>Judges Ratings</strong>
+                <table>
                     <c:forEach var="rating" items="${wrapper.ratings}">
                         <c:if test="${rating.isActive}">
-                            <li>
-                                <em>${rating.ratingTypeLabel}:</em>
-                                ${rating.ratingValueName}
-                            </li>
+                            <tr>
+                                <td>
+                                    &amp;#8226;
+                                </td>
+                                <td>
+                                    <em>${rating.ratingTypeLabel}:</em>
+                                </td>
+                                <td>
+                                    <span class="stars" title="${rating.ratingValue.value}/5">
+                                        <span style="width:${rating.ratingValueInPercent}%;"/>
+                                    </span>
+                                </td>
+                                <td>
+                                    ${rating.ratingValueName}
+                                </td>
+                            </tr>
                         </c:if>
                     </c:forEach>
                     <br/>
-                </ul>
+                </table>
             </c:if>
-
+            <br/>
             <p>
                 <strong>Judges Comments</strong><br/>
                 <span class="comment-wrapper">${wrapper.commentEscaped}</span>

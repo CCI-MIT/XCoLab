@@ -40,6 +40,5 @@
 		</c:choose>
 
 	</div>
-	
 
 </jsp:root>
