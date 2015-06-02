@@ -16,10 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalTab;
+import org.xcolab.portlets.proposals.wrappers.*;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import javax.portlet.PortletRequest;
@@ -59,6 +58,8 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
                 if (themeDisplay.getPermissionChecker().isOmniadmin()){
                     isUserAdmin = true;
                 }
+
+                populateJudgeProposalBean(request, model);
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -76,7 +77,6 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
 
         // TODO this is the Admin Id, replace with what Laur and Patrick decide to use
         Long userId = 10144L;
-        Long amountOfCriteria = 5L;
 
         for(ContestPhase contestPhase : contestPhases){
 
@@ -92,6 +92,9 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
                     map.put(userId, new ArrayList<ProposalRating>());
 
                     for (ProposalRating r : judgeRatingsForProposal) {
+                        if (r.getOnlyForInternalUsage()){
+                            continue;
+                        }
                         Long ratingAverageIndex = r.getRatingValueId() / 5L;
                         if(!averageRatingList.containsKey(ratingAverageIndex)){
                             averageRatingList.put(ratingAverageIndex, new ArrayList<Long>());
@@ -109,7 +112,8 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
                             sumRating = sumRating + averageRating;
                         }
                         Long averageRating = sumRating / averageRatingList.get(averageRatingsIndex).size();
-                        ProposalRating proposalRating = judgeRatingsForProposal.get(averageRatingsIndex.intValue());
+                        int proposalIndex = new ArrayList<>(averageRatingList.keySet()).indexOf(averageRatingsIndex);
+                        ProposalRating proposalRating = judgeRatingsForProposal.get(proposalIndex);
                         proposalRating.setRatingValueId(averageRating);
                         proposalRating.setUserId(userId);
                         map.get(userId).add(proposalRating);
@@ -166,6 +170,38 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
 
     private boolean isUserAllowToAddComments(User user, Proposal proposal){
         return isUserFellowOrJudge(user) || isUserProposalAuthorOrTeamMember(user, proposal) || isUserAdmin;
+    }
+
+    private void populateJudgeProposalBean(PortletRequest request, Model model) throws SystemException, PortalException
+    {
+
+        ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
+        ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request));
+        JudgeProposalFeedbackBean judgeProposalBean = new JudgeProposalFeedbackBean(proposalJudgeWrapper);
+
+        Long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+        Long userId = proposalsContext.getUser(request).getUserId();
+        judgeProposalBean.setContestPhaseId(contestPhaseId);
+
+        //find existing ratings
+        List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
+                userId,
+                proposalWrapper.getProposalId(),
+                contestPhaseId);
+
+        if (!existingRatings.isEmpty()) {
+            Map<Long, String> existingJudgeRating = new LinkedHashMap<>();
+            Long index = 1L;
+            for (ProposalRating proposalRating : existingRatings) {
+                existingJudgeRating.put(index, "" + proposalRating.getRatingValueId());
+                index++;
+            }
+            String existingComment = existingRatings.get(0).getComment();
+            judgeProposalBean.setRatingValues(existingJudgeRating);
+            judgeProposalBean.setComment(existingComment);
+        }
+
+        model.addAttribute("judgeProposalBean", judgeProposalBean);
     }
     
 }

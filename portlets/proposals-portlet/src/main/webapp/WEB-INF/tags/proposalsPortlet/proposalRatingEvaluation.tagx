@@ -22,7 +22,7 @@
                 ${wrapper.contestPhase}<br/>
             </c:if>
             <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
-                <strong>Judges Ratings</strong>
+                <strong>Judges Ratings <a href="/web/guest/resources/-/wiki/Main/contest+rules#Howwillproposalsbejudged" target="_blank">?</a></strong>
                 <ul>
                     <c:forEach var="rating" items="${wrapper.ratings}">
                         <c:if test="${rating.isActive}">

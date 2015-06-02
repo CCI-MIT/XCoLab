@@ -422,7 +422,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                             promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
                         }
 
-                        proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+                        // Enable this line to post promotion comment to Evaluation tab comment section
+                        // proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+
                         try {
                             proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
                         } catch (MailEngineException | AddressException e) {
@@ -525,7 +527,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
         }
 
-        proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+        // Enable this line to post promotion comment to Evaluation tab comment section
+        // proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+
         try {
             proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
         } catch (MailEngineException | AddressException e) {

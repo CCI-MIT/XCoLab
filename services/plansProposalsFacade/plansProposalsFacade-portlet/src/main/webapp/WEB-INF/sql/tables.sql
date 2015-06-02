@@ -881,7 +881,8 @@ create table xcolab_ProposalRating (
 	ratingValueId LONG,
 	comment_ TEXT null,
 	commentEnabled BOOLEAN,
-	otherDataString VARCHAR(75) null
+	otherDataString VARCHAR(75) null,
+	onlyForInternalUsage BOOLEAN
 );
 
 create table xcolab_ProposalRatingType (

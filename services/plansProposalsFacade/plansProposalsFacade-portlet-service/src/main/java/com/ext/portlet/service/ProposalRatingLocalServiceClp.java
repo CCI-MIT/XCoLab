@@ -58,6 +58,8 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
     private String[] _methodParameterTypes24;
     private String _methodName25;
     private String[] _methodParameterTypes25;
+    private String _methodName26;
+    private String[] _methodParameterTypes26;
 
     public ProposalRatingLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -182,9 +184,16 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
                 "java.lang.String"
             };
 
-        _methodName25 = "updateRating";
+        _methodName25 = "addRating";
 
         _methodParameterTypes25 = new String[] {
+                "long", "long", "long", "long", "java.lang.String",
+                "java.lang.String", "boolean"
+            };
+
+        _methodName26 = "updateRating";
+
+        _methodParameterTypes26 = new String[] {
                 "com.ext.portlet.model.ProposalRating"
             };
     }
@@ -900,8 +909,10 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
     }
 
     @Override
-    public com.ext.portlet.model.ProposalRating updateRating(
-        com.ext.portlet.model.ProposalRating proposalRating)
+    public com.ext.portlet.model.ProposalRating addRating(long proposalId,
+        long contestPhaseId, long userId, long ratingValueId,
+        java.lang.String comment, java.lang.String otherDataString,
+        boolean onlyForInternalUsage)
         throws com.liferay.portal.NoSuchUserException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -909,6 +920,53 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName25,
                     _methodParameterTypes25,
+                    new Object[] {
+                        proposalId,
+                        
+                    contestPhaseId,
+                        
+                    userId,
+                        
+                    ratingValueId,
+                        
+                    ClpSerializer.translateInput(comment),
+                        
+                    ClpSerializer.translateInput(otherDataString),
+                        
+                    onlyForInternalUsage
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.NoSuchUserException) {
+                throw (com.liferay.portal.NoSuchUserException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ProposalRating) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.ext.portlet.model.ProposalRating updateRating(
+        com.ext.portlet.model.ProposalRating proposalRating)
+        throws com.liferay.portal.NoSuchUserException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName26,
+                    _methodParameterTypes26,
                     new Object[] { ClpSerializer.translateInput(proposalRating) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);

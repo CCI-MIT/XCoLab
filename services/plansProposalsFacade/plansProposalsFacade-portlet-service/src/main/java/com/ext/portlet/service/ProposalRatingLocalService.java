@@ -264,6 +264,13 @@ public interface ProposalRatingLocalService extends BaseLocalService,
         throws com.liferay.portal.NoSuchUserException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    public com.ext.portlet.model.ProposalRating addRating(long proposalId,
+        long contestPhaseId, long userId, long ratingValueId,
+        java.lang.String comment, java.lang.String otherDataString,
+        boolean onlyForInternalUsage)
+        throws com.liferay.portal.NoSuchUserException,
+            com.liferay.portal.kernel.exception.SystemException;
+
     public com.ext.portlet.model.ProposalRating updateRating(
         com.ext.portlet.model.ProposalRating proposalRating)
         throws com.liferay.portal.NoSuchUserException,
