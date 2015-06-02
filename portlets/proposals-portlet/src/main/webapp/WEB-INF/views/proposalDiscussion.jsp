@@ -23,7 +23,7 @@
 				<c:forEach var="ratingWrapper" items="${judgeAverageRating}">
 					<h2>${ratingWrapper.contestPhase}</h2>
 					<div class="addpropbox evaluation">
-					<proposalsPortlet:proposalRatingEvaluation showRating="true" showPhase="false"
+					<proposalsPortlet:proposalRatingEvaluation showRating="true" showPhase="false" showRatingDescription="false"
 															   wrapper="${ratingWrapper}"/>
 					</div>
 				</c:forEach>

@@ -13,6 +13,7 @@
     <jsp:directive.attribute name="wrapper" type="org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper" required="true" rtexprvalue="true" description="ProposalRatings" />
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />
     <jsp:directive.attribute name="showPhase" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Phase for this Rating should be displayed or not" />
+    <jsp:directive.attribute name="showRatingDescription" type="java.lang.Boolean" required="false" rtexprvalue="true"  description="Whether the Rating description should be displayed or not" />
 
     <div class="the-comment">
         <div class="content">
@@ -21,7 +22,7 @@
                 ${wrapper.contestPhase}<br/>
             </c:if>
             <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
-                <strong>Judges Ratings</strong>
+                <strong>Judges Ratings <a href="/web/guest/resources/-/wiki/Main/contest+rules#Howwillproposalsbejudged" target="_blank">?</a></strong>
                 <table>
                     <c:forEach var="rating" items="${wrapper.ratings}">
                         <c:if test="${rating.isActive}">
@@ -37,9 +38,11 @@
                                         <span style="width:${rating.ratingValueInPercent}%;"/>
                                     </span>
                                 </td>
-                                <td>
-                                    ${rating.ratingValueName}
-                                </td>
+                                <c:if test="${showRatingDescription}">
+                                    <td>
+                                        ${rating.ratingValueName}
+                                    </td>
+                                </c:if>
                             </tr>
                         </c:if>
                     </c:forEach>
