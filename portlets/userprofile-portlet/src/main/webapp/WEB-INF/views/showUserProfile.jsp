@@ -75,8 +75,17 @@
 							<td>
 								<div class="role-indicator" style="margin-top: 5px;">
 									<div style="width: 16px">
-										<img 	src="/climatecolab-theme/images/icon_mem-${currentUserProfile.role.lowerCase}.png"
-												width="16" height="16" />
+                                        <c:choose>
+                                            <c:when test="${currentUserProfile.role.lowerCase == 'impact_assessment_fellow' }">
+                                                <img 	src="/climatecolab-theme/images/icon_mem-fellow.png"
+                                                        width="16" height="16" />
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img 	src="/climatecolab-theme/images/icon_mem-${currentUserProfile.role.lowerCase}.png"
+                                                        width="16" height="16" />
+                                            </c:otherwise>
+                                        </c:choose>
+
 									</div>
 									${currentUserProfile.role.printName}
 								</div>
