@@ -39,7 +39,7 @@
                 <div class="description">
                     <p>${contest.contestDescription }
                         <c:if test="${not empty contest.resourcesUrl and contest.contestPK gt 1301102}">
-                            <a href="${contest.resourcesUrl}" target="_blank" >Read more ...</a>
+                            <a href="${contest.resourcesUrl}" >Read more ...</a>
                         </c:if>
                     </p>
 
