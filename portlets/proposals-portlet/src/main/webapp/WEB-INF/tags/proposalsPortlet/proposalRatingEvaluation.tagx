@@ -30,7 +30,7 @@
                                 <td>
                                     &amp;#8226;
                                 </td>
-                                <td>
+                                <td width="100px">
                                     <em>${rating.ratingTypeLabel}:</em>
                                 </td>
                                 <c:if test="${not showRatingDescription}">

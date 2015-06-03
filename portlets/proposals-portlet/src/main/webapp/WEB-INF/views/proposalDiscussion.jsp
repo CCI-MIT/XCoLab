@@ -23,7 +23,7 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					tbd WORDING: Log in to make you rating.
+					TBD-check english: Log in to make you rating.
 				</c:otherwise>
 			</c:choose>
 		</c:if>
