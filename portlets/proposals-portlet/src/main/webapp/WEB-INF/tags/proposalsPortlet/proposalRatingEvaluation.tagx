@@ -33,11 +33,13 @@
                                 <td>
                                     <em>${rating.ratingTypeLabel}:</em>
                                 </td>
-                                <td>
-                                    <span class="stars" title="${rating.ratingValue.value}/5">
-                                        <span style="width:${rating.ratingValueInPercent}%;"/>
-                                    </span>
-                                </td>
+                                <c:if test="${not showRatingDescription}">
+                                    <td>
+                                        <span class="stars" title="${rating.ratingValue.value}/5">
+                                            <span style="width:${rating.ratingValueInPercent}%;"/>
+                                        </span>
+                                    </td>
+                                </c:if>
                                 <c:if test="${showRatingDescription}">
                                     <td>
                                         ${rating.ratingValueName}

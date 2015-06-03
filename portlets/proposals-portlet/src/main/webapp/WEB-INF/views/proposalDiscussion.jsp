@@ -14,11 +14,18 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	<div id="content">
 
-		<c:if test="${showPublicRating}">
+		<c:if test="${isFellowScreeningActive}">
 			<h2>Proposal rating function for every colab user</h2>
-			<div class="addpropbox evaluation">
-				<jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
-			</div>
+			<c:choose>
+				<c:when test="${isPublicRating}">
+					<div class="addpropbox evaluation">
+						<jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
+					</div>
+				</c:when>
+				<c:otherwise>
+					tbd WORDING: Log in to make you rating.
+				</c:otherwise>
+			</c:choose>
 		</c:if>
 		<c:choose>
 			<c:when test="${showDiscussion and proposalsPermissions.canPublicRating}">
@@ -37,7 +44,7 @@
 				<discussionsTagFiles:discussionComments discussionId="${discussionId }" />
 			</c:when>
 			<c:otherwise>
-				The results of the judging period will be visible here.
+				<h2>The results of the judging period will be visible here.</h2>
 			</c:otherwise>
 		</c:choose>
 

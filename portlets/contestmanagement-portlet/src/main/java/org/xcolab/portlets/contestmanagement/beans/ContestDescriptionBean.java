@@ -23,14 +23,14 @@ public class ContestDescriptionBean implements Serializable{
     private Long sponsorLogoId;
     private String emailTemplateUrl;
 
-    @Length(min = 5, max = 140, message = "The contest question must be at least 5 characters and not more than 140 characters.")
+    @Length(min = 5, max = 150, message = "The contest question must be at least 5 characters and not more than 150 characters.")
     private String contestName;
 
-    @Length(min = 5, max = 60, message = "The contest title must be at least 5 characters and not more than 60 characters.")
+    @Length(min = 5, max = 70, message = "The contest title must be at least 5 characters and not more than 70 characters.")
     @Pattern(regexp = NO_SPECIAL_CHAR_REGEX, message = "The contest title must not contain special characters.")
     private String contestShortName;
 
-    @Length(min = 5, max = 1300, message = "The contest description must be at least 5 characters and not more than 1300 characters.")
+    @Length(min = 0, max = 1400, message = "The contest description must have not more than 1400 characters.")
 
     private String contestDescription;
 

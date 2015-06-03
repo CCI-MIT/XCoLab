@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.*;
@@ -37,9 +38,24 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
             throws PortalException, SystemException  {
 
         try {
+
+            ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+            Boolean isPublicRating = permissions.getCanPublicRating();
+            boolean isFellowScreeningActive = proposalsContext.getContestPhase(request).getFellowScreeningActive() == true;
+            boolean showPublicRating = isFellowScreeningActive && isPublicRating;
+            model.addAttribute("isFellowScreeningActive", isFellowScreeningActive);
+            model.addAttribute("isPublicRating", isPublicRating);
+            if(showPublicRating){
+                populateJudgeProposalBean(request, model);
+            }
+        } catch (Exception e){
+            model.addAttribute("isFellowScreeningActive", false);
+            model.addAttribute("isPublicRating", false);
+        }
+
+        try {
             if(isPhaseStatusClosedOrOpenForSubmission(request)) {
                 model.addAttribute("showDiscussion", false);
-                model.addAttribute("showPublicRating", false);
             } else {
                 Long discussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposalsContext.getProposal(request));
 
@@ -51,8 +67,6 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
 
                 model.addAttribute("discussionId", discussionId);
                 model.addAttribute("showDiscussion", true);
-                boolean showPublicRating = proposalsContext.getContestPhase(request).getFellowScreeningActive() == true;
-                model.addAttribute("showPublicRating", showPublicRating);
                 model.addAttribute("isJudgeReadOnly", true);
                 model.addAttribute("judgeAverageRating", judgeAverageRating);
                 model.addAttribute("authorId", proposalsContext.getProposal(request).getAuthorId());
@@ -63,12 +77,10 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
                     isUserAdmin = true;
                 }
 
-                populateJudgeProposalBean(request, model);
             }
         } catch (Exception e){
             e.printStackTrace();
             model.addAttribute("showDiscussion", false);
-            model.addAttribute("showPublicRating", false);
         }
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.DISCUSSION);

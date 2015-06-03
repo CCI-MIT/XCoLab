@@ -49,8 +49,9 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
 
-        List<ProposalRating> judgeRatingsUnWrapped = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
+        List<ProposalRating> judgeRatingsUnWrapped = ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
         List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(judgeRatingsUnWrapped);
+
         List<ProposalRatingsWrapper> judgeRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK()));
         boolean isFrozen = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
                 proposal.getProposalId(),
@@ -73,6 +74,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("isJudgeReadOnly", permissions.getCanJudgeActions() && !permissions.getCanFellowActions());
         model.addAttribute("isFrozen", isFrozen);
         model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
+
         model.addAttribute("fellowRatings", fellowRatings);
         model.addAttribute("judgeRatings", judgeRatings);
 
