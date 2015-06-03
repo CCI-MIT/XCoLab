@@ -260,6 +260,10 @@ public class JudgeProposalActionController {
             return;
         }
 
+        if(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser)){
+            isPublicRating = false;
+        }
+
         //find existing ratings
         List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
                 currentUser.getUserId(),
