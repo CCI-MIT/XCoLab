@@ -131,8 +131,8 @@ public class ProposalsPermissions {
 
     public boolean getCanPublicRating() throws SystemException, PortalException {
         boolean canPublicRating = true;
-        // TODO wait for patricks reply
-        if (user.isDefaultUser() || getCanJudgeActions() || getIsTeamMember())
+
+        if (user.isDefaultUser()) // || getCanJudgeActions() || getIsTeamMember())
             canPublicRating = false;
 
         return canPublicRating;

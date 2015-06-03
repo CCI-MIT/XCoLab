@@ -13,13 +13,15 @@
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	<div id="content">
+
+		<c:if test="${showPublicRating}">
+			<h2>Proposal rating function for every colab user</h2>
+			<div class="addpropbox evaluation">
+				<jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
+			</div>
+		</c:if>
 		<c:choose>
 			<c:when test="${showDiscussion and proposalsPermissions.canPublicRating}">
-				<h2>Proposal rating function for every colab user</h2>
-				<div class="addpropbox evaluation">
-					<jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
-				</div>
-
 				<c:forEach var="ratingWrapper" items="${judgeAverageRating}">
 					<h2>${ratingWrapper.contestPhase}</h2>
 					<div class="addpropbox evaluation">

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -38,6 +39,7 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
         try {
             if(isPhaseStatusClosedOrOpenForSubmission(request)) {
                 model.addAttribute("showDiscussion", false);
+                model.addAttribute("showPublicRating", false);
             } else {
                 Long discussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposalsContext.getProposal(request));
 
@@ -49,6 +51,8 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
 
                 model.addAttribute("discussionId", discussionId);
                 model.addAttribute("showDiscussion", true);
+                boolean showPublicRating = proposalsContext.getContestPhase(request).getFellowScreeningActive() == true;
+                model.addAttribute("showPublicRating", showPublicRating);
                 model.addAttribute("isJudgeReadOnly", true);
                 model.addAttribute("judgeAverageRating", judgeAverageRating);
                 model.addAttribute("authorId", proposalsContext.getProposal(request).getAuthorId());
@@ -64,6 +68,7 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
         } catch (Exception e){
             e.printStackTrace();
             model.addAttribute("showDiscussion", false);
+            model.addAttribute("showPublicRating", false);
         }
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.DISCUSSION);

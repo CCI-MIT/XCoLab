@@ -127,7 +127,7 @@
 
             <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions
                     or proposalsPermissions.canAdminAll and proposalsPermissions.canAdminJudgeActions and proposal.selectedJudges.size() > 0
-                    or proposalsPermissions.canAdminAll or proposal.judgeReviewStatus and  proposal.judgeReviewStatus.statusValue > 0 }">
+                    or proposalsPermissions.canAdminAll or not empty proposal.judgeReviewStatus and proposal.judgeReviewStatus.statusValue > 0 }">
                 <jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
             </c:if>
         </div>
