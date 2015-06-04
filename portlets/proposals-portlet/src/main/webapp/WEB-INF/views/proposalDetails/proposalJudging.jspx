@@ -39,7 +39,7 @@
             </select>
         </c:if>
         <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
-            are saved when clicking on save. TBD-check english: The stored rating will be shown if you have rated this proposal before.
+            are saved when clicking on save.
             <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions or proposalsPermissions.canAdminAll}">
                 Your rating will be visible to the Judging team only.
             </c:if>

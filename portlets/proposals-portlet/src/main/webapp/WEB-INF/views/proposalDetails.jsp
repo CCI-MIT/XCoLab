@@ -4,8 +4,12 @@
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:judging="http://climatecolab.org/tags/xcollab_judging_1.0"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:addthis="http://www.addthis.com/help/api-spec"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
     <jsp:directive.include file="./init.jspx"/>
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
@@ -125,11 +129,13 @@
                 </c:forEach>
             </c:if>
 
-            <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions
-                    or proposalsPermissions.canAdminAll and proposalsPermissions.canAdminJudgeActions and proposal.selectedJudges.size() > 0
-                    or proposalsPermissions.canAdminAll or not empty proposal.judgeReviewStatus.statusValue and proposal.judgeReviewStatus.statusValue > 0 }">
-                <jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
-            </c:if>
+            <c:catch var ="catchException">
+                <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions
+                        or proposalsPermissions.canAdminAll and proposalsPermissions.canAdminJudgeActions and proposal.selectedJudges.size() > 0}">
+                        <!-- TODO check what this is used for: and proposal.judgeReviewStatus.statusValue > 0 -->
+                        <jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
+                </c:if>
+            </c:catch>
         </div>
         <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
     </div>

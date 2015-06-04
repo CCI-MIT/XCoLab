@@ -15,20 +15,20 @@
 	<div id="content">
 
 		<c:if test="${isFellowScreeningActive}">
-			<h2>Proposal rating function for every colab user</h2>
+			<h2>Proposal rating</h2>
 			<c:choose>
-				<c:when test="${isPublicRating}">
+				<c:when test="${proposalsPermissions.canPublicRating}">
 					<div class="addpropbox evaluation">
 						<jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
 					</div>
 				</c:when>
 				<c:otherwise>
-					TBD-check english: Log in to make you rating.
+					Please log in to tell us your opinion about this proposal. If you don't already have an account on our site, you can become a member for free <a href="web/guest/loginregister">here</a>.
 				</c:otherwise>
 			</c:choose>
 		</c:if>
 		<c:choose>
-			<c:when test="${showDiscussion and proposalsPermissions.canPublicRating}">
+			<c:when test="${showDiscussion}">
 				<c:forEach var="ratingWrapper" items="${judgeAverageRating}">
 					<h2>${ratingWrapper.contestPhase}</h2>
 					<div class="addpropbox evaluation">
@@ -44,7 +44,7 @@
 				<discussionsTagFiles:discussionComments discussionId="${discussionId }" />
 			</c:when>
 			<c:otherwise>
-				<h2>The results of the judging period will be visible here.</h2>
+				<!-- <h2>The results of the judging period will be visible here.</h2> -->
 			</c:otherwise>
 		</c:choose>
 

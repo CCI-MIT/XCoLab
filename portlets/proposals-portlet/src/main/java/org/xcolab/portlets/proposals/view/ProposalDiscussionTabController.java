@@ -38,19 +38,13 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
             throws PortalException, SystemException  {
 
         try {
-
-            ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-            Boolean isPublicRating = permissions.getCanPublicRating();
             boolean isFellowScreeningActive = proposalsContext.getContestPhase(request).getFellowScreeningActive() == true;
-            boolean showPublicRating = isFellowScreeningActive && isPublicRating;
             model.addAttribute("isFellowScreeningActive", isFellowScreeningActive);
-            model.addAttribute("isPublicRating", isPublicRating);
-            if(showPublicRating){
+            if(isFellowScreeningActive){
                 populateJudgeProposalBean(request, model);
             }
         } catch (Exception e){
             model.addAttribute("isFellowScreeningActive", false);
-            model.addAttribute("isPublicRating", false);
         }
 
         try {
