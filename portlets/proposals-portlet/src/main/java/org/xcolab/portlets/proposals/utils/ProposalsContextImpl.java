@@ -24,6 +24,7 @@ import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.wrappers.*;
 
 import javax.portlet.PortletRequest;
+import java.util.List;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
@@ -195,7 +196,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                 request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new ContestPhaseWrapper(contestPhase));
                 
                 if (proposal != null) {
-                    ProposalWrapper proposalWrapper = null;
+                    ProposalWrapper proposalWrapper;
                     User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
 
                     if (version != null && version > 0) {
@@ -209,6 +210,8 @@ public class ProposalsContextImpl implements ProposalsContext {
                                 proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
                     }
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
+
+                    replaceContestPhaseIfProposalIsNotPartOfContest(request, contestPhase, proposalWrapper.getProposalId());
                 }
             }
         }
@@ -235,4 +238,26 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
     
     private final static Log _log = LogFactoryUtil.getLog(ProposalsContextImpl.class);
+
+    private static void replaceContestPhaseIfProposalIsNotPartOfContest(PortletRequest request, ContestPhase contestPhase, Long proposalId){
+
+        try {
+            List<ContestPhase> activeContestPhasesForProposal = Proposal2PhaseLocalServiceUtil.getActiveContestPhasesForProposal(proposalId);
+            if(activeContestPhasesForProposal.contains(contestPhase)) return;
+
+            Contest contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposalId);
+            ContestPhase activeContestPhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+
+            if(activeContestPhasesForProposal.contains(activeContestPhaseForContest)) {
+                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new ContestPhaseWrapper(activeContestPhaseForContest));
+            } else if(activeContestPhasesForProposal.size() > 0){
+                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new ContestPhaseWrapper(activeContestPhasesForProposal.get(0)));
+            }
+
+        } catch (Exception e){
+            _log.warn("Couldn't find a vaild contestPhaseId for Proposal: " + proposalId);
+        }
+
+
+    }
 }
