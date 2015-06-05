@@ -185,7 +185,6 @@ public class Proposal2PhaseLocalServiceImpl
 
     public List<Proposal2Phase> getByContestPhaseId(long contestPhaseId) throws Exception{
         final DynamicQuery contestPhasesByContestPhaseId = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
-        contestPhasesByContestPhaseId.setProjection(ProjectionFactoryUtil.property("phaseProposalIds.primaryKey.proposalId"));
         contestPhasesByContestPhaseId.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
         return dynamicQuery(contestPhasesByContestPhaseId);
     }
