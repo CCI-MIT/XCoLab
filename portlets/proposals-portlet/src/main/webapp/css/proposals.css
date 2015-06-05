@@ -679,3 +679,6 @@ tr#impact-new-series-row:hover {
     display: inline-block;
 }
 
+.red-text {
+    color: red;
+}

@@ -31,6 +31,9 @@
         <portlet:param name="focusAreaId" value="@@REPLACE-FOCUS_AREA_ID@@"/>
     </portlet:resourceURL>
 
+    <portlet:resourceURL var="updateAllSeriesURL" id="proposalImpactUpdateAllSeries">
+    </portlet:resourceURL>
+
     <script>
         // Placeholder strings
         var SECTOR_TERM_ID_PLACEHOLDER = "SECTOR_TERM_ID";
@@ -46,6 +49,7 @@
         var getDataSeriesURL = '${getDataSeriesURL}';
         var saveDataSeriesURL = '${saveDataSeriesURL}';
         var deleteDataSeriesURL = '${deleteDataSeriesURL}';
+        var updateAllSeriesURL = '${updateAllSeriesURL}'
     </script>
 
     <!-- HTML templates -->
@@ -248,6 +252,21 @@
 
                 </c:otherwise>
             </c:choose>
+            <c:if test="${proposalsPermissions.canIAFActions or proposalsPermissions.canAdminAll}">
+                <div class="edit-prop-butts" style="margin-top: 20px"><a id="upload-impact-data-toggle" href="javascript:;">Show impact data upload form</a></div>
+                <div class="clearfix"><!-- --></div>
+                <div id="impact-data-upload-form" style="display: none; margin-top: 10px">
+                    Please paste in the data from the IAF Excel spreadsheet below:
+                    <textarea style="width: 100%; height: 250px;">
+                        <!-- -->
+                    </textarea>
+                    <div class="blue-button disabled" style="float:right;">
+                        <a id="submit-button" href="javascript:;">Submit</a>
+                    </div>
+                    <div class="spinner-area" style="float:right; width: 30px; height: 30px;"><!-- --></div>
+                    <span class="hint-text red-text" style="float:right; margin-right:20px; margin-top: 12px;">Data seems invalid!</span>
+                </div>
+            </c:if>
         </div>
     </div>
 
@@ -269,6 +288,10 @@
     </c:choose>
 
     <script>
+        // String contants
+        var FORM_DATA_INVALID = "Data seems invalid!";
+        var FORM_DATA_VALID = "Data seems valid!";
+
         var ROW_INDEX_NONE_SELECTED = -1;
         var editedFocusArea = 0;
         var userInputOccurred = false;
@@ -350,6 +373,30 @@
             // Change value in new series sector dropdown
             registerDropdownEventListener($('div#new-series select#region'), $('div#new-series select#sector'));
             registerHelpEventHandler();
+
+            // IAF upload form handler
+            registerSeriesUploadFormEventHandler();
+        }
+
+        function registerSeriesUploadFormEventHandler() {
+            // Show toggle
+            var form = $('div#impact-data-upload-form');
+            $('a#upload-impact-data-toggle').click(function() {
+                // toggle upload form
+                if (!form.is(":visible")) {
+                    $(this).text("Dismiss impact data upload form");
+                    form.slideDown();
+                    form.find('span.hint-text').text(FORM_DATA_INVALID);
+                } else {
+                    $(this).text("Show impact data upload form");
+                    form.slideUp();
+                }
+            });
+            // text field
+            form.children('textarea').on('keyup', seriesUploadTextAreaKeyup);
+
+            // submit button
+            form.find('a#submit-button').click(uploadAllSeriesData);
         }
 
         function registerHelpEventHandler() {
@@ -359,6 +406,22 @@
                 trigger.parent().find(".addprophelp").slideToggle("fast");
             });
         }
+
+        function seriesUploadTextAreaKeyup() {
+            var text = $(this).val();
+            var form = $(this).parent();
+            var hintTextBox = form.find('span.hint-text');
+            if (text.length > 0 &amp;&amp; text.match('\t') !== null) {
+                hintTextBox.removeClass('red-text');
+                hintTextBox.text(FORM_DATA_VALID);
+                $(this).parent().find('#submit-button').parent().removeClass('disabled');
+            } else {
+                form.find('span.hint-text').addClass('red-text');
+                hintTextBox.text(FORM_DATA_INVALID);
+                $(this).parent().find('#submit-button').parent().addClass('disabled');
+            }
+        }
+
 
         function disableEditMode() {
             if (currentEditingRowIndex != ROW_INDEX_NONE_SELECTED) {
@@ -774,6 +837,7 @@
                 $('#impact-series-detail div#new-series').spin(false);
             }
         }
+
         function insertNewSeries(resultValues) {
 
             var regionTermName = $('div#impact-series-detail h3#region-title').text();
@@ -850,6 +914,40 @@
             } else {
                 dismissDetailView();
                 $('tr#impact-new-series-row').removeClass('selected');
+            }
+        }
+
+        function uploadAllSeriesData() {
+            var uploadForm = $('div#impact-data-upload-form');
+            var excelData = uploadForm.children('textarea').val();
+
+            setAllSeriesUploadFormSpinnerMode(true);
+            var json = {"data" : excelData};
+            $.post(updateAllSeriesURL, {"json": JSON.stringify(json)}, function (response) {
+                setAllSeriesUploadFormSpinnerMode(false);
+                responseData = JSON.parse(response);
+                if (responseData.success === false) {
+                    alert("Could not process request. " + (typeof responseData.message !== "undefined" ? "Reason: " + responseData.message : ""));
+                    uploadForm.find('span.hint-text').text(FORM_DATA_INVALID);
+                } else {
+                    $('div#impact-data-upload-form').slideUp();
+                    location.reload();
+                }
+            });
+        }
+
+        function setAllSeriesUploadFormSpinnerMode(on) {
+            var uploadForm = $('div#impact-data-upload-form');
+            if (on) {
+                uploadForm.children('.spinner-area').spin('small');
+                uploadForm.find('#submit-button').parent().addClass('disabled');
+                $('a#upload-impact-data-toggle').parent().addClass('disabled');
+
+                uploadForm.find('span.hint-text').text('Working.. This may take a while... Please do not reload this page until the spinner stops!')
+            } else {
+                uploadForm.children('.spinner-area').spin(false);
+                $('a#upload-impact-data-toggle').parent().removeClass('disabled');
+                uploadForm.find('span.hint-text').text('');
             }
         }
 
