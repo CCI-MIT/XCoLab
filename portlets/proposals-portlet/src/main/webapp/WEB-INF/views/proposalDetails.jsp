@@ -130,8 +130,8 @@
             </c:if>
 
             <c:catch var ="catchException">
-                <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions
-                        or proposalsPermissions.canAdminAll and proposalsPermissions.canAdminJudgeActions and proposal.selectedJudges.size() > 0}">
+                <c:if test="${proposalsPermissions.canJudgeActions and
+                (not proposalsPermissions.canFellowActions or (proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions) and proposal.selectedJudges.size() > 0)}">
                         <!-- TODO check what this is used for: and proposal.judgeReviewStatus.statusValue > 0 -->
                         <jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
                 </c:if>
