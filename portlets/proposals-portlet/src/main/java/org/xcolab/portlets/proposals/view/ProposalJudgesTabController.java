@@ -49,10 +49,17 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
 
-        List<ProposalRating> judgeRatingsUnWrapped = ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
-        List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(judgeRatingsUnWrapped);
+        List<ProposalRating> fellowRatingsUnWrapped = ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
+        List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(fellowRatingsUnWrapped);
 
-        List<ProposalRatingsWrapper> judgeRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK()));
+        List<ProposalRating> judgesRatingsUnWrapped = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
+
+        for (Iterator i = judgesRatingsUnWrapped.iterator(); i.hasNext(); ){
+            ProposalRating judgesRatingUnWrapped = (ProposalRating) i.next();
+            if(judgesRatingUnWrapped.getOnlyForInternalUsage()) i.remove();
+        }
+
+        List<ProposalRatingsWrapper> judgeRatings = wrapProposalRatings(judgesRatingsUnWrapped);
         boolean isFrozen = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK(),
