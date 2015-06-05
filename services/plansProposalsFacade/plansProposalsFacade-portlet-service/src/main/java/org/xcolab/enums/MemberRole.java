@@ -1,5 +1,7 @@
 package org.xcolab.enums;
 
+import org.apache.commons.lang.WordUtils;
+
 public enum MemberRole {
     /**
      * Important:
@@ -29,7 +31,7 @@ public enum MemberRole {
     } 
 
     public String getPrintName() {
-        return name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase();
+        return WordUtils.capitalizeFully((name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase()).replaceAll("_"," "));
     }
     
     public String getLowerCase() {
