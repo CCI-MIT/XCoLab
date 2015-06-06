@@ -45,6 +45,7 @@ public class ProposalRatingWrapper implements ProposalRating,
         attributes.put("comment", getComment());
         attributes.put("commentEnabled", getCommentEnabled());
         attributes.put("otherDataString", getOtherDataString());
+        attributes.put("onlyForInternalUsage", getOnlyForInternalUsage());
 
         return attributes;
     }
@@ -97,6 +98,13 @@ public class ProposalRatingWrapper implements ProposalRating,
 
         if (otherDataString != null) {
             setOtherDataString(otherDataString);
+        }
+
+        Boolean onlyForInternalUsage = (Boolean) attributes.get(
+                "onlyForInternalUsage");
+
+        if (onlyForInternalUsage != null) {
+            setOnlyForInternalUsage(onlyForInternalUsage);
         }
     }
 
@@ -310,6 +318,36 @@ public class ProposalRatingWrapper implements ProposalRating,
     @Override
     public void setOtherDataString(java.lang.String otherDataString) {
         _proposalRating.setOtherDataString(otherDataString);
+    }
+
+    /**
+    * Returns the only for internal usage of this proposal rating.
+    *
+    * @return the only for internal usage of this proposal rating
+    */
+    @Override
+    public boolean getOnlyForInternalUsage() {
+        return _proposalRating.getOnlyForInternalUsage();
+    }
+
+    /**
+    * Returns <code>true</code> if this proposal rating is only for internal usage.
+    *
+    * @return <code>true</code> if this proposal rating is only for internal usage; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isOnlyForInternalUsage() {
+        return _proposalRating.isOnlyForInternalUsage();
+    }
+
+    /**
+    * Sets whether this proposal rating is only for internal usage.
+    *
+    * @param onlyForInternalUsage the only for internal usage of this proposal rating
+    */
+    @Override
+    public void setOnlyForInternalUsage(boolean onlyForInternalUsage) {
+        _proposalRating.setOnlyForInternalUsage(onlyForInternalUsage);
     }
 
     @Override

@@ -85,7 +85,9 @@ public class ProposalRatingsWrapper {
         } catch (Exception e){
 
         }
-        return contestPhaseTitle;
+
+        String contselectionestPhaseTitleAdjusted = contestPhaseTitle.replace("selection", "Evaluation");
+        return contselectionestPhaseTitleAdjusted;
     }
 
     public boolean isReviewComplete() {

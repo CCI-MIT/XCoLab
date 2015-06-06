@@ -59,6 +59,8 @@ public class ProposalRatingLocalServiceClpInvoker {
     private String[] _methodParameterTypes671;
     private String _methodName672;
     private String[] _methodParameterTypes672;
+    private String _methodName673;
+    private String[] _methodParameterTypes673;
 
     public ProposalRatingLocalServiceClpInvoker() {
         _methodName0 = "addProposalRating";
@@ -180,9 +182,16 @@ public class ProposalRatingLocalServiceClpInvoker {
                 "java.lang.String"
             };
 
-        _methodName672 = "updateRating";
+        _methodName672 = "addRating";
 
         _methodParameterTypes672 = new String[] {
+                "long", "long", "long", "long", "java.lang.String",
+                "java.lang.String", "boolean"
+            };
+
+        _methodName673 = "updateRating";
+
+        _methodParameterTypes673 = new String[] {
                 "com.ext.portlet.model.ProposalRating"
             };
     }
@@ -332,6 +341,17 @@ public class ProposalRatingLocalServiceClpInvoker {
 
         if (_methodName672.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes672, parameterTypes)) {
+            return ProposalRatingLocalServiceUtil.addRating(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                ((Long) arguments[2]).longValue(),
+                ((Long) arguments[3]).longValue(),
+                (java.lang.String) arguments[4],
+                (java.lang.String) arguments[5],
+                ((Boolean) arguments[6]).booleanValue());
+        }
+
+        if (_methodName673.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes673, parameterTypes)) {
             return ProposalRatingLocalServiceUtil.updateRating((com.ext.portlet.model.ProposalRating) arguments[0]);
         }
 

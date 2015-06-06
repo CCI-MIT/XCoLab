@@ -214,6 +214,7 @@
         <column name="comment" type="String" />
         <column name="commentEnabled" type="boolean" />
         <column name="otherDataString" type="String" />
+        <column name="onlyForInternalUsage" type="boolean" />
     </entity>
 
     <entity name="ProposalRatingType" local-service="true">

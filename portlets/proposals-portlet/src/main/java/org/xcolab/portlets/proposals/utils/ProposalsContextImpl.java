@@ -24,6 +24,7 @@ import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.wrappers.*;
 
 import javax.portlet.PortletRequest;
+import java.util.List;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
@@ -154,6 +155,8 @@ public class ProposalsContextImpl implements ProposalsContext {
             
             if (proposalId != null && proposalId > 0) {
                 try {
+                    //contestPhase = replaceContestPhaseIfProposalIsNotPartOfContest(request, contestPhase, proposalId);
+
                     proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhase.getContestPhasePK());
                 }
                 catch (NoSuchProposal2PhaseException e) {
@@ -195,7 +198,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                 request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new ContestPhaseWrapper(contestPhase));
                 
                 if (proposal != null) {
-                    ProposalWrapper proposalWrapper = null;
+                    ProposalWrapper proposalWrapper;
                     User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
 
                     if (version != null && version > 0) {
@@ -209,6 +212,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                                 proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
                     }
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
+
                 }
             }
         }
@@ -235,4 +239,39 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
     
     private final static Log _log = LogFactoryUtil.getLog(ProposalsContextImpl.class);
+
+    private static ContestPhase replaceContestPhaseIfProposalIsNotPartOfContest(PortletRequest request, ContestPhase contestPhase, Long proposalId){
+        ContestPhase replacedContestPhase = contestPhase;
+        try {
+            List<ContestPhase> activeContestPhasesForProposal = Proposal2PhaseLocalServiceUtil.getActiveContestPhasesForProposal(proposalId);
+
+            if(activeContestPhasesForProposal.size() > 0) {
+
+                if (!activeContestPhasesForProposal.contains(contestPhase)){
+                    replacedContestPhase = activeContestPhasesForProposal.get(0);
+                }
+
+                Contest contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposalId);
+                ContestPhase activeContestPhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+
+                if (activeContestPhasesForProposal.contains(activeContestPhaseForContest)) {
+                    replacedContestPhase = activeContestPhaseForContest;
+                }
+
+            } else {
+
+                List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByProposalId(proposalId);
+                for (Proposal2Phase proposal2Phase : proposal2Phases) {
+                    ContestPhase contestPhase1 = ContestPhaseLocalServiceUtil.getContestPhase(proposal2Phase.getContestPhaseId());
+                    ContestLocalServiceUtil.getContest(contestPhase1.getContestPK());
+                    replacedContestPhase = contestPhase1;
+                }
+
+            }
+        } catch (Exception e){
+            _log.warn("Couldn't find a valid contestPhaseId for Proposal: " + proposalId);
+        }
+
+        return replacedContestPhase;
+    }
 }

@@ -61,7 +61,7 @@ public class ProposalRatingWrapper {
 		}
 	}
 
-	private ProposalRatingType getRatingType() {
+	public ProposalRatingType getRatingType() {
 		ProposalRatingValue ratingValue = this.getRatingValue();
 		try {
 			if (ratingValue != null) {
@@ -74,7 +74,7 @@ public class ProposalRatingWrapper {
 		return null;
 	}
 
-	private ProposalRatingValue getRatingValue() {
+	public ProposalRatingValue getRatingValue() {
 		try {
 			if (ratingValue == null)
 				ratingValue = ProposalRatingValueLocalServiceUtil.fetchProposalRatingValue(this.proposalRating.getRatingValueId());
@@ -82,6 +82,15 @@ public class ProposalRatingWrapper {
 		} catch (SystemException e) {
 			return null;
 		}
+	}
+
+	public int getRatingValueInPercent(){
+		int ratingValueInPercent = 0;
+		ProposalRatingValue proposalRatingValue = getRatingValue();
+		if(proposalRatingValue != null){
+			ratingValueInPercent = (int) ((float) proposalRatingValue.getValue() / 5.0 * 100.0);
+		}
+		return ratingValueInPercent;
 	}
 
 	public ProposalRating unwrap() {

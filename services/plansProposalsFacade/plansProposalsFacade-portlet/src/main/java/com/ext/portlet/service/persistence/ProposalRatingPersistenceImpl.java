@@ -339,6 +339,7 @@ public class ProposalRatingPersistenceImpl extends BasePersistenceImpl<ProposalR
         proposalRatingImpl.setComment(proposalRating.getComment());
         proposalRatingImpl.setCommentEnabled(proposalRating.isCommentEnabled());
         proposalRatingImpl.setOtherDataString(proposalRating.getOtherDataString());
+        proposalRatingImpl.setOnlyForInternalUsage(proposalRating.isOnlyForInternalUsage());
 
         return proposalRatingImpl;
     }

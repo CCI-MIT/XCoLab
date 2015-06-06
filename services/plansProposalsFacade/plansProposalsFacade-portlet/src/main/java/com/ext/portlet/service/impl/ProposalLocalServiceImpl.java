@@ -15,7 +15,7 @@ import javax.mail.internet.AddressException;
 import javax.portlet.PortletRequest;
 
 import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
@@ -52,9 +52,6 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
@@ -1340,9 +1337,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
             DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
 
-            // TODO the following two lines are only temporary until the evaluation tab will be online!!!
-            discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
-            DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
+            // uncomment these lines to post promotion comment to standard comment thread
+            // discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
+            // DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
         }
     }
 
@@ -1621,14 +1618,15 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public ContestPhase getLatestProposalContestPhase(long proposalId) throws PortalException, SystemException {
         Proposal2Phase latestP2p = null;
         for (Proposal2Phase p2p: proposal2PhaseLocalService.getByProposalId(proposalId)) {
-            if (latestP2p == null || p2p.getVersionTo() == 0 || latestP2p.getVersionTo() < p2p.getVersionTo()) {
+            if (proposal2PhaseLocalService.isContestPhaseOfProposal2PhaseValidInContest(p2p) && (latestP2p == null || p2p.getVersionTo() == 0 || latestP2p.getVersionTo() < p2p.getVersionTo())) {
                 latestP2p = p2p;
             }
         }
-
         return contestPhaseLocalService.getContestPhase(latestP2p.getContestPhaseId());
     }
-    
+
+
+
     /**
      * Returns latest contest to which proposal was submited
      * 

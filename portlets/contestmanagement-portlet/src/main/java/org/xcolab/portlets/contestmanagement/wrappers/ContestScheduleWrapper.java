@@ -342,12 +342,19 @@ public class ContestScheduleWrapper {
     public static void updateContestPhaseIdForAllProposal2PhaseMatchingContestPhaseId
             (Long oldContestPhaseId, Long newContestPhaseId) throws Exception{
         List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByContestPhaseId(oldContestPhaseId);
-        for(Proposal2Phase proposal2Phase : proposal2Phases){
+
+        for ( Iterator i = proposal2Phases.iterator(); i.hasNext(); )
+        {
+            Proposal2Phase proposal2Phase = (Proposal2Phase) i.next();
             if(newContestPhaseId != null) {
                 proposal2Phase.setContestPhaseId(newContestPhaseId);
+                proposal2Phase.persist();
                 Proposal2PhaseLocalServiceUtil.updateProposal2Phase(proposal2Phase);
+                proposal2Phase.setContestPhaseId(oldContestPhaseId);
+                Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(proposal2Phase);
             }
         }
+
     }
 
     public static void createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(Contest contest, Long newScheduleTemplateId) throws Exception {

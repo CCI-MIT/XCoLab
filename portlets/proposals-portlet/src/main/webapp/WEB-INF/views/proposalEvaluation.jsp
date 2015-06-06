@@ -14,29 +14,42 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	<div id="content">
 
-		<!-- <h2>Proposal rating function for every colab user</h2>
-		tbd -->
-
+		<!--
+		<c:if test="${isFellowScreeningActive}">
+			<h2>Proposal rating</h2>
+			<c:choose>
+				<c:when test="${proposalsPermissions.canPublicRating}">
+					<div class="addpropbox evaluation">
+						<jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
+					</div>
+				</c:when>
+				<c:otherwise>
+					Please log in to tell us your opinion about this proposal. If you don't already have an account on our site, you can become a member for free <a href="web/guest/loginregister">here</a>.
+				</c:otherwise>
+			</c:choose>
+		</c:if> -->
 		<c:choose>
-			<!-- TODO clarify when to show what -->
 			<c:when test="${showEvaluation}">
-                    <c:forEach var="ratingWrapper" items="${judgeAverageRating}">
-                        <h2>${ratingWrapper.contestPhase}</h2>
-                        <div class="addpropbox evaluation">
-                        <proposalsPortlet:proposalRatingEvaluation showRating="true" showPhase="false"
-                                                                   wrapper="${ratingWrapper}"/>
-                        </div>
-                    </c:forEach>
+				<c:forEach var="ratingWrapper" items="${judgeAverageRating}">
+					<h2>${ratingWrapper.contestPhase}</h2>
+					<div class="addpropbox evaluation">
+					<proposalsPortlet:proposalRatingEvaluation showRating="true" showPhase="false"
+															   showRatingDescription="false"
+															   wrapper="${ratingWrapper}"/>
+					</div>
+				</c:forEach>
 
 				<h2>Discussion area</h2>
+				<c:if test="${proposalsPermissions.canEdit}">
+				<p>After you have integrated the Judges' feedback into your proposal, please write a short summary of the changes made in the discussion area below. This summary will serve as a guide for the selection of Finalists. </p>
+				</c:if>
 				<evaluationTagFiles:evaluationComments evaluationDiscussionId="${evaluationDiscussionId }" />
 			</c:when>
 			<c:otherwise>
-				The results of the judging period will be visible here.
+				<!-- <h2>The results of the judging period will be visible here.</h2> -->
 			</c:otherwise>
 		</c:choose>
 
 	</div>
-	
 
 </jsp:root>

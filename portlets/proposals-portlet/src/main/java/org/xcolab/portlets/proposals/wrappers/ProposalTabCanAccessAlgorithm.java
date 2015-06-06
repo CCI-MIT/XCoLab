@@ -50,7 +50,8 @@ interface ProposalTabCanAccessAlgorithm {
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
-                if (!(permissions.getCanJudgeActions() || permissions.getCanFellowActions() || permissions.getCanAdminAll())) {
+                if (!(permissions.getCanJudgeActions() || permissions.getCanFellowActions() || permissions.getCanAdminAll()
+                || permissions.getCanContestManagerActions()) ) {
                     return false;
                 }
 
@@ -79,7 +80,7 @@ interface ProposalTabCanAccessAlgorithm {
             try {
                 ContestPhase contestPhase = context.getContestPhase(request);
                 if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()) ||
-                        !contestPhase.isFellowScreeningActive()) {
+                        !contestPhase.isFellowScreeningActive() || !permissions.getCanContestManagerActions()) {
                     return false;
                 }
 

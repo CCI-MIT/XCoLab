@@ -121,7 +121,12 @@ public class Proposal2PhaseLocalServiceImpl
         return contestLocalService.getContest(contestPhase.getContestPK());
     }
 
-    private boolean isContestPhaseValidInContest(long contestPhaseId){
+    public boolean isContestPhaseOfProposal2PhaseValidInContest(Proposal2Phase proposal2Phase){
+        long contestPhaseId = proposal2Phase.getContestPhaseId();
+        return isContestPhaseValidInContest(contestPhaseId);
+    }
+
+    public boolean isContestPhaseValidInContest(long contestPhaseId){
         boolean isContestPhaseValidInContest = true;
         try {
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
@@ -180,7 +185,6 @@ public class Proposal2PhaseLocalServiceImpl
 
     public List<Proposal2Phase> getByContestPhaseId(long contestPhaseId) throws Exception{
         final DynamicQuery contestPhasesByContestPhaseId = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
-        contestPhasesByContestPhaseId.setProjection(ProjectionFactoryUtil.property("phaseProposalIds.primaryKey.proposalId"));
         contestPhasesByContestPhaseId.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
         return dynamicQuery(contestPhasesByContestPhaseId);
     }
