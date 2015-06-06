@@ -14,6 +14,7 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	<div id="content">
 
+		<!--
 		<c:if test="${isFellowScreeningActive}">
 			<h2>Proposal rating</h2>
 			<c:choose>
@@ -26,13 +27,14 @@
 					Please log in to tell us your opinion about this proposal. If you don't already have an account on our site, you can become a member for free <a href="web/guest/loginregister">here</a>.
 				</c:otherwise>
 			</c:choose>
-		</c:if>
+		</c:if> -->
 		<c:choose>
 			<c:when test="${showDiscussion}">
 				<c:forEach var="ratingWrapper" items="${judgeAverageRating}">
 					<h2>${ratingWrapper.contestPhase}</h2>
 					<div class="addpropbox evaluation">
-					<proposalsPortlet:proposalRatingEvaluation showRating="true" showPhase="false" showRatingDescription="false"
+					<proposalsPortlet:proposalRatingEvaluation showRating="true" showPhase="false"
+															   showRatingDescription="false"
 															   wrapper="${ratingWrapper}"/>
 					</div>
 				</c:forEach>
