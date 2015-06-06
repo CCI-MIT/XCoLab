@@ -155,6 +155,8 @@ public class ProposalsContextImpl implements ProposalsContext {
             
             if (proposalId != null && proposalId > 0) {
                 try {
+                    //contestPhase = replaceContestPhaseIfProposalIsNotPartOfContest(request, contestPhase, proposalId);
+
                     proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhase.getContestPhasePK());
                 }
                 catch (NoSuchProposal2PhaseException e) {
@@ -211,7 +213,6 @@ public class ProposalsContextImpl implements ProposalsContext {
                     }
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
 
-                    replaceContestPhaseIfProposalIsNotPartOfContest(request, contestPhase, proposalWrapper.getProposalId());
                 }
             }
         }
@@ -239,25 +240,38 @@ public class ProposalsContextImpl implements ProposalsContext {
     
     private final static Log _log = LogFactoryUtil.getLog(ProposalsContextImpl.class);
 
-    private static void replaceContestPhaseIfProposalIsNotPartOfContest(PortletRequest request, ContestPhase contestPhase, Long proposalId){
-
+    private static ContestPhase replaceContestPhaseIfProposalIsNotPartOfContest(PortletRequest request, ContestPhase contestPhase, Long proposalId){
+        ContestPhase replacedContestPhase = contestPhase;
         try {
             List<ContestPhase> activeContestPhasesForProposal = Proposal2PhaseLocalServiceUtil.getActiveContestPhasesForProposal(proposalId);
-            if(activeContestPhasesForProposal.contains(contestPhase)) return;
 
-            Contest contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposalId);
-            ContestPhase activeContestPhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+            if(activeContestPhasesForProposal.size() > 0) {
 
-            if(activeContestPhasesForProposal.contains(activeContestPhaseForContest)) {
-                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new ContestPhaseWrapper(activeContestPhaseForContest));
-            } else if(activeContestPhasesForProposal.size() > 0){
-                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new ContestPhaseWrapper(activeContestPhasesForProposal.get(0)));
+                if (!activeContestPhasesForProposal.contains(contestPhase)){
+                    replacedContestPhase = activeContestPhasesForProposal.get(0);
+                }
+
+                Contest contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposalId);
+                ContestPhase activeContestPhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+
+                if (activeContestPhasesForProposal.contains(activeContestPhaseForContest)) {
+                    replacedContestPhase = activeContestPhaseForContest;
+                }
+
+            } else {
+
+                List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByProposalId(proposalId);
+                for (Proposal2Phase proposal2Phase : proposal2Phases) {
+                    ContestPhase contestPhase1 = ContestPhaseLocalServiceUtil.getContestPhase(proposal2Phase.getContestPhaseId());
+                    ContestLocalServiceUtil.getContest(contestPhase1.getContestPK());
+                    replacedContestPhase = contestPhase1;
+                }
+
             }
-
         } catch (Exception e){
-            _log.warn("Couldn't find a vaild contestPhaseId for Proposal: " + proposalId);
+            _log.warn("Couldn't find a valid contestPhaseId for Proposal: " + proposalId);
         }
 
-
+        return replacedContestPhase;
     }
 }
