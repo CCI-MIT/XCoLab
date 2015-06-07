@@ -820,6 +820,17 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     /**
+    * This method adds a year suffix to already completed contests. It iterates over all inactive and completed contests
+    * and automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
+    */
+    @Override
+    public void addContestYearSuffixToCompletedContests()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _contestLocalService.addContestYearSuffixToCompletedContests();
+    }
+
+    /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ContestLocalService getWrappedContestLocalService() {

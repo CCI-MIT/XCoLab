@@ -171,6 +171,8 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes732;
     private String _methodName733;
     private String[] _methodParameterTypes733;
+    private String _methodName734;
+    private String[] _methodParameterTypes734;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -527,6 +529,10 @@ public class ContestLocalServiceClpInvoker {
         _methodParameterTypes733 = new String[] {
                 "com.ext.portlet.model.Contest", "java.lang.Long"
             };
+
+        _methodName734 = "addContestYearSuffixToCompletedContests";
+
+        _methodParameterTypes734 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -976,6 +982,13 @@ public class ContestLocalServiceClpInvoker {
                 Arrays.deepEquals(_methodParameterTypes733, parameterTypes)) {
             return ContestLocalServiceUtil.getSubContestsByOntologySpaceId((com.ext.portlet.model.Contest) arguments[0],
                 (java.lang.Long) arguments[1]);
+        }
+
+        if (_methodName734.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes734, parameterTypes)) {
+            ContestLocalServiceUtil.addContestYearSuffixToCompletedContests();
+
+            return null;
         }
 
         throw new UnsupportedOperationException();

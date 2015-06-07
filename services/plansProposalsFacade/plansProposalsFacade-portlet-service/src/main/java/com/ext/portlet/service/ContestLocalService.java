@@ -638,4 +638,12 @@ public interface ContestLocalService extends BaseLocalService,
     public java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
         com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
         throws java.lang.Exception;
+
+    /**
+    * This method adds a year suffix to already completed contests. It iterates over all inactive and completed contests
+    * and automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
+    */
+    public void addContestYearSuffixToCompletedContests()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }
