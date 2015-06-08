@@ -9,7 +9,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +19,8 @@ import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.*;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
@@ -28,13 +29,13 @@ import java.util.*;
 
 @Controller
 @RequestMapping("view")
-public class ProposalDiscussionTabController extends BaseProposalTabController {
+public class ProposalEvaluationTabController extends BaseProposalTabController {
     @Autowired
     private ProposalsContext proposalsContext;
     private boolean isUserAdmin = false;
     
-    @RequestMapping(params = {"pageToDisplay=proposalDetails_DISCUSSION"})
-    public String showDiscussion(PortletRequest request, Model model)
+    @RequestMapping(params = {"pageToDisplay=proposalDetails_EVALUATION"})
+    public String showEvaluation(PortletRequest request, Model model)
             throws PortalException, SystemException  {
 
         try {
@@ -49,9 +50,9 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
 
         try {
             if(isPhaseStatusClosedOrOpenForSubmission(request)) {
-                model.addAttribute("showDiscussion", false);
+                model.addAttribute("showEvaluation", false);
             } else {
-                Long discussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposalsContext.getProposal(request));
+                Long evaluationDiscussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposalsContext.getProposal(request));
 
                 Long proposalId = proposalsContext.getProposal(request).getProposalId();
                 Long contestId = proposalsContext.getContestPhase(request).getContestPK();
@@ -59,8 +60,8 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
                 List<ProposalRatingsWrapper> judgeAverageRating = getJudgesAverageRating(contestId, proposalId);
                 Collections.reverse(judgeAverageRating);
 
-                model.addAttribute("discussionId", discussionId);
-                model.addAttribute("showDiscussion", true);
+                model.addAttribute("evaluationDiscussionId", evaluationDiscussionId);
+                model.addAttribute("showEvaluation", true);
                 model.addAttribute("isJudgeReadOnly", true);
                 model.addAttribute("judgeAverageRating", judgeAverageRating);
                 model.addAttribute("authorId", proposalsContext.getProposal(request).getAuthorId());
@@ -74,11 +75,11 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
             }
         } catch (Exception e){
             e.printStackTrace();
-            model.addAttribute("showDiscussion", false);
+            model.addAttribute("showEvaluation", false);
         }
 
-        setCommonModelAndPageAttributes(request, model, ProposalTab.DISCUSSION);
-        return "proposalDiscussion";
+        setCommonModelAndPageAttributes(request, model, ProposalTab.EVALUATION);
+        return "proposalEvaluation";
     }
 
 

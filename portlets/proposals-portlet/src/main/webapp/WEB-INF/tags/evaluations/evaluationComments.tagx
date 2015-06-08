@@ -9,8 +9,8 @@
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:portlet="http://java.sun.com/portlet_2_0"
 	version="2.0">
-	<jsp:directive.attribute name="discussionId" type="java.lang.Long" required="true" rtexprvalue="true" description="Discussion id" />
-	<discussions:loadDiscussion discussionId="${discussionId }" >
+	<jsp:directive.attribute name="evaluationDiscussionId" type="java.lang.Long" required="true" rtexprvalue="true" description="Evaluation discussion id" />
+	<discussions:loadDiscussion discussionId="${evaluationDiscussionId }" >
 			<div class="headline prophead">
         		<h2>
 					<span>${discussion.commentsCount}</span>
@@ -147,7 +147,7 @@
 							<c:when test="${currentTab eq 'SCREENING'}">
 								<i>Your comment will be visible to the Judging team only.</i>
 							</c:when>
-							<c:when test="${currentTab eq 'DISCUSSION'}">
+							<c:when test="${currentTab eq 'EVALUATION'}">
 								<i>Your comment will be visible to the public.</i>
 							</c:when>
 							<c:otherwise>

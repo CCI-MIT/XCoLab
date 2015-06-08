@@ -754,6 +754,16 @@ public class ContestLocalServiceUtil {
                    .getSubContestsByOntologySpaceId(contest, ontologySpaceId);
     }
 
+    /**
+    * This method adds a year suffix to already completed contests. It iterates over all inactive and completed contests
+    * and automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
+    */
+    public static void addContestYearSuffixToCompletedContests()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().addContestYearSuffixToCompletedContests();
+    }
+
     public static void clearService() {
         _service = null;
     }
