@@ -11,9 +11,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import org.apache.commons.lang.StringUtils;
 import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
@@ -41,15 +39,14 @@ public class ProposalImpactDataParser {
     private static final String EXCEL_SERIES_TYPE_RESULT_KEY = "Estimated CO2 reduction";
     private static final String[] excelSeriesTypeKeys = {EXCEL_SERIES_TYPE_BAU_KEY, EXCEL_SERIES_TYPE_REDUCTION_KEY, EXCEL_SERIES_TYPE_ADOPTION_RATE_KEY, EXCEL_SERIES_TYPE_REDUCTION_KEY};
 
-    private static final Map<String, String> excelSectorToWhatTermNameMap;
+    private static final Map<String, String> excelTermToOntologyTermNameMap;
     static {
-        excelSectorToWhatTermNameMap = new HashMap<>();
-        excelSectorToWhatTermNameMap.put("Transport", "Transportation");
-        excelSectorToWhatTermNameMap.put("Generation", "Energy supply");
-        excelSectorToWhatTermNameMap.put("Consumption", "Land use & other sectors");
-        excelSectorToWhatTermNameMap.put("All other developed countries", "Other developed countries");
-        excelSectorToWhatTermNameMap.put("All other developing countries", "Other developing countries");
-        // Todo add more terms if neccessary
+        excelTermToOntologyTermNameMap = new HashMap<>();
+        excelTermToOntologyTermNameMap.put("Transport", "Transportation");
+        excelTermToOntologyTermNameMap.put("EnergySupply", "Energy supply");
+        excelTermToOntologyTermNameMap.put("Other", "Land use & other sectors");
+        excelTermToOntologyTermNameMap.put("All other developed countries", "Other developed countries");
+        excelTermToOntologyTermNameMap.put("All other developing countries", "Other developing countries");
     }
 
     private static final Map<String, String> excelSeriesTypeToSeriesTypeMap;
@@ -239,8 +236,8 @@ public class ProposalImpactDataParser {
 
     private OntologyTerm getOntologyTermByName(String name) throws SystemException, ProposalImpactDataParserException {
         // Use mapped name value if it exists
-        if (Validator.isNotNull(excelSectorToWhatTermNameMap.get(name))) {
-            name = excelSectorToWhatTermNameMap.get(name);
+        if (Validator.isNotNull(excelTermToOntologyTermNameMap.get(name))) {
+            name = excelTermToOntologyTermNameMap.get(name);
         }
 
         List<OntologyTerm> ontologyTerms = OntologyTermLocalServiceUtil.findByOntologyTermName(name);
