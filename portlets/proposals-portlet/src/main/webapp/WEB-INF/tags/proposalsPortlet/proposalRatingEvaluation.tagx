@@ -22,12 +22,19 @@
                 ${wrapper.contestPhase}<br/>
             </c:if>
             <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
-                <strong>Judges Ratings <a href="/web/guest/resources/-/wiki/Main/contest+rules#Howwillproposalsbejudged" target="_blank">?</a></strong>
+                <strong>Judges' Ratings <a href="/web/guest/resources/-/wiki/Main/contest+rules#Howwillproposalsbejudged" target="_blank">
+                    <span class="fieldWithTooltip">
+                        <img src="/climatecolab-theme/images/icon_question-chk-qm.png" height="15px" />
+                    </span>
+                    <div class="tooltip">
+                        Click here to see how proposals are judged.
+                    </div>
+                </a></strong>
                 <table>
                     <c:forEach var="rating" items="${wrapper.ratings}">
                         <c:if test="${rating.isActive}">
                             <tr>
-                                <td>
+                                <td width="20px">
                                     &amp;#8226;
                                 </td>
                                 <td width="100px">
@@ -35,7 +42,7 @@
                                 </td>
                                 <c:if test="${not showRatingDescription}">
                                     <td>
-                                        <span class="stars" title="${rating.ratingValue.value}/5">
+                                        <span class="stars" title="${rating.notRoundedRatingValueFormatted}/5">
                                             <span style="width:${rating.ratingValueInPercent}%;"/>
                                         </span>
                                     </td>
@@ -53,7 +60,7 @@
             </c:if>
             <br/>
             <p>
-                <strong>Judges Comments</strong><br/>
+                <strong>Judges' Comments</strong><br/>
                 <span class="comment-wrapper">${wrapper.commentEscaped}</span>
             </p>
         </div>

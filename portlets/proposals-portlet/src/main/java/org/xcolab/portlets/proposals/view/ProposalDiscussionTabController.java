@@ -83,11 +83,11 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
 
 
     private List<ProposalRatingsWrapper> getJudgesAverageRating(Long contestId, Long proposalId) throws Exception{
+        Long CLIMATE_COLAB_TEAM_USER_ID = 1431053L;
+        Long AVERAGE_RESULT_ROUND_FACTOR = 10L;
+
         List<ProposalRatingsWrapper> wrappers = new ArrayList<ProposalRatingsWrapper>();
         List<ContestPhase> contestPhases =  ContestPhaseLocalServiceUtil.getPhasesForContest(contestId);
-
-        // TODO this is the Admin Id, replace with what Laur and Patrick decide to use
-        Long userId = 10144L;
 
         for(ContestPhase contestPhase : contestPhases){
 
@@ -100,7 +100,7 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
                 if (judgeRatingsForProposal.size() > 0) {
                     Map<Long, List<ProposalRating>> map = new HashMap<>();
                     Map<Long, List<Long>> averageRatingList = new HashMap<>();
-                    map.put(userId, new ArrayList<ProposalRating>());
+                    map.put(CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<ProposalRating>());
 
                     for (ProposalRating r : judgeRatingsForProposal) {
                         if (r.getOnlyForInternalUsage()){
@@ -120,18 +120,18 @@ public class ProposalDiscussionTabController extends BaseProposalTabController {
                     for (Long averageRatingsIndex : averageRatingList.keySet()) {
                         Long sumRating = 0L;
                         for(Long averageRating : averageRatingList.get(averageRatingsIndex) ){
-                            sumRating = sumRating + averageRating;
+                            sumRating = sumRating + averageRating * AVERAGE_RESULT_ROUND_FACTOR;
                         }
-                        Long averageRating = sumRating / averageRatingList.get(averageRatingsIndex).size();
+                        Double averageRating = (double) sumRating / (double)averageRatingList.get(averageRatingsIndex).size();
                         int proposalIndex = new ArrayList<>(averageRatingList.keySet()).indexOf(averageRatingsIndex);
                         ProposalRating proposalRating = judgeRatingsForProposal.get(proposalIndex);
-                        proposalRating.setRatingValueId(averageRating);
-                        proposalRating.setUserId(userId);
-                        map.get(userId).add(proposalRating);
+                        proposalRating.setRatingValueId(averageRating.longValue());
+                        proposalRating.setUserId(CLIMATE_COLAB_TEAM_USER_ID);
+                        map.get(CLIMATE_COLAB_TEAM_USER_ID).add(proposalRating);
                     }
 
-                    List<ProposalRating> userRatings = map.get(userId);
-                    ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, userRatings);
+                    List<ProposalRating> userRatings = map.get(CLIMATE_COLAB_TEAM_USER_ID);
+                    ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(CLIMATE_COLAB_TEAM_USER_ID, userRatings, AVERAGE_RESULT_ROUND_FACTOR);
                     Proposal proposal =  ProposalLocalServiceUtil.getProposal(proposalId);
                     ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
                     wrapper.setComment(commentHelper.getAdvancingComment());

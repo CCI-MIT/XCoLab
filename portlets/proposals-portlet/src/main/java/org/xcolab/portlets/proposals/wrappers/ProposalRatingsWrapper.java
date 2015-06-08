@@ -23,14 +23,22 @@ public class ProposalRatingsWrapper {
     private User author;
     private String comment;
 
+    public ProposalRatingsWrapper(long authorId, List<ProposalRating> proposalRatings, Long roundFactor) throws SystemException, PortalException {
+        this(UserLocalServiceUtil.getUser(authorId), proposalRatings, roundFactor);
+    }
+
     public ProposalRatingsWrapper(long authorId, List<ProposalRating> proposalRatings) throws SystemException, PortalException {
         this(UserLocalServiceUtil.getUser(authorId), proposalRatings);
     }
 
     public ProposalRatingsWrapper(User author, List<ProposalRating> proposalRatings) throws SystemException, PortalException {
-        List<ProposalRatingWrapper> wrapped = new ArrayList<ProposalRatingWrapper>();
+        this(author, proposalRatings, 1L);
+    }
+
+    public ProposalRatingsWrapper(User author, List<ProposalRating> proposalRatings, Long roundFactor) throws SystemException, PortalException {
+        List<ProposalRatingWrapper> wrapped = new ArrayList<>();
         for (ProposalRating r : proposalRatings) {
-            wrapped.add(new ProposalRatingWrapper(r));
+            wrapped.add(new ProposalRatingWrapper(r, roundFactor));
         }
 
         //sort the list
@@ -86,8 +94,8 @@ public class ProposalRatingsWrapper {
 
         }
 
-        String contselectionestPhaseTitleAdjusted = contestPhaseTitle.replace("selection", "Evaluation");
-        return contselectionestPhaseTitleAdjusted;
+        String contestSelectionPhaseTitleAdjusted = contestPhaseTitle.replace("selection", "Evaluation");
+        return contestSelectionPhaseTitleAdjusted;
     }
 
     public boolean isReviewComplete() {
