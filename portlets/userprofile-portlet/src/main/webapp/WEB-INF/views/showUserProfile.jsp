@@ -80,6 +80,10 @@
                                                 <img 	src="/climatecolab-theme/images/icon_mem-fellow.png"
                                                         width="16" height="16" />
                                             </c:when>
+                                            <c:when test="${currentUserProfile.role.lowerCase == 'contestmanager' }">
+                                                <img 	src="/climatecolab-theme/images/icon_mem-expert.png"
+                                                        width="16" height="16" />
+                                            </c:when>
                                             <c:otherwise>
                                                 <img 	src="/climatecolab-theme/images/icon_mem-${currentUserProfile.role.lowerCase}.png"
                                                         width="16" height="16" />
