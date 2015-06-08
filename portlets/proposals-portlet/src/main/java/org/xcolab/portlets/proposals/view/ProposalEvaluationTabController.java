@@ -33,7 +33,13 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     @Autowired
     private ProposalsContext proposalsContext;
     private boolean isUserAdmin = false;
-    
+
+    @RequestMapping(params = {"pageToDisplay=proposalDetails_DISCUSSION"})
+    public String showEvaluationControllerForPreviousTabName(PortletRequest request, Model model)
+            throws PortalException, SystemException {
+        return showEvaluation(request, model);
+    }
+
     @RequestMapping(params = {"pageToDisplay=proposalDetails_EVALUATION"})
     public String showEvaluation(PortletRequest request, Model model)
             throws PortalException, SystemException  {
