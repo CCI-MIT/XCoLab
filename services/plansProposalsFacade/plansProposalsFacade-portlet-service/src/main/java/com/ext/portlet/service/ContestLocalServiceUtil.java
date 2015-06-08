@@ -764,6 +764,16 @@ public class ContestLocalServiceUtil {
         getService().addContestYearSuffixToCompletedContests();
     }
 
+    /**
+    * This method adds a year suffix to the passed contest. By passing the flag checkForCompleted, the method will only
+    * add the suffix for contests which latest contest phase is of type COMPLETED and which are inactive.
+    * It automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
+    */
+    public static void addContestYearSuffixToContest(
+        com.ext.portlet.model.Contest contest, boolean checkForCompleted) {
+        getService().addContestYearSuffixToContest(contest, checkForCompleted);
+    }
+
     public static void clearService() {
         _service = null;
     }
