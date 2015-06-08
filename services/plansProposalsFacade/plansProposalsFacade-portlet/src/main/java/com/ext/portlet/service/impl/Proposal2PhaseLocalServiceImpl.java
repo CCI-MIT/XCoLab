@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal2Phase;
@@ -156,12 +157,17 @@ public class Proposal2PhaseLocalServiceImpl
         throw new SystemException("Proposal " + proposalVersion.getProposalId() + " isn't associated with any contest phase");
     }
     
-    public List<Long> getContestPhasesForProposal(long proposalId) throws SystemException {
+    public List<Long> getContestPhasesForProposal(long proposalId) throws SystemException, PortalException {
         List<Proposal2Phase> proposal2Phases = proposal2PhasePersistence.findByProposalId(proposalId);
         List<Long> ret = new LinkedList<>();
 
         for(Proposal2Phase p2p : proposal2Phases) {
-            ret.add(p2p.getContestPhaseId());
+            try {
+                ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId());
+                ret.add(p2p.getContestPhaseId());
+            } catch (NoSuchContestPhaseException e){
+                // ignore invalid contest phases
+            }
         }
 
         return ret;
@@ -173,8 +179,8 @@ public class Proposal2PhaseLocalServiceImpl
         Date now = new Date();
         for(Long pId : allPhases) {
             ContestPhase p = ContestPhaseLocalServiceUtil.getContestPhase(pId);
-            if(p.getPhaseActiveOverride() && !p.getPhaseInactiveOverride()) { //take care of overrides
-                if(p.getPhaseStartDate().before(now) && (p.getPhaseEndDate() ==null || p.getPhaseEndDate().after(now))) {
+            if (p.getPhaseActiveOverride() && !p.getPhaseInactiveOverride()) { //take care of overrides
+                if (p.getPhaseStartDate().before(now) && (p.getPhaseEndDate() == null || p.getPhaseEndDate().after(now))) {
                     //apparently we are right in the window this proposal. yay!
                     ret.add(p);
                 }

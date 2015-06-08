@@ -1618,8 +1618,17 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public ContestPhase getLatestProposalContestPhase(long proposalId) throws PortalException, SystemException {
         Proposal2Phase latestP2p = null;
         for (Proposal2Phase p2p: proposal2PhaseLocalService.getByProposalId(proposalId)) {
-            if (proposal2PhaseLocalService.isContestPhaseOfProposal2PhaseValidInContest(p2p) && (latestP2p == null || p2p.getVersionTo() == 0 || latestP2p.getVersionTo() < p2p.getVersionTo())) {
-                latestP2p = p2p;
+
+            if (proposal2PhaseLocalService.isContestPhaseOfProposal2PhaseValidInContest(p2p)){
+                // This is always the most current phase
+                if (p2p.getVersionTo() == -1) {
+                    latestP2p = p2p;
+                    break;
+                }
+
+                if ((latestP2p == null || p2p.getVersionTo() == 0 || latestP2p.getVersionTo() < p2p.getVersionTo())) {
+                    latestP2p = p2p;
+                }
             }
         }
         return contestPhaseLocalService.getContestPhase(latestP2p.getContestPhaseId());
