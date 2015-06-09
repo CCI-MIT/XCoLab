@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
+import org.apache.commons.lang.StringUtils;
 import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
@@ -197,33 +198,44 @@ public class ProposalImpactDataParser {
                     try {
                         setProposalImpactSeriesValue(newProposalImpactSeries, currentSeriesType, year, dataString);
                     } catch (NumberFormatException e) {
-                        _log.error("Could not parse string '" + dataString + "' to double value");
-                        throw new ProposalImpactDataParserException("\"Could not parse string '\" + dataString + \"' to double value\"", e);
+                        _log.error("Could not parse string '" + dataString + "' on line " + inputLineNumber + " to double value");
+                        throw new ProposalImpactDataParserException("\"Could not parse string '" + dataString + "' to double value\"", e);
+                    } catch (ProposalImpactDataParserException e) {
+                        _log.error("Input Line " + inputLineNumber + ": " + e.getMessage());
+                        throw e;
                     }
                 }
 
                 seriesList.addProposalImpactSeries(newProposalImpactSeries);
 
             } else {
-                throw new ProposalImpactDataParserException("Could not parse data line '\" + StringUtils.join(dataStrings, \",\") + \"'; line too short");
+                throw new ProposalImpactDataParserException("Could not parse data line '" + StringUtils.join(dataStrings, ",") + "'; line too short");
             }
 
+            inputLineNumber++;
         }
 
         return seriesList;
     }
 
-    private void setProposalImpactSeriesValue(ProposalImpactSeries proposalImpactSeries, String seriesType, long year, String valueString) {
+    private void setProposalImpactSeriesValue(ProposalImpactSeries proposalImpactSeries, String seriesType, long year, String valueString) throws ProposalImpactDataParserException {
         double value = parseDataValue(seriesType, valueString);
         proposalImpactSeries.addSeriesValueWithType(seriesType, (int)year, value);
     }
 
-    private double parseDataValue(String seriesType, String valueString) {
+    private double parseDataValue(String seriesType, String valueString) throws ProposalImpactDataParserException {
+        // Remove comma-thousand separators
+        String commaSeparatedValueString = valueString.replaceAll(",", "");
+
         // percentage value
-        if (valueString.contains("%")) {
-            return Double.parseDouble(valueString.substring(0, valueString.length() - 1));
+        if (commaSeparatedValueString.contains("%")) {
+            double value =  Double.parseDouble(commaSeparatedValueString.substring(0, commaSeparatedValueString.length() - 1));
+            if (value < 0 || value > 100) {
+                throw new ProposalImpactDataParserException("Percentage value '" + value + "' out of bounds!");
+            }
+            return value;
         } else {
-            double value = Double.parseDouble(valueString.substring(0, valueString.length() - 1));
+            double value = Double.parseDouble(commaSeparatedValueString.substring(0, commaSeparatedValueString.length() - 1));
 
             // Interpret impact reduction and adoption values as ratios
             if ((seriesType.equals(ProposalImpactAttributeKeys.IMPACT_REDUCTION) || seriesType.equals(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE))) {
