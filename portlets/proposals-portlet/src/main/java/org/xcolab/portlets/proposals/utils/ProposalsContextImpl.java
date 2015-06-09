@@ -1,5 +1,6 @@
 package org.xcolab.portlets.proposals.utils;
 
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -147,7 +148,11 @@ public class ProposalsContextImpl implements ProposalsContext {
             contest = ContestLocalServiceUtil.getContest(contestId);
 
             if (phaseId != null && phaseId > 0) {
-                contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
+                try {
+                    contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
+                } catch (NoSuchContestPhaseException e){
+                    contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
+                }
             } else {
                 //get the last phase of this contest
                 contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
