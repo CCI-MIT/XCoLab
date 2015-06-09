@@ -71,10 +71,8 @@
 
 			<div id="flagFlagTextTooltip" style="display: none;">
 				<table>
-					<col span="1" class="mediumColumn"/>
-					<col span="1" class="mediumColumn"/>
 					<tr>
-						<td>
+						<td width="200px">
 							<span class="floatLeft">Flag appearance</span>
 						</td>
 						<td>
