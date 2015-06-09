@@ -383,6 +383,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     if (getContestStatus(nextPhase).isCanVote()) {
                     	//contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
                     }
+
+                    // Add contest year suffix, if contest has been completed
+                    contestLocalService.addContestYearSuffixToContest(contest, true);
+
                     _log.info("done promoting phase " + phase.getContestPhasePK());
                 } catch (SystemException | PortalException e) {
                     _log.error("Exception thrown when doing autopromotion for phase " + phase.getContestPhasePK(), e);
@@ -438,6 +442,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     }
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     updateContestPhase(phase);
+
+                    // Add contest year suffix, if contest has been completed
+                    contestLocalService.addContestYearSuffixToContest(contest, true);
+
                     _log.info("done promoting phase " + phase.getContestPhasePK());
                 } else {
                     _log.warn("Judge promoting failed for ContestPhase with ID " + phase.getContestPhasePK() + " - not all proposals have been reviewed");

@@ -1138,49 +1138,58 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     /**
-     * This method adds a year suffix to already completed contests. It iterates over all inactive and completed contests
+     * This method adds a year suffix to already completed contests. It iterates over all completed contests
      * and automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
      */
     public void addContestYearSuffixToCompletedContests() throws SystemException, PortalException {
-        for (Contest priorContest : getContestsByActivePrivate(false, false)) {
-            try {
-                ContestPhase latestPhase = getActiveOrLastPhase(priorContest);
-                String[] contestNameParts = priorContest.getContestShortName().split(" ");
+        for (Contest priorContest : getContestsByActivePrivate(true, false)) {
+            addContestYearSuffixToContest(priorContest, true);
+        }
+    }
 
-                // Is in completed phase?
-                if (ArrayUtil.isNotEmpty(contestNameParts) &&
-                        (latestPhase.getContestPhaseType() == ContestPhaseType.COMPLETED.getTypeId() ||
-                                latestPhase.getContestPhaseType() == ContestPhaseType.WINNERS_AWARDED.getTypeId()))
-                {
-                    String lastNamePart = contestNameParts[contestNameParts.length - 1];
-                    String phaseEndYear = getYearStringFromDate(latestPhase.getPhaseStartDate());
+    /**
+     * This method adds a year suffix to the passed contest. By passing the flag checkForCompleted, the method will only
+     * add the suffix for contests which latest contest phase is of type COMPLETED
+     * It automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
+     *
+     * @param contest               The contest that should get a year suffix
+     * @param checkForCompleted     Indicates whether contests that are not in a COMPLETED active contest phase should be ignored
+     */
+    public void addContestYearSuffixToContest(Contest contest, boolean checkForCompleted) {
+        try {
+            ContestPhase latestPhase = getActiveOrLastPhase(contest);
+            String[] contestNameParts = contest.getContestShortName().split(" ");
 
-                    String newContestShortName = null;
-                    try {
-                        Integer.parseInt(lastNamePart);
+            // Is in completed phase and inactive? - or is flag set to false?
+            boolean isCompleted = (ArrayUtil.isNotEmpty(contestNameParts) &&
+                    (latestPhase.getContestPhaseType() == ContestPhaseType.COMPLETED.getTypeId() ||
+                            latestPhase.getContestPhaseType() == ContestPhaseType.WINNERS_AWARDED.getTypeId()));
+            if (!checkForCompleted || isCompleted) {
+                String lastNamePart = contestNameParts[contestNameParts.length - 1];
+                String phaseEndYear = getYearStringFromDate(latestPhase.getPhaseStartDate());
 
-                        // Same year suffix detected - skip contest
-                        if (lastNamePart.equals(phaseEndYear)) {
-                            continue;
-                        }
+                String newContestShortName = null;
+                try {
+                    Integer.parseInt(lastNamePart);
 
-                        // Unlikely event that a suffix has been created but the phase end date has changed - adapt to new suffix
-                        contestNameParts[contestNameParts.length - 1] = phaseEndYear;
-                        newContestShortName = StringUtils.join(contestNameParts, " ");
-                    } catch (NumberFormatException e) {
-                        // No year suffix detected - add new one
-                        newContestShortName = priorContest.getContestShortName() + " " + phaseEndYear;
+                    // Same year suffix detected - skip contest
+                    if (lastNamePart.equals(phaseEndYear)) {
+                        return;
                     }
 
-                    priorContest.setContestShortName(newContestShortName);
-                    priorContest.persist();
+                    // Unlikely event that a suffix has been created but the phase end date has changed - adapt to new suffix
+                    contestNameParts[contestNameParts.length - 1] = phaseEndYear;
+                    newContestShortName = StringUtils.join(contestNameParts, " ");
+                } catch (NumberFormatException e) {
+                    // No year suffix detected - add new one
+                    newContestShortName = contest.getContestShortName() + " " + phaseEndYear;
                 }
-            } catch (PortalException e) {
-                _log.error("Could not get latest contest phase of contest '" + priorContest.getContestPK() + "' to add year suffix");
-                continue;
+
+                contest.setContestShortName(newContestShortName);
+                contest.persist();
             }
-
-
+        } catch (Exception e) {
+            _log.error("Could not get latest contest phase of contest '" + contest.getContestPK() + "' to add year suffix or persist contest", e);
         }
     }
 
