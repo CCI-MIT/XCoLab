@@ -56,6 +56,7 @@ public class ContestOverviewWrapper {
         selectedContest = new ArrayList<>();
         subscribedToContest = new ArrayList<>();
         contestFlagTextToolTipBean = new ContestFlagTextToolTipBean();
+        massMessageBean = new MassMessageBean();
     }
 
     private void populateSubscribedToContestList(Long userId) throws Exception{

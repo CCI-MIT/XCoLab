@@ -20,9 +20,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Thomas on 3/5/2015.
@@ -58,8 +56,8 @@ public class ContestMassActionMethods {
     public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject, PortletRequest request) throws Exception{
 
         MassMessageBean massMessageBean = (MassMessageBean) massMessageWrapperObject;
-        List<Long> recipientIds = new ArrayList<>();
-        List<InternetAddress> recipientAddresses = new  ArrayList<>();
+        Set<Long> recipientIds = new HashSet<>();
+        Set<InternetAddress> recipientAddresses = new HashSet<>();
 
         for(Long contestId : contestList) {
             List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
