@@ -126,7 +126,17 @@ public class ProposalsPermissions {
             return true;
         return false;
     }
-    
+
+
+
+    public boolean getCanPublicRating() throws SystemException, PortalException {
+        boolean canPublicRating = true;
+
+        if (user.isDefaultUser()) // || getCanJudgeActions() || getIsTeamMember())
+            canPublicRating = false;
+
+        return canPublicRating;
+    }
     
     
     public boolean getCanSeeRequestMembershipButton() throws SystemException, PortalException {

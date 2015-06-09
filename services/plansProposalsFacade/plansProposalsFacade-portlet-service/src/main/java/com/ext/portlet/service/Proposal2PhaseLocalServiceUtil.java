@@ -309,6 +309,16 @@ public class Proposal2PhaseLocalServiceUtil {
         return getService().getCurrentContestForProposal(proposalId);
     }
 
+    public static boolean isContestPhaseOfProposal2PhaseValidInContest(
+        com.ext.portlet.model.Proposal2Phase proposal2Phase) {
+        return getService()
+                   .isContestPhaseOfProposal2PhaseValidInContest(proposal2Phase);
+    }
+
+    public static boolean isContestPhaseValidInContest(long contestPhaseId) {
+        return getService().isContestPhaseValidInContest(contestPhaseId);
+    }
+
     public static com.ext.portlet.model.Proposal2Phase getForVersion(
         java.lang.Long proposalId, int proposalVersionId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -325,7 +335,8 @@ public class Proposal2PhaseLocalServiceUtil {
 
     public static java.util.List<java.lang.Long> getContestPhasesForProposal(
         long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestPhasesForProposal(proposalId);
     }
 

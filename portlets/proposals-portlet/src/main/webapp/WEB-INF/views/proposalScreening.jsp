@@ -6,7 +6,7 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:judging="http://climatecolab.org/tags/xcollab_judging_1.0"
-          xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/discussions"
+          xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
     <jsp:directive.include file="./init.jspx"/>
@@ -176,8 +176,7 @@
         </div>
 
         <div style="padding-top:40px; clear:both;"></div>
-        <discussionsTagFiles:discussionComments discussionId="${discussionId }"/>
-
+        <discussionsTagFiles:evaluationComments evaluationDiscussionId="${discussionId }"/>
 
     </div>
 

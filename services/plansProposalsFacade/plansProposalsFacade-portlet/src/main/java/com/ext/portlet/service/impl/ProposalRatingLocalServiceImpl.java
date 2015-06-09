@@ -1,5 +1,6 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.proposals.ProposalJudgeType;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
@@ -12,6 +13,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class ProposalRatingLocalServiceImpl
     public List<ProposalRating> getFellowRatingsForProposal(long proposalId, long contestPhaseId) throws SystemException {
         return getRatingsForProposal(proposalId, contestPhaseId, ProposalJudgeType.FELLOW.getId());
     }
+
     public List<ProposalRating> getJudgeRatingsForProposal(long proposalId, long contestPhaseId) throws SystemException {
         return getRatingsForProposal(proposalId, contestPhaseId, ProposalJudgeType.JUDGE.getId());
     }
@@ -47,8 +50,6 @@ public class ProposalRatingLocalServiceImpl
     protected List<ProposalRating> getRatingsForProposal(long proposalId, long contestPhaseId, int judgeType) throws SystemException {
         return ProposalRatingFinderUtil.findByProposalIdJudgeTypeContestPhaseId(proposalId, judgeType, contestPhaseId, 0, Integer.MAX_VALUE);
     }
-
-
 
     public List<ProposalRating> getJudgeRatingsForProposalAndUser(long userId, long proposalId, long contestPhaseId) throws SystemException {
         return this.getRatingsForProposalAndUser(proposalId, ProposalJudgeType.JUDGE.getId(), userId, contestPhaseId);
@@ -79,24 +80,30 @@ public class ProposalRatingLocalServiceImpl
     public ProposalRating addRating(
             long proposalId, long contestPhaseId, long userId, long ratingValueId, String comment, String otherDataString
     ) throws SystemException, NoSuchUserException {
+        return addRating(proposalId, contestPhaseId, userId, ratingValueId, comment, otherDataString, false);
+    }
 
-        long proposalRatingId = counterLocalService.increment(ProposalRating.class.getName());
+        public ProposalRating addRating(
+            long proposalId, long contestPhaseId, long userId, long ratingValueId, String comment, String otherDataString, boolean onlyForInternalUsage
+    ) throws SystemException, NoSuchUserException {
 
-        ProposalRating proposalRating = proposalRatingPersistence.create(proposalRatingId);
 
-        proposalRating.setProposalId(proposalId);
-        proposalRating.setContestPhaseId(contestPhaseId);
-        proposalRating.setUserId(userId);
-        proposalRating.setRatingValueId(ratingValueId);
-        proposalRating.setComment(comment);
-        if (comment != null && !comment.isEmpty()) {
-            proposalRating.setCommentEnabled(true);
-        }
-        proposalRating.setOtherDataString(otherDataString);
+            long proposalRatingId = counterLocalService.increment(ProposalRating.class.getName());
+            ProposalRating proposalRating = proposalRatingPersistence.create(proposalRatingId);
+            proposalRating.setProposalId(proposalId);
+            proposalRating.setContestPhaseId(contestPhaseId);
+            proposalRating.setUserId(userId);
+            proposalRating.setRatingValueId(ratingValueId);
+            proposalRating.setComment(comment);
+            proposalRating.setOnlyForInternalUsage(onlyForInternalUsage);
 
-        super.addProposalRating(proposalRating);
+            if (comment != null && !comment.isEmpty()) {
+                proposalRating.setCommentEnabled(true);
+            }
 
-        return proposalRating;
+            proposalRating.setOtherDataString(otherDataString);
+            super.addProposalRating(proposalRating);
+            return proposalRating;
     }
 
     public ProposalRating updateRating(ProposalRating proposalRating) throws SystemException, NoSuchUserException {
