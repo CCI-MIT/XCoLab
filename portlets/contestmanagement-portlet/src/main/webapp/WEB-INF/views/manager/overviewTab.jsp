@@ -68,6 +68,39 @@
 				<h3 class="floatLeft">Body</h3>
 				<form:textarea path="massMessageBean.body"/>
 			</div>
+
+			<div id="flagFlagTextTooltip" style="display: none;">
+				<table>
+					<col span="1" class="mediumColumn"/>
+					<col span="1" class="mediumColumn"/>
+					<tr>
+						<td>
+							<span class="floatLeft">Flag appearance</span>
+						</td>
+						<td>
+						<form:select path="contestFlagTextToolTipBean.flagNumber">
+							<form:options items="${contestOverviewWrapper.flagOptions}" itemValue="value" itemLabel="lable"/>
+						</form:select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="floatLeft">Flag text (ie. featured)</span>
+						</td>
+						<td>
+							<form:input path="contestFlagTextToolTipBean.flagText"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="floatLeft">Flag tooltip</span>
+						</td>
+						<td>
+							<form:input path="contestFlagTextToolTipBean.flagTooltip"/>
+						</td>
+					</tr>
+				</table>
+			</div>
 			<table class="contestOverview">
 					<col span="2" class="extraSmallColumn"/>
 					<col span="1" class="wideColumn"/>
@@ -141,8 +174,9 @@
 	<script type="text/javascript">
 		<![CDATA[
 
-		var MASS_MESSAGE_SELECT_ID = 1;
-		var REPORT_SELECT_ID = 3;
+		var MASS_MESSAGE_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('MESSAGE')}");
+		var REPORT_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('REPORT_PEOPLE_IN_CURRENT_PHASE')}");
+		var FLAG_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('FLAG')}");
 		var actionURL = "${updateContestOverviewURL }";
 		var resourceURL = "${getExport }";
 
@@ -159,6 +193,8 @@
 			var dropDownElement = document.getElementById("selectedMassAction");
 			dropDownElement.addEventListener("change", function(ev){
 				var massMessageDiv = document.getElementById("massMessage");
+				var flagFlagTextTooltipDiv = document.getElementById("flagFlagTextTooltip");
+
 				var editFormElement = document.getElementById("editForm");
 				var selectedDropDownId = ev.target.value;
 
@@ -173,6 +209,13 @@
 				} else{
 					massMessageDiv.style.display = 'none';
 				}
+
+				if(selectedDropDownId == FLAG_SELECT_ID){
+					flagFlagTextTooltipDiv.style.display = '';
+				} else{
+					flagFlagTextTooltipDiv.style.display = 'none';
+				}
+
 			})
 		}
 
@@ -213,7 +256,6 @@
 		function bindDragDropEvents(){
 
 			[].forEach.call(document.getElementsByTagName("tr"), function (rowElement) {
-				console.log("rowElement", rowElement);
 				rowElement.addEventListener("dragend", dragEnd);
 				rowElement.addEventListener("dragstart", dragStart);
 				rowElement.addEventListener("drop", drop);

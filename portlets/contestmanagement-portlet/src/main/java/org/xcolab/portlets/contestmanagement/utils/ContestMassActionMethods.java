@@ -12,6 +12,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngine;
+import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 
 import javax.mail.internet.InternetAddress;
@@ -123,6 +124,13 @@ public class ContestMassActionMethods {
         }
     }
 
+    public static void setFlag(List<Long> contestList, Object flagTexToolTipValue, PortletRequest request) throws Exception{
+        for(Long contestId : contestList) {
+            Contest contest = ContestLocalServiceUtil.getContest(contestId);
+            ContestFlagTextToolTipBean contestFlagTextToolTipBean = (ContestFlagTextToolTipBean) flagTexToolTipValue;
+            contestFlagTextToolTipBean.persist(contest);
+        }
+    }
 
     private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK) throws Exception{
         Contest contest = ContestLocalServiceUtil.getContest(contestPK);
