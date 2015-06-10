@@ -14,6 +14,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 
@@ -87,11 +88,11 @@ public class DiscussionPermissions {
     public boolean getCanSeeAddCommentButton(){
         boolean canSeeAddCommentButton = false;
         boolean isIdsInitialized = proposalId != null && contestPhaseId != null;
-        boolean isDiscussionTabActive = discussionTabName != null && discussionTabName.equals("DISCUSSION");
+        boolean isEvaluationTabActive = discussionTabName != null && discussionTabName.equals(ProposalTab.EVALUATION.name());
 
-        if(isDiscussionTabActive) {
+        if(isEvaluationTabActive) {
             if(isIdsInitialized){
-                canSeeAddCommentButton = isUserAllowedToAddCommentsToProposalDiscussionInContestPhase(currentUser, proposalId, contestPhaseId);
+                canSeeAddCommentButton = isUserAllowedToAddCommentsToProposalEvaluationInContestPhase(currentUser, proposalId, contestPhaseId);
             }
         } else {
             canSeeAddCommentButton = true;
@@ -114,7 +115,7 @@ public class DiscussionPermissions {
                 || permissionChecker.isCompanyAdmin();
     }
 
-    private boolean isUserAllowedToAddCommentsToProposalDiscussionInContestPhase
+    private boolean isUserAllowedToAddCommentsToProposalEvaluationInContestPhase
             (User user, Integer proposalId, Integer contestPhaseId){
 
         boolean isUserAllowed = false;

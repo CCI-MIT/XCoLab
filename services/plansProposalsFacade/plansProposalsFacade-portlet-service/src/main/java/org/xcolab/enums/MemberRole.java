@@ -8,6 +8,7 @@ public enum MemberRole {
      * Whenever these roles are modified (which should never happen) these Ids should be updated as well
      */
 	ALL(0L, "All"),
+    GUEST(10119L, "Guest"),
     MEMBER(10122L, "User"),
     FELLOW(193261L, "Fellow"),
     ADVISOR(193260L, "Advisor"),

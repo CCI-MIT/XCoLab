@@ -28,10 +28,11 @@ public class ProposalRatingCacheModel implements CacheModel<ProposalRating>,
     public String comment;
     public boolean commentEnabled;
     public String otherDataString;
+    public boolean onlyForInternalUsage;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(id);
@@ -49,6 +50,8 @@ public class ProposalRatingCacheModel implements CacheModel<ProposalRating>,
         sb.append(commentEnabled);
         sb.append(", otherDataString=");
         sb.append(otherDataString);
+        sb.append(", onlyForInternalUsage=");
+        sb.append(onlyForInternalUsage);
         sb.append("}");
 
         return sb.toString();
@@ -78,6 +81,8 @@ public class ProposalRatingCacheModel implements CacheModel<ProposalRating>,
             proposalRatingImpl.setOtherDataString(otherDataString);
         }
 
+        proposalRatingImpl.setOnlyForInternalUsage(onlyForInternalUsage);
+
         proposalRatingImpl.resetOriginalValues();
 
         return proposalRatingImpl;
@@ -93,6 +98,7 @@ public class ProposalRatingCacheModel implements CacheModel<ProposalRating>,
         comment = objectInput.readUTF();
         commentEnabled = objectInput.readBoolean();
         otherDataString = objectInput.readUTF();
+        onlyForInternalUsage = objectInput.readBoolean();
     }
 
     @Override
@@ -117,5 +123,7 @@ public class ProposalRatingCacheModel implements CacheModel<ProposalRating>,
         } else {
             objectOutput.writeUTF(otherDataString);
         }
+
+        objectOutput.writeBoolean(onlyForInternalUsage);
     }
 }
