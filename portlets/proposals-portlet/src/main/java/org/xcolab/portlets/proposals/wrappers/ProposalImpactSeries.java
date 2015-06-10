@@ -63,6 +63,7 @@ public class ProposalImpactSeries {
     private OntologyTerm whereTerm;
     private FocusArea focusArea;
     private Proposal proposal;
+    private ProposalWrapper proposalWrapper;
     private ProposalVersion lastModifiedVersion;
     private Map<String, ProposalImpactSeriesValues> seriesTypeToSeriesMap;
     private Map<String, Boolean> seriesTypeToEditableMap;
@@ -77,9 +78,9 @@ public class ProposalImpactSeries {
         this.seriesTypeToEditableMap = new HashMap<>();
         this.focusArea = focusArea;
         this.proposal = proposal;
+        this.proposalWrapper = new ProposalWrapper(proposal);
         this.whatTerm = ProposalImpactUtil.getWhatTerm(focusArea);
         this.whereTerm = ProposalImpactUtil.getWhereTerm(focusArea);
-
         this.impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
         // Retrieve static serieses
         bauSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_BAU_KEY);
@@ -294,6 +295,14 @@ public class ProposalImpactSeries {
             double resultValue = Math.round((bauValue * (reductionRate * 0.01 * adoptionRate * 0.01)) * 100.0) / 100.0;
             resultValues.putSeriesValue(currentYear, resultValue);
         }
+    }
+
+    public ProposalWrapper getProposalWrapper() {
+        return proposalWrapper;
+    }
+
+    public void setProposalWrapper(ProposalWrapper proposalWrapper) {
+        this.proposalWrapper = proposalWrapper;
     }
 
     public OntologyTerm getWhatTerm() {

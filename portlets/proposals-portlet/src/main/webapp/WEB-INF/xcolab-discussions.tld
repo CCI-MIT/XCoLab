@@ -44,7 +44,7 @@
 	<!-- 
 	<tag-file>
 		<name>discussionComments</name>
-		<path>WEB-INF/tags/discussions/discussionComments.tagx</path>
+		<path>WEB-INF/tags/discussions/evaluationComments.tagx</path>
 	</tag-file>
 	 -->
 </taglib>  

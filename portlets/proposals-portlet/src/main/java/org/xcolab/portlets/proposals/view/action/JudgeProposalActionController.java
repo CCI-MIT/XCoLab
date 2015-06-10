@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -248,14 +249,19 @@ public class JudgeProposalActionController {
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         User currentUser = proposalsContext.getUser(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        Boolean isPublicRating = permissions.getCanPublicRating();
 
         if(judgeProposalFeedbackBean.getScreeningUserId() != null) {
             currentUser = UserLocalServiceUtil.getUser(judgeProposalFeedbackBean.getScreeningUserId());
         }
 
         // Security handling
-        if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser))) {
+        if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser) || isPublicRating)) {
             return;
+        }
+
+        if(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser)){
+            isPublicRating = false;
         }
 
         //find existing ratings
@@ -264,8 +270,10 @@ public class JudgeProposalActionController {
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK());
 
-        this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(), contestPhase.getContestPhasePK(), currentUser.getUserId());
-        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhase.getContestPhasePK()+"/planId/"+proposal.getProposalId()+"/");
+        this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(), contestPhase.getContestPhasePK(), currentUser.getUserId(), isPublicRating);
+
+
+         response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhase.getContestPhasePK()+"/planId/"+proposal.getProposalId()+"/");
 
     }
 
@@ -339,7 +347,7 @@ public class JudgeProposalActionController {
                     proposalId,
                     contestPhaseId);
 
-            this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId());
+            this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId(), false);
             response.sendRedirect("/web/guest/plans/-/plans/contestId/" + contestId + "/phaseId/" + contestPhaseId + "/planId/" + proposalId + "/tab/SCREENING");
         } catch (Exception e) {
             List<Long> recipientIds = new ArrayList<Long>();
@@ -354,7 +362,7 @@ public class JudgeProposalActionController {
     }
 
 
-    private void saveRatings(List<ProposalRating> existingRatings, RatingBean ratingBean, long proposalId, long contestPhaseId, long currentUserId) throws NoSuchUserException, SystemException {
+    private void saveRatings(List<ProposalRating> existingRatings, RatingBean ratingBean, long proposalId, long contestPhaseId, long currentUserId, boolean isPublicRating) throws NoSuchUserException, SystemException {
         //initialize a map of existing ratings
         Map<Long, ProposalRating> typeToRatingMap = new HashMap<Long, ProposalRating>();
         for (ProposalRating r: existingRatings) {
@@ -396,7 +404,8 @@ public class JudgeProposalActionController {
                             currentUserId,
                             newRatingValueId,
                             comment,
-                            ""
+                            "",
+                            isPublicRating
                     );
                 }
             }

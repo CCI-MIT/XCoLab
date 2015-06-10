@@ -1,9 +1,11 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
+import com.ext.portlet.NoSuchProposal2PhaseException;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Thomas on 2/20/2015.
@@ -44,6 +47,7 @@ public class ContestPhaseBean {
 
     private ContestPhaseType contestPhaseTypeObj;
     private boolean contestPhaseDeleted = false;
+    private boolean contestPhaseProposalAssociations;
 
     public ContestPhaseBean(){
 
@@ -66,7 +70,23 @@ public class ContestPhaseBean {
         try {
             this.contestPhaseTypeObj = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseType);
         } catch (Exception e){
-
+        }
+        try {
+            this.contestPhaseProposalAssociations = false;
+            List<Contest> contestsUsingThisContestPhase =  ContestLocalServiceUtil.getContestsByContestScheduleId(this.contestScheduleId);
+            for(Contest contest : contestsUsingThisContestPhase){
+                List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(this.contestScheduleId,contest.getContestPK());
+                for(ContestPhase contestPhase1 : contestPhases){
+                    if(contestPhase1.getContestPhaseType() == this.contestPhaseType){
+                        List<Proposal2Phase> proposal2PhaseList =  Proposal2PhaseLocalServiceUtil.getByContestPhaseId(contestPhase1.getContestPhasePK());
+                        if(!proposal2PhaseList.isEmpty()){
+                            this.contestPhaseProposalAssociations = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
         }
     }
 
@@ -210,6 +230,14 @@ public class ContestPhaseBean {
 
     public void setContestPhaseDeleted(boolean contestPhaseDeleted) {
         this.contestPhaseDeleted = contestPhaseDeleted;
+    }
+
+    public boolean isContestPhaseProposalAssociations() {
+        return contestPhaseProposalAssociations;
+    }
+
+    public void setContestPhaseProposalAssociations(boolean contestPhaseProposalAssociations) {
+        this.contestPhaseProposalAssociations = contestPhaseProposalAssociations;
     }
 
     public void persist() throws Exception{

@@ -1446,6 +1446,7 @@
 			</basic>
 			<basic name="commentEnabled" />
 			<basic name="otherDataString" />
+			<basic name="onlyForInternalUsage" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

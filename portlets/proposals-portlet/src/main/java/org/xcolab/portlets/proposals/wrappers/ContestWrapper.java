@@ -375,6 +375,16 @@ public class ContestWrapper {
         return ContestLocalServiceUtil.getProposalsCount(contest);
     }
 
+    public long getTotalProposalsCount() throws PortalException, SystemException {
+        Set<Proposal> proposalList = new HashSet<>();
+        List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
+        for(ContestPhase contestPhase : contestPhases){
+            List<Proposal> proposals = ProposalLocalServiceUtil.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
+            proposals.addAll(proposals);
+        }
+        return proposalList.size();
+    }
+
     public long getCommentsCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getCommentsCount(contest);
     }
@@ -461,7 +471,18 @@ public class ContestWrapper {
     }
 
     public List<Contest> getSubContests() throws Exception{
-        return ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
+        long ONTOLOGY_SPACE_ID_WHERE = 104L;
+        //long ONTOLOGY_SPACE_ID_WHO = 102L;
+        //long ONTOLOGY_SPACE_ID_WHAT = 103L;
+        //long ONTOLOGY_SPACE_ID_HOW = 103L;
+        List <Contest> subContests = ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
+        Collections.sort(subContests, new Comparator<Contest>() {
+            @Override
+            public int compare(Contest c1, Contest c2) {
+                return c1.getWeight() - c2.getWeight();
+            }
+        });
+        return subContests;
     }
 
     public Contest getParentContest() throws Exception{
