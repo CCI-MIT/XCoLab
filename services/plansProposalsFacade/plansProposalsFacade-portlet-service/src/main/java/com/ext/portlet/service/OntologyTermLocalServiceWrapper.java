@@ -286,6 +286,13 @@ public class OntologyTermLocalServiceWrapper implements OntologyTermLocalService
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.OntologyTerm> findByOntologyTermName(
+        java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _ontologyTermLocalService.findByOntologyTermName(name);
+    }
+
+    @Override
     public com.ext.portlet.model.OntologyTerm createTerm(
         java.lang.Long parentId, java.lang.String name, java.lang.Long spaceId,
         java.lang.String descriptionUrl)

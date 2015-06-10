@@ -14,6 +14,7 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,8 +59,26 @@ public class ProposalImpactSeriesList {
         });
     }
 
+    public void persistImpactSeriesesWithAuthor(User author) throws PortalException, SystemException {
+        for (ProposalImpactSeries impactSeries : getImpactSerieses()) {
+            impactSeries.persistWithAuthor(author);
+        }
+    }
+
     public List<ProposalImpactSeries> getImpactSerieses() {
         return impactSerieses;
+    }
+
+    public void addProposalImpactSeries(ProposalImpactSeries proposalImpactSeries) {
+        // Check whether serie already exists
+        for (ProposalImpactSeries loopedSeries : this.impactSerieses) {
+            if (loopedSeries.getFocusArea().getId() == proposalImpactSeries.getFocusArea().getId()) {
+                this.getImpactSerieses().remove(loopedSeries);
+                break;
+            }
+        }
+
+        this.impactSerieses.add(proposalImpactSeries);
     }
 
     public FocusArea getFocusAreaForTerms(OntologyTerm whatTerm, OntologyTerm whereTerm) {
