@@ -76,12 +76,10 @@
 					<a href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
 				</div>
 				<div class="blue-button innerVerticalCenter" >
-
 					<a href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
 				</div>
 				<div class="blue-button innerVerticalCenter" >
 					<a href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
-
 				</div>
 			</div>
 		</div>
@@ -192,7 +190,9 @@
 											/>
 								</td>
 								<td>
-									<div class="deleteIcon"><!-- --></div>
+									<c:if test="${not schedulePhase.contestPhaseProposalAssociations}">
+										<div class="deleteIcon"><!-- --></div>
+									</c:if>
 								</td>
 							</tr>
 						<c:set var="dateTimePickerIndex" value="${dateTimePickerIndex + 2}"/>

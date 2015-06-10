@@ -41,7 +41,7 @@ public class WikiPageWrapper {
     }
 
     private static String removeSpecialChars(String stringToHaveSpecialCharacterRemoved){
-        return stringToHaveSpecialCharacterRemoved.replace(":", "").replace(",","");
+        return stringToHaveSpecialCharacterRemoved.replace(":", "").replace(",","").replace(";","");
     }
 
     public ContestResourcesBean getContestResourcesBean() throws Exception{

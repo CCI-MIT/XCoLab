@@ -172,6 +172,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private String[] _methodParameterTypes81;
     private String _methodName82;
     private String[] _methodParameterTypes82;
+    private String _methodName83;
+    private String[] _methodParameterTypes83;
 
     public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -534,6 +536,12 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _methodName82 = "addContestYearSuffixToCompletedContests";
 
         _methodParameterTypes82 = new String[] {  };
+
+        _methodName83 = "addContestYearSuffixToContest";
+
+        _methodParameterTypes83 = new String[] {
+                "com.ext.portlet.model.Contest", "boolean"
+            };
     }
 
     @Override
@@ -3035,6 +3043,29 @@ public class ContestLocalServiceClp implements ContestLocalService {
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public void addContestYearSuffixToContest(
+        com.ext.portlet.model.Contest contest, boolean checkForCompleted) {
+        try {
+            _invokableLocalService.invokeMethod(_methodName83,
+                _methodParameterTypes83,
+                new Object[] {
+                    ClpSerializer.translateInput(contest),
+                    
+                checkForCompleted
+                });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
 
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;

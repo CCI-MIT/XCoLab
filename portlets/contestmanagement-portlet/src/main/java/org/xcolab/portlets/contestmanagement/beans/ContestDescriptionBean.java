@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 public class ContestDescriptionBean implements Serializable{
     private static final long serialVersionUID = 1L;
-    private static final String NO_SPECIAL_CHAR_REGEX ="^[a-zA-Z:'’0-9äöüÄÖÜ?! ]*$";
+    private static final String NO_SPECIAL_CHAR_REGEX ="^[a-zA-Z:,;'’0-9äöüÄÖÜ?! ]*$";
 
     private Long ContestPK;
     private Long contestLogoId;
@@ -209,7 +209,7 @@ public class ContestDescriptionBean implements Serializable{
 
         if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
             ContestWrapper contestWrapper = new ContestWrapper(contest);
-            boolean proposalsInContest = contestWrapper.getProposalsCount() > 0;
+            boolean proposalsInContest = contestWrapper.getTotalProposalsCount() > 0;
             if(proposalsInContest) {
                 ContestScheduleWrapper.updateContestPhasesAccordingToContestSchedule(contest, contestScheduleId);
             }   else{

@@ -646,4 +646,12 @@ public interface ContestLocalService extends BaseLocalService,
     public void addContestYearSuffixToCompletedContests()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * This method adds a year suffix to the passed contest. By passing the flag checkForCompleted, the method will only
+    * add the suffix for contests which latest contest phase is of type COMPLETED and which are inactive.
+    * It automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
+    */
+    public void addContestYearSuffixToContest(
+        com.ext.portlet.model.Contest contest, boolean checkForCompleted);
 }

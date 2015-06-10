@@ -51,6 +51,10 @@ public class ProposalRatingLocalServiceImpl
         return ProposalRatingFinderUtil.findByProposalIdJudgeTypeContestPhaseId(proposalId, judgeType, contestPhaseId, 0, Integer.MAX_VALUE);
     }
 
+    protected List<ProposalRating> getRatingsForContestPhase(long contestPhaseId) throws SystemException {
+        return ProposalRatingFinderUtil.findByContestPhaseId(contestPhaseId, 0, Integer.MAX_VALUE);
+    }
+
     public List<ProposalRating> getJudgeRatingsForProposalAndUser(long userId, long proposalId, long contestPhaseId) throws SystemException {
         return this.getRatingsForProposalAndUser(proposalId, ProposalJudgeType.JUDGE.getId(), userId, contestPhaseId);
     }

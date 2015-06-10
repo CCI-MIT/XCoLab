@@ -360,7 +360,8 @@ public class Proposal2PhaseLocalServiceWrapper
     @Override
     public java.util.List<java.lang.Long> getContestPhasesForProposal(
         long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return _proposal2PhaseLocalService.getContestPhasesForProposal(proposalId);
     }
 

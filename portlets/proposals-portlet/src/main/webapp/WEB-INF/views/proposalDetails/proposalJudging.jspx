@@ -20,12 +20,12 @@
         <form:hidden path="contestPhaseId" />
         <form:hidden path="screeningUserId" id="judgeUserId"/>
 
-        <c:if test="${proposalsPermissions.canAdminAll}">
+        <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
             <i style="float: right;">Transfer rating/comment for selected judge:</i>
         </c:if>
 
         <h3><c:if test="proposalsPermissions.canJudgeActions">Judge </c:if>Rating</h3>
-        <c:if test="${proposalsPermissions.canAdminAll}">
+        <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
             <select id="judges-select">
                 <c:forEach var="judge" items="${proposal.selectedJudgeUsers}">
                     <proposalsPortlet:userPortraitSelectOption
@@ -40,7 +40,7 @@
         </c:if>
         <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
             are saved when clicking on save.
-            <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions or proposalsPermissions.canAdminAll}">
+            <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions or proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
                 Your rating will be visible to the Judging team only.
             </c:if>
         </i>
@@ -69,7 +69,7 @@
         <proposalsPortlet:ratingCriteriaText ratingTypes="${judgeProposalBean.ratingTypes}"/>
     </div>
 
-    <c:if test="${proposalsPermissions.canAdminAll}">
+    <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
         <script type="text/javascript">
             jQuery(document).ready(function() {
                 jQuery('#judges-select').ddslick({

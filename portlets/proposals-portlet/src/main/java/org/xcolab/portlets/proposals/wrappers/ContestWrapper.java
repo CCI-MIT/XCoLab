@@ -375,6 +375,16 @@ public class ContestWrapper {
         return ContestLocalServiceUtil.getProposalsCount(contest);
     }
 
+    public long getTotalProposalsCount() throws PortalException, SystemException {
+        Set<Proposal> proposalList = new HashSet<>();
+        List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
+        for(ContestPhase contestPhase : contestPhases){
+            List<Proposal> proposals = ProposalLocalServiceUtil.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
+            proposals.addAll(proposals);
+        }
+        return proposalList.size();
+    }
+
     public long getCommentsCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getCommentsCount(contest);
     }
