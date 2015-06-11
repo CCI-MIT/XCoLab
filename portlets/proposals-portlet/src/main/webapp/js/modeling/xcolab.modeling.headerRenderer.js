@@ -66,7 +66,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		this.container.find('.model_name').text(model.modelName);
 		this.container.find('.model_description').text(model.modelDescription);
 		this.container.find(".model_description .brand").remove();
-		var brand = $("<div class='brand'></div>");
+		var brand = $("<div class='brand' onclick='location.href='http://www.climateinteractive.org''</div>");
 		brand.addClass(model.modelName);
 		this.container.find(".model_description").append(brand);
 		
