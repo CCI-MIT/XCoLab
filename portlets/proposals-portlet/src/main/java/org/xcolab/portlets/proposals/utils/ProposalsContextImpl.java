@@ -160,7 +160,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             
             if (proposalId != null && proposalId > 0) {
                 try {
-                    if(request.getParameter("move")!= null) {
+                    if(request.getParameter("move")== null) {
                         contestPhase = getActiveContestPhaseIfProposalIsNotPartOfContestContestPhase(contestPhase, proposalId);
                         contest = ContestLocalServiceUtil.getContest(contestPhase.getContestPK());
                     }
