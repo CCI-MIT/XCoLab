@@ -199,6 +199,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
+				<i>Please do not put and end date to the last phase, otherwise the mass messaging function can't detect the contest!</i>
 			</div>
 		</form:form>
 	</div>
