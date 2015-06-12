@@ -120,12 +120,6 @@
                 <a target="_blank" href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">Need
                     help?</a>
             </div>
-            <c:choose>
-                <!-- Don't show table if no data is available and if user cannot edit -->
-                <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (not proposalsPermissions.canIAFActions) and (empty impactSerieses)}">
-                    <h3>No data available yet.</h3>
-                </c:when>
-                <c:otherwise>
                     <table>
                         <thead>
                         <tr>
@@ -250,8 +244,6 @@
                         </table>
                     </div>
 
-                </c:otherwise>
-            </c:choose>
             <c:if test="${proposalsPermissions.canIAFActions or proposalsPermissions.canAdminAll}">
                 <div class="edit-prop-butts" style="margin-top: 20px"><a id="upload-impact-data-toggle" href="javascript:;">Show impact data upload form</a></div>
                 <div class="clearfix"><!-- --></div>
