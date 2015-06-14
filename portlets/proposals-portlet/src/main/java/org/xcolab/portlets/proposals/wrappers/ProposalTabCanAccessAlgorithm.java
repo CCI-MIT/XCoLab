@@ -79,8 +79,8 @@ interface ProposalTabCanAccessAlgorithm {
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
                 ContestPhase contestPhase = context.getContestPhase(request);
-                if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()) ||
-                        !contestPhase.isFellowScreeningActive() || !permissions.getCanContestManagerActions()) {
+                if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll() || permissions.getCanContestManagerActions()) ||
+                        !contestPhase.isFellowScreeningActive()) {
                     return false;
                 }
 
