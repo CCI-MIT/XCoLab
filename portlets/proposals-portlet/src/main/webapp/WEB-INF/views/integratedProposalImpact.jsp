@@ -78,12 +78,12 @@
     </div>
 
     <script type="text/javascript">
-        var tableColors = ['#8C7AAE','#65B868'];
+        var tableColors;
+        //= ['#8C7AAE','#65B868'];
 
         $().ready(function() {
             tableColors = palette('tol-rainbow', 10); // TODO use dynamic value from server
             tableColors.forEach(function(part, index, theArray) {theArray[index] = "#"+part;});
-            console.log("tableColors2", tableColors);
 
             // Color table columns
             var hitFirstRow = false;
