@@ -30,6 +30,7 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
     private String _comment;
     private boolean _commentEnabled;
     private String _otherDataString;
+    private boolean _onlyForInternalUsage;
     private BaseModel<?> _proposalRatingRemoteModel;
 
     public ProposalRatingClp() {
@@ -77,6 +78,7 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
         attributes.put("comment", getComment());
         attributes.put("commentEnabled", getCommentEnabled());
         attributes.put("otherDataString", getOtherDataString());
+        attributes.put("onlyForInternalUsage", getOnlyForInternalUsage());
 
         return attributes;
     }
@@ -129,6 +131,13 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
 
         if (otherDataString != null) {
             setOtherDataString(otherDataString);
+        }
+
+        Boolean onlyForInternalUsage = (Boolean) attributes.get(
+                "onlyForInternalUsage");
+
+        if (onlyForInternalUsage != null) {
+            setOnlyForInternalUsage(onlyForInternalUsage);
         }
     }
 
@@ -326,6 +335,34 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
     }
 
     @Override
+    public boolean getOnlyForInternalUsage() {
+        return _onlyForInternalUsage;
+    }
+
+    @Override
+    public boolean isOnlyForInternalUsage() {
+        return _onlyForInternalUsage;
+    }
+
+    @Override
+    public void setOnlyForInternalUsage(boolean onlyForInternalUsage) {
+        _onlyForInternalUsage = onlyForInternalUsage;
+
+        if (_proposalRatingRemoteModel != null) {
+            try {
+                Class<?> clazz = _proposalRatingRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setOnlyForInternalUsage",
+                        boolean.class);
+
+                method.invoke(_proposalRatingRemoteModel, onlyForInternalUsage);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public boolean isRatingComplete() {
         try {
             String methodName = "isRatingComplete";
@@ -420,6 +457,7 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
         clone.setComment(getComment());
         clone.setCommentEnabled(getCommentEnabled());
         clone.setOtherDataString(getOtherDataString());
+        clone.setOnlyForInternalUsage(getOnlyForInternalUsage());
 
         return clone;
     }
@@ -465,7 +503,7 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(getId());
@@ -483,6 +521,8 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
         sb.append(getCommentEnabled());
         sb.append(", otherDataString=");
         sb.append(getOtherDataString());
+        sb.append(", onlyForInternalUsage=");
+        sb.append(getOnlyForInternalUsage());
         sb.append("}");
 
         return sb.toString();
@@ -490,7 +530,7 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ProposalRating");
@@ -527,6 +567,10 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
         sb.append(
             "<column><column-name>otherDataString</column-name><column-value><![CDATA[");
         sb.append(getOtherDataString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>onlyForInternalUsage</column-name><column-value><![CDATA[");
+        sb.append(getOnlyForInternalUsage());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

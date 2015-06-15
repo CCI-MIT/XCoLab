@@ -538,8 +538,9 @@ public class ProposalPickerJSONController {
 		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
 				proposals);
 		ProposalPickerFilterUtil.ONTOLOGY.filter(proposals, sectionId);
-		if(request != null) {
-			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(proposalsContext.getContest(request).getFocusAreaId());
+		Contest contest = proposalsContext.getContest(request);
+		if(request != null && ContestTier.getContestTierByTierType(contest.getContestTier()) == ContestTier.REGION_AGGREGATE){
+			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
 			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, contestFocusArea.getId());
 		}
 		return proposals;
@@ -558,9 +559,9 @@ public class ProposalPickerJSONController {
 		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
 				proposals);
 		ProposalPickerFilterUtil.ONTOLOGY.filter(proposals, sectionId);
-
-		if(request != null) {
-			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(proposalsContext.getContest(request).getFocusAreaId());
+		Contest contest = proposalsContext.getContest(request);
+		if(request != null && ContestTier.getContestTierByTierType(contest.getContestTier()) == ContestTier.REGION_AGGREGATE){
+			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
 			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, contestFocusArea.getId());
 		}
 		return proposals;
@@ -585,8 +586,9 @@ public class ProposalPickerJSONController {
 				proposals);
 
 		ProposalPickerFilterUtil.ONTOLOGY.filter(proposals, sectionId);
-		if(request != null) {
-			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(proposalsContext.getContest(request).getFocusAreaId());
+		Contest contest = proposalsContext.getContest(request);
+		if(request != null && ContestTier.getContestTierByTierType(contest.getContestTier()) == ContestTier.REGION_AGGREGATE){
+			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
 			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, contestFocusArea.getId());
 		}
 		return proposals;

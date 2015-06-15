@@ -58,9 +58,10 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
             { "ratingValueId", Types.BIGINT },
             { "comment_", Types.CLOB },
             { "commentEnabled", Types.BOOLEAN },
-            { "otherDataString", Types.VARCHAR }
+            { "otherDataString", Types.VARCHAR },
+            { "onlyForInternalUsage", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRating (id_ LONG not null primary key,proposalId LONG,contestPhaseId LONG,userId LONG,ratingValueId LONG,comment_ TEXT null,commentEnabled BOOLEAN,otherDataString VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRating (id_ LONG not null primary key,proposalId LONG,contestPhaseId LONG,userId LONG,ratingValueId LONG,comment_ TEXT null,commentEnabled BOOLEAN,otherDataString VARCHAR(75) null,onlyForInternalUsage BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalRating";
     public static final String ORDER_BY_JPQL = " ORDER BY proposalRating.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalRating.id_ ASC";
@@ -89,6 +90,7 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
     private String _comment;
     private boolean _commentEnabled;
     private String _otherDataString;
+    private boolean _onlyForInternalUsage;
     private ProposalRating _escapedModel;
 
     public ProposalRatingModelImpl() {
@@ -115,6 +117,7 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         model.setComment(soapModel.getComment());
         model.setCommentEnabled(soapModel.getCommentEnabled());
         model.setOtherDataString(soapModel.getOtherDataString());
+        model.setOnlyForInternalUsage(soapModel.getOnlyForInternalUsage());
 
         return model;
     }
@@ -181,6 +184,7 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         attributes.put("comment", getComment());
         attributes.put("commentEnabled", getCommentEnabled());
         attributes.put("otherDataString", getOtherDataString());
+        attributes.put("onlyForInternalUsage", getOnlyForInternalUsage());
 
         return attributes;
     }
@@ -233,6 +237,13 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
 
         if (otherDataString != null) {
             setOtherDataString(otherDataString);
+        }
+
+        Boolean onlyForInternalUsage = (Boolean) attributes.get(
+                "onlyForInternalUsage");
+
+        if (onlyForInternalUsage != null) {
+            setOnlyForInternalUsage(onlyForInternalUsage);
         }
     }
 
@@ -347,6 +358,22 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         _otherDataString = otherDataString;
     }
 
+    @JSON
+    @Override
+    public boolean getOnlyForInternalUsage() {
+        return _onlyForInternalUsage;
+    }
+
+    @Override
+    public boolean isOnlyForInternalUsage() {
+        return _onlyForInternalUsage;
+    }
+
+    @Override
+    public void setOnlyForInternalUsage(boolean onlyForInternalUsage) {
+        _onlyForInternalUsage = onlyForInternalUsage;
+    }
+
     @Override
     public ExpandoBridge getExpandoBridge() {
         return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
@@ -382,6 +409,7 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         proposalRatingImpl.setComment(getComment());
         proposalRatingImpl.setCommentEnabled(getCommentEnabled());
         proposalRatingImpl.setOtherDataString(getOtherDataString());
+        proposalRatingImpl.setOnlyForInternalUsage(getOnlyForInternalUsage());
 
         proposalRatingImpl.resetOriginalValues();
 
@@ -463,12 +491,14 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
             proposalRatingCacheModel.otherDataString = null;
         }
 
+        proposalRatingCacheModel.onlyForInternalUsage = getOnlyForInternalUsage();
+
         return proposalRatingCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(getId());
@@ -486,6 +516,8 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         sb.append(getCommentEnabled());
         sb.append(", otherDataString=");
         sb.append(getOtherDataString());
+        sb.append(", onlyForInternalUsage=");
+        sb.append(getOnlyForInternalUsage());
         sb.append("}");
 
         return sb.toString();
@@ -493,7 +525,7 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ProposalRating");
@@ -530,6 +562,10 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         sb.append(
             "<column><column-name>otherDataString</column-name><column-value><![CDATA[");
         sb.append(getOtherDataString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>onlyForInternalUsage</column-name><column-value><![CDATA[");
+        sb.append(getOnlyForInternalUsage());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

@@ -1,5 +1,6 @@
 package org.xcolab.portlets.proposals.utils;
 
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -24,6 +25,7 @@ import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.wrappers.*;
 
 import javax.portlet.PortletRequest;
+import java.util.List;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
@@ -136,7 +138,7 @@ public class ProposalsContextImpl implements ProposalsContext {
         final Long contestId = (Long) ParamUtil.getLong(request, CONTEST_ID_PARAM);
         final Long phaseId = (Long) ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
         final Integer version = (Integer) ParamUtil.getInteger(request, VERSION_PARAM);
-        
+
         Contest contest = null;
         ContestPhase contestPhase = null;
         Proposal proposal = null;
@@ -146,7 +148,11 @@ public class ProposalsContextImpl implements ProposalsContext {
             contest = ContestLocalServiceUtil.getContest(contestId);
 
             if (phaseId != null && phaseId > 0) {
-                contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
+                try {
+                    contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
+                } catch (NoSuchContestPhaseException e){
+                    contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
+                }
             } else {
                 //get the last phase of this contest
                 contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
@@ -154,6 +160,10 @@ public class ProposalsContextImpl implements ProposalsContext {
             
             if (proposalId != null && proposalId > 0) {
                 try {
+                    if(request.getParameter("move")== null) {
+                        contestPhase = getActiveContestPhaseIfProposalIsNotPartOfContestContestPhase(contestPhase, proposalId);
+                        contest = ContestLocalServiceUtil.getContest(contestPhase.getContestPK());
+                    }
                     proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhase.getContestPhasePK());
                 }
                 catch (NoSuchProposal2PhaseException e) {
@@ -195,7 +205,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                 request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new ContestPhaseWrapper(contestPhase));
                 
                 if (proposal != null) {
-                    ProposalWrapper proposalWrapper = null;
+                    ProposalWrapper proposalWrapper;
                     User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
 
                     if (version != null && version > 0) {
@@ -209,6 +219,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                                 proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
                     }
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
+
                 }
             }
         }
@@ -235,4 +246,36 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
     
     private final static Log _log = LogFactoryUtil.getLog(ProposalsContextImpl.class);
+
+    private static ContestPhase getActiveContestPhaseIfProposalIsNotPartOfContestContestPhase(ContestPhase contestPhase, Long proposalId){
+        ContestPhase replacedContestPhase = contestPhase;
+        try {
+            List<ContestPhase> activeContestPhasesForProposal = Proposal2PhaseLocalServiceUtil.getActiveContestPhasesForProposal(proposalId);
+
+            if(activeContestPhasesForProposal.isEmpty()){
+                List<Long> contestPhaseIdsForProposal = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposalId);
+                for(Long contestPhaseIdForProposal : contestPhaseIdsForProposal){
+                    activeContestPhasesForProposal.add(ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseIdForProposal));
+                }
+            }
+
+            if(activeContestPhasesForProposal.size() > 0) {
+
+                if (!activeContestPhasesForProposal.contains(contestPhase)){
+                    replacedContestPhase = activeContestPhasesForProposal.get(0);
+                }
+
+                Contest contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposalId);
+                ContestPhase activeContestPhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+
+                if (activeContestPhasesForProposal.contains(activeContestPhaseForContest)) {
+                    replacedContestPhase = activeContestPhaseForContest;
+                }
+            }
+        } catch (Exception e){
+            _log.warn("Couldn't find a valid contestPhaseId for Proposal: " + proposalId);
+        }
+
+        return replacedContestPhase;
+    }
 }

@@ -17,8 +17,8 @@
             </snapshots>
         </repository>
 		<repository>
-			<id>XColab-repo</id>
-			<url>https://xcolab.googlecode.com/svn/maven</url>
+			<id>XCoLab-repo</id>
+			<url>https://raw.github.com/CCI-MIT/XCoLab/mvn-repo/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -46,16 +46,6 @@
 			<url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
 		</repository>
 	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>XColab-plugins-repo</id>
-			<url>https://xcolab.googlecode.com/svn/maven</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 	<build>
 		<plugins>
 			<plugin>

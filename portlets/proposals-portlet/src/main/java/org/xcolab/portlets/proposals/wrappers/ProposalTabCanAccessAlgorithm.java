@@ -50,7 +50,8 @@ interface ProposalTabCanAccessAlgorithm {
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
-                if (!(permissions.getCanJudgeActions() || permissions.getCanFellowActions() || permissions.getCanAdminAll())) {
+                if (!(permissions.getCanJudgeActions() || permissions.getCanFellowActions() || permissions.getCanAdminAll()
+                || permissions.getCanContestManagerActions()) ) {
                     return false;
                 }
 
@@ -65,6 +66,7 @@ interface ProposalTabCanAccessAlgorithm {
                 return wrapper.shouldShowJudgingTab(context.getContestPhase(request).getContestPhasePK());
 
             } catch (PortalException | SystemException e) {
+                System.out.println("Error while checking advancingAccess: " + e);
                 e.printStackTrace();
             }
 
@@ -78,7 +80,7 @@ interface ProposalTabCanAccessAlgorithm {
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
                 ContestPhase contestPhase = context.getContestPhase(request);
-                if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()) ||
+                if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll() || permissions.getCanContestManagerActions()) ||
                         !contestPhase.isFellowScreeningActive()) {
                     return false;
                 }
@@ -87,6 +89,7 @@ interface ProposalTabCanAccessAlgorithm {
                 return permissions.getCanFellowActions() && phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED ||
                         permissions.getCanAdminAll();
             } catch (PortalException | SystemException e) {
+                System.out.println("Error while checking screeningAccess: " + e);
                 e.printStackTrace();
             }
 

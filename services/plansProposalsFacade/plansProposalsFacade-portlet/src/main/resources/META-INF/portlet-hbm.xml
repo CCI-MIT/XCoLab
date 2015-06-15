@@ -1150,6 +1150,7 @@
 		<property name="comment" type="com.liferay.portal.dao.orm.hibernate.StringType" column="comment_" />
 		<property name="commentEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="otherDataString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="onlyForInternalUsage" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalRatingTypeImpl" table="xcolab_ProposalRatingType">
 		<cache usage="read-write" />

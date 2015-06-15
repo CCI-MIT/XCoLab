@@ -347,7 +347,7 @@ public class ProposalWrapper {
         return 0;
     }
 
-    public long getDiscussionCommentsCount() throws PortalException, SystemException {
+    public long getEvaluationCommentsCount() throws PortalException, SystemException {
         return 0;
     }
 
