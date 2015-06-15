@@ -1,19 +1,14 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.ImpactDefaultSeries;
-import com.ext.portlet.model.ImpactIteration;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
+import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 
 import java.util.ArrayList;
@@ -39,7 +34,14 @@ public class ProposalImpactSeriesList {
             throws PortalException, SystemException {
 
         this.impactSerieses = new ArrayList<ProposalImpactSeries>();
-        for (FocusArea focusArea : ProposalLocalServiceUtil.getImpactProposalFocusAreas(proposal)) {
+
+        List<FocusArea> proposalFocusAreas = ProposalLocalServiceUtil.getImpactProposalFocusAreas(proposal);
+
+        if(proposalFocusAreas.isEmpty()){
+            FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
+            proposalFocusAreas.add(contestFocusArea);
+        }
+        for (FocusArea focusArea : proposalFocusAreas) {
             // Get the impact series for the respective focus area
             this.impactSerieses.add(new ProposalImpactSeries(contest, proposal, focusArea));
         }
@@ -125,5 +127,153 @@ public class ProposalImpactSeriesList {
         }
 
         return seriesTypeToSeriesSumMap;
+    }
+
+    /**
+     * Returns a map containing aggregated proposal impact series values of all sector-region pairs of a proposal
+     *
+     * @param seriesTypes           seriesTypes that are being calculated
+     * @return                      A map containing a ProposalImpactSeriesValues object for each impact series type
+     * @throws SystemException
+     * @throws PortalException
+     */
+    public Map<String, ProposalImpactSeriesValues> getAggregatedSeriesValues(List<String> seriesTypes, OntologyTerm regionOntologyTerm) throws SystemException, PortalException {
+        Map<String, ProposalImpactSeriesValues> seriesTypeToSeriesSumMap = new HashMap<>(seriesTypes.size());
+
+        for (String seriesType : seriesTypes) {
+            seriesTypeToSeriesSumMap.put(seriesType, new ProposalImpactSeriesValues());
+        }
+        seriesTypeToSeriesSumMap.put(ProposalImpactSeries.SERIES_TYPE_RESULT_KEY, new ProposalImpactSeriesValues());
+
+        for (ProposalImpactSeries impactSeries : impactSerieses) {
+            if(impactSeries.getWhereTerm().equals(regionOntologyTerm)) {
+                for (String seriesType : seriesTypes) {
+                    ProposalImpactSeriesValues integratedSeriesValues = seriesTypeToSeriesSumMap.get(seriesType);
+                    ProposalImpactSeriesValues impactSeriesValues = impactSeries.getSeriesValuesForType(seriesType);
+
+                    // Add up all the impact series values
+                    integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
+                }
+
+                // Aggregate result impact series
+                ProposalImpactSeriesValues integratedSeriesValues = seriesTypeToSeriesSumMap.get(ProposalImpactSeries.SERIES_TYPE_RESULT_KEY);
+                ProposalImpactSeriesValues impactSeriesValues = impactSeries.getResultSeriesValues();
+                integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
+            }
+        }
+
+        return seriesTypeToSeriesSumMap;
+    }
+
+    /**
+     * Returns a map containing aggregated proposal impact series values of all sector-region pairs of a proposal
+     *
+     * @param seriesTypes           seriesTypes that are being calculated
+     * @return                      A map containing a ProposalImpactSeriesValues object for each impact series type
+     * @throws SystemException
+     * @throws PortalException
+     */
+    public Map<String, ProposalImpactSeriesValues> getAggregatedSeriesValues(List<String> seriesTypes, Long regionOntologyTermId, List<Long> sectorOntologyTermIds) throws SystemException, PortalException {
+
+        Map<String, ProposalImpactSeriesValues> seriesTypeToSeriesSumMap = new HashMap<>(seriesTypes.size());
+        OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionOntologyTermId);
+
+        for (String seriesType : seriesTypes) {
+            seriesTypeToSeriesSumMap.put(seriesType, new ProposalImpactSeriesValues());
+        }
+
+        for (Long ontologyTermId : sectorOntologyTermIds) {
+            seriesTypeToSeriesSumMap.put(ontologyTermId.toString(), new ProposalImpactSeriesValues());
+        }
+
+        seriesTypeToSeriesSumMap.put(ProposalImpactSeries.SERIES_TYPE_RESULT_KEY, new ProposalImpactSeriesValues());
+        ProposalImpactSeriesValues emptySeries = new ProposalImpactSeriesValues();
+
+        for (ProposalImpactSeries impactSeries : impactSerieses) {
+
+            if(impactSeries.getWhereTerm().equals(regionOntologyTerm)) {
+
+                ProposalImpactSeriesValues impactSeriesValues = impactSeries.getResultSeriesValues();
+
+                ProposalImpactSeriesValues integratedSeriesValues = seriesTypeToSeriesSumMap.get(ProposalImpactSeries.SERIES_TYPE_RESULT_KEY);
+                integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
+
+                for (String seriesType : seriesTypes) {
+                    integratedSeriesValues = seriesTypeToSeriesSumMap.get(seriesType);
+                    impactSeriesValues = impactSeries.getSeriesValuesForType(seriesType);
+                    integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
+                }
+
+                for (Long sectorOntologyTermId : sectorOntologyTermIds) {
+                    OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(sectorOntologyTermId);
+                    integratedSeriesValues = seriesTypeToSeriesSumMap.get(sectorOntologyTermId.toString());
+                    if (!(impactSeries.getWhatTerm().equals(sectorOntologyTerm))){
+                        for (Integer year : impactSeriesValues.getYearToValueMap().keySet()) {
+                            emptySeries.putSeriesValue(year, 0.);
+                        }
+                        integratedSeriesValues.addImpactSeriesValues(emptySeries);
+                    } else {
+                        integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
+                    }
+                }
+            }
+        }
+
+        return seriesTypeToSeriesSumMap;
+    }
+
+    public ProposalImpactSeriesValues getAggregatedSeriesValuesByOntologyTermId(Long ontologyTermId) throws SystemException, PortalException {
+
+        ProposalImpactSeriesValues aggregatedSeriesValuesByOntologyTermId = new ProposalImpactSeriesValues();
+
+        OntologyTerm ontologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(ontologyTermId);
+        ProposalImpactSeriesValues emptySeries = new ProposalImpactSeriesValues();
+        for (ProposalImpactSeries impactSeries : impactSerieses) {
+
+                ProposalImpactSeriesValues impactSeriesValues = impactSeries.getResultSeriesValues();
+            if(!impactSeries.getWhatTerm().equals(ontologyTerm)) {
+                for(Integer year : impactSeriesValues.getYearToValueMap().keySet()){
+                    emptySeries.putSeriesValue(year, 0.);
+                }
+                aggregatedSeriesValuesByOntologyTermId.addImpactSeriesValues(emptySeries);
+            } else {
+                aggregatedSeriesValuesByOntologyTermId.addImpactSeriesValues(impactSeriesValues);
+            }
+        }
+
+        return aggregatedSeriesValuesByOntologyTermId;
+    }
+
+    public Map<String, ProposalImpactSeriesValues> getAggregatedSeriesValuesByRegionAndSectorOntologyTermIds(Long regionOntologyTermId, List<Long> sectorOntologyTermIds) throws SystemException, PortalException {
+        Map<String, ProposalImpactSeriesValues> ontologyTermIdToSeriesSumMap = new HashMap<>(sectorOntologyTermIds.size());
+        OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionOntologyTermId);
+
+        for (Long ontologyTermId : sectorOntologyTermIds) {
+            ontologyTermIdToSeriesSumMap.put(ontologyTermId.toString(), new ProposalImpactSeriesValues());
+        }
+
+        ProposalImpactSeriesValues emptySeries = new ProposalImpactSeriesValues();
+
+        for (ProposalImpactSeries impactSeries : impactSerieses) {
+
+            ProposalImpactSeriesValues impactSeriesValues = impactSeries.getResultSeriesValues();
+
+            for (String sectorOntologyTermId : ontologyTermIdToSeriesSumMap.keySet()) {
+
+                OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(Long.parseLong(sectorOntologyTermId));
+                ProposalImpactSeriesValues integratedSeriesValues = ontologyTermIdToSeriesSumMap.get(sectorOntologyTermId);
+
+                if (!(impactSeries.getWhatTerm().equals(sectorOntologyTerm) && impactSeries.getWhereTerm().equals(regionOntologyTerm))){
+                    for (Integer year : impactSeriesValues.getYearToValueMap().keySet()) {
+                        emptySeries.putSeriesValue(year, 0.);
+                    }
+                    integratedSeriesValues.addImpactSeriesValues(emptySeries);
+                } else {
+                    integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
+                }
+            }
+        }
+
+        return ontologyTermIdToSeriesSumMap;
     }
 }

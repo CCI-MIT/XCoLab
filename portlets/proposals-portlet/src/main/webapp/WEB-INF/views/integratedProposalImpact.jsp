@@ -6,6 +6,7 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:liferay-ui="http://liferay.com/tld/ui"
+          xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
     <jsp:directive.include file="./init.jspx" />
 
@@ -13,73 +14,76 @@
 
     <!-- Content -->
     <div id="content">
+
+        <!--
+        <c:if test="${not empty availableModels }">
+            <proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" />
+        </c:if>
+
+        <modeling:simulationEdit modelId="${proposal.modelId }" />
+        <modeling:simulationView scenarioId="${proposal.scenarioId }" modelId="${proposal.modelId }" />
+        -->
+
         <div id="impact">
-            <c:choose>
-                <!-- Don't show table if no data is available and if user cannot edit -->
-                <c:when test="${impactSeries.emptySeries}">
-                    <h3>No data available yet.</h3>
-                </c:when>
-                <c:otherwise>
-                    <div id="impact-chart">&#160;</div>
-                    <table>
-                        <tr>
-                            <td>&#160;</td>
-                            <c:forEach var="impactIteration" items="${impactIterations}"><th class="blue-bg" style="text-align: center;">${impactIteration.year}</th></c:forEach>
-                        </tr>
-                        <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
-                            <c:set var="seriesValues" value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}" />
-                            <tr>
-                                <td class="sector">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
-                                <c:forEach var="impactIteration" items="${impactIterations}">
-                                    <fmt:formatNumber var="value"
-                                                      value="${seriesValues.yearToValueMap[impactIteration.year]}"
-                                                      maxFractionDigits="2" />
-                                    <td class="impact-value">${value}</td>
-                                </c:forEach>
-                            </tr>
-                        </c:forEach>
-                        <tr>
-                            <c:choose>
-                                <c:when test="${empty proposal.team}"><td class="sector">${proposal.author.screenName}'s proposal (Selected proposal portfolio sum)</td></c:when>
-                                <c:otherwise><td class="sector">${proposal.team}'s proposal (Selected proposal portfolio sum)</td></c:otherwise>
-                            </c:choose>
+            <div id="impact-chart">&#160;</div>
+            <table>
+                <tr>
+                    <td>&#160;</td>
+                    <c:forEach var="impactIteration" items="${impactIterations}"><th class="blue-bg" style="text-align: center;">${impactIteration.year}</th></c:forEach>
+                </tr>
+                <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
+                    <c:set var="seriesValues" value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}" />
+                    <tr>
+                        <td class="sector">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
+                        <c:catch var ="catchException">
                             <c:forEach var="impactIteration" items="${impactIterations}">
                                 <fmt:formatNumber var="value"
-                                                  value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
+                                                  value="${seriesValues.yearToValueMap[impactIteration.year]}"
                                                   maxFractionDigits="2" />
                                 <td class="impact-value">${value}</td>
                             </c:forEach>
-                        </tr>
-                        <tr>
-                            <c:choose>
-                                <c:when test="${empty proposal.team}"><td class="sector" colspan="5">${proposal.author.screenName}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:when>
-                                <c:otherwise><td class="sector" colspan="5">${proposal.team}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:otherwise>
-                            </c:choose>
-                        </tr>
-                        <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
-                            <tr class="impact-series-clickable" id="impact-row-${index.index}">
-                                <td class="region">
-                                    ${impactSeries.proposalWrapper.name}
-                                    <span
-                                        id="${impactSeries.whereTerm.id}">(region: ${impactSeries.whereTerm.name}, </span>
-                                    <span
-                                        id="${impactSeries.whatTerm.id}">sector: ${impactSeries.whatTerm.name})</span></td>
-                                <c:forEach var="impactIteration" items="${impactIterations}">
-                                    <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
-                                </c:forEach>
-                            </tr>
+                        </c:catch>
+                    </tr>
+                </c:forEach>
+                <tr>
+                    <td class="sector">Total of above sectors</td>
+                    <c:forEach var="impactIteration" items="${impactIterations}">
+                        <fmt:formatNumber var="value"
+                                          value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
+                                          maxFractionDigits="2" />
+                        <td class="impact-value">${value}</td>
+                    </c:forEach>
+                </tr>
+                <tr>
+                    <c:choose>
+                        <c:when test="${empty proposal.team}"><td colspan="5">${proposal.author.screenName}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:when>
+                        <c:otherwise><td colspan="5">${proposal.team}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:otherwise>
+                    </c:choose>
+                </tr>
+                <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
+                    <tr class="impact-series-clickable" id="impact-row-${index.index}">
+                        <td class="region">
+                            ${impactSeries.proposalWrapper.name}
+                            <span
+                                id="${impactSeries.whereTerm.id}">(region: ${impactSeries.whereTerm.name}, </span>
+                            <span
+                                id="${impactSeries.whatTerm.id}">sector: ${impactSeries.whatTerm.name})</span></td>
+                        <c:forEach var="impactIteration" items="${impactIterations}">
+                            <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
                         </c:forEach>
-                    </table>
-                </c:otherwise>
-            </c:choose>
+                    </tr>
+                </c:forEach>
+            </table>
         </div>
     </div>
 
     <script type="text/javascript">
-        //var tableColors = palette('tol-seq', 10);
         var tableColors = ['#8C7AAE','#65B868'];
 
         $().ready(function() {
+            tableColors = palette('tol-rainbow', 10); // TODO use dynamic value from server
+            tableColors.forEach(function(part, index, theArray) {theArray[index] = "#"+part;});
+            console.log("tableColors2", tableColors);
 
             // Color table columns
             var hitFirstRow = false;
@@ -105,10 +109,10 @@
             // Chart labels
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Year');
-            <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
-                data.addColumn('number', '${seriesEntry.key}');
+            <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToDescriptionMap}" varStatus="index">
+                data.addColumn('number', '${seriesEntry.value}');
             </c:forEach>
-            data.addColumn('number', 'Selected proposal portfolio sum');
+            data.addColumn('number', 'Total of sectors');
 
             // Build chart data
             <c:forEach var="impactIteration" items="${impactIterations}">

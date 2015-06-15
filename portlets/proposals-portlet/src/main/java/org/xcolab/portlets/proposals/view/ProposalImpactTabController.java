@@ -23,11 +23,13 @@ import org.xcolab.portlets.proposals.wrappers.*;
 
 import javax.portlet.PortletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by kmang on 12/03/15.
@@ -57,12 +59,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             return "proposalImpactError";
         }
 
-
         switch (ContestTier.getContestTierByTierType(contest.getContestTier())) {
             case BASIC:
                 return showImpactTabBasicProposal(request, model);
             case REGION_SECTOR:
+                //return "proposalImpactError";
             case REGION_AGGREGATE:
+                return showImpactTabIntegratedProposal(request, model);
             case GLOBAL:
                 //return showImpactTabIntegratedProposal(request, model);
             default:
@@ -80,8 +83,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         Proposal proposal = proposalsContext.getProposal(request);
         Contest contest = proposalsContext.getContest(request);
 
-        IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal);
+        IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal, contest);
         model.addAttribute("impactSeries", integratedProposalImpactSeries);
+
+        Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(contest.getContestPK());
+        if (modelIdsWithNames.size() > 1) {
+            model.addAttribute("availableModels", modelIdsWithNames);
+        }
 
         populateImpactTabBasicProposal(model, contest, proposal);
 
@@ -101,6 +109,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             // All filled out impact series
             List<ProposalAttribute> impactProposalAttributes =
                     ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
+
             ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(contest, proposal.getWrapped());
             model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
 
@@ -115,13 +124,20 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return "basicProposalImpact";
     }
 
-
     private void populateImpactTabBasicProposal(Model model, Contest contest, Proposal proposalParent) throws PortalException, SystemException{
-        List<Proposal> referencedProposals = ProposalLocalServiceUtil.getSubproposals(proposalParent.getProposalId(), true);
+        Set<Proposal> referencedSubProposals = IntegratedProposalImpactSeries.getSubProposalsOnContestTier(proposalParent, ContestTier.BASIC.getTierType());
+        ContestWrapper contestWrapper = new ContestWrapper(contest);
+        List<OntologyTerm> ontologyTermList = contestWrapper.getWhere();
+
         List<ProposalImpactSeries> proposalImpactSerieses = new ArrayList<>();
-        for(Proposal proposal : referencedProposals) {
+        for(Proposal proposal : referencedSubProposals) {
             ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(contest, proposal);
-            proposalImpactSerieses.addAll(proposalImpactSeriesList.getImpactSerieses());
+            for(ProposalImpactSeries proposalImpactSeries : proposalImpactSeriesList.getImpactSerieses()){
+                if(proposalImpactSeries.getWhereTerm().equals(ontologyTermList.get(0))) {
+                    proposalImpactSerieses.add(proposalImpactSeries);
+                }
+            }
+
         }
         model.addAttribute("impactSerieses", proposalImpactSerieses);
     }
