@@ -86,10 +86,10 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal, contest);
         model.addAttribute("impactSeries", integratedProposalImpactSeries);
 
-        Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(contest.getContestPK());
+        /*Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(contest.getContestPK());
         if (modelIdsWithNames.size() > 1) {
             model.addAttribute("availableModels", modelIdsWithNames);
-        }
+        }*/
 
         populateImpactTabBasicProposal(model, contest, proposal);
 

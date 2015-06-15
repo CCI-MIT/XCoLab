@@ -36,11 +36,7 @@ public class ProposalImpactSeriesList {
         this.impactSerieses = new ArrayList<ProposalImpactSeries>();
 
         List<FocusArea> proposalFocusAreas = ProposalLocalServiceUtil.getImpactProposalFocusAreas(proposal);
-
-        if(proposalFocusAreas.isEmpty()){
-            FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
-            proposalFocusAreas.add(contestFocusArea);
-        }
+        
         for (FocusArea focusArea : proposalFocusAreas) {
             // Get the impact series for the respective focus area
             this.impactSerieses.add(new ProposalImpactSeries(contest, proposal, focusArea));
