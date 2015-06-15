@@ -157,13 +157,15 @@ public class IntegratedProposalImpactSeries {
     }
 
     public static void getSubProposalsOnContestTier(List<Proposal> proposals, Set<Proposal> subProposalsOnContestTier, Long contestTierId) throws SystemException, PortalException {
-        for(Proposal proposal : proposals){
-            Contest contestOfProposal = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
-            if (contestTierId == contestOfProposal.getContestTier()) {
-                subProposalsOnContestTier.addAll(proposals);
-            } else {
-                List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
-                getSubProposalsOnContestTier(subProposals, subProposalsOnContestTier, contestTierId);
+        if (proposals.size() > 0) {
+            for (Proposal proposal : proposals) {
+                Contest contestOfProposal = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
+                if (contestTierId == contestOfProposal.getContestTier()) {
+                    subProposalsOnContestTier.addAll(proposals);
+                } else {
+                    List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
+                    getSubProposalsOnContestTier(subProposals, subProposalsOnContestTier, contestTierId);
+                }
             }
         }
     }
