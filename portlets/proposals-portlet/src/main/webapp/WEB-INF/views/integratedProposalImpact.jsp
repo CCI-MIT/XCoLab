@@ -16,6 +16,7 @@
     <div id="content">
 
         <!--
+
         <c:if test="${not empty availableModels }">
             <proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" />
         </c:if>
@@ -78,8 +79,7 @@
     </div>
 
     <script type="text/javascript">
-        var tableColors;
-        //= ['#8C7AAE','#65B868'];
+        var tableColors = [];
 
         $().ready(function() {
             tableColors = palette('tol-rainbow', 10); // TODO use dynamic value from server
