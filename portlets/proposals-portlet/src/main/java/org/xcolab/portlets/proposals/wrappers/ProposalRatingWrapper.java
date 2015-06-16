@@ -82,7 +82,7 @@ public class ProposalRatingWrapper {
 	public ProposalRatingValue getRatingValue() {
 		try {
 			if (ratingValue == null)
-				ratingValue = ProposalRatingValueLocalServiceUtil.fetchProposalRatingValue(this.proposalRating.getRatingValueId() / roundFactor);
+				ratingValue = ProposalRatingValueLocalServiceUtil.fetchProposalRatingValue(this.proposalRating.getRatingValueId());
 			return ratingValue;
 		} catch (SystemException e) {
 			return null;
