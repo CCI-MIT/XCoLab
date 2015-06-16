@@ -25,8 +25,10 @@
 			src="/climatecolab-theme/images/arrow.gif" width="8" height="8" /> <a
 			href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
 	</div>
+	<c:choose>
+		<c:when test="${currentUserProfile.active}">
 
-	<div id="main" class="${currentUserProfile.viewingOwnProfile ? '' : 'full'} userProfile">
+		<div id="main" class="${currentUserProfile.viewingOwnProfile ? '' : 'full'} userProfile">
 		<h1>Member Profile</h1>
 		<div class="profile_action">
 		<c:if test="${currentUserProfile.canSendMessage and not currentUserProfile.viewingOwnProfile }">
@@ -214,6 +216,7 @@
 				</div>
 			</c:if>
 		</c:if>
+
 	</div>
 	<!-- /main -->
 
@@ -309,6 +312,12 @@
 		</div>
 	</c:if>
 	<!-- /right_col -->
+
+	</c:when>
+	<c:otherwise>
+		<h2>The requested user profile is disabled.</h2>
+	</c:otherwise>
+	</c:choose>
 
 	<div id="sendMessageOverlay" class="sendMessagePopup"
 		 style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">

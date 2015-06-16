@@ -173,6 +173,10 @@ public class
         return this.user != null;
     }
 
+    public boolean isActive() {
+        return user != null && user.isActive();
+    }
+
     public boolean isViewingOwnProfile() {
         return viewingOwnProfile;
     }
