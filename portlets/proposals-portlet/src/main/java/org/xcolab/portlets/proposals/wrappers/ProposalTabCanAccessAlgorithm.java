@@ -186,8 +186,10 @@ interface ProposalTabCanAccessAlgorithm {
             try {
                 Contest contest = context.getContest(request);
 
-                // Only let team members or admins edit impact of Basic contests
-                if ((contest != null && contest.getContestTier() == ContestTier.BASIC.getTierType()) &&
+                // Only let team members or admins edit impact
+                if ((contest != null && (
+                        contest.getContestTier() == ContestTier.BASIC.getTierType()) ||
+                        contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType()) &&
                         (permissions.getIsTeamMember() || permissions.getCanAdmin())) {
                     return true;
                 }
