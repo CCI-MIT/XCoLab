@@ -83,7 +83,7 @@
                                     <c:choose>
                                         <c:when test="${hasNoWritePermission}">
                                             <p class="submitStatus error">
-                                                <strong>You have no permission to change the advancement this proposal.</strong>
+                                                <strong>You don't have the required permission to change the status of this proposal.</strong>
                                             </p>
                                         </c:when>
                                         <c:when test="${isFrozen}">
