@@ -1626,3 +1626,9 @@ div#p_p_id_145_ {
 .disabled {
     opacity: 0.3;
 }
+
+.cmsDetailsBox {
+    border: 1px solid #30a3fb;
+    padding: 15px;
+    margin-bottom: 10px;
+}

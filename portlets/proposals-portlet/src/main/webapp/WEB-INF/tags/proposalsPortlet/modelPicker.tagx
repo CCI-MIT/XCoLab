@@ -12,28 +12,24 @@
 	<jsp:directive.attribute name="contestPK" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest PK" />
 	<jsp:directive.attribute name="modelId" type="java.lang.Long" required="false" rtexprvalue="true" description="Selected modelId" />
 
-	<div class='modelSelector'>
+	<div class='addpropbox'>
             <div>
-                <p>Select your model:</p>
+                <h3 style="margin-top: 0px;">Select your model:</h3>
                 <div class="">
-                	<select class='selectbox1 modelsSelectBox'>
-
-						<c:forEach var="value" items="${availableModels}">
-							<form:radiobutton id="${model.key}" path="${value}" value="${model.value}"/>
-						</c:forEach>
-
-
+                	<fieldset class='selectbox1 modelsSelectBox'>
                 	<c:forEach var="model" items="${availableModels }">
 						<c:choose>
 							<c:when test="${model.key == modelId}">
-										<option value="${model.key }" selected='selected'>${model.value }</option>
+								<input type="radio" name="Typ" id="${model.key }" value="${model.key }" checked="checked" />
+								<label for="${model.key }"> ${model.value }</label><br/>
 							</c:when>
 							<c:otherwise>
-										<option value="${model.key }">${model.value }</option>
+								<input type="radio" name="Typ" id="${model.key }" value="${model.key }" />
+								<label for="${model.key }"> ${model.value }</label><br/>
 							</c:otherwise>
 						</c:choose>
                 	</c:forEach>
-                	</select>
+                	</fieldset>
                 </div>
             </div>
 	</div>
@@ -53,8 +49,8 @@
 		} catch (e) {
 			// ignore
 		}
-		jQuery(".selectbox1").change(function() {
-			modeling.loadModel($(this).val());
+		jQuery(".selectbox1").change(function(element) {
+			modeling.loadModel(element.target.value);
 			jQuery(".act-edit_left").html("");
 			jQuery(".act-edit_right").html("");
 			preferredModelsMap["${contestPK}"] = $(this).val();

@@ -5,6 +5,7 @@
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:liferay-ui="http://liferay.com/tld/ui"
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
@@ -14,71 +15,172 @@
 
     <!-- Content -->
     <div id="content">
+        <c:choose>
+            <c:when test="${edit}">
+                <c:if test="${not empty availableModels }">
+                    <proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" modelId="${proposal.modelId}" />
+                </c:if>
+                <modeling:simulationEdit scenarioId="${proposal.scenarioId }" modelId="${proposal.modelId }" />
 
-        <!--
+                <portlet:actionURL var="updateProposalScenarioURL">
+                    <portlet:param name="action_forwardToPage" value="proposalDetails_IMPACT" />
+                    <portlet:param name="contestId" value="${contest.contestPK }" />
+                    <portlet:param name="planId" value="${proposal.proposalId }" />
+                    <portlet:param name="action" value="updateProposalScenario" />
+                </portlet:actionURL>
 
-        <c:if test="${not empty availableModels }">
-            <proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" />
-        </c:if>
+                <form action="${updateProposalScenarioURL }" id="updateProposalScenarioForm" method="post">
+                    <input type="text" id="proposalScenarioId" name="scenarioId" class="hidden" />
+                </form>
 
-        <modeling:simulationEdit modelId="${proposal.modelId }" />
-        <modeling:simulationView scenarioId="${proposal.scenarioId }" modelId="${proposal.modelId }" />
-        -->
+                <div class="admin-overlay-wrap">
+                    <div class="admin-overlay">
+                        <div class="inner">
+                            <div class="admin-left">
+                                <p>
+                                    <c:choose>
+                                        <c:when test="${proposal.currentVersion le 1}">
+                                            You are currently editing a new proposal
+                                        </c:when>
+                                        <c:otherwise>
+                                            You are editing a proposal
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <br />
+                                    <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
+                                </p>
+                                <div class="blue-button"><a href="#" id="saveChangesButton">SAVE and PUBLISH changes</a></div>
+                                <div class="gray-button">
+                                    <c:choose>
+                                        <c:when test="${proposal.currentVersion > 0 }">
+                                            <collab:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }"
+                                                                 linkId="discardChangesButton" text="DISCARD changes" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <!--  proposal creation, return to contest proposals page on discard -->
+                                            <proposalsPortlet:contestLink contestId="${contest.contestPK }" linkId="discardChangesButton"
+                                                                          text="DISCARD changes" />
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
+                            <div class="admin-right">
+                                <p>&#160;</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <modeling:simulationView scenarioId="${proposal.scenarioId }" modelId="${proposal.modelId }" />
+            </c:otherwise>
+        </c:choose>
+    </div>
+    <!-- TODO show fallback Graph -->
+    <div id="impact-chart"> &#160;</div>
+    <div class="clear"><!--  --></div>
+    <br />
+    <br />
 
-        <div id="impact">
-            <div id="impact-chart">&#160;</div>
-            <table>
+    <div id="impact" class="cmsDetailsBox">
+        <h2 class="model_name">Regional Plan Impact, By Sector</h2>
+        <table>
+            <thead>
+            <tr>
+                <th><!-- --></th>
+                <th class="blue-bg" style="text-align: center" colspan="${fn:length(impactIterations)}">
+                    Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
+                    <a href="javascript:;" class="helpTrigger"><img
+                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15"
+                            height="15"/></a><br/>
+
+                    <div class="addprophelp" style="color:white;">
+                        This table shows a summary of the emission reductions for all sectors and regions
+                        you submitted, in gigatons of carbon dioxide (CO2) equivalent (GtCO2e), for each
+                        decade listed.
+                        <a target='_blank' style="color: rgb(85, 26, 139)"
+                           href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">
+                            Click here for more information.
+                        </a>
+                    </div>
+                    <div class="clearfix"><!-- --></div>
+                </th>
+            </tr>
+            </thead>
+            <tr>
+                <td>&#160;</td>
+                <c:forEach var="impactIteration" items="${impactIterations}"><th class="blue-bg" style="text-align: center;">${impactIteration.year}</th></c:forEach>
+            </tr>
+            <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
+                <c:set var="seriesValues" value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}" />
                 <tr>
-                    <td>&#160;</td>
-                    <c:forEach var="impactIteration" items="${impactIterations}"><th class="blue-bg" style="text-align: center;">${impactIteration.year}</th></c:forEach>
+                    <td class="sector">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
+                    <c:catch var ="catchException">
+                        <c:forEach var="impactIteration" items="${impactIterations}">
+                            <fmt:formatNumber var="value"
+                                              value="${seriesValues.yearToValueMap[impactIteration.year]}"
+                                              maxFractionDigits="2" />
+                            <td class="impact-value">${value}</td>
+                        </c:forEach>
+                    </c:catch>
                 </tr>
-                <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
-                    <c:set var="seriesValues" value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}" />
-                    <tr>
-                        <td class="sector">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
-                        <c:catch var ="catchException">
-                            <c:forEach var="impactIteration" items="${impactIterations}">
-                                <fmt:formatNumber var="value"
-                                                  value="${seriesValues.yearToValueMap[impactIteration.year]}"
-                                                  maxFractionDigits="2" />
-                                <td class="impact-value">${value}</td>
-                            </c:forEach>
-                        </c:catch>
-                    </tr>
+            </c:forEach>
+            <tr>
+                <td class="sector">Total of above sectors</td>
+                <c:forEach var="impactIteration" items="${impactIterations}">
+                    <fmt:formatNumber var="value"
+                                      value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
+                                      maxFractionDigits="2" />
+                    <td class="impact-value">${value}</td>
                 </c:forEach>
-                <tr>
-                    <td class="sector">Total of above sectors</td>
+            </tr>
+            <tr>
+                <td class="sector">Total from model -> Needs to be implemented!!</td>
+                <c:forEach var="impactIteration" items="${impactIterations}">
+                    <fmt:formatNumber var="value"
+                                      value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
+                                      maxFractionDigits="2" />
+                    <td class="impact-value">${value}</td>
+                </c:forEach>
+            </tr>
+            <tr>
+                <c:choose>
+                    <c:when test="${empty proposal.team}"><td colspan="5">${proposal.author.screenName}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:when>
+                    <c:otherwise><td colspan="5">${proposal.team}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:otherwise>
+                </c:choose>
+            </tr>
+            <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
+                <tr class="impact-series-clickable" id="impact-row-${index.index}">
+                    <td class="region">
+                        ${impactSeries.proposalWrapper.name}
+                        <span
+                            id="${impactSeries.whereTerm.id}">(region: ${impactSeries.whereTerm.name}, </span>
+                        <span
+                            id="${impactSeries.whatTerm.id}">sector: ${impactSeries.whatTerm.name})</span></td>
                     <c:forEach var="impactIteration" items="${impactIterations}">
-                        <fmt:formatNumber var="value"
-                                          value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
-                                          maxFractionDigits="2" />
-                        <td class="impact-value">${value}</td>
+                        <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
                     </c:forEach>
                 </tr>
-                <tr>
-                    <c:choose>
-                        <c:when test="${empty proposal.team}"><td colspan="5">${proposal.author.screenName}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:when>
-                        <c:otherwise><td colspan="5">${proposal.team}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:otherwise>
-                    </c:choose>
-                </tr>
-                <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
-                    <tr class="impact-series-clickable" id="impact-row-${index.index}">
-                        <td class="region">
-                            ${impactSeries.proposalWrapper.name}
-                            <span
-                                id="${impactSeries.whereTerm.id}">(region: ${impactSeries.whereTerm.name}, </span>
-                            <span
-                                id="${impactSeries.whatTerm.id}">sector: ${impactSeries.whatTerm.name})</span></td>
-                        <c:forEach var="impactIteration" items="${impactIterations}">
-                            <td class="impact-value">${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}</td>
-                        </c:forEach>
-                    </tr>
-                </c:forEach>
-            </table>
-        </div>
+            </c:forEach>
+        </table>
     </div>
 
+    <c:if test="${edit}">
+        <script type="text/javascript">
+            jQuery("#saveChangesButton").click(function() {
+                jQuery("#proposalScenarioId").val(jQuery("#modelingScenarioId").val());
+                disableDirtyCheck();
+                jQuery("#updateProposalScenarioForm").submit();
+            });
+
+            jQuery(function() {
+                enableDirtyCheck();
+            });
+        </script>
+    </c:if>
+
     <script type="text/javascript">
+        /*
         var tableColors = [];
 
         $().ready(function() {
@@ -167,5 +269,7 @@
             var chart = new google.visualization.LineChart(document.getElementById('impact-chart'));
             chart.draw(data, options);
         }
+        */
     </script>
+
 </jsp:root>

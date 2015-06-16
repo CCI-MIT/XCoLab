@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
@@ -45,7 +46,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_IMPACT"})
-    public String showImpactTab(PortletRequest request, Model model)
+    public String showImpactTab(PortletRequest request, Model model, @RequestParam(required = false) boolean edit)
             throws PortalException, SystemException {
 
         Contest contest = proposalsContext.getContest(request);
@@ -65,7 +66,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             case REGION_SECTOR:
                 //return "proposalImpactError";
             case REGION_AGGREGATE:
-                return showImpactTabIntegratedProposal(request, model);
+                return showImpactTabIntegratedProposal(request, model, edit);
             case GLOBAL:
                 //return showImpactTabIntegratedProposal(request, model);
             default:
@@ -73,7 +74,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         }
     }
 
-    private String showImpactTabIntegratedProposal(PortletRequest request, Model model)
+    private String showImpactTabIntegratedProposal(PortletRequest request, Model model, Boolean edit)
             throws PortalException, SystemException {
 
         if (!hasImpactTabPermission(request)) {
@@ -86,11 +87,14 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal, contest);
         model.addAttribute("impactSeries", integratedProposalImpactSeries);
 
-        /*Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(contest.getContestPK());
-        if (modelIdsWithNames.size() > 1) {
-            model.addAttribute("availableModels", modelIdsWithNames);
-        }*/
+        if (edit) {
+            Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
+            if (modelIdsWithNames.size() > 1) {
+                model.addAttribute("availableModels", modelIdsWithNames);
+            }
+        }
 
+        model.addAttribute("edit", edit);
         populateImpactTabBasicProposal(model, contest, proposal);
 
         return "integratedProposalImpact";

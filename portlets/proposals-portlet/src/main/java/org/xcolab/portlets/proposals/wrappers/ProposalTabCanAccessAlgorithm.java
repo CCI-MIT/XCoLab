@@ -66,7 +66,6 @@ interface ProposalTabCanAccessAlgorithm {
                 return wrapper.shouldShowJudgingTab(context.getContestPhase(request).getContestPhasePK());
 
             } catch (PortalException | SystemException e) {
-                System.out.println("Error while checking advancingAccess: " + e);
                 e.printStackTrace();
             }
 
@@ -89,7 +88,6 @@ interface ProposalTabCanAccessAlgorithm {
                 return permissions.getCanFellowActions() && phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED ||
                         permissions.getCanAdminAll();
             } catch (PortalException | SystemException e) {
-                System.out.println("Error while checking screeningAccess: " + e);
                 e.printStackTrace();
             }
 
