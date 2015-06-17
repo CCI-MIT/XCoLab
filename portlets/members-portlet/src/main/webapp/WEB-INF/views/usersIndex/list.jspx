@@ -86,6 +86,10 @@
 							<img src="/climatecolab-theme/images/icon_mem-fellow.png"
 								 width="16" height="16" />
 						</c:when>
+                        <c:when test="${user.category.printName == 'Impact Assessment Fellow'}">
+                            <img src="/climatecolab-theme/images/icon_mem-fellow.png"
+                                 width="16" height="16" />
+                        </c:when>
 						<c:when test="${user.category.printName == 'Advisor'}">
 							<img src="/climatecolab-theme/images/icon_mem-advisor.png"
 								 width="16" height="16" />
@@ -94,6 +98,10 @@
 							<img src="/climatecolab-theme/images/icon_mem-expert.png"
 								 width="16" height="16" />
 						</c:when>
+                        <c:when test="${user.category.printName == 'Contest Manager'}">
+                            <img src="/climatecolab-theme/images/icon_mem-expert.png"
+                                 width="16" height="16" />
+                        </c:when>
 						<c:when test="${user.category.printName == 'Judges'}">
 							<img src="/climatecolab-theme/images/icon_mem-judges.png"
 								 width="16" height="16" />
@@ -158,6 +166,19 @@
 
 					<a href="${fellowCategoryURL }">Fellows</a>
 				</li>
+                <li class="${memberCategory == 'Impact Assessment Fellow' ? 'c' : ''}">
+                    <img src="/climatecolab-theme/images/icon_mem-fellow.png"
+                         width="16" height="16" />&#160;
+
+                    <portlet:renderURL var="fellowCategoryURL">
+                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
+                        <portlet:param name="memberCategory" value="Impact Assessment Fellow" />
+                        <portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
+                        <portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+                    </portlet:renderURL>
+
+                    <a href="${fellowCategoryURL }">Impact Assessment Fellows</a>
+                </li>
 				<li class="${memberCategory == 'Advisor' ? 'c' : ''}">
 					<img src="/climatecolab-theme/images/icon_mem-advisor.png"
 						 width="16" height="16" />&#160;
@@ -184,6 +205,19 @@
 
 					<a href="${expertCategoryURL }">Experts</a>
 				</li>
+                <li class="${memberCategory == 'Contest Manager' ? 'c' : ''}">
+                    <img src="/climatecolab-theme/images/icon_mem-expert.png"
+                         width="16" height="16" />&#160;
+
+                    <portlet:renderURL var="expertCategoryURL">
+                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
+                        <portlet:param name="memberCategory" value="Contest Manager" />
+                        <portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
+                        <portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+                    </portlet:renderURL>
+
+                    <a href="${expertCategoryURL }">Contestmanager</a>
+                </li>
 				<li class="${memberCategory == 'Judges' ? 'c' : ''}">
 					<img src="/climatecolab-theme/images/icon_mem-judges.png"
 						 width="16" height="16" />&#160;

@@ -128,10 +128,6 @@ public class MembersController {
 
             //Pagination
             usersCount = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(0, Integer.MAX_VALUE, filter, memberCategoryFilter).size();
-            if (memberCategoryFilter.equals("%Fellow%")){
-                int iafCount = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(0, Integer.MAX_VALUE, filter, "%Impact Assessment Fellow%").size();
-                usersCount += iafCount;
-            }
             pagesCount = (int)Math.ceil((double)usersCount/(double)USERS_PER_PAGE);
             endPage = pagesCount;
             if (startPage + 10<pagesCount)
@@ -145,150 +141,42 @@ public class MembersController {
                     case "USER_NAME":
                         if (sortFilterPage.isSortAscending()) {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                            if (memberCategoryFilter.equals("%Fellow%")){
-                                List <User_> dBUsersIAF = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, "%Impact Assessment Fellow%");
-                                dBUsers.addAll(dBUsersIAF);
-                                Collections.sort(dBUsers, new Comparator<User_>() {
-                                    @Override
-                                    public int compare(User_  user1, User_  user2)
-                                    {
-
-                                        return  user1.getScreenName().compareTo(user2.getScreenName());
-                                    }
-                                });
-                            }
                         }
                         else {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                            if (memberCategoryFilter.equals("%Fellow%")){
-                                List <User_> dBUsersIAF = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, "%Impact Assessment Fellow%");
-                                dBUsers.addAll(dBUsersIAF);
-                                Collections.sort(dBUsers, new Comparator<User_>() {
-                                    @Override
-                                    public int compare(User_  user1, User_  user2)
-                                    {
-
-                                        return  user1.getScreenName().compareTo(user2.getScreenName());
-                                    }
-                                });
-                            }
                         }
                         break;
 
                     case "ACTIVITY":
                         if (sortFilterPage.isSortAscending()) {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                            if (memberCategoryFilter.equals("%Fellow%")){
-                                List <User_> dBUsersIAF = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, "%Impact Assessment Fellow%");
-                                dBUsers.addAll(dBUsersIAF);
-                                Collections.sort(dBUsers, new Comparator<User_>() {
-                                    @Override
-                                    public int compare(User_  user1, User_  user2)
-                                    {
-
-                                        return  user1.getScreenName().compareTo(user2.getScreenName());
-                                    }
-                                });
-                            }
                         }
                         else {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                            if (memberCategoryFilter.equals("%Fellow%")){
-                                List <User_> dBUsersIAF = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, "%Impact Assessment Fellow%");
-                                dBUsers.addAll(dBUsersIAF);
-                                Collections.sort(dBUsers, new Comparator<User_>() {
-                                    @Override
-                                    public int compare(User_  user1, User_  user2)
-                                    {
-
-                                        return  user1.getScreenName().compareTo(user2.getScreenName());
-                                    }
-                                });
-                            }
                         }
                         break;
 
                     case "CATEGORY":
                         if (sortFilterPage.isSortAscending()) {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                            if (memberCategoryFilter.equals("%Fellow%")){
-                                List <User_> dBUsersIAF = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, "%Impact Assessment Fellow%");
-                                dBUsers.addAll(dBUsersIAF);
-                                Collections.sort(dBUsers, new Comparator<User_>() {
-                                    @Override
-                                    public int compare(User_  user1, User_  user2)
-                                    {
-
-                                        return  user1.getScreenName().compareTo(user2.getScreenName());
-                                    }
-                                });
-                            }
                         }
                         else {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                            if (memberCategoryFilter.equals("%Fellow%")){
-                                List <User_> dBUsersIAF = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser, endUser, filter, "%Impact Assessment Fellow%");
-                                dBUsers.addAll(dBUsersIAF);
-                                Collections.sort(dBUsers, new Comparator<User_>() {
-                                    @Override
-                                    public int compare(User_  user1, User_  user2)
-                                    {
-
-                                        return  user1.getScreenName().compareTo(user2.getScreenName());
-                                    }
-                                });
-                            }
                         }
                         break;
 
                     case "MEMBER_SINCE":
                         if (sortFilterPage.isSortAscending()) {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                            if (memberCategoryFilter.equals("%Fellow%")){
-                                List <User_> dBUsersIAF = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser, endUser, filter, "%Impact Assessment Fellow%");
-                                dBUsers.addAll(dBUsersIAF);
-                                Collections.sort(dBUsers, new Comparator<User_>() {
-                                    @Override
-                                    public int compare(User_  user1, User_  user2)
-                                    {
-
-                                        return  user1.getScreenName().compareTo(user2.getScreenName());
-                                    }
-                                });
-                            }
                         }
                         else {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                            if (memberCategoryFilter.equals("%Fellow%")){
-                                List <User_> dBUsersIAF = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser, endUser, filter, "%Impact Assessment Fellow%");
-                                dBUsers.addAll(dBUsersIAF);
-                                Collections.sort(dBUsers, new Comparator<User_>() {
-                                    @Override
-                                    public int compare(User_  user1, User_  user2)
-                                    {
-
-                                        return  user1.getScreenName().compareTo(user2.getScreenName());
-                                    }
-                                });
-                            }
                         }
 
                         break;
                 }
             else {
                 dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                if (memberCategoryFilter.equals("%Fellow%")){
-                    List <User_> dBUsersIAF = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser, endUser, filter, "%Impact Assessment Fellow%");
-                    dBUsers.addAll(dBUsersIAF);
-                    Collections.sort(dBUsers, new Comparator<User_>() {
-                        @Override
-                        public int compare(User_  user1, User_  user2)
-                        {
-
-                            return  user1.getScreenName().compareTo(user2.getScreenName());
-                        }
-                    });
-                }
                 sortFilterPage.setSortColumn("ACTIVITY");
                 sortFilterPage.setSortAscending(false);
             }
