@@ -98,7 +98,7 @@
 							<img src="/climatecolab-theme/images/icon_mem-expert.png"
 								 width="16" height="16" />
 						</c:when>
-                        <c:when test="${user.category.printName == 'Contest Manager'}">
+                        <c:when test="${user.category.printName == 'Contestmanager'}">
                             <img src="/climatecolab-theme/images/icon_mem-expert.png"
                                  width="16" height="16" />
                         </c:when>
