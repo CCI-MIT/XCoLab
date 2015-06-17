@@ -33,6 +33,7 @@
     	                <portlet:param name="planId" value="${proposal.proposalId }" />
         	            <portlet:param name="action" value="toggleProposalOpen" />
             		</portlet:actionURL >
+
             		<form action="${deleteProposalURL }" method="post">
             			<![CDATA[
             				<input type='radio' value='false' name='planOpen' ${not proposal.open ? "checked='checked'" : ''} />Team members only<br />
@@ -108,7 +109,32 @@
         	<c:set var="addBlueClass" value='${not addBlueClass }' />
         	
         </c:if>
-        
+
+
+		<c:if test="${ proposalsPermissions.getCanPromoteProposalToNextPhase() }">
+
+			<portlet:actionURL var="promoteProposalURL">
+				<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
+				<portlet:param name="contestId" value="${contest.contestPK }" />
+				<portlet:param name="planId" value="${proposal.proposalId }" />
+				<portlet:param name="contestPhaseId" value="${proposal.contestPhase.contestPhasePK}" />
+				<portlet:param name="action" value="promoteProposal" />
+			</portlet:actionURL >
+
+			<form action="${promoteProposalURL }" method="post">
+				<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+					<strong>Promote proposal to latest contest phase</strong>
+					<div>
+						<div class="blue-button">
+							<a href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+								<span>Promote</span> proposal
+							</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</c:if>
+
         <c:if test="${ proposalsPermissions.getCanMoveProposalAndHideInCurrentContest() }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
             	<strong>Move proposal to different contest</strong>
