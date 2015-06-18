@@ -140,7 +140,7 @@
                     <fmt:formatNumber var="value"
                                       value="0"
                                       maxFractionDigits="2" />
-                    <td class="impact-value" data-attr-year="#${impactIteration.year}">${value}</td>
+                    <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
                 </c:forEach>
             </tr>
             <tr>
@@ -180,11 +180,7 @@
     </c:if>
 
     <script type="text/javascript">
-
-
-        <c:forEach var="impactIteration" items="${impactIterations}">
-        var dataRow = ["${impactIteration.year}"];
-        </c:forEach>
+        var MODEL_DATA_ROW = "Emissions from energy";
 
         $().ready(function() {
 
@@ -194,7 +190,7 @@
                 var modelOutputs = event.scenario.outputs;
 
                 modelOutputs.forEach(function(modelOutput){
-                    if(modelOutput.name == "Emissions from energy"){
+                    if(modelOutput.name == MODEL_DATA_ROW){
                         var modelSeries = modelOutput.series[0];
                         var modelSeriesValues = modelSeries.variable.values;
                         modelSeriesValues.forEach(function(modelSeriesValue){
@@ -204,6 +200,7 @@
                 });
 
                 var modelTotalRow = document.getElementById("modelTotal");
+                // TODO check querySelectorAll available and provide fallback
                 var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
                 [].forEach.call(modelTotalValues, function(totalYearValue){
                     var year = totalYearValue.getAttribute("data-attr-year");
