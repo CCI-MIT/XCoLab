@@ -204,8 +204,8 @@
                 var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
                 [].forEach.call(modelTotalValues, function(totalYearValue){
                     var year = totalYearValue.getAttribute("data-attr-year");
-                    var valueToYear = modelSeriesValuesToYears[year];
-                    totalYearValue.innerHTML = valueToYear;
+                    var valueToYear = parseFloat(modelSeriesValuesToYears[year]);
+                    totalYearValue.innerHTML = valueToYear.toFixed(2);
                 });
             });
 
