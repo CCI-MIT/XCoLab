@@ -131,14 +131,14 @@
                     <fmt:formatNumber var="value"
                                       value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
                                       maxFractionDigits="2" />
-                    <td class="impact-value">${value}</td>
+                    <td class="impact-value" data-attr-year="#${impactIteration.year}">${value}</td>
                 </c:forEach>
             </tr>
-            <tr>
-                <td class="sector">Total from model -> Needs to be implemented!!</td>
+            <tr id="modelTotal">
+                <td class="sector">Total from model</td>
                 <c:forEach var="impactIteration" items="${impactIterations}">
                     <fmt:formatNumber var="value"
-                                      value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
+                                      value="0"
                                       maxFractionDigits="2" />
                     <td class="impact-value">${value}</td>
                 </c:forEach>
@@ -180,6 +180,39 @@
     </c:if>
 
     <script type="text/javascript">
+
+
+        <c:forEach var="impactIteration" items="${impactIterations}">
+        var dataRow = ["${impactIteration.year}"];
+        </c:forEach>
+
+        $().ready(function() {
+
+            jQuery($("#modelsOutputContainer").data('modeling')).on('scenarioFetched', function(event) {
+
+                var modelSeriesValuesToYears = {};
+                var modelOutputs = event.scenario.outputs;
+
+                modelOutputs.forEach(function(modelOutput){
+                    if(modelOutput.name == "Emissions from energy"){
+                        var modelSeries = modelOutput.series[0];
+                        var modelSeriesValues = modelSeries.variable.values;
+                        modelSeriesValues.forEach(function(modelSeriesValue){
+                            modelSeriesValuesToYears[modelSeriesValue[0]] = modelSeriesValue[1];
+                        });
+                    }
+                });
+
+                var modelTotalRow = document.getElementById("modelTotal");
+                var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
+                [].forEach.call(modelTotalValues, function(totalYearValue){
+                    var year = totalYearValue.getAttribute("data-attr-year");
+                    var valueToYear = modelSeriesValuesToYears[year];
+                    totalYearValue.innerHTML = valueToYear;
+                });
+            });
+
+        });
         /*
         var tableColors = [];
 
