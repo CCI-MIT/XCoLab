@@ -21,6 +21,7 @@ public class ContestModelSettingsBean  implements Serializable {
     private final static Log _log = LogFactoryUtil.getLog(ContestModelSettingsBean.class);
     private Long defaultModelId;
     private String otherModelIds;
+    private String defaultModelSettings;
 
     public ContestModelSettingsBean() {
     }
@@ -42,6 +43,14 @@ public class ContestModelSettingsBean  implements Serializable {
             String removeEverythingButNumbersAndCommas = otherModelIds.replaceAll("[^0-9,]", "").replaceAll(",,", ",");
             this.otherModelIds = removeEverythingButNumbersAndCommas;
         }
+    }
+
+    public String getDefaultModelSettings() {
+        return defaultModelSettings;
+    }
+
+    public void setDefaultModelSettings(String defaultModelSettings) {
+        this.defaultModelSettings = defaultModelSettings;
     }
 
     public void persist(Contest contest) throws Exception{
