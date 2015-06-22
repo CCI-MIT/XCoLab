@@ -179,6 +179,7 @@
 			<basic name="contestCreationStatus" />
 			<basic name="defaultModelId" />
 			<basic name="otherModels" />
+			<basic name="defaultModelSettings" />
 			<basic name="points" />
 			<basic name="defaultParentPointType" />
 			<basic name="pointDistributionStrategy" />
@@ -1103,6 +1104,7 @@
 			<basic name="focusAreaId" />
 			<basic name="tier" />
 			<basic name="locked" />
+			<basic name="contestIntegrationRelevance" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

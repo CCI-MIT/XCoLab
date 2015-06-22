@@ -58,9 +58,10 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
             { "characterLimit", Types.INTEGER },
             { "focusAreaId", Types.BIGINT },
             { "tier", Types.BIGINT },
-            { "locked", Types.BOOLEAN }
+            { "locked", Types.BOOLEAN },
+            { "contestIntegrationRelevance", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionDefinition (id_ LONG not null primary key,type_ VARCHAR(75) null,adminTitle VARCHAR(1024) null,title VARCHAR(1024) null,defaultText TEXT null,helpText TEXT null,characterLimit INTEGER,focusAreaId LONG,tier LONG,locked BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionDefinition (id_ LONG not null primary key,type_ VARCHAR(75) null,adminTitle VARCHAR(1024) null,title VARCHAR(1024) null,defaultText TEXT null,helpText TEXT null,characterLimit INTEGER,focusAreaId LONG,tier LONG,locked BOOLEAN,contestIntegrationRelevance BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanSectionDefinition";
     public static final String ORDER_BY_JPQL = " ORDER BY planSectionDefinition.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanSectionDefinition.id_ ASC";
@@ -90,6 +91,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
     private long _focusAreaId;
     private long _tier;
     private boolean _locked;
+    private boolean _contestIntegrationRelevance;
     private PlanSectionDefinition _escapedModel;
 
     public PlanSectionDefinitionModelImpl() {
@@ -119,6 +121,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         model.setFocusAreaId(soapModel.getFocusAreaId());
         model.setTier(soapModel.getTier());
         model.setLocked(soapModel.getLocked());
+        model.setContestIntegrationRelevance(soapModel.getContestIntegrationRelevance());
 
         return model;
     }
@@ -188,6 +191,8 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("tier", getTier());
         attributes.put("locked", getLocked());
+        attributes.put("contestIntegrationRelevance",
+            getContestIntegrationRelevance());
 
         return attributes;
     }
@@ -252,6 +257,13 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
         if (locked != null) {
             setLocked(locked);
+        }
+
+        Boolean contestIntegrationRelevance = (Boolean) attributes.get(
+                "contestIntegrationRelevance");
+
+        if (contestIntegrationRelevance != null) {
+            setContestIntegrationRelevance(contestIntegrationRelevance);
         }
     }
 
@@ -390,6 +402,23 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         _locked = locked;
     }
 
+    @JSON
+    @Override
+    public boolean getContestIntegrationRelevance() {
+        return _contestIntegrationRelevance;
+    }
+
+    @Override
+    public boolean isContestIntegrationRelevance() {
+        return _contestIntegrationRelevance;
+    }
+
+    @Override
+    public void setContestIntegrationRelevance(
+        boolean contestIntegrationRelevance) {
+        _contestIntegrationRelevance = contestIntegrationRelevance;
+    }
+
     @Override
     public ExpandoBridge getExpandoBridge() {
         return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
@@ -427,6 +456,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         planSectionDefinitionImpl.setFocusAreaId(getFocusAreaId());
         planSectionDefinitionImpl.setTier(getTier());
         planSectionDefinitionImpl.setLocked(getLocked());
+        planSectionDefinitionImpl.setContestIntegrationRelevance(getContestIntegrationRelevance());
 
         planSectionDefinitionImpl.resetOriginalValues();
 
@@ -530,12 +560,14 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
         planSectionDefinitionCacheModel.locked = getLocked();
 
+        planSectionDefinitionCacheModel.contestIntegrationRelevance = getContestIntegrationRelevance();
+
         return planSectionDefinitionCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(21);
+        StringBundler sb = new StringBundler(23);
 
         sb.append("{id=");
         sb.append(getId());
@@ -557,6 +589,8 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         sb.append(getTier());
         sb.append(", locked=");
         sb.append(getLocked());
+        sb.append(", contestIntegrationRelevance=");
+        sb.append(getContestIntegrationRelevance());
         sb.append("}");
 
         return sb.toString();
@@ -564,7 +598,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(34);
+        StringBundler sb = new StringBundler(37);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanSectionDefinition");
@@ -609,6 +643,10 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         sb.append(
             "<column><column-name>locked</column-name><column-value><![CDATA[");
         sb.append(getLocked());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestIntegrationRelevance</column-name><column-value><![CDATA[");
+        sb.append(getContestIntegrationRelevance());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

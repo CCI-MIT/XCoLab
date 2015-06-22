@@ -195,6 +195,28 @@ public interface PlanSectionDefinitionModel extends BaseModel<PlanSectionDefinit
      */
     public void setLocked(boolean locked);
 
+    /**
+     * Returns the contest integration relevance of this plan section definition.
+     *
+     * @return the contest integration relevance of this plan section definition
+     */
+    public boolean getContestIntegrationRelevance();
+
+    /**
+     * Returns <code>true</code> if this plan section definition is contest integration relevance.
+     *
+     * @return <code>true</code> if this plan section definition is contest integration relevance; <code>false</code> otherwise
+     */
+    public boolean isContestIntegrationRelevance();
+
+    /**
+     * Sets whether this plan section definition is contest integration relevance.
+     *
+     * @param contestIntegrationRelevance the contest integration relevance of this plan section definition
+     */
+    public void setContestIntegrationRelevance(
+        boolean contestIntegrationRelevance);
+
     @Override
     public boolean isNew();
 

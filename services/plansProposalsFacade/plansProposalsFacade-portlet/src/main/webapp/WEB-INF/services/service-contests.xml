@@ -48,6 +48,7 @@
         <column name="contestCreationStatus" type="String" />
         <column name="defaultModelId" type="long" />
         <column name="otherModels" type="String" />
+        <column name="defaultModelSettings" type="String" />
         <column name="points" type="double" />
         <column name="defaultParentPointType" type="long" />
         <column name="pointDistributionStrategy" type="String" />

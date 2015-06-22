@@ -164,6 +164,7 @@
 		<field name="contestCreationStatus" type="String" />
 		<field name="defaultModelId" type="long" />
 		<field name="otherModels" type="String" />
+		<field name="defaultModelSettings" type="String" />
 		<field name="points" type="double" />
 		<field name="defaultParentPointType" type="long" />
 		<field name="pointDistributionStrategy" type="String" />
@@ -795,6 +796,7 @@
 		<field name="focusAreaId" type="long" />
 		<field name="tier" type="long" />
 		<field name="locked" type="boolean" />
+		<field name="contestIntegrationRelevance" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.PlanSectionPlanMap">
 		<field name="sectionId" type="long" />

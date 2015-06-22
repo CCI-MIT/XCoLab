@@ -112,6 +112,7 @@ create table xcolab_Contest (
 	contestCreationStatus VARCHAR(75) null,
 	defaultModelId LONG,
 	otherModels VARCHAR(75) null,
+	defaultModelSettings VARCHAR(75) null,
 	points DOUBLE,
 	defaultParentPointType LONG,
 	pointDistributionStrategy VARCHAR(75) null,
@@ -667,7 +668,8 @@ create table xcolab_PlanSectionDefinition (
 	characterLimit INTEGER,
 	focusAreaId LONG,
 	tier LONG,
-	locked BOOLEAN
+	locked BOOLEAN,
+	contestIntegrationRelevance BOOLEAN
 );
 
 create table xcolab_PlanSectionPlanMap (
