@@ -388,8 +388,16 @@ public class UserProfileController {
         String existingCountry = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID,
                 User.class.getName(), CommunityConstants.EXPANDO,
                 CommunityConstants.COUNTRY, currentUserProfile.getUser().getUserId(), StringPool.BLANK);
-        if(!existingCountry.isEmpty())
-            existingCountry = Helper.getCodeForCounty(existingCountry);
+        if(!existingCountry.isEmpty()){
+            if (Helper.getCodeForCounty(existingCountry)!= null) {
+                existingCountry = Helper.getCodeForCounty(existingCountry);
+            }
+            else{
+                existingCountry = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID,
+                        User.class.getName(), CommunityConstants.EXPANDO,
+                        CommunityConstants.COUNTRY, currentUserProfile.getUser().getUserId(), StringPool.BLANK);
+            }
+        }
 
         if (!existingCountry.equals(updatedUserBean.getCountry())) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
