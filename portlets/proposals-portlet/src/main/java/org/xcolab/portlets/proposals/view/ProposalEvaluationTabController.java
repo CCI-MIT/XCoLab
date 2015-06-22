@@ -1,5 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
@@ -14,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.enums.MemberRole;
-import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
@@ -55,7 +54,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         }
 
         try {
-            if(isPhaseStatusClosedOrOpenForSubmission(request)) {
+            if(!hasContestPassedScreeningPhaseAlready(request)) {
                 model.addAttribute("showEvaluation", false);
             } else {
                 Long evaluationDiscussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposalsContext.getProposal(request));
@@ -150,14 +149,23 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return wrappers;
     }
 
-    private boolean isPhaseStatusClosedOrOpenForSubmission(PortletRequest request
-    ) throws SystemException, PortalException {
-        Long contestPhaseType = proposalsContext.getContestPhase(request).getContestPhaseType();
-        boolean phaseStatusOpenForSubmission =
-                ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseType).getStatus().equalsIgnoreCase("OPEN_FOR_SUBMISSION");
-        boolean phaseStatusClosed =
-                ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseType).getStatus().equalsIgnoreCase("CLOSED");
-        return phaseStatusOpenForSubmission || phaseStatusClosed;
+    private boolean hasContestPassedScreeningPhaseAlready(PortletRequest request) throws SystemException, PortalException {
+        boolean hasContestPassedScreeningPhaseAlready = false;
+
+        ContestPhase currentContestPhase = proposalsContext.getContestPhase(request);
+        Contest contest = proposalsContext.getContest(request);
+        List<ContestPhase> allContestPhasesForCurrentContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
+
+        for(ContestPhase contestPhase : allContestPhasesForCurrentContest){
+            boolean isPastContestPhase = contestPhase.getPhaseEndDate().before(currentContestPhase.getPhaseEndDate());
+            if(isPastContestPhase){
+                if(contestPhase.getFellowScreeningActive()){
+                    hasContestPassedScreeningPhaseAlready = true;
+                    break;
+                }
+            }
+        }
+        return hasContestPassedScreeningPhaseAlready;
     }
 
     private boolean isUserFellowOrJudge(User user){
