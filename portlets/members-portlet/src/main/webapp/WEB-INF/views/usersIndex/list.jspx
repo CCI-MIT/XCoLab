@@ -72,45 +72,8 @@
 					${user.activityCount}
 				</td>
 				<td class="column usersCategory">
-
-					<c:choose>
-						<c:when test="${user.category.printName == 'Member'}">
-							<img src="/climatecolab-theme/images/icon_mem-member.png"
-								 width="16" height="16" />
-						</c:when>
-						<c:when test="${user.category.printName == 'Catalyst'}">
-							<img src="/climatecolab-theme/images/icon_mem-catalyst.png"
-								 width="16" height="16" />
-						</c:when>
-						<c:when test="${user.category.printName == 'Fellow'}">
-							<img src="/climatecolab-theme/images/icon_mem-fellow.png"
-								 width="16" height="16" />
-						</c:when>
-                        <c:when test="${user.category.printName == 'Impact Assessment Fellow'}">
-                            <img src="/climatecolab-theme/images/icon_mem-fellow.png"
-                                 width="16" height="16" />
-                        </c:when>
-						<c:when test="${user.category.printName == 'Advisor'}">
-							<img src="/climatecolab-theme/images/icon_mem-advisor.png"
-								 width="16" height="16" />
-						</c:when>
-						<c:when test="${user.category.printName == 'Expert'}">
-							<img src="/climatecolab-theme/images/icon_mem-expert.png"
-								 width="16" height="16" />
-						</c:when>
-                        <c:when test="${user.category.printName == 'Contestmanager'}">
-                            <img src="/climatecolab-theme/images/icon_mem-expert.png"
-                                 width="16" height="16" />
-                        </c:when>
-						<c:when test="${user.category.printName == 'Judges'}">
-							<img src="/climatecolab-theme/images/icon_mem-judges.png"
-								 width="16" height="16" />
-						</c:when>
-						<c:when test="${user.category.printName == 'Staff'}">
-							<img src="/climatecolab-theme/images/icon_mem-staff.png"
-								 width="16" height="16" />
-						</c:when>
-					</c:choose>
+                    <img src="/climatecolab-theme/images/icon_mem-${user.category.imageUrl}.png"
+                         width="16" height="16" />
 					&#160;${user.category.printName}
 				</td>
 				<td class="column usersSeniority g">
@@ -177,7 +140,7 @@
                         <portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
                     </portlet:renderURL>
 
-                    <a href="${fellowCategoryURL }">Impact Assessment Fellows</a>
+                    <a href="${fellowCategoryURL }">IA Fellows</a>
                 </li>
 				<li class="${memberCategory == 'Advisor' ? 'c' : ''}">
 					<img src="/climatecolab-theme/images/icon_mem-advisor.png"
