@@ -61,7 +61,17 @@
                 <c:when test='${not empty contest.activePhase.status and contest.activePhase.status eq "CLOSED" or contest.activePhase.status eq "COMPLETED"}'>
                     <div class="contest-flag-container">
                         <span class="contest-flag-left contest-flag-2-left">&#160;</span>
-                        <span class="contest-flag-middle contest-flag-2-middle">${contest.activePhase.name}</span>
+                        <c:choose>
+                            <c:when test="${contest.contestActive and contest.activePhase.status eq 'COMPLETED'}">
+                                <span class="contest-flag-middle contest-flag-2-middle" style="font-size: 13px; padding-top: 11px;">
+                                    Winners to be announced
+                                </span>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="contest-flag-middle contest-flag-2-middle">${contest.activePhase.name}</span>
+                            </c:otherwise>
+                        </c:choose>
+
                         <span class="contest-flag-right contest-flag-2-right">&#160;</span>
                     </div>
                 </c:when>

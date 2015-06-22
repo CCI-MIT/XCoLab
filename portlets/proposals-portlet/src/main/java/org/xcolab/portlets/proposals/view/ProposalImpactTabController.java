@@ -19,10 +19,7 @@ import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.IntegratedProposalImpactSeries;
-import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
-import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.*;
 
 import javax.portlet.PortletRequest;
 import java.util.ArrayList;
@@ -67,7 +64,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             case REGION_SECTOR:
             case REGION_AGGREGATE:
             case GLOBAL:
-                // return showImpactTabIntegratedProposal(request, model);
+                //return showImpactTabIntegratedProposal(request, model);
             default:
                 return "proposalImpactError";
         }
@@ -81,8 +78,12 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         }
 
         Proposal proposal = proposalsContext.getProposal(request);
+        Contest contest = proposalsContext.getContest(request);
+
         IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal);
         model.addAttribute("impactSeries", integratedProposalImpactSeries);
+
+        populateImpactTabBasicProposal(model, contest, proposal);
 
         return "integratedProposalImpact";
     }
@@ -114,6 +115,16 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return "basicProposalImpact";
     }
 
+
+    private void populateImpactTabBasicProposal(Model model, Contest contest, Proposal proposalParent) throws PortalException, SystemException{
+        List<Proposal> referencedProposals = ProposalLocalServiceUtil.getSubproposals(proposalParent.getProposalId(), true);
+        List<ProposalImpactSeries> proposalImpactSerieses = new ArrayList<>();
+        for(Proposal proposal : referencedProposals) {
+            ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(contest, proposal);
+            proposalImpactSerieses.addAll(proposalImpactSeriesList.getImpactSerieses());
+        }
+        model.addAttribute("impactSerieses", proposalImpactSerieses);
+    }
 
     private List<OntologyTerm> sortByName(Collection<OntologyTerm> collection) {
         List <OntologyTerm> list = new ArrayList<OntologyTerm>(collection);

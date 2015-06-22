@@ -6,14 +6,13 @@
         xmlns:form="http://www.springframework.org/tags/form"
         xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
         xmlns:discussions="http://climatecolab.org/tags/xcollab_discussions_1.0"
-        xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/discussions"
         xmlns:addthis="http://www.addthis.com/help/api-spec"
         xmlns:portlet="http://java.sun.com/portlet_2_0"
         version="2.0">
     <jsp:directive.attribute name="wrapper" type="org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper" required="true" rtexprvalue="true" description="ProposalRatings" />
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />
     <jsp:directive.attribute name="showPhase" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Phase for this Rating should be displayed or not" />
-
+    <jsp:directive.attribute name="showRatingDescription" type="java.lang.Boolean" required="false" rtexprvalue="true"  description="Whether the Rating description should be displayed or not" />
 
     <div class="the-comment">
         <div class="content">
@@ -22,22 +21,45 @@
                 ${wrapper.contestPhase}<br/>
             </c:if>
             <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
-                <strong>Judges Ratings</strong>
-                <ul>
+                <strong>Judges' Ratings <a href="/web/guest/resources/-/wiki/Main/contest+rules#Howwillproposalsbejudged" target="_blank">
+                    <span class="fieldWithTooltip">
+                        <img src="/climatecolab-theme/images/icon_question-chk-qm.png" height="15px" />
+                    </span>
+                    <div class="tooltip">
+                        Click here to see how proposals have been judged.
+                    </div>
+                </a></strong>
+                <table>
                     <c:forEach var="rating" items="${wrapper.ratings}">
                         <c:if test="${rating.isActive}">
-                            <li>
-                                <em>${rating.ratingTypeLabel}:</em>
-                                ${rating.ratingValueName}
-                            </li>
+                            <tr>
+                                <td width="20px">
+                                    &amp;#8226;
+                                </td>
+                                <td width="100px">
+                                    <em>${rating.ratingTypeLabel}:</em>
+                                </td>
+                                <c:if test="${not showRatingDescription}">
+                                    <td>
+                                        <span class="stars" title="${rating.notRoundedRatingValueFormatted}/5">
+                                            <span style="width:${rating.ratingValueInPercent}%;"/>
+                                        </span>
+                                    </td>
+                                </c:if>
+                                <c:if test="${showRatingDescription}">
+                                    <td>
+                                        ${rating.ratingValueName}
+                                    </td>
+                                </c:if>
+                            </tr>
                         </c:if>
                     </c:forEach>
                     <br/>
-                </ul>
+                </table>
             </c:if>
-
+            <br/>
             <p>
-                <strong>Judges Comments</strong><br/>
+                <strong>Judges' Comments</strong><br/>
                 <span class="comment-wrapper">${wrapper.commentEscaped}</span>
             </p>
         </div>

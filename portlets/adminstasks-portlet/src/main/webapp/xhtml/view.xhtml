@@ -45,14 +45,18 @@
                         <li><ice:commandButton action="#{adminTask.findToSmallGroups}" value="find too small groups" /></li>
                         <li><ice:commandButton action="#{adminTask.synchronizeComments}" value="synchronize comments" /></li>
                         <li><ice:commandButton action="#{adminTask.upPlanAttributeIdCounter}" value="Up plan attribute id counter" /></li>
-                        <li><ice:commandButton action="#{adminTask.copyProposalsToCompletedPhase}" value="Copy proposals to completed phase" /></li>
-                        <li><ice:commandButton action="#{adminTask.autopromoteProposals}" value="Run autopromote task on past contest phases" /></li>
                         <li><ice:commandButton action="#{adminTask.dataBean.interpretActivities}" value="Interpret activities" /></li>
-                        <li><ice:commandButton action="#{adminTask.triggerSupportsToVote}" value="Send Emails to cast supports2votes (active contests)" /></li>
                         <li><ice:commandButton action="#{adminTask.addJoinedActivityToRequiredUsers}" value="Add joined Activity where missing" /></li>
                     </ul>
                 </ice:panelTab>
-
+                <ice:panelTab label="Contest/proposal related">
+                    <ul>
+                        <li><ice:commandButton action="#{adminTask.copyProposalsToCompletedPhase}" value="Copy proposals to completed phase" /></li>
+                        <li><ice:commandButton action="#{adminTask.autopromoteProposals}" value="Run autopromote task on past contest phases" /></li>
+                        <li><ice:commandButton action="#{adminTask.triggerSupportsToVote}" value="Send Emails to cast supports2votes (active contests)" /></li>
+                        <li><ice:commandButton action="#{adminTask.addContestYearSuffix}" value="Add contest year suffix to completed, inactive contests" /></li>
+                    </ul>
+                </ice:panelTab>
                 <ice:panelTab label="Contest launches">
                     <ul>
                         <li><ice:outputLink value="/web/guest/cms/-/contestmanagement/create2015Tier1Contests">

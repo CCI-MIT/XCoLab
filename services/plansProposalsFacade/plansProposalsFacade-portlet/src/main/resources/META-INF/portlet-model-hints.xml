@@ -991,6 +991,7 @@
 		</field>
 		<field name="commentEnabled" type="boolean" />
 		<field name="otherDataString" type="String" />
+		<field name="onlyForInternalUsage" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalRatingType">
 		<field name="id" type="long" />

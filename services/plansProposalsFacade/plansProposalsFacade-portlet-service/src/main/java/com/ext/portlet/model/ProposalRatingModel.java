@@ -180,6 +180,27 @@ public interface ProposalRatingModel extends BaseModel<ProposalRating> {
      */
     public void setOtherDataString(String otherDataString);
 
+    /**
+     * Returns the only for internal usage of this proposal rating.
+     *
+     * @return the only for internal usage of this proposal rating
+     */
+    public boolean getOnlyForInternalUsage();
+
+    /**
+     * Returns <code>true</code> if this proposal rating is only for internal usage.
+     *
+     * @return <code>true</code> if this proposal rating is only for internal usage; <code>false</code> otherwise
+     */
+    public boolean isOnlyForInternalUsage();
+
+    /**
+     * Sets whether this proposal rating is only for internal usage.
+     *
+     * @param onlyForInternalUsage the only for internal usage of this proposal rating
+     */
+    public void setOnlyForInternalUsage(boolean onlyForInternalUsage);
+
     @Override
     public boolean isNew();
 

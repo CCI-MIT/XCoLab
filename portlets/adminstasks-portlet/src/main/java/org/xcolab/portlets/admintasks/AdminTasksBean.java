@@ -1052,6 +1052,10 @@ public class AdminTasksBean {
         _log.fatal("Finished adding events");
     }
 
+	public void addContestYearSuffix() throws SystemException, PortalException {
+		ContestLocalServiceUtil.addContestYearSuffixToCompletedContests();
+	}
+
     // ----- Reindex Tasks -----
     public void removeUsers() throws SearchException, SystemException {
         pushAjaxUpdate("Removing Users from index");

@@ -34,12 +34,12 @@ public abstract class MemberRoleChoiceAlgorithm {
             }
 
             _log.error("No member role could be found for proposal impact tab member selection algorithm for user with ID " + user.getUserId() + "! Returning Member...");
-            return MemberRole.MEMBER;
+            return MemberRole.GUEST;
         }
 
         @Override
         public MemberRole[] getPrioritizedMemberRoles() {
-            MemberRole[] roles = {MemberRole.IMPACT_ASSESSMENT_FELLOW, MemberRole.STAFF, MemberRole.FELLOW, MemberRole.MEMBER};
+            MemberRole[] roles = {MemberRole.IMPACT_ASSESSMENT_FELLOW, MemberRole.STAFF, MemberRole.FELLOW, MemberRole.MEMBER, MemberRole.GUEST};
             return roles;
         }
 
