@@ -42,14 +42,14 @@ public enum MemberCategory {
     }
 
     public String getImageUrl() {
-        if (name() == MemberCategory.IMPACT_ASSESSMENT_FELLOW.name()){
-            return MemberCategory.FELLOW.name().toLowerCase();
+        String imageUrl = name();
+        if (imageUrl == MemberCategory.IMPACT_ASSESSMENT_FELLOW.name()){
+            imageUrl = MemberCategory.FELLOW.name();
         }
-        else if (name() == MemberCategory.CONTESTMANAGER.name()){
-            return MemberCategory.EXPERT.name().toLowerCase();
+        else if (imageUrl == MemberCategory.CONTESTMANAGER.name()){
+            imageUrl = MemberCategory.EXPERT.name();
         }
-        else
-            return name().toLowerCase();
+        return imageUrl.toLowerCase();
     }
     
     public String getLowerCase() {
