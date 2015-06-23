@@ -62,6 +62,7 @@ function ModelingWidget(selector, options) {
 	});
 
 	this.container.data('modeling', this);
+	this.options = options;
 }
 
 ModelingWidget.prototype.getScenarioUrl = '/plansProposalsFacade-portlet/api/jsonws/modelrunner/get-scenario';
@@ -245,9 +246,26 @@ ModelingWidget.prototype.runTheModel = function() {
 	var modelingWidget = this;
 
 	var values = {};
+	if (this.options.defaultValues) {
+		for (var key in this.options.defaultValues) {
+			values[key] = this.options.defaultValues[key];
+		}
+	}
+	
 	this.container.find(".valueBinding").each(function() {
-		values[jQuery(this).attr('data-id')] = jQuery(this).val();
+		var label = jQuery(this).parents("td.label").text();
+		var id = jQuery(this).attr('data-id');
+
+		if (modelingWidget.options.defaultValues && modelingWidget.options.defaultValues[id] || modelingWidget.options.defaultValues[label]) {
+			values[id] = modelingWidget.options.defaultValues[id] || modelingWidget.options.defaultValues[label];
+			
+		}
+		else {
+			values[id] = jQuery(this).val();
+		}
+		
 	});
+
 
 	jQuery(modelingWidget).trigger("fetchingScenario");
 	jQuery(modelingWidget).trigger("runningModel");

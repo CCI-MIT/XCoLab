@@ -16,12 +16,14 @@
 	
 	<input type="text" id="modelingScenarioId" class="hidden"/>
 	<script>
+	    var options = {};
 		<c:choose>
 			<c:when test="${not empty contestModelDefaultSetting}">
-				var options = ${contestModelDefaultSetting};
+				options.defaultValues = ${contestModelDefaultSetting};
+				//options.defaultValues = {805: "US"};
 			</c:when>
 			<c:otherwise>
-				var options = {};
+				//options.defaultValues = {805: "US"};
 			</c:otherwise>
 		</c:choose>
 		options.edit = true;
