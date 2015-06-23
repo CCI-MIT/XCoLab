@@ -50,7 +50,10 @@ public class ContestModelSettingsBean  implements Serializable {
     }
 
     public void setDefaultModelSettings(String defaultModelSettings) {
-        this.defaultModelSettings = defaultModelSettings;
+        if(defaultModelSettings != null) {
+            String defaultModelSettingsWithSingleQuotationMarks = defaultModelSettings.replaceAll("\"", "'");
+            this.defaultModelSettings = defaultModelSettingsWithSingleQuotationMarks;
+        }
     }
 
     public void persist(Contest contest) throws Exception{
@@ -59,6 +62,9 @@ public class ContestModelSettingsBean  implements Serializable {
         }
         if(defaultModelId != null){
             contest.setDefaultModelId(defaultModelId);
+        }
+        if(defaultModelSettings != null){
+            contest.setDefaultModelSettings(defaultModelSettings);
         }
         contest.persist();
     }
