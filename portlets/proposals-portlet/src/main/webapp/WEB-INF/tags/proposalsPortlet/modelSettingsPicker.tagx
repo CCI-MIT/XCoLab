@@ -1,0 +1,46 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	
+	<jsp:directive.attribute name="consolidateOptions" type="java.util.Map" required="true" rtexprvalue="true" description="Models to be shown" />
+	<jsp:directive.attribute name="contestPK" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest PK" />
+	<jsp:directive.attribute name="modelId" type="java.lang.Long" required="false" rtexprvalue="true" description="Selected modelId" />
+
+
+	<div class='addpropbox'>
+            <div>
+                <h3 style="margin-top: 0px;">How would you like to specify the parameters for your global model?</h3>
+                <div class="">
+                	<fieldset class='modelSettingsSelectBox'>
+                	<c:forEach var="model" items="${consolidateOptions}">
+
+						<input type="radio" name="Typ" id="${model.key }" value="${model.key }" checked="checked" />
+						<label for="${model.key }"> ${model.value[0] }</label>
+
+						<span class="fieldWithTooltip">
+							<img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png"/>
+						</span>
+						<div class="tooltip" style="opacity: 100;">
+							${model.value[1] }
+						</div>
+						<br/>
+                	</c:forEach>
+                	</fieldset>
+                </div>
+            </div>
+	</div>
+	<script>
+		jQuery(".modelSettingsSelectBox").change(function(element) {
+			console.log()
+
+			// TODO check child models
+			//modeling.loadModel(element.target.value);
+		});
+	</script>
+</jsp:root>

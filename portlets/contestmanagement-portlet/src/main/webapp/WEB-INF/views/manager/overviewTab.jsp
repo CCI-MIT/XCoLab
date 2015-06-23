@@ -122,7 +122,7 @@
 					</tr>
 					<tr>
 						<td>
-							<span class="floatLeft">Default model settings (JSON string: {'region':'US'})</span>
+							<span class="floatLeft">Default model settings (JSON string: {"region":"US"})</span>
 						</td>
 						<td>
 							<form:input path="contestModelSettingsBean.defaultModelSettings"/>

@@ -15,12 +15,34 @@
 
     <!-- Content -->
     <div id="content">
+        <c:set var="modelId" value="${proposal.modelId }"/>
+        <c:set var="scenarioId" value="${proposal.scenarioId }"/>
+
+        <c:if test="${not empty proposalToModelMap}">
+            <h2>Consolidation couldn't be used. Check your proposals:</h2>
+            <c:forEach items="${proposalToModelMap}" var="proposalToModel">
+                Proposal = ${proposalToModel.key.name}, Model = ${proposalToModel.value.name}<br/>
+            </c:forEach>
+        </c:if>
+
+        <c:if test="${not empty consolidatedScenarioId}">
+            <c:set var="scenarioId" value="${consolidatedScenarioId}"/>
+        </c:if>
+
         <c:choose>
             <c:when test="${edit}">
-                <c:if test="${not empty availableModels }">
-                    <proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" modelId="${proposal.modelId}" />
+
+                <c:if test="${not empty consolidateOptions }">
+                    <proposalsPortlet:modelSettingsPicker consolidateOptions="${consolidateOptions  }" contestPK="${contest.contestPK }" modelId="${modelId}" />
                 </c:if>
-                <modeling:simulationEdit scenarioId="${proposal.scenarioId }" modelId="${proposal.modelId }" />
+
+                <c:if test="${not empty availableModels }">
+                    <div style="visibility: ${not empty consolidatedScenarioId ? 'hidden' : ''};" id="modelPickerDiv">
+                        <proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" modelId="${modelId}" />
+                    </div>
+                </c:if>
+
+                <modeling:simulationEdit scenarioId="${scenarioId }" modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}"/>
 
                 <portlet:actionURL var="updateProposalScenarioURL">
                     <portlet:param name="action_forwardToPage" value="proposalDetails_IMPACT" />
@@ -72,7 +94,7 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <modeling:simulationView scenarioId="${proposal.scenarioId }" modelId="${proposal.modelId }" />
+                <modeling:simulationView scenarioId="${scenarioId }" modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}"/>
             </c:otherwise>
         </c:choose>
     </div>

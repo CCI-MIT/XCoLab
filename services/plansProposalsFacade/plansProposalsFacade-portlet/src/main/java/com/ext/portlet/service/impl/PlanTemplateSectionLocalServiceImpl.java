@@ -44,7 +44,7 @@ public class PlanTemplateSectionLocalServiceImpl
 
         DynamicQuery queryByPlanSectionDefinition =
                 DynamicQueryFactoryUtil.forClass(PlanTemplateSection.class, PortletClassLoaderUtil.getClassLoader())
-                        .add(PropertyFactoryUtil.forName("planSectionId").eq(planSectionDefinitionId));
+                        .add(PropertyFactoryUtil.forName("primaryKey.planSectionId").eq(planSectionDefinitionId));
 
         return planTemplateSectionPersistence.findWithDynamicQuery(queryByPlanSectionDefinition);
     }

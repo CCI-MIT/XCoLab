@@ -163,7 +163,7 @@ public class IntegratedProposalImpactSeries {
                 if (contestTierId == contestOfProposal.getContestTier()) {
                     subProposalsOnContestTier.addAll(proposals);
                 } else {
-                    List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
+                    List<Proposal> subProposals = ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
                     getSubProposalsOnContestTier(subProposals, subProposalsOnContestTier, contestTierId);
                 }
             }

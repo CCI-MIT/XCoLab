@@ -14,20 +14,39 @@
 
 	<div class='addpropbox'>
             <div>
-                <h3 style="margin-top: 0px;">Select your model:</h3>
+                <h3 style="margin-top: 0px;">Which modelling engine would you like to use?</h3>
                 <div class="">
                 	<fieldset class='selectbox1 modelsSelectBox'>
                 	<c:forEach var="model" items="${availableModels }">
+
+						<c:set var="checked" value=""/>
+						<c:if test="${model.key == modelId}">
+							<c:set var="checked" value="checked"/>
+						</c:if>
+
 						<c:choose>
-							<c:when test="${model.key == modelId}">
-								<input type="radio" name="Typ" id="${model.key }" value="${model.key }" checked="checked" />
-								<label for="${model.key }"> ${model.value }</label><br/>
+							<c:when test="${fn:containsIgnoreCase(model.value, 'emf')}">
+								<c:set var="wikiUrl" value="/resources/-/wiki/Main/EMF27+model+runs"/>
+							</c:when>
+							<c:when test="${fn:containsIgnoreCase(model.value, 'roads')}">
+								<c:set var="wikiUrl" value="/resources/-/wiki/Main/EnROADS+by+Climate+Interactive"/>
 							</c:when>
 							<c:otherwise>
-								<input type="radio" name="Typ" id="${model.key }" value="${model.key }" />
-								<label for="${model.key }"> ${model.value }</label><br/>
+								<c:set var="wikiUrl" value=""/>
 							</c:otherwise>
 						</c:choose>
+
+						<input type="radio" name="Typ" id="${model.key }" value="${model.key }" checked="${checked }" />
+						<label for="${model.key }"> ${model.value }</label>
+
+						<c:if test="${not empty wikiUrl}">
+							<a href="${wikiUrl}" target="_blank">
+								<span class="fieldWithTooltip">
+									<img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png"/>
+								</span>
+							</a>
+						</c:if>
+						<br/>
                 	</c:forEach>
                 	</fieldset>
                 </div>

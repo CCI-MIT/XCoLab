@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import edu.mit.cci.roma.client.Scenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,16 +19,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
+import org.xcolab.portlets.proposals.wrappers.ProposalImpactScenarioCombinationWrapper;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.*;
 
 import javax.portlet.PortletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,7 +49,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_IMPACT"})
     public String showImpactTab(PortletRequest request, Model model, @RequestParam(required = false) boolean edit)
-            throws PortalException, SystemException {
+            throws Exception {
 
         Contest contest = proposalsContext.getContest(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
@@ -66,16 +68,15 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             case REGION_SECTOR:
                 //return "proposalImpactError";
             case REGION_AGGREGATE:
-                return showImpactTabIntegratedProposal(request, model, edit);
             case GLOBAL:
-                //return showImpactTabIntegratedProposal(request, model);
+                return showImpactTabIntegratedProposal(request, model, edit);
             default:
                 return "proposalImpactError";
         }
     }
 
     private String showImpactTabIntegratedProposal(PortletRequest request, Model model, Boolean edit)
-            throws PortalException, SystemException {
+            throws Exception {
 
         if (!hasImpactTabPermission(request)) {
             return "proposalImpactError";
@@ -87,10 +88,29 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal, contest);
         model.addAttribute("impactSeries", integratedProposalImpactSeries);
 
+        boolean isGlobalContest = isGlobalContest(contest);
+        model.addAttribute("isGlobalContest", isGlobalContest);
+
         if (edit) {
-            Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
-            if (modelIdsWithNames.size() > 1) {
-                model.addAttribute("availableModels", modelIdsWithNames);
+            if(isGlobalContest) {
+                List<Proposal> subProposals =  ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
+                ProposalImpactScenarioCombinationWrapper proposalImpactScenarioCombinationWrapper =
+                        new ProposalImpactScenarioCombinationWrapper(subProposals);
+
+                Long consolidatedScenarioId  = proposalImpactScenarioCombinationWrapper.getOutputScenarioId();
+                boolean isConsolidationPossible = proposalImpactScenarioCombinationWrapper.isConsolidationOfScenariosPossible();
+
+                if(!isConsolidationPossible){
+                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalToModelMap());
+                    populateModelOptions(model, request);
+                } else {
+                    model.addAttribute("consolidatedScenarioId", consolidatedScenarioId);
+                }
+
+                populateConsolidationOptions(model);
+
+            } else {
+                populateModelOptions(model,request);
             }
         }
 
@@ -98,6 +118,21 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         populateImpactTabBasicProposal(model, contest, proposal);
 
         return "integratedProposalImpact";
+    }
+
+    private void populateModelOptions(Model model, PortletRequest request) throws Exception{
+        Long contestId = proposalsContext.getContest(request).getContestPK();
+        Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(contestId);
+        if (modelIdsWithNames.size() > 1) {
+            model.addAttribute("availableModels", modelIdsWithNames);
+        }
+    }
+
+    private void populateConsolidationOptions(Model model){
+        Map<Long, String[]> consolidateOptions = getConsolidateOptionsOnGlobalLevel();
+        if (consolidateOptions.size() > 1) {
+            model.addAttribute("consolidateOptions", consolidateOptions);
+        }
     }
 
     private String showImpactTabBasicProposal(PortletRequest request, Model model)
@@ -165,4 +200,20 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         // If not admin or fellow or IAF return false
         return (permissions.getCanAdminAll() || permissions.getCanFellowActions() || permissions.getCanIAFActions());
     }
+
+    private boolean isGlobalContest(Contest contest) throws PortalException, SystemException{
+        return contest.getContestTier() == ContestTier.GLOBAL.getTierType();
+    }
+
+    private Map<Long, String[]> getConsolidateOptionsOnGlobalLevel(){
+        Map<Long, String[]> consolidateOptions = new LinkedHashMap<>();
+
+        String[] consolidated = {"USE CONSOLIDATED VALUES FROM THE REGIONAL PLANS", "The input values for the global simulation model are automatically computed from the values in the regional plans this global plan includes."};
+        String[] separate = {"SPECIFY SEPARATE VALUES FOR THE GLOBAL PLAN", "Regardless of the input values for the regional plans, separate values for the global plan are specified here."};
+
+        consolidateOptions.put(1L, consolidated);
+        consolidateOptions.put(2L, separate);
+        return consolidateOptions;
+    }
+
 }

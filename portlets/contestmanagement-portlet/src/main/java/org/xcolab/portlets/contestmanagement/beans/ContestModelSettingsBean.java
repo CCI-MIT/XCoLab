@@ -51,8 +51,8 @@ public class ContestModelSettingsBean  implements Serializable {
 
     public void setDefaultModelSettings(String defaultModelSettings) {
         if(defaultModelSettings != null) {
-            String defaultModelSettingsWithSingleQuotationMarks = defaultModelSettings.replaceAll("\"", "'");
-            this.defaultModelSettings = defaultModelSettingsWithSingleQuotationMarks;
+            String defaultModelSettingsWithDoubleQuotationMarks = defaultModelSettings.replaceAll("'", "\"");
+            this.defaultModelSettings = defaultModelSettingsWithDoubleQuotationMarks;
         }
     }
 
