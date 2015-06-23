@@ -14,13 +14,14 @@
 	<link rel="stylesheet" href="/proposals-portlet/css/simulation.css" ></link>
 	<div id="modelsOutputContainer"></div>
 	<script>
-		<c:if test="${not empty contestModelDefaultSetting}">
-			var contestModelDefaultSetting = ${contestModelDefaultSetting};
-		</c:if>
-		var options = {};
-		if(typeof(contestModelDefaultSetting) != "undefined"){
-			options = contestModelDefaultSetting;
-		}
+		<c:choose>
+			<c:when test="${not empty contestModelDefaultSetting}">
+				var options = ${contestModelDefaultSetting};
+			</c:when>
+			<c:otherwise>
+				var options = {};
+			</c:otherwise>
+		</c:choose>
 		options.edit = false;
 		var modeling = XCoLab.modeling('#modelsOutputContainer', options);
 		<c:choose>

@@ -16,13 +16,14 @@
 	
 	<input type="text" id="modelingScenarioId" class="hidden"/>
 	<script>
-		<c:if test="${not empty contestModelDefaultSetting}">
-			var contestModelDefaultSetting = ${contestModelDefaultSetting};
-		</c:if>
-		var options = {};
-		if(typeof(contestModelDefaultSetting) != "undefined"){
-			options = contestModelDefaultSetting;
-		}
+		<c:choose>
+			<c:when test="${not empty contestModelDefaultSetting}">
+				var options = ${contestModelDefaultSetting};
+			</c:when>
+			<c:otherwise>
+				var options = {};
+			</c:otherwise>
+		</c:choose>
 		options.edit = true;
 		var modeling = XCoLab.modeling('#modelsOutputContainer', options);
 		<c:choose>
