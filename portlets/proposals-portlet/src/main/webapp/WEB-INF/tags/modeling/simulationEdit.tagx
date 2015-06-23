@@ -19,6 +19,7 @@
 		<c:if test="${not empty contestModelDefaultSetting}">
 			var contestModelDefaultSetting = ${contestModelDefaultSetting};
 		</c:if>
+		var options = {};
 		if(typeof(contestModelDefaultSetting) != "undefined"){
 			options = contestModelDefaultSetting;
 		}
