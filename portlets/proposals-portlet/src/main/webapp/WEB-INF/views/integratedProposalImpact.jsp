@@ -241,7 +241,7 @@
             [].forEach.call(modelTotalValues, function(totalYearValue){
                 var year = totalYearValue.getAttribute("data-attr-year");
                 var value = parseFloat(totalYearValue.innerHTML).toFixed(2);;
-                map.year = value;
+                map[year] = value;
             });
             return map;
         }
