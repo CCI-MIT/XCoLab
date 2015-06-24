@@ -706,4 +706,10 @@ span.stars span {
     background-color: #66af45;
 }
 
-input[radio].impact { margin-right:5px; }
+.modelSettingsSelectBox input[type=radio] {
+    margin-right:5px;
+}
+
+.modelsSelectBox input[type=radio] {
+    margin-right:5px;
+}

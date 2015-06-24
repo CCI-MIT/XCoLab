@@ -63,7 +63,6 @@ public class ProposalImpactScenarioCombinationWrapper {
         for(Proposal proposal : proposals) {
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
             Long scenarioId = proposalWrapper.getScenarioId();
-            //Long scenarioId = 11621L;
             if(scenarioId != null && scenarioId > 0) {
                 Scenario scenarioForProposal = getScenarioForScenarioId(scenarioId);
                 scenarios.add(scenarioForProposal);

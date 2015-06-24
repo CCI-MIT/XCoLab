@@ -79,7 +79,7 @@
 				checkModelSetRadioWithId(consolidatedModelId);
 				setModelSetRadiosState(true);
 			}
-		}
+		});
 
 
 		jQuery("#modelSettingsSet").change(function(event) {
