@@ -4,12 +4,12 @@ package org.xcolab.portlets.proposals.utils;
  * Created by Thomas on 6/22/2015.
  */
 public enum RegionClimateImpact {
-    US("US", 0.19),
-    EU("EU", 0.14),
-    CHINA("CHINA", 0.15),
-    INDIA("INDIA", 0.15),
-    OTHER_DEVELOPING("OTHER_DEVELOPING", 0.1),
-    OTHER_DEVELOPED("OTHER_DEVELOPED", 0.1)
+    US("US", 0.1595),
+    EU("EU", 0.1140),
+    CHINA("China", 0.2834),
+    INDIA("India", 0.0691),
+    OTHER_DEVELOPING("Other developing", 0.2828),
+    OTHER_DEVELOPED("Other developed", 0.0912)
     ;
 
     private final String regionNameUsedInRoma;

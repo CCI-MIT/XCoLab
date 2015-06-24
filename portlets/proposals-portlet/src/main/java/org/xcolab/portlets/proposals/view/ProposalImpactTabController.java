@@ -115,33 +115,39 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                     Long consolidatedModelId;
 
                     if(proposalWrapper.getScenarioId() != null && proposalWrapper.getScenarioId() != 0) {
-                        Long scenarioId = proposalWrapper.getScenarioId();
 
-                        if(proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggeragted(scenarioId)){
-                            proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
-                            consolidatedScenarioId = proposalImpactScenarioCombinationWrapper.getOutputScenarioId();
-                            consolidatedModelId = proposalImpactScenarioCombinationWrapper.getOutputModelId();
-                        } else {
-                            consolidatedScenarioId = scenarioId;
-                            consolidatedModelId = proposalImpactScenarioCombinationWrapper.getModelIdForScenarioId(scenarioId);
+                        Long proposalScenarioId = proposalWrapper.getScenarioId();
+                        boolean isCombinedScenario = proposalImpactScenarioCombinationWrapper.isCombinedScenario(proposalScenarioId);
+
+                        if(isCombinedScenario){
+                            if(proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)){
+
+                                proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
+                                consolidatedScenarioId = proposalImpactScenarioCombinationWrapper.getOutputScenarioId();
+                                consolidatedModelId = proposalImpactScenarioCombinationWrapper.getOutputModelId();
+
+                            } else {
+                                consolidatedScenarioId = proposalScenarioId;
+                                consolidatedModelId = proposalImpactScenarioCombinationWrapper.getModelIdForScenarioId(proposalScenarioId);
+                            }
+
+                            model.addAttribute("consolidatedScenarioId", consolidatedScenarioId);
+                            model.addAttribute("consolidatedModelId", consolidatedModelId);
                         }
+
                     } else {
                         proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
                         consolidatedScenarioId = proposalImpactScenarioCombinationWrapper.getOutputScenarioId();
                         consolidatedModelId = proposalImpactScenarioCombinationWrapper.getOutputModelId();
+                        model.addAttribute("consolidatedScenarioId", consolidatedScenarioId);
+                        model.addAttribute("consolidatedModelId", consolidatedModelId);
                     }
-
-                    model.addAttribute("consolidatedScenarioId", consolidatedScenarioId);
-                    model.addAttribute("consolidatedModelId", consolidatedModelId);
-
-                    if(proposalWrapper.getScenarioId() == null){
-                        proposalWrapper.setScenarioId(consolidatedScenarioId, consolidatedModelId, user.getUserId());
-                    }
-
                 }
+
                 populateConsolidationOptions(model);
             }
-            populateModelOptions(model,request);
+
+            populateModelOptions(model, request);
         }
 
 

@@ -46,28 +46,58 @@
 	</div>
 	<script>
 
-		var consolidatedScenarioId = parseInt("${consolidatedModelId}");
+		var consolidatedScenarioId = parseInt("${consolidatedScenarioId}");
 		var consolidatedModelId = parseInt("${consolidatedModelId}");
+		var consolidationPossible = ${CONSOLIDATE};
 
 		var scenarioId = parseInt("${scenarioId}");
 		var modelId = parseInt("${modelId}");
 
-		jQuery(".modelSettingsSelectBox").change(function(event) {
+		function setModelSetRadiosState(enabled){
+			var modelSetRadios = document.getElementsByName("modelSet");
+			var len=modelSetRadios.length;
+			for(var i=0; i &lt; len; i++){
+				modelSetRadios[i].disabled = enabled;
+			}
+		}
+
+		function checkModelSetRadioWithId(id){
+			var modelSetRadios = document.getElementsByName("modelSet");
+			var len=modelSetRadios.length;
+			for(var i=0; i &lt; len; i++){
+				if(modelSetRadios[i].id == id){
+					modelSetRadios[i].checked = true;
+				}
+				else{
+					modelSetRadios[i].checked = true;
+				}
+			}
+		}
+
+		jQuery("#modelSettingsSet").change(function(event) {
 			var modelSettingsOption = event.target.id;
 			var modelsSelectBox = document.getElementById("modelPickerDiv");
 			var proposalToModelMap = document.getElementById("proposalToModelMap");
 
 			if(modelSettingsOption === "CONSOLIDATE"){
-				modelsSelectBox.display = "none";
-				proposalToModelMap.display = "";
+				if(consolidationPossible) {
+					modelsSelectBox.style.display = "";
+					setModelSetRadiosState(false);
+					checkModelSetRadioWithId(consolidatedModelId);
+					if (consolidatedScenarioId > 0) {
+						modeling.loadScenario(consolidatedScenarioId);
+					}
 
-				if(consolidatedScenarioId > 0) {
-					modeling.loadScenario(consolidatedScenarioId);
+				} else{
+					modelsSelectBox.style.display = "none";
+					proposalToModelMap.style.display = "";
 				}
+
 			} else{
-				proposalToModelMap.display = "none";
-				modelsSelectBox.display = "";
-				//Show selection
+				proposalToModelMap.style.display = "none";
+				modelsSelectBox.style.display = "";
+				setModelSetRadiosState(true);
+				checkModelSetRadioWithId(modelId);
 				modeling.loadModel(modelId);
 			}
 
