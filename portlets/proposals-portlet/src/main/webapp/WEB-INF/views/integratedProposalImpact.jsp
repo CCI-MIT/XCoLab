@@ -22,7 +22,7 @@
             <c:set var="modelId" value="${consolidatedModelId}"/>
         </c:if>
 
-        <c:if test="${(empty scenarioId or not scenarioId gt 0) and not empty consolidatedScenarioId}">
+        <c:if test="${not empty consolidatedScenarioId}">
             <c:set var="scenarioId" value="${consolidatedScenarioId}"/>
         </c:if>
 
