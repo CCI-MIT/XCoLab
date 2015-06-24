@@ -112,6 +112,7 @@ public class IntegratedProposalImpactSeries {
                      impactSeriesList.getAggregatedSeriesValues(Arrays.asList(REFERENCE_SERIES_TYPES), regionOntologyTerm);
 
             addUpProposalImpactDefaultSeriesValues(aggregatedSeriesValues);
+
             addUpProposalImpactAggregatedSeriesValues(aggregatedSeriesValues);
 
             sectorsProposalAggregatedSeriesValues = global ?

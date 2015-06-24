@@ -51,7 +51,7 @@ public class ProposalImpactSeriesValues {
 
     }
 
-    public void addImpactSeriesValues(ProposalImpactSeriesValues anotherSeriesValues, Map<Long, Double> yearToValueFactor) {
+    public void addImpactSeriesValues(ProposalImpactSeriesValues anotherSeriesValues, Map<Integer, Double> yearToValueFactor) {
         Set<Integer> mergedYearKeySet = new HashSet<Integer>(yearToValueMap.keySet());
         mergedYearKeySet.addAll(anotherSeriesValues.yearToValueMap.keySet());
 
