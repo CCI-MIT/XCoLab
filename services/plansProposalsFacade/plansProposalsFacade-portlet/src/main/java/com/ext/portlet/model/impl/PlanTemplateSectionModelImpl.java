@@ -65,8 +65,9 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
     public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.PlanTemplateSection"),
             true);
-    public static long PLANTEMPLATEID_COLUMN_BITMASK = 1L;
-    public static long WEIGHT_COLUMN_BITMASK = 2L;
+    public static long PLANSECTIONID_COLUMN_BITMASK = 1L;
+    public static long PLANTEMPLATEID_COLUMN_BITMASK = 2L;
+    public static long WEIGHT_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanTemplateSection"));
     private static ClassLoader _classLoader = PlanTemplateSection.class.getClassLoader();
@@ -77,6 +78,8 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
     private long _originalPlanTemplateId;
     private boolean _setOriginalPlanTemplateId;
     private long _planSectionId;
+    private long _originalPlanSectionId;
+    private boolean _setOriginalPlanSectionId;
     private int _weight;
     private long _columnBitmask;
     private PlanTemplateSection _escapedModel;
@@ -219,7 +222,19 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
 
     @Override
     public void setPlanSectionId(long planSectionId) {
+        _columnBitmask |= PLANSECTIONID_COLUMN_BITMASK;
+
+        if (!_setOriginalPlanSectionId) {
+            _setOriginalPlanSectionId = true;
+
+            _originalPlanSectionId = _planSectionId;
+        }
+
         _planSectionId = planSectionId;
+    }
+
+    public long getOriginalPlanSectionId() {
+        return _originalPlanSectionId;
     }
 
     @JSON
@@ -314,6 +329,10 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
         planTemplateSectionModelImpl._originalPlanTemplateId = planTemplateSectionModelImpl._planTemplateId;
 
         planTemplateSectionModelImpl._setOriginalPlanTemplateId = false;
+
+        planTemplateSectionModelImpl._originalPlanSectionId = planTemplateSectionModelImpl._planSectionId;
+
+        planTemplateSectionModelImpl._setOriginalPlanSectionId = false;
 
         planTemplateSectionModelImpl._columnBitmask = 0;
     }

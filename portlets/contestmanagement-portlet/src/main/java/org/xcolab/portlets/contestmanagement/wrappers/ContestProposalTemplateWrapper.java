@@ -10,7 +10,9 @@ import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.wrapper.ContestWrapper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Thomas on 2/18/2015.
@@ -167,16 +169,19 @@ public class ContestProposalTemplateWrapper {
     private static void deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate(PlanTemplate planTemplate) throws Exception{
         List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil.getSections(planTemplate);
         for(PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if(!isPlanSectionDefinitionUsedInTemplate(planSectionDefinition.getId())) {
+            if(!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(), planTemplate.getId())) {
                 PlanSectionDefinitionLocalServiceUtil.deletePlanSectionDefinition(planSectionDefinition);
             }
-
         }
     }
 
-    private static boolean isPlanSectionDefinitionUsedInTemplate(Long planSectionDefinitionId) throws Exception{
+    private static boolean isPlanSectionDefinitionUsedInOtherTemplate(Long planSectionDefinitionId, Long planTemplateId) throws Exception{
         List<PlanTemplateSection> planTemplateSections = PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId(planSectionDefinitionId);
-        return !planTemplateSections.isEmpty();
+        if(planTemplateSections.size() == 1 && planTemplateSections.get(0).getPlanTemplateId() == planTemplateId){
+            return false;
+        } else {
+            return !planTemplateSections.isEmpty();
+        }
     }
 
     private static void deletePlanTemplateSectionsOfProposalTemplate(Long planTemplateId) throws Exception{
@@ -205,25 +210,30 @@ public class ContestProposalTemplateWrapper {
     }
 
     public void removeDeletedSections() throws Exception {
+        Set<Long> remainingPlanSectionDefinitionIds = new HashSet<>();
         List<SectionDefinitionBean> removedSectionDefinitions = new ArrayList<>();
         for(SectionDefinitionBean sectionBaseDefinition : sections ){
             if((sectionBaseDefinition.getTitle() == null || sectionBaseDefinition.getTitle().isEmpty())
                     && !sectionBaseDefinition.isTemplateSection()){
                 removedSectionDefinitions.add(sectionBaseDefinition);
+            } else{
+                remainingPlanSectionDefinitionIds.add(sectionBaseDefinition.getSectionDefinitionId());
+            }
+        }
+
+
+        List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil.getSections(planTemplate);
+        for(PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
+            if(!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())){
+                if (!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(), planTemplate.getId())) {
+                    PlanSectionDefinitionLocalServiceUtil.deletePlanSectionDefinition(planSectionDefinition);
+                }
+                PlanTemplateLocalServiceUtil.removeSection(planTemplate, planSectionDefinition);
             }
         }
 
         for(SectionDefinitionBean removedSectionDefinition : removedSectionDefinitions) {
-            if(removedSectionDefinition.getSectionDefinitionId() != null) {
-                PlanSectionDefinition removedPlanSectionDefinition =
-                        PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(removedSectionDefinition.getSectionDefinitionId());
-                if (!isPlanSectionDefinitionUsedInTemplate(removedSectionDefinition.getSectionDefinitionId())) {
-                    PlanSectionDefinitionLocalServiceUtil.deletePlanSectionDefinition(removedPlanSectionDefinition);
-                }
-            PlanTemplateLocalServiceUtil.removeSection(planTemplate, removedPlanSectionDefinition);
-            }
-
-            sections.remove(removedSectionDefinition);
+             sections.remove(removedSectionDefinition);
         }
     }
 
@@ -263,8 +273,6 @@ public class ContestProposalTemplateWrapper {
 
         if(createNew) {
             duplicateExistingPlanTemplate();
-        } else{
-            //deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate();
         }
 
         addSectionsToProposalTemplate();
