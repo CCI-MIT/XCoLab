@@ -44,6 +44,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         //findEntitiesAndPopulateModel(proposalId, contestId, phaseId, model);
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
+        model.addAttribute("edit", edit);
         
         if (move) {
         	// get base proposal from base contest
