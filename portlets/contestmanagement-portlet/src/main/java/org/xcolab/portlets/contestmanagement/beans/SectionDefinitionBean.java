@@ -13,8 +13,6 @@ import java.util.List;
  */
 public class SectionDefinitionBean implements Serializable{
 
-    //@NotBlank(message = "The contest description must be at least 5 characters and not more than 140 characters.")
-    //@Length(min = 5, max = 140, message = "The contest question must be at least 5 characters and not more than 140 characters.")
     private Long id;
     private Long sectionDefinitionId;
     private String type = "";
