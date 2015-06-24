@@ -34,9 +34,9 @@
                     <div id="proposalToModelMap" class="addpropbox">
                         <c:if test="${not empty proposalToModelMap}">
                             <div class="alert alert-error">
-                                Consolidation couldn't be used. Check your proposals
+                                In order to consolidate your models, your subproposals need to use the same modelling engine
                             </div>
-                            <table class="alert-warning">
+                            <table>
                                 <thead>
                                 <tr>
                                     <th>Proposal</th>
@@ -195,7 +195,7 @@
                     <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
                 </c:forEach>
             </tr>
-            
+
             <tr>
                 <c:choose>
                     <c:when test="${empty proposal.team}"><td colspan="5">${proposal.author.screenName}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:when>

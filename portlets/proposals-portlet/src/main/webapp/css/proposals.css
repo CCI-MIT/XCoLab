@@ -706,4 +706,4 @@ span.stars span {
     background-color: #66af45;
 }
 
-
+input[radio].impact { margin-right:5px; }
