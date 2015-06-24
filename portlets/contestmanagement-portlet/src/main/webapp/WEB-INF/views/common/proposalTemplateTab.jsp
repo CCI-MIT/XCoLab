@@ -25,14 +25,6 @@
 		<portlet:param name="elementId" value="${contestProposalTemplateWrapper.planTemplateId}" />
 	</portlet:actionURL>
 
-	<portlet:actionURL var="updateContestProposalTemplateURL">
-		<portlet:param name="action_forwardToPage" value="proposalTemplateTab" />
-		<portlet:param name="action_errorForwardToPage" value="proposalTemplateTab" />
-		<portlet:param name="tab" value="PROPOSALTEMPLATE" />
-		<portlet:param name="contestId" value="${contestWrapper.contestPK }" />
-		<portlet:param name="action" value="updateContestProposalTemplate" />
-	</portlet:actionURL>
-
 	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 
 	<c:if test="${param.manager}">
@@ -209,10 +201,9 @@
 		}
 
 		function bindAddSectionClick(){
-			var initialNumberOfSections = getNumberOfSections();
+			var initialNumberOfSections = getNumberOfSections()-1;
 			var addSectionButtonElement = document.getElementById("addSectionButton");
-
-			addSectionButtonElement.addEventListener("click", function(event) {
+			addSectionButtonElement.addEventListener("click", function() {
 				var numberOfSections = getNumberOfSections();
 				addNewSection(initialNumberOfSections, numberOfSections + 1);
 			});

@@ -15,7 +15,6 @@ public class SectionDefinitionBean implements Serializable{
 
     //@NotBlank(message = "The contest description must be at least 5 characters and not more than 140 characters.")
     //@Length(min = 5, max = 140, message = "The contest question must be at least 5 characters and not more than 140 characters.")
-    // TODO split in core bean and rest
     private Long id;
     private Long sectionDefinitionId;
     private String type = "";
@@ -23,13 +22,14 @@ public class SectionDefinitionBean implements Serializable{
     private String defaultText = "";
     private String helpText = "";
     private Integer characterLimit = 200;
-    private Long focusAreaId;
+    private Long focusAreaId = 0L; // TODO this is only the default!!
     private Long level;
     private String content = "";
     private boolean locked = false;
     private boolean deletable = true;
     private boolean isSectionNew = false;
     private boolean templateSection = false;
+    private boolean contestIntegrationRelevance = false;
     private int weight;
 
     public SectionDefinitionBean() {
@@ -71,6 +71,7 @@ public class SectionDefinitionBean implements Serializable{
         this.focusAreaId = planSectionDefinition.getFocusAreaId();
         this.locked = planSectionDefinition.getLocked();
         this.level = planSectionDefinition.getTier();
+        this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
     }
 
     public SectionDefinitionBean(String title) {
@@ -209,13 +210,20 @@ public class SectionDefinitionBean implements Serializable{
         this.weight = weight;
     }
 
-
     public Long getLevel() {
         return level;
     }
 
     public void setLevel(Long level) {
         this.level = level;
+    }
+
+    public boolean isContestIntegrationRelevance() {
+        return contestIntegrationRelevance;
+    }
+
+    public void setContestIntegrationRelevance(boolean contestIntegrationRelevance) {
+        this.contestIntegrationRelevance = contestIntegrationRelevance;
     }
 
     public static final Comparator<SectionDefinitionBean> sectionListComparator = new MyComparator();
