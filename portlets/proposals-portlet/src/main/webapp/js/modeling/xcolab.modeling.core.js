@@ -246,11 +246,12 @@ ModelingWidget.prototype.runTheModel = function() {
 	var modelingWidget = this;
 
 	var values = {};
+	/*
 	if (this.options.defaultValues) {
 		for (var key in this.options.defaultValues) {
 			values[key] = this.options.defaultValues[key];
 		}
-	}
+	}*/
 	
 	this.container.find(".valueBinding").each(function() {
 		var label = jQuery(this).parents("td.label").text();
