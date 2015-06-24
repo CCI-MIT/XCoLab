@@ -75,9 +75,13 @@
 		}
 
 		jQuery().ready(function() {
+			var proposalToModelMap = document.getElementById("proposalToModelMap");
 			if(consolidationPossible){
 				checkModelSetRadioWithId(consolidatedModelId);
 				setModelSetRadiosState(true);
+				proposalToModelMap.style.display = "none";
+			} else{
+				proposalToModelMap.style.display = "";
 			}
 		});
 
@@ -103,7 +107,7 @@
 					modelsSelectBox.style.display = "none";
 					modelContent.style.display = "none";
 					proposalToModelMap.style.display = "";
-					
+
 				}
 			} else{
 				modelsSelectBox.style.display = "";

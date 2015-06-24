@@ -26,7 +26,6 @@
             <c:set var="scenarioId" value="${consolidatedScenarioId}"/>
         </c:if>
 
-        <div id="modelContent">
         <c:choose>
             <c:when test="${edit}">
                 <c:if test="${not empty consolidateOptions }">
@@ -64,7 +63,9 @@
                     </div>
                 </c:if>
 
+                <div id="modelContent">
                 <modeling:simulationEdit scenarioId="${scenarioId }" modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}"/>
+                </div>
 
                 <portlet:actionURL var="updateProposalScenarioURL">
                     <portlet:param name="action_forwardToPage" value="proposalDetails_IMPACT" />
@@ -116,10 +117,11 @@
                 </div>
             </c:when>
             <c:otherwise>
+                <div id="modelContent">
                 <modeling:simulationView scenarioId="${scenarioId }" modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}"/>
+                </div>
             </c:otherwise>
         </c:choose>
-        </div>
     </div>
     <!-- TODO show fallback Graph -->
     <div id="impact-chart"> &#160;</div>
