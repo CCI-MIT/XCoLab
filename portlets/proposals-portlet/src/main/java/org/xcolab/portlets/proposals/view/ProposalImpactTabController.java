@@ -85,7 +85,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         Proposal proposal = proposalsContext.getProposal(request);
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         Contest contest = proposalsContext.getContest(request);
-        User user = proposalsContext.getUser(request);
 
         IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal, contest);
         model.addAttribute("impactSeries", integratedProposalImpactSeries);

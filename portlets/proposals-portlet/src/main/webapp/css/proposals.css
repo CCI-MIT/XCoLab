@@ -693,3 +693,17 @@ span.stars, span.stars span {
 span.stars span {
     background-position: 0 0;
 }
+
+.impact-value{
+    background-color: #b9b8b3;
+}
+
+.sector.total{
+    background-color: #666666;
+}
+
+.sector.model{
+    background-color: #66af45;
+}
+
+

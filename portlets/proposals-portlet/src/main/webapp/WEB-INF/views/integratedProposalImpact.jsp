@@ -151,7 +151,7 @@
             </tr>
             </thead>
             <tr>
-                <td>&#160;</td>
+                <td class="blue-bg" style="text-align: left">Sector</td>
                 <c:forEach var="impactIteration" items="${impactIterations}"><th class="blue-bg" style="text-align: center;">${impactIteration.year}</th></c:forEach>
             </tr>
             <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
@@ -168,8 +168,17 @@
                     </c:catch>
                 </tr>
             </c:forEach>
-            <tr>
-                <td class="sector">Total of above sectors</td>
+            <tr id="totalSectors">
+                <td class="sector total">Total of above sectors</td>
+                <c:forEach var="impactIteration" items="${impactIterations}">
+                    <fmt:formatNumber var="value"
+                                      value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
+                                      maxFractionDigits="2" />
+                    <td class="impact-value">${value}</td>
+                </c:forEach>
+            </tr>
+            <tr id="modelAdjustments">
+                <td class="sector">Adjustments to total, to correspond with model results</td>
                 <c:forEach var="impactIteration" items="${impactIterations}">
                     <fmt:formatNumber var="value"
                                       value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
@@ -178,7 +187,7 @@
                 </c:forEach>
             </tr>
             <tr id="modelTotal">
-                <td class="sector">Total from model</td>
+                <td class="sector model">Total from model</td>
                 <c:forEach var="impactIteration" items="${impactIterations}">
                     <fmt:formatNumber var="value"
                                       value="0"
@@ -186,6 +195,7 @@
                     <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
                 </c:forEach>
             </tr>
+            
             <tr>
                 <c:choose>
                     <c:when test="${empty proposal.team}"><td colspan="5">${proposal.author.screenName}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:when>
@@ -223,15 +233,28 @@
     </c:if>
 
     <script type="text/javascript">
-        var MODEL_DATA_ROW = "Emissions from energy";
+        var MODEL_DATA_ROW = "GHG emissions";
+
+        function mapValuesToYear(row){
+            var modelTotalValues = row.querySelectorAll('[data-attr-year]');
+            var map = {};
+            [].forEach.call(modelTotalValues, function(totalYearValue){
+                var year = totalYearValue.getAttribute("data-attr-year");
+                var value = parseFloat(totalYearValue.innerHTML).toFixed(2);;
+                map.year = value;
+            });
+            return map;
+        }
 
         $().ready(function() {
+
+            var totalSectorsRow = document.getElementById("totalSectors");
+            var totalSectorsValuesToYears = mapValuesToYear(totalSectorsRow);
 
             jQuery($("#modelsOutputContainer").data('modeling')).on('scenarioFetched', function(event) {
 
                 var modelSeriesValuesToYears = {};
                 var modelOutputs = event.scenario.outputs;
-
                 modelOutputs.forEach(function(modelOutput){
                     if(modelOutput.name == MODEL_DATA_ROW){
                         var modelSeries = modelOutput.series[0];
@@ -243,13 +266,22 @@
                 });
 
                 var modelTotalRow = document.getElementById("modelTotal");
-                // TODO check querySelectorAll available and provide fallback
                 var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
                 [].forEach.call(modelTotalValues, function(totalYearValue){
                     var year = totalYearValue.getAttribute("data-attr-year");
                     var valueToYear = parseFloat(modelSeriesValuesToYears[year]);
                     totalYearValue.innerHTML = valueToYear.toFixed(2);
                 });
+
+                var modelAdjustmentsRow = document.getElementById("modelAdjustments");
+                var modelAdjustmentValues = modelAdjustmentsRow.querySelectorAll('[data-attr-year]');
+                [].forEach.call(modelAdjustmentValues, function(modelAdjustmentValue){
+                    var year = modelAdjustmentValue.getAttribute("data-attr-year");
+                    var valueToYear = parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalSectorsValuesToYears[year]);
+                    modelAdjustmentValue.innerHTML = valueToYear.toFixed(2);
+                });
+
+
             });
 
         });

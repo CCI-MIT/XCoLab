@@ -35,11 +35,11 @@ public class IntegratedProposalImpactSeries {
     Add key ProposalImpactSeries.SERIES_TYPE_DDPP_KEY to this array to include DDPP series type
      */
     private static final String[] REFERENCE_SERIES_TYPES = new String[] {
-            ProposalImpactSeries.SERIES_TYPE_BAU_KEY,
+            //ProposalImpactSeries.SERIES_TYPE_BAU_KEY,
             };
 
     private static final String[] REFERENCE_SERIES_TYPE_DESCRIPTIONS = new String[] {
-            "Business as usual (BAU)",
+            //"Business as usual (BAU)",
             };
 
     private Map<String, String> seriesTypeToDescriptionMap;
