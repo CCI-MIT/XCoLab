@@ -74,9 +74,13 @@
 			}
 		}
 
-		jQuery("#modelSettingsSet").change(function(event) {
-			console.log("event.target.id;", event.target.id);
-		});
+		jQuery().ready(function() {
+			if(consolidationPossible){
+				checkModelSetRadioWithId(consolidatedModelId);
+				setModelSetRadiosState(true);
+			}
+		}
+
 
 		jQuery("#modelSettingsSet").change(function(event) {
 			var modelSettingsOption = event.target.id;

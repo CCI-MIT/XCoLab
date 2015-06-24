@@ -43,7 +43,7 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     Set<Scenario> scenarios;
     Map<Long, Scenario> modelIdToScenarioMap;
-    Map<ProposalWrapper, Simulation> proposalToModelMap;
+    Map<ProposalWrapper, String> proposalToModelMap;
     Map<Scenario, Proposal> scenariosToProposalMap;
 
     List<Variable> combinedInputParameters;
@@ -64,13 +64,17 @@ public class ProposalImpactScenarioCombinationWrapper {
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
             Long scenarioId = proposalWrapper.getScenarioId();
             //Long scenarioId = 11621L;
-            Scenario scenarioForProposal = getScenarioForScenarioId(scenarioId);
-            scenarios.add(scenarioForProposal);
-            scenariosToProposalMap.put(scenarioForProposal, proposal);
-            Simulation proposalModelSimulation = scenarioForProposal.getSimulation();
-            Long modelId = proposalModelSimulation.getId();
-            modelIdToScenarioMap.put(modelId, scenarioForProposal);
-            proposalToModelMap.put(new ProposalWrapper(proposal), proposalModelSimulation);
+            if(scenarioId != null && scenarioId > 0) {
+                Scenario scenarioForProposal = getScenarioForScenarioId(scenarioId);
+                scenarios.add(scenarioForProposal);
+                scenariosToProposalMap.put(scenarioForProposal, proposal);
+                Simulation proposalModelSimulation = scenarioForProposal.getSimulation();
+                Long modelId = proposalModelSimulation.getId();
+                modelIdToScenarioMap.put(modelId, scenarioForProposal);
+                proposalToModelMap.put(new ProposalWrapper(proposal), proposalModelSimulation.getName());
+            } else{
+                proposalToModelMap.put(new ProposalWrapper(proposal), "No simulation available");
+            }
         }
 
         if(scenarios.size() > 0) {
@@ -84,7 +88,7 @@ public class ProposalImpactScenarioCombinationWrapper {
         }
     }
 
-    public Map<ProposalWrapper, Simulation> getProposalToModelMap() {
+    public Map<ProposalWrapper, String> getProposalToModelMap() {
         return proposalToModelMap;
     }
 

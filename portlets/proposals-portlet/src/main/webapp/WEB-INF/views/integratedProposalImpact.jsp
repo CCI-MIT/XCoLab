@@ -47,7 +47,7 @@
                                 <c:forEach items="${proposalToModelMap}" var="proposalToModel">
                                     <tr>
                                         <td>${proposalToModel.key.name}</td>
-                                        <td>${proposalToModel.value.name}</td>
+                                        <td>${proposalToModel.value}</td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
@@ -234,6 +234,15 @@
 
     <script type="text/javascript">
         var MODEL_DATA_ROW = "GHG emissions";
+
+        /*
+        - Emissions from energy
+        - Emissions from land use
+        - Other GHG emissions
+
+        - Energy/Industry CO2 emissions
+        - Land Use CO2 emissions
+        */
 
         function mapValuesToYear(row){
             var modelTotalValues = row.querySelectorAll('[data-attr-year]');
