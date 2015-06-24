@@ -53,12 +53,15 @@ function ModelingWidget(selector, options) {
 
 	jQuery(this).on('scenarioFetched', function(event) {
 		that.modelId = event.scenario.modelId;
+		that.scenario = event.scenario;
+		that.model = event.scenario.simulation;
 	});
 
     jQuery(this).on('scenarioFetchedWithErrors', ModelingWidget.prototype.showStackTrace);
 
 	jQuery(this).on('modelFetched', function(event) {
 		that.modelId = event.model.modelId;
+		that.model = event.model;
 	});
 
 	this.container.data('modeling', this);
@@ -254,7 +257,7 @@ ModelingWidget.prototype.runTheModel = function() {
 	}*/
 	
 	this.container.find(".valueBinding").each(function() {
-		var label = jQuery(this).parents("td.label").text();
+		var label = jQuery(this).parent().parent().find("td.label").text();
 		var id = jQuery(this).attr('data-id');
 
 		if (modelingWidget.options.defaultValues && modelingWidget.options.defaultValues[id] || modelingWidget.options.defaultValues[label]) {
@@ -272,7 +275,7 @@ ModelingWidget.prototype.runTheModel = function() {
 	jQuery(modelingWidget).trigger("runningModel");
 
 	
-	console.debug(modelingWidget.runModelUrl, values, modelingWidget.modelId);
+	console.debug(modelingWidget.runModelUrl, values, modelingWidget.modelId, modelingWidget);
 	jQuery.ajax({
 		url: modelingWidget.runModelUrl, 
 		data: {modelId: modelingWidget.modelId, inputs: JSON.stringify(values)}, 
