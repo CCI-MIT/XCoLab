@@ -520,7 +520,11 @@ public class ProposalWrapper {
     public Long getModelId() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getDefaultModelId(contest.getContestPK());
     }
-    
+
+    public void setScenarioId(Long scenarioId, Long modelId, Long userId) throws PortalException, SystemException {
+        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID,modelId, scenarioId);
+    }
+
     public Long getScenarioId() throws PortalException, SystemException {
         ProposalAttribute attr = proposalAttributeUtil.getLatestAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
 	if (attr == null) return 0L;

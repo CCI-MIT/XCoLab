@@ -8,6 +8,8 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Variable;
 import edu.mit.cci.roma.client.Tuple;
+import edu.mit.cci.roma.client.comm.ModelNotFoundException;
+import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.xcolab.portlets.proposals.utils.RegionClimateImpact;
 
 import java.io.IOException;
@@ -30,7 +32,8 @@ public class ProposalImpactScenarioCombinationWrapper {
     Map<ProposalWrapper, Simulation> proposalToModelMap;
     Map<Scenario, Proposal> scenariosToProposalMap;
 
-    Set<Variable> combinedInputParameters;
+    List<Variable> combinedInputParameters;
+    Map<Long, Object> combinedInputParametersMap;
     Scenario combinedScenario;
     Simulation usedSimulation;
 
@@ -41,8 +44,14 @@ public class ProposalImpactScenarioCombinationWrapper {
         proposalToModelMap = new HashMap<>();
 
         for(Proposal proposal : proposals) {
-            Scenario scenarioForProposal = CollaboratoriumModelingService.repository().getScenario(proposal.getProposalId());
+            Long dummyScenarioId = 11621L;
+            Scenario scenarioForProposal = getScenarioForScenarioId(dummyScenarioId);
+            //Scenario scenarioForProposal = CollaboratoriumModelingService.repository().getScenario(proposal.getProposalId());
             scenarios.add(scenarioForProposal);
+            //scenarios.add(scenarioForProposal);
+            //Long dummyScenarioId2 = 11754L;
+            //scenarioForProposal = CollaboratoriumModelingService.repository().getScenario(dummyScenarioId2);
+            //scenarios.add(scenarioForProposal);
             scenariosToProposalMap.put(scenarioForProposal, proposal);
             Simulation proposalModelSimulation = scenarioForProposal.getSimulation();
             Long modelId = proposalModelSimulation.getId();
@@ -53,6 +62,7 @@ public class ProposalImpactScenarioCombinationWrapper {
         if(scenarios.size() > 0) {
             Scenario scenario = (Scenario) scenarios.toArray()[0];
             usedSimulation = scenario.getSimulation();
+            combinedInputParameters = scenario.getInputSet();
         }
     }
 
@@ -63,6 +73,14 @@ public class ProposalImpactScenarioCombinationWrapper {
     private boolean isUsedModelEMF(){
         String nameOfUsedSimulation = usedSimulation.getName().toLowerCase();
         return nameOfUsedSimulation.contains("emf");
+    }
+
+    public Long getModelIdForScenarioId(Long scenarioId)throws Exception{
+        return getScenarioForScenarioId(scenarioId).getSimulation().getId();
+    }
+
+    public Scenario getScenarioForScenarioId(Long scenarioId) throws Exception{
+        return CollaboratoriumModelingService.repository().getScenario(scenarioId);
     }
 
     public boolean isConsolidationOfScenariosPossible() {
@@ -81,38 +99,75 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     public boolean doAllScenariosUseSameModel(){
         boolean isMoreThanOneModelIdInMap = (modelIdToScenarioMap.size() > 1);
-        return isMoreThanOneModelIdInMap;
+        return !isMoreThanOneModelIdInMap;
     }
 
     public void calculateCombinedInputParameters() {
 
+        int scenarioCount = 0;
+        combinedInputParametersMap = new HashMap<>();
         for(Scenario scenario : scenarios) {
             String scenarioRegionName = "US";// TODO replace with proper callscenario.getDescription();
             double regionFactor = RegionClimateImpact.valueOf(scenarioRegionName).getRegionClimateImpactFactor();
+            List<Variable> scenarioInputSet = scenario.getInputSet();
 
-            for(Variable scenarioInputVariable : scenario.getInputSet()){
-                if(!combinedInputParameters.contains(scenarioInputVariable)){
+            for (int scenarioInputSetIndex = 0; scenarioInputSetIndex < scenarioInputSet.size(); scenarioInputSetIndex++) {
+                List<Tuple> scenarioInputVariableTuples = scenarioInputSet.get(scenarioInputSetIndex).getValue();
+                List<Tuple> aggregatedScenarioInputVariableTuples = combinedInputParameters.get(scenarioInputSetIndex).getValue();
 
-                    for(Tuple scenarioInputVariableTuple : scenarioInputVariable.getValue()){
-                        String[] test = scenarioInputVariableTuple.getValues();
+                for (int scenarioInputVariableTuplesIndex = 0; scenarioInputVariableTuplesIndex < scenarioInputVariableTuples.size(); scenarioInputVariableTuplesIndex++) {
+                    String[] valueStrings = scenarioInputVariableTuples.get(scenarioInputVariableTuplesIndex).getValues();
+                    String[] aggregatedValueStrings = aggregatedScenarioInputVariableTuples.get(scenarioInputVariableTuplesIndex).getValues();
+
+                    for (int valueStringsIndex = 0; valueStringsIndex < valueStrings.length; valueStringsIndex++) {
+                        double weightedValue = regionFactor * Double.parseDouble(valueStrings[valueStringsIndex]);
+                        double newAggregatedValue;
+                        if (scenarioCount == 0) {
+                            newAggregatedValue = weightedValue;
+                        } else {
+                            double currentAggregatedValue = Double.parseDouble(aggregatedValueStrings[valueStringsIndex]);
+                            newAggregatedValue = weightedValue + currentAggregatedValue;
+                        }
+                        aggregatedValueStrings[valueStringsIndex] = String.valueOf(newAggregatedValue);
+                        Long variableId = scenarioInputSet.get(scenarioInputSetIndex).getMetaData().getId();
+                        combinedInputParametersMap.put(variableId, String.valueOf(newAggregatedValue));
                     }
-                    //double weightedValue = scenarioInputVariable.
-                    combinedInputParameters.add(scenarioInputVariable);
-
-                } else {
-
                 }
             }
+            scenarioCount++;
         }
     }
 
-    public void runCombinedScenarioSimuation() throws PortalException, SystemException, IOException{
+    public boolean scenarioInputParameterAreDifferentThanAggeragted(Long scenarioId) throws Exception{
+        Scenario scenario = CollaboratoriumModelingService.repository().getScenario(scenarioId);
+        List<Variable> scenarioInputParameters = scenario.getInputSet();
+
+        for (int scenarioInputSetIndex = 0; scenarioInputSetIndex < scenarioInputParameters.size(); scenarioInputSetIndex++) {
+            List<Tuple> scenarioInputVariableTuples = scenarioInputParameters.get(scenarioInputSetIndex).getValue();
+            List<Tuple> aggregatedScenarioInputVariableTuples = combinedInputParameters.get(scenarioInputSetIndex).getValue();
+
+            for (int scenarioInputVariableTuplesIndex = 0; scenarioInputVariableTuplesIndex < scenarioInputVariableTuples.size(); scenarioInputVariableTuplesIndex++) {
+                String[] valueStrings = scenarioInputVariableTuples.get(scenarioInputVariableTuplesIndex).getValues();
+                String[] aggregatedValueStrings = aggregatedScenarioInputVariableTuples.get(scenarioInputVariableTuplesIndex).getValues();
+
+                for (int valueStringsIndex = 0; valueStringsIndex < valueStrings.length; valueStringsIndex++) {
+                    if(!aggregatedValueStrings[valueStringsIndex].equals(valueStrings[valueStringsIndex])){
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public void runCombinedScenarioSimulation() throws PortalException, SystemException, IOException, ScenarioNotFoundException, ModelNotFoundException{
        if(isConsolidationOfScenariosPossible()){
            if(isUsedModelEMF()){
                combinedScenario = (Scenario) scenarios.toArray()[0];
            } else{
-               //combinedScenario = CollaboratoriumModelingService.repository().
-               //        runModel(usedSimulation, combinedInputParameters, null, true);
+               combinedScenario = CollaboratoriumModelingService.repository().
+                      runModel(usedSimulation,combinedInputParametersMap, 0L, false);
            }
        }
     }
@@ -120,6 +175,12 @@ public class ProposalImpactScenarioCombinationWrapper {
     public Long getOutputScenarioId(){
       if(combinedScenario != null){
           return combinedScenario.getId();
+        }
+        else return null;
+    }
+    public Long getOutputModelId(){
+      if(usedSimulation != null){
+          return usedSimulation.getId();
         }
         else return null;
     }

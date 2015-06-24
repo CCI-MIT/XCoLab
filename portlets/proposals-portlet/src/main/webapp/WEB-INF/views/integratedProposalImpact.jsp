@@ -18,11 +18,8 @@
         <c:set var="modelId" value="${proposal.modelId }"/>
         <c:set var="scenarioId" value="${proposal.scenarioId }"/>
 
-        <c:if test="${not empty proposalToModelMap}">
-            <h2>Consolidation couldn't be used. Check your proposals:</h2>
-            <c:forEach items="${proposalToModelMap}" var="proposalToModel">
-                Proposal = ${proposalToModel.key.name}, Model = ${proposalToModel.value.name}<br/>
-            </c:forEach>
+        <c:if test="${not empty consolidatedModelId}">
+            <c:set var="modelId" value="${consolidatedModelId}"/>
         </c:if>
 
         <c:if test="${not empty consolidatedScenarioId}">
@@ -31,14 +28,38 @@
 
         <c:choose>
             <c:when test="${edit}">
-
                 <c:if test="${not empty consolidateOptions }">
-                    <proposalsPortlet:modelSettingsPicker consolidateOptions="${consolidateOptions  }" contestPK="${contest.contestPK }" modelId="${modelId}" />
+                    <proposalsPortlet:modelSettingsPicker consolidateOptions="${consolidateOptions }" contestPK="${contest.contestPK }" modelId="${modelId}"  scenarioId="${scenarioId }" />
+
+                    <div id="proposalToModelMap">
+                        <c:if test="${not empty proposalToModelMap}">
+                            <div class="alert alert-error">
+                                Consolidation couldn't be used. Check your proposals
+                            </div>
+                            <table class="alert alert-warning">
+                                <thead>
+                                <tr>
+                                    <th>Proposal</th>
+                                    <th>Model</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${proposalToModelMap}" var="proposalToModel">
+                                    <tr>
+                                        <td>${proposalToModel.key.name}</td>
+                                        <td>${proposalToModel.value.name}</td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </c:if>
+                    </div>
+
                 </c:if>
 
                 <c:if test="${not empty availableModels }">
-                    <div style="visibility: ${not empty consolidatedScenarioId ? 'hidden' : ''};" id="modelPickerDiv">
-                        <proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" modelId="${modelId}" />
+                    <div id="modelPickerDiv">
+                        <proposalsPortlet:modelPicker availableModels="${availableModels }" contestPK="${contest.contestPK }" modelId="${modelId}" />
                     </div>
                 </c:if>
 

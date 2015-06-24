@@ -11,22 +11,31 @@
 	<jsp:directive.attribute name="consolidateOptions" type="java.util.Map" required="true" rtexprvalue="true" description="Models to be shown" />
 	<jsp:directive.attribute name="contestPK" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest PK" />
 	<jsp:directive.attribute name="modelId" type="java.lang.Long" required="false" rtexprvalue="true" description="Selected modelId" />
-
+	<jsp:directive.attribute name="scenarioId" type="java.lang.Long" required="false" rtexprvalue="true" description="Selected modelId" />
 
 	<div class='addpropbox'>
             <div>
                 <h3 style="margin-top: 0px;">How would you like to specify the parameters for your global model?</h3>
-                <div class="">
-                	<fieldset class='modelSettingsSelectBox'>
+                <div class='modelSettingsSelectBox'>
+                	<fieldset id="modelSettingsSet">
                 	<c:forEach var="model" items="${consolidateOptions}">
 
-						<input type="radio" name="Typ" id="${model.key }" value="${model.key }" checked="checked" />
+						<c:choose>
+							<c:when test="${CONSOLIDATE and model.key eq 'CONSOLIDATE' or
+										not CONSOLIDATE and model.key eq 'SEPARATE'}">
+								<input type="radio" name="modelSettingsSet" id="${model.key }" value="${model.key }" checked="checked" />
+							</c:when>
+							<c:otherwise>
+								<input type="radio" name="modelSettingsSet" id="${model.key }" value="${model.key }"  />
+							</c:otherwise>
+						</c:choose>
+
 						<label for="${model.key }"> ${model.value[0] }</label>
 
 						<span class="fieldWithTooltip">
 							<img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png"/>
 						</span>
-						<div class="tooltip" style="opacity: 100;">
+						<div class="tooltip">
 							${model.value[1] }
 						</div>
 						<br/>
@@ -36,11 +45,32 @@
             </div>
 	</div>
 	<script>
-		jQuery(".modelSettingsSelectBox").change(function(element) {
-			console.log()
 
-			// TODO check child models
-			//modeling.loadModel(element.target.value);
+		var consolidatedScenarioId = parseInt("${consolidatedModelId}");
+		var consolidatedModelId = parseInt("${consolidatedModelId}");
+
+		var scenarioId = parseInt("${scenarioId}");
+		var modelId = parseInt("${modelId}");
+
+		jQuery(".modelSettingsSelectBox").change(function(event) {
+			var modelSettingsOption = event.target.id;
+			var modelsSelectBox = document.getElementById("modelPickerDiv");
+			var proposalToModelMap = document.getElementById("proposalToModelMap");
+
+			if(modelSettingsOption === "CONSOLIDATE"){
+				modelsSelectBox.display = "none";
+				proposalToModelMap.display = "";
+
+				if(consolidatedScenarioId > 0) {
+					modeling.loadScenario(consolidatedScenarioId);
+				}
+			} else{
+				proposalToModelMap.display = "none";
+				modelsSelectBox.display = "";
+				//Show selection
+				modeling.loadModel(modelId);
+			}
+
 		});
 	</script>
 </jsp:root>

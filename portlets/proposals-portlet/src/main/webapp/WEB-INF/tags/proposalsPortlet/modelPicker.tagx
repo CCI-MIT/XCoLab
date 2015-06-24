@@ -15,14 +15,9 @@
 	<div class='addpropbox'>
             <div>
                 <h3 style="margin-top: 0px;">Which modelling engine would you like to use?</h3>
-                <div class="">
-                	<fieldset class='selectbox1 modelsSelectBox'>
+                <div class="selectbox1 modelsSelectBox">
+                	<fieldset id="modelSet">
                 	<c:forEach var="model" items="${availableModels }">
-
-						<c:set var="checked" value=""/>
-						<c:if test="${model.key == modelId}">
-							<c:set var="checked" value="checked"/>
-						</c:if>
 
 						<c:choose>
 							<c:when test="${fn:containsIgnoreCase(model.value, 'emf')}">
@@ -36,7 +31,15 @@
 							</c:otherwise>
 						</c:choose>
 
-						<input type="radio" name="Typ" id="${model.key }" value="${model.key }" checked="${checked }" />
+						<c:choose>
+							<c:when test="${model.key == modelId}">
+								<input type="radio" name="modelSet" id="${model.key }" value="${model.key }" checked="checked" />
+							</c:when>
+							<c:otherwise>
+								<input type="radio" name="modelSet" id="${model.key }" value="${model.key }"  />
+							</c:otherwise>
+						</c:choose>
+
 						<label for="${model.key }"> ${model.value }</label>
 
 						<c:if test="${not empty wikiUrl}">

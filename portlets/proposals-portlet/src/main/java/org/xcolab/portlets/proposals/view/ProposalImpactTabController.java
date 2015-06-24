@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import edu.mit.cci.roma.client.Scenario;
+import com.liferay.portal.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -83,7 +83,9 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         }
 
         Proposal proposal = proposalsContext.getProposal(request);
+        ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         Contest contest = proposalsContext.getContest(request);
+        User user = proposalsContext.getUser(request);
 
         IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal, contest);
         model.addAttribute("impactSeries", integratedProposalImpactSeries);
@@ -94,25 +96,54 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if (edit) {
             if(isGlobalContest) {
                 List<Proposal> subProposals =  ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
+
                 ProposalImpactScenarioCombinationWrapper proposalImpactScenarioCombinationWrapper =
                         new ProposalImpactScenarioCombinationWrapper(subProposals);
 
-                Long consolidatedScenarioId  = proposalImpactScenarioCombinationWrapper.getOutputScenarioId();
                 boolean isConsolidationPossible = proposalImpactScenarioCombinationWrapper.isConsolidationOfScenariosPossible();
+                model.addAttribute("CONSOLIDATE", isConsolidationPossible);
 
                 if(!isConsolidationPossible){
                     model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalToModelMap());
                     populateModelOptions(model, request);
                 } else {
+                    // TODO remove just for testing
+                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalToModelMap());
+                    proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
+
+                    Long consolidatedScenarioId;
+                    Long consolidatedModelId;
+
+                    if(proposalWrapper.getScenarioId() != null && proposalWrapper.getScenarioId() != 0) {
+                        Long scenarioId = proposalWrapper.getScenarioId();
+
+                        if(proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggeragted(scenarioId)){
+                            proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
+                            consolidatedScenarioId = proposalImpactScenarioCombinationWrapper.getOutputScenarioId();
+                            consolidatedModelId = proposalImpactScenarioCombinationWrapper.getOutputModelId();
+                        } else {
+                            consolidatedScenarioId = scenarioId;
+                            consolidatedModelId = proposalImpactScenarioCombinationWrapper.getModelIdForScenarioId(scenarioId);
+                        }
+                    } else {
+                        proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
+                        consolidatedScenarioId = proposalImpactScenarioCombinationWrapper.getOutputScenarioId();
+                        consolidatedModelId = proposalImpactScenarioCombinationWrapper.getOutputModelId();
+                    }
+
                     model.addAttribute("consolidatedScenarioId", consolidatedScenarioId);
+                    model.addAttribute("consolidatedModelId", consolidatedModelId);
+
+                    if(proposalWrapper.getScenarioId() == null){
+                        proposalWrapper.setScenarioId(consolidatedScenarioId, consolidatedModelId, user.getUserId());
+                    }
+
                 }
-
                 populateConsolidationOptions(model);
-
-            } else {
-                populateModelOptions(model,request);
             }
+            populateModelOptions(model,request);
         }
+
 
         model.addAttribute("edit", edit);
         populateImpactTabBasicProposal(model, contest, proposal);
@@ -129,7 +160,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private void populateConsolidationOptions(Model model){
-        Map<Long, String[]> consolidateOptions = getConsolidateOptionsOnGlobalLevel();
+        Map<String, String[]> consolidateOptions = getConsolidateOptionsOnGlobalLevel();
         if (consolidateOptions.size() > 1) {
             model.addAttribute("consolidateOptions", consolidateOptions);
         }
@@ -205,14 +236,14 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return contest.getContestTier() == ContestTier.GLOBAL.getTierType();
     }
 
-    private Map<Long, String[]> getConsolidateOptionsOnGlobalLevel(){
-        Map<Long, String[]> consolidateOptions = new LinkedHashMap<>();
+    private Map<String, String[]> getConsolidateOptionsOnGlobalLevel(){
+        Map<String, String[]> consolidateOptions = new LinkedHashMap<>();
 
-        String[] consolidated = {"USE CONSOLIDATED VALUES FROM THE REGIONAL PLANS", "The input values for the global simulation model are automatically computed from the values in the regional plans this global plan includes."};
-        String[] separate = {"SPECIFY SEPARATE VALUES FOR THE GLOBAL PLAN", "Regardless of the input values for the regional plans, separate values for the global plan are specified here."};
+        String[] consolidated = {"Use consolidated values from the regional plans", "The input values for the global simulation model are automatically computed from the values in the regional plans this global plan includes."};
+        String[] separate = {"Specify separate values for the global plan", "Regardless of the input values for the regional plans, separate values for the global plan are specified here."};
 
-        consolidateOptions.put(1L, consolidated);
-        consolidateOptions.put(2L, separate);
+        consolidateOptions.put("CONSOLIDATE", consolidated);
+        consolidateOptions.put("SEPARATE", separate);
         return consolidateOptions;
     }
 
