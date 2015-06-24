@@ -75,6 +75,10 @@
 		}
 
 		jQuery("#modelSettingsSet").change(function(event) {
+			console.log("event.target.id;", event.target.id);
+		});
+
+		jQuery("#modelSettingsSet").change(function(event) {
 			var modelSettingsOption = event.target.id;
 			var modelsSelectBox = document.getElementById("modelPickerDiv");
 			var proposalToModelMap = document.getElementById("proposalToModelMap");
@@ -82,12 +86,11 @@
 			if(modelSettingsOption === "CONSOLIDATE"){
 				if(consolidationPossible) {
 					modelsSelectBox.style.display = "";
-					setModelSetRadiosState(false);
+					setModelSetRadiosState(true);
 					checkModelSetRadioWithId(consolidatedModelId);
 					if (consolidatedScenarioId > 0) {
 						modeling.loadScenario(consolidatedScenarioId);
 					}
-
 				} else{
 					modelsSelectBox.style.display = "none";
 					proposalToModelMap.style.display = "";
@@ -96,7 +99,7 @@
 			} else{
 				proposalToModelMap.style.display = "none";
 				modelsSelectBox.style.display = "";
-				setModelSetRadiosState(true);
+				setModelSetRadiosState(false);
 				checkModelSetRadioWithId(modelId);
 				modeling.loadModel(modelId);
 			}

@@ -57,13 +57,14 @@ public class IntegratedProposalImpactSeries {
         this.regionOntologyTerm = contestWrapper.getWhere().get(0);
         this.proposal = proposal;
         this.resultSeriesValues = new ProposalImpactSeriesValues();
-        calculateIntegratedImpactSeries();
+        boolean global = contest.getContestTier() == ContestTier.GLOBAL.getTierType();
+        calculateIntegratedImpactSeries(global);
     }
 
     public IntegratedProposalImpactSeries(Proposal proposal) throws PortalException, SystemException {
         this.proposal = proposal;
         this.resultSeriesValues = new ProposalImpactSeriesValues();
-        calculateIntegratedImpactSeries();
+        calculateIntegratedImpactSeries(false);
     }
 
     public Map<String, ProposalImpactSeriesValues> getSeriesTypeToAggregatedSeriesMap() {
@@ -82,9 +83,8 @@ public class IntegratedProposalImpactSeries {
         return this.resultSeriesValues.isEmpty();
     }
 
-    private void calculateIntegratedImpactSeries() throws SystemException, PortalException {
+    private void calculateIntegratedImpactSeries(boolean global) throws SystemException, PortalException {
         Set<Proposal> referencedSubProposals = getSubProposalsOnContestTier(proposal, ContestTier.BASIC.getTierType());
-
         seriesTypeToAggregatedSeriesMap = new LinkedHashMap<>(REFERENCE_SERIES_TYPES.length);
         seriesTypeToDescriptionMap = new LinkedHashMap<>(REFERENCE_SERIES_TYPES.length);
 
@@ -113,13 +113,17 @@ public class IntegratedProposalImpactSeries {
 
             ProposalImpactSeriesList impactSeriesList = new ProposalImpactSeriesList(referencedSubProposal);
 
-            aggregatedSeriesValues =
+            aggregatedSeriesValues = global ?
+                     impactSeriesList.getAggregatedSeriesValues(Arrays.asList(REFERENCE_SERIES_TYPES)) :
                      impactSeriesList.getAggregatedSeriesValues(Arrays.asList(REFERENCE_SERIES_TYPES), regionOntologyTerm);
+
             addUpProposalImpactDefaultSeriesValues(aggregatedSeriesValues);
             addUpProposalImpactAggregatedSeriesValues(aggregatedSeriesValues);
 
-            sectorsProposalAggregatedSeriesValues =
+            sectorsProposalAggregatedSeriesValues = global ?
+                    impactSeriesList.getAggregatedSeriesValuesBySectorOntologyTermIds(sectorOntologyTermIds) :
                     impactSeriesList.getAggregatedSeriesValuesByRegionAndSectorOntologyTermIds(regionOntologyTerm.getId(), sectorOntologyTermIds);
+
             addUpProposalImpactSectorSeriesValues(sectorsProposalAggregatedSeriesValues);
         }
     }

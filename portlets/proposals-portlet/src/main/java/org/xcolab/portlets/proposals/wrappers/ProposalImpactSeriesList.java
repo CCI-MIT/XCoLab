@@ -240,6 +240,8 @@ public class ProposalImpactSeriesList {
         return aggregatedSeriesValuesByOntologyTermId;
     }
 
+
+
     public Map<String, ProposalImpactSeriesValues> getAggregatedSeriesValuesByRegionAndSectorOntologyTermIds(Long regionOntologyTermId, List<Long> sectorOntologyTermIds) throws SystemException, PortalException {
         Map<String, ProposalImpactSeriesValues> ontologyTermIdToSeriesSumMap = new HashMap<>(sectorOntologyTermIds.size());
         OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionOntologyTermId);
@@ -260,6 +262,38 @@ public class ProposalImpactSeriesList {
                 ProposalImpactSeriesValues integratedSeriesValues = ontologyTermIdToSeriesSumMap.get(sectorOntologyTermId);
 
                 if (!(impactSeries.getWhatTerm().equals(sectorOntologyTerm) && impactSeries.getWhereTerm().equals(regionOntologyTerm))){
+                    for (Integer year : impactSeriesValues.getYearToValueMap().keySet()) {
+                        emptySeries.putSeriesValue(year, 0.);
+                    }
+                    integratedSeriesValues.addImpactSeriesValues(emptySeries);
+                } else {
+                    integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
+                }
+            }
+        }
+
+        return ontologyTermIdToSeriesSumMap;
+    }
+
+    public Map<String, ProposalImpactSeriesValues> getAggregatedSeriesValuesBySectorOntologyTermIds(List<Long> sectorOntologyTermIds) throws SystemException, PortalException {
+        Map<String, ProposalImpactSeriesValues> ontologyTermIdToSeriesSumMap = new HashMap<>(sectorOntologyTermIds.size());
+
+        for (Long ontologyTermId : sectorOntologyTermIds) {
+            ontologyTermIdToSeriesSumMap.put(ontologyTermId.toString(), new ProposalImpactSeriesValues());
+        }
+
+        ProposalImpactSeriesValues emptySeries = new ProposalImpactSeriesValues();
+
+        for (ProposalImpactSeries impactSeries : impactSerieses) {
+
+            ProposalImpactSeriesValues impactSeriesValues = impactSeries.getResultSeriesValues();
+
+            for (String sectorOntologyTermId : ontologyTermIdToSeriesSumMap.keySet()) {
+
+                OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(Long.parseLong(sectorOntologyTermId));
+                ProposalImpactSeriesValues integratedSeriesValues = ontologyTermIdToSeriesSumMap.get(sectorOntologyTermId);
+
+                if (!(impactSeries.getWhatTerm().equals(sectorOntologyTerm))){
                     for (Integer year : impactSeriesValues.getYearToValueMap().keySet()) {
                         emptySeries.putSeriesValue(year, 0.);
                     }
