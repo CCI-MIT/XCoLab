@@ -66,6 +66,7 @@ function ModelingWidget(selector, options) {
 
 	this.container.data('modeling', this);
 	this.options = options;
+	this.options.defaultValues = this.options.defaultValues || {};
 }
 
 ModelingWidget.prototype.getScenarioUrl = '/plansProposalsFacade-portlet/api/jsonws/modelrunner/get-scenario';
