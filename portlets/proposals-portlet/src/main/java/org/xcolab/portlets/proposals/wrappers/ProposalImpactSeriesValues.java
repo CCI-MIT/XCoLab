@@ -41,12 +41,28 @@ public class ProposalImpactSeriesValues {
     public void addImpactSeriesValues(ProposalImpactSeriesValues anotherSeriesValues) {
         Set<Integer> mergedYearKeySet = new HashSet<Integer>(yearToValueMap.keySet());
         mergedYearKeySet.addAll(anotherSeriesValues.yearToValueMap.keySet());
+
         for (Integer yearKey : mergedYearKeySet) {
             // Get values in fail-safe manner
             double thisValue = Validator.isNotNull(yearToValueMap.get(yearKey)) ? yearToValueMap.get(yearKey) : 0.0;
             double otherValue = Validator.isNotNull(anotherSeriesValues.getValueForYear(yearKey)) ? anotherSeriesValues.getValueForYear(yearKey) : 0.0;
             yearToValueMap.put(yearKey, (thisValue + otherValue));
         }
+
+    }
+
+    public void addImpactSeriesValues(ProposalImpactSeriesValues anotherSeriesValues, Map<Long, Double> yearToValueFactor) {
+        Set<Integer> mergedYearKeySet = new HashSet<Integer>(yearToValueMap.keySet());
+        mergedYearKeySet.addAll(anotherSeriesValues.yearToValueMap.keySet());
+
+        for (Integer yearKey : mergedYearKeySet) {
+            // Get values in fail-safe manner
+            double thisValue = Validator.isNotNull(yearToValueMap.get(yearKey)) ? yearToValueMap.get(yearKey) : 0.0;
+            double otherValue = Validator.isNotNull(anotherSeriesValues.getValueForYear(yearKey)) ? anotherSeriesValues.getValueForYear(yearKey) : 0.0;
+            double yearFactor = Validator.isNotNull(yearToValueFactor.get(yearKey)) ? yearToValueFactor.get(yearKey) : 0.0;
+            yearToValueMap.put(yearKey, (thisValue + otherValue * yearFactor));
+        }
+
     }
 
     public JSONObject toJSONObect() {

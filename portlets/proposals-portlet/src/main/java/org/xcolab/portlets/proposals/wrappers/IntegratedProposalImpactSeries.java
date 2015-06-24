@@ -1,13 +1,8 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -16,7 +11,6 @@ import org.xcolab.portlets.proposals.utils.SectorTypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -121,7 +115,7 @@ public class IntegratedProposalImpactSeries {
             addUpProposalImpactAggregatedSeriesValues(aggregatedSeriesValues);
 
             sectorsProposalAggregatedSeriesValues = global ?
-                    impactSeriesList.getAggregatedSeriesValuesBySectorOntologyTermIds(sectorOntologyTermIds) :
+                    impactSeriesList.getAggregatedWeightedSeriesValuesBySectorOntologyTermIds(sectorOntologyTermIds) :
                     impactSeriesList.getAggregatedSeriesValuesByRegionAndSectorOntologyTermIds(regionOntologyTerm.getId(), sectorOntologyTermIds);
 
             addUpProposalImpactSectorSeriesValues(sectorsProposalAggregatedSeriesValues);

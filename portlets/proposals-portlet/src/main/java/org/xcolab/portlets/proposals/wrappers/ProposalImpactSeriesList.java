@@ -26,6 +26,44 @@ import java.util.Map;
 public class ProposalImpactSeriesList {
     private List<ProposalImpactSeries> impactSerieses;
 
+    private static final Map<Long, Map<Long,Double>> ONTOLOGY_REGION_TERM_TO_YEAR_TO_VALUE_FACTOR;
+    private static final Double[] US_YEAR_TO_VALUE_FACTOR = {0.1832 , 0.1740 , 0.1592 , 0.1464 , 0.1348 , 0.1595 };
+    private static final Double[] OTHER_DEVELOPED_YEAR_TO_VALUE_FACTOR = {0.1346 , 0.1273 , 0.1135 , 0.1023 , 0.0925 , 0.1140};
+    private static final Double[] EU_YEAR_TO_VALUE_FACTOR = {0.1018 , 0.0974 , 0.0911 , 0.0854 , 0.0803 , 0.0912};
+    private static final Double[] CHINA_YEAR_TO_VALUE_FACTOR = {0.2453 , 0.2616 , 0.2858 , 0.3042 , 0.3199 , 0.2834};
+    private static final Double[] INDIA_YEAR_TO_VALUE_FACTOR = {0.0611 , 0.0651 , 0.0704 , 0.0736 , 0.0753 , 0.0691};
+    private static final Double[] OTHER_DEVELOPING_YEAR_TO_VALUE_FACTOR = {0.2740 , 0.2747 , 0.2801 , 0.2881 , 0.2973 , 0.2828};
+    private static final Integer[] YEARS_YEAR_TO_VALUE_FACTOR = {2015,2020,2030,2040,2050};
+
+    static {
+        Map<Long, Map<Long,Double>> ontologyRegionTermToYearToValueFactor =  new HashMap<>();
+        Map<Long,Double> usMap = new HashMap<>();
+        Map<Long,Double> euMap = new HashMap<>();
+        Map<Long,Double> indiaMap = new HashMap<>();
+        Map<Long,Double> chinaMap = new HashMap<>();
+        Map<Long,Double> developedMap = new HashMap<>();
+        Map<Long,Double> developingMap = new HashMap<>();
+
+        for(int i = 0; i < YEARS_YEAR_TO_VALUE_FACTOR.length; i++){
+            usMap.put(YEARS_YEAR_TO_VALUE_FACTOR[i].longValue(),US_YEAR_TO_VALUE_FACTOR[i]);
+            euMap.put(YEARS_YEAR_TO_VALUE_FACTOR[i].longValue(),EU_YEAR_TO_VALUE_FACTOR[i]);
+            indiaMap.put(YEARS_YEAR_TO_VALUE_FACTOR[i].longValue(),INDIA_YEAR_TO_VALUE_FACTOR[i]);
+            chinaMap.put(YEARS_YEAR_TO_VALUE_FACTOR[i].longValue(),CHINA_YEAR_TO_VALUE_FACTOR[i]);
+            developedMap.put(YEARS_YEAR_TO_VALUE_FACTOR[i].longValue(),OTHER_DEVELOPED_YEAR_TO_VALUE_FACTOR[i]);
+            developingMap.put(YEARS_YEAR_TO_VALUE_FACTOR[i].longValue(),OTHER_DEVELOPING_YEAR_TO_VALUE_FACTOR[i]);
+        }
+
+        ontologyRegionTermToYearToValueFactor.put(1300340L, usMap);
+        ontologyRegionTermToYearToValueFactor.put(1300341L, euMap);
+        ontologyRegionTermToYearToValueFactor.put(1300345L, chinaMap);
+        ontologyRegionTermToYearToValueFactor.put(1300346L, indiaMap);
+        ontologyRegionTermToYearToValueFactor.put(1311101L, developedMap);
+        ontologyRegionTermToYearToValueFactor.put(1311102L, developingMap);
+        ONTOLOGY_REGION_TERM_TO_YEAR_TO_VALUE_FACTOR = Collections.unmodifiableMap(ontologyRegionTermToYearToValueFactor);
+    }
+
+
+
     public ProposalImpactSeriesList(Proposal proposal) throws SystemException, PortalException {
         this (ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId()), proposal);
     }
@@ -275,7 +313,7 @@ public class ProposalImpactSeriesList {
         return ontologyTermIdToSeriesSumMap;
     }
 
-    public Map<String, ProposalImpactSeriesValues> getAggregatedSeriesValuesBySectorOntologyTermIds(List<Long> sectorOntologyTermIds) throws SystemException, PortalException {
+    public Map<String, ProposalImpactSeriesValues> getAggregatedWeightedSeriesValuesBySectorOntologyTermIds(List<Long> sectorOntologyTermIds) throws SystemException, PortalException {
         Map<String, ProposalImpactSeriesValues> ontologyTermIdToSeriesSumMap = new HashMap<>(sectorOntologyTermIds.size());
 
         for (Long ontologyTermId : sectorOntologyTermIds) {
@@ -299,7 +337,9 @@ public class ProposalImpactSeriesList {
                     }
                     integratedSeriesValues.addImpactSeriesValues(emptySeries);
                 } else {
-                    integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
+                    OntologyTerm ontologyRegionTerm = impactSeries.getWhereTerm();
+                    Map<Long, Double> yearToValueFactor = ONTOLOGY_REGION_TERM_TO_YEAR_TO_VALUE_FACTOR.get(ontologyRegionTerm.getPrimaryKey());
+                    integratedSeriesValues.addImpactSeriesValues(impactSeriesValues, yearToValueFactor);
                 }
             }
         }
