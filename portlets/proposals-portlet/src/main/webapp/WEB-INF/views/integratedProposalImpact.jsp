@@ -174,7 +174,7 @@
                     <fmt:formatNumber var="value"
                                       value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
                                       maxFractionDigits="2" />
-                    <td class="impact-value">${value}</td>
+                    <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
                 </c:forEach>
             </tr>
             <tr id="modelAdjustments">
@@ -183,7 +183,7 @@
                     <fmt:formatNumber var="value"
                                       value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
                                       maxFractionDigits="2" />
-                    <td class="impact-value">${value}</td>
+                    <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
                 </c:forEach>
             </tr>
             <tr id="modelTotal">
