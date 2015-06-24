@@ -273,8 +273,6 @@ public class ContestProposalTemplateWrapper {
 
         if(createNew) {
             duplicateExistingPlanTemplate();
-        } else{
-            //deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate();
         }
 
         addSectionsToProposalTemplate();
