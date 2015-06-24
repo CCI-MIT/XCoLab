@@ -86,10 +86,14 @@
 			var modelSettingsOption = event.target.id;
 			var modelsSelectBox = document.getElementById("modelPickerDiv");
 			var proposalToModelMap = document.getElementById("proposalToModelMap");
+			var modelContent = document.getElementById("modelContent");
 
 			if(modelSettingsOption === "CONSOLIDATE"){
 				if(consolidationPossible) {
 					modelsSelectBox.style.display = "";
+					modelContent.style.display = "";
+					proposalToModelMap.style.display = "none";
+
 					setModelSetRadiosState(true);
 					checkModelSetRadioWithId(consolidatedModelId);
 					if (consolidatedScenarioId > 0) {
@@ -97,12 +101,15 @@
 					}
 				} else{
 					modelsSelectBox.style.display = "none";
+					modelContent.style.display = "none";
 					proposalToModelMap.style.display = "";
+					
 				}
-
 			} else{
-				proposalToModelMap.style.display = "none";
 				modelsSelectBox.style.display = "";
+				modelContent.style.display = "";
+				proposalToModelMap.style.display = "none";
+
 				setModelSetRadiosState(false);
 				checkModelSetRadioWithId(modelId);
 				modeling.loadModel(modelId);

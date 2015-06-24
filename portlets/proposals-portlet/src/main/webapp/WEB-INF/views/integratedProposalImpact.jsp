@@ -26,6 +26,7 @@
             <c:set var="scenarioId" value="${consolidatedScenarioId}"/>
         </c:if>
 
+        <div id="modelContent">
         <c:choose>
             <c:when test="${edit}">
                 <c:if test="${not empty consolidateOptions }">
@@ -118,6 +119,7 @@
                 <modeling:simulationView scenarioId="${scenarioId }" modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}"/>
             </c:otherwise>
         </c:choose>
+        </div>
     </div>
     <!-- TODO show fallback Graph -->
     <div id="impact-chart"> &#160;</div>

@@ -106,8 +106,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                     model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalToModelMap());
                     populateModelOptions(model, request);
                 } else {
-                    // TODO remove just for testing
-                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalToModelMap());
+
                     proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
 
                     Long consolidatedScenarioId;
