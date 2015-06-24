@@ -31,12 +31,12 @@
                 <c:if test="${not empty consolidateOptions }">
                     <proposalsPortlet:modelSettingsPicker consolidateOptions="${consolidateOptions }" contestPK="${contest.contestPK }" modelId="${modelId}"  scenarioId="${scenarioId }" />
 
-                    <div id="proposalToModelMap">
+                    <div id="proposalToModelMap" class="addpropbox">
                         <c:if test="${not empty proposalToModelMap}">
                             <div class="alert alert-error">
                                 Consolidation couldn't be used. Check your proposals
                             </div>
-                            <table class="alert alert-warning">
+                            <table class="alert-warning">
                                 <thead>
                                 <tr>
                                     <th>Proposal</th>
