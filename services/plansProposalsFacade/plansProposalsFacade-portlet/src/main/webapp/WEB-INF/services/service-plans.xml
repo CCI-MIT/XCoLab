@@ -523,6 +523,10 @@
         <finder name="PlanTemplateId" return-type="Collection">
             <finder-column name="planTemplateId" />
         </finder>
+
+        <finder name="PlanSectionId" return-type="Collection">
+            <finder-column name="planSectionId" />
+        </finder>
         
     </entity>
     

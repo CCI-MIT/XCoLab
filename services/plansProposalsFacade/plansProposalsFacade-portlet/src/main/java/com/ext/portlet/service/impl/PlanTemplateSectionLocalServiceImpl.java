@@ -37,23 +37,12 @@ public class PlanTemplateSectionLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil} to access the plan template section local service.
      */
 
-
-    private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
-
     public List<PlanTemplateSection> findByPlanTemplateId(Long planTemplateId) throws SystemException {
         return planTemplateSectionPersistence.findByPlanTemplateId(planTemplateId);
     }
 
     public List<PlanTemplateSection> findByPlanSectionDefinitionId(Long planSectionDefinitionId) throws Exception{
-
-        ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
-                ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
-
-        DynamicQuery queryByPlanSectionDefinition =
-                DynamicQueryFactoryUtil.forClass(PlanTemplateSection.class, portletClassLoader)
-                        .add(PropertyFactoryUtil.forName("primaryKey.planSectionId").eq(planSectionDefinitionId));
-
-        return planTemplateSectionPersistence.findWithDynamicQuery(queryByPlanSectionDefinition);
+        return planTemplateSectionPersistence.findByPlanSectionId(planSectionDefinitionId);
     }
 
     public PlanTemplateSection addPlanTemplateSection(Long planTemplateId, Long sectionId, int weight) throws SystemException {
