@@ -4,6 +4,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Validator;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Variable;
@@ -26,13 +27,17 @@ import java.util.Set;
  */
 public class ProposalImpactScenarioCombinationWrapper {
 
-    private static  Map<Long, String> INPUT_ID_REGION;
+    private static Map<String, Double> REGION_AVG_FACTOR;
 
     static {
-        Map<Long, String> aMap =  new HashMap<>();
-        aMap.put(814L, "EMF");
-        aMap.put(805L, "ENROADS");
-        INPUT_ID_REGION = Collections.unmodifiableMap(aMap);
+        Map<String, Double> avgFactor =  new HashMap<>();
+        avgFactor.put("US", 0.1595);
+        avgFactor.put("EU", 0.1140);
+        avgFactor.put("China", 0.2834);
+        avgFactor.put("India", 0.0691);
+        avgFactor.put("Other developing", 0.2828);
+        avgFactor.put("Other developed", 0.0912);
+        REGION_AVG_FACTOR = Collections.unmodifiableMap(avgFactor);
     }
 
     private final static Long EMF_REGION_INPUT_ID  = 814L;
@@ -44,8 +49,6 @@ public class ProposalImpactScenarioCombinationWrapper {
     Set<Scenario> scenarios;
     Map<Long, Scenario> modelIdToScenarioMap;
     Map<ProposalWrapper, String> proposalToModelMap;
-    Map<Scenario, Proposal> scenariosToProposalMap;
-
     List<Variable> combinedInputParameters;
     Map<Long, Object> combinedInputParametersMap;
     Scenario combinedScenario;
@@ -56,7 +59,6 @@ public class ProposalImpactScenarioCombinationWrapper {
     public ProposalImpactScenarioCombinationWrapper(List<Proposal> proposals) throws Exception{
         initRomaClient();
         scenarios = new HashSet<>();
-        scenariosToProposalMap = new HashMap<>();
         modelIdToScenarioMap = new HashMap<>();
         proposalToModelMap = new HashMap<>();
 
@@ -66,13 +68,13 @@ public class ProposalImpactScenarioCombinationWrapper {
             if(scenarioId != null && scenarioId > 0) {
                 Scenario scenarioForProposal = getScenarioForScenarioId(scenarioId);
                 scenarios.add(scenarioForProposal);
-                scenariosToProposalMap.put(scenarioForProposal, proposal);
                 Simulation proposalModelSimulation = scenarioForProposal.getSimulation();
                 Long modelId = proposalModelSimulation.getId();
                 modelIdToScenarioMap.put(modelId, scenarioForProposal);
                 proposalToModelMap.put(new ProposalWrapper(proposal), proposalModelSimulation.getName());
             } else{
                 proposalToModelMap.put(new ProposalWrapper(proposal), "No simulation available");
+                modelIdToScenarioMap.put(0L, null);
             }
         }
 
@@ -164,7 +166,7 @@ public class ProposalImpactScenarioCombinationWrapper {
                 regionInputId = ENROADS_REGION_INPUT_ID;
             }
             String scenarioRegionName = (String) currentScenarioInputParameters.get(regionInputId);
-            double regionFactor = RegionClimateImpact.valueOf(scenarioRegionName).getRegionClimateImpactFactor();
+            double regionFactor = Validator.isNotNull(REGION_AVG_FACTOR.get(scenarioRegionName)) ? REGION_AVG_FACTOR.get(scenarioRegionName) : 1.0;
 
             for (Long inputId : currentScenarioInputParameters.keySet()) {
                 try{
