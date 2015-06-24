@@ -8,6 +8,7 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Variable;
 import edu.mit.cci.roma.client.Tuple;
+import edu.mit.cci.roma.client.comm.ClientRepository;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.xcolab.portlets.proposals.utils.RegionClimateImpact;
@@ -36,22 +37,22 @@ public class ProposalImpactScenarioCombinationWrapper {
     Map<Long, Object> combinedInputParametersMap;
     Scenario combinedScenario;
     Simulation usedSimulation;
+    ClientRepository romaClient;
+
 
     public ProposalImpactScenarioCombinationWrapper(List<Proposal> proposals) throws Exception{
+        initRomaClient();
         scenarios = new HashSet<>();
         scenariosToProposalMap = new HashMap<>();
         modelIdToScenarioMap = new HashMap<>();
         proposalToModelMap = new HashMap<>();
 
         for(Proposal proposal : proposals) {
-            Long dummyScenarioId = 11621L;
-            Scenario scenarioForProposal = getScenarioForScenarioId(dummyScenarioId);
-            //Scenario scenarioForProposal = CollaboratoriumModelingService.repository().getScenario(proposal.getProposalId());
+            //Long dummyScenarioId = 11621L;
+            ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
+            Long scenarioId = proposalWrapper.getScenarioId();
+            Scenario scenarioForProposal = getScenarioForScenarioId(scenarioId);
             scenarios.add(scenarioForProposal);
-            //scenarios.add(scenarioForProposal);
-            //Long dummyScenarioId2 = 11754L;
-            //scenarioForProposal = CollaboratoriumModelingService.repository().getScenario(dummyScenarioId2);
-            //scenarios.add(scenarioForProposal);
             scenariosToProposalMap.put(scenarioForProposal, proposal);
             Simulation proposalModelSimulation = scenarioForProposal.getSimulation();
             Long modelId = proposalModelSimulation.getId();
@@ -79,8 +80,23 @@ public class ProposalImpactScenarioCombinationWrapper {
         return getScenarioForScenarioId(scenarioId).getSimulation().getId();
     }
 
+    private ClientRepository getRomaClient(){
+        if(romaClient == null) {
+            initRomaClient();
+        }
+        return romaClient;
+    }
+
+    private void initRomaClient(){
+        try{
+            romaClient = CollaboratoriumModelingService.repository();
+        } catch (Exception e){
+            // TODO check why that fails
+        }
+    }
+
     public Scenario getScenarioForScenarioId(Long scenarioId) throws Exception{
-        return CollaboratoriumModelingService.repository().getScenario(scenarioId);
+        return getRomaClient().getScenario(scenarioId);
     }
 
     public boolean isConsolidationOfScenariosPossible() {
@@ -139,7 +155,7 @@ public class ProposalImpactScenarioCombinationWrapper {
     }
 
     public boolean scenarioInputParameterAreDifferentThanAggeragted(Long scenarioId) throws Exception{
-        Scenario scenario = CollaboratoriumModelingService.repository().getScenario(scenarioId);
+        Scenario scenario = getScenarioForScenarioId(scenarioId);
         List<Variable> scenarioInputParameters = scenario.getInputSet();
 
         for (int scenarioInputSetIndex = 0; scenarioInputSetIndex < scenarioInputParameters.size(); scenarioInputSetIndex++) {
@@ -166,8 +182,7 @@ public class ProposalImpactScenarioCombinationWrapper {
            if(isUsedModelEMF()){
                combinedScenario = (Scenario) scenarios.toArray()[0];
            } else{
-               combinedScenario = CollaboratoriumModelingService.repository().
-                      runModel(usedSimulation,combinedInputParametersMap, 0L, false);
+               combinedScenario = getRomaClient().runModel(usedSimulation,combinedInputParametersMap, 0L, false);
            }
        }
     }
