@@ -8,6 +8,7 @@ package com.ext.portlet.Activity;
 
 import java.util.*;
 
+import org.xcolab.enums.ColabConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -39,8 +40,6 @@ public class ActivityUtil {
     private static Log _log = LogFactoryUtil.getLog(ActivityUtil.class);
 
     public static final long AGGREGATION_TIME_WINDOW = 1000 * 60 * 60 * 1l; // 1h
-
-    private static final long DEFAULT_COMPANY_ID = 10112L;
 
     private static final String ADMINISTRATOR_ROLE_NAME = "Administrator";
 
@@ -88,7 +87,7 @@ public class ActivityUtil {
     }
 
     public static List<SocialActivity> groupAllActivities() throws SystemException {
-        return groupActivities(SocialActivityLocalServiceUtil.getOrganizationActivities(DEFAULT_COMPANY_ID, QueryUtil.ALL_POS, QueryUtil.ALL_POS));
+        return groupActivities(SocialActivityLocalServiceUtil.getOrganizationActivities(ColabConstants.COLAB_COMPANY_ID, QueryUtil.ALL_POS, QueryUtil.ALL_POS));
     }
 
     public static List<SocialActivity> groupUserActivities(long userId) throws SystemException {
@@ -196,7 +195,7 @@ public class ActivityUtil {
 
     private static Hits getAggregatedActivitySearchResults(long userId, int start, int end) throws SearchException {
         SearchContext context = new SearchContext();
-        context.setCompanyId(DEFAULT_COMPANY_ID);
+        context.setCompanyId(ColabConstants.COLAB_COMPANY_ID);
         BooleanQuery query = BooleanQueryFactoryUtil.create(context);
         query.addRequiredTerm(Field.ENTRY_CLASS_NAME, SocialActivity.class.getName());
 
@@ -219,7 +218,7 @@ public class ActivityUtil {
 
     private static Hits getAggregatedActivitySearchResultsExcludingUsers(List<Long> excludedUserIds, int start, int end) throws SearchException {
         SearchContext context = new SearchContext();
-        context.setCompanyId(DEFAULT_COMPANY_ID);
+        context.setCompanyId(ColabConstants.COLAB_COMPANY_ID);
         BooleanQuery query = BooleanQueryFactoryUtil.create(context);
         query.addRequiredTerm(Field.ENTRY_CLASS_NAME, SocialActivity.class.getName());
 
@@ -239,7 +238,7 @@ public class ActivityUtil {
     }
 
     private static List<Long> getAdministratorIds() throws SystemException, PortalException {
-        Role r = RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, ADMINISTRATOR_ROLE_NAME);
+        Role r = RoleLocalServiceUtil.getRole(ColabConstants.COLAB_COMPANY_ID, ADMINISTRATOR_ROLE_NAME);
 
         List<Long> administratorsIds = new ArrayList<Long>();
         for (long userId : UserLocalServiceUtil.getRoleUserIds(r.getRoleId())) {

@@ -21,6 +21,7 @@ public class ProposalRatingSoap implements Serializable {
     private String _comment;
     private boolean _commentEnabled;
     private String _otherDataString;
+    private boolean _onlyForInternalUsage;
 
     public ProposalRatingSoap() {
     }
@@ -36,6 +37,7 @@ public class ProposalRatingSoap implements Serializable {
         soapModel.setComment(model.getComment());
         soapModel.setCommentEnabled(model.getCommentEnabled());
         soapModel.setOtherDataString(model.getOtherDataString());
+        soapModel.setOnlyForInternalUsage(model.getOnlyForInternalUsage());
 
         return soapModel;
     }
@@ -150,5 +152,17 @@ public class ProposalRatingSoap implements Serializable {
 
     public void setOtherDataString(String otherDataString) {
         _otherDataString = otherDataString;
+    }
+
+    public boolean getOnlyForInternalUsage() {
+        return _onlyForInternalUsage;
+    }
+
+    public boolean isOnlyForInternalUsage() {
+        return _onlyForInternalUsage;
+    }
+
+    public void setOnlyForInternalUsage(boolean onlyForInternalUsage) {
+        _onlyForInternalUsage = onlyForInternalUsage;
     }
 }

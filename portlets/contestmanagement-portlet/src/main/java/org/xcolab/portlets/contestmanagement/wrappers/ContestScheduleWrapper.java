@@ -252,6 +252,7 @@ public class ContestScheduleWrapper {
                     }
                 }
             } catch (Exception e) {
+                _log.warn("Couldn't fetch schedule template selection items", e);
             }
         }
         return selectItems;
@@ -275,7 +276,12 @@ public class ContestScheduleWrapper {
     private static boolean areContestSchedulesPhasesEqual(List<Long> referenceContestSchedulePhases,List<Long> testContestSchedulePhases) {
         boolean haveContestSchedulesSamePhases = true;
         for (int i = 0; i < referenceContestSchedulePhases.size(); i++) {
-            if(!referenceContestSchedulePhases.get(i).equals(testContestSchedulePhases.get(i))){
+            try {
+                if (!referenceContestSchedulePhases.get(i).equals(testContestSchedulePhases.get(i))) {
+                    haveContestSchedulesSamePhases = false;
+                    break;
+                }
+            } catch (IndexOutOfBoundsException e){
                 haveContestSchedulesSamePhases = false;
                 break;
             }
@@ -305,16 +311,30 @@ public class ContestScheduleWrapper {
                 throw new Exception("Can't map new contestPhaseTypeId: " + contestPhaseTypeId + " to any of the old contestPhaseTypeIds." );
             }
 
-            ContestPhase contestPhaseNew = ContestPhaseLocalServiceUtil.
-                    createContestPhase(CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
+            ContestPhase oldContestPhase = ContestPhaseLocalServiceUtil.getContestPhase(oldContestPhaseId);
+            ContestPhaseBean contestPhaseBean = new ContestPhaseBean(oldContestPhase);
 
-            contestPhase.setContestPK(contest.getContestPK());
-            contestPhase.setPrimaryKey(contestPhaseNew.getPrimaryKey());
-            ContestPhaseLocalServiceUtil.addContestPhase(contestPhase);
-            newContestPhases.add(contestPhase);
+            if(!contestPhaseBean.isContestPhaseProposalAssociations()) {
+                ContestPhase contestPhaseNew = ContestPhaseLocalServiceUtil.
+                        createContestPhase(CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
 
-            Long newContestPhaseId = contestPhaseNew.getContestPhasePK();
-            updateContestPhaseIdForAllProposal2PhaseMatchingContestPhaseId(oldContestPhaseId, newContestPhaseId);
+                contestPhase.setContestPK(contest.getContestPK());
+                contestPhase.setPrimaryKey(contestPhaseNew.getPrimaryKey());
+                ContestPhaseLocalServiceUtil.addContestPhase(contestPhase);
+                newContestPhases.add(contestPhase);
+
+                Long newContestPhaseId = contestPhaseNew.getContestPhasePK();
+                updateContestPhaseIdForAllProposal2PhaseMatchingContestPhaseId(oldContestPhaseId, newContestPhaseId);
+                updateContestPhaseIdForAllProposalRatingsMatchingContestPhaseId(oldContestPhaseId, newContestPhaseId);
+
+            } else {
+                oldContestPhase.setContestScheduleId(contestPhase.getContestScheduleId());
+                oldContestPhase.setPhaseStartDate(contestPhase.getPhaseStartDate());
+                oldContestPhase.setPhaseEndDate(contestPhase.getPhaseEndDate());
+                oldContestPhase.persist();
+                ContestPhaseLocalServiceUtil.updateContestPhase(oldContestPhase);
+                oldContestPhases.remove(oldContestPhase);
+            }
 
             //oldContestPhaseIdToNewContestPhaseIdMap.put(oldContestPhaseId, newContestPhaseId);
         }
@@ -342,10 +362,34 @@ public class ContestScheduleWrapper {
     public static void updateContestPhaseIdForAllProposal2PhaseMatchingContestPhaseId
             (Long oldContestPhaseId, Long newContestPhaseId) throws Exception{
         List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByContestPhaseId(oldContestPhaseId);
-        for(Proposal2Phase proposal2Phase : proposal2Phases){
+
+        for ( Iterator i = proposal2Phases.iterator(); i.hasNext(); )
+        {
+            Proposal2Phase proposal2Phase = (Proposal2Phase) i.next();
             if(newContestPhaseId != null) {
                 proposal2Phase.setContestPhaseId(newContestPhaseId);
+                proposal2Phase.persist();
                 Proposal2PhaseLocalServiceUtil.updateProposal2Phase(proposal2Phase);
+                proposal2Phase.setContestPhaseId(oldContestPhaseId);
+                Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(proposal2Phase);
+            }
+        }
+    }
+
+
+    public static void updateContestPhaseIdForAllProposalRatingsMatchingContestPhaseId
+            (Long oldContestPhaseId, Long newContestPhaseId) throws Exception{
+        List<ProposalRating> proposalRatings = new ArrayList<>(); // ProposalRatingLocalServiceUtil.getRatingsForContestPhase(oldContestPhaseId);
+
+        for ( Iterator i = proposalRatings.iterator(); i.hasNext(); )
+        {
+            ProposalRating proposalRating = (ProposalRating) i.next();
+            if(newContestPhaseId != null) {
+                proposalRating.setContestPhaseId(newContestPhaseId);
+                proposalRating.persist();
+                ProposalRatingLocalServiceUtil.updateProposalRating(proposalRating);
+                proposalRating.setContestPhaseId(oldContestPhaseId);
+                ProposalRatingLocalServiceUtil.deleteProposalRating(proposalRating);
             }
         }
     }

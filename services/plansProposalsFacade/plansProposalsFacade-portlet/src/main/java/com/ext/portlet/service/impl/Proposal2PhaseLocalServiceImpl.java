@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal2Phase;
@@ -121,7 +122,12 @@ public class Proposal2PhaseLocalServiceImpl
         return contestLocalService.getContest(contestPhase.getContestPK());
     }
 
-    private boolean isContestPhaseValidInContest(long contestPhaseId){
+    public boolean isContestPhaseOfProposal2PhaseValidInContest(Proposal2Phase proposal2Phase){
+        long contestPhaseId = proposal2Phase.getContestPhaseId();
+        return isContestPhaseValidInContest(contestPhaseId);
+    }
+
+    public boolean isContestPhaseValidInContest(long contestPhaseId){
         boolean isContestPhaseValidInContest = true;
         try {
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
@@ -151,12 +157,17 @@ public class Proposal2PhaseLocalServiceImpl
         throw new SystemException("Proposal " + proposalVersion.getProposalId() + " isn't associated with any contest phase");
     }
     
-    public List<Long> getContestPhasesForProposal(long proposalId) throws SystemException {
+    public List<Long> getContestPhasesForProposal(long proposalId) throws SystemException, PortalException {
         List<Proposal2Phase> proposal2Phases = proposal2PhasePersistence.findByProposalId(proposalId);
         List<Long> ret = new LinkedList<>();
 
         for(Proposal2Phase p2p : proposal2Phases) {
-            ret.add(p2p.getContestPhaseId());
+            try {
+                ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId());
+                ret.add(p2p.getContestPhaseId());
+            } catch (NoSuchContestPhaseException e){
+                // ignore invalid contest phases
+            }
         }
 
         return ret;
@@ -168,8 +179,8 @@ public class Proposal2PhaseLocalServiceImpl
         Date now = new Date();
         for(Long pId : allPhases) {
             ContestPhase p = ContestPhaseLocalServiceUtil.getContestPhase(pId);
-            if(p.getPhaseActiveOverride() && !p.getPhaseInactiveOverride()) { //take care of overrides
-                if(p.getPhaseStartDate().before(now) && (p.getPhaseEndDate() ==null || p.getPhaseEndDate().after(now))) {
+            if (p.getPhaseActiveOverride() && !p.getPhaseInactiveOverride()) { //take care of overrides
+                if (p.getPhaseStartDate().before(now) && (p.getPhaseEndDate() == null || p.getPhaseEndDate().after(now))) {
                     //apparently we are right in the window this proposal. yay!
                     ret.add(p);
                 }
@@ -180,7 +191,6 @@ public class Proposal2PhaseLocalServiceImpl
 
     public List<Proposal2Phase> getByContestPhaseId(long contestPhaseId) throws Exception{
         final DynamicQuery contestPhasesByContestPhaseId = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
-        contestPhasesByContestPhaseId.setProjection(ProjectionFactoryUtil.property("phaseProposalIds.primaryKey.proposalId"));
         contestPhasesByContestPhaseId.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
         return dynamicQuery(contestPhasesByContestPhaseId);
     }

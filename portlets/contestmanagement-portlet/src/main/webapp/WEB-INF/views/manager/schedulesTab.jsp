@@ -76,12 +76,10 @@
 					<a href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
 				</div>
 				<div class="blue-button innerVerticalCenter" >
-
 					<a href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
 				</div>
 				<div class="blue-button innerVerticalCenter" >
 					<a href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
-
 				</div>
 			</div>
 		</div>
@@ -192,13 +190,16 @@
 											/>
 								</td>
 								<td>
-									<div class="deleteIcon"><!-- --></div>
+									<c:if test="${not schedulePhase.contestPhaseProposalAssociations}">
+										<div class="deleteIcon"><!-- --></div>
+									</c:if>
 								</td>
 							</tr>
 						<c:set var="dateTimePickerIndex" value="${dateTimePickerIndex + 2}"/>
 					</c:forEach>
 				</tbody>
 			</table>
+				<i>Please do not put and end date to the last phase, otherwise the mass messaging function can't detect the contest!</i>
 			</div>
 		</form:form>
 	</div>

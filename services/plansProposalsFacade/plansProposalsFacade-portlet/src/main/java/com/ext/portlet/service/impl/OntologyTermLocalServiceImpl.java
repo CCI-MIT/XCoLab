@@ -50,7 +50,10 @@ public class OntologyTermLocalServiceImpl
     public List<OntologyTerm> findByParentIdSpaceId(Long parentId, Long spaceId) throws SystemException {
         return ontologyTermPersistence.findByParentIdSpaceId(parentId, spaceId);
     }
-    
+
+    public List<OntologyTerm> findByOntologyTermName(String name) throws SystemException {
+        return ontologyTermPersistence.findByName(name);
+    }
     
     public OntologyTerm createTerm(Long parentId, String name, Long spaceId, String descriptionUrl) throws SystemException {
         Long termId = CounterLocalServiceUtil.increment(OntologyTerm.class.getName());

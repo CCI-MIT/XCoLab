@@ -383,6 +383,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     if (getContestStatus(nextPhase).isCanVote()) {
                     	//contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
                     }
+
+                    // Add contest year suffix, if contest has been completed
+                    contestLocalService.addContestYearSuffixToContest(contest, true);
+
                     _log.info("done promoting phase " + phase.getContestPhasePK());
                 } catch (SystemException | PortalException e) {
                     _log.error("Exception thrown when doing autopromotion for phase " + phase.getContestPhasePK(), e);
@@ -422,7 +426,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                             promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
                         }
 
-                        proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+                        // Enable this line to post promotion comment to Evaluation tab comment section
+                        // proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+
                         try {
                             proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
                         } catch (MailEngineException | AddressException e) {
@@ -436,6 +442,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     }
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     updateContestPhase(phase);
+
+                    // Add contest year suffix, if contest has been completed
+                    contestLocalService.addContestYearSuffixToContest(contest, true);
+
                     _log.info("done promoting phase " + phase.getContestPhasePK());
                 } else {
                     _log.warn("Judge promoting failed for ContestPhase with ID " + phase.getContestPhasePK() + " - not all proposals have been reviewed");
@@ -525,7 +535,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
         }
 
-        proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+        // Enable this line to post promotion comment to Evaluation tab comment section
+        // proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+
         try {
             proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
         } catch (MailEngineException | AddressException e) {

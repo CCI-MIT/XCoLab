@@ -9,77 +9,67 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions
-                    or proposalsPermissions.canAdminAll and proposalsPermissions.canAdminJudgeActions and proposal.selectedJudges.size() > 0}">
+    <portlet:actionURL var="saveJudgingFeedbackURL">
+        <portlet:param name="action_forwardToPage" value="proposalDetails"/>
+        <portlet:param name="contestId" value="${contest.contestPK }"/>
+        <portlet:param name="planId" value="${proposal.proposalId }"/>
+        <portlet:param name="action" value="saveJudgingFeedback"/>
+    </portlet:actionURL>
 
-        <c:choose>
-            <c:when test="${proposalsPermissions.canAdminAll or proposal.judgeReviewStatus.statusValue > 0}">
+    <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalBean">
+        <form:hidden path="contestPhaseId" />
+        <form:hidden path="screeningUserId" id="judgeUserId"/>
 
+        <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
+            <i style="float: right;">Transfer rating/comment for selected judge:</i>
+        </c:if>
 
-                <portlet:actionURL var="saveJudgingFeedbackURL">
-                    <portlet:param name="action_forwardToPage" value="proposalDetails"/>
-                    <portlet:param name="contestId" value="${contest.contestPK }"/>
-                    <portlet:param name="planId" value="${proposal.proposalId }"/>
-                    <portlet:param name="action" value="saveJudgingFeedback"/>
-                </portlet:actionURL>
+        <h3><c:if test="${proposalsPermissions.canJudgeActions}">Judge </c:if>Rating</h3>
+        <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
+            <select id="judges-select">
+                <c:forEach var="judge" items="${proposal.selectedJudgeUsers}">
+                    <proposalsPortlet:userPortraitSelectOption
+                            screenName="${judge.screenName}"
+                            fullName="${judge.fullName}"
+                            portraitId="${judge.portraitId}"
+                            userId="${judge.userId}"
+                            width="30" height="30"
+                            judgeRatingSatus="${proposal.getJudgeReviewFinishedStatusUserId(judge.userId)}"/>
+                </c:forEach>
+            </select>
+        </c:if>
+        <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
+            are saved when clicking on save.
+            <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions or proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
+                Your rating will be visible to the Judging team only.
+            </c:if>
+        </i>
+        <div class="clearfix"><!-- --></div>
+        <br/>
+        <form:errors cssClass="alert alert-error" />
 
-                <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalBean">
-                    <form:hidden path="contestPhaseId" />
-                    <form:hidden path="screeningUserId" id="judgeUserId"/>
+        <proposalsPortlet:proposalRating ratingTypes="${judgeProposalBean.ratingTypes}" ratingValuesPath="ratingValues" />
 
-                    <c:if test="${proposalsPermissions.canAdminAll}">
-                        <i style="float: right;">Transfer rating/comment for selected judge:</i>
-                    </c:if>
+        <h3 style="margin-top: 10px;"><c:if test="proposalsPermissions.canJudgeActions">Judge </c:if> Feedback</h3>
+        <div class="form-errors"><!--  -->
+            <form:errors cssClass="alert alert-error" path="comment" />
+        </div>
 
-                    <h3>Judge Rating</h3>
-                    <c:if test="${proposalsPermissions.canAdminAll}">
-                        <select id="judges-select">
-                            <c:forEach var="judge" items="${proposal.selectedJudgeUsers}">
-                                <proposalsPortlet:userPortraitSelectOption
-                                        screenName="${judge.screenName}"
-                                        fullName="${judge.fullName}"
-                                        portraitId="${judge.portraitId}"
-                                        userId="${judge.userId}"
-                                        width="30" height="30"
-                                        judgeRatingSatus="${proposal.getJudgeReviewFinishedStatusUserId(judge.userId)}"/>
-                            </c:forEach>
-                        </select>
-                    </c:if>
-                    <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
-                        are saved when clicking on save.Your rating will be visible to the Judging team only.</i>
-                    <div class="clearfix"><!-- --></div>
-                    <br/>
-                    <form:errors cssClass="alert alert-error" />
+        <form:textarea path="comment" cssClass="commentbox" style="width:100%;" placeholder="Write your review here..." />
 
-                    <proposalsPortlet:proposalRating ratingTypes="${judgeProposalBean.ratingTypes}" ratingValuesPath="ratingValues" />
+        <div class="clearfix" style="width: 100%;">
+            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
+            </div>
+        </div>
 
-                    <h3 style="margin-top: 10px;">Judge Feedback</h3>
-                    <div class="form-errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="comment" />
-                    </div>
+    </form:form>
+    <div id="judge-evaluation-criteria">
+        <h3 style="display: inline-block">Evaluation Criteria</h3>
+        <proposalsPortlet:ratingCriteriaText ratingTypes="${judgeProposalBean.ratingTypes}"/>
+    </div>
 
-
-                    <form:textarea path="comment" cssClass="commentbox" style="width:100%;" placeholder="Write your review here..." />
-
-
-                    <div class="clearfix" style="width: 100%;">
-                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                            <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
-                        </div>
-                    </div>
-
-                </form:form>
-                <div id="judge-evaluation-criteria">
-                    <h3 style="display: inline-block">Evaluation Criteria</h3>
-
-                    <h2>Evaluation Criteria</h2>
-                    <proposalsPortlet:ratingCriteriaText ratingTypes="${judgeProposalBean.ratingTypes}"/>
-                </div>
-            </c:when>
-        </c:choose>
-    </c:if>
-
-    <c:if test="${proposalsPermissions.canAdminAll}">
+    <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
         <script type="text/javascript">
             jQuery(document).ready(function() {
                 jQuery('#judges-select').ddslick({

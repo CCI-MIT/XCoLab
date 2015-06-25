@@ -29,7 +29,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
+import org.xcolab.portlets.proposals.utils.ProposalImpactDataParser;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
@@ -175,6 +177,45 @@ public class ProposalImpactJSONController {
         }
 
         responseJSON.put("success", true);
+        response.getPortletOutputStream().write(responseJSON.toString().getBytes());
+    }
+
+    @ResourceMapping("proposalImpactUpdateAllSeries")
+    public void proposalImpactUpdateAllDataSeries(
+            ResourceRequest request,
+            ResourceResponse response) throws IOException,
+            SystemException, PortalException {
+
+        JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+
+        if (!permissions.getCanIAFActions() && !permissions.getCanAdmin()) {
+            responseJSON.put("success", false);
+            responseJSON.put("message", "You don't have the required permission to perform this action!");
+            response.getPortletOutputStream().write(responseJSON.toString().getBytes());
+            return;
+        }
+
+        Proposal proposal = proposalsContext.getProposal(request);
+        Contest contest = proposalsContext.getContest(request);
+        JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
+
+        try {
+            ProposalImpactDataParser dataParser = new ProposalImpactDataParser(requestJson.getString("data"), proposal, contest);
+            ProposalImpactSeriesList impactSeriesList = dataParser.parse();
+            impactSeriesList.persistImpactSeriesesWithAuthor(proposalsContext.getUser(request));
+
+            responseJSON.put("success", true);
+        } catch(ProposalImpactDataParserException e) {
+            _log.info(e);
+            responseJSON.put("success", false);
+            responseJSON.put("message", e.getMessage());
+        }
+        catch(Exception e) {
+            _log.error(e);
+            responseJSON.put("success", false);
+        }
+
         response.getPortletOutputStream().write(responseJSON.toString().getBytes());
     }
 

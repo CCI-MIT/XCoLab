@@ -37,14 +37,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-
-        <repository>
-            <id>XColab-repo</id>
-            <url>https://xcolab.googlecode.com/svn/maven</url>
-            <snapshots>    
-                <enabled>true</enabled>
-            </snapshots> 
-        </repository>
 		
 	</repositories>
 	

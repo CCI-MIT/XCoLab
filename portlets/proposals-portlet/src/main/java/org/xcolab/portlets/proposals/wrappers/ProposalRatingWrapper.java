@@ -7,6 +7,8 @@ import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Manuel Thurner
  */
@@ -14,12 +16,15 @@ public class ProposalRatingWrapper {
 	private ProposalRating proposalRating;
 	private ProposalRatingType ratingType;
 	private ProposalRatingValue ratingValue;
-
+	private Long roundFactor = 1L;
 
 	public ProposalRatingWrapper(ProposalRating proposalRating) {
 		this.proposalRating = proposalRating;
 	}
-
+	public ProposalRatingWrapper(ProposalRating proposalRating, Long roundFactor) {
+		this.proposalRating = proposalRating;
+		this.roundFactor = roundFactor;
+	}
 
 	public ProposalRatingWrapper() {
 
@@ -61,7 +66,7 @@ public class ProposalRatingWrapper {
 		}
 	}
 
-	private ProposalRatingType getRatingType() {
+	public ProposalRatingType getRatingType() {
 		ProposalRatingValue ratingValue = this.getRatingValue();
 		try {
 			if (ratingValue != null) {
@@ -74,14 +79,44 @@ public class ProposalRatingWrapper {
 		return null;
 	}
 
-	private ProposalRatingValue getRatingValue() {
+	public ProposalRatingValue getRatingValue() {
 		try {
 			if (ratingValue == null)
-				ratingValue = ProposalRatingValueLocalServiceUtil.fetchProposalRatingValue(this.proposalRating.getRatingValueId());
+				if(roundFactor == null){
+					roundFactor = 1L;
+				}
+				ratingValue = ProposalRatingValueLocalServiceUtil.fetchProposalRatingValue(this.proposalRating.getRatingValueId()/roundFactor);
 			return ratingValue;
 		} catch (SystemException e) {
 			return null;
 		}
+	}
+
+	public double getNotRoundedRatingValue() {
+		double ratingValueNotRounded = 0.;
+		try {
+			if(roundFactor == null){
+				roundFactor = 1L;
+			}
+			ratingValueNotRounded = (double) this.proposalRating.getRatingValueId() / (double) roundFactor;
+			ratingValueNotRounded = ratingValueNotRounded / getRatingTypeId();
+		} catch (Exception e){
+		}
+		return ratingValueNotRounded;
+	}
+
+	public String getNotRoundedRatingValueFormatted(){
+		DecimalFormat f = new DecimalFormat("#0.0");
+		return f.format(getNotRoundedRatingValue());
+	}
+
+	public double getRatingValueInPercent(){
+		double ratingValueInPercent = 0;
+		Double proposalRatingValue = getNotRoundedRatingValue();
+		if(proposalRatingValue != null){
+			ratingValueInPercent = proposalRatingValue / 5.0 * 100.0;
+		}
+		return ratingValueInPercent;
 	}
 
 	public ProposalRating unwrap() {

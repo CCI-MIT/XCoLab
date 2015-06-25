@@ -2,7 +2,13 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.ResourceConstants;
+import com.liferay.portal.security.permission.ActionKeys;
+import org.xcolab.enums.ColabConstants;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.wiki.NoSuchPageException;
 import com.liferay.portlet.wiki.NoSuchPageResourceException;
@@ -10,6 +16,7 @@ import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.model.WikiPageResource;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 import com.liferay.portlet.wiki.service.WikiPageResourceLocalServiceUtil;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 
 import java.net.URLEncoder;
@@ -41,7 +48,7 @@ public class WikiPageWrapper {
     }
 
     private static String removeSpecialChars(String stringToHaveSpecialCharacterRemoved){
-        return stringToHaveSpecialCharacterRemoved.replace(":", "");
+        return stringToHaveSpecialCharacterRemoved.replace(":", "").replace(",","").replace(";","");
     }
 
     public ContestResourcesBean getContestResourcesBean() throws Exception{
@@ -87,6 +94,9 @@ public class WikiPageWrapper {
 
     private static void updateWikiPageResourceTitle(WikiPageResource wikiPageResource, String newTitle) throws Exception{
         wikiPageResource.setTitle(newTitle);
+        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(wikiPageResource.getResourcePrimKey(), MemberRole.GUEST);
+        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(wikiPageResource.getResourcePrimKey(), MemberRole.MEMBER);
+
         wikiPageResource.persist();
         WikiPageResourceLocalServiceUtil.updateWikiPageResource(wikiPageResource);
     }
@@ -164,6 +174,9 @@ public class WikiPageWrapper {
         wikiPage.persist();
         WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
 
+        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(resourcePrimaryKey, MemberRole.GUEST);
+        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(resourcePrimaryKey, MemberRole.GUEST);
+
         updateContestResourceUrl();
     }
 
@@ -183,5 +196,15 @@ public class WikiPageWrapper {
         wikiPage.setHead(false);
         wikiPage.persist();
         WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
+    }
+
+
+    private static void addWikiPageRessourceViewPermissionsForRoleIfNoneExist(long wikiPageRessourcePK, MemberRole role) throws SystemException, PortalException {
+        if (!ResourcePermissionLocalServiceUtil.hasResourcePermission(ColabConstants.COLAB_COMPANY_ID, WikiPage.class.getName(),
+                ResourceConstants.SCOPE_INDIVIDUAL, Long.toString(wikiPageRessourcePK), role.getRoleId(), ActionKeys.VIEW)) {
+            ResourcePermissionLocalServiceUtil.setResourcePermissions(ColabConstants.COLAB_COMPANY_ID, WikiPage.class.getName(),
+                    ResourceConstants.SCOPE_INDIVIDUAL, Long.toString(wikiPageRessourcePK), role.getRoleId(), new String[]{ActionKeys.VIEW});
+        }
+
     }
 }

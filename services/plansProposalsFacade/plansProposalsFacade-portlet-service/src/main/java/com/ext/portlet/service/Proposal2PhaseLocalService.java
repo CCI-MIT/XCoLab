@@ -272,6 +272,13 @@ public interface Proposal2PhaseLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isContestPhaseOfProposal2PhaseValidInContest(
+        com.ext.portlet.model.Proposal2Phase proposal2Phase);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isContestPhaseValidInContest(long contestPhaseId);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.Proposal2Phase getForVersion(
         java.lang.Long proposalId, int proposalVersionId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -286,7 +293,8 @@ public interface Proposal2PhaseLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<java.lang.Long> getContestPhasesForProposal(
         long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.ContestPhase> getActiveContestPhasesForProposal(

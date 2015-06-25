@@ -8,6 +8,7 @@ public enum MemberRole {
      * Whenever these roles are modified (which should never happen) these Ids should be updated as well
      */
 	ALL(0L, "All"),
+    GUEST(10119L, "Guest"),
     MEMBER(10122L, "User"),
     FELLOW(193261L, "Fellow"),
     ADVISOR(193260L, "Advisor"),
@@ -32,6 +33,17 @@ public enum MemberRole {
 
     public String getPrintName() {
         return WordUtils.capitalizeFully((name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase()).replaceAll("_"," "));
+    }
+
+    public String getImageUrl() {
+        if (name() == MemberRole.IMPACT_ASSESSMENT_FELLOW.name()){
+            return MemberRole.FELLOW.name().toLowerCase();
+        }
+        else if (name() == MemberRole.CONTESTMANAGER.name()){
+            return MemberRole.EXPERT.name().toLowerCase();
+        }
+        else
+            return name().toLowerCase();
     }
     
     public String getLowerCase() {

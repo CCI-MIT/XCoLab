@@ -46,11 +46,17 @@ public class MemberItem implements Serializable {
                 case "Fellow":
                     category=MemberCategory.FELLOW;
                     break;
+                case "Impact Assessment Fellow":
+                    category=MemberCategory.IMPACT_ASSESSMENT_FELLOW;
+                    break;
                 case "Advisor":
                     category=MemberCategory.ADVISOR;
                     break;
                 case "Expert":
                     category=MemberCategory.EXPERT;
+                    break;
+                case "Contest Manager":
+                    category=MemberCategory.CONTESTMANAGER;
                     break;
                 case "Judges":
                     category=MemberCategory.JUDGES;
