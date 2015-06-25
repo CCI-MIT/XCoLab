@@ -86,11 +86,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         Contest contest = proposalsContext.getContest(request);
 
-        IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal, contest);
-        model.addAttribute("impactSeries", integratedProposalImpactSeries);
-
         boolean isGlobalContest = isGlobalContest(contest);
         model.addAttribute("isGlobalContest", isGlobalContest);
+
+        if(!isGlobalContest) {
+            IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal, contest);
+            model.addAttribute("impactSeries", integratedProposalImpactSeries);
+        }
 
         if (edit) {
             if(isGlobalContest) {
@@ -148,9 +150,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             populateModelOptions(model, request);
         }
 
-
         model.addAttribute("edit", edit);
-        populateImpactTabBasicProposal(model, contest, proposal);
+
+        boolean showSubProposalListing = false;
+        if(showSubProposalListing) {
+            populateImpactTabBasicProposal(model, contest, proposal);
+        }
+        model.addAttribute("showSubProposalListing", showSubProposalListing);
 
         return "integratedProposalImpact";
     }

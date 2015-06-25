@@ -129,6 +129,7 @@
     <br />
     <br />
 
+    <c:if test="${not isGlobalContest}">
     <div id="impact" class="cmsDetailsBox">
         <h2 class="model_name">Regional Plan Impact, By Sector</h2>
         <table>
@@ -200,6 +201,7 @@
                 </c:forEach>
             </tr>
 
+            <c:if test="${not empty showSubProposalListing and showSubProposalListing}">
             <tr>
                 <c:choose>
                     <c:when test="${empty proposal.team}"><td colspan="5">${proposal.author.screenName}'s proposal portfolio sum is an aggregation of the following proposals:</td></c:when>
@@ -219,8 +221,10 @@
                     </c:forEach>
                 </tr>
             </c:forEach>
+            </c:if>
         </table>
     </div>
+    </c:if>
 
     <c:if test="${edit}">
         <script type="text/javascript">
