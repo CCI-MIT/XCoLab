@@ -5,6 +5,7 @@ import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
+
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Variable;
@@ -12,6 +13,8 @@ import edu.mit.cci.roma.client.Tuple;
 import edu.mit.cci.roma.client.comm.ClientRepository;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
+
+import org.apache.log4j.Logger;
 import org.xcolab.portlets.proposals.utils.RegionClimateImpact;
 
 import java.io.IOException;
@@ -28,6 +31,7 @@ import java.util.Set;
 public class ProposalImpactScenarioCombinationWrapper {
 
     private static Map<String, Double> REGION_AVG_FACTOR;
+    private final static Logger _log = Logger.getLogger(ProposalImpactScenarioCombinationWrapper.class);
 
     static {
         Map<String, Double> avgFactor =  new HashMap<>();
@@ -65,14 +69,22 @@ public class ProposalImpactScenarioCombinationWrapper {
         for(Proposal proposal : proposals) {
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
             Long scenarioId = proposalWrapper.getScenarioId();
+            Scenario scenarioForProposal = null;
             if(scenarioId != null && scenarioId > 0) {
-                Scenario scenarioForProposal = getScenarioForScenarioId(scenarioId);
-                scenarios.add(scenarioForProposal);
-                Simulation proposalModelSimulation = scenarioForProposal.getSimulation();
-                Long modelId = proposalModelSimulation.getId();
-                modelIdToScenarioMap.put(modelId, scenarioForProposal);
-                proposalToModelMap.put(new ProposalWrapper(proposal), proposalModelSimulation.getName());
-            } else{
+            	try {
+            		scenarioForProposal = getScenarioForScenarioId(scenarioId);
+            		scenarios.add(scenarioForProposal);
+            		Simulation proposalModelSimulation = scenarioForProposal.getSimulation();
+            		Long modelId = proposalModelSimulation.getId();
+            		modelIdToScenarioMap.put(modelId, scenarioForProposal);
+            		proposalToModelMap.put(new ProposalWrapper(proposal), proposalModelSimulation.getName());
+            	}
+            	catch (Exception e) {
+            		_log.error(String.format("Can't access scenario for id: %d", scenarioId));
+            	}
+            } 
+            
+            if (scenarioForProposal == null) {
                 proposalToModelMap.put(new ProposalWrapper(proposal), "No simulation available");
                 modelIdToScenarioMap.put(0L, null);
             }
