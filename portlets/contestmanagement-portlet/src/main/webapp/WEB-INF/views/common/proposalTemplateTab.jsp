@@ -100,10 +100,34 @@
 
 						<label>
 							<strong>Section type:</strong>
-							<form:select path="sections[${x.index}].type" data-form-name="type">
+							<form:select path="sections[${x.index}].type" data-form-name="type" id="type-select">
 								<form:option value="NONE" label="--- Select ---" />
 								<form:options items="${sectionTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
 							</form:select>
+
+							<div id="ontology-select-container" style="display: none;">
+								<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
+								<strong>WHAT Ontology term:</strong>
+								<form:select path="sections[${x.index}].whatTermId" data-form-name="whatTermId">
+									<form:option value="0" label="--- Select ---" />
+									<form:options items="${whatTerms}" itemValue="value" itemLabel="lable"/>
+								</form:select>
+								<strong>WHERE Ontology term:</strong>
+								<form:select path="sections[${x.index}].whereTermId" data-form-name="whereTermId">
+									<form:option value="0" label="--- Select ---" />
+									<form:options items="${whereTerms}" itemValue="value" itemLabel="lable"/>
+								</form:select>
+								<strong>WHO Ontology term:</strong>
+								<form:select path="sections[${x.index}].whoTermId" data-form-name="whoTermId">
+									<form:option value="0" label="--- Select ---" />
+									<form:options items="${whoTerms}" itemValue="value" itemLabel="lable"/>
+								</form:select>
+								<strong>HOW Ontology term:</strong>
+								<form:select path="sections[${x.index}].howTermId" data-form-name="howTermId">
+									<form:option value="0" label="--- Select ---" />
+									<form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
+								</form:select>
+							</div>
 
 							<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
 								<strong>Level:</strong>
@@ -191,6 +215,7 @@
 			bindAddSectionClick();
 			bindMassActionSelectChange();
 			bindContestScheduleSelectChange();
+			bindSectionTypeSelectChange();
 		});
 
 
@@ -220,6 +245,17 @@
 					}, false);
 				}
 			});
+		}
+
+		function bindSectionTypeSelectChange() {
+			var eventHandler = function() {
+				console.log("call with " + $(this).val());
+				var sectionTypeId = $(this).val();
+				jQuery('#ontology-select-container').toggle(sectionTypeId !== "");
+			}
+
+			jQuery('select#type-select').on('change', eventHandler);
+			eventHandler.call(jQuery('select#type-select')[0]);
 		}
 
 
