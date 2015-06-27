@@ -13,8 +13,10 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
+import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
+import org.xcolab.utils.OntologyTermToFocusAreaMapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +27,6 @@ import java.util.Map;
  * Created by kmang on 12/03/15.
  */
 public class ProposalImpactUtil {
-
-    private static final long WHAT_ONTOLOGY_SPACE_ID = 103;
-    private static final long WHERE_ONTOLOGY_SPACE_ID = 104;
 
     private Contest contest;
 
@@ -76,30 +75,17 @@ public class ProposalImpactUtil {
     public FocusArea getFocusAreaAssociatedWithTerms(OntologyTerm whatTerm, OntologyTerm whereTerm) throws SystemException, PortalException {
         List<ImpactTemplateMaxFocusArea> impactFocusAreas = ContestLocalServiceUtil.getContestImpactFocusAreas(contest);
 
+        List<OntologyTerm> matchingOntologyTerms = new ArrayList<>();
+        matchingOntologyTerms.add(whatTerm);
+        matchingOntologyTerms.add(whereTerm);
+
+        List<FocusArea> focusAreasToBeSearched = new ArrayList<>();
         for (ImpactTemplateMaxFocusArea impactFocusArea : impactFocusAreas) {
-            FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(impactFocusArea.getFocusAreaId());
-
-            if (getWhatTerm(focusArea).getId() == whatTerm.getId() &&
-                    getWhereTerm(focusArea).getId() == whereTerm.getId()) {
-
-                return focusArea;
-            }
+            focusAreasToBeSearched.add(FocusAreaLocalServiceUtil.getFocusArea(impactFocusArea.getFocusAreaId()));
         }
 
-        return null;
-    }
-
-    public static OntologyTerm getWhatTerm(FocusArea focusArea) throws PortalException, SystemException {
-        return getTermWithSpaceId(focusArea, WHAT_ONTOLOGY_SPACE_ID);
-    }
-
-    public static OntologyTerm getWhereTerm(FocusArea focusArea) throws PortalException, SystemException {
-        return getTermWithSpaceId(focusArea, WHERE_ONTOLOGY_SPACE_ID);
-    }
-
-    private static OntologyTerm getTermWithSpaceId(FocusArea focusArea, long spaceId) throws SystemException, PortalException {
-        OntologySpace space = OntologySpaceLocalServiceUtil.getOntologySpace(spaceId);
-        return FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
+        OntologyTermToFocusAreaMapper termMapper = new OntologyTermToFocusAreaMapper(matchingOntologyTerms);
+        return termMapper.filterAssociatedFocusArea(focusAreasToBeSearched);
     }
 
     private static Map<Long, Boolean> getImpactSeriesAvailableMap(List<ProposalImpactSeries> impactSerieses) {
@@ -113,5 +99,18 @@ public class ProposalImpactUtil {
         }
 
         return impactSeriesAvailableMap;
+    }
+
+    public static OntologyTerm getWhatTerm(FocusArea focusArea) throws PortalException, SystemException {
+        return getTermWithSpaceId(focusArea, OntologySpaceEnum.WHAT.getSpaceId());
+    }
+
+    public static OntologyTerm getWhereTerm(FocusArea focusArea) throws PortalException, SystemException {
+        return getTermWithSpaceId(focusArea, OntologySpaceEnum.WHERE.getSpaceId());
+    }
+
+    private static OntologyTerm getTermWithSpaceId(FocusArea focusArea, long spaceId) throws SystemException, PortalException {
+        OntologySpace space = OntologySpaceLocalServiceUtil.getOntologySpace(spaceId);
+        return FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
     }
 }

@@ -54,7 +54,7 @@ function ModelingWidget(selector, options) {
 	jQuery(this).on('scenarioFetched', function(event) {
 		that.modelId = event.scenario.modelId;
 		that.scenario = event.scenario;
-		that.model = event.scenario.simulation;
+		that.model = event.scenario;
 	});
 
     jQuery(this).on('scenarioFetchedWithErrors', ModelingWidget.prototype.showStackTrace);
@@ -249,26 +249,36 @@ ModelingWidget.prototype.loadScenario = function(scenarioId) {
 ModelingWidget.prototype.runTheModel = function() {
 	var modelingWidget = this;
 
+	var defaultValues = modelingWidget.options.defaultValues || {};
 	var values = {};
-	/*
-	if (this.options.defaultValues) {
-		for (var key in this.options.defaultValues) {
-			values[key] = this.options.defaultValues[key];
+	
+	function setDefaultIfAvailable(idx, input) {
+		if (input.inputs) {
+			// this is a group of inputs
+			$(input.inputs).each(setDefaultIfAvailable);
 		}
-	}*/
+		else {
+			var inputName = input.name;
+			var inputId = input.metaData.id;
+			var val = defaultValues[inputId] || defaultValues[inputName];
+			if (val) {
+				values[inputId] = val;
+			}
+		}
+		
+	}
+
+	$(modelingWidget.model.inputs).each(setDefaultIfAvailable);
 	
 	this.container.find(".valueBinding").each(function() {
 		var label = jQuery(this).parent().parent().find("td.label").text();
 		var id = jQuery(this).attr('data-id');
+		var val = jQuery(this).val();
 
-		if (modelingWidget.options.defaultValues && modelingWidget.options.defaultValues[id] || modelingWidget.options.defaultValues[label]) {
-			values[id] = modelingWidget.options.defaultValues[id] || modelingWidget.options.defaultValues[label];
-			
+		if ((val == '' || val == 'NaN') && (defaultValues[id] || defaultValues[label])) {
+			val = modelingWidget.options.defaultValues[id] || modelingWidget.options.defaultValues[label];
 		}
-		else {
-			values[id] = jQuery(this).val();
-		}
-		
+		values[id] = val;
 	});
 
 

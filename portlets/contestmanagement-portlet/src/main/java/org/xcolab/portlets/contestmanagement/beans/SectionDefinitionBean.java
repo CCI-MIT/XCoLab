@@ -1,10 +1,23 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
+import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.model.OntologySpace;
+import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.PlanTemplateSection;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
+import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
+import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Validator;
+import org.xcolab.enums.OntologySpaceEnum;
+import org.xcolab.utils.OntologyTermToFocusAreaMapper;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -20,7 +33,7 @@ public class SectionDefinitionBean implements Serializable{
     private String defaultText = "";
     private String helpText = "";
     private Integer characterLimit = 200;
-    private Long focusAreaId = 0L; // TODO this is only the default!!
+    private long focusAreaId = 0L;
     private Long level;
     private String content = "";
     private boolean locked = false;
@@ -30,10 +43,15 @@ public class SectionDefinitionBean implements Serializable{
     private boolean contestIntegrationRelevance = false;
     private int weight;
 
+    private long whatTermId = 0L;
+    private long whereTermId = 0L;
+    private long whoTermId = 0L;
+    private long howTermId = 0L;
+
     public SectionDefinitionBean() {
     }
 
-    public SectionDefinitionBean(PlanSectionDefinition planSectionDefinition){
+    public SectionDefinitionBean(PlanSectionDefinition planSectionDefinition) throws PortalException, SystemException {
         initPlanSectionDefinition(planSectionDefinition);
     }
 
@@ -59,7 +77,7 @@ public class SectionDefinitionBean implements Serializable{
         this.weight = planTemplateSection.getWeight();
     }
 
-    private void initPlanSectionDefinition(PlanSectionDefinition planSectionDefinition){
+    private void initPlanSectionDefinition(PlanSectionDefinition planSectionDefinition) throws SystemException, PortalException {
         this.sectionDefinitionId = planSectionDefinition.getId();
         this.type = planSectionDefinition.getType();
         this.title = planSectionDefinition.getTitle();
@@ -70,6 +88,23 @@ public class SectionDefinitionBean implements Serializable{
         this.locked = planSectionDefinition.getLocked();
         this.level = planSectionDefinition.getTier();
         this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
+        this.focusAreaId = planSectionDefinition.getFocusAreaId();
+
+        initOntologyTermIdsWithFocusAreaId();
+    }
+
+    private void initOntologyTermIdsWithFocusAreaId() throws SystemException, PortalException {
+        if (this.focusAreaId != 0) {
+            FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(this.focusAreaId);
+            OntologySpace space = OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.WHAT.getSpaceId());
+            this.whatTermId = FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space).getId();
+            space = OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.WHERE.getSpaceId());
+            this.whereTermId = FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space).getId();
+            space = OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.WHO.getSpaceId());
+            this.whoTermId = FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space).getId();
+            space = OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.HOW.getSpaceId());
+            this.howTermId = FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space).getId();
+        }
     }
 
     public SectionDefinitionBean(String title) {
@@ -176,14 +211,6 @@ public class SectionDefinitionBean implements Serializable{
         this.defaultText = defaultText;
     }
 
-    public Long getFocusAreaId() {
-        return focusAreaId;
-    }
-
-    public void setFocusAreaId(Long focusAreaId) {
-        this.focusAreaId = focusAreaId;
-    }
-
     public boolean isLocked() {
         return locked;
     }
@@ -224,6 +251,60 @@ public class SectionDefinitionBean implements Serializable{
         this.contestIntegrationRelevance = contestIntegrationRelevance;
     }
 
+    public long getWhatTermId() {
+        return whatTermId;
+    }
+
+    public void setWhatTermId(long whatTermId) {
+        this.whatTermId = whatTermId;
+    }
+
+    public long getWhereTermId() {
+        return whereTermId;
+    }
+
+    public void setWhereTermId(long whereTermId) {
+        this.whereTermId = whereTermId;
+    }
+
+    public long getWhoTermId() {
+        return whoTermId;
+    }
+
+    public void setWhoTermId(long whoTermId) {
+        this.whoTermId = whoTermId;
+    }
+
+    public long getHowTermId() {
+        return howTermId;
+    }
+
+    public void setHowTermId(long howTermId) {
+        this.howTermId = howTermId;
+    }
+
+    public void setFocusAreaId(long focusAreaId) {
+        this.focusAreaId = focusAreaId;
+    }
+
+    public long getFocusAreaId(){
+        try {
+            if (ontologyTermsSet()) {
+                focusAreaId = getFocusAreaViaOntologyTerms().getId();
+            }
+
+            return focusAreaId;
+        } catch (Exception e) {
+
+        }
+
+        return 0L;
+    }
+
+    private boolean ontologyTermsSet() {
+        return (getWhatTermId() != 0 && getWhereTermId() != 0 && getWhoTermId() != 0 && getHowTermId() != 0);
+    }
+
     public static final Comparator<SectionDefinitionBean> sectionListComparator = new MyComparator();
 
     static class MyComparator implements Comparator<SectionDefinitionBean>{
@@ -234,4 +315,31 @@ public class SectionDefinitionBean implements Serializable{
         }
     }
 
+    private FocusArea getFocusAreaViaOntologyTerms() throws SystemException, PortalException {
+        List<OntologyTerm> termsToBeMatched = new ArrayList<>();
+        termsToBeMatched.add(OntologyTermLocalServiceUtil.getOntologyTerm(getWhatTermId()));
+        termsToBeMatched.add(OntologyTermLocalServiceUtil.getOntologyTerm(getWhereTermId()));
+        termsToBeMatched.add(OntologyTermLocalServiceUtil.getOntologyTerm(getWhoTermId()));
+        termsToBeMatched.add(OntologyTermLocalServiceUtil.getOntologyTerm(getHowTermId()));
+
+        OntologyTermToFocusAreaMapper focusAreaMapper = new OntologyTermToFocusAreaMapper(termsToBeMatched);
+        FocusArea focusArea = focusAreaMapper.getAssociatedFocusArea();
+
+        if (Validator.isNull(focusArea)) {
+            focusArea = createNewFocusAreaWithTerms(termsToBeMatched);
+        }
+
+        return focusArea;
+    }
+
+    private FocusArea createNewFocusAreaWithTerms(List<OntologyTerm> focusAreaOntologyTerms) throws SystemException, PortalException {
+        FocusArea newFocusArea = FocusAreaLocalServiceUtil.createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
+        newFocusArea.setName("created for planSectionDefinition '" + this.title + "'");
+        for (OntologyTerm ontologyTerm : focusAreaOntologyTerms) {
+            FocusAreaLocalServiceUtil.addTerm(newFocusArea, ontologyTerm.getId());
+        }
+
+        FocusAreaLocalServiceUtil.store(newFocusArea);
+        return newFocusArea;
+    }
 }
