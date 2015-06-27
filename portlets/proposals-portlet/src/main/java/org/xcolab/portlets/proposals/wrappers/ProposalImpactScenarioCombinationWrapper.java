@@ -14,7 +14,6 @@ import edu.mit.cci.roma.client.comm.ClientRepository;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.apache.log4j.Logger;
-import org.xcolab.portlets.proposals.utils.RegionClimateImpact;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -77,7 +76,8 @@ public class ProposalImpactScenarioCombinationWrapper {
             		Simulation proposalModelSimulation = scenarioForProposal.getSimulation();
             		Long modelId = proposalModelSimulation.getId();
             		modelIdToScenarioMap.put(modelId, scenarioForProposal);
-            		proposalToModelMap.put(new ProposalWrapper(proposal), proposalModelSimulation.getName());
+                    String modelName = proposalModelSimulation.getName();
+            		proposalToModelMap.put(new ProposalWrapper(proposal), modelName);
             	}
             	catch (Exception e) {
             		_log.error(String.format("Can't access scenario for id: %d", scenarioId));
