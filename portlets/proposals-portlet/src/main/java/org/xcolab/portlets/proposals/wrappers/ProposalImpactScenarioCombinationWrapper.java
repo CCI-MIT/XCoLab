@@ -13,9 +13,7 @@ import edu.mit.cci.roma.client.Tuple;
 import edu.mit.cci.roma.client.comm.ClientRepository;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
-
 import org.apache.log4j.Logger;
-import org.xcolab.portlets.proposals.utils.RegionClimateImpact;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -32,7 +30,6 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     private static Map<String, Double> REGION_AVG_FACTOR;
     private final static Logger _log = Logger.getLogger(ProposalImpactScenarioCombinationWrapper.class);
-
     static {
         Map<String, Double> avgFactor =  new HashMap<>();
         avgFactor.put("US", 0.1595);
@@ -44,11 +41,13 @@ public class ProposalImpactScenarioCombinationWrapper {
         REGION_AVG_FACTOR = Collections.unmodifiableMap(avgFactor);
     }
 
-    private final static Long EMF_REGION_INPUT_ID  = 814L;
-    private final static Long ENROADS_REGION_INPUT_ID  = 805L;
     private final static Long ENROADS_MODEL_ID  = 23L;
+    private final static Long ENROADS_REGION_INPUT_ID  = 805L;
+
     private final static Long EMF_MODEL_ID  = 17L;
-    private final static Long MODEL_ID_COMBINED_SCENARIOS  =  ENROADS_MODEL_ID; //41L;
+    private final static Long EMF_REGION_INPUT_ID  = 814L;
+    private final static Long EMF_SCENARION_INPUT_ID  = 366L;
+
 
     Set<Scenario> scenarios;
     Map<Long, Scenario> modelIdToScenarioMap;
@@ -77,7 +76,8 @@ public class ProposalImpactScenarioCombinationWrapper {
             		Simulation proposalModelSimulation = scenarioForProposal.getSimulation();
             		Long modelId = proposalModelSimulation.getId();
             		modelIdToScenarioMap.put(modelId, scenarioForProposal);
-            		proposalToModelMap.put(new ProposalWrapper(proposal), proposalModelSimulation.getName());
+                    String modelName = proposalModelSimulation.getName();
+            		proposalToModelMap.put(new ProposalWrapper(proposal), modelName);
             	}
             	catch (Exception e) {
             		_log.error(String.format("Can't access scenario for id: %d", scenarioId));
@@ -126,7 +126,7 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     public boolean isCombinedScenario(Long scenarioId) throws Exception{
         Long modelId = getModelIdForScenarioId(scenarioId);
-        return (MODEL_ID_COMBINED_SCENARIOS == modelId);
+        return (modelId == EMF_MODEL_ID || modelId == ENROADS_MODEL_ID);
     }
 
     private ClientRepository getRomaClient(){
@@ -152,7 +152,7 @@ public class ProposalImpactScenarioCombinationWrapper {
         boolean isConsolidationOfScenariosPossible = false;
         if (doAllScenariosUseSameModel()) {
             if(isUsedModelEMF()){
-                if(scenarios.size() == 1){
+                if(doAllEMFScenariosHaveSameModelRun()){
                     isConsolidationOfScenariosPossible = true;
                 }
             } else{
@@ -166,6 +166,27 @@ public class ProposalImpactScenarioCombinationWrapper {
         boolean isMoreThanOneModelIdInMap = (modelIdToScenarioMap.size() > 1);
         return !isMoreThanOneModelIdInMap;
     }
+
+
+    public boolean doAllEMFScenariosHaveSameModelRun(){
+        boolean allEMFScenariosHaveSameModelRun = true;
+        String commonScenarioModelRun = "";
+        for(Scenario scenario : scenarios) {
+            Map<Long, Object> currentScenarioInputParameters = mapVariableInputParameters(scenario.getInputSet());
+            String currentScenarioModelRun = String.valueOf(currentScenarioInputParameters.get(EMF_SCENARION_INPUT_ID));
+            if(commonScenarioModelRun.isEmpty()){
+                commonScenarioModelRun = currentScenarioModelRun;
+            } else {
+                if(!commonScenarioModelRun.equals(currentScenarioModelRun)){
+                    allEMFScenariosHaveSameModelRun = false;
+                    break;
+                }
+            }
+        }
+        return allEMFScenariosHaveSameModelRun;
+    }
+
+
 
     public void calculateCombinedInputParameters() {
         combinedInputParametersMap = new HashMap<>();
@@ -232,6 +253,7 @@ public class ProposalImpactScenarioCombinationWrapper {
            if(isUsedModelEMF()){
                combinedScenario = (Scenario) scenarios.toArray()[0];
            } else{
+               calculateCombinedInputParameters();
                combinedScenario = getRomaClient().runModel(combinedSimulation, combinedInputParametersMap, 0L, false);
            }
        }

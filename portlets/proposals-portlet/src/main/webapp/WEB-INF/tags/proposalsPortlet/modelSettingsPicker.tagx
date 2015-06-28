@@ -81,6 +81,7 @@
 				setModelSetRadiosState(true);
 				proposalToModelMap.style.display = "none";
 			} else{
+				checkModelSetRadioWithId(modelId);
 				proposalToModelMap.style.display = "";
 			}
 		});

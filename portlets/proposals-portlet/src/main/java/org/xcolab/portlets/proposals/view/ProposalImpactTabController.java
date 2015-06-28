@@ -109,8 +109,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                     populateModelOptions(model, request);
                 } else {
 
-                    proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
-
                     Long consolidatedScenarioId;
                     Long consolidatedModelId;
 

@@ -263,6 +263,24 @@
             return map;
         }
 
+        function calculateAverage(modelSeriesList){
+            var averageSeries = {variable : {values: []}};
+            var seriesCount = modelSeriesList.length;
+            modelSeriesList.forEach(function (series) {
+                var modelSeriesValues = series.variable.values;
+                var valueIndex = 0;
+                modelSeriesValues.forEach(function(modelSeriesValue){
+                    if(typeof(averageSeries.variable.values[valueIndex]) === 'undefined'){
+                        averageSeries.variable.values.push([0,0]);
+                        averageSeries.variable.values[valueIndex][0] = modelSeriesValue[0];
+                    }
+                    averageSeries.variable.values[valueIndex][1] += modelSeriesValue[1] / seriesCount;
+                    valueIndex++;
+                });
+            });
+            return averageSeries;
+        }
+
         $().ready(function() {
 
             var totalSectorsRow = document.getElementById("totalSectors");
@@ -272,9 +290,17 @@
 
                 var modelSeriesValuesToYears = {};
                 var modelOutputs = event.scenario.outputs;
+                console.log("event.scenario.", event.scenario);
                 modelOutputs.forEach(function(modelOutput){
-                    if(modelOutput.name == MODEL_DATA_ROW){
-                        var modelSeries = modelOutput.series[0];
+                    console.log("modelOutput",modelOutput);
+                    if(modelOutput.name.toLowerCase() === MODEL_DATA_ROW.toLowerCase()){
+                        var modelSeries;
+                        if(event.scenario.modelName.toLowerCase().includes("emf")){
+                            modelSeries = calculateAverage(modelOutput.series);
+                            console.log("avg", modelSeries);
+                        } else{
+                            modelSeries = modelOutput.series[0];
+                        }
                         var modelSeriesValues = modelSeries.variable.values;
                         modelSeriesValues.forEach(function(modelSeriesValue){
                             modelSeriesValuesToYears[modelSeriesValue[0]] = modelSeriesValue[1];
