@@ -385,6 +385,7 @@ public class ContestProposalTemplateWrapper {
                     planSectionDefinition.getDefaultText().equalsIgnoreCase(sectionDefinitionBean.getDefaultText()) &&
                     planSectionDefinition.getHelpText().equalsIgnoreCase(sectionDefinitionBean.getHelpText()) &&
                     planSectionDefinition.getCharacterLimit() == sectionDefinitionBean.getCharacterLimit() &&
+                    planSectionDefinition.getContestIntegrationRelevance() == sectionDefinitionBean.isContestIntegrationRelevance() &&
                     planSectionDefinition.getFocusAreaId() == sectionDefinitionBean.getFocusAreaId());
 
         } catch(Exception e){

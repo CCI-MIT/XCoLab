@@ -98,59 +98,79 @@
 							<div class="deleteIcon"><!-- --></div>
 						</c:if>
 
-						<label>
-							<strong>Section type:</strong>
+						<div>
+							<strong>Section type:</strong><br/>
 							<form:select path="sections[${x.index}].type" data-form-name="type" id="type-select">
 								<form:option value="NONE" label="--- Select ---" />
 								<form:options items="${sectionTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
 							</form:select>
+						</div>
 
-							<div id="ontology-select-container" style="display: none;">
-								<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
-								<strong>WHAT Ontology term:</strong>
+						<div id="ontology-select-container" style="display: none;">
+							<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
+							<div>
+								<strong>WHAT Ontology term:</strong><br/>
 								<form:select path="sections[${x.index}].whatTermId" data-form-name="whatTermId">
 									<form:option value="0" label="--- Select ---" />
 									<form:options items="${whatTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
-								<strong>WHERE Ontology term:</strong>
+							</div>
+							<div>
+								<strong>WHERE Ontology term:</strong><br/>
 								<form:select path="sections[${x.index}].whereTermId" data-form-name="whereTermId">
 									<form:option value="0" label="--- Select ---" />
 									<form:options items="${whereTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
-								<strong>WHO Ontology term:</strong>
+							</div>
+							<div>
+								<strong>WHO Ontology term:</strong><br/>
 								<form:select path="sections[${x.index}].whoTermId" data-form-name="whoTermId">
 									<form:option value="0" label="--- Select ---" />
 									<form:options items="${whoTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
-								<strong>HOW Ontology term:</strong>
+							</div>
+							<div>
+								<strong>HOW Ontology term:</strong><br/>
 								<form:select path="sections[${x.index}].howTermId" data-form-name="howTermId">
 									<form:option value="0" label="--- Select ---" />
 									<form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
-
-							<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
-								<strong>Level:</strong>
-								<form:select path="sections[${x.index}].level" data-form-name="level">
-									<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
-								</form:select>
+							<div>
+								<strong>Is this proposal reference field used for contest integration?</strong><br/>
+								<form:checkbox path="sections[${x.index}].contestIntegrationRelevance" data-form-name="contestIntegrationRelevance">
+								</form:checkbox>
 							</div>
-							<strong>Title:</strong><form:input path="sections[${x.index}].title" data-form-name="title"/>
-							<br />
-							<span class="floatLeft"><strong>Character limit:</strong></span>
-							<form:input path="sections[${x.index}].characterLimit" data-form-name="characterLimit"/>
-						</label>
+						</div>
+						<div class="clearfix"><!-- --></div>
+						<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+							<strong>Level:</strong><br/>
+							<form:select path="sections[${x.index}].level" data-form-name="level">
+								<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
+							</form:select>
+						</div>
+						<div class="clearfix"><!-- --></div>
+						<div>
+							<div>
+								<strong>Title:</strong><br/><form:input path="sections[${x.index}].title" data-form-name="title"/>
+							</div>
+							<div class="clearfix"><!-- --></div>
+							<div>
+								<span class="floatLeft"><strong>Character limit:</strong></span><br/>
+								<form:input path="sections[${x.index}].characterLimit" data-form-name="characterLimit"/>
+							</div>
+						</div>
 
 						<div class="clearfix"><!--  --></div>
-						<strong>Help text:</strong>
+						<strong>Help text:</strong><br/>
 						<div class="addpropInputContainer">
 							<form:textarea path="sections[${x.index}].helpText"  data-form-name="helpText"  />   <!-- cssClass="ckeditor_placeholder" -->
 							<div class="reg_errors">
 								<form:errors cssClass="alert alert-error" path="sections[${x.index}].helpText" />
 							</div>
 						</div>
-
-						<strong>Default text:</strong>
+						<div class="clearfix"><!--  --></div>
+						<strong>Default text:</strong><br/>
 						<div class="addpropInputContainer">
 							<form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText"  />   <!-- cssClass="ckeditor_placeholder" -->
 							<div class="reg_errors">
