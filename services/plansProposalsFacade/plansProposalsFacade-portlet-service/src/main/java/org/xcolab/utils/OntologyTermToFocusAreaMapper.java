@@ -1,16 +1,13 @@
 package org.xcolab.utils;
 
 import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.ImpactTemplateMaxFocusArea;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.xcolab.enums.OntologySpaceEnum;
 
 import java.util.List;
 
@@ -31,6 +28,9 @@ public class OntologyTermToFocusAreaMapper {
 
     public FocusArea filterAssociatedFocusArea(List<FocusArea> toBeSearchedFocusAreas) throws PortalException, SystemException {
         for (FocusArea focusArea : toBeSearchedFocusAreas) {
+            if (!isFocusAreaOntologyTermCountMatching(focusArea, toBeMatchedTerms.size())) {
+                continue;
+            }
             boolean focusAreaMatchesTerms = true;
             for (OntologyTerm toBeMatchedTerm : toBeMatchedTerms) {
                 OntologyTerm focusAreaOntologyTerm = getTermWithSpaceId(focusArea, toBeMatchedTerm.getOntologySpaceId());
@@ -56,5 +56,9 @@ public class OntologyTermToFocusAreaMapper {
     private OntologyTerm getTermWithSpaceId(FocusArea focusArea, long spaceId) throws SystemException, PortalException {
         OntologySpace space = OntologySpaceLocalServiceUtil.getOntologySpace(spaceId);
         return FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
+    }
+
+    private boolean isFocusAreaOntologyTermCountMatching(FocusArea focusArea, int ontologyTermCount) throws SystemException, PortalException {
+        return FocusAreaLocalServiceUtil.getTerms(focusArea).size() == ontologyTermCount;
     }
 }
