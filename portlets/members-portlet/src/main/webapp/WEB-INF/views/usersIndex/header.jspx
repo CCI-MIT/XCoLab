@@ -84,6 +84,15 @@
         </p>
     </c:if>
 
+    <!-- HELP DIVS -->
+    <c:if test="${memberCategory == 'Impact Assessment Fellow'}">
+        <p>
+            Climate CoLab <a
+                href="http://climatecolab.org/impact_fellows">Impact Assessment Fellows</a>
+            help proposal authors estimate the greenhouse gas emission reductions that their proposals can achieve.
+        </p>
+    </c:if>
+
 	<!-- HELP DIVS -->
 	<c:if test="${memberCategory == 'Advisor'}">
 		<p>
