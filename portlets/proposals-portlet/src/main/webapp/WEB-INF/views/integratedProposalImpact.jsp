@@ -49,9 +49,9 @@
                                 <c:forEach items="${proposalToModelMap}" var="proposalToModel">
                                     <tr>
                                         <td>${proposalToModel.key.name}</td>
-                                        <td>${proposalToModel.simulation}</td>
-                                        <td>${proposalToModel.scenario}</td>
-                                        <td>${proposalToModel.region}</td>
+                                        <td>${proposalToModel.value.simulation}</td>
+                                        <td>${proposalToModel.value.scenario}</td>
+                                        <td>${proposalToModel.value.region}</td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
