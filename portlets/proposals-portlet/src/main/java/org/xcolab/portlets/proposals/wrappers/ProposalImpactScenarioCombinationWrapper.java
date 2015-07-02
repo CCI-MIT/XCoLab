@@ -46,12 +46,12 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     private final static Long EMF_MODEL_ID  = 17L;
     private final static Long EMF_REGION_INPUT_ID  = 814L;
-    private final static Long EMF_SCENARION_INPUT_ID  = 366L;
+    private final static Long EMF_SCENARIO_INPUT_ID = 366L;
 
 
     Set<Scenario> scenarios;
     Map<Long, Scenario> modelIdToScenarioMap;
-    Map<ProposalWrapper, String> proposalToModelMap;
+    Map<ProposalWrapper, SimulationScenarioRegionWrapper> proposalToModelScenarioRegionMap;
     List<Variable> combinedInputParameters;
     Map<Long, Object> combinedInputParametersMap;
     Scenario combinedScenario;
@@ -63,10 +63,11 @@ public class ProposalImpactScenarioCombinationWrapper {
         initRomaClient();
         scenarios = new HashSet<>();
         modelIdToScenarioMap = new HashMap<>();
-        proposalToModelMap = new HashMap<>();
+        proposalToModelScenarioRegionMap = new HashMap<>();
 
         for(Proposal proposal : proposals) {
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
+            SimulationScenarioRegionWrapper simulationScenarioRegion = new SimulationScenarioRegionWrapper(proposalWrapper);
             Long scenarioId = proposalWrapper.getScenarioId();
             Scenario scenarioForProposal = null;
             if(scenarioId != null && scenarioId > 0) {
@@ -77,15 +78,17 @@ public class ProposalImpactScenarioCombinationWrapper {
             		Long modelId = proposalModelSimulation.getId();
             		modelIdToScenarioMap.put(modelId, scenarioForProposal);
                     String modelName = proposalModelSimulation.getName();
-            		proposalToModelMap.put(new ProposalWrapper(proposal), modelName);
+                    simulationScenarioRegion.setSimulation(modelName);
+                    simulationScenarioRegion.setScenario(String.valueOf(scenarioId));
             	}
             	catch (Exception e) {
             		_log.error(String.format("Can't access scenario for id: %d", scenarioId));
             	}
-            } 
+            }
+
+            proposalToModelScenarioRegionMap.put(proposalWrapper, simulationScenarioRegion);
             
             if (scenarioForProposal == null) {
-                proposalToModelMap.put(new ProposalWrapper(proposal), "No simulation available");
                 modelIdToScenarioMap.put(0L, null);
             }
         }
@@ -101,8 +104,8 @@ public class ProposalImpactScenarioCombinationWrapper {
         }
     }
 
-    public Map<ProposalWrapper, String> getProposalToModelMap() {
-        return proposalToModelMap;
+    public Map<ProposalWrapper, SimulationScenarioRegionWrapper> getProposalToModelScenarioRegionMap() {
+        return proposalToModelScenarioRegionMap;
     }
 
     private static boolean isModelEMF(Simulation simulation){
@@ -173,7 +176,7 @@ public class ProposalImpactScenarioCombinationWrapper {
         String commonScenarioModelRun = "";
         for(Scenario scenario : scenarios) {
             Map<Long, Object> currentScenarioInputParameters = mapVariableInputParameters(scenario.getInputSet());
-            String currentScenarioModelRun = String.valueOf(currentScenarioInputParameters.get(EMF_SCENARION_INPUT_ID));
+            String currentScenarioModelRun = String.valueOf(currentScenarioInputParameters.get(EMF_SCENARIO_INPUT_ID));
             if(commonScenarioModelRun.isEmpty()){
                 commonScenarioModelRun = currentScenarioModelRun;
             } else {

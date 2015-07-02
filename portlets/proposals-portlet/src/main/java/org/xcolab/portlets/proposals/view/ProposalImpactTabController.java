@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -105,7 +104,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 model.addAttribute("CONSOLIDATE", isConsolidationPossible);
 
                 if(!isConsolidationPossible){
-                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalToModelMap());
+                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalToModelScenarioRegionMap());
                     populateModelOptions(model, request);
                 } else {
 

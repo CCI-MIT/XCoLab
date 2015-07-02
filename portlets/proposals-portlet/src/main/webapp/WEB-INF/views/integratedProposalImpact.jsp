@@ -41,13 +41,17 @@
                                 <tr>
                                     <th>Proposal</th>
                                     <th>Model</th>
+                                    <th>Scenario</th>
+                                    <th>Region</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach items="${proposalToModelMap}" var="proposalToModel">
                                     <tr>
                                         <td>${proposalToModel.key.name}</td>
-                                        <td>${proposalToModel.value}</td>
+                                        <td>${proposalToModel.simulation}</td>
+                                        <td>${proposalToModel.scenario}</td>
+                                        <td>${proposalToModel.region}</td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

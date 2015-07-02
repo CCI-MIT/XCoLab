@@ -14,7 +14,7 @@
 
 	<div class='addpropbox'>
             <div>
-                <h3 style="margin-top: 0px;">Which modelling engine would you like to use?</h3>
+                <h3 style="margin-top: 0px;">Which modeling engine would you like to use?</h3>
                 <div class="selectbox1 modelsSelectBox">
                 	<fieldset id="modelSet">
                 	<c:forEach var="model" items="${availableModels }">
