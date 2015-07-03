@@ -88,6 +88,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         boolean isGlobalContest = isGlobalContest(contest);
         model.addAttribute("isGlobalContest", isGlobalContest);
         model.addAttribute("isRegionalSectorContest", isRegionalSectorContest(contest));
+        model.addAttribute("isRegionalContest", isRegionalContest(contest));
 
         if(!isGlobalContest) {
             IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal, contest);
@@ -242,6 +243,9 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     private boolean isGlobalContest(Contest contest) throws PortalException, SystemException{
         return contest.getContestTier() == ContestTier.GLOBAL.getTierType();
+    }
+    private boolean isRegionalContest(Contest contest) throws PortalException, SystemException{
+        return contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType();
     }
     private boolean isRegionalSectorContest(Contest contest) throws PortalException, SystemException{
         return contest.getContestTier() == ContestTier.REGION_SECTOR.getTierType();

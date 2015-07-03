@@ -16,6 +16,7 @@ import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,6 +43,7 @@ public class ProposalImpactScenarioCombinationWrapper {
         REGION_AVG_FACTOR = Collections.unmodifiableMap(avgFactor);
     }
 
+    private final static List<String> validationRegions = Arrays.asList("United States", "European Union", "China", "India", "Other developing", "Other developed");
     private final static Long ENROADS_MODEL_ID  = 23L;
     private final static Long ENROADS_REGION_INPUT_ID  = 805L;
 
@@ -174,7 +176,7 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     public boolean isOneSubProposalPerRegionSelected(){
         boolean subProposalPerRegionSelected = true;
-        for(String region: REGION_AVG_FACTOR.keySet()){
+        for(String region: validationRegions){
             if(!presentRegion.contains(region)){
                 SimulationScenarioRegionWrapper simulationScenarioRegionWrapper = new SimulationScenarioRegionWrapper();
                 simulationScenarioRegionWrapper.setRegion(region);
