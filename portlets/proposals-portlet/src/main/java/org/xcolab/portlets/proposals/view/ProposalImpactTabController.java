@@ -86,8 +86,9 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         Contest contest = proposalsContext.getContest(request);
 
         boolean isGlobalContest = isGlobalContest(contest);
+        boolean isRegionalSectorContest = isRegionalSectorContest(contest);
         model.addAttribute("isGlobalContest", isGlobalContest);
-        model.addAttribute("isRegionalSectorContest", isRegionalSectorContest(contest));
+        model.addAttribute("isRegionalSectorContest", isRegionalSectorContest);
         model.addAttribute("isRegionalContest", isRegionalContest(contest));
 
         if(!isGlobalContest) {
@@ -95,7 +96,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("impactSeries", integratedProposalImpactSeries);
         }
 
-        if (edit) {
+        if (edit && !isRegionalSectorContest) {
             if(isGlobalContest) {
                 List<Proposal> subProposals =  ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
 
