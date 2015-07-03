@@ -138,7 +138,9 @@
 							</div>
 							<div>
 								<strong>Is this proposal reference field used for contest integration?</strong><br/>
-								<form:checkbox path="sections[${x.index}].contestIntegrationRelevance" data-form-name="contestIntegrationRelevance">
+								<form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
+											   id="sections${x.index}.contestIntegrationRelevance"
+											   data-form-name="contestIntegrationRelevance">
 								</form:checkbox>
 							</div>
 						</div>
@@ -441,13 +443,21 @@
 		}
 
 		function selectTypeChangeCallback(event){
+
+				console.log("selectTypeChangeCallback -> event", event);
+				console.log("selectTypeChangeCallback ->event.target.value", event.target.value);
+
 				event.preventDefault();
 				var selectedSectionDefinitionId = event.target.value;
 
-				if(selectedSectionDefinitionId.indexOf("PROPOSAL") >= 0 ){
-					event.target.nextSibling.style.display = "";
-				} else {
-					event.target.nextSibling.style.display = "none";
+				try {
+					if (selectedSectionDefinitionId.indexOf("PROPOSAL") >= 0) {
+						event.target.nextSibling.style.display = "";
+					} else {
+						event.target.nextSibling.style.display = "none";
+					}
+				} catch(exception){
+					console.error(exception);
 				}
 				/*
 				getSectionDefinitionFromServer(selectedSectionDefinitionId).done(function(jsondata){
