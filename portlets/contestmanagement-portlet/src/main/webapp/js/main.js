@@ -212,6 +212,7 @@ function replaceSectionFormIds(newSectionElement, newSectionInputData, newSectio
     replaceInputDataByTagName(newSectionElement, newSectionInputData, 'input');
     replaceInputDataByTagName(newSectionElement, newSectionInputData, 'select');
     replaceInputDataByTagName(newSectionElement, newSectionInputData, 'textarea');
+    replaceInputDataByTagName(newSectionElement, newSectionInputData, 'checkbox');
 }
 
 
