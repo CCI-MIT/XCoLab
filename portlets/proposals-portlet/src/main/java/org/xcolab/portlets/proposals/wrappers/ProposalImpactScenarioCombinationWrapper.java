@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,7 +52,8 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     Set<Scenario> scenarios;
     Map<Long, Scenario> modelIdToScenarioMap;
-    Map<ProposalWrapper, SimulationScenarioRegionWrapper> proposalToModelScenarioRegionMap;
+    Map<String, SimulationScenarioRegionWrapper> proposalNameToModelScenarioRegionMap;
+    Set<String> presentRegion;
     List<Variable> combinedInputParameters;
     Map<Long, Object> combinedInputParametersMap;
     Scenario combinedScenario;
@@ -61,13 +63,15 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     public ProposalImpactScenarioCombinationWrapper(List<Proposal> proposals) throws Exception{
         initRomaClient();
+        presentRegion = new HashSet<>();
         scenarios = new HashSet<>();
         modelIdToScenarioMap = new HashMap<>();
-        proposalToModelScenarioRegionMap = new HashMap<>();
+        proposalNameToModelScenarioRegionMap = new LinkedHashMap<>();
 
         for(Proposal proposal : proposals) {
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
             SimulationScenarioRegionWrapper simulationScenarioRegion = new SimulationScenarioRegionWrapper(proposalWrapper);
+            presentRegion.add(simulationScenarioRegion.getRegion());
             Long scenarioId = proposalWrapper.getScenarioId();
             Scenario scenarioForProposal = null;
             if(scenarioId != null && scenarioId > 0) {
@@ -86,7 +90,7 @@ public class ProposalImpactScenarioCombinationWrapper {
             	}
             }
 
-            proposalToModelScenarioRegionMap.put(proposalWrapper, simulationScenarioRegion);
+            proposalNameToModelScenarioRegionMap.put(proposalWrapper.getName(), simulationScenarioRegion);
             
             if (scenarioForProposal == null) {
                 modelIdToScenarioMap.put(0L, null);
@@ -104,8 +108,8 @@ public class ProposalImpactScenarioCombinationWrapper {
         }
     }
 
-    public Map<ProposalWrapper, SimulationScenarioRegionWrapper> getProposalToModelScenarioRegionMap() {
-        return proposalToModelScenarioRegionMap;
+    public Map<String, SimulationScenarioRegionWrapper> getProposalNameToModelScenarioRegionMap() {
+        return proposalNameToModelScenarioRegionMap;
     }
 
     private static boolean isModelEMF(Simulation simulation){
@@ -153,16 +157,32 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     public boolean isConsolidationOfScenariosPossible() {
         boolean isConsolidationOfScenariosPossible = false;
-        if (doAllScenariosUseSameModel()) {
-            if(isUsedModelEMF()){
-                if(doAllEMFScenariosHaveSameModelRun()){
+        if(isOneSubProposalPerRegionSelected()){
+            if (doAllScenariosUseSameModel()) {
+                if(isUsedModelEMF()){
+                    if(doAllEMFScenariosHaveSameModelRun()){
+                        isConsolidationOfScenariosPossible = true;
+                    }
+                } else{
                     isConsolidationOfScenariosPossible = true;
                 }
-            } else{
-                isConsolidationOfScenariosPossible = true;
             }
         }
         return isConsolidationOfScenariosPossible;
+    }
+
+
+    public boolean isOneSubProposalPerRegionSelected(){
+        boolean subProposalPerRegionSelected = true;
+        for(String region: REGION_AVG_FACTOR.keySet()){
+            if(!presentRegion.contains(region)){
+                SimulationScenarioRegionWrapper simulationScenarioRegionWrapper = new SimulationScenarioRegionWrapper();
+                simulationScenarioRegionWrapper.setRegion(region);
+                simulationScenarioRegionWrapper.setSimulation("-");
+                proposalNameToModelScenarioRegionMap.put("No proposal selected for region: " + region, simulationScenarioRegionWrapper);
+            }
+        }
+        return subProposalPerRegionSelected;
     }
 
     public boolean doAllScenariosUseSameModel(){

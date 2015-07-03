@@ -37,6 +37,10 @@
                                 In order to consolidate your models, your subproposals need to use the same modeling engine and you must include one subproposal per region.
                             </div>
                             <table>
+                                <col span="1" class="wideColumn"/>
+                                <col span="1" class="smallColumn"/>
+                                <col span="1" class="smallColumn"/>
+                                <col span="1" class="smallColumn"/>
                                 <thead>
                                 <tr>
                                     <th>Proposal</th>
@@ -48,7 +52,7 @@
                                 <tbody>
                                 <c:forEach items="${proposalToModelMap}" var="proposalToModel">
                                     <tr>
-                                        <td>${proposalToModel.key.name}</td>
+                                        <td>${proposalToModel.key}</td>
                                         <td>${proposalToModel.value.simulation}</td>
                                         <td>${proposalToModel.value.scenario}</td>
                                         <td>${proposalToModel.value.region}</td>
@@ -135,7 +139,11 @@
 
     <c:if test="${not isGlobalContest}">
     <div id="impact" class="cmsDetailsBox">
-        <h2 class="model_name">Regional Plan Impact, By Sector</h2>
+        <h2 class="model_name">Regional
+            <c:if test="${empty isRegionalSectorContest or not isRegionalSectorContest}">
+                Sector
+            </c:if>
+            Plan Impact, By Sector</h2>
         <table>
             <thead>
             <tr>
@@ -186,6 +194,7 @@
                     <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
                 </c:forEach>
             </tr>
+            <c:if test="${empty isRegionalSectorContest or not isRegionalSectorContest}">
             <tr id="modelAdjustments">
                 <td class="sector">Adjustments to total, to correspond with model results</td>
                 <c:forEach var="impactIteration" items="${impactIterations}">
@@ -204,6 +213,7 @@
                     <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
                 </c:forEach>
             </tr>
+            </c:if>
 
             <c:if test="${not empty showSubProposalListing and showSubProposalListing}">
             <tr>

@@ -87,6 +87,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         boolean isGlobalContest = isGlobalContest(contest);
         model.addAttribute("isGlobalContest", isGlobalContest);
+        model.addAttribute("isRegionalSectorContest", isRegionalSectorContest(contest));
 
         if(!isGlobalContest) {
             IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposal, contest);
@@ -104,7 +105,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 model.addAttribute("CONSOLIDATE", isConsolidationPossible);
 
                 if(!isConsolidationPossible){
-                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalToModelScenarioRegionMap());
+                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalNameToModelScenarioRegionMap());
                     populateModelOptions(model, request);
                 } else {
 
@@ -241,6 +242,9 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     private boolean isGlobalContest(Contest contest) throws PortalException, SystemException{
         return contest.getContestTier() == ContestTier.GLOBAL.getTierType();
+    }
+    private boolean isRegionalSectorContest(Contest contest) throws PortalException, SystemException{
+        return contest.getContestTier() == ContestTier.REGION_SECTOR.getTierType();
     }
 
     private Map<String, String[]> getConsolidateOptionsOnGlobalLevel(){
