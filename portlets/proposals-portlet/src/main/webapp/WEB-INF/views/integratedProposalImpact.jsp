@@ -13,6 +13,7 @@
 
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
+    <c:if test="${not empty isGlobalContest and isGlobalContest or not empty isRegionalContest and  isRegionalContest}">
     <!-- Content -->
     <div id="content">
         <c:set var="modelId" value="${proposal.modelId }"/>
@@ -136,7 +137,7 @@
     <div class="clear"><!--  --></div>
     <br />
     <br />
-
+    </c:if>
     <c:if test="${not isGlobalContest}">
     <div id="impact" class="cmsDetailsBox">
         <h2 class="model_name">Regional
