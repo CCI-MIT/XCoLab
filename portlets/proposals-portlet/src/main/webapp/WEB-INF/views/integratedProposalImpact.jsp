@@ -34,7 +34,7 @@
                     <div id="proposalToModelMap" class="addpropbox">
                         <c:if test="${not empty proposalToModelMap}">
                             <div class="alert alert-error">
-                                In order to consolidate your models, your subproposals need to use the same modelling engine
+                                In order to consolidate your models, your subproposals need to use the same modeling engine and you must include one subproposal per region.
                             </div>
                             <table>
                                 <thead>
