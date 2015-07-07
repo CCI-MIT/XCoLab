@@ -106,6 +106,24 @@
 							</form:select>
 						</div>
 
+						<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+							<div>
+							<strong>Level:</strong><br/>
+							<form:select path="sections[${x.index}].level" data-form-name="level">
+								<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
+							</form:select>
+							</div>
+
+							<div>
+								<strong>Is this proposal reference field used for contest integration?</strong><br/>
+								<form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
+											   id="sections${x.index}.contestIntegrationRelevance"
+											   data-form-name="contestIntegrationRelevance">
+								</form:checkbox>
+							</div>
+						</div>
+
+						<div class="clearfix"><!-- --></div>
 						<div id="ontology-select-container" style="display: none;">
 							<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
 							<div>
@@ -136,20 +154,6 @@
 									<form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
-							<div>
-								<strong>Is this proposal reference field used for contest integration?</strong><br/>
-								<form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
-											   id="sections${x.index}.contestIntegrationRelevance"
-											   data-form-name="contestIntegrationRelevance">
-								</form:checkbox>
-							</div>
-						</div>
-						<div class="clearfix"><!-- --></div>
-						<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
-							<strong>Level:</strong><br/>
-							<form:select path="sections[${x.index}].level" data-form-name="level">
-								<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
-							</form:select>
 						</div>
 						<div class="clearfix"><!-- --></div>
 						<div>
@@ -444,17 +448,18 @@
 
 		function selectTypeChangeCallback(event){
 
-				console.log("selectTypeChangeCallback -> event", event);
-				console.log("selectTypeChangeCallback ->event.target.value", event.target.value);
+				console.log("selectTypeChangeCallback ->event.target", event.target);
+				console.log("selectTypeChangeCallback ->event.target.nextSibling", event.target.nextSibling);
+				console.log("selectTypeChangeCallback ->event.target.previousSibling", event.target.previousSibling);
 
 				event.preventDefault();
 				var selectedSectionDefinitionId = event.target.value;
 
 				try {
 					if (selectedSectionDefinitionId.indexOf("PROPOSAL") >= 0) {
-						event.target.nextSibling.style.display = "";
+						event.target.parentNode.nextSibling.style.display = "";
 					} else {
-						event.target.nextSibling.style.display = "none";
+						event.target.parentNode.nextSibling.style.display = "none";
 					}
 				} catch(exception){
 					console.error(exception);
