@@ -57,7 +57,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
         } catch (PortalException e) {
-            // No impact iteration associated with the contest -> return default view
+            _log.warn("Using default impact tab view since no impact iteration are associated with the contest: "+ contest.getContestPK());
             return "proposalImpactError";
         }
 
@@ -65,11 +65,11 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             case BASIC:
                 return showImpactTabBasicProposal(request, model);
             case REGION_SECTOR:
-                //return "proposalImpactError";
             case REGION_AGGREGATE:
             case GLOBAL:
                 return showImpactTabIntegratedProposal(request, model, edit);
             default:
+                _log.warn("Using default impact tab view since contest tier is not set for contest: "+ contest.getContestPK());
                 return "proposalImpactError";
         }
     }
@@ -161,11 +161,15 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return "integratedProposalImpact";
     }
 
-    private void populateModelOptions(Model model, PortletRequest request) throws Exception{
-        Long contestId = proposalsContext.getContest(request).getContestPK();
-        Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(contestId);
-        if (modelIdsWithNames.size() > 1) {
-            model.addAttribute("availableModels", modelIdsWithNames);
+    private void populateModelOptions(Model model, PortletRequest request){
+        try {
+            Long contestId = proposalsContext.getContest(request).getContestPK();
+            Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(contestId);
+            if (modelIdsWithNames.size() > 1) {
+                model.addAttribute("availableModels", modelIdsWithNames);
+            }
+        } catch (Exception e){
+            _log.warn("Could not populateModelOptions", e);
         }
     }
 

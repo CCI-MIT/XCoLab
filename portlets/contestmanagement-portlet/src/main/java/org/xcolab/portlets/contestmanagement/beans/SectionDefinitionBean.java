@@ -12,6 +12,8 @@ import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.utils.OntologyTermToFocusAreaMapper;
@@ -25,6 +27,7 @@ import java.util.List;
  * Created by Thomas on 2/13/2015.
  */
 public class SectionDefinitionBean implements Serializable{
+    private final static Log _log = LogFactoryUtil.getLog(SectionDefinitionBean.class);
 
     private Long id;
     private Long sectionDefinitionId;
@@ -292,10 +295,9 @@ public class SectionDefinitionBean implements Serializable{
             if (ontologyTermsSet()) {
                 focusAreaId = getFocusAreaViaOntologyTerms().getId();
             }
-
             return focusAreaId;
         } catch (Exception e) {
-
+            _log.warn("Could not get focus area id", e);
         }
 
         return 0L;

@@ -159,14 +159,16 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     public boolean isConsolidationOfScenariosPossible() {
         boolean isConsolidationOfScenariosPossible = false;
-        if(isOneSubProposalPerRegionSelected()){
+        if (isOneSubProposalPerRegionSelected()) {
             if (doAllScenariosUseSameModel()) {
-                if(isUsedModelEMF()){
-                    if(doAllEMFScenariosHaveSameModelRun()){
+                if (scenarios.size() > 0) {
+                    if (isUsedModelEMF()) {
+                        if (doAllEMFScenariosHaveSameModelRun()) {
+                            isConsolidationOfScenariosPossible = true;
+                        }
+                    } else {
                         isConsolidationOfScenariosPossible = true;
                     }
-                } else{
-                    isConsolidationOfScenariosPossible = true;
                 }
             }
         }
@@ -182,6 +184,7 @@ public class ProposalImpactScenarioCombinationWrapper {
                 simulationScenarioRegionWrapper.setRegion(region);
                 simulationScenarioRegionWrapper.setSimulation("-");
                 proposalNameToModelScenarioRegionMap.put("No proposal selected for region: " + region, simulationScenarioRegionWrapper);
+                subProposalPerRegionSelected = false;
             }
         }
         return subProposalPerRegionSelected;

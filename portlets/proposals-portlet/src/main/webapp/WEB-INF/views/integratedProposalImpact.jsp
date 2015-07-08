@@ -29,7 +29,7 @@
         </c:if>
 
         <c:choose>
-            <c:when test="${edit}">
+            <c:when test="${edit and (modelId > 0 or scenarioId > 0)}">
                 <c:if test="${not empty consolidateOptions }">
                     <proposalsPortlet:modelSettingsPicker consolidateOptions="${consolidateOptions }" contestPK="${contest.contestPK }" modelId="${modelId}"  scenarioId="${scenarioId }" />
 
@@ -126,9 +126,16 @@
                     </div>
                 </div>
             </c:when>
+            <c:when test="${modelId > 0 or scenarioId > 0}">
+                <div id="modelContent">
+                    <modeling:simulationView scenarioId="${scenarioId }" modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}"/>
+                </div>
+                </c:when>
             <c:otherwise>
                 <div id="modelContent">
-                <modeling:simulationView scenarioId="${scenarioId }" modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}"/>
+                    <div class="alert alert-error">
+                        No modeling engine is configured for this contest. Please contact the administrator.
+                    </div>
                 </div>
             </c:otherwise>
         </c:choose>

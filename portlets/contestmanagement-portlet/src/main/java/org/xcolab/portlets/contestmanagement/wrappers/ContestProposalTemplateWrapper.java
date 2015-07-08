@@ -4,6 +4,8 @@ import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.*;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
@@ -19,6 +21,7 @@ import java.util.Set;
  */
 public class ContestProposalTemplateWrapper {
 
+    private final static Log _log = LogFactoryUtil.getLog(ContestProposalTemplateWrapper.class);
     private List<SectionDefinitionBean> sections;
     private Integer numberOfSections;
     private PlanTemplate planTemplate;
@@ -57,6 +60,7 @@ public class ContestProposalTemplateWrapper {
         try {
             initPlanTemplate(planTemplateId);
         } catch (Exception e){
+            _log.warn("Failed to set plan teamplte id: " + planTemplateId);
         }
     }
 
@@ -263,6 +267,10 @@ public class ContestProposalTemplateWrapper {
         planSectionDefinition.setHelpText(sectionDefinitionBean.getHelpText());
         planSectionDefinition.setTier(sectionDefinitionBean.getLevel());
         planSectionDefinition.setFocusAreaId(sectionDefinitionBean.getFocusAreaId());
+
+        planSectionDefinition.setFocusAreaId(sectionDefinitionBean.getHowTermId());
+
+
         planSectionDefinition.setContestIntegrationRelevance(sectionDefinitionBean.isContestIntegrationRelevance());
     }
 

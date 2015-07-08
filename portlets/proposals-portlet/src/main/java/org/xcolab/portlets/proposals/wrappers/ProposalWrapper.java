@@ -518,7 +518,12 @@ public class ProposalWrapper {
     }
 
     public Long getModelId() throws PortalException, SystemException {
-        return ContestLocalServiceUtil.getDefaultModelId(contest.getContestPK());
+        Long modelId = 0L;
+        try {
+            modelId = ContestLocalServiceUtil.getDefaultModelId(contest.getContestPK());
+        } catch(Exception e){
+        }
+        return modelId;
     }
 
     public void setScenarioId(Long scenarioId, Long modelId, Long userId) throws PortalException, SystemException {

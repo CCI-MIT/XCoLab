@@ -447,14 +447,8 @@
 		}
 
 		function selectTypeChangeCallback(event){
-
-				console.log("selectTypeChangeCallback ->event.target", event.target);
-				console.log("selectTypeChangeCallback ->event.target.nextSibling", event.target.nextSibling);
-				console.log("selectTypeChangeCallback ->event.target.previousSibling", event.target.previousSibling);
-
 				event.preventDefault();
 				var selectedSectionDefinitionId = event.target.value;
-
 				try {
 					if (selectedSectionDefinitionId.indexOf("PROPOSAL") >= 0) {
 						event.target.parentNode.nextSibling.style.display = "";

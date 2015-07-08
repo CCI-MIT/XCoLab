@@ -517,7 +517,7 @@
             $.getJSON(url, {get_param: 'value'}, function (data) {
                 if (data.success === false) {
 
-                    alert("Could not retrieve series data. Please contact the Administrator");
+                        alert("Could not retrieve series data. Please contact the Administrator");
                     setDetailViewSpinnerMode(false);
                     dismissDetailView();
                 } else {
