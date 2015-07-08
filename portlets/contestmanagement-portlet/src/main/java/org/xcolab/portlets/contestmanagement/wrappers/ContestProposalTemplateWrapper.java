@@ -386,8 +386,8 @@ public class ContestProposalTemplateWrapper {
                     planSectionDefinition.getHelpText().equalsIgnoreCase(sectionDefinitionBean.getHelpText()) &&
                     planSectionDefinition.getCharacterLimit() == sectionDefinitionBean.getCharacterLimit() &&
                     planSectionDefinition.getContestIntegrationRelevance() == sectionDefinitionBean.isContestIntegrationRelevance() &&
-                    planSectionDefinition.getFocusAreaId() == sectionDefinitionBean.getFocusAreaId());
-
+                    planSectionDefinition.getFocusAreaId() == sectionDefinitionBean.getFocusAreaId() &&
+                    planSectionDefinition.getTier() == sectionDefinitionBean.getLevel());
         } catch(Exception e){
         }
         return isSectionDifferentFromDefinition;
