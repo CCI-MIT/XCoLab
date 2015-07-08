@@ -124,7 +124,7 @@
 						</div>
 
 						<div class="clearfix"><!-- --></div>
-						<div id="ontology-select-container" style="display: none;">
+						<div id="ontology-select-container" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
 							<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
 							<div>
 								<strong>WHAT Ontology term:</strong><br/>
