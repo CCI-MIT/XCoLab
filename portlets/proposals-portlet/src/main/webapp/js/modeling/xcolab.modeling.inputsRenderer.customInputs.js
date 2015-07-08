@@ -442,7 +442,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	
 	CustomInputsRenderer.prototype.restoreWidgetState = function() {
 		
-		if (! 'container' in this ) return;
+		if (! ('container' in this )) return;
 		
 		var result = this.findScenarioResult();
 		self.values = result.values;
