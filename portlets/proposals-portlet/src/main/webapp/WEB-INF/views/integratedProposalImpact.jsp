@@ -179,7 +179,16 @@
                 </tr>
                 </thead>
                 <tr>
-                    <td class="blue-bg" style="text-align: left">Sector</td>
+                    <td class="blue-bg" style="text-align: left">Sector
+                        <a href="javascript:;" class="helpTrigger"><img
+                                src="/climatecolab-theme/images/icon-addprop-question.png" width="15"
+                                height="15"/></a><br/>
+                        <div class="addprophelp" style="color:white;">
+                            This table shows a summary of the emission reductions for all sectors and regions
+                            you submitted, in gigatons of carbon dioxide (CO2) equivalent (GtCO2e), for each
+                            decade listed.
+                        </div>
+                    </td>
                     <c:forEach var="impactIteration" items="${impactIterations}"><th class="blue-bg" style="text-align: center;">${impactIteration.year}</th></c:forEach>
                 </tr>
                 <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
@@ -348,12 +357,21 @@
 
         };
 
+        function registerHelpEventHandler() {
+            jQuery("#impact .helpTrigger").off("click");
+            jQuery("#impact .helpTrigger").click(function () {
+                var trigger = jQuery(this);
+                trigger.parent().find(".addprophelp").slideToggle("fast");
+            });
+        }
+
         if(jQuery($("#modelsOutputContainer").data('modeling')).length !== 0){
             jQuery($("#modelsOutputContainer").data('modeling')).on('scenarioFetched',scenarioFetchedCallback);
         }
 
         $().ready(function() {
             jQuery($("#modelsOutputContainer").data('modeling')).on('scenarioFetched',scenarioFetchedCallback);
+            registerHelpEventHandler();
         });
         /*
         var tableColors = [];

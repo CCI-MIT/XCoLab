@@ -62,9 +62,20 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	};
 	
 	DefaultHeaderRenderer.prototype.updateNameDescription = function(model) {
+		console.log("updateNameDescription");
 		console.log(this, this.container);
 		this.container.find('.model_name').text(model.modelName);
 		this.container.find('.model_description').text(model.modelDescription);
+
+		var isModelEMF = model.modelName.toLowerCase().indexOf("emf") != -1;
+		var isModelEnRoads = model.modelName.toLowerCase().indexOf("enroads") != -1;
+		var modelLink ="";
+		if (isModelEMF) {
+			modelLink = "/resources/-/wiki/Main/EMF27+model+runs";
+		} else if(isModelEnRoads){
+			modelLink = "/resources/-/wiki/Main/EnROADS+by+Climate+Interactive";
+		}
+		this.container.find('.model_name_description').attr("href", modelLink);
 		this.container.find(".model_description .brand").remove();
 		var brand = $("<div class='brand' onclick='location.href='http://www.climateinteractive.org''</div>");
 		brand.addClass(model.modelName);
