@@ -325,7 +325,7 @@ public class SectionDefinitionBean implements Serializable{
         termsToBeMatched.add(OntologyTermLocalServiceUtil.getOntologyTerm(getHowTermId()));
 
         OntologyTermToFocusAreaMapper focusAreaMapper = new OntologyTermToFocusAreaMapper(termsToBeMatched);
-        FocusArea focusArea = focusAreaMapper.getAssociatedFocusArea();
+        FocusArea focusArea = focusAreaMapper.getFocusAreaMatchingTermsExactly();
 
         if (Validator.isNull(focusArea)) {
             focusArea = createNewFocusAreaWithTerms(termsToBeMatched);

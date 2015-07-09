@@ -100,7 +100,7 @@
 
 						<div>
 							<strong>Section type:</strong><br/>
-							<form:select path="sections[${x.index}].type" data-form-name="type" id="type-select">
+							<form:select path="sections[${x.index}].type" data-form-name="type" class="type-select">
 								<form:option value="NONE" label="--- Select ---" />
 								<form:options items="${sectionTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
 							</form:select>
@@ -124,7 +124,7 @@
 						</div>
 
 						<div class="clearfix"><!-- --></div>
-						<div id="ontology-select-container" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+						<div class="ontology-select-container" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
 							<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
 							<div>
 								<strong>WHAT Ontology term:</strong><br/>
@@ -257,6 +257,8 @@
 			addSectionButtonElement.addEventListener("click", function() {
 				var numberOfSections = getNumberOfSections();
 				addNewSection(initialNumberOfSections, numberOfSections + 1);
+
+				bindSectionTypeSelectChange();
 			});
 		}
 
@@ -277,11 +279,12 @@
 			var eventHandler = function() {
 				console.log("call with " + $(this).val());
 				var sectionTypeId = $(this).val();
-				jQuery('#ontology-select-container').toggle(sectionTypeId !== "");
+				$(this).parents('.addpropbox').find('.ontology-select-container').toggle(sectionTypeId !== "");
 			}
 
-			jQuery('select#type-select').on('change', eventHandler);
-			eventHandler.call(jQuery('select#type-select')[0]);
+			jQuery('select.type-select').off('change');
+			jQuery('select.type-select').on('change', eventHandler);
+			eventHandler.call(jQuery('select.type-select')[0]);
 		}
 
 
