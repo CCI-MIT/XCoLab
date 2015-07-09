@@ -43,7 +43,7 @@ public class ProposalImpactScenarioCombinationWrapper {
         REGION_AVG_FACTOR = Collections.unmodifiableMap(avgFactor);
     }
 
-    private final static List<String> validationRegions = Arrays.asList("United States", "European Union", "China", "India", "Other developing", "Other developed");
+    private final static List<String> validationRegions = Arrays.asList("United States", "European Union", "China", "India", "Other developing countries", "Other developed countries");
     private final static Long ENROADS_MODEL_ID  = 23L;
     private final static Long ENROADS_REGION_INPUT_ID  = 805L;
 

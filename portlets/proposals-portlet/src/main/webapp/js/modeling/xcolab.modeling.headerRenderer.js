@@ -36,7 +36,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		var that = this;
 		this.container = container;
 		
-		container.append('<a class="model_name_description"><h2 class="model_name"></h2><p class="model_description"></p></a><div class="act_left">' +
+		container.append('<a class="model_name_description" target="_blank"><h2 class="model_name"></h2><p class="model_description"></p></a><div class="act_left">' +
 			'<div class="acthead-l">Actions</div>' + 
 			'</div> <!-- /act_left -->' +
 			'<div class="act_right">' + 
@@ -55,14 +55,13 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	
 	DefaultHeaderRenderer.prototype.renderView = function(container) {
 		this.container = container;
-		container.append("<a class='model_name_description'><h2 class='model_name'></h2><p class='model_description'></p></a><div class='act_left'><div class='acthead-l'>Actions</div></div>" +
+		container.append("<a class='model_name_description' target='_blank'><h2 class='model_name'></h2><p class='model_description'></p></a><div class='act_left'><div class='acthead-l'>Actions</div></div>" +
 			"<div class='act_right'><div class='acthead-r'>Impacts</div></div>" + 
 			"<div class='clearfix'></div>" + 
 			"<div class='actions_wrap'><div class='act_charts-top2'></div></div>");
 	};
 	
 	DefaultHeaderRenderer.prototype.updateNameDescription = function(model) {
-		console.log("updateNameDescription");
 		console.log(this, this.container);
 		this.container.find('.model_name').text(model.modelName);
 		this.container.find('.model_description').text(model.modelDescription);
