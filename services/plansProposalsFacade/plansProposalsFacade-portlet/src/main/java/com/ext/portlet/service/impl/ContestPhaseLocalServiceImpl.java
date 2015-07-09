@@ -355,100 +355,103 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 		
         serviceContext.setPortalURL(PortalUtil.getPortalURL(company.getVirtualHostname(), port, false));
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
-            if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
-                // we have a candidate for promotion, find next phase
-                try {
-                	_log.info("promoting phase " + phase.getContestPhasePK());
-                	Contest contest = contestLocalService.getContest(phase.getContestPK());
-                    ContestPhase nextPhase = getNextContestPhase(phase);
-                    for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
-                        //skip already promoted proposal
-                        if (hasProposalAlreadyBeenPromoted(p, phase)) {
-                            continue;
+            if(phase.getContestPK() > 0) {
+                if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
+                    // we have a candidate for promotion, find next phase
+                    try {
+                        _log.info("promoting phase " + phase.getContestPhasePK());
+                        Contest contest = contestLocalService.getContest(phase.getContestPK());
+                        ContestPhase nextPhase = getNextContestPhase(phase);
+                        for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+                            //skip already promoted proposal
+                            if (hasProposalAlreadyBeenPromoted(p, phase)) {
+                                continue;
+                            }
+
+                            if (!proposalIsVisible(p, phase)) {
+                                continue;
+                            }
+
+                            promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
                         }
 
-                        if(!proposalIsVisible(p, phase)) {
-                            continue;
+                        // update phase for which promotion was done (mark it as
+                        // "promotion done")
+                        phase.setContestPhaseAutopromote("PROMOTE_DONE");
+                        updateContestPhase(phase);
+
+                        // if transition is to voting phase
+                        if (getContestStatus(nextPhase).isCanVote()) {
+                            //contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
                         }
 
-                        promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
+                        // Add contest year suffix, if contest has been completed
+                        contestLocalService.addContestYearSuffixToContest(contest, true);
+
+                        _log.info("done promoting phase " + phase.getContestPhasePK());
+                    } catch (SystemException | PortalException e) {
+                        _log.error("Exception thrown when doing autopromotion for phase " + phase.getContestPhasePK(), e);
+                        continue;
                     }
-
-                    // update phase for which promotion was done (mark it as
-                    // "promotion done")
-                    phase.setContestPhaseAutopromote("PROMOTE_DONE");
-                    updateContestPhase(phase);
-
-                    // if transition is to voting phase
-                    if (getContestStatus(nextPhase).isCanVote()) {
-                    	//contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
-                    }
-
-                    // Add contest year suffix, if contest has been completed
-                    contestLocalService.addContestYearSuffixToContest(contest, true);
-
-                    _log.info("done promoting phase " + phase.getContestPhasePK());
-                } catch (SystemException | PortalException e) {
-                    _log.error("Exception thrown when doing autopromotion for phase " + phase.getContestPhasePK(), e);
-                    continue;
                 }
             }
         }
         //Judging-based promotion
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_JUDGED.getValue())) {
-            if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
-                _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
+            if(phase.getContestPK() > 0) {
+                if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
+                    _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
 
-                // Only do the promotion if all proposals have been successfully reviewed
-                if (allProposalsReviewed(phase)) {
-                	Contest contest = contestLocalService.getContest(phase.getContestPK());
-                    ContestPhase nextPhase = getNextContestPhase(phase);
-                    for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
-                    	try {
-                        	// check if proposal isn't already associated with requested phase
-                    		if (proposal2PhaseLocalService.getProposal2Phase(new Proposal2PhasePK(p.getProposalId(), nextPhase.getContestPhasePK())) != null) {
-                                _log.warn("Proposal is already associated with given contest phase");
+                    // Only do the promotion if all proposals have been successfully reviewed
+                    if (allProposalsReviewed(phase)) {
+                        Contest contest = contestLocalService.getContest(phase.getContestPK());
+                        ContestPhase nextPhase = getNextContestPhase(phase);
+                        for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+                            try {
+                                // check if proposal isn't already associated with requested phase
+                                if (proposal2PhaseLocalService.getProposal2Phase(new Proposal2PhasePK(p.getProposalId(), nextPhase.getContestPhasePK())) != null) {
+                                    _log.warn("Proposal is already associated with given contest phase");
+                                    continue;
+                                }
+                            } catch (NoSuchProposal2PhaseException e) {
+                                // no such proposal2phase, we can safely add association
+                            }
+                            //skip already promoted proposal
+                            if (hasProposalAlreadyBeenPromoted(p, phase)) {
+                                System.out.println("Proposal already promoted " + p.getProposalId());
                                 continue;
-                    		}
-                        }
-                    	catch (NoSuchProposal2PhaseException e) {
-                    		// no such proposal2phase, we can safely add association
-                    	}
-                        //skip already promoted proposal
-                        if (hasProposalAlreadyBeenPromoted(p, phase)) {
-                            System.out.println("Proposal already promoted "+p.getProposalId());
-                            continue;
+                            }
+
+                            // Decide about the promotion
+                            if (didJudgeDecideToPromote(p, phase)) {
+                                System.out.println("Promote proposal " + p.getProposalId());
+                                promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
+                            }
+
+                            // Enable this line to post promotion comment to Evaluation tab comment section
+                            // proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+
+                            try {
+                                proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p, phase, null);
+                            } catch (MailEngineException | AddressException e) {
+                                _log.error("Could not send proposal promotion colab messaging notification", e);
+                            }
                         }
 
-                        // Decide about the promotion
-                        if (didJudgeDecideToPromote(p, phase)) {
-                            System.out.println("Promote proposal "+p.getProposalId());
-                            promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
+                        // if transition is to voting phase
+                        if (getContestStatus(nextPhase).isCanVote()) {
+                            //contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
                         }
+                        phase.setContestPhaseAutopromote("PROMOTE_DONE");
+                        updateContestPhase(phase);
 
-                        // Enable this line to post promotion comment to Evaluation tab comment section
-                        // proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+                        // Add contest year suffix, if contest has been completed
+                        contestLocalService.addContestYearSuffixToContest(contest, true);
 
-                        try {
-                            proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
-                        } catch (MailEngineException | AddressException e) {
-                            _log.error("Could not send proposal promotion colab messaging notification", e);
-                        }
+                        _log.info("done promoting phase " + phase.getContestPhasePK());
+                    } else {
+                        _log.warn("Judge promoting failed for ContestPhase with ID " + phase.getContestPhasePK() + " - not all proposals have been reviewed");
                     }
-
-                    // if transition is to voting phase
-                    if (getContestStatus(nextPhase).isCanVote()) {
-                    	//contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
-                    }
-                    phase.setContestPhaseAutopromote("PROMOTE_DONE");
-                    updateContestPhase(phase);
-
-                    // Add contest year suffix, if contest has been completed
-                    contestLocalService.addContestYearSuffixToContest(contest, true);
-
-                    _log.info("done promoting phase " + phase.getContestPhasePK());
-                } else {
-                    _log.warn("Judge promoting failed for ContestPhase with ID " + phase.getContestPhasePK() + " - not all proposals have been reviewed");
                 }
             }
         }
