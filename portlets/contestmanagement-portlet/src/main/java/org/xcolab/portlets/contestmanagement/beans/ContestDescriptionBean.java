@@ -205,7 +205,7 @@ public class ContestDescriptionBean implements Serializable{
 
     public static void updateContestSchedule(Contest contest, Long contestScheduleId) throws Exception{
         Long oldScheduleTemplateId = contest.getContestScheduleId();
-        boolean noScheduleSelected = contestScheduleId.equals(0);
+        boolean noScheduleSelected = contestScheduleId.equals(0L);
 
         if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
             ContestWrapper contestWrapper = new ContestWrapper(contest);
