@@ -32,7 +32,12 @@ public enum MemberRole {
     } 
 
     public String getPrintName() {
-        return WordUtils.capitalizeFully((name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase()).replaceAll("_"," "));
+        String printName = WordUtils.capitalizeFully((name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase()).replaceAll("_"," "));
+        if (printName.equals("Contestmanager")){
+            return "Staff";
+        }
+        else
+            return printName;
     }
 
     public String getImageUrl() {
