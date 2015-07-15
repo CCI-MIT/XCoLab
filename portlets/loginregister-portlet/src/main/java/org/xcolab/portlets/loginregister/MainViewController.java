@@ -171,7 +171,7 @@ public class MainViewController {
 		String country = (String) portletSession.getAttribute(SSOKeys.SSO_COUNTRY,PortletSession.APPLICATION_SCOPE);
 		portletSession.removeAttribute(SSOKeys.SSO_COUNTRY,PortletSession.APPLICATION_SCOPE);
 
-        if ((StringUtils.isNotBlank(fbIdString) || StringUtils.isNotBlank(openId) )&& StringUtils.isNotBlank(eMail)){
+        if ((StringUtils.isNotBlank(fbIdString) || StringUtils.isNotBlank(openId) )){
             createUserBean.setFirstName(firstName);
             createUserBean.setLastName(lastName);
             createUserBean.setEmail(eMail);
@@ -205,9 +205,6 @@ public class MainViewController {
         if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
             model.addAttribute("redirect", HtmlUtil.escape(redirect));
         }
-
-        getSSOUserInfo(request.getPortletSession(), newAccountBean);
-        model.addAttribute("createUserBean", newAccountBean);
 
 		return "view";
 	}
@@ -436,7 +433,7 @@ public class MainViewController {
             response.sendRedirect(redirect);
         } catch (SystemException | PortalException e) {
             setCreateUserBeanSessionVariables(newAccountBean, portletSession);
-            response.setRenderParameter("error", "true");
+            response.sendRedirect("/web/guest/loginregister");
         }
     }
 
