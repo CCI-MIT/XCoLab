@@ -24,7 +24,7 @@
             <i style="float: right;">Transfer rating/comment for selected judge:</i>
         </c:if>
 
-        <h3><c:if test="proposalsPermissions.canJudgeActions">Judge </c:if>Rating</h3>
+        <h3><c:if test="${proposalsPermissions.canJudgeActions}">Judge </c:if>Rating</h3>
         <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
             <select id="judges-select">
                 <c:forEach var="judge" items="${proposal.selectedJudgeUsers}">

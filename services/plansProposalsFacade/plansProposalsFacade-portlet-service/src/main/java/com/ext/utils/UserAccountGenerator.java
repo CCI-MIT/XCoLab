@@ -4,14 +4,13 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.enums.ColabConstants;
 
 /**
  * @author pdeboer
  *         First created on 8/26/13 at 4:05 PM
  */
 public class UserAccountGenerator {
-    private static final long companyId = 10112L;
-
     public String generateUsername(String firstname, String lastname) throws SystemException {
         UserNameGenerator[] userNameGenerators = {
                 new FirstLetterFullSecond(firstname, lastname),
@@ -32,7 +31,7 @@ public class UserAccountGenerator {
 
     private boolean checkUsernameAvailable(String username) throws SystemException {
         try {
-            User u = UserLocalServiceUtil.getUserByScreenName(companyId, username);
+            User u = UserLocalServiceUtil.getUserByScreenName(ColabConstants.COLAB_COMPANY_ID, username);
             return false;
         } catch (PortalException e) {
             return true;

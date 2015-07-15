@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.permissions;
 
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.*;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
@@ -311,7 +312,37 @@ public class ProposalsPermissions {
     public boolean getCanCopyProposal() throws SystemException {
     	return !ContestLocalServiceUtil.findByActive(true).isEmpty();
     }
-    
+    public boolean getCanPromoteProposalToNextPhase() throws Exception {
+        if(contestPhase != null) {
+            return getCanPromoteProposalToNextPhase(contestPhase);
+        } else {
+            return false;
+        }
+    }
+
+    public boolean getCanPromoteProposalToNextPhase(ContestPhase contestPhase) throws Exception{
+        //getViewContestPhaseId
+        if(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()){
+            // Proposal is currently associated with a different contest and is active there
+            return false;
+        }
+
+        boolean onlyPromoteIfCurrentContestPhaseIsNotJudged = contestPhase.getFellowScreeningActive();
+        if(onlyPromoteIfCurrentContestPhaseIsNotJudged) {
+            return false;
+        }
+
+        Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
+        ContestPhase activePhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(latestProposalContest);
+        boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
+
+        if (onlyPromoteIfThisIsNotTheLatestContestPhaseInContest) {
+            return false;
+        }
+
+        return getCanAdminAll();
+    }
+
     public boolean getCanMoveProposalAndHideInCurrentContest() throws SystemException, PortalException {
         if(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()){
             // Proposal is currently associated with a different contest and is active there (i.e. has been moved before) (3)
@@ -321,6 +352,7 @@ public class ProposalsPermissions {
         if (getIsCreationAllowedByPhase()){
             return isOwner() || getCanAdminAll();
         }
+
         // Otherwise just the admin should be able to move between contests
     	return getCanAdminAll();
     }

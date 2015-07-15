@@ -16,7 +16,7 @@ public class ProposalRatingWrapper {
 	private ProposalRating proposalRating;
 	private ProposalRatingType ratingType;
 	private ProposalRatingValue ratingValue;
-	private Long roundFactor;
+	private Long roundFactor = 1L;
 
 	public ProposalRatingWrapper(ProposalRating proposalRating) {
 		this.proposalRating = proposalRating;
@@ -82,7 +82,10 @@ public class ProposalRatingWrapper {
 	public ProposalRatingValue getRatingValue() {
 		try {
 			if (ratingValue == null)
-				ratingValue = ProposalRatingValueLocalServiceUtil.fetchProposalRatingValue(this.proposalRating.getRatingValueId() / roundFactor);
+				if(roundFactor == null){
+					roundFactor = 1L;
+				}
+				ratingValue = ProposalRatingValueLocalServiceUtil.fetchProposalRatingValue(this.proposalRating.getRatingValueId()/roundFactor);
 			return ratingValue;
 		} catch (SystemException e) {
 			return null;
@@ -92,6 +95,9 @@ public class ProposalRatingWrapper {
 	public double getNotRoundedRatingValue() {
 		double ratingValueNotRounded = 0.;
 		try {
+			if(roundFactor == null){
+				roundFactor = 1L;
+			}
 			ratingValueNotRounded = (double) this.proposalRating.getRatingValueId() / (double) roundFactor;
 			ratingValueNotRounded = ratingValueNotRounded / getRatingTypeId();
 		} catch (Exception e){

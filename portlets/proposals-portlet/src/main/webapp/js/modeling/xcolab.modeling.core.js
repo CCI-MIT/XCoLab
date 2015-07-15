@@ -60,6 +60,8 @@ function ModelingWidget(selector, options) {
 	jQuery(this).on('modelFetched', function(event) {
 		that.modelId = event.model.modelId;
 	});
+
+	this.container.data('modeling', this);
 }
 
 ModelingWidget.prototype.getScenarioUrl = '/plansProposalsFacade-portlet/api/jsonws/modelrunner/get-scenario';

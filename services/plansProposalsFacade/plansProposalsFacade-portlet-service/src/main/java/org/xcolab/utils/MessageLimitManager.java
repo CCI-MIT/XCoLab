@@ -4,6 +4,7 @@ import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.Message;
 import com.ext.portlet.model.MessageRecipientStatus;
 import com.ext.portlet.service.MessageLocalServiceUtil;
+import org.xcolab.enums.ColabConstants;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -31,7 +32,6 @@ import java.util.Map;
  * @author janusz
  */
 public class MessageLimitManager {
-    private static final long companyId = 10112L;
     private static final String MESSAGES_LIMIT_COLUMN = "messages_limit";
 
     private static final String MESSAGE_ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
@@ -66,19 +66,19 @@ public class MessageLimitManager {
             // ensure that expando column has been created
             ExpandoColumn column = null;
             try {
-                column = ExpandoColumnLocalServiceUtil.getColumn(companyId, User.class.getName(),
+                column = ExpandoColumnLocalServiceUtil.getColumn(ColabConstants.COLAB_COMPANY_ID, User.class.getName(),
                         CommunityConstants.EXPANDO, MESSAGES_LIMIT_COLUMN);
             } catch (SystemException e) {
             }
             if (column == null) {
 
-                ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(companyId, User.class.getName(),
+                ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(ColabConstants.COLAB_COMPANY_ID, User.class.getName(),
                         CommunityConstants.EXPANDO);
                 ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(), MESSAGES_LIMIT_COLUMN,
                         ExpandoColumnConstants.INTEGER);
             }
             // get messagesLimit from expando table (if exists)
-            Integer messagesLimit = ExpandoValueLocalServiceUtil.getData(companyId, User.class.getName(),
+            Integer messagesLimit = ExpandoValueLocalServiceUtil.getData(ColabConstants.COLAB_COMPANY_ID, User.class.getName(),
                     CommunityConstants.EXPANDO, MESSAGES_LIMIT_COLUMN, user.getUserId(), -1);
 
             if (messagesLimit < 0) {
