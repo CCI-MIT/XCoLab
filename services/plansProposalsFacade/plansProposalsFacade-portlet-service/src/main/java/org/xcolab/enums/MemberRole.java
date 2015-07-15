@@ -45,7 +45,7 @@ public enum MemberRole {
             return MemberRole.FELLOW.name().toLowerCase();
         }
         else if (name() == MemberRole.CONTESTMANAGER.name()){
-            return MemberRole.EXPERT.name().toLowerCase();
+            return MemberRole.STAFF.name().toLowerCase();
         }
         else
             return name().toLowerCase();
