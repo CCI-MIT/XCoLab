@@ -18,6 +18,7 @@
 */
 .userslist.table .column.usersActivityCount {
 	width: 105px;
+    text-align: right;
 }
 
 .userslist.table .column.usersCategory {
