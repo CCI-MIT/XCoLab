@@ -46,9 +46,6 @@ public enum MemberCategory {
         if (imageUrl == MemberCategory.IMPACT_ASSESSMENT_FELLOW.name()){
             imageUrl = MemberCategory.FELLOW.name();
         }
-        else if (imageUrl == MemberCategory.CONTESTMANAGER.name()){
-            imageUrl = MemberCategory.EXPERT.name();
-        }
         return imageUrl.toLowerCase();
     }
     

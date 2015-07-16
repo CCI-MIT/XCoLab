@@ -265,12 +265,12 @@ public class ProposalsContextImpl implements ProposalsContext {
                     replacedContestPhase = activeContestPhasesForProposal.get(0);
                 }
 
-                Contest contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposalId);
-                ContestPhase activeContestPhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+                //Contest contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposalId);
+                //ContestPhase activeContestPhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
 
-                if (activeContestPhasesForProposal.contains(activeContestPhaseForContest)) {
-                    replacedContestPhase = activeContestPhaseForContest;
-                }
+                //if (activeContestPhasesForProposal.contains(activeContestPhaseForContest)) {
+                    //replacedContestPhase = activeContestPhaseForContest;
+                //}
             }
         } catch (Exception e){
             _log.warn("Couldn't find a valid contestPhaseId for Proposal: " + proposalId);
