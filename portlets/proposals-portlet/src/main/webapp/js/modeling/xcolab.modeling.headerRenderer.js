@@ -67,10 +67,10 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		this.container.find('.model_description').text(model.modelDescription);
 		this.container.find(".model_description .brand").remove();
         if (model.modelName == "EnROADS") {
-            var brand = $("<div class='brand' onclick='location.href='http://www.climateinteractive.org''</div>");
+            var brand = $("<div class='brand' onclick='location.href=\"http://www.climateinteractive.org\"'</div>");
         }
         else{
-            var brand = $("<div class='brand' onclick='location.href='https://emf.stanford.edu/''</div>");
+            var brand = $("<div class='brand' onclick='location.href=\"https://emf.stanford.edu\"'</div>");
         }
 		brand.addClass(model.modelName);
 		this.container.find(".model_description").append(brand);
