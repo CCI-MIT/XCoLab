@@ -355,6 +355,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 		
         serviceContext.setPortalURL(PortalUtil.getPortalURL(company.getVirtualHostname(), port, false));
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
+            if (isPhaseContestScheduleTemplatePhase(phase)) {
+                continue;
+            }
+
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 // we have a candidate for promotion, find next phase
                 try {
@@ -396,6 +400,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         }
         //Judging-based promotion
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_JUDGED.getValue())) {
+            if (isPhaseContestScheduleTemplatePhase(phase)) {
+                continue;
+            }
+
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
 
@@ -479,6 +487,11 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
         addContestPhase(newPhase);
         return newPhase;
+    }
+
+    private boolean isPhaseContestScheduleTemplatePhase(ContestPhase phase) {
+        // Usually we do not have phases with a ContestId key = 0; used as template contest phases for our ContestSchedules
+        return phase.getContestPK() == 0;
     }
 
     private boolean proposalIsVisible(Proposal p, ContestPhase phase) {
