@@ -464,8 +464,11 @@ public class ContestWrapper {
     }
 
     public boolean getShowSubContests(){
-        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS;
+        // Removed due to COLAB-518; keep the functionality in the code base for the case that we need it again.
+//        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS;
+        return false;
     }
+
     public boolean getShowParentContest(){
         return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS - 1;
     }
