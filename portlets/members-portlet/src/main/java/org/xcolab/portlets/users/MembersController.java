@@ -143,7 +143,7 @@ public class MembersController {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         }
                         else {
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         }
                         break;
 
@@ -152,7 +152,7 @@ public class MembersController {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         }
                         else {
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         }
                         break;
 
@@ -170,7 +170,7 @@ public class MembersController {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         }
                         else {
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByMemberSinceDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         }
 
                         break;

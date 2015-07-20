@@ -40,6 +40,7 @@ import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.utils.Helper;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
+import com.liferay.portal.UserPortraitSizeException;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -298,6 +299,10 @@ public class UserProfileController {
         } catch(Exception e){
             _log.warn("Updating Expando settings or portrait image failed for userId: " + currentUserProfile.getUser().getUserId());
             _log.warn(e);
+            if (e instanceof UserPortraitSizeException){
+                model.addAttribute("imageSizeError", true);
+
+            }
             validationError = true;
         }
 
@@ -388,8 +393,11 @@ public class UserProfileController {
         String existingCountry = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID,
                 User.class.getName(), CommunityConstants.EXPANDO,
                 CommunityConstants.COUNTRY, currentUserProfile.getUser().getUserId(), StringPool.BLANK);
-        if(!existingCountry.isEmpty())
-            existingCountry = Helper.getCodeForCounty(existingCountry);
+        if(!existingCountry.isEmpty()){
+            if (Helper.getCodeForCounty(existingCountry)!= null) {
+                existingCountry = Helper.getCodeForCounty(existingCountry);
+            }
+        }
 
         if (!existingCountry.equals(updatedUserBean.getCountry())) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),

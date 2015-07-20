@@ -26,7 +26,6 @@ public enum ContestStatus {
     COMPLETED("Completed",false, false,false);
 
 
-
     private String myName;
 
     public boolean isCanEdit() {
