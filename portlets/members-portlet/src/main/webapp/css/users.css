@@ -28,3 +28,7 @@
 .userslist.table .column.usersSeniority {
 	width: 105px;
 }
+
+.activity {
+    text-align: right;
+}
