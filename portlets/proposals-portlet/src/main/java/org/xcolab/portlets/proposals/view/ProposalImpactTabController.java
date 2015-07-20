@@ -65,6 +65,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             case BASIC:
                 return showImpactTabBasicProposal(request, model);
             case REGION_SECTOR:
+                return "proposalImpactError";
             case REGION_AGGREGATE:
             case GLOBAL:
                 return showImpactTabIntegratedProposal(request, model, edit);
@@ -76,11 +77,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     private String showImpactTabIntegratedProposal(PortletRequest request, Model model, Boolean edit)
             throws Exception {
-
-        if (!hasImpactTabPermission(request)) {
-            return "proposalImpactError";
-        }
-
+        
         Proposal proposal = proposalsContext.getProposal(request);
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         Contest contest = proposalsContext.getContest(request);

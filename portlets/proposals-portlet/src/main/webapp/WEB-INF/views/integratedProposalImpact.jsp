@@ -148,7 +148,7 @@
         <br />
         <br />
 
-        <c:if test="${not isGlobalContest}">
+        <c:if test="${not isGlobalContest and not isRegionalContest}">
         <div id="impact" class="cmsDetailsBox">
             <h2 class="model_name">Regional
                 <c:if test="${not empty isRegionalSectorContest and isRegionalSectorContest}">

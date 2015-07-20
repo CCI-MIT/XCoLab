@@ -168,6 +168,7 @@ interface ProposalTabCanAccessAlgorithm {
                         OntologyTermLocalServiceUtil.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId, ADAPTATION_ONTOLOGY_TERM_ID);
 
                 if ((contest != null && contest.getContestTier() != ContestTier.NONE.getTierType() &&
+                        contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType() &&
                         !isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
                     return true;
                 }
