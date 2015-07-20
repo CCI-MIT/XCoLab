@@ -1,6 +1,7 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
@@ -359,6 +360,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 continue;
             }
 
+            if (isPhaseContestHasNoValidContest(phase)) {
+                continue;
+            }
+
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 // we have a candidate for promotion, find next phase
                 try {
@@ -403,6 +408,11 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             if (isPhaseContestScheduleTemplatePhase(phase)) {
                 continue;
             }
+
+            if (isPhaseContestHasNoValidContest(phase)) {
+                continue;
+            }
+
 
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
@@ -492,6 +502,16 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     private boolean isPhaseContestScheduleTemplatePhase(ContestPhase phase) {
         // Usually we do not have phases with a ContestId key = 0; used as template contest phases for our ContestSchedules
         return phase.getContestPK() == 0;
+    }
+
+    private boolean isPhaseContestHasNoValidContest(ContestPhase phase) throws PortalException, SystemException{
+        try{
+            ContestPhaseLocalServiceUtil.getContest(phase);
+        } catch(NoSuchContestException e){
+            _log.warn("promoting phase failed due to invalid contest ", e);
+            return false;
+        }
+        return true;
     }
 
     private boolean proposalIsVisible(Proposal p, ContestPhase phase) {
