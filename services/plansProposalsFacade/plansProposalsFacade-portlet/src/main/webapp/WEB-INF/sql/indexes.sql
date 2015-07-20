@@ -169,6 +169,7 @@ create index IX_C8499DDD on xcolab_PlanSectionPlanMap (sectionId);
 create index IX_79B9BCB6 on xcolab_PlanTeamHistory (planId);
 create index IX_84A1FEF0 on xcolab_PlanTeamHistory (planId, userId);
 
+create index IX_CAECF835 on xcolab_PlanTemplateSection (planSectionId);
 create index IX_32F8E764 on xcolab_PlanTemplateSection (planTemplateId);
 
 create index IX_EC7AD748 on xcolab_PlanType (isDefault);

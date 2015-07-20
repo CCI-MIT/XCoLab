@@ -5867,6 +5867,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setContestCreationStatus(contest.getContestCreationStatus());
         contestImpl.setDefaultModelId(contest.getDefaultModelId());
         contestImpl.setOtherModels(contest.getOtherModels());
+        contestImpl.setDefaultModelSettings(contest.getDefaultModelSettings());
         contestImpl.setPoints(contest.getPoints());
         contestImpl.setDefaultParentPointType(contest.getDefaultParentPointType());
         contestImpl.setPointDistributionStrategy(contest.getPointDistributionStrategy());

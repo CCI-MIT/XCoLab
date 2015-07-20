@@ -9,6 +9,20 @@
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
 
+	<portlet:actionURL var="changeElementURL">
+		<portlet:param name="tab" value="${param.tab}" />
+		<portlet:param name="manager" value="${param.manager}" />
+		<portlet:param name="elementId" value="${contestProposalTemplateWrapper.planTemplate.id}" />
+	</portlet:actionURL>
+
+	<portlet:actionURL var="createContestScheduleURL">
+		<portlet:param name="action_forwardToPage" value="schedulesTab" />
+		<portlet:param name="action_errorForwardToPage" value="schedulesTab" />
+		<portlet:param name="tab" value="SCHEDULES" />
+		<portlet:param name="manager" value="true" />
+		<portlet:param name="action" value="createContestSchedule" />
+	</portlet:actionURL>
+
 	<portlet:actionURL var="updateContestScheduleURL">
 		<portlet:param name="action_forwardToPage" value="schedulesTab" />
 		<portlet:param name="action_errorForwardToPage" value="schedulesTab" />
@@ -17,12 +31,6 @@
 		<portlet:param name="action" value="updateContestSchedule" />
 	</portlet:actionURL>
 
-	<portlet:actionURL var="changeElementURL">
-		<portlet:param name="tab" value="${param.tab}" />
-		<portlet:param name="manager" value="${param.manager}" />
-		<portlet:param name="elementId" value="${contestProposalTemplateWrapper.planTemplate.id}" />
-	</portlet:actionURL>
-
 	<portlet:actionURL var="deleteContestScheduleURL">
 		<portlet:param name="action_forwardToPage" value="schedulesTab" />
 		<portlet:param name="action_errorForwardToPage" value="schedulesTab" />
@@ -32,30 +40,6 @@
 		<portlet:param name="action" value="deleteContestSchedule" />
 	</portlet:actionURL>
 
-	<portlet:actionURL var="createContestScheduleURL">
-		<portlet:param name="action_forwardToPage" value="schedulesTab" />
-		<portlet:param name="action_errorForwardToPage" value="schedulesTab" />
-		<portlet:param name="tab" value="SCHEDULES" />
-		<portlet:param name="manager" value="true" />
-		<portlet:param name="action" value="createContestSchedule" />
-	</portlet:actionURL>
-
-	<portlet:actionURL var="deleteContestScheduleURL">
-		<portlet:param name="action_forwardToPage" value="schedulesTab" />
-		<portlet:param name="action_errorForwardToPage" value="schedulesTab" />
-		<portlet:param name="tab" value="SCHEDULES" />
-		<portlet:param name="scheduleId" value="${contestScheduleWrapper.scheduleId}" />
-		<portlet:param name="manager" value="true" />
-		<portlet:param name="action" value="deleteContestSchedule" />
-	</portlet:actionURL>
-
-	<portlet:actionURL var="createContestScheduleURL">
-		<portlet:param name="action_forwardToPage" value="schedulesTab" />
-		<portlet:param name="action_errorForwardToPage" value="schedulesTab" />
-		<portlet:param name="tab" value="SCHEDULES" />
-		<portlet:param name="manager" value="true" />
-		<portlet:param name="action" value="createContestSchedule" />
-	</portlet:actionURL>
 
 	<form action="${deleteContestScheduleURL}" id="deleteScheduleForm" method="post" style="visibility: hidden;" >
 		<!-- -->

@@ -36,7 +36,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		var that = this;
 		this.container = container;
 		
-		container.append('<a class="model_name_description"><h2 class="model_name"></h2><p class="model_description"></p></a><div class="act_left">' +
+		container.append('<a class="model_name_description" target="_blank"><h2 class="model_name"></h2><p class="model_description"></p></a><div class="act_left">' +
 			'<div class="acthead-l">Actions</div>' + 
 			'</div> <!-- /act_left -->' +
 			'<div class="act_right">' + 
@@ -55,7 +55,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	
 	DefaultHeaderRenderer.prototype.renderView = function(container) {
 		this.container = container;
-		container.append("<a class='model_name_description'><h2 class='model_name'></h2><p class='model_description'></p></a><div class='act_left'><div class='acthead-l'>Actions</div></div>" +
+		container.append("<a class='model_name_description' target='_blank'><h2 class='model_name'></h2><p class='model_description'></p></a><div class='act_left'><div class='acthead-l'>Actions</div></div>" +
 			"<div class='act_right'><div class='acthead-r'>Impacts</div></div>" + 
 			"<div class='clearfix'></div>" + 
 			"<div class='actions_wrap'><div class='act_charts-top2'></div></div>");
@@ -65,6 +65,16 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		console.log(this, this.container);
 		this.container.find('.model_name').text(model.modelName);
 		this.container.find('.model_description').text(model.modelDescription);
+
+		var isModelEMF = model.modelName.toLowerCase().indexOf("emf") != -1;
+		var isModelEnRoads = model.modelName.toLowerCase().indexOf("enroads") != -1;
+		var modelLink ="";
+		if (isModelEMF) {
+			modelLink = "/resources/-/wiki/Main/EMF27+model+runs";
+		} else if(isModelEnRoads){
+			modelLink = "/resources/-/wiki/Main/EnROADS+by+Climate+Interactive";
+		}
+		this.container.find('.model_name_description').attr("href", modelLink);
 		this.container.find(".model_description .brand").remove();
         if (model.modelName == "EnROADS") {
             var brand = $("<div class='brand' onclick='location.href=\"http://www.climateinteractive.org\"'</div>");

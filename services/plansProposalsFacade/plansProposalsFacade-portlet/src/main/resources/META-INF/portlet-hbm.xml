@@ -234,6 +234,7 @@
 		<property name="contestCreationStatus" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="defaultModelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="otherModels" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="defaultModelSettings" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="points" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="defaultParentPointType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="pointDistributionStrategy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -898,6 +899,7 @@
 		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="tier" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="locked" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="contestIntegrationRelevance" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.PlanSectionPlanMapImpl" table="xcolab_PlanSectionPlanMap">
 		<cache usage="read-write" />

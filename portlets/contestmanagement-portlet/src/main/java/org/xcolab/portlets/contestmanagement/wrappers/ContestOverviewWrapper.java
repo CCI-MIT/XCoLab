@@ -4,6 +4,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
+import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
@@ -28,6 +29,7 @@ public class ContestOverviewWrapper {
     private List<Boolean> subscribedToContest;
     private MassMessageBean massMessageBean;
     private ContestFlagTextToolTipBean contestFlagTextToolTipBean;
+    private ContestModelSettingsBean contestModelSettingsBean;
     private Long userId;
 
 
@@ -56,6 +58,7 @@ public class ContestOverviewWrapper {
         selectedContest = new ArrayList<>();
         subscribedToContest = new ArrayList<>();
         contestFlagTextToolTipBean = new ContestFlagTextToolTipBean();
+        contestModelSettingsBean = new ContestModelSettingsBean();
         massMessageBean = new MassMessageBean();
     }
 
@@ -107,6 +110,14 @@ public class ContestOverviewWrapper {
         this.massMessageBean = massMessageBean;
     }
 
+    public ContestModelSettingsBean getContestModelSettingsBean() {
+        return contestModelSettingsBean;
+    }
+
+    public void setContestModelSettingsBean(ContestModelSettingsBean contestModelSettingsBean) {
+        this.contestModelSettingsBean = contestModelSettingsBean;
+    }
+
     public ContestFlagTextToolTipBean getContestFlagTextToolTipBean() {
         return contestFlagTextToolTipBean;
     }
@@ -125,6 +136,9 @@ public class ContestOverviewWrapper {
 
     public List<LabelValue> getFlagOptions() {
         return ContestFlagTextToolTipBean.getFlagOptions();
+    }
+    public List<LabelValue> getModelIds() {
+        return ContestModelSettingsBean.getAllModelIds();
     }
 
     public void persistOrder() throws Exception{
@@ -161,6 +175,8 @@ public class ContestOverviewWrapper {
                     (selectedMassAction == ContestMassActions.MESSAGE.ordinal());
             Boolean isSetFlagTextToolTipAction =
                     (selectedMassAction == ContestMassActions.FLAG.ordinal());
+            Boolean isSetModelSettingsAction =
+                    (selectedMassAction == ContestMassActions.MODEL_SETTINGS.ordinal());
             Boolean isMethodFromContestWrapper =
                     (massActionClass == ContestWrapper.class);
 
@@ -172,6 +188,8 @@ public class ContestOverviewWrapper {
                 invokeSetFlagTextToolTipMethod(massActionMethod, request);
             } else if (isMethodFromContestWrapper) {
                 invokeContestWrapperMethod(massActionMethod, request);
+            } else if (isSetModelSettingsAction) {
+                invokeSetModelSettingsMethod(massActionMethod, request);
             } else{
                 Boolean executeSetAction = (selectedMassAction > 0);
                 massActionMethod.invoke(null, selectedContestIds, executeSetAction, request);
@@ -189,6 +207,10 @@ public class ContestOverviewWrapper {
 
     private void invokeSetFlagTextToolTipMethod(Method massActionMethod, PortletRequest request) throws Exception{
         massActionMethod.invoke(null, selectedContestIds, contestFlagTextToolTipBean, request);
+    }
+
+    void invokeSetModelSettingsMethod(Method massActionMethod, PortletRequest request) throws Exception{
+        massActionMethod.invoke(null, selectedContestIds, contestModelSettingsBean, request);
     }
 
     private void invokeContestWrapperMethod(Method massActionMethod, PortletRequest request) throws Exception{

@@ -25,14 +25,6 @@
 		<portlet:param name="elementId" value="${contestProposalTemplateWrapper.planTemplateId}" />
 	</portlet:actionURL>
 
-	<portlet:actionURL var="updateContestProposalTemplateURL">
-		<portlet:param name="action_forwardToPage" value="proposalTemplateTab" />
-		<portlet:param name="action_errorForwardToPage" value="proposalTemplateTab" />
-		<portlet:param name="tab" value="PROPOSALTEMPLATE" />
-		<portlet:param name="contestId" value="${contestWrapper.contestPK }" />
-		<portlet:param name="action" value="updateContestProposalTemplate" />
-	</portlet:actionURL>
-
 	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 
 	<c:if test="${param.manager}">
@@ -106,35 +98,85 @@
 							<div class="deleteIcon"><!-- --></div>
 						</c:if>
 
-						<label>
-							<strong>Section type:</strong>
-							<form:select path="sections[${x.index}].type" data-form-name="type">
+						<div>
+							<strong>Section type:</strong><br/>
+							<form:select path="sections[${x.index}].type" data-form-name="type" class="type-select">
 								<form:option value="NONE" label="--- Select ---" />
 								<form:options items="${sectionTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
 							</form:select>
+						</div>
 
-							<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
-								<strong>Level:</strong>
-								<form:select path="sections[${x.index}].level" data-form-name="level">
-									<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
+						<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+							<div>
+							<strong>Level:</strong><br/>
+							<form:select path="sections[${x.index}].level" data-form-name="level">
+								<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
+							</form:select>
+							</div>
+
+							<div>
+								<strong>Is this proposal reference field used for contest integration?</strong><br/>
+								<form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
+											   id="sections${x.index}.contestIntegrationRelevance"
+											   data-form-name="contestIntegrationRelevance">
+								</form:checkbox>
+							</div>
+						</div>
+
+						<div class="clearfix"><!-- --></div>
+						<div class="ontology-select-container" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+							<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
+							<div>
+								<strong>WHAT Ontology term:</strong><br/>
+								<form:select path="sections[${x.index}].whatTermId" data-form-name="whatTermId">
+									<form:option value="0" label="--- Select ---" />
+									<form:options items="${whatTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
-							<strong>Title:</strong><form:input path="sections[${x.index}].title" data-form-name="title"/>
-							<br />
-							<span class="floatLeft"><strong>Character limit:</strong></span>
-							<form:input path="sections[${x.index}].characterLimit" data-form-name="characterLimit"/>
-						</label>
+							<div>
+								<strong>WHERE Ontology term:</strong><br/>
+								<form:select path="sections[${x.index}].whereTermId" data-form-name="whereTermId">
+									<form:option value="0" label="--- Select ---" />
+									<form:options items="${whereTerms}" itemValue="value" itemLabel="lable"/>
+								</form:select>
+							</div>
+							<div>
+								<strong>WHO Ontology term:</strong><br/>
+								<form:select path="sections[${x.index}].whoTermId" data-form-name="whoTermId">
+									<form:option value="0" label="--- Select ---" />
+									<form:options items="${whoTerms}" itemValue="value" itemLabel="lable"/>
+								</form:select>
+							</div>
+							<div>
+								<strong>HOW Ontology term:</strong><br/>
+								<form:select path="sections[${x.index}].howTermId" data-form-name="howTermId">
+									<form:option value="0" label="--- Select ---" />
+									<form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
+								</form:select>
+							</div>
+						</div>
+						<div class="clearfix"><!-- --></div>
+						<div>
+							<div>
+								<strong>Title:</strong><br/><form:input path="sections[${x.index}].title" data-form-name="title"/>
+							</div>
+							<div class="clearfix"><!-- --></div>
+							<div>
+								<span class="floatLeft"><strong>Character limit:</strong></span><br/>
+								<form:input path="sections[${x.index}].characterLimit" data-form-name="characterLimit"/>
+							</div>
+						</div>
 
 						<div class="clearfix"><!--  --></div>
-						<strong>Help text:</strong>
+						<strong>Help text:</strong><br/>
 						<div class="addpropInputContainer">
 							<form:textarea path="sections[${x.index}].helpText"  data-form-name="helpText"  />   <!-- cssClass="ckeditor_placeholder" -->
 							<div class="reg_errors">
 								<form:errors cssClass="alert alert-error" path="sections[${x.index}].helpText" />
 							</div>
 						</div>
-
-						<strong>Default text:</strong>
+						<div class="clearfix"><!--  --></div>
+						<strong>Default text:</strong><br/>
 						<div class="addpropInputContainer">
 							<form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText"  />   <!-- cssClass="ckeditor_placeholder" -->
 							<div class="reg_errors">
@@ -199,6 +241,7 @@
 			bindAddSectionClick();
 			bindMassActionSelectChange();
 			bindContestScheduleSelectChange();
+			bindSectionTypeSelectChange();
 		});
 
 
@@ -209,12 +252,13 @@
 		}
 
 		function bindAddSectionClick(){
-			var initialNumberOfSections = getNumberOfSections();
+			var initialNumberOfSections = getNumberOfSections()-1;
 			var addSectionButtonElement = document.getElementById("addSectionButton");
-
-			addSectionButtonElement.addEventListener("click", function(event) {
+			addSectionButtonElement.addEventListener("click", function() {
 				var numberOfSections = getNumberOfSections();
 				addNewSection(initialNumberOfSections, numberOfSections + 1);
+
+				bindSectionTypeSelectChange();
 			});
 		}
 
@@ -229,6 +273,18 @@
 					}, false);
 				}
 			});
+		}
+
+		function bindSectionTypeSelectChange() {
+			var eventHandler = function() {
+				console.log("call with " + $(this).val());
+				var sectionTypeId = $(this).val();
+				$(this).parents('.addpropbox').find('.ontology-select-container').toggle(sectionTypeId !== "");
+			}
+
+			jQuery('select.type-select').off('change');
+			jQuery('select.type-select').on('change', eventHandler);
+			eventHandler.call(jQuery('select.type-select')[0]);
 		}
 
 
@@ -396,11 +452,14 @@
 		function selectTypeChangeCallback(event){
 				event.preventDefault();
 				var selectedSectionDefinitionId = event.target.value;
-
-				if(selectedSectionDefinitionId.indexOf("PROPOSAL") >= 0 ){
-					event.target.nextSibling.style.display = "";
-				} else {
-					event.target.nextSibling.style.display = "none";
+				try {
+					if (selectedSectionDefinitionId.indexOf("PROPOSAL") >= 0) {
+						event.target.parentNode.nextSibling.style.display = "";
+					} else {
+						event.target.parentNode.nextSibling.style.display = "none";
+					}
+				} catch(exception){
+					console.error(exception);
 				}
 				/*
 				getSectionDefinitionFromServer(selectedSectionDefinitionId).done(function(jsondata){

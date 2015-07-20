@@ -53,15 +53,20 @@ function ModelingWidget(selector, options) {
 
 	jQuery(this).on('scenarioFetched', function(event) {
 		that.modelId = event.scenario.modelId;
+		that.scenario = event.scenario;
+		that.model = event.scenario;
 	});
 
     jQuery(this).on('scenarioFetchedWithErrors', ModelingWidget.prototype.showStackTrace);
 
 	jQuery(this).on('modelFetched', function(event) {
 		that.modelId = event.model.modelId;
+		that.model = event.model;
 	});
 
 	this.container.data('modeling', this);
+	this.options = options;
+	this.options.defaultValues = this.options.defaultValues || {};
 }
 
 ModelingWidget.prototype.getScenarioUrl = '/plansProposalsFacade-portlet/api/jsonws/modelrunner/get-scenario';
@@ -244,16 +249,44 @@ ModelingWidget.prototype.loadScenario = function(scenarioId) {
 ModelingWidget.prototype.runTheModel = function() {
 	var modelingWidget = this;
 
+	var defaultValues = modelingWidget.options.defaultValues || {};
 	var values = {};
+	
+	function setDefaultIfAvailable(idx, input) {
+		if (input.inputs) {
+			// this is a group of inputs
+			$(input.inputs).each(setDefaultIfAvailable);
+		}
+		else {
+			var inputName = input.name;
+			var inputId = input.metaData.id;
+			var val = defaultValues[inputId] || defaultValues[inputName];
+			if (val) {
+				values[inputId] = val;
+			}
+		}
+		
+	}
+
+	$(modelingWidget.model.inputs).each(setDefaultIfAvailable);
+	
 	this.container.find(".valueBinding").each(function() {
-		values[jQuery(this).attr('data-id')] = jQuery(this).val();
+		var label = jQuery(this).parent().parent().find("td.label").text();
+		var id = jQuery(this).attr('data-id');
+		var val = jQuery(this).val();
+
+		if ((val == '' || val == 'NaN') && (defaultValues[id] || defaultValues[label])) {
+			val = modelingWidget.options.defaultValues[id] || modelingWidget.options.defaultValues[label];
+		}
+		values[id] = val;
 	});
+
 
 	jQuery(modelingWidget).trigger("fetchingScenario");
 	jQuery(modelingWidget).trigger("runningModel");
 
 	
-	console.debug(modelingWidget.runModelUrl, values, modelingWidget.modelId);
+	console.debug(modelingWidget.runModelUrl, values, modelingWidget.modelId, modelingWidget);
 	jQuery.ajax({
 		url: modelingWidget.runModelUrl, 
 		data: {modelId: modelingWidget.modelId, inputs: JSON.stringify(values)}, 

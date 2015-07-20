@@ -55,6 +55,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public String contestCreationStatus;
     public long defaultModelId;
     public String otherModels;
+    public String defaultModelSettings;
     public double points;
     public long defaultParentPointType;
     public String pointDistributionStrategy;
@@ -65,7 +66,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(83);
+        StringBundler sb = new StringBundler(85);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -135,6 +136,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(defaultModelId);
         sb.append(", otherModels=");
         sb.append(otherModels);
+        sb.append(", defaultModelSettings=");
+        sb.append(defaultModelSettings);
         sb.append(", points=");
         sb.append(points);
         sb.append(", defaultParentPointType=");
@@ -274,6 +277,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             contestImpl.setOtherModels(otherModels);
         }
 
+        if (defaultModelSettings == null) {
+            contestImpl.setDefaultModelSettings(StringPool.BLANK);
+        } else {
+            contestImpl.setDefaultModelSettings(defaultModelSettings);
+        }
+
         contestImpl.setPoints(points);
         contestImpl.setDefaultParentPointType(defaultParentPointType);
 
@@ -334,6 +343,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestCreationStatus = objectInput.readUTF();
         defaultModelId = objectInput.readLong();
         otherModels = objectInput.readUTF();
+        defaultModelSettings = objectInput.readUTF();
         points = objectInput.readDouble();
         defaultParentPointType = objectInput.readLong();
         pointDistributionStrategy = objectInput.readUTF();
@@ -449,6 +459,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(otherModels);
+        }
+
+        if (defaultModelSettings == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(defaultModelSettings);
         }
 
         objectOutput.writeDouble(points);

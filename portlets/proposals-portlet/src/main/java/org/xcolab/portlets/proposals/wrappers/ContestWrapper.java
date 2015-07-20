@@ -95,6 +95,14 @@ public class ContestWrapper {
         contest.setContestModelDescription(ContestModelDescription);
     }
 
+    public String getDefaultModelSettings(){
+        return contest.getDefaultModelSettings();
+    }
+
+    public void setDefaultModelSettings(String defaultModelSettings){
+        contest.setDefaultModelSettings(defaultModelSettings);
+    }
+
     public String getEmailTemplateUrl() {
         if (contest.getEmailTemplateUrl().isEmpty()) {
             return EMAIL_TEMPLATE_URL;
@@ -464,8 +472,11 @@ public class ContestWrapper {
     }
 
     public boolean getShowSubContests(){
-        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS;
+        // Removed due to COLAB-518; keep the functionality in the code base for the case that we need it again.
+//        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS;
+        return false;
     }
+
     public boolean getShowParentContest(){
         return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS - 1;
     }

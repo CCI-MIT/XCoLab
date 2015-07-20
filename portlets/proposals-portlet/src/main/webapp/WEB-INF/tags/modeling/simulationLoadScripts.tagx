@@ -28,6 +28,7 @@
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.inputRenderer.individualSelect.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.inputRenderer.individualSlider.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.inputRenderer.individualText.js"><!-- --></script>
+	<script src="/proposals-portlet/js/modeling/xcolab.modeling.inputRenderer.individualHidden.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.headerRenderer.js"><!-- --></script>
 		
 		
