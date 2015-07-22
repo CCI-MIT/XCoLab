@@ -52,6 +52,14 @@
 		</plugins>
 	</build>
 	<dependencies>
+
+		<dependency>
+			<groupId>edu.mit.cci.roma</groupId>
+			<artifactId>client</artifactId>
+			<version>1.4-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

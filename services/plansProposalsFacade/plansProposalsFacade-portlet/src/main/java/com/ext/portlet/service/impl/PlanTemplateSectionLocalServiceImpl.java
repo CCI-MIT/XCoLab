@@ -7,6 +7,7 @@ import com.ext.portlet.model.PlanTemplateSection;
 import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
 import com.ext.portlet.service.base.PlanTemplateSectionLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.PlanTemplateSectionPK;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
@@ -35,18 +36,13 @@ public class PlanTemplateSectionLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil} to access the plan template section local service.
      */
-    
+
     public List<PlanTemplateSection> findByPlanTemplateId(Long planTemplateId) throws SystemException {
         return planTemplateSectionPersistence.findByPlanTemplateId(planTemplateId);
     }
 
     public List<PlanTemplateSection> findByPlanSectionDefinitionId(Long planSectionDefinitionId) throws Exception{
-
-        DynamicQuery queryByPlanSectionDefinition =
-                DynamicQueryFactoryUtil.forClass(PlanTemplateSection.class, PortletClassLoaderUtil.getClassLoader())
-                        .add(PropertyFactoryUtil.forName("planSectionId").eq(planSectionDefinitionId));
-
-        return planTemplateSectionPersistence.findWithDynamicQuery(queryByPlanSectionDefinition);
+        return planTemplateSectionPersistence.findByPlanSectionId(planSectionDefinitionId);
     }
 
     public PlanTemplateSection addPlanTemplateSection(Long planTemplateId, Long sectionId, int weight) throws SystemException {

@@ -1545,6 +1545,18 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return String.format(link, contest.getContestPK(), contestPhase.getContestPhasePK(), proposal.getProposalId());
     }
 
+
+    /**
+     * Returns list of proposals referenced by given proposal that are relevant for the ingtegration contests
+     * @param proposalId                        The proposal for which subproposals should be returned
+     * @return collection of referenced proposals
+     */
+    public List<Proposal> getContestIntegrationRelevantSubproposals(long proposalId) throws SystemException, PortalException {
+        boolean onlyWithContestIntegrationRelevance = true;
+        boolean includeProposalsInSameContest = false;
+        return getSubproposals(proposalId, includeProposalsInSameContest, onlyWithContestIntegrationRelevance);
+    }
+
     /**
      * Returns list of proposals referenced by given proposal
      * @param proposalId                        The proposal for which subproposals should be returned
@@ -1553,8 +1565,21 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @return collection of referenced proposals
      */
     public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest) throws SystemException, PortalException {
-        Set<Long> detectedIds = new HashSet<Long>();
+        boolean onlyWithContestIntegrationRelevance = false;
+        return getSubproposals(proposalId, includeProposalsInSameContest, onlyWithContestIntegrationRelevance);
+    }
 
+    /**
+     * Returns list of proposals referenced by given proposal
+     * @param proposalId                        The proposal for which subproposals should be returned
+     * @param includeProposalsInSameContest     Specifies whether linked proposals in the same contest as the passed proposal
+     *                                          should be included in the result or not
+     * @param onlyWithContestIntegrationRelevance Specifies whether only proposal with relevance for integration should be included
+     *
+     * @return collection of referenced proposals
+     */
+    public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest, boolean onlyWithContestIntegrationRelevance) throws SystemException, PortalException {
+        Set<Long> detectedIds = new HashSet<Long>();
 
         for (ProposalAttribute attribute: getAttributes(proposalId)) {
 
@@ -1562,6 +1587,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
 
                 if (StringUtils.isBlank(psd.getType())) {
+                    continue;
+                }
+
+                if(onlyWithContestIntegrationRelevance && !psd.getContestIntegrationRelevance()){
                     continue;
                 }
 

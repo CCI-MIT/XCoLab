@@ -22,6 +22,7 @@ public enum ContestMassActions{
     PRIVATE("Private", "Public", ContestWrapper.class, "setContestPrivate"),
     FEATURED("Feature", "Remove feature", ContestWrapper.class, "setFeatured"),
     FLAG("Set contest flag", ContestMassActionMethods.class, "setFlag"),
+    MODEL_SETTINGS("Set model settings", ContestMassActionMethods.class, "setModelSettings"),
     SUBSCRIBE("Subscribe to activity", "Unsubscribe from activity", ContestMassActionMethods.class, "changeSubscriptionStatus"),
     SHOW_IN_TILE_VIEW("Show in tile view", "Hide in tile viw", ContestWrapper.class, "setShow_in_tile_view"),
     SHOW_IN_LIST_VIEW("Show in list view", "Hide in list view", ContestWrapper.class, "setShow_in_list_view"),

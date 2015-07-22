@@ -99,6 +99,38 @@
 					</tr>
 				</table>
 			</div>
+
+			<div id="contestModelSettings" style="display: none;">
+				<table>
+					<tr>
+						<td>
+							<span class="floatLeft">Default Model ID</span>
+						</td>
+						<td>
+							<form:select path="contestModelSettingsBean.defaultModelId">
+								<form:options items="${contestOverviewWrapper.modelIds}" itemValue="value" itemLabel="lable"/>
+							</form:select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="floatLeft">Other model IDs (comma separated integer: 2,3,4)</span>
+						</td>
+						<td>
+							<form:input path="contestModelSettingsBean.otherModelIds"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="floatLeft">Default model settings (JSON string: {"region":"US"})</span>
+						</td>
+						<td>
+							<form:input path="contestModelSettingsBean.defaultModelSettings"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+
 			<table class="contestOverview">
 					<col span="2" class="extraSmallColumn"/>
 					<col span="1" class="wideColumn"/>
@@ -175,6 +207,8 @@
 		var MASS_MESSAGE_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('MESSAGE')}");
 		var REPORT_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('REPORT_PEOPLE_IN_CURRENT_PHASE')}");
 		var FLAG_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('FLAG')}");
+		var MODEL_SETTINGS_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('MODEL_SETTINGS')}");
+
 		var actionURL = "${updateContestOverviewURL }";
 		var resourceURL = "${getExport }";
 
@@ -192,6 +226,7 @@
 			dropDownElement.addEventListener("change", function(ev){
 				var massMessageDiv = document.getElementById("massMessage");
 				var flagFlagTextTooltipDiv = document.getElementById("flagFlagTextTooltip");
+				var contestModelSettingsDiv = document.getElementById("contestModelSettings");
 
 				var editFormElement = document.getElementById("editForm");
 				var selectedDropDownId = ev.target.value;
@@ -212,6 +247,12 @@
 					flagFlagTextTooltipDiv.style.display = '';
 				} else{
 					flagFlagTextTooltipDiv.style.display = 'none';
+				}
+
+				if(selectedDropDownId == MODEL_SETTINGS_SELECT_ID){
+					contestModelSettingsDiv.style.display = '';
+				} else{
+					contestModelSettingsDiv.style.display = 'none';
 				}
 
 			})

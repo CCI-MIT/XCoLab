@@ -23,6 +23,7 @@ public class PlanSectionDefinitionSoap implements Serializable {
     private long _focusAreaId;
     private long _tier;
     private boolean _locked;
+    private boolean _contestIntegrationRelevance;
 
     public PlanSectionDefinitionSoap() {
     }
@@ -41,6 +42,7 @@ public class PlanSectionDefinitionSoap implements Serializable {
         soapModel.setFocusAreaId(model.getFocusAreaId());
         soapModel.setTier(model.getTier());
         soapModel.setLocked(model.getLocked());
+        soapModel.setContestIntegrationRelevance(model.getContestIntegrationRelevance());
 
         return soapModel;
     }
@@ -174,5 +176,18 @@ public class PlanSectionDefinitionSoap implements Serializable {
 
     public void setLocked(boolean locked) {
         _locked = locked;
+    }
+
+    public boolean getContestIntegrationRelevance() {
+        return _contestIntegrationRelevance;
+    }
+
+    public boolean isContestIntegrationRelevance() {
+        return _contestIntegrationRelevance;
+    }
+
+    public void setContestIntegrationRelevance(
+        boolean contestIntegrationRelevance) {
+        _contestIntegrationRelevance = contestIntegrationRelevance;
     }
 }

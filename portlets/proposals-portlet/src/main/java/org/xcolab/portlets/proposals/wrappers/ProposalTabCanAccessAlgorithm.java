@@ -66,7 +66,6 @@ interface ProposalTabCanAccessAlgorithm {
                 return wrapper.shouldShowJudgingTab(context.getContestPhase(request).getContestPhasePK());
 
             } catch (PortalException | SystemException e) {
-                System.out.println("Error while checking advancingAccess: " + e);
                 e.printStackTrace();
             }
 
@@ -89,7 +88,6 @@ interface ProposalTabCanAccessAlgorithm {
                 return permissions.getCanFellowActions() && phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED ||
                         permissions.getCanAdminAll();
             } catch (PortalException | SystemException e) {
-                System.out.println("Error while checking screeningAccess: " + e);
                 e.printStackTrace();
             }
 
@@ -170,6 +168,7 @@ interface ProposalTabCanAccessAlgorithm {
                         OntologyTermLocalServiceUtil.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId, ADAPTATION_ONTOLOGY_TERM_ID);
 
                 if ((contest != null && contest.getContestTier() != ContestTier.NONE.getTierType() &&
+                        contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType() &&
                         !isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
                     return true;
                 }
@@ -188,8 +187,11 @@ interface ProposalTabCanAccessAlgorithm {
             try {
                 Contest contest = context.getContest(request);
 
-                // Only let team members or admins edit impact of Basic contests
-                if ((contest != null && contest.getContestTier() == ContestTier.BASIC.getTierType()) &&
+                // Only let team members or admins edit impact
+                if ((contest != null && (
+                        contest.getContestTier() == ContestTier.BASIC.getTierType()) ||
+                        contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType() ||
+                        contest.getContestTier() == ContestTier.GLOBAL.getTierType()) &&
                         (permissions.getIsTeamMember() || permissions.getCanAdmin())) {
                     return true;
                 }

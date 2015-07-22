@@ -46,7 +46,6 @@ public class ContestModelController extends BaseProposalsController {
     	Map<Long, String> modelIdsWithNames = null;
     	if (modelId != null) {
         	modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
-        	
         	model.addAttribute("availableModels", modelIdsWithNames);
     	}    
     	else {

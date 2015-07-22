@@ -62,6 +62,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	XCoLab.modeling.BaseXCoLabModelingItemRenderer.prototype = new XCoLab.modeling.BaseXCoLabModelingRenderer();
 	
 	XCoLab.modeling.BaseXCoLabModelingItemRenderer.prototype.render = function(container, input, modelingWidget, idx, parent) {
+		if (modelingWidget.inEditMode && input.widgetType == 'HIDDEN') return;
 		this.modelingWidget = modelingWidget;
 		XCoLab.modeling.BaseXCoLabModelingRenderer.prototype.render.apply(this, arguments);
 	};

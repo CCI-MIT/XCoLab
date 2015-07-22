@@ -1362,6 +1362,20 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * Returns list of proposals referenced by given proposal that are relevant for the ingtegration contests
+    *
+    * @param proposalId                        The proposal for which subproposals should be returned
+    * @return collection of referenced proposals
+    */
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getContestIntegrationRelevantSubproposals(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getContestIntegrationRelevantSubproposals(proposalId);
+    }
+
+    /**
     * Returns list of proposals referenced by given proposal
     *
     * @param proposalId                        The proposal for which subproposals should be returned
@@ -1376,6 +1390,25 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
             com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.getSubproposals(proposalId,
             includeProposalsInSameContest);
+    }
+
+    /**
+    * Returns list of proposals referenced by given proposal
+    *
+    * @param proposalId                        The proposal for which subproposals should be returned
+    * @param includeProposalsInSameContest     Specifies whether linked proposals in the same contest as the passed proposal
+    should be included in the result or not
+    * @param onlyWithContestIntegrationRelevance Specifies whether only proposal with relevance for integration should be included
+    * @return collection of referenced proposals
+    */
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getSubproposals(
+        long proposalId, boolean includeProposalsInSameContest,
+        boolean onlyWithContestIntegrationRelevance)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getSubproposals(proposalId,
+            includeProposalsInSameContest, onlyWithContestIntegrationRelevance);
     }
 
     /**

@@ -30,6 +30,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     private long _focusAreaId;
     private long _tier;
     private boolean _locked;
+    private boolean _contestIntegrationRelevance;
     private BaseModel<?> _planSectionDefinitionRemoteModel;
 
     public PlanSectionDefinitionClp() {
@@ -79,6 +80,8 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("tier", getTier());
         attributes.put("locked", getLocked());
+        attributes.put("contestIntegrationRelevance",
+            getContestIntegrationRelevance());
 
         return attributes;
     }
@@ -143,6 +146,13 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
         if (locked != null) {
             setLocked(locked);
+        }
+
+        Boolean contestIntegrationRelevance = (Boolean) attributes.get(
+                "contestIntegrationRelevance");
+
+        if (contestIntegrationRelevance != null) {
+            setContestIntegrationRelevance(contestIntegrationRelevance);
         }
     }
 
@@ -371,6 +381,36 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         }
     }
 
+    @Override
+    public boolean getContestIntegrationRelevance() {
+        return _contestIntegrationRelevance;
+    }
+
+    @Override
+    public boolean isContestIntegrationRelevance() {
+        return _contestIntegrationRelevance;
+    }
+
+    @Override
+    public void setContestIntegrationRelevance(
+        boolean contestIntegrationRelevance) {
+        _contestIntegrationRelevance = contestIntegrationRelevance;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestIntegrationRelevance",
+                        boolean.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel,
+                    contestIntegrationRelevance);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getPlanSectionDefinitionRemoteModel() {
         return _planSectionDefinitionRemoteModel;
     }
@@ -450,6 +490,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         clone.setFocusAreaId(getFocusAreaId());
         clone.setTier(getTier());
         clone.setLocked(getLocked());
+        clone.setContestIntegrationRelevance(getContestIntegrationRelevance());
 
         return clone;
     }
@@ -495,7 +536,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(21);
+        StringBundler sb = new StringBundler(23);
 
         sb.append("{id=");
         sb.append(getId());
@@ -517,6 +558,8 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         sb.append(getTier());
         sb.append(", locked=");
         sb.append(getLocked());
+        sb.append(", contestIntegrationRelevance=");
+        sb.append(getContestIntegrationRelevance());
         sb.append("}");
 
         return sb.toString();
@@ -524,7 +567,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(34);
+        StringBundler sb = new StringBundler(37);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanSectionDefinition");
@@ -569,6 +612,10 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         sb.append(
             "<column><column-name>locked</column-name><column-value><![CDATA[");
         sb.append(getLocked());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestIntegrationRelevance</column-name><column-value><![CDATA[");
+        sb.append(getContestIntegrationRelevance());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

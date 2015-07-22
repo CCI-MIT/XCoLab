@@ -48,6 +48,8 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("tier", getTier());
         attributes.put("locked", getLocked());
+        attributes.put("contestIntegrationRelevance",
+            getContestIntegrationRelevance());
 
         return attributes;
     }
@@ -112,6 +114,13 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
 
         if (locked != null) {
             setLocked(locked);
+        }
+
+        Boolean contestIntegrationRelevance = (Boolean) attributes.get(
+                "contestIntegrationRelevance");
+
+        if (contestIntegrationRelevance != null) {
+            setContestIntegrationRelevance(contestIntegrationRelevance);
         }
     }
 
@@ -343,6 +352,37 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     @Override
     public void setLocked(boolean locked) {
         _planSectionDefinition.setLocked(locked);
+    }
+
+    /**
+    * Returns the contest integration relevance of this plan section definition.
+    *
+    * @return the contest integration relevance of this plan section definition
+    */
+    @Override
+    public boolean getContestIntegrationRelevance() {
+        return _planSectionDefinition.getContestIntegrationRelevance();
+    }
+
+    /**
+    * Returns <code>true</code> if this plan section definition is contest integration relevance.
+    *
+    * @return <code>true</code> if this plan section definition is contest integration relevance; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isContestIntegrationRelevance() {
+        return _planSectionDefinition.isContestIntegrationRelevance();
+    }
+
+    /**
+    * Sets whether this plan section definition is contest integration relevance.
+    *
+    * @param contestIntegrationRelevance the contest integration relevance of this plan section definition
+    */
+    @Override
+    public void setContestIntegrationRelevance(
+        boolean contestIntegrationRelevance) {
+        _planSectionDefinition.setContestIntegrationRelevance(contestIntegrationRelevance);
     }
 
     @Override

@@ -4,19 +4,24 @@ import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.*;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.wrapper.ContestWrapper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Thomas on 2/18/2015.
  */
 public class ContestProposalTemplateWrapper {
 
+    private final static Log _log = LogFactoryUtil.getLog(ContestProposalTemplateWrapper.class);
     private List<SectionDefinitionBean> sections;
     private Integer numberOfSections;
     private PlanTemplate planTemplate;
@@ -43,13 +48,19 @@ public class ContestProposalTemplateWrapper {
         this.planTemplate = planTemplate;
     }
 
-    public Long getPlanTemplateId(){return planTemplate.getId();}
+    public Long getPlanTemplateId(){
+                if(planTemplate != null) {
+                    return planTemplate.getId();
+                } else
+                    return planTemplateId;
+    }
 
     public void setPlanTemplateId(Long planTemplateId) {
         this.planTemplateId = planTemplateId;
         try {
             initPlanTemplate(planTemplateId);
         } catch (Exception e){
+            _log.warn("Failed to set plan teamplte id: " + planTemplateId);
         }
     }
 
@@ -126,7 +137,10 @@ public class ContestProposalTemplateWrapper {
     }
 
     public int getNumberOfSections() {
-        return sections.size();
+        if(sections != null) {
+            return sections.size();
+        } else
+            return numberOfSections;
     }
 
     public void setNumberOfSections(int numberOfSections) {
@@ -152,17 +166,25 @@ public class ContestProposalTemplateWrapper {
         return newPlanTemplate;
     }
 
-    private static boolean isPlanTemplateSectionUsedInTemplate(Long planSectionDefinitionId) throws Exception{
-        List<PlanTemplateSection> planTemplateSections = PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId(planSectionDefinitionId);
-        return !planTemplateSections.isEmpty();
+    private void deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate() throws Exception {
+        deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate(planTemplate);
     }
 
     private static void deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate(PlanTemplate planTemplate) throws Exception{
         List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil.getSections(planTemplate);
         for(PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if(!isPlanTemplateSectionUsedInTemplate(planSectionDefinition.getId())) {
+            if(!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(), planTemplate.getId())) {
                 PlanSectionDefinitionLocalServiceUtil.deletePlanSectionDefinition(planSectionDefinition);
             }
+        }
+    }
+
+    private static boolean isPlanSectionDefinitionUsedInOtherTemplate(Long planSectionDefinitionId, Long planTemplateId) throws Exception{
+        List<PlanTemplateSection> planTemplateSections = PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId(planSectionDefinitionId);
+        if(planTemplateSections.size() == 1 && planTemplateSections.get(0).getPlanTemplateId() == planTemplateId){
+            return false;
+        } else {
+            return !planTemplateSections.isEmpty();
         }
     }
 
@@ -191,17 +213,31 @@ public class ContestProposalTemplateWrapper {
         sections.remove(templateSectionDefinitionBean);
     }
 
-    public void removeDeletedSections(){
+    public void removeDeletedSections() throws Exception {
+        Set<Long> remainingPlanSectionDefinitionIds = new HashSet<>();
         List<SectionDefinitionBean> removedSectionDefinitions = new ArrayList<>();
         for(SectionDefinitionBean sectionBaseDefinition : sections ){
             if((sectionBaseDefinition.getTitle() == null || sectionBaseDefinition.getTitle().isEmpty())
                     && !sectionBaseDefinition.isTemplateSection()){
                 removedSectionDefinitions.add(sectionBaseDefinition);
+            } else{
+                remainingPlanSectionDefinitionIds.add(sectionBaseDefinition.getSectionDefinitionId());
+            }
+        }
+
+
+        List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil.getSections(planTemplate);
+        for(PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
+            if(!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())){
+                if (!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(), planTemplate.getId())) {
+                    PlanSectionDefinitionLocalServiceUtil.deletePlanSectionDefinition(planSectionDefinition);
+                }
+                PlanTemplateLocalServiceUtil.removeSection(planTemplate, planSectionDefinition);
             }
         }
 
         for(SectionDefinitionBean removedSectionDefinition : removedSectionDefinitions) {
-            sections.remove(removedSectionDefinition);
+             sections.remove(removedSectionDefinition);
         }
     }
 
@@ -231,6 +267,11 @@ public class ContestProposalTemplateWrapper {
         planSectionDefinition.setHelpText(sectionDefinitionBean.getHelpText());
         planSectionDefinition.setTier(sectionDefinitionBean.getLevel());
         planSectionDefinition.setFocusAreaId(sectionDefinitionBean.getFocusAreaId());
+
+        planSectionDefinition.setFocusAreaId(sectionDefinitionBean.getHowTermId());
+
+
+        planSectionDefinition.setContestIntegrationRelevance(sectionDefinitionBean.isContestIntegrationRelevance());
     }
 
     public void persist() throws Exception{
@@ -240,9 +281,6 @@ public class ContestProposalTemplateWrapper {
 
         if(createNew) {
             duplicateExistingPlanTemplate();
-        } else{
-            // TODO write sectionId update
-            deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate(planTemplate);
         }
 
         addSectionsToProposalTemplate();
@@ -315,7 +353,7 @@ public class ContestProposalTemplateWrapper {
         }
 
         // TODO write sectionId update
-        deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate(planTemplate);
+        deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate();
         addSectionsToProposalTemplate();
     }
 
@@ -336,10 +374,10 @@ public class ContestProposalTemplateWrapper {
 
     private void addSectionsToProposalTemplate() throws Exception{
         for(SectionDefinitionBean sectionDefinitionBean: sections) {
-            if(isSectionDifferentFromItsDefinition(sectionDefinitionBean)) {
+            if(isSectionDifferentFromItsDefinition(sectionDefinitionBean)){
                 updateSectionOrCreateNewIfPartOfBaseTemplate(sectionDefinitionBean);
             }
-            createPlanTemplateSection(sectionDefinitionBean);
+            createOrUpdateIfExistsPlanTemplateSection(sectionDefinitionBean);
         }
     }
 
@@ -354,8 +392,10 @@ public class ContestProposalTemplateWrapper {
                     planSectionDefinition.getType().equalsIgnoreCase(sectionDefinitionBean.getType()) &&
                     planSectionDefinition.getDefaultText().equalsIgnoreCase(sectionDefinitionBean.getDefaultText()) &&
                     planSectionDefinition.getHelpText().equalsIgnoreCase(sectionDefinitionBean.getHelpText()) &&
-                    planSectionDefinition.getCharacterLimit() == sectionDefinitionBean.getCharacterLimit());
-
+                    planSectionDefinition.getCharacterLimit() == sectionDefinitionBean.getCharacterLimit() &&
+                    planSectionDefinition.getContestIntegrationRelevance() == sectionDefinitionBean.isContestIntegrationRelevance() &&
+                    planSectionDefinition.getFocusAreaId() == sectionDefinitionBean.getFocusAreaId() &&
+                    planSectionDefinition.getTier() == sectionDefinitionBean.getLevel());
         } catch(Exception e){
         }
         return isSectionDifferentFromDefinition;
@@ -403,22 +443,39 @@ public class ContestProposalTemplateWrapper {
     private void updatePlanSectionDefinition(SectionDefinitionBean sectionDefinitionBean) throws Exception{
 
         PlanSectionDefinition planSectionDefinition =
-                PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionDefinitionBean.getId());
+                PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionDefinitionBean.getSectionDefinitionId());
 
         setPlanSectionDefinitionFromSectionDefinitionBean(planSectionDefinition, sectionDefinitionBean);
         planSectionDefinition.persist();
         PlanSectionDefinitionLocalServiceUtil.updatePlanSectionDefinition(planSectionDefinition);
     }
 
-    private void createPlanTemplateSection(SectionDefinitionBean sectionDefinitionBean) throws Exception{
+    private void createOrUpdateIfExistsPlanTemplateSection(SectionDefinitionBean sectionDefinitionBean) throws Exception{
 
+        boolean wasUpdated = false;
         Long planTemplateId = planTemplate.getId();
         Long sectionId = sectionDefinitionBean.getSectionDefinitionId();
         Integer weight = sectionDefinitionBean.getWeight();
 
-        PlanTemplateSection planTemplateSection =
-                PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(planTemplateId, sectionId, weight);
-        planTemplateSection.persist(); // TODO check whether necessary
+        List<PlanTemplateSection> planTemplateSectionsWithSectionDefinition =
+                PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId(sectionDefinitionBean.getSectionDefinitionId());
+
+        for(PlanTemplateSection planTemplateSection : planTemplateSectionsWithSectionDefinition){
+            if(planTemplateSection.getPlanTemplateId() == planTemplateId){
+                planTemplateSection.setWeight(weight);
+                planTemplateSection.persist();
+                PlanTemplateSectionLocalServiceUtil.updatePlanTemplateSection(planTemplateSection);
+                wasUpdated = true;
+                break;
+            }
+        }
+
+        if(!wasUpdated) {
+            PlanTemplateSection planTemplateSection =
+                    PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(planTemplateId, sectionId, weight);
+            planTemplateSection.persist(); // TODO check whether necessary
+        }
+
     }
 
     public static List<LabelValue> getAllPlanTemplateSelectionItems(){

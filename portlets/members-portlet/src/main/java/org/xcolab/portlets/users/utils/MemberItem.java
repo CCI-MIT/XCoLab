@@ -101,6 +101,11 @@ public class MemberItem implements Serializable {
     public int getActivityCount() throws SystemException {
         return activityCount;
     }
+
+    public String getActivityCountFormatted() throws SystemException {
+        String activityCountFormatted = String.format("%,d", activityCount);
+        return activityCountFormatted;
+    }
     
     public MemberCategory getCategory() {
         return category;    

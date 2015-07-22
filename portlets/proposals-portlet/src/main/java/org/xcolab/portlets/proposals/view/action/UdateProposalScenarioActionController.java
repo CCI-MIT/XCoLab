@@ -38,20 +38,19 @@ public class UdateProposalScenarioActionController {
     public void show(ActionRequest request, Model model,
             ActionResponse response, @RequestParam(required = true) long scenarioId) 
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+
+
         if (proposalsContext.getProposal(request) != null && ! proposalsContext.getPermissions(request).getCanEdit()) {
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: " +
                     proposalsContext.getUser(request).getUserId() + ", proposal: " + proposalsContext.getProposal(request).getProposalId());
         }
-        
-        
-        ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
 
+        ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
         ProposalLocalServiceUtil.setAttribute(proposalsContext.getUser(request).getUserId(), 
                 proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, proposal.getModelId(), scenarioId);
+
         proposalsContext.invalidateContext(request);
-        
-        
-        
+
     }
 
 }

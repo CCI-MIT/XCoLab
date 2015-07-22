@@ -7,7 +7,8 @@
 	version="2.0">
 	<jsp:directive.attribute name="scenarioId" type="java.lang.Long" required="false" rtexprvalue="true" description="scenario id" />
 	<jsp:directive.attribute name="modelId" type="java.lang.Long" required="true" rtexprvalue="true" description="model id" />
-	
+	<jsp:directive.attribute name="contestModelDefaultSetting" type="java.lang.String" required="false" rtexprvalue="true" description="model id" />
+
 	<modeling:simulationLoadScripts />
 	
 	<link rel="stylesheet" href="/proposals-portlet/css/simulation.css" ></link>
@@ -15,7 +16,18 @@
 	
 	<input type="text" id="modelingScenarioId" class="hidden"/>
 	<script>
-		var modeling = XCoLab.modeling('#modelsOutputContainer', {edit: true});
+	    var options = {};
+		<c:choose>
+			<c:when test="${not empty contestModelDefaultSetting}">
+				options.defaultValues = ${contestModelDefaultSetting};
+				//options.defaultValues = {805: "US"};
+			</c:when>
+			<c:otherwise>
+				//options.defaultValues = {805: "US"};
+			</c:otherwise>
+		</c:choose>
+		options.edit = true;
+		var modeling = XCoLab.modeling('#modelsOutputContainer', options);
 		<c:choose>
 			<c:when test="${not empty scenarioId and scenarioId > 0}">
 				modeling.loadScenario(${scenarioId});

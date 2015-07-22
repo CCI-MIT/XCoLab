@@ -95,6 +95,14 @@ public class ContestWrapper {
         contest.setContestModelDescription(ContestModelDescription);
     }
 
+    public String getDefaultModelSettings(){
+        return contest.getDefaultModelSettings();
+    }
+
+    public void setDefaultModelSettings(String defaultModelSettings){
+        contest.setDefaultModelSettings(defaultModelSettings);
+    }
+
     public String getEmailTemplateUrl() {
         if (contest.getEmailTemplateUrl().isEmpty()) {
             return EMAIL_TEMPLATE_URL;
