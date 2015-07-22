@@ -66,17 +66,22 @@ public class ProposalJudgingCommentHelper {
         }
     }
 
-    public String getAdvancingComment() throws NoSuchProposalContestPhaseAttributeException, SystemException {
-        ProposalContestPhaseAttribute advanceDecisionAttribute = ProposalContestPhaseAttributeLocalServiceUtil.
-                getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0);
-        JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) advanceDecisionAttribute.getNumericValue());
+    public String getAdvancingComment() throws SystemException {
+        try {
+            ProposalContestPhaseAttribute advanceDecisionAttribute = ProposalContestPhaseAttributeLocalServiceUtil.
+                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0);
+            JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) advanceDecisionAttribute.getNumericValue());
 
-        if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
-            String advanceDecisionText = ProposalContestPhaseAttributeLocalServiceUtil.
-                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0).getStringValue();
+            if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
+                String advanceDecisionText = ProposalContestPhaseAttributeLocalServiceUtil.
+                        getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0).getStringValue();
 
-            return advanceDecisionText;
+                return advanceDecisionText;
+            }
+        } catch (NoSuchProposalContestPhaseAttributeException e) {
+            throw new SystemException("No advancing decision made yet", e);
         }
+
 
         return null;
     }
