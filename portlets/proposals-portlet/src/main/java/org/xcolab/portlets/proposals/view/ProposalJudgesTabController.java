@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
@@ -30,15 +31,21 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     private ProposalsContext proposalsContext;
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVANCING"})
-    public String showJudgesPanel(PortletRequest request, Model model) 
-            throws PortalException, SystemException {
+    public String showJudgesPanel(PortletRequest request, Model model)
+            throws PortalException, SystemException, ProposalsAuthorizationException {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
+
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()
+                || permissions.getCanContestManagerActions()) ) {
+
+            throw new ProposalsAuthorizationException(ACCESS_TAB_DENIED_MESSAGE);
+        }
 
         Proposal proposal = proposalsContext.getProposal(request);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         User currentUser = proposalsContext.getUser(request);
         ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
         bean.setContestPhaseId(contestPhase.getContestPhasePK());
