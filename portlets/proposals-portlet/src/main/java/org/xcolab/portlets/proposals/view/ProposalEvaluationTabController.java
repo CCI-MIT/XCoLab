@@ -144,7 +144,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                         ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
                         wrapper.setComment(commentHelper.getAdvancingComment());
                         wrappers.add(wrapper);
-                    } catch (NoSuchProposalContestPhaseAttributeException e) {
+                    } catch (SystemException e) {
                         // Ignore this rating if the advancing comment has not been set yet.
                     }
                 }
