@@ -14,8 +14,7 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	<div id="content">
 
-		<!--
-		<c:if test="${isFellowScreeningActive}">
+		<c:if test="${isFellowScreeningActive or showEvaluation}">
 			<h2>Proposal rating</h2>
 			<c:choose>
 				<c:when test="${proposalsPermissions.canPublicRating}">
@@ -27,7 +26,7 @@
 					Please log in to tell us your opinion about this proposal. If you don't already have an account on our site, you can become a member for free <a href="web/guest/loginregister">here</a>.
 				</c:otherwise>
 			</c:choose>
-		</c:if> -->
+		</c:if>
 		<c:choose>
 			<c:when test="${showEvaluation}">
 				<c:forEach var="ratingWrapper" items="${judgeAverageRating}">
