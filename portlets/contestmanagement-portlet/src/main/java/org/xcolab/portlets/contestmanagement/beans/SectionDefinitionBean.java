@@ -1,5 +1,6 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
+import com.ext.portlet.NoSuchFocusAreaException;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
@@ -93,7 +94,11 @@ public class SectionDefinitionBean implements Serializable{
         this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
         this.focusAreaId = planSectionDefinition.getFocusAreaId();
 
-        initOntologyTermIdsWithFocusAreaId();
+        try {
+            initOntologyTermIdsWithFocusAreaId();
+        } catch (NoSuchFocusAreaException e){
+            _log.warn(e);
+        }
     }
 
     private void initOntologyTermIdsWithFocusAreaId() throws SystemException, PortalException {

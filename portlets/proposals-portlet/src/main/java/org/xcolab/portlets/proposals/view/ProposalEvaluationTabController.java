@@ -157,14 +157,14 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         List<ContestPhase> allContestPhasesForCurrentContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
 
         for(ContestPhase contestPhase : allContestPhasesForCurrentContest){
-            boolean isPastContestPhase = contestPhase.getPhaseEndDate().before(currentContestPhase.getPhaseEndDate());
-            if(isPastContestPhase){
-                if(contestPhase.getFellowScreeningActive()){
-                    hasContestPassedScreeningPhaseAlready = true;
-                    break;
+                boolean isPastContestPhase = contestPhase.getPhaseEndDate() != null && contestPhase.getPhaseEndDate().before(currentContestPhase.getPhaseEndDate());
+                if (isPastContestPhase) {
+                    if (contestPhase.getFellowScreeningActive()) {
+                        hasContestPassedScreeningPhaseAlready = true;
+                        break;
+                    }
                 }
             }
-        }
         return hasContestPassedScreeningPhaseAlready;
     }
 
