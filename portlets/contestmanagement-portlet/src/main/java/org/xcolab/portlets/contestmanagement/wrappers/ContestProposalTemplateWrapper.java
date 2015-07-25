@@ -267,10 +267,6 @@ public class ContestProposalTemplateWrapper {
         planSectionDefinition.setHelpText(sectionDefinitionBean.getHelpText());
         planSectionDefinition.setTier(sectionDefinitionBean.getLevel());
         planSectionDefinition.setFocusAreaId(sectionDefinitionBean.getFocusAreaId());
-
-        planSectionDefinition.setFocusAreaId(sectionDefinitionBean.getHowTermId());
-
-
         planSectionDefinition.setContestIntegrationRelevance(sectionDefinitionBean.isContestIntegrationRelevance());
     }
 
