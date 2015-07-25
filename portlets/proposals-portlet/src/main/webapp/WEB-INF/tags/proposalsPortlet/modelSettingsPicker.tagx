@@ -21,7 +21,7 @@
 							style="width: 55px"/>
 					</div>
 				</c:if>
-                <h3 style="margin-top: 0px;">How would you like to specify the parameters for your global model?</h3>
+                <h3 style="margin-top: 0px;">How would you like to calculate your global plan's impact on climate change?</h3>
                 <div class='modelSettingsSelectBox'>
                 	<fieldset id="modelSettingsSet">
                 	<c:forEach var="model" items="${consolidateOptions}">
