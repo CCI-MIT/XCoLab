@@ -377,13 +377,11 @@ ModelingWidget.prototype.showStackTrace = function(data) {
 /**
  * Toggles the model's edit mode setting
  */
-ModelingWidget.prototype.toggleEditMode = function(isInEditMode) {
+ModelingWidget.prototype.toggleEditMask = function(isInEditMode) {
 	if (isInEditMode) {
-		$('div.act_left.act_left-list').hide();
-		$('div.act-edit_left').show();
+		$('div.act-edit_left').fadeIn();
 	} else {
-		$('div.act_left.act_left-list').show();
-		$('div.act-edit_left').hide();
+		$('div.act-edit_left').fadeOut();
 	}
 };
 

@@ -27,7 +27,7 @@
 				//options.defaultValues = {805: "US"};
 			</c:otherwise>
 		</c:choose>
-		options.edit = true &amp;&amp; !inConsolidationMode;
+		options.edit = true;
 		var modeling = XCoLab.modeling('#modelsOutputContainer', options);
 		<c:choose>
 			<c:when test="${not empty scenarioId and scenarioId > 0}">
@@ -41,6 +41,7 @@
 
 		jQuery(modeling).on("scenarioFetched", function(event) {
 			jQuery("#modelingScenarioId").val(event.scenario.scenarioId).addClass("editorDirty");
+			modeling.toggleEditMode(!inConsolidationMode);
 			
 		}).on("valueChanged", function(event) {
 			jQuery("#modelingScenarioId").addClass("editorDirty");

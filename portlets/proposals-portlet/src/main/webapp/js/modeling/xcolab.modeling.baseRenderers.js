@@ -24,34 +24,29 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			renderHeaderFunc = this.renderHeader;
 			renderFooterFunc = this.renderFooter;
 		}
-		
+
 		var elementContainer = container;
 		var containerHtml = false;
-		var containerEditHtml = false;
-
-		if ('containerHtmlEdit' in this) {
-			containerEditHtml = typeof(this.containerHtmlEdit) == 'function' ? this.containerHtmlEdit.apply(this, arguments) : this.containerHtmlEdit;
-			elementContainer = jQuery(containerEditHtml).appendTo(container);
+		if (this.modelingWidget.inEditMode && 'containerHtmlEdit' in this) {
+			containerHtml = typeof(this.containerHtmlEdit) == 'function' ? this.containerHtmlEdit.apply(this, arguments) : this.containerHtmlEdit;
 		}
-		if ('containerHtml' in this) {
-			containerHtml = typeof(this.containerHtml) == 'function' ? this.containerHtml.apply(this, arguments) : this.containerHtml;
+		else {
+			if ('containerHtml' in this) {
+				containerHtml = typeof(this.containerHtml) == 'function' ? this.containerHtml.apply(this, arguments) : this.containerHtml;
+			}
+		}
+		if (containerHtml) {
 			elementContainer = jQuery(containerHtml).appendTo(container);
 		}
 
-		if (this.modelingWidget.inEditMode) {
-			jQuery(containerHtml).hide();
-		} else {
-			jQuery(containerEditHtml).hide();
-		}
-				
 		var newArguments = [elementContainer].concat(Array.prototype.slice.call(arguments, 1));
-		
+
 		if (renderHeaderFunc) {
 			renderHeaderFunc.apply(this, newArguments);
 		}
-		
+
 		renderFunc.apply(this, newArguments);
-		
+
 		if (renderFooterFunc) {
 			renderFooterFunc.apply(this, newArguments);
 		}
