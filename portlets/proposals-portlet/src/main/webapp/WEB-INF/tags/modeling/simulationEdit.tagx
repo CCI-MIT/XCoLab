@@ -41,7 +41,7 @@
 
 		jQuery(modeling).on("scenarioFetched", function(event) {
 			jQuery("#modelingScenarioId").val(event.scenario.scenarioId).addClass("editorDirty");
-			modeling.toggleEditMask(!inConsolidationMode);
+			modeling.toggleEditMask(!${inConsolidationMode});
 			
 		}).on("valueChanged", function(event) {
 			jQuery("#modelingScenarioId").addClass("editorDirty");
