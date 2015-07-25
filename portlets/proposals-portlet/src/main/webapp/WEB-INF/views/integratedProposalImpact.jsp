@@ -74,7 +74,7 @@
                 </c:if>
 
                 <div id="modelContent">
-                <modeling:simulationEdit scenarioId="${scenarioId }" modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}"/>
+                <modeling:simulationEdit scenarioId="${scenarioId }" modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}" inConsolidationMode="${not empty consolidatedScenarioId}"/>
                 </div>
 
                 <portlet:actionURL var="updateProposalScenarioURL">

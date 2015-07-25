@@ -108,6 +108,7 @@
 					setModelSetRadiosState(true);
 					checkModelSetRadioWithId(consolidatedModelId);
 					if (consolidatedScenarioId > 0) {
+						modeling.toggleEditMask(false);
 						modeling.loadScenario(consolidatedScenarioId);
 					}
 				} else{
@@ -121,8 +122,9 @@
 				modelContent.style.display = "";
 				proposalToModelMap.style.display = "none";
 
-				setModelSetRadiosState(false);
+				setModelSetRadiosState(true);
 				checkModelSetRadioWithId(modelId);
+				modeling.toggleEditMask(true);
 				modeling.loadModel(modelId);
 			}
 
