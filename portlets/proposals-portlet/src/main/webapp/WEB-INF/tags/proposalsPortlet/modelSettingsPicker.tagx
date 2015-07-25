@@ -124,7 +124,7 @@
 
 				setModelSetRadiosState(true);
 				checkModelSetRadioWithId(modelId);
-				modeling.toggleEditMask(false);
+				modeling.toggleEditMask(true);
 				modeling.loadModel(modelId);
 			}
 
