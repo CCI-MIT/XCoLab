@@ -1,5 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
@@ -137,11 +138,15 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                     }
 
                     List<ProposalRating> userRatings = map.get(CLIMATE_COLAB_TEAM_USER_ID);
-                    ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(CLIMATE_COLAB_TEAM_USER_ID, userRatings, AVERAGE_RESULT_ROUND_FACTOR);
-                    Proposal proposal =  ProposalLocalServiceUtil.getProposal(proposalId);
-                    ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
-                    wrapper.setComment(commentHelper.getAdvancingComment());
-                    wrappers.add(wrapper);
+                    try {
+                        ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(CLIMATE_COLAB_TEAM_USER_ID, userRatings, AVERAGE_RESULT_ROUND_FACTOR);
+                        Proposal proposal =  ProposalLocalServiceUtil.getProposal(proposalId);
+                        ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
+                        wrapper.setComment(commentHelper.getAdvancingComment());
+                        wrappers.add(wrapper);
+                    } catch (SystemException e) {
+                        // Ignore this rating if the advancing comment has not been set yet.
+                    }
                 }
             }
 
