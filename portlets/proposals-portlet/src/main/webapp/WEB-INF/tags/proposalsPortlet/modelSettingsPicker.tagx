@@ -108,7 +108,7 @@
 					setModelSetRadiosState(true);
 					checkModelSetRadioWithId(consolidatedModelId);
 					if (consolidatedScenarioId > 0) {
-						modeling.toggleEditMode(false);
+						modeling.toggleEditMask(false);
 						modeling.loadScenario(consolidatedScenarioId);
 					}
 				} else{
@@ -124,7 +124,7 @@
 
 				setModelSetRadiosState(true);
 				checkModelSetRadioWithId(modelId);
-				modeling.toggleEditMode(false);
+				modeling.toggleEditMask(false);
 				modeling.loadModel(modelId);
 			}
 
