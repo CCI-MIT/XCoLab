@@ -109,6 +109,7 @@
 					checkModelSetRadioWithId(consolidatedModelId);
 					if (consolidatedScenarioId > 0) {
 						modeling.loadScenario(consolidatedScenarioId);
+						modeling.toggleEditMode(true);
 					}
 				} else{
 					modelsSelectBox.style.display = "none";
@@ -124,6 +125,7 @@
 				setModelSetRadiosState(false);
 				checkModelSetRadioWithId(modelId);
 				modeling.loadModel(modelId);
+				modeling.toggleEditMode(false);
 			}
 
 		});

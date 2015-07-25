@@ -8,6 +8,7 @@
 	<jsp:directive.attribute name="scenarioId" type="java.lang.Long" required="false" rtexprvalue="true" description="scenario id" />
 	<jsp:directive.attribute name="modelId" type="java.lang.Long" required="true" rtexprvalue="true" description="model id" />
 	<jsp:directive.attribute name="contestModelDefaultSetting" type="java.lang.String" required="false" rtexprvalue="true" description="model id" />
+	<jsp:directive.attribute name="inConsolidationMode" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Is the model in consolidation mode" />
 
 	<modeling:simulationLoadScripts />
 	
@@ -26,7 +27,7 @@
 				//options.defaultValues = {805: "US"};
 			</c:otherwise>
 		</c:choose>
-		options.edit = true;
+		options.edit = true &amp;&amp; !inConsolidationMode;
 		var modeling = XCoLab.modeling('#modelsOutputContainer', options);
 		<c:choose>
 			<c:when test="${not empty scenarioId and scenarioId > 0}">

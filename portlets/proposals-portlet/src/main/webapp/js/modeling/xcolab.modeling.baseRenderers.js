@@ -27,16 +27,21 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		
 		var elementContainer = container;
 		var containerHtml = false;
-		if (this.modelingWidget.inEditMode && 'containerHtmlEdit' in this) {
-			containerHtml = typeof(this.containerHtmlEdit) == 'function' ? this.containerHtmlEdit.apply(this, arguments) : this.containerHtmlEdit; 
+		var containerEditHtml = false;
+
+		if ('containerHtmlEdit' in this) {
+			containerEditHtml = typeof(this.containerHtmlEdit) == 'function' ? this.containerHtmlEdit.apply(this, arguments) : this.containerHtmlEdit;
+			elementContainer = jQuery(containerEditHtml).appendTo(container);
 		}
-		else {
-			if ('containerHtml' in this) {
-				containerHtml = typeof(this.containerHtml) == 'function' ? this.containerHtml.apply(this, arguments) : this.containerHtml;
-			}
-		}
-		if (containerHtml) {
+		if ('containerHtml' in this) {
+			containerHtml = typeof(this.containerHtml) == 'function' ? this.containerHtml.apply(this, arguments) : this.containerHtml;
 			elementContainer = jQuery(containerHtml).appendTo(container);
+		}
+
+		if (this.modelingWidget.inEditMode) {
+			jQuery(containerHtml).hide();
+		} else {
+			jQuery(containerEditHtml).hide();
 		}
 				
 		var newArguments = [elementContainer].concat(Array.prototype.slice.call(arguments, 1));
