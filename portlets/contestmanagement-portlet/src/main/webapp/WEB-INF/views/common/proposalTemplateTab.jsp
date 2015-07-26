@@ -128,29 +128,29 @@
 							<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
 							<div>
 								<strong>WHAT Ontology term:</strong><br/>
-								<form:select path="sections[${x.index}].whatTermId" data-form-name="whatTermId">
-									<form:option value="0" label="--- Select ---" />
+								<form:select multiple="true" path="sections[${x.index}].whatTermIds" data-form-name="whatTermId"
+											 cssStyle="width: auto; height: auto; max-width: 920px" size="5">
 									<form:options items="${whatTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
 							<div>
 								<strong>WHERE Ontology term:</strong><br/>
-								<form:select path="sections[${x.index}].whereTermId" data-form-name="whereTermId">
-									<form:option value="0" label="--- Select ---" />
+								<form:select multiple="true" path="sections[${x.index}].whereTermIds" data-form-name="whereTermId"
+											 cssStyle="width: auto; height: auto; max-width: 920px" size="5">
 									<form:options items="${whereTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
 							<div>
 								<strong>WHO Ontology term:</strong><br/>
-								<form:select path="sections[${x.index}].whoTermId" data-form-name="whoTermId">
-									<form:option value="0" label="--- Select ---" />
+								<form:select multiple="true" path="sections[${x.index}].whoTermIds" data-form-name="whoTermId"
+											 cssStyle="width: auto; height: auto; max-width: 920px" size="5">
 									<form:options items="${whoTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
 							<div>
 								<strong>HOW Ontology term:</strong><br/>
-								<form:select path="sections[${x.index}].howTermId" data-form-name="howTermId">
-									<form:option value="0" label="--- Select ---" />
+								<form:select multiple="true" path="sections[${x.index}].howTermIds" data-form-name="howTermId"
+											 cssStyle="width: auto; height: auto; max-width: 920px" size="5">
 									<form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
@@ -277,7 +277,6 @@
 
 		function bindSectionTypeSelectChange() {
 			var eventHandler = function() {
-				console.log("call with " + $(this).val());
 				var sectionTypeId = $(this).val();
 				$(this).parents('.addpropbox').find('.ontology-select-container').toggle(sectionTypeId !== "");
 			}
