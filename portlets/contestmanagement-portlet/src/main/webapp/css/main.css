@@ -371,3 +371,8 @@ li.ui-menu-item .ui-state-focus {
 .innerVerticalCenter {
     display: inline-block;
 }
+
+span.ontology-term-label {
+    margin-left: 15px;
+    font-style: italic;
+}
