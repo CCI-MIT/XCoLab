@@ -19,6 +19,7 @@ import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.utils.emailnotification.ContestVoteNotification;
 import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
 import org.xcolab.utils.judging.ProposalRatingWrapper;
 import org.xcolab.utils.judging.ProposalReview;
@@ -732,21 +733,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             	continue;
             }
 
-            /*
+
             // Directly transfer the support to a vote
             if (proposals.size() == 1) {
-                voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK()); votes will not be converted automatically anymore
+                voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK());
                 new ContestVoteNotification(user, contest, proposals.get(0), serviceContext).sendEmailNotification();
             }
             // Send a notification to the user
             else {
                 new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendEmailNotification();
             }
-            */
-            // Always ask the user to upgrade their support to a vote
-
-            
-            new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendEmailNotification();
         }
     }
 
