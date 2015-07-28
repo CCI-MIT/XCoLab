@@ -76,7 +76,7 @@ table.simulation .leftContent, table.simulation .right-content {
 }
 .model_name_description a{
     display: block;
-    width: 80%;
+    width: 50%;
 }
 .model_description .brand {
     cursor:pointer;
