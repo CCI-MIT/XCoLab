@@ -262,7 +262,7 @@
 			var selectAllCheckboxElement = document.getElementById("selectAllCheckbox");
 			selectAllCheckboxElement.addEventListener("change", function (ev) {
 				var selectAllChecked = selectAllCheckboxElement.checked;
-				var contestsTableBody = document.getElementsByTagName('tbody')[0];
+				var contestsTableBody = document.getElementById('contestOverviewBody');
 				[].forEach.call(contestsTableBody.getElementsByClassName("checkbox"), function (element) {
 					var parentRow = getClosest(element, "tr");
 					if( parentRow.getAttribute("data-filter-visible")  === 'true'){
