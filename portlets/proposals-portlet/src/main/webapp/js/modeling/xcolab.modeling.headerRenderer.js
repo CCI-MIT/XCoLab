@@ -57,8 +57,8 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	
 	DefaultHeaderRenderer.prototype.renderView = function(container) {
 		this.container = container;
-		container.append("<a class='model_name_description' target='_blank'><h2 class='model_name'></h2></a><p class='model_description'></p><div class='act_left'><div class='acthead-l'>Actions</div></div>" +
-			"<div class='act_right'><div class='acthead-r'>Impacts</div></div>" + 
+		container.append("<a class='model_name_description' target='_blank'><h2 class='model_name'></h2><p class='model_description'></p><div class='act_left'><div class='acthead-l'>Actions</div></div>" +
+			"<div class='act_right'><div class='acthead-r'>Impacts</div></div>" +
 			"<div class='clearfix'></div>" + 
 			"<div class='actions_wrap'><div class='act_charts-top2'></div></div>");
 	};
@@ -82,7 +82,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		this.container.find('.model_name_description').attr("href", modelLink);
 		this.container.find(".model_description .brand").remove();
 		brand.addClass(model.modelName);
-		console.log(this, this.container);
+		this.container.find(".model_description").append(brand);
 	}
 	
 	XCoLab.modeling.headerRenderers.push(function (modelingWidget) {

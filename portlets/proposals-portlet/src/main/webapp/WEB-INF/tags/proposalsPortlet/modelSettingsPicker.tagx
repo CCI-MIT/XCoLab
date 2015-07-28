@@ -122,7 +122,7 @@
 				modelContent.style.display = "";
 				proposalToModelMap.style.display = "none";
 
-				setModelSetRadiosState(true);
+				setModelSetRadiosState(false);
 				checkModelSetRadioWithId(modelId);
 				modeling.toggleEditMask(true);
 				modeling.loadModel(modelId);
