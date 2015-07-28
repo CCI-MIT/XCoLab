@@ -281,7 +281,9 @@ public class ProposalImpactScenarioCombinationWrapper {
            if(isUsedModelEMF()){
                combinedScenario = (Scenario) scenarios.toArray()[0];
            } else{
-               calculateCombinedInputParameters();
+               if(combinedInputParametersMap == null) {
+                   calculateCombinedInputParameters();
+               }
                combinedScenario = getRomaClient().runModel(combinedSimulation, combinedInputParametersMap, 0L, false);
            }
        }

@@ -117,6 +117,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                         boolean isCombinedScenario = proposalImpactScenarioCombinationWrapper.isCombinedScenario(proposalScenarioId);
 
                         if(isCombinedScenario){
+                            proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
                             if(proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)){
 
                                 proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
