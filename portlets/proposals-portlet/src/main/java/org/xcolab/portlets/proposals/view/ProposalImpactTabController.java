@@ -77,7 +77,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     private String showImpactTabIntegratedProposal(PortletRequest request, Model model, Boolean edit)
             throws Exception {
-        
+
         Proposal proposal = proposalsContext.getProposal(request);
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         Contest contest = proposalsContext.getContest(request);
@@ -256,8 +256,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private Map<String, String[]> getConsolidateOptionsOnGlobalLevel(){
         Map<String, String[]> consolidateOptions = new LinkedHashMap<>();
 
-        String[] consolidated = {"USE VALUES FROM THE REGIONAL PLANS", "The GHG emissions from your regional plans will be automatically used as inputs for the global simulation model."};
-        String[] separate = {"SPECIFY NEW VALUES", "Use the options below to calculate the impact of your global plan. These results will be independent of the GHG emissions from the regional plans you included."};
+        String[] consolidated = {"USE VALUES FROM THE REGIONAL PLANS", "The values from your regional plans will be automatically used as inputs for the global simulation model."};
+        String[] separate = {"SPECIFY NEW VALUES", "Use the options below to calculate the impact of your global plan. These results will be independent of the values from the regional plans you included."};
 
         consolidateOptions.put("CONSOLIDATE", consolidated);
         consolidateOptions.put("SEPARATE", separate);
