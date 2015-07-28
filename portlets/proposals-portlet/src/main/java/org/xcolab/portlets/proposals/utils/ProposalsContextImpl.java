@@ -1,5 +1,6 @@
 package org.xcolab.portlets.proposals.utils;
 
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.model.Contest;
@@ -21,6 +22,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Component;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.wrappers.*;
 
@@ -145,7 +147,11 @@ public class ProposalsContextImpl implements ProposalsContext {
         Proposal2Phase proposal2Phase = null;
 
         if (contestId != null && contestId > 0) {
-            contest = ContestLocalServiceUtil.getContest(contestId);
+            try {
+                contest = ContestLocalServiceUtil.getContest(contestId);
+            } catch (NoSuchContestException e) {
+                throw new ProposalIdOrContestIdInvalidException(e);
+            }
 
             if (phaseId != null && phaseId > 0) {
                 try {
@@ -185,7 +191,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                                 }
                             }
                             if (mostRecentPhase == null) {
-                                throw e;
+                                throw new ProposalIdOrContestIdInvalidException(e);
                             }
                             proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, mostRecentPhase.getContestPhasePK());
                             contestPhase = mostRecentPhase;
