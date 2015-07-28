@@ -145,12 +145,12 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     @Override
     public boolean isVisible(long l, int i) throws Exception {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isVisibleRelatedEntry(long l, int i) throws Exception {
-        return false;
+        return true;
     }
 
     @Override
