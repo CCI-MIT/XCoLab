@@ -287,8 +287,8 @@
         */
 
         function mapValuesToYear(row){
-            var modelTotalValues = row.querySelectorAll('[data-attr-year]');
             var map = {};
+            var modelTotalValues = row.querySelectorAll('[data-attr-year]');
             [].forEach.call(modelTotalValues, function(totalYearValue){
                 var year = totalYearValue.getAttribute("data-attr-year");
                 var value = parseFloat(totalYearValue.innerHTML).toFixed(2);;
@@ -317,44 +317,44 @@
 
         var scenarioFetchedCallback = function(event) {
             var totalSectorsRow = document.getElementById("totalSectors");
-            var totalSectorsValuesToYears = mapValuesToYear(totalSectorsRow);
-            var modelSeriesValuesToYears = {};
-            var modelOutputs = event.scenario.outputs;
-            console.log("event.scenario", event.scenario);
-            modelOutputs.forEach(function(modelOutput){
-                console.log("modelOutput",modelOutput);
-                if(modelOutput.name.toLowerCase() === MODEL_DATA_ROW.toLowerCase()){
-                    var modelSeries;
-                    if(event.scenario.modelName.toLowerCase().includes("emf")){
-                        modelSeries = calculateAverage(modelOutput.series);
-                        console.log("avg", modelSeries);
-                    } else{
-                        modelSeries = modelOutput.series[0];
+            if(totalSectorsRow) {
+                var totalSectorsValuesToYears = mapValuesToYear(totalSectorsRow);
+                var modelSeriesValuesToYears = {};
+                var modelOutputs = event.scenario.outputs;
+                console.log("event.scenario", event.scenario);
+                modelOutputs.forEach(function (modelOutput) {
+                    console.log("modelOutput", modelOutput);
+                    if (modelOutput.name.toLowerCase() === MODEL_DATA_ROW.toLowerCase()) {
+                        var modelSeries;
+                        if (event.scenario.modelName.toLowerCase().includes("emf")) {
+                            modelSeries = calculateAverage(modelOutput.series);
+                            console.log("avg", modelSeries);
+                        } else {
+                            modelSeries = modelOutput.series[0];
+                        }
+                        var modelSeriesValues = modelSeries.variable.values;
+                        modelSeriesValues.forEach(function (modelSeriesValue) {
+                            modelSeriesValuesToYears[modelSeriesValue[0]] = modelSeriesValue[1];
+                        });
                     }
-                    var modelSeriesValues = modelSeries.variable.values;
-                    modelSeriesValues.forEach(function(modelSeriesValue){
-                        modelSeriesValuesToYears[modelSeriesValue[0]] = modelSeriesValue[1];
-                    });
-                }
-            });
+                });
 
-            var modelTotalRow = document.getElementById("modelTotal");
-            var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
-            [].forEach.call(modelTotalValues, function(totalYearValue){
-                var year = totalYearValue.getAttribute("data-attr-year");
-                var valueToYear = parseFloat(modelSeriesValuesToYears[year]);
-                totalYearValue.innerHTML = valueToYear.toFixed(2);
-            });
+                var modelTotalRow = document.getElementById("modelTotal");
+                var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
+                [].forEach.call(modelTotalValues, function (totalYearValue) {
+                    var year = totalYearValue.getAttribute("data-attr-year");
+                    var valueToYear = parseFloat(modelSeriesValuesToYears[year]);
+                    totalYearValue.innerHTML = valueToYear.toFixed(2);
+                });
 
-            var modelAdjustmentsRow = document.getElementById("modelAdjustments");
-            var modelAdjustmentValues = modelAdjustmentsRow.querySelectorAll('[data-attr-year]');
-            [].forEach.call(modelAdjustmentValues, function(modelAdjustmentValue){
-                var year = modelAdjustmentValue.getAttribute("data-attr-year");
-                var valueToYear = parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalSectorsValuesToYears[year]);
-                modelAdjustmentValue.innerHTML = valueToYear.toFixed(2);
-            });
-
-
+                var modelAdjustmentsRow = document.getElementById("modelAdjustments");
+                var modelAdjustmentValues = modelAdjustmentsRow.querySelectorAll('[data-attr-year]');
+                [].forEach.call(modelAdjustmentValues, function (modelAdjustmentValue) {
+                    var year = modelAdjustmentValue.getAttribute("data-attr-year");
+                    var valueToYear = parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalSectorsValuesToYears[year]);
+                    modelAdjustmentValue.innerHTML = valueToYear.toFixed(2);
+                });
+            }
         };
 
         function registerHelpEventHandler() {
