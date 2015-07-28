@@ -74,6 +74,13 @@ table.simulation .leftContent, table.simulation .right-content {
 .model_name_description {
 	position: relative;
 }
+.model_name_description a{
+    display: block;
+    width: 80%;
+}
+.model_description .brand {
+    cursor:pointer;
+}
 
 .model_description .brand.EnROADS {
 	background: url(../img/climate_interactive_logo.png) no-repeat !important;

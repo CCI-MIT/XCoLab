@@ -64,7 +64,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	};
 	
 	DefaultHeaderRenderer.prototype.updateNameDescription = function(model) {
-		console.log(this, this.container);
 		this.container.find('.model_name').text(model.modelName);
 		this.container.find('.model_description').text(model.modelDescription);
 
