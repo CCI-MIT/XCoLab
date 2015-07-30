@@ -16,12 +16,15 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
 import org.springframework.stereotype.Component;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.wrappers.*;
@@ -145,11 +148,21 @@ public class ProposalsContextImpl implements ProposalsContext {
         ContestPhase contestPhase = null;
         Proposal proposal = null;
         Proposal2Phase proposal2Phase = null;
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        String currentUrl = themeDisplay.getPortalURL() + themeDisplay.getURLCurrent();
+        User currentUser = null;
+
+        try {
+            currentUser = PortalUtil.getUser(request);
+        } catch (Exception e) {
+            // No user is logged in
+        }
 
         if (contestId != null && contestId > 0) {
             try {
                 contest = ContestLocalServiceUtil.getContest(contestId);
             } catch (NoSuchContestException e) {
+                reportInvalidUrlToAdmins(currentUser, currentUrl);
                 throw new ProposalIdOrContestIdInvalidException(e);
             }
 
@@ -191,6 +204,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                                 }
                             }
                             if (mostRecentPhase == null) {
+                                reportInvalidUrlToAdmins(currentUser, currentUrl);
                                 throw new ProposalIdOrContestIdInvalidException(e);
                             }
                             proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, mostRecentPhase.getContestPhasePK());
@@ -238,7 +252,6 @@ public class ProposalsContextImpl implements ProposalsContext {
         request.setAttribute(PERMISSIONS_ATTRIBUTE, new ProposalsPermissions(request, proposal, contestPhase));
         request.setAttribute(PROPOSALS_PREFERENCES_ATTRIBUTE, new ProposalsPreferencesWrapper(request));
         
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
         if (phaseId > 0) {
             request.setAttribute(REQUEST_PHASE_ID_ATTRIBUTE, phaseId);
@@ -276,5 +289,14 @@ public class ProposalsContextImpl implements ProposalsContext {
         }
 
         return replacedContestPhase;
+    }
+
+    private void reportInvalidUrlToAdmins(User currentUser, String currentUrl) {
+        String userScreenName = "(not logged in)";
+        if (Validator.isNotNull(currentUser)) {
+            userScreenName = currentUser.getScreenName();
+        }
+
+        new EmailToAdminDispatcher("User accessed invalid URL", "<p>User " + userScreenName + " could not access URL " + currentUrl + "</p>").sendMessage();
     }
 }
