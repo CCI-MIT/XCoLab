@@ -133,8 +133,6 @@ public class ProposalCreationNotification extends EmailNotification {
     }
 
     private ContestPhase getActiveCreationPhase(List<ContestPhase> contestPhases) throws SystemException {
-        sortContestPhasesByPhaseStartDate(contestPhases);
-
         for (ContestPhase phase : contestPhases) {
             if (phase.getContestPhaseType() == ContestPhaseType.PROPOSAL_CREATION.getTypeId() &&
                     ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
@@ -144,15 +142,5 @@ public class ProposalCreationNotification extends EmailNotification {
         }
 
         throw new SystemException("Active proposal creation phase was not found for createdContest with id " + contest.getContestPK());
-    }
-
-    // todo: delete if not needed
-    private void sortContestPhasesByPhaseStartDate(List<ContestPhase> contestPhases) {
-        Collections.sort(contestPhases, new Comparator<ContestPhase>() {
-            @Override
-            public int compare(ContestPhase o1, ContestPhase o2) {
-                return o1.getPhaseStartDate().compareTo(o2.getPhaseStartDate());
-            }
-        });
     }
 }
