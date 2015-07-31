@@ -381,7 +381,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
                     // if transition is to voting phase
                     if (getContestStatus(nextPhase).isCanVote()) {
-                    	contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
+                    	contestLocalService.transferSupportsToVote(contest, serviceContext);
                     }
 
                     // Add contest year suffix, if contest has been completed
