@@ -1,10 +1,5 @@
 package org.xcolab.portlets.proposals.view;
 
-import java.io.IOException;
-import java.util.*;
-
-import javax.portlet.*;
-
 import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
@@ -18,6 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+
+import javax.portlet.*;
+import java.io.IOException;
+import java.util.*;
 
 @Controller
 @RequestMapping("edit")
@@ -75,7 +74,18 @@ public class ProposalsPreferencesController {
 
         return "preferences";
     }
-    
+
+
+    @RequestMapping(params = "action=judging")
+    public void releaseJudgingMails(ActionRequest request) throws Exception {
+        Integer[] phaseIds = new Integer[] { 1309143  };
+        for (Integer phaseId : phaseIds) {
+            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
+            for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(phaseId)) {
+                ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(proposal, contestPhase, request);
+            }
+        }
+    }
 
     @RequestMapping(params = "action=save")
     public void savePreferences(ActionRequest request, ActionResponse response, Model model, ProposalsPreferencesWrapper preferences)
