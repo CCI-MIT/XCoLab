@@ -10,6 +10,13 @@
 <div id="content">
     <div id="portlet-preferences">
         <h1>Proposals preferences</h1>
+        <portlet:actionURL var="judging">
+            <portlet:param name="action" value="judging" />
+        </portlet:actionURL>
+        <form:form commandName="preferences" action="${judging}">
+            <p><input type="submit" value="send judging emails of preset phases"/> </p>
+        </form:form>
+
         <portlet:actionURL var="checkForMissingTeamMembersURL">
             <portlet:param name="action" value="checkForMissingTeamMembers" />
         </portlet:actionURL>
