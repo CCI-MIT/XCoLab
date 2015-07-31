@@ -162,8 +162,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             try {
                 contest = ContestLocalServiceUtil.getContest(contestId);
             } catch (NoSuchContestException e) {
-                reportInvalidUrlToAdmins(currentUser, currentUrl);
-                throw new ProposalIdOrContestIdInvalidException(e);
+                handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
             }
 
             if (phaseId != null && phaseId > 0) {
@@ -204,8 +203,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                                 }
                             }
                             if (mostRecentPhase == null) {
-                                reportInvalidUrlToAdmins(currentUser, currentUrl);
-                                throw new ProposalIdOrContestIdInvalidException(e);
+                                handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
                             }
                             proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, mostRecentPhase.getContestPhasePK());
                             contestPhase = mostRecentPhase;
@@ -297,6 +295,14 @@ public class ProposalsContextImpl implements ProposalsContext {
             userScreenName = currentUser.getScreenName();
         }
 
-        new EmailToAdminDispatcher("User accessed invalid URL", "<p>User " + userScreenName + " could not access URL " + currentUrl + "</p>").sendMessage();
+        new EmailToAdminDispatcher("User accessed invalid URL " + currentUrl, "<p>User " + userScreenName + " could not access URL " + currentUrl + "</p>").sendMessage();
+    }
+
+    private void handleAccessedInvalidUrlIdInUrl(User currentUser, String currentUrl) throws ProposalIdOrContestIdInvalidException {
+        if (Validator.isNotNull(currentUser)) {
+            reportInvalidUrlToAdmins(currentUser, currentUrl);
+        }
+
+        throw new ProposalIdOrContestIdInvalidException();
     }
 }
