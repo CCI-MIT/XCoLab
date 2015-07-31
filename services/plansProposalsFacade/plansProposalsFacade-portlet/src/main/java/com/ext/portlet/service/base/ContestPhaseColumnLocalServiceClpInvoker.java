@@ -41,12 +41,12 @@ public class ContestPhaseColumnLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName626;
-    private String[] _methodParameterTypes626;
-    private String _methodName627;
-    private String[] _methodParameterTypes627;
-    private String _methodName632;
-    private String[] _methodParameterTypes632;
+    private String _methodName658;
+    private String[] _methodParameterTypes658;
+    private String _methodName659;
+    private String[] _methodParameterTypes659;
+    private String _methodName664;
+    private String[] _methodParameterTypes664;
 
     public ContestPhaseColumnLocalServiceClpInvoker() {
         _methodName0 = "addContestPhaseColumn";
@@ -131,17 +131,17 @@ public class ContestPhaseColumnLocalServiceClpInvoker {
                 "com.ext.portlet.model.ContestPhaseColumn"
             };
 
-        _methodName626 = "getBeanIdentifier";
+        _methodName658 = "getBeanIdentifier";
 
-        _methodParameterTypes626 = new String[] {  };
+        _methodParameterTypes658 = new String[] {  };
 
-        _methodName627 = "setBeanIdentifier";
+        _methodName659 = "setBeanIdentifier";
 
-        _methodParameterTypes627 = new String[] { "java.lang.String" };
+        _methodParameterTypes659 = new String[] { "java.lang.String" };
 
-        _methodName632 = "getPhaseColumns";
+        _methodName664 = "getPhaseColumns";
 
-        _methodParameterTypes632 = new String[] { "java.lang.Long" };
+        _methodParameterTypes664 = new String[] { "java.lang.Long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -233,20 +233,20 @@ public class ContestPhaseColumnLocalServiceClpInvoker {
             return ContestPhaseColumnLocalServiceUtil.updateContestPhaseColumn((com.ext.portlet.model.ContestPhaseColumn) arguments[0]);
         }
 
-        if (_methodName626.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes626, parameterTypes)) {
+        if (_methodName658.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes658, parameterTypes)) {
             return ContestPhaseColumnLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName627.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes627, parameterTypes)) {
+        if (_methodName659.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes659, parameterTypes)) {
             ContestPhaseColumnLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName632.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
+        if (_methodName664.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes664, parameterTypes)) {
             return ContestPhaseColumnLocalServiceUtil.getPhaseColumns((java.lang.Long) arguments[0]);
         }
 

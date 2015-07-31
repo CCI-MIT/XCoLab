@@ -2,7 +2,13 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.ResourceConstants;
+import com.liferay.portal.security.permission.ActionKeys;
+import org.xcolab.enums.ColabConstants;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.wiki.NoSuchPageException;
 import com.liferay.portlet.wiki.NoSuchPageResourceException;
@@ -10,7 +16,7 @@ import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.model.WikiPageResource;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 import com.liferay.portlet.wiki.service.WikiPageResourceLocalServiceUtil;
-import org.springframework.web.util.HtmlUtils;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 
 import java.net.URLEncoder;
@@ -34,10 +40,15 @@ public class WikiPageWrapper {
 
     public WikiPageWrapper(Contest contest, Long loggedInUserId) throws Exception{
         this.contest = contest;
-        this.contestTitle = contest.getContestShortName();
+        String contestTitle = contest.getContestShortName();
+        this.contestTitle = removeSpecialChars(contestTitle);
         this.loggedInUserId = loggedInUserId;
         initWikiPageResourceAndCreateIfNoneExistsForThisContest();
         initWikiPageAndCreateIfNoneExistsForThisContest();
+    }
+
+    private static String removeSpecialChars(String stringToHaveSpecialCharacterRemoved){
+        return stringToHaveSpecialCharacterRemoved.replace(":", "").replace(",","").replace(";","");
     }
 
     public ContestResourcesBean getContestResourcesBean() throws Exception{
@@ -58,8 +69,10 @@ public class WikiPageWrapper {
         }
     }
 
-    public static void updateWikiPageTitleIfExists(String oldTitle, String newTitle) throws Exception{
-        if(isWikiPageCreatedForContest(oldTitle)){
+    public static void updateWikiPageTitleIfExists(String oldTitleRaw, String newTitleRaw) throws Exception{
+        String oldTitle = removeSpecialChars(oldTitleRaw);
+        String newTitle = removeSpecialChars(newTitleRaw);
+        if(isWikiPageCreatedForContest(removeSpecialChars(oldTitle))){
             WikiPageResource wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WIKI_NODE_ID, oldTitle);
             WikiPage wikiPage;
             try {
@@ -81,6 +94,9 @@ public class WikiPageWrapper {
 
     private static void updateWikiPageResourceTitle(WikiPageResource wikiPageResource, String newTitle) throws Exception{
         wikiPageResource.setTitle(newTitle);
+        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(wikiPageResource.getResourcePrimKey(), MemberRole.GUEST);
+        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(wikiPageResource.getResourcePrimKey(), MemberRole.MEMBER);
+
         wikiPageResource.persist();
         WikiPageResourceLocalServiceUtil.updateWikiPageResource(wikiPageResource);
     }
@@ -158,14 +174,19 @@ public class WikiPageWrapper {
         wikiPage.persist();
         WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
 
+        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(resourcePrimaryKey, MemberRole.GUEST);
+        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(resourcePrimaryKey, MemberRole.GUEST);
+
         updateContestResourceUrl();
     }
 
     private void updateContestResourceUrl() throws Exception{
         updateContestResourceUrl(contest, wikiPage.getTitle());
     }
+
     public static void updateContestResourceUrl(Contest contest, String wikiPageTitle) throws Exception{
-        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPageTitle,"UTF-8");
+        String wikiPageTitleWithoutColon = removeSpecialChars(wikiPageTitle);
+        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPageTitleWithoutColon,"UTF-8");
         contest.setResourcesUrl(escapedWikiPageUrlLink);
         contest.persist();
         ContestLocalServiceUtil.updateContest(contest);
@@ -175,5 +196,15 @@ public class WikiPageWrapper {
         wikiPage.setHead(false);
         wikiPage.persist();
         WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
+    }
+
+
+    private static void addWikiPageRessourceViewPermissionsForRoleIfNoneExist(long wikiPageRessourcePK, MemberRole role) throws SystemException, PortalException {
+        if (!ResourcePermissionLocalServiceUtil.hasResourcePermission(ColabConstants.COLAB_COMPANY_ID, WikiPage.class.getName(),
+                ResourceConstants.SCOPE_INDIVIDUAL, Long.toString(wikiPageRessourcePK), role.getRoleId(), ActionKeys.VIEW)) {
+            ResourcePermissionLocalServiceUtil.setResourcePermissions(ColabConstants.COLAB_COMPANY_ID, WikiPage.class.getName(),
+                    ResourceConstants.SCOPE_INDIVIDUAL, Long.toString(wikiPageRessourcePK), role.getRoleId(), new String[]{ActionKeys.VIEW});
+        }
+
     }
 }

@@ -76,7 +76,8 @@
 		<!-- /inner -->
 	</div>
 	<!-- /proposal-head -->
-	<c:if test="${currentTabWrapped.canEdit and currentTabWrapped.name != 'POINTS'}">
+	<c:if test="${currentTabWrapped.canEdit and currentTabWrapped.name != 'POINTS' and not edit}">
+					<!-- or (currentTabWrapped.name == 'IMPACT' and proposalsPermissions.canAdminAll)}"> -->
 		<div class="edit-prop-wrap">
 			<div class="inner">
 				<div class="edit-prop">

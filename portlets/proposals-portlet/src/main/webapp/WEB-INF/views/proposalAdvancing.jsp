@@ -6,7 +6,7 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:discussions="http://climatecolab.org/tags/xcollab_discussions_1.0"
-          xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/discussions"
+          xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
           xmlns:liferay-ui="http://liferay.com/tld/ui">
@@ -83,7 +83,7 @@
                                     <c:choose>
                                         <c:when test="${hasNoWritePermission}">
                                             <p class="submitStatus error">
-                                                <strong>You have no permission to change the advancement this proposal.</strong>
+                                                <strong>You don't have the required permission to change the status of this proposal.</strong>
                                             </p>
                                         </c:when>
                                         <c:when test="${isFrozen}">
@@ -148,7 +148,7 @@
             <div class="addpropbox">
                 <h2>Evaluation criteria</h2>
 
-                <proposalsPortlet:ratingCriteriaText ratingTypes="${proposalAdvancingBean.ratingTypes}"/>
+                <proposalsPortlet:ratingCriteriaText ratingTypes="${proposalAdvancingBean.ratingTypes}" />
                 </div>
         </div>
         <div class="judging_comments">

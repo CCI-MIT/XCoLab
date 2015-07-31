@@ -162,6 +162,85 @@ function resizeAllTextareas(){
     });
 }
 
+function extractInputElementsInNode(node){
+    var sectionElementNames =[];
+
+    [].forEach.call(node.getElementsByTagName('input'), function(element) {
+        sectionElementNames.push(element.getAttribute("data-form-name"));
+    });
+
+    [].forEach.call(node.getElementsByTagName('textarea'), function(element) {
+        sectionElementNames.push(element.getAttribute("data-form-name"));
+    });
+
+    [].forEach.call(node.getElementsByTagName('select'), function(element) {
+        sectionElementNames.push(element.getAttribute("data-form-name"));
+    });
+
+    return sectionElementNames;
+}
+
+function createFormInputsIdReplacements(oldSectionElementId, newSectionElementId, sectionElementNames, sectionPrefix){
+    var formInputData = [];
+    for (var i = 0; i < sectionElementNames.length; i++) {
+        var sectionDummyInputId = sectionPrefix + oldSectionElementId + "." + sectionElementNames[i];
+        var sectionInputId = sectionPrefix + newSectionElementId + "." + sectionElementNames[i];
+        var sectionInputName = sectionPrefix + "[" + newSectionElementId + "]." + sectionElementNames[i];
+        formInputData[sectionDummyInputId] = {id: sectionInputId, name: sectionInputName};
+    }
+    return formInputData;
+}
+
+function replaceInputDataByTagName(newSectionElement, newSectionInputData, tagName){
+    console.debug("replaceInputDataByTagName -> tagName", tagName);
+    var sectionFormInputs = newSectionElement.getElementsByTagName(tagName);
+    for (var i = 0; i < sectionFormInputs.length; i++) {
+        console.log(" sectionFormInputs[i].id", sectionFormInputs[i].id);
+        console.log(" newSectionInputData", newSectionInputData);
+
+        var sectionInputData = newSectionInputData[sectionFormInputs[i].id];
+        console.log(" sectionFormInputs[i]", sectionFormInputs[i]);
+        console.log(" sectionFormInputs[i].id", sectionFormInputs[i].id);
+        console.log(" sectionInputData", typeof(sectionInputData));
+        if(typeof(sectionInputData) != 'undefined') {
+            sectionFormInputs[i].id = sectionInputData.id;
+            sectionFormInputs[i].name = sectionInputData.name;
+        }
+    }
+}
+
+function replaceSectionFormIds(newSectionElement, newSectionInputData, newSectionId){
+    newSectionElement.style.display = "";
+
+    if(newSectionId != undefined) {
+        console.log("newSectionId", newSectionId);
+        console.log("newSectionElement", newSectionElement);
+        newSectionElement.id = newSectionId;
+        newSectionElement.setAttribute("data-section-id", newSectionId);
+    }
+    replaceInputDataByTagName(newSectionElement, newSectionInputData, 'input');
+    replaceInputDataByTagName(newSectionElement, newSectionInputData, 'select');
+    replaceInputDataByTagName(newSectionElement, newSectionInputData, 'textarea');
+}
+
+
+function getClosest(el, tag) {
+    // this is necessary since nodeName is always in upper case
+    tag = tag.toUpperCase();
+    do {
+        if (el.nodeName === tag) {
+            // tag name is found! let's return it. :)
+            return el;
+        }
+    } while (el = el.parentNode);
+
+    // not found :(
+    return null;
+}
+
+function filter(className, element){
+    return element.getElementsByClassName(className)[0] != undefined;
+}
 
 jQuery(function() {
 
@@ -170,10 +249,6 @@ jQuery(function() {
         trigger.parent().parent().find(".addprophelp").slideToggle("fast");
     });
 
-    initTooltips();
-
     initializeTextEditors();
-
     resizeAllTextareas();
-
 });

@@ -11,9 +11,9 @@
 	<div class="cmsDetailsBox">
 		<jsp:directive.include file="./action.jspx"/>
 	</div>
+
 	<div class="cmsDetailsBox">
 		<h1>Ask your questions here: </h1>
 		<collab:discussionComments discussionId="${currentTabWrapped.discussionId }" />
 	</div>
-
 </jsp:root>

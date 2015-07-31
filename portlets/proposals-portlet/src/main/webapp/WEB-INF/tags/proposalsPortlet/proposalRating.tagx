@@ -9,37 +9,40 @@
     <jsp:directive.attribute name="ratingValuesPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to values" />
 
     <c:forEach var="type" items="${ratingTypes}">
-        <div>
-                <h5 class="fieldWithTooltip tooltipAbove">
-                    <a>${type.label}</a>
-                </h5>
-                <div class="tooltip">
-                    ${type.description}
-                </div>
-        </div>
-        <table class="judgingForm">
-            <c:forEach var="value" items="${type.ratingValues}">
-                <col width="${fn:substringBefore(100 / type.ratingValues.size(), '.')}%" />
-            </c:forEach>
-            <tbody>
-            <tr>
+        <c:if test="${type.isActive}">
+            <div>
+                    <h5 class="fieldWithTooltip tooltipAbove">
+                        <a>${type.label}</a>
+                    </h5>
+                    <div class="tooltip">
+                        ${type.description}
+                    </div>
+            </div>
+            <table class="judgingForm">
                 <c:forEach var="value" items="${type.ratingValues}">
-                    <td>
-                        <label for="rating${value.id}" class="fieldWithTooltip tooltipAbove">
-                        ${value.name}
-                        </label>
-                        <div class="tooltip">
-                            ${value.description}
-                        </div>
-                    </td>
+                    <col width="${fn:substringBefore(100 / type.ratingValues.size(), '.')}%" />
                 </c:forEach>
-            </tr>
-            <tr>
-                <c:forEach var="value" items="${type.ratingValues}">
-                    <td><form:radiobutton id="rating${value.id}" path="${ratingValuesPath}[${type.id}]" value="${value.id}"/></td>
-                </c:forEach>
-            </tr>
-            </tbody>
-        </table>
+                <tbody>
+                <tr>
+                    <c:forEach var="value" items="${type.ratingValues}">
+                        <td>
+                            <label for="rating${value.id}" class="fieldWithTooltip tooltipAbove">
+                                ${value.name}
+                            </label>
+                            <div class="tooltip">
+                                ${value.description}
+                            </div>
+                        </td>
+
+                    </c:forEach>
+                </tr>
+                <tr>
+                    <c:forEach var="value" items="${type.ratingValues}">
+                        <td><form:radiobutton id="rating${value.id}" path="${ratingValuesPath}[${type.id}]" value="${value.id}"/></td>
+                    </c:forEach>
+                </tr>
+                </tbody>
+            </table>
+        </c:if>
     </c:forEach>
 </jsp:root>

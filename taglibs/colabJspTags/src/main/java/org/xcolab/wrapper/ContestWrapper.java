@@ -4,12 +4,15 @@ import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import org.xcolab.enums.MemberRole;
 
 import java.util.*;
 
 public class ContestWrapper {
+    private final static Log _log = LogFactoryUtil.getLog(ContestWrapper.class);
     private static final String WHERE = "where";
     private static final String WHAT = "what";
     private static final String WHO = "who";
@@ -312,8 +315,30 @@ public class ContestWrapper {
         contest.setResourcesUrl(resourcesUrl);
     }
 
+    public Boolean getShow_in_list_view(){ return contest.getShow_in_list_view();}
+
+    public void setShow_in_list_view(boolean show_in_list_view){ contest.setShow_in_list_view(show_in_list_view);}
+
+    public Boolean getShow_in_tile_view(){ return contest.getShow_in_tile_view();}
+
+    public void setShow_in_tile_view(boolean show_in_tile_view){ contest.setShow_in_tile_view(show_in_tile_view);}
+
+    public Boolean getShow_in_outline_view(){ return contest.getShow_in_outline_view();}
+
+    public void setShow_in_outline_view(boolean show_in_tile_view){ contest.setShow_in_outline_view(show_in_tile_view);}
+
     public long getProposalsCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getProposalsCount(contest);
+    }
+
+    public long getTotalProposalsCount() throws PortalException, SystemException {
+        Set<Proposal> proposalList = new HashSet<>();
+        List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
+        for(ContestPhase contestPhase : contestPhases){
+            List<Proposal> proposals = ProposalLocalServiceUtil.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
+            proposalList.addAll(proposals);
+        }
+        return proposalList.size();
     }
 
     public long getCommentsCount() throws PortalException, SystemException {
@@ -483,7 +508,11 @@ public class ContestWrapper {
                     roleUsers = new ArrayList<User>();
                     teamRoleUsersMap.put(ctm.getRole(), roleUsers);
                 }
-                roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
+                try {
+                    roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
+                } catch(Exception e){
+                    _log.warn("Could not add user role: " + e);
+                }
             }
 
             for (String role : teamRoleUsersMap.keySet()) {

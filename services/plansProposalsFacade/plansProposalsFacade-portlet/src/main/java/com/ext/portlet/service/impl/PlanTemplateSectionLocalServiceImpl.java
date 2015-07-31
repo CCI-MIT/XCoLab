@@ -2,12 +2,18 @@ package com.ext.portlet.service.impl;
 
 import java.util.List;
 
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.PlanTemplateSection;
 import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
 import com.ext.portlet.service.base.PlanTemplateSectionLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.PlanTemplateSectionPK;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 
 /**
  * The implementation of the plan template section local service.
@@ -30,12 +36,15 @@ public class PlanTemplateSectionLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil} to access the plan template section local service.
      */
-    
+
     public List<PlanTemplateSection> findByPlanTemplateId(Long planTemplateId) throws SystemException {
         return planTemplateSectionPersistence.findByPlanTemplateId(planTemplateId);
-        
     }
-    
+
+    public List<PlanTemplateSection> findByPlanSectionDefinitionId(Long planSectionDefinitionId) throws Exception{
+        return planTemplateSectionPersistence.findByPlanSectionId(planSectionDefinitionId);
+    }
+
     public PlanTemplateSection addPlanTemplateSection(Long planTemplateId, Long sectionId, int weight) throws SystemException {
         PlanTemplateSection pts = createPlanTemplateSection(new PlanTemplateSectionPK(planTemplateId, sectionId));
         
@@ -58,6 +67,5 @@ public class PlanTemplateSectionLocalServiceImpl
     public void remove(PlanTemplateSection section) throws SystemException {
         PlanTemplateSectionLocalServiceUtil.deletePlanTemplateSection(section);
     }
-    
 
 }

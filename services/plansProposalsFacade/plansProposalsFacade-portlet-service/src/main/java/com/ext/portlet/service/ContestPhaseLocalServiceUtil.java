@@ -334,11 +334,26 @@ public class ContestPhaseLocalServiceUtil {
         return getService().getPhasesForContest(contestPK);
     }
 
-    public static java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestSchedule(
+    public static java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleId(
+        long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPhasesForContestScheduleId(contestScheduleId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndContest(
         long contestScheduleId, long contestPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getPhasesForContestSchedule(contestScheduleId, contestPK);
+                   .getPhasesForContestScheduleIdAndContest(contestScheduleId,
+            contestPK);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContestScheduleIdAndPhaseType(
+        long contestScheduleId, long contestPhaseType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getPhasesForContestScheduleIdAndPhaseType(contestScheduleId,
+            contestPhaseType);
     }
 
     public static com.ext.portlet.model.ContestPhase getActivePhaseForContest(
@@ -363,12 +378,6 @@ public class ContestPhaseLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getName(contestPhase);
-    }
-
-    public static void promoteProposal(long proposalId, long nextPhaseId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getService().promoteProposal(proposalId, nextPhaseId);
     }
 
     public static void promoteProposal(long proposalId, long nextPhaseId,

@@ -3,11 +3,9 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
 import org.hibernate.validator.constraints.Length;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
+import org.xcolab.wrapper.ContestWrapper;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -18,21 +16,21 @@ import java.io.Serializable;
  */
 public class ContestDescriptionBean implements Serializable{
     private static final long serialVersionUID = 1L;
-    private static final String NO_SPECIAL_CHAR_REGEX ="^[a-zA-Z0-9:äöüÄÖÜ?! ]*$";
+    private static final String NO_SPECIAL_CHAR_REGEX ="^[a-zA-Z:,;'’0-9äöüÄÖÜ?! ]*$";
 
     private Long ContestPK;
     private Long contestLogoId;
     private Long sponsorLogoId;
     private String emailTemplateUrl;
 
-    @Length(min = 5, max = 140, message = "The contest question must be at least 5 characters and not more than 140 characters.")
+    @Length(min = 5, max = 150, message = "The contest question must be at least 5 characters and not more than 150 characters.")
     private String contestName;
 
-    @Length(min = 5, max = 50, message = "The contest title must be at least 5 characters and not more than 50 characters.")
+    @Length(min = 5, max = 70, message = "The contest title must be at least 5 characters and not more than 70 characters.")
     @Pattern(regexp = NO_SPECIAL_CHAR_REGEX, message = "The contest title must not contain special characters.")
     private String contestShortName;
 
-    @Length(min = 5, max = 1300, message = "The contest description must be at least 5 characters and not more than 1300 characters.")
+    @Length(min = 0, max = 1400, message = "The contest description must have not more than 1400 characters.")
 
     private String contestDescription;
 
@@ -68,42 +66,8 @@ public class ContestDescriptionBean implements Serializable{
 
         String oldContestTitle = contest.getContestShortName();
         updateContestDescription(contest);
-        updateContestSchedules(contest, scheduleTemplateId);
+        updateContestSchedule(contest, scheduleTemplateId);
         updateContestWiki(contest, oldContestTitle);
-
-    }
-
-
-    private void updateContestDescription(Contest contest) throws Exception{
-
-        contest.setContestName(contestName);
-        contest.setEmailTemplateUrl(emailTemplateUrl);
-        contest.setContestShortName(contestShortName);
-        contest.setContestDescription(contestDescription);
-        contest.setPlanTemplateId(planTemplateId);
-        contest.setContestLogoId(contestLogoId);
-        contest.setSponsorLogoId(sponsorLogoId);
-        contest.setContestTier(contestTier);
-        contest.persist();
-
-    }
-
-    private void updateContestWiki(Contest contest, String oldContestTitle) throws Exception{
-        String newContestTitle = contest.getContestShortName();
-        if(!oldContestTitle.equals(newContestTitle)) {
-            WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
-            WikiPageWrapper.updateContestResourceUrl(contest, newContestTitle);
-        }
-
-    }
-
-    private void updateContestSchedules(Contest contest, Long scheduleTemplateId) throws Exception{
-        Long oldScheduleTemplateId = contest.getContestScheduleId();
-
-        // Schedule with id = 0 is "None", that is no change in the contest phases
-        if(scheduleTemplateId != 0 && !oldScheduleTemplateId.equals(scheduleTemplateId)) {
-            ContestScheduleWrapper.updateContestPhaseAccordingToContestSchedule(contest, scheduleTemplateId);
-        }
     }
 
     public Long getContestPK() {
@@ -158,19 +122,41 @@ public class ContestDescriptionBean implements Serializable{
 
     public String getContestDescription() {
         if(contestDescription != null) {
-        return "<p>" + contestDescription + "</p>";
+        //return "<p>" + contestDescription + "</p>";
+        return contestDescription;
         }
         return contestDescription;
     }
 
     public void setContestDescription(String contestDescription) {
+
+        /* TODO find a solution for the Read more ... <p> issue
         if(!contestDescription.isEmpty()) {
+
+            String contestDescriptionWithoutPTag = contestDescription.replace("<p>", "").replace("</p>","<br/>");
+            this.contestDescription  = contestDescriptionWithoutPTag;
+
             Document document = Jsoup.parse(contestDescription);
-            Element descriptionElement = document.select("p").first();
+            Element bodyElement = document.body();
+            Element lastElement = bodyElement.lastElementSibling();
+
+            for(Element element : bodyElement.getAllElements()){
+                this.contestDescription += element.html();
+            }
+
+            Element descriptionElement = document.select("p").last();
+
+            for(Element descriptionSection : document.select("p")){
+                this.contestDescription += "<br/>";
+                this.contestDescription += descriptionSection.html();
+            }
             this.contestDescription = descriptionElement.html();
+
         } else {
             this.contestDescription = contestDescription;
-        }
+        }*/
+
+        this.contestDescription = contestDescription;
     }
 
     public Long getPlanTemplateId() {
@@ -197,4 +183,40 @@ public class ContestDescriptionBean implements Serializable{
         this.contestTier = contestTier;
     }
 
+    private void updateContestDescription(Contest contest) throws Exception{
+        contest.setContestName(contestName);
+        contest.setEmailTemplateUrl(emailTemplateUrl);
+        contest.setContestShortName(contestShortName);
+        contest.setContestDescription(contestDescription);
+        contest.setPlanTemplateId(planTemplateId);
+        contest.setContestLogoId(contestLogoId);
+        contest.setSponsorLogoId(sponsorLogoId);
+        contest.setContestTier(contestTier);
+        contest.persist();
+    }
+
+    public static void updateContestWiki(Contest contest, String oldContestTitle) throws Exception{
+        String newContestTitle = contest.getContestShortName();
+        if(!oldContestTitle.equals(newContestTitle)) {
+            WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
+            WikiPageWrapper.updateContestResourceUrl(contest, newContestTitle);
+        }
+    }
+
+    public static void updateContestSchedule(Contest contest, Long contestScheduleId) throws Exception{
+        Long oldScheduleTemplateId = contest.getContestScheduleId();
+        boolean noScheduleSelected = contestScheduleId.equals(0L);
+
+        if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
+            ContestWrapper contestWrapper = new ContestWrapper(contest);
+            boolean proposalsInContest = contestWrapper.getTotalProposalsCount() > 0;
+            if(proposalsInContest) {
+                ContestScheduleWrapper.updateContestPhasesAccordingToContestSchedule(contest, contestScheduleId);
+            }   else{
+                ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleId);
+            }
+            contest.setContestScheduleId(contestScheduleId);
+            contest.persist();
+        }
+    }
 }

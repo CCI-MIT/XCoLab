@@ -24,10 +24,11 @@ public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingTy
     public String label;
     public String description;
     public int judgeType;
+    public boolean isActive;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(11);
 
         sb.append("{id=");
         sb.append(id);
@@ -37,6 +38,8 @@ public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingTy
         sb.append(description);
         sb.append(", judgeType=");
         sb.append(judgeType);
+        sb.append(", isActive=");
+        sb.append(isActive);
         sb.append("}");
 
         return sb.toString();
@@ -61,6 +64,7 @@ public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingTy
         }
 
         proposalRatingTypeImpl.setJudgeType(judgeType);
+        proposalRatingTypeImpl.setIsActive(isActive);
 
         proposalRatingTypeImpl.resetOriginalValues();
 
@@ -73,6 +77,7 @@ public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingTy
         label = objectInput.readUTF();
         description = objectInput.readUTF();
         judgeType = objectInput.readInt();
+        isActive = objectInput.readBoolean();
     }
 
     @Override
@@ -93,5 +98,6 @@ public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingTy
         }
 
         objectOutput.writeInt(judgeType);
+        objectOutput.writeBoolean(isActive);
     }
 }

@@ -55,6 +55,8 @@ public class PlanTemplateSectionLocalServiceClp
     private String[] _methodParameterTypes22;
     private String _methodName23;
     private String[] _methodParameterTypes23;
+    private String _methodName24;
+    private String[] _methodParameterTypes24;
 
     public PlanTemplateSectionLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -162,27 +164,31 @@ public class PlanTemplateSectionLocalServiceClp
 
         _methodParameterTypes19 = new String[] { "java.lang.Long" };
 
-        _methodName20 = "addPlanTemplateSection";
+        _methodName20 = "findByPlanSectionDefinitionId";
 
-        _methodParameterTypes20 = new String[] {
+        _methodParameterTypes20 = new String[] { "java.lang.Long" };
+
+        _methodName21 = "addPlanTemplateSection";
+
+        _methodParameterTypes21 = new String[] {
                 "java.lang.Long", "java.lang.Long", "int"
             };
 
-        _methodName21 = "removePlanTemplateSection";
+        _methodName22 = "removePlanTemplateSection";
 
-        _methodParameterTypes21 = new String[] {
+        _methodParameterTypes22 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName22 = "store";
+        _methodName23 = "store";
 
-        _methodParameterTypes22 = new String[] {
+        _methodParameterTypes23 = new String[] {
                 "com.ext.portlet.model.PlanTemplateSection"
             };
 
-        _methodName23 = "remove";
+        _methodName24 = "remove";
 
-        _methodParameterTypes23 = new String[] {
+        _methodParameterTypes24 = new String[] {
                 "com.ext.portlet.model.PlanTemplateSection"
             };
     }
@@ -748,14 +754,43 @@ public class PlanTemplateSectionLocalServiceClp
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.PlanTemplateSection> findByPlanSectionDefinitionId(
+        java.lang.Long planSectionDefinitionId) throws java.lang.Exception {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20,
+                    new Object[] {
+                        ClpSerializer.translateInput(planSectionDefinitionId)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof java.lang.Exception) {
+                throw (java.lang.Exception) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.PlanTemplateSection>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public com.ext.portlet.model.PlanTemplateSection addPlanTemplateSection(
         java.lang.Long planTemplateId, java.lang.Long sectionId, int weight)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20,
+            returnObj = _invokableLocalService.invokeMethod(_methodName21,
+                    _methodParameterTypes21,
                     new Object[] {
                         ClpSerializer.translateInput(planTemplateId),
                         
@@ -787,8 +822,8 @@ public class PlanTemplateSectionLocalServiceClp
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName21,
-                _methodParameterTypes21,
+            _invokableLocalService.invokeMethod(_methodName22,
+                _methodParameterTypes22,
                 new Object[] {
                     ClpSerializer.translateInput(planTemplateId),
                     
@@ -818,8 +853,8 @@ public class PlanTemplateSectionLocalServiceClp
     public void store(com.ext.portlet.model.PlanTemplateSection section)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName22,
-                _methodParameterTypes22,
+            _invokableLocalService.invokeMethod(_methodName23,
+                _methodParameterTypes23,
                 new Object[] { ClpSerializer.translateInput(section) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -841,8 +876,8 @@ public class PlanTemplateSectionLocalServiceClp
     public void remove(com.ext.portlet.model.PlanTemplateSection section)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName23,
-                _methodParameterTypes23,
+            _invokableLocalService.invokeMethod(_methodName24,
+                _methodParameterTypes24,
                 new Object[] { ClpSerializer.translateInput(section) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);

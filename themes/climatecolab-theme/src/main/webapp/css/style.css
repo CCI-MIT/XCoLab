@@ -289,6 +289,16 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar .how {float:left; padding: 0;  width:105px; height:37px;background:url(../images/contest-icon-how.png) no-repeat 10px 6px; }
 .blueheaderbar .how a {height:27px;padding-top:10px; margin-left:33px; display:inline-block;}
 
+/* users page */
+.blueheaderbar .user {float:left; width:356px; height:37px; padding-left:9px;}
+.blueheaderbar .user a {font-weight: bold; padding-top:10px; height:27px; display:inline-block;}
+.blueheaderbar .activity {float:left; width:125px; height:37px; }
+.blueheaderbar .activity a {font-weight: bold; height:27px; padding-top:10px; margin-left:10px; display:inline-block;}
+.blueheaderbar .category {float:left;  width:125px; height:37px; }
+.blueheaderbar .category a {font-weight: bold; height:27px; padding-top:10px; margin-left:10px; display:inline-block;}
+.blueheaderbar .seniority {float:left; width:125px; height:37px; }
+.blueheaderbar .seniority a {font-weight: bold; height:27px; padding-top:10px; margin-left:10px; display:inline-block;}
+
 /* proposal page */
 .blueheaderbar .proposalname {float:left; width:645px; height:37px; padding-left:9px;}
 .blueheaderbar.completed .proposalname {width:765px;}
@@ -584,6 +594,11 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .grid a  {width: 100%;}
 .filter {float:right; width:180px; height:27px;}
 .filter input {width:170px; height:27px; padding:1px 0 0 8px; border:1px solid #bdb7b2; font:12px "Lucida Grande", Arial, sans-serif; /*color:#bdb7b2;*/}
+.users-filter {float:right; padding-right:240px; height:27px;}
+.users-filter input {font:12px "Lucida Grande", Arial, sans-serif; /*color:#bdb7b2;*/}
+#userFilterInput {height:24px;}
+#usersFilterSubmit {margin-bottom:6px; margin-top:6px;}
+.users-pagination {float:left;margin-top:40px;margin-left:10px;}
 
 
 /* contest boxes - rounded corners ------------- */
@@ -607,7 +622,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .contest-detail .heading {background:url(../images/pattern-6x6-lite.png) #e6e4d5; min-height:24px; padding:7px 0 5px 20px; font-size:22px;}
 .contest-detail .heading-title {margin: 20px 0;}
 .contest-detail .description {padding:18px 16px 20px 18px;}
-.contest-detail .description p {padding-right:22px; line-height:24px;}
+.contest-detail .description p {padding-right:22px; line-height:24px; margin: 0px;}
 
 .fixed-position-container {position: relative;}
 .fixed-position-inner-relative {overflow: auto;}
@@ -636,6 +651,16 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 
 .contestlist.featured td {background-color:#f2f1e9;}
 .contestlist tr.feat-bot {border-bottom:1px solid #9cbcca;}
+
+/* the table with rows of users  */
+.userslist {clear:both; margin-top:-4px;}
+.userslist td {height:30px; padding:11px 10px 0; font-size:14px; line-height:20px; color:#404041; border-bottom:1px solid #d2d1d0;}
+.userslist a {font-weight:700;}
+.userslist tr.top td {height:61px; padding-top:15px;}
+.userslist td.g {background-image:url(../images/pattern-tbl-6x6.png);}
+
+.userslist.featured td {background-color:#f2f1e9;}
+.userslist tr.feat-bot {border-bottom:1px solid #9cbcca;}
 
 
 /* to be replaced ???  edit and wiki buttons next to a proposal title */
@@ -825,12 +850,15 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 
 
 /* BUTTONS ----------------------------------------------------------------------------- */
-.blue-button {background:url(../images/button-blue-left.png) no-repeat left top; padding-left:11px; height:41px; width:auto; display:inline-block; line-height:normal;}
+.blue-button {background:url(../images/button-blue-left.png) no-repeat left top; padding-left:10px; height:41px; width:auto; display:inline-block; line-height:normal;}
 .blue-button a {background:url(../images/button-blue-right.png) no-repeat right top; padding:10px 21px 0 8px; height:31px; font-size:16px; font-weight:700; color:#fff; text-shadow:1px 1px 0 #114c65; display:inline-block;}
 .blue-button:hover {background:url(../images/button-blue-left-hover.png) no-repeat left top;}
 .blue-button:hover a, .blue-button a:hover{background:url(../images/button-blue-right-hover.png) no-repeat right top;}
 
-.gray-button {background:url(../images/button-gray-left.png) no-repeat left top; padding-left:11px; height:41px; width:auto; display:inline-block; line-height:normal;}
+.blue-button.disabled { opacity: 0.4;}
+.blue-button.disabled a { pointer-events: none;}
+
+.gray-button {background:url(../images/button-gray-left.png) no-repeat left top; padding-left:10px; height:41px; width:auto; display:inline-block; line-height:normal;}
 .gray-button a {background:url(../images/button-gray-right.png) no-repeat right top; padding:10px 21px 0 8px; height:31px; font-size:16px; font-weight:700; color:#fff; text-shadow:1px 1px 0 #114c65; display:inline-block;}
 /* .gray-button a:hover {color:#000; text-shadow:1px 1px 0 #ccc;} */
 /* ------------------------------------------------------------------------------------------------------- */

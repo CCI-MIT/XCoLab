@@ -240,6 +240,10 @@ public interface OntologyTermLocalService extends BaseLocalService,
         java.lang.Long parentId, java.lang.Long spaceId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
+    public java.util.List<com.ext.portlet.model.OntologyTerm> findByOntologyTermName(
+        java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
     public com.ext.portlet.model.OntologyTerm createTerm(
         java.lang.Long parentId, java.lang.String name, java.lang.Long spaceId,
         java.lang.String descriptionUrl)
@@ -288,4 +292,9 @@ public interface OntologyTermLocalService extends BaseLocalService,
     public java.util.List<java.lang.Long> findTagedIdsForClass(
         com.ext.portlet.model.OntologyTerm ontologyTerm, java.lang.Class clasz)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
+        java.lang.Long focusAreaId, java.lang.Long ontologyTermId)
+        throws java.lang.Exception;
 }

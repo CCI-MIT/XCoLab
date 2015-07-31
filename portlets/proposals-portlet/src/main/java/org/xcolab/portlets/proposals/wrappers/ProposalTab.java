@@ -2,6 +2,8 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -10,17 +12,25 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import java.util.List;
+
 public enum ProposalTab {
     DESCRIPTION("Description", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
-    ACTIONSIMPACTS("Model results", 
+    ACTIONSIMPACTS("Model results",
             new ProposalTabCanAccessAlgorithm() {
 
                 @Override
                 public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context,
                         PortletRequest request) {
+
                     // user is allowed to access actions and impacts only when there is a model defined 
                     // for current contest (model id in proposalwrapper will be > 0)
                     try {
+                        Long contestPK = context.getContest(request).getContestPK();
+                        Long contestPKofFirst2015Contest = 1301101L;
+                        if(contestPK > contestPKofFirst2015Contest){
+                            return false;
+                        }
                         return context.getProposalWrapped(request).getModelId() > 0;
                     } catch (PortalException e) {
                         _log.error("Can't access proposals model id", e);
@@ -35,7 +45,7 @@ public enum ProposalTab {
     IMPACT("Impact", ProposalTabCanAccessAlgorithm.impactViewAccess, ProposalTabCanAccessAlgorithm.impactEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
     TEAM("Contributors", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.membersCount),
     COMMENTS("Comments", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.commentsCount),
-    DISCUSSION("Evaluation", ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.discussionCommentsCount),
+    EVALUATION("Evaluation", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.evaluationCommentsCount),
     ADVANCING("Judging Decision",ProposalTabCanAccessAlgorithm.advancingAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     SCREENING("Screening", ProposalTabCanAccessAlgorithm.screeningAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     ADMIN("Admin", ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),

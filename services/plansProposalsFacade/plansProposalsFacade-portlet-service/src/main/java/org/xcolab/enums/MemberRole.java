@@ -1,11 +1,14 @@
 package org.xcolab.enums;
 
+import org.apache.commons.lang.WordUtils;
+
 public enum MemberRole {
     /**
      * Important:
      * Whenever these roles are modified (which should never happen) these Ids should be updated as well
      */
 	ALL(0L, "All"),
+    GUEST(10119L, "Guest"),
     MEMBER(10122L, "User"),
     FELLOW(193261L, "Fellow"),
     ADVISOR(193260L, "Advisor"),
@@ -14,7 +17,8 @@ public enum MemberRole {
     STAFF(31704L, "Staff", "Moderator", "Administrator"),
     MODERATOR(31213L, "Staff"),
     CATALYST(1430078L, "Catalyst"),
-    CONTESTMANAGER(1950101L, "Contest Manager");
+    CONTESTMANAGER(1950101L, "Contest Manager"),
+    IMPACT_ASSESSMENT_FELLOW(1975251L, "Impact Assessment Fellow");
 
     
     private final String[] roleNames;
@@ -28,10 +32,27 @@ public enum MemberRole {
     } 
 
     public String getPrintName() {
-        return name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase();
+        String printName = WordUtils.capitalizeFully((name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase()).replaceAll("_"," "));
+            if (printName.equalsIgnoreCase("Contestmanager")) {
+                return "Staff";
+            }
+        else
+            return printName;
+    }
+
+    public String getImageUrl() {
+        if (name().equalsIgnoreCase(MemberRole.IMPACT_ASSESSMENT_FELLOW.name())){
+            return MemberRole.FELLOW.name().toLowerCase();
+        }
+        else if (name().equalsIgnoreCase(MemberRole.CONTESTMANAGER.name()) ){
+            return MemberRole.STAFF.name().toLowerCase();
+        }
+        else
+            return name().toLowerCase();
     }
     
     public String getLowerCase() {
+
         return name().toLowerCase();
     }
 

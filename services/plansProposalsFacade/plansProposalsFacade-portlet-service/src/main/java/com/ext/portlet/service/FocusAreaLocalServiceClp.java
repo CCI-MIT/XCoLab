@@ -56,6 +56,8 @@ public class FocusAreaLocalServiceClp implements FocusAreaLocalService {
     private String[] _methodParameterTypes23;
     private String _methodName24;
     private String[] _methodParameterTypes24;
+    private String _methodName25;
+    private String[] _methodParameterTypes25;
 
     public FocusAreaLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -174,6 +176,13 @@ public class FocusAreaLocalServiceClp implements FocusAreaLocalService {
         _methodName24 = "getOntologyTermFromFocusAreaWithOntologySpace";
 
         _methodParameterTypes24 = new String[] {
+                "com.ext.portlet.model.FocusArea",
+                "com.ext.portlet.model.OntologySpace"
+            };
+
+        _methodName25 = "getAllOntologyTermsFromFocusAreaWithOntologySpace";
+
+        _methodParameterTypes25 = new String[] {
                 "com.ext.portlet.model.FocusArea",
                 "com.ext.portlet.model.OntologySpace"
             };
@@ -882,5 +891,43 @@ public class FocusAreaLocalServiceClp implements FocusAreaLocalService {
         }
 
         return (com.ext.portlet.model.OntologyTerm) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.OntologyTerm> getAllOntologyTermsFromFocusAreaWithOntologySpace(
+        com.ext.portlet.model.FocusArea focusArea,
+        com.ext.portlet.model.OntologySpace ontologySpace)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25,
+                    new Object[] {
+                        ClpSerializer.translateInput(focusArea),
+                        
+                    ClpSerializer.translateInput(ontologySpace)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.OntologyTerm>) ClpSerializer.translateOutput(returnObj);
     }
 }

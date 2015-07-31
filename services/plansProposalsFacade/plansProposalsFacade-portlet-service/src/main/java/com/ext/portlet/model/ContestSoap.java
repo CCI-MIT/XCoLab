@@ -48,6 +48,7 @@ public class ContestSoap implements Serializable {
     private String _contestCreationStatus;
     private long _defaultModelId;
     private String _otherModels;
+    private String _defaultModelSettings;
     private double _points;
     private long _defaultParentPointType;
     private String _pointDistributionStrategy;
@@ -96,6 +97,7 @@ public class ContestSoap implements Serializable {
         soapModel.setContestCreationStatus(model.getContestCreationStatus());
         soapModel.setDefaultModelId(model.getDefaultModelId());
         soapModel.setOtherModels(model.getOtherModels());
+        soapModel.setDefaultModelSettings(model.getDefaultModelSettings());
         soapModel.setPoints(model.getPoints());
         soapModel.setDefaultParentPointType(model.getDefaultParentPointType());
         soapModel.setPointDistributionStrategy(model.getPointDistributionStrategy());
@@ -442,6 +444,14 @@ public class ContestSoap implements Serializable {
 
     public void setOtherModels(String otherModels) {
         _otherModels = otherModels;
+    }
+
+    public String getDefaultModelSettings() {
+        return _defaultModelSettings;
+    }
+
+    public void setDefaultModelSettings(String defaultModelSettings) {
+        _defaultModelSettings = defaultModelSettings;
     }
 
     public double getPoints() {

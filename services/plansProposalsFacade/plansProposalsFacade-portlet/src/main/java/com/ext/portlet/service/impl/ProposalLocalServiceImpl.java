@@ -15,7 +15,7 @@ import javax.mail.internet.AddressException;
 import javax.portlet.PortletRequest;
 
 import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
@@ -52,9 +52,6 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
@@ -1340,9 +1337,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
             DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
 
-            // TODO the following two lines are only temporary until the evaluation tab will be online!!!
-            discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
-            DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
+            // uncomment these lines to post promotion comment to standard comment thread
+            // discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
+            // DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
         }
     }
 
@@ -1548,6 +1545,18 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return String.format(link, contest.getContestPK(), contestPhase.getContestPhasePK(), proposal.getProposalId());
     }
 
+
+    /**
+     * Returns list of proposals referenced by given proposal that are relevant for the ingtegration contests
+     * @param proposalId                        The proposal for which subproposals should be returned
+     * @return collection of referenced proposals
+     */
+    public List<Proposal> getContestIntegrationRelevantSubproposals(long proposalId) throws SystemException, PortalException {
+        boolean onlyWithContestIntegrationRelevance = true;
+        boolean includeProposalsInSameContest = false;
+        return getSubproposals(proposalId, includeProposalsInSameContest, onlyWithContestIntegrationRelevance);
+    }
+
     /**
      * Returns list of proposals referenced by given proposal
      * @param proposalId                        The proposal for which subproposals should be returned
@@ -1556,8 +1565,21 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @return collection of referenced proposals
      */
     public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest) throws SystemException, PortalException {
-        Set<Long> detectedIds = new HashSet<Long>();
+        boolean onlyWithContestIntegrationRelevance = false;
+        return getSubproposals(proposalId, includeProposalsInSameContest, onlyWithContestIntegrationRelevance);
+    }
 
+    /**
+     * Returns list of proposals referenced by given proposal
+     * @param proposalId                        The proposal for which subproposals should be returned
+     * @param includeProposalsInSameContest     Specifies whether linked proposals in the same contest as the passed proposal
+     *                                          should be included in the result or not
+     * @param onlyWithContestIntegrationRelevance Specifies whether only proposal with relevance for integration should be included
+     *
+     * @return collection of referenced proposals
+     */
+    public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest, boolean onlyWithContestIntegrationRelevance) throws SystemException, PortalException {
+        Set<Long> detectedIds = new HashSet<Long>();
 
         for (ProposalAttribute attribute: getAttributes(proposalId)) {
 
@@ -1565,6 +1587,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
 
                 if (StringUtils.isBlank(psd.getType())) {
+                    continue;
+                }
+
+                if(onlyWithContestIntegrationRelevance && !psd.getContestIntegrationRelevance()){
                     continue;
                 }
 
@@ -1621,14 +1647,24 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public ContestPhase getLatestProposalContestPhase(long proposalId) throws PortalException, SystemException {
         Proposal2Phase latestP2p = null;
         for (Proposal2Phase p2p: proposal2PhaseLocalService.getByProposalId(proposalId)) {
-            if (latestP2p == null || p2p.getVersionTo() == 0 || latestP2p.getVersionTo() < p2p.getVersionTo()) {
-                latestP2p = p2p;
+
+            if (proposal2PhaseLocalService.isContestPhaseOfProposal2PhaseValidInContest(p2p)){
+                // This is always the most current phase
+                if (p2p.getVersionTo() == -1) {
+                    latestP2p = p2p;
+                    break;
+                }
+
+                if ((latestP2p == null || p2p.getVersionTo() == 0 || latestP2p.getVersionTo() < p2p.getVersionTo())) {
+                    latestP2p = p2p;
+                }
             }
         }
-
         return contestPhaseLocalService.getContestPhase(latestP2p.getContestPhaseId());
     }
-    
+
+
+
     /**
      * Returns latest contest to which proposal was submited
      * 

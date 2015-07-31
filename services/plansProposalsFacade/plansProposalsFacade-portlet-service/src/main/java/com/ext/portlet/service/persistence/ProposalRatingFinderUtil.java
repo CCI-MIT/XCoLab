@@ -24,6 +24,12 @@ public class ProposalRatingFinderUtil {
             judgeType, judgeId, contestPhaseId, start, end);
     }
 
+    public static java.util.List<com.ext.portlet.model.ProposalRating> findByContestPhaseId(
+        long contestPhaseId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getFinder().findByContestPhaseId(contestPhaseId, start, end);
+    }
+
     public static ProposalRatingFinder getFinder() {
         if (_finder == null) {
             _finder = (ProposalRatingFinder) PortletBeanLocatorUtil.locate(com.ext.portlet.service.ClpSerializer.getServletContextName(),

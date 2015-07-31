@@ -17,6 +17,7 @@ import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.*;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalRatingTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
@@ -25,7 +26,6 @@ import java.util.*;
 @Controller
 @RequestMapping("view")
 public class ProposalSectionsTabController extends BaseProposalTabController {
-
     @Autowired
     private ProposalsContext proposalsContext;
 
@@ -44,6 +44,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         //findEntitiesAndPopulateModel(proposalId, contestId, phaseId, model);
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
+        model.addAttribute("edit", edit);
         
         if (move) {
         	// get base proposal from base contest
@@ -103,6 +104,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         Long userId = proposalsContext.getUser(request).getUserId();
         judgeProposalBean.setContestPhaseId(contestPhaseId);
 
+
         //find existing ratings
         List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
                 userId,
@@ -120,6 +122,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             judgeProposalBean.setRatingValues(existingJudgeRating);
             judgeProposalBean.setComment(existingComment);
         }
+
         model.addAttribute("judgeProposalBean", judgeProposalBean);
 
         Proposal proposal = proposalsContext.getProposal(request);
@@ -132,4 +135,5 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
         return "proposalDetails";
     }
+
 }

@@ -65,8 +65,8 @@ public class SingleSignOnController {
 
                 // Do the linkage of OpenID or Facebook ID
                 u = UserLocalServiceUtil.getUser(MapUtil.getLong(resultsMap, "userId"));
-                String fbIdString = (String) portletSession.getAttribute("FACEBOOK_USER_ID",PortletSession.APPLICATION_SCOPE);
-                String openId = (String) portletSession.getAttribute("SSO_OPENID_ID",PortletSession.APPLICATION_SCOPE);
+                String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
+                String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
                 String profileImageId = (String)portletSession.getAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, PortletSession.APPLICATION_SCOPE);
 
                 if (Validator.isNotNull(profileImageId) && u.getPortraitId() == 0) {

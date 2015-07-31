@@ -112,10 +112,11 @@ create table xcolab_Contest (
 	contestCreationStatus VARCHAR(75) null,
 	defaultModelId LONG,
 	otherModels VARCHAR(75) null,
+	defaultModelSettings VARCHAR(75) null,
 	points DOUBLE,
 	defaultParentPointType LONG,
 	pointDistributionStrategy VARCHAR(75) null,
-	emailTemplateUrl VARCHAR(75) null,
+	emailTemplateUrl VARCHAR(500) null,
 	show_in_tile_view BOOLEAN,
 	show_in_list_view BOOLEAN,
 	show_in_outline_view BOOLEAN
@@ -277,7 +278,7 @@ create table xcolab_FocusAreaOntologyTerm (
 create table xcolab_ImpactDefaultSeries (
 	seriesId LONG not null,
 	name VARCHAR(75) not null,
-	description VARCHAR(75) null,
+	description VARCHAR(1000) null,
 	focusAreaId LONG,
 	visible BOOLEAN,
 	editable BOOLEAN,
@@ -667,7 +668,8 @@ create table xcolab_PlanSectionDefinition (
 	characterLimit INTEGER,
 	focusAreaId LONG,
 	tier LONG,
-	locked BOOLEAN
+	locked BOOLEAN,
+	contestIntegrationRelevance BOOLEAN
 );
 
 create table xcolab_PlanSectionPlanMap (
@@ -881,14 +883,16 @@ create table xcolab_ProposalRating (
 	ratingValueId LONG,
 	comment_ TEXT null,
 	commentEnabled BOOLEAN,
-	otherDataString VARCHAR(75) null
+	otherDataString VARCHAR(75) null,
+	onlyForInternalUsage BOOLEAN
 );
 
 create table xcolab_ProposalRatingType (
 	id_ LONG not null primary key,
 	label VARCHAR(75) null,
 	description TEXT null,
-	judgeType INTEGER
+	judgeType INTEGER,
+	isActive BOOLEAN
 );
 
 create table xcolab_ProposalRatingValue (
@@ -924,6 +928,22 @@ create table xcolab_ProposalVote (
 	primary key (contestPhaseId, userId)
 );
 
+create table xcolab_Role_ (
+	roleId LONG not null primary key,
+	name VARCHAR(75) null
+);
+
+create table xcolab_RolesCategory (
+	roleId LONG not null primary key,
+	categoryName VARCHAR(75) null,
+	roleOrdinal INTEGER
+);
+
+create table xcolab_SocialActivity (
+	activityId LONG not null primary key,
+	userId LONG
+);
+
 create table xcolab_StaffMember (
 	id_ LONG not null primary key,
 	userId LONG,
@@ -956,4 +976,16 @@ create table xcolab_TrackedVisitor2User (
 	uuid_ VARCHAR(36) null,
 	userId LONG,
 	createDate DATE null
+);
+
+create table xcolab_User_ (
+	userId LONG not null primary key,
+	createDate DATE null,
+	screenName VARCHAR(75) null
+);
+
+create table xcolab_Users_Roles (
+	roleId LONG not null,
+	userId LONG not null,
+	primary key (roleId, userId)
 );

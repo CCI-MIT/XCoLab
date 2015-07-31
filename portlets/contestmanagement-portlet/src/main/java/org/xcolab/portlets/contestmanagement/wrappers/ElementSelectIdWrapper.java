@@ -12,8 +12,9 @@ public class ElementSelectIdWrapper {
     private List<LabelValue> selectionItems;
     private Long elementId;
 
-    public ElementSelectIdWrapper(Long elementId) {
+    public ElementSelectIdWrapper(Long elementId, List<LabelValue> selectionItems) {
         this.elementId = elementId;
+        this.selectionItems = selectionItems;
     }
 
     public Long getElementId() {

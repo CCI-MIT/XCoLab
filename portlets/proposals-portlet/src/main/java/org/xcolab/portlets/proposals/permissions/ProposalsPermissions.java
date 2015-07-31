@@ -2,10 +2,13 @@ package org.xcolab.portlets.proposals.permissions;
 
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.*;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.portal.model.MembershipRequestConstants;
+import org.xcolab.enums.MemberRole;
+import org.xcolab.enums.MemberRoleChoiceAlgorithm;
 import org.xcolab.portlets.proposals.utils.ProposalsActions;
 
 import com.ext.portlet.contests.ContestStatus;
@@ -124,7 +127,17 @@ public class ProposalsPermissions {
             return true;
         return false;
     }
-    
+
+
+
+    public boolean getCanPublicRating() throws SystemException, PortalException {
+        boolean canPublicRating = true;
+
+        if (user.isDefaultUser()) // || getCanJudgeActions() || getIsTeamMember())
+            canPublicRating = false;
+
+        return canPublicRating;
+    }
     
     
     public boolean getCanSeeRequestMembershipButton() throws SystemException, PortalException {
@@ -262,6 +275,27 @@ public class ProposalsPermissions {
         return permissionChecker.hasPermission(contestGroupId, portletId, primKey, ProposalsActions.CAN_JUDGE_ACTIONS) || getCanAdminAll();
     }
 
+    public boolean getCanContestManagerActions() {
+        boolean canContestManagerActions = false;
+        try {
+            MemberRole memberRole = MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm.getHighestMemberRoleForUser(user);
+            canContestManagerActions = (memberRole == MemberRole.CONTESTMANAGER || memberRole == MemberRole.STAFF);
+        } catch (Exception e){
+        }
+        return canContestManagerActions;
+    }
+
+    public boolean getCanIAFActions() {
+        boolean canIAFAction = false;
+        try {
+            MemberRole memberRole = MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm.getHighestMemberRoleForUser(user);
+            canIAFAction = (memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW);
+        } catch (Exception e){
+        }
+        return canIAFAction;
+    }
+
+
 
     public boolean getCanAdminJudgeActions() {
         return contestPhase.getFellowScreeningActive();
@@ -278,7 +312,37 @@ public class ProposalsPermissions {
     public boolean getCanCopyProposal() throws SystemException {
     	return !ContestLocalServiceUtil.findByActive(true).isEmpty();
     }
-    
+    public boolean getCanPromoteProposalToNextPhase() throws Exception {
+        if(contestPhase != null) {
+            return getCanPromoteProposalToNextPhase(contestPhase);
+        } else {
+            return false;
+        }
+    }
+
+    public boolean getCanPromoteProposalToNextPhase(ContestPhase contestPhase) throws Exception{
+        //getViewContestPhaseId
+        if(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()){
+            // Proposal is currently associated with a different contest and is active there
+            return false;
+        }
+
+        boolean onlyPromoteIfCurrentContestPhaseIsNotJudged = contestPhase.getFellowScreeningActive();
+        if(onlyPromoteIfCurrentContestPhaseIsNotJudged) {
+            return false;
+        }
+
+        Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
+        ContestPhase activePhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(latestProposalContest);
+        boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
+
+        if (onlyPromoteIfThisIsNotTheLatestContestPhaseInContest) {
+            return false;
+        }
+
+        return getCanAdminAll();
+    }
+
     public boolean getCanMoveProposalAndHideInCurrentContest() throws SystemException, PortalException {
         if(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()){
             // Proposal is currently associated with a different contest and is active there (i.e. has been moved before) (3)
@@ -288,6 +352,7 @@ public class ProposalsPermissions {
         if (getIsCreationAllowedByPhase()){
             return isOwner() || getCanAdminAll();
         }
+
         // Otherwise just the admin should be able to move between contests
     	return getCanAdminAll();
     }

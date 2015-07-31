@@ -407,7 +407,7 @@ public class ProposalWrapper {
 
     public List<ProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {
         if (members == null) {
-            members = new ArrayList<ProposalTeamMemberWrapper>();
+            members = new ArrayList<>();
             for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
                 members.add(new ProposalTeamMemberWrapper(proposal, user));
             }

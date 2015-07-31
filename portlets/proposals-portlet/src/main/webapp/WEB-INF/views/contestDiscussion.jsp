@@ -6,7 +6,7 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/discussions"
+	xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	<jsp:directive.include file="./init.jspx" />
 	<div class="proposal-head">
@@ -24,7 +24,6 @@
 	</div>
 	<!-- /proposal-head -->	
 	<div id="content">
-	
-		<discussionsTagFiles:discussionComments discussionId="${discussionId }" />
+		<discussionsTagFiles:evaluationComments evaluationDiscussionId="${discussionId }" />
 	</div>
 </jsp:root>

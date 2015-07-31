@@ -290,11 +290,40 @@ public class Proposal2PhaseLocalServiceUtil {
         return getService().getByProposalId(proposalId);
     }
 
+    public static int getLatestProposalVersionInActiveContest(
+        java.lang.Long proposalId) throws java.lang.Exception {
+        return getService().getLatestProposalVersionInActiveContest(proposalId);
+    }
+
+    public static com.ext.portlet.model.ContestPhase getLatestContestPhaseInContest(
+        java.lang.Long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getLatestContestPhaseInContest(proposalId);
+    }
+
     public static com.ext.portlet.model.Contest getCurrentContestForProposal(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getCurrentContestForProposal(proposalId);
+    }
+
+    public static boolean isContestPhaseOfProposal2PhaseValidInContest(
+        com.ext.portlet.model.Proposal2Phase proposal2Phase) {
+        return getService()
+                   .isContestPhaseOfProposal2PhaseValidInContest(proposal2Phase);
+    }
+
+    public static boolean isContestPhaseValidInContest(long contestPhaseId) {
+        return getService().isContestPhaseValidInContest(contestPhaseId);
+    }
+
+    public static com.ext.portlet.model.Proposal2Phase getForVersion(
+        java.lang.Long proposalId, int proposalVersionId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getForVersion(proposalId, proposalVersionId);
     }
 
     public static com.ext.portlet.model.Proposal2Phase getForVersion(
@@ -306,7 +335,8 @@ public class Proposal2PhaseLocalServiceUtil {
 
     public static java.util.List<java.lang.Long> getContestPhasesForProposal(
         long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestPhasesForProposal(proposalId);
     }
 
@@ -315,6 +345,11 @@ public class Proposal2PhaseLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getActiveContestPhasesForProposal(proposalId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Proposal2Phase> getByContestPhaseId(
+        long contestPhaseId) throws java.lang.Exception {
+        return getService().getByContestPhaseId(contestPhaseId);
     }
 
     public static void clearService() {

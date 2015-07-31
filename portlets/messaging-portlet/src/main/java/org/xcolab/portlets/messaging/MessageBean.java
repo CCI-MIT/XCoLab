@@ -26,7 +26,11 @@ public class MessageBean implements Serializable {
     public MessageBean(Message message) throws PortalException, SystemException {
         this.message = message;
         for (MessageRecipientStatus recipient: MessageLocalServiceUtil.getRecipients(message)) {
-            recipients.add(UserLocalServiceUtil.getUser(recipient.getUserId()));
+            try {
+                recipients.add(UserLocalServiceUtil.getUser(recipient.getUserId()));
+            } catch (Exception e){
+                // User is not available anymore
+            }
         }
     }
     

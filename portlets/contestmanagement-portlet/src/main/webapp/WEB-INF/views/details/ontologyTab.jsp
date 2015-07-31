@@ -82,13 +82,11 @@
 			var indexOfTermId = selectedOntologyTerms.indexOf(parseInt(term));
 			if (indexOfTermId > 0) return;
 			selectedOntologyTerms.push(parseInt(term));
-			console.log("add -> selectedOntologyTerms", selectedOntologyTerms);
 			jQuery("#selectedOntologyTerms").val(selectedOntologyTerms.toString());
 		}
 
 		function removeOntologyTermFromSelection(term) {
 			var indexOfTermId = selectedOntologyTerms.indexOf(parseInt(term));
-			//console.log("remove -> indexOfTermId", indexOfTermId);
 			if (indexOfTermId < 0) return;
 			selectedOntologyTerms.splice(indexOfTermId, 1);
 			console.log("remove -> selectedOntologyTerms", selectedOntologyTerms);

@@ -9,21 +9,17 @@
 	<portlet>
 		<portlet-name>members-portlet</portlet-name>
 		<display-name>members-portlet</display-name>
-		<portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
 		<init-param>
-			<name>javax.portlet.faces.defaultViewId.view</name>
-			<value>/xhtml/view.xhtml</value>
-		</init-param>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.edit</name>
-			<value>/xhtml/edit.xhtml</value>
+    		<name>check-auth-token</name>
+    		<value>false</value>
 		</init-param>
 		<supports>
 			<mime-type>text/html</mime-type>
 			<portlet-mode>edit</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>MIT Members (ICE)</title>
+			<title>Members Portlet</title>
 			<short-title>Members</short-title>
 			<keywords>members</keywords>
 		</portlet-info>

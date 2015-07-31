@@ -12,6 +12,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngine;
+import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
+import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 
 import javax.mail.internet.InternetAddress;
@@ -19,9 +21,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Thomas on 3/5/2015.
@@ -36,6 +36,7 @@ public class ContestMassActionMethods {
 
     public static void reportOfPeopleInCurrentPhase(List<Long> contestList, Object ResourceResponseObject, PortletRequest request) throws Exception{
 
+        String exportFileName ="reportOfPeopleInCurrentPhase";
         ResourceResponse response = (ResourceResponse) ResourceResponseObject;
         CsvExportUtil csvExportUtil = new CsvExportUtil();
         csvExportUtil.addRowToExportData(CSV_EXPORT_HEADER);
@@ -43,20 +44,21 @@ public class ContestMassActionMethods {
         for(Long contestId : contestList){
             try {
                 List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
-                csvExportUtil.addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase);
+                ContestPhase activeContestPhase = ContestLocalServiceUtil.getActivePhase(ContestLocalServiceUtil.getContest(contestId));
+                csvExportUtil.addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
             } catch (Exception e){
                 _log.warn("Failed to export data for csv: ", e);
             }
         }
 
-        csvExportUtil.initiateDownload("reportOfPeopleInCurrentPhase", request, response);
+        csvExportUtil.initiateDownload(exportFileName, request, response);
 
     }
     public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject, PortletRequest request) throws Exception{
 
         MassMessageBean massMessageBean = (MassMessageBean) massMessageWrapperObject;
-        List<Long> recipientIds = new ArrayList<>();
-        List<InternetAddress> recipientAddresses = new  ArrayList<>();
+        Set<Long> recipientIds = new HashSet<>();
+        Set<InternetAddress> recipientAddresses = new HashSet<>();
 
         for(Long contestId : contestList) {
             List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
@@ -121,6 +123,21 @@ public class ContestMassActionMethods {
         }
     }
 
+    public static void setFlag(List<Long> contestList, Object flagTexToolTipValue, PortletRequest request) throws Exception{
+        for(Long contestId : contestList) {
+            Contest contest = ContestLocalServiceUtil.getContest(contestId);
+            ContestFlagTextToolTipBean contestFlagTextToolTipBean = (ContestFlagTextToolTipBean) flagTexToolTipValue;
+            contestFlagTextToolTipBean.persist(contest);
+        }
+    }
+
+    public static void setModelSettings(List<Long> contestList, Object modelSettings, PortletRequest request) throws Exception{
+        for(Long contestId : contestList) {
+            Contest contest = ContestLocalServiceUtil.getContest(contestId);
+            ContestModelSettingsBean contestModelSettingsBean = (ContestModelSettingsBean) modelSettings;
+            contestModelSettingsBean.persist(contest);
+        }
+    }
 
     private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK) throws Exception{
         Contest contest = ContestLocalServiceUtil.getContest(contestPK);

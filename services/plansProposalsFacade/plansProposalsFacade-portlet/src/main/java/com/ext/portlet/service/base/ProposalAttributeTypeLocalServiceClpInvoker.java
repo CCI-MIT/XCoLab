@@ -41,10 +41,10 @@ public class ProposalAttributeTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName626;
-    private String[] _methodParameterTypes626;
-    private String _methodName627;
-    private String[] _methodParameterTypes627;
+    private String _methodName658;
+    private String[] _methodParameterTypes658;
+    private String _methodName659;
+    private String[] _methodParameterTypes659;
 
     public ProposalAttributeTypeLocalServiceClpInvoker() {
         _methodName0 = "addProposalAttributeType";
@@ -129,13 +129,13 @@ public class ProposalAttributeTypeLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalAttributeType"
             };
 
-        _methodName626 = "getBeanIdentifier";
+        _methodName658 = "getBeanIdentifier";
 
-        _methodParameterTypes626 = new String[] {  };
+        _methodParameterTypes658 = new String[] {  };
 
-        _methodName627 = "setBeanIdentifier";
+        _methodName659 = "setBeanIdentifier";
 
-        _methodParameterTypes627 = new String[] { "java.lang.String" };
+        _methodParameterTypes659 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -227,13 +227,13 @@ public class ProposalAttributeTypeLocalServiceClpInvoker {
             return ProposalAttributeTypeLocalServiceUtil.updateProposalAttributeType((com.ext.portlet.model.ProposalAttributeType) arguments[0]);
         }
 
-        if (_methodName626.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes626, parameterTypes)) {
+        if (_methodName658.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes658, parameterTypes)) {
             return ProposalAttributeTypeLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName627.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes627, parameterTypes)) {
+        if (_methodName659.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes659, parameterTypes)) {
             ProposalAttributeTypeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

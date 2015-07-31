@@ -21,12 +21,12 @@ public interface ProposalTabActivityCountAlgorithm {
     };
 
 
-    public static ProposalTabActivityCountAlgorithm discussionCommentsCount = new ProposalTabActivityCountAlgorithm() {
+    public static ProposalTabActivityCountAlgorithm evaluationCommentsCount = new ProposalTabActivityCountAlgorithm() {
 
         @Override
         public int getActivityCount(ProposalsContext context, PortletRequest request) {
             try {
-                return (int) context.getProposalWrapped(request).getDiscussionCommentsCount();
+                return (int) context.getProposalWrapped(request).getEvaluationCommentsCount();
             } catch (PortalException e) {
                 _log.error("can't get comments count for a proposal", e);
             } catch (SystemException e) {

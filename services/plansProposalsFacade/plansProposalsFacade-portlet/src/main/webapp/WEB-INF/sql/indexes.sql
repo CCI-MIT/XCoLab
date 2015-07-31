@@ -169,6 +169,7 @@ create index IX_C8499DDD on xcolab_PlanSectionPlanMap (sectionId);
 create index IX_79B9BCB6 on xcolab_PlanTeamHistory (planId);
 create index IX_84A1FEF0 on xcolab_PlanTeamHistory (planId, userId);
 
+create index IX_CAECF835 on xcolab_PlanTemplateSection (planSectionId);
 create index IX_32F8E764 on xcolab_PlanTemplateSection (planTemplateId);
 
 create index IX_EC7AD748 on xcolab_PlanType (isDefault);
@@ -227,3 +228,9 @@ create index IX_497348F2 on xcolab_ProposalVote (userId);
 create index IX_9C5CE364 on xcolab_StaffMember (userId);
 
 create index IX_21569857 on xcolab_TrackedVisit (uuid_);
+
+create index IX_FD2AB29 on xcolab_User_ (roles);
+create index IX_EA7236BE on xcolab_User_ (userId);
+
+create index IX_2EC2E39B on xcolab_Users_Roles (roleId);
+create index IX_2EC49C70 on xcolab_Users_Roles (userId);

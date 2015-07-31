@@ -2,28 +2,18 @@ package com.ext.portlet.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeMap;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.ImpactIteration;
 import com.ext.portlet.model.ImpactTemplateFocusAreaList;
 import com.ext.portlet.model.ImpactTemplateMaxFocusArea;
 import com.ext.portlet.model.ImpactTemplateSeries;
-import com.ext.portlet.service.ImpactIterationLocalServiceUtil;
 import com.ext.portlet.service.ImpactTemplateFocusAreaListLocalServiceUtil;
-import com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateLocalService;
 import com.ext.portlet.service.persistence.ImpactTemplateSeriesUtil;
 import com.google.common.collect.ImmutableSet;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseType;
@@ -58,6 +48,7 @@ import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.models.CollaboratoriumModelingService;
+import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
@@ -104,8 +95,11 @@ import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 
 import edu.mit.cci.roma.client.Simulation;
+import scala.Array;
 
 
 /**
@@ -129,6 +123,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestLocalServiceUtil} to access the contest local service.
      */
 
+    public static final List<Long> ANY_TERM_IDS = Arrays.asList(1L,2L,3L, 1300601L);
     public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on contest %s";
     private Random rand = new Random();
 
@@ -612,10 +607,13 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     public List<Contest> getContestsMatchingOntologyTerms(List<OntologyTerm> ontologyTerms) throws PortalException, SystemException{
+
         // remove terms that are root elements
         for (Iterator<OntologyTerm> i = ontologyTerms.iterator(); i.hasNext();){
             OntologyTerm o = i.next();
-            if (o.getParentId() == 0) i.remove();
+
+            if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) i.remove();
+
         }
         Long[][] terms = new Long[ontologyTerms.size()][];
         // get all child elements and add id's to array
@@ -1090,5 +1088,114 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) throws PortalException, SystemException {
         ImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);
         return impactTemplateMaxFocusAreaPersistence.findByFocusAreaListId(focusAreaList.getFocusAreaListId());
+    }
+
+
+    public List<Contest> getContestsByTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTermIds) throws Exception{
+
+        DynamicQuery queryContestsByTierLevelAndOntologyTermIds =
+            DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
+                    .add(PropertyFactoryUtil.forName("contestTier").eq(contestTier))
+                    .add(PropertyFactoryUtil.forName("focusAreaId").in(focusAreaOntologyTermIds));
+
+        return contestPersistence.findWithDynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
+    }
+
+    public List<Contest> getContestsByContestScheduleId(Long contestScheduleId) throws Exception{
+
+        DynamicQuery queryContestsByTierLevelAndOntologyTermIds =
+                DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
+                        .add(PropertyFactoryUtil.forName("contestScheduleId").eq(contestScheduleId))
+                        .add(PropertyFactoryUtil.forName("ContestPK").ne(0L));
+
+        return contestPersistence.findWithDynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
+    }
+
+    public List<Contest> getContestsByPlanTemplateId(Long planTemplateId) throws Exception{
+
+        DynamicQuery queryContestsByPlanTemplateId =
+                DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
+                        .add(PropertyFactoryUtil.forName("planTemplateId").eq(planTemplateId))
+                        .add(PropertyFactoryUtil.forName("ContestPK").ne(0L));
+
+        return contestPersistence.findWithDynamicQuery(queryContestsByPlanTemplateId);
+    }
+
+
+    public List<Contest> getSubContestsByOntologySpaceId(Contest contest, Long ontologySpaceId) throws Exception{
+        long focusAreaId = contest.getFocusAreaId();
+        long contestTier =  contest.getContestTier();
+        long lowerContestTier = contestTier - 1;
+
+        if(lowerContestTier < 1) {
+            new Exception("Contest " + contest.getContestPK() + " has no sub-contests!" );
+        }
+
+        List<Long> focusAreaOntologyTermIds =
+                FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(focusAreaId, ontologySpaceId);
+
+        return getContestsByTierLevelAndOntologyTermIds(lowerContestTier, focusAreaOntologyTermIds);
+    }
+
+    /**
+     * This method adds a year suffix to already completed contests. It iterates over all completed contests
+     * and automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
+     */
+    public void addContestYearSuffixToCompletedContests() throws SystemException, PortalException {
+        for (Contest priorContest : getContestsByActivePrivate(true, false)) {
+            addContestYearSuffixToContest(priorContest, true);
+        }
+    }
+
+    /**
+     * This method adds a year suffix to the passed contest. By passing the flag checkForCompleted, the method will only
+     * add the suffix for contests which latest contest phase is of type COMPLETED
+     * It automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
+     *
+     * @param contest               The contest that should get a year suffix
+     * @param checkForCompleted     Indicates whether contests that are not in a COMPLETED active contest phase should be ignored
+     */
+    public void addContestYearSuffixToContest(Contest contest, boolean checkForCompleted) {
+        try {
+            ContestPhase latestPhase = getActiveOrLastPhase(contest);
+            String[] contestNameParts = contest.getContestShortName().split(" ");
+
+            // Is in completed phase and inactive? - or is flag set to false?
+            boolean isCompleted = (ArrayUtil.isNotEmpty(contestNameParts) &&
+                    (latestPhase.getContestPhaseType() == ContestPhaseType.COMPLETED.getTypeId() ||
+                            latestPhase.getContestPhaseType() == ContestPhaseType.WINNERS_AWARDED.getTypeId()));
+            if (!checkForCompleted || isCompleted) {
+                String lastNamePart = contestNameParts[contestNameParts.length - 1];
+                String phaseEndYear = getYearStringFromDate(latestPhase.getPhaseStartDate());
+
+                String newContestShortName = null;
+                try {
+                    Integer.parseInt(lastNamePart);
+
+                    // Same year suffix detected - skip contest
+                    if (lastNamePart.equals(phaseEndYear)) {
+                        return;
+                    }
+
+                    // Unlikely event that a suffix has been created but the phase end date has changed - adapt to new suffix
+                    contestNameParts[contestNameParts.length - 1] = phaseEndYear;
+                    newContestShortName = StringUtils.join(contestNameParts, " ");
+                } catch (NumberFormatException e) {
+                    // No year suffix detected - add new one
+                    newContestShortName = contest.getContestShortName() + " " + phaseEndYear;
+                }
+
+                contest.setContestShortName(newContestShortName);
+                contest.persist();
+            }
+        } catch (Exception e) {
+            _log.error("Could not get latest contest phase of contest '" + contest.getContestPK() + "' to add year suffix or persist contest", e);
+        }
+    }
+
+    private String getYearStringFromDate(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+        df.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
+        return df.format(date);
     }
 }

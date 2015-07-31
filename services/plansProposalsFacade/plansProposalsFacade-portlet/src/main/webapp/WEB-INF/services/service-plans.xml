@@ -442,6 +442,7 @@
         <column name="focusAreaId" type="long" />
         <column name="tier" type="long" />
         <column name="locked" type="boolean" />
+        <column name="contestIntegrationRelevance" type="boolean" />
     </entity>
     
     <entity name="PlanSection" local-service="true">
@@ -521,6 +522,10 @@
         
         <finder name="PlanTemplateId" return-type="Collection">
             <finder-column name="planTemplateId" />
+        </finder>
+
+        <finder name="PlanSectionId" return-type="Collection">
+            <finder-column name="planSectionId" />
         </finder>
         
     </entity>

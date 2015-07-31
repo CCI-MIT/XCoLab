@@ -85,6 +85,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "contestCreationStatus", Types.VARCHAR },
             { "defaultModelId", Types.BIGINT },
             { "otherModels", Types.VARCHAR },
+            { "defaultModelSettings", Types.VARCHAR },
             { "points", Types.DOUBLE },
             { "defaultParentPointType", Types.BIGINT },
             { "pointDistributionStrategy", Types.VARCHAR },
@@ -93,7 +94,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "show_in_list_view", Types.BOOLEAN },
             { "show_in_outline_view", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(2048) null,ContestShortName VARCHAR(1024) null,ContestDescription VARCHAR(3072) null,ContestModelDescription VARCHAR(2048) null,ContestPositionsDescription VARCHAR(2048) null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(2048) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(1024) null,flagTooltip VARCHAR(1024) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(75) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(2048) null,ContestShortName VARCHAR(1024) null,ContestDescription VARCHAR(3072) null,ContestModelDescription VARCHAR(2048) null,ContestPositionsDescription VARCHAR(2048) null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(2048) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(1024) null,flagTooltip VARCHAR(1024) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,defaultModelSettings VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(500) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Contest";
     public static final String ORDER_BY_JPQL = " ORDER BY contest.weight ASC, contest.created ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Contest.weight ASC, xcolab_Contest.created ASC";
@@ -171,6 +172,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private String _contestCreationStatus;
     private long _defaultModelId;
     private String _otherModels;
+    private String _defaultModelSettings;
     private double _points;
     private long _defaultParentPointType;
     private String _pointDistributionStrategy;
@@ -231,6 +233,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setContestCreationStatus(soapModel.getContestCreationStatus());
         model.setDefaultModelId(soapModel.getDefaultModelId());
         model.setOtherModels(soapModel.getOtherModels());
+        model.setDefaultModelSettings(soapModel.getDefaultModelSettings());
         model.setPoints(soapModel.getPoints());
         model.setDefaultParentPointType(soapModel.getDefaultParentPointType());
         model.setPointDistributionStrategy(soapModel.getPointDistributionStrategy());
@@ -331,6 +334,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("contestCreationStatus", getContestCreationStatus());
         attributes.put("defaultModelId", getDefaultModelId());
         attributes.put("otherModels", getOtherModels());
+        attributes.put("defaultModelSettings", getDefaultModelSettings());
         attributes.put("points", getPoints());
         attributes.put("defaultParentPointType", getDefaultParentPointType());
         attributes.put("pointDistributionStrategy",
@@ -555,6 +559,13 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             setOtherModels(otherModels);
         }
 
+        String defaultModelSettings = (String) attributes.get(
+                "defaultModelSettings");
+
+        if (defaultModelSettings != null) {
+            setDefaultModelSettings(defaultModelSettings);
+        }
+
         Double points = (Double) attributes.get("points");
 
         if (points != null) {
@@ -587,9 +598,6 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         if (show_in_tile_view != null) {
             setShow_in_tile_view(show_in_tile_view);
         }
-        else {
-            setShow_in_tile_view(true);
-        }
 
         Boolean show_in_list_view = (Boolean) attributes.get(
                 "show_in_list_view");
@@ -597,18 +605,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         if (show_in_list_view != null) {
             setShow_in_list_view(show_in_list_view);
         }
-        else {
-            setShow_in_list_view(true);
-        }
 
         Boolean show_in_outline_view = (Boolean) attributes.get(
                 "show_in_outline_view");
 
         if (show_in_outline_view != null) {
             setShow_in_outline_view(show_in_outline_view);
-        }
-        else {
-            setShow_in_outline_view(true);
         }
     }
 
@@ -1152,6 +1154,21 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @JSON
     @Override
+    public String getDefaultModelSettings() {
+        if (_defaultModelSettings == null) {
+            return StringPool.BLANK;
+        } else {
+            return _defaultModelSettings;
+        }
+    }
+
+    @Override
+    public void setDefaultModelSettings(String defaultModelSettings) {
+        _defaultModelSettings = defaultModelSettings;
+    }
+
+    @JSON
+    @Override
     public double getPoints() {
         return _points;
     }
@@ -1315,6 +1332,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setContestCreationStatus(getContestCreationStatus());
         contestImpl.setDefaultModelId(getDefaultModelId());
         contestImpl.setOtherModels(getOtherModels());
+        contestImpl.setDefaultModelSettings(getDefaultModelSettings());
         contestImpl.setPoints(getPoints());
         contestImpl.setDefaultParentPointType(getDefaultParentPointType());
         contestImpl.setPointDistributionStrategy(getPointDistributionStrategy());
@@ -1578,6 +1596,15 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             contestCacheModel.otherModels = null;
         }
 
+        contestCacheModel.defaultModelSettings = getDefaultModelSettings();
+
+        String defaultModelSettings = contestCacheModel.defaultModelSettings;
+
+        if ((defaultModelSettings != null) &&
+                (defaultModelSettings.length() == 0)) {
+            contestCacheModel.defaultModelSettings = null;
+        }
+
         contestCacheModel.points = getPoints();
 
         contestCacheModel.defaultParentPointType = getDefaultParentPointType();
@@ -1610,7 +1637,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(83);
+        StringBundler sb = new StringBundler(85);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1680,6 +1707,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getDefaultModelId());
         sb.append(", otherModels=");
         sb.append(getOtherModels());
+        sb.append(", defaultModelSettings=");
+        sb.append(getDefaultModelSettings());
         sb.append(", points=");
         sb.append(getPoints());
         sb.append(", defaultParentPointType=");
@@ -1701,7 +1730,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(127);
+        StringBundler sb = new StringBundler(130);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1842,6 +1871,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>otherModels</column-name><column-value><![CDATA[");
         sb.append(getOtherModels());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>defaultModelSettings</column-name><column-value><![CDATA[");
+        sb.append(getDefaultModelSettings());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>points</column-name><column-value><![CDATA[");

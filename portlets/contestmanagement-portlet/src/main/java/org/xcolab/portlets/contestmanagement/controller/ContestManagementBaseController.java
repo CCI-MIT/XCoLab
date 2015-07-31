@@ -23,7 +23,7 @@ public class ContestManagementBaseController {
 
     @RequestMapping(params = "createContest=true")
     public String createContestController(PortletRequest request, Model model, PortletResponse response) {
-        String view = "notFound";
+        String view = "common/notFound";
         try {
             ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
             PermissionChecker portletPermissionChecker = themeDisplay.getPermissionChecker();
@@ -33,9 +33,8 @@ public class ContestManagementBaseController {
                 Contest contest = ContestCreatorUtil.createNewContest("created contest");
                 String newContestLink = "/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/DESCRIPTION";
                 model.addAttribute("newContestLink", newContestLink);
-                view = "newContestCreated";
+                view = "common/newContestCreated";
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,7 +44,7 @@ public class ContestManagementBaseController {
 
     @RequestMapping(params = "create2015Tier1Contests=true")
     public String create2015Tier1ContestsController(PortletRequest request, Model model, PortletResponse response) {
-        String view = "notFound";
+        String view = "common/notFound";
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         PermissionChecker portletPermissionChecker = themeDisplay.getPermissionChecker();
@@ -56,7 +55,7 @@ public class ContestManagementBaseController {
             Map<String, String> contestEditMap = ContestCreatorUtil.create2015BasicContests(themeDisplay.getPortalURL());
             model.addAttribute("contestEditLinks", contestEditMap);
             model.addAttribute("success", (contestEditMap != null));
-            view = "creationDone";
+            view = "common/creationDone";
         }
 
         return view;
@@ -64,7 +63,7 @@ public class ContestManagementBaseController {
 
     @RequestMapping(params = "create2015Tier2And3Contests=true")
     public String create2015Tier2And3ContestsController(PortletRequest request, Model model, PortletResponse response) {
-        String view = "notFound";
+        String view = "common/notFound";
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         PermissionChecker portletPermissionChecker = themeDisplay.getPermissionChecker();
@@ -75,7 +74,7 @@ public class ContestManagementBaseController {
             Map<String, String> contestEditMap = ContestCreatorUtil.create2015Tier2And3Contests(themeDisplay.getPortalURL());
             model.addAttribute("contestEditLinks", contestEditMap);
             model.addAttribute("success", (contestEditMap != null));
-            view = "creationDone";
+            view = "common/creationDone";
         }
 
         return view;

@@ -55,6 +55,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private String _contestCreationStatus;
     private long _defaultModelId;
     private String _otherModels;
+    private String _defaultModelSettings;
     private double _points;
     private long _defaultParentPointType;
     private String _pointDistributionStrategy;
@@ -136,6 +137,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("contestCreationStatus", getContestCreationStatus());
         attributes.put("defaultModelId", getDefaultModelId());
         attributes.put("otherModels", getOtherModels());
+        attributes.put("defaultModelSettings", getDefaultModelSettings());
         attributes.put("points", getPoints());
         attributes.put("defaultParentPointType", getDefaultParentPointType());
         attributes.put("pointDistributionStrategy",
@@ -360,6 +362,13 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
             setOtherModels(otherModels);
         }
 
+        String defaultModelSettings = (String) attributes.get(
+                "defaultModelSettings");
+
+        if (defaultModelSettings != null) {
+            setDefaultModelSettings(defaultModelSettings);
+        }
+
         Double points = (Double) attributes.get("points");
 
         if (points != null) {
@@ -392,8 +401,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         if (show_in_tile_view != null) {
             setShow_in_tile_view(show_in_tile_view);
         }
-        else
-            setShow_in_tile_view(true);
 
         Boolean show_in_list_view = (Boolean) attributes.get(
                 "show_in_list_view");
@@ -1197,6 +1204,29 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     }
 
     @Override
+    public String getDefaultModelSettings() {
+        return _defaultModelSettings;
+    }
+
+    @Override
+    public void setDefaultModelSettings(String defaultModelSettings) {
+        _defaultModelSettings = defaultModelSettings;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setDefaultModelSettings",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, defaultModelSettings);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public double getPoints() {
         return _points;
     }
@@ -1472,6 +1502,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setContestCreationStatus(getContestCreationStatus());
         clone.setDefaultModelId(getDefaultModelId());
         clone.setOtherModels(getOtherModels());
+        clone.setDefaultModelSettings(getDefaultModelSettings());
         clone.setPoints(getPoints());
         clone.setDefaultParentPointType(getDefaultParentPointType());
         clone.setPointDistributionStrategy(getPointDistributionStrategy());
@@ -1536,7 +1567,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(83);
+        StringBundler sb = new StringBundler(85);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1606,6 +1637,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getDefaultModelId());
         sb.append(", otherModels=");
         sb.append(getOtherModels());
+        sb.append(", defaultModelSettings=");
+        sb.append(getDefaultModelSettings());
         sb.append(", points=");
         sb.append(getPoints());
         sb.append(", defaultParentPointType=");
@@ -1627,7 +1660,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(127);
+        StringBundler sb = new StringBundler(130);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1768,6 +1801,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>otherModels</column-name><column-value><![CDATA[");
         sb.append(getOtherModels());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>defaultModelSettings</column-name><column-value><![CDATA[");
+        sb.append(getDefaultModelSettings());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>points</column-name><column-value><![CDATA[");

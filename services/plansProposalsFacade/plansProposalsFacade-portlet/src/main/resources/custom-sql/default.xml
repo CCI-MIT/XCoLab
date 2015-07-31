@@ -10,4 +10,5 @@
      <sql file="custom-sql/debates.xml" />
     <sql file="custom-sql/plans_versioned.xml" />
     <sql file="custom-sql/proposals.xml" />
+    <sql file="custom-sql/users.xml" />
 </custom-sql>

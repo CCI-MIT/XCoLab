@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
+import au.com.bytecode.opencsv.CSVWriter;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
@@ -19,6 +20,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -202,7 +204,7 @@ public class JudgeProposalActionController {
         User currentUser = proposalsContext.getUser(request);
         // Security handling
         if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
-                !permissions.getCanAdminAll() && !permissions.getCanJudgeActions()) {
+                !permissions.getCanAdminAll() && !permissions.getCanJudgeActions() && !permissions.getCanContestManagerActions()) {
             return;
         }
 
@@ -214,8 +216,11 @@ public class JudgeProposalActionController {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             String csvPayload = ContestLocalServiceUtil.getProposalJudgeReviewCsv(proposalsContext.getContest(request),
                     proposalsContext.getContestPhase(request), serviceContext);
+
+            String separatorIndicationForExcel =  "sep=" + CSVWriter.DEFAULT_SEPARATOR + CSVWriter.DEFAULT_LINE_END;
+            csvPayload = separatorIndicationForExcel + csvPayload;
             outputStream.write(csvPayload.getBytes());
-            response.setContentType("text/csv");
+            response.setContentType("application/csv");
             response.addProperty(HttpHeaders.CACHE_CONTROL, "max-age=3600, must-revalidate");
             response.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=export.csv");
 
@@ -244,14 +249,19 @@ public class JudgeProposalActionController {
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         User currentUser = proposalsContext.getUser(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        Boolean isPublicRating = permissions.getCanPublicRating();
 
         if(judgeProposalFeedbackBean.getScreeningUserId() != null) {
             currentUser = UserLocalServiceUtil.getUser(judgeProposalFeedbackBean.getScreeningUserId());
         }
 
         // Security handling
-        if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser))) {
+        if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser) || isPublicRating)) {
             return;
+        }
+
+        if(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser)){
+            isPublicRating = false;
         }
 
         //find existing ratings
@@ -260,8 +270,10 @@ public class JudgeProposalActionController {
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK());
 
-        this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(), contestPhase.getContestPhasePK(), currentUser.getUserId());
-        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhase.getContestPhasePK()+"/planId/"+proposal.getProposalId()+"/");
+        this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(), contestPhase.getContestPhasePK(), currentUser.getUserId(), isPublicRating);
+
+
+         response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhase.getContestPhasePK()+"/planId/"+proposal.getProposalId()+"/");
 
     }
 
@@ -335,7 +347,7 @@ public class JudgeProposalActionController {
                     proposalId,
                     contestPhaseId);
 
-            this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId());
+            this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId(), false);
             response.sendRedirect("/web/guest/plans/-/plans/contestId/" + contestId + "/phaseId/" + contestPhaseId + "/planId/" + proposalId + "/tab/SCREENING");
         } catch (Exception e) {
             List<Long> recipientIds = new ArrayList<Long>();
@@ -350,7 +362,7 @@ public class JudgeProposalActionController {
     }
 
 
-    private void saveRatings(List<ProposalRating> existingRatings, RatingBean ratingBean, long proposalId, long contestPhaseId, long currentUserId) throws NoSuchUserException, SystemException {
+    private void saveRatings(List<ProposalRating> existingRatings, RatingBean ratingBean, long proposalId, long contestPhaseId, long currentUserId, boolean isPublicRating) throws NoSuchUserException, SystemException {
         //initialize a map of existing ratings
         Map<Long, ProposalRating> typeToRatingMap = new HashMap<Long, ProposalRating>();
         for (ProposalRating r: existingRatings) {
@@ -392,7 +404,8 @@ public class JudgeProposalActionController {
                             currentUserId,
                             newRatingValueId,
                             comment,
-                            ""
+                            "",
+                            isPublicRating
                     );
                 }
             }

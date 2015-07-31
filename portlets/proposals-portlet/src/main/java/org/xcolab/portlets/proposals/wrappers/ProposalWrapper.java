@@ -3,10 +3,13 @@ package org.xcolab.portlets.proposals.wrappers;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.model.*;
+import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.*;
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.ProposalAttributeKeys;
@@ -22,9 +25,13 @@ import com.liferay.portlet.expando.model.ExpandoBridge;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.proposals.utils.ProposalAttributeUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProposalWrapper {
 
@@ -347,7 +354,7 @@ public class ProposalWrapper {
         return 0;
     }
 
-    public long getDiscussionCommentsCount() throws PortalException, SystemException {
+    public long getEvaluationCommentsCount() throws PortalException, SystemException {
         return 0;
     }
 
@@ -403,6 +410,7 @@ public class ProposalWrapper {
         try {
             return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -510,16 +518,93 @@ public class ProposalWrapper {
     }
 
     public Long getModelId() throws PortalException, SystemException {
-        return ContestLocalServiceUtil.getDefaultModelId(contest.getContestPK());
+        Long modelId = 0L;
+        try {
+            modelId = ContestLocalServiceUtil.getDefaultModelId(contest.getContestPK());
+        } catch(Exception e){
+        }
+        return modelId;
     }
-    
-    
+
+    public void setScenarioId(Long scenarioId, Long modelId, Long userId) throws PortalException, SystemException {
+        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID,modelId, scenarioId);
+    }
 
     public Long getScenarioId() throws PortalException, SystemException {
         ProposalAttribute attr = proposalAttributeUtil.getLatestAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
 	if (attr == null) return 0L;
         return attr.getNumericValue();
     }
+
+    public Map<Long,List<ProposalWrapper>> getSubProposalPerModel() throws PortalException, SystemException {
+        Map<Long,List<ProposalWrapper>> subProposalPerModel = new HashMap<>();
+        List<Proposal> subProposals =  ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
+
+        for(Proposal subProposal : subProposals){
+            ProposalWrapper subProposalWrapper = new ProposalWrapper(subProposal);
+            Long modelId = subProposalWrapper.getModelIdForStoredScenario();
+            if(!subProposalPerModel.containsKey(modelId)){
+                subProposalPerModel.put(modelId, Arrays.asList(subProposalWrapper));
+            } else {
+                subProposalPerModel.get(modelId).add(subProposalWrapper);
+            }
+        }
+        return subProposalPerModel;
+    }
+
+    public Scenario getScenario() throws IOException, SystemException{
+        return getScenarioByProposalId(proposal.getProposalId());
+    }
+
+    public Scenario getScenarioByProposalId(Long proposalId) throws IOException, SystemException{
+        return CollaboratoriumModelingService.repository().getScenario(proposalId);
+    }
+
+    private static Long getModelIdForScenarioId(Long scenarioId) throws SystemException{
+        Long modelId;
+
+        try {
+            Scenario scenario = CollaboratoriumModelingService.repository().getScenario(scenarioId);
+            Simulation simulation = scenario.getSimulation();
+            modelId = simulation.getId();
+        }
+        catch (IOException e) {
+            modelId = 0L;
+        }
+
+        return modelId;
+    }
+
+    public List<Scenario> getSubProposalScenarios() throws SystemException, PortalException, IOException{
+        List<Scenario> subProposalScenarios = new ArrayList<>();
+        List<Proposal> subProposals =  ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
+        for(Proposal subProposal : subProposals) {
+            Scenario scenarioForSubProposal = getScenarioByProposalId(subProposal.getProposalId());
+            subProposalScenarios.add(scenarioForSubProposal);
+        }
+        return subProposalScenarios;
+    }
+
+    private Long getModelIdForStoredScenario() throws SystemException{
+        return getModelIdForScenarioId(proposal.getProposalId());
+    }
+
+    public List<Long> getSubProposalScenarioIds() throws PortalException, SystemException {
+        List<Long> subProposalScenarioIds = new ArrayList<>();
+        Map<Long,List<ProposalWrapper>> subProposalPerModel = getSubProposalPerModel();
+
+        if(subProposalPerModel.size() > 0){
+            for(Long modelId : subProposalPerModel.keySet()){
+                List<ProposalWrapper> proposalWrappers = subProposalPerModel.get(modelId);
+                for(ProposalWrapper proposalWrapper : proposalWrappers){
+                    subProposalScenarioIds.add(proposalWrapper.getScenarioId());
+                }
+            }
+        }
+
+        return subProposalScenarioIds;
+    }
+
 
     /**
      * Determine if fellow are done with proposal

@@ -164,10 +164,13 @@
 		<field name="contestCreationStatus" type="String" />
 		<field name="defaultModelId" type="long" />
 		<field name="otherModels" type="String" />
+		<field name="defaultModelSettings" type="String" />
 		<field name="points" type="double" />
 		<field name="defaultParentPointType" type="long" />
 		<field name="pointDistributionStrategy" type="String" />
-		<field name="emailTemplateUrl" type="String" />
+		<field name="emailTemplateUrl" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="show_in_tile_view" type="boolean">
 			<hint name="default-value">true</hint>
 		</field>
@@ -345,7 +348,9 @@
 	<model name="com.ext.portlet.model.ImpactDefaultSeries">
 		<field name="seriesId" type="long" />
 		<field name="name" type="String" />
-		<field name="description" type="String" />
+		<field name="description" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
 		<field name="focusAreaId" type="long" />
 		<field name="visible" type="boolean" />
 		<field name="editable" type="boolean" />
@@ -791,6 +796,7 @@
 		<field name="focusAreaId" type="long" />
 		<field name="tier" type="long" />
 		<field name="locked" type="boolean" />
+		<field name="contestIntegrationRelevance" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.PlanSectionPlanMap">
 		<field name="sectionId" type="long" />
@@ -987,6 +993,7 @@
 		</field>
 		<field name="commentEnabled" type="boolean" />
 		<field name="otherDataString" type="String" />
+		<field name="onlyForInternalUsage" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalRatingType">
 		<field name="id" type="long" />
@@ -995,6 +1002,7 @@
 			<hint name="max-length">10000</hint>
 		</field>
 		<field name="judgeType" type="int" />
+		<field name="isActive" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalRatingValue">
 		<field name="id" type="long" />
@@ -1023,6 +1031,19 @@
 		<field name="contestPhaseId" type="long" />
 		<field name="userId" type="long" />
 		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.Role_">
+		<field name="roleId" type="long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.RolesCategory">
+		<field name="roleId" type="long" />
+		<field name="categoryName" type="String" />
+		<field name="roleOrdinal" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.SocialActivity">
+		<field name="activityId" type="long" />
+		<field name="userId" type="long" />
 	</model>
 	<model name="com.ext.portlet.model.StaffMember">
 		<field name="id" type="long" />
@@ -1075,5 +1096,14 @@
 		</field>
 		<field name="userId" type="long" />
 		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.User_">
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="screenName" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.Users_Roles">
+		<field name="userId" type="long" />
+		<field name="roleId" type="long" />
 	</model>
 </model-hints>

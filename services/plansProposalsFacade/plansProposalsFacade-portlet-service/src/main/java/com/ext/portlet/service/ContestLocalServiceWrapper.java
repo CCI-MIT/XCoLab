@@ -790,6 +790,61 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getContestImpactFocusAreas(contest);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
+        java.lang.Long contestTier,
+        java.util.List<java.lang.Long> focusAreaOntologyTermIds)
+        throws java.lang.Exception {
+        return _contestLocalService.getContestsByTierLevelAndOntologyTermIds(contestTier,
+            focusAreaOntologyTermIds);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByContestScheduleId(
+        java.lang.Long contestScheduleId) throws java.lang.Exception {
+        return _contestLocalService.getContestsByContestScheduleId(contestScheduleId);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByPlanTemplateId(
+        java.lang.Long planTemplateId) throws java.lang.Exception {
+        return _contestLocalService.getContestsByPlanTemplateId(planTemplateId);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
+        com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
+        throws java.lang.Exception {
+        return _contestLocalService.getSubContestsByOntologySpaceId(contest,
+            ontologySpaceId);
+    }
+
+    /**
+    * This method adds a year suffix to already completed contests. It iterates over all completed contests
+    * and automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
+    */
+    @Override
+    public void addContestYearSuffixToCompletedContests()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _contestLocalService.addContestYearSuffixToCompletedContests();
+    }
+
+    /**
+    * This method adds a year suffix to the passed contest. By passing the flag checkForCompleted, the method will only
+    * add the suffix for contests which latest contest phase is of type COMPLETED
+    * It automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
+    *
+    * @param contest               The contest that should get a year suffix
+    * @param checkForCompleted     Indicates whether contests that are not in a COMPLETED active contest phase should be ignored
+    */
+    @Override
+    public void addContestYearSuffixToContest(
+        com.ext.portlet.model.Contest contest, boolean checkForCompleted) {
+        _contestLocalService.addContestYearSuffixToContest(contest,
+            checkForCompleted);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

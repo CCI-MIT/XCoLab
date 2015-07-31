@@ -6,6 +6,8 @@ public interface TabEnum {
 
     String getDisplayName();
 
+    String getElementType();
+
     String getName();
 
     boolean getIsDefault();

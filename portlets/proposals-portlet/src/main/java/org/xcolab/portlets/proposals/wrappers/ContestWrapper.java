@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import java.util.*;
-
-import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -10,6 +8,13 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
 public class ContestWrapper {
+
+    private static final long ONTOLOGY_SPACE_ID_WHERE = 104L;
+    private static final long ONTOLOGY_SPACE_ID_WHO = 102L;
+    private static final long ONTOLOGY_SPACE_ID_WHAT = 103L;
+    private static final long ONTOLOGY_SPACE_ID_HOW = 103L;
+    private static final long CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS = 3L;
+
     private static final String WHERE = "where";
     private static final String WHAT = "what";
     private static final String WHO = "who";
@@ -90,6 +95,14 @@ public class ContestWrapper {
         contest.setContestModelDescription(ContestModelDescription);
     }
 
+    public String getDefaultModelSettings(){
+        return contest.getDefaultModelSettings();
+    }
+
+    public void setDefaultModelSettings(String defaultModelSettings){
+        contest.setDefaultModelSettings(defaultModelSettings);
+    }
+
     public String getEmailTemplateUrl() {
         if (contest.getEmailTemplateUrl().isEmpty()) {
             return EMAIL_TEMPLATE_URL;
@@ -146,7 +159,7 @@ public class ContestWrapper {
             return contest.getShow_in_outline_view();
         }
         else {
-            contest.setShow_in_tile_view(true);
+            contest.setShow_in_outline_view(true);
             return true;
         }
 
@@ -370,6 +383,16 @@ public class ContestWrapper {
         return ContestLocalServiceUtil.getProposalsCount(contest);
     }
 
+    public long getTotalProposalsCount() throws PortalException, SystemException {
+        Set<Proposal> proposalList = new HashSet<>();
+        List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
+        for(ContestPhase contestPhase : contestPhases){
+            List<Proposal> proposals = ProposalLocalServiceUtil.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
+            proposals.addAll(proposals);
+        }
+        return proposalList.size();
+    }
+
     public long getCommentsCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getCommentsCount(contest);
     }
@@ -446,6 +469,38 @@ public class ContestWrapper {
         	return "";
         }
         return ontologyJoinedName;
+    }
+
+    public boolean getShowSubContests(){
+        // Removed due to COLAB-518; keep the functionality in the code base for the case that we need it again.
+//        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS;
+        return false;
+    }
+
+    public boolean getShowParentContest(){
+        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS - 1;
+    }
+
+    public List<Contest> getSubContests() throws Exception{
+        long ONTOLOGY_SPACE_ID_WHERE = 104L;
+        //long ONTOLOGY_SPACE_ID_WHO = 102L;
+        //long ONTOLOGY_SPACE_ID_WHAT = 103L;
+        //long ONTOLOGY_SPACE_ID_HOW = 103L;
+        List <Contest> subContests = ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
+        Collections.sort(subContests, new Comparator<Contest>() {
+            @Override
+            public int compare(Contest c1, Contest c2) {
+                return c1.getWeight() - c2.getWeight();
+            }
+        });
+        return subContests;
+    }
+
+    public Contest getParentContest() throws Exception{
+        List<Long> focusAreaOntologyTermIds =
+                FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(contest.getFocusAreaId(), ONTOLOGY_SPACE_ID_WHERE);
+        List<Contest> contests = ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
+        return contests.get(0);
     }
 
     public Long getVotingPhasePK() throws PortalException, SystemException {

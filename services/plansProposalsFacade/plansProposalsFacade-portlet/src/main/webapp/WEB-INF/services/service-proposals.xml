@@ -214,6 +214,7 @@
         <column name="comment" type="String" />
         <column name="commentEnabled" type="boolean" />
         <column name="otherDataString" type="String" />
+        <column name="onlyForInternalUsage" type="boolean" />
     </entity>
 
     <entity name="ProposalRatingType" local-service="true">
@@ -221,6 +222,7 @@
         <column name="label" type="String" />
         <column name="description" type="String" />
         <column name="judgeType" type="int" />
+        <column name="isActive" type="boolean" />
         <column name="proposalRatingValues" type="Collection" entity="ProposalRatingValue" mapping-key="ratingTypeId"/>
     </entity>
     <entity name="ProposalRatingValue" local-service="true">

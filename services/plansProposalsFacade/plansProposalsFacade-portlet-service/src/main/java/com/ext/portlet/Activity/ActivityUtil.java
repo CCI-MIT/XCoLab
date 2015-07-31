@@ -8,6 +8,7 @@ package com.ext.portlet.Activity;
 
 import java.util.*;
 
+import org.xcolab.enums.ColabConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -28,6 +29,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
@@ -39,8 +41,6 @@ public class ActivityUtil {
 
     public static final long AGGREGATION_TIME_WINDOW = 1000 * 60 * 60 * 1l; // 1h
 
-    private static final long DEFAULT_COMPANY_ID = 10112L;
-
     private static final String ADMINISTRATOR_ROLE_NAME = "Administrator";
 
     public static List<SocialActivity> retrieveAllActivities(int pagestart, int next) throws SystemException {
@@ -51,18 +51,17 @@ public class ActivityUtil {
     }
 
     public static List<SocialActivity> retrieveWindowedActivities(int start, int end) throws SystemException, PortalException {
-    	return retrieveWindowedActivities(start, end, false);
+        return retrieveWindowedActivities(start, end, false);
     }
-    
+
     public static List<SocialActivity> retrieveWindowedActivities(int start, int end, boolean showAdmin) throws SystemException, PortalException {
         Hits hits;
-    	if (showAdmin) {
+        if (showAdmin) {
             hits = getAllAggregatedActivitySearchResults(start, end);
-    	}
-    	else {
+        } else {
             List<Long> administratorsIds = getAdministratorIds();
-    		hits = getAggregatedActivitySearchResultsExcludingUsers(administratorsIds, start, end);
-    	}
+            hits = getAggregatedActivitySearchResultsExcludingUsers(administratorsIds, start, end);
+        }
 
         return retrieveAggregatedSocialActivities(hits);
     }
@@ -88,7 +87,7 @@ public class ActivityUtil {
     }
 
     public static List<SocialActivity> groupAllActivities() throws SystemException {
-        return groupActivities(SocialActivityLocalServiceUtil.getOrganizationActivities(DEFAULT_COMPANY_ID, QueryUtil.ALL_POS, QueryUtil.ALL_POS));
+        return groupActivities(SocialActivityLocalServiceUtil.getOrganizationActivities(ColabConstants.COLAB_COMPANY_ID, QueryUtil.ALL_POS, QueryUtil.ALL_POS));
     }
 
     public static List<SocialActivity> groupUserActivities(long userId) throws SystemException {
@@ -176,8 +175,7 @@ public class ActivityUtil {
             for (SocialActivity socialActivity : socialActivities) {
                 if (curMin == null || socialActivity.getCreateDate() - curMin.getCreateDate() < AGGREGATION_TIME_WINDOW) {
                     curMin = socialActivity;
-                }
-                else {
+                } else {
                     aggregatedActivities.add(curMin);
                     curMin = socialActivity;
                 }
@@ -197,7 +195,7 @@ public class ActivityUtil {
 
     private static Hits getAggregatedActivitySearchResults(long userId, int start, int end) throws SearchException {
         SearchContext context = new SearchContext();
-        context.setCompanyId(DEFAULT_COMPANY_ID);
+        context.setCompanyId(ColabConstants.COLAB_COMPANY_ID);
         BooleanQuery query = BooleanQueryFactoryUtil.create(context);
         query.addRequiredTerm(Field.ENTRY_CLASS_NAME, SocialActivity.class.getName());
 
@@ -220,7 +218,7 @@ public class ActivityUtil {
 
     private static Hits getAggregatedActivitySearchResultsExcludingUsers(List<Long> excludedUserIds, int start, int end) throws SearchException {
         SearchContext context = new SearchContext();
-        context.setCompanyId(DEFAULT_COMPANY_ID);
+        context.setCompanyId(ColabConstants.COLAB_COMPANY_ID);
         BooleanQuery query = BooleanQueryFactoryUtil.create(context);
         query.addRequiredTerm(Field.ENTRY_CLASS_NAME, SocialActivity.class.getName());
 
@@ -240,13 +238,28 @@ public class ActivityUtil {
     }
 
     private static List<Long> getAdministratorIds() throws SystemException, PortalException {
-        Role r = RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, ADMINISTRATOR_ROLE_NAME);
+        Role r = RoleLocalServiceUtil.getRole(ColabConstants.COLAB_COMPANY_ID, ADMINISTRATOR_ROLE_NAME);
 
         List<Long> administratorsIds = new ArrayList<Long>();
-        for (long userId: UserLocalServiceUtil.getRoleUserIds(r.getRoleId())) {
+        for (long userId : UserLocalServiceUtil.getRoleUserIds(r.getRoleId())) {
             administratorsIds.add(userId);
         }
 
         return administratorsIds;
     }
+
+    public static HashMap<Long,Integer> getUsersActivityCount() throws SystemException, PortalException {
+
+        List<User> liferayUsers = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
+        HashMap<Long, Integer> activityCounts = new HashMap<Long, Integer>();
+
+        for(User u:liferayUsers)
+        {
+            Long userId = u.getUserId();
+            activityCounts.put(userId, SocialActivityLocalServiceUtil.getUserActivitiesCount(userId));
+        }
+
+        return activityCounts;
+
+}
 }

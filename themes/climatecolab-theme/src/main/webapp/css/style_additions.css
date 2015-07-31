@@ -58,7 +58,7 @@
 .acthead-r .runmodel { float:right; margin-top:-5px;}
 
 .act-edit_left { float:left; width:495px;}
-.act-edit_right { float:left; width:489px; color:#464646;}
+.act-edit_right { float:right; width:489px; color:#464646;}
 
 .act-edit_left-top { width:480px; padding:15px; background:url(../images/actions_charttop-bg.gif);}
 
@@ -387,7 +387,7 @@ ul#blogArchives li {list-style: none; margin-bottom: 10px; background: none;}
 /** COMMUNITY **/
 
 /* community - discussions */
-.comm_disc-head { margin:0px 0 10px 0; height:40px; }
+.comm_disc-head { margin:0px 10px 10px 0; height:40px; }
 .comm_disc-title { float:left; width:330px;}
 #main.full .comm_disc-title { float:left; width:630px;}
 #main .comm_disc-title h2 { margin:0; }
@@ -1617,4 +1617,18 @@ div#p_p_id_145_ {
 
 #impact .shaded-bg {
     background: url(../images/pattern-6x6-blue.png);
+}
+
+.centered {
+    text-align: center;
+}
+
+.disabled {
+    opacity: 0.3;
+}
+
+.cmsDetailsBox {
+    border: 1px solid #30a3fb;
+    padding: 15px;
+    margin-bottom: 10px;
 }

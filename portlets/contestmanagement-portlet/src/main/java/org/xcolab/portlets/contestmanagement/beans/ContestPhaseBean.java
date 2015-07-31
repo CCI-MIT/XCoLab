@@ -1,22 +1,27 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
+import com.ext.portlet.NoSuchProposal2PhaseException;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.model.ContestSchedule;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Thomas on 2/20/2015.
  */
 public class ContestPhaseBean {
+
+
+    public static final Long CREATE_PHASE_CONTEST_PK = -1L;
 
     private Long contestSchedulePK;
     private Long contestPhasePK;
@@ -26,7 +31,9 @@ public class ContestPhaseBean {
     private final static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
     @DateTimeFormat(pattern="MM/dd/yyyy hh:mm")
+    @NotNull(message = "Phase start date must not be empty.")
     private Date phaseStartDate;
+
     @DateTimeFormat(pattern="MM/dd/yyyy hh:mm")
     private Date phaseEndDate;
     private Date phaseBufferEndDated;
@@ -39,13 +46,14 @@ public class ContestPhaseBean {
     private String contestPhaseAutopromote = "";
 
     private ContestPhaseType contestPhaseTypeObj;
+    private boolean contestPhaseDeleted = false;
+    private boolean contestPhaseProposalAssociations;
 
     public ContestPhaseBean(){
 
     }
 
     public ContestPhaseBean(ContestPhase contestPhase){
-        // TODO just use the ContestPhaseWrapper and put the constructor in a static helper
         this.contestPhasePK = contestPhase.getContestPhasePK();
         this.contestPK = contestPhase.getContestPK();
         this.contestPhaseType = contestPhase.getContestPhaseType();
@@ -55,7 +63,6 @@ public class ContestPhaseBean {
         this.phaseBufferEndDated = contestPhase.getPhaseBufferEndDated();
         this.fellowScreeningActive = contestPhase.getFellowScreeningActive();
         this.contestPhaseAutopromote = contestPhase.getContestPhaseAutopromote();
-        this.contestPhaseType = contestPhase.getContestPhaseType();
         this.contestPhaseDescriptionOverride = contestPhase.getContestPhaseDescriptionOverride();
         this.phaseActiveOverride = contestPhase.getPhaseActiveOverride();
         this.phaseInactiveOverride = contestPhase.getPhaseInactiveOverride();
@@ -63,10 +70,25 @@ public class ContestPhaseBean {
         try {
             this.contestPhaseTypeObj = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseType);
         } catch (Exception e){
-
+        }
+        try {
+            this.contestPhaseProposalAssociations = false;
+            List<Contest> contestsUsingThisContestPhase =  ContestLocalServiceUtil.getContestsByContestScheduleId(this.contestScheduleId);
+            for(Contest contest : contestsUsingThisContestPhase){
+                List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(this.contestScheduleId,contest.getContestPK());
+                for(ContestPhase contestPhase1 : contestPhases){
+                    if(contestPhase1.getContestPhaseType() == this.contestPhaseType){
+                        List<Proposal2Phase> proposal2PhaseList =  Proposal2PhaseLocalServiceUtil.getByContestPhaseId(contestPhase1.getContestPhasePK());
+                        if(!proposal2PhaseList.isEmpty()){
+                            this.contestPhaseProposalAssociations = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
         }
     }
-
 
     public ContestPhaseBean( Long contestPhaseType, Date phaseStartDate, Date phaseEndDate, String contestPhaseAutopromote,  Boolean fellowScreeningActive) {
         this.phaseStartDate = phaseStartDate;
@@ -137,16 +159,21 @@ public class ContestPhaseBean {
         return phaseEndDateFormatted;
     }
 
+    public void setPhaseEndDateFormatted(String phaseEndDateFormatted){
+        if(phaseEndDateFormatted != null){
+            try {
+                this.phaseEndDate = dateFormat.parse(phaseEndDateFormatted);
+            } catch(Exception e){
+            }
+        }
+    }
+
     public Date getPhaseEndDate() {
         return phaseEndDate;
     }
 
     public void setPhaseEndDate(Date phaseEndDate) {
         this.phaseEndDate = phaseEndDate;
-    }
-
-    public void setPhaseEndDate(String phaseEndDate) throws Exception{
-        this.phaseEndDate = dateFormat.parse(phaseEndDate);
     }
 
     public Date getPhaseBufferEndDated() {
@@ -187,5 +214,71 @@ public class ContestPhaseBean {
             isPhaseBufferEndDateAfterPhaseEndDate = (this.phaseBufferEndDated.after(this.phaseEndDate));
         }
         return isPhaseBufferEndDateAfterPhaseEndDate;
+    }
+
+    public Long getContestScheduleId() {
+        return contestScheduleId;
+    }
+
+    public void setContestScheduleId(Long contestScheduleId) {
+        this.contestScheduleId = contestScheduleId;
+    }
+
+    public boolean isContestPhaseDeleted() {
+        return contestPhaseDeleted;
+    }
+
+    public void setContestPhaseDeleted(boolean contestPhaseDeleted) {
+        this.contestPhaseDeleted = contestPhaseDeleted;
+    }
+
+    public boolean isContestPhaseProposalAssociations() {
+        return contestPhaseProposalAssociations;
+    }
+
+    public void setContestPhaseProposalAssociations(boolean contestPhaseProposalAssociations) {
+        this.contestPhaseProposalAssociations = contestPhaseProposalAssociations;
+    }
+
+    public void persist() throws Exception{
+
+        if(contestPhasePK.equals(CREATE_PHASE_CONTEST_PK)){
+            createNewContestPhase();
+        }
+
+        if(contestPhaseDeleted){
+            deleteContestPhase();
+        } else {
+            persistContestPhase();
+        }
+    }
+    
+    private void createNewContestPhase() throws Exception {
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.createContestPhase(CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
+        contestPhase.persist();
+        contestPhasePK = contestPhase.getContestPhasePK();
+    }
+
+    private void  persistContestPhase() throws Exception{
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
+        contestPhase.setContestPK(contestPK);
+        contestPhase.setContestPhaseType(contestPhaseType);
+        contestPhase.setContestScheduleId(contestScheduleId);
+        contestPhase.setPhaseStartDate(phaseStartDate);
+        contestPhase.setPhaseEndDate(phaseEndDate);
+        contestPhase.setPhaseBufferEndDated(phaseBufferEndDated);
+        contestPhase.setFellowScreeningActive(fellowScreeningActive);
+        contestPhase.setContestPhaseAutopromote(contestPhaseAutopromote);
+        contestPhase.setContestPhaseDescriptionOverride(contestPhaseDescriptionOverride);
+        contestPhase.setPhaseActiveOverride(phaseActiveOverride);
+        contestPhase.setPhaseInactiveOverride(phaseInactiveOverride);
+        contestPhase.setNextStatus(nextStatus);
+        contestPhase.persist();
+        ContestPhaseLocalServiceUtil.updateContestPhase(contestPhase);
+    }
+
+    private void deleteContestPhase() throws Exception{
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
+        ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
     }
 }

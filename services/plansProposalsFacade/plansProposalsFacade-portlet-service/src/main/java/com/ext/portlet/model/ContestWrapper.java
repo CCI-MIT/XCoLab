@@ -72,6 +72,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("contestCreationStatus", getContestCreationStatus());
         attributes.put("defaultModelId", getDefaultModelId());
         attributes.put("otherModels", getOtherModels());
+        attributes.put("defaultModelSettings", getDefaultModelSettings());
         attributes.put("points", getPoints());
         attributes.put("defaultParentPointType", getDefaultParentPointType());
         attributes.put("pointDistributionStrategy",
@@ -294,6 +295,13 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (otherModels != null) {
             setOtherModels(otherModels);
+        }
+
+        String defaultModelSettings = (String) attributes.get(
+                "defaultModelSettings");
+
+        if (defaultModelSettings != null) {
+            setDefaultModelSettings(defaultModelSettings);
         }
 
         Double points = (Double) attributes.get("points");
@@ -1095,6 +1103,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setOtherModels(java.lang.String otherModels) {
         _contest.setOtherModels(otherModels);
+    }
+
+    /**
+    * Returns the default model settings of this contest.
+    *
+    * @return the default model settings of this contest
+    */
+    @Override
+    public java.lang.String getDefaultModelSettings() {
+        return _contest.getDefaultModelSettings();
+    }
+
+    /**
+    * Sets the default model settings of this contest.
+    *
+    * @param defaultModelSettings the default model settings of this contest
+    */
+    @Override
+    public void setDefaultModelSettings(java.lang.String defaultModelSettings) {
+        _contest.setDefaultModelSettings(defaultModelSettings);
     }
 
     /**

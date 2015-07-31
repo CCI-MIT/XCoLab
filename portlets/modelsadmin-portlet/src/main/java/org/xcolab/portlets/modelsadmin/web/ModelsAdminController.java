@@ -45,6 +45,7 @@ public class ModelsAdminController {
 		if (refresh) {
 			CollaboratoriumModelingService.repository().getManager().clearCache();
 		}
+
 		List<Simulation> simulationsSorted = new ArrayList<Simulation>(CollaboratoriumModelingService.repository().getAllSimulations());
 		Collections.sort(simulationsSorted, new Comparator<Simulation>() {
 

@@ -271,6 +271,12 @@ public class OntologyTermLocalServiceUtil {
         return getService().findByParentIdSpaceId(parentId, spaceId);
     }
 
+    public static java.util.List<com.ext.portlet.model.OntologyTerm> findByOntologyTermName(
+        java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().findByOntologyTermName(name);
+    }
+
     public static com.ext.portlet.model.OntologyTerm createTerm(
         java.lang.Long parentId, java.lang.String name, java.lang.Long spaceId,
         java.lang.String descriptionUrl)
@@ -336,6 +342,14 @@ public class OntologyTermLocalServiceUtil {
         com.ext.portlet.model.OntologyTerm ontologyTerm, java.lang.Class clasz)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().findTagedIdsForClass(ontologyTerm, clasz);
+    }
+
+    public static java.lang.Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
+        java.lang.Long focusAreaId, java.lang.Long ontologyTermId)
+        throws java.lang.Exception {
+        return getService()
+                   .isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId,
+            ontologyTermId);
     }
 
     public static void clearService() {

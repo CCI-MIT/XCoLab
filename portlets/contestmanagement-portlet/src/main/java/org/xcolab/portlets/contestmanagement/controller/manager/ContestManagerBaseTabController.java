@@ -19,9 +19,8 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
 
     protected TabWrapper tabWrapper;
 
-    static final String NO_PERMISSION_TAB_VIEW = "details/noPermissionTab";
-    private final String DEFAULT_SUCCESS_MESSAGE = "Changes saved!";
-    static final String NOT_FOUND_TAB_VIEW = "notFound";
+    static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
+    static final String NOT_FOUND_TAB_VIEW = "common/notFound";
 
     @ModelAttribute("tabs")
     @Override
@@ -35,7 +34,6 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
 
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
             throws PortalException, SystemException {
-
         String pageTitle = "Contest Management Tool";
         String pageSubTitle = tab.getDisplayName() + " - " + pageTitle;
         String pageDescription = "Contest details for " + pageTitle;
@@ -48,31 +46,6 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
 
     public void setTabWrapper(TabWrapper tabWrapper) {
         this.tabWrapper = tabWrapper;
-    }
-
-    public void setSuccessRenderRedirect (ActionResponse response, String tabName) throws Exception{
-        response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName);
-    }
-
-    public void setErrorRenderParameter(ActionResponse response, String errorActionParameter){
-        response.setRenderParameter("error", "true");
-        response.setRenderParameter("action", errorActionParameter);
-    }
-    public void setNoPermissionErrorRenderParameter(ActionResponse response){
-        setErrorRenderParameter(response, "showNoPermission");
-    }
-
-    public void setNotFoundErrorRenderParameter(ActionResponse response){
-        setErrorRenderParameter(response, "showNotFound");
-    }
-
-    public void addActionSuccessMessageToSession(PortletRequest request, String successMessage){
-        PortletSession session = request.getPortletSession();
-        session.setAttribute("actionSuccessMessage" , successMessage, PortletSession.APPLICATION_SCOPE);
-    }
-
-    public void addActionSuccessMessageToSession(PortletRequest request){
-        addActionSuccessMessageToSession(request, DEFAULT_SUCCESS_MESSAGE);
     }
 
 }

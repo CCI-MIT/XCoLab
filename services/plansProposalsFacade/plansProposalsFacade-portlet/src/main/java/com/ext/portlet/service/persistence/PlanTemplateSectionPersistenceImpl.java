@@ -95,6 +95,30 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPlanTemplateId",
             new String[] { Long.class.getName() });
     private static final String _FINDER_COLUMN_PLANTEMPLATEID_PLANTEMPLATEID_2 = "planTemplateSection.id.planTemplateId = ?";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PLANSECTIONID =
+        new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTemplateSectionModelImpl.FINDER_CACHE_ENABLED,
+            PlanTemplateSectionImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByPlanSectionId",
+            new String[] {
+                Long.class.getName(),
+                
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
+            });
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANSECTIONID =
+        new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTemplateSectionModelImpl.FINDER_CACHE_ENABLED,
+            PlanTemplateSectionImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByPlanSectionId",
+            new String[] { Long.class.getName() },
+            PlanTemplateSectionModelImpl.PLANSECTIONID_COLUMN_BITMASK |
+            PlanTemplateSectionModelImpl.WEIGHT_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_PLANSECTIONID = new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTemplateSectionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPlanSectionId",
+            new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_PLANSECTIONID_PLANSECTIONID_2 = "planTemplateSection.id.planSectionId = ?";
     private static final String _SQL_SELECT_PLANTEMPLATESECTION = "SELECT planTemplateSection FROM PlanTemplateSection planTemplateSection";
     private static final String _SQL_SELECT_PLANTEMPLATESECTION_WHERE = "SELECT planTemplateSection FROM PlanTemplateSection planTemplateSection WHERE ";
     private static final String _SQL_COUNT_PLANTEMPLATESECTION = "SELECT COUNT(planTemplateSection) FROM PlanTemplateSection planTemplateSection";
@@ -592,6 +616,466 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
     }
 
     /**
+     * Returns all the plan template sections where planSectionId = &#63;.
+     *
+     * @param planSectionId the plan section ID
+     * @return the matching plan template sections
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanTemplateSection> findByPlanSectionId(long planSectionId)
+        throws SystemException {
+        return findByPlanSectionId(planSectionId, QueryUtil.ALL_POS,
+            QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the plan template sections where planSectionId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param planSectionId the plan section ID
+     * @param start the lower bound of the range of plan template sections
+     * @param end the upper bound of the range of plan template sections (not inclusive)
+     * @return the range of matching plan template sections
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanTemplateSection> findByPlanSectionId(long planSectionId,
+        int start, int end) throws SystemException {
+        return findByPlanSectionId(planSectionId, start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the plan template sections where planSectionId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param planSectionId the plan section ID
+     * @param start the lower bound of the range of plan template sections
+     * @param end the upper bound of the range of plan template sections (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching plan template sections
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanTemplateSection> findByPlanSectionId(long planSectionId,
+        int start, int end, OrderByComparator orderByComparator)
+        throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANSECTIONID;
+            finderArgs = new Object[] { planSectionId };
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_PLANSECTIONID;
+            finderArgs = new Object[] {
+                    planSectionId,
+                    
+                    start, end, orderByComparator
+                };
+        }
+
+        List<PlanTemplateSection> list = (List<PlanTemplateSection>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if ((list != null) && !list.isEmpty()) {
+            for (PlanTemplateSection planTemplateSection : list) {
+                if ((planSectionId != planTemplateSection.getPlanSectionId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
+        if (list == null) {
+            StringBundler query = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(3 +
+                        (orderByComparator.getOrderByFields().length * 3));
+            } else {
+                query = new StringBundler(3);
+            }
+
+            query.append(_SQL_SELECT_PLANTEMPLATESECTION_WHERE);
+
+            query.append(_FINDER_COLUMN_PLANSECTIONID_PLANSECTIONID_2);
+
+            if (orderByComparator != null) {
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+            } else
+             if (pagination) {
+                query.append(PlanTemplateSectionModelImpl.ORDER_BY_JPQL);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(planSectionId);
+
+                if (!pagination) {
+                    list = (List<PlanTemplateSection>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanTemplateSection>(list);
+                } else {
+                    list = (List<PlanTemplateSection>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Returns the first plan template section in the ordered set where planSectionId = &#63;.
+     *
+     * @param planSectionId the plan section ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plan template section
+     * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a matching plan template section could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection findByPlanSectionId_First(long planSectionId,
+        OrderByComparator orderByComparator)
+        throws NoSuchPlanTemplateSectionException, SystemException {
+        PlanTemplateSection planTemplateSection = fetchByPlanSectionId_First(planSectionId,
+                orderByComparator);
+
+        if (planTemplateSection != null) {
+            return planTemplateSection;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("planSectionId=");
+        msg.append(planSectionId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanTemplateSectionException(msg.toString());
+    }
+
+    /**
+     * Returns the first plan template section in the ordered set where planSectionId = &#63;.
+     *
+     * @param planSectionId the plan section ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plan template section, or <code>null</code> if a matching plan template section could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection fetchByPlanSectionId_First(long planSectionId,
+        OrderByComparator orderByComparator) throws SystemException {
+        List<PlanTemplateSection> list = findByPlanSectionId(planSectionId, 0,
+                1, orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the last plan template section in the ordered set where planSectionId = &#63;.
+     *
+     * @param planSectionId the plan section ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plan template section
+     * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a matching plan template section could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection findByPlanSectionId_Last(long planSectionId,
+        OrderByComparator orderByComparator)
+        throws NoSuchPlanTemplateSectionException, SystemException {
+        PlanTemplateSection planTemplateSection = fetchByPlanSectionId_Last(planSectionId,
+                orderByComparator);
+
+        if (planTemplateSection != null) {
+            return planTemplateSection;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("planSectionId=");
+        msg.append(planSectionId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanTemplateSectionException(msg.toString());
+    }
+
+    /**
+     * Returns the last plan template section in the ordered set where planSectionId = &#63;.
+     *
+     * @param planSectionId the plan section ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plan template section, or <code>null</code> if a matching plan template section could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection fetchByPlanSectionId_Last(long planSectionId,
+        OrderByComparator orderByComparator) throws SystemException {
+        int count = countByPlanSectionId(planSectionId);
+
+        if (count == 0) {
+            return null;
+        }
+
+        List<PlanTemplateSection> list = findByPlanSectionId(planSectionId,
+                count - 1, count, orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the plan template sections before and after the current plan template section in the ordered set where planSectionId = &#63;.
+     *
+     * @param planTemplateSectionPK the primary key of the current plan template section
+     * @param planSectionId the plan section ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the previous, current, and next plan template section
+     * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a plan template section with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection[] findByPlanSectionId_PrevAndNext(
+        PlanTemplateSectionPK planTemplateSectionPK, long planSectionId,
+        OrderByComparator orderByComparator)
+        throws NoSuchPlanTemplateSectionException, SystemException {
+        PlanTemplateSection planTemplateSection = findByPrimaryKey(planTemplateSectionPK);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            PlanTemplateSection[] array = new PlanTemplateSectionImpl[3];
+
+            array[0] = getByPlanSectionId_PrevAndNext(session,
+                    planTemplateSection, planSectionId, orderByComparator, true);
+
+            array[1] = planTemplateSection;
+
+            array[2] = getByPlanSectionId_PrevAndNext(session,
+                    planTemplateSection, planSectionId, orderByComparator, false);
+
+            return array;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    protected PlanTemplateSection getByPlanSectionId_PrevAndNext(
+        Session session, PlanTemplateSection planTemplateSection,
+        long planSectionId, OrderByComparator orderByComparator,
+        boolean previous) {
+        StringBundler query = null;
+
+        if (orderByComparator != null) {
+            query = new StringBundler(6 +
+                    (orderByComparator.getOrderByFields().length * 6));
+        } else {
+            query = new StringBundler(3);
+        }
+
+        query.append(_SQL_SELECT_PLANTEMPLATESECTION_WHERE);
+
+        query.append(_FINDER_COLUMN_PLANSECTIONID_PLANSECTIONID_2);
+
+        if (orderByComparator != null) {
+            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+            if (orderByConditionFields.length > 0) {
+                query.append(WHERE_AND);
+            }
+
+            for (int i = 0; i < orderByConditionFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByConditionFields[i]);
+
+                if ((i + 1) < orderByConditionFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
+                    } else {
+                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN);
+                    } else {
+                        query.append(WHERE_LESSER_THAN);
+                    }
+                }
+            }
+
+            query.append(ORDER_BY_CLAUSE);
+
+            String[] orderByFields = orderByComparator.getOrderByFields();
+
+            for (int i = 0; i < orderByFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByFields[i]);
+
+                if ((i + 1) < orderByFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC_HAS_NEXT);
+                    } else {
+                        query.append(ORDER_BY_DESC_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC);
+                    } else {
+                        query.append(ORDER_BY_DESC);
+                    }
+                }
+            }
+        } else {
+            query.append(PlanTemplateSectionModelImpl.ORDER_BY_JPQL);
+        }
+
+        String sql = query.toString();
+
+        Query q = session.createQuery(sql);
+
+        q.setFirstResult(0);
+        q.setMaxResults(2);
+
+        QueryPos qPos = QueryPos.getInstance(q);
+
+        qPos.add(planSectionId);
+
+        if (orderByComparator != null) {
+            Object[] values = orderByComparator.getOrderByConditionValues(planTemplateSection);
+
+            for (Object value : values) {
+                qPos.add(value);
+            }
+        }
+
+        List<PlanTemplateSection> list = q.list();
+
+        if (list.size() == 2) {
+            return list.get(1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Removes all the plan template sections where planSectionId = &#63; from the database.
+     *
+     * @param planSectionId the plan section ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByPlanSectionId(long planSectionId)
+        throws SystemException {
+        for (PlanTemplateSection planTemplateSection : findByPlanSectionId(
+                planSectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(planTemplateSection);
+        }
+    }
+
+    /**
+     * Returns the number of plan template sections where planSectionId = &#63;.
+     *
+     * @param planSectionId the plan section ID
+     * @return the number of matching plan template sections
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByPlanSectionId(long planSectionId)
+        throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_PLANSECTIONID;
+
+        Object[] finderArgs = new Object[] { planSectionId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_PLANTEMPLATESECTION_WHERE);
+
+            query.append(_FINDER_COLUMN_PLANSECTIONID_PLANSECTIONID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(planSectionId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Caches the plan template section in the entity cache if it is enabled.
      *
      * @param planTemplateSection the plan template section
@@ -825,6 +1309,27 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
                 FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANTEMPLATEID,
                     args);
                 FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANTEMPLATEID,
+                    args);
+            }
+
+            if ((planTemplateSectionModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANSECTIONID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planTemplateSectionModelImpl.getOriginalPlanSectionId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANSECTIONID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANSECTIONID,
+                    args);
+
+                args = new Object[] {
+                        planTemplateSectionModelImpl.getPlanSectionId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANSECTIONID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANSECTIONID,
                     args);
             }
         }

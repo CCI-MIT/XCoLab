@@ -571,6 +571,21 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setOtherModels(String otherModels);
 
     /**
+     * Returns the default model settings of this contest.
+     *
+     * @return the default model settings of this contest
+     */
+    @AutoEscape
+    public String getDefaultModelSettings();
+
+    /**
+     * Sets the default model settings of this contest.
+     *
+     * @param defaultModelSettings the default model settings of this contest
+     */
+    public void setDefaultModelSettings(String defaultModelSettings);
+
+    /**
      * Returns the points of this contest.
      *
      * @return the points of this contest

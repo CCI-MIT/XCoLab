@@ -9,8 +9,11 @@ import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.base.FocusAreaOntologyTermLocalServiceBaseImpl;
+import com.liferay.portal.kernel.dao.orm.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 
 /**
  * The implementation of the focus area ontology term local service.
@@ -65,5 +68,43 @@ public class FocusAreaOntologyTermLocalServiceImpl
     
     public FocusArea getArea(FocusAreaOntologyTerm faot) throws PortalException, SystemException {
         return FocusAreaLocalServiceUtil.getFocusArea(faot.getFocusAreaId());
+    }
+
+    public List<Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(long focusAreaId, long ontologySpaceId) throws Exception{
+        long ontologyTermId = getOntologyTermIdByFocusAreaAndSpaceId(focusAreaId, ontologySpaceId);
+        return getFocusAreaIdsByOntologyTermId(ontologyTermId);
+    }
+
+    private long getOntologyTermIdByFocusAreaAndSpaceId(Long focusAreaId, Long ontologySpaceId) throws Exception{
+        List<FocusAreaOntologyTerm> ontologyTermsForFocusArea;
+
+        DynamicQuery retrieveOntologyTermsForFocusArea =
+                DynamicQueryFactoryUtil.forClass(FocusAreaOntologyTerm.class, PortletClassLoaderUtil.getClassLoader())
+                        .add(PropertyFactoryUtil.forName("primaryKey.focusAreaId").eq(focusAreaId));
+        ontologyTermsForFocusArea = FocusAreaOntologyTermLocalServiceUtil.dynamicQuery(retrieveOntologyTermsForFocusArea);
+
+        for(FocusAreaOntologyTerm focusAreaOntologyTerm : ontologyTermsForFocusArea){
+            long FocusAreaOntologyTermOntologyTermId = focusAreaOntologyTerm.getOntologyTermId();
+            OntologyTerm ontologyTerm =  OntologyTermLocalServiceUtil.getOntologyTerm(FocusAreaOntologyTermOntologyTermId);
+            if(ontologyTerm.getOntologySpaceId() == ontologySpaceId){
+                return ontologyTerm.getId();
+            }
+        }
+
+        throw new Exception("Could not find ontologyTermId for focusAreaId: " + focusAreaId.toString() +
+                " and ontologySpaceId: " + ontologySpaceId.toString());
+    }
+
+    private List<Long> getFocusAreaIdsByOntologyTermId(Long ontologyTermId) throws Exception{
+
+        ProjectionList projectionList = ProjectionFactoryUtil.projectionList();
+        projectionList.add(ProjectionFactoryUtil.property("primaryKey.focusAreaId"));
+
+        DynamicQuery retrieveFocusAreaOntologyTerms =
+                DynamicQueryFactoryUtil.forClass(FocusAreaOntologyTerm.class, PortletClassLoaderUtil.getClassLoader())
+                        .add(PropertyFactoryUtil.forName("primaryKey.ontologyTermId").eq(ontologyTermId))
+                        .setProjection(projectionList);
+
+        return FocusAreaOntologyTermLocalServiceUtil.dynamicQuery(retrieveFocusAreaOntologyTerms);
     }
 }

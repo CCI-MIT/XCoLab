@@ -62,12 +62,17 @@
 .cmsDetailsBox .addpropbox input{
     float: left;
     height: 30px;
+
 }
 
 .cmsDetailsBox .addpropbox select{
     height: 30px;
     width: 445px;
     font-size: 16px;
+}
+
+.cmsDetailsBox .addpropbox select.autoWidth{
+    width: auto;
 }
 
 .cmsDetailsBox .addpropbox .wideLargeInput{
@@ -168,6 +173,12 @@
     width: 22px;
     height: 22px;
 }
+.cmsDetailsBox .contestPhases .deleteIcon {
+    right: 0px;
+    top: 0px;
+}
+
+
 .cmsDetailsBox .addpropbox.teamBox{
     float: left;
     margin-right: 20px;
@@ -266,7 +277,6 @@ li.ui-menu-item .ui-state-focus {
 .cmsDetailsBox .contestOverview tr {
     white-space: nowrap;
     line-height: 30px;
-    cursor: move;
     height: 30px;
     background-color: #f2f1e9;
     display: table-row;
@@ -276,6 +286,10 @@ li.ui-menu-item .ui-state-focus {
     padding: inherit;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.cmsDetailsBox .contestOverview tr.draggable {
+    cursor: move;
 }
 
 .cmsDetailsBox .contestOverview .blue tr  {
@@ -356,4 +370,9 @@ li.ui-menu-item .ui-state-focus {
 
 .innerVerticalCenter {
     display: inline-block;
+}
+
+span.ontology-term-label {
+    margin-left: 15px;
+    font-style: italic;
 }

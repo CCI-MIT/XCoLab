@@ -2,11 +2,8 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import javax.portlet.PortletRequest;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.service.ContestLocalService;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.enums.ContestTier;
@@ -17,6 +14,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.util.List;
 
 interface ProposalTabCanAccessAlgorithm {
     boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request);
@@ -51,7 +50,8 @@ interface ProposalTabCanAccessAlgorithm {
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
-                if (!(permissions.getCanJudgeActions() || permissions.getCanFellowActions() || permissions.getCanAdminAll())) {
+                if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()
+                || permissions.getCanContestManagerActions()) ) {
                     return false;
                 }
 
@@ -79,7 +79,7 @@ interface ProposalTabCanAccessAlgorithm {
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
                 ContestPhase contestPhase = context.getContestPhase(request);
-                if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()) ||
+                if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll() || permissions.getCanContestManagerActions()) ||
                         !contestPhase.isFellowScreeningActive()) {
                     return false;
                 }
@@ -162,11 +162,17 @@ interface ProposalTabCanAccessAlgorithm {
             try {
                 Contest contest = context.getContest(request);
 
-                // Only show tab for contests which have their contest tier set to != None
-                if ((contest != null && contest.getContestTier() != ContestTier.NONE.getTierType())) {
+                long ADAPTATION_ONTOLOGY_TERM_ID = 1300355L;
+                long focusAreaId = contest.getFocusAreaId();
+                boolean isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm =
+                        OntologyTermLocalServiceUtil.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId, ADAPTATION_ONTOLOGY_TERM_ID);
+
+                if ((contest != null && contest.getContestTier() != ContestTier.NONE.getTierType() &&
+                        contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType() &&
+                        !isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
                     return true;
                 }
-            } catch (SystemException | PortalException e) {
+            } catch (Exception e) {
                 _log.error("can't check if user is allowed to view impact tab", e);
             }
             return false;
@@ -181,8 +187,11 @@ interface ProposalTabCanAccessAlgorithm {
             try {
                 Contest contest = context.getContest(request);
 
-                // Only let team members or admins edit impact of Basic contests
-                if ((contest != null && contest.getContestTier() == ContestTier.BASIC.getTierType()) &&
+                // Only let team members or admins edit impact
+                if ((contest != null && (
+                        contest.getContestTier() == ContestTier.BASIC.getTierType()) ||
+                        contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType() ||
+                        contest.getContestTier() == ContestTier.GLOBAL.getTierType()) &&
                         (permissions.getIsTeamMember() || permissions.getCanAdmin())) {
                     return true;
                 }
