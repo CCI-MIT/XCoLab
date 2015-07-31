@@ -14,7 +14,7 @@ public class EmailToAdminDispatcher {
 
     private static final Log _log = LogFactoryUtil.getLog(EmailToAdminDispatcher.class);
 
-    private static final String[] adminEmailRecipients = new String[] {"pdeboer@mit.edu", "knauert@mit.edu", "mail@klemensmang.com"};
+    private static final String[] adminEmailRecipients = new String[] {"pdeboer@mit.edu", "knauert@mit.edu", "mail@klemensmang.com", "jobachhu@mit.edu"};
     private static final String fromEmailAddress = "no-reply@climatecolab.org";
     private static final String fromEmailName = "MIT Climate CoLab";
 
