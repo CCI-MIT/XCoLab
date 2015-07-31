@@ -53,10 +53,14 @@ public abstract class EmailNotification {
      * @param proposal  The proposal object (must not be null)
      * @return          Proposal URL as String
      */
-       protected  String getProposalLink(Contest contest, Proposal proposal) throws SystemException, PortalException {
+    protected  String getProposalLink(Contest contest, Proposal proposal) throws SystemException, PortalException {
         final String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        return getProposalLinkWithLinkText(contest, proposal, proposalName);
+    }
+
+    protected String getProposalLinkWithLinkText(Contest contest, Proposal proposal, String linkText) throws SystemException, PortalException {
         final String proposalLinkUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
-        return String.format(LINK_FORMAT_STRING, proposalLinkUrl, proposalName);
+        return String.format(LINK_FORMAT_STRING, proposalLinkUrl, linkText);
     }
 
     /**
