@@ -177,8 +177,13 @@ public class OpenIdController {
 
                     long imageId = 0;
 					if (Validator.isNotNull(profilePicURL)) {
-                        imageId = ImageUploadUtils.linkProfilePicture(profilePicURL);
-                        portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
+                        try {
+                            imageId = ImageUploadUtils.linkProfilePicture(profilePicURL);
+                            portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
+                        } catch(Exception e) {
+                            _log.error("Could not link profile picture with URL " + profilePicURL + " to new user account", e);
+                        }
+
                     }
 
                     if (session.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_LOGIN)) {
