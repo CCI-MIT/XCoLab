@@ -25,14 +25,17 @@ import java.io.IOException;
 @Controller
 public class ReportInvalidUrlErrorActionController {
 
-    private static final String EMAIL_SUBJECT = "User accessed invalid URL";
+    private static final String EMAIL_SUBJECT_FORMAT_STRING = "User accessed invalid URL %s";
 
     private static final String EMAIL_ADDRESS_PLACEHOLDER = "(email address not specified)";
     private static final String USER_SCREEN_NAME_PLACEHOLDER = "(name not specified)";
 
+    private static final String URL_REGEX = "([A-Za-z]{4}:(?:\\/\\/)?)climatecolab\\.org\\/(.)*\\/plans\\/(.)*";
+
 
     private static final String MESSAGE_BODY_FORMAT_STRING = "<p>URL %s could not be accessed by user <strong>%s</strong></p>" +
             "<br/>" +
+            "<p>The user provided the following steps to reproduce the problem: <br/>%s</p>" +
             "<p><strong>Please notify the user once we have a fix for the bug:</strong><br/>%s</p>";
 
     @RequestMapping(params = {"error=invalidUrl", "pageToDisplay=contestProposals"})
@@ -44,7 +47,9 @@ public class ReportInvalidUrlErrorActionController {
         String url = request.getParameter("url");
         InvalidUrlErrorWrapper invalidUrlErrorWrapper = new InvalidUrlErrorWrapper(stepsToReproduce, userEmailAddress);
 
-        if (invalidUrlErrorWrapper.isWrapperFilledOut()) {
+        if (invalidUrlErrorWrapper.isWrapperFilledOut()
+                && isUrlValid(url)) {
+
             User user = null;
             try {
                 user = PortalUtil.getUser(request);
@@ -52,10 +57,15 @@ public class ReportInvalidUrlErrorActionController {
                 // User not logged in
             }
 
-            new EmailToAdminDispatcher(EMAIL_SUBJECT, getMessageBody(url, invalidUrlErrorWrapper, user)).sendMessage();
+            new EmailToAdminDispatcher(String.format(EMAIL_SUBJECT_FORMAT_STRING, url),
+                    getMessageBody(url, invalidUrlErrorWrapper, user)).sendMessage();
         }
 
         response.sendRedirect("/web/guest/plans");
+    }
+
+    private boolean isUrlValid(String url) {
+        return Validator.isNotNull(url) && url.matches(URL_REGEX);
     }
 
     private String getMessageBody(String url, InvalidUrlErrorWrapper invalidUrlErrorWrapper, User user) {
@@ -72,6 +82,6 @@ public class ReportInvalidUrlErrorActionController {
             }
         }
 
-        return String.format(MESSAGE_BODY_FORMAT_STRING, url, userScreenName, emailAddress);
+        return String.format(MESSAGE_BODY_FORMAT_STRING, url, userScreenName, invalidUrlErrorWrapper.getStepsToReproduce(), emailAddress);
     }
 }
