@@ -44,6 +44,8 @@ public class OpenIdController {
 
     private static final String GOOGLE_OAUTH_REQUEST_STATE_TOKEN = "GOOGLE_OAUTH_REQUEST_STATE_TOKEN";
 
+    private static final String DEFAULT_SCREEN_NAME = "user";
+
 
     @RequestMapping(params = "action=initiateOpenIdRegistration")
     public void initiateOpenIdRegistration(ActionRequest actionRequest, Model model, ActionResponse actionResponse) throws Exception{
@@ -169,7 +171,11 @@ public class OpenIdController {
                         screenName = emailAddress.substring(0, emailAddress.indexOf(CharPool.AT));
                         screenName = screenName.replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
                         portletSession.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName, PortletSession.APPLICATION_SCOPE);
+                    } else {
+                        // Just use a default screen name if we don't have access to the user's email address
+                        screenName = DEFAULT_SCREEN_NAME;
                     }
+
                     if (Validator.isNotNull(firstName)) portletSession.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName, PortletSession.APPLICATION_SCOPE);
                     if (Validator.isNotNull(lastName)) portletSession.setAttribute(SSOKeys.SSO_LAST_NAME, lastName, PortletSession.APPLICATION_SCOPE);
                     portletSession.setAttribute(SSOKeys.SSO_CITY, city, PortletSession.APPLICATION_SCOPE);
@@ -204,13 +210,14 @@ public class OpenIdController {
                         userBean.setEmail(emailAddress);
                         userBean.setCountry(country);
                         userBean.setImageId(Long.toString(imageId));
+                        userBean.setScreenName(screenName);
 
 
                         // Validate uniqueness of the screen name
                         // The chance of a collision among 40 equal screennames is 50% -> 5 tries should be sufficient
                         for (int i = 0; i < 5; i++) {
                             try {
-                                User duplicateUser = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
+                                UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
                                 // Generate a random suffix for the non-unique screenName
                                 screenName = userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
                             } catch (PortalException e) {
