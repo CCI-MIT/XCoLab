@@ -460,6 +460,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     public long getVotesCount(Contest contest) throws SystemException, PortalException {
+        ContestPhase contestPhase = contestPhaseLocalService.getActivePhaseForContest(contest);
         List<Long> proposalIds = new ArrayList<>();
         for (Proposal proposal : proposalLocalService.getProposalsInContest(contest.getContestPK())) {
             proposalIds.add(proposal.getProposalId());
@@ -469,9 +470,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             return 0L;
         }
 
+        Long contestPhaseId = contestPhase.getContestPhasePK();
         DynamicQuery votesQuery = DynamicQueryFactoryUtil.forClass(ProposalVote.class);
+        votesQuery.add(PropertyFactoryUtil.forName("primaryKey.contestPhaseId").eq(contestPhaseId));
         votesQuery.add(RestrictionsFactoryUtil.in("proposalId", proposalIds));
-
         return dynamicQueryCount(votesQuery);
     }
 

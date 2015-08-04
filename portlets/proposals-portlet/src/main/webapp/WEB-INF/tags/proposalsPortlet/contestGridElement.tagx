@@ -26,9 +26,8 @@
                 </div>
 
                 <c:choose>
-                    
+
                     <c:when test="${not empty contest.activePhase and contest.activePhase.canVote }">
-                        <!--
                         <div class="comm" rendered="${contest.activePhase.canVote}"><strong>${contest.votesCount}</strong>
                             <c:choose>
                                 <c:when test="${contest.votesCount == 1}"> vote</c:when>
@@ -36,10 +35,8 @@
                             </c:choose>
 
                         </div>
-                        -->
                     </c:when>
                     <c:otherwise>
-
                         <div class="comm" rendered="${not contest.activePhase.canVote}"><strong>${contest.totalCommentsCount}</strong>
                             <c:choose>
                                 <c:when test="${contest.totalCommentsCount == 1}"> comment</c:when>
