@@ -136,6 +136,7 @@
 		<field name="contestActive" type="boolean" />
 		<field name="planTemplateId" type="long" />
 		<field name="contestScheduleId" type="long" />
+		<field name="templateTypeString" type="String" />
 		<field name="focusAreaId" type="long" />
 		<field name="contestTier" type="long" />
 		<field name="contestLogoId" type="long" />

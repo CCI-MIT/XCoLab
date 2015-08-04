@@ -28,6 +28,7 @@ public class ContestSoap implements Serializable {
     private boolean _contestActive;
     private long _planTemplateId;
     private long _contestScheduleId;
+    private String _templateTypeString;
     private long _focusAreaId;
     private long _contestTier;
     private long _contestLogoId;
@@ -77,6 +78,7 @@ public class ContestSoap implements Serializable {
         soapModel.setContestActive(model.getContestActive());
         soapModel.setPlanTemplateId(model.getPlanTemplateId());
         soapModel.setContestScheduleId(model.getContestScheduleId());
+        soapModel.setTemplateTypeString(model.getTemplateTypeString());
         soapModel.setFocusAreaId(model.getFocusAreaId());
         soapModel.setContestTier(model.getContestTier());
         soapModel.setContestLogoId(model.getContestLogoId());
@@ -268,6 +270,14 @@ public class ContestSoap implements Serializable {
 
     public void setContestScheduleId(long contestScheduleId) {
         _contestScheduleId = contestScheduleId;
+    }
+
+    public String getTemplateTypeString() {
+        return _templateTypeString;
+    }
+
+    public void setTemplateTypeString(String templateTypeString) {
+        _templateTypeString = templateTypeString;
     }
 
     public long getFocusAreaId() {

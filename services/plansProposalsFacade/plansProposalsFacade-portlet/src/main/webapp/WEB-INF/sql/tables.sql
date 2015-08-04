@@ -92,6 +92,7 @@ create table xcolab_Contest (
 	contestActive BOOLEAN,
 	planTemplateId LONG,
 	contestScheduleId LONG,
+	templateTypeString VARCHAR(75) null,
 	focusAreaId LONG,
 	contestTier LONG,
 	contestLogoId LONG,

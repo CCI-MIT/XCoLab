@@ -24,6 +24,7 @@
         <column name="contestActive" type="boolean"/>
         <column name="planTemplateId" type="long" />
         <column name="contestScheduleId" type="long" />
+        <column name="templateTypeString" type="String" />
 
         <column name="focusAreaId" type="long" />
         <column name="contestTier" type="long" />

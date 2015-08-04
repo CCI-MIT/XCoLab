@@ -256,6 +256,21 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setContestScheduleId(long contestScheduleId);
 
     /**
+     * Returns the template type string of this contest.
+     *
+     * @return the template type string of this contest
+     */
+    @AutoEscape
+    public String getTemplateTypeString();
+
+    /**
+     * Sets the template type string of this contest.
+     *
+     * @param templateTypeString the template type string of this contest
+     */
+    public void setTemplateTypeString(String templateTypeString);
+
+    /**
      * Returns the focus area ID of this contest.
      *
      * @return the focus area ID of this contest

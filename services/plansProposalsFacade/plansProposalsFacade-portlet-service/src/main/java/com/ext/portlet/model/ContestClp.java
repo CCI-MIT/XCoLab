@@ -35,6 +35,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private boolean _contestActive;
     private long _planTemplateId;
     private long _contestScheduleId;
+    private String _templateTypeString;
     private long _focusAreaId;
     private long _contestTier;
     private long _contestLogoId;
@@ -117,6 +118,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("contestActive", getContestActive());
         attributes.put("planTemplateId", getPlanTemplateId());
         attributes.put("contestScheduleId", getContestScheduleId());
+        attributes.put("templateTypeString", getTemplateTypeString());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("contestTier", getContestTier());
         attributes.put("contestLogoId", getContestLogoId());
@@ -238,6 +240,13 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (contestScheduleId != null) {
             setContestScheduleId(contestScheduleId);
+        }
+
+        String templateTypeString = (String) attributes.get(
+                "templateTypeString");
+
+        if (templateTypeString != null) {
+            setTemplateTypeString(templateTypeString);
         }
 
         Long focusAreaId = (Long) attributes.get("focusAreaId");
@@ -732,6 +741,29 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                         long.class);
 
                 method.invoke(_contestRemoteModel, contestScheduleId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getTemplateTypeString() {
+        return _templateTypeString;
+    }
+
+    @Override
+    public void setTemplateTypeString(String templateTypeString) {
+        _templateTypeString = templateTypeString;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setTemplateTypeString",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, templateTypeString);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -1482,6 +1514,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setContestActive(getContestActive());
         clone.setPlanTemplateId(getPlanTemplateId());
         clone.setContestScheduleId(getContestScheduleId());
+        clone.setTemplateTypeString(getTemplateTypeString());
         clone.setFocusAreaId(getFocusAreaId());
         clone.setContestTier(getContestTier());
         clone.setContestLogoId(getContestLogoId());
@@ -1567,7 +1600,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(85);
+        StringBundler sb = new StringBundler(87);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1597,6 +1630,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getPlanTemplateId());
         sb.append(", contestScheduleId=");
         sb.append(getContestScheduleId());
+        sb.append(", templateTypeString=");
+        sb.append(getTemplateTypeString());
         sb.append(", focusAreaId=");
         sb.append(getFocusAreaId());
         sb.append(", contestTier=");
@@ -1660,7 +1695,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(130);
+        StringBundler sb = new StringBundler(133);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1721,6 +1756,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>contestScheduleId</column-name><column-value><![CDATA[");
         sb.append(getContestScheduleId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>templateTypeString</column-name><column-value><![CDATA[");
+        sb.append(getTemplateTypeString());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>focusAreaId</column-name><column-value><![CDATA[");

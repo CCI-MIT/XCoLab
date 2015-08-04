@@ -52,6 +52,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("contestActive", getContestActive());
         attributes.put("planTemplateId", getPlanTemplateId());
         attributes.put("contestScheduleId", getContestScheduleId());
+        attributes.put("templateTypeString", getTemplateTypeString());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("contestTier", getContestTier());
         attributes.put("contestLogoId", getContestLogoId());
@@ -173,6 +174,13 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (contestScheduleId != null) {
             setContestScheduleId(contestScheduleId);
+        }
+
+        String templateTypeString = (String) attributes.get(
+                "templateTypeString");
+
+        if (templateTypeString != null) {
+            setTemplateTypeString(templateTypeString);
         }
 
         Long focusAreaId = (Long) attributes.get("focusAreaId");
@@ -663,6 +671,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setContestScheduleId(long contestScheduleId) {
         _contest.setContestScheduleId(contestScheduleId);
+    }
+
+    /**
+    * Returns the template type string of this contest.
+    *
+    * @return the template type string of this contest
+    */
+    @Override
+    public java.lang.String getTemplateTypeString() {
+        return _contest.getTemplateTypeString();
+    }
+
+    /**
+    * Sets the template type string of this contest.
+    *
+    * @param templateTypeString the template type string of this contest
+    */
+    @Override
+    public void setTemplateTypeString(java.lang.String templateTypeString) {
+        _contest.setTemplateTypeString(templateTypeString);
     }
 
     /**

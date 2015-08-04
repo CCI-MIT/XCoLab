@@ -5847,6 +5847,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setContestActive(contest.isContestActive());
         contestImpl.setPlanTemplateId(contest.getPlanTemplateId());
         contestImpl.setContestScheduleId(contest.getContestScheduleId());
+        contestImpl.setTemplateTypeString(contest.getTemplateTypeString());
         contestImpl.setFocusAreaId(contest.getFocusAreaId());
         contestImpl.setContestTier(contest.getContestTier());
         contestImpl.setContestLogoId(contest.getContestLogoId());

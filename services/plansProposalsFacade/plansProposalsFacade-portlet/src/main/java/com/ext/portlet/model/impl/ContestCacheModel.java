@@ -35,6 +35,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public boolean contestActive;
     public long planTemplateId;
     public long contestScheduleId;
+    public String templateTypeString;
     public long focusAreaId;
     public long contestTier;
     public long contestLogoId;
@@ -66,7 +67,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(85);
+        StringBundler sb = new StringBundler(87);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -96,6 +97,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(planTemplateId);
         sb.append(", contestScheduleId=");
         sb.append(contestScheduleId);
+        sb.append(", templateTypeString=");
+        sb.append(templateTypeString);
         sb.append(", focusAreaId=");
         sb.append(focusAreaId);
         sb.append(", contestTier=");
@@ -217,6 +220,13 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestImpl.setContestActive(contestActive);
         contestImpl.setPlanTemplateId(planTemplateId);
         contestImpl.setContestScheduleId(contestScheduleId);
+
+        if (templateTypeString == null) {
+            contestImpl.setTemplateTypeString(StringPool.BLANK);
+        } else {
+            contestImpl.setTemplateTypeString(templateTypeString);
+        }
+
         contestImpl.setFocusAreaId(focusAreaId);
         contestImpl.setContestTier(contestTier);
         contestImpl.setContestLogoId(contestLogoId);
@@ -323,6 +333,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestActive = objectInput.readBoolean();
         planTemplateId = objectInput.readLong();
         contestScheduleId = objectInput.readLong();
+        templateTypeString = objectInput.readUTF();
         focusAreaId = objectInput.readLong();
         contestTier = objectInput.readLong();
         contestLogoId = objectInput.readLong();
@@ -401,6 +412,13 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         objectOutput.writeBoolean(contestActive);
         objectOutput.writeLong(planTemplateId);
         objectOutput.writeLong(contestScheduleId);
+
+        if (templateTypeString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(templateTypeString);
+        }
+
         objectOutput.writeLong(focusAreaId);
         objectOutput.writeLong(contestTier);
         objectOutput.writeLong(contestLogoId);
