@@ -237,6 +237,14 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			chartContainer.jqplot(valuesCombined, plotOptions);
 			
 			chartContainer.find("table.jqplot-table-legend").appendTo(legendContainer).removeAttr('style');
+
+			// this is bad bad way of doing this, yet I don't see any better place to put it, it shouldn't be hardcoded (janusz)
+			// get column count in the legend
+			var legendElem = chartContainer.find("table.jqplot-table-legend")
+			var columnCount = legendElem.find("tr:first td").length;
+			jQuery("table.jqplot-table-legend").prepend("<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" +
+				"Results shown for the following models. See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>EMF27 model runs for more details</a></td></tr>");
+
 		}
 		
 		

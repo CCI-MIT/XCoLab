@@ -54,7 +54,7 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     Set<Scenario> scenarios;
     Map<Long, Scenario> modelIdToScenarioMap;
-    Map<String, SimulationScenarioRegionWrapper> proposalNameToModelScenarioRegionMap;
+    Map<String, ProposalSimulationScenarioRegionWrapper> proposalNameToModelScenarioRegionMap;
     Set<String> presentRegion;
     List<Variable> combinedInputParameters;
     Map<Long, Object> combinedInputParametersMap;
@@ -72,7 +72,7 @@ public class ProposalImpactScenarioCombinationWrapper {
 
         for(Proposal proposal : proposals) {
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
-            SimulationScenarioRegionWrapper simulationScenarioRegion = new SimulationScenarioRegionWrapper(proposalWrapper);
+            ProposalSimulationScenarioRegionWrapper simulationScenarioRegion = new ProposalSimulationScenarioRegionWrapper(proposalWrapper);
             presentRegion.add(simulationScenarioRegion.getRegion());
             Long scenarioId = proposalWrapper.getScenarioId();
             Scenario scenarioForProposal = null;
@@ -110,7 +110,11 @@ public class ProposalImpactScenarioCombinationWrapper {
         }
     }
 
-    public Map<String, SimulationScenarioRegionWrapper> getProposalNameToModelScenarioRegionMap() {
+    private void fillProposalNameToModelScenarioRegionMap(){
+
+    }
+
+    public Map<String, ProposalSimulationScenarioRegionWrapper> getProposalNameToModelScenarioRegionMap() {
         return proposalNameToModelScenarioRegionMap;
     }
 
@@ -177,17 +181,17 @@ public class ProposalImpactScenarioCombinationWrapper {
 
 
     public boolean isOneSubProposalPerRegionSelected(){
-        boolean subProposalPerRegionSelected = true;
+        boolean oneSubProposalPerRegionSelected = true;
         for(String region: validationRegions){
             if(!presentRegion.contains(region)){
-                SimulationScenarioRegionWrapper simulationScenarioRegionWrapper = new SimulationScenarioRegionWrapper();
-                simulationScenarioRegionWrapper.setRegion(region);
-                simulationScenarioRegionWrapper.setSimulation("-");
-                proposalNameToModelScenarioRegionMap.put("No proposal selected for region: " + region, simulationScenarioRegionWrapper);
-                subProposalPerRegionSelected = false;
+                ProposalSimulationScenarioRegionWrapper proposalSimulationScenarioRegionWrapper = new ProposalSimulationScenarioRegionWrapper();
+                proposalSimulationScenarioRegionWrapper.setRegion(region);
+                proposalSimulationScenarioRegionWrapper.setSimulation("-");
+                proposalNameToModelScenarioRegionMap.put("No proposal selected for region: " + region, proposalSimulationScenarioRegionWrapper);
+                oneSubProposalPerRegionSelected = false;
             }
         }
-        return subProposalPerRegionSelected;
+        return oneSubProposalPerRegionSelected;
     }
 
     public boolean doAllScenariosUseSameModel(){
