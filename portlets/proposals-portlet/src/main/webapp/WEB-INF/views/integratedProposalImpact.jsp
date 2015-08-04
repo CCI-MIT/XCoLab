@@ -35,7 +35,7 @@
                                                               contestPK="${contest.contestPK }" modelId="${modelId}"
                                                               scenarioId="${scenarioId }"/>
 
-                        <div id="proposalToModelMap" class="addpropbox">
+                        <div id="proposalToModelMap" class="addpropbox" style="display: none;">
                             <c:if test="${not empty proposalToModelMap}">
                                 <div class="alert alert-error">
                                     In order to use the values from your regional plans here, all the regional plans
