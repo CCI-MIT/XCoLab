@@ -441,7 +441,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                         // Add this check for extra security to prevent proposal authors from being spammed (see COLAB-500)
                         if (hasProposalAlreadyBeenReviewed(p, phase)) {
                             try {
-                                //proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null); //TODO reenable again
+                                proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
                                 createProposalContestPhasePromotionDoneAttribute(p.getProposalId(), phase.getContestPhasePK());
                             } catch (Throwable e) {
                                 _log.error("Could not send proposal promotion colab messaging notification", e);
