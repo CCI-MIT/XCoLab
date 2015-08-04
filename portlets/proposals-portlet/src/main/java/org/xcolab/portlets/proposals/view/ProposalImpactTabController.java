@@ -104,7 +104,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 model.addAttribute("CONSOLIDATE", isConsolidationPossible);
 
                 if(!isConsolidationPossible){
-                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalNameToModelScenarioRegionMap());
+                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getRegionToProposalSimulationScenarioMap());
                     populateModelOptions(model, request);
                 } else {
 
@@ -117,6 +117,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                         boolean isCombinedScenario = proposalImpactScenarioCombinationWrapper.isCombinedScenario(proposalScenarioId);
 
                         if(isCombinedScenario){
+
                             proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
                             if(proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)){
 

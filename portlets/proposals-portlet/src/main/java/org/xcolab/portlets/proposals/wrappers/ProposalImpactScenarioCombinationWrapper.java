@@ -54,7 +54,7 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     Set<Scenario> scenarios;
     Map<Long, Scenario> modelIdToScenarioMap;
-    Map<String, ProposalSimulationScenarioRegionWrapper> proposalNameToModelScenarioRegionMap;
+    Map<String, ProposalSimulationScenarioRegionWrapper> regionToProposalSimulationScenarioMap;
     Set<String> presentRegion;
     List<Variable> combinedInputParameters;
     Map<Long, Object> combinedInputParametersMap;
@@ -68,7 +68,8 @@ public class ProposalImpactScenarioCombinationWrapper {
         presentRegion = new HashSet<>();
         scenarios = new HashSet<>();
         modelIdToScenarioMap = new HashMap<>();
-        proposalNameToModelScenarioRegionMap = new LinkedHashMap<>();
+        regionToProposalSimulationScenarioMap = new LinkedHashMap<>();
+        fillProposalNameToModelScenarioRegionMap();
 
         for(Proposal proposal : proposals) {
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
@@ -92,7 +93,7 @@ public class ProposalImpactScenarioCombinationWrapper {
             	}
             }
 
-            proposalNameToModelScenarioRegionMap.put(proposalWrapper.getName(), simulationScenarioRegion);
+            regionToProposalSimulationScenarioMap.put(simulationScenarioRegion.getRegion(), simulationScenarioRegion);
             
             if (scenarioForProposal == null) {
                 modelIdToScenarioMap.put(0L, null);
@@ -111,11 +112,13 @@ public class ProposalImpactScenarioCombinationWrapper {
     }
 
     private void fillProposalNameToModelScenarioRegionMap(){
-
+        for(String region:validationRegions){
+            regionToProposalSimulationScenarioMap.put(region, null);
+        }
     }
 
-    public Map<String, ProposalSimulationScenarioRegionWrapper> getProposalNameToModelScenarioRegionMap() {
-        return proposalNameToModelScenarioRegionMap;
+    public Map<String, ProposalSimulationScenarioRegionWrapper> getRegionToProposalSimulationScenarioMap() {
+        return regionToProposalSimulationScenarioMap;
     }
 
     private static boolean isModelEMF(Simulation simulation){
@@ -187,7 +190,7 @@ public class ProposalImpactScenarioCombinationWrapper {
                 ProposalSimulationScenarioRegionWrapper proposalSimulationScenarioRegionWrapper = new ProposalSimulationScenarioRegionWrapper();
                 proposalSimulationScenarioRegionWrapper.setRegion(region);
                 proposalSimulationScenarioRegionWrapper.setSimulation("-");
-                proposalNameToModelScenarioRegionMap.put("No proposal selected for region: " + region, proposalSimulationScenarioRegionWrapper);
+                regionToProposalSimulationScenarioMap.put(region, proposalSimulationScenarioRegionWrapper);
                 oneSubProposalPerRegionSelected = false;
             }
         }

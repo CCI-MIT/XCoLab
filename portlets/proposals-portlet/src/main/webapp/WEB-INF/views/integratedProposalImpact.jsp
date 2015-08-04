@@ -58,8 +58,8 @@
                                     <tbody>
                                     <c:forEach items="${proposalToModelMap}" var="proposalToModel">
                                         <tr>
-                                            <td><a href="${proposalToModel.value.proposalUrl}">${proposalToModel.value.region}</a></td>
-                                            <td>${proposalToModel.key}</td>
+                                            <td>${proposalToModel.value.region}</td>
+                                            <td><a href="${proposalToModel.value.proposalUrl}" target="_blank">${proposalToModel.value.proposalName}</a></td>
                                             <td>${proposalToModel.value.simulation}</td>
                                             <!-- <td>${proposalToModel.value.scenario}</td> -->
                                         </tr>
