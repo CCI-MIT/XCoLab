@@ -53,6 +53,11 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         Contest contest = proposalsContext.getContest(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
 
+        boolean editValidated = false;
+        if(edit && proposalsContext.getPermissions(request).getCanEdit()){
+            editValidated = edit;
+        }
+
         try {
             List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
@@ -68,7 +73,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 return "proposalImpactError";
             case REGION_AGGREGATE:
             case GLOBAL:
-                return showImpactTabIntegratedProposal(request, model, edit);
+                return showImpactTabIntegratedProposal(request, model, editValidated);
             default:
                 _log.warn("Using default impact tab view since contest tier is not set for contest: "+ contest.getContestPK());
                 return "proposalImpactError";
@@ -147,7 +152,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             populateModelOptions(model, request);
         }
 
-        model.addAttribute("edit", edit);
 
         boolean showSubProposalListing = false;
         if(showSubProposalListing) {
