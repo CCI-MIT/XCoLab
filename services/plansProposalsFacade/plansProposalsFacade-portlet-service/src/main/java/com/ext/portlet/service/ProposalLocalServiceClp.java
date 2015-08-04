@@ -1,5 +1,6 @@
 package com.ext.portlet.service;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.InvokableLocalService;
 
 /**
@@ -2407,8 +2408,9 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
+                throw new SystemException("kmang; Unknown Exception occured: ", t);
+                /*throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");*/
             }
         }
     }
@@ -2436,8 +2438,9 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
+                throw new SystemException("kmang; Unknown Exception occured: ", t);
+                /*throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");*/
             }
         }
     }
