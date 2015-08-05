@@ -54,7 +54,10 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
 
         boolean editValidated = false;
-        if(edit && proposalsContext.getPermissions(request).getCanEdit()){
+        if(edit
+                && (proposalsContext.getPermissions(request).getCanEdit()
+                    || proposalsContext.getPermissions(request).getCanIAFActions())) {
+
             editValidated = edit;
         }
 
