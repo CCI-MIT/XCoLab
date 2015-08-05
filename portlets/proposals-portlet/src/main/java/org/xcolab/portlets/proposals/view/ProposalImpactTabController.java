@@ -155,7 +155,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             populateModelOptions(model, request);
         }
 
-
+        model.addAttribute("edit", edit);
+        
         boolean showSubProposalListing = false;
         if(showSubProposalListing) {
             populateImpactTabBasicProposal(model, contest, proposal);
