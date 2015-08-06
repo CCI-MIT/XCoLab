@@ -16,12 +16,13 @@ public class ContestEmailTemplateWrapper {
     private String proposalName;
     private String contestName;
 
+    private static final String PROPOSAL_TITLE_PLACEHOLDER = "<proposal-title/>";
+    private static final String CONTEST_TITLE_PLACEHOLDER = "<contest-title/>";
 
     public ContestEmailTemplateWrapper(ContestEmailTemplate template, String proposalName, String contestName) {
         this.template = template;
         this.proposalName = proposalName;
         this.contestName = contestName;
-
     }
 
     public String getHeader() {
@@ -41,8 +42,8 @@ public class ContestEmailTemplateWrapper {
     }
 
     private String replaceVariables(String subject) {
-        String result = subject.replace("<contest-title/>", this.contestName)
-                .replace("<proposal-title/>", this.proposalName);
+        String result = subject.replace(CONTEST_TITLE_PLACEHOLDER, this.contestName)
+                .replace(PROPOSAL_TITLE_PLACEHOLDER, this.proposalName);
         return result;
     }
 }
