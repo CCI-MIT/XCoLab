@@ -10,6 +10,8 @@
 	<jsp:directive.attribute name="contestModelDefaultSetting" type="java.lang.String" required="false" rtexprvalue="true" description="model id" />
 	<jsp:directive.attribute name="inConsolidationMode" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Is the model in consolidation mode" />
 
+    <c:set var="inConsolidationMode" value="${(empty inConsolidationMode) ? false : true}" />
+
 	<modeling:simulationLoadScripts />
 
 	<link rel="stylesheet" href="/proposals-portlet/css/simulation.css" ></link>
@@ -30,8 +32,7 @@
 
 		options.edit = true;
 		var modeling = XCoLab.modeling('#modelsOutputContainer', options);
-		var inConsolidationMode = ${inConsolidationMode};
-				<c:choose>
+        <c:choose>
 			<c:when test="${not empty scenarioId and scenarioId > 0}">
 				modeling.loadScenario(${scenarioId});
 			</c:when>
@@ -43,7 +44,7 @@
 
 		jQuery(modeling).on("scenarioFetched", function(event) {
 			jQuery("#modelingScenarioId").val(event.scenario.scenarioId).addClass("editorDirty");
-			modeling.toggleEditMask(!inConsolidationMode);
+			modeling.toggleEditMask(!${inConsolidationMode});
 
 		}).on("valueChanged", function(event) {
 			jQuery("#modelingScenarioId").addClass("editorDirty");
