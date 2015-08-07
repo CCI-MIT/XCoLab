@@ -19,6 +19,10 @@ import org.climatecollaboratorium.events.EventBus;
 import org.climatecollaboratorium.events.EventHandler;
 import org.climatecollaboratorium.events.HandlerRegistration;
 import org.climatecollaboratorium.navigation.NavigationEvent;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Entities;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Whitelist;
 import org.xcolab.portlets.search.utils.DataPage;
 import org.xcolab.portlets.search.utils.DataSource;
 import org.xcolab.portlets.search.utils.PagedListDataModel;
@@ -63,7 +67,7 @@ public class SearchBean extends DataSource implements Serializable {
             this.searchPhrase = null;
         }
         else {
-            this.searchPhrase = searchPhrase;
+            this.searchPhrase = cleanHtml(searchPhrase);
         }
         onePageDataModel = null;
         
@@ -247,22 +251,33 @@ public class SearchBean extends DataSource implements Serializable {
                     try {
                         String newPhrase = event.getParameters("search").get("searchPhrase");
                         if (newPhrase != null && newPhrase.trim().length() > 0) {
-                            searchPhrase = URLDecoder.decode(event.getParameters("search").get("searchPhrase"), "UTF-8");
-                        }
-                        else {
+                            searchPhrase = cleanHtml(URLDecoder.decode(event.getParameters("search").get("searchPhrase"), "UTF-8"));
+                        } else {
                             searchPhrase = null;
-                            
+
                         }
-                        
+
                         onePageDataModel = null;
                     } catch (UnsupportedEncodingException e) {
                         _log.error("Can't read search phrase", e);
                     }
                 }
             }
-            
+
         }));
         
+    }
+
+    private static String cleanHtml(String text) {
+        return cleanHtml(text, Whitelist.none());
+    }
+
+    private static String cleanHtml(String text, Whitelist whitelist) {
+        org.jsoup.nodes.Document doc = Jsoup.parse(text);
+        doc = new Cleaner(whitelist).clean(doc);
+        // Adjust escape mode, http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities
+        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+        return doc.body().html();
     }
 
 	public DataPaginator getPaginator1() {
