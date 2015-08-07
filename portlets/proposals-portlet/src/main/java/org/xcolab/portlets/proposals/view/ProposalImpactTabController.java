@@ -53,11 +53,11 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         Contest contest = proposalsContext.getContest(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
 
+        boolean canEditImpactTab = ProposalTab.IMPACT
+                .getCanEdit(proposalsContext.getPermissions(request),proposalsContext, request);
+        
         boolean editValidated = false;
-        if(edit
-                && (proposalsContext.getPermissions(request).getCanEdit()
-                    || proposalsContext.getPermissions(request).getCanIAFActions())) {
-
+        if(edit && canEditImpactTab){
             editValidated = edit;
         }
 
