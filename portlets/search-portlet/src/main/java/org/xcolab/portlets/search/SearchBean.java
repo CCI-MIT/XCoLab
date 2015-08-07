@@ -249,7 +249,7 @@ public class SearchBean extends DataSource implements Serializable {
             public void onEvent(NavigationEvent event) {
                 if (event.hasSource("search")) {
                     try {
-                        String newPhrase = event.getParameters("search").get("searchPhrase");
+                        String newPhrase = cleanHtml(event.getParameters("search").get("searchPhrase"));
                         if (newPhrase != null && newPhrase.trim().length() > 0) {
                             searchPhrase = cleanHtml(URLDecoder.decode(event.getParameters("search").get("searchPhrase"), "UTF-8"));
                         } else {
