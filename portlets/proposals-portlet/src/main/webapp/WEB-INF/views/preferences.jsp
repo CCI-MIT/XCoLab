@@ -1,29 +1,24 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
-          xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <div id="content">
-        <div id="portlet-preferences">
-            <h1>Proposals preferences</h1>
-            <portlet:actionURL var="judging">
-                <portlet:param name="action" value="judging" />
-            </portlet:actionURL>
-            <form:form commandName="preferences" action="${judging}">
-                <p><input type="submit" value="send judging emails of preset phases"/> </p>
-            </form:form>
+<div id="content">
+    <div id="portlet-preferences">
+        <h1>Proposals preferences</h1>
 
-            <portlet:actionURL var="checkForMissingTeamMembersURL">
-                <portlet:param name="action" value="checkForMissingTeamMembers" />
-            </portlet:actionURL>
-            <form:form commandName="preferences" action="${checkForMissingTeamMembersURL}">
-                <p>
-                    <input type="submit"
-                           style="
+
+        <portlet:actionURL var="checkForMissingTeamMembersURL">
+            <portlet:param name="action" value="checkForMissingTeamMembers" />
+        </portlet:actionURL>
+        <form:form commandName="preferences" action="${checkForMissingTeamMembersURL}">
+            <p>
+                <input type="submit"
+                       style="
                     background: #ddd;
                     color: white;
                     font-size: 1em;
@@ -33,17 +28,17 @@
                     cursor: pointer;
                     margin-top: 2em;
                    "
-                           value="Check for missing team members"
-                            />
-                </p>
-            </form:form>
-            <portlet:actionURL var="runRibbonDistributionURL">
-                <portlet:param name="action" value="runRibbonDistribution" />
-            </portlet:actionURL>
-            <form:form commandName="preferences" action="${runRibbonDistributionURL}">
-                <p>
-                    <input type="submit"
-                           style="
+                       value="Check for missing team members"
+                        />
+            </p>
+        </form:form>
+        <portlet:actionURL var="runRibbonDistributionURL">
+            <portlet:param name="action" value="runRibbonDistribution" />
+        </portlet:actionURL>
+        <form:form commandName="preferences" action="${runRibbonDistributionURL}">
+            <p>
+                <input type="submit"
+                  style="
                     background: #a30;
                     color: white;
                     font-size: 1em;
@@ -53,114 +48,114 @@
                     cursor: pointer;
                     margin-top: 2em;
                    "
-                           value="Run (Semi)-Finalist Ribbon Distribution and Copy All Proposals to Winners Awarded for All Active Contests"
-                           onclick="return confirm('Are you sure? This action cannot be undone.');" />
-                </p>
-            </form:form>
-            <portlet:actionURL var="saveURL">
-                <portlet:param name="action" value="save" />
-            </portlet:actionURL>
-            <form:form commandName="preferences" action="${saveURL}">
-                <h2>Copy Proposals to Phases</h2>
+                   value="Run (Semi)-Finalist Ribbon Distribution and Copy All Proposals to Winners Awarded for All Active Contests"
+                   onclick="return confirm('Are you sure? This action cannot be undone.');" />
+            </p>
+        </form:form>
+        <portlet:actionURL var="saveURL">
+            <portlet:param name="action" value="save" />
+        </portlet:actionURL>
+        <form:form commandName="preferences" action="${saveURL}">
+            <h2>Copy Proposals to Phases</h2>
 
+            <p>
+                <strong>${message}</strong>
+            </p>
+            <p>
+                <label>
+                    Contest:<br />
+                    <form:select id="selectContest" path="moveFromContestId">
+                        <form:option value="-1" label="Choose a contest" />
+                        <c:forEach var="contest" items="${contests}">
+                            <form:option value="${contest.contestPK}" label="${contest.contestShortName}" />
+                        </c:forEach>
+                    </form:select>
+                </label>
+            </p>
+            <p id="contestPhaseContainer">
+                <label>
+                    Contest Phase:<br />
+                    <select id="selectContestPhase">
+                        <option value="-1">Choose a contest phase</option>
+                    </select>
+                </label>
+            </p>
+            <p id="proposalContainer">
+                <label>
+                    Proposals:<br />
+                    <select id="selectProposal" multiple="multiple" style="height:120px">
+                        <option/>
+                    </select>
+                </label>
+            </p>
+            <div id="targetContestPhaseContainer">
                 <p>
-                    <strong>${message}</strong>
+                    <label>
+                        <strong>Target Phase:</strong><br />
+                        <form:select id="selectTargetContestPhase" path="moveToContestPhaseId">
+                            <form:option value="-1" label="Choose a contest phase" />
+                        </form:select>
+                    </label>
                 </p>
                 <p>
                     <label>
-                        Contest:<br />
-                        <form:select id="selectContest" path="moveFromContestId">
-                            <form:option value="-1" label="Choose a contest" />
-                            <c:forEach var="contest" items="${contests}">
-                                <form:option value="${contest.contestPK}" label="${contest.contestShortName}" />
+                        Assign Ribbon in Target Phase:
+                        <form:select path="ribbonId">
+                            <form:option value="-1" label="no ribbon" />
+                            <c:forEach var="ribbon" items="${availableRibbons }">
+                                <c:choose>
+                                    <c:when test="${proposal.ribbon == ribbon.ribbon }">
+                                        <form:option value="${ribbon.id}" selected="selected" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <form:option value="${ribbon.id}" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
+                                    </c:otherwise>
+                                </c:choose>
                             </c:forEach>
                         </form:select>
                     </label>
                 </p>
-                <p id="contestPhaseContainer">
-                    <label>
-                        Contest Phase:<br />
-                        <select id="selectContestPhase">
-                            <option value="-1">Choose a contest phase</option>
-                        </select>
-                    </label>
-                </p>
-                <p id="proposalContainer">
-                    <label>
-                        Proposals:<br />
-                        <select id="selectProposal" multiple="multiple" style="height:120px">
-                            <option/>
-                        </select>
-                    </label>
-                </p>
-                <div id="targetContestPhaseContainer">
-                    <p>
-                        <label>
-                            <strong>Target Phase:</strong><br />
-                            <form:select id="selectTargetContestPhase" path="moveToContestPhaseId">
-                                <form:option value="-1" label="Choose a contest phase" />
-                            </form:select>
-                        </label>
-                    </p>
-                    <p>
-                        <label>
-                            Assign Ribbon in Target Phase:
-                            <form:select path="ribbonId">
-                                <form:option value="-1" label="no ribbon" />
-                                <c:forEach var="ribbon" items="${availableRibbons }">
-                                    <c:choose>
-                                        <c:when test="${proposal.ribbon == ribbon.ribbon }">
-                                            <form:option value="${ribbon.id}" selected="selected" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
-                                        </c:when>
-                                        <c:otherwise>
-                                            <form:option value="${ribbon.id}" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
-                            </form:select>
-                        </label>
-                    </p>
-                </div>
+            </div>
 
-                <p>
-                    <form:hidden id="proposalIdsToBeMoved" path="proposalIdsToBeMoved" />
-                </p>
+            <p>
+                <form:hidden id="proposalIdsToBeMoved" path="proposalIdsToBeMoved" />
+            </p>
 
-                <p>
-                    <input type="submit" value="Save" />
-                </p>
+            <p>
+            <input type="submit" value="Save" />
+            </p>
 
 
-                <h2>General</h2>
-                <label for="termsOfService">Terms of service:</label>
-                <form:textarea path="termsOfService" id="termsOfService" cssStyle="width: 100%; height: 300px;"/>
-                <form:errors path="termsOfService"/>
+            <h2>General</h2>
+            <label for="termsOfService">Terms of service:</label>
+            <form:textarea path="termsOfService" id="termsOfService" cssStyle="width: 100%; height: 300px;"/>
+            <form:errors path="termsOfService"/>
 
 
-                <input type="submit" value="Save" />
-            </form:form>
-        </div>
+            <input type="submit" value="Save" />
+        </form:form>
     </div>
-    <script>
-        var contestPhases = {
-                <c:forEach var="contestId" items="${contestPhases.keySet()}">
+</div>
+<script>
+var contestPhases = {
+    <c:forEach var="contestId" items="${contestPhases.keySet()}">
         ${contestId}: [
-        <c:forEach var="contestPhase" items="${contestPhases.get(contestId)}">
+            <c:forEach var="contestPhase" items="${contestPhases.get(contestId)}">
                 {pk: ${contestPhase.contestPhasePK}, name: "${contestPhaseType.get(contestPhase.contestPhaseType).name}"},
-        </c:forEach>
+            </c:forEach>
         ],
-        </c:forEach>
-        };
+    </c:forEach>
+};
 
-        var proposals = {
-                <c:forEach var="contestPhaseId" items="${proposals.keySet()}">
+var proposals = {
+    <c:forEach var="contestPhaseId" items="${proposals.keySet()}">
         ${contestPhaseId}: {
-        <c:forEach var="proposal" items="${proposals.get(contestPhaseId)}">
-            ${proposal.proposalId}: "${proposal.name.replaceAll("[^a-zA-Z 0-9]", "")}",
-        </c:forEach>
+            <c:forEach var="proposal" items="${proposals.get(contestPhaseId)}">
+                ${proposal.proposalId}: "${proposal.name.replaceAll("[^a-zA-Z 0-9]", "")}",
+            </c:forEach>
         },
-        </c:forEach>
-        };
-    </script>
+    </c:forEach>
+};
+</script>
 
 </jsp:root>

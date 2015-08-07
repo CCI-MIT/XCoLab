@@ -18,10 +18,10 @@ public class ContestVoteQuestionNotification extends EmailNotification {
 
     private static final String MESSAGE_BODY_FORMAT_STRING = "Dear %s," +
             "<br/><br/>The voting period for the %s contest has started! Vote now to help your favorite proposal win the Popular Choice award." +
-            "<br/><br/>You are currently supporting the following Finalist proposal(s) in the <b>%s</b> contest:<br/><br/>" +
+            "<br/><br/>You are currently supporting the Finalist proposal(s) below in the <b>%s</b> contest:<br/>" +
+            "<b>To cast your vote, click the link below of the proposal you would like to win.</b> You can vote for one proposal per contest.<br/><br/>" +
             "%s<br/>" +
-            "<b>To cast your vote, click the link above of the proposal you would like to win.</b>" +
-            "<br/><br/>Please note that you can vote for only one proposal per contest. You must have a valid email address for your vote to be counted. Votes cast by members with invalid email addresses will be removed. See the other proposals in this contest by visiting %s." +
+            "<br/><br/>Please note that you must have a valid email address for your vote to be counted. Votes cast by members with invalid email addresses will be removed. See the other proposals in this contest by visiting %s." +
             "<br/><br/>Thank you! And be sure to stay tuned for the results." +
             "<br/><br/>Sincerely,<br/>The Climate Colab Team";
 

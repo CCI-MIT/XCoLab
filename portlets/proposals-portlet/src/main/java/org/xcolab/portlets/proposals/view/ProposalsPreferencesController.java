@@ -78,7 +78,7 @@ public class ProposalsPreferencesController {
 
     @RequestMapping(params = "action=judging")
     public void releaseJudgingMails(ActionRequest request) throws Exception {
-        Integer[] phaseIds = new Integer[] { 1309143  };
+        Integer[] phaseIds = new Integer[] { 1308611,1309131,1309135,1309139,1309143,1309147,1309151,1309155,1309159,1309163,1309167,1309171,1309175,1309179,1309183,1309187,1309191,1309201,1309707  };
         for (Integer phaseId : phaseIds) {
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
             for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(phaseId)) {
