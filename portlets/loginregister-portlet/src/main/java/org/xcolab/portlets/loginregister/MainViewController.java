@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.HttpUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Entities;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -290,7 +295,7 @@ public class MainViewController {
                     User.class.getName(),
                     CommunityConstants.EXPANDO,
                     CommunityConstants.BIO, loggedInUser.getUserId(),
-                    bio);
+                    cleanHtml(bio, Whitelist.basicWithImages()));
         } else {
             if (bio.length() > 2000) {
                 json.getJSONObject("bio").put("success", false);
@@ -330,22 +335,21 @@ public class MainViewController {
         BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
 
         try {
-
             User user = UserServiceUtil.addUserWithWorkflow(
                     DEFAULT_COMPANY_ID, false,
                     newAccountBean.getPassword(),
                     newAccountBean.getRetypePassword(), false,
-                    newAccountBean.getScreenName(),
+                    cleanHtml(newAccountBean.getScreenName()),
                     newAccountBean.getEmail(), 0L, "",
                     themeDisplay.getLocale(),
-                    newAccountBean.getFirstName(), "",
-                    newAccountBean.getLastName(), 0, 0, true, 1, 1,
+                    cleanHtml(newAccountBean.getFirstName()), "",
+                    cleanHtml(newAccountBean.getLastName()), 0, 0, true, 1, 1,
                     1970, "", new long[]{}, new long[]{},
                     new long[]{}, new long[]{}, true, serviceContext);
 
             if (newAccountBean.getShortBio() != null
                     && newAccountBean.getShortBio().length() > 0) {
-                setExpandoValue(user, CommunityConstants.BIO, newAccountBean.getShortBio());
+                setExpandoValue(user, CommunityConstants.BIO, cleanHtml(newAccountBean.getShortBio(), Whitelist.basicWithImages()));
             }
 
             if (newAccountBean.getCountry() != null
@@ -435,6 +439,18 @@ public class MainViewController {
             setCreateUserBeanSessionVariables(newAccountBean, portletSession);
             response.sendRedirect("/web/guest/loginregister");
         }
+    }
+
+    private static String cleanHtml(String text) {
+        return cleanHtml(text, Whitelist.none());
+    }
+
+    private static String cleanHtml(String text, Whitelist whitelist) {
+        Document doc = Jsoup.parse(text);
+        doc = new Cleaner(whitelist).clean(doc);
+        // Adjust escape mode, http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities
+        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+        return doc.body().html();
     }
 
     private static void setCreateUserBeanSessionVariables(CreateUserBean createUserBean, PortletSession portletSession) {

@@ -6,6 +6,11 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Entities;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,10 +44,18 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
             throw new DiscussionsException("User isn't allowed to edit comment");
 
         DiscussionMessage m = DiscussionMessageLocalServiceUtil.getMessageByMessageId(messageId);
-        m.setBody(comment);
+        m.setBody(cleanHtml(comment, Whitelist.basicWithImages()));
         DiscussionMessageLocalServiceUtil.updateDiscussionMessage(m);
 
         redirectToReferer(request, response);
+    }
+
+    private String cleanHtml(String text, Whitelist whitelist) {
+        Document doc = Jsoup.parse(text);
+        doc = new Cleaner(whitelist).clean(doc);
+        // Adjust escape mode, http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities
+        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+        return doc.body().html();
     }
 
     @Override

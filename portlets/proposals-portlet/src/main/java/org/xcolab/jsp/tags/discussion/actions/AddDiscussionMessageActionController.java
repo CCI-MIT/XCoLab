@@ -10,6 +10,11 @@ import javax.servlet.http.Cookie;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.model.User;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Entities;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,8 +54,8 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
         checkPermissions(request, "User isn't allowed to add comment", newMessage.getDiscussionId());
         long userId = themeDisplay.getUser().getUserId();
-        
-        DiscussionCategoryGroupLocalServiceUtil.addComment(dcg, newMessage.getTitle(), newMessage.getDescription(), themeDisplay.getUser());
+
+        DiscussionCategoryGroupLocalServiceUtil.addComment(dcg, cleanHtml(newMessage.getTitle()), cleanHtml(newMessage.getDescription(), Whitelist.basicWithImages()), themeDisplay.getUser());
         // Update activity counter for user
         Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
         indexer.reindex(userId);
@@ -89,6 +94,18 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
         redirectToReferer(request, response);
         
+    }
+
+    private String cleanHtml(String text) {
+        return cleanHtml(text, Whitelist.none());
+    }
+
+    private String cleanHtml(String text, Whitelist whitelist) {
+        Document doc = Jsoup.parse(text);
+        doc = new Cleaner(whitelist).clean(doc);
+        // Adjust escape mode, http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities
+        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+        return doc.body().html();
     }
 
     @Override

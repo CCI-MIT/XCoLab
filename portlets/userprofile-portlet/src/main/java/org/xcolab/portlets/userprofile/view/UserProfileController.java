@@ -24,6 +24,11 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Entities;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -247,7 +252,7 @@ public class UserProfileController {
             validator.validate(updatedUserBean, result, UserBean.ScreenNameChanged.class);
 
             if (!result.hasErrors()) {
-                currentUserProfile.getUser().setScreenName(updatedUserBean.getScreenName());
+                currentUserProfile.getUser().setScreenName(cleanHtml(updatedUserBean.getScreenName()));
                 changedUserPart = true;
             }else{
                 validationError = true;
@@ -275,7 +280,7 @@ public class UserProfileController {
                 && !updatedUserBean.getFirstName().equals(currentUserProfile.getUserBean().getFirstName())) {
             validator.validate(updatedUserBean, result);
             if (!result.hasErrors()) {
-                currentUserProfile.getUser().setFirstName(updatedUserBean.getFirstName());
+                currentUserProfile.getUser().setFirstName(cleanHtml(updatedUserBean.getFirstName()));
                 changedUserPart = true;
             } else {
                 validationError = true;
@@ -286,7 +291,7 @@ public class UserProfileController {
                 && !updatedUserBean.getLastName().equals(currentUserProfile.getUserBean().getLastName())) {
             validator.validate(updatedUserBean, result);
             if (!result.hasErrors()) {
-                currentUserProfile.getUser().setLastName(updatedUserBean.getLastName());
+                currentUserProfile.getUser().setLastName(cleanHtml(updatedUserBean.getLastName()));
                 changedUserPart = true;
             } else {
                 validationError = true;
@@ -351,6 +356,18 @@ public class UserProfileController {
         }
     }
 
+    private String cleanHtml(String text) {
+        return cleanHtml(text, Whitelist.none());
+    }
+
+    private String cleanHtml(String text, Whitelist whitelist) {
+        Document doc = Jsoup.parse(text);
+        doc = new Cleaner(whitelist).clean(doc);
+        // Adjust escape mode, http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities
+        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+        return doc.body().html();
+    }
+
     private void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model){
         model.addAttribute("currentUserProfile", currentUserProfile);
         model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
@@ -386,7 +403,7 @@ public class UserProfileController {
         if (!existingBio.equals(updatedUserBean.getShortBio())) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID,  User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.BIO,
-                    currentUserProfile.getUser().getUserId(), updatedUserBean.getShortBio());
+                    currentUserProfile.getUser().getUserId(), cleanHtml(updatedUserBean.getShortBio(), Whitelist.basicWithImages()));
             changedDetails = true;
         }
 
