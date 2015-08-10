@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
+import org.xcolab.utils.HtmlCleaner;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,18 +45,10 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
             throw new DiscussionsException("User isn't allowed to edit comment");
 
         DiscussionMessage m = DiscussionMessageLocalServiceUtil.getMessageByMessageId(messageId);
-        m.setBody(cleanHtml(comment, Whitelist.basicWithImages()));
+        m.setBody(HtmlCleaner.cleanSome(comment));
         DiscussionMessageLocalServiceUtil.updateDiscussionMessage(m);
 
         redirectToReferer(request, response);
-    }
-
-    private String cleanHtml(String text, Whitelist whitelist) {
-        Document doc = Jsoup.parse(text);
-        doc = new Cleaner(whitelist).clean(doc);
-        // Adjust escape mode, http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities
-        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
-        return doc.body().html();
     }
 
     @Override
