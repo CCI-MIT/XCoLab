@@ -14,7 +14,7 @@
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
     <div id="content">
 
-        <c:if test="${isFellowScreeningActive or showEvaluation}">
+        <c:if test="${showPublicRatingForm}">
             <h2>Proposal rating</h2>
             <c:choose>
                 <c:when test="${proposalsPermissions.canPublicRating}">
