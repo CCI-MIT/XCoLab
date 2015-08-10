@@ -36,7 +36,7 @@
                     <div id="proposalToModelMap" class="addpropbox">
                         <c:if test="${not empty proposalToModelMap}">
                             <div class="alert alert-error">
-                                In order to consolidate your models, your subproposals need to use the same modeling engine and you must include one subproposal per region.
+                                In order to use the values from your regional plans here, all the regional plans need to use the same modeling engine, and you must include a regional plan for all the regions.
                             </div>
                             <table>
                                 <col span="1" class="wideColumn"/>
@@ -47,7 +47,7 @@
                                 <tr>
                                     <th>Proposal</th>
                                     <th>Model</th>
-                                    <th>Scenario</th>
+                                    <!-- <th>Scenario</th> -->
                                     <th>Region</th>
                                 </tr>
                                 </thead>
@@ -56,7 +56,7 @@
                                     <tr>
                                         <td>${proposalToModel.key}</td>
                                         <td>${proposalToModel.value.simulation}</td>
-                                        <td>${proposalToModel.value.scenario}</td>
+                                        <!-- <td>${proposalToModel.value.scenario}</td> -->
                                         <td>${proposalToModel.value.region}</td>
                                     </tr>
                                 </c:forEach>

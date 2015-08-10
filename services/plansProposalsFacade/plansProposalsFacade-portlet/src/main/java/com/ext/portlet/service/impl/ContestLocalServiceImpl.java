@@ -19,6 +19,7 @@ import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.utils.emailnotification.ContestVoteNotification;
 import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
 import org.xcolab.utils.judging.ProposalRatingWrapper;
 import org.xcolab.utils.judging.ProposalReview;
@@ -459,6 +460,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     public long getVotesCount(Contest contest) throws SystemException, PortalException {
+        ContestPhase contestPhase = contestPhaseLocalService.getActivePhaseForContest(contest);
         List<Long> proposalIds = new ArrayList<>();
         for (Proposal proposal : proposalLocalService.getProposalsInContest(contest.getContestPK())) {
             proposalIds.add(proposal.getProposalId());
@@ -468,9 +470,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             return 0L;
         }
 
+        Long contestPhaseId = contestPhase.getContestPhasePK();
         DynamicQuery votesQuery = DynamicQueryFactoryUtil.forClass(ProposalVote.class);
+        votesQuery.add(PropertyFactoryUtil.forName("primaryKey.contestPhaseId").eq(contestPhaseId));
         votesQuery.add(RestrictionsFactoryUtil.in("proposalId", proposalIds));
-
         return dynamicQueryCount(votesQuery);
     }
 
@@ -732,21 +735,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             	continue;
             }
 
-            /*
+
             // Directly transfer the support to a vote
             if (proposals.size() == 1) {
-                voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK()); votes will not be converted automatically anymore
+                voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK());
                 new ContestVoteNotification(user, contest, proposals.get(0), serviceContext).sendEmailNotification();
             }
             // Send a notification to the user
             else {
                 new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendEmailNotification();
             }
-            */
-            // Always ask the user to upgrade their support to a vote
-
-            
-            new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendEmailNotification();
         }
     }
 

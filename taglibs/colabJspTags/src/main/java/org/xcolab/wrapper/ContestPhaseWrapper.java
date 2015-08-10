@@ -180,4 +180,8 @@ public class ContestPhaseWrapper {
         }
         return descriptionOverride;
     }
+
+    public boolean getFellowScreeningActive(){
+        return contestPhase.getFellowScreeningActive();
+    }
 }

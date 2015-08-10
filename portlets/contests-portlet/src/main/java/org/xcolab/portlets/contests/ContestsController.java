@@ -18,7 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("view")
 public class ContestsController {
-    private static final int NUM_CONTESTS = 5;
+    private static final int NUM_CONTESTS = 3;
     
     public ContestsController() {
     }

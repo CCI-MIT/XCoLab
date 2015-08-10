@@ -187,12 +187,12 @@ interface ProposalTabCanAccessAlgorithm {
             try {
                 Contest contest = context.getContest(request);
 
-                // Only let team members or admins edit impact
+                // Only let team members, IAF fellows or admins edit impact
                 if ((contest != null && (
                         contest.getContestTier() == ContestTier.BASIC.getTierType()) ||
                         contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType() ||
                         contest.getContestTier() == ContestTier.GLOBAL.getTierType()) &&
-                        (permissions.getIsTeamMember() || permissions.getCanAdmin())) {
+                        (permissions.getIsTeamMember() || permissions.getCanAdmin() || permissions.getCanIAFActions())) {
                     return true;
                 }
             } catch (SystemException | PortalException e) {

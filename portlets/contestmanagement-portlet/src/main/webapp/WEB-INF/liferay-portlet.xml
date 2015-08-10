@@ -4,7 +4,6 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>contestmanagement-portlet</portlet-name>
-		<icon>/icon.png</icon>
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
         <friendly-url-mapping>contestmanagement</friendly-url-mapping>
 		<friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>

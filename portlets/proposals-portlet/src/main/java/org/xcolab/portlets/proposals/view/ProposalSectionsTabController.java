@@ -44,7 +44,12 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         //findEntitiesAndPopulateModel(proposalId, contestId, phaseId, model);
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
-        model.addAttribute("edit", edit);
+
+        boolean editValidated = false;
+        if(edit && proposalsContext.getPermissions(request).getCanEdit()){
+            editValidated = edit;
+        }
+        model.addAttribute("edit", editValidated);
         
         if (move) {
         	// get base proposal from base contest
@@ -93,7 +98,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         }
 
         
-        if (edit || move) {
+        if (editValidated || move) {
             return "proposalDetails_edit";
         }
 

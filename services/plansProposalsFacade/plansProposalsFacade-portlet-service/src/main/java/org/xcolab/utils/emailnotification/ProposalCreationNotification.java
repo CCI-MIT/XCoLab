@@ -4,6 +4,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -13,6 +14,8 @@ import org.xcolab.enums.ContestPhaseType;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -37,9 +40,7 @@ public class ProposalCreationNotification extends EmailNotification {
             "<ul>" +
             "<li><b>Share your proposal</b> with your friends and colleagues over TWITTER_PLACEHOLDER, FACEBOOK_PLACEHOLDER, PINTEREST_PLACEHOLDER, LINKEDIN_PLACEHOLDER & more.  " +
             "Ask for support, comments, or just to check out what you're working on.  Don't forget to mention us @ClimateCoLab!</li>" +
-            "<li><b>The contest deadline is DEADLINE_PLACEHOLDER</b> (except for proposals created in the Workspace, where there is no deadline). You can edit your proposal as many times as you want before then, but make sure your final " +
-            "version is updated before the deadline.  At that point, the most recent version of your proposal will be frozen and submitted to the Judges for review.  " +
-            "To learn more about the judging process, click <a href='http://climatecolab.org/web/guest/crowdsourcing'>click here</a>.</li>" +
+            "CONTEST_DEADLINE_SECTION_PLACEHOLDER" +
             "</ul>" +
             "Happy CoLaborating!" +
             "<br/><br/>" +
@@ -49,11 +50,15 @@ public class ProposalCreationNotification extends EmailNotification {
             "<a href='mailto:admin@climatecolab.org'>admin@climatecolab.org</a><br/>" +
             "<a href='http://www.climatecolab.org'>www.climatecolab.org</a>";
 
+    private static final String CONTEST_DEADLINE_SECTION_TEMPLATE = "<li><b>The contest deadline is DEADLINE_PLACEHOLDER</b> (except for proposals created in the Workspace, where there is no deadline). You can edit your proposal as many times as you want before then, but make sure your final " +
+            "version is updated before the deadline.  At that point, the most recent version of your proposal will be frozen and submitted to the Judges for review.  " +
+            "To learn more about the judging process, click <a href='http://climatecolab.org/web/guest/crowdsourcing'>click here</a>.</li>";
+
     private static final String PROPOSAL_SHARE_TEXT = "I just created a new proposal at the Climate CoLab. Check it out!";
     private static final String PROPOSAL_SHARE_TITLE = "New proposal at @ClimateCoLab";
 
     private static final String YEAR_FALLBACK = "2015";
-    private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
+    //private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
 
     // Placeholder strings
     private static final String FIRSTNAME_PLACEHOLDER = "FIRSTNAME_PLACEHOLDER";
@@ -65,6 +70,7 @@ public class ProposalCreationNotification extends EmailNotification {
     private static final String LINKEDIN_PLACEHOLDER = "LINKEDIN_PLACEHOLDER";
     private static final String YEAR_PLACEHOLDER = "YEAR_PLACEHOLDER";
     private static final String DEADLINE_PLACEHOLDER = "DEADLINE_PLACEHOLDER";
+    private static final String CONTEST_DEADLINE_SECTION_PLACEHOLDER = "CONTEST_DEADLINE_SECTION_PLACEHOLDER";
 
     private Proposal createdProposal;
     private Contest contest;
@@ -101,25 +107,40 @@ public class ProposalCreationNotification extends EmailNotification {
         }
 
         DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, HH:mm:ss a", Locale.US);
-        // This should never happen when the contest phases are set up properly
+        // This should never happen when the contest phases are set up properly - do not include the deadline section in this case
         if (Validator.isNull(getProposalCreationDeadline())) {
-            body = StringUtil.replace(body, DEADLINE_PLACEHOLDER, DATE_FALLBACK + " EDT");
+            body = StringUtil.replace(body, CONTEST_DEADLINE_SECTION_PLACEHOLDER, "");
 
         } else {
-            body = StringUtil.replace(body, DEADLINE_PLACEHOLDER, customDateFormat.format(getProposalCreationDeadline()) + " EDT");
+            // Todo test before committing
+            String contestDeadlineSectionBody = StringUtil.replace(CONTEST_DEADLINE_SECTION_TEMPLATE,
+                    DEADLINE_PLACEHOLDER, customDateFormat.format(getProposalCreationDeadline()) + " EDT");
+            body = StringUtil.replace(body, CONTEST_DEADLINE_SECTION_PLACEHOLDER, contestDeadlineSectionBody);
         }
         return body;
     }
 
     private Date getProposalCreationDeadline() throws SystemException, PortalException {
         List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(contest);
+        try {
+            return getActiveCreationPhase(contestPhases).getPhaseEndDate();
+        }
+        // No active proposal creation phase could be found -
+        // should never be the case unless an admin is creating a proposal in a non-creation phase
+        catch(SystemException exception) {
+            return null;
+        }
+    }
 
+    private ContestPhase getActiveCreationPhase(List<ContestPhase> contestPhases) throws SystemException {
         for (ContestPhase phase : contestPhases) {
-            if (phase.getContestPhaseType() == ContestPhaseType.PROPOSAL_CREATION.getTypeId()) {
-                return phase.getPhaseEndDate();
+            if (phase.getContestPhaseType() == ContestPhaseType.PROPOSAL_CREATION.getTypeId() &&
+                    ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
+
+                return phase;
             }
         }
 
-        throw new SystemException("Proposal creation phase was not found for contest with id " + contest.getContestPK());
+        throw new SystemException("Active proposal creation phase was not found for createdContest with id " + contest.getContestPK());
     }
 }

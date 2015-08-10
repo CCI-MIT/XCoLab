@@ -26,6 +26,7 @@
                 </div>
 
                 <c:choose>
+
                     <c:when test="${not empty contest.activePhase and contest.activePhase.canVote }">
                         <div class="comm" rendered="${contest.activePhase.canVote}"><strong>${contest.votesCount}</strong>
                             <c:choose>
