@@ -22,13 +22,18 @@ public class SetRenderParameterUtil {
 
     public static void setExceptionRenderParameter(ActionResponse response, Exception exception){
         setErrorRenderParameter(response, "showException");
-        response.setRenderParameter("exception", exception.getMessage());
+        response.setRenderParameter("exceptionMessage", exception.getMessage());
+        response.setRenderParameter("exceptionStacktrace", exception.getStackTrace().toString());
+    }
+
+    public static void addActionExceptionMessageToSession(PortletRequest request, Exception exception){
+        addMessageToSession(request, "exceptionMessage", exception.getMessage());
     }
 
     public static void addActionSuccessMessageToSession(PortletRequest request, String successMessage){
         addMessageToSession(request, "actionSuccessMessage", successMessage);
-
     }
+
     public static void addActionSuccessMessageToSession(PortletRequest request){
         addActionSuccessMessageToSession(request, DEFAULT_SUCCESS_MESSAGE);
     }

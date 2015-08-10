@@ -4,8 +4,10 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
@@ -36,23 +38,23 @@ public class ContestScheduleWrapper {
             initContestSchedule(scheduleId);
             initContestPhases(scheduleId);
             initContestsUsingSelectedSchedule(scheduleId);
-        } catch (Exception e){
+        } catch (Exception e) {
             _log.info("Could not create ContestScheduleWrapper for scheduleId: " + scheduleId, e);
         }
     }
 
 
-    private void initContestPhases(Long scheduleId) throws Exception{
+    private void initContestPhases(Long scheduleId) throws Exception {
         schedulePhases = new ArrayList<>();
         List<ContestPhase> contestPhases =
                 ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(scheduleId, DEFAULT_CONTEST_ID_FOR_SCHEDULE);
-        for(ContestPhase contestPhase : contestPhases) {
+        for (ContestPhase contestPhase : contestPhases) {
             schedulePhases.add(new ContestPhaseBean(contestPhase));
         }
         addDummySchedulePhase();
     }
 
-    private void initContestSchedule(Long scheduleId){
+    private void initContestSchedule(Long scheduleId) {
         try {
             if (scheduleId != null) {
                 contestSchedule = ContestScheduleLocalServiceUtil.getContestSchedule(scheduleId);
@@ -60,12 +62,13 @@ public class ContestScheduleWrapper {
                 List<ContestSchedule> contestScheduleList = ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE);
                 contestSchedule = contestScheduleList.get(0);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
 
     }
-    private void addDummySchedulePhase() throws Exception{
+
+    private void addDummySchedulePhase() throws Exception {
         Long dummyContestPhaseId = CounterLocalServiceUtil.increment(ContestPhase.class.getName());
         ContestPhase dummyContestPhase = ContestPhaseLocalServiceUtil.createContestPhase(dummyContestPhaseId);
         ContestPhaseBean dummyContestPhaseBean = new ContestPhaseBean(dummyContestPhase);
@@ -77,10 +80,10 @@ public class ContestScheduleWrapper {
         ContestPhaseLocalServiceUtil.deleteContestPhase(dummyContestPhase);
     }
 
-    private void initContestsUsingSelectedSchedule(Long scheduleId) throws Exception{
+    private void initContestsUsingSelectedSchedule(Long scheduleId) throws Exception {
         List<Contest> contestsUsingSelectedScheduleList = ContestLocalServiceUtil.getContestsByContestScheduleId(scheduleId);
         contestsUsingSelectedSchedule = new ArrayList<>();
-        for(Contest contest : contestsUsingSelectedScheduleList){
+        for (Contest contest : contestsUsingSelectedScheduleList) {
             contestsUsingSelectedSchedule.add(new ContestWrapper(contest));
         }
     }
@@ -89,23 +92,24 @@ public class ContestScheduleWrapper {
         return contestsUsingSelectedSchedule;
     }
 
-    public Long getScheduleId(){
+    public Long getScheduleId() {
         return contestSchedule.getId();
     }
 
-    public String getScheduleName(){
+    public String getScheduleName() {
         return contestSchedule.getName();
     }
 
-    public void setScheduleId(Long contestScheduleId){
-        try{
+    public void setScheduleId(Long contestScheduleId) {
+        try {
             initContestSchedule(contestScheduleId);
             initContestsUsingSelectedSchedule(contestScheduleId);
-        } catch (Exception e){
+        } catch (Exception e) {
+            _log.warn("Could init with new schedule id:", e);
         }
     }
 
-    public void setScheduleName(String name){
+    public void setScheduleName(String name) {
         this.contestSchedule.setName(name);
     }
 
@@ -125,30 +129,29 @@ public class ContestScheduleWrapper {
         this.createNew = createNew;
     }
 
-    public void persist() throws Exception{
+    public void persist() throws Exception {
         removeEmptyContestPhases();
-        if(createNew){
+        if (createNew) {
             createNewScheduleFromExistingSchedule();
         } else {
-            persistSchedule();
+            persistUpdatedSchedule();
         }
     }
 
-    private void removeEmptyContestPhases() throws Exception{
+    private void removeEmptyContestPhases() throws Exception {
         List<ContestPhaseBean> emptyContestPhases = new ArrayList<>();
         for (ContestPhaseBean contestPhaseBean : schedulePhases) {
             boolean contestPhaseIsEmpty = (contestPhaseBean.getContestPhasePK() == null);
-            if(contestPhaseIsEmpty){
+            if (contestPhaseIsEmpty) {
                 emptyContestPhases.add(contestPhaseBean);
             }
         }
-        for(ContestPhaseBean emptyContestPhaseBean : emptyContestPhases) {
+        for (ContestPhaseBean emptyContestPhaseBean : emptyContestPhases) {
             schedulePhases.remove(emptyContestPhaseBean);
         }
-
     }
 
-    private void createNewScheduleFromExistingSchedule() throws Exception{
+    private void createNewScheduleFromExistingSchedule() throws Exception {
         Long existingContestScheduleId = contestSchedule.getId();
         Long newContestScheduleId = CounterLocalServiceUtil.increment(ContestSchedule.class.getName());
 
@@ -161,56 +164,63 @@ public class ContestScheduleWrapper {
         contestSchedule = newContestSchedule;
     }
 
-    private static void duplicateContestPhasesFromExistingScheduleToNewSchedule(Long existingContestScheduleId, Long newContestScheduleId) throws Exception{
+    private static void duplicateContestPhasesFromExistingScheduleToNewSchedule(Long existingContestScheduleId, Long newContestScheduleId) throws Exception {
         List<ContestPhase> contestPhasesForExistingSchedule = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleId(existingContestScheduleId);
-        for(ContestPhase contestPhase : contestPhasesForExistingSchedule){
+        for (ContestPhase contestPhase : contestPhasesForExistingSchedule) {
             contestPhase.setContestScheduleId(newContestScheduleId);
             createContestPhaseFromExistingContestPhaseWithContestId(contestPhase, DEFAULT_CONTEST_ID_FOR_SCHEDULE);
         }
     }
 
-    private void persistSchedule() throws Exception{
-
+    private void persistUpdatedSchedule() throws Exception {
+        persistChangesToSchedulePhases();
         makeSureThatAllContestsUsingScheduleIdHaveCorrectContestPhases(contestSchedule.getId());
-
-        for (ContestPhaseBean contestPhaseBean : schedulePhases) {
-            contestPhaseBean.persist();
-            updateAssociatedContestPhaseDates(contestPhaseBean);
-        }
+        updateContestsUsingSchedule(contestSchedule.getId());
         contestSchedule.persist();
     }
 
-    private static void makeSureThatAllContestsUsingScheduleIdHaveCorrectContestPhases(Long contestScheduleId) throws Exception{
-        List<Contest> contestsUsingScheduleId = ContestLocalServiceUtil.getContestsByContestScheduleId(contestScheduleId);
-        for(Contest contest : contestsUsingScheduleId){
-            createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(contest, contestScheduleId);
-            updateContestPhasesAccordingToContestSchedule(contest, contestScheduleId);
+    private void persistChangesToSchedulePhases() throws Exception {
+        for (ContestPhaseBean contestPhaseBean : schedulePhases) {
+            contestPhaseBean.persist();
         }
     }
 
+    private static void updateContestsUsingSchedule(Long contestScheduleId) throws Exception {
+        List<Contest> contestsUsingScheduleId = ContestLocalServiceUtil.getContestsByContestScheduleId(contestScheduleId);
+        for (Contest contest : contestsUsingScheduleId) {
+            updateContestPhasesOfContestAccordingToContestSchedule(contest, contestScheduleId);
+        }
+    }
 
-    private static void createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(Contest contest, Long contestScheduleId) throws Exception{
+    private static void makeSureThatAllContestsUsingScheduleIdHaveCorrectContestPhases(Long contestScheduleId) throws Exception {
+        List<Contest> contestsUsingScheduleId = ContestLocalServiceUtil.getContestsByContestScheduleId(contestScheduleId);
+        for (Contest contest : contestsUsingScheduleId) {
+            createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(contest, contestScheduleId);
+        }
+    }
+
+    private static void createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(Contest contest, Long contestScheduleId) throws Exception {
 
         List<ContestPhase> existingContestPhasesForContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
-        List<ContestPhase> contestPhasesOfContestSchedule = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleId(contestScheduleId);
+        List<ContestPhase> contestPhasesForContestSchedule = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleId(contestScheduleId);
 
-        for(ContestPhase contestPhaseOfContestSchedule : contestPhasesOfContestSchedule){
+        for (ContestPhase contestPhaseOfContestSchedule : contestPhasesForContestSchedule) {
             Long contestPhaseType = contestPhaseOfContestSchedule.getContestPhaseType();
-            if(!isContestPhaseTypeInContestPhaseList(existingContestPhasesForContest, contestPhaseType, contestScheduleId)) {
+            if (!isContestPhaseTypeInContestPhaseList(existingContestPhasesForContest, contestPhaseType, contestScheduleId)) {
                 createContestPhaseFromExistingContestPhaseWithContestId(contestPhaseOfContestSchedule, contest.getContestPK());
             }
         }
     }
 
-
-    private static boolean isContestPhaseTypeInContestPhaseList(List<ContestPhase> contestPhases, Long contestPhaseTyp, Long contestScheduleId){
-        for(ContestPhase existingContestPhaseForContest : contestPhases){
-            if(existingContestPhaseForContest.getContestPhaseType() == contestPhaseTyp &&
+    private static boolean isContestPhaseTypeInContestPhaseList(List<ContestPhase> contestPhases, Long contestPhaseTyp, Long contestScheduleId) {
+        for (ContestPhase existingContestPhaseForContest : contestPhases) {
+            if (existingContestPhaseForContest.getContestPhaseType() == contestPhaseTyp &&
                     existingContestPhaseForContest.getContestScheduleId() == contestScheduleId) return true;
         }
         return false;
     }
 
+    /*
     private void updateAssociatedContestPhaseDates(ContestPhaseBean contestPhaseBean) throws Exception{
         Date updatedPhaseStartDate = contestPhaseBean.getPhaseStartDate();
         Date updatedPhaseEndDate = contestPhaseBean.getPhaseEndDate();
@@ -225,29 +235,29 @@ public class ContestScheduleWrapper {
             ContestPhaseLocalServiceUtil.updateContestPhase(contestPhase);
         }
 
-    }
+    }*/
 
-    public static List<LabelValue> getAllScheduleTemplateSelectionItems(){
+    public static List<LabelValue> getAllScheduleTemplateSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         try {
             ContestCreatorUtil.insertSeedDataToContestScheduleTableIfNotAvailable();
             for (ContestSchedule scheduleTemplate : ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE)) {
                 selectItems.add(new LabelValue(scheduleTemplate.getId(), scheduleTemplate.getName()));
             }
-        } catch (Exception e){
+        } catch (Exception e) {
         }
         return selectItems;
     }
 
-    public static List<LabelValue> getScheduleTemplateSelectionItems(long existingScheduleId, boolean showOnlySchedulesWithSamePhases){
+    public static List<LabelValue> getScheduleTemplateSelectionItems(long existingScheduleId, boolean showOnlySchedulesWithSamePhases) {
         List<LabelValue> selectItems = new ArrayList<>();
-        if(!showOnlySchedulesWithSamePhases){
+        if (!showOnlySchedulesWithSamePhases) {
             selectItems = getAllScheduleTemplateSelectionItems();
         } else {
             try {
                 ContestCreatorUtil.insertSeedDataToContestScheduleTableIfNotAvailable();
                 for (ContestSchedule scheduleTemplate : ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE)) {
-                    if(haveContestSchedulesSamePhases(existingScheduleId, scheduleTemplate.getId())){
+                    if (haveContestSchedulesSamePhases(existingScheduleId, scheduleTemplate.getId())) {
                         selectItems.add(new LabelValue(scheduleTemplate.getId(), scheduleTemplate.getName()));
                     }
                 }
@@ -258,22 +268,22 @@ public class ContestScheduleWrapper {
         return selectItems;
     }
 
-    private static List<Long> getContestSchedulePhaseTypes(Long existingContestScheduleId) throws Exception{
+    private static List<Long> getContestSchedulePhaseTypes(Long existingContestScheduleId) throws Exception {
         List<Long> contestSchedulePhaseTypes = new ArrayList<>();
         List<ContestPhase> contestPhasesForContestSchedule = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(existingContestScheduleId, 0);
-        for(ContestPhase contestPhase : contestPhasesForContestSchedule) {
+        for (ContestPhase contestPhase : contestPhasesForContestSchedule) {
             contestSchedulePhaseTypes.add(contestPhase.getContestPhaseType());
         }
         return contestSchedulePhaseTypes;
     }
 
-    private static boolean haveContestSchedulesSamePhases(Long contestScheduleId1, Long contestScheduleId2) throws Exception{
+    private static boolean haveContestSchedulesSamePhases(Long contestScheduleId1, Long contestScheduleId2) throws Exception {
         List<Long> contestSchedule1PhaseTypes = getContestSchedulePhaseTypes(contestScheduleId1);
         List<Long> contestSchedule2PhaseTypes = getContestSchedulePhaseTypes(contestScheduleId2);
         return areContestSchedulesPhasesEqual(contestSchedule1PhaseTypes, contestSchedule2PhaseTypes);
     }
 
-    private static boolean areContestSchedulesPhasesEqual(List<Long> referenceContestSchedulePhases,List<Long> testContestSchedulePhases) {
+    private static boolean areContestSchedulesPhasesEqual(List<Long> referenceContestSchedulePhases, List<Long> testContestSchedulePhases) {
         boolean haveContestSchedulesSamePhases = true;
         for (int i = 0; i < referenceContestSchedulePhases.size(); i++) {
             try {
@@ -281,7 +291,7 @@ public class ContestScheduleWrapper {
                     haveContestSchedulesSamePhases = false;
                     break;
                 }
-            } catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 haveContestSchedulesSamePhases = false;
                 break;
             }
@@ -290,165 +300,144 @@ public class ContestScheduleWrapper {
     }
 
 
-    public static void updateContestPhasesAccordingToContestSchedule(Contest contest, Long scheduleTemplateId) throws Exception{
+    public static void updateContestPhasesOfContestAccordingToContestSchedule(Contest contest, Long scheduleTemplateId) throws Exception {
 
-        List<ContestPhase> oldContestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(contest.getContestPK());
-        List<ContestPhase> newContestPhases = new ArrayList<>();
+        List<ContestPhase> newPhasesForContest = new ArrayList<>();
+        List<ContestPhase> existingPhasesOfContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest.getContestPK());
+        Map<Long, Long> phaseTypeIdToPhaseIdMapForExistingContestPhases = new LinkedHashMap<>();
+        populatePhaseTypeIdToPhaseIdMap(contest, phaseTypeIdToPhaseIdMapForExistingContestPhases);
 
-        //Map<Long, Long> oldContestPhaseIdToNewContestPhaseIdMap = new LinkedHashMap<>();
-        Map<Long, Long> oldContestPhaseTypeIdPhaseIdMap = new LinkedHashMap<>();
-        populateContestPhaseTypeIdPhaseId(contest, oldContestPhaseTypeIdPhaseIdMap);
+        List<ContestPhase> phasesOfContestSchedule = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(scheduleTemplateId, 0L);
+        for (ContestPhase schedulePhase : phasesOfContestSchedule) {
 
-        List<ContestPhase> contestSchedulePhases = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(scheduleTemplateId, 0L);
+            Long phaseTypeIdOfSchdeulePhase = schedulePhase.getContestPhaseType();
+            Long phaseIdOfExistingPhaseWithSchedulePhaseType = phaseTypeIdToPhaseIdMapForExistingContestPhases.get(phaseTypeIdOfSchdeulePhase);
 
-        for(ContestPhase contestPhase : contestSchedulePhases){
-
-            Long contestPhaseTypeId = contestPhase.getContestPhaseType();
-            Long oldContestPhaseId = oldContestPhaseTypeIdPhaseIdMap.get(contestPhaseTypeId);
-
-            if(oldContestPhaseId == null){
-                removeContestPhases(newContestPhases);
-                throw new Exception("Can't map new contestPhaseTypeId: " + contestPhaseTypeId + " to any of the old contestPhaseTypeIds." );
+            if (phaseIdOfExistingPhaseWithSchedulePhaseType == null) {
+                removeContestPhases(newPhasesForContest);
+                throw new Exception("Can't map new contestPhaseTypeId: " + phaseTypeIdOfSchdeulePhase + " to any of the existing contestPhaseTypeIds.");
             }
 
-            ContestPhase oldContestPhase = ContestPhaseLocalServiceUtil.getContestPhase(oldContestPhaseId);
-            ContestPhaseBean contestPhaseBean = new ContestPhaseBean(oldContestPhase);
-
-            if(!contestPhaseBean.isContestPhaseProposalAssociations()) {
-                ContestPhase contestPhaseNew = ContestPhaseLocalServiceUtil.
-                        createContestPhase(CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
-
-                contestPhase.setContestPK(contest.getContestPK());
-                contestPhase.setPrimaryKey(contestPhaseNew.getPrimaryKey());
-                ContestPhaseLocalServiceUtil.addContestPhase(contestPhase);
-                newContestPhases.add(contestPhase);
-
-                Long newContestPhaseId = contestPhaseNew.getContestPhasePK();
-                updateContestPhaseIdForAllProposal2PhaseMatchingContestPhaseId(oldContestPhaseId, newContestPhaseId);
-                updateContestPhaseIdForAllProposalRatingsMatchingContestPhaseId(oldContestPhaseId, newContestPhaseId);
-
-            } else {
-                oldContestPhase.setContestScheduleId(contestPhase.getContestScheduleId());
-                oldContestPhase.setPhaseStartDate(contestPhase.getPhaseStartDate());
-                oldContestPhase.setPhaseEndDate(contestPhase.getPhaseEndDate());
-                oldContestPhase.persist();
-                ContestPhaseLocalServiceUtil.updateContestPhase(oldContestPhase);
-                oldContestPhases.remove(oldContestPhase);
-            }
-
-            //oldContestPhaseIdToNewContestPhaseIdMap.put(oldContestPhaseId, newContestPhaseId);
+            ContestPhase existingPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseIdOfExistingPhaseWithSchedulePhaseType);
+            updateExistingContestPhaseAccordingToContestSchedulePhase(existingPhase, schedulePhase);
+            existingPhasesOfContest.remove(existingPhase);
         }
 
-        /*
-        List<Proposal> proposalInThisContest = ProposalLocalServiceUtil.getProposalsInContest(contest.getContestPK());
-
-        for(Proposal proposal : proposalInThisContest){
-            Long proposalId = proposal.getProposalId();
-            List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByProposalId(proposalId);
-            for(Proposal2Phase proposal2Phase : proposal2Phases){
-                Long oldContestPhaseId = proposal2Phase.getContestPhaseId();
-                Long newContestPhaseId = oldContestPhaseIdToNewContestPhaseIdMap.get(oldContestPhaseId);
-                if(newContestPhaseId != null) {
-                    proposal2Phase.setContestPhaseId(newContestPhaseId);
-                    Proposal2PhaseLocalServiceUtil.updateProposal2Phase(proposal2Phase);
-                }
-            }
-        }
-        */
-
-        removeContestPhases(oldContestPhases);
+        removeRemainingUnusedContestPhases(existingPhasesOfContest);
     }
 
-    public static void updateContestPhaseIdForAllProposal2PhaseMatchingContestPhaseId
-            (Long oldContestPhaseId, Long newContestPhaseId) throws Exception{
-        List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByContestPhaseId(oldContestPhaseId);
+    private static void removeRemainingUnusedContestPhases(List<ContestPhase> contestPhases) throws Exception {
+        removeContestPhases(contestPhases);
+    }
 
-        for ( Iterator i = proposal2Phases.iterator(); i.hasNext(); )
-        {
+    private static void updateExistingContestPhaseAccordingToContestSchedulePhase(ContestPhase existingContestPhase, ContestPhase contestSchedulePhase) throws SystemException {
+        existingContestPhase.setContestPhaseType(contestSchedulePhase.getContestPhaseType());
+        existingContestPhase.setContestScheduleId(contestSchedulePhase.getContestScheduleId());
+        existingContestPhase.setContestPhaseDescriptionOverride(contestSchedulePhase.getContestPhaseDescriptionOverride());
+        existingContestPhase.setUpdated(new Date());
+        existingContestPhase.setPhaseStartDate(contestSchedulePhase.getPhaseStartDate());
+        existingContestPhase.setPhaseEndDate(contestSchedulePhase.getPhaseEndDate());
+        if (!isContestPhaseAlreadyPromoted(existingContestPhase)) {
+            existingContestPhase.setContestPhaseAutopromote(contestSchedulePhase.getContestPhaseAutopromote());
+        }
+        existingContestPhase.setFellowScreeningActive(contestSchedulePhase.getFellowScreeningActive());
+        ContestPhaseLocalServiceUtil.updateContestPhase(existingContestPhase);
+    }
+
+    private static void setNewContestPhasePK(ContestPhase contestPhase, Contest contest) throws SystemException {
+        ContestPhase contestPhaseNew = ContestPhaseLocalServiceUtil.
+                createContestPhase(CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
+
+        contestPhase.setContestPK(contest.getContestPK());
+        contestPhase.setPrimaryKey(contestPhaseNew.getPrimaryKey());
+        ContestPhaseLocalServiceUtil.addContestPhase(contestPhase);
+    }
+
+    private static boolean isContestPhaseAlreadyPromoted(ContestPhase contestPhase) {
+        return contestPhase.getContestPhaseAutopromote().equals(ContestPhasePromoteType.PROMOTE_DONE.getValue());
+    }
+
+    public static void deleteProposal2PhasesWithContestPhaseId(Long contestPhaseId) throws Exception {
+        List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByContestPhaseId(contestPhaseId);
+
+        for (Iterator i = proposal2Phases.iterator(); i.hasNext(); ) {
             Proposal2Phase proposal2Phase = (Proposal2Phase) i.next();
-            if(newContestPhaseId != null) {
-                proposal2Phase.setContestPhaseId(newContestPhaseId);
-                proposal2Phase.persist();
-                Proposal2PhaseLocalServiceUtil.updateProposal2Phase(proposal2Phase);
-                proposal2Phase.setContestPhaseId(oldContestPhaseId);
-                Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(proposal2Phase);
-            }
+            Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(proposal2Phase);
         }
     }
 
+    public static void deleteProposalRatingsWithContestPhaseId
+            (Long contestPhaseId) throws Exception {
+        List<ProposalRating> proposalRatings = new ArrayList<>(); // ProposalRatingLocalServiceUtil.getRatingsForContestPhase(contestPhaseId);
 
-    public static void updateContestPhaseIdForAllProposalRatingsMatchingContestPhaseId
-            (Long oldContestPhaseId, Long newContestPhaseId) throws Exception{
-        List<ProposalRating> proposalRatings = new ArrayList<>(); // ProposalRatingLocalServiceUtil.getRatingsForContestPhase(oldContestPhaseId);
-
-        for ( Iterator i = proposalRatings.iterator(); i.hasNext(); )
-        {
+        for (Iterator i = proposalRatings.iterator(); i.hasNext(); ) {
             ProposalRating proposalRating = (ProposalRating) i.next();
-            if(newContestPhaseId != null) {
-                proposalRating.setContestPhaseId(newContestPhaseId);
-                proposalRating.persist();
-                ProposalRatingLocalServiceUtil.updateProposalRating(proposalRating);
-                proposalRating.setContestPhaseId(oldContestPhaseId);
-                ProposalRatingLocalServiceUtil.deleteProposalRating(proposalRating);
-            }
+            ProposalRatingLocalServiceUtil.deleteProposalRating(proposalRating);
         }
     }
 
     public static void createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(Contest contest, Long newScheduleTemplateId) throws Exception {
         removeExistingContestPhases(contest);
         List<ContestPhase> contestSchedulePhases = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleId(newScheduleTemplateId);
-        for(ContestPhase contestSchedulePhase : contestSchedulePhases){
+        for (ContestPhase contestSchedulePhase : contestSchedulePhases) {
             createContestPhaseFromExistingContestPhaseWithContestId(contestSchedulePhase, contest.getContestPK());
         }
     }
 
-    private static void createContestPhaseFromExistingContestPhaseWithContestId(ContestPhase contestSchedulePhase, Long contestId) throws Exception{
+    private static void createContestPhaseFromExistingContestPhaseWithContestId(ContestPhase contestSchedulePhase, Long contestId) throws Exception {
         ContestPhase newContestPhase = ContestPhaseLocalServiceUtil.createFromContestPhase(contestSchedulePhase);
         newContestPhase.setContestPK(contestId);
         newContestPhase.persist();
     }
 
-    private static void populateContestPhaseTypeIdPhaseId(Contest contest, Map<Long, Long> contestPhaseTypeIdPhaseIdMap) throws Exception{
+    private static void populatePhaseTypeIdToPhaseIdMap(Contest contest, Map<Long, Long> contestPhaseTypeIdPhaseIdMap) throws Exception {
         List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(contest.getContestPK());
-        for(ContestPhase contestPhase : contestPhases){
+        for (ContestPhase contestPhase : contestPhases) {
             contestPhaseTypeIdPhaseIdMap.put(contestPhase.getContestPhaseType(), contestPhase.getPrimaryKey());
         }
     }
 
-    private static void removeExistingContestPhases(Contest contest) throws Exception{
+    private static void removeExistingContestPhases(Contest contest) throws Exception {
         List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(contest.getContestPK());
-        for(ContestPhase contestPhase : contestPhases){
+        for (ContestPhase contestPhase : contestPhases) {
             ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
         }
     }
 
-    private static void removeContestPhases( List<ContestPhase> contestPhases) throws Exception{
-        for(ContestPhase contestPhase : contestPhases){
+    private static void removeContestPhases(List<ContestPhase> contestPhases) throws Exception {
+        for (ContestPhase contestPhase : contestPhases) {
+            Long contestPhaseId = contestPhase.getContestPhasePK();
+            List<Proposal2Phase> proposal2Phases =
+                    Proposal2PhaseLocalServiceUtil.getByContestPhaseId(contestPhaseId);
+            if (!proposal2Phases.isEmpty()) {
+                // TODO how should we treat these remainings entries?
+                _log.warn("There are remaining proposal2phase entries for contestPhaseId:" + contestPhaseId);
+            }
             ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
         }
     }
 
-    public static void deleteContestSchedule(Long scheduleId) throws Exception{
+    public static void deleteContestSchedule(Long scheduleId) throws Exception {
         removeContestSchedulePhases(scheduleId);
         removeContestPhaseOfContestThatAreUsingSchedule(scheduleId);
         removeContestSchedule(scheduleId);
     }
 
-    private static void removeContestSchedulePhases(Long scheduleId) throws Exception{
+    private static void removeContestSchedulePhases(Long scheduleId) throws Exception {
         List<ContestPhase> contestSchedulePhases = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleId(scheduleId);
         removeContestPhases(contestSchedulePhases);
     }
 
-    private static void removeContestPhaseOfContestThatAreUsingSchedule(Long scheduleId) throws Exception{
+    private static void removeContestPhaseOfContestThatAreUsingSchedule(Long scheduleId) throws Exception {
         List<Contest> contestsUsingSchedule = ContestLocalServiceUtil.getContestsByContestScheduleId(scheduleId);
-        for(Contest contestUsingSchedule : contestsUsingSchedule){
-            List<ContestPhase>  contestSchedulePhases =
+        for (Contest contestUsingSchedule : contestsUsingSchedule) {
+            List<ContestPhase> contestSchedulePhases =
                     ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(scheduleId, contestUsingSchedule.getContestPK());
             removeContestPhases(contestSchedulePhases);
         }
     }
 
-    private static void removeContestSchedule(Long scheduleId) throws Exception{
+    private static void removeContestSchedule(Long scheduleId) throws Exception {
         ContestScheduleLocalServiceUtil.deleteContestSchedule(scheduleId);
     }
 
