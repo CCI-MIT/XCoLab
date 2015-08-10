@@ -1,5 +1,6 @@
 package org.xcolab.portlets.contestmanagement.controller.common;
 
+import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
@@ -27,6 +28,7 @@ import javax.portlet.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
@@ -126,9 +128,14 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     }
 
     private List<LabelValue> getTermsFromOntologySpace(OntologySpaceEnum ontologySpace) throws SystemException, PortalException {
-        List<LabelValue> termSelectItems = new ArrayList<>();
-        List<SelectItem> ret = new ArrayList<SelectItem>();
+        List<Stack<OntologyTerm>> allParentsPaths = getAllOntologyTermParentPathStacks(ontologySpace);
+        sortOntologyTermParentPathsAlphabetically(allParentsPaths);
 
+        return buildOntologyTermParentPathSelectItemList(allParentsPaths);
+    }
+
+    private List<Stack<OntologyTerm>> getAllOntologyTermParentPathStacks(OntologySpaceEnum ontologySpace) throws SystemException, PortalException {
+        List<Stack<OntologyTerm>> allParentsPaths = new ArrayList<>();
         for (OntologyTerm term: OntologyTermLocalServiceUtil.getOntologyTerms(0, Integer.MAX_VALUE)) {
             // Just consider terms in the passed ontologySpace
             if (term.getOntologySpaceId() != ontologySpace.getSpaceId()) {
@@ -137,21 +144,56 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
 
             Stack<OntologyTerm> parentsPath = getOntologyTermParentPath(term);
-            String ontologyTermPathString = buildOntologyTermPathString(parentsPath, term);
-
-            termSelectItems.add(new LabelValue(term.getId(), ontologyTermPathString));
+            allParentsPaths.add(parentsPath);
         }
 
-        Collections.sort(ret, new Comparator<SelectItem>() {
+        return allParentsPaths;
+    }
+
+    private void sortOntologyTermParentPathsAlphabetically(List<Stack<OntologyTerm>> allParentsPaths) {
+        Collections.sort(allParentsPaths, new Comparator<Stack<OntologyTerm>>() {
 
             @Override
-            public int compare(SelectItem o1, SelectItem o2) {
-                return o1.getLabel().compareTo(o2.getLabel());
+            public int compare(Stack<OntologyTerm> o1, Stack<OntologyTerm> o2) {
+                return compareOntologyTermStacks((Stack<OntologyTerm>) o1.clone(), (Stack<OntologyTerm>) o2.clone());
             }
 
         });
+    }
+
+    private int compareOntologyTermStacks(Stack<OntologyTerm> stack1, Stack<OntologyTerm> stack2) {
+        String stack1FirstItemName = null;
+        String stack2FirstItemName = null;
+        try {
+            stack1FirstItemName = stack1.pop().getName();
+        } catch (EmptyStackException e) {
+            return -1;
+        }
+        try {
+            stack2FirstItemName = stack2.pop().getName();
+        } catch (EmptyStackException e) {
+            return 1;
+        }
+
+        if (stack1FirstItemName.compareTo(stack2FirstItemName) == 0) {
+            return compareOntologyTermStacks(stack1, stack2);
+        }
+
+        return stack1FirstItemName.compareTo(stack2FirstItemName);
+    }
+
+    private List<LabelValue> buildOntologyTermParentPathSelectItemList(List<Stack<OntologyTerm>> allParentsPaths) throws PortalException, SystemException {
+        List<LabelValue> termSelectItems = new ArrayList<>();
+
+        for (Stack<OntologyTerm> ontologyTermParentsPath : allParentsPaths) {
+            OntologyTerm childTerm = ontologyTermParentsPath.firstElement();
+            String ontologyTermPathString = buildOntologyTermPathString(ontologyTermParentsPath, childTerm);
+            termSelectItems.add(new LabelValue(childTerm.getId(), ontologyTermPathString));
+        }
+
         return termSelectItems;
     }
+
 
     private Stack<OntologyTerm> getOntologyTermParentPath(OntologyTerm term) throws SystemException, PortalException {
         Stack<OntologyTerm> parentsPath = new Stack<OntologyTerm>();
@@ -165,16 +207,33 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     }
 
     private String buildOntologyTermPathString(Stack<OntologyTerm> parentsPath, OntologyTerm childTerm) throws SystemException, PortalException {
-        OntologyTerm currentTerm;
+        if (parentsPath.size() == 1) {
+            return parentsPath.pop().getName();
+        }
+
+        // Build a path string in the form of "--|--|--|-- childTermName"
+        OntologyTerm currentTerm = parentsPath.pop();
         StringBuilder nameStr = new StringBuilder();
-        nameStr.append(OntologyTermLocalServiceUtil.getSpace(childTerm).getName() + " # ");
+        boolean firstItem = true;
         while (! parentsPath.isEmpty()) {
             currentTerm = parentsPath.pop();
-            nameStr.append(" > " + currentTerm.getName());
+            if (firstItem) {
+                nameStr.append("-");
+                firstItem = false;
+            }
+            nameStr.append("-|-");
         }
-        nameStr.append(" (" + childTerm.getId() + ")");
+        nameStr.append("- " + currentTerm.getName());
         return nameStr.toString();
     }
+
+//    private String cropStringToMaxCharacters(String inputString, int maxChars) {
+//        if (inputString.length() <= maxChars) {
+//            return inputString;
+//        }
+//
+//        return inputString.substring(0, maxChars) + "...";
+//    }
 
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
             throws PortalException, SystemException {

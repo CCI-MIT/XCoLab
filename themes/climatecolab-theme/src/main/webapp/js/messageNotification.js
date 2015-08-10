@@ -1,4 +1,4 @@
-var url = "/api/jsonws/plansProposalsFacade-portlet.contest/get-number-of-unread-messages/";
+var pollerUrl = "/api/jsonws/plansProposalsFacade-portlet.contest/get-number-of-unread-messages/";
 var intervalMinutes = 10;
 var interval = intervalMinutes * 60 * 1000;
 
@@ -12,7 +12,7 @@ function pollData() {
     // Reset the session expiration timer
     extendSession();
 
-    $.getJSON(url, function(data) {
+    $.getJSON(pollerUrl, function(data) {
         parseData(data);
         setTimeout(pollData,interval);
     });

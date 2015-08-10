@@ -53,11 +53,19 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         Contest contest = proposalsContext.getContest(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
 
+        boolean canEditImpactTab = ProposalTab.IMPACT
+                .getCanEdit(proposalsContext.getPermissions(request),proposalsContext, request);
+        
+        boolean editValidated = false;
+        if(edit && canEditImpactTab){
+            editValidated = edit;
+        }
+
         try {
             List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
         } catch (PortalException e) {
-            // No impact iteration associated with the contest -> return default view
+            _log.warn("Using default impact tab view since no impact iteration are associated with the contest: "+ contest.getContestPK());
             return "proposalImpactError";
         }
 
@@ -65,21 +73,18 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             case BASIC:
                 return showImpactTabBasicProposal(request, model);
             case REGION_SECTOR:
-                //return "proposalImpactError";
+                return "proposalImpactError";
             case REGION_AGGREGATE:
             case GLOBAL:
-                return showImpactTabIntegratedProposal(request, model, edit);
+                return showImpactTabIntegratedProposal(request, model, editValidated);
             default:
+                _log.warn("Using default impact tab view since contest tier is not set for contest: "+ contest.getContestPK());
                 return "proposalImpactError";
         }
     }
 
     private String showImpactTabIntegratedProposal(PortletRequest request, Model model, Boolean edit)
             throws Exception {
-
-        if (!hasImpactTabPermission(request)) {
-            return "proposalImpactError";
-        }
 
         Proposal proposal = proposalsContext.getProposal(request);
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
@@ -107,7 +112,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 model.addAttribute("CONSOLIDATE", isConsolidationPossible);
 
                 if(!isConsolidationPossible){
-                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalNameToModelScenarioRegionMap());
+                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getRegionToProposalSimulationScenarioMap());
                     populateModelOptions(model, request);
                 } else {
 
@@ -120,6 +125,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                         boolean isCombinedScenario = proposalImpactScenarioCombinationWrapper.isCombinedScenario(proposalScenarioId);
 
                         if(isCombinedScenario){
+
+                            proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
                             if(proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)){
 
                                 proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
@@ -151,7 +158,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         }
 
         model.addAttribute("edit", edit);
-
+        
         boolean showSubProposalListing = false;
         if(showSubProposalListing) {
             populateImpactTabBasicProposal(model, contest, proposal);
@@ -161,11 +168,15 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return "integratedProposalImpact";
     }
 
-    private void populateModelOptions(Model model, PortletRequest request) throws Exception{
-        Long contestId = proposalsContext.getContest(request).getContestPK();
-        Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(contestId);
-        if (modelIdsWithNames.size() > 1) {
-            model.addAttribute("availableModels", modelIdsWithNames);
+    private void populateModelOptions(Model model, PortletRequest request){
+        try {
+            Long contestId = proposalsContext.getContest(request).getContestPK();
+            Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(contestId);
+            if (modelIdsWithNames.size() > 1) {
+                model.addAttribute("availableModels", modelIdsWithNames);
+            }
+        } catch (Exception e){
+            _log.warn("Could not populateModelOptions", e);
         }
     }
 
@@ -255,8 +266,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private Map<String, String[]> getConsolidateOptionsOnGlobalLevel(){
         Map<String, String[]> consolidateOptions = new LinkedHashMap<>();
 
-        String[] consolidated = {"Use consolidated values from the regional plans", "The input values for the global simulation model are automatically computed from the values in the regional plans this global plan includes."};
-        String[] separate = {"Specify separate values for the global plan", "Regardless of the input values for the regional plans, separate values for the global plan are specified here."};
+        String[] consolidated = {"USE VALUES FROM THE REGIONAL PLANS", "The values from your regional plans will be automatically used as inputs for the global simulation model."};
+        String[] separate = {"SPECIFY NEW VALUES", "Use the options below to calculate the impact of your global plan. These results will be independent of the values from the regional plans you included."};
 
         consolidateOptions.put("CONSOLIDATE", consolidated);
         consolidateOptions.put("SEPARATE", separate);

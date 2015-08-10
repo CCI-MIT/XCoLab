@@ -11,6 +11,12 @@
 		</script>
 	</c:if>
 
+    <c:if test="${imageSizeError}">
+        <script type="text/javascript" >
+            imageSizeError();
+        </script>
+    </c:if>
+
 	<portlet:resourceURL var="unlinkFacebookSSO" id="unlinkFacebookSSO" />
 	<portlet:resourceURL var="unlinkGoogleSSO" id="unlinkGoogleSSO"/>
 

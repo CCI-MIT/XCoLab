@@ -245,15 +245,18 @@
                     </div>
 
             <c:if test="${proposalsPermissions.canIAFActions or proposalsPermissions.canAdminAll}">
-                <div class="edit-prop-butts" style="margin-top: 20px"><a id="upload-impact-data-toggle" href="javascript:;">Show impact data upload form</a></div>
+                <div class="edit-prop-butts" style="margin-top: 20px"><a id="upload-impact-data-toggle" href="javascript:;">Upload data from a spreadsheet</a></div>
                 <div class="clearfix"><!-- --></div>
                 <div id="impact-data-upload-form" style="display: none; margin-top: 10px">
-                    Please paste in the data from the IAF Excel spreadsheet below:
+                    Please paste data from your spreadsheet below:
                     <textarea style="width: 100%; height: 250px;">
                         <!-- -->
                     </textarea>
+                    <div class="gray-button" style="float:right;">
+                        <a id="cancel-button" href="javascript:;">Cancel</a>
+                    </div>
                     <div class="blue-button disabled" style="float:right;">
-                        <a id="submit-button" href="javascript:;">Submit</a>
+                        <a id="submit-button" href="javascript:;">OK</a>
                     </div>
                     <div class="spinner-area" style="float:right; width: 30px; height: 30px;"><!-- --></div>
                     <span class="hint-text red-text" style="float:right; margin-right:20px; margin-top: 12px;">Data seems invalid!</span>
@@ -376,12 +379,8 @@
             $('a#upload-impact-data-toggle').click(function() {
                 // toggle upload form
                 if (!form.is(":visible")) {
-                    $(this).text("Dismiss impact data upload form");
                     form.slideDown();
                     form.find('span.hint-text').text(FORM_DATA_INVALID);
-                } else {
-                    $(this).text("Show impact data upload form");
-                    form.slideUp();
                 }
             });
             // text field
@@ -389,6 +388,7 @@
 
             // submit button
             form.find('a#submit-button').click(uploadAllSeriesData);
+            form.find('a#cancel-button').click(hideDataUploadForm);
         }
 
         function registerHelpEventHandler() {
@@ -517,7 +517,7 @@
             $.getJSON(url, {get_param: 'value'}, function (data) {
                 if (data.success === false) {
 
-                    alert("Could not retrieve series data. Please contact the Administrator");
+                        alert("Could not retrieve series data. Please contact the Administrator");
                     setDetailViewSpinnerMode(false);
                     dismissDetailView();
                 } else {
@@ -907,6 +907,13 @@
                 dismissDetailView();
                 $('tr#impact-new-series-row').removeClass('selected');
             }
+        }
+
+        function hideDataUploadForm(){
+            var uploadForm = $('div#impact-data-upload-form');
+            uploadForm.find('span.hint-text').text(FORM_DATA_INVALID);
+            $('div#impact-data-upload-form').slideUp();
+            uploadForm.children('textarea').val("");
         }
 
         function uploadAllSeriesData() {

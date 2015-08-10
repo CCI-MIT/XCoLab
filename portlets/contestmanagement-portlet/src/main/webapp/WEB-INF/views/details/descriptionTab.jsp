@@ -178,6 +178,7 @@
 			<div class="clearfix"><!-- --></div>
 			<div class="addpropInputContainer">
 			<form:select path="scheduleTemplateId">
+				<form:option value="0" label="None" />
 				<form:options items="${scheduleTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
 			</form:select>
 			<div class="reg_errors">

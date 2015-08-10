@@ -100,7 +100,7 @@
 
 						<div>
 							<strong>Section type:</strong><br/>
-							<form:select path="sections[${x.index}].type" data-form-name="type" id="type-select">
+							<form:select path="sections[${x.index}].type" data-form-name="type" class="type-select">
 								<form:option value="NONE" label="--- Select ---" />
 								<form:options items="${sectionTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
 							</form:select>
@@ -124,33 +124,38 @@
 						</div>
 
 						<div class="clearfix"><!-- --></div>
-						<div id="ontology-select-container" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+						<div class="ontology-select-container" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
 							<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
 							<div>
-								<strong>WHAT Ontology term:</strong><br/>
-								<form:select path="sections[${x.index}].whatTermId" data-form-name="whatTermId">
-									<form:option value="0" label="--- Select ---" />
+								<strong>WHAT Ontology term:</strong>
+								<span class="ontology-term-label"><!-- --></span>
+								<br/>
+								<form:select multiple="true" path="sections[${x.index}].whatTermIds" data-form-name="whatTermId"
+											 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
 									<form:options items="${whatTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
 							<div>
-								<strong>WHERE Ontology term:</strong><br/>
-								<form:select path="sections[${x.index}].whereTermId" data-form-name="whereTermId">
-									<form:option value="0" label="--- Select ---" />
+								<strong>WHERE Ontology term:</strong>
+								<span class="ontology-term-label"><!-- --></span><br/>
+								<form:select multiple="true" path="sections[${x.index}].whereTermIds" data-form-name="whereTermId"
+											 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
 									<form:options items="${whereTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
 							<div>
-								<strong>WHO Ontology term:</strong><br/>
-								<form:select path="sections[${x.index}].whoTermId" data-form-name="whoTermId">
-									<form:option value="0" label="--- Select ---" />
+								<strong>WHO Ontology term:</strong>
+								<span class="ontology-term-label"><!-- --></span><br/>
+								<form:select multiple="true" path="sections[${x.index}].whoTermIds" data-form-name="whoTermId"
+											 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
 									<form:options items="${whoTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
 							<div>
-								<strong>HOW Ontology term:</strong><br/>
-								<form:select path="sections[${x.index}].howTermId" data-form-name="howTermId">
-									<form:option value="0" label="--- Select ---" />
+								<strong>HOW Ontology term:</strong>
+								<span class="ontology-term-label"><!-- --></span><br/>
+								<form:select multiple="true" path="sections[${x.index}].howTermIds" data-form-name="howTermId"
+											 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
 									<form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
@@ -242,6 +247,7 @@
 			bindMassActionSelectChange();
 			bindContestScheduleSelectChange();
 			bindSectionTypeSelectChange();
+			bindOntologyDropdownChange()
 		});
 
 
@@ -257,6 +263,8 @@
 			addSectionButtonElement.addEventListener("click", function() {
 				var numberOfSections = getNumberOfSections();
 				addNewSection(initialNumberOfSections, numberOfSections + 1);
+
+				bindSectionTypeSelectChange();
 			});
 		}
 
@@ -275,13 +283,34 @@
 
 		function bindSectionTypeSelectChange() {
 			var eventHandler = function() {
-				console.log("call with " + $(this).val());
 				var sectionTypeId = $(this).val();
-				jQuery('#ontology-select-container').toggle(sectionTypeId !== "");
+				$(this).parents('.addpropbox').find('.ontology-select-container').toggle(sectionTypeId !== "");
 			}
 
-			jQuery('select#type-select').on('change', eventHandler);
-			eventHandler.call(jQuery('select#type-select')[0]);
+			jQuery('select.type-select').off('change');
+			jQuery('select.type-select').on('change', eventHandler);
+			eventHandler.call(jQuery('select.type-select')[0]);
+		}
+
+		function bindOntologyDropdownChange() {
+			var ontologyTermDropdowns = $('select.ontology-terms');
+			var updateSelectedTermsLabel = function() {
+				var selectedTermLabels = $(this).find(':selected').map(function () {
+					return $(this).text();
+				}).get();
+
+				var cleanedLabels = selectedTermLabels.map(eliminateOntologyTermMetacharactersFromString);
+				$(this).parent().find('span.ontology-term-label').text(cleanedLabels.join(", "));
+			};
+
+			ontologyTermDropdowns.on("change", updateSelectedTermsLabel);
+			ontologyTermDropdowns.each(function(idx, dropdown) {
+				updateSelectedTermsLabel.apply(dropdown);
+			});
+		}
+
+		function eliminateOntologyTermMetacharactersFromString(ontologyTermString) {
+			return ontologyTermString.replace(/-[-|]+-/g, "");
 		}
 
 
@@ -447,14 +476,8 @@
 		}
 
 		function selectTypeChangeCallback(event){
-
-				console.log("selectTypeChangeCallback ->event.target", event.target);
-				console.log("selectTypeChangeCallback ->event.target.nextSibling", event.target.nextSibling);
-				console.log("selectTypeChangeCallback ->event.target.previousSibling", event.target.previousSibling);
-
 				event.preventDefault();
 				var selectedSectionDefinitionId = event.target.value;
-
 				try {
 					if (selectedSectionDefinitionId.indexOf("PROPOSAL") >= 0) {
 						event.target.parentNode.nextSibling.style.display = "";

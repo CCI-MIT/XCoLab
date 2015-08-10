@@ -85,7 +85,7 @@ public class ProposalImpactUtil {
         }
 
         OntologyTermToFocusAreaMapper termMapper = new OntologyTermToFocusAreaMapper(matchingOntologyTerms);
-        return termMapper.filterAssociatedFocusArea(focusAreasToBeSearched);
+        return termMapper.getFocusAreaMatchingTermsPartially(focusAreasToBeSearched);
     }
 
     private static Map<Long, Boolean> getImpactSeriesAvailableMap(List<ProposalImpactSeries> impactSerieses) {

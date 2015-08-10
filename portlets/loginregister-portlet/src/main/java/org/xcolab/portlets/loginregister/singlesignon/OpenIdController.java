@@ -91,6 +91,7 @@ public class OpenIdController {
         ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
+        PortletSession portletSession = actionRequest.getPortletSession();
         HttpSession session = request.getSession();
 		session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
 
@@ -129,7 +130,7 @@ public class OpenIdController {
             try {
                 user = UserLocalServiceUtil.getUserByOpenId(
                         themeDisplay.getCompanyId(), openId);
-                session.setAttribute(SSOKeys.OPEN_ID_LOGIN, new Long(user.getUserId()));
+                portletSession.setAttribute(SSOKeys.OPEN_ID_LOGIN, new Long(user.getUserId()), PortletSession.APPLICATION_SCOPE);
 
                 actionResponse.sendRedirect(redirectUrl);
                 ImageUploadUtils.updateProfilePicture(user, profilePicURL);
@@ -138,6 +139,10 @@ public class OpenIdController {
             catch (NoSuchUserException nsue) {
                 // try to get user by email
                 try {
+                    // Do not try to login via email address if not set
+                    if (Validator.isNull(emailAddress)) {
+                        throw nsue;
+                    }
                     user = UserLocalServiceUtil.getUserByEmailAddress(themeDisplay.getCompanyId(),emailAddress);
                     user.setOpenId(openId);
 					if (Validator.isNotNull(city)) {
@@ -148,7 +153,7 @@ public class OpenIdController {
 					}
 
                     UserLocalServiceUtil.updateUser(user);
-                    session.setAttribute(SSOKeys.OPEN_ID_LOGIN, new Long(user.getUserId()));
+                    portletSession.setAttribute(SSOKeys.OPEN_ID_LOGIN, new Long(user.getUserId()), PortletSession.APPLICATION_SCOPE);
                     actionResponse.sendRedirect(redirectUrl);
 					LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
 
@@ -156,22 +161,30 @@ public class OpenIdController {
                     user.getPortraitURL(themeDisplay);
                 }catch (NoSuchUserException nsue2){
                     // forward to login or register
-                    session.setAttribute(SSOKeys.SSO_OPENID_ID, openId);
+                    portletSession.setAttribute(SSOKeys.SSO_OPENID_ID, openId, PortletSession.APPLICATION_SCOPE);
+                    String screenName = null;
                     if (Validator.isNotNull(emailAddress)) {
-                        session.setAttribute(SSOKeys.SSO_EMAIL, emailAddress);
+                        portletSession.setAttribute(SSOKeys.SSO_EMAIL, emailAddress, PortletSession.APPLICATION_SCOPE);
                         // Screenname = email prefix until @ character
-                        String screenName = emailAddress.substring(0, emailAddress.indexOf(CharPool.AT));
+                        screenName = emailAddress.substring(0, emailAddress.indexOf(CharPool.AT));
                         screenName = screenName.replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
-                        session.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
+                        portletSession.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName, PortletSession.APPLICATION_SCOPE);
                     }
-                    if (Validator.isNotNull(firstName)) session.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName);
-                    if (Validator.isNotNull(lastName)) session.setAttribute(SSOKeys.SSO_LAST_NAME, lastName);
-					session.setAttribute(SSOKeys.SSO_CITY, city);
-					session.setAttribute(SSOKeys.SSO_COUNTRY, country);
 
+                    if (Validator.isNotNull(firstName)) portletSession.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName, PortletSession.APPLICATION_SCOPE);
+                    if (Validator.isNotNull(lastName)) portletSession.setAttribute(SSOKeys.SSO_LAST_NAME, lastName, PortletSession.APPLICATION_SCOPE);
+                    portletSession.setAttribute(SSOKeys.SSO_CITY, city, PortletSession.APPLICATION_SCOPE);
+                    portletSession.setAttribute(SSOKeys.SSO_COUNTRY, country, PortletSession.APPLICATION_SCOPE);
+
+                    long imageId = 0;
 					if (Validator.isNotNull(profilePicURL)) {
-                        long imageId = ImageUploadUtils.linkProfilePicture(profilePicURL);
-                        session.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
+                        try {
+                            imageId = ImageUploadUtils.linkProfilePicture(profilePicURL);
+                            portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
+                        } catch(Exception e) {
+                            _log.error("Could not link profile picture with URL " + profilePicURL + " to new user account", e);
+                        }
+
                     }
 
                     if (session.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_LOGIN)) {
@@ -187,19 +200,25 @@ public class OpenIdController {
                         String password = RandomStringUtils.random(12, true, true);
                         userBean.setPassword(password);
                         userBean.setRetypePassword(password);
+                        userBean.setFirstName(firstName);
+                        userBean.setLastName(lastName);
+                        userBean.setEmail(emailAddress);
+                        userBean.setCountry(country);
+                        userBean.setImageId(Long.toString(imageId));
 
-                        MainViewController.getSSOUserInfo(actionRequest.getPortletSession(), userBean);
+                        if (Validator.isNotNull(screenName)) {
+                            userBean.setScreenName(screenName);
 
-                        // Validate uniqueness of the screen name
-                        // The chance of a collision among 40 equal screennames is 50% -> 5 tries should be sufficient
-                        String screenName = userBean.getScreenName();
-                        for (int i = 0; i < 5; i++) {
-                            try {
-                                User duplicateUser = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
-                                // Generate a random suffix for the non-unique screenName
-                                screenName = userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
-                            } catch (PortalException e) {
-                                break;
+                            // Validate uniqueness of the screen name
+                            // The chance of a collision among 40 equal screennames is 50% -> 5 tries should be sufficient
+                            for (int i = 0; i < 5; i++) {
+                                try {
+                                    UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
+                                    // Generate a random suffix for the non-unique screenName
+                                    screenName = userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
+                                } catch (PortalException e) {
+                                    break;
+                                }
                             }
                         }
 

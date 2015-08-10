@@ -32,21 +32,27 @@ public enum MemberRole {
     } 
 
     public String getPrintName() {
-        return WordUtils.capitalizeFully((name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase()).replaceAll("_"," "));
+        String printName = WordUtils.capitalizeFully((name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase()).replaceAll("_"," "));
+            if (printName.equalsIgnoreCase("Contestmanager")) {
+                return "Staff";
+            }
+        else
+            return printName;
     }
 
     public String getImageUrl() {
-        if (name() == MemberRole.IMPACT_ASSESSMENT_FELLOW.name()){
+        if (name().equalsIgnoreCase(MemberRole.IMPACT_ASSESSMENT_FELLOW.name())){
             return MemberRole.FELLOW.name().toLowerCase();
         }
-        else if (name() == MemberRole.CONTESTMANAGER.name()){
-            return MemberRole.EXPERT.name().toLowerCase();
+        else if (name().equalsIgnoreCase(MemberRole.CONTESTMANAGER.name()) ){
+            return MemberRole.STAFF.name().toLowerCase();
         }
         else
             return name().toLowerCase();
     }
     
     public String getLowerCase() {
+
         return name().toLowerCase();
     }
 

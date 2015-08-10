@@ -57,6 +57,8 @@ public class FocusAreaLocalServiceClpInvoker {
     private String[] _methodParameterTypes668;
     private String _methodName669;
     private String[] _methodParameterTypes669;
+    private String _methodName670;
+    private String[] _methodParameterTypes670;
 
     public FocusAreaLocalServiceClpInvoker() {
         _methodName0 = "addFocusArea";
@@ -177,6 +179,13 @@ public class FocusAreaLocalServiceClpInvoker {
         _methodName669 = "getOntologyTermFromFocusAreaWithOntologySpace";
 
         _methodParameterTypes669 = new String[] {
+                "com.ext.portlet.model.FocusArea",
+                "com.ext.portlet.model.OntologySpace"
+            };
+
+        _methodName670 = "getAllOntologyTermsFromFocusAreaWithOntologySpace";
+
+        _methodParameterTypes670 = new String[] {
                 "com.ext.portlet.model.FocusArea",
                 "com.ext.portlet.model.OntologySpace"
             };
@@ -322,6 +331,12 @@ public class FocusAreaLocalServiceClpInvoker {
         if (_methodName669.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes669, parameterTypes)) {
             return FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace((com.ext.portlet.model.FocusArea) arguments[0],
+                (com.ext.portlet.model.OntologySpace) arguments[1]);
+        }
+
+        if (_methodName670.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes670, parameterTypes)) {
+            return FocusAreaLocalServiceUtil.getAllOntologyTermsFromFocusAreaWithOntologySpace((com.ext.portlet.model.FocusArea) arguments[0],
                 (com.ext.portlet.model.OntologySpace) arguments[1]);
         }
 

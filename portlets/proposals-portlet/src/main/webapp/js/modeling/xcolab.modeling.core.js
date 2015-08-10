@@ -41,7 +41,7 @@ function ModelingWidget(selector, options) {
 		throw "Missing renderers";
 	}
 	this.inEditMode = 'edit' in options ? options.edit : false;
-	
+
 	var that = this;
 	this.renderers = [];
 	jQuery(options.renderers).each(function(idx, renderer) {
@@ -372,6 +372,17 @@ ModelingWidget.prototype.showStackTrace = function(data) {
         jQuery("#errorModal").modal('show');
         jQuery('.modal-body').html(jQuery('#main', tempDom));
     }
+};
+
+/**
+ * Toggles the model's edit mode setting
+ */
+ModelingWidget.prototype.toggleEditMask = function(isInEditMode) {
+	if (isInEditMode) {
+		$('div.act-edit_left').fadeIn();
+	} else {
+		$('div.act-edit_left').fadeOut();
+	}
 };
 
 XCoLab.modeling.outputItemRenderers = [];

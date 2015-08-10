@@ -69,7 +69,7 @@
 					</div>
 				</td>
 				<td class="column usersActivityCount g">
-					${user.activityCount}
+                    ${user.activityCountFormatted}
 				</td>
 				<td class="column usersCategory">
                     <img src="/climatecolab-theme/images/icon_mem-${user.category.imageUrl}.png"
@@ -168,19 +168,6 @@
 
 					<a href="${expertCategoryURL }">Experts</a>
 				</li>
-                <li class="${memberCategory == 'Contest Manager' ? 'c' : ''}">
-                    <img src="/climatecolab-theme/images/icon_mem-expert.png"
-                         width="16" height="16" />&#160;
-
-                    <portlet:renderURL var="expertCategoryURL">
-                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-                        <portlet:param name="memberCategory" value="Contest Manager" />
-                        <portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-                        <portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-                    </portlet:renderURL>
-
-                    <a href="${expertCategoryURL }">Contestmanager</a>
-                </li>
 				<li class="${memberCategory == 'Judges' ? 'c' : ''}">
 					<img src="/climatecolab-theme/images/icon_mem-judges.png"
 						 width="16" height="16" />&#160;

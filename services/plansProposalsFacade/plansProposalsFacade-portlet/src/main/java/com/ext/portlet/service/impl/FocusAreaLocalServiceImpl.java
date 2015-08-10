@@ -101,4 +101,15 @@ public class FocusAreaLocalServiceImpl extends FocusAreaLocalServiceBaseImpl {
         return null;
     }
 
+    public List<OntologyTerm> getAllOntologyTermsFromFocusAreaWithOntologySpace(FocusArea focusArea, OntologySpace ontologySpace) throws SystemException, PortalException {
+        List<OntologyTerm> matchingOntologyTerms = new ArrayList<>();
+        for (OntologyTerm term : getTerms(focusArea)) {
+            if (term.getOntologySpaceId() == ontologySpace.getId()) {
+                matchingOntologyTerms.add(term);
+            }
+        }
+
+        return matchingOntologyTerms;
+    }
+
 }

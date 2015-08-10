@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 @Component
 public class BaseProposalTabController extends BaseProposalsController {
+
+    protected final static String ACCESS_TAB_DENIED_MESSAGE = "You don't have the permissions to access this content.";
     
     @Autowired
     private ProposalsContext proposalsContext;

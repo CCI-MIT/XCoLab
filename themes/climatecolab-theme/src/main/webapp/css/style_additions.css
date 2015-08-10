@@ -58,7 +58,7 @@
 .acthead-r .runmodel { float:right; margin-top:-5px;}
 
 .act-edit_left { float:left; width:495px;}
-.act-edit_right { float:left; width:489px; color:#464646;}
+.act-edit_right { float:right; width:489px; color:#464646;}
 
 .act-edit_left-top { width:480px; padding:15px; background:url(../images/actions_charttop-bg.gif);}
 

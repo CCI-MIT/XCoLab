@@ -1,5 +1,6 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
+import com.ext.portlet.NoSuchFocusAreaException;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
@@ -12,6 +13,8 @@ import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.utils.OntologyTermToFocusAreaMapper;
@@ -25,6 +28,7 @@ import java.util.List;
  * Created by Thomas on 2/13/2015.
  */
 public class SectionDefinitionBean implements Serializable{
+    private final static Log _log = LogFactoryUtil.getLog(SectionDefinitionBean.class);
 
     private Long id;
     private Long sectionDefinitionId;
@@ -43,10 +47,10 @@ public class SectionDefinitionBean implements Serializable{
     private boolean contestIntegrationRelevance = false;
     private int weight;
 
-    private long whatTermId = 0L;
-    private long whereTermId = 0L;
-    private long whoTermId = 0L;
-    private long howTermId = 0L;
+    private List<Long> whatTermIds = new ArrayList<>();
+    private List<Long> whereTermIds = new ArrayList<>();
+    private List<Long> whoTermIds = new ArrayList<>();
+    private List<Long> howTermIds = new ArrayList<>();
 
     public SectionDefinitionBean() {
     }
@@ -90,20 +94,32 @@ public class SectionDefinitionBean implements Serializable{
         this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
         this.focusAreaId = planSectionDefinition.getFocusAreaId();
 
-        initOntologyTermIdsWithFocusAreaId();
+        try {
+            initOntologyTermIdsWithFocusAreaId();
+        } catch (NoSuchFocusAreaException e){
+            _log.warn(e);
+        }
     }
 
     private void initOntologyTermIdsWithFocusAreaId() throws SystemException, PortalException {
         if (this.focusAreaId != 0) {
             FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(this.focusAreaId);
+
             OntologySpace space = OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.WHAT.getSpaceId());
-            this.whatTermId = FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space).getId();
+            List<OntologyTerm> terms = FocusAreaLocalServiceUtil.getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
+            this.whatTermIds = getIdsFromOntologyTerms(terms);
+
             space = OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.WHERE.getSpaceId());
-            this.whereTermId = FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space).getId();
+            terms = FocusAreaLocalServiceUtil.getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
+            this.whereTermIds = getIdsFromOntologyTerms(terms);
+
             space = OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.WHO.getSpaceId());
-            this.whoTermId = FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space).getId();
+            terms = FocusAreaLocalServiceUtil.getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
+            this.whoTermIds = getIdsFromOntologyTerms(terms);
+
             space = OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.HOW.getSpaceId());
-            this.howTermId = FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space).getId();
+            terms = FocusAreaLocalServiceUtil.getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
+            this.howTermIds = getIdsFromOntologyTerms(terms);
         }
     }
 
@@ -251,36 +267,36 @@ public class SectionDefinitionBean implements Serializable{
         this.contestIntegrationRelevance = contestIntegrationRelevance;
     }
 
-    public long getWhatTermId() {
-        return whatTermId;
+    public List<Long> getWhatTermIds() {
+        return whatTermIds;
     }
 
-    public void setWhatTermId(long whatTermId) {
-        this.whatTermId = whatTermId;
+    public void setWhatTermIds(List<Long> whatTermIds) {
+        this.whatTermIds = whatTermIds;
     }
 
-    public long getWhereTermId() {
-        return whereTermId;
+    public List<Long> getWhereTermIds() {
+        return whereTermIds;
     }
 
-    public void setWhereTermId(long whereTermId) {
-        this.whereTermId = whereTermId;
+    public void setWhereTermIds(List<Long> whereTermIds) {
+        this.whereTermIds = whereTermIds;
     }
 
-    public long getWhoTermId() {
-        return whoTermId;
+    public List<Long> getWhoTermIds() {
+        return whoTermIds;
     }
 
-    public void setWhoTermId(long whoTermId) {
-        this.whoTermId = whoTermId;
+    public void setWhoTermIds(List<Long> whoTermIds) {
+        this.whoTermIds = whoTermIds;
     }
 
-    public long getHowTermId() {
-        return howTermId;
+    public List<Long> getHowTermIds() {
+        return howTermIds;
     }
 
-    public void setHowTermId(long howTermId) {
-        this.howTermId = howTermId;
+    public void setHowTermIds(List<Long> howTermIds) {
+        this.howTermIds = howTermIds;
     }
 
     public void setFocusAreaId(long focusAreaId) {
@@ -292,17 +308,16 @@ public class SectionDefinitionBean implements Serializable{
             if (ontologyTermsSet()) {
                 focusAreaId = getFocusAreaViaOntologyTerms().getId();
             }
-
             return focusAreaId;
         } catch (Exception e) {
-
+            _log.warn("Could not get focus area id", e);
         }
 
         return 0L;
     }
 
     private boolean ontologyTermsSet() {
-        return (getWhatTermId() != 0 && getWhereTermId() != 0 && getWhoTermId() != 0 && getHowTermId() != 0);
+        return (getWhatTermIds().size() > 0 && getWhereTermIds().size() > 0 && getWhoTermIds().size() > 0 && getHowTermIds().size() > 0);
     }
 
     public static final Comparator<SectionDefinitionBean> sectionListComparator = new MyComparator();
@@ -316,14 +331,10 @@ public class SectionDefinitionBean implements Serializable{
     }
 
     private FocusArea getFocusAreaViaOntologyTerms() throws SystemException, PortalException {
-        List<OntologyTerm> termsToBeMatched = new ArrayList<>();
-        termsToBeMatched.add(OntologyTermLocalServiceUtil.getOntologyTerm(getWhatTermId()));
-        termsToBeMatched.add(OntologyTermLocalServiceUtil.getOntologyTerm(getWhereTermId()));
-        termsToBeMatched.add(OntologyTermLocalServiceUtil.getOntologyTerm(getWhoTermId()));
-        termsToBeMatched.add(OntologyTermLocalServiceUtil.getOntologyTerm(getHowTermId()));
+        List<OntologyTerm> termsToBeMatched = getAllSelectedOntologyTerms();
 
         OntologyTermToFocusAreaMapper focusAreaMapper = new OntologyTermToFocusAreaMapper(termsToBeMatched);
-        FocusArea focusArea = focusAreaMapper.getAssociatedFocusArea();
+        FocusArea focusArea = focusAreaMapper.getFocusAreaMatchingTermsExactly();
 
         if (Validator.isNull(focusArea)) {
             focusArea = createNewFocusAreaWithTerms(termsToBeMatched);
@@ -341,5 +352,29 @@ public class SectionDefinitionBean implements Serializable{
 
         FocusAreaLocalServiceUtil.store(newFocusArea);
         return newFocusArea;
+    }
+
+    private List<Long> getIdsFromOntologyTerms(List<OntologyTerm> ontologyTerms) {
+        List<Long> ids = new ArrayList<>(ontologyTerms.size());
+        for (OntologyTerm term : ontologyTerms) {
+            ids.add(term.getId());
+        }
+
+        return ids;
+    }
+
+    private List<OntologyTerm> getAllSelectedOntologyTerms() throws SystemException, PortalException {
+        List[] ontologyTermIdLists = new List[] {
+                getWhatTermIds(), getWhereTermIds(), getWhoTermIds(), getHowTermIds()
+        };
+
+        List<OntologyTerm> selectedOntologyTerms = new ArrayList<>();
+        for (List<Long> ontologyTermIds : ontologyTermIdLists) {
+            for (Long ontologyTermId : ontologyTermIds) {
+                selectedOntologyTerms.add(OntologyTermLocalServiceUtil.getOntologyTerm(ontologyTermId));
+            }
+        }
+
+        return selectedOntologyTerms;
     }
 }

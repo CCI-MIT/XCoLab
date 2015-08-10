@@ -24,11 +24,11 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			renderHeaderFunc = this.renderHeader;
 			renderFooterFunc = this.renderFooter;
 		}
-		
+
 		var elementContainer = container;
 		var containerHtml = false;
 		if (this.modelingWidget.inEditMode && 'containerHtmlEdit' in this) {
-			containerHtml = typeof(this.containerHtmlEdit) == 'function' ? this.containerHtmlEdit.apply(this, arguments) : this.containerHtmlEdit; 
+			containerHtml = typeof(this.containerHtmlEdit) == 'function' ? this.containerHtmlEdit.apply(this, arguments) : this.containerHtmlEdit;
 		}
 		else {
 			if ('containerHtml' in this) {
@@ -38,15 +38,15 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		if (containerHtml) {
 			elementContainer = jQuery(containerHtml).appendTo(container);
 		}
-				
+
 		var newArguments = [elementContainer].concat(Array.prototype.slice.call(arguments, 1));
-		
+
 		if (renderHeaderFunc) {
 			renderHeaderFunc.apply(this, newArguments);
 		}
-		
+
 		renderFunc.apply(this, newArguments);
-		
+
 		if (renderFooterFunc) {
 			renderFooterFunc.apply(this, newArguments);
 		}

@@ -4,6 +4,8 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +32,8 @@ public class VoteOnProposalActionController {
     private final static String VOTE_ANALYTICS_CATEGORY = "User";
     private final static String VOTE_ANALYTICS_ACTION = "Vote contest entry";
     private final static String VOTE_ANALYTICS_LABEL = "";
+
+    private static Log _log = LogFactoryUtil.getLog(VoteOnProposalActionController.class);
     
     @RequestMapping(params = {"action=voteOnProposalAction"})
     public void handleAction(ActionRequest request, Model model, ActionResponse response)
@@ -47,7 +51,13 @@ public class VoteOnProposalActionController {
                     // User has voted for a different proposal. Vote will be retracted and converted to a vote of this proposal.
                     ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
                 }
-                ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
+                try {
+                    ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
+                } catch(SystemException exception) {
+                    _log.error("kmang: Original Vote exception occured: ", exception.getCause());
+                    _log.error("kmang: Wrapped Vote exception occured: ", exception);
+                }
+
 
                 //publish event per contestPhaseId to allow voting on exactly one proposal per contest(phase)
             	AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY+contestPhaseId,

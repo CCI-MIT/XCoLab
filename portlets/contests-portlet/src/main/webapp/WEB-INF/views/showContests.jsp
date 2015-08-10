@@ -35,7 +35,7 @@
                         <div class="icePnlGrp prop"><strong>${contest.proposalsCount}</strong> proposals</div>
                         <c:if test="${not contest.contestInVotingPhase}">
                         	<div class="icePnlGrp comm"><strong> ${contest.totalCommentsCount}</strong> comments</div>
-                        </c:if>                        
+                        </c:if>
                         <c:if test="${contest.contestInVotingPhase}">
                         	<div class="icePnlGrp comm"><strong>${contest.votesCount}</strong> votes</div>
                         </c:if>

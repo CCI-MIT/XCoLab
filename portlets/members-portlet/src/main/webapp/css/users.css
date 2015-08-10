@@ -18,6 +18,7 @@
 */
 .userslist.table .column.usersActivityCount {
 	width: 105px;
+    text-align: right;
 }
 
 .userslist.table .column.usersCategory {
@@ -26,4 +27,8 @@
 
 .userslist.table .column.usersSeniority {
 	width: 105px;
+}
+
+.activity {
+    text-align: right;
 }

@@ -63,7 +63,6 @@ public class ContestDescriptionBean implements Serializable{
     }
 
     public void persist(Contest contest) throws Exception {
-
         String oldContestTitle = contest.getContestShortName();
         updateContestDescription(contest);
         updateContestSchedule(contest, scheduleTemplateId);
@@ -205,13 +204,13 @@ public class ContestDescriptionBean implements Serializable{
 
     public static void updateContestSchedule(Contest contest, Long contestScheduleId) throws Exception{
         Long oldScheduleTemplateId = contest.getContestScheduleId();
-        boolean noScheduleSelected = contestScheduleId.equals(0);
+        boolean noScheduleSelected = contestScheduleId.equals(0L);
 
         if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
             ContestWrapper contestWrapper = new ContestWrapper(contest);
             boolean proposalsInContest = contestWrapper.getTotalProposalsCount() > 0;
             if(proposalsInContest) {
-                ContestScheduleWrapper.updateContestPhasesAccordingToContestSchedule(contest, contestScheduleId);
+                ContestScheduleWrapper.updateContestPhasesOfContestAccordingToContestSchedule(contest, contestScheduleId);
             }   else{
                 ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleId);
             }

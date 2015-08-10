@@ -1,6 +1,7 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
@@ -321,16 +322,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
         Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
 
-        //save the information that the promotion has been done.
-        if (currentPhaseId != 0) {
-            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
-                    proposalId,
-                    currentPhaseId,
-                    ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
-                    0,
-                    "true"
-            );
-        }
+        createProposalContestPhasePromotionDoneAttribute(proposalId, currentPhaseId);
     }
 
     /**
@@ -355,6 +347,14 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 		
         serviceContext.setPortalURL(PortalUtil.getPortalURL(company.getVirtualHostname(), port, false));
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
+            if (isPhaseContestScheduleTemplatePhase(phase)) {
+                continue;
+            }
+
+            if (isPhaseContestHasNoValidContest(phase)) {
+                continue;
+            }
+
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 // we have a candidate for promotion, find next phase
                 try {
@@ -381,7 +381,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
                     // if transition is to voting phase
                     if (getContestStatus(nextPhase).isCanVote()) {
-                    	//contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
+                    	contestLocalService.transferSupportsToVote(contest, serviceContext);
                     }
 
                     // Add contest year suffix, if contest has been completed
@@ -396,6 +396,15 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         }
         //Judging-based promotion
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_JUDGED.getValue())) {
+            if (isPhaseContestScheduleTemplatePhase(phase)) {
+                continue;
+            }
+
+            if (isPhaseContestHasNoValidContest(phase)) {
+                continue;
+            }
+
+
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
 
@@ -429,16 +438,20 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                         // Enable this line to post promotion comment to Evaluation tab comment section
                         // proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
 
-                        try {
-                            proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
-                        } catch (MailEngineException | AddressException e) {
-                            _log.error("Could not send proposal promotion colab messaging notification", e);
+                        // Add this check for extra security to prevent proposal authors from being spammed (see COLAB-500)
+                        if (hasProposalAlreadyBeenReviewed(p, phase)) {
+                            try {
+                                proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
+                                createProposalContestPhasePromotionDoneAttribute(p.getProposalId(), phase.getContestPhasePK());
+                            } catch (Throwable e) {
+                                _log.error("Could not send proposal promotion colab messaging notification", e);
+                            }
                         }
                     }
 
                     // if transition is to voting phase
                     if (getContestStatus(nextPhase).isCanVote()) {
-                    	//contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
+                    	contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
                     }
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     updateContestPhase(phase);
@@ -481,6 +494,35 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return newPhase;
     }
 
+
+    private void createProposalContestPhasePromotionDoneAttribute(long proposalId, long currentPhaseId) {
+        //save the information that the promotion has been done.
+        if (currentPhaseId != 0) {
+            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
+                    proposalId,
+                    currentPhaseId,
+                    ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
+                    0,
+                    "true"
+            );
+        }
+    }
+
+    private boolean isPhaseContestScheduleTemplatePhase(ContestPhase phase) {
+        // Usually we do not have phases with a ContestId key = 0; used as template contest phases for our ContestSchedules
+        return phase.getContestPK() == 0;
+    }
+
+    private boolean isPhaseContestHasNoValidContest(ContestPhase phase) throws PortalException, SystemException{
+        try{
+            ContestPhaseLocalServiceUtil.getContest(phase);
+        } catch(NoSuchContestException e){
+            _log.warn("promoting phase failed due to invalid contest ", e);
+            return true;
+        }
+        return false;
+    }
+
     private boolean proposalIsVisible(Proposal p, ContestPhase phase) {
         if(!p.getVisible()) return false;
 
@@ -502,6 +544,20 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         } else {
             return false;
         }
+    }
+
+    private boolean hasProposalAlreadyBeenReviewed(Proposal p, ContestPhase phase) {
+        ProposalContestPhaseAttribute judgeDecision = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
+        Long judgeDecisionValue = (judgeDecision == null) ? JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue() : judgeDecision.getNumericValue();
+        ProposalContestPhaseAttribute fellowAction = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
+        Long fellowActionValue = (fellowAction == null) ? JudgingSystemActions.FellowAction.NO_DECISION.getAttributeValue() : fellowAction.getNumericValue();
+
+        if (JudgingSystemActions.AdvanceDecision.fromInt(judgeDecisionValue.intValue()) == JudgingSystemActions.AdvanceDecision.NO_DECISION &&
+                !JudgingSystemActions.FellowAction.fromInt(fellowActionValue.intValue()).isActionProhibitingAdvancing()) {
+            return false;
+        }
+
+        return true;
     }
 
     private boolean hasProposalAlreadyBeenPromoted(Proposal p, ContestPhase phase) throws SystemException {
@@ -564,14 +620,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     private boolean allProposalsReviewed(ContestPhase phase) throws SystemException, PortalException {
         boolean allProposalsReviewed = true;
         for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
-            ProposalContestPhaseAttribute judgeDecision = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
-            Long judgeDecisionValue = (judgeDecision == null) ? JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue() : judgeDecision.getNumericValue();
-            ProposalContestPhaseAttribute fellowAction = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
-            Long fellowActionValue = (fellowAction == null) ? JudgingSystemActions.FellowAction.NO_DECISION.getAttributeValue() : fellowAction.getNumericValue();
-
-            if (JudgingSystemActions.AdvanceDecision.fromInt(judgeDecisionValue.intValue()) == JudgingSystemActions.AdvanceDecision.NO_DECISION &&
-                    !JudgingSystemActions.FellowAction.fromInt(fellowActionValue.intValue()).isActionProhibitingAdvancing()) {
+            if (!hasProposalAlreadyBeenReviewed(p, phase)) {
                 allProposalsReviewed = false;
+                break;
             }
         }
 

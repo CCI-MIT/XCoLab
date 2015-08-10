@@ -72,7 +72,7 @@
                                         <div class="role-indicator">
                                             <div style="width: 16px">
                                                 <img
-                                                        src="/climatecolab-theme/images/icon_mem-${role.lowerCase}.png"
+                                                        src="/climatecolab-theme/images/icon_mem-${role.imageUrl}.png"
                                                         width="16" height="16" />
                                             </div>
                                             ${role.printName}

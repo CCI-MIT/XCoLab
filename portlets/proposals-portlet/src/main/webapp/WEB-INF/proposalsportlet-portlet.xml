@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:mvc="http://www.springframework.org/schema/mvc"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
         http://www.springframework.org/schema/context
@@ -12,17 +12,17 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
-    <context:component-scan base-package="org.xcolab.portlets.proposals" />
+	<context:component-scan base-package="org.xcolab.portlets.proposals" />
 
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-      <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-      <property name="prefix" value="/WEB-INF/views/"/>
-      <property name="suffix" value=".jsp"/>
-    </bean>
-    
-    <bean class="org.springframework.web.portlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-    	<property name="interceptors">
-    		<list>
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/views/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+
+	<bean class="org.springframework.web.portlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<list>
 				<bean class="org.xcolab.portlets.proposals.view.interceptors.PopulateContextInterceptor" />
 				<bean class="org.xcolab.portlets.proposals.view.interceptors.ParametersMappingInterceptor">
 					<property name="parameters">
@@ -40,51 +40,52 @@
 					<property name="ignoreOnError">
 						<list>
 							<value>action_forwardToPage</value>
-                            <value>action</value>
-                            <value>move</value>
+							<value>action</value>
+							<value>move</value>
 						</list>
 					</property>
 					<property name="ignoreOnSuccess">
 						<list>
 							<value>action_errorForwardToPage</value>
-                            <value>action</value>
+							<value>action</value>
 						</list>
 					</property>
 					<property name="mapAll" value="true" />
 				</bean>
 				<bean class="org.xcolab.portlets.proposals.view.interceptors.ValidateTabPermissionsInterceptor" />
-    		</list>
-    	</property>
-    	
-    </bean>
+			</list>
+		</property>
+
+	</bean>
 
 	<bean class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-    	<property name="webBindingInitializer">
-        	<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
-            	<property name="validator">
-                	<bean class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
-            	</property>
-        	</bean>        	
-    	</property>
+		<property name="webBindingInitializer">
+			<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+				<property name="validator">
+					<bean class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+				</property>
+			</bean>
+		</property>
 	</bean>
-	
+
 	<bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver" p:defaultErrorView="uncaughtException">
-   	<property name="exceptionMappings">
-    	<props>
-           <prop key=".ProposalsAuthorizationException">accessDenied</prop>
-           <prop key=".DataAccessException">dataAccessFailure</prop>
-           <prop key=".TypeMismatchException">resourceNotFound</prop>
-           <prop key=".AccessDeniedException">accessDenied</prop>
-			<prop key=".DiscussionsException">accessDenied</prop>
-        </props>
-    </property>
- </bean>
-	
+		<property name="exceptionMappings">
+			<props>
+				<prop key=".ProposalsAuthorizationException">accessDenied</prop>
+				<prop key=".DataAccessException">dataAccessFailure</prop>
+				<prop key=".TypeMismatchException">resourceNotFound</prop>
+				<prop key=".AccessDeniedException">accessDenied</prop>
+				<prop key=".DiscussionsException">accessDenied</prop>
+				<prop key=".ProposalIdOrContestIdInvalidException">proposalIdOrContestIdInvalid</prop>
+			</props>
+		</property>
+	</bean>
+
 	<mvc:annotation-driven/>
-	
+
 	<bean class="org.xcolab.jsp.tags.discussion.actions.AddDiscussionMessageActionController" />
 	<bean class="org.xcolab.jsp.tags.discussion.actions.ToggleDiscussionMessageFlagActionController" />
 	<bean class="org.xcolab.jsp.tags.discussion.actions.DeleteDiscussionMessageFlagActionController" />
-    <bean class="org.xcolab.jsp.tags.discussion.actions.EditDiscussionMessageActionController" />
-	
+	<bean class="org.xcolab.jsp.tags.discussion.actions.EditDiscussionMessageActionController" />
+
 </beans>

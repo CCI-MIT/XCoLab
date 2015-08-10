@@ -50,7 +50,7 @@ interface ProposalTabCanAccessAlgorithm {
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
-                if (!(permissions.getCanJudgeActions() || permissions.getCanFellowActions() || permissions.getCanAdminAll()
+                if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()
                 || permissions.getCanContestManagerActions()) ) {
                     return false;
                 }
@@ -168,6 +168,7 @@ interface ProposalTabCanAccessAlgorithm {
                         OntologyTermLocalServiceUtil.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId, ADAPTATION_ONTOLOGY_TERM_ID);
 
                 if ((contest != null && contest.getContestTier() != ContestTier.NONE.getTierType() &&
+                        contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType() &&
                         !isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
                     return true;
                 }
@@ -186,12 +187,12 @@ interface ProposalTabCanAccessAlgorithm {
             try {
                 Contest contest = context.getContest(request);
 
-                // Only let team members or admins edit impact
+                // Only let team members, IAF fellows or admins edit impact
                 if ((contest != null && (
                         contest.getContestTier() == ContestTier.BASIC.getTierType()) ||
                         contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType() ||
                         contest.getContestTier() == ContestTier.GLOBAL.getTierType()) &&
-                        (permissions.getIsTeamMember() || permissions.getCanAdmin())) {
+                        (permissions.getIsTeamMember() || permissions.getCanAdmin() || permissions.getCanIAFActions())) {
                     return true;
                 }
             } catch (SystemException | PortalException e) {

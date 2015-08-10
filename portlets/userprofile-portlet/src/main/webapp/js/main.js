@@ -20,6 +20,10 @@ function updateError(){
     jQuery.growlUI('','Errors occurred while updating profile.');
 }
 
+function imageSizeError(){
+    jQuery.growlUI('','Your profile picture is too big, please upload a smaller one.');
+}
+
 function messageSent() {
     jQuery.growlUI('', 'Message has been sent.');
 }
