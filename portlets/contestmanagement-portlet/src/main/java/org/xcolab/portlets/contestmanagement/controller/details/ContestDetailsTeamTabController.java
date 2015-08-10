@@ -84,7 +84,6 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
         } catch(Exception e){
             _log.warn("Update contest team failed with: ", e);
-            _log.warn(e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }

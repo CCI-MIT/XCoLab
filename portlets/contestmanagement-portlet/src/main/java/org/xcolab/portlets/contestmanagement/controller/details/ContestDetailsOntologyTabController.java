@@ -62,6 +62,8 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
             setPageAttributes(request, model, tab);
             return TAB_VIEW;
         } catch (Exception e){
+            _log.warn("Could not show ontology tab: ", e);
+            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
         return NOT_FOUND_TAB_VIEW;
     }
@@ -101,7 +103,6 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
         } catch(Exception e){
             _log.warn("Update contest overview failed with: ", e);
-            _log.warn(e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }

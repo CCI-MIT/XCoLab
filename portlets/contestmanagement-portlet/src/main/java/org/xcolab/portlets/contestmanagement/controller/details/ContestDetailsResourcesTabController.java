@@ -69,7 +69,8 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
             model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
             return TAB_VIEW;
         } catch (Exception e){
-            e.printStackTrace();
+            _log.warn("Could not show resources tab:", e);
+            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
         return NOT_FOUND_TAB_VIEW;
     }
@@ -93,7 +94,6 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
         } catch(Exception e){
             _log.warn("Update contest resources failed with: ", e);
-            _log.warn(e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }

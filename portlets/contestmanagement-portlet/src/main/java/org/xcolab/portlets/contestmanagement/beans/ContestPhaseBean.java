@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -33,21 +34,20 @@ public class ContestPhaseBean {
     @DateTimeFormat(pattern="MM/dd/yyyy hh:mm")
     @NotNull(message = "Phase start date must not be empty.")
     private Date phaseStartDate;
-
     @DateTimeFormat(pattern="MM/dd/yyyy hh:mm")
     private Date phaseEndDate;
     private Date phaseBufferEndDated;
     private String nextStatus;
     private String contestPhaseDescriptionOverride;
+    private String contestPhaseAutopromote;
 
     private Boolean phaseActiveOverride = false;
     private Boolean phaseInactiveOverride = false;
     private Boolean fellowScreeningActive = false;
-    private String contestPhaseAutopromote = "";
 
     private ContestPhaseType contestPhaseTypeObj;
     private boolean contestPhaseDeleted = false;
-    private boolean contestPhaseProposalAssociations;
+    private boolean contestPhaseHasProposalAssociations;
 
     public ContestPhaseBean(){
 
@@ -72,7 +72,7 @@ public class ContestPhaseBean {
         } catch (Exception e){
         }
         try {
-            this.contestPhaseProposalAssociations = false;
+            this.contestPhaseHasProposalAssociations = false;
             List<Contest> contestsUsingThisContestPhase =  ContestLocalServiceUtil.getContestsByContestScheduleId(this.contestScheduleId);
             for(Contest contest : contestsUsingThisContestPhase){
                 List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(this.contestScheduleId,contest.getContestPK());
@@ -80,7 +80,7 @@ public class ContestPhaseBean {
                     if(contestPhase1.getContestPhaseType() == this.contestPhaseType){
                         List<Proposal2Phase> proposal2PhaseList =  Proposal2PhaseLocalServiceUtil.getByContestPhaseId(contestPhase1.getContestPhasePK());
                         if(!proposal2PhaseList.isEmpty()){
-                            this.contestPhaseProposalAssociations = true;
+                            this.contestPhaseHasProposalAssociations = true;
                             break;
                         }
                     }
@@ -163,7 +163,8 @@ public class ContestPhaseBean {
         if(phaseEndDateFormatted != null){
             try {
                 this.phaseEndDate = dateFormat.parse(phaseEndDateFormatted);
-            } catch(Exception e){
+            } catch(ParseException e){
+                this.phaseEndDate = null;
             }
         }
     }
@@ -232,12 +233,12 @@ public class ContestPhaseBean {
         this.contestPhaseDeleted = contestPhaseDeleted;
     }
 
-    public boolean isContestPhaseProposalAssociations() {
-        return contestPhaseProposalAssociations;
+    public boolean isContestPhaseHasProposalAssociations() {
+        return contestPhaseHasProposalAssociations;
     }
 
-    public void setContestPhaseProposalAssociations(boolean contestPhaseProposalAssociations) {
-        this.contestPhaseProposalAssociations = contestPhaseProposalAssociations;
+    public void setContestPhaseProposalAssociations(boolean contestPhaseHasProposalAssociations) {
+        this.contestPhaseHasProposalAssociations = contestPhaseHasProposalAssociations;
     }
 
     public void persist() throws Exception{
