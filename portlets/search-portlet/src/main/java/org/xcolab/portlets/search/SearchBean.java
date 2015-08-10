@@ -19,10 +19,6 @@ import org.climatecollaboratorium.events.EventBus;
 import org.climatecollaboratorium.events.EventHandler;
 import org.climatecollaboratorium.events.HandlerRegistration;
 import org.climatecollaboratorium.navigation.NavigationEvent;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Entities;
-import org.jsoup.safety.Cleaner;
-import org.jsoup.safety.Whitelist;
 import org.xcolab.portlets.search.utils.DataPage;
 import org.xcolab.portlets.search.utils.DataSource;
 import org.xcolab.portlets.search.utils.PagedListDataModel;
@@ -37,6 +33,7 @@ import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.StringQueryImpl;
+import org.xcolab.utils.HtmlCleaner;
 
 public class SearchBean extends DataSource implements Serializable {
     /**
@@ -67,7 +64,7 @@ public class SearchBean extends DataSource implements Serializable {
             this.searchPhrase = null;
         }
         else {
-            this.searchPhrase = cleanHtml(searchPhrase);
+            this.searchPhrase = HtmlCleaner.cleanAll(searchPhrase);
         }
         onePageDataModel = null;
         
@@ -249,9 +246,9 @@ public class SearchBean extends DataSource implements Serializable {
             public void onEvent(NavigationEvent event) {
                 if (event.hasSource("search")) {
                     try {
-                        String newPhrase = cleanHtml(event.getParameters("search").get("searchPhrase"));
+                        String newPhrase = HtmlCleaner.cleanAll(event.getParameters("search").get("searchPhrase"));
                         if (newPhrase != null && newPhrase.trim().length() > 0) {
-                            searchPhrase = cleanHtml(URLDecoder.decode(event.getParameters("search").get("searchPhrase"), "UTF-8"));
+                            searchPhrase = HtmlCleaner.cleanAll(URLDecoder.decode(event.getParameters("search").get("searchPhrase"), "UTF-8"));
                         } else {
                             searchPhrase = null;
 
@@ -266,18 +263,6 @@ public class SearchBean extends DataSource implements Serializable {
 
         }));
         
-    }
-
-    private static String cleanHtml(String text) {
-        return cleanHtml(text, Whitelist.none());
-    }
-
-    private static String cleanHtml(String text, Whitelist whitelist) {
-        org.jsoup.nodes.Document doc = Jsoup.parse(text);
-        doc = new Cleaner(whitelist).clean(doc);
-        // Adjust escape mode, http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities
-        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
-        return doc.body().html();
     }
 
 	public DataPaginator getPaginator1() {
