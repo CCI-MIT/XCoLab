@@ -54,7 +54,7 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     Set<Scenario> scenarios;
     Map<Long, Scenario> modelIdToScenarioMap;
-    Map<String, SimulationScenarioRegionWrapper> proposalNameToModelScenarioRegionMap;
+    Map<String, ProposalSimulationScenarioRegionWrapper> regionToProposalSimulationScenarioMap;
     Set<String> presentRegion;
     List<Variable> combinedInputParameters;
     Map<Long, Object> combinedInputParametersMap;
@@ -68,11 +68,12 @@ public class ProposalImpactScenarioCombinationWrapper {
         presentRegion = new HashSet<>();
         scenarios = new HashSet<>();
         modelIdToScenarioMap = new HashMap<>();
-        proposalNameToModelScenarioRegionMap = new LinkedHashMap<>();
+        regionToProposalSimulationScenarioMap = new LinkedHashMap<>();
+        fillProposalNameToModelScenarioRegionMap();
 
         for(Proposal proposal : proposals) {
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
-            SimulationScenarioRegionWrapper simulationScenarioRegion = new SimulationScenarioRegionWrapper(proposalWrapper);
+            ProposalSimulationScenarioRegionWrapper simulationScenarioRegion = new ProposalSimulationScenarioRegionWrapper(proposalWrapper);
             presentRegion.add(simulationScenarioRegion.getRegion());
             Long scenarioId = proposalWrapper.getScenarioId();
             Scenario scenarioForProposal = null;
@@ -92,7 +93,7 @@ public class ProposalImpactScenarioCombinationWrapper {
             	}
             }
 
-            proposalNameToModelScenarioRegionMap.put(proposalWrapper.getName(), simulationScenarioRegion);
+            regionToProposalSimulationScenarioMap.put(simulationScenarioRegion.getRegion(), simulationScenarioRegion);
             
             if (scenarioForProposal == null) {
                 modelIdToScenarioMap.put(0L, null);
@@ -110,8 +111,14 @@ public class ProposalImpactScenarioCombinationWrapper {
         }
     }
 
-    public Map<String, SimulationScenarioRegionWrapper> getProposalNameToModelScenarioRegionMap() {
-        return proposalNameToModelScenarioRegionMap;
+    private void fillProposalNameToModelScenarioRegionMap(){
+        for(String region:validationRegions){
+            regionToProposalSimulationScenarioMap.put(region, null);
+        }
+    }
+
+    public Map<String, ProposalSimulationScenarioRegionWrapper> getRegionToProposalSimulationScenarioMap() {
+        return regionToProposalSimulationScenarioMap;
     }
 
     private static boolean isModelEMF(Simulation simulation){
@@ -177,17 +184,17 @@ public class ProposalImpactScenarioCombinationWrapper {
 
 
     public boolean isOneSubProposalPerRegionSelected(){
-        boolean subProposalPerRegionSelected = true;
+        boolean oneSubProposalPerRegionSelected = true;
         for(String region: validationRegions){
             if(!presentRegion.contains(region)){
-                SimulationScenarioRegionWrapper simulationScenarioRegionWrapper = new SimulationScenarioRegionWrapper();
-                simulationScenarioRegionWrapper.setRegion(region);
-                simulationScenarioRegionWrapper.setSimulation("-");
-                proposalNameToModelScenarioRegionMap.put("No proposal selected for region: " + region, simulationScenarioRegionWrapper);
-                subProposalPerRegionSelected = false;
+                ProposalSimulationScenarioRegionWrapper proposalSimulationScenarioRegionWrapper = new ProposalSimulationScenarioRegionWrapper();
+                proposalSimulationScenarioRegionWrapper.setRegion(region);
+                proposalSimulationScenarioRegionWrapper.setSimulation("-");
+                regionToProposalSimulationScenarioMap.put(region, proposalSimulationScenarioRegionWrapper);
+                oneSubProposalPerRegionSelected = false;
             }
         }
-        return subProposalPerRegionSelected;
+        return oneSubProposalPerRegionSelected;
     }
 
     public boolean doAllScenariosUseSameModel(){
@@ -281,7 +288,9 @@ public class ProposalImpactScenarioCombinationWrapper {
            if(isUsedModelEMF()){
                combinedScenario = (Scenario) scenarios.toArray()[0];
            } else{
-               calculateCombinedInputParameters();
+               if(combinedInputParametersMap == null) {
+                   calculateCombinedInputParameters();
+               }
                combinedScenario = getRomaClient().runModel(combinedSimulation, combinedInputParametersMap, 0L, false);
            }
        }

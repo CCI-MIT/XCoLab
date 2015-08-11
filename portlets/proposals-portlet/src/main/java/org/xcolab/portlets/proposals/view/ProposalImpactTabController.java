@@ -53,11 +53,11 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         Contest contest = proposalsContext.getContest(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
 
+        boolean canEditImpactTab = ProposalTab.IMPACT
+                .getCanEdit(proposalsContext.getPermissions(request),proposalsContext, request);
+        
         boolean editValidated = false;
-        if(edit
-                && (proposalsContext.getPermissions(request).getCanEdit()
-                    || proposalsContext.getPermissions(request).getCanIAFActions())) {
-
+        if(edit && canEditImpactTab){
             editValidated = edit;
         }
 
@@ -85,7 +85,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     private String showImpactTabIntegratedProposal(PortletRequest request, Model model, Boolean edit)
             throws Exception {
-        
+
         Proposal proposal = proposalsContext.getProposal(request);
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         Contest contest = proposalsContext.getContest(request);
@@ -112,7 +112,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 model.addAttribute("CONSOLIDATE", isConsolidationPossible);
 
                 if(!isConsolidationPossible){
-                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getProposalNameToModelScenarioRegionMap());
+                    model.addAttribute("proposalToModelMap", proposalImpactScenarioCombinationWrapper.getRegionToProposalSimulationScenarioMap());
                     populateModelOptions(model, request);
                 } else {
 
@@ -125,6 +125,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                         boolean isCombinedScenario = proposalImpactScenarioCombinationWrapper.isCombinedScenario(proposalScenarioId);
 
                         if(isCombinedScenario){
+
+                            proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
                             if(proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)){
 
                                 proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
@@ -264,8 +266,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private Map<String, String[]> getConsolidateOptionsOnGlobalLevel(){
         Map<String, String[]> consolidateOptions = new LinkedHashMap<>();
 
-        String[] consolidated = {"USE VALUES FROM THE REGIONAL PLANS", "The GHG emissions from your regional plans will be automatically used as inputs for the global simulation model."};
-        String[] separate = {"SPECIFY NEW VALUES", "Use the options below to calculate the impact of your global plan. These results will be independent of the GHG emissions from the regional plans you included."};
+        String[] consolidated = {"USE VALUES FROM THE REGIONAL PLANS", "The values from your regional plans will be automatically used as inputs for the global simulation model."};
+        String[] separate = {"SPECIFY NEW VALUES", "Use the options below to calculate the impact of your global plan. These results will be independent of the values from the regional plans you included."};
 
         consolidateOptions.put("CONSOLIDATE", consolidated);
         consolidateOptions.put("SEPARATE", separate);

@@ -50,7 +50,6 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
         return tabWrapper;
     }
 
-
     @RequestMapping(params = "tab=PROPOSALTEMPLATES")
     public String showProposalTemplatesTabController(PortletRequest request, PortletResponse response, Model model,
                                                     @RequestParam(value = "elementId", required = false) Long elementId)
@@ -69,6 +68,7 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
             return ContestProposalTemplateTabController.TAB_VIEW;
         } catch (Exception e){
             _log.warn("Could not create proposal template wrapper: ", e);
+            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
         return NOT_FOUND_TAB_VIEW;
     }
