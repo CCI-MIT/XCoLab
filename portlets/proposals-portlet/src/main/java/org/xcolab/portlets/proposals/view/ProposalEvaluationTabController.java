@@ -58,8 +58,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
         try {
             if (showPublicRatingForm) {
-                JudgeProposalFeedbackBean proposalRatingBean = getProposalRatingBean(request);
-                model.addAttribute("judgeProposalBean", proposalRatingBean);
+                model.addAttribute("judgeProposalBean", getProposalRatingBean(request));
             }
         } catch (Exception e) {
             _log.warn("Could not create public rating form for evaluation tab", e);
@@ -69,14 +68,9 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             if (showEvaluationRatings) {
                 Proposal proposal = proposalsContext.getProposal(request);
                 Long contestId = proposalsContext.getContestPhase(request).getContestPK();
-
                 Long evaluationDiscussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposal);
                 model.addAttribute("evaluationDiscussionId", evaluationDiscussionId);
-
-                List<ProposalRatingsWrapper> judgeAverageRating =
-                        getJudgesRatingsForPastScreeningPhases(contestId, proposal);
-                model.addAttribute("judgeAverageRating", judgeAverageRating);
-
+                model.addAttribute("averageRatingsPerPhase", getAverageRatingsForPastPhases(contestId, proposal));
                 model.addAttribute("showEvaluation", true);
                 model.addAttribute("isJudgeReadOnly", true);
                 model.addAttribute("authorId", proposal.getAuthorId());
@@ -143,7 +137,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return hasContestPassedScreeningPhaseAlready;
     }
 
-    private List<ProposalRatingsWrapper> getJudgesRatingsForPastScreeningPhases(Long contestId, Proposal proposal)
+    private List<ProposalRatingsWrapper> getAverageRatingsForPastPhases(Long contestId, Proposal proposal)
             throws Exception {
 
         List<ProposalRatingsWrapper> proposalRatings = new ArrayList<ProposalRatingsWrapper>();
@@ -214,11 +208,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 }
 
     private boolean hasContestPhaseEnded(ContestPhase contestPhase) {
-        boolean hasContestPhaseEnded = false;
-        if (contestPhase.getPhaseEndDate().before(new Date())) {
-            hasContestPhaseEnded = true;
-        }
-        return hasContestPhaseEnded;
+        return contestPhase.getPhaseEndDate().before(new Date());
     }
 
     private boolean isUserAllowToAddComments(User user, Proposal proposal, PortletRequest request) throws Exception {
