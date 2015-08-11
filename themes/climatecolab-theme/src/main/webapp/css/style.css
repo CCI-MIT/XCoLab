@@ -69,7 +69,7 @@ p {margin:0 0 20px 0;}
 
 b, strong {font-weight:700;}
 
-a { color:#30a3fb; text-decoration:none;}
+a { color:#30a3fb; text-decoration:none !important;}
 a:hover {color:#000;}
 
 /* ------------------------------------------------------------------------------------------------------- */
@@ -850,16 +850,17 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 
 
 /* BUTTONS ----------------------------------------------------------------------------- */
-.blue-button {background:url(../images/button-blue-left.png) no-repeat left top; padding-left:10px; height:41px; width:auto; display:inline-block; line-height:normal;}
-.blue-button a {background:url(../images/button-blue-right.png) no-repeat right top; padding:10px 21px 0 8px; height:31px; font-size:16px; font-weight:700; color:#fff; text-shadow:1px 1px 0 #114c65; display:inline-block;}
-.blue-button:hover {background:url(../images/button-blue-left-hover.png) no-repeat left top;}
-.blue-button:hover a, .blue-button a:hover{background:url(../images/button-blue-right-hover.png) no-repeat right top;}
+.blue-button {background:url(../images/button-blue-left.png) no-repeat left top; padding-left:10px; height:41px; width:auto; display:inline-block; line-height:normal; }
+.blue-button a {background:url(../images/button-blue-right.png) no-repeat right top; padding:10px 21px 0 8px; height:31px; font-size:16px; font-weight:700; color:#fff; text-shadow:1px 1px 0 #114c65; display:inline-block; box-sizing: initial;}
+.blue-button:hover {background:url(../images/button-blue-left-hover.png) no-repeat left top; }
+.blue-button:hover a, .blue-button a:hover{background:url(../images/button-blue-right-hover.png) no-repeat right top; color: inherit;}
 
 .blue-button.disabled { opacity: 0.4;}
 .blue-button.disabled a { pointer-events: none;}
 
 .gray-button {background:url(../images/button-gray-left.png) no-repeat left top; padding-left:10px; height:41px; width:auto; display:inline-block; line-height:normal;}
-.gray-button a {background:url(../images/button-gray-right.png) no-repeat right top; padding:10px 21px 0 8px; height:31px; font-size:16px; font-weight:700; color:#fff; text-shadow:1px 1px 0 #114c65; display:inline-block;}
+.gray-button a {background:url(../images/button-gray-right.png) no-repeat right top; padding:10px 21px 0 8px; height:31px; font-size:16px; font-weight:700; color:#fff; text-shadow:1px 1px 0 #114c65; display:inline-block; box-sizing: initial;}
+.gray-button:hover a, .gray-button a:hover{color: inherit;}
 /* .gray-button a:hover {color:#000; text-shadow:1px 1px 0 #ccc;} */
 /* ------------------------------------------------------------------------------------------------------- */
 

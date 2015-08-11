@@ -9,8 +9,8 @@
           xmlns:liferay-ui="http://liferay.com/tld/ui"
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-    <jsp:directive.include file="./init.jspx"/>
 
+    <jsp:directive.include file="./init.jspx"/>
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
     <!-- Content -->
@@ -59,7 +59,17 @@
                                     <c:forEach items="${proposalToModelMap}" var="proposalToModel">
                                         <tr>
                                             <td>${proposalToModel.value.region}</td>
-                                            <td><a href="${proposalToModel.value.proposalUrl}" target="_blank">${proposalToModel.value.proposalName}</a></td>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${not empty proposalToModel.value.proposalUrl}">
+                                                        <a href="${proposalToModel.value.proposalUrl}"
+                                                           target="_blank">${proposalToModel.value.proposalName}</a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                            ${proposalToModel.value.proposalName}
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
                                             <td>${proposalToModel.value.simulation}</td>
                                             <!-- <td>${proposalToModel.value.scenario}</td> -->
                                         </tr>
@@ -350,7 +360,7 @@
 
         var scenarioFetchedCallback = function (event) {
             var totalSectorsRow = document.getElementById("totalSectors");
-            if(totalSectorsRow) {
+            if (totalSectorsRow) {
                 var totalSectorsValuesToYears = mapValuesToYear(totalSectorsRow);
                 var modelSeriesValuesToYears = {};
                 var modelOutputs = event.scenario.outputs;
