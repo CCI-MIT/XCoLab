@@ -31,7 +31,7 @@
 
         <c:choose>
             <c:when test="${showEvaluation}">
-                <c:forEach var="ratingWrapper" items="${judgeAverageRating}">
+                <c:forEach var="ratingWrapper" items="${averageRatingsPerPhase}">
                     <h2>${ratingWrapper.contestPhase}</h2>
 
                     <div class="addpropbox evaluation">
