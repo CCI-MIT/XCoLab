@@ -35,7 +35,10 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public boolean contestActive;
     public long planTemplateId;
     public long contestScheduleId;
-    public String templateTypeString;
+    public String proposalCreationTemplateString;
+    public String creationTemplateString;
+    public String voteTemplateString;
+    public String voteQuestionTemplateString;
     public long focusAreaId;
     public long contestTier;
     public long contestLogoId;
@@ -67,7 +70,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(87);
+        StringBundler sb = new StringBundler(93);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -97,8 +100,14 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(planTemplateId);
         sb.append(", contestScheduleId=");
         sb.append(contestScheduleId);
-        sb.append(", templateTypeString=");
-        sb.append(templateTypeString);
+        sb.append(", proposalCreationTemplateString=");
+        sb.append(proposalCreationTemplateString);
+        sb.append(", creationTemplateString=");
+        sb.append(creationTemplateString);
+        sb.append(", voteTemplateString=");
+        sb.append(voteTemplateString);
+        sb.append(", voteQuestionTemplateString=");
+        sb.append(voteQuestionTemplateString);
         sb.append(", focusAreaId=");
         sb.append(focusAreaId);
         sb.append(", contestTier=");
@@ -221,10 +230,28 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestImpl.setPlanTemplateId(planTemplateId);
         contestImpl.setContestScheduleId(contestScheduleId);
 
-        if (templateTypeString == null) {
-            contestImpl.setTemplateTypeString(StringPool.BLANK);
+        if (proposalCreationTemplateString == null) {
+            contestImpl.setProposalCreationTemplateString(StringPool.BLANK);
         } else {
-            contestImpl.setTemplateTypeString(templateTypeString);
+            contestImpl.setProposalCreationTemplateString(proposalCreationTemplateString);
+        }
+
+        if (creationTemplateString == null) {
+            contestImpl.setCreationTemplateString(StringPool.BLANK);
+        } else {
+            contestImpl.setCreationTemplateString(creationTemplateString);
+        }
+
+        if (voteTemplateString == null) {
+            contestImpl.setVoteTemplateString(StringPool.BLANK);
+        } else {
+            contestImpl.setVoteTemplateString(voteTemplateString);
+        }
+
+        if (voteQuestionTemplateString == null) {
+            contestImpl.setVoteQuestionTemplateString(StringPool.BLANK);
+        } else {
+            contestImpl.setVoteQuestionTemplateString(voteQuestionTemplateString);
         }
 
         contestImpl.setFocusAreaId(focusAreaId);
@@ -333,7 +360,10 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestActive = objectInput.readBoolean();
         planTemplateId = objectInput.readLong();
         contestScheduleId = objectInput.readLong();
-        templateTypeString = objectInput.readUTF();
+        proposalCreationTemplateString = objectInput.readUTF();
+        creationTemplateString = objectInput.readUTF();
+        voteTemplateString = objectInput.readUTF();
+        voteQuestionTemplateString = objectInput.readUTF();
         focusAreaId = objectInput.readLong();
         contestTier = objectInput.readLong();
         contestLogoId = objectInput.readLong();
@@ -413,10 +443,28 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         objectOutput.writeLong(planTemplateId);
         objectOutput.writeLong(contestScheduleId);
 
-        if (templateTypeString == null) {
+        if (proposalCreationTemplateString == null) {
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
-            objectOutput.writeUTF(templateTypeString);
+            objectOutput.writeUTF(proposalCreationTemplateString);
+        }
+
+        if (creationTemplateString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(creationTemplateString);
+        }
+
+        if (voteTemplateString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(voteTemplateString);
+        }
+
+        if (voteQuestionTemplateString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(voteQuestionTemplateString);
         }
 
         objectOutput.writeLong(focusAreaId);

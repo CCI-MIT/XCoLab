@@ -28,7 +28,10 @@ public class ContestSoap implements Serializable {
     private boolean _contestActive;
     private long _planTemplateId;
     private long _contestScheduleId;
-    private String _templateTypeString;
+    private String _proposalCreationTemplateString;
+    private String _creationTemplateString;
+    private String _voteTemplateString;
+    private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
     private long _contestLogoId;
@@ -78,7 +81,10 @@ public class ContestSoap implements Serializable {
         soapModel.setContestActive(model.getContestActive());
         soapModel.setPlanTemplateId(model.getPlanTemplateId());
         soapModel.setContestScheduleId(model.getContestScheduleId());
-        soapModel.setTemplateTypeString(model.getTemplateTypeString());
+        soapModel.setProposalCreationTemplateString(model.getProposalCreationTemplateString());
+        soapModel.setCreationTemplateString(model.getCreationTemplateString());
+        soapModel.setVoteTemplateString(model.getVoteTemplateString());
+        soapModel.setVoteQuestionTemplateString(model.getVoteQuestionTemplateString());
         soapModel.setFocusAreaId(model.getFocusAreaId());
         soapModel.setContestTier(model.getContestTier());
         soapModel.setContestLogoId(model.getContestLogoId());
@@ -272,12 +278,37 @@ public class ContestSoap implements Serializable {
         _contestScheduleId = contestScheduleId;
     }
 
-    public String getTemplateTypeString() {
-        return _templateTypeString;
+    public String getProposalCreationTemplateString() {
+        return _proposalCreationTemplateString;
     }
 
-    public void setTemplateTypeString(String templateTypeString) {
-        _templateTypeString = templateTypeString;
+    public void setProposalCreationTemplateString(
+        String proposalCreationTemplateString) {
+        _proposalCreationTemplateString = proposalCreationTemplateString;
+    }
+
+    public String getCreationTemplateString() {
+        return _creationTemplateString;
+    }
+
+    public void setCreationTemplateString(String creationTemplateString) {
+        _creationTemplateString = creationTemplateString;
+    }
+
+    public String getVoteTemplateString() {
+        return _voteTemplateString;
+    }
+
+    public void setVoteTemplateString(String voteTemplateString) {
+        _voteTemplateString = voteTemplateString;
+    }
+
+    public String getVoteQuestionTemplateString() {
+        return _voteQuestionTemplateString;
+    }
+
+    public void setVoteQuestionTemplateString(String voteQuestionTemplateString) {
+        _voteQuestionTemplateString = voteQuestionTemplateString;
     }
 
     public long getFocusAreaId() {

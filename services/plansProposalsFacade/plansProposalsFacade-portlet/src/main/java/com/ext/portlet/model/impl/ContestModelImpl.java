@@ -65,7 +65,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "contestActive", Types.BOOLEAN },
             { "planTemplateId", Types.BIGINT },
             { "contestScheduleId", Types.BIGINT },
-            { "templateTypeString", Types.VARCHAR },
+            { "proposalCreationTemplateString", Types.VARCHAR },
+            { "creationTemplateString", Types.VARCHAR },
+            { "voteTemplateString", Types.VARCHAR },
+            { "voteQuestionTemplateString", Types.VARCHAR },
             { "focusAreaId", Types.BIGINT },
             { "contestTier", Types.BIGINT },
             { "contestLogoId", Types.BIGINT },
@@ -95,7 +98,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "show_in_list_view", Types.BOOLEAN },
             { "show_in_outline_view", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(2048) null,ContestShortName VARCHAR(1024) null,ContestDescription VARCHAR(3072) null,ContestModelDescription VARCHAR(2048) null,ContestPositionsDescription VARCHAR(2048) null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,templateTypeString VARCHAR(75) null,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(2048) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(1024) null,flagTooltip VARCHAR(1024) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,defaultModelSettings VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(500) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(1024) null,ContestShortName VARCHAR(512) null,ContestDescription TEXT null,ContestModelDescription TEXT null,ContestPositionsDescription TEXT null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,proposalCreationTemplateString VARCHAR(75) null,creationTemplateString VARCHAR(75) null,voteTemplateString VARCHAR(75) null,voteQuestionTemplateString VARCHAR(75) null,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(500) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(256) null,flagTooltip VARCHAR(512) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,defaultModelSettings VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(500) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Contest";
     public static final String ORDER_BY_JPQL = " ORDER BY contest.weight ASC, contest.created ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Contest.weight ASC, xcolab_Contest.created ASC";
@@ -144,7 +147,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private boolean _setOriginalContestActive;
     private long _planTemplateId;
     private long _contestScheduleId;
-    private String _templateTypeString;
+    private String _proposalCreationTemplateString;
+    private String _creationTemplateString;
+    private String _voteTemplateString;
+    private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
     private long _originalContestTier;
@@ -215,7 +221,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setContestActive(soapModel.getContestActive());
         model.setPlanTemplateId(soapModel.getPlanTemplateId());
         model.setContestScheduleId(soapModel.getContestScheduleId());
-        model.setTemplateTypeString(soapModel.getTemplateTypeString());
+        model.setProposalCreationTemplateString(soapModel.getProposalCreationTemplateString());
+        model.setCreationTemplateString(soapModel.getCreationTemplateString());
+        model.setVoteTemplateString(soapModel.getVoteTemplateString());
+        model.setVoteQuestionTemplateString(soapModel.getVoteQuestionTemplateString());
         model.setFocusAreaId(soapModel.getFocusAreaId());
         model.setContestTier(soapModel.getContestTier());
         model.setContestLogoId(soapModel.getContestLogoId());
@@ -317,7 +326,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("contestActive", getContestActive());
         attributes.put("planTemplateId", getPlanTemplateId());
         attributes.put("contestScheduleId", getContestScheduleId());
-        attributes.put("templateTypeString", getTemplateTypeString());
+        attributes.put("proposalCreationTemplateString",
+            getProposalCreationTemplateString());
+        attributes.put("creationTemplateString", getCreationTemplateString());
+        attributes.put("voteTemplateString", getVoteTemplateString());
+        attributes.put("voteQuestionTemplateString",
+            getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("contestTier", getContestTier());
         attributes.put("contestLogoId", getContestLogoId());
@@ -441,11 +455,32 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             setContestScheduleId(contestScheduleId);
         }
 
-        String templateTypeString = (String) attributes.get(
-                "templateTypeString");
+        String proposalCreationTemplateString = (String) attributes.get(
+                "proposalCreationTemplateString");
 
-        if (templateTypeString != null) {
-            setTemplateTypeString(templateTypeString);
+        if (proposalCreationTemplateString != null) {
+            setProposalCreationTemplateString(proposalCreationTemplateString);
+        }
+
+        String creationTemplateString = (String) attributes.get(
+                "creationTemplateString");
+
+        if (creationTemplateString != null) {
+            setCreationTemplateString(creationTemplateString);
+        }
+
+        String voteTemplateString = (String) attributes.get(
+                "voteTemplateString");
+
+        if (voteTemplateString != null) {
+            setVoteTemplateString(voteTemplateString);
+        }
+
+        String voteQuestionTemplateString = (String) attributes.get(
+                "voteQuestionTemplateString");
+
+        if (voteQuestionTemplateString != null) {
+            setVoteQuestionTemplateString(voteQuestionTemplateString);
         }
 
         Long focusAreaId = (Long) attributes.get("focusAreaId");
@@ -837,17 +872,63 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @JSON
     @Override
-    public String getTemplateTypeString() {
-        if (_templateTypeString == null) {
+    public String getProposalCreationTemplateString() {
+        if (_proposalCreationTemplateString == null) {
             return StringPool.BLANK;
         } else {
-            return _templateTypeString;
+            return _proposalCreationTemplateString;
         }
     }
 
     @Override
-    public void setTemplateTypeString(String templateTypeString) {
-        _templateTypeString = templateTypeString;
+    public void setProposalCreationTemplateString(
+        String proposalCreationTemplateString) {
+        _proposalCreationTemplateString = proposalCreationTemplateString;
+    }
+
+    @JSON
+    @Override
+    public String getCreationTemplateString() {
+        if (_creationTemplateString == null) {
+            return StringPool.BLANK;
+        } else {
+            return _creationTemplateString;
+        }
+    }
+
+    @Override
+    public void setCreationTemplateString(String creationTemplateString) {
+        _creationTemplateString = creationTemplateString;
+    }
+
+    @JSON
+    @Override
+    public String getVoteTemplateString() {
+        if (_voteTemplateString == null) {
+            return StringPool.BLANK;
+        } else {
+            return _voteTemplateString;
+        }
+    }
+
+    @Override
+    public void setVoteTemplateString(String voteTemplateString) {
+        _voteTemplateString = voteTemplateString;
+    }
+
+    @JSON
+    @Override
+    public String getVoteQuestionTemplateString() {
+        if (_voteQuestionTemplateString == null) {
+            return StringPool.BLANK;
+        } else {
+            return _voteQuestionTemplateString;
+        }
+    }
+
+    @Override
+    public void setVoteQuestionTemplateString(String voteQuestionTemplateString) {
+        _voteQuestionTemplateString = voteQuestionTemplateString;
     }
 
     @JSON
@@ -1338,7 +1419,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setContestActive(getContestActive());
         contestImpl.setPlanTemplateId(getPlanTemplateId());
         contestImpl.setContestScheduleId(getContestScheduleId());
-        contestImpl.setTemplateTypeString(getTemplateTypeString());
+        contestImpl.setProposalCreationTemplateString(getProposalCreationTemplateString());
+        contestImpl.setCreationTemplateString(getCreationTemplateString());
+        contestImpl.setVoteTemplateString(getVoteTemplateString());
+        contestImpl.setVoteQuestionTemplateString(getVoteQuestionTemplateString());
         contestImpl.setFocusAreaId(getFocusAreaId());
         contestImpl.setContestTier(getContestTier());
         contestImpl.setContestLogoId(getContestLogoId());
@@ -1540,12 +1624,39 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         contestCacheModel.contestScheduleId = getContestScheduleId();
 
-        contestCacheModel.templateTypeString = getTemplateTypeString();
+        contestCacheModel.proposalCreationTemplateString = getProposalCreationTemplateString();
 
-        String templateTypeString = contestCacheModel.templateTypeString;
+        String proposalCreationTemplateString = contestCacheModel.proposalCreationTemplateString;
 
-        if ((templateTypeString != null) && (templateTypeString.length() == 0)) {
-            contestCacheModel.templateTypeString = null;
+        if ((proposalCreationTemplateString != null) &&
+                (proposalCreationTemplateString.length() == 0)) {
+            contestCacheModel.proposalCreationTemplateString = null;
+        }
+
+        contestCacheModel.creationTemplateString = getCreationTemplateString();
+
+        String creationTemplateString = contestCacheModel.creationTemplateString;
+
+        if ((creationTemplateString != null) &&
+                (creationTemplateString.length() == 0)) {
+            contestCacheModel.creationTemplateString = null;
+        }
+
+        contestCacheModel.voteTemplateString = getVoteTemplateString();
+
+        String voteTemplateString = contestCacheModel.voteTemplateString;
+
+        if ((voteTemplateString != null) && (voteTemplateString.length() == 0)) {
+            contestCacheModel.voteTemplateString = null;
+        }
+
+        contestCacheModel.voteQuestionTemplateString = getVoteQuestionTemplateString();
+
+        String voteQuestionTemplateString = contestCacheModel.voteQuestionTemplateString;
+
+        if ((voteQuestionTemplateString != null) &&
+                (voteQuestionTemplateString.length() == 0)) {
+            contestCacheModel.voteQuestionTemplateString = null;
         }
 
         contestCacheModel.focusAreaId = getFocusAreaId();
@@ -1672,7 +1783,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(87);
+        StringBundler sb = new StringBundler(93);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1702,8 +1813,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getPlanTemplateId());
         sb.append(", contestScheduleId=");
         sb.append(getContestScheduleId());
-        sb.append(", templateTypeString=");
-        sb.append(getTemplateTypeString());
+        sb.append(", proposalCreationTemplateString=");
+        sb.append(getProposalCreationTemplateString());
+        sb.append(", creationTemplateString=");
+        sb.append(getCreationTemplateString());
+        sb.append(", voteTemplateString=");
+        sb.append(getVoteTemplateString());
+        sb.append(", voteQuestionTemplateString=");
+        sb.append(getVoteQuestionTemplateString());
         sb.append(", focusAreaId=");
         sb.append(getFocusAreaId());
         sb.append(", contestTier=");
@@ -1767,7 +1884,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(133);
+        StringBundler sb = new StringBundler(142);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1830,8 +1947,20 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getContestScheduleId());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>templateTypeString</column-name><column-value><![CDATA[");
-        sb.append(getTemplateTypeString());
+            "<column><column-name>proposalCreationTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getProposalCreationTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>creationTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getCreationTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>voteTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getVoteTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>voteQuestionTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getVoteQuestionTemplateString());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>focusAreaId</column-name><column-value><![CDATA[");

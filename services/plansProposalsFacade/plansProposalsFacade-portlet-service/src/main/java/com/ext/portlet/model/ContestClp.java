@@ -35,7 +35,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private boolean _contestActive;
     private long _planTemplateId;
     private long _contestScheduleId;
-    private String _templateTypeString;
+    private String _proposalCreationTemplateString;
+    private String _creationTemplateString;
+    private String _voteTemplateString;
+    private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
     private long _contestLogoId;
@@ -118,7 +121,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("contestActive", getContestActive());
         attributes.put("planTemplateId", getPlanTemplateId());
         attributes.put("contestScheduleId", getContestScheduleId());
-        attributes.put("templateTypeString", getTemplateTypeString());
+        attributes.put("proposalCreationTemplateString",
+            getProposalCreationTemplateString());
+        attributes.put("creationTemplateString", getCreationTemplateString());
+        attributes.put("voteTemplateString", getVoteTemplateString());
+        attributes.put("voteQuestionTemplateString",
+            getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("contestTier", getContestTier());
         attributes.put("contestLogoId", getContestLogoId());
@@ -242,11 +250,32 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
             setContestScheduleId(contestScheduleId);
         }
 
-        String templateTypeString = (String) attributes.get(
-                "templateTypeString");
+        String proposalCreationTemplateString = (String) attributes.get(
+                "proposalCreationTemplateString");
 
-        if (templateTypeString != null) {
-            setTemplateTypeString(templateTypeString);
+        if (proposalCreationTemplateString != null) {
+            setProposalCreationTemplateString(proposalCreationTemplateString);
+        }
+
+        String creationTemplateString = (String) attributes.get(
+                "creationTemplateString");
+
+        if (creationTemplateString != null) {
+            setCreationTemplateString(creationTemplateString);
+        }
+
+        String voteTemplateString = (String) attributes.get(
+                "voteTemplateString");
+
+        if (voteTemplateString != null) {
+            setVoteTemplateString(voteTemplateString);
+        }
+
+        String voteQuestionTemplateString = (String) attributes.get(
+                "voteQuestionTemplateString");
+
+        if (voteQuestionTemplateString != null) {
+            setVoteQuestionTemplateString(voteQuestionTemplateString);
         }
 
         Long focusAreaId = (Long) attributes.get("focusAreaId");
@@ -748,22 +777,93 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     }
 
     @Override
-    public String getTemplateTypeString() {
-        return _templateTypeString;
+    public String getProposalCreationTemplateString() {
+        return _proposalCreationTemplateString;
     }
 
     @Override
-    public void setTemplateTypeString(String templateTypeString) {
-        _templateTypeString = templateTypeString;
+    public void setProposalCreationTemplateString(
+        String proposalCreationTemplateString) {
+        _proposalCreationTemplateString = proposalCreationTemplateString;
 
         if (_contestRemoteModel != null) {
             try {
                 Class<?> clazz = _contestRemoteModel.getClass();
 
-                Method method = clazz.getMethod("setTemplateTypeString",
+                Method method = clazz.getMethod("setProposalCreationTemplateString",
                         String.class);
 
-                method.invoke(_contestRemoteModel, templateTypeString);
+                method.invoke(_contestRemoteModel,
+                    proposalCreationTemplateString);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getCreationTemplateString() {
+        return _creationTemplateString;
+    }
+
+    @Override
+    public void setCreationTemplateString(String creationTemplateString) {
+        _creationTemplateString = creationTemplateString;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setCreationTemplateString",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, creationTemplateString);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getVoteTemplateString() {
+        return _voteTemplateString;
+    }
+
+    @Override
+    public void setVoteTemplateString(String voteTemplateString) {
+        _voteTemplateString = voteTemplateString;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setVoteTemplateString",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, voteTemplateString);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getVoteQuestionTemplateString() {
+        return _voteQuestionTemplateString;
+    }
+
+    @Override
+    public void setVoteQuestionTemplateString(String voteQuestionTemplateString) {
+        _voteQuestionTemplateString = voteQuestionTemplateString;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setVoteQuestionTemplateString",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, voteQuestionTemplateString);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -1514,7 +1614,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setContestActive(getContestActive());
         clone.setPlanTemplateId(getPlanTemplateId());
         clone.setContestScheduleId(getContestScheduleId());
-        clone.setTemplateTypeString(getTemplateTypeString());
+        clone.setProposalCreationTemplateString(getProposalCreationTemplateString());
+        clone.setCreationTemplateString(getCreationTemplateString());
+        clone.setVoteTemplateString(getVoteTemplateString());
+        clone.setVoteQuestionTemplateString(getVoteQuestionTemplateString());
         clone.setFocusAreaId(getFocusAreaId());
         clone.setContestTier(getContestTier());
         clone.setContestLogoId(getContestLogoId());
@@ -1600,7 +1703,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(87);
+        StringBundler sb = new StringBundler(93);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1630,8 +1733,14 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getPlanTemplateId());
         sb.append(", contestScheduleId=");
         sb.append(getContestScheduleId());
-        sb.append(", templateTypeString=");
-        sb.append(getTemplateTypeString());
+        sb.append(", proposalCreationTemplateString=");
+        sb.append(getProposalCreationTemplateString());
+        sb.append(", creationTemplateString=");
+        sb.append(getCreationTemplateString());
+        sb.append(", voteTemplateString=");
+        sb.append(getVoteTemplateString());
+        sb.append(", voteQuestionTemplateString=");
+        sb.append(getVoteQuestionTemplateString());
         sb.append(", focusAreaId=");
         sb.append(getFocusAreaId());
         sb.append(", contestTier=");
@@ -1695,7 +1804,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(133);
+        StringBundler sb = new StringBundler(142);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1758,8 +1867,20 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getContestScheduleId());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>templateTypeString</column-name><column-value><![CDATA[");
-        sb.append(getTemplateTypeString());
+            "<column><column-name>proposalCreationTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getProposalCreationTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>creationTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getCreationTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>voteTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getVoteTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>voteQuestionTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getVoteQuestionTemplateString());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>focusAreaId</column-name><column-value><![CDATA[");

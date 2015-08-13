@@ -52,7 +52,12 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("contestActive", getContestActive());
         attributes.put("planTemplateId", getPlanTemplateId());
         attributes.put("contestScheduleId", getContestScheduleId());
-        attributes.put("templateTypeString", getTemplateTypeString());
+        attributes.put("proposalCreationTemplateString",
+            getProposalCreationTemplateString());
+        attributes.put("creationTemplateString", getCreationTemplateString());
+        attributes.put("voteTemplateString", getVoteTemplateString());
+        attributes.put("voteQuestionTemplateString",
+            getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("contestTier", getContestTier());
         attributes.put("contestLogoId", getContestLogoId());
@@ -176,11 +181,32 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
             setContestScheduleId(contestScheduleId);
         }
 
-        String templateTypeString = (String) attributes.get(
-                "templateTypeString");
+        String proposalCreationTemplateString = (String) attributes.get(
+                "proposalCreationTemplateString");
 
-        if (templateTypeString != null) {
-            setTemplateTypeString(templateTypeString);
+        if (proposalCreationTemplateString != null) {
+            setProposalCreationTemplateString(proposalCreationTemplateString);
+        }
+
+        String creationTemplateString = (String) attributes.get(
+                "creationTemplateString");
+
+        if (creationTemplateString != null) {
+            setCreationTemplateString(creationTemplateString);
+        }
+
+        String voteTemplateString = (String) attributes.get(
+                "voteTemplateString");
+
+        if (voteTemplateString != null) {
+            setVoteTemplateString(voteTemplateString);
+        }
+
+        String voteQuestionTemplateString = (String) attributes.get(
+                "voteQuestionTemplateString");
+
+        if (voteQuestionTemplateString != null) {
+            setVoteQuestionTemplateString(voteQuestionTemplateString);
         }
 
         Long focusAreaId = (Long) attributes.get("focusAreaId");
@@ -674,23 +700,86 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     }
 
     /**
-    * Returns the template type string of this contest.
+    * Returns the proposal creation template string of this contest.
     *
-    * @return the template type string of this contest
+    * @return the proposal creation template string of this contest
     */
     @Override
-    public java.lang.String getTemplateTypeString() {
-        return _contest.getTemplateTypeString();
+    public java.lang.String getProposalCreationTemplateString() {
+        return _contest.getProposalCreationTemplateString();
     }
 
     /**
-    * Sets the template type string of this contest.
+    * Sets the proposal creation template string of this contest.
     *
-    * @param templateTypeString the template type string of this contest
+    * @param proposalCreationTemplateString the proposal creation template string of this contest
     */
     @Override
-    public void setTemplateTypeString(java.lang.String templateTypeString) {
-        _contest.setTemplateTypeString(templateTypeString);
+    public void setProposalCreationTemplateString(
+        java.lang.String proposalCreationTemplateString) {
+        _contest.setProposalCreationTemplateString(proposalCreationTemplateString);
+    }
+
+    /**
+    * Returns the creation template string of this contest.
+    *
+    * @return the creation template string of this contest
+    */
+    @Override
+    public java.lang.String getCreationTemplateString() {
+        return _contest.getCreationTemplateString();
+    }
+
+    /**
+    * Sets the creation template string of this contest.
+    *
+    * @param creationTemplateString the creation template string of this contest
+    */
+    @Override
+    public void setCreationTemplateString(
+        java.lang.String creationTemplateString) {
+        _contest.setCreationTemplateString(creationTemplateString);
+    }
+
+    /**
+    * Returns the vote template string of this contest.
+    *
+    * @return the vote template string of this contest
+    */
+    @Override
+    public java.lang.String getVoteTemplateString() {
+        return _contest.getVoteTemplateString();
+    }
+
+    /**
+    * Sets the vote template string of this contest.
+    *
+    * @param voteTemplateString the vote template string of this contest
+    */
+    @Override
+    public void setVoteTemplateString(java.lang.String voteTemplateString) {
+        _contest.setVoteTemplateString(voteTemplateString);
+    }
+
+    /**
+    * Returns the vote question template string of this contest.
+    *
+    * @return the vote question template string of this contest
+    */
+    @Override
+    public java.lang.String getVoteQuestionTemplateString() {
+        return _contest.getVoteQuestionTemplateString();
+    }
+
+    /**
+    * Sets the vote question template string of this contest.
+    *
+    * @param voteQuestionTemplateString the vote question template string of this contest
+    */
+    @Override
+    public void setVoteQuestionTemplateString(
+        java.lang.String voteQuestionTemplateString) {
+        _contest.setVoteQuestionTemplateString(voteQuestionTemplateString);
     }
 
     /**

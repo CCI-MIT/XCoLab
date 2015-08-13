@@ -256,19 +256,65 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setContestScheduleId(long contestScheduleId);
 
     /**
-     * Returns the template type string of this contest.
+     * Returns the proposal creation template string of this contest.
      *
-     * @return the template type string of this contest
+     * @return the proposal creation template string of this contest
      */
     @AutoEscape
-    public String getTemplateTypeString();
+    public String getProposalCreationTemplateString();
 
     /**
-     * Sets the template type string of this contest.
+     * Sets the proposal creation template string of this contest.
      *
-     * @param templateTypeString the template type string of this contest
+     * @param proposalCreationTemplateString the proposal creation template string of this contest
      */
-    public void setTemplateTypeString(String templateTypeString);
+    public void setProposalCreationTemplateString(
+        String proposalCreationTemplateString);
+
+    /**
+     * Returns the creation template string of this contest.
+     *
+     * @return the creation template string of this contest
+     */
+    @AutoEscape
+    public String getCreationTemplateString();
+
+    /**
+     * Sets the creation template string of this contest.
+     *
+     * @param creationTemplateString the creation template string of this contest
+     */
+    public void setCreationTemplateString(String creationTemplateString);
+
+    /**
+     * Returns the vote template string of this contest.
+     *
+     * @return the vote template string of this contest
+     */
+    @AutoEscape
+    public String getVoteTemplateString();
+
+    /**
+     * Sets the vote template string of this contest.
+     *
+     * @param voteTemplateString the vote template string of this contest
+     */
+    public void setVoteTemplateString(String voteTemplateString);
+
+    /**
+     * Returns the vote question template string of this contest.
+     *
+     * @return the vote question template string of this contest
+     */
+    @AutoEscape
+    public String getVoteQuestionTemplateString();
+
+    /**
+     * Sets the vote question template string of this contest.
+     *
+     * @param voteQuestionTemplateString the vote question template string of this contest
+     */
+    public void setVoteQuestionTemplateString(String voteQuestionTemplateString);
 
     /**
      * Returns the focus area ID of this contest.
