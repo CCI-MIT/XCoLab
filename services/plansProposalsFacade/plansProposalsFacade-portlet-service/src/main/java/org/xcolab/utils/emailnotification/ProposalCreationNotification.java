@@ -2,6 +2,7 @@ package org.xcolab.utils.emailnotification;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
@@ -13,6 +14,10 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.parser.Parser;
 import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.utils.judging.ContestEmailTemplateWrapper;
 
@@ -31,32 +36,25 @@ import java.util.Locale;
  */
 public class ProposalCreationNotification extends EmailNotification {
 
-    private static final String CONTEST_DEADLINE_SECTION_TEMPLATE = "<li><b>The contest deadline is <deadline/></b> (except for proposals created in the Workspace, where there is no deadline). You can edit your proposal as many times as you want before then, but make sure your final " +
-            "version is updated before the deadline.  At that point, the most recent version of your proposal will be frozen and submitted to the Judges for review.  " +
-            "To learn more about the judging process, click <a href='http://climatecolab.org/web/guest/crowdsourcing'>click here</a>.</li>";
-
-    private static final String PROPOSAL_SHARE_TEXT = "I just created a new proposal at the Climate CoLab. Check it out!";
-    private static final String PROPOSAL_SHARE_TITLE = "New proposal at @ClimateCoLab";
-
     private static final String YEAR_FALLBACK = "2015";
     //private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
 
     // Additional placeholder strings
-    private static final String FIRSTNAME_PLACEHOLDER = "<firstname/>";
-    private static final String YEAR_PLACEHOLDER = "<year/>";
-    private static final String PROPOSAL_LINK_PLACEHOLDER = "<proposal-link/>";
-    private static final String CONTEST_LINK_PLACEHOLDER = "<contest-link/>";
-    private static final String TWITTER_PLACEHOLDER = "<twitter/>";
-    private static final String FACEBOOK_PLACEHOLDER = "<facebook/>";
-    private static final String PINTEREST_PLACEHOLDER = "<pinterest/>";
-    private static final String LINKEDIN_PLACEHOLDER = "<linkedin/>";
-    private static final String DEADLINE_PLACEHOLDER = "<deadline/>";
-    private static final String CONTEST_DEADLINE_SECTION_PLACEHOLDER = "<contest-deadline-section/>";
+    private static final String FIRSTNAME_PLACEHOLDER = "firstname";
+    private static final String YEAR_PLACEHOLDER = "year";
+    private static final String PROPOSAL_LINK_PLACEHOLDER = "proposal-link";
+    private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
+    private static final String TWITTER_PLACEHOLDER = "twitter";
+    private static final String FACEBOOK_PLACEHOLDER = "facebook";
+    private static final String PINTEREST_PLACEHOLDER = "pinterest";
+    private static final String LINKEDIN_PLACEHOLDER = "linkedin";
+    private static final String DEADLINE_PLACEHOLDER = "deadline";
+    private static final String CONTEST_DEADLINE_SECTION_PLACEHOLDER = "contest-deadline-section";
 
     private Proposal createdProposal;
     private Contest contest;
 
-    private ContestEmailTemplateWrapper templateWrapper = null;
+    private ProposalCreationTemplate templateWrapper = null;
 
     public ProposalCreationNotification(Proposal createdProposal, Contest contest, ServiceContext serviceContext) {
         super(serviceContext);
@@ -64,15 +62,15 @@ public class ProposalCreationNotification extends EmailNotification {
         this.contest = contest;
     }
 
-    private ContestEmailTemplateWrapper getTemplateWrapper() throws PortalException, SystemException {
+    private ProposalCreationTemplate getTemplateWrapper() throws PortalException, SystemException {
         if (templateWrapper != null) {
             return templateWrapper;
         }
 
         final String proposalName = ProposalLocalServiceUtil.getAttribute(createdProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
-        templateWrapper = new ContestEmailTemplateWrapper(
-                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(contest.getTemplateTypeString()),
+        templateWrapper = new ProposalCreationTemplate(
+                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(contest.getProposalCreationTemplateString()),
                 proposalName,
                 contest.getContestShortName()
         );
@@ -82,41 +80,10 @@ public class ProposalCreationNotification extends EmailNotification {
 
     @Override
     public void sendEmailNotification() throws PortalException, SystemException {
-        String subject = getTemplateWrapper().getSubject();
-        String body = populateBodyString();
+        ProposalCreationTemplate template = getTemplateWrapper();
+        String subject = template.getSubject();
+        String body = template.getHeader()+"\n"+template.getFooter();
         sendMessage(subject, body, getProposalAuthor(createdProposal));
-    }
-
-    private String populateBodyString() throws PortalException, SystemException {
-        String body = getTemplateWrapper().getHeader()+"\n"+getTemplateWrapper().getFooter();
-        body = StringUtil.replace(body, FIRSTNAME_PLACEHOLDER, getProposalAuthor(createdProposal).getFirstName());
-        body = StringUtil.replace(body, PROPOSAL_LINK_PLACEHOLDER, getProposalLink(contest, createdProposal));
-        body = StringUtil.replace(body, CONTEST_LINK_PLACEHOLDER, getContestLink(contest));
-        body = StringUtil.replace(body, TWITTER_PLACEHOLDER, getProposalTwitterShareLink(contest, createdProposal, PROPOSAL_SHARE_TEXT));
-        body = StringUtil.replace(body, FACEBOOK_PLACEHOLDER, getProposalFacebookShareLink(contest, createdProposal));
-        body = StringUtil.replace(body, PINTEREST_PLACEHOLDER, getProposalPinterestShareLink(contest, createdProposal, PROPOSAL_SHARE_TEXT));
-        body = StringUtil.replace(body, LINKEDIN_PLACEHOLDER, getProposalLinkedInShareLink(contest, createdProposal, PROPOSAL_SHARE_TITLE, PROPOSAL_SHARE_TEXT));
-
-        DateFormat yearFormat = new SimpleDateFormat("yyyy");
-        // This should never happen when contests are properly set up
-        if (Validator.isNull(contest.getCreated())) {
-            body = StringUtil.replace(body, YEAR_PLACEHOLDER, YEAR_FALLBACK);
-        } else {
-            body = StringUtil.replace(body, YEAR_PLACEHOLDER, yearFormat.format(contest.getCreated()));
-        }
-
-        DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, HH:mm:ss a", Locale.US);
-        // This should never happen when the contest phases are set up properly - do not include the deadline section in this case
-        if (Validator.isNull(getProposalCreationDeadline())) {
-            body = StringUtil.replace(body, CONTEST_DEADLINE_SECTION_PLACEHOLDER, "");
-
-        } else {
-            // Todo test before committing
-            String contestDeadlineSectionBody = StringUtil.replace(CONTEST_DEADLINE_SECTION_TEMPLATE,
-                    DEADLINE_PLACEHOLDER, customDateFormat.format(getProposalCreationDeadline()) + " EDT");
-            body = StringUtil.replace(body, CONTEST_DEADLINE_SECTION_PLACEHOLDER, contestDeadlineSectionBody);
-        }
-        return body;
     }
 
     private Date getProposalCreationDeadline() throws SystemException, PortalException {
@@ -141,5 +108,52 @@ public class ProposalCreationNotification extends EmailNotification {
         }
 
         throw new SystemException("Active proposal creation phase was not found for createdContest with id " + contest.getContestPK());
+    }
+
+    private class ProposalCreationTemplate extends ContestEmailTemplateWrapper {
+
+        public ProposalCreationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
+            super(template, proposalName, contestName);
+        }
+
+        @Override
+        protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+            Node node = super.resolvePlaceholderTag(tag);
+            if (node != null) {
+                return node;
+            }
+
+            switch (tag.nodeName()) {
+                case FIRSTNAME_PLACEHOLDER:
+                    return new TextNode(getProposalAuthor(createdProposal).getFirstName(), "");
+                case CONTEST_LINK_PLACEHOLDER:
+                    return parseXmlNode(getContestLink(contest));
+                case PROPOSAL_LINK_PLACEHOLDER:
+                    return parseXmlNode(getProposalLink(contest, createdProposal));
+                case TWITTER_PLACEHOLDER:
+                    return parseXmlNode(getTwitterShareLink(getProposalLinkUrl(contest, createdProposal), tag.ownText()));
+                case PINTEREST_PLACEHOLDER:
+                    return parseXmlNode(getPinterestShareLink(getProposalLinkUrl(contest, createdProposal), tag.ownText()));
+                case FACEBOOK_PLACEHOLDER:
+                    return parseXmlNode(getFacebookShareLink(getProposalLinkUrl(contest, createdProposal)));
+                case LINKEDIN_PLACEHOLDER:
+                    return parseXmlNode(getLinkedInShareLink(getProposalLinkUrl(contest, createdProposal), tag.attr("title") , tag.ownText()));
+                case YEAR_PLACEHOLDER:
+                    DateFormat yearFormat = new SimpleDateFormat("yyyy");
+                    // This should never happen when contests are properly set up
+                    if (Validator.isNull(contest.getCreated())) {
+                        return new TextNode(YEAR_FALLBACK, "");
+                    } else {
+                        return new TextNode(yearFormat.format(contest.getCreated()), "");
+                    }
+                case DEADLINE_PLACEHOLDER:
+                    DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, HH:mm:ss a", Locale.US);
+                    return new TextNode(customDateFormat.format(getProposalCreationDeadline()) + " EDT", "");
+                case CONTEST_DEADLINE_SECTION_PLACEHOLDER:
+                    return new TextNode(tag.ownText(), "");
+            }
+            return null;
+        }
+
     }
 }

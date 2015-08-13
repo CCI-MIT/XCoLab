@@ -1,12 +1,14 @@
 package org.xcolab.utils.judging;
 
 import com.ext.portlet.model.ContestEmailTemplate;
-import com.ext.portlet.model.ProposalRatingType;
-import com.ext.portlet.model.ProposalRatingValue;
-import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-
-import java.util.List;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.parser.Parser;
 
 /**
  * Created by Manuel Thurner
@@ -25,25 +27,46 @@ public class ContestEmailTemplateWrapper {
         this.contestName = contestName;
     }
 
-    public String getHeader() {
+    public String getHeader() throws SystemException, PortalException {
         return this.replaceVariables(this.template.getHeader());
     }
 
-    public String getFooter() {
+    public String getFooter() throws SystemException, PortalException {
         return this.replaceVariables(this.template.getFooter());
     }
 
-    public String getSubject() {
+    public String getSubject() throws SystemException, PortalException {
         return this.replaceVariables(this.template.getSubject());
     }
 
-    public String getCompleteMessage(String body) {
+    public String getCompleteMessage(String body) throws SystemException, PortalException {
         return this.getHeader()+"\n"+body+"\n\n"+this.getFooter();
     }
 
-    private String replaceVariables(String subject) {
-        String result = subject.replace(CONTEST_TITLE_PLACEHOLDER, this.contestName)
-                .replace(PROPOSAL_TITLE_PLACEHOLDER, this.proposalName);
-        return result;
+    private String replaceVariables(String inputString) throws SystemException, PortalException {
+        Document doc = Jsoup.parse(inputString, "", Parser.xmlParser());
+        for (Element tag : doc.children()) {
+            Node resolvedNode = resolvePlaceholderTag(tag);
+            if (resolvedNode == null) {
+                //don't replace tags that aren't recognized, they are probably html tags (e.g. <br />)
+                continue;
+            }
+            tag.replaceWith(resolvedNode);
+        }
+        return doc.html();
+    }
+
+    protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+        switch (tag.nodeName()) {
+            case "proposal-title":
+                return new TextNode(this.proposalName, "");
+            case "contest-title":
+                return new TextNode(this.contestName, "");
+        }
+        return null;
+    }
+
+    protected Node parseXmlNode(String xml) {
+        return Parser.parseXmlFragment(xml, "").get(0);
     }
 }

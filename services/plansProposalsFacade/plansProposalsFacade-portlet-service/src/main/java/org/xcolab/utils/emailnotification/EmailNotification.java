@@ -106,7 +106,7 @@ public abstract class EmailNotification {
     }
 
     /**
-     * Returns a fully prepared Facebook share link for the given proposal including the specified share message
+     * Returns the link url to the given proposal
      *
      * @param contest                       Contest in which the proposal is in
      * @param proposalToShare               The Proposal that should be shared
@@ -114,27 +114,48 @@ public abstract class EmailNotification {
      * @throws SystemException
      * @throws PortalException
      */
-    protected String getProposalFacebookShareLink(Contest contest, Proposal proposalToShare) throws SystemException, PortalException {
-        final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
-        String url = String.format(FACEBOOK_PROPOSAL_SHARE_LINK, proposalUrl);
+    protected String getProposalLinkUrl(Contest contest, Proposal proposalToShare) throws SystemException, PortalException {
+        return serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
+    }
+
+    /**
+     * Returns the link url to the given contest
+     *
+     * @param contest                       Contest to be shared
+     * @return
+     * @throws SystemException
+     * @throws PortalException
+     */
+    protected String getContestLinkUrl(Contest contest) throws SystemException, PortalException {
+        return serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(contest);
+    }
+
+    /**
+     * Returns a fully prepared Facebook share link for the given url
+     *
+     * @param urlToShare            The url to be shared
+     * @return
+     * @throws SystemException
+     * @throws PortalException
+     */
+    protected String getFacebookShareLink(String urlToShare) throws SystemException, PortalException {
+        String url = String.format(FACEBOOK_PROPOSAL_SHARE_LINK, urlToShare);
         return String.format(LINK_FORMAT_STRING, url, "Facebook");
     }
 
 
     /**
-     * Returns a fully prepared Twitter share link for the given proposal including the specified share message
+     * Returns a fully prepared Twitter share link for the given url including the specified share message
      *
-     * @param contest                       Contest in which the proposal is in
-     * @param proposalToShare               The Proposal that should be shared
+     * @param urlToShare    The url to be shared
      * @param shareMessage                  The message that should be included for sharing
      * @return
      * @throws SystemException
      * @throws PortalException
      */
-    protected String getProposalTwitterShareLink(Contest contest, Proposal proposalToShare, String shareMessage) throws SystemException {
-        final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
+    protected String getTwitterShareLink(String urlToShare, String shareMessage) throws SystemException {
         try {
-            String url = String.format(TWITTER_PROPOSAL_SHARE_LINK, proposalUrl, URLEncoder.encode(shareMessage, "UTF-8"));
+            String url = String.format(TWITTER_PROPOSAL_SHARE_LINK, urlToShare, URLEncoder.encode(shareMessage, "UTF-8"));
             return String.format(LINK_FORMAT_STRING, url, "Twitter");
         } catch (UnsupportedEncodingException e) {
             // Should never happen
@@ -142,10 +163,9 @@ public abstract class EmailNotification {
         }
     }
 
-    protected String getProposalLinkedInShareLink(Contest contest, Proposal proposalToShare, String shareTitle, String shareMessage) throws SystemException {
-        final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
+    protected String getLinkedInShareLink(String urlToShare, String shareTitle, String shareMessage) throws SystemException {
         try {
-            String url = String.format(LINKEDIN_PROPOSAL_SHARE_LINK, proposalUrl,
+            String url = String.format(LINKEDIN_PROPOSAL_SHARE_LINK, urlToShare,
                     URLEncoder.encode(shareTitle, "UTF-8"),
                     URLEncoder.encode(shareMessage, "UTF-8"));
             return String.format(LINK_FORMAT_STRING, url, "LinkedIn");
@@ -155,10 +175,9 @@ public abstract class EmailNotification {
         }
     }
 
-    protected String getProposalPinterestShareLink(Contest contest, Proposal proposalToShare, String shareMessage) throws SystemException {
-        final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
+    protected String getPinterestShareLink(String urlToShare, String shareMessage) throws SystemException {
         try {
-            String url = String.format(PINTEREST_PROPOSAL_SHARE_LINK, proposalUrl, URLEncoder.encode(shareMessage, "UTF-8"));
+            String url = String.format(PINTEREST_PROPOSAL_SHARE_LINK, urlToShare, URLEncoder.encode(shareMessage, "UTF-8"));
             return String.format(LINK_FORMAT_STRING, url, "Pinterest");
         } catch (UnsupportedEncodingException e) {
             // Should never happen
