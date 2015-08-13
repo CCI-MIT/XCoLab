@@ -38,6 +38,7 @@ public class VoteOnProposalActionController {
     @RequestMapping(params = {"action=voteOnProposalAction"})
     public void handleAction(ActionRequest request, Model model, ActionResponse response)
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+        boolean hasVoted = false;
         if (proposalsContext.getPermissions(request).getCanVote()) {
             long proposalId = proposalsContext.getProposal(request).getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
@@ -53,6 +54,7 @@ public class VoteOnProposalActionController {
                 }
                 try {
                     ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
+                    hasVoted = true;
                 } catch(SystemException exception) {
                     _log.error("kmang: Original Vote exception occured: ", exception.getCause());
                     _log.error("kmang: Wrapped Vote exception occured: ", exception);
@@ -78,7 +80,7 @@ public class VoteOnProposalActionController {
         }
         // Redirect to prevent page-refreshing from influencing the vote
         response.sendRedirect(ProposalsURLGenerator.getProposalURL(
-                proposalsContext.getProposal(request))
+                proposalsContext.getProposal(request))+(hasVoted?"?voted=true":"")
         );
     }
 
