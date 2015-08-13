@@ -51,7 +51,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             editValidated = edit;
         }
         model.addAttribute("edit", editValidated);
-        model.addAtrribute("voted", voted);
+        model.addAttribute("voted", voted);
         
         if (move) {
         	// get base proposal from base contest
