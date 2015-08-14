@@ -158,12 +158,12 @@
                 <div class="closepopuplogin">
                     <a href="javascript:;" onclick="jQuery('#popup_justVoted').hide()"><img src="http://climatecolab.org/climatecolab-theme/images/help_close.png" width="20" height="20" alt="X" /></a>
                 </div>
-                <h2>Thank you for voting!</h2>
+                <h2 style="color: #66b035;">Thank you for voting!</h2>
                 <div>
-                    <p>You just voted for ${proposal.name}. The Voting Period ends September 12, 2015. <br />
+                    <p style="color: #545454;">You just voted for ${proposal.name}. The Voting Period ends September 12, 2015. <br />
                         Vote for more proposals <a href="/web/guest/plans">here</a>.</p>
-                    <h4>Share on social media:</h4>
-                    <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left; width: 205px;">
+                    <h4 style="color: #30a3fb;">Share your vote:</h4>
+                    <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="align: center; width: 205px;">
                         <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
                         <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
                         <a class="addthis_button_email" id="addThisButton3" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
