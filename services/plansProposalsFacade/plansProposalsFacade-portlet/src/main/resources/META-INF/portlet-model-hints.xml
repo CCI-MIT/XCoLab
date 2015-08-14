@@ -136,10 +136,18 @@
 		<field name="contestActive" type="boolean" />
 		<field name="planTemplateId" type="long" />
 		<field name="contestScheduleId" type="long" />
-		<field name="proposalCreationTemplateString" type="String" />
-		<field name="creationTemplateString" type="String" />
-		<field name="voteTemplateString" type="String" />
-		<field name="voteQuestionTemplateString" type="String" />
+		<field name="proposalCreationTemplateString" type="String">
+			<hint name="default-value">PROPOSAL_CREATION_DEFAULT</hint>
+		</field>
+		<field name="voteTemplateString" type="String">
+			<hint name="default-value">CONTEST_VOTE_DEFAULT</hint>
+		</field>
+		<field name="voteConfirmationTemplateString" type="String">
+			<hint name="default-value">PROPOSAL_VOTE_DEFAULT</hint>
+		</field>
+		<field name="voteQuestionTemplateString" type="String">
+			<hint name="default-value">CONTEST_VOTE_QUESTION_DEFAULT</hint>
+		</field>
 		<field name="focusAreaId" type="long" />
 		<field name="contestTier" type="long" />
 		<field name="contestLogoId" type="long" />

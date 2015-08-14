@@ -36,8 +36,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public long planTemplateId;
     public long contestScheduleId;
     public String proposalCreationTemplateString;
-    public String creationTemplateString;
     public String voteTemplateString;
+    public String voteConfirmationTemplateString;
     public String voteQuestionTemplateString;
     public long focusAreaId;
     public long contestTier;
@@ -102,10 +102,10 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(contestScheduleId);
         sb.append(", proposalCreationTemplateString=");
         sb.append(proposalCreationTemplateString);
-        sb.append(", creationTemplateString=");
-        sb.append(creationTemplateString);
         sb.append(", voteTemplateString=");
         sb.append(voteTemplateString);
+        sb.append(", voteConfirmationTemplateString=");
+        sb.append(voteConfirmationTemplateString);
         sb.append(", voteQuestionTemplateString=");
         sb.append(voteQuestionTemplateString);
         sb.append(", focusAreaId=");
@@ -236,16 +236,16 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             contestImpl.setProposalCreationTemplateString(proposalCreationTemplateString);
         }
 
-        if (creationTemplateString == null) {
-            contestImpl.setCreationTemplateString(StringPool.BLANK);
-        } else {
-            contestImpl.setCreationTemplateString(creationTemplateString);
-        }
-
         if (voteTemplateString == null) {
             contestImpl.setVoteTemplateString(StringPool.BLANK);
         } else {
             contestImpl.setVoteTemplateString(voteTemplateString);
+        }
+
+        if (voteConfirmationTemplateString == null) {
+            contestImpl.setVoteConfirmationTemplateString(StringPool.BLANK);
+        } else {
+            contestImpl.setVoteConfirmationTemplateString(voteConfirmationTemplateString);
         }
 
         if (voteQuestionTemplateString == null) {
@@ -361,8 +361,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         planTemplateId = objectInput.readLong();
         contestScheduleId = objectInput.readLong();
         proposalCreationTemplateString = objectInput.readUTF();
-        creationTemplateString = objectInput.readUTF();
         voteTemplateString = objectInput.readUTF();
+        voteConfirmationTemplateString = objectInput.readUTF();
         voteQuestionTemplateString = objectInput.readUTF();
         focusAreaId = objectInput.readLong();
         contestTier = objectInput.readLong();
@@ -449,16 +449,16 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             objectOutput.writeUTF(proposalCreationTemplateString);
         }
 
-        if (creationTemplateString == null) {
-            objectOutput.writeUTF(StringPool.BLANK);
-        } else {
-            objectOutput.writeUTF(creationTemplateString);
-        }
-
         if (voteTemplateString == null) {
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(voteTemplateString);
+        }
+
+        if (voteConfirmationTemplateString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(voteConfirmationTemplateString);
         }
 
         if (voteQuestionTemplateString == null) {

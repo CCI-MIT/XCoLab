@@ -36,8 +36,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private long _planTemplateId;
     private long _contestScheduleId;
     private String _proposalCreationTemplateString;
-    private String _creationTemplateString;
     private String _voteTemplateString;
+    private String _voteConfirmationTemplateString;
     private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
@@ -123,8 +123,9 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("contestScheduleId", getContestScheduleId());
         attributes.put("proposalCreationTemplateString",
             getProposalCreationTemplateString());
-        attributes.put("creationTemplateString", getCreationTemplateString());
         attributes.put("voteTemplateString", getVoteTemplateString());
+        attributes.put("voteConfirmationTemplateString",
+            getVoteConfirmationTemplateString());
         attributes.put("voteQuestionTemplateString",
             getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
@@ -257,18 +258,18 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
             setProposalCreationTemplateString(proposalCreationTemplateString);
         }
 
-        String creationTemplateString = (String) attributes.get(
-                "creationTemplateString");
-
-        if (creationTemplateString != null) {
-            setCreationTemplateString(creationTemplateString);
-        }
-
         String voteTemplateString = (String) attributes.get(
                 "voteTemplateString");
 
         if (voteTemplateString != null) {
             setVoteTemplateString(voteTemplateString);
+        }
+
+        String voteConfirmationTemplateString = (String) attributes.get(
+                "voteConfirmationTemplateString");
+
+        if (voteConfirmationTemplateString != null) {
+            setVoteConfirmationTemplateString(voteConfirmationTemplateString);
         }
 
         String voteQuestionTemplateString = (String) attributes.get(
@@ -802,29 +803,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     }
 
     @Override
-    public String getCreationTemplateString() {
-        return _creationTemplateString;
-    }
-
-    @Override
-    public void setCreationTemplateString(String creationTemplateString) {
-        _creationTemplateString = creationTemplateString;
-
-        if (_contestRemoteModel != null) {
-            try {
-                Class<?> clazz = _contestRemoteModel.getClass();
-
-                Method method = clazz.getMethod("setCreationTemplateString",
-                        String.class);
-
-                method.invoke(_contestRemoteModel, creationTemplateString);
-            } catch (Exception e) {
-                throw new UnsupportedOperationException(e);
-            }
-        }
-    }
-
-    @Override
     public String getVoteTemplateString() {
         return _voteTemplateString;
     }
@@ -841,6 +819,31 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                         String.class);
 
                 method.invoke(_contestRemoteModel, voteTemplateString);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getVoteConfirmationTemplateString() {
+        return _voteConfirmationTemplateString;
+    }
+
+    @Override
+    public void setVoteConfirmationTemplateString(
+        String voteConfirmationTemplateString) {
+        _voteConfirmationTemplateString = voteConfirmationTemplateString;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setVoteConfirmationTemplateString",
+                        String.class);
+
+                method.invoke(_contestRemoteModel,
+                    voteConfirmationTemplateString);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -1615,8 +1618,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setPlanTemplateId(getPlanTemplateId());
         clone.setContestScheduleId(getContestScheduleId());
         clone.setProposalCreationTemplateString(getProposalCreationTemplateString());
-        clone.setCreationTemplateString(getCreationTemplateString());
         clone.setVoteTemplateString(getVoteTemplateString());
+        clone.setVoteConfirmationTemplateString(getVoteConfirmationTemplateString());
         clone.setVoteQuestionTemplateString(getVoteQuestionTemplateString());
         clone.setFocusAreaId(getFocusAreaId());
         clone.setContestTier(getContestTier());
@@ -1735,10 +1738,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getContestScheduleId());
         sb.append(", proposalCreationTemplateString=");
         sb.append(getProposalCreationTemplateString());
-        sb.append(", creationTemplateString=");
-        sb.append(getCreationTemplateString());
         sb.append(", voteTemplateString=");
         sb.append(getVoteTemplateString());
+        sb.append(", voteConfirmationTemplateString=");
+        sb.append(getVoteConfirmationTemplateString());
         sb.append(", voteQuestionTemplateString=");
         sb.append(getVoteQuestionTemplateString());
         sb.append(", focusAreaId=");
@@ -1871,12 +1874,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getProposalCreationTemplateString());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>creationTemplateString</column-name><column-value><![CDATA[");
-        sb.append(getCreationTemplateString());
-        sb.append("]]></column-value></column>");
-        sb.append(
             "<column><column-name>voteTemplateString</column-name><column-value><![CDATA[");
         sb.append(getVoteTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>voteConfirmationTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getVoteConfirmationTemplateString());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>voteQuestionTemplateString</column-name><column-value><![CDATA[");

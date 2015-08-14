@@ -54,8 +54,9 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("contestScheduleId", getContestScheduleId());
         attributes.put("proposalCreationTemplateString",
             getProposalCreationTemplateString());
-        attributes.put("creationTemplateString", getCreationTemplateString());
         attributes.put("voteTemplateString", getVoteTemplateString());
+        attributes.put("voteConfirmationTemplateString",
+            getVoteConfirmationTemplateString());
         attributes.put("voteQuestionTemplateString",
             getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
@@ -188,18 +189,18 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
             setProposalCreationTemplateString(proposalCreationTemplateString);
         }
 
-        String creationTemplateString = (String) attributes.get(
-                "creationTemplateString");
-
-        if (creationTemplateString != null) {
-            setCreationTemplateString(creationTemplateString);
-        }
-
         String voteTemplateString = (String) attributes.get(
                 "voteTemplateString");
 
         if (voteTemplateString != null) {
             setVoteTemplateString(voteTemplateString);
+        }
+
+        String voteConfirmationTemplateString = (String) attributes.get(
+                "voteConfirmationTemplateString");
+
+        if (voteConfirmationTemplateString != null) {
+            setVoteConfirmationTemplateString(voteConfirmationTemplateString);
         }
 
         String voteQuestionTemplateString = (String) attributes.get(
@@ -721,27 +722,6 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     }
 
     /**
-    * Returns the creation template string of this contest.
-    *
-    * @return the creation template string of this contest
-    */
-    @Override
-    public java.lang.String getCreationTemplateString() {
-        return _contest.getCreationTemplateString();
-    }
-
-    /**
-    * Sets the creation template string of this contest.
-    *
-    * @param creationTemplateString the creation template string of this contest
-    */
-    @Override
-    public void setCreationTemplateString(
-        java.lang.String creationTemplateString) {
-        _contest.setCreationTemplateString(creationTemplateString);
-    }
-
-    /**
     * Returns the vote template string of this contest.
     *
     * @return the vote template string of this contest
@@ -759,6 +739,27 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setVoteTemplateString(java.lang.String voteTemplateString) {
         _contest.setVoteTemplateString(voteTemplateString);
+    }
+
+    /**
+    * Returns the vote confirmation template string of this contest.
+    *
+    * @return the vote confirmation template string of this contest
+    */
+    @Override
+    public java.lang.String getVoteConfirmationTemplateString() {
+        return _contest.getVoteConfirmationTemplateString();
+    }
+
+    /**
+    * Sets the vote confirmation template string of this contest.
+    *
+    * @param voteConfirmationTemplateString the vote confirmation template string of this contest
+    */
+    @Override
+    public void setVoteConfirmationTemplateString(
+        java.lang.String voteConfirmationTemplateString) {
+        _contest.setVoteConfirmationTemplateString(voteConfirmationTemplateString);
     }
 
     /**

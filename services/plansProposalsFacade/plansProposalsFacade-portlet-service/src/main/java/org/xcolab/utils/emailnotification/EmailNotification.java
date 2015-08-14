@@ -15,11 +15,13 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+import org.xcolab.utils.judging.ContestEmailTemplateWrapper;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -91,7 +93,7 @@ public abstract class EmailNotification {
         return UserLocalServiceUtil.getUserById(proposal.getAuthorId());
     }
 
-    protected User getContestlAuthor(Contest contest) throws SystemException, PortalException {
+    protected User getContestAuthor(Contest contest) throws SystemException, PortalException {
         return UserLocalServiceUtil.getUserById(contest.getAuthorId());
     }
 
@@ -185,5 +187,21 @@ public abstract class EmailNotification {
         }
     }
 
-    public abstract void sendEmailNotification() throws SystemException, PortalException;
+    protected abstract ContestEmailTemplateWrapper getTemplateWrapper() throws SystemException, PortalException;
+
+    protected abstract User getRecipient() throws SystemException, PortalException;
+
+    public void sendEmailNotification() throws SystemException, PortalException {
+        ContestEmailTemplateWrapper template = getTemplateWrapper();
+        String subject = template.getSubject();
+        String body = template.getHeader()+"\n"+template.getFooter();
+        sendMessage(subject, body, getRecipient());
+    }
+
+    public void sendMessage() throws SystemException, PortalException, MailEngineException, AddressException {
+        List<Long> recipients = new ArrayList<Long>();
+        recipients.add(getRecipient().getUserId());
+        ContestEmailTemplateWrapper template = getTemplateWrapper();
+        MessageUtil.sendMessage(template.getSubject(), template.getHeader()+"\n"+template.getFooter(), ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients, null);
+    }
 }

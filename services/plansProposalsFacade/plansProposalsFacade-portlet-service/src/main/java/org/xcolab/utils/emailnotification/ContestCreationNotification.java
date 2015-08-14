@@ -1,17 +1,14 @@
 package org.xcolab.utils.emailnotification;
 
-import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -31,6 +28,9 @@ import java.util.Locale;
  * Created by kmang on 21/05/14.
  */
 public class ContestCreationNotification extends EmailNotification {
+
+    private static final String TEMPLATE_NAME = "CONTEST_CREATION_DEFAULT";
+
     private static final String YEAR_FALLBACK = "2014";
     private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
 
@@ -54,26 +54,23 @@ public class ContestCreationNotification extends EmailNotification {
         this.createdContest = contest;
     }
 
-    private ContestCreationTemplate getTemplateWrapper() throws PortalException, SystemException {
+    @Override
+    protected User getRecipient() throws SystemException, PortalException {
+        return getContestAuthor(createdContest);
+    }
+
+    @Override
+    protected ContestCreationTemplate getTemplateWrapper() throws PortalException, SystemException {
         if (templateWrapper != null) {
             return templateWrapper;
         }
 
         templateWrapper = new ContestCreationTemplate(
-                //TODO: template name
-                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(createdContest.getCreationTemplateString()),
+                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(TEMPLATE_NAME),
                 createdContest.getContestShortName()
         );
 
         return templateWrapper;
-    }
-
-    @Override
-    public void sendEmailNotification() throws PortalException, SystemException {
-        ContestCreationTemplate template = getTemplateWrapper();
-        String subject = template.getSubject();
-        String body = template.getHeader()+"\n"+template.getFooter();
-        sendMessage(subject, body, getContestlAuthor(createdContest));
     }
 
     private Date getProposalCreationDeadline() throws SystemException, PortalException {
@@ -103,7 +100,7 @@ public class ContestCreationNotification extends EmailNotification {
 
             switch (tag.nodeName()) {
                 case FIRSTNAME_PLACEHOLDER:
-                    return new TextNode(getContestlAuthor(createdContest).getFirstName(), "");
+                    return new TextNode(getContestAuthor(createdContest).getFirstName(), "");
                 case CONTEST_LINK_PLACEHOLDER:
                     return parseXmlNode(getContestLink(createdContest));
                 case TWITTER_PLACEHOLDER:

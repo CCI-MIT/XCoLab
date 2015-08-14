@@ -5848,8 +5848,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setPlanTemplateId(contest.getPlanTemplateId());
         contestImpl.setContestScheduleId(contest.getContestScheduleId());
         contestImpl.setProposalCreationTemplateString(contest.getProposalCreationTemplateString());
-        contestImpl.setCreationTemplateString(contest.getCreationTemplateString());
         contestImpl.setVoteTemplateString(contest.getVoteTemplateString());
+        contestImpl.setVoteConfirmationTemplateString(contest.getVoteConfirmationTemplateString());
         contestImpl.setVoteQuestionTemplateString(contest.getVoteQuestionTemplateString());
         contestImpl.setFocusAreaId(contest.getFocusAreaId());
         contestImpl.setContestTier(contest.getContestTier());

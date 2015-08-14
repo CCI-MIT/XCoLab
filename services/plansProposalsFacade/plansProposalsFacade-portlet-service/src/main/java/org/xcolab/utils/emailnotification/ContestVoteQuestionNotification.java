@@ -38,7 +38,13 @@ public class ContestVoteQuestionNotification extends EmailNotification {
         this.supportedProposals = supportedProposals;
     }
 
-    private ContestVoteQuestionTemplate getTemplateWrapper() throws PortalException, SystemException {
+    @Override
+    protected User getRecipient() throws SystemException, PortalException {
+        return recipient;
+    }
+
+    @Override
+    protected ContestVoteQuestionTemplate getTemplateWrapper() throws PortalException, SystemException {
         if (templateWrapper != null) {
             return templateWrapper;
         }
@@ -49,14 +55,6 @@ public class ContestVoteQuestionNotification extends EmailNotification {
         );
 
         return templateWrapper;
-    }
-
-    @Override
-    public void sendEmailNotification() throws PortalException, SystemException {
-        ContestVoteQuestionTemplate template = getTemplateWrapper();
-        String subject = template.getSubject();
-        String body = template.getHeader()+"\n"+template.getFooter();
-        sendMessage(subject, body, recipient);
     }
 
     private class ContestVoteQuestionTemplate extends ContestEmailTemplateWrapper {

@@ -215,8 +215,8 @@
 		<property name="planTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="contestScheduleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="proposalCreationTemplateString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="creationTemplateString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="voteTemplateString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="voteConfirmationTemplateString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="voteQuestionTemplateString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="contestTier" type="com.liferay.portal.dao.orm.hibernate.LongType" />

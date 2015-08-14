@@ -29,8 +29,8 @@ public class ContestSoap implements Serializable {
     private long _planTemplateId;
     private long _contestScheduleId;
     private String _proposalCreationTemplateString;
-    private String _creationTemplateString;
     private String _voteTemplateString;
+    private String _voteConfirmationTemplateString;
     private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
@@ -82,8 +82,8 @@ public class ContestSoap implements Serializable {
         soapModel.setPlanTemplateId(model.getPlanTemplateId());
         soapModel.setContestScheduleId(model.getContestScheduleId());
         soapModel.setProposalCreationTemplateString(model.getProposalCreationTemplateString());
-        soapModel.setCreationTemplateString(model.getCreationTemplateString());
         soapModel.setVoteTemplateString(model.getVoteTemplateString());
+        soapModel.setVoteConfirmationTemplateString(model.getVoteConfirmationTemplateString());
         soapModel.setVoteQuestionTemplateString(model.getVoteQuestionTemplateString());
         soapModel.setFocusAreaId(model.getFocusAreaId());
         soapModel.setContestTier(model.getContestTier());
@@ -287,20 +287,21 @@ public class ContestSoap implements Serializable {
         _proposalCreationTemplateString = proposalCreationTemplateString;
     }
 
-    public String getCreationTemplateString() {
-        return _creationTemplateString;
-    }
-
-    public void setCreationTemplateString(String creationTemplateString) {
-        _creationTemplateString = creationTemplateString;
-    }
-
     public String getVoteTemplateString() {
         return _voteTemplateString;
     }
 
     public void setVoteTemplateString(String voteTemplateString) {
         _voteTemplateString = voteTemplateString;
+    }
+
+    public String getVoteConfirmationTemplateString() {
+        return _voteConfirmationTemplateString;
+    }
+
+    public void setVoteConfirmationTemplateString(
+        String voteConfirmationTemplateString) {
+        _voteConfirmationTemplateString = voteConfirmationTemplateString;
     }
 
     public String getVoteQuestionTemplateString() {

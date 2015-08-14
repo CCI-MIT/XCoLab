@@ -272,21 +272,6 @@ public interface ContestModel extends BaseModel<Contest> {
         String proposalCreationTemplateString);
 
     /**
-     * Returns the creation template string of this contest.
-     *
-     * @return the creation template string of this contest
-     */
-    @AutoEscape
-    public String getCreationTemplateString();
-
-    /**
-     * Sets the creation template string of this contest.
-     *
-     * @param creationTemplateString the creation template string of this contest
-     */
-    public void setCreationTemplateString(String creationTemplateString);
-
-    /**
      * Returns the vote template string of this contest.
      *
      * @return the vote template string of this contest
@@ -300,6 +285,22 @@ public interface ContestModel extends BaseModel<Contest> {
      * @param voteTemplateString the vote template string of this contest
      */
     public void setVoteTemplateString(String voteTemplateString);
+
+    /**
+     * Returns the vote confirmation template string of this contest.
+     *
+     * @return the vote confirmation template string of this contest
+     */
+    @AutoEscape
+    public String getVoteConfirmationTemplateString();
+
+    /**
+     * Sets the vote confirmation template string of this contest.
+     *
+     * @param voteConfirmationTemplateString the vote confirmation template string of this contest
+     */
+    public void setVoteConfirmationTemplateString(
+        String voteConfirmationTemplateString);
 
     /**
      * Returns the vote question template string of this contest.

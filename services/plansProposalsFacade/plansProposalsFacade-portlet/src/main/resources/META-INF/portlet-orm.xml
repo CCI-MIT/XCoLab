@@ -158,8 +158,8 @@
 			<basic name="planTemplateId" />
 			<basic name="contestScheduleId" />
 			<basic name="proposalCreationTemplateString" />
-			<basic name="creationTemplateString" />
 			<basic name="voteTemplateString" />
+			<basic name="voteConfirmationTemplateString" />
 			<basic name="voteQuestionTemplateString" />
 			<basic name="focusAreaId" />
 			<basic name="contestTier" />
