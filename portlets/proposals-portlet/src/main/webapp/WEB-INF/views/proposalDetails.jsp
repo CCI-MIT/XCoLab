@@ -14,21 +14,6 @@
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
-    <c:if test="${voted}">
-        <div id="popup_justVoted" class="popup-wrap small" style="">
-            <div class="popup">
-                <div class="closepopuplogin">
-                    <a href="javascript:;" onclick="jQuery('#popup_justVoted').hide()"><img src="http://climatecolab.org/climatecolab-theme/images/help_close.png" width="20" height="20" alt="X" /></a>
-                </div>
-                <h4>You just voted</h4>
-                <div class="error-message">
-                    <p>Yay!</p>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-    </c:if>
-
     <div id="content">
 
         <style type="text/css">
