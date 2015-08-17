@@ -137,12 +137,18 @@ public class ProposalCreationNotification extends EmailNotification {
                         return new TextNode(yearFormat.format(contest.getCreated()), "");
                     }
                 case DEADLINE_PLACEHOLDER:
-                    return new TextNode(customDateFormat.format(getProposalCreationDeadline()) + " EDT", "");
+                    final Date proposalCreationDeadline = getProposalCreationDeadline();
+                    if (Validator.isNull(proposalCreationDeadline)) {
+                        return new TextNode("", "");
+                    } else {
+                        return new TextNode(customDateFormat.format(proposalCreationDeadline) + " EDT", "");
+                    }
                 case CONTEST_DEADLINE_SECTION_PLACEHOLDER:
                     if (Validator.isNull(getProposalCreationDeadline())) {
                         return new TextNode("", "");
                     } else {
-                        return new TextNode(tag.html(), "");
+                        //need to call another layer of replace variables to replace plaholders inside the tag
+                        return parseXmlNode(replaceVariables(tag.html()));
                     }
             }
             return null;

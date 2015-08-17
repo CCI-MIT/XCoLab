@@ -140,7 +140,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     private void sendEmailNotificationToAuthor(ThemeDisplay themeDisplay, Contest contest) throws PortalException, SystemException{
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
-        new ContestCreationNotification(contest, serviceContext).sendEmailNotification();
+        new ContestCreationNotification(contest, serviceContext).sendMessage();
     }
 
     private List<LabelValue> getProposalTemplateSelectionItems(){

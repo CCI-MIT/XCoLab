@@ -68,7 +68,6 @@ public class VoteOnProposalActionController {
                     ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
                     serviceContext.setPortalURL(themeDisplay.getPortalURL());
                     new ProposalVoteNotification(proposal, ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId)), user, serviceContext).sendMessage();
-                    new ProposalVoteNotification(proposal, ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId)), user, serviceContext).sendEmailNotification();
                     hasVoted = true;
                 } catch(SystemException exception) {
                     _log.error("kmang: Original Vote exception occured: ", exception.getCause());

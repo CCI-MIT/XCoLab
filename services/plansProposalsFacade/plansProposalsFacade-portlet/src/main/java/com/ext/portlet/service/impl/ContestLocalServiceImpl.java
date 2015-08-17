@@ -739,11 +739,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             // Directly transfer the support to a vote
             if (proposals.size() == 1) {
                 voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK());
-                new ContestVoteNotification(user, contest, proposals.get(0), serviceContext).sendEmailNotification();
+                new ContestVoteNotification(user, contest, proposals.get(0), serviceContext).sendMessage();
             }
             // Send a notification to the user
             else {
-                new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendEmailNotification();
+                new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendMessage();
             }
         }
     }

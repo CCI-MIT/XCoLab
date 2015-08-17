@@ -43,7 +43,7 @@ public class ContestEmailTemplateWrapper {
         return this.getHeader()+"\n"+body+"\n\n"+this.getFooter();
     }
 
-    private String replaceVariables(String inputString) throws SystemException, PortalException {
+    protected String replaceVariables(String inputString) throws SystemException, PortalException {
         Document doc = Jsoup.parse(inputString, "", Parser.xmlParser());
         for (Element tag : doc.select("*")) {
             Node resolvedNode = resolvePlaceholderTag(tag);

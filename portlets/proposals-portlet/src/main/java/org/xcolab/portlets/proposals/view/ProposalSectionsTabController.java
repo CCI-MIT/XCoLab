@@ -57,8 +57,11 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("edit", editValidated);
         model.addAttribute("voted", voted);
 
+        final Proposal proposal = proposalsContext.getProposal(request);
+        Contest baseContest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
+
         if (voted) {
-            Date votingDeadline = getVotingDeadline();
+            Date votingDeadline = getVotingDeadline(baseContest);
             if (Validator.isNotNull(votingDeadline)) {
                 final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, YYYY", Locale.US);
                 model.addAttribute("votingDeadline", customDateFormat.format(votingDeadline));
@@ -66,11 +69,9 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                 model.addAttribute("votingDeadline", "");
             }
         }
-        
+
         if (move) {
         	// get base proposal from base contest
-        	Proposal proposal = proposalsContext.getProposal(request);
-        	Contest baseContest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
         	ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(baseContest);
         	
         	ProposalWrapper baseProposalWrapped = new ProposalWrapper(proposal, proposal.getCurrentVersion(), baseContest, contestPhase, null);
@@ -146,7 +147,6 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
         model.addAttribute("judgeProposalBean", judgeProposalBean);
 
-        Proposal proposal = proposalsContext.getProposal(request);
         List<Proposal> linkedProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
         List<ProposalWrapper> linkedProposalsWrappers = new ArrayList<>();
         for (Proposal linkedProposal: linkedProposals){

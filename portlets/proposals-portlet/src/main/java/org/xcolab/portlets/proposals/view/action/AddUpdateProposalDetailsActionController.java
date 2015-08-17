@@ -292,8 +292,7 @@ public class AddUpdateProposalDetailsActionController {
             ServiceContext serviceContext = new ServiceContext();
             serviceContext.setPortalURL(themeDisplay.getPortalURL());
             Contest contest = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(proposalsContext.getContestPhase(request).getContestPhasePK()));
-            new ProposalCreationNotification(proposal.getWrapped(), contest, serviceContext).sendEmailNotification();
-
+            new ProposalCreationNotification(proposal.getWrapped(), contest, serviceContext).sendMessage();
         }
         
         
