@@ -21,9 +21,6 @@ import java.util.List;
  */
 public class ContestVoteQuestionNotification extends EmailNotification {
 
-    private static final String FIRSTNAME_PLACEHOLDER = "firstname";
-    private static final String FULL_NAME_PLACEHOLDER = "fullname";
-    private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
     private static final String SUPPORTED_PROPOSALS_PLACEHOLDER = "supported-proposals";
 
     private User recipient;
@@ -44,6 +41,11 @@ public class ContestVoteQuestionNotification extends EmailNotification {
     }
 
     @Override
+    protected Contest getContest() {
+        return contest;
+    }
+
+    @Override
     protected ContestVoteQuestionTemplate getTemplateWrapper() throws PortalException, SystemException {
         if (templateWrapper != null) {
             return templateWrapper;
@@ -57,7 +59,7 @@ public class ContestVoteQuestionNotification extends EmailNotification {
         return templateWrapper;
     }
 
-    private class ContestVoteQuestionTemplate extends ContestEmailTemplateWrapper {
+    private class ContestVoteQuestionTemplate extends EmailNotificationTemplate {
 
         public ContestVoteQuestionTemplate(ContestEmailTemplate template, String contestName) {
             super(template, "", contestName);
@@ -71,12 +73,6 @@ public class ContestVoteQuestionNotification extends EmailNotification {
             }
 
             switch (tag.nodeName()) {
-                case FIRSTNAME_PLACEHOLDER:
-                    return new TextNode(getRecipient().getFirstName(), "");
-                case FULL_NAME_PLACEHOLDER:
-                    return new TextNode(getRecipient().getFullName(), "");
-                case CONTEST_LINK_PLACEHOLDER:
-                    return parseXmlNode(getContestLink(contest));
                 case SUPPORTED_PROPOSALS_PLACEHOLDER:
                     StringBuilder supportedProposalsLinks = new StringBuilder();
                     supportedProposalsLinks.append("<span>");

@@ -41,14 +41,7 @@ public class ProposalCreationNotification extends EmailNotification {
     //private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
 
     // Additional placeholder strings
-    private static final String FIRSTNAME_PLACEHOLDER = "firstname";
     private static final String YEAR_PLACEHOLDER = "year";
-    private static final String PROPOSAL_LINK_PLACEHOLDER = "proposal-link";
-    private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
-    private static final String TWITTER_PLACEHOLDER = "twitter";
-    private static final String FACEBOOK_PLACEHOLDER = "facebook";
-    private static final String PINTEREST_PLACEHOLDER = "pinterest";
-    private static final String LINKEDIN_PLACEHOLDER = "linkedin";
     private static final String DEADLINE_PLACEHOLDER = "deadline";
     private static final String CONTEST_DEADLINE_SECTION_PLACEHOLDER = "contest-deadline-section";
 
@@ -68,6 +61,16 @@ public class ProposalCreationNotification extends EmailNotification {
     @Override
     protected User getRecipient() throws SystemException, PortalException {
         return getProposalAuthor(createdProposal);
+    }
+
+    @Override
+    protected Contest getContest() {
+        return contest;
+    }
+
+    @Override
+    protected Proposal getProposal() {
+        return createdProposal;
     }
 
     @Override
@@ -111,7 +114,7 @@ public class ProposalCreationNotification extends EmailNotification {
         throw new SystemException("Active proposal creation phase was not found for createdContest with id " + contest.getContestPK());
     }
 
-    private class ProposalCreationTemplate extends ContestEmailTemplateWrapper {
+    private class ProposalCreationTemplate extends EmailNotificationTemplate {
 
         public ProposalCreationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
@@ -125,20 +128,6 @@ public class ProposalCreationNotification extends EmailNotification {
             }
 
             switch (tag.nodeName()) {
-                case FIRSTNAME_PLACEHOLDER:
-                    return new TextNode(getProposalAuthor(createdProposal).getFirstName(), "");
-                case CONTEST_LINK_PLACEHOLDER:
-                    return parseXmlNode(getContestLink(contest));
-                case PROPOSAL_LINK_PLACEHOLDER:
-                    return parseXmlNode(getProposalLink(contest, createdProposal));
-                case TWITTER_PLACEHOLDER:
-                    return parseXmlNode(getTwitterShareLink(getProposalLinkUrl(contest, createdProposal), tag.ownText()));
-                case PINTEREST_PLACEHOLDER:
-                    return parseXmlNode(getPinterestShareLink(getProposalLinkUrl(contest, createdProposal), tag.ownText()));
-                case FACEBOOK_PLACEHOLDER:
-                    return parseXmlNode(getFacebookShareLink(getProposalLinkUrl(contest, createdProposal)));
-                case LINKEDIN_PLACEHOLDER:
-                    return parseXmlNode(getLinkedInShareLink(getProposalLinkUrl(contest, createdProposal), tag.attr("title") , tag.ownText()));
                 case YEAR_PLACEHOLDER:
                     DateFormat yearFormat = new SimpleDateFormat("yyyy");
                     // This should never happen when contests are properly set up
@@ -153,9 +142,7 @@ public class ProposalCreationNotification extends EmailNotification {
                     if (Validator.isNull(getProposalCreationDeadline())) {
                         return new TextNode("", "");
                     } else {
-                        final String contestDeadlineSectionBody = StringUtil.replace(tag.data(),
-                                DEADLINE_PLACEHOLDER, customDateFormat.format(getProposalCreationDeadline()) + " EDT");
-                        return new TextNode(contestDeadlineSectionBody, "");
+                        return new TextNode(tag.html(), "");
                     }
             }
             return null;

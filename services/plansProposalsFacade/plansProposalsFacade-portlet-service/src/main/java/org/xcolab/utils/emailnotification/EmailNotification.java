@@ -3,6 +3,7 @@ package org.xcolab.utils.emailnotification;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -10,17 +11,24 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.xcolab.utils.judging.ContestEmailTemplateWrapper;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +39,15 @@ import java.util.List;
  */
 public abstract class EmailNotification {
     protected static final long ADMINISTRATOR_USER_ID = 10144L;
+
+    private static final String FIRSTNAME_PLACEHOLDER = "firstname";
+    private static final String FULL_NAME_PLACEHOLDER = "fullname";
+    private static final String PROPOSAL_LINK_PLACEHOLDER = "proposal-link";
+    private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
+    private static final String TWITTER_PLACEHOLDER = "twitter";
+    private static final String FACEBOOK_PLACEHOLDER = "facebook";
+    private static final String PINTEREST_PLACEHOLDER = "pinterest";
+    private static final String LINKEDIN_PLACEHOLDER = "linkedin";
 
     protected static final String FACEBOOK_PROPOSAL_SHARE_LINK = "https://www.facebook.com/sharer/sharer.php?u=%s&display=popup";
     protected static final String TWITTER_PROPOSAL_SHARE_LINK = "https://twitter.com/share?url=%s&text=%s";
@@ -95,6 +112,14 @@ public abstract class EmailNotification {
 
     protected User getContestAuthor(Contest contest) throws SystemException, PortalException {
         return UserLocalServiceUtil.getUserById(contest.getAuthorId());
+    }
+
+    protected Contest getContest() {
+        return null;
+    }
+
+    protected Proposal getProposal() {
+        return null;
     }
 
     protected void sendMessage(String subject, String body, User recipient) {
@@ -206,6 +231,61 @@ public abstract class EmailNotification {
             MessageUtil.sendMessage(template.getSubject(), template.getHeader()+"\n"+template.getFooter(), ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients, null);
         } catch (MailEngineException | AddressException e) {
             throw new SystemException(e);
+        }
+    }
+
+    protected class EmailNotificationTemplate extends ContestEmailTemplateWrapper {
+        public EmailNotificationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
+            super(template, proposalName, contestName);
+        }
+
+        @Override
+        protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+            final Node node = super.resolvePlaceholderTag(tag);
+            if (node != null) {
+                return node;
+            }
+            Contest contest = getContest();
+            Proposal proposal = getProposal();
+            final boolean hasProposal = contest != null && proposal != null;
+
+            switch (tag.nodeName()) {
+                case FIRSTNAME_PLACEHOLDER:
+                    return new TextNode(getRecipient().getFirstName(), "");
+                case FULL_NAME_PLACEHOLDER:
+                    return new TextNode(getRecipient().getFullName(), "");
+                case CONTEST_LINK_PLACEHOLDER:
+                    if (contest == null) {
+                        break;
+                    }
+                    return parseXmlNode(getContestLink(contest));
+                case PROPOSAL_LINK_PLACEHOLDER:
+                    if (!hasProposal) {
+                        break;
+                    }
+                    return parseXmlNode(getProposalLink(contest, proposal));
+                case TWITTER_PLACEHOLDER:
+                    if (!hasProposal) {
+                        break;
+                    }
+                    return parseXmlNode(getTwitterShareLink(getProposalLinkUrl(contest, proposal), tag.ownText()));
+                case PINTEREST_PLACEHOLDER:
+                    if (!hasProposal) {
+                        break;
+                    }
+                    return parseXmlNode(getPinterestShareLink(getProposalLinkUrl(contest, proposal), tag.ownText()));
+                case FACEBOOK_PLACEHOLDER:
+                    if (!hasProposal) {
+                        break;
+                    }
+                    return parseXmlNode(getFacebookShareLink(getProposalLinkUrl(contest, proposal)));
+                case LINKEDIN_PLACEHOLDER:
+                    if (!hasProposal) {
+                        break;
+                    }
+                    return parseXmlNode(getLinkedInShareLink(getProposalLinkUrl(contest, proposal), tag.attr("title") , tag.ownText()));
+            }
+            return null;
         }
     }
 }

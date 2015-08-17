@@ -36,14 +36,7 @@ public class ProposalVoteNotification extends EmailNotification {
     //private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
 
     // Additional placeholder strings
-    private static final String FIRSTNAME_PLACEHOLDER = "firstname";
     private static final String YEAR_PLACEHOLDER = "year";
-    private static final String PROPOSAL_LINK_PLACEHOLDER = "proposal-link";
-    private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
-    private static final String TWITTER_PLACEHOLDER = "twitter";
-    private static final String FACEBOOK_PLACEHOLDER = "facebook";
-    private static final String PINTEREST_PLACEHOLDER = "pinterest";
-    private static final String LINKEDIN_PLACEHOLDER = "linkedin";
     private static final String DEADLINE_PLACEHOLDER = "deadline";
     private static final String CONTEST_DEADLINE_SECTION_PLACEHOLDER = "contest-deadline-section";
     private static final String OTHER_CONTESTS_PLACEHOLDER = "other-contests-link";
@@ -66,6 +59,16 @@ public class ProposalVoteNotification extends EmailNotification {
     @Override
     protected User getRecipient() throws SystemException, PortalException {
         return recipient;
+    }
+
+    @Override
+    protected Contest getContest() {
+        return contest;
+    }
+
+    @Override
+    protected Proposal getProposal() {
+        return votedProposal;
     }
 
     @Override
@@ -114,7 +117,7 @@ public class ProposalVoteNotification extends EmailNotification {
         return String.format(LINK_FORMAT_STRING, baseUrl + "/web/guest/plans", linkText);
     }
 
-    private class ProposalVoteTemplate extends ContestEmailTemplateWrapper {
+    private class ProposalVoteTemplate extends EmailNotificationTemplate {
 
         public ProposalVoteTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
@@ -128,20 +131,6 @@ public class ProposalVoteNotification extends EmailNotification {
             }
 
             switch (tag.nodeName()) {
-                case FIRSTNAME_PLACEHOLDER:
-                    return new TextNode(getRecipient().getFirstName(), "");
-                case CONTEST_LINK_PLACEHOLDER:
-                    return parseXmlNode(getContestLink(contest));
-                case PROPOSAL_LINK_PLACEHOLDER:
-                    return parseXmlNode(getProposalLink(contest, votedProposal));
-                case TWITTER_PLACEHOLDER:
-                    return parseXmlNode(getTwitterShareLink(getProposalLinkUrl(contest, votedProposal), tag.ownText()));
-                case PINTEREST_PLACEHOLDER:
-                    return parseXmlNode(getPinterestShareLink(getProposalLinkUrl(contest, votedProposal), tag.ownText()));
-                case FACEBOOK_PLACEHOLDER:
-                    return parseXmlNode(getFacebookShareLink(getProposalLinkUrl(contest, votedProposal)));
-                case LINKEDIN_PLACEHOLDER:
-                    return parseXmlNode(getLinkedInShareLink(getProposalLinkUrl(contest, votedProposal), tag.attr("title") , tag.ownText()));
                 case YEAR_PLACEHOLDER:
                     DateFormat yearFormat = new SimpleDateFormat("yyyy");
                     // This should never happen when contests are properly set up

@@ -35,7 +35,6 @@ public class ContestCreationNotification extends EmailNotification {
     private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
 
     // Placeholder strings
-    private static final String FIRSTNAME_PLACEHOLDER = "firstname";
     private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
     private static final String CONTEST_PLACEHOLDER = "contest-title";
     private static final String TWITTER_PLACEHOLDER = "twitter";
@@ -85,7 +84,7 @@ public class ContestCreationNotification extends EmailNotification {
         throw new SystemException("Proposal creation phase was not found for createdContest with id " + createdContest.getContestPK());
     }
 
-    private class ContestCreationTemplate extends ContestEmailTemplateWrapper {
+    private class ContestCreationTemplate extends EmailNotificationTemplate {
 
         public ContestCreationTemplate(ContestEmailTemplate template, String contestName) {
             super(template, "", contestName);
@@ -99,8 +98,6 @@ public class ContestCreationNotification extends EmailNotification {
             }
 
             switch (tag.nodeName()) {
-                case FIRSTNAME_PLACEHOLDER:
-                    return new TextNode(getRecipient().getFirstName(), "");
                 case CONTEST_LINK_PLACEHOLDER:
                     return parseXmlNode(getContestLink(createdContest));
                 case TWITTER_PLACEHOLDER:

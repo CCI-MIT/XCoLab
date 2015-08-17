@@ -26,15 +26,7 @@ import java.util.Locale;
  */
 public class ContestVoteNotification extends EmailNotification {
 
-    private static final String FIRSTNAME_PLACEHOLDER = "firstname";
-    private static final String PROPOSAL_LINK_PLACEHOLDER = "proposal-link";
-    private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
-    private static final String TWITTER_PLACEHOLDER = "twitter";
-    private static final String FACEBOOK_PLACEHOLDER = "facebook";
-    private static final String PINTEREST_PLACEHOLDER = "pinterest";
-    private static final String LINKEDIN_PLACEHOLDER = "linkedin";
     private static final String OTHER_CONTESTS_PLACEHOLDER = "other-contests-link";
-    private static final String CONTEST_TITLE_PLACEHOLDER = "contest-title";
 
     private User recipient;
     private Contest contest;
@@ -51,6 +43,16 @@ public class ContestVoteNotification extends EmailNotification {
     @Override
     protected User getRecipient() throws SystemException, PortalException {
         return recipient;
+    }
+
+    @Override
+    protected Contest getContest() {
+        return contest;
+    }
+
+    @Override
+    protected Proposal getProposal() {
+        return votedProposal;
     }
 
     @Override
@@ -74,7 +76,7 @@ public class ContestVoteNotification extends EmailNotification {
         return String.format(LINK_FORMAT_STRING, baseUrl + "/web/guest/plans", linkText);
     }
 
-    private class ContestVoteTemplate extends ContestEmailTemplateWrapper {
+    private class ContestVoteTemplate extends EmailNotificationTemplate {
 
         public ContestVoteTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
@@ -88,26 +90,6 @@ public class ContestVoteNotification extends EmailNotification {
             }
 
             switch (tag.nodeName()) {
-                case FIRSTNAME_PLACEHOLDER:
-                    return new TextNode(getRecipient().getFirstName(), "");
-                case CONTEST_LINK_PLACEHOLDER:
-                    return parseXmlNode(getContestLink(contest));
-                case CONTEST_TITLE_PLACEHOLDER:
-                    return new TextNode(contest.getContestShortName(), "");
-                case PROPOSAL_LINK_PLACEHOLDER:
-                    if (tag.ownText().equals("")) {
-                        return parseXmlNode(getProposalLink(contest, votedProposal));
-                    } else {
-                        return parseXmlNode(getProposalLinkWithLinkText(contest, votedProposal, tag.ownText()));
-                    }
-                case TWITTER_PLACEHOLDER:
-                    return parseXmlNode(getTwitterShareLink(getProposalLinkUrl(contest, votedProposal), tag.ownText()));
-                case PINTEREST_PLACEHOLDER:
-                    return parseXmlNode(getPinterestShareLink(getProposalLinkUrl(contest, votedProposal), tag.ownText()));
-                case FACEBOOK_PLACEHOLDER:
-                    return parseXmlNode(getFacebookShareLink(getProposalLinkUrl(contest, votedProposal)));
-                case LINKEDIN_PLACEHOLDER:
-                    return parseXmlNode(getLinkedInShareLink(getProposalLinkUrl(contest, votedProposal), tag.attr("title") , tag.ownText()));
                 case OTHER_CONTESTS_PLACEHOLDER:
                     return parseXmlNode(getOtherContestLink(tag.ownText()));
             }

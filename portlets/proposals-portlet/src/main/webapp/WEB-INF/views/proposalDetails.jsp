@@ -160,7 +160,8 @@
                 </div>
                 <h2 style="color: #66b035;">Thank you for voting!</h2>
                 <div>
-                    <p style="color: #545454; margin-top: 5px;">You just voted for ${proposal.name}. The Voting Period ends September 12, 2015. </p>
+                    <p style="color: #545454; margin-top: 5px;">You just voted for ${proposal.name}.
+                        <c:if test="${not empty votingDeadline}">The Voting Period ends ${votingDeadline}.</c:if> </p>
                     <p style="color: #545454; margin-top: 5px;">Vote for more proposals <a href="/web/guest/plans">here</a>.</p>
                     <h4 style="color: #30a3fb;">Share your vote:</h4>
                     <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="align: center; width: 205px;">

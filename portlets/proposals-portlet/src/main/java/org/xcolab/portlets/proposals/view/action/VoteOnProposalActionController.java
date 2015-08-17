@@ -94,9 +94,8 @@ public class VoteOnProposalActionController {
             }
         }
         // Redirect to prevent page-refreshing from influencing the vote
-        response.sendRedirect(ProposalsURLGenerator.getProposalURL(
-                        proposal)+(hasVoted?"?voted=true":"")
-        );
+        final String arguments = hasVoted ? "?voted=true" : "";
+        response.sendRedirect(ProposalsURLGenerator.getProposalURL(proposal) + arguments);
     }
 
 }
