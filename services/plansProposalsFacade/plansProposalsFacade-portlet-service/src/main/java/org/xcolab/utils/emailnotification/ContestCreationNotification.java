@@ -100,7 +100,7 @@ public class ContestCreationNotification extends EmailNotification {
 
             switch (tag.nodeName()) {
                 case FIRSTNAME_PLACEHOLDER:
-                    return new TextNode(getContestAuthor(createdContest).getFirstName(), "");
+                    return new TextNode(getRecipient().getFirstName(), "");
                 case CONTEST_LINK_PLACEHOLDER:
                     return parseXmlNode(getContestLink(createdContest));
                 case TWITTER_PLACEHOLDER:

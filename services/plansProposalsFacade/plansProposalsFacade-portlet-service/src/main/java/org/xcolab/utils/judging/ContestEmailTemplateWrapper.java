@@ -45,7 +45,7 @@ public class ContestEmailTemplateWrapper {
 
     private String replaceVariables(String inputString) throws SystemException, PortalException {
         Document doc = Jsoup.parse(inputString, "", Parser.xmlParser());
-        for (Element tag : doc.children()) {
+        for (Element tag : doc.select("*")) {
             Node resolvedNode = resolvePlaceholderTag(tag);
             if (resolvedNode == null) {
                 //don't replace tags that aren't recognized, they are probably html tags (e.g. <br />)
