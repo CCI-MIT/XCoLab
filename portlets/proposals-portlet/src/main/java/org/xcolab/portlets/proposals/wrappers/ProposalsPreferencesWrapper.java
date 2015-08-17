@@ -7,6 +7,7 @@ import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import java.io.IOException;
 
+import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
@@ -34,7 +35,12 @@ public class ProposalsPreferencesWrapper {
 
     public ProposalsPreferencesWrapper(PortletRequest request) {
         this.preferences = request.getPreferences();
-        termsOfService = getTermsOfServiceTemplateWrapper().getHeader();;
+        try {
+            termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
+        } catch(SystemException | PortletException e) {
+            //should never happen
+            throw new RuntimeException(e);
+        }
         proposalIdsToBeMoved = "";
         moveFromContestId = -1;
         moveToContestPhaseId = -1;
