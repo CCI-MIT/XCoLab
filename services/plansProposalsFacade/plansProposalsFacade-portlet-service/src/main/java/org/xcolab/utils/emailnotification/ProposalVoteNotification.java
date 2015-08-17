@@ -19,7 +19,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.xcolab.enums.ContestPhaseType;
-import org.xcolab.utils.judging.ContestEmailTemplateWrapper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

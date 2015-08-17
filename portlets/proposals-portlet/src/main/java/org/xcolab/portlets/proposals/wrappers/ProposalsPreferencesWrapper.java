@@ -3,8 +3,7 @@ package org.xcolab.portlets.proposals.wrappers;
 import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.xcolab.enums.ContestPhaseType;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
+import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import java.io.IOException;
 
@@ -27,7 +26,7 @@ public class ProposalsPreferencesWrapper {
 
     private long ribbonId = -1;
 
-    private ContestEmailTemplateWrapper termsOfServiceTemplateWrapper;
+    private EmailTemplateWrapper termsOfServiceTemplateWrapper;
 
     public ProposalsPreferencesWrapper() {
 
@@ -41,13 +40,13 @@ public class ProposalsPreferencesWrapper {
         moveToContestPhaseId = -1;
     }
 
-    private ContestEmailTemplateWrapper getTermsOfServiceTemplateWrapper() {
+    private EmailTemplateWrapper getTermsOfServiceTemplateWrapper() {
         if (termsOfServiceTemplateWrapper != null) {
             return termsOfServiceTemplateWrapper;
         }
 
         try {
-            termsOfServiceTemplateWrapper = new ContestEmailTemplateWrapper(
+            termsOfServiceTemplateWrapper = new EmailTemplateWrapper(
                     ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(TERMS_OF_SERVICE_PREF),
                     "",
                     ""
@@ -57,10 +56,6 @@ public class ProposalsPreferencesWrapper {
         }
 
         return termsOfServiceTemplateWrapper;
-    }
-
-    private String newline2br(String input) {
-        return input.replaceAll("(\r\n|\n)", "<br />");
     }
 
     public void store(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {

@@ -11,8 +11,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
-import org.xcolab.utils.judging.ContestEmailTemplateWrapper;
 
 import java.util.List;
 

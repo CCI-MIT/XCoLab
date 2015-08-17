@@ -146,7 +146,10 @@ public class MessageUtil {
     public static void copyRecipient(Long userId, Message m, PortletRequest request) throws SystemException, PortalException, AddressException, MailEngineException {
         User from = UserLocalServiceUtil.getUser(m.getFromId());
         User to = UserLocalServiceUtil.getUser(userId);
-        String subject = MessageConstants.EMAIL_MESSAGE_SUBJECT.replace(MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName());
+        String subject = m.getSubject();
+        if (subject.length() < 3) {
+            subject = MessageConstants.EMAIL_MESSAGE_SUBJECT.replace(MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName());
+        }
         String message = MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName())
                 .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL,createMessageURL(m, request)).replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT,m.getSubject())
                 .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,m.getContent().replaceAll("\n" ,"<br />"));

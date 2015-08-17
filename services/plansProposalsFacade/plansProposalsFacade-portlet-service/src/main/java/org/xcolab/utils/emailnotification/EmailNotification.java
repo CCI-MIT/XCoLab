@@ -11,8 +11,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -21,14 +19,12 @@ import com.liferay.util.mail.MailEngineException;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-import org.xcolab.utils.judging.ContestEmailTemplateWrapper;
+import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -212,12 +208,12 @@ public abstract class EmailNotification {
         }
     }
 
-    protected abstract ContestEmailTemplateWrapper getTemplateWrapper() throws SystemException, PortalException;
+    protected abstract EmailTemplateWrapper getTemplateWrapper() throws SystemException, PortalException;
 
     protected abstract User getRecipient() throws SystemException, PortalException;
 
     public void sendEmailNotification() throws SystemException, PortalException {
-        ContestEmailTemplateWrapper template = getTemplateWrapper();
+        EmailTemplateWrapper template = getTemplateWrapper();
         String subject = template.getSubject();
         String body = template.getHeader()+"\n"+template.getFooter();
         sendMessage(subject, body, getRecipient());
@@ -226,15 +222,17 @@ public abstract class EmailNotification {
     public void sendMessage() throws SystemException, PortalException {
         List<Long> recipients = new ArrayList<Long>();
         recipients.add(getRecipient().getUserId());
-        ContestEmailTemplateWrapper template = getTemplateWrapper();
+        EmailTemplateWrapper template = getTemplateWrapper();
         try {
-            MessageUtil.sendMessage(template.getSubject(), template.getHeader()+"\n"+template.getFooter(), ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients, null);
+            String content = template.getHeader() + template.getFooter();
+            content = content.replace("\n", " ").replace("\r", " ");
+            MessageUtil.sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients, null);
         } catch (MailEngineException | AddressException e) {
             throw new SystemException(e);
         }
     }
 
-    protected class EmailNotificationTemplate extends ContestEmailTemplateWrapper {
+    protected class EmailNotificationTemplate extends EmailTemplateWrapper {
         public EmailNotificationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }

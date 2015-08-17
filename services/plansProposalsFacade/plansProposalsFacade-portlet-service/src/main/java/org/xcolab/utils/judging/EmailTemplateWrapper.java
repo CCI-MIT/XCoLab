@@ -13,15 +13,15 @@ import org.jsoup.parser.Parser;
 /**
  * Created by Manuel Thurner
  */
-public class ContestEmailTemplateWrapper {
+public class EmailTemplateWrapper {
     private ContestEmailTemplate template;
     private String proposalName;
     private String contestName;
 
-    private static final String PROPOSAL_TITLE_PLACEHOLDER = "<proposal-title/>";
-    private static final String CONTEST_TITLE_PLACEHOLDER = "<contest-title/>";
+    private static final String PROPOSAL_TITLE_PLACEHOLDER = "proposal-title";
+    private static final String CONTEST_TITLE_PLACEHOLDER = "contest-title";
 
-    public ContestEmailTemplateWrapper(ContestEmailTemplate template, String proposalName, String contestName) {
+    public EmailTemplateWrapper(ContestEmailTemplate template, String proposalName, String contestName) {
         this.template = template;
         this.proposalName = proposalName;
         this.contestName = contestName;
@@ -58,9 +58,9 @@ public class ContestEmailTemplateWrapper {
 
     protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
         switch (tag.nodeName()) {
-            case "proposal-title":
+            case PROPOSAL_TITLE_PLACEHOLDER:
                 return new TextNode(this.proposalName, "");
-            case "contest-title":
+            case CONTEST_TITLE_PLACEHOLDER:
                 return new TextNode(this.contestName, "");
         }
         return null;
