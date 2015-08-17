@@ -52,6 +52,8 @@ public class ProposalCreationNotification extends EmailNotification {
     private static final String DEADLINE_PLACEHOLDER = "deadline";
     private static final String CONTEST_DEADLINE_SECTION_PLACEHOLDER = "contest-deadline-section";
 
+    private static final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, HH:mm:ss a", Locale.US);
+
     private Proposal createdProposal;
     private Contest contest;
 
@@ -146,10 +148,15 @@ public class ProposalCreationNotification extends EmailNotification {
                         return new TextNode(yearFormat.format(contest.getCreated()), "");
                     }
                 case DEADLINE_PLACEHOLDER:
-                    DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, HH:mm:ss a", Locale.US);
                     return new TextNode(customDateFormat.format(getProposalCreationDeadline()) + " EDT", "");
                 case CONTEST_DEADLINE_SECTION_PLACEHOLDER:
-                    return new TextNode(tag.ownText(), "");
+                    if (Validator.isNull(getProposalCreationDeadline())) {
+                        return new TextNode("", "");
+                    } else {
+                        final String contestDeadlineSectionBody = StringUtil.replace(tag.data(),
+                                DEADLINE_PLACEHOLDER, customDateFormat.format(getProposalCreationDeadline()) + " EDT");
+                        return new TextNode(contestDeadlineSectionBody, "");
+                    }
             }
             return null;
         }

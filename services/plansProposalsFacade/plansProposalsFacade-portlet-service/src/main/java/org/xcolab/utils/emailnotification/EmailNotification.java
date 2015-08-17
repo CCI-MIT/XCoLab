@@ -198,10 +198,14 @@ public abstract class EmailNotification {
         sendMessage(subject, body, getRecipient());
     }
 
-    public void sendMessage() throws SystemException, PortalException, MailEngineException, AddressException {
+    public void sendMessage() throws SystemException, PortalException {
         List<Long> recipients = new ArrayList<Long>();
         recipients.add(getRecipient().getUserId());
         ContestEmailTemplateWrapper template = getTemplateWrapper();
-        MessageUtil.sendMessage(template.getSubject(), template.getHeader()+"\n"+template.getFooter(), ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients, null);
+        try {
+            MessageUtil.sendMessage(template.getSubject(), template.getHeader()+"\n"+template.getFooter(), ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients, null);
+        } catch (MailEngineException | AddressException e) {
+            throw new SystemException(e);
+        }
     }
 }

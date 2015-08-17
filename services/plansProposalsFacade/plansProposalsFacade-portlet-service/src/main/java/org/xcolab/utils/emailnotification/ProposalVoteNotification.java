@@ -11,6 +11,7 @@ import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
@@ -45,21 +46,26 @@ public class ProposalVoteNotification extends EmailNotification {
     private static final String LINKEDIN_PLACEHOLDER = "linkedin";
     private static final String DEADLINE_PLACEHOLDER = "deadline";
     private static final String CONTEST_DEADLINE_SECTION_PLACEHOLDER = "contest-deadline-section";
+    private static final String OTHER_CONTESTS_PLACEHOLDER = "other-contests-link";
 
+    private static final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, HH:mm:ss a", Locale.US);
+
+    private User recipient;
     private Proposal votedProposal;
     private Contest contest;
 
     private ProposalVoteTemplate templateWrapper = null;
 
-    public ProposalVoteNotification(Proposal votedProposal, Contest contest, ServiceContext serviceContext) {
+    public ProposalVoteNotification(Proposal votedProposal, Contest contest, User recipient, ServiceContext serviceContext) {
         super(serviceContext);
         this.votedProposal = votedProposal;
         this.contest = contest;
+        this.recipient = recipient;
     }
 
     @Override
     protected User getRecipient() throws SystemException, PortalException {
-        return getProposalAuthor(votedProposal);
+        return recipient;
     }
 
     @Override
@@ -103,6 +109,11 @@ public class ProposalVoteNotification extends EmailNotification {
         throw new SystemException("Active proposal creation phase was not found for createdContest with id " + contest.getContestPK());
     }
 
+    private String getOtherContestLink(String linkText) {
+        final String baseUrl = serviceContext.getPortalURL();
+        return String.format(LINK_FORMAT_STRING, baseUrl + "/web/guest/plans", linkText);
+    }
+
     private class ProposalVoteTemplate extends ContestEmailTemplateWrapper {
 
         public ProposalVoteTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
@@ -118,7 +129,7 @@ public class ProposalVoteNotification extends EmailNotification {
 
             switch (tag.nodeName()) {
                 case FIRSTNAME_PLACEHOLDER:
-                    return new TextNode(getProposalAuthor(votedProposal).getFirstName(), "");
+                    return new TextNode(getRecipient().getFirstName(), "");
                 case CONTEST_LINK_PLACEHOLDER:
                     return parseXmlNode(getContestLink(contest));
                 case PROPOSAL_LINK_PLACEHOLDER:
@@ -140,10 +151,17 @@ public class ProposalVoteNotification extends EmailNotification {
                         return new TextNode(yearFormat.format(contest.getCreated()), "");
                     }
                 case DEADLINE_PLACEHOLDER:
-                    DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, HH:mm:ss a", Locale.US);
                     return new TextNode(customDateFormat.format(getProposalCreationDeadline()) + " EDT", "");
                 case CONTEST_DEADLINE_SECTION_PLACEHOLDER:
-                    return new TextNode(tag.ownText(), "");
+                    if (Validator.isNull(getProposalCreationDeadline())) {
+                        return new TextNode("", "");
+                    } else {
+                        final String contestDeadlineSectionBody = StringUtil.replace(tag.data(),
+                                DEADLINE_PLACEHOLDER, customDateFormat.format(getProposalCreationDeadline()) + " EDT");
+                        return new TextNode(contestDeadlineSectionBody, "");
+                    }
+                case OTHER_CONTESTS_PLACEHOLDER:
+                    return parseXmlNode(getOtherContestLink(tag.ownText()));
             }
             return null;
         }

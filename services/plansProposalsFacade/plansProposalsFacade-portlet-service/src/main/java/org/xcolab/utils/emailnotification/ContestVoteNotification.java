@@ -89,7 +89,7 @@ public class ContestVoteNotification extends EmailNotification {
 
             switch (tag.nodeName()) {
                 case FIRSTNAME_PLACEHOLDER:
-                    return new TextNode(getProposalAuthor(votedProposal).getFirstName(), "");
+                    return new TextNode(getRecipient().getFirstName(), "");
                 case CONTEST_LINK_PLACEHOLDER:
                     return parseXmlNode(getContestLink(contest));
                 case CONTEST_TITLE_PLACEHOLDER:
