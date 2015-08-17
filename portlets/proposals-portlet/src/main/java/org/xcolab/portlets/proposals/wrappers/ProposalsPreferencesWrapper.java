@@ -3,11 +3,11 @@ package org.xcolab.portlets.proposals.wrappers;
 import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.exception.PortalException;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import java.io.IOException;
 
-import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
@@ -37,7 +37,7 @@ public class ProposalsPreferencesWrapper {
         this.preferences = request.getPreferences();
         try {
             termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
-        } catch(SystemException | PortletException e) {
+        } catch(SystemException | PortalException e) {
             //should never happen
             throw new RuntimeException(e);
         }
