@@ -48,6 +48,10 @@
                 	</c:forEach>
                 	</fieldset>
                 </div>
+				<p id="modelSettingsDescriptionBox">
+					To aggregate emission projections from the regional proposals included in your global proposal, there must be a proposal for all six regions (you can select regional proposals in the Description tab, directly under the Summary) and all regional proposals must use the same modeling tool.
+					For more, see <a href="/web/guest/resources/-/wiki/Main/Aggregating+regional+emission+projections+in+global+proposals">Aggregating regional emissions projections in global proposals.</a>
+				</p>
             </div>
 	</div>
 	<script>
@@ -82,12 +86,15 @@
 
 		jQuery().ready(function() {
 			var proposalToModelMap = document.getElementById("proposalToModelMap");
+			var modelSettingsDescriptionBox = document.getElementById("modelSettingsDescriptionBox");
 			proposalToModelMap.style.display = "none";
 			if(consolidationPossible){
 				checkModelSetRadioWithId(consolidatedModelId);
 				setModelSetRadiosState(true);
+				modelSettingsDescriptionBox.style.display = "";
 			} else{
 				checkModelSetRadioWithId(modelId);
+				modelSettingsDescriptionBox.style.display = "none";
 			}
 		});
 
@@ -97,6 +104,7 @@
 			var modelsSelectBox = document.getElementById("modelPickerDiv");
 			var proposalToModelMap = document.getElementById("proposalToModelMap");
 			var modelContent = document.getElementById("modelContent");
+			var modelSettingsDescriptionBox = document.getElementById("modelSettingsDescriptionBox");
 
 			if(modelSettingsOption === "CONSOLIDATE"){
 				if(consolidationPossible) {
@@ -116,15 +124,18 @@
 					proposalToModelMap.style.display = "";
 
 				}
+				modelSettingsDescriptionBox.style.display = "";
 			} else{
 				modelsSelectBox.style.display = "";
 				modelContent.style.display = "";
 				proposalToModelMap.style.display = "none";
+				modelSettingsDescriptionBox.style.display = "none";
 
 				setModelSetRadiosState(false);
 				checkModelSetRadioWithId(modelId);
 				modeling.toggleEditMask(true);
 				modeling.loadModel(modelId);
+
 			}
 
 		});

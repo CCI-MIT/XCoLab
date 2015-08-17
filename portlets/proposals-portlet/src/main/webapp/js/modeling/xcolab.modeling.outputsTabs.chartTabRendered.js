@@ -236,16 +236,8 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		if (valuesCombined.length > 0) {
 			chartContainer.jqplot(valuesCombined, plotOptions);
 			chartContainer.find("table.jqplot-table-legend").appendTo(legendContainer).removeAttr('style');
-			chartContainer.find("table.jqplot-table-legend tr.emfModelsUnderChartMessage").remove();
-			
-			var legendElem = chartContainer.find("table.jqplot-table-legend");
-			var columnCount = legendElem.find("tr:first td").length;
-			var emfModelsUnderChartMessage = "<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" +
-				"Results shown for the following models. See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>EMF27 model runs for more details</a></td></tr>";
-			legendElem.prepend(emfModelsUnderChartMessage);
 		}
-		
-		
+
 		jQuery.each({indexedOutOfRangeError: 'rangeErrorPolicy', indexedInvalidError: 'invalidErrorPolicy'}, function(key, val) {
 			if (output[key] && output[key]['message'] && seriesWithErrors[val].length > 0) {
 				errorMessages.push(output[key].message.replace("%outputs", seriesWithErrors[val].join(", ")));

@@ -67,6 +67,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		this.container.find('.model_name').text(model.modelName);
 		this.container.find('.model_description').text(model.modelDescription);
 
+		var isModelRegional = model.modelName.toLowerCase().indexOf("regional") != -1;
 		var isModelEMF = model.modelName.toLowerCase().indexOf("emf") != -1;
 		var isModelEnRoads = model.modelName.toLowerCase().indexOf("enroads") != -1;
 		var modelLink ="";
@@ -78,10 +79,18 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			brand = $("<div class='brand' onclick='location.href=\"http://www.climateinteractive.org\"'></div>");
 			modelLink = "/resources/-/wiki/Main/EnROADS+by+Climate+Interactive";
 		}
+
+		if(isModelRegional){
+			var instructions = "<p class='instructions'>Regional versions of the EnROADS and EMF 27 modeling tools, specifically adapted for this contest, are available below. Enter inputs that correspond with the actions you propose and click “Run the Model.” The tool will project CO2 emissions for the country/region through 2100. " +
+				"For more, see <a href='/web/guest/resources/-/wiki/Main/Climate+CoLab+Regional+Modeling+Tools'>Climate CoLab Regional Modeling Tools.</a></p>";
+			this.container.find(".model_description .instructions").remove();
+			this.container.find(".model_description").append(instructions);
+		}
+
 		this.container.find('.model_name_description').attr("href", modelLink);
 		this.container.find(".model_description .brand").remove();
 		brand.addClass(model.modelName);
-		this.container.find(".model_description").append(brand);
+		this.container.find(".model_description").prepend(brand);
 	}
 	
 	XCoLab.modeling.headerRenderers.push(function (modelingWidget) {
