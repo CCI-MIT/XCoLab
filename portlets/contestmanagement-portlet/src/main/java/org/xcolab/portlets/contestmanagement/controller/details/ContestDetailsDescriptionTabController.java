@@ -126,7 +126,6 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
         } catch(Exception e){
             _log.warn("Update contest description failed with: ", e);
-            _log.warn(e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
 
@@ -153,6 +152,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
                 }
             }
         } catch (Exception e){
+
         }
         return selectItems;
     }

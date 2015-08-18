@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
+import org.xcolab.utils.HtmlCleaner;
 import org.xcolab.utils.emailnotification.ProposalCreationNotification;
 
 
@@ -192,7 +193,7 @@ public class AddUpdateProposalDetailsActionController {
         
         
         if (updateProposalSectionsBean.getName() != null && (proposal.getName() == null || !updateProposalSectionsBean.getName().equals(proposal.getName()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, removeHtml(updateProposalSectionsBean.getName()));
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, HtmlCleaner.cleanMost(updateProposalSectionsBean.getName()));
         }
         else {
         	filledAll = false;
@@ -213,7 +214,7 @@ public class AddUpdateProposalDetailsActionController {
         }
 
         if (updateProposalSectionsBean.getTeam() != null && !updateProposalSectionsBean.getTeam().equals(proposal.getTeam())) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, removeHtml(updateProposalSectionsBean.getTeam()));
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, HtmlCleaner.cleanMost(updateProposalSectionsBean.getTeam()));
         }
         else {
         	filledAll = false;
@@ -302,25 +303,6 @@ public class AddUpdateProposalDetailsActionController {
         response.sendRedirect("/web/guest/plans/-/plans/contestId/" + proposalsContext.getContest(request).getContestPK() + "/planId/" + proposal.getProposalId());
     }
 
-    private String removeHtml(String data) {
-    	
-    	// fixing bug related to escaping html entities
-    	// http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities
-    	
-    	
-    	// Parse str into a Document
-    	Document doc = Jsoup.parse(data);
-
-    	// Clean the document.
-    	doc = new Cleaner(Whitelist.simpleText()).clean(doc);
-
-    	// Adjust escape mode
-    	doc.outputSettings().escapeMode(EscapeMode.xhtml);
-
-    	// Get back the string of the body.
-    	return doc.body().html();
-    }
-
     private String xssClean(String sectionData, PortletRequest request) {
     	String baseUrl = PortalUtil.getHttpServletRequest(request).getRequestURL().toString();
     	baseUrl.substring(0, baseUrl.indexOf("/", 9));
@@ -333,15 +315,7 @@ public class AddUpdateProposalDetailsActionController {
         // /w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
         w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
 
-    	Document doc = Jsoup.parse(sectionData, baseUrl);
-    	// Clean the document.
-    	doc = new Cleaner(w).clean(doc);
-
-    	// Adjust escape mode
-    	doc.outputSettings().escapeMode(EscapeMode.xhtml);
-
-    	// Get back the string of the body.
-    	return doc.body().html();
+        return HtmlCleaner.clean(sectionData, w);
     }
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})

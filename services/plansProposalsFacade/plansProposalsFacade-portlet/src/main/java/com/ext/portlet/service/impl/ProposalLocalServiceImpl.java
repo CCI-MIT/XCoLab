@@ -16,6 +16,7 @@ import javax.portlet.PortletRequest;
 
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.service.*;
+import com.liferay.portal.NoSuchUserException;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
@@ -837,7 +838,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public List<User> getSupporters(long proposalId) throws SystemException, PortalException {
         List<User> ret = new ArrayList<>();
         for (ProposalSupporter supporter : proposalSupporterPersistence.findByProposalId(proposalId)) {
-            ret.add(UserLocalServiceUtil.getUser(supporter.getUserId()));
+            try {
+                ret.add(UserLocalServiceUtil.getUser(supporter.getUserId()));
+            } catch(NoSuchUserException e){
+                _log.warn("Could not add proposal supporter", e);
+            }
         }
         return ret;
     }

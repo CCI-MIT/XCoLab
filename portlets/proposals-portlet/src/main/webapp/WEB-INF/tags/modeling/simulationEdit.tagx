@@ -1,6 +1,6 @@
-<jsp:root 
-	xmlns:c="http://java.sun.com/jsp/jstl/core" 
-	xmlns:jsp="http://java.sun.com/JSP/Page"  
+<jsp:root
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
@@ -8,12 +8,15 @@
 	<jsp:directive.attribute name="scenarioId" type="java.lang.Long" required="false" rtexprvalue="true" description="scenario id" />
 	<jsp:directive.attribute name="modelId" type="java.lang.Long" required="true" rtexprvalue="true" description="model id" />
 	<jsp:directive.attribute name="contestModelDefaultSetting" type="java.lang.String" required="false" rtexprvalue="true" description="model id" />
+	<jsp:directive.attribute name="inConsolidationMode" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Is the model in consolidation mode" />
+
+    <c:set var="inConsolidationMode" value="${(empty inConsolidationMode) ? false : true}" />
 
 	<modeling:simulationLoadScripts />
-	
+
 	<link rel="stylesheet" href="/proposals-portlet/css/simulation.css" ></link>
 	<div id="modelsOutputContainer"></div>
-	
+
 	<input type="text" id="modelingScenarioId" class="hidden"/>
 	<script>
 	    var options = {};
@@ -26,9 +29,10 @@
 				//options.defaultValues = {805: "US"};
 			</c:otherwise>
 		</c:choose>
+
 		options.edit = true;
 		var modeling = XCoLab.modeling('#modelsOutputContainer', options);
-		<c:choose>
+        <c:choose>
 			<c:when test="${not empty scenarioId and scenarioId > 0}">
 				modeling.loadScenario(${scenarioId});
 			</c:when>
@@ -40,7 +44,8 @@
 
 		jQuery(modeling).on("scenarioFetched", function(event) {
 			jQuery("#modelingScenarioId").val(event.scenario.scenarioId).addClass("editorDirty");
-			
+			modeling.toggleEditMask(!${inConsolidationMode});
+
 		}).on("valueChanged", function(event) {
 			jQuery("#modelingScenarioId").addClass("editorDirty");
 		});

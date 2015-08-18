@@ -58,9 +58,14 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
         if(!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
-        setPageAttributes(request, model, tab);
-        model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(request));
-        return TAB_VIEW;
+        try {
+            setPageAttributes(request, model, tab);
+            model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(request));
+            return TAB_VIEW;
+        }catch (Exception e){
+            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
+        }
+        return NOT_FOUND_TAB_VIEW;
     }
 
     @RequestMapping(params = "action=updateContestOverview")
@@ -74,8 +79,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
         }
 
         try {
-            updateContestOverviewWrapper.persistOrder();
-            updateContestOverviewWrapper.executeMassActionIfSelected(request, null);
+            updateContestOverviewWrapper.executeMassAction(request, null);
             String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
             SetRenderParameterUtil.addActionSuccessMessageToSession(request, massActionTitle);
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName());
@@ -96,10 +100,10 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
         }
 
         try {
-            updateContestOverviewWrapper.executeMassActionIfSelected(request, response);
+            updateContestOverviewWrapper.executeMassAction(request, response);
         } catch(Exception e){
             _log.warn("Export failed with: ", e);
-            _log.warn(e);
+            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
     }
 

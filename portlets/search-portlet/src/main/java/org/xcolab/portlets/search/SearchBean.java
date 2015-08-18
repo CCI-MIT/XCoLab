@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.StringQueryImpl;
+import org.xcolab.utils.HtmlCleaner;
 
 public class SearchBean extends DataSource implements Serializable {
     /**
@@ -63,7 +64,7 @@ public class SearchBean extends DataSource implements Serializable {
             this.searchPhrase = null;
         }
         else {
-            this.searchPhrase = searchPhrase;
+            this.searchPhrase = HtmlCleaner.cleanAll(searchPhrase);
         }
         onePageDataModel = null;
         
@@ -245,22 +246,21 @@ public class SearchBean extends DataSource implements Serializable {
             public void onEvent(NavigationEvent event) {
                 if (event.hasSource("search")) {
                     try {
-                        String newPhrase = event.getParameters("search").get("searchPhrase");
+                        String newPhrase = HtmlCleaner.cleanAll(event.getParameters("search").get("searchPhrase"));
                         if (newPhrase != null && newPhrase.trim().length() > 0) {
-                            searchPhrase = URLDecoder.decode(event.getParameters("search").get("searchPhrase"), "UTF-8");
-                        }
-                        else {
+                            searchPhrase = HtmlCleaner.cleanAll(URLDecoder.decode(event.getParameters("search").get("searchPhrase"), "UTF-8"));
+                        } else {
                             searchPhrase = null;
-                            
+
                         }
-                        
+
                         onePageDataModel = null;
                     } catch (UnsupportedEncodingException e) {
                         _log.error("Can't read search phrase", e);
                     }
                 }
             }
-            
+
         }));
         
     }

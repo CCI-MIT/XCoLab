@@ -80,6 +80,7 @@ public class ContestDetailsProposalTempateController extends ContestProposalTemp
             return ContestProposalTemplateTabController.TAB_VIEW;
         } catch (Exception e){
             _log.warn("Could not create proposal template wrapper: ", e);
+            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
         return NOT_FOUND_TAB_VIEW;
     }

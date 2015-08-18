@@ -67,6 +67,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+import org.xcolab.utils.HtmlCleaner;
 
 //import javax.validation.Validator;
 
@@ -290,7 +291,7 @@ public class MainViewController {
                     User.class.getName(),
                     CommunityConstants.EXPANDO,
                     CommunityConstants.BIO, loggedInUser.getUserId(),
-                    bio);
+                    HtmlCleaner.cleanSome(bio));
         } else {
             if (bio.length() > 2000) {
                 json.getJSONObject("bio").put("success", false);
@@ -330,7 +331,6 @@ public class MainViewController {
         BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
 
         try {
-
             User user = UserServiceUtil.addUserWithWorkflow(
                     DEFAULT_COMPANY_ID, false,
                     newAccountBean.getPassword(),
@@ -338,14 +338,14 @@ public class MainViewController {
                     newAccountBean.getScreenName(),
                     newAccountBean.getEmail(), 0L, "",
                     themeDisplay.getLocale(),
-                    newAccountBean.getFirstName(), "",
-                    newAccountBean.getLastName(), 0, 0, true, 1, 1,
+                    HtmlCleaner.cleanAll(newAccountBean.getFirstName()), "",
+                    HtmlCleaner.cleanAll(newAccountBean.getLastName()), 0, 0, true, 1, 1,
                     1970, "", new long[]{}, new long[]{},
                     new long[]{}, new long[]{}, true, serviceContext);
 
             if (newAccountBean.getShortBio() != null
                     && newAccountBean.getShortBio().length() > 0) {
-                setExpandoValue(user, CommunityConstants.BIO, newAccountBean.getShortBio());
+                setExpandoValue(user, CommunityConstants.BIO, HtmlCleaner.cleanSome(newAccountBean.getShortBio()));
             }
 
             if (newAccountBean.getCountry() != null

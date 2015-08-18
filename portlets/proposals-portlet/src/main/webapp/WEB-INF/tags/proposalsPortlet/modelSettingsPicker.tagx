@@ -82,13 +82,12 @@
 
 		jQuery().ready(function() {
 			var proposalToModelMap = document.getElementById("proposalToModelMap");
+			proposalToModelMap.style.display = "none";
 			if(consolidationPossible){
 				checkModelSetRadioWithId(consolidatedModelId);
 				setModelSetRadiosState(true);
-				proposalToModelMap.style.display = "none";
 			} else{
 				checkModelSetRadioWithId(modelId);
-				proposalToModelMap.style.display = "";
 			}
 		});
 
@@ -108,6 +107,7 @@
 					setModelSetRadiosState(true);
 					checkModelSetRadioWithId(consolidatedModelId);
 					if (consolidatedScenarioId > 0) {
+						modeling.toggleEditMask(false);
 						modeling.loadScenario(consolidatedScenarioId);
 					}
 				} else{
@@ -123,6 +123,7 @@
 
 				setModelSetRadiosState(false);
 				checkModelSetRadioWithId(modelId);
+				modeling.toggleEditMask(true);
 				modeling.loadModel(modelId);
 			}
 
