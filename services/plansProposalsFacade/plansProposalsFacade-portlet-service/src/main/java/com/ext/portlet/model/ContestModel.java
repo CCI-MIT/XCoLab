@@ -287,20 +287,19 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setVoteTemplateString(String voteTemplateString);
 
     /**
-     * Returns the vote confirmation template string of this contest.
+     * Returns the proposal vote template string of this contest.
      *
-     * @return the vote confirmation template string of this contest
+     * @return the proposal vote template string of this contest
      */
     @AutoEscape
-    public String getVoteConfirmationTemplateString();
+    public String getProposalVoteTemplateString();
 
     /**
-     * Sets the vote confirmation template string of this contest.
+     * Sets the proposal vote template string of this contest.
      *
-     * @param voteConfirmationTemplateString the vote confirmation template string of this contest
+     * @param proposalVoteTemplateString the proposal vote template string of this contest
      */
-    public void setVoteConfirmationTemplateString(
-        String voteConfirmationTemplateString);
+    public void setProposalVoteTemplateString(String proposalVoteTemplateString);
 
     /**
      * Returns the vote question template string of this contest.
@@ -516,6 +515,20 @@ public interface ContestModel extends BaseModel<Contest> {
      * @param discussionGroupId the discussion group ID of this contest
      */
     public void setDiscussionGroupId(long discussionGroupId);
+
+    /**
+     * Returns the fellow discussion group ID of this contest.
+     *
+     * @return the fellow discussion group ID of this contest
+     */
+    public long getFellowDiscussionGroupId();
+
+    /**
+     * Sets the fellow discussion group ID of this contest.
+     *
+     * @param fellowDiscussionGroupId the fellow discussion group ID of this contest
+     */
+    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId);
 
     /**
      * Returns the weight of this contest.

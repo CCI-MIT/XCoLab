@@ -79,7 +79,7 @@ public class ProposalVoteNotification extends EmailNotification {
         final String proposalName = ProposalLocalServiceUtil.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
         templateWrapper = new ProposalVoteTemplate(
-                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(contest.getVoteConfirmationTemplateString()),
+                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(contest.getProposalVoteTemplateString()),
                 proposalName,
                 contest.getContestShortName()
         );

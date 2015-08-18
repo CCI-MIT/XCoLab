@@ -55,8 +55,8 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("proposalCreationTemplateString",
             getProposalCreationTemplateString());
         attributes.put("voteTemplateString", getVoteTemplateString());
-        attributes.put("voteConfirmationTemplateString",
-            getVoteConfirmationTemplateString());
+        attributes.put("proposalVoteTemplateString",
+            getProposalVoteTemplateString());
         attributes.put("voteQuestionTemplateString",
             getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
@@ -72,6 +72,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("flagTooltip", getFlagTooltip());
         attributes.put("groupId", getGroupId());
         attributes.put("discussionGroupId", getDiscussionGroupId());
+        attributes.put("fellowDiscussionGroupId", getFellowDiscussionGroupId());
         attributes.put("weight", getWeight());
         attributes.put("resourcesUrl", getResourcesUrl());
         attributes.put("contestPrivate", getContestPrivate());
@@ -196,11 +197,11 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
             setVoteTemplateString(voteTemplateString);
         }
 
-        String voteConfirmationTemplateString = (String) attributes.get(
-                "voteConfirmationTemplateString");
+        String proposalVoteTemplateString = (String) attributes.get(
+                "proposalVoteTemplateString");
 
-        if (voteConfirmationTemplateString != null) {
-            setVoteConfirmationTemplateString(voteConfirmationTemplateString);
+        if (proposalVoteTemplateString != null) {
+            setProposalVoteTemplateString(proposalVoteTemplateString);
         }
 
         String voteQuestionTemplateString = (String) attributes.get(
@@ -287,6 +288,13 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (discussionGroupId != null) {
             setDiscussionGroupId(discussionGroupId);
+        }
+
+        Long fellowDiscussionGroupId = (Long) attributes.get(
+                "fellowDiscussionGroupId");
+
+        if (fellowDiscussionGroupId != null) {
+            setFellowDiscussionGroupId(fellowDiscussionGroupId);
         }
 
         Integer weight = (Integer) attributes.get("weight");
@@ -742,24 +750,24 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     }
 
     /**
-    * Returns the vote confirmation template string of this contest.
+    * Returns the proposal vote template string of this contest.
     *
-    * @return the vote confirmation template string of this contest
+    * @return the proposal vote template string of this contest
     */
     @Override
-    public java.lang.String getVoteConfirmationTemplateString() {
-        return _contest.getVoteConfirmationTemplateString();
+    public java.lang.String getProposalVoteTemplateString() {
+        return _contest.getProposalVoteTemplateString();
     }
 
     /**
-    * Sets the vote confirmation template string of this contest.
+    * Sets the proposal vote template string of this contest.
     *
-    * @param voteConfirmationTemplateString the vote confirmation template string of this contest
+    * @param proposalVoteTemplateString the proposal vote template string of this contest
     */
     @Override
-    public void setVoteConfirmationTemplateString(
-        java.lang.String voteConfirmationTemplateString) {
-        _contest.setVoteConfirmationTemplateString(voteConfirmationTemplateString);
+    public void setProposalVoteTemplateString(
+        java.lang.String proposalVoteTemplateString) {
+        _contest.setProposalVoteTemplateString(proposalVoteTemplateString);
     }
 
     /**
@@ -1061,6 +1069,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setDiscussionGroupId(long discussionGroupId) {
         _contest.setDiscussionGroupId(discussionGroupId);
+    }
+
+    /**
+    * Returns the fellow discussion group ID of this contest.
+    *
+    * @return the fellow discussion group ID of this contest
+    */
+    @Override
+    public long getFellowDiscussionGroupId() {
+        return _contest.getFellowDiscussionGroupId();
+    }
+
+    /**
+    * Sets the fellow discussion group ID of this contest.
+    *
+    * @param fellowDiscussionGroupId the fellow discussion group ID of this contest
+    */
+    @Override
+    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId) {
+        _contest.setFellowDiscussionGroupId(fellowDiscussionGroupId);
     }
 
     /**

@@ -142,7 +142,7 @@
 		<field name="voteTemplateString" type="String">
 			<hint name="default-value">CONTEST_VOTE_DEFAULT</hint>
 		</field>
-		<field name="voteConfirmationTemplateString" type="String">
+		<field name="proposalVoteTemplateString" type="String">
 			<hint name="default-value">PROPOSAL_VOTE_DEFAULT</hint>
 		</field>
 		<field name="voteQuestionTemplateString" type="String">
@@ -167,6 +167,7 @@
 		</field>
 		<field name="groupId" type="long" />
 		<field name="discussionGroupId" type="long" />
+		<field name="fellowDiscussionGroupId" type="long" />
 		<field name="weight" type="int" />
 		<field name="resourcesUrl" type="String">
 			<hint name="max-length">1024</hint>

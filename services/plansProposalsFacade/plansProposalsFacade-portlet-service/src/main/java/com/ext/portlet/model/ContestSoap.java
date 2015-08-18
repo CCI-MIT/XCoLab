@@ -30,7 +30,7 @@ public class ContestSoap implements Serializable {
     private long _contestScheduleId;
     private String _proposalCreationTemplateString;
     private String _voteTemplateString;
-    private String _voteConfirmationTemplateString;
+    private String _proposalVoteTemplateString;
     private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
@@ -45,6 +45,7 @@ public class ContestSoap implements Serializable {
     private String _flagTooltip;
     private long _groupId;
     private long _discussionGroupId;
+    private long _fellowDiscussionGroupId;
     private int _weight;
     private String _resourcesUrl;
     private boolean _contestPrivate;
@@ -83,7 +84,7 @@ public class ContestSoap implements Serializable {
         soapModel.setContestScheduleId(model.getContestScheduleId());
         soapModel.setProposalCreationTemplateString(model.getProposalCreationTemplateString());
         soapModel.setVoteTemplateString(model.getVoteTemplateString());
-        soapModel.setVoteConfirmationTemplateString(model.getVoteConfirmationTemplateString());
+        soapModel.setProposalVoteTemplateString(model.getProposalVoteTemplateString());
         soapModel.setVoteQuestionTemplateString(model.getVoteQuestionTemplateString());
         soapModel.setFocusAreaId(model.getFocusAreaId());
         soapModel.setContestTier(model.getContestTier());
@@ -98,6 +99,7 @@ public class ContestSoap implements Serializable {
         soapModel.setFlagTooltip(model.getFlagTooltip());
         soapModel.setGroupId(model.getGroupId());
         soapModel.setDiscussionGroupId(model.getDiscussionGroupId());
+        soapModel.setFellowDiscussionGroupId(model.getFellowDiscussionGroupId());
         soapModel.setWeight(model.getWeight());
         soapModel.setResourcesUrl(model.getResourcesUrl());
         soapModel.setContestPrivate(model.getContestPrivate());
@@ -295,13 +297,12 @@ public class ContestSoap implements Serializable {
         _voteTemplateString = voteTemplateString;
     }
 
-    public String getVoteConfirmationTemplateString() {
-        return _voteConfirmationTemplateString;
+    public String getProposalVoteTemplateString() {
+        return _proposalVoteTemplateString;
     }
 
-    public void setVoteConfirmationTemplateString(
-        String voteConfirmationTemplateString) {
-        _voteConfirmationTemplateString = voteConfirmationTemplateString;
+    public void setProposalVoteTemplateString(String proposalVoteTemplateString) {
+        _proposalVoteTemplateString = proposalVoteTemplateString;
     }
 
     public String getVoteQuestionTemplateString() {
@@ -422,6 +423,14 @@ public class ContestSoap implements Serializable {
 
     public void setDiscussionGroupId(long discussionGroupId) {
         _discussionGroupId = discussionGroupId;
+    }
+
+    public long getFellowDiscussionGroupId() {
+        return _fellowDiscussionGroupId;
+    }
+
+    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId) {
+        _fellowDiscussionGroupId = fellowDiscussionGroupId;
     }
 
     public int getWeight() {

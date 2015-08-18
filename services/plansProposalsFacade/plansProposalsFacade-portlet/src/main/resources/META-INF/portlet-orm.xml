@@ -159,7 +159,7 @@
 			<basic name="contestScheduleId" />
 			<basic name="proposalCreationTemplateString" />
 			<basic name="voteTemplateString" />
-			<basic name="voteConfirmationTemplateString" />
+			<basic name="proposalVoteTemplateString" />
 			<basic name="voteQuestionTemplateString" />
 			<basic name="focusAreaId" />
 			<basic name="contestTier" />
@@ -176,6 +176,7 @@
 			<basic name="flagTooltip" />
 			<basic name="groupId" />
 			<basic name="discussionGroupId" />
+			<basic name="fellowDiscussionGroupId" />
 			<basic name="weight" />
 			<basic name="resourcesUrl" />
 			<basic name="contestPrivate" />

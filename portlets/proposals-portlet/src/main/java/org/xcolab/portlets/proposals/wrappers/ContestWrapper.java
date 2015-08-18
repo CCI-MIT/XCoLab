@@ -363,6 +363,14 @@ public class ContestWrapper {
         contest.setDiscussionGroupId(discussionGroupId);
     }
 
+    public long getFellowDiscussionGroupId() {
+        return contest.getFellowDiscussionGroupId();
+    }
+
+    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId) {
+        contest.setFellowDiscussionGroupId(fellowDiscussionGroupId);
+    }
+
     public int getWeight() {
         return contest.getWeight();
     }
