@@ -156,7 +156,7 @@ public class ProposalWrapper {
     public long getFellowDiscussionId() throws PortalException, SystemException {
         final long fellowDiscussionId = proposal.getFellowDiscussionId();
         if (fellowDiscussionId == 0) {
-            DiscussionCategoryGroup discussionCategoryGroup = DiscussionCategoryGroupLocalServiceUtil.createDiscussionCategoryGroup(_proposal.getProposalId() + "_fellowReview");
+            DiscussionCategoryGroup discussionCategoryGroup = DiscussionCategoryGroupLocalServiceUtil.createDiscussionCategoryGroup(proposal.getProposalId() + "_fellowReview");
             return discussionCategoryGroup.getId();
         }
         return fellowDiscussionId;
