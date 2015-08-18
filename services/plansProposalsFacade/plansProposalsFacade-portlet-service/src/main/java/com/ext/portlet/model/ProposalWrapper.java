@@ -1,7 +1,5 @@
 package com.ext.portlet.model;
 
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
@@ -347,16 +345,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     */
     @Override
     public long getFellowDiscussionId() {
-        final long fellowDiscussionId = _proposal.getFellowDiscussionId();
-        if (fellowDiscussionId == 0) {
-            try {
-                DiscussionCategoryGroup discussionCategoryGroup = DiscussionCategoryGroupLocalServiceUtil.createDiscussionCategoryGroup(_proposal.getProposalId() + "_fellowReview");
-                return discussionCategoryGroup.getId();
-            } catch (SystemException e) {
-                e.printStackTrace();
-            }
-        }
-        return fellowDiscussionId;
+        return _proposal.getFellowDiscussionId();
     }
 
     /**

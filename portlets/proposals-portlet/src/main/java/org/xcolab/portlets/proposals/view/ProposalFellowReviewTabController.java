@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
 
@@ -22,7 +23,7 @@ public class ProposalFellowReviewTabController extends BaseProposalTabController
     public String showFellowReview(PortletRequest request, Model model)
             throws PortalException, SystemException {
 
-        final Proposal proposal = proposalsContext.getProposal(request);
+        final ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
         model.addAttribute("discussionId", proposal.getFellowDiscussionId());
         model.addAttribute("authorId", proposal.getAuthorId());
         model.addAttribute("proposalId", proposal.getProposalId());

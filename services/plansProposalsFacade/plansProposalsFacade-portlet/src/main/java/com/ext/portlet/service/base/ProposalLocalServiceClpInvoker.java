@@ -165,8 +165,8 @@ public class ProposalLocalServiceClpInvoker {
     private String[] _methodParameterTypes723;
     private String _methodName724;
     private String[] _methodParameterTypes724;
-    private String _methodName730;
-    private String[] _methodParameterTypes730;
+    private String _methodName725;
+    private String[] _methodParameterTypes725;
     private String _methodName731;
     private String[] _methodParameterTypes731;
     private String _methodName732;
@@ -185,6 +185,8 @@ public class ProposalLocalServiceClpInvoker {
     private String[] _methodParameterTypes738;
     private String _methodName739;
     private String[] _methodParameterTypes739;
+    private String _methodName740;
+    private String[] _methodParameterTypes740;
 
     public ProposalLocalServiceClpInvoker() {
         _methodName0 = "addProposal";
@@ -464,154 +466,158 @@ public class ProposalLocalServiceClpInvoker {
 
         _methodParameterTypes703 = new String[] { "long" };
 
-        _methodName704 = "isUserAMember";
+        _methodName704 = "getFellowReviewCommentsCount";
 
-        _methodParameterTypes704 = new String[] { "long", "long" };
+        _methodParameterTypes704 = new String[] { "long" };
 
-        _methodName705 = "isOpen";
+        _methodName705 = "isUserAMember";
 
-        _methodParameterTypes705 = new String[] { "long" };
+        _methodParameterTypes705 = new String[] { "long", "long" };
 
-        _methodName706 = "getMembershipRequests";
+        _methodName706 = "isOpen";
 
         _methodParameterTypes706 = new String[] { "long" };
 
-        _methodName707 = "addMembershipRequest";
+        _methodName707 = "getMembershipRequests";
 
-        _methodParameterTypes707 = new String[] {
+        _methodParameterTypes707 = new String[] { "long" };
+
+        _methodName708 = "addMembershipRequest";
+
+        _methodParameterTypes708 = new String[] {
                 "long", "long", "java.lang.String"
             };
 
-        _methodName708 = "removeUserFromTeam";
+        _methodName709 = "removeUserFromTeam";
 
-        _methodParameterTypes708 = new String[] { "long", "long" };
+        _methodParameterTypes709 = new String[] { "long", "long" };
 
-        _methodName709 = "dennyMembershipRequest";
+        _methodName710 = "dennyMembershipRequest";
 
-        _methodParameterTypes709 = new String[] {
+        _methodParameterTypes710 = new String[] {
                 "long", "long", "long", "java.lang.String", "long"
             };
 
-        _methodName710 = "approveMembershipRequest";
+        _methodName711 = "approveMembershipRequest";
 
-        _methodParameterTypes710 = new String[] {
+        _methodParameterTypes711 = new String[] {
                 "long", "java.lang.Long",
                 "com.liferay.portal.model.MembershipRequest", "java.lang.String",
                 "java.lang.Long"
             };
 
-        _methodName711 = "hasUserRequestedMembership";
-
-        _methodParameterTypes711 = new String[] { "long", "long" };
-
-        _methodName712 = "joinIfNotAMemberAndProposalIsOpen";
+        _methodName712 = "hasUserRequestedMembership";
 
         _methodParameterTypes712 = new String[] { "long", "long" };
 
-        _methodName713 = "isSubscribed";
+        _methodName713 = "joinIfNotAMemberAndProposalIsOpen";
 
         _methodParameterTypes713 = new String[] { "long", "long" };
 
-        _methodName714 = "subscribe";
+        _methodName714 = "isSubscribed";
 
         _methodParameterTypes714 = new String[] { "long", "long" };
 
         _methodName715 = "subscribe";
 
-        _methodParameterTypes715 = new String[] { "long", "long", "boolean" };
+        _methodParameterTypes715 = new String[] { "long", "long" };
 
-        _methodName716 = "unsubscribe";
+        _methodName716 = "subscribe";
 
-        _methodParameterTypes716 = new String[] { "long", "long" };
+        _methodParameterTypes716 = new String[] { "long", "long", "boolean" };
 
         _methodName717 = "unsubscribe";
 
-        _methodParameterTypes717 = new String[] { "long", "long", "boolean" };
+        _methodParameterTypes717 = new String[] { "long", "long" };
 
-        _methodName718 = "hasUserVoted";
+        _methodName718 = "unsubscribe";
 
-        _methodParameterTypes718 = new String[] { "long", "long", "long" };
+        _methodParameterTypes718 = new String[] { "long", "long", "boolean" };
 
-        _methodName719 = "getUserSupportedProposalsCount";
+        _methodName719 = "hasUserVoted";
 
-        _methodParameterTypes719 = new String[] { "long" };
+        _methodParameterTypes719 = new String[] { "long", "long", "long" };
 
-        _methodName720 = "getUserVotedProposalsCount";
+        _methodName720 = "getUserSupportedProposalsCount";
 
         _methodParameterTypes720 = new String[] { "long" };
 
-        _methodName721 = "getModifiedAfter";
+        _methodName721 = "getUserVotedProposalsCount";
 
-        _methodParameterTypes721 = new String[] { "java.util.Date" };
+        _methodParameterTypes721 = new String[] { "long" };
 
-        _methodName722 = "contestPhasePromotionEmailNotifyProposalContributors";
+        _methodName722 = "getModifiedAfter";
 
-        _methodParameterTypes722 = new String[] {
+        _methodParameterTypes722 = new String[] { "java.util.Date" };
+
+        _methodName723 = "contestPhasePromotionEmailNotifyProposalContributors";
+
+        _methodParameterTypes723 = new String[] {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.ContestPhase",
                 "javax.portlet.PortletRequest"
             };
 
-        _methodName723 = "contestPhasePromotionCommentNotifyProposalContributors";
+        _methodName724 = "contestPhasePromotionCommentNotifyProposalContributors";
 
-        _methodParameterTypes723 = new String[] {
+        _methodParameterTypes724 = new String[] {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.ContestPhase"
             };
 
-        _methodName724 = "getDiscussionIdAndGenerateIfNull";
+        _methodName725 = "getDiscussionIdAndGenerateIfNull";
 
-        _methodParameterTypes724 = new String[] { "com.ext.portlet.model.Proposal" };
-
-        _methodName730 = "getProposalLinkUrl";
-
-        _methodParameterTypes730 = new String[] {
-                "com.ext.portlet.model.Contest",
-                "com.ext.portlet.model.Proposal"
-            };
+        _methodParameterTypes725 = new String[] { "com.ext.portlet.model.Proposal" };
 
         _methodName731 = "getProposalLinkUrl";
 
         _methodParameterTypes731 = new String[] {
                 "com.ext.portlet.model.Contest",
+                "com.ext.portlet.model.Proposal"
+            };
+
+        _methodName732 = "getProposalLinkUrl";
+
+        _methodParameterTypes732 = new String[] {
+                "com.ext.portlet.model.Contest",
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.ContestPhase"
             };
 
-        _methodName732 = "getContestIntegrationRelevantSubproposals";
+        _methodName733 = "getContestIntegrationRelevantSubproposals";
 
-        _methodParameterTypes732 = new String[] { "long" };
-
-        _methodName733 = "getSubproposals";
-
-        _methodParameterTypes733 = new String[] { "long", "boolean" };
+        _methodParameterTypes733 = new String[] { "long" };
 
         _methodName734 = "getSubproposals";
 
-        _methodParameterTypes734 = new String[] { "long", "boolean", "boolean" };
+        _methodParameterTypes734 = new String[] { "long", "boolean" };
 
-        _methodName735 = "getLatestProposalContestPhase";
+        _methodName735 = "getSubproposals";
 
-        _methodParameterTypes735 = new String[] { "long" };
+        _methodParameterTypes735 = new String[] { "long", "boolean", "boolean" };
 
-        _methodName736 = "getLatestProposalContest";
+        _methodName736 = "getLatestProposalContestPhase";
 
         _methodParameterTypes736 = new String[] { "long" };
 
-        _methodName737 = "getImpactProposalAttributes";
+        _methodName737 = "getLatestProposalContest";
 
-        _methodParameterTypes737 = new String[] { "com.ext.portlet.model.Proposal" };
+        _methodParameterTypes737 = new String[] { "long" };
 
         _methodName738 = "getImpactProposalAttributes";
 
-        _methodParameterTypes738 = new String[] {
+        _methodParameterTypes738 = new String[] { "com.ext.portlet.model.Proposal" };
+
+        _methodName739 = "getImpactProposalAttributes";
+
+        _methodParameterTypes739 = new String[] {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.FocusArea"
             };
 
-        _methodName739 = "getImpactProposalFocusAreas";
+        _methodName740 = "getImpactProposalFocusAreas";
 
-        _methodParameterTypes739 = new String[] { "com.ext.portlet.model.Proposal" };
+        _methodParameterTypes740 = new String[] { "com.ext.portlet.model.Proposal" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -1001,37 +1007,42 @@ public class ProposalLocalServiceClpInvoker {
 
         if (_methodName704.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes704, parameterTypes)) {
-            return ProposalLocalServiceUtil.isUserAMember(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue());
+            return ProposalLocalServiceUtil.getFellowReviewCommentsCount(((Long) arguments[0]).longValue());
         }
 
         if (_methodName705.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes705, parameterTypes)) {
-            return ProposalLocalServiceUtil.isOpen(((Long) arguments[0]).longValue());
+            return ProposalLocalServiceUtil.isUserAMember(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
         }
 
         if (_methodName706.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes706, parameterTypes)) {
-            return ProposalLocalServiceUtil.getMembershipRequests(((Long) arguments[0]).longValue());
+            return ProposalLocalServiceUtil.isOpen(((Long) arguments[0]).longValue());
         }
 
         if (_methodName707.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes707, parameterTypes)) {
+            return ProposalLocalServiceUtil.getMembershipRequests(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName708.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes708, parameterTypes)) {
             return ProposalLocalServiceUtil.addMembershipRequest(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2]);
         }
 
-        if (_methodName708.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes708, parameterTypes)) {
+        if (_methodName709.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes709, parameterTypes)) {
             ProposalLocalServiceUtil.removeUserFromTeam(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
 
             return null;
         }
 
-        if (_methodName709.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes709, parameterTypes)) {
+        if (_methodName710.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes710, parameterTypes)) {
             ProposalLocalServiceUtil.dennyMembershipRequest(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
@@ -1041,8 +1052,8 @@ public class ProposalLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName710.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes710, parameterTypes)) {
+        if (_methodName711.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes711, parameterTypes)) {
             ProposalLocalServiceUtil.approveMembershipRequest(((Long) arguments[0]).longValue(),
                 (java.lang.Long) arguments[1],
                 (com.liferay.portal.model.MembershipRequest) arguments[2],
@@ -1051,47 +1062,39 @@ public class ProposalLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName711.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes711, parameterTypes)) {
+        if (_methodName712.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes712, parameterTypes)) {
             return ProposalLocalServiceUtil.hasUserRequestedMembership(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName712.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes712, parameterTypes)) {
+        if (_methodName713.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes713, parameterTypes)) {
             ProposalLocalServiceUtil.joinIfNotAMemberAndProposalIsOpen(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
 
             return null;
         }
 
-        if (_methodName713.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes713, parameterTypes)) {
-            return ProposalLocalServiceUtil.isSubscribed(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue());
-        }
-
         if (_methodName714.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes714, parameterTypes)) {
-            ProposalLocalServiceUtil.subscribe(((Long) arguments[0]).longValue(),
+            return ProposalLocalServiceUtil.isSubscribed(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
-
-            return null;
         }
 
         if (_methodName715.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes715, parameterTypes)) {
             ProposalLocalServiceUtil.subscribe(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue(),
-                ((Boolean) arguments[2]).booleanValue());
+                ((Long) arguments[1]).longValue());
 
             return null;
         }
 
         if (_methodName716.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes716, parameterTypes)) {
-            ProposalLocalServiceUtil.unsubscribe(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue());
+            ProposalLocalServiceUtil.subscribe(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                ((Boolean) arguments[2]).booleanValue());
 
             return null;
         }
@@ -1099,36 +1102,44 @@ public class ProposalLocalServiceClpInvoker {
         if (_methodName717.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes717, parameterTypes)) {
             ProposalLocalServiceUtil.unsubscribe(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue(),
-                ((Boolean) arguments[2]).booleanValue());
+                ((Long) arguments[1]).longValue());
 
             return null;
         }
 
         if (_methodName718.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes718, parameterTypes)) {
+            ProposalLocalServiceUtil.unsubscribe(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                ((Boolean) arguments[2]).booleanValue());
+
+            return null;
+        }
+
+        if (_methodName719.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes719, parameterTypes)) {
             return ProposalLocalServiceUtil.hasUserVoted(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue());
         }
 
-        if (_methodName719.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes719, parameterTypes)) {
-            return ProposalLocalServiceUtil.getUserSupportedProposalsCount(((Long) arguments[0]).longValue());
-        }
-
         if (_methodName720.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes720, parameterTypes)) {
-            return ProposalLocalServiceUtil.getUserVotedProposalsCount(((Long) arguments[0]).longValue());
+            return ProposalLocalServiceUtil.getUserSupportedProposalsCount(((Long) arguments[0]).longValue());
         }
 
         if (_methodName721.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes721, parameterTypes)) {
-            return ProposalLocalServiceUtil.getModifiedAfter((java.util.Date) arguments[0]);
+            return ProposalLocalServiceUtil.getUserVotedProposalsCount(((Long) arguments[0]).longValue());
         }
 
         if (_methodName722.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes722, parameterTypes)) {
+            return ProposalLocalServiceUtil.getModifiedAfter((java.util.Date) arguments[0]);
+        }
+
+        if (_methodName723.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes723, parameterTypes)) {
             ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors((com.ext.portlet.model.Proposal) arguments[0],
                 (com.ext.portlet.model.ContestPhase) arguments[1],
                 (javax.portlet.PortletRequest) arguments[2]);
@@ -1136,73 +1147,73 @@ public class ProposalLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName723.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes723, parameterTypes)) {
+        if (_methodName724.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes724, parameterTypes)) {
             ProposalLocalServiceUtil.contestPhasePromotionCommentNotifyProposalContributors((com.ext.portlet.model.Proposal) arguments[0],
                 (com.ext.portlet.model.ContestPhase) arguments[1]);
 
             return null;
         }
 
-        if (_methodName724.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes724, parameterTypes)) {
+        if (_methodName725.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes725, parameterTypes)) {
             return ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull((com.ext.portlet.model.Proposal) arguments[0]);
-        }
-
-        if (_methodName730.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes730, parameterTypes)) {
-            return ProposalLocalServiceUtil.getProposalLinkUrl((com.ext.portlet.model.Contest) arguments[0],
-                (com.ext.portlet.model.Proposal) arguments[1]);
         }
 
         if (_methodName731.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes731, parameterTypes)) {
             return ProposalLocalServiceUtil.getProposalLinkUrl((com.ext.portlet.model.Contest) arguments[0],
-                (com.ext.portlet.model.Proposal) arguments[1],
-                (com.ext.portlet.model.ContestPhase) arguments[2]);
+                (com.ext.portlet.model.Proposal) arguments[1]);
         }
 
         if (_methodName732.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes732, parameterTypes)) {
-            return ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(((Long) arguments[0]).longValue());
+            return ProposalLocalServiceUtil.getProposalLinkUrl((com.ext.portlet.model.Contest) arguments[0],
+                (com.ext.portlet.model.Proposal) arguments[1],
+                (com.ext.portlet.model.ContestPhase) arguments[2]);
         }
 
         if (_methodName733.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes733, parameterTypes)) {
-            return ProposalLocalServiceUtil.getSubproposals(((Long) arguments[0]).longValue(),
-                ((Boolean) arguments[1]).booleanValue());
+            return ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(((Long) arguments[0]).longValue());
         }
 
         if (_methodName734.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes734, parameterTypes)) {
             return ProposalLocalServiceUtil.getSubproposals(((Long) arguments[0]).longValue(),
-                ((Boolean) arguments[1]).booleanValue(),
-                ((Boolean) arguments[2]).booleanValue());
+                ((Boolean) arguments[1]).booleanValue());
         }
 
         if (_methodName735.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes735, parameterTypes)) {
-            return ProposalLocalServiceUtil.getLatestProposalContestPhase(((Long) arguments[0]).longValue());
+            return ProposalLocalServiceUtil.getSubproposals(((Long) arguments[0]).longValue(),
+                ((Boolean) arguments[1]).booleanValue(),
+                ((Boolean) arguments[2]).booleanValue());
         }
 
         if (_methodName736.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes736, parameterTypes)) {
-            return ProposalLocalServiceUtil.getLatestProposalContest(((Long) arguments[0]).longValue());
+            return ProposalLocalServiceUtil.getLatestProposalContestPhase(((Long) arguments[0]).longValue());
         }
 
         if (_methodName737.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes737, parameterTypes)) {
-            return ProposalLocalServiceUtil.getImpactProposalAttributes((com.ext.portlet.model.Proposal) arguments[0]);
+            return ProposalLocalServiceUtil.getLatestProposalContest(((Long) arguments[0]).longValue());
         }
 
         if (_methodName738.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes738, parameterTypes)) {
-            return ProposalLocalServiceUtil.getImpactProposalAttributes((com.ext.portlet.model.Proposal) arguments[0],
-                (com.ext.portlet.model.FocusArea) arguments[1]);
+            return ProposalLocalServiceUtil.getImpactProposalAttributes((com.ext.portlet.model.Proposal) arguments[0]);
         }
 
         if (_methodName739.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes739, parameterTypes)) {
+            return ProposalLocalServiceUtil.getImpactProposalAttributes((com.ext.portlet.model.Proposal) arguments[0],
+                (com.ext.portlet.model.FocusArea) arguments[1]);
+        }
+
+        if (_methodName740.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes740, parameterTypes)) {
             return ProposalLocalServiceUtil.getImpactProposalFocusAreas((com.ext.portlet.model.Proposal) arguments[0]);
         }
 

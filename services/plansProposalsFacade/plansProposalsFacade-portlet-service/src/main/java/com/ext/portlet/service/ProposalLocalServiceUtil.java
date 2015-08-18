@@ -968,6 +968,20 @@ public class ProposalLocalServiceUtil {
     }
 
     /**
+    * <p>Returns number of fellow review comments in discussion associated with this proposal</p>
+    *
+    * @param proposalId proposal id
+    * @return number of comments
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public static long getFellowReviewCommentsCount(long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getFellowReviewCommentsCount(proposalId);
+    }
+
+    /**
     * <p>Tells if user is a member of a proposal team</p>
     *
     * @param proposalId id of a proposal
