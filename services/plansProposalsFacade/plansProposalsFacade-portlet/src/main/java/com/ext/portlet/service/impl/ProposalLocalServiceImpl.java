@@ -1050,7 +1050,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     public long getFellowReviewCommentsCount(long proposalId) throws SystemException, PortalException {
         Proposal proposal = getProposal(proposalId);
-        return discussionCategoryGroupLocalService.getCommentsCount(proposal.getFellowDiscussionId());
+        final long fellowDiscussionId = proposal.getFellowDiscussionId();
+        if (fellowDiscussionId == 0) {
+            return 0;
+        }
+        return discussionCategoryGroupLocalService.getCommentsCount(fellowDiscussionId);
     }
 
     /**
