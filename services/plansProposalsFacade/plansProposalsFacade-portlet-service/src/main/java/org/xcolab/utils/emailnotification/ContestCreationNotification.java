@@ -62,10 +62,11 @@ public class ContestCreationNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        templateWrapper = new ContestCreationTemplate(
-                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(TEMPLATE_NAME),
-                createdContest.getContestShortName()
-        );
+        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(TEMPLATE_NAME);
+        if (emailTemplate == null) {
+            throw new SystemException("Could not load template \""+TEMPLATE_NAME+"\" for "+this.getClass().getName());
+        }
+        templateWrapper = new ContestCreationTemplate(emailTemplate, createdContest.getContestShortName());
 
         return templateWrapper;
     }

@@ -49,10 +49,12 @@ public class ContestVoteQuestionNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        templateWrapper = new ContestVoteQuestionTemplate(
-                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(contest.getVoteQuestionTemplateString()),
-                contest.getContestShortName()
-        );
+        final String voteQuestionTemplateString = contest.getVoteQuestionTemplateString();
+        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(voteQuestionTemplateString);
+        if (emailTemplate == null) {
+            throw new SystemException("Could not load template \""+voteQuestionTemplateString+"\" for "+this.getClass().getName());
+        }
+        templateWrapper = new ContestVoteQuestionTemplate(emailTemplate, contest.getContestShortName());
 
         return templateWrapper;
     }

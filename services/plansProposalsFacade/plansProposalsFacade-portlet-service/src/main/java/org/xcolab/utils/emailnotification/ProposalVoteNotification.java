@@ -78,11 +78,12 @@ public class ProposalVoteNotification extends EmailNotification {
 
         final String proposalName = ProposalLocalServiceUtil.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
-        templateWrapper = new ProposalVoteTemplate(
-                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(contest.getProposalVoteTemplateString()),
-                proposalName,
-                contest.getContestShortName()
-        );
+        final String proposalVoteTemplateString = contest.getProposalVoteTemplateString();
+        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(proposalVoteTemplateString);
+        if (emailTemplate == null) {
+            throw new SystemException("Could not load template \""+proposalVoteTemplateString+"\" for "+this.getClass().getName());
+        }
+        templateWrapper = new ProposalVoteTemplate(emailTemplate, proposalName, contest.getContestShortName());
 
         return templateWrapper;
     }
