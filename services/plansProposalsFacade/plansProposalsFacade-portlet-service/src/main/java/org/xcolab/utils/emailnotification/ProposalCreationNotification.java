@@ -32,6 +32,8 @@ import java.util.Locale;
  */
 public class ProposalCreationNotification extends EmailNotification {
 
+    private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_CREATION_DEFAULT";
+
     private static final String YEAR_FALLBACK = "2015";
     //private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
 
@@ -76,7 +78,10 @@ public class ProposalCreationNotification extends EmailNotification {
 
         final String proposalName = ProposalLocalServiceUtil.getAttribute(createdProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
-        final String proposalCreationTemplateString = contest.getProposalCreationTemplateString();
+        String proposalCreationTemplateString = contest.getProposalCreationTemplateString();
+        if (proposalCreationTemplateString.length() == 0) {
+            proposalCreationTemplateString = DEFAULT_TEMPLATE_STRING;
+        }
         final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(proposalCreationTemplateString);
         if (emailTemplate == null) {
             throw new SystemException("Could not load template \""+proposalCreationTemplateString+"\" for "+this.getClass().getName());

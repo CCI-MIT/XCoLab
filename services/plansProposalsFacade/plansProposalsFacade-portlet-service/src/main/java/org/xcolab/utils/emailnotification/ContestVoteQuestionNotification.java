@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class ContestVoteQuestionNotification extends EmailNotification {
 
+    private static final String DEFAULT_TEMPLATE_STRING = "CONTEST_VOTE_QUESTION_DEFAULT";
+
     private static final String SUPPORTED_PROPOSALS_PLACEHOLDER = "supported-proposals";
 
     private User recipient;
@@ -49,7 +51,10 @@ public class ContestVoteQuestionNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        final String voteQuestionTemplateString = contest.getVoteQuestionTemplateString();
+        String voteQuestionTemplateString = contest.getVoteQuestionTemplateString();
+        if (voteQuestionTemplateString.length() == 0) {
+            voteQuestionTemplateString = DEFAULT_TEMPLATE_STRING;
+        }
         final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(voteQuestionTemplateString);
         if (emailTemplate == null) {
             throw new SystemException("Could not load template \""+voteQuestionTemplateString+"\" for "+this.getClass().getName());

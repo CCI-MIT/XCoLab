@@ -18,6 +18,8 @@ import org.jsoup.nodes.Node;
  */
 public class ContestVoteNotification extends EmailNotification {
 
+    private static final String DEFAULT_TEMPLATE_STRING = "CONTEST_VOTE_DEFAULT";
+
     private static final String OTHER_CONTESTS_PLACEHOLDER = "other-contests-link";
 
     private User recipient;
@@ -55,7 +57,10 @@ public class ContestVoteNotification extends EmailNotification {
 
         final String proposalName = ProposalLocalServiceUtil.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
-        final String voteTemplateString = contest.getVoteTemplateString();
+        String voteTemplateString = contest.getVoteTemplateString();
+        if (voteTemplateString.length() == 0) {
+            voteTemplateString = DEFAULT_TEMPLATE_STRING;
+        }
         final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(voteTemplateString);
         if (emailTemplate == null) {
             throw new SystemException("Could not load template \""+voteTemplateString+"\" for "+this.getClass().getName());
