@@ -1,7 +1,10 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import org.xcolab.enums.ContestPhaseType;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
+import com.ext.portlet.model.ContestEmailTemplate;
+import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.exception.PortalException;
+import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import java.io.IOException;
 
@@ -12,7 +15,7 @@ import javax.portlet.ValidatorException;
 
 public class ProposalsPreferencesWrapper {
 
-    private final static String TERMS_OF_SERVICE_PREF = "DEFAULT_DESCRIPTION";
+    private final static String TERMS_OF_SERVICE_PREF = "TERMS_OF_SERVICE";
 
     private PortletPreferences preferences;
 
@@ -24,21 +27,53 @@ public class ProposalsPreferencesWrapper {
 
     private long ribbonId = -1;
 
+    private EmailTemplateWrapper termsOfServiceTemplateWrapper;
+
     public ProposalsPreferencesWrapper() {
 
     }
 
     public ProposalsPreferencesWrapper(PortletRequest request) {
         this.preferences = request.getPreferences();
-        termsOfService = preferences.getValue(TERMS_OF_SERVICE_PREF, "");
+        try {
+            termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
+        } catch(SystemException | PortalException e) {
+            //should never happen
+            throw new RuntimeException(e);
+        }
         proposalIdsToBeMoved = "";
         moveFromContestId = -1;
         moveToContestPhaseId = -1;
     }
 
+    private EmailTemplateWrapper getTermsOfServiceTemplateWrapper() {
+        if (termsOfServiceTemplateWrapper != null) {
+            return termsOfServiceTemplateWrapper;
+        }
+
+        try {
+            termsOfServiceTemplateWrapper = new EmailTemplateWrapper(
+                    ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(TERMS_OF_SERVICE_PREF),
+                    "",
+                    ""
+            );
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
+
+        return termsOfServiceTemplateWrapper;
+    }
+
     public void store(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {
         PortletPreferences preferences = request.getPreferences();
-        preferences.setValue(TERMS_OF_SERVICE_PREF, termsOfService);
+        try {
+            ContestEmailTemplate template = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(TERMS_OF_SERVICE_PREF);
+            template.setHeader(termsOfService);
+            ContestEmailTemplateLocalServiceUtil.updateContestEmailTemplate(template);
+
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
         preferences.store();
     }
 
@@ -81,7 +116,4 @@ public class ProposalsPreferencesWrapper {
     public void setTermsOfService(String termsOfService) {
         this.termsOfService = termsOfService;
     }
-
-
-
 }

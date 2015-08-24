@@ -256,6 +256,67 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setContestScheduleId(long contestScheduleId);
 
     /**
+     * Returns the proposal creation template string of this contest.
+     *
+     * @return the proposal creation template string of this contest
+     */
+    @AutoEscape
+    public String getProposalCreationTemplateString();
+
+    /**
+     * Sets the proposal creation template string of this contest.
+     *
+     * @param proposalCreationTemplateString the proposal creation template string of this contest
+     */
+    public void setProposalCreationTemplateString(
+        String proposalCreationTemplateString);
+
+    /**
+     * Returns the vote template string of this contest.
+     *
+     * @return the vote template string of this contest
+     */
+    @AutoEscape
+    public String getVoteTemplateString();
+
+    /**
+     * Sets the vote template string of this contest.
+     *
+     * @param voteTemplateString the vote template string of this contest
+     */
+    public void setVoteTemplateString(String voteTemplateString);
+
+    /**
+     * Returns the proposal vote template string of this contest.
+     *
+     * @return the proposal vote template string of this contest
+     */
+    @AutoEscape
+    public String getProposalVoteTemplateString();
+
+    /**
+     * Sets the proposal vote template string of this contest.
+     *
+     * @param proposalVoteTemplateString the proposal vote template string of this contest
+     */
+    public void setProposalVoteTemplateString(String proposalVoteTemplateString);
+
+    /**
+     * Returns the vote question template string of this contest.
+     *
+     * @return the vote question template string of this contest
+     */
+    @AutoEscape
+    public String getVoteQuestionTemplateString();
+
+    /**
+     * Sets the vote question template string of this contest.
+     *
+     * @param voteQuestionTemplateString the vote question template string of this contest
+     */
+    public void setVoteQuestionTemplateString(String voteQuestionTemplateString);
+
+    /**
      * Returns the focus area ID of this contest.
      *
      * @return the focus area ID of this contest
@@ -454,6 +515,20 @@ public interface ContestModel extends BaseModel<Contest> {
      * @param discussionGroupId the discussion group ID of this contest
      */
     public void setDiscussionGroupId(long discussionGroupId);
+
+    /**
+     * Returns the fellow discussion group ID of this contest.
+     *
+     * @return the fellow discussion group ID of this contest
+     */
+    public long getFellowDiscussionGroupId();
+
+    /**
+     * Sets the fellow discussion group ID of this contest.
+     *
+     * @param fellowDiscussionGroupId the fellow discussion group ID of this contest
+     */
+    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId);
 
     /**
      * Returns the weight of this contest.

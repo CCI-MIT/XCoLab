@@ -11,6 +11,7 @@ import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
@@ -26,13 +27,11 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * This class is responsible for sending out email notifications regarding the creation of a new proposal
- *
- * Created by kmang on 21/05/14.
+ * Created by johannes on 8/14/15.
  */
-public class ProposalCreationNotification extends EmailNotification {
+public class ProposalVoteNotification extends EmailNotification {
 
-    private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_CREATION_DEFAULT";
+    private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_VOTE_DEFAULT";
 
     private static final String YEAR_FALLBACK = "2015";
     //private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
@@ -41,23 +40,26 @@ public class ProposalCreationNotification extends EmailNotification {
     private static final String YEAR_PLACEHOLDER = "year";
     private static final String DEADLINE_PLACEHOLDER = "deadline";
     private static final String CONTEST_DEADLINE_SECTION_PLACEHOLDER = "contest-deadline-section";
+    private static final String OTHER_CONTESTS_PLACEHOLDER = "other-contests-link";
 
     private static final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, HH:mm:ss a", Locale.US);
 
-    private Proposal createdProposal;
+    private User recipient;
+    private Proposal votedProposal;
     private Contest contest;
 
-    private ProposalCreationTemplate templateWrapper = null;
+    private ProposalVoteTemplate templateWrapper = null;
 
-    public ProposalCreationNotification(Proposal createdProposal, Contest contest, ServiceContext serviceContext) {
+    public ProposalVoteNotification(Proposal votedProposal, Contest contest, User recipient, ServiceContext serviceContext) {
         super(serviceContext);
-        this.createdProposal = createdProposal;
+        this.votedProposal = votedProposal;
         this.contest = contest;
+        this.recipient = recipient;
     }
 
     @Override
     protected User getRecipient() throws SystemException, PortalException {
-        return getProposalAuthor(createdProposal);
+        return recipient;
     }
 
     @Override
@@ -67,26 +69,26 @@ public class ProposalCreationNotification extends EmailNotification {
 
     @Override
     protected Proposal getProposal() {
-        return createdProposal;
+        return votedProposal;
     }
 
     @Override
-    protected ProposalCreationTemplate getTemplateWrapper() throws PortalException, SystemException {
+    protected ProposalVoteTemplate getTemplateWrapper() throws SystemException, PortalException {
         if (templateWrapper != null) {
             return templateWrapper;
         }
 
-        final String proposalName = ProposalLocalServiceUtil.getAttribute(createdProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        final String proposalName = ProposalLocalServiceUtil.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
-        String proposalCreationTemplateString = contest.getProposalCreationTemplateString();
-        if (proposalCreationTemplateString.length() == 0) {
-            proposalCreationTemplateString = DEFAULT_TEMPLATE_STRING;
+        String proposalVoteTemplateString = contest.getProposalVoteTemplateString();
+        if (proposalVoteTemplateString.length() == 0) {
+            proposalVoteTemplateString = DEFAULT_TEMPLATE_STRING;
         }
-        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(proposalCreationTemplateString);
+        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(proposalVoteTemplateString);
         if (emailTemplate == null) {
-            throw new SystemException("Could not load template \""+proposalCreationTemplateString+"\" for "+this.getClass().getName());
+            throw new SystemException("Could not load template \""+proposalVoteTemplateString+"\" for "+this.getClass().getName());
         }
-        templateWrapper = new ProposalCreationTemplate(emailTemplate, proposalName, contest.getContestShortName());
+        templateWrapper = new ProposalVoteTemplate(emailTemplate, proposalName, contest.getContestShortName());
 
         return templateWrapper;
     }
@@ -115,9 +117,14 @@ public class ProposalCreationNotification extends EmailNotification {
         throw new SystemException("Active proposal creation phase was not found for createdContest with id " + contest.getContestPK());
     }
 
-    private class ProposalCreationTemplate extends EmailNotificationTemplate {
+    private String getOtherContestLink(String linkText) {
+        final String baseUrl = serviceContext.getPortalURL();
+        return String.format(LINK_FORMAT_STRING, baseUrl + "/web/guest/plans", linkText);
+    }
 
-        public ProposalCreationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
+    private class ProposalVoteTemplate extends EmailNotificationTemplate {
+
+        public ProposalVoteTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 
@@ -138,19 +145,17 @@ public class ProposalCreationNotification extends EmailNotification {
                         return new TextNode(yearFormat.format(contest.getCreated()), "");
                     }
                 case DEADLINE_PLACEHOLDER:
-                    final Date proposalCreationDeadline = getProposalCreationDeadline();
-                    if (Validator.isNull(proposalCreationDeadline)) {
-                        return new TextNode("", "");
-                    } else {
-                        return new TextNode(customDateFormat.format(proposalCreationDeadline) + " EDT", "");
-                    }
+                    return new TextNode(customDateFormat.format(getProposalCreationDeadline()) + " EDT", "");
                 case CONTEST_DEADLINE_SECTION_PLACEHOLDER:
                     if (Validator.isNull(getProposalCreationDeadline())) {
                         return new TextNode("", "");
                     } else {
-                        //need to call another layer of replace variables to replace plaholders inside the tag
-                        return parseXmlNode(replaceVariables(tag.html()));
+                        final String contestDeadlineSectionBody = StringUtil.replace(tag.data(),
+                                DEADLINE_PLACEHOLDER, customDateFormat.format(getProposalCreationDeadline()) + " EDT");
+                        return new TextNode(contestDeadlineSectionBody, "");
                     }
+                case OTHER_CONTESTS_PLACEHOLDER:
+                    return parseXmlNode(getOtherContestLink(tag.ownText()));
             }
             return null;
         }

@@ -5847,6 +5847,10 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setContestActive(contest.isContestActive());
         contestImpl.setPlanTemplateId(contest.getPlanTemplateId());
         contestImpl.setContestScheduleId(contest.getContestScheduleId());
+        contestImpl.setProposalCreationTemplateString(contest.getProposalCreationTemplateString());
+        contestImpl.setVoteTemplateString(contest.getVoteTemplateString());
+        contestImpl.setProposalVoteTemplateString(contest.getProposalVoteTemplateString());
+        contestImpl.setVoteQuestionTemplateString(contest.getVoteQuestionTemplateString());
         contestImpl.setFocusAreaId(contest.getFocusAreaId());
         contestImpl.setContestTier(contest.getContestTier());
         contestImpl.setContestLogoId(contest.getContestLogoId());
@@ -5860,6 +5864,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setFlagTooltip(contest.getFlagTooltip());
         contestImpl.setGroupId(contest.getGroupId());
         contestImpl.setDiscussionGroupId(contest.getDiscussionGroupId());
+        contestImpl.setFellowDiscussionGroupId(contest.getFellowDiscussionGroupId());
         contestImpl.setWeight(contest.getWeight());
         contestImpl.setResourcesUrl(contest.getResourcesUrl());
         contestImpl.setContestPrivate(contest.isContestPrivate());

@@ -133,7 +133,7 @@ public class ProposalJudgingCommentHelper {
                 if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
                     String templateToLoad = (advanceDecision == JudgingSystemActions.AdvanceDecision.MOVE_ON) ? "ADVANCING_ADVANCE_TO_SEMIFINALIST" : "ADVANCING_DO_NOT_ADVANCE";
 
-                    ContestEmailTemplateWrapper wrapper = new ContestEmailTemplateWrapper(
+                    EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
                             ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateToLoad),
                             proposalName,
                             contestName
@@ -160,7 +160,7 @@ public class ProposalJudgingCommentHelper {
                 templateToLoad = "SCREENING_DO_NOT_ADVANCE_OTHER";
             }
 
-            ContestEmailTemplateWrapper wrapper = new ContestEmailTemplateWrapper(
+            EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
                     ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateToLoad),
                     proposalName,
                     contestName
