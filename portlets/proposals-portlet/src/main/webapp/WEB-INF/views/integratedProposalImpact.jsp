@@ -15,10 +15,10 @@
 
     <!-- Content -->
     <div id="content">
-        <c:if test="${not empty isGlobalContest and isGlobalContest or not empty isRegionalContest and  isRegionalContest}">
+        <c:if test="${not empty isGlobalContest and isGlobalContest or not empty isRegionalContest and isRegionalContest}">
 
-            <c:set var="modelId" value="${proposal.modelId }"/>
-            <c:set var="scenarioId" value="${proposal.scenarioId }"/>
+            <c:set var="modelId" value="${modelId}"/>
+            <c:set var="scenarioId" value="${scenarioId }"/>
 
             <c:if test="${not empty consolidatedModelId}">
                 <c:set var="modelId" value="${consolidatedModelId}"/>
