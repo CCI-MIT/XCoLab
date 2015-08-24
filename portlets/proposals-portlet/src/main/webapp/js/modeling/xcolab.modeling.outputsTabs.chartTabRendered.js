@@ -235,20 +235,22 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		
 		if (valuesCombined.length > 0) {
 			console.debug("charTabRendered chartContainer", chartContainer);
+			console.debug("charTabRendered legendContainer", legendContainer);
+
 			chartContainer.jqplot(valuesCombined, plotOptions);
 			chartContainer.find("table.jqplot-table-legend").appendTo(legendContainer).removeAttr('style');
 
-			var legendElem = jQuery(chartContainer.find("table.jqplot-table-legend"));
+			var legendElem = jQuery(legendContainer.find("table.jqplot-table-legend"));
 			console.debug("charTabRendered legendElem", legendElem);
 			var columnCount = legendElem.find("tr:first td").length;
 			console.debug("charTabRendered columnCount", columnCount);
 
-			jQuery(chartContainer.find("table.jqplot-table-legend tr.emfModelsUnderChartMessage")).remove();
+			jQuery(legendContainer.find("table.jqplot-table-legend tr.emfModelsUnderChartMessage")).remove();
 
 			var emfModelsUnderChartMessage = "<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" +
 				"Results shown for the following models. See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>EMF27 model runs for more details</a></td></tr>";
 
-			console.debug("charTabRendered legendElem", legendElem);
+			console.debug("charTabRendered legendElem", emfModelsUnderChartMessage);
 			legendElem.prepend(emfModelsUnderChartMessage);
 		}
 
