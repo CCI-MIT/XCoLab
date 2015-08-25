@@ -54,21 +54,21 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     public String showImpactTab(PortletRequest request, Model model, @RequestParam(required = false) boolean edit)
             throws Exception {
 
-        boolean editValidated = false;
+        boolean userAllowedToEdit = false;
         contest = proposalsContext.getContest(request);
         proposalWrapper = proposalsContext.getProposalWrapped(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
         if (edit) {
-            editValidated = canEditImpactTab(request);
+            userAllowedToEdit = canEditImpactTab(request);
         }
 
-        model.addAttribute("edit", editValidated);
+        model.addAttribute("edit", userAllowedToEdit);
         model.addAttribute("isRegionalSectorContest", isRegionalSectorContest(contest));
         model.addAttribute("isRegionalContest", isRegionalContest(contest));
         model.addAttribute("isGlobalContest", isGlobalContest(contest));
 
-        boolean isTabUsesModeling = (isRegionalContest(contest) || isGlobalContest(contest));
-        if(isTabUsesModeling){
+        boolean tabUsesModeling = (isRegionalContest(contest) || isGlobalContest(contest));
+        if(tabUsesModeling){
             model.addAttribute("availableModels", ContestLocalServiceUtil.getModelIdsAndNames(contest.getContestPK()));
             model.addAttribute("modelId", getModelIdIfProposalHasScenarioIdOrContestDefaultModelId());
             model.addAttribute("scenarioId", proposalWrapper.getScenarioId());
@@ -89,7 +89,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             case REGION_AGGREGATE:
                 return showImpactTabRegionAggregate(request, model);
             case GLOBAL:
-                if(editValidated)
+                if(userAllowedToEdit)
                     return showImpactTabEditGlobal(request, model);
                 else
                     return showImpactTabGlobal(request, model);
@@ -101,9 +101,9 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     private Long getModelIdIfProposalHasScenarioIdOrContestDefaultModelId() throws Exception{
         Long modelId = proposalWrapper.getModelId();
-        boolean isProposalHasValidScenarioId =
+        boolean scenarioIdValid =
                 Validator.isNotNull(proposalWrapper.getScenarioId()) && proposalWrapper.getScenarioId() > 0;
-        if(isProposalHasValidScenarioId){
+        if(scenarioIdValid){
             try {
                 modelId = CollaboratoriumModelingService.repository()
                         .getScenario(proposalWrapper.getProposalId()).getSimulation().getId();
@@ -180,7 +180,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                     proposalImpactScenarioCombinationWrapper.getRegionToProposalSimulationScenarioMap());
         }
 
-        model.addAttribute("CONSOLIDATE", isConsolidationPossible);
+        model.addAttribute("consolidationPossible", isConsolidationPossible);
         model.addAttribute("consolidateOptions", getConsolidationOptions());
 
         return "integratedProposalImpact";

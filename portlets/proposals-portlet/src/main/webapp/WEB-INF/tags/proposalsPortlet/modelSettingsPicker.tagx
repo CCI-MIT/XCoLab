@@ -33,8 +33,8 @@
                     <c:forEach var="model" items="${consolidateOptions}">
 
                         <c:choose>
-                            <c:when test="${CONSOLIDATE and model.key eq 'CONSOLIDATE' or
-										not CONSOLIDATE and model.key eq 'SEPARATE'}">
+                            <c:when test="${consolidationPossible and model.key eq 'CONSOLIDATE' or
+										not consolidationPossible and model.key eq 'SEPARATE'}">
                                 <input type="radio" name="modelSettingsSet" id="${model.key }" value="${model.key }"
                                        checked="checked"/>
                             </c:when>
@@ -68,7 +68,7 @@
 
         var consolidatedScenarioId = parseInt("${consolidatedScenarioId}");
         var consolidatedModelId = parseInt("${consolidatedModelId}");
-        var consolidationPossible = ${CONSOLIDATE};
+        var consolidationPossible = ${consolidationPossible};
 
         var scenarioId = parseInt("${scenarioId}");
         var modelId = parseInt("${modelId}");
