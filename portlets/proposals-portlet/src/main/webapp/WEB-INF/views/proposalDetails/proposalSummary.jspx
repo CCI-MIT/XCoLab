@@ -28,7 +28,7 @@
                                     </portlet:actionURL>
 
 
-                                    <a href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false; else ">
+                                    <a href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
                                         ${proposalsPermissions.canSeeVoteButton ? 'VOTE for proposal' : 'RETRACT vote'}
                                     </a>
                                 </div>
