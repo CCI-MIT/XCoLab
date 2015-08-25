@@ -462,41 +462,16 @@ public class ProposalPickerJSONController {
 			PortalException {
 
 		List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
-
-		// FocusArea
-		PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
-		FocusArea fa = PlanSectionDefinitionLocalServiceUtil.getFocusArea(planSectionDefinition);
-		List<OntologyTerm> terms = new LinkedList<>();
-		if (planSectionDefinition.getFocusAreaId() < 0) {
-			//if we did not specify the focus area on the field definition, let's use the one of the contest
-			fa = FocusAreaLocalServiceUtil.getFocusArea(proposalsContext.getContest(request).getFocusAreaId());
-
-			//we can then add every additional term of the inverted focusArea to adapt it to our setting
-			FocusArea additionalTerms = FocusAreaLocalServiceUtil.getFocusArea(-1 * planSectionDefinition.getFocusAreaId());
-			if (additionalTerms != null) {
-				terms.addAll(FocusAreaLocalServiceUtil.getTerms(additionalTerms));
-			}
+		
+		for (Contest c: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
+			contests.add(Pair.of(new ContestWrapper(c),
+					c.getCreated() == null ? new Date(0) : c.getCreated()));
 		}
 
-		if(fa != null) {
-			terms.addAll(FocusAreaLocalServiceUtil.getTerms(fa));
-		}
-
-		ContestTier contestTier = ContestTier.getContestTierByTierType(planSectionDefinition.getTier());
-
-		// List of terms in this area
-		if (terms.size() > 0) {
-			for (Contest c : ContestLocalServiceUtil
-					.getContestsMatchingOntologyTermsAndTier(terms, contestTier.getTierType())) {
-				contests.add(Pair.of(new ContestWrapper(c),
-						c.getCreated() == null ? new Date(0) : c.getCreated()));
-			}
-		} else {
-			for (Contest c : ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType())) {
-				contests.add(Pair.of(new ContestWrapper(c),
-						c.getCreated() == null ? new Date(0) : c.getCreated()));
-			}
-		}
+//		for (Contest c : ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType())) {
+//			contests.add(Pair.of(new ContestWrapper(c),
+//					c.getCreated() == null ? new Date(0) : c.getCreated()));
+//		}
 
 		return contests;
 	}
@@ -535,14 +510,9 @@ public class ProposalPickerJSONController {
 						as.getCreateDate()));
 			}
 		}
-		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
-				proposals);
-		ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, sectionId);
-		Contest contest = proposalsContext.getContest(request);
-		if(request != null && ContestTier.getContestTierByTierType(contest.getContestTier()) == ContestTier.REGION_AGGREGATE){
-			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
-			ProposalPickerFilterUtil.CONTEST_TIER.filter(proposals, contestFocusArea.getId());
-		}
+
+		filterProposals(proposals, filterKey, sectionId, request);
+
 		return proposals;
 	}
 
@@ -556,14 +526,9 @@ public class ProposalPickerJSONController {
 					ProposalLocalServiceUtil.getProposal(ps.getProposalId()),
 					ps.getCreateDate()));
 		}
-		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
-				proposals);
-		ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, sectionId);
-		Contest contest = proposalsContext.getContest(request);
-		if(request != null && ContestTier.getContestTierByTierType(contest.getContestTier()) == ContestTier.REGION_AGGREGATE){
-			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
-			ProposalPickerFilterUtil.CONTEST_TIER.filter(proposals, contestFocusArea.getId());
-		}
+
+		filterProposals(proposals, filterKey, sectionId, request);
+
 		return proposals;
 	}
 
@@ -582,6 +547,15 @@ public class ProposalPickerJSONController {
 		for (Proposal p : proposalsRaw) {
 			proposals.add(Pair.of(p, new Date(0)));
 		}
+
+		filterProposals(proposals, filterKey, sectionId, request);
+
+		return proposals;
+	}
+
+	private void filterProposals(List<Pair<Proposal, Date>> proposals,
+				String filterKey, long sectionId, PortletRequest request)
+			throws SystemException, PortalException {
 		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
 				proposals);
 
@@ -597,7 +571,5 @@ public class ProposalPickerJSONController {
 		}
 
 		ProposalPickerFilterUtil.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
-
-		return proposals;
 	}
 }
