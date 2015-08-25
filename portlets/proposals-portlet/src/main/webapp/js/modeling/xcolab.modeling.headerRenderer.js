@@ -95,7 +95,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
             } else if (isModelEMF) {
                 instructions = "<p class='instructions'>" +
                     "The proposal author(s) have estimated the CO2 emission impacts of this proposal for the country/region through 2100 using the " + model.modelName + " modeling tool. " +
-                    "For more information, see <a href='/web/guest/resources/-/wiki/Main/EnROADS+by+Climate+Interactive' target='_blank'>Stanford EMF.</a></p>";
+                    "For more information, see <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>Stanford EMF.</a></p>";
             } else if (isModelEnRoads) {
                 instructions = "<p class='instructions'>" +
                     "The proposal author(s) have estimated the CO2 emission impacts of this proposal for the country/region through 2100 using the " + model.modelName + " modeling tool." +
@@ -108,7 +108,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
             } else if (isModelEMF) {
                 instructions = "<p class='instructions'>" +
                     "The " + model.modelName + " modeling tool is available below. Enter inputs that correspond with the actions you propose and click \"Run the Model.\" The tool will project CO2 emissions for the country/region through 2100. " +
-                    "For more information, see <a href='/web/guest/resources/-/wiki/Main/EnROADS+by+Climate+Interactive' target='_blank'>Stanford EMF.</a></p>";
+                    "For more information, see <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>Stanford EMF.</a></p>";
             } else if (isModelEnRoads) {
                 instructions = "<p class='instructions'>" +
                     "The " + model.modelName + " modeling tool is available below. Enter inputs that correspond with the actions you propose and click \"Run the Model.\" The tool will project CO2 emissions for the country/region through 2100. " +
