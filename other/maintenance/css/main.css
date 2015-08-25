@@ -18,3 +18,47 @@ body{
 	padding: 20px;
         color: #545454;
 }
+
+input {
+
+border: 1px solid #DDD;
+color: #8d8d8d;
+font-weight: 200;
+margin-bottom: 7px;
+box-shadow: none;
+
+background: url(../img/input.gif) no-repeat;
+width: 330px;
+height: 28px;
+padding: 2px 0 0 8px;
+font-size: 15px;
+margin: 5px 0 10px 0;
+
+}
+
+
+.blue-button:hover a, .blue-button a:hover {
+background: url(../img/button-blue-right-hover.png) no-repeat right top;
+}
+.blue-button:hover a, .blue-button a:hover {
+background: url(../img/button-blue-right-hover.png) no-repeat right top;
+}
+.blue-button a {
+background: url(../img/button-blue-right.png) no-repeat right top;
+padding: 10px 21px 0 8px;
+height: 31px;
+font-size: 16px;
+font-weight: 700;
+color: #fff;
+text-shadow: 1px 1px 0 #114c65;
+display: inline-block;
+}
+
+.blue-button {
+background: url(../img/button-blue-left.png) no-repeat left top;
+padding-left: 11px;
+height: 41px;
+width: auto;
+display: inline-block;
+line-height: normal;
+}
