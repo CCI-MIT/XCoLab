@@ -537,11 +537,11 @@ public class ProposalPickerJSONController {
 		}
 		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
 				proposals);
-		ProposalPickerFilterUtil.ONTOLOGY.filter(proposals, sectionId);
+		ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, sectionId);
 		Contest contest = proposalsContext.getContest(request);
 		if(request != null && ContestTier.getContestTierByTierType(contest.getContestTier()) == ContestTier.REGION_AGGREGATE){
 			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
-			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, contestFocusArea.getId());
+			ProposalPickerFilterUtil.CONTEST_TIER.filter(proposals, contestFocusArea.getId());
 		}
 		return proposals;
 	}
@@ -558,11 +558,11 @@ public class ProposalPickerJSONController {
 		}
 		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
 				proposals);
-		ProposalPickerFilterUtil.ONTOLOGY.filter(proposals, sectionId);
+		ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, sectionId);
 		Contest contest = proposalsContext.getContest(request);
 		if(request != null && ContestTier.getContestTierByTierType(contest.getContestTier()) == ContestTier.REGION_AGGREGATE){
 			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
-			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, contestFocusArea.getId());
+			ProposalPickerFilterUtil.CONTEST_TIER.filter(proposals, contestFocusArea.getId());
 		}
 		return proposals;
 	}
@@ -585,12 +585,19 @@ public class ProposalPickerJSONController {
 		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
 				proposals);
 
-		ProposalPickerFilterUtil.ONTOLOGY.filter(proposals, sectionId);
-		Contest contest = proposalsContext.getContest(request);
-		if(request != null && ContestTier.getContestTierByTierType(contest.getContestTier()) == ContestTier.REGION_AGGREGATE){
-			FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
-			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, contestFocusArea.getId());
+		PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
+		if (planSectionDefinition.getFocusAreaId() < 0) {
+			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, -1 * planSectionDefinition.getFocusAreaId());
+			if (request != null) {
+				Contest contest = proposalsContext.getContest(request);
+				ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, contest.getFocusAreaId());
+			}
+		} else {
+			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, planSectionDefinition);
 		}
+
+		ProposalPickerFilterUtil.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
+
 		return proposals;
 	}
 }

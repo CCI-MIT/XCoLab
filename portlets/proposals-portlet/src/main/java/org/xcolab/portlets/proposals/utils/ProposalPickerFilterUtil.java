@@ -127,33 +127,20 @@ public enum ProposalPickerFilterUtil {
 			
 		}
     }),
-    ONTOLOGY(new ProposalPickerFilter() {
+    ONTOLOGY_FOCUS_AREA(new ProposalPickerFilter() {
         @Override
         public void filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             try{
 
-                long definitionId = (Long) additionalFilterCriterion;
+                long focusAreaId = (Long) additionalFilterCriterion;
 
-                // FocusArea
-                PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(definitionId);
-                FocusArea fa = PlanSectionDefinitionLocalServiceUtil.getFocusArea(planSectionDefinition);
+                FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
+
                 List<OntologyTerm> terms = new LinkedList<>();
-                if (planSectionDefinition.getFocusAreaId() < 0) {
-                    //we can then add every additional term of the inverted focusArea to adapt it to our setting
-                    FocusArea additionalTerms = FocusAreaLocalServiceUtil.getFocusArea(-1 * planSectionDefinition.getFocusAreaId());
-                    if (additionalTerms != null) {
-                        terms.addAll(FocusAreaLocalServiceUtil.getTerms(additionalTerms));
-                    }
-                } else if(fa != null) {
-                    terms.addAll(FocusAreaLocalServiceUtil.getTerms(fa));
+                if (focusArea != null) {
+                    terms.addAll(FocusAreaLocalServiceUtil.getTerms(focusArea));
                 }
 
-                HashSet<OntologyTerm> uniqueTerms = new HashSet();
-                uniqueTerms.addAll(terms);
-                terms.clear();
-                terms.addAll(uniqueTerms);
-
-                // List of terms in this area
                 if (terms.size() > 0) {
                     List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
@@ -162,21 +149,6 @@ public enum ProposalPickerFilterUtil {
                             if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
                         } catch (Exception e){
                             i.remove();
-                        }
-                    }
-                }
-                // Filter by contest tier
-                if (ContestTier.getContestTierByTierType(planSectionDefinition.getTier()) != ContestTier.NONE) {
-                    ContestTier contestTier = ContestTier.getContestTierByTierType(planSectionDefinition.getTier());
-                    List<Contest> tierFilteredContests = ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType());
-
-                    for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
-                        Proposal p = i.next().getLeft();
-                        try {
-                            if (!tierFilteredContests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId())))
-                                i.remove();
-                        } catch (Exception e){
-                                i.remove();
                         }
                     }
                 }
@@ -189,24 +161,36 @@ public enum ProposalPickerFilterUtil {
 			// do nothing
 			
 		}
-    }),ONTOLOGY_FOCUS_AREA(new ProposalPickerFilter() {
+    }), CONTEST_TIER(new ProposalPickerFilter() {
         @Override
         public void filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             try{
+                // if filterTier < 0:
+                //  allow tier < (-filterTier)
+                // else if filterTier > 0
+                //  only allow tier == filterTier - 1
+                Long filterTier = (Long) additionalFilterCriterion;
+                boolean exactMatch = true;
+                if (filterTier < 0) {
+                    filterTier = -filterTier;
+                    exactMatch = false;
+                }
 
-                long focusAreaId = (Long) additionalFilterCriterion;
-                // FocusArea
-                FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
-                List<OntologyTerm> terms = new LinkedList<>();
-                terms.addAll(FocusAreaLocalServiceUtil.getTerms(fa));
+                if (ContestTier.getContestTierByTierType(filterTier) != ContestTier.NONE) {
+                    ContestTier contestTier = ContestTier.getContestTierByTierType(filterTier);
+                    Set<Contest> tierFilteredContests = new HashSet<>(ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType()));
+                    if (!exactMatch) {
+                        for (Long currentTier = filterTier -1; currentTier >= 0; currentTier-- ) {
+                            ContestTier localContestTier = ContestTier.getContestTierByTierType(currentTier);
+                            tierFilteredContests.addAll(ContestLocalServiceUtil.getContestsMatchingTier(localContestTier.getTierType()));
+                        }
+                    }
 
-                // List of terms in this area
-                if (terms.size() > 0) {
-                    List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                         Proposal p = i.next().getLeft();
                         try {
-                            if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
+                            if (!tierFilteredContests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId())))
+                                i.remove();
                         } catch (Exception e){
                             i.remove();
                         }
