@@ -20,7 +20,7 @@
 
         <li class="${liClass}">
             <c:if test="${not empty staffMember.role}">
-                <strong class="staffmembers-role">${staffMember.role}</strong><br />
+                <strong class="staffmembers-role">${staffMember.role}</strong><br/>
             </c:if>
             <c:choose>
                 <c:when test="${displayUrl and not empty staffMember.url}">
@@ -32,13 +32,18 @@
                     ${staffMember.name}
                 </c:otherwise>
             </c:choose>
-            <br />
+            <br/>
             <c:if test="${not empty staffMember.organization}">
-                <span class="staffmembers-organization">${staffMember.organization}</span><br />
+                <span class="staffmembers-organization">${staffMember.organization}</span><br/>
             </c:if>
-            <c:if test="${displayPhoto and not empty staffMember.photoUrl}">
-                <img src="${staffMember.photoUrl}" />
-            </c:if>
+            <c:choose>
+                <c:when test="${displayPhoto and not empty staffMember.photoUrl}">
+                    <img src="${staffMember.photoUrl}"/>
+                </c:when>
+                <c:otherwise>
+                    <img src="/image/user_male_portrait" />
+                </c:otherwise>
+            </c:choose>
         </li>
     </c:forEach>
 </jsp:root>
