@@ -35,6 +35,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private boolean _contestActive;
     private long _planTemplateId;
     private long _contestScheduleId;
+    private String _proposalCreationTemplateString;
+    private String _voteTemplateString;
+    private String _proposalVoteTemplateString;
+    private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
     private long _contestLogoId;
@@ -48,6 +52,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private String _flagTooltip;
     private long _groupId;
     private long _discussionGroupId;
+    private long _fellowDiscussionGroupId;
     private int _weight;
     private String _resourcesUrl;
     private boolean _contestPrivate;
@@ -117,6 +122,13 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("contestActive", getContestActive());
         attributes.put("planTemplateId", getPlanTemplateId());
         attributes.put("contestScheduleId", getContestScheduleId());
+        attributes.put("proposalCreationTemplateString",
+            getProposalCreationTemplateString());
+        attributes.put("voteTemplateString", getVoteTemplateString());
+        attributes.put("proposalVoteTemplateString",
+            getProposalVoteTemplateString());
+        attributes.put("voteQuestionTemplateString",
+            getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("contestTier", getContestTier());
         attributes.put("contestLogoId", getContestLogoId());
@@ -130,6 +142,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("flagTooltip", getFlagTooltip());
         attributes.put("groupId", getGroupId());
         attributes.put("discussionGroupId", getDiscussionGroupId());
+        attributes.put("fellowDiscussionGroupId", getFellowDiscussionGroupId());
         attributes.put("weight", getWeight());
         attributes.put("resourcesUrl", getResourcesUrl());
         attributes.put("contestPrivate", getContestPrivate());
@@ -240,6 +253,34 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
             setContestScheduleId(contestScheduleId);
         }
 
+        String proposalCreationTemplateString = (String) attributes.get(
+                "proposalCreationTemplateString");
+
+        if (proposalCreationTemplateString != null) {
+            setProposalCreationTemplateString(proposalCreationTemplateString);
+        }
+
+        String voteTemplateString = (String) attributes.get(
+                "voteTemplateString");
+
+        if (voteTemplateString != null) {
+            setVoteTemplateString(voteTemplateString);
+        }
+
+        String proposalVoteTemplateString = (String) attributes.get(
+                "proposalVoteTemplateString");
+
+        if (proposalVoteTemplateString != null) {
+            setProposalVoteTemplateString(proposalVoteTemplateString);
+        }
+
+        String voteQuestionTemplateString = (String) attributes.get(
+                "voteQuestionTemplateString");
+
+        if (voteQuestionTemplateString != null) {
+            setVoteQuestionTemplateString(voteQuestionTemplateString);
+        }
+
         Long focusAreaId = (Long) attributes.get("focusAreaId");
 
         if (focusAreaId != null) {
@@ -317,6 +358,13 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (discussionGroupId != null) {
             setDiscussionGroupId(discussionGroupId);
+        }
+
+        Long fellowDiscussionGroupId = (Long) attributes.get(
+                "fellowDiscussionGroupId");
+
+        if (fellowDiscussionGroupId != null) {
+            setFellowDiscussionGroupId(fellowDiscussionGroupId);
         }
 
         Integer weight = (Integer) attributes.get("weight");
@@ -739,6 +787,100 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     }
 
     @Override
+    public String getProposalCreationTemplateString() {
+        return _proposalCreationTemplateString;
+    }
+
+    @Override
+    public void setProposalCreationTemplateString(
+        String proposalCreationTemplateString) {
+        _proposalCreationTemplateString = proposalCreationTemplateString;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setProposalCreationTemplateString",
+                        String.class);
+
+                method.invoke(_contestRemoteModel,
+                    proposalCreationTemplateString);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getVoteTemplateString() {
+        return _voteTemplateString;
+    }
+
+    @Override
+    public void setVoteTemplateString(String voteTemplateString) {
+        _voteTemplateString = voteTemplateString;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setVoteTemplateString",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, voteTemplateString);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getProposalVoteTemplateString() {
+        return _proposalVoteTemplateString;
+    }
+
+    @Override
+    public void setProposalVoteTemplateString(String proposalVoteTemplateString) {
+        _proposalVoteTemplateString = proposalVoteTemplateString;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setProposalVoteTemplateString",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, proposalVoteTemplateString);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getVoteQuestionTemplateString() {
+        return _voteQuestionTemplateString;
+    }
+
+    @Override
+    public void setVoteQuestionTemplateString(String voteQuestionTemplateString) {
+        _voteQuestionTemplateString = voteQuestionTemplateString;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setVoteQuestionTemplateString",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, voteQuestionTemplateString);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public long getFocusAreaId() {
         return _focusAreaId;
     }
@@ -1030,6 +1172,29 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                         long.class);
 
                 method.invoke(_contestRemoteModel, discussionGroupId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public long getFellowDiscussionGroupId() {
+        return _fellowDiscussionGroupId;
+    }
+
+    @Override
+    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId) {
+        _fellowDiscussionGroupId = fellowDiscussionGroupId;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setFellowDiscussionGroupId",
+                        long.class);
+
+                method.invoke(_contestRemoteModel, fellowDiscussionGroupId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -1482,6 +1647,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setContestActive(getContestActive());
         clone.setPlanTemplateId(getPlanTemplateId());
         clone.setContestScheduleId(getContestScheduleId());
+        clone.setProposalCreationTemplateString(getProposalCreationTemplateString());
+        clone.setVoteTemplateString(getVoteTemplateString());
+        clone.setProposalVoteTemplateString(getProposalVoteTemplateString());
+        clone.setVoteQuestionTemplateString(getVoteQuestionTemplateString());
         clone.setFocusAreaId(getFocusAreaId());
         clone.setContestTier(getContestTier());
         clone.setContestLogoId(getContestLogoId());
@@ -1495,6 +1664,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setFlagTooltip(getFlagTooltip());
         clone.setGroupId(getGroupId());
         clone.setDiscussionGroupId(getDiscussionGroupId());
+        clone.setFellowDiscussionGroupId(getFellowDiscussionGroupId());
         clone.setWeight(getWeight());
         clone.setResourcesUrl(getResourcesUrl());
         clone.setContestPrivate(getContestPrivate());
@@ -1567,7 +1737,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(85);
+        StringBundler sb = new StringBundler(95);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1597,6 +1767,14 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getPlanTemplateId());
         sb.append(", contestScheduleId=");
         sb.append(getContestScheduleId());
+        sb.append(", proposalCreationTemplateString=");
+        sb.append(getProposalCreationTemplateString());
+        sb.append(", voteTemplateString=");
+        sb.append(getVoteTemplateString());
+        sb.append(", proposalVoteTemplateString=");
+        sb.append(getProposalVoteTemplateString());
+        sb.append(", voteQuestionTemplateString=");
+        sb.append(getVoteQuestionTemplateString());
         sb.append(", focusAreaId=");
         sb.append(getFocusAreaId());
         sb.append(", contestTier=");
@@ -1623,6 +1801,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getGroupId());
         sb.append(", discussionGroupId=");
         sb.append(getDiscussionGroupId());
+        sb.append(", fellowDiscussionGroupId=");
+        sb.append(getFellowDiscussionGroupId());
         sb.append(", weight=");
         sb.append(getWeight());
         sb.append(", resourcesUrl=");
@@ -1660,7 +1840,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(130);
+        StringBundler sb = new StringBundler(145);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1723,6 +1903,22 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getContestScheduleId());
         sb.append("]]></column-value></column>");
         sb.append(
+            "<column><column-name>proposalCreationTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getProposalCreationTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>voteTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getVoteTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>proposalVoteTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getProposalVoteTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>voteQuestionTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getVoteQuestionTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
             "<column><column-name>focusAreaId</column-name><column-value><![CDATA[");
         sb.append(getFocusAreaId());
         sb.append("]]></column-value></column>");
@@ -1773,6 +1969,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>discussionGroupId</column-name><column-value><![CDATA[");
         sb.append(getDiscussionGroupId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>fellowDiscussionGroupId</column-name><column-value><![CDATA[");
+        sb.append(getFellowDiscussionGroupId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>weight</column-name><column-value><![CDATA[");
