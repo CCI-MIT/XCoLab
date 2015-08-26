@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -561,13 +560,13 @@ public class ProposalPickerJSONController {
 
 		PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
 		if (planSectionDefinition.getFocusAreaId() < 0) {
-			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, -1 * planSectionDefinition.getFocusAreaId());
+			ProposalPickerFilterUtil.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals, -1 * planSectionDefinition.getFocusAreaId());
 			if (request != null) {
 				Contest contest = proposalsContext.getContest(request);
-				ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, contest.getFocusAreaId());
+				ProposalPickerFilterUtil.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals, contest.getFocusAreaId());
 			}
 		} else {
-			ProposalPickerFilterUtil.ONTOLOGY_FOCUS_AREA.filter(proposals, planSectionDefinition);
+			ProposalPickerFilterUtil.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals, planSectionDefinition);
 		}
 
 		ProposalPickerFilterUtil.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());

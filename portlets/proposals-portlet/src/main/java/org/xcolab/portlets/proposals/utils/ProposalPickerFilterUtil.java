@@ -127,7 +127,7 @@ public enum ProposalPickerFilterUtil {
 			
 		}
     }),
-    ONTOLOGY_FOCUS_AREA(new ProposalPickerFilter() {
+    SECTION_DEF_FOCUS_AREA_FILTER(new ProposalPickerFilter() {
         @Override
         public void filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             try{
@@ -170,16 +170,16 @@ public enum ProposalPickerFilterUtil {
                 // else if filterTier > 0
                 //  only allow tier == filterTier - 1
                 Long filterTier = (Long) additionalFilterCriterion;
-                boolean exactMatch = true;
+                boolean allowLowerTiers = false;
                 if (filterTier < 0) {
-                    filterTier = -filterTier;
-                    exactMatch = false;
+                    filterTier = Math.abs(filterTier);
+                    allowLowerTiers = true;
                 }
 
                 if (ContestTier.getContestTierByTierType(filterTier) != ContestTier.NONE) {
                     ContestTier contestTier = ContestTier.getContestTierByTierType(filterTier);
                     Set<Contest> tierFilteredContests = new HashSet<>(ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType()));
-                    if (!exactMatch) {
+                    if (allowLowerTiers) {
                         for (Long currentTier = filterTier -1; currentTier >= 0; currentTier-- ) {
                             ContestTier localContestTier = ContestTier.getContestTierByTierType(currentTier);
                             tierFilteredContests.addAll(ContestLocalServiceUtil.getContestsMatchingTier(localContestTier.getTierType()));
