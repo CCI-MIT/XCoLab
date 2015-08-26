@@ -4,7 +4,7 @@ $c = mysqli_connect("127.0.0.1", "ColabMaintenance", 'xcolab', "ColabMaintenance
 
 while ($row = mysqli_fetch_row($r)) {
 
-        echo "Sending email to :" . $row[1] . "\n";
+        echo "Sending email to: " . $row[1] . "\n";
 $subject = "Climate CoLab is back online!";
 $message = "Dear Climate CoLab member,\n\n" .
         "Thank you very much for waiting for us to make some critical updates to the Climate CoLab. The site is back online now: www.climatecolab.org.\n\n" .
