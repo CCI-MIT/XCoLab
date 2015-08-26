@@ -35,7 +35,7 @@
                                 <p style="margin:15px 0 15px 0;font-size:17px">You receive one vote per contest</p>
                             </c:if>
                             </div>
-                            <div class="question"><a href="http://climatecolab.org/web/guest/resources/-/wiki/Main/contest+rules#Voting" target="_blank">
+                            <div class="question"><a href="/web/guest/resources/-/wiki/Main/contest+rules#Voting" target="_blank">
                                 <img src="/climatecolab-theme/images/icon-proposal-question.png" width="23" height="23" alt="Question?" />
                             </a></div>
                         </div>
