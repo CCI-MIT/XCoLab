@@ -168,7 +168,7 @@ public class ProposalPickerJSONController {
 			JSONObject o = JSONFactoryUtil.createJSONObject();
 			o.put("id", p.getLeft().getProposalId());
 			o.put("proposalName", StringUtils.abbreviate(
-					StringEscapeUtils.unescapeHtml4(wrappedProposal.getName()), MAXCHARS_FOR_NAMES));
+					StringEscapeUtils.unescapeXml(wrappedProposal.getName()), MAXCHARS_FOR_NAMES));
 			o.put("contestName", StringUtils.abbreviate(wrappedProposal
 					.getContest().getContestShortName(), MAXCHARS_FOR_NAMES));
 			o.put("contestId", wrappedProposal.getContest().getContestPK());
