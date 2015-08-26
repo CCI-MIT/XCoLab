@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -167,7 +168,7 @@ public class ProposalPickerJSONController {
 			JSONObject o = JSONFactoryUtil.createJSONObject();
 			o.put("id", p.getLeft().getProposalId());
 			o.put("proposalName", StringUtils.abbreviate(
-					wrappedProposal.getName(), MAXCHARS_FOR_NAMES));
+					StringEscapeUtils.unescapeHtml4(wrappedProposal.getName()), MAXCHARS_FOR_NAMES));
 			o.put("contestName", StringUtils.abbreviate(wrappedProposal
 					.getContest().getContestShortName(), MAXCHARS_FOR_NAMES));
 			o.put("contestId", wrappedProposal.getContest().getContestPK());
