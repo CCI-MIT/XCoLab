@@ -8,6 +8,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
@@ -38,6 +40,7 @@ import java.util.*;
 public class ProposalPickerJSONController {
 
 	private static int MAXCHARS_FOR_NAMES = 75;
+	private static Log _log = LogFactoryUtil.getLog(ProposalPickerJSONController.class);
 
 	@Autowired
 	private ProposalsContext proposalsContext;
@@ -75,17 +78,23 @@ public class ProposalPickerJSONController {
 			proposals = getFilteredAllProposalsForUser(Long.parseLong(user),
 					filterType, sectionId, contestPK, request);
 		}
+		int totalCount;
+		if (proposals != null) {
+			if (filterText != null && filterText.length() > 0)
+				ProposalPickerFilterUtil.TEXTBASED.filter(proposals, filterText);
+			totalCount = proposals.size();
 
-		if (filterText != null && filterText.length() > 0)
-			ProposalPickerFilterUtil.TEXTBASED.filter(proposals, filterText);
-		int totalCount = proposals.size();
+			sortProposalsList(sortOrder, sortColumn, proposals);
+			if (end >= totalCount && totalCount > 0)
+				end = totalCount;
+			if (totalCount > (end - start))
+				proposals = proposals.subList(start, end);
 
-		sortList(sortOrder, sortColumn, proposals);
-		if (end >= proposals.size() && proposals.size() > 0)
-			end = proposals.size();
-		if (proposals.size() > (end - start))
-			proposals = proposals.subList(start, end);
-
+		} else {
+			totalCount = 0;
+			_log.error("Could not retrieve proposals: proposals variable should not be null for valid filterKeys." +
+					"(filterKey was "+filterText+")");
+		}
 		response.getPortletOutputStream().write(
 				getJSONObjectMapping(proposals, totalCount).getBytes());
 	}
@@ -107,29 +116,27 @@ public class ProposalPickerJSONController {
 		List<Pair<ContestWrapper, Date>> contests = getFilteredContests(
 				filterType, sectionId, request);
 
-		if (filterText != null && filterText.length() > 0)
+		if (filterText != null && filterText.length() > 0) {
 			ProposalPickerFilterUtil.TEXTBASED.filterContests(contests,
 					filterText);
+		}
 		int totalCount = contests.size();
 
 		// sortList(sortOrder,sortColumn,contests);
-		if (end >= contests.size() && contests.size() > 0)
+		if (end >= contests.size() && contests.size() > 0) {
 			end = contests.size();
+		}
 		sortContestsList(sortOrder, sortColumn, contests);
-		if (contests.size() > (end - start))
+		if (contests.size() > (end - start)) {
 			contests = contests.subList(start, end);
-
-		// response.getPortletOutputStream().write(getJSONObjectMapping(contests,totalCount).getBytes());
+		}
 
 		response.getPortletOutputStream().write(
 				getJSONObjectMappingContests(contests, totalCount).getBytes());
 	}
 
 	/**
-	 * Methode is used to fill the counting bubbles for each tab
-	 *
-	 * @param request
-	 * @param response
+	 * This method is used to fill the counting bubbles for each tab
 	 */
 	@ResourceMapping("proposalPickerCounter")
 	public void proposalPickerCounter(ResourceRequest request,
@@ -147,6 +154,7 @@ public class ProposalPickerJSONController {
 				filterType, sectionId, 0L, request).size();
 		int numberOfSubscriptionsSupporting = getFilteredSubscribedSupportingProposalsForUser(
 				userId, filterType, sectionId, request).size();
+		int numberOfContests = getFilteredContests(filterType, sectionId, request).size();
 
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		wrapper.put("numberOfSubscriptions", numberOfSubscriptions);
@@ -154,7 +162,7 @@ public class ProposalPickerJSONController {
 		wrapper.put("numberOfProposals", numberOfProposals);
 		wrapper.put("numberOfSubscriptionsSupporting",
 				numberOfSubscriptionsSupporting);
-		wrapper.put("numberOfContests", numberOfProposals);
+		wrapper.put("numberOfContests", numberOfContests);
 		response.getPortletOutputStream().write(wrapper.toString().getBytes());
 	}
 
@@ -237,224 +245,231 @@ public class ProposalPickerJSONController {
 		return wrapper.toString();
 	}
 
-	private void sortList(String sortOrder, String sortColumn,
-						  List<Pair<Proposal, Date>> proposals) {
-		if (sortColumn.equalsIgnoreCase("Contest")) {
-			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-				@Override
-				public int compare(Pair<Proposal, Date> o1,
-								   Pair<Proposal, Date> o2) {
-					try {
-						return Proposal2PhaseLocalServiceUtil
-								.getCurrentContestForProposal(
-										o1.getLeft().getProposalId())
-								.getContestName()
-								.compareTo(
-										Proposal2PhaseLocalServiceUtil
-												.getCurrentContestForProposal(
-														o2.getLeft()
-																.getProposalId())
-												.getContestName());
-					} catch (Exception e) {
-						return 0;
+	private void sortProposalsList(String sortOrder, String sortColumn,
+								   List<Pair<Proposal, Date>> proposals) {
+		switch (sortColumn.toLowerCase()) {
+			case "contest":
+				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
+					@Override
+					public int compare(Pair<Proposal, Date> o1,
+									   Pair<Proposal, Date> o2) {
+						try {
+							return Proposal2PhaseLocalServiceUtil
+									.getCurrentContestForProposal(
+											o1.getLeft().getProposalId())
+									.getContestName()
+									.compareTo(
+											Proposal2PhaseLocalServiceUtil
+													.getCurrentContestForProposal(
+															o2.getLeft()
+																	.getProposalId())
+													.getContestName());
+						} catch (Exception e) {
+							return 0;
+						}
 					}
-				}
-			});
-		} else if (sortColumn.equalsIgnoreCase("Proposal")) {
-			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-				@Override
-				public int compare(Pair<Proposal, Date> o1,
-								   Pair<Proposal, Date> o2) {
-					try {
-						return ProposalLocalServiceUtil
-								.getAttribute(o1.getLeft().getProposalId(),
-										ProposalAttributeKeys.NAME, 0l)
-								.getStringValue()
-								.compareTo(
-										ProposalLocalServiceUtil.getAttribute(
-												o2.getLeft().getProposalId(),
-												ProposalAttributeKeys.NAME, 0l)
-												.getStringValue());
-					} catch (Exception e) {
-						return 0;
+				});
+				break;
+			case "proposal":
+				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
+					@Override
+					public int compare(Pair<Proposal, Date> o1,
+									   Pair<Proposal, Date> o2) {
+						try {
+							return ProposalLocalServiceUtil
+									.getAttribute(o1.getLeft().getProposalId(),
+											ProposalAttributeKeys.NAME, 0l)
+									.getStringValue()
+									.compareTo(
+											ProposalLocalServiceUtil.getAttribute(
+													o2.getLeft().getProposalId(),
+													ProposalAttributeKeys.NAME, 0l)
+													.getStringValue());
+						} catch (Exception e) {
+							return 0;
+						}
 					}
-				}
-			});
-		} else if (sortColumn.equalsIgnoreCase("Author")) {
-			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-				@Override
-				public int compare(Pair<Proposal, Date> o1,
-								   Pair<Proposal, Date> o2) {
-					try {
-						ProposalAttribute t1 = ProposalLocalServiceUtil
-								.getAttribute(o1.getLeft().getProposalId(),
-										ProposalAttributeKeys.TEAM, 0);
-						ProposalAttribute t2 = ProposalLocalServiceUtil
-								.getAttribute(o2.getLeft().getProposalId(),
-										ProposalAttributeKeys.TEAM, 0);
+				});
+				break;
+			case "author":
+				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
+					@Override
+					public int compare(Pair<Proposal, Date> o1,
+									   Pair<Proposal, Date> o2) {
+						try {
+							ProposalAttribute t1 = ProposalLocalServiceUtil
+									.getAttribute(o1.getLeft().getProposalId(),
+											ProposalAttributeKeys.TEAM, 0);
+							ProposalAttribute t2 = ProposalLocalServiceUtil
+									.getAttribute(o2.getLeft().getProposalId(),
+											ProposalAttributeKeys.TEAM, 0);
 
-						String author1 = t1 == null
-								|| t1.getStringValue().trim().length() == 0 ? UserLocalServiceUtil
-								.getUser(o1.getLeft().getAuthorId())
-								.getScreenName() : t1.getStringValue();
-						String author2 = t2 == null
-								|| t2.getStringValue().trim().length() == 0 ? UserLocalServiceUtil
-								.getUser(o2.getLeft().getAuthorId())
-								.getScreenName() : t2.getStringValue();
+							String author1 = t1 == null
+									|| t1.getStringValue().trim().length() == 0 ? UserLocalServiceUtil
+									.getUser(o1.getLeft().getAuthorId())
+									.getScreenName() : t1.getStringValue();
+							String author2 = t2 == null
+									|| t2.getStringValue().trim().length() == 0 ? UserLocalServiceUtil
+									.getUser(o2.getLeft().getAuthorId())
+									.getScreenName() : t2.getStringValue();
 
-						return author1.compareTo(author2);
-					} catch (Exception e) {
-						return 0;
+							return author1.compareTo(author2);
+						} catch (Exception e) {
+							return 0;
+						}
 					}
-				}
-			});
-		} else if (sortColumn.equalsIgnoreCase("Date")) {
-			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-				@Override
-				public int compare(Pair<Proposal, Date> o1,
-								   Pair<Proposal, Date> o2) {
-					return o1.getRight().compareTo(o2.getRight());
-				}
-			});
-		} else if (sortColumn.equalsIgnoreCase("Supporters")) {
-			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-				@Override
-				public int compare(Pair<Proposal, Date> o1,
-								   Pair<Proposal, Date> o2) {
-					try {
-						return ProposalLocalServiceUtil.getSupportersCount(o1
-								.getLeft().getProposalId()) - ProposalLocalServiceUtil
-								.getSupportersCount(o2.getLeft()
-										.getProposalId());
-					} catch (PortalException e) {
-					} catch (SystemException e) {
+				});
+				break;
+			case "date":
+				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
+					@Override
+					public int compare(Pair<Proposal, Date> o1,
+									   Pair<Proposal, Date> o2) {
+						return o1.getRight().compareTo(o2.getRight());
 					}
-					return 0;
-				}
-			});
-		} else if (sortColumn.equalsIgnoreCase("Comments")) {
-			Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-				@Override
-				public int compare(Pair<Proposal, Date> o1,
-								   Pair<Proposal, Date> o2) {
-					try {
-						return (int) (ProposalLocalServiceUtil
-								.getCommentsCount(o1.getLeft().getProposalId()) - ProposalLocalServiceUtil
-								.getCommentsCount(o2.getLeft().getProposalId()));
-					} catch (PortalException e) {
-					} catch (SystemException e) {
+				});
+				break;
+			case "supporters":
+				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
+					@Override
+					public int compare(Pair<Proposal, Date> o1,
+									   Pair<Proposal, Date> o2) {
+						try {
+							return ProposalLocalServiceUtil.getSupportersCount(o1
+									.getLeft().getProposalId()) - ProposalLocalServiceUtil
+									.getSupportersCount(o2.getLeft()
+											.getProposalId());
+						} catch (PortalException | SystemException e) {
+							return 0;
+						}
 					}
-					return 0;
-				}
-			});
+				});
+				break;
+			case "comments":
+				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
+					@Override
+					public int compare(Pair<Proposal, Date> o1,
+									   Pair<Proposal, Date> o2) {
+						try {
+							return (int) (ProposalLocalServiceUtil
+									.getCommentsCount(o1.getLeft().getProposalId()) - ProposalLocalServiceUtil
+									.getCommentsCount(o2.getLeft().getProposalId()));
+						} catch (PortalException | SystemException e) {
+							return 0;
+						}
+					}
+				});
+				break;
 		}
 
-		if (sortOrder.equalsIgnoreCase("DESC"))
+		if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {
 			Collections.reverse(proposals);
+		}
 	}
 
 	private void sortContestsList(String sortOrder, String sortColumn,
 								  List<Pair<ContestWrapper, Date>> contests) {
-		Comparator<Pair<ContestWrapper, Date>> contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
-			@Override
-			public int compare(Pair<ContestWrapper, Date> o1,
-							   Pair<ContestWrapper, Date> o2) {
-				try {
-					return (int) (o1.getLeft().getProposalsCount() - o2
-							.getLeft().getProposalsCount());
-				} catch (PortalException | SystemException e) {
-				}
-				return 0;
-			}
-		};
 		if (sortColumn != null) {
-			if (sortColumn.toLowerCase().equals("name")) {
-				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
-					@Override
-					public int compare(Pair<ContestWrapper, Date> o1,
-									   Pair<ContestWrapper, Date> o2) {
-						return o1.getLeft().getContestShortName()
-								.compareTo(o2.getLeft().getContestShortName());
-					}
-				};
-			}
-			if (sortColumn.toLowerCase().equals("comments")) {
-				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
-					@Override
-					public int compare(Pair<ContestWrapper, Date> o1,
-									   Pair<ContestWrapper, Date> o2) {
-						try {
-							return (int) (o1.getLeft().getTotalCommentsCount() - o2
-									.getLeft().getTotalCommentsCount());
-						} catch (PortalException | SystemException e) {
+			switch (sortColumn.toLowerCase()) {
+				case "name":
+					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+						@Override
+						public int compare(Pair<ContestWrapper, Date> o1,
+										   Pair<ContestWrapper, Date> o2) {
+							return o1.getLeft().getContestShortName()
+									.compareTo(o2.getLeft().getContestShortName());
 						}
-						return 0;
-					}
-				};
-			}
-			if (sortColumn.toLowerCase().equals("what")) {
-				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
-					@Override
-					public int compare(Pair<ContestWrapper, Date> o1,
-									   Pair<ContestWrapper, Date> o2) {
-						try {
-							return o1.getLeft().getWhatName()
-									.compareTo(o2.getLeft().getWhatName());
-						} catch (PortalException | SystemException e) {
+					});
+					break;
+				case "comments":
+					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+						@Override
+						public int compare(Pair<ContestWrapper, Date> o1,
+										   Pair<ContestWrapper, Date> o2) {
+							try {
+								return (int) (o1.getLeft().getTotalCommentsCount() - o2
+										.getLeft().getTotalCommentsCount());
+							} catch (PortalException | SystemException e) {
+								return 0;
+							}
 						}
-						return 0;
-					}
-				};
-			}
-			if (sortColumn.toLowerCase().equals("where")) {
-				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
-					@Override
-					public int compare(Pair<ContestWrapper, Date> o1,
-									   Pair<ContestWrapper, Date> o2) {
-						try {
-							return o1.getLeft().getWhereName()
-									.compareTo(o2.getLeft().getWhereName());
-						} catch (PortalException | SystemException e) {
+					});
+					break;
+				case "what":
+					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+						@Override
+						public int compare(Pair<ContestWrapper, Date> o1,
+										   Pair<ContestWrapper, Date> o2) {
+							try {
+								return o1.getLeft().getWhatName()
+										.compareTo(o2.getLeft().getWhatName());
+							} catch (PortalException | SystemException e) {
+								return 0;
+							}
 						}
-						return 0;
-					}
-				};
-			}
-			if (sortColumn.toLowerCase().equals("who")) {
-				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
-					@Override
-					public int compare(Pair<ContestWrapper, Date> o1,
-									   Pair<ContestWrapper, Date> o2) {
-						try {
-							return o1.getLeft().getWhoName()
-									.compareTo(o2.getLeft().getWhoName());
-						} catch (PortalException | SystemException e) {
+					});
+					break;
+				case "where":
+					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+						@Override
+						public int compare(Pair<ContestWrapper, Date> o1,
+										   Pair<ContestWrapper, Date> o2) {
+							try {
+								return o1.getLeft().getWhereName()
+										.compareTo(o2.getLeft().getWhereName());
+							} catch (PortalException | SystemException e) {
+								return 0;
+							}
 						}
-						return 0;
-					}
-				};
-			}
-			if (sortColumn.toLowerCase().equals("how")) {
-				contestComparator = new Comparator<Pair<ContestWrapper, Date>>() {
-					@Override
-					public int compare(Pair<ContestWrapper, Date> o1,
-									   Pair<ContestWrapper, Date> o2) {
-						try {
-							return o1.getLeft().getHowName()
-									.compareTo(o2.getLeft().getHowName());
-						} catch (PortalException | SystemException e) {
+					});
+					break;
+				case "who":
+					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+						@Override
+						public int compare(Pair<ContestWrapper, Date> o1,
+										   Pair<ContestWrapper, Date> o2) {
+							try {
+								return o1.getLeft().getWhoName()
+										.compareTo(o2.getLeft().getWhoName());
+							} catch (PortalException | SystemException e) {
+								return 0;
+							}
 						}
-						return 0;
-					}
-				};
+					});
+					break;
+				case "how":
+					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+						@Override
+						public int compare(Pair<ContestWrapper, Date> o1,
+										   Pair<ContestWrapper, Date> o2) {
+							try {
+								return o1.getLeft().getHowName()
+										.compareTo(o2.getLeft().getHowName());
+							} catch (PortalException | SystemException e) {
+								return 0;
+							}
+						}
+					});
+					break;
+				default:
+					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+						@Override
+						public int compare(Pair<ContestWrapper, Date> o1,
+										   Pair<ContestWrapper, Date> o2) {
+							try {
+								return (int) (o1.getLeft().getProposalsCount() - o2
+										.getLeft().getProposalsCount());
+							} catch (PortalException | SystemException e) {
+								return 0;
+							}
+						}
+					});
 			}
-
 		}
-		Collections.sort(contests, contestComparator);
+
 		if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {
 			Collections.reverse(contests);
 		}
-
 	}
 
 	private List<Pair<ContestWrapper, Date>> getFilteredContests(
