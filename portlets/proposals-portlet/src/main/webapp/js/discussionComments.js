@@ -4,7 +4,10 @@ function disableAddComment() {
 }
 function isAddCommentFormValid() {
     var isValid = (jQuery.trim(jQuery("#thecomment .commentContent").val()) != '');
-
+    if (!isValid) {
+        isValid = jQuery.trim(CKEDITOR.instances.messageContent.getData()) != '';
+    }
+    
     if (isValid) {
         jQuery('#thecomment .errorMsg').hide();
     }

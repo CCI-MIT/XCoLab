@@ -11,6 +11,7 @@
 	version="2.0">
 	<jsp:directive.attribute name="evaluationDiscussionId" type="java.lang.Long" required="true" rtexprvalue="true" description="Evaluation discussion id" />
 	<discussions:loadDiscussion discussionId="${evaluationDiscussionId }" >
+		<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 			<div class="headline prophead">
         		<h2>
 					<span>${discussion.commentsCount}</span>
@@ -164,8 +165,8 @@
         				<form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
         					<input name="discussionId" class="title text hidden" maxlength="255" value="${discussion.discussionId }"/>
 	       					<input name="title" class="title text hidden" maxlength="255" />
-    	   					<textarea id="messageContent" name="description"  class="commentbox commentContent" ><!--  --></textarea>
-            				<br />
+    	   					<textarea id="messageContent" name="description"  class="rte commentbox commentContent" />
+							<br />
 	           				<span class="errorMsg portlet-msg-error" style="display: none;">Value is required</span>
     	       				<div class="blue-button">
     	       					<c:choose>
