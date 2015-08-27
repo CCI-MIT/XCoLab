@@ -37,7 +37,10 @@ public class HtmlCleaner {
      * @return input string without dangerous html tags
      */
     public static String cleanSome(String text) {
-        return clean(text, Whitelist.basicWithImages());
+        final Whitelist whitelist = Whitelist.basicWithImages();
+        whitelist.addAttributes("img", "style");
+        whitelist.preserveRelativeLinks(true);
+        return clean(text, whitelist);
     }
 
     /**
