@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Utility class to sanitize HTML inputs.
+ * Utility class to sanitize and format HTML inputs.
  *
  * Created by johannes on 8/10/15.
  */
@@ -79,7 +79,7 @@ public class HtmlUtil {
         if (! content.contains("<br")) {
             tmp = filterLineBreaks(tmp);
         }
-        linkifyUrls(tmp);
+        tmp = linkifyUrls(tmp);
         tmp = tmp.replaceAll("\"", "'");
 
         return tmp;
