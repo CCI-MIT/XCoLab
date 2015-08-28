@@ -6,8 +6,6 @@ import javax.portlet.ActionResponse;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
@@ -40,7 +38,6 @@ public class VoteOnProposalActionController {
     private final static String VOTE_ANALYTICS_ACTION = "Vote contest entry";
     private final static String VOTE_ANALYTICS_LABEL = "";
 
-    private static Log _log = LogFactoryUtil.getLog(VoteOnProposalActionController.class);
 
     @RequestMapping(params = {"action=voteOnProposalAction"})
     public void handleAction(ActionRequest request, Model model, ActionResponse response)
@@ -61,18 +58,14 @@ public class VoteOnProposalActionController {
                     // User has voted for a different proposal. Vote will be retracted and converted to a vote of this proposal.
                     ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
                 }
-                try {
-                    ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
 
-                    ServiceContext serviceContext = new ServiceContext();
-                    ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-                    serviceContext.setPortalURL(themeDisplay.getPortalURL());
-                    new ProposalVoteNotification(proposal, ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId)), user, serviceContext).sendMessage();
-                    hasVoted = true;
-                } catch(SystemException exception) {
-                    _log.error("kmang: Original Vote exception occured: ", exception.getCause());
-                    _log.error("kmang: Wrapped Vote exception occured: ", exception);
-                }
+                ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
+
+                ServiceContext serviceContext = new ServiceContext();
+                ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+                serviceContext.setPortalURL(themeDisplay.getPortalURL());
+                new ProposalVoteNotification(proposal, ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId)), user, serviceContext).sendMessage();
+                hasVoted = true;
 
 
                 //publish event per contestPhaseId to allow voting on exactly one proposal per contest(phase)
