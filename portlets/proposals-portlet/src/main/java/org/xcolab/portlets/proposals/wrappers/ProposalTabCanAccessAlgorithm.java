@@ -145,7 +145,7 @@ interface ProposalTabCanAccessAlgorithm {
                 if ((contest != null && contest.getDefaultParentPointType() > 0) && (permissions.getIsTeamMember() || permissions.getCanAdmin())) {
                     //if yes, check if contest phase allows editing
                     Integer pointsAccessible = ContestLocalServiceUtil.getPointsAccessibleForActivePhaseOfContest(contest);
-                    return (pointsAccessible != null && pointsAccessible >= 2);
+                    return permissions.getCanAdmin() || (pointsAccessible != null && pointsAccessible >= 2);
                 }
             } catch (SystemException | PortalException e) {
                 _log.error("can't check if user is allowed to edit points", e);
