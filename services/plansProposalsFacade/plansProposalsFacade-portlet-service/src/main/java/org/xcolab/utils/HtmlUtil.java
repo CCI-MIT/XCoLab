@@ -86,7 +86,7 @@ public class HtmlUtil {
     }
 
     public static String linkifyUrls(String content) {
-        Pattern existingLinksPattern = Pattern.compile("(<a[^>]*>[^<]*</a>|<img[^>]*>)");
+        Pattern existingLinksPattern = Pattern.compile("(<a[^>]*>[^<]*</a>|<img[^>]*>|<a[^>]*>)");
         Matcher existingLinksMatcher = existingLinksPattern.matcher(content);
 
         List<Integer[]> linksBeginEnd = new ArrayList<>();
