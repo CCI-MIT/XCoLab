@@ -15,10 +15,10 @@
 
     <!-- Content -->
     <div id="content">
-        <c:if test="${not empty isGlobalContest and isGlobalContest or not empty isRegionalContest and  isRegionalContest}">
+        <c:if test="${not empty isGlobalContest and isGlobalContest or not empty isRegionalContest and isRegionalContest}">
 
-            <c:set var="modelId" value="${proposal.modelId }"/>
-            <c:set var="scenarioId" value="${proposal.scenarioId }"/>
+            <c:set var="modelId" value="${modelId}"/>
+            <c:set var="scenarioId" value="${scenarioId }"/>
 
             <c:if test="${not empty consolidatedModelId}">
                 <c:set var="modelId" value="${consolidatedModelId}"/>
@@ -359,12 +359,11 @@
         }
 
         var scenarioFetchedCallback = function (event) {
+            var modelOutputs = event.scenario.outputs;
             var totalSectorsRow = document.getElementById("totalSectors");
             if (totalSectorsRow) {
                 var totalSectorsValuesToYears = mapValuesToYear(totalSectorsRow);
                 var modelSeriesValuesToYears = {};
-                var modelOutputs = event.scenario.outputs;
-                console.log("event.scenario", event.scenario);
                 modelOutputs.forEach(function (modelOutput) {
                     console.log("modelOutput", modelOutput);
                     if (modelOutput.name.toLowerCase() === MODEL_DATA_ROW.toLowerCase()) {
@@ -408,12 +407,10 @@
             });
         }
 
-        if (jQuery($("#modelsOutputContainer").data('modeling')).length !== 0) {
-            jQuery($("#modelsOutputContainer").data('modeling')).on('scenarioFetched', scenarioFetchedCallback);
-        }
-
         $().ready(function () {
-            jQuery($("#modelsOutputContainer").data('modeling')).on('scenarioFetched', scenarioFetchedCallback);
+            if (jQuery($("#modelsOutputContainer").data('modeling')).length !== 0) {
+                jQuery($("#modelsOutputContainer").data('modeling')).on('scenarioFetched', scenarioFetchedCallback);
+            }
             registerHelpEventHandler();
         });
         /*

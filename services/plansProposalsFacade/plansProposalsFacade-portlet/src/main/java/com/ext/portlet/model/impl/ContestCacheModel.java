@@ -35,6 +35,10 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public boolean contestActive;
     public long planTemplateId;
     public long contestScheduleId;
+    public String proposalCreationTemplateString;
+    public String voteTemplateString;
+    public String proposalVoteTemplateString;
+    public String voteQuestionTemplateString;
     public long focusAreaId;
     public long contestTier;
     public long contestLogoId;
@@ -48,6 +52,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public String flagTooltip;
     public long groupId;
     public long discussionGroupId;
+    public long fellowDiscussionGroupId;
     public int weight;
     public String resourcesUrl;
     public boolean contestPrivate;
@@ -66,7 +71,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(85);
+        StringBundler sb = new StringBundler(95);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -96,6 +101,14 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(planTemplateId);
         sb.append(", contestScheduleId=");
         sb.append(contestScheduleId);
+        sb.append(", proposalCreationTemplateString=");
+        sb.append(proposalCreationTemplateString);
+        sb.append(", voteTemplateString=");
+        sb.append(voteTemplateString);
+        sb.append(", proposalVoteTemplateString=");
+        sb.append(proposalVoteTemplateString);
+        sb.append(", voteQuestionTemplateString=");
+        sb.append(voteQuestionTemplateString);
         sb.append(", focusAreaId=");
         sb.append(focusAreaId);
         sb.append(", contestTier=");
@@ -122,6 +135,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(groupId);
         sb.append(", discussionGroupId=");
         sb.append(discussionGroupId);
+        sb.append(", fellowDiscussionGroupId=");
+        sb.append(fellowDiscussionGroupId);
         sb.append(", weight=");
         sb.append(weight);
         sb.append(", resourcesUrl=");
@@ -217,6 +232,31 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestImpl.setContestActive(contestActive);
         contestImpl.setPlanTemplateId(planTemplateId);
         contestImpl.setContestScheduleId(contestScheduleId);
+
+        if (proposalCreationTemplateString == null) {
+            contestImpl.setProposalCreationTemplateString(StringPool.BLANK);
+        } else {
+            contestImpl.setProposalCreationTemplateString(proposalCreationTemplateString);
+        }
+
+        if (voteTemplateString == null) {
+            contestImpl.setVoteTemplateString(StringPool.BLANK);
+        } else {
+            contestImpl.setVoteTemplateString(voteTemplateString);
+        }
+
+        if (proposalVoteTemplateString == null) {
+            contestImpl.setProposalVoteTemplateString(StringPool.BLANK);
+        } else {
+            contestImpl.setProposalVoteTemplateString(proposalVoteTemplateString);
+        }
+
+        if (voteQuestionTemplateString == null) {
+            contestImpl.setVoteQuestionTemplateString(StringPool.BLANK);
+        } else {
+            contestImpl.setVoteQuestionTemplateString(voteQuestionTemplateString);
+        }
+
         contestImpl.setFocusAreaId(focusAreaId);
         contestImpl.setContestTier(contestTier);
         contestImpl.setContestLogoId(contestLogoId);
@@ -252,6 +292,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
         contestImpl.setGroupId(groupId);
         contestImpl.setDiscussionGroupId(discussionGroupId);
+        contestImpl.setFellowDiscussionGroupId(fellowDiscussionGroupId);
         contestImpl.setWeight(weight);
 
         if (resourcesUrl == null) {
@@ -323,6 +364,10 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestActive = objectInput.readBoolean();
         planTemplateId = objectInput.readLong();
         contestScheduleId = objectInput.readLong();
+        proposalCreationTemplateString = objectInput.readUTF();
+        voteTemplateString = objectInput.readUTF();
+        proposalVoteTemplateString = objectInput.readUTF();
+        voteQuestionTemplateString = objectInput.readUTF();
         focusAreaId = objectInput.readLong();
         contestTier = objectInput.readLong();
         contestLogoId = objectInput.readLong();
@@ -336,6 +381,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         flagTooltip = objectInput.readUTF();
         groupId = objectInput.readLong();
         discussionGroupId = objectInput.readLong();
+        fellowDiscussionGroupId = objectInput.readLong();
         weight = objectInput.readInt();
         resourcesUrl = objectInput.readUTF();
         contestPrivate = objectInput.readBoolean();
@@ -401,6 +447,31 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         objectOutput.writeBoolean(contestActive);
         objectOutput.writeLong(planTemplateId);
         objectOutput.writeLong(contestScheduleId);
+
+        if (proposalCreationTemplateString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(proposalCreationTemplateString);
+        }
+
+        if (voteTemplateString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(voteTemplateString);
+        }
+
+        if (proposalVoteTemplateString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(proposalVoteTemplateString);
+        }
+
+        if (voteQuestionTemplateString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(voteQuestionTemplateString);
+        }
+
         objectOutput.writeLong(focusAreaId);
         objectOutput.writeLong(contestTier);
         objectOutput.writeLong(contestLogoId);
@@ -436,6 +507,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
         objectOutput.writeLong(groupId);
         objectOutput.writeLong(discussionGroupId);
+        objectOutput.writeLong(fellowDiscussionGroupId);
         objectOutput.writeInt(weight);
 
         if (resourcesUrl == null) {

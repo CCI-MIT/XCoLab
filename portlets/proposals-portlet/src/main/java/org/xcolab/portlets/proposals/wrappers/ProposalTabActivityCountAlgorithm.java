@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
 import com.liferay.portal.kernel.exception.PortalException;
@@ -27,6 +28,22 @@ public interface ProposalTabActivityCountAlgorithm {
         public int getActivityCount(ProposalsContext context, PortletRequest request) {
             try {
                 return (int) context.getProposalWrapped(request).getEvaluationCommentsCount();
+            } catch (PortalException e) {
+                _log.error("can't get comments count for a proposal", e);
+            } catch (SystemException e) {
+                _log.error("can't get comments count for a proposal", e);
+            }
+            return 0;
+        }
+        private Log _log = LogFactoryUtil.getLog(ProposalTabActivityCountAlgorithm.class);
+    };
+
+    public static ProposalTabActivityCountAlgorithm fellowReviewCommentsCount = new ProposalTabActivityCountAlgorithm() {
+
+        @Override
+        public int getActivityCount(ProposalsContext context, PortletRequest request) {
+            try {
+                return (int) context.getProposalWrapped(request).getFellowReviewCommentsCount();
             } catch (PortalException e) {
                 _log.error("can't get comments count for a proposal", e);
             } catch (SystemException e) {

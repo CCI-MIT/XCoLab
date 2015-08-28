@@ -3,6 +3,7 @@ package org.xcolab.utils.emailnotification;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -15,11 +16,16 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +35,15 @@ import java.util.List;
  */
 public abstract class EmailNotification {
     protected static final long ADMINISTRATOR_USER_ID = 10144L;
+
+    private static final String FIRSTNAME_PLACEHOLDER = "firstname";
+    private static final String FULL_NAME_PLACEHOLDER = "fullname";
+    private static final String PROPOSAL_LINK_PLACEHOLDER = "proposal-link";
+    private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
+    private static final String TWITTER_PLACEHOLDER = "twitter";
+    private static final String FACEBOOK_PLACEHOLDER = "facebook";
+    private static final String PINTEREST_PLACEHOLDER = "pinterest";
+    private static final String LINKEDIN_PLACEHOLDER = "linkedin";
 
     protected static final String FACEBOOK_PROPOSAL_SHARE_LINK = "https://www.facebook.com/sharer/sharer.php?u=%s&display=popup";
     protected static final String TWITTER_PROPOSAL_SHARE_LINK = "https://twitter.com/share?url=%s&text=%s";
@@ -91,8 +106,16 @@ public abstract class EmailNotification {
         return UserLocalServiceUtil.getUserById(proposal.getAuthorId());
     }
 
-    protected User getContestlAuthor(Contest contest) throws SystemException, PortalException {
+    protected User getContestAuthor(Contest contest) throws SystemException, PortalException {
         return UserLocalServiceUtil.getUserById(contest.getAuthorId());
+    }
+
+    protected Contest getContest() {
+        return null;
+    }
+
+    protected Proposal getProposal() {
+        return null;
     }
 
     protected void sendMessage(String subject, String body, User recipient) {
@@ -106,7 +129,7 @@ public abstract class EmailNotification {
     }
 
     /**
-     * Returns a fully prepared Facebook share link for the given proposal including the specified share message
+     * Returns the link url to the given proposal
      *
      * @param contest                       Contest in which the proposal is in
      * @param proposalToShare               The Proposal that should be shared
@@ -114,27 +137,48 @@ public abstract class EmailNotification {
      * @throws SystemException
      * @throws PortalException
      */
-    protected String getProposalFacebookShareLink(Contest contest, Proposal proposalToShare) throws SystemException, PortalException {
-        final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
-        String url = String.format(FACEBOOK_PROPOSAL_SHARE_LINK, proposalUrl);
+    protected String getProposalLinkUrl(Contest contest, Proposal proposalToShare) throws SystemException, PortalException {
+        return serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
+    }
+
+    /**
+     * Returns the link url to the given contest
+     *
+     * @param contest                       Contest to be shared
+     * @return
+     * @throws SystemException
+     * @throws PortalException
+     */
+    protected String getContestLinkUrl(Contest contest) throws SystemException, PortalException {
+        return serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(contest);
+    }
+
+    /**
+     * Returns a fully prepared Facebook share link for the given url
+     *
+     * @param urlToShare            The url to be shared
+     * @return
+     * @throws SystemException
+     * @throws PortalException
+     */
+    protected String getFacebookShareLink(String urlToShare) throws SystemException, PortalException {
+        String url = String.format(FACEBOOK_PROPOSAL_SHARE_LINK, urlToShare);
         return String.format(LINK_FORMAT_STRING, url, "Facebook");
     }
 
 
     /**
-     * Returns a fully prepared Twitter share link for the given proposal including the specified share message
+     * Returns a fully prepared Twitter share link for the given url including the specified share message
      *
-     * @param contest                       Contest in which the proposal is in
-     * @param proposalToShare               The Proposal that should be shared
+     * @param urlToShare    The url to be shared
      * @param shareMessage                  The message that should be included for sharing
      * @return
      * @throws SystemException
      * @throws PortalException
      */
-    protected String getProposalTwitterShareLink(Contest contest, Proposal proposalToShare, String shareMessage) throws SystemException {
-        final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
+    protected String getTwitterShareLink(String urlToShare, String shareMessage) throws SystemException {
         try {
-            String url = String.format(TWITTER_PROPOSAL_SHARE_LINK, proposalUrl, URLEncoder.encode(shareMessage, "UTF-8"));
+            String url = String.format(TWITTER_PROPOSAL_SHARE_LINK, urlToShare, URLEncoder.encode(shareMessage, "UTF-8"));
             return String.format(LINK_FORMAT_STRING, url, "Twitter");
         } catch (UnsupportedEncodingException e) {
             // Should never happen
@@ -142,10 +186,9 @@ public abstract class EmailNotification {
         }
     }
 
-    protected String getProposalLinkedInShareLink(Contest contest, Proposal proposalToShare, String shareTitle, String shareMessage) throws SystemException {
-        final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
+    protected String getLinkedInShareLink(String urlToShare, String shareTitle, String shareMessage) throws SystemException {
         try {
-            String url = String.format(LINKEDIN_PROPOSAL_SHARE_LINK, proposalUrl,
+            String url = String.format(LINKEDIN_PROPOSAL_SHARE_LINK, urlToShare,
                     URLEncoder.encode(shareTitle, "UTF-8"),
                     URLEncoder.encode(shareMessage, "UTF-8"));
             return String.format(LINK_FORMAT_STRING, url, "LinkedIn");
@@ -155,10 +198,9 @@ public abstract class EmailNotification {
         }
     }
 
-    protected String getProposalPinterestShareLink(Contest contest, Proposal proposalToShare, String shareMessage) throws SystemException {
-        final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
+    protected String getPinterestShareLink(String urlToShare, String shareMessage) throws SystemException {
         try {
-            String url = String.format(PINTEREST_PROPOSAL_SHARE_LINK, proposalUrl, URLEncoder.encode(shareMessage, "UTF-8"));
+            String url = String.format(PINTEREST_PROPOSAL_SHARE_LINK, urlToShare, URLEncoder.encode(shareMessage, "UTF-8"));
             return String.format(LINK_FORMAT_STRING, url, "Pinterest");
         } catch (UnsupportedEncodingException e) {
             // Should never happen
@@ -166,5 +208,82 @@ public abstract class EmailNotification {
         }
     }
 
-    public abstract void sendEmailNotification() throws SystemException, PortalException;
+    protected abstract EmailTemplateWrapper getTemplateWrapper() throws SystemException, PortalException;
+
+    protected abstract User getRecipient() throws SystemException, PortalException;
+
+    public void sendEmailNotification() throws SystemException, PortalException {
+        EmailTemplateWrapper template = getTemplateWrapper();
+        String subject = template.getSubject();
+        String body = template.getHeader()+"\n"+template.getFooter();
+        sendMessage(subject, body, getRecipient());
+    }
+
+    public void sendMessage() throws SystemException, PortalException {
+        List<Long> recipients = new ArrayList<Long>();
+        recipients.add(getRecipient().getUserId());
+        EmailTemplateWrapper template = getTemplateWrapper();
+        try {
+            String content = template.getHeader() + template.getFooter();
+            content = content.replace("\n", " ").replace("\r", " ");
+            MessageUtil.sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients, null);
+        } catch (MailEngineException | AddressException e) {
+            throw new SystemException(e);
+        }
+    }
+
+    protected class EmailNotificationTemplate extends EmailTemplateWrapper {
+        public EmailNotificationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
+            super(template, proposalName, contestName);
+        }
+
+        @Override
+        protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+            final Node node = super.resolvePlaceholderTag(tag);
+            if (node != null) {
+                return node;
+            }
+            Contest contest = getContest();
+            Proposal proposal = getProposal();
+            final boolean hasProposal = contest != null && proposal != null;
+
+            switch (tag.nodeName()) {
+                case FIRSTNAME_PLACEHOLDER:
+                    return new TextNode(getRecipient().getFirstName(), "");
+                case FULL_NAME_PLACEHOLDER:
+                    return new TextNode(getRecipient().getFullName(), "");
+                case CONTEST_LINK_PLACEHOLDER:
+                    if (contest == null) {
+                        break;
+                    }
+                    return parseXmlNode(getContestLink(contest));
+                case PROPOSAL_LINK_PLACEHOLDER:
+                    if (!hasProposal) {
+                        break;
+                    }
+                    return parseXmlNode(getProposalLink(contest, proposal));
+                case TWITTER_PLACEHOLDER:
+                    if (!hasProposal) {
+                        break;
+                    }
+                    return parseXmlNode(getTwitterShareLink(getProposalLinkUrl(contest, proposal), tag.ownText()));
+                case PINTEREST_PLACEHOLDER:
+                    if (!hasProposal) {
+                        break;
+                    }
+                    return parseXmlNode(getPinterestShareLink(getProposalLinkUrl(contest, proposal), tag.ownText()));
+                case FACEBOOK_PLACEHOLDER:
+                    if (!hasProposal) {
+                        break;
+                    }
+                    return parseXmlNode(getFacebookShareLink(getProposalLinkUrl(contest, proposal)));
+                case LINKEDIN_PLACEHOLDER:
+                    if (!hasProposal) {
+                        break;
+                    }
+                    return parseXmlNode(getLinkedInShareLink(getProposalLinkUrl(contest, proposal), tag.attr("title") , tag.ownText()));
+            }
+            return null;
+        }
+    }
 }

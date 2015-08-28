@@ -28,6 +28,10 @@ public class ContestSoap implements Serializable {
     private boolean _contestActive;
     private long _planTemplateId;
     private long _contestScheduleId;
+    private String _proposalCreationTemplateString;
+    private String _voteTemplateString;
+    private String _proposalVoteTemplateString;
+    private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
     private long _contestLogoId;
@@ -41,6 +45,7 @@ public class ContestSoap implements Serializable {
     private String _flagTooltip;
     private long _groupId;
     private long _discussionGroupId;
+    private long _fellowDiscussionGroupId;
     private int _weight;
     private String _resourcesUrl;
     private boolean _contestPrivate;
@@ -77,6 +82,10 @@ public class ContestSoap implements Serializable {
         soapModel.setContestActive(model.getContestActive());
         soapModel.setPlanTemplateId(model.getPlanTemplateId());
         soapModel.setContestScheduleId(model.getContestScheduleId());
+        soapModel.setProposalCreationTemplateString(model.getProposalCreationTemplateString());
+        soapModel.setVoteTemplateString(model.getVoteTemplateString());
+        soapModel.setProposalVoteTemplateString(model.getProposalVoteTemplateString());
+        soapModel.setVoteQuestionTemplateString(model.getVoteQuestionTemplateString());
         soapModel.setFocusAreaId(model.getFocusAreaId());
         soapModel.setContestTier(model.getContestTier());
         soapModel.setContestLogoId(model.getContestLogoId());
@@ -90,6 +99,7 @@ public class ContestSoap implements Serializable {
         soapModel.setFlagTooltip(model.getFlagTooltip());
         soapModel.setGroupId(model.getGroupId());
         soapModel.setDiscussionGroupId(model.getDiscussionGroupId());
+        soapModel.setFellowDiscussionGroupId(model.getFellowDiscussionGroupId());
         soapModel.setWeight(model.getWeight());
         soapModel.setResourcesUrl(model.getResourcesUrl());
         soapModel.setContestPrivate(model.getContestPrivate());
@@ -270,6 +280,39 @@ public class ContestSoap implements Serializable {
         _contestScheduleId = contestScheduleId;
     }
 
+    public String getProposalCreationTemplateString() {
+        return _proposalCreationTemplateString;
+    }
+
+    public void setProposalCreationTemplateString(
+        String proposalCreationTemplateString) {
+        _proposalCreationTemplateString = proposalCreationTemplateString;
+    }
+
+    public String getVoteTemplateString() {
+        return _voteTemplateString;
+    }
+
+    public void setVoteTemplateString(String voteTemplateString) {
+        _voteTemplateString = voteTemplateString;
+    }
+
+    public String getProposalVoteTemplateString() {
+        return _proposalVoteTemplateString;
+    }
+
+    public void setProposalVoteTemplateString(String proposalVoteTemplateString) {
+        _proposalVoteTemplateString = proposalVoteTemplateString;
+    }
+
+    public String getVoteQuestionTemplateString() {
+        return _voteQuestionTemplateString;
+    }
+
+    public void setVoteQuestionTemplateString(String voteQuestionTemplateString) {
+        _voteQuestionTemplateString = voteQuestionTemplateString;
+    }
+
     public long getFocusAreaId() {
         return _focusAreaId;
     }
@@ -380,6 +423,14 @@ public class ContestSoap implements Serializable {
 
     public void setDiscussionGroupId(long discussionGroupId) {
         _discussionGroupId = discussionGroupId;
+    }
+
+    public long getFellowDiscussionGroupId() {
+        return _fellowDiscussionGroupId;
+    }
+
+    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId) {
+        _fellowDiscussionGroupId = fellowDiscussionGroupId;
     }
 
     public int getWeight() {

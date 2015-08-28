@@ -46,12 +46,12 @@ interface ProposalTabCanAccessAlgorithm {
     };
     
     public final static ProposalTabCanAccessAlgorithm advancingAccess = new ProposalTabCanAccessAlgorithm() {
-        
+
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
                 if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()
-                || permissions.getCanContestManagerActions()) ) {
+                        || permissions.getCanContestManagerActions()) ) {
                     return false;
                 }
 
@@ -70,6 +70,22 @@ interface ProposalTabCanAccessAlgorithm {
             }
 
             return false;
+        }
+    };
+
+    public final static ProposalTabCanAccessAlgorithm fellowReviewAccess = new ProposalTabCanAccessAlgorithm() {
+
+        @Override
+        public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
+            try {
+                ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
+                if (proposalWrapper.getContest().getContestTier() < 1) {
+                    return false;
+                }
+            } catch (PortalException | SystemException e) {
+                e.printStackTrace();
+            }
+            return permissions.getCanAdminAll() || permissions.getCanJudgeActions() || permissions.getCanFellowActions();
         }
     };
     
