@@ -2,8 +2,6 @@ package org.xcolab.jsp.tags.discussion.wrappers;
 
 import java.util.Date;
 
-import org.xcolab.commons.utils.ContentFilterHelper;
-
 import com.ext.portlet.discussions.DiscussionMessageFlagType;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.DiscussionMessageFlag;
@@ -12,6 +10,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.utils.HtmlUtil;
 
 public class DiscussionMessageWrapper {
     private DiscussionMessage wrapped;
@@ -29,7 +28,7 @@ public class DiscussionMessageWrapper {
     }
 
     public String getBody() {
-        return ContentFilterHelper.filterContent(wrapped.getBody());
+        return HtmlUtil.filterAndFormatContent(wrapped.getBody());
     }
 
     public long getThreadId() {
