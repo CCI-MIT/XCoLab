@@ -16,6 +16,7 @@ import javax.portlet.PortletRequest;
 
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.service.*;
+import com.liferay.portal.NoSuchUserException;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
@@ -837,7 +838,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public List<User> getSupporters(long proposalId) throws SystemException, PortalException {
         List<User> ret = new ArrayList<>();
         for (ProposalSupporter supporter : proposalSupporterPersistence.findByProposalId(proposalId)) {
-            ret.add(UserLocalServiceUtil.getUser(supporter.getUserId()));
+            try {
+                ret.add(UserLocalServiceUtil.getUser(supporter.getUserId()));
+            } catch(NoSuchUserException e){
+                _log.warn("Could not add proposal supporter", e);
+            }
         }
         return ret;
     }
@@ -1033,6 +1038,23 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public long getCommentsCount(long proposalId) throws SystemException, PortalException {
         Proposal proposal = getProposal(proposalId);
         return discussionCategoryGroupLocalService.getCommentsCount(proposal.getDiscussionId());
+    }
+
+    /**
+     * <p>Returns number of fellow review comments in discussion associated with this proposal</p>
+     *
+     * @param proposalId proposal id
+     * @return number of comments
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public long getFellowReviewCommentsCount(long proposalId) throws SystemException, PortalException {
+        Proposal proposal = getProposal(proposalId);
+        final long fellowDiscussionId = proposal.getFellowDiscussionId();
+        if (fellowDiscussionId == 0) {
+            return 0;
+        }
+        return discussionCategoryGroupLocalService.getCommentsCount(fellowDiscussionId);
     }
 
     /**

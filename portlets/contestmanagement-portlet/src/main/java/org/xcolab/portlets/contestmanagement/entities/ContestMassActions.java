@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Thomas on 2/17/2015.
  */
 public enum ContestMassActions{
-    NONE("Order only"),
+    ORDER("Order only"),
     MESSAGE("Message contributors in active phase", ContestMassActionMethods.class, "sendMassMessage"),
     CAST_SUPPORT_TO_VOTES("Message proposal supporters to vote", ContestMassActionMethods.class, "sendSupport2VotesEmail"),
     REPORT_PEOPLE_IN_CURRENT_PHASE("Generate report of contributors in active phase", ContestMassActionMethods.class, "reportOfPeopleInCurrentPhase"),

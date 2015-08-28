@@ -75,20 +75,30 @@ table.simulation .leftContent, table.simulation .right-content {
 	position: relative;
 }
 
+a.model_name_description{
+    display: block;
+}
+.model_description .brand {
+    cursor:pointer;
+    position: relative;
+    right: 0px;
+    top: 0px;
+    float: right;
+    margin-top: -50px;
+}	
+
 .model_description .brand.EnROADS {
 	background: url(../img/climate_interactive_logo.png) no-repeat !important;
 	width: 150px;
 	height: 67px;
-	float: right;
-	margin-top: -50px;
 }
 
 .model_description .brand.EMF27, .model_description .brand.EMF  {
 	background: url(../img/emf_logo.png) no-repeat !important;
 	width: 154px;
 	height: 50px;
-	float: right;
-	position: absolute;
-	right: 0px;
-	top: 0px;
+}
+
+.model_description .instructions{
+    width: 80%;
 }

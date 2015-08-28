@@ -112,19 +112,19 @@
 	<model name="com.ext.portlet.model.Contest">
 		<field name="ContestPK" type="long" />
 		<field name="ContestName" type="String">
-			<hint name="max-length">2048</hint>
-		</field>
-		<field name="ContestShortName" type="String">
 			<hint name="max-length">1024</hint>
 		</field>
+		<field name="ContestShortName" type="String">
+			<hint name="max-length">512</hint>
+		</field>
 		<field name="ContestDescription" type="String">
-			<hint name="max-length">3072</hint>
+			<hint name="max-length">10000</hint>
 		</field>
 		<field name="ContestModelDescription" type="String">
-			<hint name="max-length">2048</hint>
+			<hint name="max-length">10000</hint>
 		</field>
 		<field name="ContestPositionsDescription" type="String">
-			<hint name="max-length">2048</hint>
+			<hint name="max-length">10000</hint>
 		</field>
 		<field name="defaultPlanDescription" type="String">
 			<hint name="max-length">2000000</hint>
@@ -136,6 +136,18 @@
 		<field name="contestActive" type="boolean" />
 		<field name="planTemplateId" type="long" />
 		<field name="contestScheduleId" type="long" />
+		<field name="proposalCreationTemplateString" type="String">
+			<hint name="default-value">PROPOSAL_CREATION_DEFAULT</hint>
+		</field>
+		<field name="voteTemplateString" type="String">
+			<hint name="default-value">CONTEST_VOTE_DEFAULT</hint>
+		</field>
+		<field name="proposalVoteTemplateString" type="String">
+			<hint name="default-value">PROPOSAL_VOTE_DEFAULT</hint>
+		</field>
+		<field name="voteQuestionTemplateString" type="String">
+			<hint name="default-value">CONTEST_VOTE_QUESTION_DEFAULT</hint>
+		</field>
 		<field name="focusAreaId" type="long" />
 		<field name="contestTier" type="long" />
 		<field name="contestLogoId" type="long" />
@@ -143,18 +155,19 @@
 		<field name="plansOpenByDefault" type="boolean" />
 		<field name="sponsorLogoId" type="long" />
 		<field name="sponsorText" type="String">
-			<hint name="max-length">2048</hint>
+			<hint name="max-length">500</hint>
 		</field>
 		<field name="sponsorLink" type="String" />
 		<field name="flag" type="int" />
 		<field name="flagText" type="String">
-			<hint name="max-length">1024</hint>
+			<hint name="max-length">256</hint>
 		</field>
 		<field name="flagTooltip" type="String">
-			<hint name="max-length">1024</hint>
+			<hint name="max-length">512</hint>
 		</field>
 		<field name="groupId" type="long" />
 		<field name="discussionGroupId" type="long" />
+		<field name="fellowDiscussionGroupId" type="long" />
 		<field name="weight" type="int" />
 		<field name="resourcesUrl" type="String">
 			<hint name="max-length">1024</hint>

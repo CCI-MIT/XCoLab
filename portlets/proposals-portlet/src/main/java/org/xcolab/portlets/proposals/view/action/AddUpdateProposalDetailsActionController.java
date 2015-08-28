@@ -13,14 +13,9 @@ import javax.validation.Valid;
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
 
 import org.apache.commons.lang.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Entities.EscapeMode;
-import org.jsoup.safety.Cleaner;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +39,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
+import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.emailnotification.ProposalCreationNotification;
 
 
@@ -192,7 +188,7 @@ public class AddUpdateProposalDetailsActionController {
         
         
         if (updateProposalSectionsBean.getName() != null && (proposal.getName() == null || !updateProposalSectionsBean.getName().equals(proposal.getName()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, removeHtml(updateProposalSectionsBean.getName()));
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, HtmlUtil.cleanMost(updateProposalSectionsBean.getName()));
         }
         else {
         	filledAll = false;
@@ -213,7 +209,7 @@ public class AddUpdateProposalDetailsActionController {
         }
 
         if (updateProposalSectionsBean.getTeam() != null && !updateProposalSectionsBean.getTeam().equals(proposal.getTeam())) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, removeHtml(updateProposalSectionsBean.getTeam()));
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, HtmlUtil.cleanMost(updateProposalSectionsBean.getTeam()));
         }
         else {
         	filledAll = false;
@@ -292,8 +288,7 @@ public class AddUpdateProposalDetailsActionController {
             ServiceContext serviceContext = new ServiceContext();
             serviceContext.setPortalURL(themeDisplay.getPortalURL());
             Contest contest = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(proposalsContext.getContestPhase(request).getContestPhasePK()));
-            new ProposalCreationNotification(proposal.getWrapped(), contest, serviceContext).sendEmailNotification();
-
+            new ProposalCreationNotification(proposal.getWrapped(), contest, serviceContext).sendMessage();
         }
         
         
@@ -301,25 +296,6 @@ public class AddUpdateProposalDetailsActionController {
         
         request.setAttribute("ACTION_REDIRECTING", true);
         response.sendRedirect("/web/guest/plans/-/plans/contestId/" + proposalsContext.getContest(request).getContestPK() + "/planId/" + proposal.getProposalId());
-    }
-
-    private String removeHtml(String data) {
-    	
-    	// fixing bug related to escaping html entities
-    	// http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities
-    	
-    	
-    	// Parse str into a Document
-    	Document doc = Jsoup.parse(data);
-
-    	// Clean the document.
-    	doc = new Cleaner(Whitelist.simpleText()).clean(doc);
-
-    	// Adjust escape mode
-    	doc.outputSettings().escapeMode(EscapeMode.xhtml);
-
-    	// Get back the string of the body.
-    	return doc.body().html();
     }
 
     private String xssClean(String sectionData, PortletRequest request) {
@@ -334,15 +310,7 @@ public class AddUpdateProposalDetailsActionController {
         // /w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
         w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
 
-    	Document doc = Jsoup.parse(sectionData, baseUrl);
-    	// Clean the document.
-    	doc = new Cleaner(w).clean(doc);
-
-    	// Adjust escape mode
-    	doc.outputSettings().escapeMode(EscapeMode.xhtml);
-
-    	// Get back the string of the body.
-    	return doc.body().html();
+        return HtmlUtil.clean(sectionData, w);
     }
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})

@@ -153,8 +153,14 @@ public class ProposalWrapper {
         proposal.setResultsDiscussionId(resultsDiscussionId);
     }
 
-    public long getFellowDiscussionId() {
-        return proposal.getFellowDiscussionId();
+    public long getFellowDiscussionId() throws PortalException, SystemException {
+        final long fellowDiscussionId = proposal.getFellowDiscussionId();
+        if (fellowDiscussionId == 0) {
+            DiscussionCategoryGroup discussionCategoryGroup = DiscussionCategoryGroupLocalServiceUtil.createDiscussionCategoryGroup(proposal.getProposalId() + "_fellowReview");
+            return discussionCategoryGroup.getId();
+        }
+        return fellowDiscussionId;
+
     }
 
     public void setFellowDiscussionId(long fellowDiscussionId) {
@@ -350,6 +356,13 @@ public class ProposalWrapper {
     public long getCommentsCount() throws PortalException, SystemException {
         if (proposal.getProposalId() > 0) {
             return ProposalLocalServiceUtil.getCommentsCount(proposal.getProposalId());
+        }
+        return 0;
+    }
+
+    public long getFellowReviewCommentsCount() throws PortalException, SystemException {
+        if (proposal.getProposalId() > 0) {
+            return ProposalLocalServiceUtil.getFellowReviewCommentsCount(proposal.getProposalId());
         }
         return 0;
     }

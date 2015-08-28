@@ -46,12 +46,12 @@ interface ProposalTabCanAccessAlgorithm {
     };
     
     public final static ProposalTabCanAccessAlgorithm advancingAccess = new ProposalTabCanAccessAlgorithm() {
-        
+
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
                 if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()
-                || permissions.getCanContestManagerActions()) ) {
+                        || permissions.getCanContestManagerActions()) ) {
                     return false;
                 }
 
@@ -70,6 +70,22 @@ interface ProposalTabCanAccessAlgorithm {
             }
 
             return false;
+        }
+    };
+
+    public final static ProposalTabCanAccessAlgorithm fellowReviewAccess = new ProposalTabCanAccessAlgorithm() {
+
+        @Override
+        public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
+            try {
+                ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
+                if (proposalWrapper.getContest().getContestTier() < 1) {
+                    return false;
+                }
+            } catch (PortalException | SystemException e) {
+                e.printStackTrace();
+            }
+            return permissions.getCanAdminAll() || permissions.getCanJudgeActions() || permissions.getCanFellowActions();
         }
     };
     
@@ -145,7 +161,7 @@ interface ProposalTabCanAccessAlgorithm {
                 if ((contest != null && contest.getDefaultParentPointType() > 0) && (permissions.getIsTeamMember() || permissions.getCanAdmin())) {
                     //if yes, check if contest phase allows editing
                     Integer pointsAccessible = ContestLocalServiceUtil.getPointsAccessibleForActivePhaseOfContest(contest);
-                    return (pointsAccessible != null && pointsAccessible >= 2);
+                    return permissions.getCanAdmin() || (pointsAccessible != null && pointsAccessible >= 2);
                 }
             } catch (SystemException | PortalException e) {
                 _log.error("can't check if user is allowed to edit points", e);
@@ -187,12 +203,12 @@ interface ProposalTabCanAccessAlgorithm {
             try {
                 Contest contest = context.getContest(request);
 
-                // Only let team members or admins edit impact
+                // Only let team members, IAF fellows or admins edit impact
                 if ((contest != null && (
                         contest.getContestTier() == ContestTier.BASIC.getTierType()) ||
                         contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType() ||
                         contest.getContestTier() == ContestTier.GLOBAL.getTierType()) &&
-                        (permissions.getIsTeamMember() || permissions.getCanAdmin())) {
+                        (permissions.getIsTeamMember() || permissions.getCanAdmin() || permissions.getCanIAFActions())) {
                     return true;
                 }
             } catch (SystemException | PortalException e) {

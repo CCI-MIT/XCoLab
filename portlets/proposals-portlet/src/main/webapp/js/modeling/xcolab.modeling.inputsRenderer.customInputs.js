@@ -23,10 +23,12 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				if ((that.model && that.model.usesCustomInputs)) {
 					// this is bad bad way of doing this, yet I don't see any better place to put it, it shouldn't be hardcoded (janusz)
 					// get column count in the legend
-					var legendElem = jQuery("table.jqplot-table-legend");
+					/*var legendElem = jQuery("table.jqplot-table-legend");
 					var columnCount = legendElem.find("tr:first td").length;
-					jQuery("table.jqplot-table-legend").prepend("<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" + 
-						"Results shown for the following models. See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>EMF27 model runs for more details</a></td></tr>");
+					jQuery("table.jqplot-table-legend tr.emfModelsUnderChartMessage").remove();
+					var emfModelsUnderChartMessage = "<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" +
+						"Results shown for the following models. See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>EMF27 model runs for more details</a></td></tr>";
+					legendElem.prepend(emfModelsUnderChartMessage);*/
 				}
 			}
 		});
@@ -630,14 +632,14 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		
 		return result;
 	};
-	
+
 	CustomInputsRenderer.prototype.renderView = function(container, model) {
 		this.definition = eval("(" + model.customInputsDefinition + ")");
 		var that = this;
 		var inputsContainer = jQuery("<div class='act_left act_left-list'></div>").appendTo(container);
 
 		var result = this.findScenarioResult();
-		
+
 		var selectedOptionsHtml = [];
 		selectedOptionsHtml.push("<ul class='wizardSelectedOptionsInfo'>");
 		
@@ -653,12 +655,26 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				}
 			}
 		}
-		
-		
-		selectedOptionsHtml.push("</ul>");		
+
+		var isModelRegional = model.modelName.toLowerCase().indexOf("regional") != -1;
+		var isModelEMF = model.modelName.toLowerCase().indexOf("emf") != -1;
+		var isModelEnRoads = model.modelName.toLowerCase().indexOf("enroads") != -1;
+
+		selectedOptionsHtml.push("<li><strong>");
+		selectedOptionsHtml.push("See more:");
+		selectedOptionsHtml.push("</strong> ");
+		if(isModelRegional){
+			selectedOptionsHtml.push("<a href='/resources/-/wiki/Main/Climate+CoLab+Regional+Modeling+Tools'>Climate CoLab Regional Modeling Tools</a>");
+		} else if(isModelEMF){
+			selectedOptionsHtml.push("<a href='/resources/-/wiki/Main/EMF27+model+runs'>Stanford EMF27</a>");
+		} else if(isModelEnRoads){
+			selectedOptionsHtml.push("<a href='/resources/-/wiki/Main/EnROADS+by+Climate+Interactive'>Climate Interactive EnROADS</a>");
+		}
+		selectedOptionsHtml.push("</li>");
+		selectedOptionsHtml.push("</ul>");
+
 		inputsContainer.append(selectedOptionsHtml.join(''));
-		
-		
+
 	};
 	CustomInputsRenderer.prototype.render = function(container, scenario) {
 		if (scenario.modelId != this.modelId) {

@@ -854,6 +854,19 @@ public interface ProposalLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * <p>Returns number of fellow review comments in discussion associated with this proposal</p>
+    *
+    * @param proposalId proposal id
+    * @return number of comments
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public long getFellowReviewCommentsCount(long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * <p>Tells if user is a member of a proposal team</p>
     *
     * @param proposalId id of a proposal

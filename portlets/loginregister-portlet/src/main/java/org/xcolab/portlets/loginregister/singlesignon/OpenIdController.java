@@ -170,6 +170,7 @@ public class OpenIdController {
                         screenName = screenName.replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
                         portletSession.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName, PortletSession.APPLICATION_SCOPE);
                     }
+
                     if (Validator.isNotNull(firstName)) portletSession.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName, PortletSession.APPLICATION_SCOPE);
                     if (Validator.isNotNull(lastName)) portletSession.setAttribute(SSOKeys.SSO_LAST_NAME, lastName, PortletSession.APPLICATION_SCOPE);
                     portletSession.setAttribute(SSOKeys.SSO_CITY, city, PortletSession.APPLICATION_SCOPE);
@@ -177,8 +178,13 @@ public class OpenIdController {
 
                     long imageId = 0;
 					if (Validator.isNotNull(profilePicURL)) {
-                        imageId = ImageUploadUtils.linkProfilePicture(profilePicURL);
-                        portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
+                        try {
+                            imageId = ImageUploadUtils.linkProfilePicture(profilePicURL);
+                            portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
+                        } catch(Exception e) {
+                            _log.error("Could not link profile picture with URL " + profilePicURL + " to new user account", e);
+                        }
+
                     }
 
                     if (session.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_LOGIN)) {
@@ -200,16 +206,19 @@ public class OpenIdController {
                         userBean.setCountry(country);
                         userBean.setImageId(Long.toString(imageId));
 
+                        if (Validator.isNotNull(screenName)) {
+                            userBean.setScreenName(screenName);
 
-                        // Validate uniqueness of the screen name
-                        // The chance of a collision among 40 equal screennames is 50% -> 5 tries should be sufficient
-                        for (int i = 0; i < 5; i++) {
-                            try {
-                                User duplicateUser = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
-                                // Generate a random suffix for the non-unique screenName
-                                screenName = userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
-                            } catch (PortalException e) {
-                                break;
+                            // Validate uniqueness of the screen name
+                            // The chance of a collision among 40 equal screennames is 50% -> 5 tries should be sufficient
+                            for (int i = 0; i < 5; i++) {
+                                try {
+                                    UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
+                                    // Generate a random suffix for the non-unique screenName
+                                    screenName = userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
+                                } catch (PortalException e) {
+                                    break;
+                                }
                             }
                         }
 

@@ -126,7 +126,6 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
         } catch(Exception e){
             _log.warn("Update contest description failed with: ", e);
-            _log.warn(e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
 
@@ -140,7 +139,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     private void sendEmailNotificationToAuthor(ThemeDisplay themeDisplay, Contest contest) throws PortalException, SystemException{
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
-        new ContestCreationNotification(contest, serviceContext).sendEmailNotification();
+        new ContestCreationNotification(contest, serviceContext).sendMessage();
     }
 
     private List<LabelValue> getProposalTemplateSelectionItems(){
@@ -153,6 +152,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
                 }
             }
         } catch (Exception e){
+
         }
         return selectItems;
     }

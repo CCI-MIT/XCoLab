@@ -29,7 +29,7 @@ value : 'g8_0.5',
 title : '50 percent reduction by 2050 policy',
 description : '50 percent cut in global emissions by 2050 with 2 percent annual reductions 2050-2100',
 descriptionLong : "<p><strong>What is the 50 percent reduction by 2050 policy?</strong></p>"
-+ "<p>The advanced economies (the United States, Canada, Japan, Australia, New Zealand and the countries of the European Union, Scandinavia, and Eastern Europe) reduce their greenhouse gas emissions 80 percent by 2050. Emerging economies reduce their emissions sufficiently to meet the 2050 target of 50 percent global reductions. Both advanced and emerging economies reduce emissions 2 percent per year for the 2050-2100 period. The major fossil fuel-producing countries (Venezuela, Angola, Nigeria, Russia, the former Soviet Union and the oil exporting nations of the Middle East) do not reducte emissions.</p>",
++ "<p>The advanced economies (the United States, Canada, Japan, Australia, New Zealand and the countries of the European Union, Scandinavia, and Eastern Europe) reduce their greenhouse gas emissions 80 percent vs. 2005 levels by 2050. Emerging economies reduce their emissions sufficiently to meet the 2050 target of 50 percent global reductions vs. 2005 levels. Both advanced and emerging economies reduce emissions 2 percent per year for the 2050-2100 period. The major fossil fuel-producing countries (Venezuela, Angola, Nigeria, Russia, the former Soviet Union and the oil exporting nations of the Middle East) do not reduce emissions.</p>",
 type : 'blueArrow'
 },
 {

@@ -50,7 +50,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Image;
@@ -67,6 +66,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+import org.xcolab.utils.HtmlUtil;
 
 //import javax.validation.Validator;
 
@@ -134,7 +134,7 @@ public class MainViewController {
 		} else {
 
             if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
-                model.addAttribute("redirect", HtmlUtil.escape(redirect));
+                model.addAttribute("redirect", com.liferay.portal.kernel.util.HtmlUtil.escape(redirect));
             }
 
             // append SSO attributes
@@ -203,7 +203,7 @@ public class MainViewController {
 		}
 
         if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
-            model.addAttribute("redirect", HtmlUtil.escape(redirect));
+            model.addAttribute("redirect", com.liferay.portal.kernel.util.HtmlUtil.escape(redirect));
         }
 
 		return "view";
@@ -235,7 +235,7 @@ public class MainViewController {
 				response.setRenderParameter("error", "true");
 				response.setRenderParameter("recaptchaError", "true");
                 if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
-                    model.addAttribute("redirect", HtmlUtil.escape(redirect));
+                    model.addAttribute("redirect", com.liferay.portal.kernel.util.HtmlUtil.escape(redirect));
                 }
 			} else {
 				try {
@@ -251,7 +251,7 @@ public class MainViewController {
 		} else {
 			response.setRenderParameter("error", "true");
             if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
-                model.addAttribute("redirect", HtmlUtil.escape(redirect));
+                model.addAttribute("redirect", com.liferay.portal.kernel.util.HtmlUtil.escape(redirect));
             }
 		}
         SessionErrors.clear(request);
@@ -290,7 +290,7 @@ public class MainViewController {
                     User.class.getName(),
                     CommunityConstants.EXPANDO,
                     CommunityConstants.BIO, loggedInUser.getUserId(),
-                    bio);
+                    HtmlUtil.cleanSome(bio));
         } else {
             if (bio.length() > 2000) {
                 json.getJSONObject("bio").put("success", false);
@@ -330,7 +330,6 @@ public class MainViewController {
         BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
 
         try {
-
             User user = UserServiceUtil.addUserWithWorkflow(
                     DEFAULT_COMPANY_ID, false,
                     newAccountBean.getPassword(),
@@ -338,14 +337,14 @@ public class MainViewController {
                     newAccountBean.getScreenName(),
                     newAccountBean.getEmail(), 0L, "",
                     themeDisplay.getLocale(),
-                    newAccountBean.getFirstName(), "",
-                    newAccountBean.getLastName(), 0, 0, true, 1, 1,
+                    HtmlUtil.cleanAll(newAccountBean.getFirstName()), "",
+                    HtmlUtil.cleanAll(newAccountBean.getLastName()), 0, 0, true, 1, 1,
                     1970, "", new long[]{}, new long[]{},
                     new long[]{}, new long[]{}, true, serviceContext);
 
             if (newAccountBean.getShortBio() != null
                     && newAccountBean.getShortBio().length() > 0) {
-                setExpandoValue(user, CommunityConstants.BIO, newAccountBean.getShortBio());
+                setExpandoValue(user, CommunityConstants.BIO, HtmlUtil.cleanSome(newAccountBean.getShortBio()));
             }
 
             if (newAccountBean.getCountry() != null

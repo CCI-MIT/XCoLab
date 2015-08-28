@@ -4,7 +4,10 @@ function disableAddComment() {
 }
 function isAddCommentFormValid() {
     var isValid = (jQuery.trim(jQuery("#thecomment .commentContent").val()) != '');
-
+    if (!isValid) {
+        isValid = jQuery.trim(CKEDITOR.instances.messageContent.getData()) != '';
+    }
+    
     if (isValid) {
         jQuery('#thecomment .errorMsg').hide();
     }
@@ -15,17 +18,18 @@ function isAddCommentFormValid() {
 }
 
 function editComment(messageId, url){
-    var comment = extractText('message_' + messageId);
+    var comment = jQuery('#' + 'message_' + messageId).html(); //extractText('message_' + messageId);
     $('#message_' + messageId).empty();
     var formContent = '<form method="post" action="' + url + '">';
-    formContent += '<textarea id="text_' + messageId + '" name="comment" style="width: 100%; height: 150px;"></textarea>';
+    formContent += '<textarea class="rte" id="text_' + messageId + '" name="comment" style="width: 100%; height: 150px;"></textarea>';
     formContent += '<input name="messageId" type="hidden" value="' + messageId + '"/>';
     formContent += '<div class="blue-button" style="margin-left: 320px; margin-top: 10px;"><a onclick=" $(this).parents(\'form:first\').submit()" type="submit" href="javascript:;">Save</a></div>';
     formContent += '</form>';
     $('#message_' + messageId).append(formContent);
     $('#message_' + messageId).next().remove();
 
-    $('#text_'+messageId).text(comment);
+    $('#text_'+messageId).html(comment);
+    initializeTextEditors();
 }
 
 function extractText(elementId) {

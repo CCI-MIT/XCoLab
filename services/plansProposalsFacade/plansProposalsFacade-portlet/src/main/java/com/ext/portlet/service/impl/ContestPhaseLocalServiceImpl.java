@@ -381,7 +381,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
                     // if transition is to voting phase
                     if (getContestStatus(nextPhase).isCanVote()) {
-                    	//contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
+                    	contestLocalService.transferSupportsToVote(contest, serviceContext);
                     }
 
                     // Add contest year suffix, if contest has been completed
@@ -443,7 +443,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                             try {
                                 proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
                                 createProposalContestPhasePromotionDoneAttribute(p.getProposalId(), phase.getContestPhasePK());
-                            } catch (MailEngineException | AddressException e) {
+                            } catch (Throwable e) {
                                 _log.error("Could not send proposal promotion colab messaging notification", e);
                             }
                         }
@@ -451,7 +451,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
                     // if transition is to voting phase
                     if (getContestStatus(nextPhase).isCanVote()) {
-                    	//contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
+                    	contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
                     }
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     updateContestPhase(phase);

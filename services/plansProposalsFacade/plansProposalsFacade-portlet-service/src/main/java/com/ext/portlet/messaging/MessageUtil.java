@@ -31,6 +31,7 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.xcolab.utils.MessageLimitManager;
 
 /**
@@ -108,7 +109,7 @@ public class MessageUtil {
     public static void sendMessage(String subject, String content, Long fromId, Long replyToId, Collection<Long> recipientIds, PortletRequest request) throws SystemException, PortalException, MailEngineException, AddressException {
         long nextId = CounterLocalServiceUtil.increment(Message.class.getName());
         Message m = MessageLocalServiceUtil.createMessage(nextId);
-        m.setSubject(subject);
+        m.setSubject(StringEscapeUtils.unescapeXml(subject));
         m.setContent(content);
         m.setFromId(fromId);
         m.setCreateDate(new Date());
@@ -146,7 +147,10 @@ public class MessageUtil {
     public static void copyRecipient(Long userId, Message m, PortletRequest request) throws SystemException, PortalException, AddressException, MailEngineException {
         User from = UserLocalServiceUtil.getUser(m.getFromId());
         User to = UserLocalServiceUtil.getUser(userId);
-        String subject = MessageConstants.EMAIL_MESSAGE_SUBJECT.replace(MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName());
+        String subject = m.getSubject();
+        if (subject.length() < 3) {
+            subject = MessageConstants.EMAIL_MESSAGE_SUBJECT.replace(MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName());
+        }
         String message = MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName())
                 .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL,createMessageURL(m, request)).replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT,m.getSubject())
                 .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,m.getContent().replaceAll("\n" ,"<br />"));

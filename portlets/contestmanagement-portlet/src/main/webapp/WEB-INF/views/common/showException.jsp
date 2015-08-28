@@ -9,14 +9,6 @@
 	<jsp:directive.include file="../init.jspx" />
 
 	<h1>Exception occured!</h1>
-	<c:select>
-		<c:when test="${not empty sessionScope.exceptionMessage }">
-			<p>${sessionScope.exceptionMessage}</p>
-			<c:remove var="exceptionMessage" scope="session" />
-		</c:when>
-		<c:when test="${exceptionMessage}">
-			<p>${exceptionMessage}</p>
-		</c:when>
-	</c:select>
+	<p>${exceptionMessage}</p>
 
 </jsp:root>

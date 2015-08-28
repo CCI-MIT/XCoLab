@@ -3,7 +3,13 @@ package org.xcolab.portlets.proposals.view.action;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +22,7 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.proposals.utils.ProposalsURLGenerator;
+import org.xcolab.utils.emailnotification.ProposalVoteNotification;
 
 import java.io.IOException;
 
@@ -25,19 +32,23 @@ public class VoteOnProposalActionController {
 
     @Autowired
     private ProposalsContext proposalsContext;
-    
+
     private final static String VOTE_ANALYTICS_KEY = "VOTE_CONTEST_ENTRIES";
     private final static String VOTE_ANALYTICS_CATEGORY = "User";
     private final static String VOTE_ANALYTICS_ACTION = "Vote contest entry";
     private final static String VOTE_ANALYTICS_LABEL = "";
-    
+
+
     @RequestMapping(params = {"action=voteOnProposalAction"})
     public void handleAction(ActionRequest request, Model model, ActionResponse response)
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+        boolean hasVoted = false;
+        final Proposal proposal = proposalsContext.getProposal(request);
+        final User user = proposalsContext.getUser(request);
         if (proposalsContext.getPermissions(request).getCanVote()) {
-            long proposalId = proposalsContext.getProposal(request).getProposalId();
+            long proposalId = proposal.getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
-            long userId = proposalsContext.getUser(request).getUserId();
+            long userId = user.getUserId();
             if (ProposalLocalServiceUtil.hasUserVoted(proposalId, contestPhaseId, userId)) {
                 // User has voted for this proposal and would like to retract the vote
                 ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
@@ -47,18 +58,26 @@ public class VoteOnProposalActionController {
                     // User has voted for a different proposal. Vote will be retracted and converted to a vote of this proposal.
                     ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
                 }
+
                 ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
+
+                ServiceContext serviceContext = new ServiceContext();
+                ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+                serviceContext.setPortalURL(themeDisplay.getPortalURL());
+                new ProposalVoteNotification(proposal, ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId)), user, serviceContext).sendMessage();
+                hasVoted = true;
+
 
                 //publish event per contestPhaseId to allow voting on exactly one proposal per contest(phase)
             	AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY+contestPhaseId,
-            			VOTE_ANALYTICS_CATEGORY, 
+            			VOTE_ANALYTICS_CATEGORY,
             			VOTE_ANALYTICS_ACTION,
-            			VOTE_ANALYTICS_LABEL, 
+            			VOTE_ANALYTICS_LABEL,
             			1);
             }
         }
         else {
-            if (proposalsContext.getUser(request) == null || proposalsContext.getUser(request).getUserId() == 10115) {
+            if (user == null || user.getUserId() == 10115) {
                 /* User is not logged in - don't count vote and let user log in*/
                 request.setAttribute("promptLoginWindow","true");
                 return;
@@ -67,9 +86,8 @@ public class VoteOnProposalActionController {
             }
         }
         // Redirect to prevent page-refreshing from influencing the vote
-        response.sendRedirect(ProposalsURLGenerator.getProposalURL(
-                proposalsContext.getProposal(request))
-        );
+        final String arguments = hasVoted ? "?voted=true" : "";
+        response.sendRedirect(ProposalsURLGenerator.getProposalURL(proposal) + arguments);
     }
 
 }

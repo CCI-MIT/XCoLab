@@ -1,15 +1,23 @@
 package org.xcolab.portlets.proposals.view;
 
-import java.io.IOException;
-import java.util.*;
-
-import javax.portlet.*;
-
 import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseType;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -18,6 +26,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.ReadOnlyException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.ValidatorException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("edit")
@@ -75,7 +97,18 @@ public class ProposalsPreferencesController {
 
         return "preferences";
     }
-    
+
+
+    @RequestMapping(params = "action=judging")
+    public void releaseJudgingMails(ActionRequest request) throws Exception {
+        Integer[] phaseIds = new Integer[] { 1308611,1309131,1309135,1309139,1309143,1309147,1309151,1309155,1309159,1309163,1309167,1309171,1309175,1309179,1309183,1309187,1309191,1309201,1309707  };
+        for (Integer phaseId : phaseIds) {
+            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
+            for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(phaseId)) {
+                ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(proposal, contestPhase, request);
+            }
+        }
+    }
 
     @RequestMapping(params = "action=save")
     public void savePreferences(ActionRequest request, ActionResponse response, Model model, ProposalsPreferencesWrapper preferences)

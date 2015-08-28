@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
@@ -8,6 +7,8 @@ import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
@@ -30,9 +31,13 @@ import java.util.*;
 @Controller
 @RequestMapping("view")
 public class ProposalEvaluationTabController extends BaseProposalTabController {
+    private final static Log _log = LogFactoryUtil.getLog(ProposalEvaluationTabController.class);
+    private static final Long CLIMATE_COLAB_TEAM_USER_ID = 1431053L;
+    private static final Long AVERAGE_RESULT_ROUND_FACTOR = 10L;
+    private static final String EVALUATION_TAB_VIEW_NAME = "proposalEvaluation";
+
     @Autowired
     private ProposalsContext proposalsContext;
-    private boolean isUserAdmin = false;
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_DISCUSSION"})
     public String showEvaluationControllerForPreviousTabName(PortletRequest request, Model model)
@@ -42,177 +47,55 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_EVALUATION"})
     public String showEvaluation(PortletRequest request, Model model)
-            throws PortalException, SystemException  {
+            throws PortalException, SystemException {
+
+        boolean isFellowScreeningActive = proposalsContext.getContestPhase(request).getFellowScreeningActive();
+        boolean showEvaluationRatings = hasContestPassedAnyScreeningPhaseAlready(request);
+        boolean showPublicRatingForm = isFellowScreeningActive || showEvaluationRatings;
+        showPublicRatingForm = false; // Remove once public rating is approved
+        model.addAttribute("showPublicRatingForm", showPublicRatingForm);
+        model.addAttribute("showEvaluation", showEvaluationRatings);
 
         try {
-            boolean isFellowScreeningActive = proposalsContext.getContestPhase(request).getFellowScreeningActive() == true;
-            model.addAttribute("isFellowScreeningActive", isFellowScreeningActive);
-            if(isFellowScreeningActive){
-                populateJudgeProposalBean(request, model);
+            if (showPublicRatingForm) {
+                model.addAttribute("judgeProposalBean", getProposalRatingBean(request));
             }
-        } catch (Exception e){
-            model.addAttribute("isFellowScreeningActive", false);
+        } catch (Exception e) {
+            _log.warn("Could not create public rating form for evaluation tab", e);
         }
 
         try {
-            if(!hasContestPassedScreeningPhaseAlready(request)) {
-                model.addAttribute("showEvaluation", false);
-            } else {
-                Long evaluationDiscussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposalsContext.getProposal(request));
-
-                Long proposalId = proposalsContext.getProposal(request).getProposalId();
+            if (showEvaluationRatings) {
+                Proposal proposal = proposalsContext.getProposal(request);
                 Long contestId = proposalsContext.getContestPhase(request).getContestPK();
-
-                List<ProposalRatingsWrapper> judgeAverageRating = getJudgesAverageRating(contestId, proposalId);
-                Collections.reverse(judgeAverageRating);
-
+                Long evaluationDiscussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposal);
                 model.addAttribute("evaluationDiscussionId", evaluationDiscussionId);
+                model.addAttribute("averageRatingsPerPhase", getAverageRatingsForPastPhases(contestId, proposal));
                 model.addAttribute("showEvaluation", true);
                 model.addAttribute("isJudgeReadOnly", true);
-                model.addAttribute("judgeAverageRating", judgeAverageRating);
-                model.addAttribute("authorId", proposalsContext.getProposal(request).getAuthorId());
-                model.addAttribute("proposalId", proposalId);
-
-                ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-                if (themeDisplay.getPermissionChecker().isOmniadmin()){
-                    isUserAdmin = true;
-                }
-
+                model.addAttribute("authorId", proposal.getAuthorId());
+                model.addAttribute("proposalId", proposal.getProposalId());
             }
-        } catch (Exception e){
-            e.printStackTrace();
-            model.addAttribute("showEvaluation", false);
+        } catch (Exception e) {
+            _log.warn("Could not gather ratings for evaluation tab", e);
         }
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.EVALUATION);
-        return "proposalEvaluation";
+        return EVALUATION_TAB_VIEW_NAME;
     }
 
+    private JudgeProposalFeedbackBean getProposalRatingBean(PortletRequest request) throws SystemException, PortalException {
 
-    private List<ProposalRatingsWrapper> getJudgesAverageRating(Long contestId, Long proposalId) throws Exception{
-        Long CLIMATE_COLAB_TEAM_USER_ID = 1431053L;
-        Long AVERAGE_RESULT_ROUND_FACTOR = 10L;
-
-        List<ProposalRatingsWrapper> wrappers = new ArrayList<ProposalRatingsWrapper>();
-        List<ContestPhase> contestPhases =  ContestPhaseLocalServiceUtil.getPhasesForContest(contestId);
-
-        for(ContestPhase contestPhase : contestPhases){
-
-            if(contestPhase.isFellowScreeningActive()) {
-                List<ProposalRating> judgeRatingsForProposal = ProposalRatingLocalServiceUtil
-                        .getJudgeRatingsForProposal(proposalId, contestPhase.getContestPhasePK());
-
-                List<Long> judgeIds = new ArrayList<>();
-
-                if (judgeRatingsForProposal.size() > 0) {
-                    Map<Long, List<ProposalRating>> map = new HashMap<>();
-                    Map<Long, List<Long>> averageRatingList = new HashMap<>();
-                    map.put(CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<ProposalRating>());
-
-                    for (ProposalRating r : judgeRatingsForProposal) {
-                        if (r.getOnlyForInternalUsage()){
-                            continue;
-                        }
-                        Long ratingAverageIndex = r.getRatingValueId() / 5L;
-                        if(!averageRatingList.containsKey(ratingAverageIndex)){
-                            averageRatingList.put(ratingAverageIndex, new ArrayList<Long>());
-                        }
-                        Long currentRating = r.getRatingValueId();
-                        averageRatingList.get(ratingAverageIndex).add(currentRating);
-                        if(!judgeIds.contains(r.getUserId())) {
-                            judgeIds.add(r.getUserId());
-                        }
-                    }
-
-                    for (Long averageRatingsIndex : averageRatingList.keySet()) {
-                        Long sumRating = 0L;
-                        for(Long averageRating : averageRatingList.get(averageRatingsIndex) ){
-                            sumRating = sumRating + averageRating * AVERAGE_RESULT_ROUND_FACTOR;
-                        }
-                        Double averageRating = (double) sumRating / (double)averageRatingList.get(averageRatingsIndex).size();
-                        int proposalIndex = new ArrayList<>(averageRatingList.keySet()).indexOf(averageRatingsIndex);
-                        ProposalRating proposalRating = judgeRatingsForProposal.get(proposalIndex);
-                        proposalRating.setRatingValueId(averageRating.longValue());
-                        proposalRating.setUserId(CLIMATE_COLAB_TEAM_USER_ID);
-                        map.get(CLIMATE_COLAB_TEAM_USER_ID).add(proposalRating);
-                    }
-
-                    List<ProposalRating> userRatings = map.get(CLIMATE_COLAB_TEAM_USER_ID);
-                    try {
-                        ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(CLIMATE_COLAB_TEAM_USER_ID, userRatings, AVERAGE_RESULT_ROUND_FACTOR);
-                        Proposal proposal =  ProposalLocalServiceUtil.getProposal(proposalId);
-                        ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
-                        wrapper.setComment(commentHelper.getAdvancingComment());
-                        wrappers.add(wrapper);
-                    } catch (SystemException e) {
-                        // Ignore this rating if the advancing comment has not been set yet.
-                    }
-                }
-            }
-
-        }
-        return wrappers;
-    }
-
-    private boolean hasContestPassedScreeningPhaseAlready(PortletRequest request) throws SystemException, PortalException {
-        boolean hasContestPassedScreeningPhaseAlready = false;
-
-        ContestPhase currentContestPhase = proposalsContext.getContestPhase(request);
-        Contest contest = proposalsContext.getContest(request);
-        List<ContestPhase> allContestPhasesForCurrentContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
-
-        for(ContestPhase contestPhase : allContestPhasesForCurrentContest){
-                boolean isPastContestPhase = contestPhase.getPhaseEndDate() != null && contestPhase.getPhaseEndDate().before(currentContestPhase.getPhaseEndDate());
-                if (isPastContestPhase) {
-                    if (contestPhase.getFellowScreeningActive()) {
-                        hasContestPassedScreeningPhaseAlready = true;
-                        break;
-                    }
-                }
-            }
-        return hasContestPassedScreeningPhaseAlready;
-    }
-
-    private boolean isUserFellowOrJudge(User user){
-        boolean fellow = false;
-        boolean judge = false;
-
-        try {
-            // TODO this only checks for the Role but not whether the user has this role in this contest
-            judge = RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.JUDGES.getRoleId());
-            fellow = RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.FELLOW.getRoleId());
-        } catch (SystemException e) {
-            e.printStackTrace();
-        }
-        return fellow || judge;
-    }
-
-    private boolean isUserProposalAuthorOrTeamMember(User user, Proposal proposal){
-
-        try {
-            boolean author = proposal.getAuthorId() == user.getUserId();
-            boolean member = ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId());
-            return author || member;
-        } catch (PortalException | SystemException e) {
-        }
-
-        return false;
-    }
-
-    private boolean isUserAllowToAddComments(User user, Proposal proposal){
-        return isUserFellowOrJudge(user) || isUserProposalAuthorOrTeamMember(user, proposal) || isUserAdmin;
-    }
-
-    private void populateJudgeProposalBean(PortletRequest request, Model model) throws SystemException, PortalException
-    {
-
-        ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
-        ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request));
-        JudgeProposalFeedbackBean judgeProposalBean = new JudgeProposalFeedbackBean(proposalJudgeWrapper);
+        ProposalWrapper proposalWrapper =
+                proposalsContext.getProposalWrapped(request);
+        ProposalJudgeWrapper proposalJudgeWrapper =
+                new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request));
+        JudgeProposalFeedbackBean proposalRatingBean =
+                new JudgeProposalFeedbackBean(proposalJudgeWrapper);
 
         Long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
         Long userId = proposalsContext.getUser(request).getUserId();
-        judgeProposalBean.setContestPhaseId(contestPhaseId);
+        proposalRatingBean.setContestPhaseId(contestPhaseId);
 
         //find existing ratings
         List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
@@ -228,11 +111,133 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                 index++;
             }
             String existingComment = existingRatings.get(0).getComment();
-            judgeProposalBean.setRatingValues(existingJudgeRating);
-            judgeProposalBean.setComment(existingComment);
+            proposalRatingBean.setRatingValues(existingJudgeRating);
+            proposalRatingBean.setComment(existingComment);
         }
 
-        model.addAttribute("judgeProposalBean", judgeProposalBean);
+        return proposalRatingBean;
     }
-    
+
+    private boolean hasContestPassedAnyScreeningPhaseAlready(PortletRequest request) throws SystemException, PortalException {
+        boolean hasContestPassedScreeningPhaseAlready = false;
+
+        ContestPhase currentContestPhase = proposalsContext.getContestPhase(request);
+        Contest contest = proposalsContext.getContest(request);
+        List<ContestPhase> allContestPhasesForCurrentContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
+
+        for (ContestPhase contestPhase : allContestPhasesForCurrentContest) {
+            boolean isPastContestPhase = contestPhase.getPhaseEndDate() != null && contestPhase.getPhaseEndDate().before(currentContestPhase.getPhaseEndDate());
+            if (isPastContestPhase) {
+                if (contestPhase.getFellowScreeningActive()) {
+                    hasContestPassedScreeningPhaseAlready = true;
+                    break;
+                }
+            }
+        }
+        return hasContestPassedScreeningPhaseAlready;
+    }
+
+    private List<ProposalRatingsWrapper> getAverageRatingsForPastPhases(Long contestId, Proposal proposal)
+            throws Exception {
+
+        List<ProposalRatingsWrapper> proposalRatings = new ArrayList<ProposalRatingsWrapper>();
+        List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(contestId);
+
+        for (ContestPhase contestPhase : contestPhases) {
+            boolean isPhasePastScreeningPhase =
+                    contestPhase.isFellowScreeningActive() && hasContestPhaseEnded(contestPhase);
+            if (isPhasePastScreeningPhase) {
+
+                List<ProposalRating> judgeRatingsForProposal = ProposalRatingLocalServiceUtil
+                        .getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                if (judgeRatingsForProposal.size() > 0) {
+                    try {
+                        ProposalRatingsWrapper proposalRating = calculateAverageRating(judgeRatingsForProposal);
+                        ProposalJudgingCommentHelper commentHelper =
+                                new ProposalJudgingCommentHelper(proposal, contestPhase);
+                        proposalRating.setComment(commentHelper.getAdvancingComment());
+                        proposalRatings.add(proposalRating);
+                    } catch (Exception e) {
+                        _log.warn("Could not create average rating for contest phase", e);
+                    }
+                }
+            }
+        }
+        Collections.reverse(proposalRatings);
+        return proposalRatings;
+    }
+
+    private ProposalRatingsWrapper calculateAverageRating(List<ProposalRating> judgeRatingsForProposal)
+            throws Exception {
+
+        List<Long> judgeIds = new ArrayList<>();
+        Map<Long, List<ProposalRating>> map = new HashMap<>();
+        Map<Long, List<Long>> averageRatingList = new HashMap<>();
+        map.put(CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<ProposalRating>());
+
+        for (ProposalRating judgeRating : judgeRatingsForProposal) {
+            if (judgeRating.getOnlyForInternalUsage()) {
+                continue;
+            }
+            Long ratingAverageIndex = judgeRating.getRatingValueId() / 5L;
+            if (!averageRatingList.containsKey(ratingAverageIndex)) {
+                averageRatingList.put(ratingAverageIndex, new ArrayList<Long>());
+            }
+            Long currentRating = judgeRating.getRatingValueId();
+            averageRatingList.get(ratingAverageIndex).add(currentRating);
+            if (!judgeIds.contains(judgeRating.getUserId())) {
+                judgeIds.add(judgeRating.getUserId());
+            }
+        }
+
+        for (Long averageRatingsIndex : averageRatingList.keySet()) {
+            Long sumRating = 0L;
+            for (Long averageRating : averageRatingList.get(averageRatingsIndex)) {
+                sumRating = sumRating + averageRating * AVERAGE_RESULT_ROUND_FACTOR;
+            }
+            Double averageRating = (double) sumRating / (double) averageRatingList.get(averageRatingsIndex).size();
+            int proposalIndex = new ArrayList<>(averageRatingList.keySet()).indexOf(averageRatingsIndex);
+            ProposalRating proposalRating = judgeRatingsForProposal.get(proposalIndex);
+            proposalRating.setRatingValueId(averageRating.longValue());
+            proposalRating.setUserId(CLIMATE_COLAB_TEAM_USER_ID);
+            map.get(CLIMATE_COLAB_TEAM_USER_ID).add(proposalRating);
+        }
+
+        List<ProposalRating> userRatings = map.get(CLIMATE_COLAB_TEAM_USER_ID);
+        return new ProposalRatingsWrapper(CLIMATE_COLAB_TEAM_USER_ID, userRatings, AVERAGE_RESULT_ROUND_FACTOR);
+}
+
+    private boolean hasContestPhaseEnded(ContestPhase contestPhase) {
+        return contestPhase.getPhaseEndDate().before(new Date());
+    }
+
+    private boolean isUserAllowToAddComments(User user, Proposal proposal, PortletRequest request) throws Exception {
+        return isUserFellowOrJudge(user) || isUserProposalAuthorOrTeamMember(user, proposal) || userIsAdmin(request);
+    }
+
+    private boolean isUserFellowOrJudge(User user) throws Exception {
+        boolean isFellow = false;
+        boolean isJudge = false;
+
+        // TODO this only checks for the Role but not whether the user has this role in this contest
+        isJudge = RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.JUDGES.getRoleId());
+        isFellow = RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.FELLOW.getRoleId());
+        return isFellow || isJudge;
+    }
+
+    private boolean isUserProposalAuthorOrTeamMember(User user, Proposal proposal) throws Exception {
+        boolean isAuthor = proposal.getAuthorId() == user.getUserId();
+        boolean isMember = ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId());
+        return isAuthor || isMember;
+    }
+
+    private boolean userIsAdmin(PortletRequest request) {
+        boolean isUserAdmin = false;
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        if (themeDisplay.getPermissionChecker().isOmniadmin()) {
+            isUserAdmin = true;
+        }
+        return isUserAdmin;
+    }
+
 }
