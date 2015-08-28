@@ -15,6 +15,7 @@ import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.jspTags.discussion.DiscussionPermission;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
+import org.xcolab.utils.HtmlUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -41,7 +42,7 @@ public class AddDiscussionMessageBaseActionController extends DiscussionsBaseAct
         checkPermissions(request, "User isn't allowed to add comment", newMessage.getDiscussionId());
         long userId = themeDisplay.getUser().getUserId();
         
-        DiscussionCategoryGroupLocalServiceUtil.addComment(dcg, newMessage.getTitle(), newMessage.getDescription(), themeDisplay.getUser());
+        DiscussionCategoryGroupLocalServiceUtil.addComment(dcg, HtmlUtil.cleanAll(newMessage.getTitle()), HtmlUtil.cleanSome(newMessage.getDescription()), themeDisplay.getUser());
         // Update activity counter for user
         Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
         indexer.reindex(userId);

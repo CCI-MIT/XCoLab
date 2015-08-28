@@ -13,14 +13,9 @@ import javax.validation.Valid;
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
 
 import org.apache.commons.lang.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Entities.EscapeMode;
-import org.jsoup.safety.Cleaner;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +39,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
-import org.xcolab.utils.HtmlCleaner;
+import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.emailnotification.ProposalCreationNotification;
 
 
@@ -193,7 +188,7 @@ public class AddUpdateProposalDetailsActionController {
         
         
         if (updateProposalSectionsBean.getName() != null && (proposal.getName() == null || !updateProposalSectionsBean.getName().equals(proposal.getName()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, HtmlCleaner.cleanMost(updateProposalSectionsBean.getName()));
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, HtmlUtil.cleanMost(updateProposalSectionsBean.getName()));
         }
         else {
         	filledAll = false;
@@ -214,7 +209,7 @@ public class AddUpdateProposalDetailsActionController {
         }
 
         if (updateProposalSectionsBean.getTeam() != null && !updateProposalSectionsBean.getTeam().equals(proposal.getTeam())) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, HtmlCleaner.cleanMost(updateProposalSectionsBean.getTeam()));
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, HtmlUtil.cleanMost(updateProposalSectionsBean.getTeam()));
         }
         else {
         	filledAll = false;
@@ -315,7 +310,7 @@ public class AddUpdateProposalDetailsActionController {
         // /w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
         w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
 
-        return HtmlCleaner.clean(sectionData, w);
+        return HtmlUtil.clean(sectionData, w);
     }
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})

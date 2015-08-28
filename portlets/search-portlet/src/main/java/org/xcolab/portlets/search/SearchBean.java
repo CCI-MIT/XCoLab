@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.StringQueryImpl;
-import org.xcolab.utils.HtmlCleaner;
+import org.xcolab.utils.HtmlUtil;
 
 public class SearchBean extends DataSource implements Serializable {
     /**
@@ -64,7 +64,7 @@ public class SearchBean extends DataSource implements Serializable {
             this.searchPhrase = null;
         }
         else {
-            this.searchPhrase = HtmlCleaner.cleanAll(searchPhrase);
+            this.searchPhrase = HtmlUtil.cleanAll(searchPhrase);
         }
         onePageDataModel = null;
         
@@ -246,9 +246,9 @@ public class SearchBean extends DataSource implements Serializable {
             public void onEvent(NavigationEvent event) {
                 if (event.hasSource("search")) {
                     try {
-                        String newPhrase = HtmlCleaner.cleanAll(event.getParameters("search").get("searchPhrase"));
+                        String newPhrase = HtmlUtil.cleanAll(event.getParameters("search").get("searchPhrase"));
                         if (newPhrase != null && newPhrase.trim().length() > 0) {
-                            searchPhrase = HtmlCleaner.cleanAll(URLDecoder.decode(event.getParameters("search").get("searchPhrase"), "UTF-8"));
+                            searchPhrase = HtmlUtil.cleanAll(URLDecoder.decode(event.getParameters("search").get("searchPhrase"), "UTF-8"));
                         } else {
                             searchPhrase = null;
 
