@@ -1,7 +1,6 @@
 package org.xcolab.jsp.tags.discussion.actions;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -20,13 +19,12 @@ import org.xcolab.jsp.tags.discussion.wrappers.NewMessageWrapper;
 
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.utils.HtmlCleaner;
+import org.xcolab.utils.HtmlUtil;
 
 @Controller
 @RequestMapping("view")
@@ -51,7 +49,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         checkPermissions(request, "User isn't allowed to add comment", newMessage.getDiscussionId());
         long userId = themeDisplay.getUser().getUserId();
 
-        DiscussionCategoryGroupLocalServiceUtil.addComment(dcg, HtmlCleaner.cleanAll(newMessage.getTitle()), HtmlCleaner.cleanSome(newMessage.getDescription()), themeDisplay.getUser());
+        DiscussionCategoryGroupLocalServiceUtil.addComment(dcg, HtmlUtil.cleanAll(newMessage.getTitle()), HtmlUtil.cleanSome(newMessage.getDescription()), themeDisplay.getUser());
         // Update activity counter for user
         Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
         indexer.reindex(userId);

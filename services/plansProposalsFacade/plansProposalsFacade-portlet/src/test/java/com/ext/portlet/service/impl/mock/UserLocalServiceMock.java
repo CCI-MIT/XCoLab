@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalService;
 
 /**
@@ -2682,6 +2683,11 @@ public class UserLocalServiceMock implements UserLocalService {
     public com.liferay.portal.model.User updateStatus(long userId, int status)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
+        return null;
+    }
+
+    @Override
+    public User updateStatus(long l, int i, ServiceContext serviceContext) throws PortalException, SystemException {
         return null;
     }
 

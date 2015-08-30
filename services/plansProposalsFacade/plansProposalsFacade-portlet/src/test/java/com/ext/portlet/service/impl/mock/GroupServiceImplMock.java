@@ -1,6 +1,7 @@
 package com.ext.portlet.service.impl.mock;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Organization;
 import com.liferay.portal.model.Portlet;
@@ -136,6 +138,18 @@ public class GroupServiceImplMock implements GroupService {
     public boolean hasUserGroup(long userId, long groupId) throws SystemException {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public List<Group> search(long l, long[] longs, String s, LinkedHashMap<String, Object> linkedHashMap, int i, int i1, OrderByComparator orderByComparator) throws PortalException, SystemException {
+        return null;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public List<Group> search(long l, long[] longs, String s, String s1, LinkedHashMap<String, Object> linkedHashMap, boolean b, int i, int i1, OrderByComparator orderByComparator) throws PortalException, SystemException {
+        return null;
     }
 
     @Override
