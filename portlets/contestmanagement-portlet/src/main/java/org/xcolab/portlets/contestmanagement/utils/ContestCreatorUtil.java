@@ -30,6 +30,8 @@ public class ContestCreatorUtil {
     public static final String CONTEST_SCHEDULE_2015_SECTOR_LABEL = "2015 Schedule: sector";
     public static final String CONTEST_SCHEDULE_2015_REGIONAL_LABEL = "2015 Schedule: regional";
     public static final String CONTEST_SCHEDULE_2015_GLOBAL_LABEL = "2015 Schedule: global";
+    public final static Long DEFAULT_CONTEST_SCHEDULE_ID = 601L; // Our default schedule with proposal creation only
+    public final static Long DEFAULT_CONTEST_TEMPLATE_ID = 102L; // Our default template
 
     private static final String CONTEST_NAME_KEY = "name";
     private static final String CONTEST_QUESTION_KEY = "question";
@@ -462,11 +464,10 @@ public class ContestCreatorUtil {
         contest.setShow_in_tile_view(true);
         contest.setShow_in_list_view(true);
         contest.setShow_in_outline_view(true);
-
-        // TODO for now there is always a template preselected
-        contest.setPlanTemplateId(102L);
+        contest.setPlanTemplateId(DEFAULT_CONTEST_TEMPLATE_ID);
+        contest.setContestScheduleId(DEFAULT_CONTEST_SCHEDULE_ID);
         contest.persist();
-
+        ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, DEFAULT_CONTEST_SCHEDULE_ID);
         return contest;
     }
 
