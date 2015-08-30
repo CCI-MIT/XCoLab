@@ -29,8 +29,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 
 
 	DefaulChartRenderer.prototype.render = function(container, output, modelingWidget, parent) {
-		
-		
 
 		var errorMessages = [];
 		var errorMessagesContainer = jQuery("<ul class='chartMessagePlaceholder' style='display: none;'></ul>").appendTo(container);
@@ -55,7 +53,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		else {
 			xaxisTicks = [];
 			// as requested by Robert we should start from year that has 0 at the end (ie 2010)
-			
 			for (var i=indexMin + (10 - indexMin%10); i<=indexMax; i+=10) {
 				xaxisTicks.push(i);
 			}
@@ -64,8 +61,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		var yaxis = {labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer};
 		var xaxis = {autoscale: false, tickOptions:{formatString:'%d'}, ticks: xaxisTicks, labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer, label: 'Year'};
 		
-		
-
 		var plotSeries = [];
 		var seriesWithErrors = {rangeErrorPolicy: [], invalidErrorPolicy: []};
 		var confidenceIntervalsByDescribedId = {};
@@ -239,8 +234,21 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			var legendElem = jQuery(legendContainer.find("table.jqplot-table-legend"));
 			var columnCount = legendElem.find("tr:first td").length;
 			jQuery(legendContainer.find("table.jqplot-table-legend tr.emfModelsUnderChartMessage")).remove();
+
+			var isModelRegional = modelingWidget.model.modelName.toLowerCase().indexOf("regional") != -1;
+			var isModelEMF = modelingWidget.model.modelName.toLowerCase().indexOf("emf") != -1;
+			var isModelEnRoads = modelingWidget.model.modelName.toLowerCase().indexOf("enroads") != -1;
 			var emfModelsUnderChartMessage = "<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" +
-				"Results shown for the following models. See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>EMF27 model runs for more details</a></td></tr>";
+				"Results shown for the following models. ";
+			if(isModelRegional){
+				emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/Climate+CoLab+Regional+Modeling+Tools' target='_blank'>Climate CoLab Regional model runs for more details.</a></td></tr>";
+			} else if(isModelEMF){
+				emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>EMF27 model runs for more details.</a></td></tr>";
+			} else if(isModelEnRoads){
+				emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/EnROADS+by+Climate+Interactive' target='_blank'>Climate Interactive EnROADS model runs for more details.</a></td></tr>";
+			} else {
+				emfModelsUnderChartMessage = "";
+			}
 			legendElem.prepend(emfModelsUnderChartMessage);
 		}
 
