@@ -69,7 +69,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     }
 
     @ModelAttribute("scheduleTemplateSelectionItems")
-    public List<LabelValue> populateScheduleSelectionItems(RenderRequest request){
+    public List<LabelValue> populateScheduleSelectionItems(PortletRequest request){
         return getContestScheduleSelectionItems(request);
     }
 
@@ -165,7 +165,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return selectItems;
     }
 
-    private List<LabelValue> getContestScheduleSelectionItems(RenderRequest request){
+    private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request){
         List<LabelValue> scheduleTemplateSelectionItems = new ArrayList<>();
         try {
             Contest contest = getContest(request);
