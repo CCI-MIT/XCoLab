@@ -5,6 +5,8 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.xcolab.controller.BaseTabController;
@@ -20,6 +22,7 @@ import java.util.List;
 
 public abstract class ContestDetailsBaseTabController extends BaseTabController {
 
+    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsBaseTabController.class);
     private Contest contest;
     private ContestWrapper contestWrapper;
     protected TabWrapper tabWrapper;
@@ -40,16 +43,22 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     @ModelAttribute("contestWrapper")
     public ContestWrapper populateContestWrapper(Model model, PortletRequest request){
         try {
-            Long contestId = getContestIdFromRequest(request);
-            if (contestId != null) {
-                contest = ContestLocalServiceUtil.getContest(contestId);
-                contestWrapper = new ContestWrapper(contest);
-                return contestWrapper;
-            }
-            throw new Exception("No contest id provided.Severe.");
+            initContest(request);
+            return contestWrapper;
         } catch (Exception e){
+            _log.warn("Could not get contest: ", e);
         }
         return null;
+    }
+
+    private void initContest(PortletRequest request) throws Exception{
+            Long contestId = getContestIdFromRequest(request);
+        if (contestId != null) {
+            contest = ContestLocalServiceUtil.getContest(contestId);
+            contestWrapper = new ContestWrapper(contest);
+        } else {
+            throw new Exception("Severe. No contest Id provided.");
+        }
     }
 
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
@@ -69,6 +78,19 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     public Long getContestPK(){ return contest.getContestPK();}
 
     public Contest getContest() {
+        return contest;
+    }
+
+    public Contest getContest(PortletRequest request) {
+        if(contest != null){
+            return contest;
+        } else {
+            try {
+                initContest(request);
+            } catch (Exception e){
+                _log.warn("Could not get contest: ", e);
+            }
+        }
         return contest;
     }
 

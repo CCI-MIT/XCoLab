@@ -1,5 +1,6 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
+import javax.portlet.*;
 import javax.validation.Valid;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.PlanTemplate;
@@ -32,11 +33,6 @@ import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.utils.emailnotification.ContestCreationNotification;
 import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,8 +69,8 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     }
 
     @ModelAttribute("scheduleTemplateSelectionItems")
-    public List<LabelValue> populateScheduleSelectionItems(){
-        return getContestScheduleSelectionItems();
+    public List<LabelValue> populateScheduleSelectionItems(RenderRequest request){
+        return getContestScheduleSelectionItems(request);
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -152,7 +148,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
                 }
             }
         } catch (Exception e){
-
+            _log.warn("Could not get contest proposal template selection items: " + e);
         }
         return selectItems;
     }
@@ -164,14 +160,15 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
                 selectItems.add(new LabelValue(new Long(contestLevel.getTierType()), contestLevel.getTierName()));
             }
         } catch (Exception e){
+            _log.warn("Could not get contest level selection items: " + e);
         }
         return selectItems;
     }
 
-    private List<LabelValue> getContestScheduleSelectionItems(){
+    private List<LabelValue> getContestScheduleSelectionItems(RenderRequest request){
         List<LabelValue> scheduleTemplateSelectionItems = new ArrayList<>();
         try {
-            Contest contest = getContest();
+            Contest contest = getContest(request);
             ContestWrapper contestWrapper = new ContestWrapper(contest);
             Long existingContestScheduleId = contest.getContestScheduleId();
             Boolean isContestExistingProposalsCountNotNull = contestWrapper.getProposalsCount() > 0;
