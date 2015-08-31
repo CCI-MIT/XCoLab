@@ -23,8 +23,12 @@
                         <td style="vertical-align: middle;">
                             <div class="heading-sponsor-logo">
                                 <c:choose>
-                                    <c:when test="${contest.sponsorLinkAvailable}"><a href="//${contest.sponsorLink}"><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></a></c:when>
-                                    <c:otherwise><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></c:otherwise>
+                                    <c:when test="${contest.sponsorLinkAvailable}"><a
+                                            href="//${contest.sponsorLink}"><img
+                                            src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}"
+                                            alt="Sponsor Logo"/></a></c:when>
+                                    <c:otherwise><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}"
+                                                      alt="Sponsor Logo"/></c:otherwise>
                                 </c:choose>
 
                             </div>
@@ -37,31 +41,31 @@
         <div class="fixed-position-container">
             <div class="fixed-position-inner-relative">
                 <div class="description">
-                    <p>${contest.contestDescription }
+                    <p>
+                        ${contest.contestDescription }
                         <c:if test="${not empty contest.resourcesUrl and contest.contestPK gt 1301102}">
-                            <a href="${contest.resourcesUrl}" >Read more ...</a>
+                            <a href="${contest.resourcesUrl}" id="readMoreLink" style="display: none" target="_blank"> Read more ...</a>
                         </c:if>
                     </p>
-
                     <c:if test="${contest.showSubContests}">
-                    <table>
-                        <tr>
-                            <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
-                                <div class="subcontests">
-                                    <span class="title">To create your plan, combine proposals from these sector workspaces:</span>
-                                    <ul>
-                                        <c:forEach items="${contest.subContests}" var="subContest">
-                                            <li>
+                        <table>
+                            <tr>
+                                <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
+                                    <div class="subcontests">
+                                        <span class="title">To create your plan, combine proposals from these sector workspaces:</span>
+                                        <ul>
+                                            <c:forEach items="${contest.subContests}" var="subContest">
+                                                <li>
                                         <span>
                                         <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
                                         </span>
-                                            </li>
-                                        </c:forEach>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                                                </li>
+                                            </c:forEach>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </c:if>
 
                     <c:if test="${contest.showParentContest}">
@@ -90,7 +94,8 @@
                                                 </td>
                                                 <td>
                                                     <div class="ontologyItem">
-                                                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what}" />
+                                                        <proposalsPortlet:ontologyTermLink
+                                                                ontologyTerms="${contest.what}"/>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -104,11 +109,13 @@
                                         <table style="width: auto;">
                                             <tbody>
                                             <tr>
-                                                <td><div class="where"><strong>Where:</strong></div>
+                                                <td>
+                                                    <div class="where"><strong>Where:</strong></div>
                                                 </td>
                                                 <td>
                                                     <div class="ontologyItem">
-                                                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where}" />
+                                                        <proposalsPortlet:ontologyTermLink
+                                                                ontologyTerms="${contest.where}"/>
                                                     </div>
                                                 </td>
 
@@ -128,14 +135,15 @@
                                                 </td>
                                                 <td>
                                                     <div class="ontologyItem">
-                                                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who}" /></div>
+                                                        <proposalsPortlet:ontologyTermLink
+                                                                ontologyTerms="${contest.who}"/></div>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
                                     </td>
                                 </c:if>
-                                
+
                                 <c:if test="${not empty contest.how}">
                                     <td>
                                         <table style="width: auto;">
@@ -146,7 +154,8 @@
                                                 </td>
                                                 <td>
                                                     <div class="ontologyItem">
-                                                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.how}" /></div>
+                                                        <proposalsPortlet:ontologyTermLink
+                                                                ontologyTerms="${contest.how}"/></div>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -159,14 +168,19 @@
                 </div>
             </div>
             <div class="fixed-position-inner-fixed" style="right: -32px; top: 20px;">
-                <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left;">
-                    <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
+                <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox"
+                     style="float: left;">
+                    <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${contest.contestShortName}"
+                       addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
                     <span class="clearfix"></span>
-                    <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
+                    <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${contest.contestShortName}"
+                       addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
                     <span class="clearfix"></span>
-                    <a class="addthis_button_email" id="addThisButton3" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
+                    <a class="addthis_button_email" id="addThisButton3" addthis:title="${contest.contestShortName}"
+                       addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
                     <span class="clearfix"></span>
-                    <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
+                    <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${contest.contestShortName}"
+                       addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
                     <span class="clearfix"></span>
                 </div>
             </div>
@@ -192,10 +206,15 @@
                                                 </c:choose>
                                             </td>
                                             <td class="contestTeamMembers">
-                                                <c:forEach var="teamRoleUser" items="${teamRole.users }" varStatus="status">
+                                                <c:forEach var="teamRoleUser" items="${teamRole.users }"
+                                                           varStatus="status">
                                                     <div class="contestTeamMember">
-                                                        <proposalsPortlet:userPortrait screenName="${teamRoleUser.screenName }"	portraitId="${teamRoleUser.portraitId}" width="30"	height="30" />
-                                                        <proposalsPortlet:userLinkSimple userId="${teamRoleUser.userId}" text="${teamRoleUser.fullName}" />
+                                                        <proposalsPortlet:userPortrait
+                                                                screenName="${teamRoleUser.screenName }"
+                                                                portraitId="${teamRoleUser.portraitId}" width="30"
+                                                                height="30"/>
+                                                        <proposalsPortlet:userLinkSimple userId="${teamRoleUser.userId}"
+                                                                                         text="${teamRoleUser.fullName}"/>
                                                     </div>
                                                 </c:forEach>
                                             </td>
@@ -208,12 +227,17 @@
                     <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
                         <div>
                             <c:if test="${not empty contest.resourcesUrl}">
-                            	<div class="button-wrapper">
-                                	<a class="detailbutton" href="${contest.resourcesUrl}" >Resources</a>
+                                <div class="button-wrapper">
+                                    <a class="detailbutton" href="${contest.resourcesUrl}">Resources</a>
                                 </div>
                             </c:if>
+
                             <div class="button-wrapper">
-                                <a class="detailbutton"	href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion</a><c:if test="${contest.commentsCount > 0}"> <div class="discussion-button-badge">${contest.commentsCount}</div></c:if>
+                                <a class="detailbutton"
+                                   href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion</a><c:if
+                                    test="${contest.commentsCount > 0}">
+                                <div class="discussion-button-badge">${contest.commentsCount}</div>
+                            </c:if>
                             </div>
                         </div>
                     </td>
@@ -230,6 +254,16 @@
                 pageTracker._trackEvent('User', 'ShareContestViaSocialMedia', service, 1);
             }
         }
+
+        $(document).ready(function () {
+            var readMoreLink = document.querySelector("#readMoreLink");
+            if (readMoreLink) {
+                var lastParagraph = readMoreLink.previousElementSibling;
+                $(lastParagraph).append(readMoreLink);
+                $(readMoreLink).show();
+            }
+
+        });
 
         // Listen for the share event
         addthis.addEventListener('addthis.menu.share', shareEventHandler);
