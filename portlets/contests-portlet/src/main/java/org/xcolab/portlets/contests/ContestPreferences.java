@@ -61,62 +61,32 @@ public class ContestPreferences {
             e.printStackTrace();
         }
     }
-    
+
     public String submit(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
         PortletPreferences prefs = request.getPreferences();
-    	
+
         prefs.setValue(SELECTED_CONTESTS_PREFERENCE, StringUtils.join(convertLongsToStrings(selectedContests), ","));
         prefs.setValue(TITLE_PREFERENCE, title);
         prefs.setValue(FEED_SIZE_PREFERENCE, feedSize+"");
 
         prefs.store();
-        
+
         return null;
     }
-    
-    
-    public Map<Long,String> getContestPhases() throws SystemException, PortalException{
-    	Map<Long, String> phases = new LinkedHashMap<>();
-    	
-    	 List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
-    	 
-    	 Collections.sort(contests, new Comparator<Contest>() {    		 
-    		             @Override
-    		             public int compare(Contest o1, Contest o2) {
-    		                 return (int) (o1.getContestPK() - o2.getContestPK());
-    		             }
-    		             
-    		         });
-    	 
-    	 for (Contest c: contests) {
-           for (ContestPhase cp: ContestLocalServiceUtil.getVisiblePhases(c)) {
-        	   String prefix = "";
-        	   if (ContestPhaseLocalServiceUtil.getPhaseActive(cp)) {
-        		   prefix = "* ACTIVE *";
-        	   }
-        	   phases.put(cp.getContestPhasePK()
-        			   ,c.getContestPK() + " " + prefix + " " + c.getContestShortName() + " - " + cp.getContestPhasePK() + " " + ContestPhaseLocalServiceUtil.getContestStatusStr(cp)) ;        	   
-        	   
-           }
-       }
-    	 
-    	 
-    	return phases;
-    }
-    
-    public Long[] getSelectedContets() {
+
+    public Long[] getSelectedContests() {
         return selectedContests;
     }
 
     public void setSelectedContests(Long[] selectedPhases) {
         this.selectedContests = selectedPhases;
     }
-    
+
     private static Long[] convertStringsToLongs(String[] arrayStr) {
-        if (arrayStr.length == 1 && StringUtils.isBlank(arrayStr[0])) { 
+        if (arrayStr.length == 1 && StringUtils.isBlank(arrayStr[0])) {
             return new Long[] {};
         }
-        
+
         Long[] arrayLong = new Long[arrayStr.length];
         for (int i = 0; i < arrayStr.length; i++) {
             try {
@@ -135,6 +105,10 @@ public class ContestPreferences {
             arrayStr[i] = arrayLong[i].toString();
         }
         return arrayStr;
+    }
+
+    public void setContests(List<Contest> contests) {
+        this.contests = contests;
     }
 
     public List<Contest> getContests() {
