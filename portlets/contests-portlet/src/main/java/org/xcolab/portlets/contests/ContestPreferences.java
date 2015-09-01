@@ -2,8 +2,10 @@ package org.xcolab.portlets.contests;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
@@ -22,11 +24,11 @@ import java.util.Map;
 public class ContestPreferences {
     private Long[] selectedContests;
     private String SELECTED_CONTESTS_PREFERENCE = "SELECTED_CONTESTS";
-    private String TITLE_PREFERENCE = "TITLE";
-    private String FEED_SIZE_PREFERENCE = "FEED_SIZE";
+    private String TITLE_PREFERENCE = "CONTEST_TITLE";
+    private String FEED_SIZE_PREFERENCE = "CONTEST_FEED_SIZE";
     private String title;
     private Integer feedSize;
-    private List<Contest> contests;
+    private Map<Long, String> contestMap;
 
     public String getTitle() {
         return title;
@@ -56,8 +58,27 @@ public class ContestPreferences {
             feedSize = 4;
         }
         try {
-            contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
-        } catch (SystemException e) {
+            final List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
+            contestMap = new LinkedHashMap<>();
+
+            Collections.sort(contests, new Comparator<Contest>() {
+                @Override
+                public int compare(Contest o1, Contest o2) {
+                    return (int) (o1.getContestPK() - o2.getContestPK());
+                }
+            });
+
+            for (Contest c: contests) {
+                final long contestPhaseTypeId = ContestLocalServiceUtil.getActiveOrLastPhase(c).getContestPhaseType();
+                final ContestPhaseType contestPhaseType= ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseTypeId);
+                contestMap.put(c.getPrimaryKey(),
+                        String.format("%d [%s] %s",
+                                c.getContestPK(),
+                                contestPhaseType.getName(),
+                                c.getContestShortName()
+                        ));
+            }
+        } catch (SystemException | PortalException e) {
             e.printStackTrace();
         }
     }
@@ -107,11 +128,12 @@ public class ContestPreferences {
         return arrayStr;
     }
 
-    public void setContests(List<Contest> contests) {
-        this.contests = contests;
+
+    public Map<Long, String> getContestMap() {
+        return contestMap;
     }
 
-    public List<Contest> getContests() {
-        return contests;
+    public void setContestMap(Map<Long, String> contestMap) {
+        this.contestMap = contestMap;
     }
 }

@@ -37,7 +37,7 @@
 				Choose the contests to randomly display
 			</td>
 			<td style="padding-right:10px;">		
-				<form:select path="selectedContests" items="${preferences.contests}" style="width:100%; height: 600px;"/>
+				<form:select path="selectedContests" items="${preferences.contestMap}" style="width:100%; height: 600px;"/>
 			</td>
 		</tr>
 	</table>
