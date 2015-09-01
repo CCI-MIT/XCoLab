@@ -29,11 +29,11 @@ public class ContestsController {
 
         List<ContestWrapper> ret = new ArrayList<>();
         List<Contest> contests;
-        if (contestPreferences.getSelectedContets().length == 0) {
+        if (contestPreferences.getSelectedContests().length == 0) {
              contests = ContestLocalServiceUtil.findByActiveFeatured(true,true);
         } else {
             contests = new ArrayList<>();
-            for (Long contestId : contestPreferences.getSelectedContets()) {
+            for (Long contestId : contestPreferences.getSelectedContests()) {
                 contests.add(ContestLocalServiceUtil.getContest(contestId));
             }
         }
