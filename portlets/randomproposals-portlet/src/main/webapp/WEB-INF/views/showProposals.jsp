@@ -4,8 +4,8 @@
 	
 	<div>
         <h2> ${proposalsModel.preferences.title}<span>
-            <a href="${proposalsModel.preferences.allProposalsUrl}">${proposalsModel.preferences.allProposalsUrl}</a>
-        </span></h2>        
+            <a href="${proposalsModel.preferences.allProposalsUrl}">${proposalsModel.preferences.allProposalsTitle}</a>
+        </span></h2>
         <c:forEach items="${proposalsModel.proposals}" var="proposal">
         	<div class="contestbox">
                 <div class="img-wrap">
