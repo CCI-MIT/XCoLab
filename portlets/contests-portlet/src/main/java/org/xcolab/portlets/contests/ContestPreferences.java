@@ -57,6 +57,10 @@ public class ContestPreferences {
         } catch (NumberFormatException e) {
             feedSize = 4;
         }
+        populateContestMap();
+    }
+
+    private void populateContestMap() {
         try {
             final List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
             contestMap = new LinkedHashMap<>();
@@ -69,12 +73,19 @@ public class ContestPreferences {
             });
 
             for (Contest c: contests) {
-                final long contestPhaseTypeId = ContestLocalServiceUtil.getActiveOrLastPhase(c).getContestPhaseType();
-                final ContestPhaseType contestPhaseType= ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseTypeId);
+                final ContestPhase activeOrLastPhase = ContestLocalServiceUtil.getActiveOrLastPhase(c);
+                final String phaseName;
+                if (activeOrLastPhase != null) {
+                    final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseType();
+                    final ContestPhaseType contestPhaseType= ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseTypeId);
+                    phaseName = contestPhaseType.getName();
+                } else {
+                    phaseName = " ";
+                }
                 contestMap.put(c.getPrimaryKey(),
                         String.format("%d [%s] %s",
                                 c.getContestPK(),
-                                contestPhaseType.getName(),
+                                phaseName,
                                 c.getContestShortName()
                         ));
             }
