@@ -3,7 +3,9 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	
 	<div>
-        <h2> ${proposalsModel.preferences.title} <span><a href="/web/guest/plans">see all proposals</a></span></h2>        
+        <h2> ${proposalsModel.preferences.title}<span>
+            <a href="${proposalsModel.preferences.allProposalsUrl}">${proposalsModel.preferences.allProposalsUrl}</a>
+        </span></h2>        
         <c:forEach items="${proposalsModel.proposals}" var="proposal">
         	<div class="contestbox">
                 <div class="img-wrap">

@@ -23,9 +23,9 @@ import java.util.Map;
 
 public class ContestPreferences {
     private Long[] selectedContests;
-    private String SELECTED_CONTESTS_PREFERENCE = "SELECTED_CONTESTS";
-    private String TITLE_PREFERENCE = "CONTEST_TITLE";
-    private String FEED_SIZE_PREFERENCE = "CONTEST_FEED_SIZE";
+    private final static String SELECTED_CONTESTS_PREFERENCE = "SELECTED_CONTESTS";
+    private final static String TITLE_PREFERENCE = "CONTEST_TITLE";
+    private final static String FEED_SIZE_PREFERENCE = "CONTEST_FEED_SIZE";
     private String title;
     private Integer feedSize;
     private Map<Long, String> contestMap;
