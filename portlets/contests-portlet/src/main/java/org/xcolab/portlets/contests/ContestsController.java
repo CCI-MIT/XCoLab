@@ -18,19 +18,29 @@ import java.util.List;
 @Controller
 @RequestMapping("view")
 public class ContestsController {
-    private static final int NUM_CONTESTS = 3;
     
     public ContestsController() {
     }
 
     @RequestMapping
     public String showContests(PortletRequest request, PortletResponse response, Model model) throws SystemException, PortalException {
-    	
+
+        ContestPreferences contestPreferences = new ContestPreferences(request);
+
         List<ContestWrapper> ret = new ArrayList<>();
-        List<Contest> contests = ContestLocalServiceUtil.findByActiveFeatured(true,true);
+        List<Contest> contests;
+        if (contestPreferences.getSelectedContets().length == 0) {
+             contests = ContestLocalServiceUtil.findByActiveFeatured(true,true);
+        } else {
+            contests = new ArrayList<>();
+            for (Long contestId : contestPreferences.getSelectedContets()) {
+                contests.add(ContestLocalServiceUtil.getContest(contestId));
+            }
+        }
+
         Collections.shuffle(contests);
         for (Contest contest: contests) {
-            if(ret.size() >= NUM_CONTESTS) {
+            if(ret.size() >= contestPreferences.getFeedSize()) {
             	break;
             }
             if (contest.getContestPrivate()) {
@@ -40,9 +50,7 @@ public class ContestsController {
         }
         
         model.addAttribute("contests", ret);
+        model.addAttribute("title", contestPreferences.getTitle());
     	return "showContests";
     }
-
-
-
 }
