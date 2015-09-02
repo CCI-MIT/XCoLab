@@ -24,47 +24,20 @@
 		</tr>
 		
 		<tr>
-			<td>		
-				Enter comma separated list of flag filters (empty if none)
-			</td>
-			<td>
-				<form:input path="flagFiltersStr" />
-			</td>
-		</tr>
-
-		<tr>
-			<td>
+			<td>	
 				Enter feed size
 			</td>
-			<td>
+			<td>			
 				<form:input path="feedSize" />
 			</td>
-		</tr>
-
-		<tr>
-			<td>
-				Enter proposal link title
-			</td>
-			<td>
-				<form:input path="allProposalsTitle" />
-			</td>
-		</tr>
-
-		<tr>
-			<td>
-				Enter proposal link url
-			</td>
-			<td>
-				<form:input path="allProposalsUrl" />
-			</td>
-		</tr>
+		</tr>	
 	
 		<tr>
 			<td>
-				Choose contest phases from which to pick proposals.
+				Choose the contests to randomly display
 			</td>
 			<td style="padding-right:10px;">		
-				<form:select path="selectedPhases" items="${preferences.contestPhases}" style="width:100%; height: 600px;"/>
+				<form:select path="selectedContests" items="${preferences.contestMap}" style="width:100%; height: 600px;"/>
 			</td>
 		</tr>
 	</table>

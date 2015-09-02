@@ -16,6 +16,7 @@
 		</init-param>
 		<supports>
 			<mime-type>text/html</mime-type>
+			<portlet-mode>edit</portlet-mode>
 		</supports>
 		<portlet-info>
 			<title>MIT Contests (ICE)</title>

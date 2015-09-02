@@ -6,11 +6,6 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Entities;
-import org.jsoup.safety.Cleaner;
-import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +17,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.xcolab.utils.HtmlCleaner;
+import org.xcolab.utils.HtmlUtil;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,7 +40,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
             throw new DiscussionsException("User isn't allowed to edit comment");
 
         DiscussionMessage m = DiscussionMessageLocalServiceUtil.getMessageByMessageId(messageId);
-        m.setBody(HtmlCleaner.cleanSome(comment));
+        m.setBody(HtmlUtil.cleanSome(comment));
         DiscussionMessageLocalServiceUtil.updateDiscussionMessage(m);
 
         redirectToReferer(request, response);

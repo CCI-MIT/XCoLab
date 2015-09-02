@@ -116,6 +116,11 @@ public class PermissionLocalServiceImplMock implements ResourcePermissionLocalSe
 	}
 
 	@Override
+	public ResourcePermission fetchResourcePermission(long l, String s, int i, String s1, long l1) throws SystemException {
+		return null;
+	}
+
+	@Override
 	public List dynamicQuery(DynamicQuery dynamicQuery) throws SystemException {
 		// TODO Auto-generated method stub
 		return null;

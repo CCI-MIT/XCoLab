@@ -8,7 +8,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.commons.utils.ContentFilterHelper;
+import org.xcolab.utils.HtmlUtil;
 
 import java.util.Date;
 
@@ -28,7 +28,7 @@ public class DiscussionMessageWrapper {
     }
 
     public String getBody() {
-        return ContentFilterHelper.filterContent(wrapped.getBody());
+        return HtmlUtil.filterAndFormatContent(wrapped.getBody());
     }
 
     public long getThreadId() {

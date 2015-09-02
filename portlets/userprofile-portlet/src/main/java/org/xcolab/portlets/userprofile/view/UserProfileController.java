@@ -46,7 +46,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
-import org.xcolab.utils.HtmlCleaner;
+import org.xcolab.utils.HtmlUtil;
 
 import java.io.IOException;
 
@@ -276,7 +276,7 @@ public class UserProfileController {
                 && !updatedUserBean.getFirstName().equals(currentUserProfile.getUserBean().getFirstName())) {
             validator.validate(updatedUserBean, result);
             if (!result.hasErrors()) {
-                currentUserProfile.getUser().setFirstName(HtmlCleaner.cleanAll(updatedUserBean.getFirstName()));
+                currentUserProfile.getUser().setFirstName(HtmlUtil.cleanAll(updatedUserBean.getFirstName()));
                 changedUserPart = true;
             } else {
                 validationError = true;
@@ -287,7 +287,7 @@ public class UserProfileController {
                 && !updatedUserBean.getLastName().equals(currentUserProfile.getUserBean().getLastName())) {
             validator.validate(updatedUserBean, result);
             if (!result.hasErrors()) {
-                currentUserProfile.getUser().setLastName(HtmlCleaner.cleanAll(updatedUserBean.getLastName()));
+                currentUserProfile.getUser().setLastName(HtmlUtil.cleanAll(updatedUserBean.getLastName()));
                 changedUserPart = true;
             } else {
                 validationError = true;
@@ -387,7 +387,7 @@ public class UserProfileController {
         if (!existingBio.equals(updatedUserBean.getShortBio())) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID,  User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.BIO,
-                    currentUserProfile.getUser().getUserId(), HtmlCleaner.cleanSome(updatedUserBean.getShortBio()));
+                    currentUserProfile.getUser().getUserId(), HtmlUtil.cleanSome(updatedUserBean.getShortBio()));
             changedDetails = true;
         }
 

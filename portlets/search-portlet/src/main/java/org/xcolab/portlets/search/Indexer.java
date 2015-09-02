@@ -489,7 +489,17 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         return false;
     }
 
-    @Override
+	@Override
+	public boolean isVisible(long l, int i) throws Exception {
+		return true;
+	}
+
+	@Override
+	public boolean isVisibleRelatedEntry(long l, int i) throws Exception {
+		return true;
+	}
+
+	@Override
     public void postProcessContextQuery(BooleanQuery contextQuery, SearchContext searchContext) throws Exception {
         // TODO Auto-generated method stub
         

@@ -27,7 +27,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.xcolab.portlets.proposals.utils.LinkUtils;
-import org.xcolab.commons.utils.ContentFilterHelper;
+import org.xcolab.utils.HtmlUtil;
 
 public class ProposalSectionWrapper {
 
@@ -72,7 +72,7 @@ public class ProposalSectionWrapper {
 
         }
         Document contentDocument = Jsoup.parse(content.trim());
-        contentDocument = ContentFilterHelper.addNoFollowToLinkTagsInDocument(contentDocument);
+        contentDocument = HtmlUtil.addNoFollowToLinkTagsInDocument(contentDocument);
 
         for (Element aTagElements : contentDocument.select("a")) {
         	String curURL = aTagElements.attr("href");
@@ -89,7 +89,7 @@ public class ProposalSectionWrapper {
         		continue;
         	}
 
-        	if (! (aTagElements.hasClass("utube") || aTagElements.text().toString().toLowerCase().startsWith("embed"))) {
+        	if (! (aTagElements.hasClass("utube") || aTagElements.text().toLowerCase().startsWith("embed"))) {
         		// only links with "embed" text or "utube" class should be replaced by an iframe
         		continue;
         	}
@@ -156,7 +156,7 @@ public class ProposalSectionWrapper {
                         elementName = link;
                     }
 
-                    String newLinkElementWithNoFollow = ContentFilterHelper.createLink(link, elementName);
+                    String newLinkElementWithNoFollow = HtmlUtil.createLink(link, elementName);
                     // Replace exactly this word in the HTML code with leading and trailing spaces
                     if (words.length == 1) { // In this case there are no leading and trailing spaces in the html code
                         if (!html.contains("<"))

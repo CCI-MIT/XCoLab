@@ -18,6 +18,7 @@ import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import com.ext.portlet.ProposalAttributeKeys;
@@ -40,7 +41,7 @@ public class UdateProposalScenarioActionController {
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
 
 
-        if (proposalsContext.getProposal(request) != null && ! proposalsContext.getPermissions(request).getCanEdit()) {
+        if (proposalsContext.getProposal(request) != null && !canEditImpactTab(request)){
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: " +
                     proposalsContext.getUser(request).getUserId() + ", proposal: " + proposalsContext.getProposal(request).getProposalId());
         }
@@ -51,6 +52,10 @@ public class UdateProposalScenarioActionController {
 
         proposalsContext.invalidateContext(request);
 
+    }
+
+    private boolean canEditImpactTab(PortletRequest request) throws PortalException, SystemException{
+        return ProposalTab.IMPACT.getCanEdit(proposalsContext.getPermissions(request), proposalsContext, request);
     }
 
 }

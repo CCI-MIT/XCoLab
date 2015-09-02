@@ -30,8 +30,7 @@ public class ContestDescriptionBean implements Serializable{
     @Pattern(regexp = NO_SPECIAL_CHAR_REGEX, message = "The contest title must not contain special characters.")
     private String contestShortName;
 
-    @Length(min = 0, max = 1400, message = "The contest description must have not more than 1400 characters.")
-
+    @Length(min = 0, max = 3000, message = "The contest description must have not more than 3000 characters (including html tags).")
     private String contestDescription;
 
     @NotNull(message = "A plan template must be selected.")
@@ -118,43 +117,11 @@ public class ContestDescriptionBean implements Serializable{
 
     public void setEmailTemplateUrl(String emailTemplateUrl) {this.emailTemplateUrl = emailTemplateUrl;}
 
-
     public String getContestDescription() {
-        if(contestDescription != null) {
-        //return "<p>" + contestDescription + "</p>";
-        return contestDescription;
-        }
         return contestDescription;
     }
 
     public void setContestDescription(String contestDescription) {
-
-        /* TODO find a solution for the Read more ... <p> issue
-        if(!contestDescription.isEmpty()) {
-
-            String contestDescriptionWithoutPTag = contestDescription.replace("<p>", "").replace("</p>","<br/>");
-            this.contestDescription  = contestDescriptionWithoutPTag;
-
-            Document document = Jsoup.parse(contestDescription);
-            Element bodyElement = document.body();
-            Element lastElement = bodyElement.lastElementSibling();
-
-            for(Element element : bodyElement.getAllElements()){
-                this.contestDescription += element.html();
-            }
-
-            Element descriptionElement = document.select("p").last();
-
-            for(Element descriptionSection : document.select("p")){
-                this.contestDescription += "<br/>";
-                this.contestDescription += descriptionSection.html();
-            }
-            this.contestDescription = descriptionElement.html();
-
-        } else {
-            this.contestDescription = contestDescription;
-        }*/
-
         this.contestDescription = contestDescription;
     }
 
