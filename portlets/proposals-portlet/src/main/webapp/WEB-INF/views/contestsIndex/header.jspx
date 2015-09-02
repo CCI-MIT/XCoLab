@@ -135,7 +135,7 @@
             </div>
         </form>
     </div>
-	<div>
+	<div class="headline">
 		${preferences.callToAction}
 	</div>
 
