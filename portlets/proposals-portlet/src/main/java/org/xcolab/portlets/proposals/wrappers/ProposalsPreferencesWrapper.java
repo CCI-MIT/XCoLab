@@ -16,10 +16,14 @@ import javax.portlet.ValidatorException;
 public class ProposalsPreferencesWrapper {
 
     private final static String TERMS_OF_SERVICE_PREF = "TERMS_OF_SERVICE";
+    private final static String CALL_TO_ACTION = "CALL_TO_ACTION";
 
-    private PortletPreferences preferences;
+    private final static String CALL_TO_ACTION_DEFAULT = "The public voting period is open until September 12!" +
+            "<a href=\"/community/-/blogs/finalists-selected-vote-to-select-popular-choice-winner-2\">" +
+            " See a list of all contest Finalists and how to vote.</a>";
 
     private String termsOfService;
+    private String callToAction;
 
     private String proposalIdsToBeMoved;
     private long moveFromContestId;
@@ -34,13 +38,14 @@ public class ProposalsPreferencesWrapper {
     }
 
     public ProposalsPreferencesWrapper(PortletRequest request) {
-        this.preferences = request.getPreferences();
+        PortletPreferences preferences = request.getPreferences();
         try {
             termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
         } catch(SystemException | PortalException e) {
             //should never happen
             throw new RuntimeException(e);
         }
+        callToAction = preferences.getValue(CALL_TO_ACTION, CALL_TO_ACTION_DEFAULT);
         proposalIdsToBeMoved = "";
         moveFromContestId = -1;
         moveToContestPhaseId = -1;
@@ -74,6 +79,7 @@ public class ProposalsPreferencesWrapper {
         } catch (SystemException e) {
             e.printStackTrace();
         }
+        preferences.setValue(CALL_TO_ACTION, callToAction);
         preferences.store();
     }
 
@@ -115,5 +121,13 @@ public class ProposalsPreferencesWrapper {
 
     public void setTermsOfService(String termsOfService) {
         this.termsOfService = termsOfService;
+    }
+
+    public String getCallToAction() {
+        return callToAction;
+    }
+
+    public void setCallToAction(String callToAction) {
+        this.callToAction = callToAction;
     }
 }

@@ -127,12 +127,20 @@
 
 
             <h2>General</h2>
-            <label for="termsOfService">Terms of service:</label>
-            <form:textarea path="termsOfService" id="termsOfService" cssStyle="width: 100%; height: 300px;"/>
-            <form:errors path="termsOfService"/>
+            <p>
+                <label for="callToAction">Call to action:</label>
+                <form:textarea path="callToAction" id="callToAction" cssStyle="width: 100%; height: 100px;"/>
+                <form:errors path="callToAction"/>
+                <input type="submit" value="Save" />
+            </p>
 
+            <p>
+                <label for="termsOfService">Terms of service:</label>
+                <form:textarea path="termsOfService" id="termsOfService" cssStyle="width: 100%; height: 300px;"/>
+                <form:errors path="termsOfService"/>
+                <input type="submit" value="Save" />
+            </p>
 
-            <input type="submit" value="Save" />
         </form:form>
     </div>
 </div>
