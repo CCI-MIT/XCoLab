@@ -68,7 +68,10 @@ public class ContestPreferences {
             Collections.sort(contests, new Comparator<Contest>() {
                 @Override
                 public int compare(Contest o1, Contest o2) {
-                    return (int) (o1.getContestPK() - o2.getContestPK());
+                    if (o1.getCreated().before(o2.getCreated())) {
+                        return 1;
+                    }
+                    return -1;
                 }
             });
 
