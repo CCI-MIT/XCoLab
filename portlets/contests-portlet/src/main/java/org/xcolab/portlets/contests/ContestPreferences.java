@@ -17,6 +17,7 @@ import javax.portlet.ValidatorException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,10 +69,16 @@ public class ContestPreferences {
             Collections.sort(contests, new Comparator<Contest>() {
                 @Override
                 public int compare(Contest o1, Contest o2) {
-                    if (o1.getCreated().before(o2.getCreated())) {
-                        return 1;
+                    final Date created1 = o1.getCreated();
+                    final Date created2 = o2.getCreated();
+                    if (created1 != null && created2 != null) {
+                        if (created1.before(created2)) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
                     }
-                    return -1;
+                    return (int) (o2.getContestPK() - o1.getContestPK());
                 }
             });
 
