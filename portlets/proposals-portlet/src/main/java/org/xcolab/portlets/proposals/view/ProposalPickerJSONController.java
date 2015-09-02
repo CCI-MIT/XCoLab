@@ -483,11 +483,6 @@ public class ProposalPickerJSONController {
 					c.getCreated() == null ? new Date(0) : c.getCreated()));
 		}
 
-//		for (Contest c : ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType())) {
-//			contests.add(Pair.of(new ContestWrapper(c),
-//					c.getCreated() == null ? new Date(0) : c.getCreated()));
-//		}
-
 		return contests;
 	}
 
@@ -571,19 +566,20 @@ public class ProposalPickerJSONController {
 	private void filterProposals(List<Pair<Proposal, Date>> proposals,
 				String filterKey, long sectionId, PortletRequest request)
 			throws SystemException, PortalException {
-		ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(
-				proposals);
+		ProposalPickerFilterUtil.filterByParameter(filterKey, proposals);
 
 		PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
-		if (planSectionDefinition.getFocusAreaId() < 0) {
-			ProposalPickerFilterUtil.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals, -1 * planSectionDefinition.getFocusAreaId());
-			if (request != null) {
-				Contest contest = proposalsContext.getContest(request);
-				ProposalPickerFilterUtil.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals, contest.getFocusAreaId());
-			}
+
+		final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
+		final long contestFocusAreaId;
+		if (request != null) {
+			Contest contest = proposalsContext.getContest(request);
+			contestFocusAreaId = contest.getFocusAreaId();
 		} else {
-			ProposalPickerFilterUtil.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals, planSectionDefinition);
+			contestFocusAreaId = 0;
 		}
+		ProposalPickerFilterUtil.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
+				Pair.of(sectionFocusAreaId, contestFocusAreaId));
 
 		ProposalPickerFilterUtil.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
 	}
