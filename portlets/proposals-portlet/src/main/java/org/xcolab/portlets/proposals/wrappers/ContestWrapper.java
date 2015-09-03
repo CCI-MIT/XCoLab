@@ -689,4 +689,12 @@ public class ContestWrapper {
         return true;
     }
 
+    public long getContestTier() {
+        return contest.getContestTier();
+    }
+
+    public void setContestTier(long contestTier) {
+        contest.setContestTier(contestTier);
+    }
+
 }
