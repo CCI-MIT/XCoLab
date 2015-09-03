@@ -34,6 +34,7 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 public class ProposalPickerFilterUtil {
 
     private static Log _log = LogFactoryUtil.getLog(ProposalPickerFilterUtil.class);
+    public static final List<Long> ANY_TERM_IDS = Arrays.asList(1L, 2L, 3L, 1300601L);
 
     public static ProposalPickerFilter ACCEPTALL = new ProposalPickerFilter();
 
@@ -204,16 +205,26 @@ public class ProposalPickerFilterUtil {
             FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contestFocusAreaId);
             if (focusArea != null) {
                 final List<OntologyTerm> sectionTerms = FocusAreaLocalServiceUtil.getTerms(focusArea);
-                _log.debug(String.format("Added %d section terms", sectionTerms.size()));
+                removeRootTerms(sectionTerms);
+                _log.debug(String.format("Added %d non-root section terms", sectionTerms.size()));
                 terms.addAll(sectionTerms);
             }
             if (contestFocusArea != null) {
                 final List<OntologyTerm> contestTerms = FocusAreaLocalServiceUtil.getTerms(contestFocusArea);
-                _log.debug(String.format("Added %d contest terms", contestTerms.size()));
+                removeRootTerms(contestTerms);
+                _log.debug(String.format("Added %d non-root contest terms", contestTerms.size()));
                 terms.addAll(contestTerms);
             }
 
             return terms;
+        }
+
+        private void removeRootTerms(List<OntologyTerm> terms) {
+            for (Iterator<OntologyTerm> i = terms.iterator(); i.hasNext();){
+                OntologyTerm o = i.next();
+
+                if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) i.remove();
+            }
         }
     };
 
