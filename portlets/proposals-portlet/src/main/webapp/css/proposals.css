@@ -445,12 +445,12 @@ table.judgingForm {
 	font-style: normal;
 }
 
-#proposalPicker_contestsContainer a .box_tooltip {
+.box_tooltip {
     display: inline;
     position: relative;
 }
 
-#proposalPicker_contestsContainer a .box_tooltip:hover:after {
+.box_tooltip:hover:after {
     background: #333;
     background: rgba(0,0,0,.8);
     border-radius: 5px;
@@ -464,7 +464,7 @@ table.judgingForm {
     width: 220px;
 }
 
-#proposalPicker_contestsContainer a .box_tooltip:hover:before {
+.box_tooltip:hover:before {
     border: solid;
     border-color: #333 transparent;
     border-width: 6px 6px 0 6px;
