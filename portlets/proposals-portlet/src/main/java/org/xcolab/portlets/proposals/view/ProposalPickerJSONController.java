@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -10,8 +8,6 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -20,12 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.portlets.proposals.utils.ProposalPickerFilter;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
+import org.xcolab.portlets.proposals.utils.ProposalPickerSortingUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import java.io.IOException;
@@ -64,27 +61,28 @@ public class ProposalPickerJSONController {
 
 		List<Pair<Proposal, Date>> proposals = null;
 
+		final long userId = Long.parseLong(user);
 		if (requestType.equalsIgnoreCase("subscriptionsAndSupporting")) {
-			proposals = getFilteredSubscribedSupportingProposalsForUser(
-					Long.parseLong(user), filterType, sectionId, request);
+			proposals = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
+					userId, filterType, sectionId, request, proposalsContext);
 		} else if (requestType.equalsIgnoreCase("subscriptions")) {
-			proposals = getFilteredSubscribedProposalsForUser(
-					Long.parseLong(user), filterType, sectionId, request);
+			proposals = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
+					userId, filterType, sectionId, request, proposalsContext);
 		} else if (requestType.equalsIgnoreCase("supporting")) {
-			proposals = getFilteredSupportingProposalsForUser(
-					Long.parseLong(user), filterType, sectionId, request);
+			proposals = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(
+					userId, filterType, sectionId, request, proposalsContext);
 		} else if (requestType.equalsIgnoreCase("all")
 				|| requestType.equalsIgnoreCase("contests")) {
-			proposals = getFilteredAllProposalsForUser(Long.parseLong(user),
-					filterType, sectionId, contestPK, request);
+			proposals = ProposalPickerFilterUtil.getFilteredAllProposals(filterType,
+					sectionId, contestPK, request, proposalsContext);
 		}
 		int totalCount;
 		if (proposals != null) {
 			if (filterText != null && filterText.length() > 0)
-				ProposalPickerFilterUtil.TEXTBASED.filter(proposals, filterText);
+				ProposalPickerFilter.TEXTBASED.filter(proposals, filterText);
 			totalCount = proposals.size();
 
-			sortProposalsList(sortOrder, sortColumn, proposals);
+			ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
 			if (end >= totalCount && totalCount > 0)
 				end = totalCount;
 			if (totalCount > (end - start))
@@ -113,11 +111,11 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) Long sectionId) throws IOException,
 			SystemException, PortalException {
 
-		List<Pair<ContestWrapper, Date>> contests = getFilteredContests(
-				filterType, sectionId, request);
+		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getFilteredContests(
+				sectionId, request, proposalsContext);
 
 		if (filterText != null && filterText.length() > 0) {
-			ProposalPickerFilterUtil.TEXTBASED.filterContests(contests,
+			ProposalPickerFilter.TEXTBASED.filterContests(contests,
 					filterText);
 		}
 		int totalCount = contests.size();
@@ -126,7 +124,7 @@ public class ProposalPickerJSONController {
 		if (end >= contests.size() && contests.size() > 0) {
 			end = contests.size();
 		}
-		sortContestsList(sortOrder, sortColumn, contests);
+		ProposalPickerSortingUtil.sortContestsList(sortOrder, sortColumn, contests);
 		if (contests.size() > (end - start)) {
 			contests = contests.subList(start, end);
 		}
@@ -146,15 +144,15 @@ public class ProposalPickerJSONController {
 		long sectionId = Long.parseLong(request.getParameter("sectionId"));
 		long userId = Long.parseLong(request.getRemoteUser());
 
-		int numberOfSubscriptions = getFilteredSubscribedProposalsForUser(
-				userId, filterType, sectionId, request).size();
-		int numberOfSupporting = getFilteredSupportingProposalsForUser(userId,
-				filterType, sectionId, request).size();
-		int numberOfProposals = getFilteredAllProposalsForUser(userId,
-				filterType, sectionId, 0L, request).size();
-		int numberOfSubscriptionsSupporting = getFilteredSubscribedSupportingProposalsForUser(
-				userId, filterType, sectionId, request).size();
-		int numberOfContests = getFilteredContests(filterType, sectionId, request).size();
+		int numberOfSubscriptions = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
+				userId, filterType, sectionId, request, proposalsContext).size();
+		int numberOfSupporting = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(userId,
+				filterType, sectionId, request, proposalsContext).size();
+		int numberOfProposals = ProposalPickerFilterUtil.getFilteredAllProposals(filterType,
+				sectionId, 0L, request, proposalsContext).size();
+		int numberOfSubscriptionsSupporting = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
+				userId, filterType, sectionId, request, proposalsContext).size();
+		int numberOfContests = ProposalPickerFilterUtil.getFilteredContests(sectionId, request, proposalsContext).size();
 
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		wrapper.put("numberOfSubscriptions", numberOfSubscriptions);
@@ -243,363 +241,5 @@ public class ProposalPickerJSONController {
 		wrapper.put("contests", proposalsJSON);
 		wrapper.put("totalCount", totalNumberOfContests);
 		return wrapper.toString();
-	}
-
-	private void sortProposalsList(String sortOrder, String sortColumn,
-								   List<Pair<Proposal, Date>> proposals) {
-		switch (sortColumn.toLowerCase()) {
-			case "contest":
-				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-					@Override
-					public int compare(Pair<Proposal, Date> o1,
-									   Pair<Proposal, Date> o2) {
-						try {
-							return Proposal2PhaseLocalServiceUtil
-									.getCurrentContestForProposal(
-											o1.getLeft().getProposalId())
-									.getContestName()
-									.compareTo(
-											Proposal2PhaseLocalServiceUtil
-													.getCurrentContestForProposal(
-															o2.getLeft()
-																	.getProposalId())
-													.getContestName());
-						} catch (Exception e) {
-							return 0;
-						}
-					}
-				});
-				break;
-			case "proposal":
-				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-					@Override
-					public int compare(Pair<Proposal, Date> o1,
-									   Pair<Proposal, Date> o2) {
-						try {
-							return ProposalLocalServiceUtil
-									.getAttribute(o1.getLeft().getProposalId(),
-											ProposalAttributeKeys.NAME, 0l)
-									.getStringValue()
-									.compareTo(
-											ProposalLocalServiceUtil.getAttribute(
-													o2.getLeft().getProposalId(),
-													ProposalAttributeKeys.NAME, 0l)
-													.getStringValue());
-						} catch (Exception e) {
-							return 0;
-						}
-					}
-				});
-				break;
-			case "author":
-				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-					@Override
-					public int compare(Pair<Proposal, Date> o1,
-									   Pair<Proposal, Date> o2) {
-						try {
-							ProposalAttribute t1 = ProposalLocalServiceUtil
-									.getAttribute(o1.getLeft().getProposalId(),
-											ProposalAttributeKeys.TEAM, 0);
-							ProposalAttribute t2 = ProposalLocalServiceUtil
-									.getAttribute(o2.getLeft().getProposalId(),
-											ProposalAttributeKeys.TEAM, 0);
-
-							String author1 = t1 == null
-									|| t1.getStringValue().trim().length() == 0 ? UserLocalServiceUtil
-									.getUser(o1.getLeft().getAuthorId())
-									.getScreenName() : t1.getStringValue();
-							String author2 = t2 == null
-									|| t2.getStringValue().trim().length() == 0 ? UserLocalServiceUtil
-									.getUser(o2.getLeft().getAuthorId())
-									.getScreenName() : t2.getStringValue();
-
-							return author1.compareTo(author2);
-						} catch (Exception e) {
-							return 0;
-						}
-					}
-				});
-				break;
-			case "date":
-				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-					@Override
-					public int compare(Pair<Proposal, Date> o1,
-									   Pair<Proposal, Date> o2) {
-						return o1.getRight().compareTo(o2.getRight());
-					}
-				});
-				break;
-			case "supporters":
-				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-					@Override
-					public int compare(Pair<Proposal, Date> o1,
-									   Pair<Proposal, Date> o2) {
-						try {
-							return ProposalLocalServiceUtil.getSupportersCount(o1
-									.getLeft().getProposalId()) - ProposalLocalServiceUtil
-									.getSupportersCount(o2.getLeft()
-											.getProposalId());
-						} catch (PortalException | SystemException e) {
-							return 0;
-						}
-					}
-				});
-				break;
-			case "comments":
-				Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-					@Override
-					public int compare(Pair<Proposal, Date> o1,
-									   Pair<Proposal, Date> o2) {
-						try {
-							return (int) (ProposalLocalServiceUtil
-									.getCommentsCount(o1.getLeft().getProposalId()) - ProposalLocalServiceUtil
-									.getCommentsCount(o2.getLeft().getProposalId()));
-						} catch (PortalException | SystemException e) {
-							return 0;
-						}
-					}
-				});
-				break;
-		}
-
-		if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {
-			Collections.reverse(proposals);
-		}
-	}
-
-	private void sortContestsList(String sortOrder, String sortColumn,
-								  List<Pair<ContestWrapper, Date>> contests) {
-		if (sortColumn != null) {
-			switch (sortColumn.toLowerCase()) {
-				case "name":
-					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
-						@Override
-						public int compare(Pair<ContestWrapper, Date> o1,
-										   Pair<ContestWrapper, Date> o2) {
-							return o1.getLeft().getContestShortName()
-									.compareTo(o2.getLeft().getContestShortName());
-						}
-					});
-					break;
-				case "comments":
-					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
-						@Override
-						public int compare(Pair<ContestWrapper, Date> o1,
-										   Pair<ContestWrapper, Date> o2) {
-							try {
-								return (int) (o1.getLeft().getTotalCommentsCount() - o2
-										.getLeft().getTotalCommentsCount());
-							} catch (PortalException | SystemException e) {
-								return 0;
-							}
-						}
-					});
-					break;
-				case "what":
-					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
-						@Override
-						public int compare(Pair<ContestWrapper, Date> o1,
-										   Pair<ContestWrapper, Date> o2) {
-							try {
-								return o1.getLeft().getWhatName()
-										.compareTo(o2.getLeft().getWhatName());
-							} catch (PortalException | SystemException e) {
-								return 0;
-							}
-						}
-					});
-					break;
-				case "where":
-					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
-						@Override
-						public int compare(Pair<ContestWrapper, Date> o1,
-										   Pair<ContestWrapper, Date> o2) {
-							try {
-								return o1.getLeft().getWhereName()
-										.compareTo(o2.getLeft().getWhereName());
-							} catch (PortalException | SystemException e) {
-								return 0;
-							}
-						}
-					});
-					break;
-				case "who":
-					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
-						@Override
-						public int compare(Pair<ContestWrapper, Date> o1,
-										   Pair<ContestWrapper, Date> o2) {
-							try {
-								return o1.getLeft().getWhoName()
-										.compareTo(o2.getLeft().getWhoName());
-							} catch (PortalException | SystemException e) {
-								return 0;
-							}
-						}
-					});
-					break;
-				case "how":
-					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
-						@Override
-						public int compare(Pair<ContestWrapper, Date> o1,
-										   Pair<ContestWrapper, Date> o2) {
-							try {
-								return o1.getLeft().getHowName()
-										.compareTo(o2.getLeft().getHowName());
-							} catch (PortalException | SystemException e) {
-								return 0;
-							}
-						}
-					});
-					break;
-				default:
-					Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
-						@Override
-						public int compare(Pair<ContestWrapper, Date> o1,
-										   Pair<ContestWrapper, Date> o2) {
-							try {
-								return (int) (o1.getLeft().getProposalsCount() - o2
-										.getLeft().getProposalsCount());
-							} catch (PortalException | SystemException e) {
-								return 0;
-							}
-						}
-					});
-			}
-		}
-
-		if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {
-			Collections.reverse(contests);
-		}
-	}
-
-	private List<Pair<ContestWrapper, Date>> getFilteredContests(
-			String filterKey, long sectionId, ResourceRequest request) throws SystemException,
-			PortalException {
-
-		List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
-		
-		for (Contest c: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
-			contests.add(Pair.of(new ContestWrapper(c),
-					c.getCreated() == null ? new Date(0) : c.getCreated()));
-		}
-
-		PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
-
-		final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
-		final long contestFocusAreaId;
-		if (request != null) {
-			Contest contest = proposalsContext.getContest(request);
-			contestFocusAreaId = contest.getFocusAreaId();
-		} else {
-			contestFocusAreaId = 0;
-		}
-		_log.debug(String.format("Filtering contests for focus areas %d and %d", sectionFocusAreaId, contestFocusAreaId));
-		_log.debug(String.format("%d contests before filtering", contests.size()));
-		ProposalPickerFilterUtil.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
-				Pair.of(sectionFocusAreaId, contestFocusAreaId));
-		_log.debug(String.format("%d contests left after focus area filtering", contests.size()));
-
-		ProposalPickerFilterUtil.CONTEST_TIER.filterContests(contests, planSectionDefinition.getTier());
-		_log.debug(String.format("%d contests left after tier filtering", contests.size()));
-
-		return contests;
-	}
-
-	private List<Pair<Proposal, Date>> getFilteredSubscribedSupportingProposalsForUser(
-			long userId, String filterKey, long sectionId, PortletRequest request)
-			throws SystemException, PortalException {
-		List<Pair<Proposal, Date>> proposals = getFilteredSubscribedProposalsForUser(
-				userId, filterKey, sectionId, request);
-
-		Set<Long> includedProposals = new HashSet<>();
-		for (Pair<Proposal, Date> entry : proposals) {
-			includedProposals.add(entry.getLeft().getProposalId());
-		}
-		for (Pair<Proposal, Date> entry : getFilteredSupportingProposalsForUser(
-				userId, filterKey, sectionId, request)) {
-			if (includedProposals.contains(entry.getLeft().getProposalId()))
-				continue;
-			proposals.add(entry);
-		}
-
-		return proposals;
-	}
-
-	private List<Pair<Proposal, Date>> getFilteredSubscribedProposalsForUser(
-			long userId, String filterKey, long sectionId, PortletRequest request)
-			throws SystemException, PortalException {
-		List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-		List<ActivitySubscription> activitySubscriptions = ActivitySubscriptionLocalServiceUtil
-				.findByUser(userId);
-		for (ActivitySubscription as : activitySubscriptions) {
-			if (as.getClassNameId() == ClassNameLocalServiceUtil
-					.getClassNameId(Proposal.class)) {
-				proposals.add(Pair.of(
-						ProposalLocalServiceUtil.getProposal(as.getClassPK()),
-						as.getCreateDate()));
-			}
-		}
-
-		filterProposals(proposals, filterKey, sectionId, request);
-
-		return proposals;
-	}
-
-	private List<Pair<Proposal, Date>> getFilteredSupportingProposalsForUser(
-			long userId, String filterKey, long sectionId, PortletRequest request)
-			throws SystemException, PortalException {
-		List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-		for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil
-				.getProposals(userId)) {
-			proposals.add(Pair.of(
-					ProposalLocalServiceUtil.getProposal(ps.getProposalId()),
-					ps.getCreateDate()));
-		}
-
-		filterProposals(proposals, filterKey, sectionId, request);
-
-		return proposals;
-	}
-
-	private List<Pair<Proposal, Date>> getFilteredAllProposalsForUser(
-			long userId, String filterKey, long sectionId, Long contestPK, PortletRequest request)
-			throws SystemException, PortalException {
-		List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-		List<Proposal> proposalsRaw = null;
-		if (contestPK > 0) {
-			proposalsRaw = ProposalLocalServiceUtil
-					.getProposalsInContest(contestPK);
-		} else {
-			proposalsRaw = ProposalLocalServiceUtil.getProposals(0,
-					Integer.MAX_VALUE);
-		}
-		for (Proposal p : proposalsRaw) {
-			proposals.add(Pair.of(p, new Date(0)));
-		}
-
-		filterProposals(proposals, filterKey, sectionId, request);
-
-		return proposals;
-	}
-
-	private void filterProposals(List<Pair<Proposal, Date>> proposals,
-				String filterKey, long sectionId, PortletRequest request)
-			throws SystemException, PortalException {
-		ProposalPickerFilterUtil.filterByParameter(filterKey, proposals);
-
-		PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
-
-		final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
-		final long contestFocusAreaId;
-		if (request != null) {
-			Contest contest = proposalsContext.getContest(request);
-			contestFocusAreaId = contest.getFocusAreaId();
-		} else {
-			contestFocusAreaId = 0;
-		}
-		ProposalPickerFilterUtil.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
-				Pair.of(sectionFocusAreaId, contestFocusAreaId));
-
-		ProposalPickerFilterUtil.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
 	}
 }
