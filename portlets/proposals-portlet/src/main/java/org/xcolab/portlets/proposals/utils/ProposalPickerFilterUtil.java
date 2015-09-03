@@ -172,7 +172,6 @@ public class ProposalPickerFilterUtil {
                             List<OntologyTerm> requiredDescendantTerms = OntologyTermLocalServiceUtil.getAllDescendantTerms(requiredTerm);
                             requiredDescendantTerms.add(requiredTerm);
                             if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
-                                _log.debug(String.format("Removed contest with terms %s", contestTerms.toString()));
                                 removedContests.add(contest.getContestPK());
                                 i.remove();
                                 break;
