@@ -323,7 +323,7 @@
                         		<div class="tooltip">{{contest.flagTooltip}}<div class="tt-arrow"><!--  --></div></div>
                         	</c:if>
                 	{{/if}}
-                		<a href="javascript:;">{{contest.contestShortName}}</a>
+                		<a href="javascript:;" class="box_tooltop" title="{{contest.contestShortName}}">{{contest.contestShortName}}</a>
                 			{{contest.contestName}}
             		</div>
             	</td>
