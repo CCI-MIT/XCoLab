@@ -111,8 +111,9 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) Long sectionId) throws IOException,
 			SystemException, PortalException {
 
+		final HashMap<Long, String> removedContests = new HashMap<>();
 		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getFilteredContests(
-				sectionId, request, proposalsContext);
+				sectionId, request, proposalsContext, removedContests);
 
 		if (filterText != null && filterText.length() > 0) {
 			ProposalPickerFilter.TEXTBASED.filterContests(contests,
@@ -130,7 +131,7 @@ public class ProposalPickerJSONController {
 		}
 
 		response.getPortletOutputStream().write(
-				getJSONObjectMappingContests(contests, totalCount).getBytes());
+				getJSONObjectMappingContests(contests, totalCount, removedContests).getBytes());
 	}
 
 	/**
@@ -152,7 +153,7 @@ public class ProposalPickerJSONController {
 				sectionId, 0L, request, proposalsContext).size();
 		int numberOfSubscriptionsSupporting = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
 				userId, filterType, sectionId, request, proposalsContext).size();
-		int numberOfContests = ProposalPickerFilterUtil.getFilteredContests(sectionId, request, proposalsContext).size();
+		int numberOfContests = ProposalPickerFilterUtil.getFilteredContests(sectionId, request, proposalsContext, null).size();
 
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		wrapper.put("numberOfSubscriptions", numberOfSubscriptions);
@@ -211,21 +212,22 @@ public class ProposalPickerJSONController {
 	}
 
 	private String getJSONObjectMappingContests(
-			List<Pair<ContestWrapper, Date>> contests, int totalNumberOfContests)
+			List<Pair<ContestWrapper, Date>> contests, int totalNumberOfContests, Map<Long, String> removedContests)
 			throws SystemException, PortalException {
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
 
 		for (Pair<ContestWrapper, Date> p : contests) {
 			ContestWrapper wrapped = p.getLeft();
+			final long contestPK = wrapped.getContestPK();
 			JSONObject o = JSONFactoryUtil.createJSONObject();
 
-			o.put("id", p.getLeft().getContestPK());
+			o.put("id", contestPK);
 			o.put("contestShortName", StringUtils.abbreviate(
 					wrapped.getContestShortName(), MAXCHARS_FOR_NAMES));
 			o.put("contestName", StringUtils.abbreviate(
 					wrapped.getContestName(), MAXCHARS_FOR_NAMES));
-			o.put("contestPK", wrapped.getContestPK());
+			o.put("contestPK", contestPK);
 			o.put("flagText", wrapped.getFlagText());
 			o.put("flag", wrapped.getFlag());
 			o.put("flagTooltip", wrapped.getFlagTooltip());
@@ -235,6 +237,12 @@ public class ProposalPickerJSONController {
 			o.put("who", wrapped.getWhoName());
 			o.put("where", wrapped.getWhereName());
 			o.put("date", p.getRight().getTime());
+			if (removedContests.containsKey(contestPK)) {
+				o.put("wasFiltered", true);
+				final String filterReason = removedContests.get(contestPK);
+				o.put("filterReasonFocusArea", filterReason.equals(ProposalPickerFilterUtil.CONTEST_FILTER_REASON_FOCUS_AREA));
+				o.put("filterReasonTier", filterReason.equals(ProposalPickerFilterUtil.CONTEST_FILTER_REASON_TIER));
+			}
 			proposalsJSON.put(o);
 		}
 

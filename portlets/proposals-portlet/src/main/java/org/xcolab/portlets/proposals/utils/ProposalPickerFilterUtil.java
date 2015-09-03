@@ -32,6 +32,9 @@ import javax.portlet.ResourceRequest;
  */
 public class ProposalPickerFilterUtil {
 
+    public static final String CONTEST_FILTER_REASON_FOCUS_AREA = "FOCUS_AREA";
+    public static final String CONTEST_FILTER_REASON_TIER = "TIER";
+
     private static Log _log = LogFactoryUtil.getLog(ProposalPickerFilterUtil.class);
 
     /**
@@ -47,9 +50,22 @@ public class ProposalPickerFilterUtil {
         }
     }
 
+    /**
+     *  Retrieves a list of all contests matching the section's filters.
+     *  If desired, the removed contests will be stored in the removedContests object together with a fitler reason.
+     *
+     * @param sectionId the section id of the proposal picker's caller
+     * @param request the associated request
+     * @param proposalsContext the associated proposal context
+     * @param removedContests all removed contests are added to this Map together with a reason
+     * @return A List of contests together with their creation date
+     * @throws SystemException
+     * @throws PortalException
+     */
     public static List<Pair<ContestWrapper, Date>> getFilteredContests(
-            long sectionId, ResourceRequest request, ProposalsContext proposalsContext) throws SystemException,
-            PortalException {
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext,
+            Map<Long, String> removedContests)
+            throws SystemException, PortalException {
 
         List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
 
@@ -69,13 +85,22 @@ public class ProposalPickerFilterUtil {
             contestFocusAreaId = 0;
         }
         _log.debug(String.format("%d contests before filtering", contests.size()));
-        ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
+        Set<Long> focusAreaRemovedContests = ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
                 Pair.of(sectionFocusAreaId, contestFocusAreaId));
         _log.debug(String.format("%d contests left after filtering for focus areas %d and %d",
                 contests.size(), sectionFocusAreaId, contestFocusAreaId));
         final long filterTier = planSectionDefinition.getTier();
-        ProposalPickerFilter.CONTEST_TIER.filterContests(contests, filterTier);
+        Set<Long> tierRemovedContests = ProposalPickerFilter.CONTEST_TIER.filterContests(contests, filterTier);
         _log.debug(String.format("%d contests left after filtering for tier %d", contests.size(), filterTier));
+
+        if (removedContests != null) {
+            for (Long contestId : focusAreaRemovedContests) {
+                removedContests.put(contestId, CONTEST_FILTER_REASON_FOCUS_AREA);
+            }
+            for (Long contestId : tierRemovedContests) {
+                removedContests.put(contestId, CONTEST_FILTER_REASON_TIER);
+            }
+        }
 
         return contests;
     }

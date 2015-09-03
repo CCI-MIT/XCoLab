@@ -475,6 +475,10 @@ table.judgingForm {
     z-index: 99;
 }
 
+.greyed_out {
+    color: #aaa;
+}
+
 #popup_proposalPicker .contestlist td{
 	height: 45px;
 }
