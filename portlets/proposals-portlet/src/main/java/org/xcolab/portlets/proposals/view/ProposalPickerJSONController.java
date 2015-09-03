@@ -113,7 +113,7 @@ public class ProposalPickerJSONController {
 
 		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
 		Map<Long, String> removedContests = ProposalPickerFilterUtil.filterContests(
-				contests, sectionId, request, proposalsContext, true);
+				new ArrayList<>(contests), sectionId, request, proposalsContext, true);
 
 		if (filterText != null && filterText.length() > 0) {
 			ProposalPickerFilter.TEXTBASED.filterContests(contests,
