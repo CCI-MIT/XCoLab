@@ -618,6 +618,12 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) i.remove();
 
         }
+
+        if (ontologyTerms.size() == 0) {
+            //if no terms are left (i.e. they were all root elements), return all contests
+            return getContests(0, Integer.MAX_VALUE);
+        }
+
         Long[][] terms = new Long[ontologyTerms.size()][];
         // get all child elements and add id's to array
         int i = 0;
