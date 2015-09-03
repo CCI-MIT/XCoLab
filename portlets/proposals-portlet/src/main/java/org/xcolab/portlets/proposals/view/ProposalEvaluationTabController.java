@@ -1,7 +1,5 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
@@ -11,7 +9,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
@@ -30,7 +27,6 @@ import org.xcolab.portlets.proposals.wrappers.*;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import javax.portlet.PortletRequest;
-import java.lang.reflect.Array;
 import java.util.*;
 
 @Controller
@@ -76,7 +72,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                 Long evaluationDiscussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposal);
                 model.addAttribute("evaluationDiscussionId", evaluationDiscussionId);
                 model.addAttribute("averageRatingsPerPhase", getAverageRatingsForPastPhases(contest.getContestPK(), proposal));
-                model.addAttribute("proposalRevisionPhaseActive", isContestRevisionPhaseActive(contest));
+                model.addAttribute("activeContestPhaseOpenForEdit", isActiveContestPhaseOpenForEdit(contest));
                 model.addAttribute("showEvaluation", true);
                 model.addAttribute("isJudgeReadOnly", true);
                 model.addAttribute("authorId", proposal.getAuthorId());
@@ -145,9 +141,10 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return hasContestPassedScreeningPhaseAlready;
     }
 
-    private boolean isContestRevisionPhaseActive(Contest contest) throws Exception{
+    private boolean isActiveContestPhaseOpenForEdit(Contest contest) throws Exception{
         ContestPhase activeContestPhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
-        return activeContestPhase.getContestPhaseType() == ContestPhaseType.PROPOSAL_REVISION.getTypeId();
+        Long contestPhaseTypeId = activeContestPhase.getContestPhaseType();
+        return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
     }
 
     private List<ProposalRatingsWrapper> getAverageRatingsForPastPhases(Long contestId, Proposal proposal)
