@@ -493,10 +493,14 @@ public class ProposalPickerJSONController {
 		} else {
 			contestFocusAreaId = 0;
 		}
+		_log.debug(String.format("Filtering contests for focus areas %d and %d", sectionFocusAreaId, contestFocusAreaId));
+		_log.debug(String.format("%d contests before filtering", contests.size()));
 		ProposalPickerFilterUtil.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
 				Pair.of(sectionFocusAreaId, contestFocusAreaId));
+		_log.debug(String.format("%d contests left after focus area filtering", contests.size()));
 
 		ProposalPickerFilterUtil.CONTEST_TIER.filterContests(contests, planSectionDefinition.getTier());
+		_log.debug(String.format("%d contests left after tier filtering", contests.size()));
 
 		return contests;
 	}

@@ -5,6 +5,8 @@ import java.util.*;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -30,6 +32,8 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
  * Time: 10:25
  */
 public class ProposalPickerFilterUtil {
+
+    private static Log _log = LogFactoryUtil.getLog(ProposalPickerFilterUtil.class);
 
     public static ProposalPickerFilter ACCEPTALL = new ProposalPickerFilter();
 
@@ -163,13 +167,17 @@ public class ProposalPickerFilterUtil {
                     try {
                         FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
                         List<OntologyTerm> contestTerms = FocusAreaLocalServiceUtil.getTerms(focusArea);
+                        _log.debug(String.format("Found %d terms in filtered conttest. Looking for matches...", contestTerms.size()));
                         for (OntologyTerm requiredTerm : requiredTerms) {
                             List<OntologyTerm> requiredDescendantTerms = OntologyTermLocalServiceUtil.getAllDescendantTerms(requiredTerm);
                             requiredDescendantTerms.add(requiredTerm);
+                            _log.debug(String.format("Checking for match in %d required descendant terms...", requiredDescendantTerms.size()));
                             if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
                                 removedContests.add(contest.getContestPK());
                                 i.remove();
+                                break;
                             }
+                            _log.debug("Found at least one!");
                         }
                     } catch (Exception e){
                         removedContests.add(contest.getContestPK());
@@ -197,10 +205,14 @@ public class ProposalPickerFilterUtil {
             FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
             FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contestFocusAreaId);
             if (focusArea != null) {
-                terms.addAll(FocusAreaLocalServiceUtil.getTerms(focusArea));
+                final List<OntologyTerm> sectionTerms = FocusAreaLocalServiceUtil.getTerms(focusArea);
+                _log.debug(String.format("Added %d section terms", sectionTerms.size()));
+                terms.addAll(sectionTerms);
             }
             if (contestFocusArea != null) {
-                terms.addAll(FocusAreaLocalServiceUtil.getTerms(contestFocusArea));
+                final List<OntologyTerm> contestTerms = FocusAreaLocalServiceUtil.getTerms(contestFocusArea);
+                _log.debug(String.format("Added %d contest terms", contestTerms.size()));
+                terms.addAll(contestTerms);
             }
 
             return terms;
