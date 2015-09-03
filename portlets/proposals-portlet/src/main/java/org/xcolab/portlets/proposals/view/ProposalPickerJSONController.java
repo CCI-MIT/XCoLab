@@ -483,6 +483,21 @@ public class ProposalPickerJSONController {
 					c.getCreated() == null ? new Date(0) : c.getCreated()));
 		}
 
+		PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
+
+		final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
+		final long contestFocusAreaId;
+		if (request != null) {
+			Contest contest = proposalsContext.getContest(request);
+			contestFocusAreaId = contest.getFocusAreaId();
+		} else {
+			contestFocusAreaId = 0;
+		}
+		ProposalPickerFilterUtil.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
+				Pair.of(sectionFocusAreaId, contestFocusAreaId));
+
+		ProposalPickerFilterUtil.CONTEST_TIER.filterContests(contests, planSectionDefinition.getTier());
+
 		return contests;
 	}
 

@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.utils;
 
 import java.util.*;
 
+import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.collections.CollectionUtils;
@@ -156,15 +157,19 @@ public class ProposalPickerFilterUtil {
 				Object additionalFilterCriterion) {
             Set<Long> removedContests = new HashSet<>();
             try {
-                List<OntologyTerm> allowedTerms = getOntologyTermsFromSectionAndContest((Pair) additionalFilterCriterion);
+                List<OntologyTerm> requiredTerms = getOntologyTermsFromSectionAndContest((Pair) additionalFilterCriterion);
                 for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
                     ContestWrapper contest = i.next().getLeft();
                     try {
                         FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
                         List<OntologyTerm> contestTerms = FocusAreaLocalServiceUtil.getTerms(focusArea);
-                        if (!CollectionUtils.containsAny(allowedTerms, contestTerms)) {
-                            removedContests.add(contest.getContestPK());
-                            i.remove();
+                        for (OntologyTerm requiredTerm : requiredTerms) {
+                            List<OntologyTerm> requiredDescendantTerms = OntologyTermLocalServiceUtil.getAllDescendantTerms(requiredTerm);
+                            requiredDescendantTerms.add(requiredTerm);
+                            if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
+                                removedContests.add(contest.getContestPK());
+                                i.remove();
+                            }
                         }
                     } catch (Exception e){
                         removedContests.add(contest.getContestPK());
