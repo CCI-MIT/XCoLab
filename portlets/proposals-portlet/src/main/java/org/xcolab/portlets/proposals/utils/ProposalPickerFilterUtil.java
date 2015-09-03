@@ -167,17 +167,15 @@ public class ProposalPickerFilterUtil {
                     try {
                         FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
                         List<OntologyTerm> contestTerms = FocusAreaLocalServiceUtil.getTerms(focusArea);
-                        _log.debug(String.format("Found %d terms in filtered conttest. Looking for matches...", contestTerms.size()));
                         for (OntologyTerm requiredTerm : requiredTerms) {
                             List<OntologyTerm> requiredDescendantTerms = OntologyTermLocalServiceUtil.getAllDescendantTerms(requiredTerm);
                             requiredDescendantTerms.add(requiredTerm);
-                            _log.debug(String.format("Checking for match in %d required descendant terms...", requiredDescendantTerms.size()));
                             if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
+                                _log.debug(String.format("Removed contest with terms %s", contestTerms.toString()));
                                 removedContests.add(contest.getContestPK());
                                 i.remove();
                                 break;
                             }
-                            _log.debug("Found at least one!");
                         }
                     } catch (Exception e){
                         removedContests.add(contest.getContestPK());
