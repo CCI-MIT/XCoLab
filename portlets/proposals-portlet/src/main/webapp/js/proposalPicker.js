@@ -18,7 +18,7 @@ function loadProposals(){
     var URL = replaceURLPlaceholders(proposalPickerURL);
     $.getJSON(URL, { get_param: 'value' }, function(data) {
     	$("#proposalPicker_proposalsContainer").empty();
-        $('#proposalPickerTable > tbody').empty();
+        $('#proposalPickerTable').find('> tbody').empty();
         var even = true;
         $.each(data.proposals, function(index, attr) {
             addToProposalPickerTable(attr,even);
@@ -38,7 +38,7 @@ function loadContests(){
     
     $.getJSON(URL, { get_param: 'value' }, function(data) {
         contests = data.contests;
-        $('#proposalPickerTable > tbody').empty();
+        $('#proposalPickerTable').find('> tbody').empty();
         var even = true;
         var container = $("#proposalPicker_contestsContainer");
         container.empty();
@@ -70,7 +70,10 @@ function updateTabRibbons(){
 /* Replace the URL placeholders with actual values */
 function replaceURLPlaceholders(rawUrl){
     var URL = rawUrl.replace('%40%40REPLACE-TYPE%40%40',proposalType).replace('%40%40REPLACE-FILTERKEY%40%40',filterKey);
-    if ($('#prop-search').val() != 'Filter') URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40',$('#prop-search').val());
+    var $propSearch = $('#prop-search');
+    if ($propSearch.val() != 'Filter') {
+        URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40',$propSearch.val());
+    }
     else URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40','');
     URL = URL.replace('%40%40REPLACE-START%40%40',proposalPickerPage * proposalsPerPage);
     URL = URL.replace('%40%40REPLACE-END%40%40',(proposalPickerPage + 1) * proposalsPerPage);
@@ -89,21 +92,23 @@ function proposalPickerTabSelected(element, type){
     element.parent().addClass('c'); proposalPickerPage = 0;
     // check if date should be displayed
     if (type == 'all'){
-        $('#proposalPickerTable > thead > tr > td:nth-child(3)').children().hide();
+        $('#proposalPickerTable').find('> thead > tr > td:nth-child(3)').children().hide();
     } else {
-        $('#proposalPickerTable > thead > tr > td:nth-child(3) > a').show();
+        $('#proposalPickerTable').find('> thead > tr > td:nth-child(3) > a').show();
     }
+    var proposalsPickerProposalsContainer = $("#proposalsPicker_proposalsContainer");
     if (type == 'contests') {
-    	$("#proposalsPicker_proposalsContainer").hide();
+
+        proposalsPickerProposalsContainer.hide();
     	$("#proposalPickerTableContests").show();
-    	$("#proposalsPicker_proposalsContainer .breadcrumb").show();
+        proposalsPickerProposalsContainer.find(".breadcrumb").show();
     	loadContests();
     }
     else {
     	contestPK = 0;
-    	$("#proposalsPicker_proposalsContainer").show();
+        proposalsPickerProposalsContainer.show();
     	$("#proposalPickerTableContests").hide();
-    	$("#proposalsPicker_proposalsContainer .breadcrumb").hide();
+        proposalsPickerProposalsContainer.find(".breadcrumb").hide();
     	loadProposals();
     }
 }
@@ -135,8 +140,9 @@ function pickProposal(sectionId){
     
     pickMultipleProposals = false;
     updateTabRibbons();
-    $('#popup_proposalPicker').show();
-    proposalPickerTabSelected($('#popup_proposalPicker > div > .prop-tabs > ul > li:first > a'),'contests');
+    var popupProposalPicker = $('#popup_proposalPicker');
+    popupProposalPicker.show();
+    proposalPickerTabSelected(popupProposalPicker.find('> div > .prop-tabs > ul > li:first > a'),'contests');
 }
 
 /* Pick a list of proposals */
@@ -146,8 +152,9 @@ function pickProposalList(sectionId){
     
     pickMultipleProposals = true;
     updateTabRibbons();
-    $('#popup_proposalPicker').show();
-    proposalPickerTabSelected($('#popup_proposalPicker > div > .prop-tabs > ul > li:first > a'),'contests');
+    var popupProposalPicker = $('#popup_proposalPicker');
+    popupProposalPicker.show();
+    proposalPickerTabSelected(popupProposalPicker.find('> div > .prop-tabs > ul > li:first > a'),'contests');
 }
 
 /* click "select" in the picker */
@@ -247,7 +254,7 @@ function addPaginationToProposalPickerTable(prev,next,totalPages){
     output += ' Page ' + (proposalPickerPage + 1) + ' of ' + totalPages + ' ';
     if (next) output += '<a href="javascript:;" onClick="proposalPickerPage = (proposalPickerPage + 1); loadProposals();" class="blue-arrow-right"></a>';
     output += '</span>';
-    $('#proposalPickerTable > tbody').append('<tr><td colspan="4" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
+    $('#proposalPickerTable').find('> tbody').append('<tr><td colspan="4" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
 }
 
 function addPaginationToContestsPickerTable(prev,next,totalPages){
@@ -256,7 +263,7 @@ function addPaginationToContestsPickerTable(prev,next,totalPages){
     output += ' Page ' + (proposalPickerPage + 1) + ' of ' + totalPages + ' ';
     if (next) output += '<a href="javascript:;" onClick="proposalPickerPage = (proposalPickerPage + 1); loadContests();" class="blue-arrow-right"></a>';
     output += '</span>';
-    $('#proposalPicker_contestsContainer > tbody').append('<tr><td colspan="6" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
+    $('#proposalPicker_contestsContainer').find('> tbody').append('<tr><td colspan="6" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
 }
 
 var pickerTimer;
@@ -304,7 +311,7 @@ var highlighter = function() {
     if (input.value) {
         var called = false;
         try {
-            var regex = RegExp(input.value, 'gi');
+            var regex = new RegExp(input.value, 'gi');
         } catch(e) {
             return;
         }
@@ -410,7 +417,7 @@ $("#savePickedProposals").click(function(event) {
 	return false;
 });
 
-$("#popup_proposalPicker .blueheaderbar a").click(function(event) {
+$("#popup_proposalPicker").find(".blueheaderbar a").click(function(event) {
 	event.preventDefault();
 	var link = $(this);
 	var parentContainer = link.parents(".blueheaderbar");
