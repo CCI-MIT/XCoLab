@@ -323,7 +323,7 @@
                         		<div class="tooltip">{{contest.flagTooltip}}<div class="tt-arrow"><!--  --></div></div>
                         	</c:if>
                 	{{/if}}
-                		<a href="javascript:;" class="{{#if contest.wasFiltered}} box_tooltip greyed_out {{/if}}" title="{{#if contest.filterReasonFocusArea}} This contest does not fit this section's focus area. {{else if contest.filterReasonTier}} This contest does not fit this section's tier. {{/if}}">{{contest.contestShortName}}</a>
+                		<a href="javascript:;" class="{{#if contest.wasFiltered}} box_tooltip greyed_out {{/if}}" title="{{#if contest.filterReasonFocusArea}} This contest does not fit this section's focus area. {{/if}} {{#if contest.filterReasonTier}} This contest does not fit this section's tier.{{/if}}">{{contest.contestShortName}}</a>
                 			{{contest.contestName}}
             		</div>
             	</td>

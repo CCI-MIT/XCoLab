@@ -50,32 +50,29 @@ public class ProposalPickerFilterUtil {
         }
     }
 
-    /**
-     *  Retrieves a list of all contests matching the section's filters.
-     *  If desired, the removed contests will be stored in the removedContests object together with a fitler reason.
-     *
-     * @param sectionId the section id of the proposal picker's caller
-     * @param request the associated request
-     * @param proposalsContext the associated proposal context
-     * @param removedContests all removed contests are added to this Map together with a reason
-     * @return A List of contests together with their creation date
-     * @throws SystemException
-     * @throws PortalException
-     */
     public static List<Pair<ContestWrapper, Date>> getFilteredContests(
-            long sectionId, ResourceRequest request, ProposalsContext proposalsContext,
-            Map<Long, String> removedContests)
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext)
             throws SystemException, PortalException {
+        List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
+        ProposalPickerFilterUtil.filterContests(contests, sectionId, request, proposalsContext, false);
+        return contests;
+    }
 
+    public static List<Pair<ContestWrapper, Date>> getAllContests() throws SystemException, PortalException {
         List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
 
         for (Contest c: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
             contests.add(Pair.of(new ContestWrapper(c),
                     c.getCreated() == null ? new Date(0) : c.getCreated()));
         }
+        return contests;
+    }
+
+    public static Map<Long, String> filterContests(List<Pair<ContestWrapper, Date>> contests,
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests)
+            throws SystemException, PortalException {
 
         PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
-
         final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
         final long contestFocusAreaId;
         if (request != null) {
@@ -84,6 +81,7 @@ public class ProposalPickerFilterUtil {
         } else {
             contestFocusAreaId = 0;
         }
+
         _log.debug(String.format("%d contests before filtering", contests.size()));
         Set<Long> focusAreaRemovedContests = ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
                 Pair.of(sectionFocusAreaId, contestFocusAreaId));
@@ -93,7 +91,8 @@ public class ProposalPickerFilterUtil {
         Set<Long> tierRemovedContests = ProposalPickerFilter.CONTEST_TIER.filterContests(contests, filterTier);
         _log.debug(String.format("%d contests left after filtering for tier %d", contests.size(), filterTier));
 
-        if (removedContests != null) {
+        Map<Long, String> removedContests = new HashMap<>();
+        if (trackRemovedContests) {
             for (Long contestId : focusAreaRemovedContests) {
                 removedContests.put(contestId, CONTEST_FILTER_REASON_FOCUS_AREA);
             }
@@ -101,8 +100,7 @@ public class ProposalPickerFilterUtil {
                 removedContests.put(contestId, CONTEST_FILTER_REASON_TIER);
             }
         }
-
-        return contests;
+        return removedContests;
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSubscribedSupportingProposalsForUser(

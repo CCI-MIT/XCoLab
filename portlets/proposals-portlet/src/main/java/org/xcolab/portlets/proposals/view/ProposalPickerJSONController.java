@@ -111,9 +111,9 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) Long sectionId) throws IOException,
 			SystemException, PortalException {
 
-		final HashMap<Long, String> removedContests = new HashMap<>();
-		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getFilteredContests(
-				sectionId, request, proposalsContext, removedContests);
+		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
+		Map<Long, String> removedContests = ProposalPickerFilterUtil.filterContests(
+				contests, sectionId, request, proposalsContext, true);
 
 		if (filterText != null && filterText.length() > 0) {
 			ProposalPickerFilter.TEXTBASED.filterContests(contests,
@@ -153,7 +153,7 @@ public class ProposalPickerJSONController {
 				sectionId, 0L, request, proposalsContext).size();
 		int numberOfSubscriptionsSupporting = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
 				userId, filterType, sectionId, request, proposalsContext).size();
-		int numberOfContests = ProposalPickerFilterUtil.getFilteredContests(sectionId, request, proposalsContext, null).size();
+		int numberOfContests = ProposalPickerFilterUtil.getFilteredContests(sectionId, request, proposalsContext).size();
 
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		wrapper.put("numberOfSubscriptions", numberOfSubscriptions);
