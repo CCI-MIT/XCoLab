@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Utility class to sort lists of contests or proposals by a string parameter
@@ -23,7 +24,7 @@ import java.util.List;
 public class ProposalPickerSortingUtil {
 
     public static void sortContestsList(String sortOrder, String sortColumn,
-                                  List<Pair<ContestWrapper, Date>> contests) {
+                                        List<Pair<ContestWrapper, Date>> contests, final Map<Long, String> removedContests) {
         if (sortColumn != null) {
 
             boolean descendingSortOrder = (sortOrder != null) && sortOrder.toLowerCase().equals("desc");
@@ -35,6 +36,11 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<ContestWrapper, Date> o1,
                                            Pair<ContestWrapper, Date> o2) {
+                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
+                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
+                            if (contest1wasRemoved != contest2wasRemoved) {
+                                return contest2wasRemoved ? 1 : -1;
+                            }
                             return sortOrderModifier * o1.getLeft().getContestShortName()
                                     .compareTo(o2.getLeft().getContestShortName());
                         }
@@ -45,6 +51,11 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<ContestWrapper, Date> o1,
                                            Pair<ContestWrapper, Date> o2) {
+                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
+                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
+                            if (contest1wasRemoved != contest2wasRemoved) {
+                                return contest2wasRemoved ? 1 : -1;
+                            }
                             try {
                                 return sortOrderModifier * (int) (o1.getLeft().getTotalCommentsCount() - o2
                                         .getLeft().getTotalCommentsCount());
@@ -59,6 +70,11 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<ContestWrapper, Date> o1,
                                            Pair<ContestWrapper, Date> o2) {
+                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
+                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
+                            if (contest1wasRemoved != contest2wasRemoved) {
+                                return contest2wasRemoved ? 1 : -1;
+                            }
                             try {
                                 return sortOrderModifier * o1.getLeft().getWhatName()
                                         .compareTo(o2.getLeft().getWhatName());
@@ -73,6 +89,11 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<ContestWrapper, Date> o1,
                                            Pair<ContestWrapper, Date> o2) {
+                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
+                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
+                            if (contest1wasRemoved != contest2wasRemoved) {
+                                return contest2wasRemoved ? 1 : -1;
+                            }
                             try {
                                 return sortOrderModifier * o1.getLeft().getWhereName()
                                         .compareTo(o2.getLeft().getWhereName());
@@ -87,6 +108,11 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<ContestWrapper, Date> o1,
                                            Pair<ContestWrapper, Date> o2) {
+                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
+                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
+                            if (contest1wasRemoved != contest2wasRemoved) {
+                                return contest2wasRemoved ? 1 : -1;
+                            }
                             try {
                                 return sortOrderModifier * o1.getLeft().getWhoName()
                                         .compareTo(o2.getLeft().getWhoName());
@@ -101,6 +127,11 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<ContestWrapper, Date> o1,
                                            Pair<ContestWrapper, Date> o2) {
+                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
+                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
+                            if (contest1wasRemoved != contest2wasRemoved) {
+                                return contest2wasRemoved ? 1 : -1;
+                            }
                             try {
                                 return sortOrderModifier * o1.getLeft().getHowName()
                                         .compareTo(o2.getLeft().getHowName());
@@ -115,6 +146,11 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<ContestWrapper, Date> o1,
                                            Pair<ContestWrapper, Date> o2) {
+                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
+                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
+                            if (contest1wasRemoved != contest2wasRemoved) {
+                                return contest2wasRemoved ? 1 : -1;
+                            }
                             try {
                                 return sortOrderModifier * (int) (o1.getLeft().getProposalsCount() - o2
                                         .getLeft().getProposalsCount());

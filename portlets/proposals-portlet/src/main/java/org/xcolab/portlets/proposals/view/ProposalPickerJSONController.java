@@ -125,7 +125,7 @@ public class ProposalPickerJSONController {
 		if (end >= contests.size() && contests.size() > 0) {
 			end = contests.size();
 		}
-		ProposalPickerSortingUtil.sortContestsList(sortOrder, sortColumn, contests);
+		ProposalPickerSortingUtil.sortContestsList(sortOrder, sortColumn, contests, removedContests);
 		if (contests.size() > (end - start)) {
 			contests = contests.subList(start, end);
 		}
