@@ -102,6 +102,7 @@
 
                     <form action="${updateProposalScenarioURL }" id="updateProposalScenarioForm" method="post">
                         <input type="text" id="proposalScenarioId" name="scenarioId" class="hidden"/>
+                        <input type="text" id="scenarioModelId" name="modelId" class="hidden"/>
                     </form>
 
                     <div class="admin-overlay-wrap">
@@ -306,6 +307,7 @@
         <script type="text/javascript">
             jQuery("#saveChangesButton").click(function () {
                 jQuery("#proposalScenarioId").val(jQuery("#modelingScenarioId").val());
+                jQuery("#scenarioModelId").val(jQuery("#modelingModelId").val());
                 disableDirtyCheck();
                 jQuery("#updateProposalScenarioForm").submit();
             });

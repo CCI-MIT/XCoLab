@@ -240,24 +240,28 @@ if (typeof(XCoLab.modeling) == 'undefined')
             chartContainer.find("table.jqplot-table-legend").appendTo(legendContainer).removeAttr('style');
             jQuery(legendContainer.find("table.jqplot-table-legend tr.emfModelsUnderChartMessage")).remove();
 
-            if (!modelingWidget.inEditMode) {
-                var legendElem = jQuery(legendContainer.find("table.jqplot-table-legend"));
-                var columnCount = legendElem.find("tr:first td").length;
-                var isModelRegional = modelingWidget.model.modelName.toLowerCase().indexOf("regional") != -1;
-                var isModelEMF = modelingWidget.model.modelName.toLowerCase().indexOf("emf") != -1;
-                var isModelEnRoads = modelingWidget.model.modelName.toLowerCase().indexOf("enroads") != -1;
-                var emfModelsUnderChartMessage = "<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" +
-                    "Results shown for the following models. ";
-                if (isModelRegional) {
-                    emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/Climate+CoLab+Regional+Modeling+Tools' target='_blank'>Climate CoLab Regional model runs for more details.</a></td></tr>";
-                } else if (isModelEMF) {
-                    emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>EMF27 model runs for more details.</a></td></tr>";
-                } else if (isModelEnRoads) {
-                    emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/EnROADS+by+Climate+Interactive' target='_blank'>Climate Interactive EnROADS model runs for more details.</a></td></tr>";
-                } else {
-                    emfModelsUnderChartMessage = "";
+            try {
+                if (!modelingWidget.inEditMode && !!modelingWidget.model) {
+                    var legendElem = jQuery(legendContainer.find("table.jqplot-table-legend"));
+                    var columnCount = legendElem.find("tr:first td").length;
+                    var isModelRegional = modelingWidget.model.modelName.toLowerCase().indexOf("regional") != -1;
+                    var isModelEMF = modelingWidget.model.modelName.toLowerCase().indexOf("emf") != -1;
+                    var isModelEnRoads = modelingWidget.model.modelName.toLowerCase().indexOf("enroads") != -1;
+                    var emfModelsUnderChartMessage = "<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" +
+                        "Results shown for the following models. ";
+                    if (isModelRegional) {
+                        emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/Climate+CoLab+Regional+Modeling+Tools' target='_blank'>Climate CoLab Regional model runs for more details.</a></td></tr>";
+                    } else if (isModelEMF) {
+                        emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>EMF27 model runs for more details.</a></td></tr>";
+                    } else if (isModelEnRoads) {
+                        emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/EnROADS+by+Climate+Interactive' target='_blank'>Climate Interactive EnROADS model runs for more details.</a></td></tr>";
+                    } else {
+                        emfModelsUnderChartMessage = "";
+                    }
+                    legendElem.prepend(emfModelsUnderChartMessage);
                 }
-                legendElem.prepend(emfModelsUnderChartMessage);
+            } catch(exception){
+                console.warn("Error while creating tab model links", exception);
             }
         }
 

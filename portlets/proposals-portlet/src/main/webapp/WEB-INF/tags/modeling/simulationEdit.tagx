@@ -18,6 +18,7 @@
 	<div id="modelsOutputContainer"></div>
 
 	<input type="text" id="modelingScenarioId" class="hidden"/>
+	<input type="text" id="modelingModelId" class="hidden"/>
 	<script>
 	    var options = {};
 		<c:choose>
@@ -44,10 +45,13 @@
 
 		jQuery(modeling).on("scenarioFetched", function(event) {
 			jQuery("#modelingScenarioId").val(event.scenario.scenarioId).addClass("editorDirty");
+			jQuery("#modelingModelId").val(event.scenario.modelId).addClass("editorDirty");
 			modeling.toggleEditMask(!${inConsolidationMode});
 
 		}).on("valueChanged", function(event) {
 			jQuery("#modelingScenarioId").addClass("editorDirty");
+			jQuery("#modelingModelId").addClass("editorDirty");
+
 		});
 	</script>
 </jsp:root>
