@@ -44,7 +44,6 @@
 			</div>
 		</div>
 
-
 		<div class="addpropbox">
 			<label>
 				<strong>Question</strong>
@@ -130,7 +129,7 @@
 				</div>
 				<div class="clearfix"><!-- --></div>
 				<div class="inputLimitContainer">
-					<span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">1300</span> characters
+					<span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">1500</span> characters
 				</div>
 			</div>
 		</div>

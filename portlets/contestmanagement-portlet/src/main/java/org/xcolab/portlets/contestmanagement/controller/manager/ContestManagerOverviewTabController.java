@@ -54,7 +54,6 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
     @RequestMapping(params = "tab=OVERVIEW")
     public String showAdminTabController(PortletRequest request, PortletResponse response, Model model)
             throws PortalException, SystemException {
-
         if(!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
@@ -72,12 +71,10 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
     public void updateContestOverviewTabController(ActionRequest request, Model model,
                                         @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
                                         ActionResponse response) {
-
         if(!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
-
         try {
             updateContestOverviewWrapper.executeMassAction(request, null);
             String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
@@ -85,7 +82,6 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName());
         } catch(Exception e){
             _log.warn("Update contest overview failed with: ", e);
-            _log.warn(e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
@@ -94,11 +90,9 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
     public void getExportController(ResourceRequest request, Model model,
                                         @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
                                         ResourceResponse response) {
-
         if(!tabWrapper.getCanEdit()) {
             return;
         }
-
         try {
             updateContestOverviewWrapper.executeMassAction(request, response);
         } catch(Exception e){
@@ -106,7 +100,6 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
     }
-
 
     @RequestMapping(params = {"action=updateContestOverview", "error=true"})
     public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {

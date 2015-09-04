@@ -24,15 +24,19 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 public class RandomProposalsPreferences {
+    private final static String SELECTED_PHASES_PREFERENCE = "SELECTED_PHASES";
+    private final static String FLAG_FILTER_PREFERENCE = "FLAG_FILTERS";
+    private final static String TITLE_PREFERENCE = "TITLE";
+    private final static String FEED_SIZE_PREFERENCE = "FEED_SIZE";
+    private final static String ALL_PROPOSALS_TITLE = "ALL_PROPOSALS_TITLE";
+    private final static String ALL_PROPOSALS_URL = "ALL_PROPOSALS_URL";
+
     private Long[] selectedPhases;
     private Long[] flagFilters;
     private String flagFiltersStr;
-    private String SELECTED_PHASES_PREFERENCE = "SELECTED_PHASES";
-    private String FLAG_FILTER_PREFERENCE = "FLAG_FILTERS";
-    private String TITLE_PREFERENCE = "TITLE";
-    private String FEED_SIZE_PREFERENCE = "FEED_SIZE";
     private String title;
     private Integer feedSize;
+    private String allProposalsUrl;
 
     public String getTitle() {
         return title;
@@ -57,6 +61,9 @@ public class RandomProposalsPreferences {
         selectedPhases = convertStringsToLongs(prefs.getValue(SELECTED_PHASES_PREFERENCE, "").split(","));
         flagFiltersStr = prefs.getValue(FLAG_FILTER_PREFERENCE, "");
         title = prefs.getValue(TITLE_PREFERENCE, "Interesting Proposals");
+        allProposalsTitle = prefs.getValue(ALL_PROPOSALS_TITLE, "see all finalists");
+        allProposalsUrl = prefs.getValue(ALL_PROPOSALS_URL,
+                "/community/-/blogs/finalists-selected-vote-to-select-popular-choice-winner-2#Vote");
         try {
             feedSize = Integer.parseInt(prefs.getValue(FEED_SIZE_PREFERENCE, "4"));
         } catch (NumberFormatException e) {
@@ -73,6 +80,8 @@ public class RandomProposalsPreferences {
         prefs.setValue(FLAG_FILTER_PREFERENCE, flagFiltersStr);
         prefs.setValue(TITLE_PREFERENCE, title);
         prefs.setValue(FEED_SIZE_PREFERENCE, feedSize+"");
+        prefs.setValue(ALL_PROPOSALS_TITLE, allProposalsTitle);
+        prefs.setValue(ALL_PROPOSALS_URL, allProposalsUrl);
 
         prefs.store();
         
@@ -81,32 +90,35 @@ public class RandomProposalsPreferences {
     
     
     public Map<Long,String> getContestPhases() throws SystemException, PortalException{
-    	Map<Long, String> phases = new LinkedHashMap<>();
-    	
-    	 List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
-    	 
-    	 Collections.sort(contests, new Comparator<Contest>() {    		 
-    		             @Override
-    		             public int compare(Contest o1, Contest o2) {
-    		                 return (int) (o1.getContestPK() - o2.getContestPK());
-    		             }
-    		             
-    		         });
-    	 
-    	 for (Contest c: contests) {
-           for (ContestPhase cp: ContestLocalServiceUtil.getVisiblePhases(c)) {
-        	   String prefix = "";
-        	   if (ContestPhaseLocalServiceUtil.getPhaseActive(cp)) {
-        		   prefix = "* ACTIVE *";
-        	   }
-        	   phases.put(cp.getContestPhasePK()
-        			   ,c.getContestPK() + " " + prefix + " " + c.getContestShortName() + " - " + cp.getContestPhasePK() + " " + ContestPhaseLocalServiceUtil.getContestStatusStr(cp)) ;        	   
-        	   
-           }
-       }
-    	 
-    	 
-    	return phases;
+        Map<Long, String> phases = new LinkedHashMap<>();
+
+        List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
+
+        Collections.sort(contests, new Comparator<Contest>() {
+            @Override
+            public int compare(Contest o1, Contest o2) {
+                return (int) (o1.getContestPK() - o2.getContestPK());
+            }
+        });
+
+        for (Contest c: contests) {
+            for (ContestPhase cp: ContestLocalServiceUtil.getVisiblePhases(c)) {
+                String prefix = "";
+                if (ContestPhaseLocalServiceUtil.getPhaseActive(cp)) {
+                   prefix = "* ACTIVE *";
+                }
+                phases.put(cp.getContestPhasePK(),
+                        String.format("%d %s %s - %d %s",
+                                c.getContestPK(),
+                                prefix,
+                                c.getContestShortName(),
+                                cp.getContestPhasePK(),
+                                ContestPhaseLocalServiceUtil.getContestStatusStr(cp)
+                        )) ;
+            }
+        }
+
+        return phases;
     }
     
     public Long[] getSelectedPhases() {
@@ -165,6 +177,22 @@ public class RandomProposalsPreferences {
         // if we reach this point then there was no parse exception, we can proceed
         this.flagFiltersStr = flagFiltersStr;
     }
-    
-    
+
+    public String getAllProposalsTitle() {
+        return allProposalsTitle;
+    }
+
+    public void setAllProposalsTitle(String allProposalsTitle) {
+        this.allProposalsTitle = allProposalsTitle;
+    }
+
+    private String allProposalsTitle;
+
+    public String getAllProposalsUrl() {
+        return allProposalsUrl;
+    }
+
+    public void setAllProposalsUrl(String allProposalsUrl) {
+        this.allProposalsUrl = allProposalsUrl;
+    }
 }

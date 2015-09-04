@@ -2,241 +2,179 @@ package org.xcolab.portlets.proposals.utils;
 
 import java.util.*;
 
+import com.ext.portlet.model.ActivitySubscription;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.PlanSectionDefinition;
-import org.apache.commons.lang.StringUtils;
+import com.ext.portlet.model.ProposalSupporter;
+import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import org.apache.commons.lang3.tuple.Pair;
-import org.xcolab.enums.ContestTier;
+
+import com.ext.portlet.model.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+import javax.portlet.PortletRequest;
+import javax.portlet.ResourceRequest;
 
 /**
  * Created with IntelliJ IDEA.
  * User: patrickhiesel
  * Date: 04/12/13
  * Time: 10:25
- * To change this template use File | Settings | File Templates.
  */
-public enum ProposalPickerFilterUtil {
+public class ProposalPickerFilterUtil {
 
-    // why are lamdba expressions not supported here?
-    ACCEPTALL(new ProposalPickerFilter() {
-        @Override
-        public void filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion) {
-            // do not modify the list
+    private static Log _log = LogFactoryUtil.getLog(ProposalPickerFilterUtil.class);
+
+    /**
+     * Parse filter from frontend parameter and filter the contents of the proposals parameter
+     * @param filterKey the filter key passed as parameter from the frontend
+     * @param proposals A list of Proposals paired with their date
+     */
+    public static void filterByParameter(String filterKey, List<Pair<Proposal, Date>> proposals) {
+        if (filterKey != null && filterKey.equalsIgnoreCase("WINNERSONLY")) {
+            ProposalPickerFilter.WINNERSONLY.filter(proposals);
+        } else {
+            ProposalPickerFilter.ACCEPTALL.filter(proposals);
+        }
+    }
+
+    public static List<Pair<ContestWrapper, Date>> getFilteredContests(
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext) throws SystemException,
+            PortalException {
+
+        List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
+
+        for (Contest c: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
+            contests.add(Pair.of(new ContestWrapper(c),
+                    c.getCreated() == null ? new Date(0) : c.getCreated()));
         }
 
-		@Override
-		public void filterContests(List<Pair<ContestWrapper, Date>> proposals,
-				Object additionalFilterCriterion) {
-			// do nothing
-		}
-    }),
-    TEXTBASED(new ProposalPickerFilter() {
-        @Override
-        public void filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion) {
-            if (!(additionalFilterCriterion instanceof String)) return;
-            String searchCriterion = (String) additionalFilterCriterion;
-            for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
-                Proposal p = i.next().getLeft();
-                 try{
-                     // PROPOSAL NAME
-                     String proposalName = ProposalLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0l).getStringValue();
-                     if (StringUtils.containsIgnoreCase(proposalName,searchCriterion)){
-                         continue;
-                     }
-                     // CONTEST NAME
-                     String contestName = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestName();
-                     if (StringUtils.containsIgnoreCase(contestName,searchCriterion)){
-                         continue;
-                     }
-                     // Remove element if it does not match any criterion
-                     i.remove();
-                 } catch (Exception e){ /* LR EXCEPTIONS */e.printStackTrace(); }
-            }
+        PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
 
+        final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
+        final long contestFocusAreaId;
+        if (request != null) {
+            Contest contest = proposalsContext.getContest(request);
+            contestFocusAreaId = contest.getFocusAreaId();
+        } else {
+            contestFocusAreaId = 0;
+        }
+        _log.debug(String.format("%d contests before filtering", contests.size()));
+        ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
+                Pair.of(sectionFocusAreaId, contestFocusAreaId));
+        _log.debug(String.format("%d contests left after filtering for focus areas %d and %d",
+                contests.size(), sectionFocusAreaId, contestFocusAreaId));
+        final long filterTier = planSectionDefinition.getTier();
+        ProposalPickerFilter.CONTEST_TIER.filterContests(contests, filterTier);
+        _log.debug(String.format("%d contests left after filtering for tier %d", contests.size(), filterTier));
+
+        return contests;
+    }
+
+    public static List<Pair<Proposal, Date>> getFilteredSubscribedSupportingProposalsForUser(
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
+            throws SystemException, PortalException {
+        List<Pair<Proposal, Date>> proposals = getFilteredSubscribedProposalsForUser(
+                userId, filterKey, sectionId, request, proposalsContext);
+
+        Set<Long> includedProposals = new HashSet<>();
+        for (Pair<Proposal, Date> entry : proposals) {
+            includedProposals.add(entry.getLeft().getProposalId());
+        }
+        for (Pair<Proposal, Date> entry : getFilteredSupportingProposalsForUser(
+                userId, filterKey, sectionId, request, proposalsContext)) {
+            if (includedProposals.contains(entry.getLeft().getProposalId()))
+                continue;
+            proposals.add(entry);
         }
 
-		@Override
-		public void filterContests(List<Pair<ContestWrapper, Date>> contests,
-				Object additionalFilterCriterion) {
-            if (!(additionalFilterCriterion instanceof String)) return;
-            String searchCriterion = (String) additionalFilterCriterion;
-            for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
-                ContestWrapper c = i.next().getLeft();
-                
-                 try{
-                     // CONTEST NAME
-                     if (StringUtils.containsIgnoreCase(c.getContestName(),searchCriterion)){
-                         continue;
-                     }
-                     if (StringUtils.containsIgnoreCase(c.getContestShortName(), searchCriterion)) {
-                    	 continue;
-                     }
-                     // focus area
-                     if (StringUtils.containsIgnoreCase(c.getWhatName(), searchCriterion)) {
-                    	 continue;
-                     }
-                     if (StringUtils.containsIgnoreCase(c.getWhoName(), searchCriterion)) {
-                    	 continue;
-                     }
-                     if (StringUtils.containsIgnoreCase(c.getWhereName(), searchCriterion)) {
-                    	 continue;
-                     }
-                     
-                     // Remove element if it does not match any criterion
-                     i.remove();
-                 } catch (Exception e){ /* LR EXCEPTIONS */e.printStackTrace(); }
-            }
-		}
-    }),
-    WINNERSONLY(new ProposalPickerFilter() {
-        @Override
-        public void filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
-            for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
-                Proposal p = i.next().getLeft();
-                try{
-                    List<Long> phases = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
-                    boolean winner = false;
-                    for (long phase : phases){
-                        try{
-                            ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),phase,"RIBBON");
-                            winner = true;
-                        }catch (NoSuchProposalContestPhaseAttributeException nspcpae){ /* NO WINNER */ }
-                    }
-                    if (!winner) i.remove();
-                } catch (Exception e){ /* LR EXCEPTIONS */e.printStackTrace(); }
+        return proposals;
+    }
+
+    public static List<Pair<Proposal, Date>> getFilteredSubscribedProposalsForUser(
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
+            throws SystemException, PortalException {
+        List<Pair<Proposal, Date>> proposals = new ArrayList<>();
+        List<ActivitySubscription> activitySubscriptions = ActivitySubscriptionLocalServiceUtil
+                .findByUser(userId);
+        for (ActivitySubscription as : activitySubscriptions) {
+            if (as.getClassNameId() == ClassNameLocalServiceUtil
+                    .getClassNameId(Proposal.class)) {
+                proposals.add(Pair.of(
+                        ProposalLocalServiceUtil.getProposal(as.getClassPK()),
+                        as.getCreateDate()));
             }
         }
 
-		@Override
-		public void filterContests(List<Pair<ContestWrapper, Date>> proposals,
-				Object additionalFilterCriterion) {
-			// do nothing
-			
-		}
-    }),
-    SECTION_DEF_FOCUS_AREA_FILTER(new ProposalPickerFilter() {
-        @Override
-        public void filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
-            try{
+        filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
 
-                long focusAreaId = (Long) additionalFilterCriterion;
+        return proposals;
+    }
 
-                FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
-
-                List<OntologyTerm> terms = new LinkedList<>();
-                if (focusArea != null) {
-                    terms.addAll(FocusAreaLocalServiceUtil.getTerms(focusArea));
-                }
-
-                if (terms.size() > 0) {
-                    List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
-                    for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
-                        Proposal p = i.next().getLeft();
-                        try {
-                            if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
-                        } catch (Exception e){
-                            i.remove();
-                        }
-                    }
-                }
-            } catch (Exception e){ /* LR EXCEPTIONS */ e.printStackTrace(); }
+    public static List<Pair<Proposal, Date>> getFilteredSupportingProposalsForUser(
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
+            throws SystemException, PortalException {
+        List<Pair<Proposal, Date>> proposals = new ArrayList<>();
+        for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil
+                .getProposals(userId)) {
+            proposals.add(Pair.of(
+                    ProposalLocalServiceUtil.getProposal(ps.getProposalId()),
+                    ps.getCreateDate()));
         }
 
-		@Override
-		public void filterContests(List<Pair<ContestWrapper, Date>> proposals,
-				Object additionalFilterCriterion) {
-			// do nothing
-			
-		}
-    }), CONTEST_TIER(new ProposalPickerFilter() {
-        @Override
-        public void filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
-            try{
-                // if filterTier < 0:
-                //  allow tier < (-filterTier)
-                // else if filterTier > 0
-                //  only allow tier == filterTier - 1
-                Long filterTier = (Long) additionalFilterCriterion;
-                boolean allowLowerTiers = false;
-                if (filterTier < 0) {
-                    filterTier = Math.abs(filterTier);
-                    allowLowerTiers = true;
-                }
+        filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
 
-                if (ContestTier.getContestTierByTierType(filterTier) != ContestTier.NONE) {
-                    ContestTier contestTier = ContestTier.getContestTierByTierType(filterTier);
-                    Set<Contest> tierFilteredContests = new HashSet<>(ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType()));
-                    if (allowLowerTiers) {
-                        for (Long currentTier = filterTier -1; currentTier >= 0; currentTier-- ) {
-                            ContestTier localContestTier = ContestTier.getContestTierByTierType(currentTier);
-                            tierFilteredContests.addAll(ContestLocalServiceUtil.getContestsMatchingTier(localContestTier.getTierType()));
-                        }
-                    }
+        return proposals;
+    }
 
-                    for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
-                        Proposal p = i.next().getLeft();
-                        try {
-                            if (!tierFilteredContests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId())))
-                                i.remove();
-                        } catch (Exception e){
-                            i.remove();
-                        }
-                    }
-                }
-            } catch (Exception e){ /* LR EXCEPTIONS */ e.printStackTrace(); }
+    public static List<Pair<Proposal, Date>> getFilteredAllProposals(
+            String filterKey, long sectionId, Long contestPK, PortletRequest request, ProposalsContext proposalsContext)
+            throws SystemException, PortalException {
+        List<Pair<Proposal, Date>> proposals = new ArrayList<>();
+        List<Proposal> proposalsRaw;
+        if (contestPK > 0) {
+            proposalsRaw = ProposalLocalServiceUtil
+                    .getProposalsInContest(contestPK);
+        } else {
+            proposalsRaw = ProposalLocalServiceUtil.getProposals(0,
+                    Integer.MAX_VALUE);
+        }
+        for (Proposal p : proposalsRaw) {
+            proposals.add(Pair.of(p, new Date(0)));
         }
 
-        @Override
-        public void filterContests(List<Pair<ContestWrapper, Date>> proposals,
-                                   Object additionalFilterCriterion) {
-            // do nothing
+        filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
 
+        return proposals;
+    }
+
+    public static void filterProposals(List<Pair<Proposal, Date>> proposals,
+                                       String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
+            throws SystemException, PortalException {
+        filterByParameter(filterKey, proposals);
+
+        PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
+
+        final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
+        final long contestFocusAreaId;
+        if (request != null) {
+            Contest contest = proposalsContext.getContest(request);
+            contestFocusAreaId = contest.getFocusAreaId();
+        } else {
+            contestFocusAreaId = 0;
         }
-    });
+        ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
+                Pair.of(sectionFocusAreaId, contestFocusAreaId));
 
-    private final ProposalPickerFilter proposalPickerFilter;
-
-    private ProposalPickerFilterUtil(ProposalPickerFilter proposalPickerFilter) {
-        this.proposalPickerFilter = proposalPickerFilter;
+        ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
     }
-
-    public ProposalPickerFilter getProposalPickerFilter() {
-        return proposalPickerFilter;
-    }
-
-    // CONVENIENCE METHODS
-    public void filter(List<Pair<Proposal,Date>> proposals){
-        this.getProposalPickerFilter().filter(proposals, null);
-    }
-
-    public void filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion){
-        this.getProposalPickerFilter().filter(proposals, additionalFilterCriterion);
-    }
-
-    // PARSE FILTER FROM FRONT END PARAMETER
-    public static ProposalPickerFilterUtil getFilterByParameter(String filterKey) {
-        if (filterKey == null) return ACCEPTALL;
-        if (filterKey.equalsIgnoreCase("WINNERSONLY")) return WINNERSONLY;
-        return ACCEPTALL;
-    }
-
-	public void filterContests(List<Pair<ContestWrapper, Date>> contests,
-			String filterText) {
-        this.getProposalPickerFilter().filterContests(contests, filterText);
-		
-	}
-
 }
