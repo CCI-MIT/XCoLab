@@ -269,7 +269,7 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar a {font-weight:normal;}
 
 /* list page */
-.blueheaderbar .contest {float:left; width:415px; height:37px; padding-left:9px;}
+.blueheaderbar .contest {float:left; width:404px; height:37px; padding-left:9px;}
 .blueheaderbar .contest a {padding-top:10px; height:27px; display:inline-block;}
 .blueheaderbar .proposal {float:left; width:56px; height:37px; position: relative;}
 .blueheaderbar .proposal .sort-arrow {position: absolute; top: 15px;}
