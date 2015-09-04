@@ -39,7 +39,7 @@ public class ProposalPickerSortingUtil {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest2wasRemoved ? 1 : -1;
+                                return contest1wasRemoved ? 1 : -1;
                             }
                             return sortOrderModifier * o1.getLeft().getContestShortName()
                                     .compareTo(o2.getLeft().getContestShortName());
@@ -54,7 +54,7 @@ public class ProposalPickerSortingUtil {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest2wasRemoved ? 1 : -1;
+                                return contest1wasRemoved ? 1 : -1;
                             }
                             try {
                                 return sortOrderModifier * (int) (o1.getLeft().getTotalCommentsCount() - o2
@@ -73,7 +73,7 @@ public class ProposalPickerSortingUtil {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest2wasRemoved ? 1 : -1;
+                                return contest1wasRemoved ? 1 : -1;
                             }
                             try {
                                 return sortOrderModifier * o1.getLeft().getWhatName()
@@ -92,7 +92,7 @@ public class ProposalPickerSortingUtil {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest2wasRemoved ? 1 : -1;
+                                return contest1wasRemoved ? 1 : -1;
                             }
                             try {
                                 return sortOrderModifier * o1.getLeft().getWhereName()
@@ -111,7 +111,7 @@ public class ProposalPickerSortingUtil {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest2wasRemoved ? 1 : -1;
+                                return contest1wasRemoved ? 1 : -1;
                             }
                             try {
                                 return sortOrderModifier * o1.getLeft().getWhoName()
@@ -130,7 +130,7 @@ public class ProposalPickerSortingUtil {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest2wasRemoved ? 1 : -1;
+                                return contest1wasRemoved ? 1 : -1;
                             }
                             try {
                                 return sortOrderModifier * o1.getLeft().getHowName()
@@ -149,7 +149,7 @@ public class ProposalPickerSortingUtil {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest2wasRemoved ? 1 : -1;
+                                return contest1wasRemoved ? 1 : -1;
                             }
                             try {
                                 return sortOrderModifier * (int) (o1.getLeft().getProposalsCount() - o2
