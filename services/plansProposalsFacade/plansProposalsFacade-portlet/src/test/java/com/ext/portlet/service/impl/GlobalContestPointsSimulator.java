@@ -1,7 +1,10 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.*;
+import com.ext.portlet.model.PointDistributionTarget;
+import com.ext.portlet.model.Points;
+import com.ext.portlet.model.PointsDistributionConfiguration;
+import com.ext.portlet.model.Proposal;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;

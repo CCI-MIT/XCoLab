@@ -1,8 +1,22 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.ContestPhaseType;
+import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.PointType;
+import com.ext.portlet.service.ContestLocalService;
+import com.ext.portlet.service.ContestPhaseLocalService;
+import com.ext.portlet.service.ContestPhaseTypeLocalService;
+import com.ext.portlet.service.ContestTeamMemberLocalService;
+import com.ext.portlet.service.PlanSectionDefinitionLocalService;
+import com.ext.portlet.service.PointDistributionTargetLocalService;
+import com.ext.portlet.service.PointTypeLocalService;
+import com.ext.portlet.service.PointsDistributionConfigurationLocalService;
+import com.ext.portlet.service.PointsLocalService;
+import com.ext.portlet.service.Proposal2PhaseLocalService;
+import com.ext.portlet.service.ProposalAttributeLocalService;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
+import com.ext.portlet.service.ProposalLocalService;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
@@ -11,7 +25,13 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
-import com.liferay.portal.service.*;
+import com.liferay.portal.service.ContactLocalService;
+import com.liferay.portal.service.MockContextProvider;
+import com.liferay.portal.service.PasswordPolicyLocalService;
+import com.liferay.portal.service.ResourceActionLocalServiceUtil;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserLocalService;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
 import com.liferay.portal.util.InitUtil;
 import org.junit.BeforeClass;
@@ -21,7 +41,6 @@ import org.xcolab.services.EventBusService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

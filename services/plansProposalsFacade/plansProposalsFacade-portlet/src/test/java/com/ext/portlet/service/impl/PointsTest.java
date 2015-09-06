@@ -2,13 +2,11 @@ package com.ext.portlet.service.impl;
 
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.*;
 import com.ext.portlet.service.persistence.PointsPersistence;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
-import com.liferay.portal.service.*;
 import org.junit.Test;
 
 import java.lang.reflect.Field;

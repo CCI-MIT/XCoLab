@@ -2,7 +2,11 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ProposalAttributeLocalService;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;

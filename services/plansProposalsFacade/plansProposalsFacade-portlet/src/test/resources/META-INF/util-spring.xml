@@ -279,7 +279,7 @@
 		<property name="portletContainer" ref="com.liferay.portlet.RestrictPortletContainerWrapper" />
 	</bean>
 	<bean id="com.liferay.portal.kernel.resiliency.spi.SPIRegistryUtil" class="com.liferay.portal.kernel.resiliency.spi.SPIRegistryUtil">
-		<property name="sPIRegistry">
+		<property name="SPIRegistry">
 			<bean class="com.liferay.portal.resiliency.spi.SPIRegistryImpl">
 				<property name="errorSPI">
 					<bean class="com.liferay.portal.resiliency.spi.ErrorSPI" />
@@ -288,7 +288,7 @@
 		</property>
 	</bean>
 	<bean id="com.liferay.portal.kernel.resiliency.spi.agent.SPIAgentFactoryUtil" class="com.liferay.portal.kernel.resiliency.spi.agent.SPIAgentFactoryUtil">
-		<property name="sPIAgentClasses">
+		<property name="SPIAgentClasses">
 			<set>
 				<bean class="com.liferay.portal.kernel.spring.util.ClassNameUtil" factory-method="getClassName">
 					<constructor-arg value="com.liferay.portal.resiliency.spi.agent.HttpClientSPIAgent" />
@@ -602,7 +602,12 @@
 	</bean>
 	<bean id="com.liferay.portal.kernel.xml.SAXReader" class="com.liferay.portal.xml.SAXReaderImpl" />
 	<bean id="com.liferay.portal.kernel.xml.SAXReaderUtil" class="com.liferay.portal.kernel.xml.SAXReaderUtil">
-		<property name="SAXReader" ref="com.liferay.portal.kernel.xml.SAXReader" />
+		<property name="secureSAXReader" ref="com.liferay.portal.kernel.xml.SAXReader" />
+	</bean>
+	<bean id="com.liferay.portal.security.xml.SecureXMLFactoryProviderUtil" class="com.liferay.portal.security.xml.SecureXMLFactoryProviderUtil">
+		<property name="secureXMLFactoryProvider">
+			<bean class="com.liferay.portal.security.xml.SecureXMLFactoryProviderImpl" />
+		</property>
 	</bean>
 	<bean id="com.liferay.portal.kernel.xmlrpc.XmlRpc" class="com.liferay.portal.xmlrpc.XmlRpcImpl" />
 	<bean id="com.liferay.portal.kernel.xmlrpc.XmlRpcUtil" class="com.liferay.portal.kernel.xmlrpc.XmlRpcUtil">
