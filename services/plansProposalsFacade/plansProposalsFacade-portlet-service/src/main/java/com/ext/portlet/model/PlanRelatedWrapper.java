@@ -183,7 +183,7 @@ public class PlanRelatedWrapper implements PlanRelated,
     }
 
     @Override
-    public int compareTo(PlanRelated planRelated) {
+    public int compareTo(com.ext.portlet.model.PlanRelated planRelated) {
         return _planRelated.compareTo(planRelated);
     }
 
@@ -193,17 +193,17 @@ public class PlanRelatedWrapper implements PlanRelated,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanRelated> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanRelated> toCacheModel() {
         return _planRelated.toCacheModel();
     }
 
     @Override
-    public PlanRelated toEscapedModel() {
+    public com.ext.portlet.model.PlanRelated toEscapedModel() {
         return new PlanRelatedWrapper(_planRelated.toEscapedModel());
     }
 
     @Override
-    public PlanRelated toUnescapedModel() {
+    public com.ext.portlet.model.PlanRelated toUnescapedModel() {
         return new PlanRelatedWrapper(_planRelated.toUnescapedModel());
     }
 

@@ -1,30 +1,30 @@
 <custom-sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameAsc'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByScreenNameAsc'>
         <![CDATA[
 			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.screenName ASC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameAscFilteredByCategory'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByScreenNameAscFilteredByCategory'>
         <![CDATA[
 			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.screenName ASC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameDesc'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByScreenNameDesc'>
         <![CDATA[
 			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.screenName DESC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByScreenNameDescFilteredByCategory'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByScreenNameDescFilteredByCategory'>
         <![CDATA[
 			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.screenName DESC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByRoleNameAsc'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByRoleNameAsc'>
         <![CDATA[
 			SELECT  u.*, r.*
 FROM User_ u
@@ -44,7 +44,7 @@ ORDER BY r.categoryName ASC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByRoleNameDesc'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByRoleNameDesc'>
         <![CDATA[
 			SELECT  u.*, r.*
 FROM User_ u
@@ -64,55 +64,55 @@ ORDER BY r.categoryName DESC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceAsc'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByMemberSinceAsc'>
         <![CDATA[
 			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.createDate ASC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceAscFilteredByCategory'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByMemberSinceAscFilteredByCategory'>
         <![CDATA[
 			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.createDate ASC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceDesc'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByMemberSinceDesc'>
         <![CDATA[
 			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY us.createDate DESC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByMemberSinceDescFilteredByCategory'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByMemberSinceDescFilteredByCategory'>
         <![CDATA[
 			SELECT DISTINCT us.* FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY us.createDate DESC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountAsc'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByActivityCountAsc'>
         <![CDATA[
 			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY activityCount ASC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountAscFilteredByCategory'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByActivityCountAscFilteredByCategory'>
         <![CDATA[
 			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY activityCount ASC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountDesc'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByActivityCountDesc'>
         <![CDATA[
 			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY activityCount DESC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByActivityCountDescFilteredByCategory'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByActivityCountDescFilteredByCategory'>
         <![CDATA[
 			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY activityCount DESC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getUserActivityCount'>
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUserActivityCount'>
         <![CDATA[
 			SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = ?
 		]]>

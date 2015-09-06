@@ -23,6 +23,7 @@ public class PlanItemGroupClp extends BaseModelImpl<PlanItemGroup>
     private long _planId;
     private long _groupId;
     private BaseModel<?> _planItemGroupRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanItemGroupClp() {
     }
@@ -232,6 +233,10 @@ public class PlanItemGroupClp extends BaseModelImpl<PlanItemGroup>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

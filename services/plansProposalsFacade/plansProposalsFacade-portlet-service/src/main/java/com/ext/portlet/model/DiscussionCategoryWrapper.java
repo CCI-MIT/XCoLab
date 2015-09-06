@@ -427,7 +427,8 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     }
 
     @Override
-    public int compareTo(DiscussionCategory discussionCategory) {
+    public int compareTo(
+        com.ext.portlet.model.DiscussionCategory discussionCategory) {
         return _discussionCategory.compareTo(discussionCategory);
     }
 
@@ -437,17 +438,17 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<DiscussionCategory> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.DiscussionCategory> toCacheModel() {
         return _discussionCategory.toCacheModel();
     }
 
     @Override
-    public DiscussionCategory toEscapedModel() {
+    public com.ext.portlet.model.DiscussionCategory toEscapedModel() {
         return new DiscussionCategoryWrapper(_discussionCategory.toEscapedModel());
     }
 
     @Override
-    public DiscussionCategory toUnescapedModel() {
+    public com.ext.portlet.model.DiscussionCategory toUnescapedModel() {
         return new DiscussionCategoryWrapper(_discussionCategory.toUnescapedModel());
     }
 

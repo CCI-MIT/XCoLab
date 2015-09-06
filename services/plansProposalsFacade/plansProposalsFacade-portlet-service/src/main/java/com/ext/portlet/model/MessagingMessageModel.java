@@ -263,19 +263,20 @@ public interface MessagingMessageModel extends BaseModel<MessagingMessage> {
     public Object clone();
 
     @Override
-    public int compareTo(MessagingMessage messagingMessage);
+    public int compareTo(
+        com.ext.portlet.model.MessagingMessage messagingMessage);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<MessagingMessage> toCacheModel();
+    public CacheModel<com.ext.portlet.model.MessagingMessage> toCacheModel();
 
     @Override
-    public MessagingMessage toEscapedModel();
+    public com.ext.portlet.model.MessagingMessage toEscapedModel();
 
     @Override
-    public MessagingMessage toUnescapedModel();
+    public com.ext.portlet.model.MessagingMessage toUnescapedModel();
 
     @Override
     public String toString();

@@ -183,7 +183,7 @@ public class ImpactIterationWrapper implements ImpactIteration,
     }
 
     @Override
-    public int compareTo(ImpactIteration impactIteration) {
+    public int compareTo(com.ext.portlet.model.ImpactIteration impactIteration) {
         return _impactIteration.compareTo(impactIteration);
     }
 
@@ -193,17 +193,17 @@ public class ImpactIterationWrapper implements ImpactIteration,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ImpactIteration> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ImpactIteration> toCacheModel() {
         return _impactIteration.toCacheModel();
     }
 
     @Override
-    public ImpactIteration toEscapedModel() {
+    public com.ext.portlet.model.ImpactIteration toEscapedModel() {
         return new ImpactIterationWrapper(_impactIteration.toEscapedModel());
     }
 
     @Override
-    public ImpactIteration toUnescapedModel() {
+    public com.ext.portlet.model.ImpactIteration toUnescapedModel() {
         return new ImpactIterationWrapper(_impactIteration.toUnescapedModel());
     }
 

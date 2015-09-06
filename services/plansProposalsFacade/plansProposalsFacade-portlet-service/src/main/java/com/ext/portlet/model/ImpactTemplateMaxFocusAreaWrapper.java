@@ -185,7 +185,8 @@ public class ImpactTemplateMaxFocusAreaWrapper
     }
 
     @Override
-    public int compareTo(ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea) {
+    public int compareTo(
+        com.ext.portlet.model.ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea) {
         return _impactTemplateMaxFocusArea.compareTo(impactTemplateMaxFocusArea);
     }
 
@@ -195,17 +196,17 @@ public class ImpactTemplateMaxFocusAreaWrapper
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ImpactTemplateMaxFocusArea> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ImpactTemplateMaxFocusArea> toCacheModel() {
         return _impactTemplateMaxFocusArea.toCacheModel();
     }
 
     @Override
-    public ImpactTemplateMaxFocusArea toEscapedModel() {
+    public com.ext.portlet.model.ImpactTemplateMaxFocusArea toEscapedModel() {
         return new ImpactTemplateMaxFocusAreaWrapper(_impactTemplateMaxFocusArea.toEscapedModel());
     }
 
     @Override
-    public ImpactTemplateMaxFocusArea toUnescapedModel() {
+    public com.ext.portlet.model.ImpactTemplateMaxFocusArea toUnescapedModel() {
         return new ImpactTemplateMaxFocusAreaWrapper(_impactTemplateMaxFocusArea.toUnescapedModel());
     }
 

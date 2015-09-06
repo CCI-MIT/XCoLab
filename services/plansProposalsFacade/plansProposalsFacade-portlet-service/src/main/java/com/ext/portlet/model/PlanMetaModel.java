@@ -363,19 +363,19 @@ public interface PlanMetaModel extends BaseModel<PlanMeta> {
     public Object clone();
 
     @Override
-    public int compareTo(PlanMeta planMeta);
+    public int compareTo(com.ext.portlet.model.PlanMeta planMeta);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlanMeta> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlanMeta> toCacheModel();
 
     @Override
-    public PlanMeta toEscapedModel();
+    public com.ext.portlet.model.PlanMeta toEscapedModel();
 
     @Override
-    public PlanMeta toUnescapedModel();
+    public com.ext.portlet.model.PlanMeta toUnescapedModel();
 
     @Override
     public String toString();

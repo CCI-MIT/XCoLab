@@ -24,6 +24,7 @@ public class PlanPositionItemClp extends BaseModelImpl<PlanPositionItem>
     private long _planPositionsId;
     private long _positionId;
     private BaseModel<?> _planPositionItemRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanPositionItemClp() {
     }
@@ -229,6 +230,10 @@ public class PlanPositionItemClp extends BaseModelImpl<PlanPositionItem>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

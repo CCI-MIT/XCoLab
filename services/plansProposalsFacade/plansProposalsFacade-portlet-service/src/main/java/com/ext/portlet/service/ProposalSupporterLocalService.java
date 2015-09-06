@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface ProposalSupporterLocalService extends BaseLocalService,
     * @return the proposal supporter that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ProposalSupporter addProposalSupporter(
         com.ext.portlet.model.ProposalSupporter proposalSupporter)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -60,6 +62,7 @@ public interface ProposalSupporterLocalService extends BaseLocalService,
     * @throws PortalException if a proposal supporter with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ProposalSupporter deleteProposalSupporter(
         com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -72,6 +75,7 @@ public interface ProposalSupporterLocalService extends BaseLocalService,
     * @return the proposal supporter that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ProposalSupporter deleteProposalSupporter(
         com.ext.portlet.model.ProposalSupporter proposalSupporter)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -213,6 +217,7 @@ public interface ProposalSupporterLocalService extends BaseLocalService,
     * @return the proposal supporter that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ProposalSupporter updateProposalSupporter(
         com.ext.portlet.model.ProposalSupporter proposalSupporter)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -242,7 +247,7 @@ public interface ProposalSupporterLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.ProposalSupporter> getProposals(
         long userId)
-        throws com.liferay.portal.PortalException,
+        throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

@@ -210,19 +210,19 @@ public interface PointsDistributionConfigurationModel extends BaseModel<PointsDi
 
     @Override
     public int compareTo(
-        PointsDistributionConfiguration pointsDistributionConfiguration);
+        com.ext.portlet.model.PointsDistributionConfiguration pointsDistributionConfiguration);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PointsDistributionConfiguration> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PointsDistributionConfiguration> toCacheModel();
 
     @Override
-    public PointsDistributionConfiguration toEscapedModel();
+    public com.ext.portlet.model.PointsDistributionConfiguration toEscapedModel();
 
     @Override
-    public PointsDistributionConfiguration toUnescapedModel();
+    public com.ext.portlet.model.PointsDistributionConfiguration toUnescapedModel();
 
     @Override
     public String toString();

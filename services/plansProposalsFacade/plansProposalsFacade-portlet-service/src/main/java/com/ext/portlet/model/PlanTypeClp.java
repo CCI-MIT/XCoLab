@@ -30,6 +30,7 @@ public class PlanTypeClp extends BaseModelImpl<PlanType> implements PlanType {
     private long _defaultModelId;
     private long _defaultScenarioId;
     private BaseModel<?> _planTypeRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanTypeClp() {
     }
@@ -491,6 +492,10 @@ public class PlanTypeClp extends BaseModelImpl<PlanType> implements PlanType {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

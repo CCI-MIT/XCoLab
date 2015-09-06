@@ -211,7 +211,8 @@ public class FocusAreaOntologyTermWrapper implements FocusAreaOntologyTerm,
     }
 
     @Override
-    public int compareTo(FocusAreaOntologyTerm focusAreaOntologyTerm) {
+    public int compareTo(
+        com.ext.portlet.model.FocusAreaOntologyTerm focusAreaOntologyTerm) {
         return _focusAreaOntologyTerm.compareTo(focusAreaOntologyTerm);
     }
 
@@ -221,17 +222,17 @@ public class FocusAreaOntologyTermWrapper implements FocusAreaOntologyTerm,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<FocusAreaOntologyTerm> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.FocusAreaOntologyTerm> toCacheModel() {
         return _focusAreaOntologyTerm.toCacheModel();
     }
 
     @Override
-    public FocusAreaOntologyTerm toEscapedModel() {
+    public com.ext.portlet.model.FocusAreaOntologyTerm toEscapedModel() {
         return new FocusAreaOntologyTermWrapper(_focusAreaOntologyTerm.toEscapedModel());
     }
 
     @Override
-    public FocusAreaOntologyTerm toUnescapedModel() {
+    public com.ext.portlet.model.FocusAreaOntologyTerm toUnescapedModel() {
         return new FocusAreaOntologyTermWrapper(_focusAreaOntologyTerm.toUnescapedModel());
     }
 

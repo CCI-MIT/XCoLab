@@ -141,19 +141,20 @@ public interface ProposalSupporterModel extends BaseModel<ProposalSupporter> {
     public Object clone();
 
     @Override
-    public int compareTo(ProposalSupporter proposalSupporter);
+    public int compareTo(
+        com.ext.portlet.model.ProposalSupporter proposalSupporter);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ProposalSupporter> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ProposalSupporter> toCacheModel();
 
     @Override
-    public ProposalSupporter toEscapedModel();
+    public com.ext.portlet.model.ProposalSupporter toEscapedModel();
 
     @Override
-    public ProposalSupporter toUnescapedModel();
+    public com.ext.portlet.model.ProposalSupporter toUnescapedModel();
 
     @Override
     public String toString();

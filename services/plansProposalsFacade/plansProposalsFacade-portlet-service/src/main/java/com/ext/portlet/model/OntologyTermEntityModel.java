@@ -151,19 +151,20 @@ public interface OntologyTermEntityModel extends AttachedModel,
     public Object clone();
 
     @Override
-    public int compareTo(OntologyTermEntity ontologyTermEntity);
+    public int compareTo(
+        com.ext.portlet.model.OntologyTermEntity ontologyTermEntity);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<OntologyTermEntity> toCacheModel();
+    public CacheModel<com.ext.portlet.model.OntologyTermEntity> toCacheModel();
 
     @Override
-    public OntologyTermEntity toEscapedModel();
+    public com.ext.portlet.model.OntologyTermEntity toEscapedModel();
 
     @Override
-    public OntologyTermEntity toUnescapedModel();
+    public com.ext.portlet.model.OntologyTermEntity toUnescapedModel();
 
     @Override
     public String toString();

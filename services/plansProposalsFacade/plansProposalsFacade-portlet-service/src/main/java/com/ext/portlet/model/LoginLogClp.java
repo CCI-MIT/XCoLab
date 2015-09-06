@@ -30,6 +30,7 @@ public class LoginLogClp extends BaseModelImpl<LoginLog> implements LoginLog {
     private String _country;
     private String _entryUrl;
     private BaseModel<?> _loginLogRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public LoginLogClp() {
     }
@@ -398,6 +399,10 @@ public class LoginLogClp extends BaseModelImpl<LoginLog> implements LoginLog {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

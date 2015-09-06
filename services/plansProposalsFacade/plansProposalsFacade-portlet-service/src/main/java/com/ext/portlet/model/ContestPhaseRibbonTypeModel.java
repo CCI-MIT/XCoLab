@@ -159,19 +159,20 @@ public interface ContestPhaseRibbonTypeModel extends BaseModel<ContestPhaseRibbo
     public Object clone();
 
     @Override
-    public int compareTo(ContestPhaseRibbonType contestPhaseRibbonType);
+    public int compareTo(
+        com.ext.portlet.model.ContestPhaseRibbonType contestPhaseRibbonType);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ContestPhaseRibbonType> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ContestPhaseRibbonType> toCacheModel();
 
     @Override
-    public ContestPhaseRibbonType toEscapedModel();
+    public com.ext.portlet.model.ContestPhaseRibbonType toEscapedModel();
 
     @Override
-    public ContestPhaseRibbonType toUnescapedModel();
+    public com.ext.portlet.model.ContestPhaseRibbonType toUnescapedModel();
 
     @Override
     public String toString();

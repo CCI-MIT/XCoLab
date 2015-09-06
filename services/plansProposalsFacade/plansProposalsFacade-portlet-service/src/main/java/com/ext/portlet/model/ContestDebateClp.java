@@ -24,6 +24,7 @@ public class ContestDebateClp extends BaseModelImpl<ContestDebate>
     private long _debateId;
     private long _ContestPK;
     private BaseModel<?> _contestDebateRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ContestDebateClp() {
     }
@@ -263,6 +264,10 @@ public class ContestDebateClp extends BaseModelImpl<ContestDebate>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

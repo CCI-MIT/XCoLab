@@ -274,7 +274,8 @@ public class ContestPhaseRibbonTypeWrapper implements ContestPhaseRibbonType,
     }
 
     @Override
-    public int compareTo(ContestPhaseRibbonType contestPhaseRibbonType) {
+    public int compareTo(
+        com.ext.portlet.model.ContestPhaseRibbonType contestPhaseRibbonType) {
         return _contestPhaseRibbonType.compareTo(contestPhaseRibbonType);
     }
 
@@ -284,17 +285,17 @@ public class ContestPhaseRibbonTypeWrapper implements ContestPhaseRibbonType,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ContestPhaseRibbonType> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ContestPhaseRibbonType> toCacheModel() {
         return _contestPhaseRibbonType.toCacheModel();
     }
 
     @Override
-    public ContestPhaseRibbonType toEscapedModel() {
+    public com.ext.portlet.model.ContestPhaseRibbonType toEscapedModel() {
         return new ContestPhaseRibbonTypeWrapper(_contestPhaseRibbonType.toEscapedModel());
     }
 
     @Override
-    public ContestPhaseRibbonType toUnescapedModel() {
+    public com.ext.portlet.model.ContestPhaseRibbonType toUnescapedModel() {
         return new ContestPhaseRibbonTypeWrapper(_contestPhaseRibbonType.toUnescapedModel());
     }
 

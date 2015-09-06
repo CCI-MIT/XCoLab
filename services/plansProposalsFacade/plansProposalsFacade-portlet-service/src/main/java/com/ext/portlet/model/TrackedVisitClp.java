@@ -32,6 +32,7 @@ public class TrackedVisitClp extends BaseModelImpl<TrackedVisit>
     private String _referer;
     private Date _createDate;
     private BaseModel<?> _trackedVisitRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public TrackedVisitClp() {
     }
@@ -480,6 +481,10 @@ public class TrackedVisitClp extends BaseModelImpl<TrackedVisit>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

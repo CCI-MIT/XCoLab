@@ -31,6 +31,7 @@ public class PlanPositionClp extends BaseModelImpl<PlanPosition>
     private Date _createDate;
     private Date _modifiedDate;
     private BaseModel<?> _planPositionRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanPositionClp() {
     }
@@ -388,6 +389,10 @@ public class PlanPositionClp extends BaseModelImpl<PlanPosition>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

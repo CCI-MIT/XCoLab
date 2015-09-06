@@ -40,6 +40,7 @@ public class PlanMetaClp extends BaseModelImpl<PlanMeta> implements PlanMeta {
     private long _previousContestPhase;
     private long _contestPhase;
     private BaseModel<?> _planMetaRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanMetaClp() {
     }
@@ -778,6 +779,10 @@ public class PlanMetaClp extends BaseModelImpl<PlanMeta> implements PlanMeta {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

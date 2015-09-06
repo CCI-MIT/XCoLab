@@ -295,19 +295,19 @@ public interface BalloonTextModel extends BaseModel<BalloonText> {
     public Object clone();
 
     @Override
-    public int compareTo(BalloonText balloonText);
+    public int compareTo(com.ext.portlet.model.BalloonText balloonText);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<BalloonText> toCacheModel();
+    public CacheModel<com.ext.portlet.model.BalloonText> toCacheModel();
 
     @Override
-    public BalloonText toEscapedModel();
+    public com.ext.portlet.model.BalloonText toEscapedModel();
 
     @Override
-    public BalloonText toUnescapedModel();
+    public com.ext.portlet.model.BalloonText toUnescapedModel();
 
     @Override
     public String toString();

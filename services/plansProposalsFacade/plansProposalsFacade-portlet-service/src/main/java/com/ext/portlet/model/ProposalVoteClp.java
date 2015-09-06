@@ -29,6 +29,7 @@ public class ProposalVoteClp extends BaseModelImpl<ProposalVote>
     private String _userUuid;
     private Date _createDate;
     private BaseModel<?> _proposalVoteRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ProposalVoteClp() {
     }
@@ -302,6 +303,10 @@ public class ProposalVoteClp extends BaseModelImpl<ProposalVote>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -25,6 +25,7 @@ public class FocusAreaOntologyTermClp extends BaseModelImpl<FocusAreaOntologyTer
     private long _ontologyTermId;
     private int _order;
     private BaseModel<?> _focusAreaOntologyTermRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public FocusAreaOntologyTermClp() {
     }
@@ -272,6 +273,10 @@ public class FocusAreaOntologyTermClp extends BaseModelImpl<FocusAreaOntologyTer
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

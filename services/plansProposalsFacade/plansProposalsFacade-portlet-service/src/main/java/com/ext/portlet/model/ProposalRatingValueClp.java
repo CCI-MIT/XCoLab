@@ -26,6 +26,7 @@ public class ProposalRatingValueClp extends BaseModelImpl<ProposalRatingValue>
     private String _name;
     private String _description;
     private BaseModel<?> _proposalRatingValueRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ProposalRatingValueClp() {
     }
@@ -326,6 +327,10 @@ public class ProposalRatingValueClp extends BaseModelImpl<ProposalRatingValue>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

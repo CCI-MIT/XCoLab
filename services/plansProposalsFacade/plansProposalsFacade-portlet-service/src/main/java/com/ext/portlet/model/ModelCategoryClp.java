@@ -25,6 +25,7 @@ public class ModelCategoryClp extends BaseModelImpl<ModelCategory>
     private String _modelCategoryDescription;
     private int _modelCategoryDisplayWeight;
     private BaseModel<?> _modelCategoryRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ModelCategoryClp() {
     }
@@ -302,6 +303,10 @@ public class ModelCategoryClp extends BaseModelImpl<ModelCategory>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

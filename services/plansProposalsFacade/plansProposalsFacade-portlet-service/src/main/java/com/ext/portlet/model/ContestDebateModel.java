@@ -121,19 +121,19 @@ public interface ContestDebateModel extends BaseModel<ContestDebate> {
     public Object clone();
 
     @Override
-    public int compareTo(ContestDebate contestDebate);
+    public int compareTo(com.ext.portlet.model.ContestDebate contestDebate);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ContestDebate> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ContestDebate> toCacheModel();
 
     @Override
-    public ContestDebate toEscapedModel();
+    public com.ext.portlet.model.ContestDebate toEscapedModel();
 
     @Override
-    public ContestDebate toUnescapedModel();
+    public com.ext.portlet.model.ContestDebate toUnescapedModel();
 
     @Override
     public String toString();

@@ -251,7 +251,8 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     }
 
     @Override
-    public int compareTo(OntologyTermEntity ontologyTermEntity) {
+    public int compareTo(
+        com.ext.portlet.model.OntologyTermEntity ontologyTermEntity) {
         return _ontologyTermEntity.compareTo(ontologyTermEntity);
     }
 
@@ -261,17 +262,17 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<OntologyTermEntity> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.OntologyTermEntity> toCacheModel() {
         return _ontologyTermEntity.toCacheModel();
     }
 
     @Override
-    public OntologyTermEntity toEscapedModel() {
+    public com.ext.portlet.model.OntologyTermEntity toEscapedModel() {
         return new OntologyTermEntityWrapper(_ontologyTermEntity.toEscapedModel());
     }
 
     @Override
-    public OntologyTermEntity toUnescapedModel() {
+    public com.ext.portlet.model.OntologyTermEntity toUnescapedModel() {
         return new OntologyTermEntityWrapper(_ontologyTermEntity.toUnescapedModel());
     }
 

@@ -37,6 +37,7 @@ public class DiscussionMessageClp extends BaseModelImpl<DiscussionMessage>
     private Date _lastActivityDate;
     private long _lastActivityAuthorId;
     private BaseModel<?> _discussionMessageRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public DiscussionMessageClp() {
     }
@@ -614,6 +615,10 @@ public class DiscussionMessageClp extends BaseModelImpl<DiscussionMessage>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

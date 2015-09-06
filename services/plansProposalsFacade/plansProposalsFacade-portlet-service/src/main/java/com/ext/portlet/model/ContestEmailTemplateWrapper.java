@@ -237,7 +237,8 @@ public class ContestEmailTemplateWrapper implements ContestEmailTemplate,
     }
 
     @Override
-    public int compareTo(ContestEmailTemplate contestEmailTemplate) {
+    public int compareTo(
+        com.ext.portlet.model.ContestEmailTemplate contestEmailTemplate) {
         return _contestEmailTemplate.compareTo(contestEmailTemplate);
     }
 
@@ -247,17 +248,17 @@ public class ContestEmailTemplateWrapper implements ContestEmailTemplate,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ContestEmailTemplate> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ContestEmailTemplate> toCacheModel() {
         return _contestEmailTemplate.toCacheModel();
     }
 
     @Override
-    public ContestEmailTemplate toEscapedModel() {
+    public com.ext.portlet.model.ContestEmailTemplate toEscapedModel() {
         return new ContestEmailTemplateWrapper(_contestEmailTemplate.toEscapedModel());
     }
 
     @Override
-    public ContestEmailTemplate toUnescapedModel() {
+    public com.ext.portlet.model.ContestEmailTemplate toUnescapedModel() {
         return new ContestEmailTemplateWrapper(_contestEmailTemplate.toUnescapedModel());
     }
 

@@ -238,7 +238,8 @@ public class MessagingRedirectLinkWrapper implements MessagingRedirectLink,
     }
 
     @Override
-    public int compareTo(MessagingRedirectLink messagingRedirectLink) {
+    public int compareTo(
+        com.ext.portlet.model.MessagingRedirectLink messagingRedirectLink) {
         return _messagingRedirectLink.compareTo(messagingRedirectLink);
     }
 
@@ -248,17 +249,17 @@ public class MessagingRedirectLinkWrapper implements MessagingRedirectLink,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<MessagingRedirectLink> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.MessagingRedirectLink> toCacheModel() {
         return _messagingRedirectLink.toCacheModel();
     }
 
     @Override
-    public MessagingRedirectLink toEscapedModel() {
+    public com.ext.portlet.model.MessagingRedirectLink toEscapedModel() {
         return new MessagingRedirectLinkWrapper(_messagingRedirectLink.toEscapedModel());
     }
 
     @Override
-    public MessagingRedirectLink toUnescapedModel() {
+    public com.ext.portlet.model.MessagingRedirectLink toUnescapedModel() {
         return new MessagingRedirectLinkWrapper(_messagingRedirectLink.toUnescapedModel());
     }
 

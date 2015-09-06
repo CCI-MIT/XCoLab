@@ -230,19 +230,19 @@ public interface TrackedVisitModel extends BaseModel<TrackedVisit> {
     public Object clone();
 
     @Override
-    public int compareTo(TrackedVisit trackedVisit);
+    public int compareTo(com.ext.portlet.model.TrackedVisit trackedVisit);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<TrackedVisit> toCacheModel();
+    public CacheModel<com.ext.portlet.model.TrackedVisit> toCacheModel();
 
     @Override
-    public TrackedVisit toEscapedModel();
+    public com.ext.portlet.model.TrackedVisit toEscapedModel();
 
     @Override
-    public TrackedVisit toUnescapedModel();
+    public com.ext.portlet.model.TrackedVisit toUnescapedModel();
 
     @Override
     public String toString();

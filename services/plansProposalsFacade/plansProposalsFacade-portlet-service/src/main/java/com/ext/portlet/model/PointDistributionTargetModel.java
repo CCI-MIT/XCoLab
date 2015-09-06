@@ -149,19 +149,20 @@ public interface PointDistributionTargetModel extends BaseModel<PointDistributio
     public Object clone();
 
     @Override
-    public int compareTo(PointDistributionTarget pointDistributionTarget);
+    public int compareTo(
+        com.ext.portlet.model.PointDistributionTarget pointDistributionTarget);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PointDistributionTarget> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PointDistributionTarget> toCacheModel();
 
     @Override
-    public PointDistributionTarget toEscapedModel();
+    public com.ext.portlet.model.PointDistributionTarget toEscapedModel();
 
     @Override
-    public PointDistributionTarget toUnescapedModel();
+    public com.ext.portlet.model.PointDistributionTarget toUnescapedModel();
 
     @Override
     public String toString();

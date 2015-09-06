@@ -209,19 +209,19 @@ public interface PlanSectionModel extends BaseModel<PlanSection> {
     public Object clone();
 
     @Override
-    public int compareTo(PlanSection planSection);
+    public int compareTo(com.ext.portlet.model.PlanSection planSection);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlanSection> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlanSection> toCacheModel();
 
     @Override
-    public PlanSection toEscapedModel();
+    public com.ext.portlet.model.PlanSection toEscapedModel();
 
     @Override
-    public PlanSection toUnescapedModel();
+    public com.ext.portlet.model.PlanSection toUnescapedModel();
 
     @Override
     public String toString();

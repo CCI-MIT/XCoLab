@@ -5,7 +5,10 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class FocusAreaOntologyTermPK implements Comparable<FocusAreaOntologyTermPK>,
     Serializable {
     public long focusAreaId;

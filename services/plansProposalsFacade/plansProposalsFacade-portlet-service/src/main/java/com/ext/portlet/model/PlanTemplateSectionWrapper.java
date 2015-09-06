@@ -210,7 +210,8 @@ public class PlanTemplateSectionWrapper implements PlanTemplateSection,
     }
 
     @Override
-    public int compareTo(PlanTemplateSection planTemplateSection) {
+    public int compareTo(
+        com.ext.portlet.model.PlanTemplateSection planTemplateSection) {
         return _planTemplateSection.compareTo(planTemplateSection);
     }
 
@@ -220,17 +221,17 @@ public class PlanTemplateSectionWrapper implements PlanTemplateSection,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanTemplateSection> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanTemplateSection> toCacheModel() {
         return _planTemplateSection.toCacheModel();
     }
 
     @Override
-    public PlanTemplateSection toEscapedModel() {
+    public com.ext.portlet.model.PlanTemplateSection toEscapedModel() {
         return new PlanTemplateSectionWrapper(_planTemplateSection.toEscapedModel());
     }
 
     @Override
-    public PlanTemplateSection toUnescapedModel() {
+    public com.ext.portlet.model.PlanTemplateSection toUnescapedModel() {
         return new PlanTemplateSectionWrapper(_planTemplateSection.toUnescapedModel());
     }
 

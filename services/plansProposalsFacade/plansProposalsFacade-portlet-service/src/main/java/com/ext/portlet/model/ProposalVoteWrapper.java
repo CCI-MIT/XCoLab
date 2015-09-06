@@ -260,7 +260,7 @@ public class ProposalVoteWrapper implements ProposalVote,
     }
 
     @Override
-    public int compareTo(ProposalVote proposalVote) {
+    public int compareTo(com.ext.portlet.model.ProposalVote proposalVote) {
         return _proposalVote.compareTo(proposalVote);
     }
 
@@ -270,17 +270,17 @@ public class ProposalVoteWrapper implements ProposalVote,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ProposalVote> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ProposalVote> toCacheModel() {
         return _proposalVote.toCacheModel();
     }
 
     @Override
-    public ProposalVote toEscapedModel() {
+    public com.ext.portlet.model.ProposalVote toEscapedModel() {
         return new ProposalVoteWrapper(_proposalVote.toEscapedModel());
     }
 
     @Override
-    public ProposalVote toUnescapedModel() {
+    public com.ext.portlet.model.ProposalVote toUnescapedModel() {
         return new ProposalVoteWrapper(_proposalVote.toUnescapedModel());
     }
 

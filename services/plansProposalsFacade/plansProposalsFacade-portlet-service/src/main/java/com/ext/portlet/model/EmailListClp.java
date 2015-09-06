@@ -23,6 +23,7 @@ public class EmailListClp extends BaseModelImpl<EmailList> implements EmailList 
     private String _name;
     private String _email;
     private BaseModel<?> _emailListRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public EmailListClp() {
     }
@@ -261,6 +262,10 @@ public class EmailListClp extends BaseModelImpl<EmailList> implements EmailList 
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -226,19 +226,20 @@ public interface ActivitySubscriptionModel extends AttachedModel,
     public Object clone();
 
     @Override
-    public int compareTo(ActivitySubscription activitySubscription);
+    public int compareTo(
+        com.ext.portlet.model.ActivitySubscription activitySubscription);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ActivitySubscription> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ActivitySubscription> toCacheModel();
 
     @Override
-    public ActivitySubscription toEscapedModel();
+    public com.ext.portlet.model.ActivitySubscription toEscapedModel();
 
     @Override
-    public ActivitySubscription toUnescapedModel();
+    public com.ext.portlet.model.ActivitySubscription toUnescapedModel();
 
     @Override
     public String toString();
