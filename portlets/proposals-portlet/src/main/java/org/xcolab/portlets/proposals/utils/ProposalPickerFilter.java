@@ -273,6 +273,8 @@ public class ProposalPickerFilter {
                         ContestTier contestTier = ContestTier.getContestTierByTierType(tier);
                         if (contestTier != null) {
                             tierFilteredContests.addAll(ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType()));
+                        } else {
+                            _log.error(String.format("Could not find contest tier %d. Tier ignored in filtering.", tier));
                         }
                     }
 
@@ -303,13 +305,15 @@ public class ProposalPickerFilter {
                 for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
                     ContestWrapper contest = i.next().getLeft();
                     try {
-                        if (allowedContestTiers.contains(contest.getContestTier())) {
+                        if (!allowedContestTiers.contains(contest.getContestTier())) {
                             removedContests.add(contest.getContestPK());
                             i.remove();
                         }
                     } catch (Exception e){
                         removedContests.add(contest.getContestPK());
                         i.remove();
+                        _log.error(String.format("Contest %d caused an error while filtering for contest tier." +
+                                "Removing contests from list...", contest.getContestPK()));
                     }
                 }
             }
