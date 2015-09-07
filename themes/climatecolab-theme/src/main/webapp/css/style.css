@@ -269,22 +269,22 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar a {font-weight:normal;}
 
 /* list page */
-.blueheaderbar .contest {float:left; width:357px; height:37px; padding-left:9px;}
+.blueheaderbar .contest {float:left; width:404px; height:37px; padding-left:9px;}
 .blueheaderbar .contest a {padding-top:10px; height:27px; display:inline-block;}
-.blueheaderbar .proposal {float:left; width:55px; height:37px; position: relative;}
+.blueheaderbar .proposal {float:left; width:56px; height:37px; position: relative;}
 .blueheaderbar .proposal .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .proposal a {background:url(../images/icon-list-proposals.png) no-repeat 9px 7px; width:33px; height:37px; display:inline-block;}
-.blueheaderbar .comment {float:left; width:55px; height:37px; position: relative;}
+.blueheaderbar .comment {float:left; width:60px; height:37px; position: relative;}
 .blueheaderbar .comment .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .comment a {background:url(../images/icon-list-comment.png) no-repeat 9px 8px; width:33px; height:37px; display:inline-block;}
 .blueheaderbar .voteslist {float:left; width:55px; height:37px; position: relative;}
 .blueheaderbar .voteslist .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .voteslist a {background:url(../images/icon-proposal-vote.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
-.blueheaderbar .what {float:left; width:133px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
+.blueheaderbar .what {float:left; width:151px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
 .blueheaderbar .what a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
-.blueheaderbar .where {float:left;  width:125px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
+.blueheaderbar .where {float:left;  width:177px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
 .blueheaderbar .where a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
-.blueheaderbar .who {float:left; width:120px; height:37px;background:url(../images/icon-list-who.png) no-repeat 10px 6px; }
+.blueheaderbar .who {float:left; width:139px; height:37px;background:url(../images/icon-list-who.png) no-repeat 10px 6px; }
 .blueheaderbar .who a {height:27px; padding-top:10px; margin-left:33px; display:inline-block;}
 .blueheaderbar .how {float:left; padding: 0;  width:105px; height:37px;background:url(../images/contest-icon-how.png) no-repeat 10px 6px; }
 .blueheaderbar .how a {height:27px;padding-top:10px; margin-left:33px; display:inline-block;}
