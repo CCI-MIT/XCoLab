@@ -44,9 +44,9 @@ public class ProposalPickerFilterUtil {
      */
     public static void filterByParameter(String filterKey, List<Pair<Proposal, Date>> proposals) {
         if (filterKey != null && filterKey.equalsIgnoreCase("WINNERSONLY")) {
-            ProposalPickerFilter.WINNERSONLY.filter(proposals);
+            ProposalPickerFilter.WINNERS_ONLY.filter(proposals);
         } else {
-            ProposalPickerFilter.ACCEPTALL.filter(proposals);
+            ProposalPickerFilter.ACCEPT_ALL.filter(proposals);
         }
     }
 

@@ -79,7 +79,7 @@ public class ProposalPickerJSONController {
 		int totalCount;
 		if (proposals != null) {
 			if (filterText != null && filterText.length() > 0)
-				ProposalPickerFilter.TEXTBASED.filter(proposals, filterText);
+				ProposalPickerFilter.TEXT_BASED.filter(proposals, filterText);
 			totalCount = proposals.size();
 
 			ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
@@ -116,7 +116,7 @@ public class ProposalPickerJSONController {
 				new ArrayList<>(contests), sectionId, request, proposalsContext, true);
 
 		if (filterText != null && filterText.length() > 0) {
-			ProposalPickerFilter.TEXTBASED.filterContests(contests,
+			ProposalPickerFilter.TEXT_BASED.filterContests(contests,
 					filterText);
 		}
 		int totalCount = contests.size();

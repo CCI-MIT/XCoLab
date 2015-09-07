@@ -69,7 +69,7 @@ public class ProposalPickerFilter {
         return new HashSet<>();
     }
 
-    public static ProposalPickerFilter ACCEPTALL = new ProposalPickerFilter();
+    public static ProposalPickerFilter ACCEPT_ALL = new ProposalPickerFilter();
 
     public static ProposalPickerFilter SECTION_DEF_FOCUS_AREA_FILTER = new ProposalPickerFilter() {
         @Override
@@ -169,7 +169,7 @@ public class ProposalPickerFilter {
         }
     };
 
-    public static ProposalPickerFilter TEXTBASED = new ProposalPickerFilter() {
+    public static ProposalPickerFilter TEXT_BASED = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
@@ -235,7 +235,7 @@ public class ProposalPickerFilter {
         }
     };
 
-    public static ProposalPickerFilter WINNERSONLY= new ProposalPickerFilter() {
+    public static ProposalPickerFilter WINNERS_ONLY = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
@@ -318,14 +318,15 @@ public class ProposalPickerFilter {
 
         private Set<Long> getAllowedTiers(Long filterTier) {
             // if filterTier < 0:
-            //  allow tier < (-filterTier)
+            //  allow tier <= (-filterTier)
             // else if filterTier > 0
-            //  only allow tier == filterTier - 1
+            //  only allow tier == filterTier
             Set<Long> allowedTiers = new HashSet<>();
-            allowedTiers.add(filterTier);
+            final long positiveFilterTier = Math.abs(filterTier);
+            allowedTiers.add(positiveFilterTier);
 
             if (filterTier < 0) {
-                for (Long currentTier = Math.abs(filterTier) - 1; currentTier >= 0; currentTier--) {
+                for (Long currentTier = positiveFilterTier - 1; currentTier >= 0; currentTier--) {
                     allowedTiers.add(currentTier);
                 }
             }
