@@ -513,10 +513,8 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                         }
                         else if (phaseType.getStatus().equals("CLOSED")) {
                             if (finalistSelection == null || cp.getPhaseEndDate().after(finalistSelection.getPhaseEndDate())) {
+                                semifinalistSelection = finalistSelection;
                                 finalistSelection = cp;
-                            }
-                            if (semifinalistSelection == null || cp.getPhaseEndDate().after(semifinalistSelection.getPhaseEndDate())) {
-                                semifinalistSelection = cp;
                             }
                         }
                     }
