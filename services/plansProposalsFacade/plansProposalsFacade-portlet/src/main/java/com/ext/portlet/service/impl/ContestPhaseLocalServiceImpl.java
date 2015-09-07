@@ -595,14 +595,16 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 throw new SystemException("Proposal not found");
             }
 
-            Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), lastPhase.getContestPhasePK());
+            try {
+                Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), lastPhase.getContestPhasePK());
 
-            if (oldP2p != null) {
-                if (oldP2p.getVersionTo() < 0) {
-                    oldP2p.setVersionTo(currentProposalVersion.intValue());
-                    Proposal2PhaseLocalServiceUtil.updateProposal2Phase(oldP2p);
+                if (oldP2p != null) {
+                    if (oldP2p.getVersionTo() < 0) {
+                        oldP2p.setVersionTo(currentProposalVersion.intValue());
+                        Proposal2PhaseLocalServiceUtil.updateProposal2Phase(oldP2p);
+                    }
                 }
-            }
+            } catch (NoSuchProposal2PhaseException ignored) {}
 
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), toPhase.getContestPhasePK());
             p2p.setVersionFrom(currentProposalVersion.intValue());
