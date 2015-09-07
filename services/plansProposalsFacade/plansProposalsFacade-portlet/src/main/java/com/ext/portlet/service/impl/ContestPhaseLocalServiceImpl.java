@@ -3,6 +3,7 @@ package com.ext.portlet.service.impl;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
@@ -10,6 +11,7 @@ import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseColumn;
+import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
@@ -17,6 +19,7 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
@@ -53,11 +56,13 @@ import org.xcolab.utils.ClockImpl;
 import javax.mail.internet.AddressException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Date;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * The implementation of the contest phase local service.
@@ -346,6 +351,13 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 		Company company = CompanyLocalServiceUtil.getCompany(PortalUtil.getDefaultCompanyId());
 		
         serviceContext.setPortalURL(PortalUtil.getPortalURL(company.getVirtualHostname(), port, false));
+
+        basicPromotion(now, serviceContext);
+        judgingBasedPromotion(now, serviceContext);
+        distributeRibbons(now);
+    }
+
+    private void basicPromotion(Date now, ServiceContext serviceContext) throws SystemException, PortalException {
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
             if (isPhaseContestScheduleTemplatePhase(phase)) {
                 continue;
@@ -394,7 +406,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 }
             }
         }
-        //Judging-based promotion
+    }
+
+    private void judgingBasedPromotion(Date now, ServiceContext serviceContext) throws SystemException, PortalException {
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_JUDGED.getValue())) {
             if (isPhaseContestScheduleTemplatePhase(phase)) {
                 continue;
@@ -462,6 +476,164 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     _log.info("done promoting phase " + phase.getContestPhasePK());
                 } else {
                     _log.warn("Judge promoting failed for ContestPhase with ID " + phase.getContestPhasePK() + " - not all proposals have been reviewed");
+                }
+            }
+        }
+    }
+
+    private void distributeRibbons(Date now) throws SystemException, PortalException {
+        for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_RIBBONIZE.getValue())) {
+            if (isPhaseContestScheduleTemplatePhase(phase)) {
+                continue;
+            }
+
+            if (isPhaseContestHasNoValidContest(phase)) {
+                continue;
+            }
+
+            if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
+                _log.info("promoting phase " + phase.getContestPhasePK() + " (ribbonize)");
+
+                try {
+                    _log.info("promoting phase " + phase.getContestPhasePK());
+                    Contest contest = contestLocalService.getContest(phase.getContestPK());
+                    ContestPhase nextPhase = getNextContestPhase(phase);
+
+                    List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(contest);
+                    ContestPhase finalistSelection = null;
+                    ContestPhase semifinalistSelection = null;
+                    ContestPhase proposalCreation = null;
+
+                    for (ContestPhase cp : contestPhases) {
+                        ContestPhaseType phaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(cp.getContestPhaseType());
+
+                        if (phaseType.getStatus().equals("OPEN_FOR_SUBMISSION")) {
+                            //TODO: what happens if there are two proposal creation phases?
+                            proposalCreation = cp;
+                        }
+                        else if (phaseType.getStatus().equals("CLOSED")) {
+                            if (finalistSelection == null || cp.getPhaseEndDate().after(finalistSelection.getPhaseEndDate())) {
+                                finalistSelection = cp;
+                            }
+                            if (semifinalistSelection == null || cp.getPhaseEndDate().after(semifinalistSelection.getPhaseEndDate())) {
+                                semifinalistSelection = cp;
+                            }
+                        }
+                    }
+
+                    if (semifinalistSelection == finalistSelection) {
+                        //TODO: what happens if there are no semifinalists? (See regional contests)
+                        semifinalistSelection = null;
+                    }
+
+                    Set<Proposal> allProposals = new HashSet<>();
+                    List<Proposal> finalists = null;
+                    List<Proposal> semifinalists = null;
+                    if (proposalCreation != null) {
+                        for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(proposalCreation.getContestPhasePK())) {
+                            if(!proposalIsVisible(p, proposalCreation)) {
+                                continue;
+                            }
+                            allProposals.add(p);
+                        }
+                    } else {
+                        _log.error(String.format("Can't distribute ribbons: No proposal creation phase found in contest %d", phase.getContestPK()));
+                    }
+
+                    if (finalistSelection != null) {
+                        ContestPhase finalsPhase = getNextContestPhase(finalistSelection);
+                        finalists = ProposalLocalServiceUtil.getProposalsInContestPhase(finalsPhase.getContestPhasePK());
+                        //make sure all finalists are in the set
+                        allProposals.addAll(finalists);
+
+                        if (semifinalistSelection != null) {
+                            ContestPhase semifinalsPhase = getNextContestPhase(semifinalistSelection);
+                            semifinalists = ProposalLocalServiceUtil.getProposalsInContestPhase(semifinalsPhase.getContestPhasePK());
+                            semifinalists.removeAll(finalists);
+                            //make sure all semifinalists are in the set
+                            allProposals.addAll(semifinalists);
+                        } else {
+                            _log.warn(String.format("No semifinalist phase found in contest %d", phase.getContestPK()));
+                        }
+                    } else {
+                        _log.error(String.format("Can't distribute ribbons: Finalist phase found in contest %d", phase.getContestPK()));
+                    }
+
+                    moveProposals(allProposals, contest, phase, nextPhase);
+
+                    if (semifinalists != null) {
+                        assignRibbonsToProposals(3L, semifinalists, nextPhase.getContestPhasePK());
+                    }
+                    if (finalists != null) {
+                        assignRibbonsToProposals(1L, finalists, nextPhase.getContestPhasePK());
+                    }
+
+                    // update phase for which promotion was done (mark it as
+                    // "promotion done")
+                    phase.setContestPhaseAutopromote("PROMOTE_DONE");
+                    updateContestPhase(phase);
+
+                    // Add contest year suffix, if contest has been completed
+                    contestLocalService.addContestYearSuffixToContest(contest, true);
+
+                    _log.info("done promoting phase " + phase.getContestPhasePK());
+                } catch (SystemException | PortalException e) {
+                    _log.error("Exception thrown when doing autopromotion for phase " + phase.getContestPhasePK(), e);
+                }
+            }
+        }
+    }
+
+    private static void moveProposals(Set<Proposal> proposals, Contest fromContest, ContestPhase lastPhase, ContestPhase toPhase)
+            throws SystemException, PortalException {
+
+        //traverse proposals to be moved
+        for (Proposal proposal : proposals) {
+            //update the last phase association - set the end version to the current version minus one
+            Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposal.getProposalId());
+            if (currentProposalVersion < 0) {
+                throw new SystemException("Proposal not found");
+            }
+
+            Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), lastPhase.getContestPhasePK());
+
+            if (oldP2p != null) {
+                if (oldP2p.getVersionTo() < 0) {
+                    oldP2p.setVersionTo(currentProposalVersion.intValue());
+                    Proposal2PhaseLocalServiceUtil.updateProposal2Phase(oldP2p);
+                }
+            }
+
+            Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), toPhase.getContestPhasePK());
+            p2p.setVersionFrom(currentProposalVersion.intValue());
+            p2p.setVersionTo(currentProposalVersion.intValue());
+            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+        }
+    }
+
+    private static void assignRibbonsToProposals(Long ribbonId, List<Proposal> proposals, Long phasePK)
+            throws SystemException, PortalException {
+        //create ribbon in target phase
+        if (ribbonId > 0) {
+            for (Proposal proposal : proposals) {
+                //first, see if a ribbon already exists
+                ProposalContestPhaseAttribute attribute = null;
+                try {
+                    attribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), phasePK,
+                            ProposalContestPhaseAttributeKeys.RIBBON);
+                } catch (NoSuchProposalContestPhaseAttributeException ignored) {
+                }
+
+                //do not overwrite existing ribbons
+                if (attribute == null) {
+                    try {
+                        ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(ribbonId);
+                        ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), phasePK,
+                                ProposalContestPhaseAttributeKeys.RIBBON, ribbonId);
+                    } catch (NoSuchContestPhaseRibbonTypeException e) {
+                        ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposal.getProposalId(), phasePK,
+                                ProposalContestPhaseAttributeKeys.RIBBON);
+                    }
                 }
             }
         }
