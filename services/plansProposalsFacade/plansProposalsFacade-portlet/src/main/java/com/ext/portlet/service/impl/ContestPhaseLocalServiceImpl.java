@@ -56,6 +56,7 @@ import org.xcolab.utils.ClockImpl;
 import javax.mail.internet.AddressException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Date;
@@ -93,6 +94,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     private final static Log _log = LogFactoryUtil.getLog(ContestPhaseLocalServiceImpl.class);
     private static final Long DEFAULT_CONTEST_ID_FOR_SCHEDULE = 0L;
     private static final String SERVER_PORT_PROPS_KEY = "climatecolab.server.port";
+    public static final String STATUS_OPEN_FOR_SUBMISSION = "OPEN_FOR_SUBMISSION";
+    public static final String STATUS_CLOSED = "CLOSED";
+    public static final long SEMIFINALIST_RIBBON_ID = 3L;
+    public static final long FINALIST_RIBBON_ID = 1L;
     private Clock clock = new ClockImpl();
 
     /** This can be used by unit tests to set a different clock than the standard one */
@@ -352,12 +357,12 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 		
         serviceContext.setPortalURL(PortalUtil.getPortalURL(company.getVirtualHostname(), port, false));
 
-        basicPromotion(now, serviceContext);
-        judgingBasedPromotion(now, serviceContext);
+        doBasicPromotion(now, serviceContext);
+        doJudgingBasedPromotion(now, serviceContext);
         distributeRibbons(now);
     }
 
-    private void basicPromotion(Date now, ServiceContext serviceContext) throws SystemException, PortalException {
+    private void doBasicPromotion(Date now, ServiceContext serviceContext) throws SystemException, PortalException {
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
             if (isPhaseContestScheduleTemplatePhase(phase)) {
                 continue;
@@ -408,7 +413,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         }
     }
 
-    private void judgingBasedPromotion(Date now, ServiceContext serviceContext) throws SystemException, PortalException {
+    private void doJudgingBasedPromotion(Date now, ServiceContext serviceContext) throws SystemException, PortalException {
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_JUDGED.getValue())) {
             if (isPhaseContestScheduleTemplatePhase(phase)) {
                 continue;
@@ -502,16 +507,15 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(contest);
                     ContestPhase finalistSelection = null;
                     ContestPhase semifinalistSelection = null;
-                    ContestPhase proposalCreation = null;
+                    Set<ContestPhase> proposalCreationPhases = new HashSet<>();
 
                     for (ContestPhase cp : contestPhases) {
                         ContestPhaseType phaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(cp.getContestPhaseType());
 
-                        if (phaseType.getStatus().equals("OPEN_FOR_SUBMISSION")) {
-                            //TODO: what happens if there are two proposal creation phases?
-                            proposalCreation = cp;
+                        if (phaseType.getStatus().equals(STATUS_OPEN_FOR_SUBMISSION)) {
+                            proposalCreationPhases.add(cp);
                         }
-                        else if (phaseType.getStatus().equals("CLOSED")) {
+                        else if (phaseType.getStatus().equals(STATUS_CLOSED)) {
                             if (finalistSelection == null || cp.getPhaseEndDate().after(finalistSelection.getPhaseEndDate())) {
                                 semifinalistSelection = finalistSelection;
                                 finalistSelection = cp;
@@ -520,19 +524,17 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     }
 
                     if (semifinalistSelection == finalistSelection) {
-                        //TODO: what happens if there are no semifinalists? (See regional contests)
+                        //ignore if there is no semifinalist phase
                         semifinalistSelection = null;
                     }
 
                     Set<Proposal> allProposals = new HashSet<>();
                     List<Proposal> finalists = null;
                     List<Proposal> semifinalists = null;
-                    if (proposalCreation != null) {
-                        for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(proposalCreation.getContestPhasePK())) {
-                            if(!proposalIsVisible(p, proposalCreation)) {
-                                continue;
-                            }
-                            allProposals.add(p);
+                    if (proposalCreationPhases.size() > 0) {
+                        for (ContestPhase creationPhase : proposalCreationPhases) {
+                            final List<Proposal> proposalsInContestPhase = ProposalLocalServiceUtil.getProposalsInContestPhase(creationPhase.getContestPhasePK());
+                            addAllVisibleProposalsToCollection(proposalsInContestPhase, allProposals, creationPhase);
                         }
                     } else {
                         _log.error(String.format("Can't distribute ribbons: No proposal creation phase found in contest %d", phase.getContestPK()));
@@ -542,28 +544,28 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                         ContestPhase finalsPhase = getNextContestPhase(finalistSelection);
                         finalists = ProposalLocalServiceUtil.getProposalsInContestPhase(finalsPhase.getContestPhasePK());
                         //make sure all finalists are in the set
-                        allProposals.addAll(finalists);
+                        addAllVisibleProposalsToCollection(finalists, allProposals, finalsPhase);
 
                         if (semifinalistSelection != null) {
                             ContestPhase semifinalsPhase = getNextContestPhase(semifinalistSelection);
                             semifinalists = ProposalLocalServiceUtil.getProposalsInContestPhase(semifinalsPhase.getContestPhasePK());
                             semifinalists.removeAll(finalists);
                             //make sure all semifinalists are in the set
-                            allProposals.addAll(semifinalists);
+                            addAllVisibleProposalsToCollection(semifinalists, allProposals, semifinalsPhase);
                         } else {
                             _log.warn(String.format("No semifinalist phase found in contest %d", phase.getContestPK()));
                         }
                     } else {
-                        _log.error(String.format("Can't distribute ribbons: Finalist phase found in contest %d", phase.getContestPK()));
+                        _log.error(String.format("Can't distribute ribbons: No finalist phase found in contest %d", phase.getContestPK()));
                     }
 
-                    moveProposals(allProposals, contest, phase, nextPhase);
+                    associateProposalsWithCompletedPhase(allProposals, phase, nextPhase);
 
                     if (semifinalists != null) {
-                        assignRibbonsToProposals(3L, semifinalists, nextPhase.getContestPhasePK());
+                        assignRibbonsToProposals(SEMIFINALIST_RIBBON_ID, semifinalists, nextPhase.getContestPhasePK());
                     }
                     if (finalists != null) {
-                        assignRibbonsToProposals(1L, finalists, nextPhase.getContestPhasePK());
+                        assignRibbonsToProposals(FINALIST_RIBBON_ID, finalists, nextPhase.getContestPhasePK());
                     }
 
                     // update phase for which promotion was done (mark it as
@@ -582,19 +584,28 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         }
     }
 
-    private static void moveProposals(Set<Proposal> proposals, Contest fromContest, ContestPhase lastPhase, ContestPhase toPhase)
+    private void addAllVisibleProposalsToCollection(Collection<Proposal> sourceCollection, Collection<Proposal> toCollection, ContestPhase inPhase) {
+        for (Proposal p : sourceCollection) {
+            if(!proposalIsVisible(p, inPhase)) {
+                continue;
+            }
+            toCollection.add(p);
+        }
+    }
+
+    private static void associateProposalsWithCompletedPhase(Set<Proposal> proposals, ContestPhase previousPhase, ContestPhase completedPhase)
             throws SystemException, PortalException {
 
-        //traverse proposals to be moved
         for (Proposal proposal : proposals) {
-            //update the last phase association - set the end version to the current version minus one
+            //update the last phase association - set the end version to the current version
             Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposal.getProposalId());
             if (currentProposalVersion < 0) {
                 throw new SystemException("Proposal not found");
             }
 
             try {
-                Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), lastPhase.getContestPhasePK());
+                //make sure that proposals in the phase directly before have final versions
+                Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), previousPhase.getContestPhasePK());
 
                 if (oldP2p != null) {
                     if (oldP2p.getVersionTo() < 0) {
@@ -604,7 +615,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 }
             } catch (NoSuchProposal2PhaseException ignored) {}
 
-            Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), toPhase.getContestPhasePK());
+            Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), completedPhase.getContestPhasePK());
             p2p.setVersionFrom(currentProposalVersion.intValue());
             p2p.setVersionTo(currentProposalVersion.intValue());
             Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);

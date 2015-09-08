@@ -119,7 +119,7 @@ public class XCoLabTest {
     protected void createContestPhaseTypes() throws SystemException {
         ContestPhaseType cpt = contestPhaseTypeLocalService.createContestPhaseType(1);
         cpt.setName("Proposal creation");
-        cpt.setStatus("OPEN_FOR_SUBMISSION");
+        cpt.setStatus("STATUS_OPEN_FOR_SUBMISSION");
         contestPhaseTypeLocalService.updateContestPhaseType(cpt);
 
         cpt = contestPhaseTypeLocalService.createContestPhaseType(15);
