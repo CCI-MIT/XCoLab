@@ -1279,7 +1279,7 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 }
 
 
-.badge-small-title a{
+.badge-small-title {
     font-family: "bree", "bree-1", Verdana, sans-serif;
     font-size: 6px;
     font-weight: bold;
@@ -1311,7 +1311,7 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
     font-size: 9px;
     position: absolute;
     left: 10px;
-    top: 101px;
+    top: 36px;
     -webkit-transform: rotate(396deg);
     -moz-transform: rotate(396deg);
     -o-transform: rotate(396deg);

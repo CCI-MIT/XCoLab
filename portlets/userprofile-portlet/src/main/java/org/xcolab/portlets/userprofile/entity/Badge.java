@@ -76,7 +76,8 @@ public class Badge implements Serializable {
     }
 
     public String getBadgeYearShort() {
-        return Integer.toString(year).substring(2, 3);
+        final String fullYear = Integer.toString(year);
+        return fullYear.substring(2, fullYear.length());
     }
 
     public long getContestId(){

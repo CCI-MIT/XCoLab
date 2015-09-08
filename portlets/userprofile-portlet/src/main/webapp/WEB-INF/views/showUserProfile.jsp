@@ -82,7 +82,7 @@
 
 				<div class="memdiv" style="background-color:#707070;">.</div>
 
-				<table border="0" cellpadding="0" cellspacing="0" class="colab members otherInfo profileTable" style="width:300px;">
+				<table border="0" cellpadding="0" cellspacing="0" class="colab members otherInfo profileTable" style="width:100%;">
 					<tbody>
 					<tr>
 						<td class="b" nowrap="nowrap" width="20%">Screen Name</td>
@@ -95,8 +95,8 @@
 						<td width="25%">
 							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
 						</td>
-						<td class="b points_box left top" width="40%">CoLab Points (actual)</td>
-						<td class="points_box right top">${currentUserProfile.actualPoints}</td>
+						<td class="b points_box left_border top_border" width="40%">CoLab Points (actual)</td>
+						<td class="points_box right_border top_border">${currentUserProfile.actualPoints}</td>
 					</tr>
 
 
@@ -108,8 +108,8 @@
 								<c:otherwise>Unknown</c:otherwise>
 							</c:choose>
 						</td>
-						<td class="b points_box left bottom" width="40%">CoLab Points (max. potential)</td>
-						<td class="points_box right bottom">${currentUserProfile.potentialPoints}</td>
+						<td class="b points_box left_border bottom_border" width="40%">CoLab Points (max. potential)</td>
+						<td class="points_box right_border bottom_border">${currentUserProfile.potentialPoints}</td>
 					</tr>
 
 

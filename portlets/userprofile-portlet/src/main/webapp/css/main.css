@@ -200,18 +200,18 @@ input.cmn-toggle-round:checked ~ label:after {
     /*border is invisible unless border-style is set*/
 }
 
-.profileTable td.left {
+.profileTable td.left_border {
     border-left-style: solid;
 }
 
-.profileTable td.right {
+.profileTable td.right_border {
     border-right-style: solid;
 }
 
-.profileTable td.bottom {
+.profileTable td.bottom_border {
     border-bottom-style: solid;
 }
 
-.profileTable td.right_top {
+.profileTable td.top_border {
     border-top-style: solid;
 }
