@@ -215,3 +215,7 @@ input.cmn-toggle-round:checked ~ label:after {
 .profileTable td.top_border {
     border-top-style: solid;
 }
+
+td.align_right {
+    text-align: right;
+}

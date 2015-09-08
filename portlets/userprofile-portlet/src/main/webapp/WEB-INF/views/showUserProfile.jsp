@@ -36,22 +36,6 @@
 				<a href="/web/guest/conference2014" class="attendingConference"><img src="/climatecolab-theme/images/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
 			</c:if> -->
 
-			<div class="badge-container">
-				<c:forEach var="badge" items="${currentUserProfile.badges}">
-					<a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}" title="${badge.badgeTitle}">
-						<div class="badge-small badge-${badge.badgeType}">
-
-							<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
-								${badge.badgeTitle}
-							</span>
-
-							<div class="badge-small-text">20</div>
-							<span class="badge-small-year">${badge.badgeYearShort}</span>
-						</div>
-					</a>
-				</c:forEach>
-			</div>
-
 			<div class="comm_member-photo">
 				<img src="${baseImagePath}${userBean.portrait}" width="150" height="150"
 					 alt="${currentUserProfile.realName}" />
@@ -65,6 +49,23 @@
 						</tr> -->
 						<tr>
 							<td class="memname">${currentUserProfile.realName}</td>
+							<td rowspan="2">
+								<div class="badge-container">
+									<c:forEach var="badge" items="${currentUserProfile.badges}">
+										<a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}" title="${badge.badgeText}">
+											<div class="badge-small badge-${badge.badgeType}">
+
+								<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
+										${badge.badgeTitle}
+								</span>
+
+												<div class="badge-small-text">20</div>
+												<span class="badge-small-year">${badge.badgeYearShort}</span>
+											</div>
+										</a>
+									</c:forEach>
+								</div>
+							</td>
 						</tr>
 						<tr>
 							<td>
@@ -85,37 +86,36 @@
 				<table border="0" cellpadding="0" cellspacing="0" class="colab members otherInfo profileTable" style="width:100%;">
 					<tbody>
 					<tr>
-						<td class="b" nowrap="nowrap" width="20%">Screen Name</td>
-						<td width="25%">${userBean.screenName}</td>
-						<td class="b" width="40%">Activities</td>
-						<td>${currentUserProfile.userActivityCount}</td>
+						<td class="b" nowrap="nowrap" width="23%">Screen Name</td>
+						<td width="23%">${userBean.screenName}</td>
+						<td class="b" width="43%">Activities</td>
+						<td class="align_right">${currentUserProfile.userActivityCount}</td>
 					</tr>
 					<tr>
-						<td class="b" nowrap="nowrap" width="20%">Member Since</td>
-						<td width="25%">
+						<td class="b" nowrap="nowrap" width="23%">Member Since</td>
+						<td width="23%">
 							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
 						</td>
-						<td class="b points_box left_border top_border" width="40%">CoLab Points (actual)</td>
-						<td class="points_box right_border top_border">${currentUserProfile.actualPoints}</td>
+						<td class="b points_box left_border top_border" width="43%">CoLab Points (actual)</td>
+						<td class="points_box right_border top_border align_right">${currentUserProfile.actualPoints}</td>
 					</tr>
 
 
 					<tr>
-						<td class="b" width="20%">Country</td>
-						<td width="25%">
+						<td class="b" width="23%">Country</td>
+						<td width="23%">
 							<c:choose>
 							<c:when test="${not empty userBean.country}">${userBean.country}</c:when>
-								<c:otherwise>Unknown</c:otherwise>
 							</c:choose>
 						</td>
-						<td class="b points_box left_border bottom_border" width="40%">CoLab Points (max. potential)</td>
-						<td class="points_box right_border bottom_border">${currentUserProfile.potentialPoints}</td>
+						<td class="b points_box left_border bottom_border" width="43%">CoLab Points (max. potential)</td>
+						<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPoints}</td>
 					</tr>
 
 
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
 						<tr>
-							<td class="b" width="20%">Email</td>
+							<td class="b" width="23%">Email</td>
 							<td colspan="3" style="white-space: nowrap;">
 								<a href="mailto:${userBean.email}">${userBean.emailStored}</a>
 
