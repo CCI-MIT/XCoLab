@@ -38,15 +38,17 @@
 
 			<div class="badge-container">
 				<c:forEach var="badge" items="${currentUserProfile.badges}">
-					<div class="badge-big badge-${badge.badgeType}">
+					<a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}" title="${badge.badgeTitle}">
+						<div class="badge-small badge-${badge.badgeType}">
 
-                        <span class="badge-title">
-                            <a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}" style="${badge.badgeTitle.length() gt 8 ? 'top: 26px;' : ''};">${badge.badgeTitle}</a>
-                        </span>
+							<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
+								${badge.badgeTitle}
+							</span>
 
-						<div class="badge-text" style="${badge.badgeText.length() gt 15 ? 'font-size: 7px;' : ''}${fn:substring(badge.badgeText,0,6) eq 'Judges' ? 'width: 47px;' : ''}">${badge.badgeText.length() gt 13 ? badge.badgeText : ''}</div>
-						<span class="badge-year">${badge.badgeYear}</span>
-					</div>
+							<div class="badge-small-text">20</div>
+							<span class="badge-small-year">${badge.badgeYearShort}</span>
+						</div>
+					</a>
 				</c:forEach>
 			</div>
 
@@ -80,41 +82,41 @@
 
 				<div class="memdiv" style="background-color:#707070;">.</div>
 
-				<table border="0" cellpadding="0" cellspacing="0" class="colab members otherInfo" style="width:300px;">
+				<table border="0" cellpadding="0" cellspacing="0" class="colab members otherInfo profileTable" style="width:300px;">
 					<tbody>
 					<tr>
-						<td class="b" nowrap="nowrap" width="50%">Screen Name</td>
-						<td>${userBean.screenName}</td>
-						<td>Activities</td>
+						<td class="b" nowrap="nowrap" width="20%">Screen Name</td>
+						<td width="25%">${userBean.screenName}</td>
+						<td class="b" width="40%">Activities</td>
 						<td>${currentUserProfile.userActivityCount}</td>
 					</tr>
 					<tr>
-						<td class="b" nowrap="nowrap" width="50%">Member Since</td>
-						<td>
+						<td class="b" nowrap="nowrap" width="20%">Member Since</td>
+						<td width="25%">
 							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
 						</td>
-						<td>CoLab Points (actual)</td>
-						<td>${currentUserProfile.actualPoints}</td>
+						<td class="b points_box left top" width="40%">CoLab Points (actual)</td>
+						<td class="points_box right top">${currentUserProfile.actualPoints}</td>
 					</tr>
 
 
 					<tr>
-						<td class="b" width="50%">Country</td>
-						<td width="50%">
+						<td class="b" width="20%">Country</td>
+						<td width="25%">
 							<c:choose>
 							<c:when test="${not empty userBean.country}">${userBean.country}</c:when>
 								<c:otherwise>Unknown</c:otherwise>
 							</c:choose>
 						</td>
-						<td>CoLab Points (max. potential)</td>
-						<td>${currentUserProfile.potentialPoints}</td>
+						<td class="b points_box left bottom" width="40%">CoLab Points (max. potential)</td>
+						<td class="points_box right bottom">${currentUserProfile.potentialPoints}</td>
 					</tr>
 
 
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
 						<tr>
-							<td class="b" width="50%">Email</td>
-							<td width="50%" style="white-space: nowrap;">
+							<td class="b" width="20%">Email</td>
+							<td colspan="3" style="white-space: nowrap;">
 								<a href="mailto:${userBean.email}">${userBean.emailStored}</a>
 
 								<c:if test="${currentUserProfile.displayEMailErrorMessage}">
@@ -127,7 +129,7 @@
 
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
 						<tr>
-							<td colspan="2">
+							<td colspan="4">
 							<a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/edit">Manage profile and settings</a>
 							</td>
 						</tr>
@@ -138,15 +140,13 @@
 			</div>
 			<div class="clearfix">&#160;</div>
 		</div>
-		<div class="profile_action">
-			<c:if test="${currentUserProfile.canSendMessage and not currentUserProfile.viewingOwnProfile }">
-				<div class="blue-button">
-					<a href="javascript:;"
-					   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
-						<strong>${userBean.firstName}</strong> a Message </a>
-				</div>
-			</c:if>
-		</div>
+		<c:if test="${currentUserProfile.canSendMessage and not currentUserProfile.viewingOwnProfile }">
+			<div class="blue-button">
+				<a href="javascript:;"
+				   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
+					<strong>${userBean.firstName}</strong> a Message </a>
+			</div>
+		</c:if>
 		<p>
 			${userBean.shortBio}
 		</p>

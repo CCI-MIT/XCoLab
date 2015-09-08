@@ -188,3 +188,30 @@ input.cmn-toggle-round:checked ~ label:before {
 input.cmn-toggle-round:checked ~ label:after {
     margin-left: 30px;
 }
+
+
+.profileTable td {
+    padding: 3px;
+}
+
+.profileTable td.points_box {
+    border-color: #30a3fb;
+    border-width: 2px;
+    /*border is invisible unless border-style is set*/
+}
+
+.profileTable td.left {
+    border-left-style: solid;
+}
+
+.profileTable td.right {
+    border-right-style: solid;
+}
+
+.profileTable td.bottom {
+    border-bottom-style: solid;
+}
+
+.profileTable td.right_top {
+    border-top-style: solid;
+}
