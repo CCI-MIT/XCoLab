@@ -83,9 +83,9 @@
                 checkModelSetRadioWithId(modelId);
             }
 
-            if (jQuery($("#modelsOutputContainer").data('modeling')).length != 0) {
+            //if (jQuery($("#modelsOutputContainer").data('modeling')).length != 0) {
                 jQuery($("#modelsOutputContainer").data('modeling')).on('scenarioFetched', selectModelForFetchedScenario);
-            }
+            //}
 
         });
 
