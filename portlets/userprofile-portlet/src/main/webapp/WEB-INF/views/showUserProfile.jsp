@@ -30,15 +30,6 @@
 
 		<div id="main" class="${currentUserProfile.viewingOwnProfile ? '' : 'full'} userProfile">
 		<h1>Member Profile</h1>
-		<div class="profile_action">
-		<c:if test="${currentUserProfile.canSendMessage and not currentUserProfile.viewingOwnProfile }">
-			<div class="blue-button">
-			<a href="javascript:;"
-			   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
-				<strong>${userBean.firstName}</strong> a Message </a>
-			</div>
-		</c:if>
-		</div>
 		<div class="comm_member" style="margin-top: 0;">
 
             <!-- <c:if test="${currentUserProfile.attendsConference}">
@@ -94,13 +85,31 @@
 					<tr>
 						<td class="b" nowrap="nowrap" width="50%">Screen Name</td>
 						<td>${userBean.screenName}</td>
+						<td>Activities</td>
+						<td>${currentUserProfile.userActivityCount}</td>
 					</tr>
 					<tr>
 						<td class="b" nowrap="nowrap" width="50%">Member Since</td>
 						<td>
 							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
 						</td>
+						<td>CoLab Points (actual)</td>
+						<td>${currentUserProfile.actualPoints}</td>
 					</tr>
+
+
+					<tr>
+						<td class="b" width="50%">Country</td>
+						<td width="50%">
+							<c:choose>
+							<c:when test="${not empty userBean.country}">${userBean.country}</c:when>
+								<c:otherwise>Unknown</c:otherwise>
+							</c:choose>
+						</td>
+						<td>CoLab Points (max. potential)</td>
+						<td>${currentUserProfile.potentialPoints}</td>
+					</tr>
+
 
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
 						<tr>
@@ -113,13 +122,6 @@
 								</c:if>
 
 							</td>
-						</tr>
-					</c:if>
-
-					<c:if test="${not empty userBean.country}">
-						<tr>
-							<td class="b" width="50%">Country</td>
-							<td width="50%">${userBean.country}</td>
 						</tr>
 					</c:if>
 
@@ -136,8 +138,15 @@
 			</div>
 			<div class="clearfix">&#160;</div>
 		</div>
-
-		<h2 style="margin-top: 20px;">Short Bio</h2>
+		<div class="profile_action">
+			<c:if test="${currentUserProfile.canSendMessage and not currentUserProfile.viewingOwnProfile }">
+				<div class="blue-button">
+					<a href="javascript:;"
+					   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
+						<strong>${userBean.firstName}</strong> a Message </a>
+				</div>
+			</c:if>
+		</div>
 		<p>
 			${userBean.shortBio}
 		</p>

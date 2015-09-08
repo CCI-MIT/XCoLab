@@ -8,9 +8,11 @@ import com.ext.portlet.model.Message;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
+import com.ext.portlet.service.User_LocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -310,6 +312,28 @@ public class
 
     public List<Badge> getBadges() { return badges.getBadges(); }
 
+    public long getUserActivityCount() {
+        try {
+            return User_LocalServiceUtil.getUserActivityCount(getUserId()).get(0).longValue();
+        } catch (SystemException e) {
+            return 0;
+        }
+    }
 
+    public long getActualPoints() {
+        try {
+            return PointsLocalServiceUtil.getUserMaterializedPoints(getUserId());
+        } catch (SystemException e) {
+            return 0;
+        }
+    }
+
+    public long getPotentialPoints() {
+        try {
+            return PointsLocalServiceUtil.getUserHypotheticalPoints(getUserId());
+        } catch (SystemException e) {
+            return 0;
+        }
+    }
 
 }
