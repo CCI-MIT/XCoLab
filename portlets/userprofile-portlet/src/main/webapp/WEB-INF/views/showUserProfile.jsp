@@ -60,11 +60,12 @@
 
 												<div class="badge-small-text">20</div>
 												<span class="badge-small-year">${badge.badgeYearShort}</span>
+												<div class="tooltip">
+														${badge.badgeText} in ${badge.contestName}
+													<div class="tt-arrow"><!--  --></div>
+												</div>
 											</div>
-											<div class="tooltip">
-												${badge.badgeText} in ${badge.contestName}
-												<div class="tt-arrow"><!--  --></div>
-											</div>
+
 										</a>
 									</c:forEach>
 								</div>
