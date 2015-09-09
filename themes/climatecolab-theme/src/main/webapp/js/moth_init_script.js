@@ -453,7 +453,7 @@ function initTooltips() {
 		var children = $(obj).children();
 		for (i = 0; i < children.length; ++i) {
 			if (jQuery(children[i]).hasClass('tooltip')) {
-				return children[i];
+				return jQuery(children[i]);
 			}
 		}
         if (obj.parent() != null && obj.parent() != obj) {
