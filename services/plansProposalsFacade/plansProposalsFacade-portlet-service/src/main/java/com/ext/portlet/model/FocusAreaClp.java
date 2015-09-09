@@ -23,6 +23,7 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
     private String _name;
     private int _order;
     private BaseModel<?> _focusAreaRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public FocusAreaClp() {
     }
@@ -267,6 +268,10 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

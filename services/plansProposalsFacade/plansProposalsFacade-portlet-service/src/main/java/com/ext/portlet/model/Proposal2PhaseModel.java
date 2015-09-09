@@ -172,19 +172,19 @@ public interface Proposal2PhaseModel extends BaseModel<Proposal2Phase> {
     public Object clone();
 
     @Override
-    public int compareTo(Proposal2Phase proposal2Phase);
+    public int compareTo(com.ext.portlet.model.Proposal2Phase proposal2Phase);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<Proposal2Phase> toCacheModel();
+    public CacheModel<com.ext.portlet.model.Proposal2Phase> toCacheModel();
 
     @Override
-    public Proposal2Phase toEscapedModel();
+    public com.ext.portlet.model.Proposal2Phase toEscapedModel();
 
     @Override
-    public Proposal2Phase toUnescapedModel();
+    public com.ext.portlet.model.Proposal2Phase toUnescapedModel();
 
     @Override
     public String toString();

@@ -123,19 +123,20 @@ public interface FocusAreaOntologyTermModel extends BaseModel<FocusAreaOntologyT
     public Object clone();
 
     @Override
-    public int compareTo(FocusAreaOntologyTerm focusAreaOntologyTerm);
+    public int compareTo(
+        com.ext.portlet.model.FocusAreaOntologyTerm focusAreaOntologyTerm);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<FocusAreaOntologyTerm> toCacheModel();
+    public CacheModel<com.ext.portlet.model.FocusAreaOntologyTerm> toCacheModel();
 
     @Override
-    public FocusAreaOntologyTerm toEscapedModel();
+    public com.ext.portlet.model.FocusAreaOntologyTerm toEscapedModel();
 
     @Override
-    public FocusAreaOntologyTerm toUnescapedModel();
+    public com.ext.portlet.model.FocusAreaOntologyTerm toUnescapedModel();
 
     @Override
     public String toString();

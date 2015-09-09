@@ -5,7 +5,10 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class Proposal2PhasePK implements Comparable<Proposal2PhasePK>,
     Serializable {
     public long proposalId;

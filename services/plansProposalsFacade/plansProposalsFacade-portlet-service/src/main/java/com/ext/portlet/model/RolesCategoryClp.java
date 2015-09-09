@@ -24,6 +24,7 @@ public class RolesCategoryClp extends BaseModelImpl<RolesCategory>
     private String _categoryName;
     private int _roleOrdinal;
     private BaseModel<?> _rolesCategoryRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public RolesCategoryClp() {
     }
@@ -263,6 +264,10 @@ public class RolesCategoryClp extends BaseModelImpl<RolesCategory>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

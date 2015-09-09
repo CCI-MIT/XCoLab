@@ -280,19 +280,20 @@ public interface DiscussionMessageModel extends BaseModel<DiscussionMessage> {
     public Object clone();
 
     @Override
-    public int compareTo(DiscussionMessage discussionMessage);
+    public int compareTo(
+        com.ext.portlet.model.DiscussionMessage discussionMessage);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<DiscussionMessage> toCacheModel();
+    public CacheModel<com.ext.portlet.model.DiscussionMessage> toCacheModel();
 
     @Override
-    public DiscussionMessage toEscapedModel();
+    public com.ext.portlet.model.DiscussionMessage toEscapedModel();
 
     @Override
-    public DiscussionMessage toUnescapedModel();
+    public com.ext.portlet.model.DiscussionMessage toUnescapedModel();
 
     @Override
     public String toString();

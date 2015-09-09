@@ -30,6 +30,7 @@ public class ModelOutputChartOrderClp extends BaseModelImpl<ModelOutputChartOrde
     private String _modelIndexErrorMessage;
     private boolean _modelChartIsVisible;
     private BaseModel<?> _modelOutputChartOrderRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ModelOutputChartOrderClp() {
     }
@@ -478,6 +479,10 @@ public class ModelOutputChartOrderClp extends BaseModelImpl<ModelOutputChartOrde
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

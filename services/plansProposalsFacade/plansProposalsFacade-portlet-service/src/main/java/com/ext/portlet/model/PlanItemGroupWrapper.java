@@ -182,7 +182,7 @@ public class PlanItemGroupWrapper implements PlanItemGroup,
     }
 
     @Override
-    public int compareTo(PlanItemGroup planItemGroup) {
+    public int compareTo(com.ext.portlet.model.PlanItemGroup planItemGroup) {
         return _planItemGroup.compareTo(planItemGroup);
     }
 
@@ -192,17 +192,17 @@ public class PlanItemGroupWrapper implements PlanItemGroup,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanItemGroup> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanItemGroup> toCacheModel() {
         return _planItemGroup.toCacheModel();
     }
 
     @Override
-    public PlanItemGroup toEscapedModel() {
+    public com.ext.portlet.model.PlanItemGroup toEscapedModel() {
         return new PlanItemGroupWrapper(_planItemGroup.toEscapedModel());
     }
 
     @Override
-    public PlanItemGroup toUnescapedModel() {
+    public com.ext.portlet.model.PlanItemGroup toUnescapedModel() {
         return new PlanItemGroupWrapper(_planItemGroup.toUnescapedModel());
     }
 

@@ -471,7 +471,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     }
 
     @Override
-    public int compareTo(ModelOutputItem modelOutputItem) {
+    public int compareTo(com.ext.portlet.model.ModelOutputItem modelOutputItem) {
         return _modelOutputItem.compareTo(modelOutputItem);
     }
 
@@ -481,17 +481,17 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ModelOutputItem> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ModelOutputItem> toCacheModel() {
         return _modelOutputItem.toCacheModel();
     }
 
     @Override
-    public ModelOutputItem toEscapedModel() {
+    public com.ext.portlet.model.ModelOutputItem toEscapedModel() {
         return new ModelOutputItemWrapper(_modelOutputItem.toEscapedModel());
     }
 
     @Override
-    public ModelOutputItem toUnescapedModel() {
+    public com.ext.portlet.model.ModelOutputItem toUnescapedModel() {
         return new ModelOutputItemWrapper(_modelOutputItem.toUnescapedModel());
     }
 

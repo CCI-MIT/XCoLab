@@ -200,19 +200,19 @@ public interface LoginLogModel extends BaseModel<LoginLog> {
     public Object clone();
 
     @Override
-    public int compareTo(LoginLog loginLog);
+    public int compareTo(com.ext.portlet.model.LoginLog loginLog);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<LoginLog> toCacheModel();
+    public CacheModel<com.ext.portlet.model.LoginLog> toCacheModel();
 
     @Override
-    public LoginLog toEscapedModel();
+    public com.ext.portlet.model.LoginLog toEscapedModel();
 
     @Override
-    public LoginLog toUnescapedModel();
+    public com.ext.portlet.model.LoginLog toUnescapedModel();
 
     @Override
     public String toString();

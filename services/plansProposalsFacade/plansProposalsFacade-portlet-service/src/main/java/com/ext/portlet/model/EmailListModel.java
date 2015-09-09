@@ -124,19 +124,19 @@ public interface EmailListModel extends BaseModel<EmailList> {
     public Object clone();
 
     @Override
-    public int compareTo(EmailList emailList);
+    public int compareTo(com.ext.portlet.model.EmailList emailList);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<EmailList> toCacheModel();
+    public CacheModel<com.ext.portlet.model.EmailList> toCacheModel();
 
     @Override
-    public EmailList toEscapedModel();
+    public com.ext.portlet.model.EmailList toEscapedModel();
 
     @Override
-    public EmailList toUnescapedModel();
+    public com.ext.portlet.model.EmailList toUnescapedModel();
 
     @Override
     public String toString();

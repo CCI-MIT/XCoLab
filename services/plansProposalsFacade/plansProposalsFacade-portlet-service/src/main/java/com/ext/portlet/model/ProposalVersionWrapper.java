@@ -292,7 +292,7 @@ public class ProposalVersionWrapper implements ProposalVersion,
     }
 
     @Override
-    public int compareTo(ProposalVersion proposalVersion) {
+    public int compareTo(com.ext.portlet.model.ProposalVersion proposalVersion) {
         return _proposalVersion.compareTo(proposalVersion);
     }
 
@@ -302,17 +302,17 @@ public class ProposalVersionWrapper implements ProposalVersion,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ProposalVersion> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ProposalVersion> toCacheModel() {
         return _proposalVersion.toCacheModel();
     }
 
     @Override
-    public ProposalVersion toEscapedModel() {
+    public com.ext.portlet.model.ProposalVersion toEscapedModel() {
         return new ProposalVersionWrapper(_proposalVersion.toEscapedModel());
     }
 
     @Override
-    public ProposalVersion toUnescapedModel() {
+    public com.ext.portlet.model.ProposalVersion toUnescapedModel() {
         return new ProposalVersionWrapper(_proposalVersion.toUnescapedModel());
     }
 

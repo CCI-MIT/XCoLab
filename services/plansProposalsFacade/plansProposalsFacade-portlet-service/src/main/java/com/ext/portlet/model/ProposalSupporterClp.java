@@ -28,6 +28,7 @@ public class ProposalSupporterClp extends BaseModelImpl<ProposalSupporter>
     private String _userUuid;
     private Date _createDate;
     private BaseModel<?> _proposalSupporterRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ProposalSupporterClp() {
     }
@@ -273,6 +274,10 @@ public class ProposalSupporterClp extends BaseModelImpl<ProposalSupporter>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

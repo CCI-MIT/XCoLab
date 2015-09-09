@@ -28,6 +28,7 @@ public class MessageRecipientStatusClp extends BaseModelImpl<MessageRecipientSta
     private boolean _opened;
     private boolean _archived;
     private BaseModel<?> _messageRecipientStatusRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public MessageRecipientStatusClp() {
     }
@@ -358,6 +359,10 @@ public class MessageRecipientStatusClp extends BaseModelImpl<MessageRecipientSta
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

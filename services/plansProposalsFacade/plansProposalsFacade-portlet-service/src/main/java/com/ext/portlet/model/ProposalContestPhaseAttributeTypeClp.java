@@ -23,6 +23,7 @@ public class ProposalContestPhaseAttributeTypeClp extends BaseModelImpl<Proposal
     private String _name;
     private boolean _copyOnPromote;
     private BaseModel<?> _proposalContestPhaseAttributeTypeRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ProposalContestPhaseAttributeTypeClp() {
     }
@@ -236,6 +237,10 @@ public class ProposalContestPhaseAttributeTypeClp extends BaseModelImpl<Proposal
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

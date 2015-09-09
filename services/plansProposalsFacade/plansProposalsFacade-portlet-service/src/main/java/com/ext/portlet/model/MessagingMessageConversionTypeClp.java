@@ -24,6 +24,7 @@ public class MessagingMessageConversionTypeClp extends BaseModelImpl<MessagingMe
     private String _name;
     private String _description;
     private BaseModel<?> _messagingMessageConversionTypeRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public MessagingMessageConversionTypeClp() {
     }
@@ -266,6 +267,10 @@ public class MessagingMessageConversionTypeClp extends BaseModelImpl<MessagingMe
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

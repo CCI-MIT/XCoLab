@@ -28,6 +28,7 @@ public class PlanFanClp extends BaseModelImpl<PlanFan> implements PlanFan {
     private Date _created;
     private Date _deleted;
     private BaseModel<?> _planFanRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanFanClp() {
     }
@@ -342,6 +343,10 @@ public class PlanFanClp extends BaseModelImpl<PlanFan> implements PlanFan {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

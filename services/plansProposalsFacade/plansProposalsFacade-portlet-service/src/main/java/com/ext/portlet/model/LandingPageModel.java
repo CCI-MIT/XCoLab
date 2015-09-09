@@ -140,19 +140,19 @@ public interface LandingPageModel extends BaseModel<LandingPage> {
     public Object clone();
 
     @Override
-    public int compareTo(LandingPage landingPage);
+    public int compareTo(com.ext.portlet.model.LandingPage landingPage);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<LandingPage> toCacheModel();
+    public CacheModel<com.ext.portlet.model.LandingPage> toCacheModel();
 
     @Override
-    public LandingPage toEscapedModel();
+    public com.ext.portlet.model.LandingPage toEscapedModel();
 
     @Override
-    public LandingPage toUnescapedModel();
+    public com.ext.portlet.model.LandingPage toUnescapedModel();
 
     @Override
     public String toString();

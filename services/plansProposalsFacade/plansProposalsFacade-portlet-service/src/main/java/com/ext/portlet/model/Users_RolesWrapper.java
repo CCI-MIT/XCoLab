@@ -205,7 +205,7 @@ public class Users_RolesWrapper implements Users_Roles,
     }
 
     @Override
-    public int compareTo(Users_Roles users_Roles) {
+    public int compareTo(com.ext.portlet.model.Users_Roles users_Roles) {
         return _users_Roles.compareTo(users_Roles);
     }
 
@@ -215,17 +215,17 @@ public class Users_RolesWrapper implements Users_Roles,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<Users_Roles> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.Users_Roles> toCacheModel() {
         return _users_Roles.toCacheModel();
     }
 
     @Override
-    public Users_Roles toEscapedModel() {
+    public com.ext.portlet.model.Users_Roles toEscapedModel() {
         return new Users_RolesWrapper(_users_Roles.toEscapedModel());
     }
 
     @Override
-    public Users_Roles toUnescapedModel() {
+    public com.ext.portlet.model.Users_Roles toUnescapedModel() {
         return new Users_RolesWrapper(_users_Roles.toUnescapedModel());
     }
 

@@ -236,7 +236,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     }
 
     @Override
-    public int compareTo(PlanAttribute planAttribute) {
+    public int compareTo(com.ext.portlet.model.PlanAttribute planAttribute) {
         return _planAttribute.compareTo(planAttribute);
     }
 
@@ -246,17 +246,17 @@ public class PlanAttributeWrapper implements PlanAttribute,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanAttribute> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanAttribute> toCacheModel() {
         return _planAttribute.toCacheModel();
     }
 
     @Override
-    public PlanAttribute toEscapedModel() {
+    public com.ext.portlet.model.PlanAttribute toEscapedModel() {
         return new PlanAttributeWrapper(_planAttribute.toEscapedModel());
     }
 
     @Override
-    public PlanAttribute toUnescapedModel() {
+    public com.ext.portlet.model.PlanAttribute toUnescapedModel() {
         return new PlanAttributeWrapper(_planAttribute.toUnescapedModel());
     }
 

@@ -24,6 +24,7 @@ public class ContestDiscussionClp extends BaseModelImpl<ContestDiscussion>
     private long _ContestId;
     private String _Tab;
     private BaseModel<?> _contestDiscussionRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ContestDiscussionClp() {
     }
@@ -264,6 +265,10 @@ public class ContestDiscussionClp extends BaseModelImpl<ContestDiscussion>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

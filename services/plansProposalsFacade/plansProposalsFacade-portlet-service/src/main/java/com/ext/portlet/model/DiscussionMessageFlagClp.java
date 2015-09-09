@@ -30,6 +30,7 @@ public class DiscussionMessageFlagClp extends BaseModelImpl<DiscussionMessageFla
     private long _userId;
     private String _userUuid;
     private BaseModel<?> _discussionMessageFlagRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public DiscussionMessageFlagClp() {
     }
@@ -370,6 +371,10 @@ public class DiscussionMessageFlagClp extends BaseModelImpl<DiscussionMessageFla
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

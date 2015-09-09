@@ -218,19 +218,20 @@ public interface ModelOutputChartOrderModel extends BaseModel<ModelOutputChartOr
     public Object clone();
 
     @Override
-    public int compareTo(ModelOutputChartOrder modelOutputChartOrder);
+    public int compareTo(
+        com.ext.portlet.model.ModelOutputChartOrder modelOutputChartOrder);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ModelOutputChartOrder> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ModelOutputChartOrder> toCacheModel();
 
     @Override
-    public ModelOutputChartOrder toEscapedModel();
+    public com.ext.portlet.model.ModelOutputChartOrder toEscapedModel();
 
     @Override
-    public ModelOutputChartOrder toUnescapedModel();
+    public com.ext.portlet.model.ModelOutputChartOrder toUnescapedModel();
 
     @Override
     public String toString();

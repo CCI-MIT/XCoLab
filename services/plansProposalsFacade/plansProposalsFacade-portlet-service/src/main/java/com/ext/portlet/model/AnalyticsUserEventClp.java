@@ -32,6 +32,7 @@ public class AnalyticsUserEventClp extends BaseModelImpl<AnalyticsUserEvent>
     private int _value;
     private Date _created;
     private BaseModel<?> _analyticsUserEventRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public AnalyticsUserEventClp() {
     }
@@ -397,6 +398,10 @@ public class AnalyticsUserEventClp extends BaseModelImpl<AnalyticsUserEvent>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -28,6 +28,7 @@ public class BalloonStatsEntryClp extends BaseModelImpl<BalloonStatsEntry>
     private String _ip;
     private String _extraData;
     private BaseModel<?> _balloonStatsEntryRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public BalloonStatsEntryClp() {
     }
@@ -388,6 +389,10 @@ public class BalloonStatsEntryClp extends BaseModelImpl<BalloonStatsEntry>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

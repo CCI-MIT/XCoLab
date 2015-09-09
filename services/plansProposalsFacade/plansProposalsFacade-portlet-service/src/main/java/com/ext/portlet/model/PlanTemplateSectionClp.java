@@ -25,6 +25,7 @@ public class PlanTemplateSectionClp extends BaseModelImpl<PlanTemplateSection>
     private long _planSectionId;
     private int _weight;
     private BaseModel<?> _planTemplateSectionRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanTemplateSectionClp() {
     }
@@ -272,6 +273,10 @@ public class PlanTemplateSectionClp extends BaseModelImpl<PlanTemplateSection>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

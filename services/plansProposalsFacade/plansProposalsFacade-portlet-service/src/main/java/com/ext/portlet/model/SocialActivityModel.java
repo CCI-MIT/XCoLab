@@ -123,19 +123,19 @@ public interface SocialActivityModel extends BaseModel<SocialActivity> {
     public Object clone();
 
     @Override
-    public int compareTo(SocialActivity socialActivity);
+    public int compareTo(com.ext.portlet.model.SocialActivity socialActivity);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<SocialActivity> toCacheModel();
+    public CacheModel<com.ext.portlet.model.SocialActivity> toCacheModel();
 
     @Override
-    public SocialActivity toEscapedModel();
+    public com.ext.portlet.model.SocialActivity toEscapedModel();
 
     @Override
-    public SocialActivity toUnescapedModel();
+    public com.ext.portlet.model.SocialActivity toUnescapedModel();
 
     @Override
     public String toString();

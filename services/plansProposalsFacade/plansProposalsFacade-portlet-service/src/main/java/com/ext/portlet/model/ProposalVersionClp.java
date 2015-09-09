@@ -29,6 +29,7 @@ public class ProposalVersionClp extends BaseModelImpl<ProposalVersion>
     private String _updateType;
     private long _updateAdditionalId;
     private BaseModel<?> _proposalVersionRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ProposalVersionClp() {
     }
@@ -369,6 +370,10 @@ public class ProposalVersionClp extends BaseModelImpl<ProposalVersion>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

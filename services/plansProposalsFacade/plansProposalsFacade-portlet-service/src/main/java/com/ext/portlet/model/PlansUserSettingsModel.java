@@ -210,19 +210,20 @@ public interface PlansUserSettingsModel extends BaseModel<PlansUserSettings> {
     public Object clone();
 
     @Override
-    public int compareTo(PlansUserSettings plansUserSettings);
+    public int compareTo(
+        com.ext.portlet.model.PlansUserSettings plansUserSettings);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlansUserSettings> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlansUserSettings> toCacheModel();
 
     @Override
-    public PlansUserSettings toEscapedModel();
+    public com.ext.portlet.model.PlansUserSettings toEscapedModel();
 
     @Override
-    public PlansUserSettings toUnescapedModel();
+    public com.ext.portlet.model.PlansUserSettings toUnescapedModel();
 
     @Override
     public String toString();

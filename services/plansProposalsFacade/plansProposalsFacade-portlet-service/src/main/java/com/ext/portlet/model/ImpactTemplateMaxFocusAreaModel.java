@@ -109,19 +109,20 @@ public interface ImpactTemplateMaxFocusAreaModel extends BaseModel<ImpactTemplat
     public Object clone();
 
     @Override
-    public int compareTo(ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea);
+    public int compareTo(
+        com.ext.portlet.model.ImpactTemplateMaxFocusArea impactTemplateMaxFocusArea);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ImpactTemplateMaxFocusArea> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ImpactTemplateMaxFocusArea> toCacheModel();
 
     @Override
-    public ImpactTemplateMaxFocusArea toEscapedModel();
+    public com.ext.portlet.model.ImpactTemplateMaxFocusArea toEscapedModel();
 
     @Override
-    public ImpactTemplateMaxFocusArea toUnescapedModel();
+    public com.ext.portlet.model.ImpactTemplateMaxFocusArea toUnescapedModel();
 
     @Override
     public String toString();
