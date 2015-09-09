@@ -56,7 +56,6 @@
 											<span class="fieldWithTooltip">
 												<img src="/climatecolab-theme/images/icon-prize{{ proposal.ribbon }}.png" />
 
-
 												<div class="badge-small badge-${badge.badgeType}">
 													<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
 															${badge.badgeTitle}
@@ -105,7 +104,7 @@
 						</td>
 						<td class="b points_box left_border top_border" width="43%">
 							CoLab Points (actual)
-							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png"></a>
+							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
 							<br />
 							<div style="display: none;" class="addprophelp">
 								CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains. <a href="">(See more)</a>
@@ -114,7 +113,6 @@
 						</td>
 						<td class="points_box right_border top_border align_right">${currentUserProfile.actualPoints}</td>
 					</tr>
-
 
 					<tr>
 						<td class="b" width="23%">Country</td>
@@ -125,7 +123,7 @@
 						</td>
 						<td class="b points_box left_border bottom_border" width="43%">
 							CoLab Points (max. potential)
-							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png"></a>
+							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
 							<br />
 							<div style="display: none;" class="addprophelp">
 								The maximum number of CoLab Points this member could receive. This is a measure of how many times the member’s proposals have been included in other proposals and how important it is in those proposals.  <a href="">(See more)</a>
@@ -134,8 +132,7 @@
 						</td>
 						<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPoints}</td>
 					</tr>
-
-
+					
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
 						<tr>
 							<td class="b" width="23%">Email</td>
