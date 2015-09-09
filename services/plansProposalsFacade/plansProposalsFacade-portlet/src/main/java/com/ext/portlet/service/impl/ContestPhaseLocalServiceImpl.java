@@ -22,6 +22,7 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
+import com.ext.utils.promotion.AutoPromoteHelper;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -43,7 +44,7 @@ import com.liferay.util.mail.MailEngineException;
 import com.liferay.util.portlet.PortletProps;
 
 import org.apache.commons.lang3.StringUtils;
-import com.ext.utils.AutoPromotionUtil;
+import com.ext.utils.promotion.PhasePromotionHelper;
 import org.xcolab.utils.Clock;
 import org.xcolab.utils.ClockImpl;
 
@@ -275,9 +276,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     		// no such proposal2phase, we can safely add association
     	}
         Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposalId);
-        if (currentProposalVersion < 0)
+        if (currentProposalVersion <= 0) {
+            _log.error(String.format("Proposal %d not found: version was %d", proposalId, currentProposalVersion));
             throw new SystemException("Proposal not found");
-
+        }
         ContestPhase nextPhase = getContestPhase(nextPhaseId);
         if (nextPhase == null) throw new SystemException("phase not found");
 
@@ -316,7 +318,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
         Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
 
-        AutoPromotionUtil.createProposalContestPhasePromotionDoneAttribute(proposalId, currentPhaseId);
+        PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(proposalId, currentPhaseId);
     }
 
     /**
@@ -341,9 +343,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 		
         serviceContext.setPortalURL(PortalUtil.getPortalURL(company.getVirtualHostname(), port, false));
 
-        AutoPromotionUtil.doBasicPromotion(now, serviceContext);
-        AutoPromotionUtil.doJudgingBasedPromotion(now, serviceContext);
-        AutoPromotionUtil.distributeRibbons(now);
+        AutoPromoteHelper autoPromoteHelper = new AutoPromoteHelper(now, serviceContext);
+        autoPromoteHelper.doBasicPromotion();
+        autoPromoteHelper.doJudgingBasedPromotion();
+        autoPromoteHelper.distributeRibbons();
     }
 
     /**
@@ -374,14 +377,14 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
     public void forcePromotionOfProposalInPhase(Proposal p, ContestPhase phase) throws SystemException, PortalException {
         ContestPhase nextPhase = getNextContestPhase(phase);
-
+        PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
         //skip already promoted proposal
-        if (AutoPromotionUtil.hasProposalAlreadyBeenPromoted(p, phase)) {
+        if (phasePromotionHelper.hasProposalAlreadyBeenPromoted(p)) {
             return;
         }
 
         // Decide about the promotion
-        if (AutoPromotionUtil.didJudgeDecideToPromote(p, phase)) {
+        if (phasePromotionHelper.didJudgeDecideToPromote(p)) {
             promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
         }
 
