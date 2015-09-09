@@ -322,6 +322,11 @@ public class AutoPromoteHelper {
                         ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposal.getProposalId(), phasePK,
                                 ProposalContestPhaseAttributeKeys.RIBBON);
                     }
+                } else {
+                    _log.error(String.format(
+                            "Skipping ribbon (id = %d) assignment for proposal %d: this proposal already has a ribbon assigned",
+                            ribbonId, proposal.getProposalId()
+                    ));
                 }
             }
         }
