@@ -331,19 +331,19 @@ public interface ContestPhaseModel extends BaseModel<ContestPhase> {
     public Object clone();
 
     @Override
-    public int compareTo(ContestPhase contestPhase);
+    public int compareTo(com.ext.portlet.model.ContestPhase contestPhase);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ContestPhase> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ContestPhase> toCacheModel();
 
     @Override
-    public ContestPhase toEscapedModel();
+    public com.ext.portlet.model.ContestPhase toEscapedModel();
 
     @Override
-    public ContestPhase toUnescapedModel();
+    public com.ext.portlet.model.ContestPhase toUnescapedModel();
 
     @Override
     public String toString();

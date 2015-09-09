@@ -261,19 +261,19 @@ public interface ModelOutputItemModel extends BaseModel<ModelOutputItem> {
     public Object clone();
 
     @Override
-    public int compareTo(ModelOutputItem modelOutputItem);
+    public int compareTo(com.ext.portlet.model.ModelOutputItem modelOutputItem);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ModelOutputItem> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ModelOutputItem> toCacheModel();
 
     @Override
-    public ModelOutputItem toEscapedModel();
+    public com.ext.portlet.model.ModelOutputItem toEscapedModel();
 
     @Override
-    public ModelOutputItem toUnescapedModel();
+    public com.ext.portlet.model.ModelOutputItem toUnescapedModel();
 
     @Override
     public String toString();

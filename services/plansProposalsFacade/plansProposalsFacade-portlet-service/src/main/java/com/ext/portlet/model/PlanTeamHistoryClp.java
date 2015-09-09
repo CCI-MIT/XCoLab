@@ -31,6 +31,7 @@ public class PlanTeamHistoryClp extends BaseModelImpl<PlanTeamHistory>
     private Date _created;
     private long _updateAuthorId;
     private BaseModel<?> _planTeamHistoryRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanTeamHistoryClp() {
     }
@@ -407,6 +408,10 @@ public class PlanTeamHistoryClp extends BaseModelImpl<PlanTeamHistory>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -152,6 +152,21 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
             throws NoSuchProposalContestPhaseAttributeException, SystemException {
         return proposalContestPhaseAttributePersistence.findByProposalIdContestPhaseIdNameAdditionalId(proposalId, contestPhaseId, attributeName, 0);
     }
+
+    /**
+     * <p>Returns proposal phase attribute (if exists)</p>
+     * @param proposalId id of a proposal
+     * @param contestPhaseId id of a phase
+     * @param attributeName name of an attribute
+     * @return true if the attribute exists, false otherwise
+     * @throws SystemException in case of lr error
+     */
+    public boolean hasProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName)
+            throws SystemException {
+        final ProposalContestPhaseAttribute proposalContestPhaseAttribute = proposalContestPhaseAttributePersistence.fetchByProposalIdContestPhaseIdNameAdditionalId(proposalId,
+                contestPhaseId, attributeName, 0);
+        return proposalContestPhaseAttribute != null;
+    }
     
     /**
      * <p>Returns all contest phase attributes</p>

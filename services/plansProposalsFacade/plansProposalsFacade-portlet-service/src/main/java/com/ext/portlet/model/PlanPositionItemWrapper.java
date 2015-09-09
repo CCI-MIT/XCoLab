@@ -183,7 +183,8 @@ public class PlanPositionItemWrapper implements PlanPositionItem,
     }
 
     @Override
-    public int compareTo(PlanPositionItem planPositionItem) {
+    public int compareTo(
+        com.ext.portlet.model.PlanPositionItem planPositionItem) {
         return _planPositionItem.compareTo(planPositionItem);
     }
 
@@ -193,17 +194,17 @@ public class PlanPositionItemWrapper implements PlanPositionItem,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanPositionItem> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanPositionItem> toCacheModel() {
         return _planPositionItem.toCacheModel();
     }
 
     @Override
-    public PlanPositionItem toEscapedModel() {
+    public com.ext.portlet.model.PlanPositionItem toEscapedModel() {
         return new PlanPositionItemWrapper(_planPositionItem.toEscapedModel());
     }
 
     @Override
-    public PlanPositionItem toUnescapedModel() {
+    public com.ext.portlet.model.PlanPositionItem toUnescapedModel() {
         return new PlanPositionItemWrapper(_planPositionItem.toUnescapedModel());
     }
 

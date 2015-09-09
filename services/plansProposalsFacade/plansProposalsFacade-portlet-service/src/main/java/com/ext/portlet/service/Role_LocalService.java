@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface Role_LocalService extends BaseLocalService,
     * @return the role_ that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.Role_ addRole_(
         com.ext.portlet.model.Role_ role_)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -59,6 +61,7 @@ public interface Role_LocalService extends BaseLocalService,
     * @throws PortalException if a role_ with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.Role_ deleteRole_(long roleId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -70,6 +73,7 @@ public interface Role_LocalService extends BaseLocalService,
     * @return the role_ that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.Role_ deleteRole_(
         com.ext.portlet.model.Role_ role_)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -208,6 +212,7 @@ public interface Role_LocalService extends BaseLocalService,
     * @return the role_ that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.Role_ updateRole_(
         com.ext.portlet.model.Role_ role_)
         throws com.liferay.portal.kernel.exception.SystemException;

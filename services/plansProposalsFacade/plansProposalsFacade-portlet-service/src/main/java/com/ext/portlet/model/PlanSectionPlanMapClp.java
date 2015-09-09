@@ -24,6 +24,7 @@ public class PlanSectionPlanMapClp extends BaseModelImpl<PlanSectionPlanMap>
     private long _sectionId;
     private long _relatedPlanId;
     private BaseModel<?> _planSectionPlanMapRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanSectionPlanMapClp() {
     }
@@ -229,6 +230,10 @@ public class PlanSectionPlanMapClp extends BaseModelImpl<PlanSectionPlanMap>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

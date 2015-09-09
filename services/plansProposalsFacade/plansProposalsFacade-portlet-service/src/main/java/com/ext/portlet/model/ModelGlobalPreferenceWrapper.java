@@ -369,7 +369,8 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     }
 
     @Override
-    public int compareTo(ModelGlobalPreference modelGlobalPreference) {
+    public int compareTo(
+        com.ext.portlet.model.ModelGlobalPreference modelGlobalPreference) {
         return _modelGlobalPreference.compareTo(modelGlobalPreference);
     }
 
@@ -379,17 +380,17 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ModelGlobalPreference> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ModelGlobalPreference> toCacheModel() {
         return _modelGlobalPreference.toCacheModel();
     }
 
     @Override
-    public ModelGlobalPreference toEscapedModel() {
+    public com.ext.portlet.model.ModelGlobalPreference toEscapedModel() {
         return new ModelGlobalPreferenceWrapper(_modelGlobalPreference.toEscapedModel());
     }
 
     @Override
-    public ModelGlobalPreference toUnescapedModel() {
+    public com.ext.portlet.model.ModelGlobalPreference toUnescapedModel() {
         return new ModelGlobalPreferenceWrapper(_modelGlobalPreference.toUnescapedModel());
     }
 

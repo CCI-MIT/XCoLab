@@ -152,19 +152,20 @@ public interface ProposalRatingValueModel extends BaseModel<ProposalRatingValue>
     public Object clone();
 
     @Override
-    public int compareTo(ProposalRatingValue proposalRatingValue);
+    public int compareTo(
+        com.ext.portlet.model.ProposalRatingValue proposalRatingValue);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ProposalRatingValue> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ProposalRatingValue> toCacheModel();
 
     @Override
-    public ProposalRatingValue toEscapedModel();
+    public com.ext.portlet.model.ProposalRatingValue toEscapedModel();
 
     @Override
-    public ProposalRatingValue toUnescapedModel();
+    public com.ext.portlet.model.ProposalRatingValue toUnescapedModel();
 
     @Override
     public String toString();

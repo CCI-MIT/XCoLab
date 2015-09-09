@@ -204,7 +204,7 @@ public class SocialActivityWrapper implements SocialActivity,
     }
 
     @Override
-    public int compareTo(SocialActivity socialActivity) {
+    public int compareTo(com.ext.portlet.model.SocialActivity socialActivity) {
         return _socialActivity.compareTo(socialActivity);
     }
 
@@ -214,17 +214,17 @@ public class SocialActivityWrapper implements SocialActivity,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<SocialActivity> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.SocialActivity> toCacheModel() {
         return _socialActivity.toCacheModel();
     }
 
     @Override
-    public SocialActivity toEscapedModel() {
+    public com.ext.portlet.model.SocialActivity toEscapedModel() {
         return new SocialActivityWrapper(_socialActivity.toEscapedModel());
     }
 
     @Override
-    public SocialActivity toUnescapedModel() {
+    public com.ext.portlet.model.SocialActivity toUnescapedModel() {
         return new SocialActivityWrapper(_socialActivity.toUnescapedModel());
     }
 

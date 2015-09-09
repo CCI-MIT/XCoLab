@@ -27,6 +27,7 @@ public class BalloonLinkClp extends BaseModelImpl<BalloonLink>
     private String _balloonUserUuid;
     private Date _createDate;
     private BaseModel<?> _balloonLinkRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public BalloonLinkClp() {
     }
@@ -320,6 +321,10 @@ public class BalloonLinkClp extends BaseModelImpl<BalloonLink>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

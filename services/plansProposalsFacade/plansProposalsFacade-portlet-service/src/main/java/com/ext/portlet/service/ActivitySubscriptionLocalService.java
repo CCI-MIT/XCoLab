@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface ActivitySubscriptionLocalService extends BaseLocalService,
     * @return the activity subscription that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ActivitySubscription addActivitySubscription(
         com.ext.portlet.model.ActivitySubscription activitySubscription)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -60,6 +62,7 @@ public interface ActivitySubscriptionLocalService extends BaseLocalService,
     * @throws PortalException if a activity subscription with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ActivitySubscription deleteActivitySubscription(
         long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -72,6 +75,7 @@ public interface ActivitySubscriptionLocalService extends BaseLocalService,
     * @return the activity subscription that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ActivitySubscription deleteActivitySubscription(
         com.ext.portlet.model.ActivitySubscription activitySubscription)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -212,6 +216,7 @@ public interface ActivitySubscriptionLocalService extends BaseLocalService,
     * @return the activity subscription that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ActivitySubscription updateActivitySubscription(
         com.ext.portlet.model.ActivitySubscription activitySubscription)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -265,6 +270,7 @@ public interface ActivitySubscriptionLocalService extends BaseLocalService,
         java.lang.Integer type, java.lang.String extraData)
         throws com.liferay.portal.kernel.exception.SystemException;
 
+    @com.liferay.portal.kernel.transaction.Transactional
     public void deleteSubscription(java.lang.Long userId,
         java.lang.Long classNameId, java.lang.Long classPK,
         java.lang.Integer type, java.lang.String extraData, boolean automatic)
@@ -286,6 +292,7 @@ public interface ActivitySubscriptionLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    @com.liferay.portal.kernel.transaction.Transactional
     public void addSubscription(java.lang.Long classNameId,
         java.lang.Long classPK, java.lang.Integer type,
         java.lang.String extraData, java.lang.Long userId, boolean automatic)

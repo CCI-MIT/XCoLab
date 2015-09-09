@@ -27,6 +27,7 @@ public class PlansFilterPositionClp extends BaseModelImpl<PlansFilterPosition>
     private long _planTypeId;
     private long _positionId;
     private BaseModel<?> _plansFilterPositionRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlansFilterPositionClp() {
     }
@@ -273,6 +274,10 @@ public class PlansFilterPositionClp extends BaseModelImpl<PlansFilterPosition>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

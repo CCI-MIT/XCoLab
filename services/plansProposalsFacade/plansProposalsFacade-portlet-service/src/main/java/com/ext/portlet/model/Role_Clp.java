@@ -22,6 +22,7 @@ public class Role_Clp extends BaseModelImpl<Role_> implements Role_ {
     private long _roleId;
     private String _name;
     private BaseModel<?> _role_RemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public Role_Clp() {
     }
@@ -230,6 +231,10 @@ public class Role_Clp extends BaseModelImpl<Role_> implements Role_ {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

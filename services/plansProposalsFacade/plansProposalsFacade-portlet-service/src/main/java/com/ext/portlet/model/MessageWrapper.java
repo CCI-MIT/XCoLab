@@ -290,7 +290,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
     }
 
     @Override
-    public int compareTo(Message message) {
+    public int compareTo(com.ext.portlet.model.Message message) {
         return _message.compareTo(message);
     }
 
@@ -300,17 +300,17 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<Message> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.Message> toCacheModel() {
         return _message.toCacheModel();
     }
 
     @Override
-    public Message toEscapedModel() {
+    public com.ext.portlet.model.Message toEscapedModel() {
         return new MessageWrapper(_message.toEscapedModel());
     }
 
     @Override
-    public Message toUnescapedModel() {
+    public com.ext.portlet.model.Message toUnescapedModel() {
         return new MessageWrapper(_message.toUnescapedModel());
     }
 

@@ -209,7 +209,7 @@ public class RolesCategoryWrapper implements RolesCategory,
     }
 
     @Override
-    public int compareTo(RolesCategory rolesCategory) {
+    public int compareTo(com.ext.portlet.model.RolesCategory rolesCategory) {
         return _rolesCategory.compareTo(rolesCategory);
     }
 
@@ -219,17 +219,17 @@ public class RolesCategoryWrapper implements RolesCategory,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<RolesCategory> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.RolesCategory> toCacheModel() {
         return _rolesCategory.toCacheModel();
     }
 
     @Override
-    public RolesCategory toEscapedModel() {
+    public com.ext.portlet.model.RolesCategory toEscapedModel() {
         return new RolesCategoryWrapper(_rolesCategory.toEscapedModel());
     }
 
     @Override
-    public RolesCategory toUnescapedModel() {
+    public com.ext.portlet.model.RolesCategory toUnescapedModel() {
         return new RolesCategoryWrapper(_rolesCategory.toUnescapedModel());
     }
 

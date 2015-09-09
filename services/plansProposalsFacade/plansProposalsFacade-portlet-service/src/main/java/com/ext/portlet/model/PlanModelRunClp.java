@@ -29,6 +29,7 @@ public class PlanModelRunClp extends BaseModelImpl<PlanModelRun>
     private Date _created;
     private long _updateAuthorId;
     private BaseModel<?> _planModelRunRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanModelRunClp() {
     }
@@ -395,6 +396,10 @@ public class PlanModelRunClp extends BaseModelImpl<PlanModelRun>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

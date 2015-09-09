@@ -26,6 +26,7 @@ public class MessagingRedirectLinkClp extends BaseModelImpl<MessagingRedirectLin
     private long _messageId;
     private Date _createDate;
     private BaseModel<?> _messagingRedirectLinkRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public MessagingRedirectLinkClp() {
     }
@@ -296,6 +297,10 @@ public class MessagingRedirectLinkClp extends BaseModelImpl<MessagingRedirectLin
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

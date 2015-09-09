@@ -153,19 +153,19 @@ public interface ContestScheduleModel extends BaseModel<ContestSchedule> {
     public Object clone();
 
     @Override
-    public int compareTo(ContestSchedule contestSchedule);
+    public int compareTo(com.ext.portlet.model.ContestSchedule contestSchedule);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ContestSchedule> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ContestSchedule> toCacheModel();
 
     @Override
-    public ContestSchedule toEscapedModel();
+    public com.ext.portlet.model.ContestSchedule toEscapedModel();
 
     @Override
-    public ContestSchedule toUnescapedModel();
+    public com.ext.portlet.model.ContestSchedule toUnescapedModel();
 
     @Override
     public String toString();

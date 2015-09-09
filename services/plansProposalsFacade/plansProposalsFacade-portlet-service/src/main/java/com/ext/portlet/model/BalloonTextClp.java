@@ -35,6 +35,7 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
     private String _facebookSubject;
     private boolean _enabled;
     private BaseModel<?> _balloonTextRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public BalloonTextClp() {
     }
@@ -621,6 +622,10 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

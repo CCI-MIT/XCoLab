@@ -23,6 +23,7 @@ public class ImpactTemplateFocusAreaListClp extends BaseModelImpl<ImpactTemplate
     private long _focusAreaListId;
     private String _name;
     private BaseModel<?> _impactTemplateFocusAreaListRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ImpactTemplateFocusAreaListClp() {
     }
@@ -235,6 +236,10 @@ public class ImpactTemplateFocusAreaListClp extends BaseModelImpl<ImpactTemplate
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -33,6 +33,7 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
     private long _advisorDiscussionId;
     private long _groupId;
     private BaseModel<?> _proposalRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ProposalClp() {
     }
@@ -550,6 +551,10 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

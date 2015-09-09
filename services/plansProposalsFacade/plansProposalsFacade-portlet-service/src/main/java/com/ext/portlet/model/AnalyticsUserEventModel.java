@@ -202,19 +202,20 @@ public interface AnalyticsUserEventModel extends BaseModel<AnalyticsUserEvent> {
     public Object clone();
 
     @Override
-    public int compareTo(AnalyticsUserEvent analyticsUserEvent);
+    public int compareTo(
+        com.ext.portlet.model.AnalyticsUserEvent analyticsUserEvent);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<AnalyticsUserEvent> toCacheModel();
+    public CacheModel<com.ext.portlet.model.AnalyticsUserEvent> toCacheModel();
 
     @Override
-    public AnalyticsUserEvent toEscapedModel();
+    public com.ext.portlet.model.AnalyticsUserEvent toEscapedModel();
 
     @Override
-    public AnalyticsUserEvent toUnescapedModel();
+    public com.ext.portlet.model.AnalyticsUserEvent toUnescapedModel();
 
     @Override
     public String toString();

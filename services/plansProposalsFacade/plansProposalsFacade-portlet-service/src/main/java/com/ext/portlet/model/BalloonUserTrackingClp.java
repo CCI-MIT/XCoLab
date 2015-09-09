@@ -42,6 +42,7 @@ public class BalloonUserTrackingClp extends BaseModelImpl<BalloonUserTracking>
     private String _balloonLinkContext;
     private String _userAgent;
     private BaseModel<?> _balloonUserTrackingRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public BalloonUserTrackingClp() {
     }
@@ -741,6 +742,10 @@ public class BalloonUserTrackingClp extends BaseModelImpl<BalloonUserTracking>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

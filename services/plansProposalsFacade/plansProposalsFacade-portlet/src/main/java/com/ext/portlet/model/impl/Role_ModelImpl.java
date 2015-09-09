@@ -67,8 +67,8 @@ public class Role_ModelImpl extends BaseModelImpl<Role_> implements Role_Model {
     public static final boolean COLUMN_BITMASK_ENABLED = false;
     public static final String MAPPING_TABLE_XCOLAB_USERS_ROLES_NAME = "xcolab_Users_Roles";
     public static final Object[][] MAPPING_TABLE_XCOLAB_USERS_ROLES_COLUMNS = {
-            { "userId", Types.BIGINT },
-            { "roleId", Types.BIGINT }
+            { "roleId", Types.BIGINT },
+            { "userId", Types.BIGINT }
         };
     public static final String MAPPING_TABLE_XCOLAB_USERS_ROLES_SQL_CREATE = "create table xcolab_Users_Roles (roleId LONG not null,userId LONG not null,primary key (roleId, userId))";
     public static final boolean FINDER_CACHE_ENABLED_XCOLAB_USERS_ROLES = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(

@@ -29,6 +29,7 @@ public class ModelGlobalPreferenceClp extends BaseModelImpl<ModelGlobalPreferenc
     private boolean _usesCustomInputs;
     private String _customInputsDefinition;
     private BaseModel<?> _modelGlobalPreferenceRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ModelGlobalPreferenceClp() {
     }
@@ -440,6 +441,10 @@ public class ModelGlobalPreferenceClp extends BaseModelImpl<ModelGlobalPreferenc
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

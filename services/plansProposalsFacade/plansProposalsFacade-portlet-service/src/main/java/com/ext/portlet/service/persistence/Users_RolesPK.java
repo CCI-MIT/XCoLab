@@ -5,7 +5,10 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class Users_RolesPK implements Comparable<Users_RolesPK>, Serializable {
     public long userId;
     public long roleId;

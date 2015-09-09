@@ -181,19 +181,20 @@ public interface BalloonStatsEntryModel extends BaseModel<BalloonStatsEntry> {
     public Object clone();
 
     @Override
-    public int compareTo(BalloonStatsEntry balloonStatsEntry);
+    public int compareTo(
+        com.ext.portlet.model.BalloonStatsEntry balloonStatsEntry);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<BalloonStatsEntry> toCacheModel();
+    public CacheModel<com.ext.portlet.model.BalloonStatsEntry> toCacheModel();
 
     @Override
-    public BalloonStatsEntry toEscapedModel();
+    public com.ext.portlet.model.BalloonStatsEntry toEscapedModel();
 
     @Override
-    public BalloonStatsEntry toUnescapedModel();
+    public com.ext.portlet.model.BalloonStatsEntry toUnescapedModel();
 
     @Override
     public String toString();

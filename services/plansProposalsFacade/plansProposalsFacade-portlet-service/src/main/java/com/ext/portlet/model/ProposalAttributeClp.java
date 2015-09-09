@@ -30,6 +30,7 @@ public class ProposalAttributeClp extends BaseModelImpl<ProposalAttribute>
     private String _stringValue;
     private double _realValue;
     private BaseModel<?> _proposalAttributeRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ProposalAttributeClp() {
     }
@@ -452,6 +453,10 @@ public class ProposalAttributeClp extends BaseModelImpl<ProposalAttribute>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

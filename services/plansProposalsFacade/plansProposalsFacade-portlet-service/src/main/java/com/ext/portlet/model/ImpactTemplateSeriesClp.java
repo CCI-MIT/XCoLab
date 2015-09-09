@@ -24,6 +24,7 @@ public class ImpactTemplateSeriesClp extends BaseModelImpl<ImpactTemplateSeries>
     private long _iterationId;
     private String _name;
     private BaseModel<?> _impactTemplateSeriesRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ImpactTemplateSeriesClp() {
     }
@@ -264,6 +265,10 @@ public class ImpactTemplateSeriesClp extends BaseModelImpl<ImpactTemplateSeries>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

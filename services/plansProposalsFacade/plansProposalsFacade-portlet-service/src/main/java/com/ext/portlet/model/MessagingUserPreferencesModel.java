@@ -207,19 +207,20 @@ public interface MessagingUserPreferencesModel extends BaseModel<MessagingUserPr
     public Object clone();
 
     @Override
-    public int compareTo(MessagingUserPreferences messagingUserPreferences);
+    public int compareTo(
+        com.ext.portlet.model.MessagingUserPreferences messagingUserPreferences);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<MessagingUserPreferences> toCacheModel();
+    public CacheModel<com.ext.portlet.model.MessagingUserPreferences> toCacheModel();
 
     @Override
-    public MessagingUserPreferences toEscapedModel();
+    public com.ext.portlet.model.MessagingUserPreferences toEscapedModel();
 
     @Override
-    public MessagingUserPreferences toUnescapedModel();
+    public com.ext.portlet.model.MessagingUserPreferences toUnescapedModel();
 
     @Override
     public String toString();

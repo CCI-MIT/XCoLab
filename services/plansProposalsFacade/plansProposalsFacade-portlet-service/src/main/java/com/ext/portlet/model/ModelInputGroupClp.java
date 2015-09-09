@@ -29,6 +29,7 @@ public class ModelInputGroupClp extends BaseModelImpl<ModelInputGroup>
     private String _groupType;
     private long _parentGroupPK;
     private BaseModel<?> _modelInputGroupRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ModelInputGroupClp() {
     }
@@ -425,6 +426,10 @@ public class ModelInputGroupClp extends BaseModelImpl<ModelInputGroup>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

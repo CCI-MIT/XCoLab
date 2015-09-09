@@ -28,6 +28,7 @@ public class PlanItemClp extends BaseModelImpl<PlanItem> implements PlanItem {
     private String _updateType;
     private long _version;
     private BaseModel<?> _planItemRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanItemClp() {
     }
@@ -394,6 +395,10 @@ public class PlanItemClp extends BaseModelImpl<PlanItem> implements PlanItem {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

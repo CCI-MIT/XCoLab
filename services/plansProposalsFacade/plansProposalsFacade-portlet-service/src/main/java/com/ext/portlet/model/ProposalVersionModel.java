@@ -169,19 +169,19 @@ public interface ProposalVersionModel extends BaseModel<ProposalVersion> {
     public Object clone();
 
     @Override
-    public int compareTo(ProposalVersion proposalVersion);
+    public int compareTo(com.ext.portlet.model.ProposalVersion proposalVersion);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ProposalVersion> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ProposalVersion> toCacheModel();
 
     @Override
-    public ProposalVersion toEscapedModel();
+    public com.ext.portlet.model.ProposalVersion toEscapedModel();
 
     @Override
-    public ProposalVersion toUnescapedModel();
+    public com.ext.portlet.model.ProposalVersion toUnescapedModel();
 
     @Override
     public String toString();

@@ -184,19 +184,20 @@ public interface DiscussionMessageFlagModel extends BaseModel<DiscussionMessageF
     public Object clone();
 
     @Override
-    public int compareTo(DiscussionMessageFlag discussionMessageFlag);
+    public int compareTo(
+        com.ext.portlet.model.DiscussionMessageFlag discussionMessageFlag);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<DiscussionMessageFlag> toCacheModel();
+    public CacheModel<com.ext.portlet.model.DiscussionMessageFlag> toCacheModel();
 
     @Override
-    public DiscussionMessageFlag toEscapedModel();
+    public com.ext.portlet.model.DiscussionMessageFlag toEscapedModel();
 
     @Override
-    public DiscussionMessageFlag toUnescapedModel();
+    public com.ext.portlet.model.DiscussionMessageFlag toUnescapedModel();
 
     @Override
     public String toString();

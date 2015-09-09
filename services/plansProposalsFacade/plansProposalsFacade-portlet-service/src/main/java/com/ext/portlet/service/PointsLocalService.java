@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface PointsLocalService extends BaseLocalService,
     * @return the points that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.Points addPoints(
         com.ext.portlet.model.Points points)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -59,6 +61,7 @@ public interface PointsLocalService extends BaseLocalService,
     * @throws PortalException if a points with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.Points deletePoints(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -70,6 +73,7 @@ public interface PointsLocalService extends BaseLocalService,
     * @return the points that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.Points deletePoints(
         com.ext.portlet.model.Points points)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -208,6 +212,7 @@ public interface PointsLocalService extends BaseLocalService,
     * @return the points that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.Points updatePoints(
         com.ext.portlet.model.Points points)
         throws com.liferay.portal.kernel.exception.SystemException;

@@ -123,19 +123,19 @@ public interface FocusAreaModel extends BaseModel<FocusArea> {
     public Object clone();
 
     @Override
-    public int compareTo(FocusArea focusArea);
+    public int compareTo(com.ext.portlet.model.FocusArea focusArea);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<FocusArea> toCacheModel();
+    public CacheModel<com.ext.portlet.model.FocusArea> toCacheModel();
 
     @Override
-    public FocusArea toEscapedModel();
+    public com.ext.portlet.model.FocusArea toEscapedModel();
 
     @Override
-    public FocusArea toUnescapedModel();
+    public com.ext.portlet.model.FocusArea toUnescapedModel();
 
     @Override
     public String toString();

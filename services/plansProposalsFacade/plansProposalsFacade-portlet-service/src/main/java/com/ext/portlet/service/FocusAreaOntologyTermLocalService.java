@@ -1,7 +1,9 @@
 package com.ext.portlet.service;
 
+import com.liferay.portal.kernel.dao.orm.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +41,7 @@ public interface FocusAreaOntologyTermLocalService extends BaseLocalService,
     * @return the focus area ontology term that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.FocusAreaOntologyTerm addFocusAreaOntologyTerm(
         com.ext.portlet.model.FocusAreaOntologyTerm focusAreaOntologyTerm)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -60,6 +63,7 @@ public interface FocusAreaOntologyTermLocalService extends BaseLocalService,
     * @throws PortalException if a focus area ontology term with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.FocusAreaOntologyTerm deleteFocusAreaOntologyTerm(
         com.ext.portlet.service.persistence.FocusAreaOntologyTermPK focusAreaOntologyTermPK)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -72,6 +76,7 @@ public interface FocusAreaOntologyTermLocalService extends BaseLocalService,
     * @return the focus area ontology term that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.FocusAreaOntologyTerm deleteFocusAreaOntologyTerm(
         com.ext.portlet.model.FocusAreaOntologyTerm focusAreaOntologyTerm)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -213,6 +218,7 @@ public interface FocusAreaOntologyTermLocalService extends BaseLocalService,
     * @return the focus area ontology term that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.FocusAreaOntologyTerm updateFocusAreaOntologyTerm(
         com.ext.portlet.model.FocusAreaOntologyTerm focusAreaOntologyTerm)
         throws com.liferay.portal.kernel.exception.SystemException;

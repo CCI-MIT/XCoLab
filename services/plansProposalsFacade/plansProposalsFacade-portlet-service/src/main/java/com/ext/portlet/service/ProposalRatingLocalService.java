@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface ProposalRatingLocalService extends BaseLocalService,
     * @return the proposal rating that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ProposalRating addProposalRating(
         com.ext.portlet.model.ProposalRating proposalRating)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -59,6 +61,7 @@ public interface ProposalRatingLocalService extends BaseLocalService,
     * @throws PortalException if a proposal rating with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ProposalRating deleteProposalRating(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -70,6 +73,7 @@ public interface ProposalRatingLocalService extends BaseLocalService,
     * @return the proposal rating that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ProposalRating deleteProposalRating(
         com.ext.portlet.model.ProposalRating proposalRating)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -209,6 +213,7 @@ public interface ProposalRatingLocalService extends BaseLocalService,
     * @return the proposal rating that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ProposalRating updateProposalRating(
         com.ext.portlet.model.ProposalRating proposalRating)
         throws com.liferay.portal.kernel.exception.SystemException;

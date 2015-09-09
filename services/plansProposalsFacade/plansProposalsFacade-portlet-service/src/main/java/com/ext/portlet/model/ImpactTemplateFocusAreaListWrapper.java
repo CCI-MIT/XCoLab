@@ -185,7 +185,7 @@ public class ImpactTemplateFocusAreaListWrapper
 
     @Override
     public int compareTo(
-        ImpactTemplateFocusAreaList impactTemplateFocusAreaList) {
+        com.ext.portlet.model.ImpactTemplateFocusAreaList impactTemplateFocusAreaList) {
         return _impactTemplateFocusAreaList.compareTo(impactTemplateFocusAreaList);
     }
 
@@ -195,17 +195,17 @@ public class ImpactTemplateFocusAreaListWrapper
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ImpactTemplateFocusAreaList> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ImpactTemplateFocusAreaList> toCacheModel() {
         return _impactTemplateFocusAreaList.toCacheModel();
     }
 
     @Override
-    public ImpactTemplateFocusAreaList toEscapedModel() {
+    public com.ext.portlet.model.ImpactTemplateFocusAreaList toEscapedModel() {
         return new ImpactTemplateFocusAreaListWrapper(_impactTemplateFocusAreaList.toEscapedModel());
     }
 
     @Override
-    public ImpactTemplateFocusAreaList toUnescapedModel() {
+    public com.ext.portlet.model.ImpactTemplateFocusAreaList toUnescapedModel() {
         return new ImpactTemplateFocusAreaListWrapper(_impactTemplateFocusAreaList.toUnescapedModel());
     }
 

@@ -317,7 +317,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     }
 
     @Override
-    public int compareTo(ModelInputItem modelInputItem) {
+    public int compareTo(com.ext.portlet.model.ModelInputItem modelInputItem) {
         return _modelInputItem.compareTo(modelInputItem);
     }
 
@@ -327,17 +327,17 @@ public class ModelInputItemWrapper implements ModelInputItem,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ModelInputItem> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ModelInputItem> toCacheModel() {
         return _modelInputItem.toCacheModel();
     }
 
     @Override
-    public ModelInputItem toEscapedModel() {
+    public com.ext.portlet.model.ModelInputItem toEscapedModel() {
         return new ModelInputItemWrapper(_modelInputItem.toEscapedModel());
     }
 
     @Override
-    public ModelInputItem toUnescapedModel() {
+    public com.ext.portlet.model.ModelInputItem toUnescapedModel() {
         return new ModelInputItemWrapper(_modelInputItem.toUnescapedModel());
     }
 

@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface ProposalContestPhaseAttributeLocalService
     * @return the proposal contest phase attribute that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ProposalContestPhaseAttribute addProposalContestPhaseAttribute(
         com.ext.portlet.model.ProposalContestPhaseAttribute proposalContestPhaseAttribute)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -60,6 +62,7 @@ public interface ProposalContestPhaseAttributeLocalService
     * @throws PortalException if a proposal contest phase attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ProposalContestPhaseAttribute deleteProposalContestPhaseAttribute(
         long id)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -72,6 +75,7 @@ public interface ProposalContestPhaseAttributeLocalService
     * @return the proposal contest phase attribute that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ProposalContestPhaseAttribute deleteProposalContestPhaseAttribute(
         com.ext.portlet.model.ProposalContestPhaseAttribute proposalContestPhaseAttribute)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -212,6 +216,7 @@ public interface ProposalContestPhaseAttributeLocalService
     * @return the proposal contest phase attribute that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ProposalContestPhaseAttribute updateProposalContestPhaseAttribute(
         com.ext.portlet.model.ProposalContestPhaseAttribute proposalContestPhaseAttribute)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -300,6 +305,20 @@ public interface ProposalContestPhaseAttributeLocalService
         long proposalId, long contestPhaseId, java.lang.String attributeName)
         throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Returns proposal phase attribute (if exists)</p>
+    *
+    * @param proposalId id of a proposal
+    * @param contestPhaseId id of a phase
+    * @param attributeName name of an attribute
+    * @return true if the attribute exists, false otherwise
+    * @throws SystemException in case of lr error
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean hasProposalContestPhaseAttribute(long proposalId,
+        long contestPhaseId, java.lang.String attributeName)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * <p>Returns all contest phase attributes</p>
