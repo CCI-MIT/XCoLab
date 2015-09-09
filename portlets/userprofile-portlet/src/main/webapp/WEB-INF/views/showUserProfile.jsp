@@ -53,18 +53,14 @@
 								<div class="badge-container">
 									<c:forEach var="badge" items="${currentUserProfile.badges}">
 										<a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}">
-											<span class="fieldWithTooltip">
-												<img src="/climatecolab-theme/images/icon-prize{{ proposal.ribbon }}.png" />
+											<div class="badge-small badge-${badge.badgeType} fieldWithTooltip">
+												<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
+														${badge.badgeTitle}
+												</span>
 
-												<div class="badge-small badge-${badge.badgeType}">
-													<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
-															${badge.badgeTitle}
-													</span>
-
-													<div class="badge-small-text">20</div>
-													<span class="badge-small-year">${badge.badgeYearShort}</span>
-												</div>
-											</span>
+												<div class="badge-small-text">20</div>
+												<span class="badge-small-year">${badge.badgeYearShort}</span>
+											</div>
 											<div class="tooltip">
 												${badge.badgeText} in ${badge.contestName}
 											</div>
@@ -132,7 +128,7 @@
 						</td>
 						<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPoints}</td>
 					</tr>
-					
+
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
 						<tr>
 							<td class="b" width="23%">Email</td>
