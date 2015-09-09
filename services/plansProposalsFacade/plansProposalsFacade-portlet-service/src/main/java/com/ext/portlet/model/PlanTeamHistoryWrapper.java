@@ -340,7 +340,7 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     }
 
     @Override
-    public int compareTo(PlanTeamHistory planTeamHistory) {
+    public int compareTo(com.ext.portlet.model.PlanTeamHistory planTeamHistory) {
         return _planTeamHistory.compareTo(planTeamHistory);
     }
 
@@ -350,17 +350,17 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanTeamHistory> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanTeamHistory> toCacheModel() {
         return _planTeamHistory.toCacheModel();
     }
 
     @Override
-    public PlanTeamHistory toEscapedModel() {
+    public com.ext.portlet.model.PlanTeamHistory toEscapedModel() {
         return new PlanTeamHistoryWrapper(_planTeamHistory.toEscapedModel());
     }
 
     @Override
-    public PlanTeamHistory toUnescapedModel() {
+    public com.ext.portlet.model.PlanTeamHistory toUnescapedModel() {
         return new PlanTeamHistoryWrapper(_planTeamHistory.toUnescapedModel());
     }
 

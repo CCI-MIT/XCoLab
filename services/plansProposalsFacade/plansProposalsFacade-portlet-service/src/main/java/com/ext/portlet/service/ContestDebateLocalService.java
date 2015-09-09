@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface ContestDebateLocalService extends BaseLocalService,
     * @return the contest debate that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ContestDebate addContestDebate(
         com.ext.portlet.model.ContestDebate contestDebate)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -59,6 +61,7 @@ public interface ContestDebateLocalService extends BaseLocalService,
     * @throws PortalException if a contest debate with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ContestDebate deleteContestDebate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -70,6 +73,7 @@ public interface ContestDebateLocalService extends BaseLocalService,
     * @return the contest debate that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ContestDebate deleteContestDebate(
         com.ext.portlet.model.ContestDebate contestDebate)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -209,6 +213,7 @@ public interface ContestDebateLocalService extends BaseLocalService,
     * @return the contest debate that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ContestDebate updateContestDebate(
         com.ext.portlet.model.ContestDebate contestDebate)
         throws com.liferay.portal.kernel.exception.SystemException;

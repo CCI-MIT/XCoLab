@@ -317,7 +317,7 @@ public class PlanItemWrapper implements PlanItem, ModelWrapper<PlanItem> {
     }
 
     @Override
-    public int compareTo(PlanItem planItem) {
+    public int compareTo(com.ext.portlet.model.PlanItem planItem) {
         return _planItem.compareTo(planItem);
     }
 
@@ -327,17 +327,17 @@ public class PlanItemWrapper implements PlanItem, ModelWrapper<PlanItem> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanItem> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanItem> toCacheModel() {
         return _planItem.toCacheModel();
     }
 
     @Override
-    public PlanItem toEscapedModel() {
+    public com.ext.portlet.model.PlanItem toEscapedModel() {
         return new PlanItemWrapper(_planItem.toEscapedModel());
     }
 
     @Override
-    public PlanItem toUnescapedModel() {
+    public com.ext.portlet.model.PlanItem toUnescapedModel() {
         return new PlanItemWrapper(_planItem.toUnescapedModel());
     }
 

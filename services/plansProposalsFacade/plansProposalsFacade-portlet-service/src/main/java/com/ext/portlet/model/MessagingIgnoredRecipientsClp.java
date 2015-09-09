@@ -29,6 +29,7 @@ public class MessagingIgnoredRecipientsClp extends BaseModelImpl<MessagingIgnore
     private String _userUuid;
     private Date _createDate;
     private BaseModel<?> _messagingIgnoredRecipientsRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public MessagingIgnoredRecipientsClp() {
     }
@@ -341,6 +342,10 @@ public class MessagingIgnoredRecipientsClp extends BaseModelImpl<MessagingIgnore
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

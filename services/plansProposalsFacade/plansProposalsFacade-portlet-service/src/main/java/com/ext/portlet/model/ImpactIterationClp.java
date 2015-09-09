@@ -24,6 +24,7 @@ public class ImpactIterationClp extends BaseModelImpl<ImpactIteration>
     private long _iterationId;
     private int _year;
     private BaseModel<?> _impactIterationRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ImpactIterationClp() {
     }
@@ -229,6 +230,10 @@ public class ImpactIterationClp extends BaseModelImpl<ImpactIteration>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

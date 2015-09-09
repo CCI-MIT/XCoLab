@@ -242,19 +242,19 @@ public interface StaffMemberModel extends BaseModel<StaffMember> {
     public Object clone();
 
     @Override
-    public int compareTo(StaffMember staffMember);
+    public int compareTo(com.ext.portlet.model.StaffMember staffMember);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<StaffMember> toCacheModel();
+    public CacheModel<com.ext.portlet.model.StaffMember> toCacheModel();
 
     @Override
-    public StaffMember toEscapedModel();
+    public com.ext.portlet.model.StaffMember toEscapedModel();
 
     @Override
-    public StaffMember toUnescapedModel();
+    public com.ext.portlet.model.StaffMember toUnescapedModel();
 
     @Override
     public String toString();

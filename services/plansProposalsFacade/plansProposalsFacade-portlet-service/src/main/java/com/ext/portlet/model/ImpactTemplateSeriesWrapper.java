@@ -210,7 +210,8 @@ public class ImpactTemplateSeriesWrapper implements ImpactTemplateSeries,
     }
 
     @Override
-    public int compareTo(ImpactTemplateSeries impactTemplateSeries) {
+    public int compareTo(
+        com.ext.portlet.model.ImpactTemplateSeries impactTemplateSeries) {
         return _impactTemplateSeries.compareTo(impactTemplateSeries);
     }
 
@@ -220,17 +221,17 @@ public class ImpactTemplateSeriesWrapper implements ImpactTemplateSeries,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ImpactTemplateSeries> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ImpactTemplateSeries> toCacheModel() {
         return _impactTemplateSeries.toCacheModel();
     }
 
     @Override
-    public ImpactTemplateSeries toEscapedModel() {
+    public com.ext.portlet.model.ImpactTemplateSeries toEscapedModel() {
         return new ImpactTemplateSeriesWrapper(_impactTemplateSeries.toEscapedModel());
     }
 
     @Override
-    public ImpactTemplateSeries toUnescapedModel() {
+    public com.ext.portlet.model.ImpactTemplateSeries toUnescapedModel() {
         return new ImpactTemplateSeriesWrapper(_impactTemplateSeries.toUnescapedModel());
     }
 

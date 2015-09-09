@@ -182,19 +182,20 @@ public interface ImpactDefaultSeriesModel extends BaseModel<ImpactDefaultSeries>
     public Object clone();
 
     @Override
-    public int compareTo(ImpactDefaultSeries impactDefaultSeries);
+    public int compareTo(
+        com.ext.portlet.model.ImpactDefaultSeries impactDefaultSeries);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ImpactDefaultSeries> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ImpactDefaultSeries> toCacheModel();
 
     @Override
-    public ImpactDefaultSeries toEscapedModel();
+    public com.ext.portlet.model.ImpactDefaultSeries toEscapedModel();
 
     @Override
-    public ImpactDefaultSeries toUnescapedModel();
+    public com.ext.portlet.model.ImpactDefaultSeries toUnescapedModel();
 
     @Override
     public String toString();

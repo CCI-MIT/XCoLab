@@ -26,6 +26,7 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
     private String _columnName;
     private boolean _visibleByDefault;
     private BaseModel<?> _planTypeColumnRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanTypeColumnClp() {
     }
@@ -346,6 +347,10 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

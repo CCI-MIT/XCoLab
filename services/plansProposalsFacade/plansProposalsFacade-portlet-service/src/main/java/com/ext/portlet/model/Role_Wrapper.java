@@ -181,7 +181,7 @@ public class Role_Wrapper implements Role_, ModelWrapper<Role_> {
     }
 
     @Override
-    public int compareTo(Role_ role_) {
+    public int compareTo(com.ext.portlet.model.Role_ role_) {
         return _role_.compareTo(role_);
     }
 
@@ -191,17 +191,17 @@ public class Role_Wrapper implements Role_, ModelWrapper<Role_> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<Role_> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.Role_> toCacheModel() {
         return _role_.toCacheModel();
     }
 
     @Override
-    public Role_ toEscapedModel() {
+    public com.ext.portlet.model.Role_ toEscapedModel() {
         return new Role_Wrapper(_role_.toEscapedModel());
     }
 
     @Override
-    public Role_ toUnescapedModel() {
+    public com.ext.portlet.model.Role_ toUnescapedModel() {
         return new Role_Wrapper(_role_.toUnescapedModel());
     }
 

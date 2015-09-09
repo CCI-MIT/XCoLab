@@ -259,7 +259,7 @@ public class PlanVoteWrapper implements PlanVote, ModelWrapper<PlanVote> {
     }
 
     @Override
-    public int compareTo(PlanVote planVote) {
+    public int compareTo(com.ext.portlet.model.PlanVote planVote) {
         return _planVote.compareTo(planVote);
     }
 
@@ -269,17 +269,17 @@ public class PlanVoteWrapper implements PlanVote, ModelWrapper<PlanVote> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanVote> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanVote> toCacheModel() {
         return _planVote.toCacheModel();
     }
 
     @Override
-    public PlanVote toEscapedModel() {
+    public com.ext.portlet.model.PlanVote toEscapedModel() {
         return new PlanVoteWrapper(_planVote.toEscapedModel());
     }
 
     @Override
-    public PlanVote toUnescapedModel() {
+    public com.ext.portlet.model.PlanVote toUnescapedModel() {
         return new PlanVoteWrapper(_planVote.toUnescapedModel());
     }
 

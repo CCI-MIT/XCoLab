@@ -27,6 +27,7 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
     private String _userUuid;
     private String _role;
     private BaseModel<?> _contestTeamMemberRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ContestTeamMemberClp() {
     }
@@ -313,6 +314,10 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

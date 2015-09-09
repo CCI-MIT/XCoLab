@@ -27,6 +27,7 @@ public class MessagingMessageRecipientClp extends BaseModelImpl<MessagingMessage
     private String _userUuid;
     private String _emailAddress;
     private BaseModel<?> _messagingMessageRecipientRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public MessagingMessageRecipientClp() {
     }
@@ -308,6 +309,10 @@ public class MessagingMessageRecipientClp extends BaseModelImpl<MessagingMessage
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

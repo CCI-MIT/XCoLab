@@ -28,6 +28,7 @@ public class PlanVoteClp extends BaseModelImpl<PlanVote> implements PlanVote {
     private long _planId;
     private Date _createDate;
     private BaseModel<?> _planVoteRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanVoteClp() {
     }
@@ -301,6 +302,10 @@ public class PlanVoteClp extends BaseModelImpl<PlanVote> implements PlanVote {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

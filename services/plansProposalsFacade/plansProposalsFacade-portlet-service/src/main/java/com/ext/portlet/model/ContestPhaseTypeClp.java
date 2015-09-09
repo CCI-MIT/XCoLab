@@ -29,6 +29,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
     private boolean _invisible;
     private int _pointsAccessible;
     private BaseModel<?> _contestPhaseTypeRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ContestPhaseTypeClp() {
     }
@@ -439,6 +440,10 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

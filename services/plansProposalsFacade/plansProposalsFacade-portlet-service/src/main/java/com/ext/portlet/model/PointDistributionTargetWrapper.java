@@ -264,7 +264,8 @@ public class PointDistributionTargetWrapper implements PointDistributionTarget,
     }
 
     @Override
-    public int compareTo(PointDistributionTarget pointDistributionTarget) {
+    public int compareTo(
+        com.ext.portlet.model.PointDistributionTarget pointDistributionTarget) {
         return _pointDistributionTarget.compareTo(pointDistributionTarget);
     }
 
@@ -274,17 +275,17 @@ public class PointDistributionTargetWrapper implements PointDistributionTarget,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PointDistributionTarget> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PointDistributionTarget> toCacheModel() {
         return _pointDistributionTarget.toCacheModel();
     }
 
     @Override
-    public PointDistributionTarget toEscapedModel() {
+    public com.ext.portlet.model.PointDistributionTarget toEscapedModel() {
         return new PointDistributionTargetWrapper(_pointDistributionTarget.toEscapedModel());
     }
 
     @Override
-    public PointDistributionTarget toUnescapedModel() {
+    public com.ext.portlet.model.PointDistributionTarget toUnescapedModel() {
         return new PointDistributionTargetWrapper(_pointDistributionTarget.toUnescapedModel());
     }
 

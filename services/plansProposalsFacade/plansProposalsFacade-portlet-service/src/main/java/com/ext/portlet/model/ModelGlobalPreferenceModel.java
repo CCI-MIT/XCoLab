@@ -207,19 +207,20 @@ public interface ModelGlobalPreferenceModel extends BaseModel<ModelGlobalPrefere
     public Object clone();
 
     @Override
-    public int compareTo(ModelGlobalPreference modelGlobalPreference);
+    public int compareTo(
+        com.ext.portlet.model.ModelGlobalPreference modelGlobalPreference);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ModelGlobalPreference> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ModelGlobalPreference> toCacheModel();
 
     @Override
-    public ModelGlobalPreference toEscapedModel();
+    public com.ext.portlet.model.ModelGlobalPreference toEscapedModel();
 
     @Override
-    public ModelGlobalPreference toUnescapedModel();
+    public com.ext.portlet.model.ModelGlobalPreference toUnescapedModel();
 
     @Override
     public String toString();

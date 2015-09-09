@@ -33,6 +33,7 @@ public class StaffMemberClp extends BaseModelImpl<StaffMember>
     private String _organization;
     private int _sort;
     private BaseModel<?> _staffMemberRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public StaffMemberClp() {
     }
@@ -497,6 +498,10 @@ public class StaffMemberClp extends BaseModelImpl<StaffMember>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

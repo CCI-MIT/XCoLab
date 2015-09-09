@@ -24,6 +24,7 @@ public class ModelDiscussionClp extends BaseModelImpl<ModelDiscussion>
     private long _modelId;
     private long _categoryId;
     private BaseModel<?> _modelDiscussionRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ModelDiscussionClp() {
     }
@@ -265,6 +266,10 @@ public class ModelDiscussionClp extends BaseModelImpl<ModelDiscussion>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

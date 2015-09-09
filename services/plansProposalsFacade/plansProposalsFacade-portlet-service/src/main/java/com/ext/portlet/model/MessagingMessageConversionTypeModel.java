@@ -125,19 +125,19 @@ public interface MessagingMessageConversionTypeModel extends BaseModel<Messaging
 
     @Override
     public int compareTo(
-        MessagingMessageConversionType messagingMessageConversionType);
+        com.ext.portlet.model.MessagingMessageConversionType messagingMessageConversionType);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<MessagingMessageConversionType> toCacheModel();
+    public CacheModel<com.ext.portlet.model.MessagingMessageConversionType> toCacheModel();
 
     @Override
-    public MessagingMessageConversionType toEscapedModel();
+    public com.ext.portlet.model.MessagingMessageConversionType toEscapedModel();
 
     @Override
-    public MessagingMessageConversionType toUnescapedModel();
+    public com.ext.portlet.model.MessagingMessageConversionType toUnescapedModel();
 
     @Override
     public String toString();

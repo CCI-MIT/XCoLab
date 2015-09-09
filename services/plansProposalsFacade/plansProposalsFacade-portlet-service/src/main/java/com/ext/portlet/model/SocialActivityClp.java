@@ -25,6 +25,7 @@ public class SocialActivityClp extends BaseModelImpl<SocialActivity>
     private long _userId;
     private String _userUuid;
     private BaseModel<?> _socialActivityRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public SocialActivityClp() {
     }
@@ -245,6 +246,10 @@ public class SocialActivityClp extends BaseModelImpl<SocialActivity>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

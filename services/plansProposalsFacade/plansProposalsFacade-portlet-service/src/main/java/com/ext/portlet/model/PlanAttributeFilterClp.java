@@ -27,6 +27,7 @@ public class PlanAttributeFilterClp extends BaseModelImpl<PlanAttributeFilter>
     private Double _min;
     private String _stringVal;
     private BaseModel<?> _planAttributeFilterRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanAttributeFilterClp() {
     }
@@ -362,6 +363,10 @@ public class PlanAttributeFilterClp extends BaseModelImpl<PlanAttributeFilter>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -28,6 +28,7 @@ public class Proposal2PhaseClp extends BaseModelImpl<Proposal2Phase>
     private int _sortWeight;
     private boolean _autopromoteCandidate;
     private BaseModel<?> _proposal2PhaseRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public Proposal2PhaseClp() {
     }
@@ -360,6 +361,10 @@ public class Proposal2PhaseClp extends BaseModelImpl<Proposal2Phase>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

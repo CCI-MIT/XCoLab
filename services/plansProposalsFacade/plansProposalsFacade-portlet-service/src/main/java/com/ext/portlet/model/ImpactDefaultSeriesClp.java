@@ -28,6 +28,7 @@ public class ImpactDefaultSeriesClp extends BaseModelImpl<ImpactDefaultSeries>
     private boolean _visible;
     private boolean _editable;
     private BaseModel<?> _impactDefaultSeriesRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ImpactDefaultSeriesClp() {
     }
@@ -363,6 +364,10 @@ public class ImpactDefaultSeriesClp extends BaseModelImpl<ImpactDefaultSeries>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

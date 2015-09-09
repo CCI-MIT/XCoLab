@@ -264,7 +264,7 @@ public class BalloonLinkWrapper implements BalloonLink,
     }
 
     @Override
-    public int compareTo(BalloonLink balloonLink) {
+    public int compareTo(com.ext.portlet.model.BalloonLink balloonLink) {
         return _balloonLink.compareTo(balloonLink);
     }
 
@@ -274,17 +274,17 @@ public class BalloonLinkWrapper implements BalloonLink,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<BalloonLink> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.BalloonLink> toCacheModel() {
         return _balloonLink.toCacheModel();
     }
 
     @Override
-    public BalloonLink toEscapedModel() {
+    public com.ext.portlet.model.BalloonLink toEscapedModel() {
         return new BalloonLinkWrapper(_balloonLink.toEscapedModel());
     }
 
     @Override
-    public BalloonLink toUnescapedModel() {
+    public com.ext.portlet.model.BalloonLink toUnescapedModel() {
         return new BalloonLinkWrapper(_balloonLink.toUnescapedModel());
     }
 

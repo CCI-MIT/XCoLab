@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface PlanVoteLocalService extends BaseLocalService,
     * @return the plan vote that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.PlanVote addPlanVote(
         com.ext.portlet.model.PlanVote planVote)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -60,6 +62,7 @@ public interface PlanVoteLocalService extends BaseLocalService,
     * @throws PortalException if a plan vote with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.PlanVote deletePlanVote(
         com.ext.portlet.service.persistence.PlanVotePK planVotePK)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -72,6 +75,7 @@ public interface PlanVoteLocalService extends BaseLocalService,
     * @return the plan vote that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.PlanVote deletePlanVote(
         com.ext.portlet.model.PlanVote planVote)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -213,6 +217,7 @@ public interface PlanVoteLocalService extends BaseLocalService,
     * @return the plan vote that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.PlanVote updatePlanVote(
         com.ext.portlet.model.PlanVote planVote)
         throws com.liferay.portal.kernel.exception.SystemException;

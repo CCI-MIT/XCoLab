@@ -141,19 +141,19 @@ public interface User_Model extends BaseModel<User_> {
     public Object clone();
 
     @Override
-    public int compareTo(User_ user_);
+    public int compareTo(com.ext.portlet.model.User_ user_);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<User_> toCacheModel();
+    public CacheModel<com.ext.portlet.model.User_> toCacheModel();
 
     @Override
-    public User_ toEscapedModel();
+    public com.ext.portlet.model.User_ toEscapedModel();
 
     @Override
-    public User_ toUnescapedModel();
+    public com.ext.portlet.model.User_ toUnescapedModel();
 
     @Override
     public String toString();

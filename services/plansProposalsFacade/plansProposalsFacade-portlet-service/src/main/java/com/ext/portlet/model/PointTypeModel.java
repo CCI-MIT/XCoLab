@@ -181,19 +181,19 @@ public interface PointTypeModel extends BaseModel<PointType> {
     public Object clone();
 
     @Override
-    public int compareTo(PointType pointType);
+    public int compareTo(com.ext.portlet.model.PointType pointType);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PointType> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PointType> toCacheModel();
 
     @Override
-    public PointType toEscapedModel();
+    public com.ext.portlet.model.PointType toEscapedModel();
 
     @Override
-    public PointType toUnescapedModel();
+    public com.ext.portlet.model.PointType toUnescapedModel();
 
     @Override
     public String toString();

@@ -818,19 +818,19 @@ public interface ContestModel extends BaseModel<Contest> {
     public Object clone();
 
     @Override
-    public int compareTo(Contest contest);
+    public int compareTo(com.ext.portlet.model.Contest contest);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<Contest> toCacheModel();
+    public CacheModel<com.ext.portlet.model.Contest> toCacheModel();
 
     @Override
-    public Contest toEscapedModel();
+    public com.ext.portlet.model.Contest toEscapedModel();
 
     @Override
-    public Contest toUnescapedModel();
+    public com.ext.portlet.model.Contest toUnescapedModel();
 
     @Override
     public String toString();

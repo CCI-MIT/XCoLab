@@ -109,19 +109,19 @@ public interface ImpactIterationModel extends BaseModel<ImpactIteration> {
     public Object clone();
 
     @Override
-    public int compareTo(ImpactIteration impactIteration);
+    public int compareTo(com.ext.portlet.model.ImpactIteration impactIteration);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ImpactIteration> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ImpactIteration> toCacheModel();
 
     @Override
-    public ImpactIteration toEscapedModel();
+    public com.ext.portlet.model.ImpactIteration toEscapedModel();
 
     @Override
-    public ImpactIteration toUnescapedModel();
+    public com.ext.portlet.model.ImpactIteration toUnescapedModel();
 
     @Override
     public String toString();

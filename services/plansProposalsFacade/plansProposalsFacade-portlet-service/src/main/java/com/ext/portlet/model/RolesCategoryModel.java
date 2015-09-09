@@ -123,19 +123,19 @@ public interface RolesCategoryModel extends BaseModel<RolesCategory> {
     public Object clone();
 
     @Override
-    public int compareTo(RolesCategory rolesCategory);
+    public int compareTo(com.ext.portlet.model.RolesCategory rolesCategory);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<RolesCategory> toCacheModel();
+    public CacheModel<com.ext.portlet.model.RolesCategory> toCacheModel();
 
     @Override
-    public RolesCategory toEscapedModel();
+    public com.ext.portlet.model.RolesCategory toEscapedModel();
 
     @Override
-    public RolesCategory toUnescapedModel();
+    public com.ext.portlet.model.RolesCategory toUnescapedModel();
 
     @Override
     public String toString();

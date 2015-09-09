@@ -27,6 +27,7 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
     private String _descriptionUrl;
     private int _order_;
     private BaseModel<?> _ontologyTermRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public OntologyTermClp() {
     }
@@ -374,6 +375,10 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

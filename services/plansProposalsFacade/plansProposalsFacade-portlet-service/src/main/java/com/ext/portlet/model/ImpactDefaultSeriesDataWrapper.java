@@ -211,7 +211,8 @@ public class ImpactDefaultSeriesDataWrapper implements ImpactDefaultSeriesData,
     }
 
     @Override
-    public int compareTo(ImpactDefaultSeriesData impactDefaultSeriesData) {
+    public int compareTo(
+        com.ext.portlet.model.ImpactDefaultSeriesData impactDefaultSeriesData) {
         return _impactDefaultSeriesData.compareTo(impactDefaultSeriesData);
     }
 
@@ -221,17 +222,17 @@ public class ImpactDefaultSeriesDataWrapper implements ImpactDefaultSeriesData,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ImpactDefaultSeriesData> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ImpactDefaultSeriesData> toCacheModel() {
         return _impactDefaultSeriesData.toCacheModel();
     }
 
     @Override
-    public ImpactDefaultSeriesData toEscapedModel() {
+    public com.ext.portlet.model.ImpactDefaultSeriesData toEscapedModel() {
         return new ImpactDefaultSeriesDataWrapper(_impactDefaultSeriesData.toEscapedModel());
     }
 
     @Override
-    public ImpactDefaultSeriesData toUnescapedModel() {
+    public com.ext.portlet.model.ImpactDefaultSeriesData toUnescapedModel() {
         return new ImpactDefaultSeriesDataWrapper(_impactDefaultSeriesData.toUnescapedModel());
     }
 

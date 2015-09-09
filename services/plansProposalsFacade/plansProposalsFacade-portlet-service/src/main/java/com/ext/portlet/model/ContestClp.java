@@ -69,6 +69,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private boolean _show_in_list_view;
     private boolean _show_in_outline_view;
     private BaseModel<?> _contestRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ContestClp() {
     }
@@ -1728,6 +1729,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

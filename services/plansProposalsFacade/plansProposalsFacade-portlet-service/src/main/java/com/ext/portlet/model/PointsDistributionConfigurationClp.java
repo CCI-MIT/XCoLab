@@ -32,6 +32,7 @@ public class PointsDistributionConfigurationClp extends BaseModelImpl<PointsDist
     private long _creator;
     private Date _createDate;
     private BaseModel<?> _pointsDistributionConfigurationRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PointsDistributionConfigurationClp() {
     }
@@ -442,6 +443,10 @@ public class PointsDistributionConfigurationClp extends BaseModelImpl<PointsDist
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

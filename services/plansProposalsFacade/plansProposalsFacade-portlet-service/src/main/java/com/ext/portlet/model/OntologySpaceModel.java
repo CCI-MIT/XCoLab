@@ -138,19 +138,19 @@ public interface OntologySpaceModel extends BaseModel<OntologySpace> {
     public Object clone();
 
     @Override
-    public int compareTo(OntologySpace ontologySpace);
+    public int compareTo(com.ext.portlet.model.OntologySpace ontologySpace);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<OntologySpace> toCacheModel();
+    public CacheModel<com.ext.portlet.model.OntologySpace> toCacheModel();
 
     @Override
-    public OntologySpace toEscapedModel();
+    public com.ext.portlet.model.OntologySpace toEscapedModel();
 
     @Override
-    public OntologySpace toUnescapedModel();
+    public com.ext.portlet.model.OntologySpace toUnescapedModel();
 
     @Override
     public String toString();

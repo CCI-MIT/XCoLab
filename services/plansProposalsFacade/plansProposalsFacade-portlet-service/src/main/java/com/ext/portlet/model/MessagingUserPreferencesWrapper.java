@@ -355,7 +355,8 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     }
 
     @Override
-    public int compareTo(MessagingUserPreferences messagingUserPreferences) {
+    public int compareTo(
+        com.ext.portlet.model.MessagingUserPreferences messagingUserPreferences) {
         return _messagingUserPreferences.compareTo(messagingUserPreferences);
     }
 
@@ -365,17 +366,17 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<MessagingUserPreferences> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.MessagingUserPreferences> toCacheModel() {
         return _messagingUserPreferences.toCacheModel();
     }
 
     @Override
-    public MessagingUserPreferences toEscapedModel() {
+    public com.ext.portlet.model.MessagingUserPreferences toEscapedModel() {
         return new MessagingUserPreferencesWrapper(_messagingUserPreferences.toEscapedModel());
     }
 
     @Override
-    public MessagingUserPreferences toUnescapedModel() {
+    public com.ext.portlet.model.MessagingUserPreferences toUnescapedModel() {
         return new MessagingUserPreferencesWrapper(_messagingUserPreferences.toUnescapedModel());
     }
 

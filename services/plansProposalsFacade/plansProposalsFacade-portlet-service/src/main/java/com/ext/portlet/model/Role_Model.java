@@ -109,19 +109,19 @@ public interface Role_Model extends BaseModel<Role_> {
     public Object clone();
 
     @Override
-    public int compareTo(Role_ role_);
+    public int compareTo(com.ext.portlet.model.Role_ role_);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<Role_> toCacheModel();
+    public CacheModel<com.ext.portlet.model.Role_> toCacheModel();
 
     @Override
-    public Role_ toEscapedModel();
+    public com.ext.portlet.model.Role_ toEscapedModel();
 
     @Override
-    public Role_ toUnescapedModel();
+    public com.ext.portlet.model.Role_ toUnescapedModel();
 
     @Override
     public String toString();

@@ -52,16 +52,22 @@ public interface ModelRunnerService extends BaseService, InvokableService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
 
+    @com.liferay.portal.kernel.jsonwebservice.JSONWebService
+    @com.liferay.portal.security.ac.AccessControlled(guestAccessEnabled = true)
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.liferay.portal.kernel.json.JSONObject getScenario(
         long scenarioId);
 
+    @com.liferay.portal.kernel.jsonwebservice.JSONWebService
+    @com.liferay.portal.security.ac.AccessControlled(guestAccessEnabled = true)
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.liferay.portal.kernel.json.JSONObject getModel(long modelId)
         throws com.ext.portlet.models.ui.IllegalUIConfigurationException,
             com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException;
 
+    @com.liferay.portal.kernel.jsonwebservice.JSONWebService
+    @com.liferay.portal.security.ac.AccessControlled(guestAccessEnabled = true)
     public com.liferay.portal.kernel.json.JSONObject runModel(long modelId,
         java.lang.String inputs)
         throws com.ext.portlet.models.ui.IllegalUIConfigurationException,

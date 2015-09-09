@@ -26,6 +26,7 @@ public class ContestPhaseRibbonTypeClp extends BaseModelImpl<ContestPhaseRibbonT
     private String _description;
     private boolean _copyOnPromote;
     private BaseModel<?> _contestPhaseRibbonTypeRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ContestPhaseRibbonTypeClp() {
     }
@@ -332,6 +333,10 @@ public class ContestPhaseRibbonTypeClp extends BaseModelImpl<ContestPhaseRibbonT
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

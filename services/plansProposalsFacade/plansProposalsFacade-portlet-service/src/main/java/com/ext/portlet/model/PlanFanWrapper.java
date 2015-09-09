@@ -285,7 +285,7 @@ public class PlanFanWrapper implements PlanFan, ModelWrapper<PlanFan> {
     }
 
     @Override
-    public int compareTo(PlanFan planFan) {
+    public int compareTo(com.ext.portlet.model.PlanFan planFan) {
         return _planFan.compareTo(planFan);
     }
 
@@ -295,17 +295,17 @@ public class PlanFanWrapper implements PlanFan, ModelWrapper<PlanFan> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanFan> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanFan> toCacheModel() {
         return _planFan.toCacheModel();
     }
 
     @Override
-    public PlanFan toEscapedModel() {
+    public com.ext.portlet.model.PlanFan toEscapedModel() {
         return new PlanFanWrapper(_planFan.toEscapedModel());
     }
 
     @Override
-    public PlanFan toUnescapedModel() {
+    public com.ext.portlet.model.PlanFan toUnescapedModel() {
         return new PlanFanWrapper(_planFan.toUnescapedModel());
     }
 
