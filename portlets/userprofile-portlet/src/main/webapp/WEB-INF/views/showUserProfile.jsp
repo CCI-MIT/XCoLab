@@ -52,15 +52,22 @@
 							<td rowspan="2">
 								<div class="badge-container">
 									<c:forEach var="badge" items="${currentUserProfile.badges}">
-										<a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}" title="${badge.badgeText}">
-											<div class="badge-small badge-${badge.badgeType}">
+										<a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}">
+											<span class="fieldWithTooltip">
+												<img src="/climatecolab-theme/images/icon-prize{{ proposal.ribbon }}.png" />
 
-								<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
-										${badge.badgeTitle}
-								</span>
 
-												<div class="badge-small-text">20</div>
-												<span class="badge-small-year">${badge.badgeYearShort}</span>
+												<div class="badge-small badge-${badge.badgeType}">
+													<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
+															${badge.badgeTitle}
+													</span>
+
+													<div class="badge-small-text">20</div>
+													<span class="badge-small-year">${badge.badgeYearShort}</span>
+												</div>
+											</span>
+											<div class="tooltip">
+												${badge.badgeText} in ${badge.contestName}
 											</div>
 										</a>
 									</c:forEach>
@@ -96,7 +103,15 @@
 						<td width="23%">
 							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
 						</td>
-						<td class="b points_box left_border top_border" width="43%">CoLab Points (actual)</td>
+						<td class="b points_box left_border top_border" width="43%">
+							CoLab Points (actual)
+							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png"></a>
+							<br />
+							<div style="display: none;" class="addprophelp">
+								CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains. <a href="">(See more)</a>
+							</div>
+							<div class="clearfix"></div>
+						</td>
 						<td class="points_box right_border top_border align_right">${currentUserProfile.actualPoints}</td>
 					</tr>
 
@@ -108,7 +123,15 @@
 							<c:when test="${not empty userBean.country}">${userBean.country}</c:when>
 							</c:choose>
 						</td>
-						<td class="b points_box left_border bottom_border" width="43%">CoLab Points (max. potential)</td>
+						<td class="b points_box left_border bottom_border" width="43%">
+							CoLab Points (max. potential)
+							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png"></a>
+							<br />
+							<div style="display: none;" class="addprophelp">
+								The maximum number of CoLab Points this member could receive. This is a measure of how many times the member’s proposals have been included in other proposals and how important it is in those proposals.  <a href="">(See more)</a>
+							</div>
+							<div class="clearfix"></div>
+						</td>
 						<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPoints}</td>
 					</tr>
 

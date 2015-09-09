@@ -84,6 +84,15 @@ public class Badge implements Serializable {
         return contestId;
     }
 
+    public String getContestName() {
+        try {
+            return ContestLocalServiceUtil.getContest(contestId).getContestShortName();
+        } catch (PortalException | SystemException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public long getPlanId(){
         return planId;
     }
