@@ -450,16 +450,20 @@ function initTooltips() {
         if (obj.next().hasClass('tooltip')) {
             return obj.next();
         }
-		if (obj.lastChild && obj.lastChild.hasClass('tooltip')) {
-			return obj.lastChild;
+		var children = $(obj).children();
+		for (i = 0; i < children.length; ++i) {
+			if (jQuery(children[i]).hasClass('tooltip')) {
+				return children[i];
+			}
 		}
         if (obj.parent() != null && obj.parent() != obj) {
             return findTooltip(obj.parent());
         }
         return jQuery("<span />");
     }
-    
-    jQuery(".tooltips div a, .fieldWithTooltip").not('.tooltipInitialized').mouseover(function() {
+
+	const tooltipFields = jQuery(".tooltips div a, .fieldWithTooltip");
+	tooltipFields.not('.tooltipInitialized').mouseover(function() {
         var self = jQuery(this);
         self.addClass('tooltipInitialized');
         var tooltip = findTooltip(self);
@@ -477,7 +481,7 @@ function initTooltips() {
         
         tooltip.css(offsets);
     });
-    jQuery(".tooltips div a, .fieldWithTooltip").mouseleave(function() {
+    tooltipFields.mouseleave(function() {
         findTooltip(jQuery(this)).hide();
     });
 
