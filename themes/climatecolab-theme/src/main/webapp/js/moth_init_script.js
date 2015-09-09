@@ -450,7 +450,7 @@ function initTooltips() {
         if (obj.next().hasClass('tooltip')) {
             return obj.next();
         }
-		if (obj.lastChild.hasClass('tooltip')) {
+		if (obj.lastChild && obj.lastChild.hasClass('tooltip')) {
 			return obj.lastChild;
 		}
         if (obj.parent() != null && obj.parent() != obj) {
