@@ -32,8 +32,11 @@ public class PhasePromotionHelper {
         if(!p.getVisible()) return false;
 
         try {
-            ProposalContestPhaseAttribute attr = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(), phase.getContestPhasePK(), "VISIBLE");
-            if(attr.getNumericValue() == 0) return false;
+            ProposalContestPhaseAttribute attr = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(
+                    p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
+            if(attr.getNumericValue() == 0) {
+                return false;
+            }
         } catch (Exception ignored) {
         }
 

@@ -311,16 +311,9 @@ public class AutoPromoteHelper {
             throws SystemException, PortalException {
         if (ribbonId > 0) {
             for (Proposal proposal : proposals) {
-                //first, see if a ribbon already exists
-                ProposalContestPhaseAttribute attribute = null;
-                try {
-                    attribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), phasePK,
-                            ProposalContestPhaseAttributeKeys.RIBBON);
-                } catch (NoSuchProposalContestPhaseAttributeException ignored) {
-                }
-
-                //do not overwrite existing ribbons
-                if (attribute == null) {
+                //don't overwrite existing ribbons, as they might be manually assigned winner's ribbons!
+                if (!ProposalContestPhaseAttributeLocalServiceUtil.hasProposalContestPhaseAttribute(proposal.getProposalId(), phasePK,
+                        ProposalContestPhaseAttributeKeys.RIBBON)) {
                     try {
                         ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(ribbonId);
                         ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), phasePK,
