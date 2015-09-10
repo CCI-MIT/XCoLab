@@ -361,6 +361,7 @@
         }
 
         var scenarioFetchedCallback = function (event) {
+            selectModelForFetchedScenario(event);
             var modelOutputs = event.scenario.outputs;
             var totalSectorsRow = document.getElementById("totalSectors");
             if (totalSectorsRow) {
@@ -409,9 +410,19 @@
             });
         }
 
-        $().ready(function () {
+        var scenarioFetchedCallbackRegisterd = false;
+        function registerScenarioFetchedCallback(){
             if (jQuery($("#modelsOutputContainer").data('modeling')).length !== 0) {
+                scenarioFetchedCallbackRegisterd = true;
                 jQuery($("#modelsOutputContainer").data('modeling')).on('scenarioFetched', scenarioFetchedCallback);
+            }
+        }
+
+        registerScenarioFetchedCallback();
+
+        $().ready(function () {
+            if(!scenarioFetchedCallbackRegisterd){
+                registerScenarioFetchedCallback();
             }
             registerHelpEventHandler();
         });

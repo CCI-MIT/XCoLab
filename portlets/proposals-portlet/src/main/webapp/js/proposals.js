@@ -367,7 +367,7 @@ $(function() {
 function setModelSetRadiosState(enabled) {
     var modelSetRadios = document.getElementsByName("modelSet");
     var len = modelSetRadios.length;
-    for (var i = 0; i &lt; len; i++) {
+    for (var i = 0; i < len; i++) {
         modelSetRadios[i].disabled = enabled;
     }
 }
