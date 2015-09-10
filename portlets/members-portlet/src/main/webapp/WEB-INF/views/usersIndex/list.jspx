@@ -23,7 +23,7 @@
            	</div>
 			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="USER_NAME" />
         </div>
-		<div class="points fieldWithTooltip">
+		<div class="points fieldWithTooltip tooltipAbove">
 			<portlet:renderURL var="sortURLPoints">
 				<portlet:param name="sortColumn" value="POINTS" />
 				<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : true }" />
