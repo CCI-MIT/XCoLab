@@ -18,7 +18,6 @@ import com.ext.portlet.service.ProposalAttributeLocalService;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
 import com.ext.portlet.service.ProposalLocalService;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -35,15 +34,6 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
 import com.liferay.portal.util.InitUtil;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.xcolab.services.EventBusService;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 /**
  * Created by manu on 17/09/14.
@@ -105,8 +95,8 @@ public class XCoLabTest {
         contactLocalService.addContact(contactLocalService.createContact(id));
 
         User user = userLocalService.createUser(id);
-        user.setScreenName("thurner"+id);
-        user.setEmailAddress("john.doe+"+id+"@example.com");
+        user.setScreenName("thurner" + id);
+        user.setEmailAddress("john.doe+" + id + "@example.com");
         user.setCompanyId(10112L);
         user.setPasswordUnencrypted("test11");
         user.setPasswordEncrypted(false);
@@ -133,7 +123,6 @@ public class XCoLabTest {
         this.createPointTypes();
         this.createContestPhaseTypes();
     }
-
 
     protected void createContestPhaseTypes() throws SystemException {
         ContestPhaseType cpt = contestPhaseTypeLocalService.createContestPhaseType(1);
