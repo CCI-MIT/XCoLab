@@ -1,5 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
+import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
@@ -190,13 +191,14 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     }
 
     private Boolean wasProposalPromotedInContestPhase(Proposal proposal, ContestPhase contestPhase) throws PortalException, SystemException{
-        ProposalContestPhaseAttribute attr = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(
+        ProposalContestPhaseAttribute judgingDecisionAttr = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK(),
-                ProposalContestPhaseAttributeKeys.PROMOTE_DONE
+                ProposalContestPhaseAttributeKeys.JUDGE_DECISION
         );
-        if(Validator.isNotNull(attr)){
-            return attr.getStringValue().equals("true");
+        if(Validator.isNotNull(judgingDecisionAttr)){
+            Long judgingDecision = judgingDecisionAttr.getNumericValue();
+            return judgingDecision.intValue() == JudgingSystemActions.AdvanceDecision.MOVE_ON.getAttributeValue();
         } else {
             return false;
         }
