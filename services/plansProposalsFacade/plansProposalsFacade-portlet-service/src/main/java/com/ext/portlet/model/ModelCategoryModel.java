@@ -138,19 +138,19 @@ public interface ModelCategoryModel extends BaseModel<ModelCategory> {
     public Object clone();
 
     @Override
-    public int compareTo(ModelCategory modelCategory);
+    public int compareTo(com.ext.portlet.model.ModelCategory modelCategory);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ModelCategory> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ModelCategory> toCacheModel();
 
     @Override
-    public ModelCategory toEscapedModel();
+    public com.ext.portlet.model.ModelCategory toEscapedModel();
 
     @Override
-    public ModelCategory toUnescapedModel();
+    public com.ext.portlet.model.ModelCategory toUnescapedModel();
 
     @Override
     public String toString();

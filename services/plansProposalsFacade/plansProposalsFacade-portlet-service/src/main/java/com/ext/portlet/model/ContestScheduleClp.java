@@ -26,6 +26,7 @@ public class ContestScheduleClp extends BaseModelImpl<ContestSchedule>
     private String _status;
     private Long _baseScheduleId;
     private BaseModel<?> _contestScheduleRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ContestScheduleClp() {
     }
@@ -326,6 +327,10 @@ public class ContestScheduleClp extends BaseModelImpl<ContestSchedule>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

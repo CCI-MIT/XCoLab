@@ -26,6 +26,7 @@ public class ContestPhaseColumnClp extends BaseModelImpl<ContestPhaseColumn>
     private int _columnWeight;
     private boolean _defaultSort;
     private BaseModel<?> _contestPhaseColumnRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ContestPhaseColumnClp() {
     }
@@ -337,6 +338,10 @@ public class ContestPhaseColumnClp extends BaseModelImpl<ContestPhaseColumn>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

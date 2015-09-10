@@ -209,7 +209,7 @@ public class ContestDebateWrapper implements ContestDebate,
     }
 
     @Override
-    public int compareTo(ContestDebate contestDebate) {
+    public int compareTo(com.ext.portlet.model.ContestDebate contestDebate) {
         return _contestDebate.compareTo(contestDebate);
     }
 
@@ -219,17 +219,17 @@ public class ContestDebateWrapper implements ContestDebate,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ContestDebate> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ContestDebate> toCacheModel() {
         return _contestDebate.toCacheModel();
     }
 
     @Override
-    public ContestDebate toEscapedModel() {
+    public com.ext.portlet.model.ContestDebate toEscapedModel() {
         return new ContestDebateWrapper(_contestDebate.toEscapedModel());
     }
 
     @Override
-    public ContestDebate toUnescapedModel() {
+    public com.ext.portlet.model.ContestDebate toUnescapedModel() {
         return new ContestDebateWrapper(_contestDebate.toUnescapedModel());
     }
 

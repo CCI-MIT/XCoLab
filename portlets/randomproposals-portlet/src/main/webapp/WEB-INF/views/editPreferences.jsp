@@ -31,15 +31,33 @@
 				<form:input path="flagFiltersStr" />
 			</td>
 		</tr>
-		
+
 		<tr>
-			<td>	
+			<td>
 				Enter feed size
 			</td>
-			<td>			
+			<td>
 				<form:input path="feedSize" />
 			</td>
-		</tr>	
+		</tr>
+
+		<tr>
+			<td>
+				Enter proposal link title
+			</td>
+			<td>
+				<form:input path="allProposalsTitle" />
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				Enter proposal link url
+			</td>
+			<td>
+				<form:input path="allProposalsUrl" />
+			</td>
+		</tr>
 	
 		<tr>
 			<td>

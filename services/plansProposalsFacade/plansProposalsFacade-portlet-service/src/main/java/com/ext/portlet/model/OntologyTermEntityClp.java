@@ -28,6 +28,7 @@ public class OntologyTermEntityClp extends BaseModelImpl<OntologyTermEntity>
     private long _classNameId;
     private long _classPK;
     private BaseModel<?> _ontologyTermEntityRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public OntologyTermEntityClp() {
     }
@@ -318,6 +319,10 @@ public class OntologyTermEntityClp extends BaseModelImpl<OntologyTermEntity>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -433,7 +433,6 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     * Creates a new contest phase object by copying all attributes of the original contest phase
     *
     * @param originalPhase     The contest phase to copy
-    * @return
     */
     @Override
     public com.ext.portlet.model.ContestPhase createFromContestPhase(

@@ -77,6 +77,7 @@
 		} catch (e) {
 			// ignore
 		}
+
 		jQuery(".selectbox1").change(function(element) {
 			modeling.loadModel(element.target.value);
 			jQuery(".act-edit_left").html("");
@@ -85,5 +86,7 @@
 			
 			$.cookie("cc_contests_preferredModels", JSON.stringify(preferredModelsMap), { expires : 365 });
 		});
+
+
 	</script>
 </jsp:root>

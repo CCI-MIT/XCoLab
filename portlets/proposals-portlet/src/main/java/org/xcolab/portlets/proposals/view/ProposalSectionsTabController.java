@@ -106,8 +106,6 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         	}
         	
         	updateProposalDetailsBean.setMoveToContestPhaseId(contestPhase.getContestPhasePK());
-        	
-        	
         	model.addAttribute("updateProposalSectionsBean", updateProposalDetailsBean);
         	model.addAttribute("hasNotMappedSections", hasNotMappedSections);
         } else {

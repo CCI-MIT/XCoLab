@@ -34,6 +34,7 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
     private Date _lastActivityDate;
     private long _lastActivityAuthorId;
     private BaseModel<?> _discussionCategoryRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public DiscussionCategoryClp() {
     }
@@ -521,6 +522,10 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

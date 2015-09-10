@@ -34,6 +34,7 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
     private Date _createDate;
     private Date _modifiedDate;
     private BaseModel<?> _activitySubscriptionRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ActivitySubscriptionClp() {
     }
@@ -479,6 +480,10 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -83,7 +83,8 @@ interface ProposalTabCanAccessAlgorithm {
 			} catch (PortalException | SystemException e) {
 				e.printStackTrace();
 			}
-			return permissions.getCanAdminAll() || permissions.getCanJudgeActions() || permissions.getCanFellowActions();
+			return permissions.getCanAdminAll() || permissions.getCanJudgeActions()
+					|| permissions.getCanFellowActions() || permissions.getCanIAFActions();
 		}
 	};
 

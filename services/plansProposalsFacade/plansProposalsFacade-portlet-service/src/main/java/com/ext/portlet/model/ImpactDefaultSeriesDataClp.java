@@ -25,6 +25,7 @@ public class ImpactDefaultSeriesDataClp extends BaseModelImpl<ImpactDefaultSerie
     private int _year;
     private double _value;
     private BaseModel<?> _impactDefaultSeriesDataRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ImpactDefaultSeriesDataClp() {
     }
@@ -260,6 +261,10 @@ public class ImpactDefaultSeriesDataClp extends BaseModelImpl<ImpactDefaultSerie
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

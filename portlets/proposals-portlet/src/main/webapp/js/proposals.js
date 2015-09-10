@@ -363,3 +363,28 @@ $(function() {
 });
 
 
+
+function setModelSetRadiosState(enabled) {
+    var modelSetRadios = document.getElementsByName("modelSet");
+    var len = modelSetRadios.length;
+    for (var i = 0; i < len; i++) {
+        modelSetRadios[i].disabled = enabled;
+    }
+}
+
+function checkModelSetRadioWithId(id) {
+    var modelSetRadios = document.getElementsByName("modelSet");
+    var len = modelSetRadios.length;
+    for (var i = 0; i < len; i++) {
+        if (modelSetRadios[i].id == id) {
+            modelSetRadios[i].checked = true;
+        }
+        else {
+            modelSetRadios[i].checked = false;
+        }
+    }
+}
+
+var selectModelForFetchedScenario = function(event){
+    checkModelSetRadioWithId(event.scenario.modelId);
+};

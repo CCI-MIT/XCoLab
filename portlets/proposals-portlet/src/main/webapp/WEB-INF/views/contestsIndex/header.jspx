@@ -134,9 +134,11 @@
                 </div>
             </div>
         </form>
-
-
     </div>
+	<div class="headline">
+		${preferences.callToAction}
+	</div>
+
     <c:choose>
         <c:when test="${showActiveContests }">
             <!-- <div style="margin-bottom: 10px; font-size: 17px;">

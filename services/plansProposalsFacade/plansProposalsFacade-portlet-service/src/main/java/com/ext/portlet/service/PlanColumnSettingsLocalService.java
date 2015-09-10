@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface PlanColumnSettingsLocalService extends BaseLocalService,
     * @return the plan column settings that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.PlanColumnSettings addPlanColumnSettings(
         com.ext.portlet.model.PlanColumnSettings planColumnSettings)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -60,6 +62,7 @@ public interface PlanColumnSettingsLocalService extends BaseLocalService,
     * @throws PortalException if a plan column settings with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.PlanColumnSettings deletePlanColumnSettings(
         long planColumnSettingsId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -72,6 +75,7 @@ public interface PlanColumnSettingsLocalService extends BaseLocalService,
     * @return the plan column settings that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.PlanColumnSettings deletePlanColumnSettings(
         com.ext.portlet.model.PlanColumnSettings planColumnSettings)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -213,6 +217,7 @@ public interface PlanColumnSettingsLocalService extends BaseLocalService,
     * @return the plan column settings that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.PlanColumnSettings updatePlanColumnSettings(
         com.ext.portlet.model.PlanColumnSettings planColumnSettings)
         throws com.liferay.portal.kernel.exception.SystemException;

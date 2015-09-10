@@ -260,7 +260,8 @@ public class MessagingMessageRecipientWrapper
     }
 
     @Override
-    public int compareTo(MessagingMessageRecipient messagingMessageRecipient) {
+    public int compareTo(
+        com.ext.portlet.model.MessagingMessageRecipient messagingMessageRecipient) {
         return _messagingMessageRecipient.compareTo(messagingMessageRecipient);
     }
 
@@ -270,17 +271,17 @@ public class MessagingMessageRecipientWrapper
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<MessagingMessageRecipient> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.MessagingMessageRecipient> toCacheModel() {
         return _messagingMessageRecipient.toCacheModel();
     }
 
     @Override
-    public MessagingMessageRecipient toEscapedModel() {
+    public com.ext.portlet.model.MessagingMessageRecipient toEscapedModel() {
         return new MessagingMessageRecipientWrapper(_messagingMessageRecipient.toEscapedModel());
     }
 
     @Override
-    public MessagingMessageRecipient toUnescapedModel() {
+    public com.ext.portlet.model.MessagingMessageRecipient toUnescapedModel() {
         return new MessagingMessageRecipientWrapper(_messagingMessageRecipient.toUnescapedModel());
     }
 

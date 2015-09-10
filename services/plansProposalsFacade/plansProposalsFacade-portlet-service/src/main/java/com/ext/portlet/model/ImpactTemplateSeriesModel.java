@@ -123,19 +123,20 @@ public interface ImpactTemplateSeriesModel extends BaseModel<ImpactTemplateSerie
     public Object clone();
 
     @Override
-    public int compareTo(ImpactTemplateSeries impactTemplateSeries);
+    public int compareTo(
+        com.ext.portlet.model.ImpactTemplateSeries impactTemplateSeries);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ImpactTemplateSeries> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ImpactTemplateSeries> toCacheModel();
 
     @Override
-    public ImpactTemplateSeries toEscapedModel();
+    public com.ext.portlet.model.ImpactTemplateSeries toEscapedModel();
 
     @Override
-    public ImpactTemplateSeries toUnescapedModel();
+    public com.ext.portlet.model.ImpactTemplateSeries toUnescapedModel();
 
     @Override
     public String toString();

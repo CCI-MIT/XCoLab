@@ -170,19 +170,20 @@ public interface MessagingIgnoredRecipientsModel extends BaseModel<MessagingIgno
     public Object clone();
 
     @Override
-    public int compareTo(MessagingIgnoredRecipients messagingIgnoredRecipients);
+    public int compareTo(
+        com.ext.portlet.model.MessagingIgnoredRecipients messagingIgnoredRecipients);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<MessagingIgnoredRecipients> toCacheModel();
+    public CacheModel<com.ext.portlet.model.MessagingIgnoredRecipients> toCacheModel();
 
     @Override
-    public MessagingIgnoredRecipients toEscapedModel();
+    public com.ext.portlet.model.MessagingIgnoredRecipients toEscapedModel();
 
     @Override
-    public MessagingIgnoredRecipients toUnescapedModel();
+    public com.ext.portlet.model.MessagingIgnoredRecipients toUnescapedModel();
 
     @Override
     public String toString();

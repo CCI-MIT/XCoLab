@@ -109,19 +109,20 @@ public interface PlanSectionPlanMapModel extends BaseModel<PlanSectionPlanMap> {
     public Object clone();
 
     @Override
-    public int compareTo(PlanSectionPlanMap planSectionPlanMap);
+    public int compareTo(
+        com.ext.portlet.model.PlanSectionPlanMap planSectionPlanMap);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlanSectionPlanMap> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlanSectionPlanMap> toCacheModel();
 
     @Override
-    public PlanSectionPlanMap toEscapedModel();
+    public com.ext.portlet.model.PlanSectionPlanMap toEscapedModel();
 
     @Override
-    public PlanSectionPlanMap toUnescapedModel();
+    public com.ext.portlet.model.PlanSectionPlanMap toUnescapedModel();
 
     @Override
     public String toString();

@@ -37,7 +37,7 @@ public class UdateProposalScenarioActionController {
 
     @RequestMapping(params = {"action=updateProposalScenario"})
     public void show(ActionRequest request, Model model,
-            ActionResponse response, @RequestParam(required = true) long scenarioId) 
+            ActionResponse response, @RequestParam(required = true) long scenarioId, @RequestParam(required = true) long modelId)
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
 
 
@@ -47,9 +47,7 @@ public class UdateProposalScenarioActionController {
         }
 
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
-        ProposalLocalServiceUtil.setAttribute(proposalsContext.getUser(request).getUserId(), 
-                proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, proposal.getModelId(), scenarioId);
-
+        proposal.setScenarioId(scenarioId, modelId, proposalsContext.getUser(request).getUserId());
         proposalsContext.invalidateContext(request);
 
     }

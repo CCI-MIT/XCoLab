@@ -403,7 +403,6 @@ public class ContestPhaseLocalServiceUtil {
     * Creates a new contest phase object by copying all attributes of the original contest phase
     *
     * @param originalPhase     The contest phase to copy
-    * @return
     */
     public static com.ext.portlet.model.ContestPhase createFromContestPhase(
         com.ext.portlet.model.ContestPhase originalPhase)

@@ -30,6 +30,7 @@ public class PlansUserSettingsClp extends BaseModelImpl<PlansUserSettings>
     private boolean _filterEnabled;
     private boolean _filterPositionsAll;
     private BaseModel<?> _plansUserSettingsRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlansUserSettingsClp() {
     }
@@ -414,6 +415,10 @@ public class PlansUserSettingsClp extends BaseModelImpl<PlansUserSettings>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

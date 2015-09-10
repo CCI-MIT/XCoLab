@@ -155,19 +155,19 @@ public interface BalloonLinkModel extends BaseModel<BalloonLink> {
     public Object clone();
 
     @Override
-    public int compareTo(BalloonLink balloonLink);
+    public int compareTo(com.ext.portlet.model.BalloonLink balloonLink);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<BalloonLink> toCacheModel();
+    public CacheModel<com.ext.portlet.model.BalloonLink> toCacheModel();
 
     @Override
-    public BalloonLink toEscapedModel();
+    public com.ext.portlet.model.BalloonLink toEscapedModel();
 
     @Override
-    public BalloonLink toUnescapedModel();
+    public com.ext.portlet.model.BalloonLink toUnescapedModel();
 
     @Override
     public String toString();

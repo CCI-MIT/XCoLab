@@ -155,19 +155,20 @@ public interface TrackedVisitor2UserModel extends BaseModel<TrackedVisitor2User>
     public Object clone();
 
     @Override
-    public int compareTo(TrackedVisitor2User trackedVisitor2User);
+    public int compareTo(
+        com.ext.portlet.model.TrackedVisitor2User trackedVisitor2User);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<TrackedVisitor2User> toCacheModel();
+    public CacheModel<com.ext.portlet.model.TrackedVisitor2User> toCacheModel();
 
     @Override
-    public TrackedVisitor2User toEscapedModel();
+    public com.ext.portlet.model.TrackedVisitor2User toEscapedModel();
 
     @Override
-    public TrackedVisitor2User toUnescapedModel();
+    public com.ext.portlet.model.TrackedVisitor2User toUnescapedModel();
 
     @Override
     public String toString();

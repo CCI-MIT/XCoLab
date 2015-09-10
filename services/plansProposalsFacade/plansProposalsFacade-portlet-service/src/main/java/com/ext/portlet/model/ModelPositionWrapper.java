@@ -209,7 +209,7 @@ public class ModelPositionWrapper implements ModelPosition,
     }
 
     @Override
-    public int compareTo(ModelPosition modelPosition) {
+    public int compareTo(com.ext.portlet.model.ModelPosition modelPosition) {
         return _modelPosition.compareTo(modelPosition);
     }
 
@@ -219,17 +219,17 @@ public class ModelPositionWrapper implements ModelPosition,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ModelPosition> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ModelPosition> toCacheModel() {
         return _modelPosition.toCacheModel();
     }
 
     @Override
-    public ModelPosition toEscapedModel() {
+    public com.ext.portlet.model.ModelPosition toEscapedModel() {
         return new ModelPositionWrapper(_modelPosition.toEscapedModel());
     }
 
     @Override
-    public ModelPosition toUnescapedModel() {
+    public com.ext.portlet.model.ModelPosition toUnescapedModel() {
         return new ModelPositionWrapper(_modelPosition.toUnescapedModel());
     }
 

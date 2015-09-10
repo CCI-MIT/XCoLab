@@ -140,19 +140,20 @@ public interface ContestEmailTemplateModel extends BaseModel<ContestEmailTemplat
     public Object clone();
 
     @Override
-    public int compareTo(ContestEmailTemplate contestEmailTemplate);
+    public int compareTo(
+        com.ext.portlet.model.ContestEmailTemplate contestEmailTemplate);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ContestEmailTemplate> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ContestEmailTemplate> toCacheModel();
 
     @Override
-    public ContestEmailTemplate toEscapedModel();
+    public com.ext.portlet.model.ContestEmailTemplate toEscapedModel();
 
     @Override
-    public ContestEmailTemplate toUnescapedModel();
+    public com.ext.portlet.model.ContestEmailTemplate toUnescapedModel();
 
     @Override
     public String toString();

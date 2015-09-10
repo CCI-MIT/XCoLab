@@ -180,19 +180,19 @@ public interface ModelInputItemModel extends BaseModel<ModelInputItem> {
     public Object clone();
 
     @Override
-    public int compareTo(ModelInputItem modelInputItem);
+    public int compareTo(com.ext.portlet.model.ModelInputItem modelInputItem);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ModelInputItem> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ModelInputItem> toCacheModel();
 
     @Override
-    public ModelInputItem toEscapedModel();
+    public com.ext.portlet.model.ModelInputItem toEscapedModel();
 
     @Override
-    public ModelInputItem toUnescapedModel();
+    public com.ext.portlet.model.ModelInputItem toUnescapedModel();
 
     @Override
     public String toString();

@@ -207,19 +207,19 @@ public interface PointsModel extends BaseModel<Points> {
     public Object clone();
 
     @Override
-    public int compareTo(Points points);
+    public int compareTo(com.ext.portlet.model.Points points);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<Points> toCacheModel();
+    public CacheModel<com.ext.portlet.model.Points> toCacheModel();
 
     @Override
-    public Points toEscapedModel();
+    public com.ext.portlet.model.Points toEscapedModel();
 
     @Override
-    public Points toUnescapedModel();
+    public com.ext.portlet.model.Points toUnescapedModel();
 
     @Override
     public String toString();

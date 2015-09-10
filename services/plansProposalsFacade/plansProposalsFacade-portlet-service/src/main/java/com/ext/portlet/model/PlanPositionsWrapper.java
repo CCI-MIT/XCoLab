@@ -291,7 +291,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     }
 
     @Override
-    public int compareTo(PlanPositions planPositions) {
+    public int compareTo(com.ext.portlet.model.PlanPositions planPositions) {
         return _planPositions.compareTo(planPositions);
     }
 
@@ -301,17 +301,17 @@ public class PlanPositionsWrapper implements PlanPositions,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanPositions> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanPositions> toCacheModel() {
         return _planPositions.toCacheModel();
     }
 
     @Override
-    public PlanPositions toEscapedModel() {
+    public com.ext.portlet.model.PlanPositions toEscapedModel() {
         return new PlanPositionsWrapper(_planPositions.toEscapedModel());
     }
 
     @Override
-    public PlanPositions toUnescapedModel() {
+    public com.ext.portlet.model.PlanPositions toUnescapedModel() {
         return new PlanPositionsWrapper(_planPositions.toUnescapedModel());
     }
 

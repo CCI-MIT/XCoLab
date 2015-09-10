@@ -355,19 +355,19 @@ public interface PlansFilterModel extends BaseModel<PlansFilter> {
     public Object clone();
 
     @Override
-    public int compareTo(PlansFilter plansFilter);
+    public int compareTo(com.ext.portlet.model.PlansFilter plansFilter);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlansFilter> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlansFilter> toCacheModel();
 
     @Override
-    public PlansFilter toEscapedModel();
+    public com.ext.portlet.model.PlansFilter toEscapedModel();
 
     @Override
-    public PlansFilter toUnescapedModel();
+    public com.ext.portlet.model.PlansFilter toUnescapedModel();
 
     @Override
     public String toString();

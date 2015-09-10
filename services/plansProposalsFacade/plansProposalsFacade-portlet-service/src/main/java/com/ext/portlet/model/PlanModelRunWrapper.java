@@ -318,7 +318,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     }
 
     @Override
-    public int compareTo(PlanModelRun planModelRun) {
+    public int compareTo(com.ext.portlet.model.PlanModelRun planModelRun) {
         return _planModelRun.compareTo(planModelRun);
     }
 
@@ -328,17 +328,17 @@ public class PlanModelRunWrapper implements PlanModelRun,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanModelRun> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanModelRun> toCacheModel() {
         return _planModelRun.toCacheModel();
     }
 
     @Override
-    public PlanModelRun toEscapedModel() {
+    public com.ext.portlet.model.PlanModelRun toEscapedModel() {
         return new PlanModelRunWrapper(_planModelRun.toEscapedModel());
     }
 
     @Override
-    public PlanModelRun toUnescapedModel() {
+    public com.ext.portlet.model.PlanModelRun toUnescapedModel() {
         return new PlanModelRunWrapper(_planModelRun.toUnescapedModel());
     }
 

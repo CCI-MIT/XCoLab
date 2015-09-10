@@ -25,6 +25,7 @@ public class PlanColumnSettingsClp extends BaseModelImpl<PlanColumnSettings>
     private long _planUserSettingsId;
     private boolean _visible;
     private BaseModel<?> _planColumnSettingsRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanColumnSettingsClp() {
     }
@@ -304,6 +305,10 @@ public class PlanColumnSettingsClp extends BaseModelImpl<PlanColumnSettings>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override
