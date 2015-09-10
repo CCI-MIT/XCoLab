@@ -217,6 +217,6 @@
 
 			</div>
 			<proposalsPortlet:proposalsList proposals="${proposals.proposalsWithRibbons }" showShadebar="true"/>
-			<proposalsPortlet:proposalsList proposals="${proposals.proposalsNormal }" showShadebar="${fn:length(proposals.proposalsWithRibbons) > 0 }"/>
+			<proposalsPortlet:proposalsList proposals="${proposals.proposalsNormal }" showShadebar="${fn:length(proposals.proposalsWithRibbons) > 0 and not contest.hideRibbons}"/>
 	</div>
 </jsp:root>

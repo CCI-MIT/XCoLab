@@ -97,9 +97,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "emailTemplateUrl", Types.VARCHAR },
             { "show_in_tile_view", Types.BOOLEAN },
             { "show_in_list_view", Types.BOOLEAN },
-            { "show_in_outline_view", Types.BOOLEAN }
+            { "show_in_outline_view", Types.BOOLEAN },
+            { "hideRibbons", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(1024) null,ContestShortName VARCHAR(512) null,ContestDescription TEXT null,ContestModelDescription TEXT null,ContestPositionsDescription TEXT null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,proposalCreationTemplateString VARCHAR(75) null,voteTemplateString VARCHAR(75) null,proposalVoteTemplateString VARCHAR(75) null,voteQuestionTemplateString VARCHAR(75) null,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(500) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(256) null,flagTooltip VARCHAR(512) null,groupId LONG,discussionGroupId LONG,fellowDiscussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,defaultModelSettings VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(500) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(1024) null,ContestShortName VARCHAR(512) null,ContestDescription TEXT null,ContestModelDescription TEXT null,ContestPositionsDescription TEXT null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,proposalCreationTemplateString VARCHAR(75) null,voteTemplateString VARCHAR(75) null,proposalVoteTemplateString VARCHAR(75) null,voteQuestionTemplateString VARCHAR(75) null,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(500) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(256) null,flagTooltip VARCHAR(512) null,groupId LONG,discussionGroupId LONG,fellowDiscussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,defaultModelSettings VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(500) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN,hideRibbons BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Contest";
     public static final String ORDER_BY_JPQL = " ORDER BY contest.weight ASC, contest.created ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Contest.weight ASC, xcolab_Contest.created ASC";
@@ -190,6 +191,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private boolean _show_in_tile_view;
     private boolean _show_in_list_view;
     private boolean _show_in_outline_view;
+    private boolean _hideRibbons;
     private long _columnBitmask;
     private Contest _escapedModel;
 
@@ -256,6 +258,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setShow_in_tile_view(soapModel.getShow_in_tile_view());
         model.setShow_in_list_view(soapModel.getShow_in_list_view());
         model.setShow_in_outline_view(soapModel.getShow_in_outline_view());
+        model.setHideRibbons(soapModel.getHideRibbons());
 
         return model;
     }
@@ -366,6 +369,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("show_in_tile_view", getShow_in_tile_view());
         attributes.put("show_in_list_view", getShow_in_list_view());
         attributes.put("show_in_outline_view", getShow_in_outline_view());
+        attributes.put("hideRibbons", getHideRibbons());
 
         return attributes;
     }
@@ -669,6 +673,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         if (show_in_outline_view != null) {
             setShow_in_outline_view(show_in_outline_view);
+        }
+
+        Boolean hideRibbons = (Boolean) attributes.get("hideRibbons");
+
+        if (hideRibbons != null) {
+            setHideRibbons(hideRibbons);
         }
     }
 
@@ -1397,6 +1407,22 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         _show_in_outline_view = show_in_outline_view;
     }
 
+    @JSON
+    @Override
+    public boolean getHideRibbons() {
+        return _hideRibbons;
+    }
+
+    @Override
+    public boolean isHideRibbons() {
+        return _hideRibbons;
+    }
+
+    @Override
+    public void setHideRibbons(boolean hideRibbons) {
+        _hideRibbons = hideRibbons;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -1475,6 +1501,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setShow_in_tile_view(getShow_in_tile_view());
         contestImpl.setShow_in_list_view(getShow_in_list_view());
         contestImpl.setShow_in_outline_view(getShow_in_outline_view());
+        contestImpl.setHideRibbons(getHideRibbons());
 
         contestImpl.resetOriginalValues();
 
@@ -1804,12 +1831,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         contestCacheModel.show_in_outline_view = getShow_in_outline_view();
 
+        contestCacheModel.hideRibbons = getHideRibbons();
+
         return contestCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(95);
+        StringBundler sb = new StringBundler(97);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1905,6 +1934,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getShow_in_list_view());
         sb.append(", show_in_outline_view=");
         sb.append(getShow_in_outline_view());
+        sb.append(", hideRibbons=");
+        sb.append(getHideRibbons());
         sb.append("}");
 
         return sb.toString();
@@ -1912,7 +1943,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(145);
+        StringBundler sb = new StringBundler(148);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -2105,6 +2136,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>show_in_outline_view</column-name><column-value><![CDATA[");
         sb.append(getShow_in_outline_view());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>hideRibbons</column-name><column-value><![CDATA[");
+        sb.append(getHideRibbons());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

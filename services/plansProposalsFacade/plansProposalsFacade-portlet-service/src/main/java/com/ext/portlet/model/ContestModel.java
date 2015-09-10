@@ -781,6 +781,27 @@ public interface ContestModel extends BaseModel<Contest> {
      */
     public void setShow_in_outline_view(boolean show_in_outline_view);
 
+    /**
+     * Returns the hide ribbons of this contest.
+     *
+     * @return the hide ribbons of this contest
+     */
+    public boolean getHideRibbons();
+
+    /**
+     * Returns <code>true</code> if this contest is hide ribbons.
+     *
+     * @return <code>true</code> if this contest is hide ribbons; <code>false</code> otherwise
+     */
+    public boolean isHideRibbons();
+
+    /**
+     * Sets whether this contest is hide ribbons.
+     *
+     * @param hideRibbons the hide ribbons of this contest
+     */
+    public void setHideRibbons(boolean hideRibbons);
+
     @Override
     public boolean isNew();
 

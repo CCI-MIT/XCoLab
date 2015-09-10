@@ -27,6 +27,7 @@ public class Badge implements Serializable {
     private String badgeTitle;    // "Winner", "Finalist", "Semi-Finalist"
     private String badgeText; // "Popular Choice", "Judges Choice", etc
     private int year = 2013;
+    private boolean hideRibbon;
 
     private long contestId;
     private String planTitle;
@@ -45,9 +46,11 @@ public class Badge implements Serializable {
             this.badgeTitle = "Winner";
         }
 
-        // Associate the year
+        // Associate the year and get hideRibbon property from contest
         try {
             Contest contest = ContestLocalServiceUtil.getContest(contestId);
+            hideRibbon = contest.getHideRibbons();
+
             ContestPhase lastPhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
             Date referenceDate = lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate() : lastPhase.getPhaseEndDate();
             Calendar cal = Calendar.getInstance();
@@ -85,6 +88,10 @@ public class Badge implements Serializable {
 
     public String getPlanTitle(){
         return planTitle;
+    }
+
+    public boolean isHideRibbon() {
+        return hideRibbon;
     }
 
     @Override

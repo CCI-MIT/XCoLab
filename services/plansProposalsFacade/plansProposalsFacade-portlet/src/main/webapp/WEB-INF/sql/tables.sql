@@ -124,7 +124,8 @@ create table xcolab_Contest (
 	emailTemplateUrl VARCHAR(500) null,
 	show_in_tile_view BOOLEAN,
 	show_in_list_view BOOLEAN,
-	show_in_outline_view BOOLEAN
+	show_in_outline_view BOOLEAN,
+	hideRibbons BOOLEAN
 );
 
 create table xcolab_ContestDebate (
