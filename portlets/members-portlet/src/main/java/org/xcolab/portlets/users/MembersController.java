@@ -54,7 +54,7 @@ public class MembersController {
         int pagesCount;
         int endPage;
 
-        List<MemberItem> users = new ArrayList<MemberItem>();
+        List<MemberItem> users = new ArrayList<>();
 
         if (memberCategoryParam==null || memberCategoryParam.compareTo("")==0) {
 
@@ -72,6 +72,14 @@ public class MembersController {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser, filter);
                         else
                             dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDesc(firstUser, endUser, filter);
+                        break;
+
+                    case "POINTS":
+                        //TODO: add correct service calls
+                        if (sortFilterPage.isSortAscending())
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAsc(firstUser, endUser, filter);
+                        else
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDesc(firstUser, endUser, filter);
                         break;
 
                     case "ACTIVITY":
@@ -144,6 +152,16 @@ public class MembersController {
                         }
                         else {
                             dBUsers = User_LocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
+                        }
+                        break;
+
+                    case "POINTS":
+                        //TODO: add correct service call
+                        if (sortFilterPage.isSortAscending()) {
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
+                        }
+                        else {
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         }
                         break;
 

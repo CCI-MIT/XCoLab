@@ -1,19 +1,14 @@
 package org.xcolab.portlets.users.utils;
 
-import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.model.Role_;
 import com.ext.portlet.model.User_;
-import com.ext.portlet.service.Role_LocalServiceUtil;
+import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.User_LocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.model.Role;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -25,6 +20,7 @@ public class MemberItem implements Serializable {
     private Date joinDate;
     private Long userId;
     private String screenName;
+    private int points;
 
     public MemberItem(User_ user, String memberCategoryParam) throws PortalException, SystemException {
 
@@ -32,6 +28,7 @@ public class MemberItem implements Serializable {
         activityCount = User_LocalServiceUtil.getUserActivityCount(userId).get(0).intValue();
         screenName = user.getScreenName();
         joinDate = user.getCreateDate();
+        points = PointsLocalServiceUtil.getUserMaterializedPoints(userId);
 
 
         if (memberCategoryParam!=null && memberCategoryParam.compareTo("")!=0)
@@ -103,8 +100,15 @@ public class MemberItem implements Serializable {
     }
 
     public String getActivityCountFormatted() throws SystemException {
-        String activityCountFormatted = String.format("%,d", activityCount);
-        return activityCountFormatted;
+        return String.format("%,d", activityCount);
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public String getPointsFormatted() throws SystemException {
+        return String.format("%,d", points);
     }
     
     public MemberCategory getCategory() {

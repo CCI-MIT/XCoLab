@@ -23,6 +23,17 @@
            	</div>
 			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="USER_NAME" />
         </div>
+		<div class="points">
+			<portlet:renderURL var="sortURLPoints">
+				<portlet:param name="sortColumn" value="POINTS" />
+				<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : true }" />
+				<portlet:param name="filter" value="${sortFilterPage.filter}" />
+				<portlet:param name="memberCategory" value="${memberCategory}" />
+			</portlet:renderURL>
+			<a href="${sortURLPoints }"> Points</a>
+			<div class="tooltip">Click to sort by points<div class="tt-arrow"><!--  --></div></div>
+			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
+		</div>
         <div class="activity">
         	<portlet:renderURL var="sortURLActivity">
         		<portlet:param name="sortColumn" value="ACTIVITY" />
@@ -68,15 +79,18 @@
 						<a href="/web/guest/member/-/member/userId/${user.userId}">${user.screenName}</a>
 					</div>
 				</td>
-				<td class="column usersActivityCount g">
+				<td class="column usersPoints g">
+					${user.pointsFormatted}
+				</td>
+				<td class="column usersActivityCount">
                     ${user.activityCountFormatted}
 				</td>
-				<td class="column usersCategory">
+				<td class="column usersCategory g">
                     <img src="/climatecolab-theme/images/icon_mem-${user.category.imageUrl}.png"
                          width="16" height="16" />
 					&#160;${user.category.printName}
 				</td>
-				<td class="column usersSeniority g">
+				<td class="column usersSeniority">
 					${user.memberSince}
 				</td>
 			</tr>
