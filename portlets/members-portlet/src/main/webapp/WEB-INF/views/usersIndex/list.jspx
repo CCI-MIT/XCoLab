@@ -9,15 +9,15 @@
 
 	<div class="main_long">
 
-	<div class="blueheaderbar tooltips">
-        <div class="user fieldWithTooltip tooltipAbove">
+	<div class="blueheaderbar">
+        <div class="user">
         	<portlet:renderURL var="sortURL">
         		<portlet:param name="sortColumn" value="USER_NAME" />
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'USER_NAME' ? not sortFilterPage.sortAscending : true }" />
                 <portlet:param name="filter" value="${sortFilterPage.filter}" />
                 <portlet:param name="memberCategory" value="${memberCategory}" />
         	</portlet:renderURL>
-           	<a href="${sortURL }">User</a>
+           	<a class="fieldWithTooltip" href="${sortURL }">User</a>
            	<div class="tooltip">
            		Click to sort by user name
            	</div>
@@ -37,7 +37,7 @@
 					<div class="tt-arrow"><!--  --></div>
 				</div>
 			</span>
-			<a href="${sortURLPoints }"> Points</a>
+			<a class="fieldWithTooltip" href="${sortURLPoints }"> Points</a>
 			<div class="tooltip">Click to sort by points</div>
 			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
 		</div>
@@ -48,7 +48,7 @@
                 <portlet:param name="filter" value="${sortFilterPage.filter}" />
                 <portlet:param name="memberCategory" value="${memberCategory}" />
 			</portlet:renderURL>
-        	<a href="${sortURLActivity }"> Activity</a>
+        	<a class="fieldWithTooltip" href="${sortURLActivity }"> Activity</a>
             <div class="tooltip">Click to sort by activity</div>
             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="ACTIVITY" />
         </div>
@@ -59,7 +59,7 @@
                 <portlet:param name="filter" value="${sortFilterPage.filter}" />
                 <portlet:param name="memberCategory" value="${memberCategory}" />
 			</portlet:renderURL>
-        	<a href="${sortURLCategory }"> Category</a>
+        	<a class="fieldWithTooltip" href="${sortURLCategory }"> Category</a>
             <div class="tooltip">Click to sort by category</div>
             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CATEGORY" />
         </div>
@@ -71,7 +71,7 @@
                 <portlet:param name="filter" value="${sortFilterPage.filter}" />
                 <portlet:param name="memberCategory" value="${memberCategory}" />
 			</portlet:renderURL>
-        	<a href="${sortURLSeniority }"> Member since</a>
+        	<a class="fieldWithTooltip" href="${sortURLSeniority }"> Member since</a>
             <div class="tooltip">Click to sort by seniority</div>
             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MEMBER_SINCE" />
         </div>

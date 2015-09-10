@@ -533,7 +533,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             QueryPos qPos = QueryPos.getInstance(q);
             qPos.add(userId.toString());
             List<BigInteger> results = (List<BigInteger>) QueryUtil.list(q, getDialect(), 0, Integer.MAX_VALUE);
-            if (results.size() > 0) {
+            if (results.size() > 0 && results.get(0) != null) {
                 return results.get(0).longValue();
             }
         } catch (Exception e) {
@@ -559,7 +559,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             QueryPos qPos = QueryPos.getInstance(q);
             qPos.add(userId.toString());
             List<BigInteger> results = (List<BigInteger>) QueryUtil.list(q, getDialect(), 0, Integer.MAX_VALUE);
-            if (results.size() > 0) {
+            if (results.size() > 0 && results.get(0) != null) {
                 return results.get(0).longValue();
             }
         } catch (Exception e) {
