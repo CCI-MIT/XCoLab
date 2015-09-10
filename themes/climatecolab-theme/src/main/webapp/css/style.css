@@ -289,14 +289,16 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar .how {float:left; padding: 0;  width:105px; height:37px;background:url(../images/contest-icon-how.png) no-repeat 10px 6px; }
 .blueheaderbar .how a {height:27px;padding-top:10px; margin-left:33px; display:inline-block;}
 
-/* users page */
-.blueheaderbar .user {float:left; width:356px; height:37px; padding-left:9px;}
+/* users/members page */
+.blueheaderbar .user {float:left; width:312px; height:37px; padding-left:9px;}
 .blueheaderbar .user a {font-weight: bold; padding-top:10px; height:27px; display:inline-block;}
-.blueheaderbar .activity {float:left; width:125px; height:37px; }
+.blueheaderbar .points {float:left; width:95px; height:37px; }
+.blueheaderbar .points a {font-weight: bold; height:27px; padding-top:10px; margin-left:10px; display:inline-block;}
+.blueheaderbar .activity {float:left; width:90px; height:37px; }
 .blueheaderbar .activity a {font-weight: bold; height:27px; padding-top:10px; margin-left:10px; display:inline-block;}
-.blueheaderbar .category {float:left;  width:125px; height:37px; }
+.blueheaderbar .category {float:left;  width:115px; height:37px; }
 .blueheaderbar .category a {font-weight: bold; height:27px; padding-top:10px; margin-left:10px; display:inline-block;}
-.blueheaderbar .seniority {float:left; width:125px; height:37px; }
+.blueheaderbar .seniority {float:left; width:115px; height:37px; }
 .blueheaderbar .seniority a {font-weight: bold; height:27px; padding-top:10px; margin-left:10px; display:inline-block;}
 
 /* proposal page */
