@@ -372,7 +372,8 @@ public class ProposalAttributeWrapper implements ProposalAttribute,
     }
 
     @Override
-    public int compareTo(ProposalAttribute proposalAttribute) {
+    public int compareTo(
+        com.ext.portlet.model.ProposalAttribute proposalAttribute) {
         return _proposalAttribute.compareTo(proposalAttribute);
     }
 
@@ -382,17 +383,17 @@ public class ProposalAttributeWrapper implements ProposalAttribute,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ProposalAttribute> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ProposalAttribute> toCacheModel() {
         return _proposalAttribute.toCacheModel();
     }
 
     @Override
-    public ProposalAttribute toEscapedModel() {
+    public com.ext.portlet.model.ProposalAttribute toEscapedModel() {
         return new ProposalAttributeWrapper(_proposalAttribute.toEscapedModel());
     }
 
     @Override
-    public ProposalAttribute toUnescapedModel() {
+    public com.ext.portlet.model.ProposalAttribute toUnescapedModel() {
         return new ProposalAttributeWrapper(_proposalAttribute.toUnescapedModel());
     }
 

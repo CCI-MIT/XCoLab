@@ -314,7 +314,7 @@ public class PlanPositionWrapper implements PlanPosition,
     }
 
     @Override
-    public int compareTo(PlanPosition planPosition) {
+    public int compareTo(com.ext.portlet.model.PlanPosition planPosition) {
         return _planPosition.compareTo(planPosition);
     }
 
@@ -324,17 +324,17 @@ public class PlanPositionWrapper implements PlanPosition,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanPosition> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanPosition> toCacheModel() {
         return _planPosition.toCacheModel();
     }
 
     @Override
-    public PlanPosition toEscapedModel() {
+    public com.ext.portlet.model.PlanPosition toEscapedModel() {
         return new PlanPositionWrapper(_planPosition.toEscapedModel());
     }
 
     @Override
-    public PlanPosition toUnescapedModel() {
+    public com.ext.portlet.model.PlanPosition toUnescapedModel() {
         return new PlanPositionWrapper(_planPosition.toUnescapedModel());
     }
 

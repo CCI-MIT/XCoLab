@@ -26,6 +26,7 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
     private long _commentsThread;
     private boolean _isQuiet;
     private BaseModel<?> _discussionCategoryGroupRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public DiscussionCategoryGroupClp() {
     }
@@ -332,6 +333,10 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

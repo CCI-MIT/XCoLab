@@ -155,19 +155,19 @@ public interface ProposalVoteModel extends BaseModel<ProposalVote> {
     public Object clone();
 
     @Override
-    public int compareTo(ProposalVote proposalVote);
+    public int compareTo(com.ext.portlet.model.ProposalVote proposalVote);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ProposalVote> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ProposalVote> toCacheModel();
 
     @Override
-    public ProposalVote toEscapedModel();
+    public com.ext.portlet.model.ProposalVote toEscapedModel();
 
     @Override
-    public ProposalVote toUnescapedModel();
+    public com.ext.portlet.model.ProposalVote toUnescapedModel();
 
     @Override
     public String toString();

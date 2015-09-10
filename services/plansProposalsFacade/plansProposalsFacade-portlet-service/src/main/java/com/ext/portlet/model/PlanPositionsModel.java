@@ -165,19 +165,19 @@ public interface PlanPositionsModel extends BaseModel<PlanPositions> {
     public Object clone();
 
     @Override
-    public int compareTo(PlanPositions planPositions);
+    public int compareTo(com.ext.portlet.model.PlanPositions planPositions);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlanPositions> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlanPositions> toCacheModel();
 
     @Override
-    public PlanPositions toEscapedModel();
+    public com.ext.portlet.model.PlanPositions toEscapedModel();
 
     @Override
-    public PlanPositions toUnescapedModel();
+    public com.ext.portlet.model.PlanPositions toUnescapedModel();
 
     @Override
     public String toString();

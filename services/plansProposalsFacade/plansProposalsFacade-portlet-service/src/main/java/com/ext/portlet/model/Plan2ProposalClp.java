@@ -23,6 +23,7 @@ public class Plan2ProposalClp extends BaseModelImpl<Plan2Proposal>
     private long _planId;
     private long _proposalId;
     private BaseModel<?> _plan2ProposalRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public Plan2ProposalClp() {
     }
@@ -232,6 +233,10 @@ public class Plan2ProposalClp extends BaseModelImpl<Plan2Proposal>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

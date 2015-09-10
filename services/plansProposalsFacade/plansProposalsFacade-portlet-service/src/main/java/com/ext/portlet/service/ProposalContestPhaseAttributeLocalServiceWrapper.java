@@ -371,6 +371,23 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     }
 
     /**
+    * <p>Returns proposal phase attribute (if exists)</p>
+    *
+    * @param proposalId id of a proposal
+    * @param contestPhaseId id of a phase
+    * @param attributeName name of an attribute
+    * @return true if the attribute exists, false otherwise
+    * @throws SystemException in case of lr error
+    */
+    @Override
+    public boolean hasProposalContestPhaseAttribute(long proposalId,
+        long contestPhaseId, java.lang.String attributeName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalContestPhaseAttributeLocalService.hasProposalContestPhaseAttribute(proposalId,
+            contestPhaseId, attributeName);
+    }
+
+    /**
     * <p>Returns all contest phase attributes</p>
     *
     * @param contestPhaseId id of a phase

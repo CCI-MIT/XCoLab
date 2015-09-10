@@ -232,7 +232,8 @@ public class PlansFilterPositionWrapper implements PlansFilterPosition,
     }
 
     @Override
-    public int compareTo(PlansFilterPosition plansFilterPosition) {
+    public int compareTo(
+        com.ext.portlet.model.PlansFilterPosition plansFilterPosition) {
         return _plansFilterPosition.compareTo(plansFilterPosition);
     }
 
@@ -242,17 +243,17 @@ public class PlansFilterPositionWrapper implements PlansFilterPosition,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlansFilterPosition> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlansFilterPosition> toCacheModel() {
         return _plansFilterPosition.toCacheModel();
     }
 
     @Override
-    public PlansFilterPosition toEscapedModel() {
+    public com.ext.portlet.model.PlansFilterPosition toEscapedModel() {
         return new PlansFilterPositionWrapper(_plansFilterPosition.toEscapedModel());
     }
 
     @Override
-    public PlansFilterPosition toUnescapedModel() {
+    public com.ext.portlet.model.PlansFilterPosition toUnescapedModel() {
         return new PlansFilterPositionWrapper(_plansFilterPosition.toUnescapedModel());
     }
 

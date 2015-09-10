@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface ContestPhaseLocalService extends BaseLocalService,
     * @return the contest phase that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ContestPhase addContestPhase(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -60,6 +62,7 @@ public interface ContestPhaseLocalService extends BaseLocalService,
     * @throws PortalException if a contest phase with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ContestPhase deleteContestPhase(
         long ContestPhasePK)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -72,6 +75,7 @@ public interface ContestPhaseLocalService extends BaseLocalService,
     * @return the contest phase that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ContestPhase deleteContestPhase(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -213,6 +217,7 @@ public interface ContestPhaseLocalService extends BaseLocalService,
     * @return the contest phase that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ContestPhase updateContestPhase(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -350,7 +355,6 @@ public interface ContestPhaseLocalService extends BaseLocalService,
     * Creates a new contest phase object by copying all attributes of the original contest phase
     *
     * @param originalPhase     The contest phase to copy
-    * @return
     */
     public com.ext.portlet.model.ContestPhase createFromContestPhase(
         com.ext.portlet.model.ContestPhase originalPhase)

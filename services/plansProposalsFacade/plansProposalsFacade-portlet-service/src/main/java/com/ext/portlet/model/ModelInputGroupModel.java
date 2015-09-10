@@ -196,19 +196,19 @@ public interface ModelInputGroupModel extends BaseModel<ModelInputGroup> {
     public Object clone();
 
     @Override
-    public int compareTo(ModelInputGroup modelInputGroup);
+    public int compareTo(com.ext.portlet.model.ModelInputGroup modelInputGroup);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ModelInputGroup> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ModelInputGroup> toCacheModel();
 
     @Override
-    public ModelInputGroup toEscapedModel();
+    public com.ext.portlet.model.ModelInputGroup toEscapedModel();
 
     @Override
-    public ModelInputGroup toUnescapedModel();
+    public com.ext.portlet.model.ModelInputGroup toUnescapedModel();
 
     @Override
     public String toString();

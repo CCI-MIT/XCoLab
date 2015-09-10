@@ -32,6 +32,7 @@ public class PlanDescriptionClp extends BaseModelImpl<PlanDescription>
     private long _image;
     private String _pitch;
     private BaseModel<?> _planDescriptionRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanDescriptionClp() {
     }
@@ -490,6 +491,10 @@ public class PlanDescriptionClp extends BaseModelImpl<PlanDescription>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

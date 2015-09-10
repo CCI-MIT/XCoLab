@@ -167,19 +167,19 @@ public interface PlanFanModel extends BaseModel<PlanFan> {
     public Object clone();
 
     @Override
-    public int compareTo(PlanFan planFan);
+    public int compareTo(com.ext.portlet.model.PlanFan planFan);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlanFan> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlanFan> toCacheModel();
 
     @Override
-    public PlanFan toEscapedModel();
+    public com.ext.portlet.model.PlanFan toEscapedModel();
 
     @Override
-    public PlanFan toUnescapedModel();
+    public com.ext.portlet.model.PlanFan toUnescapedModel();
 
     @Override
     public String toString();

@@ -26,6 +26,7 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
     private int _judgeType;
     private boolean _isActive;
     private BaseModel<?> _proposalRatingTypeRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ProposalRatingTypeClp() {
     }
@@ -349,6 +350,10 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

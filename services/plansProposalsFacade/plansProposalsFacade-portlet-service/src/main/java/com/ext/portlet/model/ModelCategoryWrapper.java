@@ -240,7 +240,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     }
 
     @Override
-    public int compareTo(ModelCategory modelCategory) {
+    public int compareTo(com.ext.portlet.model.ModelCategory modelCategory) {
         return _modelCategory.compareTo(modelCategory);
     }
 
@@ -250,17 +250,17 @@ public class ModelCategoryWrapper implements ModelCategory,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ModelCategory> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ModelCategory> toCacheModel() {
         return _modelCategory.toCacheModel();
     }
 
     @Override
-    public ModelCategory toEscapedModel() {
+    public com.ext.portlet.model.ModelCategory toEscapedModel() {
         return new ModelCategoryWrapper(_modelCategory.toEscapedModel());
     }
 
     @Override
-    public ModelCategory toUnescapedModel() {
+    public com.ext.portlet.model.ModelCategory toUnescapedModel() {
         return new ModelCategoryWrapper(_modelCategory.toUnescapedModel());
     }
 

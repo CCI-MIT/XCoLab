@@ -24,6 +24,7 @@ public class ImpactTemplateMaxFocusAreaClp extends BaseModelImpl<ImpactTemplateM
     private long _focusAreaListId;
     private long _focusAreaId;
     private BaseModel<?> _impactTemplateMaxFocusAreaRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ImpactTemplateMaxFocusAreaClp() {
     }
@@ -231,6 +232,10 @@ public class ImpactTemplateMaxFocusAreaClp extends BaseModelImpl<ImpactTemplateM
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -158,19 +158,19 @@ public interface PlanTypeColumnModel extends BaseModel<PlanTypeColumn> {
     public Object clone();
 
     @Override
-    public int compareTo(PlanTypeColumn planTypeColumn);
+    public int compareTo(com.ext.portlet.model.PlanTypeColumn planTypeColumn);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlanTypeColumn> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlanTypeColumn> toCacheModel();
 
     @Override
-    public PlanTypeColumn toEscapedModel();
+    public com.ext.portlet.model.PlanTypeColumn toEscapedModel();
 
     @Override
-    public PlanTypeColumn toUnescapedModel();
+    public com.ext.portlet.model.PlanTypeColumn toUnescapedModel();
 
     @Override
     public String toString();

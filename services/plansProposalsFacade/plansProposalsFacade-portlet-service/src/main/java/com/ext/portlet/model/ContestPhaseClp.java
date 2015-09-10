@@ -39,6 +39,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
     private Date _updated;
     private long _authorId;
     private BaseModel<?> _contestPhaseRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ContestPhaseClp() {
     }
@@ -699,6 +700,10 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

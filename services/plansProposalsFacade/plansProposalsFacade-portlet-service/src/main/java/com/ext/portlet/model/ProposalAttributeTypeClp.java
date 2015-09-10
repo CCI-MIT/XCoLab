@@ -24,6 +24,7 @@ public class ProposalAttributeTypeClp extends BaseModelImpl<ProposalAttributeTyp
     private boolean _visibleInVersionHistory;
     private boolean _copyOnPromote;
     private BaseModel<?> _proposalAttributeTypeRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ProposalAttributeTypeClp() {
     }
@@ -272,6 +273,10 @@ public class ProposalAttributeTypeClp extends BaseModelImpl<ProposalAttributeTyp
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

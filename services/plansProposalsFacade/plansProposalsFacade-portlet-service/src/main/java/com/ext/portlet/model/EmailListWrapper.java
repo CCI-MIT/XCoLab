@@ -208,7 +208,7 @@ public class EmailListWrapper implements EmailList, ModelWrapper<EmailList> {
     }
 
     @Override
-    public int compareTo(EmailList emailList) {
+    public int compareTo(com.ext.portlet.model.EmailList emailList) {
         return _emailList.compareTo(emailList);
     }
 
@@ -218,17 +218,17 @@ public class EmailListWrapper implements EmailList, ModelWrapper<EmailList> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<EmailList> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.EmailList> toCacheModel() {
         return _emailList.toCacheModel();
     }
 
     @Override
-    public EmailList toEscapedModel() {
+    public com.ext.portlet.model.EmailList toEscapedModel() {
         return new EmailListWrapper(_emailList.toEscapedModel());
     }
 
     @Override
-    public EmailList toUnescapedModel() {
+    public com.ext.portlet.model.EmailList toUnescapedModel() {
         return new EmailListWrapper(_emailList.toUnescapedModel());
     }
 

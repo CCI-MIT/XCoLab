@@ -29,6 +29,7 @@ public class MessagingMessageConversionClp extends BaseModelImpl<MessagingMessag
     private String _extraData2;
     private Date _createDate;
     private BaseModel<?> _messagingMessageConversionRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public MessagingMessageConversionClp() {
     }
@@ -392,6 +393,10 @@ public class MessagingMessageConversionClp extends BaseModelImpl<MessagingMessag
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

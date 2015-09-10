@@ -209,7 +209,7 @@ public class ModelDiscussionWrapper implements ModelDiscussion,
     }
 
     @Override
-    public int compareTo(ModelDiscussion modelDiscussion) {
+    public int compareTo(com.ext.portlet.model.ModelDiscussion modelDiscussion) {
         return _modelDiscussion.compareTo(modelDiscussion);
     }
 
@@ -219,17 +219,17 @@ public class ModelDiscussionWrapper implements ModelDiscussion,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ModelDiscussion> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ModelDiscussion> toCacheModel() {
         return _modelDiscussion.toCacheModel();
     }
 
     @Override
-    public ModelDiscussion toEscapedModel() {
+    public com.ext.portlet.model.ModelDiscussion toEscapedModel() {
         return new ModelDiscussionWrapper(_modelDiscussion.toEscapedModel());
     }
 
     @Override
-    public ModelDiscussion toUnescapedModel() {
+    public com.ext.portlet.model.ModelDiscussion toUnescapedModel() {
         return new ModelDiscussionWrapper(_modelDiscussion.toUnescapedModel());
     }
 

@@ -198,19 +198,19 @@ public interface PlanTeamHistoryModel extends BaseModel<PlanTeamHistory> {
     public Object clone();
 
     @Override
-    public int compareTo(PlanTeamHistory planTeamHistory);
+    public int compareTo(com.ext.portlet.model.PlanTeamHistory planTeamHistory);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlanTeamHistory> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlanTeamHistory> toCacheModel();
 
     @Override
-    public PlanTeamHistory toEscapedModel();
+    public com.ext.portlet.model.PlanTeamHistory toEscapedModel();
 
     @Override
-    public PlanTeamHistory toUnescapedModel();
+    public com.ext.portlet.model.PlanTeamHistory toUnescapedModel();
 
     @Override
     public String toString();

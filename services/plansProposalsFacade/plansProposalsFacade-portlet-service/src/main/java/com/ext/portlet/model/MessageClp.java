@@ -28,6 +28,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
     private String _subject;
     private String _content;
     private BaseModel<?> _messageRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public MessageClp() {
     }
@@ -358,6 +359,10 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

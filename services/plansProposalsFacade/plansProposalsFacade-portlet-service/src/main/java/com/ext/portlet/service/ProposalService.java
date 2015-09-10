@@ -1,5 +1,7 @@
 package com.ext.portlet.service;
 
+import com.ext.portlet.service.*;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -61,6 +63,8 @@ public interface ProposalService extends BaseService, InvokableService {
     * @throws PortalException
     * @throws SystemException
     */
+    @com.liferay.portal.kernel.jsonwebservice.JSONWebService
+    @com.liferay.portal.security.ac.AccessControlled(guestAccessEnabled = true)
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.liferay.portal.kernel.json.JSONObject getProposalVersionFirstIndex(
         long contestPhaseId, long proposalId)
@@ -76,6 +80,8 @@ public interface ProposalService extends BaseService, InvokableService {
     * @throws PortalException
     * @throws SystemException
     */
+    @com.liferay.portal.kernel.jsonwebservice.JSONWebService
+    @com.liferay.portal.security.ac.AccessControlled(guestAccessEnabled = true)
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.liferay.portal.kernel.json.JSONObject getProposalVersionIndex(
         long version, long proposalId)
@@ -91,18 +97,24 @@ public interface ProposalService extends BaseService, InvokableService {
     * @throws PortalException
     * @throws SystemException
     */
+    @com.liferay.portal.kernel.jsonwebservice.JSONWebService
+    @com.liferay.portal.security.ac.AccessControlled(guestAccessEnabled = true)
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.liferay.portal.kernel.json.JSONObject getProposalVersions(
         long contestId, long contestPhaseId, long proposalId, int start, int end)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    @com.liferay.portal.kernel.jsonwebservice.JSONWebService
+    @com.liferay.portal.security.ac.AccessControlled(guestAccessEnabled = true)
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.liferay.portal.kernel.json.JSONObject getProposalVersions(
         long proposalId, int start, int end)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    @com.liferay.portal.kernel.jsonwebservice.JSONWebService
+    @com.liferay.portal.security.ac.AccessControlled(guestAccessEnabled = true)
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.liferay.portal.kernel.json.JSONArray getProposalContestSections(
         long proposalId, int version, long contestId)

@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface ContestPhaseRibbonTypeLocalService extends BaseLocalService,
     * @return the contest phase ribbon type that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ContestPhaseRibbonType addContestPhaseRibbonType(
         com.ext.portlet.model.ContestPhaseRibbonType contestPhaseRibbonType)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -60,6 +62,7 @@ public interface ContestPhaseRibbonTypeLocalService extends BaseLocalService,
     * @throws PortalException if a contest phase ribbon type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ContestPhaseRibbonType deleteContestPhaseRibbonType(
         long id)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -72,6 +75,7 @@ public interface ContestPhaseRibbonTypeLocalService extends BaseLocalService,
     * @return the contest phase ribbon type that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ContestPhaseRibbonType deleteContestPhaseRibbonType(
         com.ext.portlet.model.ContestPhaseRibbonType contestPhaseRibbonType)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -212,6 +216,7 @@ public interface ContestPhaseRibbonTypeLocalService extends BaseLocalService,
     * @return the contest phase ribbon type that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ContestPhaseRibbonType updateContestPhaseRibbonType(
         com.ext.portlet.model.ContestPhaseRibbonType contestPhaseRibbonType)
         throws com.liferay.portal.kernel.exception.SystemException;

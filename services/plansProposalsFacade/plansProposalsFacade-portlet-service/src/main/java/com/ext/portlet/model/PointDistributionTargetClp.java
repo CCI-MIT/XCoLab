@@ -26,6 +26,7 @@ public class PointDistributionTargetClp extends BaseModelImpl<PointDistributionT
     private double _numberOfPoints;
     private long _pointTypeOverride;
     private BaseModel<?> _pointDistributionTargetRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PointDistributionTargetClp() {
     }
@@ -330,6 +331,10 @@ public class PointDistributionTargetClp extends BaseModelImpl<PointDistributionT
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

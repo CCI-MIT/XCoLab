@@ -123,19 +123,20 @@ public interface PlanTypeAttributeModel extends BaseModel<PlanTypeAttribute> {
     public Object clone();
 
     @Override
-    public int compareTo(PlanTypeAttribute planTypeAttribute);
+    public int compareTo(
+        com.ext.portlet.model.PlanTypeAttribute planTypeAttribute);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlanTypeAttribute> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlanTypeAttribute> toCacheModel();
 
     @Override
-    public PlanTypeAttribute toEscapedModel();
+    public com.ext.portlet.model.PlanTypeAttribute toEscapedModel();
 
     @Override
-    public PlanTypeAttribute toUnescapedModel();
+    public com.ext.portlet.model.PlanTypeAttribute toUnescapedModel();
 
     @Override
     public String toString();

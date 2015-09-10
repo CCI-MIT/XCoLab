@@ -26,6 +26,7 @@ public class User_Clp extends BaseModelImpl<User_> implements User_ {
     private Date _createDate;
     private String _screenName;
     private BaseModel<?> _user_RemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public User_Clp() {
     }
@@ -274,6 +275,10 @@ public class User_Clp extends BaseModelImpl<User_> implements User_ {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

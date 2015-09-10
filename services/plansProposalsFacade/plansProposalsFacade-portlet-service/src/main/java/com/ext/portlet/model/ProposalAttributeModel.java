@@ -208,19 +208,20 @@ public interface ProposalAttributeModel extends BaseModel<ProposalAttribute> {
     public Object clone();
 
     @Override
-    public int compareTo(ProposalAttribute proposalAttribute);
+    public int compareTo(
+        com.ext.portlet.model.ProposalAttribute proposalAttribute);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ProposalAttribute> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ProposalAttribute> toCacheModel();
 
     @Override
-    public ProposalAttribute toEscapedModel();
+    public com.ext.portlet.model.ProposalAttribute toEscapedModel();
 
     @Override
-    public ProposalAttribute toUnescapedModel();
+    public com.ext.portlet.model.ProposalAttribute toUnescapedModel();
 
     @Override
     public String toString();

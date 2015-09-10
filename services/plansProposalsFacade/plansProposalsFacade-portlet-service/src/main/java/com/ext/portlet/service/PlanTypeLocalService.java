@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface PlanTypeLocalService extends BaseLocalService,
     * @return the plan type that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.PlanType addPlanType(
         com.ext.portlet.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -59,6 +61,7 @@ public interface PlanTypeLocalService extends BaseLocalService,
     * @throws PortalException if a plan type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.PlanType deletePlanType(long planTypeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -70,6 +73,7 @@ public interface PlanTypeLocalService extends BaseLocalService,
     * @return the plan type that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.PlanType deletePlanType(
         com.ext.portlet.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -209,6 +213,7 @@ public interface PlanTypeLocalService extends BaseLocalService,
     * @return the plan type that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.PlanType updatePlanType(
         com.ext.portlet.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException;

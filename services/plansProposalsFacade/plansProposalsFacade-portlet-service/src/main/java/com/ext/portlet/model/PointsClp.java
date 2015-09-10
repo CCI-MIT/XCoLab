@@ -30,6 +30,7 @@ public class PointsClp extends BaseModelImpl<Points> implements Points {
     private long _originatingContestPK;
     private long _originatingProposalId;
     private BaseModel<?> _pointsRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PointsClp() {
     }
@@ -436,6 +437,10 @@ public class PointsClp extends BaseModelImpl<Points> implements Points {
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

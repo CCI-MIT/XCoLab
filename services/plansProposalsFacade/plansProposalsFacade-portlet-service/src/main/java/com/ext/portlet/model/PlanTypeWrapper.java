@@ -418,7 +418,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     }
 
     @Override
-    public int compareTo(PlanType planType) {
+    public int compareTo(com.ext.portlet.model.PlanType planType) {
         return _planType.compareTo(planType);
     }
 
@@ -428,17 +428,17 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<PlanType> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanType> toCacheModel() {
         return _planType.toCacheModel();
     }
 
     @Override
-    public PlanType toEscapedModel() {
+    public com.ext.portlet.model.PlanType toEscapedModel() {
         return new PlanTypeWrapper(_planType.toEscapedModel());
     }
 
     @Override
-    public PlanType toUnescapedModel() {
+    public com.ext.portlet.model.PlanType toUnescapedModel() {
         return new PlanTypeWrapper(_planType.toUnescapedModel());
     }
 

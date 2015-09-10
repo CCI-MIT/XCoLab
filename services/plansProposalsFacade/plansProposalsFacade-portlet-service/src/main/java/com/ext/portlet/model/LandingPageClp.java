@@ -26,6 +26,7 @@ public class LandingPageClp extends BaseModelImpl<LandingPage>
     private String _targetUrl;
     private Date _updated;
     private BaseModel<?> _landingPageRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public LandingPageClp() {
     }
@@ -294,6 +295,10 @@ public class LandingPageClp extends BaseModelImpl<LandingPage>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

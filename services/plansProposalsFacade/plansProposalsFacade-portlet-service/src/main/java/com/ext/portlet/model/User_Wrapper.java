@@ -231,7 +231,7 @@ public class User_Wrapper implements User_, ModelWrapper<User_> {
     }
 
     @Override
-    public int compareTo(User_ user_) {
+    public int compareTo(com.ext.portlet.model.User_ user_) {
         return _user_.compareTo(user_);
     }
 
@@ -241,17 +241,17 @@ public class User_Wrapper implements User_, ModelWrapper<User_> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<User_> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.User_> toCacheModel() {
         return _user_.toCacheModel();
     }
 
     @Override
-    public User_ toEscapedModel() {
+    public com.ext.portlet.model.User_ toEscapedModel() {
         return new User_Wrapper(_user_.toEscapedModel());
     }
 
     @Override
-    public User_ toUnescapedModel() {
+    public com.ext.portlet.model.User_ toUnescapedModel() {
         return new User_Wrapper(_user_.toUnescapedModel());
     }
 

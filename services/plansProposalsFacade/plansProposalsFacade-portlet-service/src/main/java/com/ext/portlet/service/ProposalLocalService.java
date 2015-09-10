@@ -1,7 +1,10 @@
 package com.ext.portlet.service;
 
+import com.ext.portlet.service.*;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +42,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @return the proposal that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.Proposal addProposal(
         com.ext.portlet.model.Proposal proposal)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -59,6 +63,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws PortalException if a proposal with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.Proposal deleteProposal(long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -70,6 +75,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @return the proposal that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.Proposal deleteProposal(
         com.ext.portlet.model.Proposal proposal)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -209,6 +215,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @return the proposal that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.Proposal updateProposal(
         com.ext.portlet.model.Proposal proposal)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -255,6 +262,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws PortalException in case of a Liferay error
     * @author janusz
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public com.ext.portlet.model.Proposal create(long authorId,
         long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -283,11 +291,13 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws PortalException in case of a Liferay error
     * @author janusz
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public com.ext.portlet.model.Proposal create(long authorId,
         long contestPhaseId, long proposalId, boolean publishActivity)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    @com.liferay.portal.kernel.transaction.Transactional
     public void setVisibility(java.lang.Long proposalId,
         java.lang.Boolean visibility, java.lang.Long authorId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -315,6 +325,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws SystemException in case of an LR error
     * @author janusz
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName, long additionalId,
         java.lang.String stringValue, long numericValue, double realValue)
@@ -344,6 +355,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws SystemException in case of an LR error
     * @author patrickhiesel
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName, long additionalId,
         java.lang.String stringValue, long numericValue, double realValue,
@@ -740,6 +752,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws SystemException in case of an LR error
     * @throws PortalException
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public void addSupporter(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -752,6 +765,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws SystemException in case of an LR error
     * @throws PortalException
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public void addSupporter(long proposalId, long userId,
         boolean publishActivity)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -765,6 +779,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws SystemException in case of an LR error
     * @throws PortalException
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public void removeSupporter(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -808,6 +823,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public void addVote(long proposalId, long contestPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -823,6 +839,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public void addVote(long proposalId, long contestPhaseId, long userId,
         boolean publishActivity)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -836,6 +853,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public void removeVote(long contestPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;

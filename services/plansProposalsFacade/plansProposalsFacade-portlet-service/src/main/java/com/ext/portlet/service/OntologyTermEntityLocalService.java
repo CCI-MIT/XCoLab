@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface OntologyTermEntityLocalService extends BaseLocalService,
     * @return the ontology term entity that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.OntologyTermEntity addOntologyTermEntity(
         com.ext.portlet.model.OntologyTermEntity ontologyTermEntity)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -60,6 +62,7 @@ public interface OntologyTermEntityLocalService extends BaseLocalService,
     * @throws PortalException if a ontology term entity with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.OntologyTermEntity deleteOntologyTermEntity(
         long id)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -72,6 +75,7 @@ public interface OntologyTermEntityLocalService extends BaseLocalService,
     * @return the ontology term entity that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.OntologyTermEntity deleteOntologyTermEntity(
         com.ext.portlet.model.OntologyTermEntity ontologyTermEntity)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -212,6 +216,7 @@ public interface OntologyTermEntityLocalService extends BaseLocalService,
     * @return the ontology term entity that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.OntologyTermEntity updateOntologyTermEntity(
         com.ext.portlet.model.OntologyTermEntity ontologyTermEntity)
         throws com.liferay.portal.kernel.exception.SystemException;

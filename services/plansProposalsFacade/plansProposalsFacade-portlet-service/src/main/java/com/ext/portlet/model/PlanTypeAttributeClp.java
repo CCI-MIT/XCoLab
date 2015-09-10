@@ -24,6 +24,7 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
     private long _planTypeId;
     private String _attributeName;
     private BaseModel<?> _planTypeAttributeRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanTypeAttributeClp() {
     }
@@ -265,6 +266,10 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override
