@@ -100,6 +100,42 @@ public class User_FinderUtil {
         return getFinder().getUserActivityCount(userId);
     }
 
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsAsc(
+        int begin, int end, java.lang.String filter) {
+        return getFinder().getUsersSortedByPointsAsc(begin, end, filter);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsAscFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String categoryName) {
+        return getFinder()
+                   .getUsersSortedByPointsAscFilteredByCategory(begin, end,
+            filter, categoryName);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsDesc(
+        int begin, int end, java.lang.String filter) {
+        return getFinder().getUsersSortedByPointsDesc(begin, end, filter);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsDescFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String categoryName) {
+        return getFinder()
+                   .getUsersSortedByPointsDescFilteredByCategory(begin, end,
+            filter, categoryName);
+    }
+
+    public static java.lang.Long getUserMaterializedPoints(
+        java.lang.Long userId) {
+        return getFinder().getUserMaterializedPoints(userId);
+    }
+
+    public static java.lang.Long getUserHypotheticalPoints(
+        java.lang.Long userId) {
+        return getFinder().getUserHypotheticalPoints(userId);
+    }
+
     public static User_Finder getFinder() {
         if (_finder == null) {
             _finder = (User_Finder) PortletBeanLocatorUtil.locate(com.ext.portlet.service.ClpSerializer.getServletContextName(),

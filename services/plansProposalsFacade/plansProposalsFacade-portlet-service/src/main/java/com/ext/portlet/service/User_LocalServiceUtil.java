@@ -502,6 +502,48 @@ public class User_LocalServiceUtil {
         return getService().getUserActivityCount(userId);
     }
 
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsAsc(
+        int begin, int end, java.lang.String filter)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUsersSortedByPointsAsc(begin, end, filter);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsAscFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getUsersSortedByPointsAscFilteredByCategory(begin, end,
+            filter, memberCategory);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsDesc(
+        int begin, int end, java.lang.String filter)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUsersSortedByPointsDesc(begin, end, filter);
+    }
+
+    public static java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsDescFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getUsersSortedByPointsDescFilteredByCategory(begin, end,
+            filter, memberCategory);
+    }
+
+    public static java.lang.Long getUserMaterializedPoints(
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUserMaterializedPoints(userId);
+    }
+
+    public static java.lang.Long getUserHypotheticalPoints(
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUserHypotheticalPoints(userId);
+    }
+
     public static void clearService() {
         _service = null;
     }

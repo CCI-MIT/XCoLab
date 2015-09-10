@@ -118,4 +118,40 @@ public class User_LocalServiceImpl extends User_LocalServiceBaseImpl {
 
         return User_FinderUtil.getUserActivityCount(userId);
     }
+
+    public List<User_> getUsersSortedByPointsAsc(int begin, int end, String filter)
+            throws SystemException {
+
+        return User_FinderUtil.getUsersSortedByPointsAsc(begin, end, filter);
+    }
+
+    public List<User_> getUsersSortedByPointsAscFilteredByCategory(int begin, int end, String filter, String memberCategory)
+            throws SystemException {
+
+        return User_FinderUtil.getUsersSortedByPointsAscFilteredByCategory(begin, end, filter, memberCategory);
+    }
+
+    public List<User_> getUsersSortedByPointsDesc(int begin, int end, String filter)
+            throws SystemException {
+
+        return User_FinderUtil.getUsersSortedByPointsDesc(begin, end, filter);
+    }
+
+    public List<User_> getUsersSortedByPointsDescFilteredByCategory(int begin, int end, String filter, String memberCategory)
+            throws SystemException {
+
+        return User_FinderUtil.getUsersSortedByPointsDescFilteredByCategory(begin, end, filter, memberCategory);
+    }
+
+    public Long getUserMaterializedPoints(Long userId)
+            throws SystemException {
+
+        return User_FinderUtil.getUserMaterializedPoints(userId);
+    }
+
+    public Long getUserHypotheticalPoints(Long userId)
+            throws SystemException {
+
+        return User_FinderUtil.getUserHypotheticalPoints(userId);
+    }
 }

@@ -107,6 +107,18 @@ public class User_LocalServiceClpInvoker {
     private String[] _methodParameterTypes693;
     private String _methodName694;
     private String[] _methodParameterTypes694;
+    private String _methodName695;
+    private String[] _methodParameterTypes695;
+    private String _methodName696;
+    private String[] _methodParameterTypes696;
+    private String _methodName697;
+    private String[] _methodParameterTypes697;
+    private String _methodName698;
+    private String[] _methodParameterTypes698;
+    private String _methodName699;
+    private String[] _methodParameterTypes699;
+    private String _methodName700;
+    private String[] _methodParameterTypes700;
 
     public User_LocalServiceClpInvoker() {
         _methodName0 = "addUser_";
@@ -335,6 +347,34 @@ public class User_LocalServiceClpInvoker {
         _methodName694 = "getUserActivityCount";
 
         _methodParameterTypes694 = new String[] { "java.lang.Long" };
+
+        _methodName695 = "getUsersSortedByPointsAsc";
+
+        _methodParameterTypes695 = new String[] { "int", "int", "java.lang.String" };
+
+        _methodName696 = "getUsersSortedByPointsAscFilteredByCategory";
+
+        _methodParameterTypes696 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName697 = "getUsersSortedByPointsDesc";
+
+        _methodParameterTypes697 = new String[] { "int", "int", "java.lang.String" };
+
+        _methodName698 = "getUsersSortedByPointsDescFilteredByCategory";
+
+        _methodParameterTypes698 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName699 = "getUserMaterializedPoints";
+
+        _methodParameterTypes699 = new String[] { "java.lang.Long" };
+
+        _methodName700 = "getUserHypotheticalPoints";
+
+        _methodParameterTypes700 = new String[] { "java.lang.Long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -654,6 +694,44 @@ public class User_LocalServiceClpInvoker {
         if (_methodName694.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes694, parameterTypes)) {
             return User_LocalServiceUtil.getUserActivityCount((java.lang.Long) arguments[0]);
+        }
+
+        if (_methodName695.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes695, parameterTypes)) {
+            return User_LocalServiceUtil.getUsersSortedByPointsAsc(((Integer) arguments[0]).intValue(),
+                ((Integer) arguments[1]).intValue(),
+                (java.lang.String) arguments[2]);
+        }
+
+        if (_methodName696.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes696, parameterTypes)) {
+            return User_LocalServiceUtil.getUsersSortedByPointsAscFilteredByCategory(((Integer) arguments[0]).intValue(),
+                ((Integer) arguments[1]).intValue(),
+                (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
+        }
+
+        if (_methodName697.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes697, parameterTypes)) {
+            return User_LocalServiceUtil.getUsersSortedByPointsDesc(((Integer) arguments[0]).intValue(),
+                ((Integer) arguments[1]).intValue(),
+                (java.lang.String) arguments[2]);
+        }
+
+        if (_methodName698.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes698, parameterTypes)) {
+            return User_LocalServiceUtil.getUsersSortedByPointsDescFilteredByCategory(((Integer) arguments[0]).intValue(),
+                ((Integer) arguments[1]).intValue(),
+                (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
+        }
+
+        if (_methodName699.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes699, parameterTypes)) {
+            return User_LocalServiceUtil.getUserMaterializedPoints((java.lang.Long) arguments[0]);
+        }
+
+        if (_methodName700.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes700, parameterTypes)) {
+            return User_LocalServiceUtil.getUserHypotheticalPoints((java.lang.Long) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

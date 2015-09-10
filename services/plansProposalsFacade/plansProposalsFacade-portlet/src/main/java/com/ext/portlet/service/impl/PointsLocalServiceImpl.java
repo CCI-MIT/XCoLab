@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.PointsTarget;
 import org.xcolab.points.ReceiverLimitationStrategy;
@@ -46,11 +47,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	 * @throws SystemException
 	 */
 	public int getUserMaterializedPoints(long userId) throws SystemException {
-		int count = 0;
-		for (Points points: pointsPersistence.findByUserId(userId)) {
-			count += points.getMaterializedPoints();
-		}
-		return count;
+		return user_LocalService.getUserMaterializedPoints(userId).intValue();
 	}
 	
 	/**
@@ -61,11 +58,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	 * @throws SystemException
 	 */
 	public long getUserHypotheticalPoints(long userId) throws SystemException {
-		int count = 0;
-		for (Points points: pointsPersistence.findByUserId(userId)) {
-			count += points.getHypotheticalPoints();
-		}
-		return count;
+        return user_LocalService.getUserHypotheticalPoints(userId).intValue();
 	}
 	
 	/**

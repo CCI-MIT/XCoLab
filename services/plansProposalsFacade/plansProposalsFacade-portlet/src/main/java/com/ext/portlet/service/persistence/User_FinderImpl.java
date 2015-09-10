@@ -416,6 +416,164 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
         return null;
     }
 
+    public List<User_> getUsersSortedByPointsAsc(int begin, int end, String filter) {
+        Session session = null;
+        try {
+            session = openSession();
+            String sql = CustomSQLUtil.get(
+                    GET_USERS_SORTED_BY_POINTS_ASC);
+            SQLQuery q = session.createSQLQuery(sql);
+            q.setCacheable(false);
+            q.addEntity("User_", User_Impl.class);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
+            return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
+        } catch (Exception e) {
+            try {
+                throw new SystemException(e);
+            } catch (SystemException se) {
+                se.printStackTrace();
+            }
+        } finally {
+            closeSession(session);
+        }
+        return null;
+    }
+
+    public List<User_> getUsersSortedByPointsAscFilteredByCategory(int begin, int end, String filter, String categoryName) {
+        Session session = null;
+        try {
+            session = openSession();
+            String sql = CustomSQLUtil.get(
+                    GET_USERS_SORTED_BY_POINTS_ASC_FILTERED_BY_CATEGORY);
+            SQLQuery q = session.createSQLQuery(sql);
+            q.setCacheable(false);
+            q.addEntity("User_", User_Impl.class);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(categoryName);
+            return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
+        } catch (Exception e) {
+            try {
+                throw new SystemException(e);
+            } catch (SystemException se) {
+                se.printStackTrace();
+            }
+        } finally {
+            closeSession(session);
+        }
+        return null;
+    }
+
+    public List<User_> getUsersSortedByPointsDesc(int begin, int end, String filter) {
+        Session session = null;
+        try {
+            session = openSession();
+            String sql = CustomSQLUtil.get(
+                    GET_USERS_SORTED_BY_POINTS_DESC);
+            SQLQuery q = session.createSQLQuery(sql);
+            q.setCacheable(false);
+            q.addEntity("User_", User_Impl.class);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
+            return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
+        } catch (Exception e) {
+            try {
+                throw new SystemException(e);
+            } catch (SystemException se) {
+                se.printStackTrace();
+            }
+        } finally {
+            closeSession(session);
+        }
+        return null;
+    }
+
+    public List<User_> getUsersSortedByPointsDescFilteredByCategory(int begin, int end, String filter, String categoryName) {
+        Session session = null;
+        try {
+            session = openSession();
+            String sql = CustomSQLUtil.get(
+                    GET_USERS_SORTED_BY_POINTS_DESC_FILTERED_BY_CATEGORY);
+            SQLQuery q = session.createSQLQuery(sql);
+            q.setCacheable(false);
+            q.addEntity("User_", User_Impl.class);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(filter);
+            qPos.add(categoryName);
+            return (List<User_>) QueryUtil.list(q, getDialect(), begin, end);
+        } catch (Exception e) {
+            try {
+                throw new SystemException(e);
+            } catch (SystemException se) {
+                se.printStackTrace();
+            }
+        } finally {
+            closeSession(session);
+        }
+        return null;
+    }
+
+    public Long getUserMaterializedPoints(Long userId) {
+        Session session = null;
+        try {
+            session = openSession();
+            String sql = CustomSQLUtil.get(
+                    GET_USER_MATERIALIZED_POINTS);
+            SQLQuery q = session.createSQLQuery(sql);
+            q.setCacheable(false);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(userId.toString());
+            List<BigInteger> results = (List<BigInteger>) QueryUtil.list(q, getDialect(), 0, Integer.MAX_VALUE);
+            if (results.size() > 0) {
+                return results.get(0).longValue();
+            }
+        } catch (Exception e) {
+            try {
+                throw new SystemException(e);
+            } catch (SystemException se) {
+                se.printStackTrace();
+            }
+        } finally {
+            closeSession(session);
+        }
+        return 0L;
+    }
+
+    public Long getUserHypotheticalPoints(Long userId) {
+        Session session = null;
+        try {
+            session = openSession();
+            String sql = CustomSQLUtil.get(
+                    GET_USER_HYPTOTHETICAL_POINTS);
+            SQLQuery q = session.createSQLQuery(sql);
+            q.setCacheable(false);
+            QueryPos qPos = QueryPos.getInstance(q);
+            qPos.add(userId.toString());
+            List<BigInteger> results = (List<BigInteger>) QueryUtil.list(q, getDialect(), 0, Integer.MAX_VALUE);
+            if (results.size() > 0) {
+                return results.get(0).longValue();
+            }
+        } catch (Exception e) {
+            try {
+                throw new SystemException(e);
+            } catch (SystemException se) {
+                se.printStackTrace();
+            }
+        } finally {
+            closeSession(session);
+        }
+        return 0L;
+    }
+
     public static final String GET_USERS_SORTED_BY_SCREENNAME_ASC =
             User_Finder.class.getName() +
                     ".getUsersSortedByScreenNameAsc";
@@ -475,5 +633,29 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
     public static final String GET_USER_ACTIVITY_COUNT =
             User_Finder.class.getName() +
                     ".getUserActivityCount";
+
+    public static final String GET_USERS_SORTED_BY_POINTS_ASC =
+            User_Finder.class.getName() +
+                    ".getUsersSortedByPointsAsc";
+
+    public static final String GET_USERS_SORTED_BY_POINTS_ASC_FILTERED_BY_CATEGORY =
+            User_Finder.class.getName() +
+                    ".getUsersSortedByPointsAscFilteredByCategory";
+
+    public static final String GET_USERS_SORTED_BY_POINTS_DESC =
+            User_Finder.class.getName() +
+                    ".getUsersSortedByPointsDesc";
+
+    public static final String GET_USERS_SORTED_BY_POINTS_DESC_FILTERED_BY_CATEGORY =
+            User_Finder.class.getName() +
+                    ".getUsersSortedByPointsDescFilteredByCategory";
+
+    public static final String GET_USER_MATERIALIZED_POINTS =
+            User_Finder.class.getName() +
+                    ".getUserMaterializedPoints";
+
+    public static final String GET_USER_HYPTOTHETICAL_POINTS =
+            User_Finder.class.getName() +
+                    ".getUserHypotheticalPoints";
 
 }

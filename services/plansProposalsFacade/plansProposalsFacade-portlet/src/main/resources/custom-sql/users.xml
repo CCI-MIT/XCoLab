@@ -118,4 +118,40 @@ ORDER BY r.categoryName DESC
 		]]>
     </sql>
 
+    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByPointsAsc'>
+        <![CDATA[
+			SELECT DISTINCT us.*, us.userId as uId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = uId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY points ASC
+		]]>
+    </sql>
+
+    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByPointsAscFilteredByCategory'>
+        <![CDATA[
+			SELECT DISTINCT us.*, us.userId as uId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = uId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY points ASC
+		]]>
+    </sql>
+
+    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByPointsDesc'>
+        <![CDATA[
+			SELECT DISTINCT us.*, us.userId as uId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = uId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY points DESC
+		]]>
+    </sql>
+
+    <sql id='com.ext.portlet.service.persistence.User_Finder.getUsersSortedByPointsDescFilteredByCategory'>
+        <![CDATA[
+			SELECT DISTINCT us.*, us.userId as uId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = uId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY points DESC
+		]]>
+    </sql>
+
+    <sql id='com.ext.portlet.service.persistence.User_Finder.getMaterializedPoints'>
+        <![CDATA[
+			SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = ?
+		]]>
+    </sql>
+
+    <sql id='com.ext.portlet.service.persistence.User_Finder.getHypotheticalPoints'>
+        <![CDATA[
+			SELECT SUM(hypotheticalPoints) FROM xcolab_Points WHERE xcolab_Points.userId = ?
+		]]>
+    </sql>
+
 </custom-sql>

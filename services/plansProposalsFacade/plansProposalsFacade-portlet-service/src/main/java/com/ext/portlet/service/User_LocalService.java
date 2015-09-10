@@ -423,4 +423,34 @@ public interface User_LocalService extends BaseLocalService,
     public java.util.List<java.math.BigInteger> getUserActivityCount(
         java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsAsc(
+        int begin, int end, java.lang.String filter)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsAscFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsDesc(
+        int begin, int end, java.lang.String filter)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsDescFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long getUserMaterializedPoints(java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long getUserHypotheticalPoints(java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

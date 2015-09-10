@@ -51,4 +51,22 @@ public interface User_Finder {
 
     public java.util.List<java.math.BigInteger> getUserActivityCount(
         java.lang.Long userId);
+
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsAsc(
+        int begin, int end, java.lang.String filter);
+
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsAscFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String categoryName);
+
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsDesc(
+        int begin, int end, java.lang.String filter);
+
+    public java.util.List<com.ext.portlet.model.User_> getUsersSortedByPointsDescFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String categoryName);
+
+    public java.lang.Long getUserMaterializedPoints(java.lang.Long userId);
+
+    public java.lang.Long getUserHypotheticalPoints(java.lang.Long userId);
 }

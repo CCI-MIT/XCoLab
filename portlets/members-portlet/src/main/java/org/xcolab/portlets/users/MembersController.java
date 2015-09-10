@@ -23,7 +23,7 @@ import java.util.*;
 @RequestMapping("view")
 public class MembersController {
 
-    private int USERS_PER_PAGE = 20;
+    private static final int USERS_PER_PAGE = 20;
 
     @RequestMapping
     public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage, @RequestParam(value = "page", required = false) Long pageParam, @RequestParam(value="memberCategory", required = false) String memberCategoryParam, Model model) throws SystemException, PortalException {
@@ -40,7 +40,7 @@ public class MembersController {
         if (page > 1)
             firstUser = (page-1) * USERS_PER_PAGE;
 
-        int endUser = firstUser+USERS_PER_PAGE;
+        int endUser = firstUser + USERS_PER_PAGE;
 
         List<User_> dBUsers = null;
 
@@ -75,11 +75,10 @@ public class MembersController {
                         break;
 
                     case "POINTS":
-                        //TODO: add correct service calls
                         if (sortFilterPage.isSortAscending())
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAsc(firstUser, endUser, filter);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByPointsAsc(firstUser, endUser, filter);
                         else
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDesc(firstUser, endUser, filter);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByPointsDesc(firstUser, endUser, filter);
                         break;
 
                     case "ACTIVITY":
@@ -156,21 +155,20 @@ public class MembersController {
                         break;
 
                     case "POINTS":
-                        //TODO: add correct service call
                         if (sortFilterPage.isSortAscending()) {
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByPointsAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         }
                         else {
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByPointsDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         }
                         break;
 
                     case "ACTIVITY":
                         if (sortFilterPage.isSortAscending()) {
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByPointsAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         }
                         else {
-                            dBUsers = User_LocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
+                            dBUsers = User_LocalServiceUtil.getUsersSortedByPointsDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
                         }
                         break;
 
