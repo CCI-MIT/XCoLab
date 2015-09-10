@@ -418,9 +418,14 @@ public class ContestScheduleWrapper {
     }
 
     public static void deleteContestSchedule(Long scheduleId) throws Exception {
-        removeContestSchedulePhases(scheduleId);
-        removeContestPhaseOfContestThatAreUsingSchedule(scheduleId);
-        removeContestSchedule(scheduleId);
+        boolean isContestScheduleUsed = ContestScheduleLocalServiceUtil.isContestScheduleUsed(scheduleId);
+        if (!isContestScheduleUsed) {
+            removeContestSchedulePhases(scheduleId);
+            removeContestPhaseOfContestThatAreUsingSchedule(scheduleId);
+            removeContestSchedule(scheduleId);
+        } else {
+            throw new Exception("Contest schedule used by contests and can not be deleted!");
+        }
     }
 
     private static void removeContestSchedulePhases(Long scheduleId) throws Exception {
