@@ -142,13 +142,13 @@ ORDER BY r.categoryName DESC
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getMaterializedPoints'>
+    <sql id='com.ext.portlet.service.persistence.User_Finder.getUserMaterializedPoints'>
         <![CDATA[
 			SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = ?
 		]]>
     </sql>
 
-    <sql id='com.ext.portlet.service.persistence.User_Finder.getHypotheticalPoints'>
+    <sql id='com.ext.portlet.service.persistence.User_Finder.getUserHypotheticalPoints'>
         <![CDATA[
 			SELECT SUM(hypotheticalPoints) FROM xcolab_Points WHERE xcolab_Points.userId = ?
 		]]>

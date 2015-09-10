@@ -27,6 +27,7 @@ jQuery(function() {
 		jQuery("#contestFilterInput").val("");
 		jQuery("#filterContestsForm").submit();
 	});
+    initTooltips();
 });
 
 /**

@@ -9,7 +9,7 @@
 
 	<div class="main_long">
 
-	<div class="blueheaderbar">
+	<div class="blueheaderbar tooltips">
         <div class="user fieldWithTooltip tooltipAbove">
         	<portlet:renderURL var="sortURL">
         		<portlet:param name="sortColumn" value="USER_NAME" />
@@ -19,26 +19,29 @@
         	</portlet:renderURL>
            	<a href="${sortURL }">User</a>
            	<div class="tooltip">
-           		Click to sort by user name <div class="tt-arrow"><!--  --></div>
+           		Click to sort by user name
            	</div>
 			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="USER_NAME" />
         </div>
-		<div class="points fieldWithTooltip tooltipAbove">
+		<div class="points">
 			<portlet:renderURL var="sortURLPoints">
 				<portlet:param name="sortColumn" value="POINTS" />
 				<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : true }" />
 				<portlet:param name="filter" value="${sortFilterPage.filter}" />
 				<portlet:param name="memberCategory" value="${memberCategory}" />
 			</portlet:renderURL>
+			<span class="fieldWithTooltip tooltipAbove">
+				<img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" />
+				<div class="tooltip">
+					Points listed here are for winning proposals. You can see Points from entered proposals by visiting each individual member’s profile
+					<div class="tt-arrow"><!--  --></div>
+				</div>
+			</span>
 			<a href="${sortURLPoints }"> Points</a>
-			<div class="tooltip">
-				Click to sort by points <br />
-				Points listed here are for winning proposals. you can see Points from entered proposals by visiting each individual member’s profile
-				<div class="tt-arrow"><!--  --></div>
-			</div>
+			<div class="tooltip">Click to sort by points</div>
 			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
 		</div>
-        <div class="activity fieldWithTooltip tooltipAbove">
+        <div class="activity">
         	<portlet:renderURL var="sortURLActivity">
         		<portlet:param name="sortColumn" value="ACTIVITY" />
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'ACTIVITY' ? not sortFilterPage.sortAscending : true }" />
@@ -46,10 +49,10 @@
                 <portlet:param name="memberCategory" value="${memberCategory}" />
 			</portlet:renderURL>
         	<a href="${sortURLActivity }"> Activity</a>
-            <div class="tooltip">Click to sort by activity<div class="tt-arrow"><!--  --></div></div>
+            <div class="tooltip">Click to sort by activity</div>
             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="ACTIVITY" />
         </div>
-        <div class="category fieldWithTooltip tooltipAbove">
+        <div class="category">
         	<portlet:renderURL var="sortURLCategory">
         		<portlet:param name="sortColumn" value="CATEGORY" />
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'CATEGORY' ? not sortFilterPage.sortAscending : true }" />
@@ -57,10 +60,10 @@
                 <portlet:param name="memberCategory" value="${memberCategory}" />
 			</portlet:renderURL>
         	<a href="${sortURLCategory }"> Category</a>
-            <div class="tooltip">Click to sort by<br />category<div class="tt-arrow"><!--  --></div></div>
+            <div class="tooltip">Click to sort by category</div>
             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CATEGORY" />
         </div>
-        <div class="seniority fieldWithTooltip tooltipAbove">
+        <div class="seniority">
         	<c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'MEMBER_SINCE' ? not sortFilterPage.sortAscending : true }" />
         	<portlet:renderURL var="sortURLSeniority">
         		<portlet:param name="sortColumn" value="MEMBER_SINCE" />
@@ -69,7 +72,7 @@
                 <portlet:param name="memberCategory" value="${memberCategory}" />
 			</portlet:renderURL>
         	<a href="${sortURLSeniority }"> Member since</a>
-            <div class="tooltip">Click to sort by <br />seniority<div class="tt-arrow"><!--  --></div></div>
+            <div class="tooltip">Click to sort by seniority</div>
             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MEMBER_SINCE" />
         </div>
 
