@@ -105,7 +105,8 @@
 							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
 							<br />
 							<div style="display: none;" class="addprophelp">
-								CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains. <a href="">(See more)</a>
+								CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains.
+								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
 							</div>
 							<div class="clearfix"></div>
 						</td>
@@ -124,7 +125,8 @@
 							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
 							<br />
 							<div style="display: none;" class="addprophelp">
-								The maximum number of CoLab Points this member could receive. This is a measure of how many times the member’s proposals have been included in other proposals and how important it is in those proposals.  <a href="">(See more)</a>
+								The maximum number of CoLab Points this member could receive. This is a measure of how many times the member’s proposals have been included in other proposals and how important it is in those proposals.
+								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
 							</div>
 							<div class="clearfix"></div>
 						</td>
