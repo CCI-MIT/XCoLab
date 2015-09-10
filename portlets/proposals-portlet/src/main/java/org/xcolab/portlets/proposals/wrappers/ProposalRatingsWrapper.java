@@ -12,10 +12,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by Manuel Thurner
@@ -31,6 +28,9 @@ public class ProposalRatingsWrapper {
         this(UserLocalServiceUtil.getUser(authorId), proposalRatings, roundFactor);
     }
 
+    public ProposalRatingsWrapper(long authorId) throws SystemException, PortalException {
+        this(UserLocalServiceUtil.getUser(authorId), Collections.<ProposalRating>emptyList());
+    }
     public ProposalRatingsWrapper(long authorId, List<ProposalRating> proposalRatings) throws SystemException, PortalException {
         this(UserLocalServiceUtil.getUser(authorId), proposalRatings);
     }
