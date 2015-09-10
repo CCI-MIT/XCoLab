@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.enums.ColabConstants;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -32,7 +33,6 @@ import java.util.*;
 @RequestMapping("view")
 public class ProposalEvaluationTabController extends BaseProposalTabController {
     private final static Log _log = LogFactoryUtil.getLog(ProposalEvaluationTabController.class);
-    private static final Long CLIMATE_COLAB_TEAM_USER_ID = 1431053L;
     private static final Long AVERAGE_RESULT_ROUND_FACTOR = 10L;
     private static final String EVALUATION_TAB_VIEW_NAME = "proposalEvaluation";
 
@@ -166,7 +166,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                         if(wasProposalPromotedInContestPhase(proposal, contestPhase)) {
                             proposalRating = calculateAverageRating(judgeRatingsForProposal);
                         } else {
-                            proposalRating = new ProposalRatingsWrapper(CLIMATE_COLAB_TEAM_USER_ID);
+                            proposalRating = new ProposalRatingsWrapper(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
                         }
                         ProposalJudgingCommentHelper commentHelper =
                                 new ProposalJudgingCommentHelper(proposal, contestPhase);
@@ -203,7 +203,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     }
 
     private ProposalRatingsWrapper getProposalPromotionCommentRating(Proposal proposal, ContestPhase contestPhase) throws Exception {
-        ProposalRatingsWrapper proposalRating = new ProposalRatingsWrapper(CLIMATE_COLAB_TEAM_USER_ID);
+        ProposalRatingsWrapper proposalRating = new ProposalRatingsWrapper(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String promoComment = reviewContentHelper.getPromotionComment(true);
         if(!promoComment.trim().isEmpty()) {
@@ -216,7 +216,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
     private ProposalRatingsWrapper getProposalAdvacningCommentRating(Proposal proposal, ContestPhase contestPhase) throws Exception {
         List<ProposalRating> proposalRatings = Arrays.asList();
-        ProposalRatingsWrapper proposalRating = new ProposalRatingsWrapper(CLIMATE_COLAB_TEAM_USER_ID, proposalRatings);
+        ProposalRatingsWrapper proposalRating = new ProposalRatingsWrapper(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID, proposalRatings);
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String promoComment = reviewContentHelper.getPromotionComment(true);
         if(!promoComment.trim().isEmpty()) {
@@ -233,7 +233,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         List<Long> judgeIds = new ArrayList<>();
         Map<Long, List<ProposalRating>> map = new HashMap<>();
         Map<Long, List<Long>> averageRatingList = new HashMap<>();
-        map.put(CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<ProposalRating>());
+        map.put(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<ProposalRating>());
 
         for (ProposalRating judgeRating : judgeRatingsForProposal) {
             if (judgeRating.getOnlyForInternalUsage()) {
@@ -259,12 +259,12 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             int proposalIndex = new ArrayList<>(averageRatingList.keySet()).indexOf(averageRatingsIndex);
             ProposalRating proposalRating = judgeRatingsForProposal.get(proposalIndex);
             proposalRating.setRatingValueId(averageRating.longValue());
-            proposalRating.setUserId(CLIMATE_COLAB_TEAM_USER_ID);
-            map.get(CLIMATE_COLAB_TEAM_USER_ID).add(proposalRating);
+            proposalRating.setUserId(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
+            map.get(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID).add(proposalRating);
         }
 
-        List<ProposalRating> userRatings = map.get(CLIMATE_COLAB_TEAM_USER_ID);
-        return new ProposalRatingsWrapper(CLIMATE_COLAB_TEAM_USER_ID, userRatings, AVERAGE_RESULT_ROUND_FACTOR);
+        List<ProposalRating> userRatings = map.get(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
+        return new ProposalRatingsWrapper(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID, userRatings, AVERAGE_RESULT_ROUND_FACTOR);
 }
 
     private boolean hasContestPhaseEnded(ContestPhase contestPhase) {
