@@ -532,7 +532,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             q.setCacheable(false);
             QueryPos qPos = QueryPos.getInstance(q);
             qPos.add(userId.toString());
-            List<BigInteger> results = (List<BigInteger>) QueryUtil.list(q, getDialect(), 0, Integer.MAX_VALUE);
+            List<Double> results = (List<Double>) QueryUtil.list(q, getDialect(), 0, Integer.MAX_VALUE);
             if (results.size() > 0 && results.get(0) != null) {
                 return results.get(0).longValue();
             }
@@ -558,7 +558,7 @@ public class User_FinderImpl extends BasePersistenceImpl<User_>
             q.setCacheable(false);
             QueryPos qPos = QueryPos.getInstance(q);
             qPos.add(userId.toString());
-            List<BigInteger> results = (List<BigInteger>) QueryUtil.list(q, getDialect(), 0, Integer.MAX_VALUE);
+            List<Double> results = (List<Double>) QueryUtil.list(q, getDialect(), 0, Integer.MAX_VALUE);
             if (results.size() > 0 && results.get(0) != null) {
                 return results.get(0).longValue();
             }
