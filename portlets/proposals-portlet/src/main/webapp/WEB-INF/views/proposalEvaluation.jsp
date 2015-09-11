@@ -31,6 +31,7 @@
 
         <c:choose>
             <c:when test="${showEvaluation}">
+                <p>Please find below the Climate CoLab judging results for your proposal.</p>
                 <c:forEach var="ratingWrapper" items="${averageRatingsPerPhase}">
                     <h2>${ratingWrapper.contestPhase}</h2>
 
@@ -42,8 +43,8 @@
                 </c:forEach>
 
                 <h2>Discussion area</h2>
-                <c:if test="${proposalsPermissions.canEdit}">
-                    <p>After you have integrated the Judges' feedback into your proposal, please write a short summary
+                <c:if test="${proposalsPermissions.canEdit and proposalRevisionPhaseActive}">
+                    <p> After you have integrated the Judges' feedback into your proposal, please write a short summary
                         of the changes made in the discussion area below. This summary will serve as a guide for the
                         selection of Finalists. </p>
                 </c:if>
