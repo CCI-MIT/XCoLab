@@ -163,14 +163,15 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
                 if (judgeRatingsForProposal.size() > 0) {
                     try {
+                        ProposalJudgingCommentHelper commentHelper =
+                                new ProposalJudgingCommentHelper(proposal, contestPhase);
                         ProposalRatingsWrapper proposalRating;
                         if(wasProposalPromotedInContestPhase(proposal, contestPhase)) {
                             proposalRating = calculateAverageRating(judgeRatingsForProposal);
                         } else {
                             proposalRating = new ProposalRatingsWrapper(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
+                            proposalRating.setContestPhase(contestPhase);
                         }
-                        ProposalJudgingCommentHelper commentHelper =
-                                new ProposalJudgingCommentHelper(proposal, contestPhase);
                         proposalRating.setComment(commentHelper.getAdvancingComment());
                         proposalRatings.add(proposalRating);
                     } catch (Exception e) {
