@@ -35,7 +35,7 @@
                 ${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? 'judgement-actions' : ''}
                 ${additionalCSSClasses}
                 ">
-					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0}">
+					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0 and not contest.hideRibbons}">
             <div class="ribbonPlaceholder">
                 <span class="fieldWithTooltip">
                     <br />

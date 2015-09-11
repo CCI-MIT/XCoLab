@@ -252,6 +252,10 @@ public class AutoPromoteHelper {
                     assignRibbonsToProposals(SEMIFINALIST_RIBBON_ID, semifinalists, nextPhase.getContestPhasePK());
                     assignRibbonsToProposals(FINALIST_RIBBON_ID, finalists, nextPhase.getContestPhasePK());
 
+                    // We want to wait showing all ribbons until the winners are determined
+                    contest.setHideRibbons(true);
+                    contest.persist();
+
                     // update phase for which promotion was done (mark it as "promotion done")
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     ContestPhaseLocalServiceUtil.updateContestPhase(phase);

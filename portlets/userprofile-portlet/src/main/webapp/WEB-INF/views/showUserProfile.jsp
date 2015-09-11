@@ -47,15 +47,17 @@
 
 			<div class="badge-container">
 				<c:forEach var="badge" items="${currentUserProfile.badges}">
-					<div class="badge-big badge-${badge.badgeType}">
+					<c:if test="${not badge.hideRibbon}">
+						<div class="badge-big badge-${badge.badgeType}">
 
                         <span class="badge-title">
                             <a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}" style="${badge.badgeTitle.length() gt 8 ? 'top: 26px;' : ''};">${badge.badgeTitle}</a>
                         </span>
 
-						<div class="badge-text" style="${badge.badgeText.length() gt 15 ? 'font-size: 7px;' : ''}${fn:substring(badge.badgeText,0,6) eq 'Judges' ? 'width: 47px;' : ''}">${badge.badgeText.length() gt 13 ? badge.badgeText : ''}</div>
-						<span class="badge-year">${badge.badgeYear}</span>
-					</div>
+							<div class="badge-text" style="${badge.badgeText.length() gt 15 ? 'font-size: 7px;' : ''}${fn:substring(badge.badgeText,0,6) eq 'Judges' ? 'width: 47px;' : ''}">${badge.badgeText.length() gt 13 ? badge.badgeText : ''}</div>
+							<span class="badge-year">${badge.badgeYear}</span>
+						</div>
+					</c:if>
 				</c:forEach>
 			</div>
 

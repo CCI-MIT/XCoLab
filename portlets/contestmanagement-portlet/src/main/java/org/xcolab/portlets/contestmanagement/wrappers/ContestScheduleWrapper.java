@@ -220,23 +220,6 @@ public class ContestScheduleWrapper {
         return false;
     }
 
-    /*
-    private void updateAssociatedContestPhaseDates(ContestPhaseBean contestPhaseBean) throws Exception{
-        Date updatedPhaseStartDate = contestPhaseBean.getPhaseStartDate();
-        Date updatedPhaseEndDate = contestPhaseBean.getPhaseEndDate();
-        Long contestScheduleId = contestPhaseBean.getContestScheduleId();
-        Long contestPhaseType = contestPhaseBean.getContestPhaseType();
-
-        List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndPhaseType(contestScheduleId, contestPhaseType);
-        for(ContestPhase contestPhase : contestPhases){
-            contestPhase.setPhaseStartDate(updatedPhaseStartDate);
-            contestPhase.setPhaseEndDate(updatedPhaseEndDate);
-            contestPhase.persist();
-            ContestPhaseLocalServiceUtil.updateContestPhase(contestPhase);
-        }
-
-    }*/
-
     public static List<LabelValue> getAllScheduleTemplateSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         try {
@@ -244,6 +227,7 @@ public class ContestScheduleWrapper {
             for (ContestSchedule scheduleTemplate : ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE)) {
                 selectItems.add(new LabelValue(scheduleTemplate.getId(), scheduleTemplate.getName()));
             }
+            Collections.sort(selectItems);
         } catch (Exception e) {
         }
         return selectItems;
@@ -261,6 +245,7 @@ public class ContestScheduleWrapper {
                         selectItems.add(new LabelValue(scheduleTemplate.getId(), scheduleTemplate.getName()));
                     }
                 }
+                Collections.sort(selectItems);
             } catch (Exception e) {
                 _log.warn("Couldn't fetch schedule template selection items", e);
             }
@@ -410,7 +395,7 @@ public class ContestScheduleWrapper {
             List<Proposal2Phase> proposal2Phases =
                     Proposal2PhaseLocalServiceUtil.getByContestPhaseId(contestPhaseId);
             if (!proposal2Phases.isEmpty()) {
-                // TODO how should we treat these remainings entries?
+                // TODO how should we treat these remaining entries?
                 _log.warn("There are remaining proposal2phase entries for contestPhaseId:" + contestPhaseId);
             }
             ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);

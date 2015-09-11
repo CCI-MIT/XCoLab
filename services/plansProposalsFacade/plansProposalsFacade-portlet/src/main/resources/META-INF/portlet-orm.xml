@@ -192,6 +192,7 @@
 			<basic name="show_in_tile_view" />
 			<basic name="show_in_list_view" />
 			<basic name="show_in_outline_view" />
+			<basic name="hideRibbons" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
