@@ -12,6 +12,13 @@
         <jsp:directive.include file="./contestProposals/header.jspx"/>
         <jsp:directive.include file="./contestProposals/header_contest_details.jspx"/>
 
+        <div class="fold">
+            <c:if test="${contest.hideRibbons and contestCompleted}">
+                <div class="fold-message">
+                    <h3>We’re tallying the votes… winners will be announced soon!</h3>
+                </div>
+            </c:if>
+        </div>
         <div class="headline subhead">
             <h2>
                 <span>${fn:length(proposals.proposals)}</span> proposals
