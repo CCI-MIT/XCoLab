@@ -79,7 +79,7 @@
 					</div>
 				</div>
 
-                <c:if test="${contestPhase.canVote or contest.isContestCompleted(contestPhase) }">
+                <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and not contest.hideRibbons)}">
                     <div class="votes">
                         <portlet:renderURL var="sortURL">
                             <portlet:param name="contestId" value="${contest.contestPK }" />
@@ -96,7 +96,7 @@
                         <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES" />
                     </div>
                 </c:if>
-                <c:if test="${not contestPhase.canVote}">
+                <c:if test="${not contestPhase.canVote or contest.hideRibbons}">
                     <div class="thumbs">
                         <portlet:renderURL var="sortURL">
                             <portlet:param name="contestId" value="${contest.contestPK }" />
