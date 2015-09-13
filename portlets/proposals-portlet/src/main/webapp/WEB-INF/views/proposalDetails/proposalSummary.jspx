@@ -13,7 +13,7 @@
 	<div class="votebox-wrap">
 		<div class="votebox-shade">
 			<div class="votebox">
-				<c:if test="${contestPhase.canVote or contest.isContestCompleted(contestPhase) }">
+				<c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and not contest.hideRibbons)}">
 					<div class="votebox-top clearfix">
 						<div class="vote">
 							<img src="/climatecolab-theme/images/icon-proposal-vote.png" width="22" height="18" alt="Vote" /> 
