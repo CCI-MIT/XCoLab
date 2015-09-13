@@ -96,7 +96,7 @@
                         <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES" />
                     </div>
                 </c:if>
-                <c:if test="${not contestPhase.canVote or contest.hideRibbons}">
+                <c:if test="${not contestPhase.canVote}">
                     <div class="thumbs">
                         <portlet:renderURL var="sortURL">
                             <portlet:param name="contestId" value="${contest.contestPK }" />
