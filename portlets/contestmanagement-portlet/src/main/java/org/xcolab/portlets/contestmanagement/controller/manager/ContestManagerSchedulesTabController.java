@@ -59,21 +59,23 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
                                          @RequestParam(value = "elementId", required = false) Long elementId)
             throws PortalException, SystemException {
 
+
         if(!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
 
         try{
+            //throw new Exception("Test");
             Long scheduleId = elementId != null ? elementId : getFirstScheduleId();
             model.addAttribute("contestScheduleWrapper", new ContestScheduleWrapper(scheduleId));
             model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(scheduleId, ContestScheduleWrapper.getAllScheduleTemplateSelectionItems()));
+            setPageAttributes(request, model, tab);
+            return TAB_VIEW;
         } catch (Exception e){
-            _log.warn("Show contest schedule failed with: ", e);
-            return NOT_FOUND_TAB_VIEW;
+            _log.warn("Exception while rendering CMS schedules tab", e);
+            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
-
-        setPageAttributes(request, model, tab);
-        return TAB_VIEW;
+        return NOT_FOUND_TAB_VIEW;
     }
 
 
@@ -132,10 +134,10 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         }
 
         try {
+            //throw new Exception("Test");
             updateContestScheduleWrapper.persist();
             SetRenderParameterUtil.addActionSuccessMessageToSession(request);
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), updateContestScheduleWrapper.getScheduleId());
-            throw new Exception("Test");
         } catch(Exception e){
             _log.warn("Update contest schedule failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
