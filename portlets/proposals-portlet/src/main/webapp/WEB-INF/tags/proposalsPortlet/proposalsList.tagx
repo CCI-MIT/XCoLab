@@ -62,7 +62,7 @@
                     </h4>
                     <div class="clear" ><!--  --></div>
                 </div>
-                <c:if test="${contestPhase.canVote or contest.isContestCompleted(contestPhase) }">
+                <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and not contest.hideRibbons)}">
                     <div class="voteboxsmall">
                         <collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.votesCount}" />
                     </div>
