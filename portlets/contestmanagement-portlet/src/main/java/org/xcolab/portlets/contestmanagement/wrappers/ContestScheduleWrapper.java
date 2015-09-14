@@ -198,7 +198,7 @@ public class ContestScheduleWrapper {
     private void updateContestsUsingSchedule(Long contestScheduleId) throws Exception {
         List<Contest> contestsUsingScheduleId = ContestLocalServiceUtil.getContestsByContestScheduleId(contestScheduleId);
         for (Contest contest : contestsUsingScheduleId) {
-            updateContestPhasesOfContestAccordingToContestSchedule(contest, contestScheduleId);
+            updateContestPhasesOfContestAccordingToUpdatedContestSchedule(contest);
         }
     }
 
@@ -320,7 +320,7 @@ public class ContestScheduleWrapper {
         removeRemainingUnusedContestPhases(existingPhasesOfContest);
     }
 
-    public void updateContestPhasesOfContestAccordingToUpdatedContestSchedule(Contest contest, Long scheduleTemplateId) throws Exception {
+    public void updateContestPhasesOfContestAccordingToUpdatedContestSchedule(Contest contest) throws Exception {
 
         List<ContestPhase> newPhasesForContest = new ArrayList<>();
         List<ContestPhase> existingPhasesOfContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest.getContestPK());
