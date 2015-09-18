@@ -12,6 +12,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 /**
  * Created by johannes on 9/18/15.
+ *
+ * Wrapper around ContestPhaseRibbonType with utility methods for retrieving information related to the proposal
  */
 public class RibbonWrapper {
 
