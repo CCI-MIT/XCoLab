@@ -236,8 +236,13 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .headline .days-left {float:right; width:300px; text-align:right; vertical-align:middle; line-height:normal;}
 .headline .days-left span {font-size:24px; font-weight:700; color:#e36f0f; padding-right:5px; vertical-align:middle;}
 
+/* contest page fold */
+.fold {padding: 25px 0 25px 0;}
+.fold .fold-message {padding: 10px 10px; border-top: 1px dashed #00f; border-bottom: 1px dashed #00f; background: #eeeeff; text-align: center;}
+.fold .fold-message h3 {display: inline;}
+
 /* second headline area on the contest page */
-.headline.subhead {margin:50px 0 15px 0; padding-left:15px;}
+.headline.subhead {margin:0 0 15px 0; padding-left:15px;}
 .headline h2 {float:left; display:inline; width:auto; font-weight:400; color:#404040;}
 .headline h2 span {font-size:33px; font-weight:700; color:#66b035;}
 .subhead .right {float:right; width:300px; text-align:right;}

@@ -52,6 +52,7 @@
 							<td rowspan="2">
 								<div class="badge-container">
 									<c:forEach var="badge" items="${currentUserProfile.badges}">
+										<c:if test="${not badge.hideRibbon}">
 										<a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}">
 											<div class="badge-small badge-${badge.badgeType} fieldWithTooltip tooltipAbove">
 												<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
@@ -65,8 +66,8 @@
 													<div class="tt-arrow"><!--  --></div>
 												</div>
 											</div>
-
 										</a>
+										</c:if>
 									</c:forEach>
 								</div>
 							</td>

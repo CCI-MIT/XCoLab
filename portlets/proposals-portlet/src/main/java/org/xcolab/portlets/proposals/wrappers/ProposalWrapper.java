@@ -209,7 +209,8 @@ public class ProposalWrapper {
     }
 
     public boolean isFeatured() throws PortalException, SystemException {
-        return getRibbon() > 0;
+        // contest hideRibbons property overrides getRibbon by proposal
+        return getRibbon() > 0 && !contest.getHideRibbons();
     }
 
     public int getRibbon() throws PortalException, SystemException {
@@ -540,7 +541,7 @@ public class ProposalWrapper {
     }
 
     public void setScenarioId(Long scenarioId, Long modelId, Long userId) throws PortalException, SystemException {
-        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID,modelId, scenarioId);
+        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, modelId, scenarioId);
     }
 
     public Long getScenarioId() throws PortalException, SystemException {

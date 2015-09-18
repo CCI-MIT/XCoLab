@@ -35,7 +35,7 @@
                 ${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? 'judgement-actions' : ''}
                 ${additionalCSSClasses}
                 ">
-					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0}">
+					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0 and not contest.hideRibbons}">
             <div class="ribbonPlaceholder">
                 <span class="fieldWithTooltip">
                     <br />
@@ -62,7 +62,7 @@
                     </h4>
                     <div class="clear" ><!--  --></div>
                 </div>
-                <c:if test="${contestPhase.canVote or contest.isContestCompleted(contestPhase) }">
+                <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and not contest.hideRibbons)}">
                     <div class="voteboxsmall">
                         <collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.votesCount}" />
                     </div>

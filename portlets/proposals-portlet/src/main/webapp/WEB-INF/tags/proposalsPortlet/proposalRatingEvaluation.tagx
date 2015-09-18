@@ -18,7 +18,7 @@
         <div class="content">
             <c:if test="${showPhase}">
                 <strong>Contest phase: </strong>
-                ${wrapper.contestPhase}<br/>
+                ${wrapper.contestPhase}
             </c:if>
             <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
                 <strong>Judges' Ratings <a href="/web/guest/resources/-/wiki/Main/contest+rules#Howwillproposalsbejudged" target="_blank">
@@ -56,8 +56,8 @@
                     </c:forEach>
                     <br/>
                 </table>
+                <br/>
             </c:if>
-            <br/>
             <p>
                 <strong>Judges' Comments</strong><br/>
                 <span class="comment-wrapper">${wrapper.commentEscaped}</span>

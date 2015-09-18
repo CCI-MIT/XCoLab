@@ -60,6 +60,7 @@
 	<script>
 		jQuery("#saveChangesButton").click(function() {
 			jQuery("#proposalScenarioId").val(jQuery("#modelingScenarioId").val());
+			jQuery("#scenarioModelId").val(jQuery("#modelingModelId").val());
 
     		disableDirtyCheck();
 			jQuery("#updateProposalScenarioForm").submit();

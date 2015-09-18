@@ -697,4 +697,8 @@ public class ContestWrapper {
         contest.setContestTier(contestTier);
     }
 
+    public boolean getHideRibbons() {
+        return contest.getHideRibbons();
+    }
+
 }
