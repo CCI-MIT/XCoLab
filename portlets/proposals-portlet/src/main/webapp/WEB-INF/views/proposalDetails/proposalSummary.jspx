@@ -101,7 +101,7 @@
         <c:if test="${proposal.ribbonWrapper.ribbon > 0 and not contest.hideRibbons}">
             <div class="badge-big badge-${proposal.ribbonWrapper.ribbon}" style="float:none; text-align:center; margin: 0 0 36px 76px;">
                         <span class="badge-title">
-                            <a href="#" style="${(proposal.ribbonWrapper.ribbonText.length() gt 8 and proposal.ribbonWrapper.ribbonText.length() lt 14)  ? 'top: 26px;' : ''}">${proposal.ribbonWrapper.ribbonWrapper.ribbonTitle}</a>
+                            <a href="#" style="${(proposal.ribbonWrapper.ribbonText.length() gt 8 and proposal.ribbonWrapper.ribbonText.length() lt 14)  ? 'top: 26px;' : ''}">${proposal.ribbonWrapper.ribbonTitle}</a>
                         </span>
                 <div class="badge-text" style="${proposal.ribbonWrapper.ribbonText.length() gt 15 ? 'font-size: 7px;' : ''}${fn:substring(proposal.ribbonWrapper.ribbonText,0,6) eq 'Judges' ? 'width: 47px;' : ''}">${proposal.ribbonWrapper.ribbonText.length() gt 13 ? proposal.ribbonWrapper.ribbonText : ''}</div>
                 <span class="badge-year">${contest.activePhase.phaseReferenceYear}</span>
