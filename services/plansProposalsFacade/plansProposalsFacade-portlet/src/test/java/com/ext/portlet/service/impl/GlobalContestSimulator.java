@@ -174,7 +174,7 @@ public class GlobalContestSimulator {
     }
 
 
-    private void createUsers() throws SystemException {
+    protected void createUsers() throws SystemException {
         users = new ArrayList<User>();
         for (int i = 0; i < amountOfUsers; i++) {
             users.add(testInstance.createUser(i+1));
@@ -182,7 +182,7 @@ public class GlobalContestSimulator {
     }
 
 
-    private List<User> setTeamMembers(Proposal proposal, User author) throws SystemException, PortalException {
+    protected List<User> setTeamMembers(Proposal proposal, User author) throws SystemException, PortalException {
         //sometimes the admin user is still in the user group
         testInstance.userLocalService.deleteGroupUser(proposal.getGroupId(), testInstance.adminId);
 
@@ -198,7 +198,7 @@ public class GlobalContestSimulator {
 
 
 
-    private void createGlobalContestAndProposals() throws SystemException, PortalException, ParseException {
+    protected void createGlobalContestAndProposals() throws SystemException, PortalException, ParseException {
         //create global contest
         globalContest = testInstance.contestLocalService.createNewContest(testInstance.adminId, "Test-Global-Contest");
         globalContest.setPoints(pointsToBeDistributed);
@@ -310,7 +310,7 @@ public class GlobalContestSimulator {
 
 
 
-    private List<ContestPhase> createPhasesForContest(Contest contest, List<ContestPhase> baseOnExistingPhases, Integer startPhase) throws ParseException, SystemException {
+    protected List<ContestPhase> createPhasesForContest(Contest contest, List<ContestPhase> baseOnExistingPhases, Integer startPhase) throws ParseException, SystemException {
         List<ContestPhase> createdPhases = new ArrayList<ContestPhase>();
         String sCp1StartDate;
         String[] sCp1To2Transition;
@@ -411,7 +411,7 @@ public class GlobalContestSimulator {
     }
 
 
-    private void initializePhasesForProposal(Proposal proposal, int proposalIndex, int currentPhase, List<ContestPhase> contestPhases, List<Integer> proposalsInLastPhase) throws SystemException {
+    protected void initializePhasesForProposal(Proposal proposal, int proposalIndex, int currentPhase, List<ContestPhase> contestPhases, List<Integer> proposalsInLastPhase) throws SystemException {
         if (currentPhase == 1) {
             proposalsInLastPhase.add(proposalIndex);
         } else if (currentPhase > 1) {
@@ -444,7 +444,7 @@ public class GlobalContestSimulator {
     }
 
 
-    private ContestPhase createContestPhase(Contest c, long type, boolean fellowScreeningActive, String autoPromote, String startDate, String endDate) throws SystemException, ParseException {
+    protected ContestPhase createContestPhase(Contest c, long type, boolean fellowScreeningActive, String autoPromote, String startDate, String endDate) throws SystemException, ParseException {
         ContestPhase cp = testInstance.contestPhaseLocalService.createContestPhase(100000+contestPhaseIdCount++);
         cp.setContestPK(c.getContestPK());
         cp.setContestPhaseType(type);
@@ -463,7 +463,7 @@ public class GlobalContestSimulator {
 
 
 
-    private static void copyProposalToPhase(Proposal p, ContestPhase cp) throws SystemException {
+    protected static void copyProposalToPhase(Proposal p, ContestPhase cp) throws SystemException {
         Proposal2Phase p2p = testInstance.proposal2PhaseLocalService.create(p.getProposalId(), cp.getContestPhasePK());
         p2p.setVersionFrom(1);
         p2p.setVersionTo(1);
