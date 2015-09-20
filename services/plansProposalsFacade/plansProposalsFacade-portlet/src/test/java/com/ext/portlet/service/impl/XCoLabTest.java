@@ -17,6 +17,7 @@ import com.ext.portlet.service.Proposal2PhaseLocalService;
 import com.ext.portlet.service.ProposalAttributeLocalService;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
 import com.ext.portlet.service.ProposalLocalService;
+import com.ext.portlet.service.persistence.PointTypePersistence;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -51,6 +52,7 @@ public class XCoLabTest {
     protected static Proposal2PhaseLocalService proposal2PhaseLocalService;
     protected static ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService;
     protected static PointTypeLocalService pointTypeLocalService;
+    protected static PointTypePersistence pointTypePersistence;
     protected static PointsLocalService pointsLocalService;
     protected static PointsDistributionConfigurationLocalService pointsDistributionConfigurationService;
     protected static PointDistributionTargetLocalService pointDistributionTargetService;
@@ -83,12 +85,15 @@ public class XCoLabTest {
         proposal2PhaseLocalService = (Proposal2PhaseLocalService) PortalBeanLocatorUtil.locate(Proposal2PhaseLocalService.class.getName());
         proposalContestPhaseAttributeLocalService = (ProposalContestPhaseAttributeLocalService) PortalBeanLocatorUtil.locate(ProposalContestPhaseAttributeLocalService.class.getName());
         pointTypeLocalService = (PointTypeLocalService) PortalBeanLocatorUtil.locate(PointTypeLocalService.class.getName());
+        pointTypePersistence = (PointTypePersistence) PortalBeanLocatorUtil.locate(PointTypePersistence.class.getName());
         pointsLocalService = (PointsLocalService) PortalBeanLocatorUtil.locate(PointsLocalService.class.getName());
         pointsDistributionConfigurationService = (PointsDistributionConfigurationLocalService) PortalBeanLocatorUtil.locate(PointsDistributionConfigurationLocalService.class.getName());
         pointDistributionTargetService = (PointDistributionTargetLocalService) PortalBeanLocatorUtil.locate(PointDistributionTargetLocalService.class.getName());
         planSectionDefinitionLocalService = (PlanSectionDefinitionLocalService) PortalBeanLocatorUtil.locate(PlanSectionDefinitionLocalService.class.getName());
 
         PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(adminId));
+
+        setupBasicDataset();
     }
 
     protected User createUser(long id) throws SystemException {
@@ -106,7 +111,7 @@ public class XCoLabTest {
         return user;
     }
 
-    protected void setupBasicDataset() throws SystemException, PortalException {
+    protected static void setupBasicDataset() throws SystemException, PortalException {
         //create default password policy
         passwordPolicyLocalService.addPasswordPolicy(10115L, true, "Default Password Policy", "Default Password Policy", true, false, 0L, false, true, 6, 0, 6, 0, 0, 0, "", false, 0, false, 8640000L, 0L, 0, false, 3, 600L, 0L, 0L, new ServiceContext());
 
@@ -120,11 +125,11 @@ public class XCoLabTest {
         psd.setLocked(false);
         planSectionDefinitionLocalService.addPlanSectionDefinition(psd);
 
-        this.createPointTypes();
-        this.createContestPhaseTypes();
+        createPointTypes();
+        createContestPhaseTypes();
     }
 
-    protected void createContestPhaseTypes() throws SystemException {
+    protected static void createContestPhaseTypes() throws SystemException {
         ContestPhaseType cpt = contestPhaseTypeLocalService.createContestPhaseType(1);
         cpt.setName("Proposal creation");
         cpt.setStatus("OPEN_FOR_SUBMISSION");
@@ -156,7 +161,7 @@ public class XCoLabTest {
         contestPhaseTypeLocalService.updateContestPhaseType(cpt);
     }
 
-    protected void createPointTypes() throws SystemException {
+    protected static void createPointTypes() throws SystemException {
         PointType pt = pointTypeLocalService.createPointType(1);
         pt.setParentPointTypeId(0);
         pt.setPercentageOfParent(1);
