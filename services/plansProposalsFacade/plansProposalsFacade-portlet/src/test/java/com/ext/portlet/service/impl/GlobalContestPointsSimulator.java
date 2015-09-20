@@ -1,7 +1,10 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.*;
+import com.ext.portlet.model.PointDistributionTarget;
+import com.ext.portlet.model.Points;
+import com.ext.portlet.model.PointsDistributionConfiguration;
+import com.ext.portlet.model.Proposal;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -267,7 +270,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         double matPointsPerSubProposal = amountOfSubProposals > 0 ? ( Math.ceil(materializedPoints)*0.8)/amountOfSubProposals : 0;
 
         //TEAM
-        if (hypPointsPerSubProposal >= 1) {
+        if (hypTeamPoints >= 1) {
             for (int j = 0; j < globalProposalsTeamMembers.get(proposalIndex).size(); j++) {
                 User teamMember = globalProposalsTeamMembers.get(proposalIndex).get(j);
                 double share;
@@ -290,7 +293,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         }
 
         //SUB-PROPOSALS
-        if (Math.ceil(hypotheticalPoints)*0.8 >= 1 && amountOfSubProposals > 0) {
+        if (hypPointsPerSubProposal >= 1 && amountOfSubProposals > 0) {
             //first gather all linked proposal ids and where they are located in our fields
             List<Long> childrenProposalIds = new ArrayList<Long>();
             List<Integer[]> childrenSideProposalIndizes = new ArrayList<Integer[]>();

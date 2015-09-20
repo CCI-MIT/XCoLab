@@ -2,7 +2,11 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ProposalAttributeLocalService;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
@@ -186,14 +190,17 @@ public class GlobalContestSimulator {
         //sometimes the admin user is still in the user group
         testInstance.userLocalService.deleteGroupUser(proposal.getGroupId(), testInstance.adminId);
 
-        List<User> teamMembers = new ArrayList<User>();
-        teamMembers.add(author);
+        // Use a set in order to prevent multiple user entries of the same user in a group
+        Set<User> teamMembersSet = new HashSet<User>();
+        teamMembersSet.add(author);
         for (int i = 1; doWithProbability(probabilityOfAdditionalTeamMember/i); i++) {
-            teamMembers.add(users.get(randomInt(0, amountOfUsers)));
+            teamMembersSet.add(users.get(randomInt(0, amountOfUsers)));
         }
-        testInstance.userLocalService.addGroupUsers(proposal.getGroupId(), teamMembers);
+        List<User> teamMembersList = new ArrayList<>();
+        teamMembersList.addAll(teamMembersSet);
+        testInstance.userLocalService.addGroupUsers(proposal.getGroupId(), teamMembersList);
 
-        return teamMembers;
+        return teamMembersList;
     }
 
 

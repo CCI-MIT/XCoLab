@@ -12,7 +12,7 @@ public class PhaseTransitionTest extends XCoLabTest {
 
     @Test
     public void randomTest() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
-        this.setupBasicDataset();
+        //this.setupBasicDataset();
         GlobalContestPhaseTransitionSimulator.initSimulatorWithTestEnvironment(this);
         GlobalContestPhaseTransitionSimulator gcs = new GlobalContestPhaseTransitionSimulator();
 
