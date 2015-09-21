@@ -178,6 +178,11 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 
         List<Points> materializedPointsList = new ArrayList<Points>();
 		for (PointsTarget target: targets) {
+            // Skip when we would distribute less than 1 point
+            if (hypotheticalPoints * target.getPercentage() < 1.0 && materializedPoints * target.getPercentage() < 1) {
+                continue;
+            }
+
 			Points points = createPoints(counterLocalService.increment(Points.class.getName()));
 
 			points.setOriginatingContestPK(originatingContest.getContestPK());

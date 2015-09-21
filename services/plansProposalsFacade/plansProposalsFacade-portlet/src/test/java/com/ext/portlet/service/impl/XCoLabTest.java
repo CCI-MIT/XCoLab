@@ -169,7 +169,6 @@ public class XCoLabTest {
                 groupLocalService.deleteGroup(userGroup);
             }
         }
-        System.out.println("");
     }
 
     protected static void setupBasicDataset() throws SystemException, PortalException {

@@ -5,6 +5,7 @@ import com.ext.portlet.model.PointDistributionTarget;
 import com.ext.portlet.model.Points;
 import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.impl.helper.points.DistributionConfiguration;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -26,13 +27,6 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
     protected Map<Integer, PointDistributionTarget> globalProposalsDistributionTargets;
     protected Map<Integer, Map<Integer, DistributionConfiguration>> sideProposalsDistributions;
     protected List<Points> points;
-
-    class DistributionConfiguration {
-        //the teamMemberShares indizes are the indizes in the proposalTeamMembers field
-        public Map<Integer, Double> teamMemberShares = new HashMap<Integer, Double>();
-        //in additionalShares, the indizes are the indizes of the users field
-        public Map<Integer, Double> additionalShares = new HashMap<Integer, Double>();
-    }
 
     public void deletePointDistributions() throws SystemException {
         //delete points
