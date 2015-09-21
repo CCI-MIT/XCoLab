@@ -40,9 +40,11 @@ public class Badge implements Serializable {
         this.planId = planId;
         this.badgeText = ribbonText;
 
-        if (ribbonText.equalsIgnoreCase("Finalist") || ribbonText.equalsIgnoreCase("Semi-Finalist")){
-            this.badgeTitle = ribbonText;
-        } else{
+        if (ribbonText.equalsIgnoreCase("Finalist") || ribbonText.equalsIgnoreCase("Judges' Special Commendation")){
+            this.badgeTitle = "Finalist";
+        } else if (ribbonText.equalsIgnoreCase("Semi-Finalist")) {
+            this.badgeTitle = "Semi-Finalist";
+        } else {
             this.badgeTitle = "Winner";
         }
 

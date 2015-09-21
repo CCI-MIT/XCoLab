@@ -187,8 +187,8 @@ public class ProposalPickerJSONController {
 			o.put("commentsCount", wrappedProposal.getCommentsCount());
 			o.put("supportersCount", wrappedProposal.getSupportersCount());
 			o.put("pitch", wrappedProposal.getPitch());
-			o.put("ribbon", wrappedProposal.getRibbon());
-			o.put("ribbonText", wrappedProposal.getRibbonText());
+			o.put("ribbon", wrappedProposal.getRibbonWrapper().getRibbon());
+			o.put("ribbonText", wrappedProposal.getRibbonWrapper().getRibbonText());
 			o.put("featured", wrappedProposal.isFeatured());
 
 			JSONArray proposalContests = JSONFactoryUtil.createJSONArray();
