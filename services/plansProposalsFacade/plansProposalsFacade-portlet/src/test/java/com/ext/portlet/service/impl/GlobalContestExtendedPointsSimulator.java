@@ -41,7 +41,14 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
 
     private int amountOfContestTiers;
 
+    /**
+     * Helper data structure for the test points test suite
+     */
     class ContestTierDataStructure {
+        /**
+         * Generic data structure that maps from a proposal nr to a generic collection
+         * @param <T>
+         */
         class ProposalToCollection<T> {
             Map<Integer, List<T>> proposalToCollection;
 
@@ -63,6 +70,9 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
             }
         }
 
+        /**
+         * Map Collection encapsulating the ProposalTeamMember list per proposalNr
+         */
         class ProposalTeamMembers extends ProposalToCollection<User>{
             public void setProposalTeamMembers(int proposalNumber, List<User> teamMembers) {
                 setProposal(proposalNumber);
@@ -74,6 +84,9 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
             }
         }
 
+        /**
+         * Map collection encapsulating the DistributionConfiguration list per proposalNr
+         */
         class ProposalPointsDistributionConfigurations extends ProposalToCollection<DistributionConfiguration> {
             public void setPointsDistributionConfigurations(int proposalNumber, List<DistributionConfiguration> configurations) {
                 setProposal(proposalNumber);
@@ -99,6 +112,9 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
             }
         }
 
+        /**
+         * Class that encapsulates a proposal reference reference to another proposal in a particular contestTier, contestNr, proposalNr and proposalId
+         */
         class ProposalLink {
             int toTierNr;
             int toContestNr;
@@ -150,7 +166,7 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
 
             public void addPointDistributionTarget(int proposalNumber, PointDistributionTarget target) {
                 List<PointDistributionTarget> targets = getProposalToCollection(proposalNumber);
-                if (target == null) {
+                if (targets == null) {
                     setProposal(proposalNumber);
                     targets = getProposalToCollection(proposalNumber);
                 }
@@ -189,6 +205,11 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
             contests = new ArrayList<Contest>();
         }
 
+        /**
+         * Get a ProposalTeamMembers data structure for the given contestNr
+         * @param contestNr
+         * @return
+         */
         public ProposalTeamMembers getProposalTeamMembers(int contestNr) {
             if (contestToProposalTeamMembersMap.get(contestNr) == null) {
                 contestToProposalTeamMembersMap.put(contestNr, new ProposalTeamMembers());
@@ -231,6 +252,10 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
             return contestToProposalPointsDistributionConfigurationsMap.get(contestNr);
         }
 
+        public void removeAllProposalPointsDistributionConfigurations(int contestNr) {
+            contestToProposalPointsDistributionConfigurationsMap.remove(contestNr);
+        }
+
         public List<Contest> getContests() {
             return contests;
         }
@@ -261,6 +286,10 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
 
         public void addPointDistributionTarget(int contestNr, int proposalNr, PointDistributionTarget target) {
             getProposalPointDistributionTargets(contestNr).addPointDistributionTarget(proposalNr, target);
+        }
+
+        public void removeAllPointDistributionTargets(int contestNr) {
+            contestToProposalPointsDistributionTargetsMap.remove(contestNr);
         }
     }
 
@@ -347,6 +376,15 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
         globalContestDataStructure.getProposalsInLastPhase(0).addAll(globalProposalsInLastPhase);
     }
 
+    /**
+     * Set distributions of empty/non-empty ProposalDistributionConfiguration
+     *
+     * @param probabilityOfEmptyGlobalProposalConfiguration
+     * @param probabilityOfEmptySideProposalConfiguration
+     * @param probabilityOfPointsDistributionAdditionalNonTeamMembers
+     * @throws NoSuchUserException
+     * @throws SystemException
+     */
     public void setPointsDistributions(
             double probabilityOfEmptyGlobalProposalConfiguration,
             double probabilityOfEmptySideProposalConfiguration,
@@ -362,9 +400,6 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
 
             // contests loop
             for (int contestIdx = 0; contestIdx < tierDataStructure.getContests().size(); contestIdx++) {
-
-                final ContestTierDataStructure.ProposalPointsDistributionConfigurations pointsDistributionConfigurations =
-                        tierDataStructure.getProposalPointsDistributionConfigurations(contestIdx);
                 for (int proposalIdx = 0; proposalIdx < tierDataStructure.amountOfProposals; proposalIdx++) {
 
                     if (!doWithProbability(tierIdx == amountOfContestTiers - 1 ? probabilityOfEmptyGlobalProposalConfiguration : probabilityOfEmptySideProposalConfiguration)) {
@@ -378,6 +413,10 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
         }
     }
 
+    /**
+     * Set random pointDistributionTargets to all proposals
+     * @throws SystemException
+     */
     public void setPointDistributionTargets() throws SystemException {
         double sumOfPoints = 0;
 
@@ -420,6 +459,11 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
         }
     }
 
+    /**
+     * Starts the assertion of distributed points. Recursively evaluates all distributed points originating at the contest with the highest tier
+     * @throws SystemException
+     * @throws PortalException
+     */
     public void assertPointDistributions() throws SystemException, PortalException {
         //Assure that the individual Point data entries are correct
         this.points = new ArrayList<Points>(testInstance.pointsLocalService.getPointses(0, Integer.MAX_VALUE));
@@ -447,7 +491,8 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
         for (int proposalIdx : globalProposalsInLastPhase) {
             double materializedPoints = 0L;
             if (distributionTargets.getSize() > 0 && distributionTargets.getPointDistributionTargets(proposalIdx) != null) {
-                materializedPoints = distributionTargets.getPointDistributionTargets(proposalIdx).get(0).getNumberOfPoints(); // todo do we need multiple pointDistributionTargets per proposal?
+                // Do we need multiple pointDistributionTargets?
+                materializedPoints = distributionTargets.getPointDistributionTargets(proposalIdx).get(0).getNumberOfPoints();
             }
             this.assertDistributionForProposal(amountOfContestTiers - 1, 0, proposalIdx, 0L, pointsToBeDistributed, materializedPoints);
         }
@@ -456,7 +501,13 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
         assertTrue(points.isEmpty());
     }
 
-    public void deleteContestsAndProposals() throws SystemException, PortalException {
+    /**
+     * Clean up all created model objects that have been used for the test run. This method should be invoked whenever the
+     * test of the created contest/proposal structure should be cleaned up
+     * @throws SystemException
+     * @throws PortalException
+     */
+    public void cleanupPointsSimulator() throws SystemException, PortalException {
         for (int tierIdx = 0; tierIdx < contestTierToDataStructureMap.size(); tierIdx++) {
             final ContestTierDataStructure tierDataStructure = contestTierToDataStructureMap.get(tierIdx);
 
@@ -490,11 +541,29 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
             }
         }
 
+        // Delete all created users for this test
+        deleteUsers();
+
+        // Clean up remaning data structures
         globalProposalLinksToGlobalProposals = null;
         globalProposalLinksToSideProposals = null;
         globalContestPhases = null;
         sideContests = null;
         contestTierToDataStructureMap = null;
+    }
+
+    /**
+     * Resets the set of random point distributions. Invoke this method before you set new DistributionTargets and DistributionConfigurations
+     * @throws SystemException
+     */
+    public void deletePointDistributions() throws SystemException {
+        super.deletePointDistributions();
+        for (ContestTierDataStructure tierDataStructure : contestTierToDataStructureMap.values()) {
+            for (int contestIdx = 0; contestIdx < tierDataStructure.getContests().size(); contestIdx++) {
+                tierDataStructure.removeAllPointDistributionTargets(contestIdx);
+                tierDataStructure.removeAllProposalPointsDistributionConfigurations(contestIdx);
+            }
+        }
     }
 
     /**
@@ -599,16 +668,11 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
                 ContestTierDataStructure.ProposalLink proposalLink = getProposalLinkWithProposalId(proposalLinks, proposalId);
                 this.assertDistributionForProposal(proposalLink.getToTierNr(), proposalLink.getToContestNr(), proposalLink.getToProposalNr(), subProposalSourcePoints.getId(), Math.ceil(hypPointsPerSubProposal), Math.ceil(matPointsPerSubProposal));
 
-//                if (proposalLink.getToProposalNr() > -1) {
-//                    proposalLinks.remove(getProposalLinkWithProposalId(proposalLinks, proposalId));
-//                } else {
-//                    throw new RuntimeException("Wrong sub-proposal " + proposalId);
-//                }
+                // Todo remove proposal links from proposalLinks
             }
         }
 
-        // we are done. the proposal links array should be empty by now.
-//        assertTrue(proposalLinks.isEmpty());
+        // todo we are done. the proposal links array should be empty by now.
     }
 
     private ContestTierDataStructure.ProposalLink getProposalLinkWithProposalId(List<ContestTierDataStructure.ProposalLink> proposalLinks, long proposalId) {
@@ -621,6 +685,13 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
         return null;
     }
 
+    /**
+     * Creates a contest and proposal structure for all contest tiers except the highest one (usually global tier)
+     *
+     * @throws SystemException
+     * @throws PortalException
+     * @throws ParseException
+     */
     private void createSideContestsAndProposals() throws SystemException, PortalException, ParseException {
         // Create Contests and proposals for all remaining contest tiers
         for (int tierIdx = amountOfContestTiers - 2; tierIdx >= 0; tierIdx--) {
@@ -635,6 +706,7 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
 
                 Contest contest = testInstance.contestLocalService.createNewContest(testInstance.adminId, "Tier " + (tierIdx+1) + " Contest " + (contestIdx+1));
                 contest.setPoints(0);
+                // We assume that all contests except the ones on the lowest tier use the parent point type 1 (as used in 2015 rounds of contests)
                 contest.setDefaultParentPointType((tierIdx + 1) == 1 ? 6 : 1);
                 testInstance.contestLocalService.updateContest(contest);
 
@@ -644,6 +716,7 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
                     contestPhases.addAll(this.createPhasesForContest(contest, null, startPhase));
                 }
 
+                // Add proposal author and team members
                 for (int proposalIdx = 0; proposalIdx < amountOfProposalsPerSideContest; proposalIdx++) {
                     User author = users.get(randomInt(0, amountOfUsers));
                     Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), contestPhases.get(0).getContestPhasePK());
@@ -658,11 +731,10 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
                 contestTierDataStructure.addContest(contest);
             }
         }
-
-
     }
 
     private void createLinksBetweenProposals() throws SystemException, PortalException {
+        // Create links from the highest tier to the lowest - do not create links originating from the lowest tier
         for (int tierIdx = amountOfContestTiers - 1; tierIdx >= 1; tierIdx--) {
             final ContestTierDataStructure contestTierDataStructure = contestTierToDataStructureMap.get(tierIdx);
             final ContestTierDataStructure nextContestTierDataStructure = contestTierToDataStructureMap.get(tierIdx - 1);
@@ -670,21 +742,12 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
             for (int contestIdx = 0; contestIdx < contestTierDataStructure.getContests().size(); contestIdx++) {
                 final Contest contest = contestTierDataStructure.getContests().get(contestIdx);
                 final List<Proposal> contestProposals = contestTierDataStructure.getProposals(contestIdx);
-                // Proposal links to proposals in the same contest
+
+                // Create proposal links for each proposal of a contest
                 for (int fromProposalIdx = 0; fromProposalIdx < contestTierDataStructure.getAmountOfProposals(); fromProposalIdx++) {
                     String sectionText = "These are the proposals we link to:\n";
 
-                    for (int toProposalIdx = 0; toProposalIdx < contestTierDataStructure.getAmountOfProposals(); toProposalIdx++) {
-                        if (doWithProbability(probabilityToLinkToOtherProposal)) {
-//                            sectionText += "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/" + contest.getContestPK() +
-//                                    "/planId/" + contestProposals.get(toProposalIdx).getProposalId() + "\n\n";
-
-                            // todo
-                            // contestTierDataStructure.getProposalLinks(contestIdx).addProposalLink(fromProposalIdx, tierIdx, contestIdx, toProposalIdx, contestProposals.get(toProposalIdx).getProposalId());
-                        }
-                    }
-
-
+                    // Iterate over all contests and proposals of the contest tier below and create a link with probability
                     for (int toContestIdx = 0; toContestIdx < nextContestTierDataStructure.getContests().size(); toContestIdx++) {
                         final Contest toContest = nextContestTierDataStructure.getContests().get(toContestIdx);
                         for (int toProposalIdx = 0; toProposalIdx < nextContestTierDataStructure.getAmountOfProposals(); toProposalIdx++) {
@@ -705,19 +768,6 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
                             sectionText);
                 }
 
-            }
-        }
-
-        for (int tierIdx = amountOfContestTiers - 1; tierIdx >= 1; tierIdx--) {
-            final ContestTierDataStructure contestTierDataStructure = contestTierToDataStructureMap.get(tierIdx);
-            for (int contestIdx = 0; contestIdx < contestTierDataStructure.getContests().size(); contestIdx++) {
-                for (int fromProposalIdx = 0; fromProposalIdx < contestTierDataStructure.getAmountOfProposals(); fromProposalIdx++) {
-                    Proposal proposal = contestTierDataStructure.getProposals(contestIdx).get(fromProposalIdx);
-                    List<ContestTierDataStructure.ProposalLink> proposalLinks = contestTierDataStructure.getProposalLinks(contestIdx).getProposalLinkList(fromProposalIdx);
-                    List<Proposal> subproposals = testInstance.proposalLocalService.getSubproposals(proposal.getProposalId(), false);
-
-                    assertEquals(proposalLinks.size(), subproposals.size());
-                }
             }
         }
     }

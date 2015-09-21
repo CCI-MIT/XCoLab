@@ -20,21 +20,31 @@ import com.ext.portlet.service.ProposalLocalService;
 import com.ext.portlet.service.persistence.PointTypePersistence;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.Contact;
+import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
 import com.liferay.portal.service.ContactLocalService;
+import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portal.service.MockContextProvider;
 import com.liferay.portal.service.PasswordPolicyLocalService;
 import com.liferay.portal.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
 import com.liferay.portal.util.InitUtil;
 import org.junit.BeforeClass;
+import org.xcolab.utils.HtmlUtil;
+
+import javax.jcr.query.Query;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by manu on 17/09/14.
@@ -43,6 +53,7 @@ public class XCoLabTest {
     protected static ContestPhaseTypeLocalService contestPhaseTypeLocalService;
     protected static ContactLocalService contactLocalService;
     protected static UserLocalService userLocalService;
+    protected static GroupLocalService groupLocalService;
     protected static PasswordPolicyLocalService passwordPolicyLocalService;
     protected static ContestLocalService contestLocalService;
     protected static ContestPhaseLocalService contestPhaseLocalService;
@@ -58,6 +69,8 @@ public class XCoLabTest {
     protected static PointDistributionTargetLocalService pointDistributionTargetService;
     protected static PlanSectionDefinitionLocalService planSectionDefinitionLocalService;
     protected static long adminId = 10144L;
+
+    protected int numberOfCreatedUsers;
 
     @BeforeClass
     public static void beforeTest() throws Exception {
@@ -77,6 +90,7 @@ public class XCoLabTest {
         passwordPolicyLocalService = (PasswordPolicyLocalService) PortalBeanLocatorUtil.locate(PasswordPolicyLocalService.class.getName());
         contactLocalService = (ContactLocalService) PortalBeanLocatorUtil.locate(ContactLocalService.class.getName());
         userLocalService = (UserLocalService) PortalBeanLocatorUtil.locate(UserLocalService.class.getName());
+        groupLocalService = (GroupLocalService) PortalBeanLocatorUtil.locate(GroupLocalService.class.getName());
         contestLocalService = (ContestLocalService) PortalBeanLocatorUtil.locate(ContestLocalService.class.getName());
         contestTeamMemberLocalService = (ContestTeamMemberLocalService) PortalBeanLocatorUtil.locate(ContestTeamMemberLocalService.class.getName());
         contestPhaseLocalService = (ContestPhaseLocalService) PortalBeanLocatorUtil.locate(ContestPhaseLocalService.class.getName());
@@ -96,7 +110,24 @@ public class XCoLabTest {
         setupBasicDataset();
     }
 
-    protected User createUser(long id) throws SystemException {
+    /**
+     * Create a set of new user model objects
+     * @param numberOfUsers number of objects that should be created
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
+    protected List<User> createUsers(int numberOfUsers) throws PortalException, SystemException {
+        numberOfCreatedUsers = numberOfUsers;
+        List<User> users = new ArrayList<>(numberOfUsers);
+        for (int i = 0; i < numberOfUsers; i++) {
+            users.add(createUser(i+1));
+        }
+
+        return users;
+    }
+
+    private User createUser(long id) throws SystemException, PortalException {
         contactLocalService.addContact(contactLocalService.createContact(id));
 
         User user = userLocalService.createUser(id);
@@ -108,7 +139,37 @@ public class XCoLabTest {
         user.setContactId(id);
         userLocalService.addUser(user);
 
+        // Create a matching group for the new user
+        groupLocalService.addGroup(adminId, 0,
+                "com.liferay.portal.model.User",
+                id, 0, "", "User", 0, true, 0, "/" + user.getScreenName(), false, true, new ServiceContext());
+
         return user;
+    }
+
+    /**
+     * Clean up all previously created user and utility model objects
+     * @throws SystemException
+     * @throws PortalException
+     */
+    protected void deleteUsers() throws SystemException, PortalException {
+        // Only delete the created users/contacts/groups from the method createUser
+        for (Contact contact : contactLocalService.getContacts(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            if (contact.getContactId() >= 1 && contact.getContactId() <= numberOfCreatedUsers) {
+                contactLocalService.deleteContact(contact);
+            }
+        }
+        for (User user : userLocalService.getUsers(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            if (user.getUserId() >= 1 && user.getUserId() <= numberOfCreatedUsers) {
+                userLocalService.deleteUser(user);
+            }
+        }
+        for (Group userGroup : groupLocalService.getGroups(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            if (userGroup.getClassNameId() == 10038L && userGroup.getClassPK() >= 1 && userGroup.getClassPK() <= numberOfCreatedUsers) {
+                groupLocalService.deleteGroup(userGroup);
+            }
+        }
+        System.out.println("");
     }
 
     protected static void setupBasicDataset() throws SystemException, PortalException {

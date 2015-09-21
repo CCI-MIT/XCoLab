@@ -12,6 +12,7 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 
 import java.text.DateFormat;
@@ -128,7 +129,7 @@ public class GlobalContestSimulator {
         this.createLinksBetweenProposals();
     }
 
-    public void deleteContestsAndProposals() throws SystemException, PortalException {
+    public void cleanupPointsSimulator() throws SystemException, PortalException {
         //delete all contestPhases
         for (ContestPhase cp : globalContestPhases) {
             testInstance.contestPhaseLocalService.deleteContestPhase(cp);
@@ -178,11 +179,16 @@ public class GlobalContestSimulator {
     }
 
 
-    protected void createUsers() throws SystemException {
-        users = new ArrayList<User>();
-        for (int i = 0; i < amountOfUsers; i++) {
-            users.add(testInstance.createUser(i+1));
+    protected void createUsers() throws SystemException, PortalException {
+        if (users != null && !users.isEmpty()) {
+            deleteUsers();
         }
+
+        users = testInstance.createUsers(amountOfUsers);
+    }
+
+    protected void deleteUsers() throws PortalException, SystemException {
+        testInstance.deleteUsers();
     }
 
 

@@ -36,7 +36,7 @@ public class PhaseTransitionTest extends XCoLabTest {
             }
 
             //reset
-            gcs.deleteContestsAndProposals();
+            gcs.cleanupPointsSimulator();
         }
     }
 

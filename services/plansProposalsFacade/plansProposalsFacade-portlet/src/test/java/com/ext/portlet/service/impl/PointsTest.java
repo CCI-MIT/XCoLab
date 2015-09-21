@@ -70,19 +70,20 @@ public class PointsTest extends XCoLabTest {
                 gcs.deletePointDistributions();
             }
             //reset
-            gcs.deleteContestsAndProposals();
+            gcs.cleanupPointsSimulator();
         }
     }
 
     @Test
     public void fixedHypotheticalTest() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
         GlobalContestPointsSimulator.initSimulatorWithTestEnvironment(this);
-        GlobalContestPointsSimulator gcs = new GlobalContestPointsSimulator();
+        GlobalContestExtendedPointsSimulator gcs = new GlobalContestExtendedPointsSimulator();
         for (int j = 0; j < NUMBER_OF_FIXED_TEST_RUNS; j++) {
             gcs.initializeContests(
                     200,
                     20000,
                     false,
+                    2,
                     20,
                     2,
                     5,
@@ -104,7 +105,7 @@ public class PointsTest extends XCoLabTest {
                 gcs.deletePointDistributions();
             }
             //reset
-            gcs.deleteContestsAndProposals();
+            gcs.cleanupPointsSimulator();
         }
     }
 
@@ -122,13 +123,14 @@ public class PointsTest extends XCoLabTest {
      */
     private void performRandomTest(boolean hasContestEnded) throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
         GlobalContestPointsSimulator.initSimulatorWithTestEnvironment(this);
-        GlobalContestPointsSimulator gcs = new GlobalContestPointsSimulator();
+        GlobalContestExtendedPointsSimulator gcs = new GlobalContestExtendedPointsSimulator();
         int amountOfUsers = GlobalContestSimulator.randomInt(50, 1500);
         for (int j = 0; j < NUMBER_OF_RANDOM_TEST_RUNS; j++) {
             gcs.initializeContests(
                     amountOfUsers,
                     GlobalContestSimulator.randomInt(0, 50000),
                     hasContestEnded,
+                    2,
                     GlobalContestSimulator.randomInt(0, 50),
                     GlobalContestSimulator.randomInt(0, 15),
                     GlobalContestSimulator.randomInt(0, 50),
@@ -161,7 +163,7 @@ public class PointsTest extends XCoLabTest {
                 gcs.deletePointDistributions();
             }
             //reset
-            gcs.deleteContestsAndProposals();
+            gcs.cleanupPointsSimulator();
         }
     }
 
@@ -219,7 +221,7 @@ public class PointsTest extends XCoLabTest {
                 gcs.deletePointDistributions();
             }
             //reset
-            gcs.deleteContestsAndProposals();
+            gcs.cleanupPointsSimulator();
         }
     }
 
