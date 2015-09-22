@@ -48,8 +48,16 @@
 							<td colspan="2"><h2>Member Profile</h2></td>
 						</tr> -->
 						<tr>
-							<td class="memname">${currentUserProfile.realName}</td>
-							<td rowspan="2">
+							<td>
+								<div class="memname">${currentUserProfile.realName}</div>
+								<div class="role-indicator" style="margin-top: 5px;">
+									<div style="width: 16px">
+										<img src="/climatecolab-theme/images/icon_mem-${currentUserProfile.role.imageUrl}.png" width="16" height="16" />
+									</div>
+									${currentUserProfile.role.printName}
+								</div>
+							</td>
+							<td>
 								<div class="badge-container">
 									<c:forEach var="badge" items="${currentUserProfile.badges}">
 										<c:if test="${not badge.hideRibbon}">
@@ -69,17 +77,6 @@
 										</a>
 										</c:if>
 									</c:forEach>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="role-indicator" style="margin-top: 5px;">
-									<div style="width: 16px">
-                                        <img    src="/climatecolab-theme/images/icon_mem-${currentUserProfile.role.imageUrl}.png"
-                                                width="16" height="16" />
-									</div>
-									${currentUserProfile.role.printName}
 								</div>
 							</td>
 						</tr>
