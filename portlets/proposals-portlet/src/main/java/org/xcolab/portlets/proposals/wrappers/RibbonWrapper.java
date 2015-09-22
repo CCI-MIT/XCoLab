@@ -29,7 +29,7 @@ public class RibbonWrapper {
 
     private ContestPhaseRibbonType getContestPhaseRibbonType() throws PortalException, SystemException {
         if (contestPhaseRibbonType == null) {
-            ProposalContestPhaseAttribute ribbonAttribute = null;
+            ProposalContestPhaseAttribute ribbonAttribute;
             try {
                 ribbonAttribute = ProposalContestPhaseAttributeLocalServiceUtil
                         .getProposalContestPhaseAttribute(
@@ -37,19 +37,19 @@ public class RibbonWrapper {
                                 proposalWrapper.getContestPhase().getContestPhasePK(),
                                 ProposalContestPhaseAttributeKeys.RIBBON
                         );
+                if (ribbonAttribute != null) {
+                    long typeId = ribbonAttribute.getNumericValue();
+                    if (typeId >= 0) {
+                        contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
+                    }
+                } else {
+                    _log.warn(String.format("Could not retrieve ribbon type for proposal %d", proposalWrapper.getProposalId()));
+                }
             } catch (NoSuchProposalContestPhaseAttributeException e) {
                 //TODO: can (and should) we cache this failure to prevent repeated failed requests?
                 _log.info(String.format("Could not find attribute RIBBON for proposal %d, contest phase %d",
                         proposalWrapper.getProposalId(),
                         proposalWrapper.getContestPhase().getContestPhasePK()));
-            }
-            if (ribbonAttribute != null) {
-                long typeId = ribbonAttribute.getNumericValue();
-                if (typeId >= 0) {
-                    contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
-                }
-            } else {
-                _log.warn(String.format("Could not retrieve ribbon type for proposal %d", proposalWrapper.getProposalId()));
             }
         }
         return contestPhaseRibbonType;
