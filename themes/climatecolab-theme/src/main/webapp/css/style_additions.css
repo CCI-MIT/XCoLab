@@ -455,8 +455,8 @@ ul#blogArchives li {list-style: none; margin-bottom: 10px; background: none;}
 .comm_member table.colab { width:100%; margin-top: 0; }
 .comm_member table.colab.otherInfo { width:100%;  margin-top: 0; width: 300px;}
 .member table.colab { width:100%;  margin-top: 0; margin-bottom: 20px;}
-.comm_member td.memname { font-size:21px; color:#707070;}
-    .wf-active .comm_member td.memname { font-size:23px; }
+.comm_member td div.memname { font-size:21px; color:#707070;}
+    .wf-active .comm_member td div.memname { font-size:23px; }
 .comm_member td.r { text-align:right;}
 .comm_member td.b { font-weight:600;}
 .comm_member .memdiv {background:#efeee3; height:4px; margin:7px 0 10px 0;}
