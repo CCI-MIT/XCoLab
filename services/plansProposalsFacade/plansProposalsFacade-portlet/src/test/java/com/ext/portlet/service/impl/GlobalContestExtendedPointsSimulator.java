@@ -390,26 +390,26 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
         double matNonTeamPoints = nonTeamPointsFactor * materializedPoints;
 
         //TEAM
-            List<User> teamMembers = currentTierDataStructure.getProposalTeamMembers(contestIdx).getProposalTeamMembers(proposalIndex);
-            for (int userIdx = 0; userIdx < teamMembers.size(); userIdx++) {
-                User teamMember = teamMembers.get(userIdx);
-                double share;
-                if (config != null) {
-                    share = config.teamMemberShares.get(userIdx);
-                } else {
-                    //no config is present. shares are distributed equally
-                    share = 1.00 / teamMembers.size();
-                }
-
-                if (hypTeamPoints * share >= 1) {
-                    assertNotNull(popPointEntryInList(points, proposal.getProposalId(), teamMember.getUserId(), sourceId, Math.ceil(matTeamPoints * share), Math.ceil(hypTeamPoints * share)));
-                }
-                // Less than 1 point should not have been distributed
-                else {
-                    assertNull(popPointEntryInList(points, proposal.getProposalId(), teamMember.getUserId(), sourceId, Math.ceil(matTeamPoints * share), Math.ceil(hypTeamPoints * share)));
-                }
-
+        List<User> teamMembers = currentTierDataStructure.getProposalTeamMembers(contestIdx).getProposalTeamMembers(proposalIndex);
+        for (int userIdx = 0; userIdx < teamMembers.size(); userIdx++) {
+            User teamMember = teamMembers.get(userIdx);
+            double share;
+            if (config != null) {
+                share = config.teamMemberShares.get(userIdx);
+            } else {
+                //no config is present. shares are distributed equally
+                share = 1.00 / teamMembers.size();
             }
+
+            if (hypTeamPoints * share >= 1) {
+                assertNotNull(popPointEntryInList(points, proposal.getProposalId(), teamMember.getUserId(), sourceId, Math.ceil(matTeamPoints * share), Math.ceil(hypTeamPoints * share)));
+            }
+            // Less than 1 point should not have been distributed
+            else {
+                assertNull(popPointEntryInList(points, proposal.getProposalId(), teamMember.getUserId(), sourceId, Math.ceil(matTeamPoints * share), Math.ceil(hypTeamPoints * share)));
+            }
+
+        }
 
         //NON-TEAM
         if (config != null) {
