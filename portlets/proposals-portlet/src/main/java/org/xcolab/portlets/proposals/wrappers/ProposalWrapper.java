@@ -9,29 +9,23 @@ import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
 import edu.mit.cci.roma.client.Scenario;
-import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portlet.expando.model.ExpandoBridge;
 
 import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.portlets.proposals.utils.ProposalAttributeUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ProposalWrapper {
 
@@ -46,10 +40,8 @@ public class ProposalWrapper {
     private final Proposal2Phase proposal2Phase;
     protected ProposalRatingsWrapper proposalRatings;
     private RibbonWrapper ribbonWrapper;
-    private ProposalWrapper baseProposal;
     private List<ProposalTeamMemberWrapper> members;
     private List<ProposalSectionWrapper> sections;
-    private List<MembershipRequestWrapper> membershipRequests;
     private List<ProposalContestPhaseAttribute> contestPhaseAttributes;
     private ProposalAttributeUtil proposalAttributeUtil;
 
@@ -89,28 +81,12 @@ public class ProposalWrapper {
                 proposalWrapper.proposal2Phase);
     }
 
-    public Class<?> getModelClass() {
-        return proposal.getModelClass();
-    }
-
     public long getProposalId() {
         return proposal.getProposalId();
     }
 
-    public Date getCreateDate() {
-        return proposal.getCreateDate();
-    }
-
-    public void setCreateDate(Date createDate) {
-        proposal.setCreateDate(createDate);
-    }
-
     public int getCurrentVersion() {
         return proposal.getCurrentVersion();
-    }
-
-    public void setCurrentVersion(int currentVersion) {
-        proposal.setCurrentVersion(currentVersion);
     }
 
     public long getAuthorId() {
@@ -125,33 +101,12 @@ public class ProposalWrapper {
         return proposal.getVisible();
     }
 
-    public boolean isVisibleInPhase() throws PortalException, SystemException {
-    	ProposalContestPhaseAttribute visibleInPhase = getContestPhaseAttributeOrNull(ProposalContestPhaseAttributeKeys.VISIBLE, 0);
-        return proposal.isVisible() && (visibleInPhase == null || visibleInPhase.getNumericValue() > 0); 
-    }
-
     public long getDiscussionId() {
         return proposal.getDiscussionId();
     }
 
     public void setDiscussionId(long discussionId) {
         proposal.setDiscussionId(discussionId);
-    }
-
-    public long getJudgeDiscussionId() {
-        return proposal.getJudgeDiscussionId();
-    }
-
-    public void setJudgeDiscussionId(long judgeDiscussionId) {
-        proposal.setJudgeDiscussionId(judgeDiscussionId);
-    }
-
-    public long getResultsDiscussionId() {
-        return proposal.getResultsDiscussionId();
-    }
-
-    public void setResultsDiscussionId(long resultsDiscussionId) {
-        proposal.setResultsDiscussionId(resultsDiscussionId);
     }
 
     public long getFellowDiscussionId() throws PortalException, SystemException {
@@ -162,38 +117,6 @@ public class ProposalWrapper {
         }
         return fellowDiscussionId;
 
-    }
-
-    public void setFellowDiscussionId(long fellowDiscussionId) {
-        proposal.setFellowDiscussionId(fellowDiscussionId);
-    }
-
-    public long getAdvisorDiscussionId() {
-        return proposal.getAdvisorDiscussionId();
-    }
-
-    public void setAdvisorDiscussionId(long advisorDiscussionId) {
-        proposal.setAdvisorDiscussionId(advisorDiscussionId);
-    }
-
-    public long getGroupId() {
-        return proposal.getGroupId();
-    }
-
-    public void setGroupId(long groupId) {
-        proposal.setGroupId(groupId);
-    }
-
-    public void setCachedModel(boolean cachedModel) {
-        proposal.setCachedModel(cachedModel);
-    }
-
-    public ExpandoBridge getExpandoBridge() {
-        return proposal.getExpandoBridge();
-    }
-
-    public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        proposal.setExpandoBridgeAttributes(serviceContext);
     }
 
     public String getPitch() throws PortalException, SystemException {
@@ -234,7 +157,7 @@ public class ProposalWrapper {
     }
 
     public List<Long> getSelectedJudges() throws SystemException, PortalException {
-        List<Long> selectedJudges = new ArrayList<Long>();
+        List<Long> selectedJudges = new ArrayList<>();
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
@@ -251,29 +174,6 @@ public class ProposalWrapper {
             }
             if (s == null || s.length() == 0) return selectedJudges;
             for (String element : s.split(";")) selectedJudges.add(Long.parseLong(element));
-        }
-
-        return selectedJudges;
-    }
-
-    public List<User> getSelectedJudgeUsers() throws SystemException, PortalException {
-        List<User> selectedJudges = new ArrayList<>();
-
-        // All judges are selected when screening is disabled
-        if (!contestPhase.getFellowScreeningActive()) {
-            for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
-                selectedJudges.add(judge);
-            }
-        }
-        else {
-            String s;
-            try {
-                s = getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
-            } catch (Exception e) {
-                return selectedJudges;
-            }
-            if (s == null || s.length() == 0) return selectedJudges;
-            for (String element : s.split(";")) selectedJudges.add(UserLocalServiceUtil.getUser(Long.parseLong(element)));
         }
 
         return selectedJudges;
@@ -298,7 +198,6 @@ public class ProposalWrapper {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -308,14 +207,12 @@ public class ProposalWrapper {
                 return true;
             }
         }
-
         return false;
     }
 
     public boolean isJudgingContestPhase() {
         return ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote()) == ContestPhasePromoteType.PROMOTE_JUDGED;
     }
-
 
     public String getTeam() throws PortalException, SystemException {
         return proposalAttributeUtil.getAttributeValueString(ProposalAttributeKeys.TEAM, "");
@@ -328,9 +225,6 @@ public class ProposalWrapper {
     public long getSupportersCount() throws PortalException, SystemException {
         return ProposalLocalServiceUtil.getSupportersCount(proposal.getProposalId());
     }
-
-
-
 
     public long getCommentsCount() throws PortalException, SystemException {
         if (proposal.getProposalId() > 0) {
@@ -354,16 +248,8 @@ public class ProposalWrapper {
         return proposal.getUpdatedDate();
     }
 
-    public Date getLastModifiedDateForContestPhase() throws PortalException, SystemException {
-        if (proposal2Phase.getVersionTo() == -1) return getLastModifiedDate();
-        return ProposalVersionLocalServiceUtil.getByProposalIdVersion(proposal.getProposalId(), version).getCreateDate();
-    }
-
     public boolean isOpen() throws PortalException, SystemException {
-        if (proposal.getProposalId() > 0) {
-            return ProposalLocalServiceUtil.isOpen(proposal.getProposalId());
-        }
-        return false;
+        return proposal.getProposalId() > 0 && ProposalLocalServiceUtil.isOpen(proposal.getProposalId());
     }
 
     public long getVotesCount() throws SystemException, PortalException {
@@ -382,10 +268,9 @@ public class ProposalWrapper {
         return String.format("/web/guest/plans/-/plans/contestId/%s/planId/%s", contest.getContestPK(), proposal.getProposalId());
     }
 
-
     public List<ProposalSectionWrapper> getSections() throws PortalException, SystemException {
         if (sections == null) {
-            sections = new ArrayList<ProposalSectionWrapper>();
+            sections = new ArrayList<>();
             if (contest != null) {
                 PlanTemplate planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
                 if (planTemplate != null) {
@@ -409,18 +294,13 @@ public class ProposalWrapper {
 
     public List<ProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {
         if (members == null) {
-            members = new ArrayList<ProposalTeamMemberWrapper>();
+            members = new ArrayList<>();
             for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
                 members.add(new ProposalTeamMemberWrapper(proposal, user));
             }
         }
         return members;
     }
-
-    public List<User> getSupporters() throws PortalException, SystemException {
-        return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
-    }
-
 
     protected boolean getFellowScreeningNeccessary() {
         return contestPhase.getFellowScreeningActive();
@@ -443,16 +323,9 @@ public class ProposalWrapper {
         try {
             List<ProposalContestPhaseAttribute> attributes = ProposalContestPhaseAttributeLocalServiceUtil.getAllContestPhaseProposalAttributes(contestPhase.getContestPhasePK(), proposal.getProposalId());
             setContestPhaseAttributes(attributes);
-        } catch (NoSuchProposalContestPhaseAttributeException e) {
-            e.printStackTrace();
-        } catch (SystemException e) {
+        } catch (NoSuchProposalContestPhaseAttributeException | SystemException e) {
             e.printStackTrace();
         }
-    }
-
-    private double getContestPhaseAttributeValueReal(String attributeName, long additionalId, double defaultVal) throws PortalException, SystemException {
-        ProposalContestPhaseAttribute pa = getContestPhaseAttributeOrNull(attributeName, additionalId);
-        return pa == null ? defaultVal : pa.getRealValue();
     }
 
     private ProposalContestPhaseAttribute getContestPhaseAttributeOrNull(String attributeName, long additionalId) throws PortalException, SystemException {
@@ -463,7 +336,7 @@ public class ProposalWrapper {
         	for (ProposalContestPhaseAttribute attr: contestPhaseAttributes) {
         		if (attr.getName().equals(attributeName) && attr.getAdditionalId() == additionalId) return attr;
         	}
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return null;
     }
@@ -480,29 +353,12 @@ public class ProposalWrapper {
     public Contest getContest() {
         return contest;
     }
-    
-    public List<MembershipRequestWrapper> getMembershipRequests() {
-        if (this.membershipRequests == null) {
-            // get all Membershiprequests
-            membershipRequests = new ArrayList<MembershipRequestWrapper>();
-            try {
-                for (MembershipRequest m : ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId())) {
-                    membershipRequests.add(new MembershipRequestWrapper(m));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-        return this.membershipRequests;
-
-    }
 
     public Long getModelId() throws PortalException, SystemException {
         Long modelId = 0L;
         try {
             modelId = ContestLocalServiceUtil.getDefaultModelId(contest.getContestPK());
-        } catch(Exception e){
+        } catch(Exception ignored){
         }
         return modelId;
     }
@@ -513,24 +369,10 @@ public class ProposalWrapper {
 
     public Long getScenarioId() throws PortalException, SystemException {
         ProposalAttribute attr = proposalAttributeUtil.getLatestAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
-	if (attr == null) return 0L;
-        return attr.getNumericValue();
-    }
-
-    public Map<Long,List<ProposalWrapper>> getSubProposalPerModel() throws PortalException, SystemException {
-        Map<Long,List<ProposalWrapper>> subProposalPerModel = new HashMap<>();
-        List<Proposal> subProposals =  ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
-
-        for(Proposal subProposal : subProposals){
-            ProposalWrapper subProposalWrapper = new ProposalWrapper(subProposal);
-            Long modelId = subProposalWrapper.getModelIdForStoredScenario();
-            if(!subProposalPerModel.containsKey(modelId)){
-                subProposalPerModel.put(modelId, Arrays.asList(subProposalWrapper));
-            } else {
-                subProposalPerModel.get(modelId).add(subProposalWrapper);
-            }
+	    if (attr == null) {
+            return 0L;
         }
-        return subProposalPerModel;
+        return attr.getNumericValue();
     }
 
     public Scenario getScenario() throws IOException, SystemException{
@@ -541,54 +383,8 @@ public class ProposalWrapper {
         return CollaboratoriumModelingService.repository().getScenario(proposalId);
     }
 
-    private static Long getModelIdForScenarioId(Long scenarioId) throws SystemException{
-        Long modelId;
-
-        try {
-            Scenario scenario = CollaboratoriumModelingService.repository().getScenario(scenarioId);
-            Simulation simulation = scenario.getSimulation();
-            modelId = simulation.getId();
-        }
-        catch (IOException e) {
-            modelId = 0L;
-        }
-
-        return modelId;
-    }
-
-    public List<Scenario> getSubProposalScenarios() throws SystemException, PortalException, IOException{
-        List<Scenario> subProposalScenarios = new ArrayList<>();
-        List<Proposal> subProposals =  ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
-        for(Proposal subProposal : subProposals) {
-            Scenario scenarioForSubProposal = getScenarioByProposalId(subProposal.getProposalId());
-            subProposalScenarios.add(scenarioForSubProposal);
-        }
-        return subProposalScenarios;
-    }
-
-    private Long getModelIdForStoredScenario() throws SystemException{
-        return getModelIdForScenarioId(proposal.getProposalId());
-    }
-
-    public List<Long> getSubProposalScenarioIds() throws PortalException, SystemException {
-        List<Long> subProposalScenarioIds = new ArrayList<>();
-        Map<Long,List<ProposalWrapper>> subProposalPerModel = getSubProposalPerModel();
-
-        if(subProposalPerModel.size() > 0){
-            for(Long modelId : subProposalPerModel.keySet()){
-                List<ProposalWrapper> proposalWrappers = subProposalPerModel.get(modelId);
-                for(ProposalWrapper proposalWrapper : proposalWrappers){
-                    subProposalScenarioIds.add(proposalWrapper.getScenarioId());
-                }
-            }
-        }
-
-        return subProposalScenarioIds;
-    }
-
-
     /**
-     * Determine if fellow are done with proposal
+     * Determine if fellows are done with proposal
      */
     public GenericJudgingStatus getScreeningStatus() {
         try {
@@ -627,7 +423,6 @@ public class ProposalWrapper {
 
     /**
      * Determines whether the screening/advance decision of the proposal is done
-     * @return
      */
     public GenericJudgingStatus getOverallStatus() {
         try {
@@ -644,60 +439,6 @@ public class ProposalWrapper {
         return GenericJudgingStatus.STATUS_UNKNOWN;
     }
 
-    public boolean getIsLatestVersion() {
-        try {
-            return getCurrentVersion() == version;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-     /*
-    public boolean getIsLatestVersionInContest() throws SystemException, PortalException {
-        if (getWasMovedToContest() == null) return getIsLatestVersion();
-         //Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposal.getProposalId());
-        List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId());
-        List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(contest);
-
-        long maxVersion = proposal.getCurrentVersion();
-        for (Proposal2Phase p2p : proposal2Phases){
-            if (contestPhases.)
-            if (p2p.getVersionTo() <= proposal.getCurrentVersion()) continue;
-            if ()
-        }
-
-        return false;
-    }
-    */
-    public Contest getWasMovedToContest() {
-        try{
-            Contest c = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
-            if (c.getContestPK() != contest.getContestPK())
-                return c;
-            return null;
-        } catch (PortalException e) { return null; }
-        catch (SystemException e) { return null; }
-    }
-
-    public ProposalVersion getSelectedVersion() {
-        try {
-            for (ProposalVersion pv : ProposalVersionLocalServiceUtil.getByProposalId(proposal.getProposalId(), 0, Integer.MAX_VALUE)) {
-                if (pv.getVersion() == version) return pv;
-            }
-        } catch (Exception e) {
-            return null;
-        }
-        return null;
-    }
-
-    public User getUserForSelectedVersion() {
-        try {
-            return UserLocalServiceUtil.getUser(getSelectedVersion().getAuthorId());
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     public boolean getAllJudgesReviewFinished() throws SystemException, PortalException {
         if (getSelectedJudges().size() > 0) {
             for (long userId : getSelectedJudges()) {
@@ -712,21 +453,6 @@ public class ProposalWrapper {
 
             }
         }
-
-        return true;
-    }
-
-    public boolean getJudgeReviewFinishedStatusUserId(Long userId) throws SystemException, PortalException {
-
-        List<ProposalRating> proposalRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
-                userId,
-                this.proposal.getProposalId(),
-                this.contestPhase.getContestPhasePK());
-        ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);
-        if (!wrapper.isReviewComplete()) {
-            return false;
-        }
-
         return true;
     }
 
@@ -734,29 +460,12 @@ public class ProposalWrapper {
         return proposalAttributeUtil;
     }
 
-	public List<ProposalContestPhaseAttribute> getContestPhaseAttributes() {
-		return contestPhaseAttributes;
-	}
-
 	public void setContestPhaseAttributes(List<ProposalContestPhaseAttribute> contestPhaseAttributes) {
 		this.contestPhaseAttributes = contestPhaseAttributes;
 	}
 
 	public int getVersion() {
 		return version;
-	}
-	
-	public ProposalWrapper getBaseProposal() throws PortalException, SystemException {
-		if (baseProposal == null) {
-			long baseProposalId = proposalAttributeUtil.getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_ID, 0);
-			long baseProposalContestId = proposalAttributeUtil.getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0);
-			if (baseProposalId > 0 && baseProposalContestId > 0) {
-				Proposal p = ProposalLocalServiceUtil.getProposal(baseProposalId);
-				Contest c = ContestLocalServiceUtil.getContest(baseProposalContestId);
-				baseProposal = new ProposalWrapper(p, p.getCurrentVersion(), c, null, null);
-			}
-		}
-		return baseProposal;
 	}
 	
 	public long getContestPK() {
@@ -790,19 +499,17 @@ public class ProposalWrapper {
     }
 
     public List<ProposalRatingWrapper> getRatings() throws SystemException, PortalException {
-        if (this.proposalRatings != null) {
-            return this.proposalRatings.getRatings();
-        } else {
-            return new ArrayList<ProposalRatingWrapper>();
+        if (this.proposalRatings == null) {
+            return new ArrayList<>();
         }
+        return this.proposalRatings.getRatings();
     }
 
     public String getRatingComment() throws SystemException, PortalException {
-        if (this.proposalRatings != null) {
-            return this.proposalRatings.getComment();
-        } else {
+        if (this.proposalRatings == null) {
             return "";
         }
+        return this.proposalRatings.getComment();
     }
 
     public ContestPhase getContestPhase() {
@@ -811,21 +518,5 @@ public class ProposalWrapper {
 
     public RibbonWrapper getRibbonWrapper() {
         return ribbonWrapper;
-    }
-
-    public enum GenericJudgingStatus {
-        STATUS_UNKNOWN(0),
-        STATUS_REJECTED(1),
-        STATUS_ACCEPTED(2);
-
-        private int statusValue;
-
-        GenericJudgingStatus(int statusValue) {
-            this.statusValue = statusValue;
-        }
-
-        public int getStatusValue() {
-            return statusValue;
-        }
     }
 }
