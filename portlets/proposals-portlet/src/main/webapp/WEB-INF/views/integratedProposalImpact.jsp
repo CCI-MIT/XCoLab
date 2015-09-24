@@ -178,7 +178,7 @@
         <br/>
         <br/>
 
-        <c:if test="${not isGlobalContest and not isRegionalContest}">
+        <c:if test="${showDataTable}">
             <div id="impact" class="cmsDetailsBox">
                 <h2 class="model_name">Regional
                     <c:if test="${not empty isRegionalSectorContest and isRegionalSectorContest}">
@@ -209,16 +209,7 @@
                     </tr>
                     </thead>
                     <tr>
-                        <td class="blue-bg" style="text-align: left">Sector
-                            <a href="javascript:;" class="helpTrigger"><img
-                                    src="/climatecolab-theme/images/icon-addprop-question.png" width="15"
-                                    height="15"/></a><br/>
-
-                            <div class="addprophelp" style="color:white;">
-                                This table shows a summary of the emission reductions for all sectors and regions
-                                you submitted, in gigatons of carbon dioxide (CO2) equivalent (GtCO2e), for each
-                                decade listed.
-                            </div>
+                        <td colspan="1">
                         </td>
                         <c:forEach var="impactIteration" items="${impactIterations}">
                             <th class="blue-bg" style="text-align: center;">${impactIteration.year}</th>
@@ -226,47 +217,49 @@
                     </tr>
                     <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}"
                                varStatus="index">
-                        <c:set var="seriesValues"
-                               value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}"/>
-                        <tr>
-                            <td class="sector">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
-                            <c:catch var="catchException">
-                                <c:forEach var="impactIteration" items="${impactIterations}">
-                                    <fmt:formatNumber var="value"
-                                                      value="${seriesValues.yearToValueMap[impactIteration.year]}"
-                                                      maxFractionDigits="2"/>
-                                    <td class="impact-value">${value}</td>
-                                </c:forEach>
-                            </c:catch>
+                        <tr id="series${fn:replace(impactSeries.seriesTypeToDescriptionMap[seriesEntry.key],' ', '')}">
+                            <modeling:impactSeriesDataRow
+                                    seriesName="${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}"
+                                    seriesValues="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}"
+                                    impactIterations="${impactIterations}"
+                                    seriesNameClass="${fn:containsIgnoreCase(impactSeries.seriesTypeToDescriptionMap[seriesEntry.key], 'Business as usual') ?
+                                    'blue-bg' : 'sector'}"/>
                         </tr>
+                        <c:if test="${fn:containsIgnoreCase(impactSeries.seriesTypeToDescriptionMap[seriesEntry.key], 'Business as usual')}">
+                            <tr>
+                                <td class="blue-bg" style="text-align: left">Emission reductions from BAU (by sector)
+                                </td>
+                            </tr>
+                        </c:if>
                     </c:forEach>
                     <tr id="totalSectors">
-                        <td class="sector total">Total of above sectors</td>
-                        <c:forEach var="impactIteration" items="${impactIterations}">
-                            <fmt:formatNumber var="value"
-                                              value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
-                                              maxFractionDigits="2"/>
-                            <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
-                        </c:forEach>
+                        <modeling:impactSeriesDataRow
+                                seriesName="Total emission reductions"
+                                seriesValues="${impactSeries.resultSeriesValues}"
+                                impactIterations="${impactIterations}"
+                                seriesNameClass="sector italic"/>
+                    </tr>
+                    <tr id="totalProjectedEmissions">
+                        <modeling:impactSeriesDataRow
+                                seriesName="Total projected emissions"
+                                seriesValues="${impactSeries.resultSeriesValues}"
+                                impactIterations="${impactIterations}"
+                                seriesNameClass="total blue-bg"/>
                     </tr>
                     <c:if test="${empty isRegionalSectorContest or not isRegionalSectorContest}">
                         <tr id="modelAdjustments">
-                            <td class="sector">Adjustments to total, to correspond with model results</td>
-                            <c:forEach var="impactIteration" items="${impactIterations}">
-                                <fmt:formatNumber var="value"
-                                                  value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
-                                                  maxFractionDigits="2"/>
-                                <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
-                            </c:forEach>
+                            <modeling:impactSeriesDataRow
+                                    seriesName="Adjustments to total, to correspond with model results"
+                                    seriesValues="${impactSeries.resultSeriesValues}"
+                                    impactIterations="${impactIterations}"
+                                    seriesNameClass="italic"/>
                         </tr>
                         <tr id="modelTotal">
-                            <td class="sector model">Total from model</td>
-                            <c:forEach var="impactIteration" items="${impactIterations}">
-                                <fmt:formatNumber var="value"
-                                                  value="0"
-                                                  maxFractionDigits="2"/>
-                                <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
-                            </c:forEach>
+                            <modeling:impactSeriesDataRow
+                                    seriesName="Total from model"
+                                    seriesValues="${impactSeries.resultSeriesValues}"
+                                    impactIterations="${impactIterations}"
+                                    seriesNameClass="model total"/>
                         </tr>
                     </c:if>
 
@@ -363,43 +356,59 @@
         var scenarioFetchedCallback = function (event) {
             selectModelForFetchedScenario(event);
             var modelOutputs = event.scenario.outputs;
+
+            var bauRow = document.getElementById("seriesBusinessasusual(BAU");
             var totalSectorsRow = document.getElementById("totalSectors");
-            if (totalSectorsRow) {
+
+            if (!!bauRow &amp;&amp; !!totalSectorsRow) {
+                var bauValuesToYears = mapValuesToYear(totalSectorsRow);
                 var totalSectorsValuesToYears = mapValuesToYear(totalSectorsRow);
-                var modelSeriesValuesToYears = {};
-                modelOutputs.forEach(function (modelOutput) {
-                    console.log("modelOutput", modelOutput);
-                    if (modelOutput.name.toLowerCase() === MODEL_DATA_ROW.toLowerCase()) {
-                        var modelSeries;
-                        if (event.scenario.modelName.toLowerCase().includes("emf")) {
-                            modelSeries = calculateAverage(modelOutput.series);
-                            console.log("avg", modelSeries);
-                        } else {
-                            modelSeries = modelOutput.series[0];
-                        }
-                        var modelSeriesValues = modelSeries.variable.values;
-                        modelSeriesValues.forEach(function (modelSeriesValue) {
-                            modelSeriesValuesToYears[modelSeriesValue[0]] = modelSeriesValue[1];
-                        });
+            } else return;
+
+            var totalProjectedEmissionsRow = document.getElementById("totalProjectedEmissions");
+            if (totalProjectedEmissionsRow) {
+                var totalProjectedEmissionsValues = totalProjectedEmissionsRow.querySelectorAll('[data-attr-year]');
+                [].forEach.call(totalProjectedEmissionsValues, function (totalProjectedEmissionsYearValue) {
+                    var year = totalProjectedEmissionsYearValue.getAttribute("data-attr-year");
+                    var totalProjectedEmissionsValueToYear = parseFloat(bauValuesToYears[year]) + parseFloat(totalSectorsValuesToYears[year]);
+                    totalProjectedEmissionsYearValue.innerHTML = valueToYear.toFixed(2);
+                });
+
+            } else return;
+
+            var modelSeriesValuesToYears = {};
+            modelOutputs.forEach(function (modelOutput) {
+                console.log("modelOutput", modelOutput);
+                if (modelOutput.name.toLowerCase() === MODEL_DATA_ROW.toLowerCase()) {
+                    var modelSeries;
+                    if (event.scenario.modelName.toLowerCase().includes("emf")) {
+                        modelSeries = calculateAverage(modelOutput.series);
+                        console.log("avg", modelSeries);
+                    } else {
+                        modelSeries = modelOutput.series[0];
                     }
-                });
+                    var modelSeriesValues = modelSeries.variable.values;
+                    modelSeriesValues.forEach(function (modelSeriesValue) {
+                        modelSeriesValuesToYears[modelSeriesValue[0]] = modelSeriesValue[1];
+                    });
+                }
+            });
 
-                var modelTotalRow = document.getElementById("modelTotal");
-                var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
-                [].forEach.call(modelTotalValues, function (totalYearValue) {
-                    var year = totalYearValue.getAttribute("data-attr-year");
-                    var valueToYear = parseFloat(modelSeriesValuesToYears[year]);
-                    totalYearValue.innerHTML = valueToYear.toFixed(2);
-                });
+            var modelTotalRow = document.getElementById("modelTotal");
+            var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
+            [].forEach.call(modelTotalValues, function (totalYearValue) {
+                var year = totalYearValue.getAttribute("data-attr-year");
+                var valueToYear = parseFloat(modelSeriesValuesToYears[year]);
+                totalYearValue.innerHTML = valueToYear.toFixed(2);
+            });
 
-                var modelAdjustmentsRow = document.getElementById("modelAdjustments");
-                var modelAdjustmentValues = modelAdjustmentsRow.querySelectorAll('[data-attr-year]');
-                [].forEach.call(modelAdjustmentValues, function (modelAdjustmentValue) {
-                    var year = modelAdjustmentValue.getAttribute("data-attr-year");
-                    var valueToYear = parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalSectorsValuesToYears[year]);
-                    modelAdjustmentValue.innerHTML = valueToYear.toFixed(2);
-                });
-            }
+            var modelAdjustmentsRow = document.getElementById("modelAdjustments");
+            var modelAdjustmentValues = modelAdjustmentsRow.querySelectorAll('[data-attr-year]');
+            [].forEach.call(modelAdjustmentValues, function (modelAdjustmentValue) {
+                var year = modelAdjustmentValue.getAttribute("data-attr-year");
+                var valueToYear = parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalSectorsValuesToYears[year]);
+                modelAdjustmentValue.innerHTML = valueToYear.toFixed(2);
+            });
         };
 
         function registerHelpEventHandler() {
@@ -411,7 +420,7 @@
         }
 
         var scenarioFetchedCallbackRegisterd = false;
-        function registerScenarioFetchedCallback(){
+        function registerScenarioFetchedCallback() {
             if (jQuery($("#modelsOutputContainer").data('modeling')).length !== 0) {
                 scenarioFetchedCallbackRegisterd = true;
                 jQuery($("#modelsOutputContainer").data('modeling')).on('scenarioFetched', scenarioFetchedCallback);
@@ -421,7 +430,7 @@
         registerScenarioFetchedCallback();
 
         $().ready(function () {
-            if(!scenarioFetchedCallbackRegisterd){
+            if (!scenarioFetchedCallbackRegisterd) {
                 registerScenarioFetchedCallback();
             }
             registerHelpEventHandler();

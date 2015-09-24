@@ -636,6 +636,22 @@ div.selected {
     width: 90%;
 }
 
+
+#impact table .sector {
+    padding-left: 20px;
+}
+
+#impact table .model.total {
+    background-color: #66af45;
+}
+
+#impact table .bold {
+    font-weight: bold;
+}
+#impact table .italic {
+    font-style: italic;
+}
+
 div.spinner {
     left: 50% !important;
     top: 20px !important;
@@ -700,10 +716,6 @@ span.stars span {
 
 .sector.total{
     background-color: #666666;
-}
-
-.sector.model{
-    background-color: #66af45;
 }
 
 .modelSettingsSelectBox input[type=radio] {

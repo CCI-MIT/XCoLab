@@ -74,11 +74,20 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("scenarioId", proposalWrapper.getScenarioId());
         }
 
-        boolean showSubProposalListing = (isRegionalSectorContest(contest));
-        if (showSubProposalListing) {
+        boolean showSubProposalListing = (isRegionalContest(contest));
+        boolean showDataTable = (isRegionalContest(contest));
+        if (showDataTable) {
+            IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposalWrapper.getWrapped(), contest);
+            model.addAttribute("impactSeries", integratedProposalImpactSeries);
+            List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+            model.addAttribute("impactIterations", impactIterations);
+        }
+
+        if(showSubProposalListing){
             model.addAttribute("impactSerieses", getImpactTabBasicProposal(proposalWrapper.getWrapped()));
         }
         model.addAttribute("showSubProposalListing", showSubProposalListing);
+        model.addAttribute("showDataTable", showDataTable);
 
         switch (ContestTier.getContestTierByTierType(contest.getContestTier())) {
             case BASIC:
@@ -153,7 +162,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 if (isCombinedScenario) {
                     proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
 
-                    if (proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)) {
+                    if (proposalImpactScenarioCombinationWrapper.
+                            scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)) {
 
                         proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
                         model.addAttribute("consolidatedScenarioId",
