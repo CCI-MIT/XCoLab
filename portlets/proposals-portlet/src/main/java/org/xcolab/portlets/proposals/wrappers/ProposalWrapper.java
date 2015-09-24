@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
@@ -20,11 +19,9 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
@@ -39,6 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.portlets.proposals.utils.ProposalAttributeUtil;
+import org.xcolab.portlets.proposals.utils.ProposalContestPhaseAttributeHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,8 +63,9 @@ public class ProposalWrapper {
     private List<ProposalTeamMemberWrapper> members;
     private List<ProposalSectionWrapper> sections;
     private List<MembershipRequestWrapper> membershipRequests;
-    private List<ProposalContestPhaseAttribute> contestPhaseAttributes;
+    private List<ProposalContestPhaseAttribute> proposalContestPhaseAttributes;
     private ProposalAttributeUtil proposalAttributeUtil;
+    ProposalContestPhaseAttributeHelper proposalContestPhaseAttributeHelper;
 
     public ProposalWrapper(Proposal proposal) {
         this(proposal, proposal.getCurrentVersion());
@@ -85,7 +84,7 @@ public class ProposalWrapper {
         this.ribbonWrapper = new RibbonWrapper(this);
 
         proposalAttributeUtil = new ProposalAttributeUtil(proposal, version);
-        initializeContestPhaseAttributes();
+        proposalContestPhaseAttributeHelper = new ProposalContestPhaseAttributeHelper(proposal, contestPhase);
     }
 
     public ProposalWrapper(Proposal proposal, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
@@ -141,7 +140,7 @@ public class ProposalWrapper {
     }
 
     public boolean isVisibleInPhase() throws PortalException, SystemException {
-    	ProposalContestPhaseAttribute visibleInPhase = getContestPhaseAttributeOrNull(ProposalContestPhaseAttributeKeys.VISIBLE, 0);
+    	ProposalContestPhaseAttribute visibleInPhase = proposalContestPhaseAttributeHelper.getAttributeOrNull(ProposalContestPhaseAttributeKeys.VISIBLE, 0);
         return proposal.isVisible() && (visibleInPhase == null || visibleInPhase.getNumericValue() > 0); 
     }
 
@@ -228,21 +227,21 @@ public class ProposalWrapper {
     }
 
     public JudgingSystemActions.AdvanceDecision getJudgeDecision() throws SystemException, PortalException {
-        long judgingDecision = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0, LONG_DEFAULT_VAL);
+        long judgingDecision = proposalContestPhaseAttributeHelper.getAttributeLongValue(ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0, LONG_DEFAULT_VAL);
         return JudgingSystemActions.AdvanceDecision.fromInt((int) judgingDecision);
     }
 
     public JudgingSystemActions.FellowAction getFellowAction() throws SystemException, PortalException {
-        Long action = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, LONG_DEFAULT_VAL);
+        Long action = proposalContestPhaseAttributeHelper.getAttributeLongValue(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, LONG_DEFAULT_VAL);
         return JudgingSystemActions.FellowAction.fromInt(action.intValue());
     }
 
     public String getFellowActionComment() throws SystemException, PortalException {
-        return getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, 0, STRING_DEFAULT_VAL);
+        return proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, 0, STRING_DEFAULT_VAL);
     }
 
     public String getProposalReview() throws SystemException, PortalException {
-        return getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0, STRING_DEFAULT_VAL);
+        return proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0, STRING_DEFAULT_VAL);
     }
 
     public List<Long> getSelectedJudges() throws SystemException, PortalException {
@@ -256,7 +255,7 @@ public class ProposalWrapper {
         } else {
             String s;
             try {
-                s = getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
+                s = proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
             } catch (Exception e) {
                 return selectedJudges;
             }
@@ -278,7 +277,7 @@ public class ProposalWrapper {
         } else {
             String s;
             try {
-                s = getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
+                s = proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
             } catch (Exception e) {
                 return selectedJudges;
             }
@@ -422,40 +421,6 @@ public class ProposalWrapper {
 
     protected boolean getFellowScreeningNeccessary() {
         return contestPhase.getFellowScreeningActive();
-    }
-
-    protected String getContestPhaseAttributeStringValue(String attributeName, long additionalId, String defaultVal) throws PortalException, SystemException {
-        ProposalContestPhaseAttribute pa = getContestPhaseAttributeOrNull(attributeName, additionalId);
-        return pa == null ? defaultVal : pa.getStringValue();
-    }
-
-    protected long getContestPhaseAttributeLongValue(String attributeName, long additionalId, long defaultVal) throws PortalException, SystemException {
-        ProposalContestPhaseAttribute pa = getContestPhaseAttributeOrNull(attributeName, additionalId);
-        return pa == null ? defaultVal : pa.getNumericValue();
-    }
-
-    private void initializeContestPhaseAttributes() {
-        if (Validator.isNull(contestPhase)) {
-            return;
-        }
-        try {
-            List<ProposalContestPhaseAttribute> attributes = ProposalContestPhaseAttributeLocalServiceUtil.getAllContestPhaseProposalAttributes(contestPhase.getContestPhasePK(), proposal.getProposalId());
-            setContestPhaseAttributes(attributes);
-        } catch (NoSuchProposalContestPhaseAttributeException | SystemException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private ProposalContestPhaseAttribute getContestPhaseAttributeOrNull(String attributeName, long additionalId) throws PortalException, SystemException {
-        try {
-        	if (contestPhaseAttributes == null) {
-        		contestPhaseAttributes = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributes(proposal.getProposalId(), contestPhase.getContestPhasePK());
-        	}
-        	for (ProposalContestPhaseAttribute attr: contestPhaseAttributes) {
-        		if (attr.getName().equals(attributeName) && attr.getAdditionalId() == additionalId) return attr;
-        	}
-        } catch (Exception ignored) { }
-        return null;
     }
 
     public String getAuthorName() throws PortalException, SystemException {
@@ -614,7 +579,6 @@ public class ProposalWrapper {
         return GenericJudgingStatus.STATUS_UNKNOWN;
     }
 
-
     /**
      * Determines whether the screening/advance decision of the proposal is done
      */
@@ -702,14 +666,6 @@ public class ProposalWrapper {
         return proposalAttributeUtil;
     }
 
-	public List<ProposalContestPhaseAttribute> getContestPhaseAttributes() {
-		return contestPhaseAttributes;
-	}
-
-	public void setContestPhaseAttributes(List<ProposalContestPhaseAttribute> contestPhaseAttributes) {
-		this.contestPhaseAttributes = contestPhaseAttributes;
-	}
-
 	public int getVersion() {
 		return version;
 	}
@@ -733,28 +689,6 @@ public class ProposalWrapper {
 
     public Proposal getWrapped() {
         return proposal;
-    }
-
-    protected ProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(long proposalId, long contestPhaseId, String attributeName, long additionalId) {
-        try {
-            return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, additionalId);
-        } catch (NoSuchProposalContestPhaseAttributeException e) {
-            try {
-                ProposalContestPhaseAttribute attribute = ProposalContestPhaseAttributeLocalServiceUtil.createProposalContestPhaseAttribute(
-                        CounterLocalServiceUtil.increment(ProposalContestPhaseAttribute.class.getName()));
-                attribute.setProposalId(proposalId);
-                attribute.setContestPhaseId(contestPhaseId);
-                attribute.setName(attributeName);
-                ProposalContestPhaseAttributeLocalServiceUtil.addProposalContestPhaseAttribute(attribute);
-                return attribute;
-            } catch (Exception e2) {
-                e.printStackTrace();
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public List<ProposalRatingWrapper> getRatings() throws SystemException, PortalException {

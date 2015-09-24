@@ -61,7 +61,7 @@ interface ProposalTabCanAccessAlgorithm {
 
 				ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
 				ProposalJudgeWrapper wrapper = new ProposalJudgeWrapper(proposalWrapper, context.getUser(request));
-				return wrapper.shouldShowJudgingTab(context.getContestPhase(request).getContestPhasePK());
+				return wrapper.shouldShowJudgingTab();
 
 			} catch (PortalException | SystemException e) {
 				e.printStackTrace();
