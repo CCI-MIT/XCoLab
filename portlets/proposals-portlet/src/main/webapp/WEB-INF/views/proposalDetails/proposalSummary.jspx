@@ -126,7 +126,7 @@
                 </c:otherwise>
             </c:choose>
 
-            <c:if test="${proposalsPermissions.canAdmin and false}">
+            <c:if test="${proposalsPermissions.canAdminProposal and false}">
                 <a href="${proposal.proposalId }/tab/ADMIN">Change settings</a>
             </c:if>
 
