@@ -58,7 +58,7 @@ public class ProposalsSortFilterBean {
             public int compare(ProposalWrapper o1, ProposalWrapper o2) {
                 if (StringUtils.isBlank(sortFilterPage.getSortColumn())) {
                     try {
-                        int ribbonDiff = o1.getRibbon() - o2.getRibbon();
+                        int ribbonDiff = o1.getRibbonWrapper().getRibbon() - o2.getRibbonWrapper().getRibbon();
                         if (ribbonDiff != 0) {
                             return ribbonDiff;
                         }
@@ -74,7 +74,7 @@ public class ProposalsSortFilterBean {
         });
         
         for (ProposalWrapper contest: this.proposals) {
-            if (contest.getRibbon() > 0) proposalsWithRibbons.add(contest);
+            if (contest.getRibbonWrapper().getRibbon() > 0) proposalsWithRibbons.add(contest);
             else proposalsNormal.add(contest);
         }
     }

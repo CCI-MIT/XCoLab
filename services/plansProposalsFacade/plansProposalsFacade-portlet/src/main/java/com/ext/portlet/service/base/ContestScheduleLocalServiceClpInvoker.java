@@ -45,6 +45,8 @@ public class ContestScheduleLocalServiceClpInvoker {
     private String[] _methodParameterTypes658;
     private String _methodName659;
     private String[] _methodParameterTypes659;
+    private String _methodName664;
+    private String[] _methodParameterTypes664;
 
     public ContestScheduleLocalServiceClpInvoker() {
         _methodName0 = "addContestSchedule";
@@ -136,6 +138,10 @@ public class ContestScheduleLocalServiceClpInvoker {
         _methodName659 = "setBeanIdentifier";
 
         _methodParameterTypes659 = new String[] { "java.lang.String" };
+
+        _methodName664 = "isContestScheduleUsed";
+
+        _methodParameterTypes664 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -237,6 +243,11 @@ public class ContestScheduleLocalServiceClpInvoker {
             ContestScheduleLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
+        }
+
+        if (_methodName664.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes664, parameterTypes)) {
+            return ContestScheduleLocalServiceUtil.isContestScheduleUsed(((Long) arguments[0]).longValue());
         }
 
         throw new UnsupportedOperationException();

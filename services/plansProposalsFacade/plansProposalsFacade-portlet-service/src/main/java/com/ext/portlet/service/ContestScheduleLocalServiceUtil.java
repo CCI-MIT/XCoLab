@@ -262,6 +262,12 @@ public class ContestScheduleLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static java.lang.Boolean isContestScheduleUsed(
+        long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().isContestScheduleUsed(contestScheduleId);
+    }
+
     public static void clearService() {
         _service = null;
     }

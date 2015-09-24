@@ -35,14 +35,14 @@
                 ${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? 'judgement-actions' : ''}
                 ${additionalCSSClasses}
                 ">
-					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0 and not contest.hideRibbons}">
+					<c:if test="${proposal.ribbonWrapper.ribbon != null and proposal.ribbonWrapper.ribbon > 0 and not contest.hideRibbons}">
             <div class="ribbonPlaceholder">
                 <span class="fieldWithTooltip">
                     <br />
-                    <img src="/climatecolab-theme/images/icon-prize${proposal.ribbon}.png" />
+                    <img src="/climatecolab-theme/images/icon-prize${proposal.ribbonWrapper.ribbon}.png" />
                 </span>
                 <div class="tooltip">
-                    ${proposal.ribbonText}
+                    ${proposal.ribbonWrapper.ribbonText}
                 </div>
             </div>
             </c:if>

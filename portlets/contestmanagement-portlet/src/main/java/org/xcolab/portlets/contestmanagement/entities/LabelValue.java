@@ -3,7 +3,7 @@ package org.xcolab.portlets.contestmanagement.entities;
 /**
  * Created by Thomas on 2/9/2015.
  */
-public class LabelValue {
+public class LabelValue implements Comparable<LabelValue>{
     private String lable;
     private Long value;
 
@@ -27,5 +27,10 @@ public class LabelValue {
 
     public void setLable(String lable) {
         this.lable = lable;
+    }
+
+    public int compareTo(LabelValue o)
+    {
+        return this.getLable().compareTo(o.getLable());
     }
 }

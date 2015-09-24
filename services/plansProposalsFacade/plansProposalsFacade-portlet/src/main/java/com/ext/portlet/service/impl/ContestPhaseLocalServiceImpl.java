@@ -45,6 +45,7 @@ import com.liferay.util.portlet.PortletProps;
 
 import org.apache.commons.lang3.StringUtils;
 import com.ext.utils.promotion.PhasePromotionHelper;
+import org.xcolab.enums.ColabConstants;
 import org.xcolab.utils.Clock;
 import org.xcolab.utils.ClockImpl;
 
@@ -84,7 +85,6 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      * contest phase local service.
      */
     private final static Log _log = LogFactoryUtil.getLog(ContestPhaseLocalServiceImpl.class);
-    private static final Long DEFAULT_CONTEST_ID_FOR_SCHEDULE = 0L;
     private static final String SERVER_PORT_PROPS_KEY = "climatecolab.server.port";
     private Clock clock = new ClockImpl();
 
@@ -182,12 +182,13 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     }
 
     public List<ContestPhase> getPhasesForContestScheduleId(long contestScheduleId) throws SystemException {
-        return contestPhasePersistence.findByContestScheduleId(contestScheduleId, DEFAULT_CONTEST_ID_FOR_SCHEDULE);
+        return contestPhasePersistence.findByContestScheduleId(contestScheduleId, ColabConstants.DEFAULT_CONTEST_SCHEDULE_ID);
     }
 
     public List<ContestPhase> getPhasesForContestScheduleIdAndContest(long contestScheduleId, long contestPK) throws SystemException {
         return contestPhasePersistence.findByContestScheduleId(contestScheduleId, contestPK);
     }
+
 
     public List<ContestPhase> getPhasesForContestScheduleIdAndPhaseType(long contestScheduleId, long contestPhaseType) throws SystemException {
 

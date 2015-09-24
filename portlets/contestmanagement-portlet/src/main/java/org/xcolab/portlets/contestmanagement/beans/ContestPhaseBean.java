@@ -1,10 +1,6 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-import com.ext.portlet.NoSuchProposal2PhaseException;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,6 +24,7 @@ public class ContestPhaseBean {
     private Long contestPhasePK;
     private Long contestPK;
     private Long contestPhaseType;
+    private Long contestPhaseTypeOld;
     private Long contestScheduleId;
     private final static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
@@ -57,6 +54,7 @@ public class ContestPhaseBean {
         this.contestPhasePK = contestPhase.getContestPhasePK();
         this.contestPK = contestPhase.getContestPK();
         this.contestPhaseType = contestPhase.getContestPhaseType();
+        this.contestPhaseTypeOld = contestPhase.getContestPhaseType();
         this.contestScheduleId = contestPhase.getContestScheduleId();
         this.phaseStartDate = contestPhase.getPhaseStartDate();
         this.phaseEndDate = contestPhase.getPhaseEndDate();
@@ -260,7 +258,23 @@ public class ContestPhaseBean {
         contestPhasePK = contestPhase.getContestPhasePK();
     }
 
-    private void  persistContestPhase() throws Exception{
+    public String getContestPhaseDescriptionOverride() {
+        return contestPhaseDescriptionOverride;
+    }
+
+    public void setContestPhaseDescriptionOverride(String contestPhaseDescriptionOverride) {
+        this.contestPhaseDescriptionOverride = contestPhaseDescriptionOverride;
+    }
+
+    public Long getContestPhaseTypeOld() {
+        return contestPhaseTypeOld;
+    }
+
+    public void setContestPhaseTypeOld(Long contestPhaseTypeOld) {
+        this.contestPhaseTypeOld = contestPhaseTypeOld;
+    }
+
+    public ContestPhase getContestPhase() throws Exception {
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
         contestPhase.setContestPK(contestPK);
         contestPhase.setContestPhaseType(contestPhaseType);
@@ -274,6 +288,11 @@ public class ContestPhaseBean {
         contestPhase.setPhaseActiveOverride(phaseActiveOverride);
         contestPhase.setPhaseInactiveOverride(phaseInactiveOverride);
         contestPhase.setNextStatus(nextStatus);
+        return contestPhase;
+    }
+
+    private void  persistContestPhase() throws Exception{
+        ContestPhase contestPhase = getContestPhase();
         contestPhase.persist();
         ContestPhaseLocalServiceUtil.updateContestPhase(contestPhase);
     }

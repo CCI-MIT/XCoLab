@@ -3,16 +3,13 @@ package org.xcolab.portlets.proposals.view.action;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.mail.EmailToAdminDispatcher;
-import org.xcolab.portlets.proposals.wrappers.InvalidUrlErrorWrapper;
+import org.xcolab.wrapper.SimpleExceptionErrorReportWrapper;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -45,9 +42,9 @@ public class ReportInvalidUrlErrorActionController {
         String stepsToReproduce = request.getParameter("stepsToReproduce");
         String userEmailAddress = request.getParameter("userEmailAddress");
         String url = request.getParameter("url");
-        InvalidUrlErrorWrapper invalidUrlErrorWrapper = new InvalidUrlErrorWrapper(stepsToReproduce, userEmailAddress);
+        SimpleExceptionErrorReportWrapper simpleExceptionErrorReportWrapper = new SimpleExceptionErrorReportWrapper(stepsToReproduce, userEmailAddress);
 
-        if (invalidUrlErrorWrapper.isWrapperFilledOut()
+        if (simpleExceptionErrorReportWrapper.isWrapperFilledOut()
                 && isUrlValid(url)) {
 
             User user = null;
@@ -58,7 +55,7 @@ public class ReportInvalidUrlErrorActionController {
             }
 
             new EmailToAdminDispatcher(String.format(EMAIL_SUBJECT_FORMAT_STRING, url),
-                    getMessageBody(url, invalidUrlErrorWrapper, user)).sendMessage();
+                    getMessageBody(url, simpleExceptionErrorReportWrapper, user)).sendMessage();
         }
 
         response.sendRedirect("/web/guest/plans");
@@ -68,11 +65,11 @@ public class ReportInvalidUrlErrorActionController {
         return Validator.isNotNull(url) && url.matches(URL_REGEX);
     }
 
-    private String getMessageBody(String url, InvalidUrlErrorWrapper invalidUrlErrorWrapper, User user) {
+    private String getMessageBody(String url, SimpleExceptionErrorReportWrapper simpleExceptionErrorReportWrapper, User user) {
         String userScreenName = USER_SCREEN_NAME_PLACEHOLDER;
         String emailAddress = EMAIL_ADDRESS_PLACEHOLDER;
-        if (Validator.isNotNull(invalidUrlErrorWrapper.getUserEmailAddress())) {
-            emailAddress = invalidUrlErrorWrapper.getUserEmailAddress();
+        if (Validator.isNotNull(simpleExceptionErrorReportWrapper.getUserEmailAddress())) {
+            emailAddress = simpleExceptionErrorReportWrapper.getUserEmailAddress();
         }
 
         if (Validator.isNotNull(user)) {
@@ -82,6 +79,6 @@ public class ReportInvalidUrlErrorActionController {
             }
         }
 
-        return String.format(MESSAGE_BODY_FORMAT_STRING, url, userScreenName, invalidUrlErrorWrapper.getStepsToReproduce(), emailAddress);
+        return String.format(MESSAGE_BODY_FORMAT_STRING, url, userScreenName, simpleExceptionErrorReportWrapper.getStepsToReproduce(), emailAddress);
     }
 }

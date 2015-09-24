@@ -13,7 +13,8 @@ public enum ContestPhaseType {
     SELECTION_OF_WINNERS_NEW(20, "Selection of winners"),/* seems to be equivalent to 13 and 20*/
     COMPLETED(14, "Complete"),
     WINNERS_AWARDED(17, "Winners awarded"),
-    WINNERS_SELECTION(15, "Winners selection"); /* seems to be equivalent to 13 */
+    WINNERS_SELECTION(15, "Winners selection"), /* seems to be equivalent to 13 */
+    WINNERS_ANNOUNCED_SOON(301, "Winners announced soon");
 
     private long typeId;
 

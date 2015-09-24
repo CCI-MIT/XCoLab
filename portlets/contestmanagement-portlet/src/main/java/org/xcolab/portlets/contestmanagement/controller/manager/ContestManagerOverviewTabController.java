@@ -62,6 +62,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
             model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(request));
             return TAB_VIEW;
         }catch (Exception e){
+            _log.warn("Exception while rendering CMS overview tab", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
         return NOT_FOUND_TAB_VIEW;
