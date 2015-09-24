@@ -23,7 +23,7 @@
         <div class="admin_left">
         <c:set var="addBlueClass" value='false' />
         
-		<c:if test="${proposalsPermissions.canAdmin }">
+		<c:if test="${proposalsPermissions.canAdminProposal }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
             	<strong>This proposal can be edited by:</strong>
             	<div>            		
