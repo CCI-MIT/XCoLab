@@ -67,7 +67,7 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
             model.addAttribute("elementId", planTemplateId);
             return ContestProposalTemplateTabController.TAB_VIEW;
         } catch (Exception e){
-            _log.warn("Could not create proposal template wrapper: ", e);
+            _log.warn("Exception while rendering CMS proposal template tab", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
         return NOT_FOUND_TAB_VIEW;

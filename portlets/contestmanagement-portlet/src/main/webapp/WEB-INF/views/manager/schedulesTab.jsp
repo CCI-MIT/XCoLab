@@ -156,6 +156,7 @@
 
                             <td data-form-attribute="indexLable">${x.index + 1}</td>
                             <td>
+                                <form:hidden path="schedulePhases[${x.index}].contestPhaseTypeOld" data-form-name="contestPhaseTypeOld"/>
                                 <form:select path="schedulePhases[${x.index}].contestPhaseType" class="autoWidth"
                                              data-form-name="contestPhaseType">
                                     <form:options items="${contestPhaseTypesSelectionItems}" itemValue="value"

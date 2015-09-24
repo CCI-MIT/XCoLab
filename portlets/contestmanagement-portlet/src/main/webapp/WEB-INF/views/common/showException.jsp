@@ -7,8 +7,6 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	<jsp:directive.include file="../init.jspx" />
-
-	<h1>Exception occured!</h1>
-	<p>${exceptionMessage}</p>
+	<jsp:directive.include file="reportException.jspx" />
 
 </jsp:root>

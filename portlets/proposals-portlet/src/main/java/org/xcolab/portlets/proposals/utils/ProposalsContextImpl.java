@@ -137,7 +137,7 @@ public class ProposalsContextImpl implements ProposalsContext {
         }
         return (T) request.getAttribute(attributeName);
     }
-    
+
     private void init(PortletRequest request) throws PortalException, SystemException {
         final Long proposalId = (Long) ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
         final Long contestId = (Long) ParamUtil.getLong(request, CONTEST_ID_PARAM);
@@ -178,11 +178,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             
             if (proposalId != null && proposalId > 0) {
                 try {
-                    if(request.getParameter("move")== null) {
-                        contestPhase = getActiveContestPhaseIfProposalIsNotPartOfContestContestPhase(contestPhase, proposalId);
-                        contest = ContestLocalServiceUtil.getContest(contestPhase.getContestPK());
-                    }
-                    proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhase.getContestPhasePK());
+                      proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhase.getContestPhasePK());
                 }
                 catch (NoSuchProposal2PhaseException e) {
                     // there is no connection between proposal and selected contest phase, check if phaseId was given by the user, if it was
@@ -190,24 +186,42 @@ public class ProposalsContextImpl implements ProposalsContext {
                     // fetch most recent one
                     // if proposal is beeing moved ignore missing p2p mapping
                     if (request.getParameter("move")==null){
-                        ContestPhase mostRecentPhase = null;
+
+                        ContestPhase mostRecentPhaseInRequestedContest = null;
+                        ContestPhase mostRecentPhaseInOtherContest = null;
                         if (phaseId == null || phaseId <= 0) {
                             _log.info("Can't find association between proposal " + proposalId + " and phase " + contestPhase.getContestPhasePK());
                             for (Long contestPhaseId: Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposalId)) {
+
                                 ContestPhase cp = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-                                if (cp.getContestPK() == contest.getContestPK()) {
-                                    // we have a candidate
-                                    if (mostRecentPhase == null || mostRecentPhase.compareTo(cp) < 0) {
-                                        mostRecentPhase = cp;
+                                boolean isContestPhaseAssociatedWithRequestedContest = cp.getContestPK() == contest.getContestPK();
+                                if (isContestPhaseAssociatedWithRequestedContest) {
+                                    if (mostRecentPhaseInRequestedContest == null || mostRecentPhaseInRequestedContest.compareTo(cp) < 0) {
+                                        mostRecentPhaseInRequestedContest = cp;
+                                    }
+                                } else {
+                                    if (mostRecentPhaseInOtherContest == null || mostRecentPhaseInOtherContest.compareTo(cp) < 0) {
+                                        mostRecentPhaseInOtherContest = cp;
                                     }
                                 }
                             }
-                            if (mostRecentPhase == null) {
-                                handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
+                            if (mostRecentPhaseInRequestedContest == null) {
+
+                                if(mostRecentPhaseInOtherContest == null){
+                                    handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
+                                } else {
+                                    contestPhase = mostRecentPhaseInOtherContest;
+                                    // TODO show user list if several contest are available
+                                    contest = ContestLocalServiceUtil.getContest(contestPhase.getContestPK());
+                                }
+
+                            } else {
+                                contestPhase = mostRecentPhaseInRequestedContest;
                             }
-                            proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, mostRecentPhase.getContestPhasePK());
-                            contestPhase = mostRecentPhase;
+                            proposal2Phase = Proposal2PhaseLocalServiceUtil.
+                                    getByProposalIdContestPhaseId(proposalId, contestPhase.getContestPhasePK());
                         } else {
+                            _log.warn("Couldn't find alternative association between proposal " + proposalId + " and phase " + contestPhase.getContestPhasePK());
                             throw e;
                         }
                     }
@@ -241,7 +255,6 @@ public class ProposalsContextImpl implements ProposalsContext {
                 }
             }
         }
-        
 
         request.setAttribute(PROPOSAL_ATTRIBUTE, proposal);
         request.setAttribute(CONTEST_ATTRIBUTE, contest);
@@ -257,37 +270,10 @@ public class ProposalsContextImpl implements ProposalsContext {
         
         request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
         
-        
-        
-        
     }
-    
+
     private final static Log _log = LogFactoryUtil.getLog(ProposalsContextImpl.class);
 
-    private static ContestPhase getActiveContestPhaseIfProposalIsNotPartOfContestContestPhase(ContestPhase contestPhase, Long proposalId){
-        ContestPhase replacedContestPhase = contestPhase;
-        try {
-            List<ContestPhase> activeContestPhasesForProposal = Proposal2PhaseLocalServiceUtil.getActiveContestPhasesForProposal(proposalId);
-
-            if(activeContestPhasesForProposal.isEmpty()){
-                List<Long> contestPhaseIdsForProposal = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposalId);
-                for(Long contestPhaseIdForProposal : contestPhaseIdsForProposal){
-                    activeContestPhasesForProposal.add(ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseIdForProposal));
-                }
-            }
-
-            if(activeContestPhasesForProposal.size() > 0) {
-
-                if (!activeContestPhasesForProposal.contains(contestPhase)){
-                    replacedContestPhase = activeContestPhasesForProposal.get(0);
-                }
-            }
-        } catch (Exception e){
-            _log.warn("Couldn't find a valid contestPhaseId for Proposal: " + proposalId);
-        }
-
-        return replacedContestPhase;
-    }
 
     private void reportInvalidUrlToAdmins(User currentUser, String currentUrl) {
         String userScreenName = "(not logged in)";

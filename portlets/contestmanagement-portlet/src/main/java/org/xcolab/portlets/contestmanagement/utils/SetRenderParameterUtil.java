@@ -3,6 +3,7 @@ package org.xcolab.portlets.contestmanagement.utils;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
+import java.util.List;
 
 /**
  * Created by Thomas on 4/27/2015.
@@ -23,11 +24,21 @@ public class SetRenderParameterUtil {
     public static void setExceptionRenderParameter(ActionResponse response, Exception exception){
         setErrorRenderParameter(response, "showException");
         response.setRenderParameter("exceptionMessage", exception.getMessage());
-        response.setRenderParameter("exceptionStacktrace", exception.getStackTrace().toString());
+        response.setRenderParameter("exceptionStacktrace", getStackTraceInHtmlFormat(exception.getStackTrace()));
+    }
+
+    private static String getStackTraceInHtmlFormat(StackTraceElement[] stackTraceElements){
+        String htmlStacktrace = "<pre>";
+        for(int i = 0; i < stackTraceElements.length; i++){
+            htmlStacktrace += stackTraceElements[i].toString() + "<br>";
+        }
+        htmlStacktrace += "</pre>";
+        return htmlStacktrace;
     }
 
     public static void addActionExceptionMessageToSession(PortletRequest request, Exception exception){
         addMessageToSession(request, "exceptionMessage", exception.getMessage());
+        addMessageToSession(request, "exceptionStacktrace", getStackTraceInHtmlFormat(exception.getStackTrace()));
     }
 
     public static void addActionSuccessMessageToSession(PortletRequest request, String successMessage){

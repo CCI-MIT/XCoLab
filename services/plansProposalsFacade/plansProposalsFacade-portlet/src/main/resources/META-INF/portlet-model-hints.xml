@@ -193,6 +193,7 @@
 		<field name="show_in_outline_view" type="boolean">
 			<hint name="default-value">true</hint>
 		</field>
+		<field name="hideRibbons" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ContestDebate">
 		<field name="id" type="long" />

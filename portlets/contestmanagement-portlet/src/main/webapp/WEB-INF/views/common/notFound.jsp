@@ -8,15 +8,15 @@
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
     <jsp:directive.include file="../init.jspx"/>
 
-    <h1>Error!</h1>
+    <c:choose>
+        <c:when test="${not empty sessionScope.exceptionMessage or not empty sessionScope}">
+            <jsp:directive.include file="reportException.jspx"/>
+        </c:when>
+        <c:otherwise>
+            <h1>Error!</h1>
 
-    <h2>You request was not successful.</h2>
-
-    <p>The following exception message can help our developers to investage into this issue: <br/>
-        <c:if test="${not empty sessionScope.exceptionMessage }">
-                ${sessionScope.exceptionMessage};
-        </c:if>
-    </p>
-
-    <c:remove var="exceptionMessage" scope="session"/>
+            <h3>The requested page was not found!</h3>
+        </c:otherwise>
+    </c:choose>
+    </c:if>
 </jsp:root>

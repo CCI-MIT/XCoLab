@@ -14,6 +14,7 @@
 	<div id="modelsOutputContainer"></div>
 	
 	<input type="text" id="modelingScenarioId" class="hidden"/>
+	<input type="text" id="modelingModelId" class="hidden"/>
 	<script>
 		var modeling = XCoLab.modeling('#modelsOutputContainer', {edit: true});
 		<c:choose>
@@ -28,9 +29,11 @@
 
 		jQuery(modeling).on("scenarioFetched", function(event) {
 			jQuery("#modelingScenarioId").val(event.scenario.scenarioId).addClass("editorDirty");
-			
+			jQuery("#modelingModelId").val(event.scenario.modelId).addClass("editorDirty");
+
 		}).on("valueChanged", function(event) {
 			jQuery("#modelingScenarioId").addClass("editorDirty");
+			jQuery("#modelingModelId").addClass("editorDirty");
 		});
 	</script>
 
