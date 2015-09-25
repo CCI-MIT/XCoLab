@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
  * Wrapper around ContestPhaseRibbonType with utility methods for retrieving information related to the proposal
  */
 public class RibbonWrapper {
-
     private final static Log _log = LogFactoryUtil.getLog(RibbonWrapper.class);
 
     private ContestPhaseRibbonType contestPhaseRibbonType;
@@ -27,7 +26,7 @@ public class RibbonWrapper {
         this.proposalWrapper = proposalWrapper;
     }
 
-    private ContestPhaseRibbonType getContestPhaseRibbonType() throws PortalException, SystemException {
+    private ContestPhaseRibbonType getContestPhaseRibbonType() {
         if (contestPhaseRibbonType == null) {
             ProposalContestPhaseAttribute ribbonAttribute;
             try {
@@ -50,32 +49,35 @@ public class RibbonWrapper {
                 _log.info(String.format("Could not find attribute RIBBON for proposal %d, contest phase %d",
                         proposalWrapper.getProposalId(),
                         proposalWrapper.getContestPhase().getContestPhasePK()));
+            } catch (PortalException | SystemException e) {
+                _log.error(String.format("Liferay exception occurred while getting ContestPhaseRibbonType for proposal %d",
+                        proposalWrapper.getProposalId()), e);
             }
         }
         return contestPhaseRibbonType;
     }
 
-    public int getRibbon() throws PortalException, SystemException {
+    public int getRibbon() {
         if (getContestPhaseRibbonType() != null) {
             return getContestPhaseRibbonType().getRibbon();
         }
         return 0;
     }
-    public long getRibbonId() throws PortalException, SystemException {
+    public long getRibbonId() {
         if (getContestPhaseRibbonType() != null) {
             return getContestPhaseRibbonType().getId();
         }
         return 0L;
     }
 
-    public String getRibbonText() throws PortalException, SystemException {
+    public String getRibbonText() {
         if (getContestPhaseRibbonType() != null) {
             return getContestPhaseRibbonType().getHoverText();
         }
         return null;
     }
 
-    public String getRibbonTitle() throws PortalException, SystemException {
+    public String getRibbonTitle() {
         if (getContestPhaseRibbonType() != null) {
             if (getRibbonText().equalsIgnoreCase("Finalist") || getRibbonText().equalsIgnoreCase("Judges' Special Commendation")){
                 return "Finalist";
@@ -85,7 +87,8 @@ public class RibbonWrapper {
                 return "Winner";
             }
         }
-        return null;
+        _log.error(String.format("Could not get ribbon title: ContestPhaseRibbonType was null for proposal %d", proposalWrapper.getProposalId()));
+        return "";
     }
 
 }
