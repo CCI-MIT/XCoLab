@@ -264,14 +264,14 @@
 		type="text/x-handlebars-template">
 		
 		<div class="propbox {{#if proposal.featured }} 'featured' {{/if}}">
-			{{#if proposal.ribbon }}
+			{{#if proposal.ribbonWrapper.ribbon }}
 			<div class="ribbonPlaceholder">
                 <span class="fieldWithTooltip">
                     <br />
-                    <img src="/climatecolab-theme/images/icon-prize{{ proposal.ribbon }}.png" />
+                    <img src="/climatecolab-theme/images/icon-prize{{ proposal.ribbonWrapper.ribbon }}.png" />
                 </span>
                 <div class="tooltip">
-                    {{proposal.ribbonText}}
+                    {{proposal.ribbonWrapper.ribbonText}}
                 </div>
             </div>
 			{{/if}}
