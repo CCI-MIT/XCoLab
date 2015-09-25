@@ -17,7 +17,7 @@
 								linkId="previewContestButton" target="_blank"/>
 		</div>
 		<div class="blue-button"><a href="#" id="submitContestButton">SUBMIT contest</a></div>
-		<div class="gray-button"><a href="." id="saveChangesButton">DISCARD changes</a></div>
+		<div class="gray-button"><a href="${currentTabWrapped.tabUrl}" id="saveChangesButton">DISCARD changes</a></div>
 	</div>
 
 	<script type="text/javascript">
