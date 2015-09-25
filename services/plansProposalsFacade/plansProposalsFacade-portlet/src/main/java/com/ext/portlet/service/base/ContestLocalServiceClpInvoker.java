@@ -175,6 +175,8 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes708;
     private String _methodName709;
     private String[] _methodParameterTypes709;
+    private String _methodName710;
+    private String[] _methodParameterTypes710;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -536,9 +538,13 @@ public class ContestLocalServiceClpInvoker {
 
         _methodParameterTypes708 = new String[] {  };
 
-        _methodName709 = "addContestYearSuffixToContest";
+        _methodName709 = "getPointsEnabledContests";
 
-        _methodParameterTypes709 = new String[] {
+        _methodParameterTypes709 = new String[] { "boolean" };
+
+        _methodName710 = "addContestYearSuffixToContest";
+
+        _methodParameterTypes710 = new String[] {
                 "com.ext.portlet.model.Contest", "boolean"
             };
     }
@@ -1001,6 +1007,11 @@ public class ContestLocalServiceClpInvoker {
 
         if (_methodName709.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes709, parameterTypes)) {
+            return ContestLocalServiceUtil.getPointsEnabledContests(((Boolean) arguments[0]).booleanValue());
+        }
+
+        if (_methodName710.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes710, parameterTypes)) {
             ContestLocalServiceUtil.addContestYearSuffixToContest((com.ext.portlet.model.Contest) arguments[0],
                 ((Boolean) arguments[1]).booleanValue());
 
