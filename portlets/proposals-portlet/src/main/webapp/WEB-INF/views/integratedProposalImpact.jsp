@@ -332,7 +332,6 @@
             [].forEach.call(modelTotalValues, function (totalYearValue) {
                 var year = totalYearValue.getAttribute("data-attr-year");
                 var value = parseFloat(totalYearValue.innerHTML).toFixed(2);
-                ;
                 map[year] = value;
             });
             return map;
@@ -364,19 +363,20 @@
             var totalSectorsRow = document.getElementById("totalSectors");
 
             if (!!bauRow &amp;&amp; !!totalSectorsRow) {
-                var bauValuesToYears = mapValuesToYear(totalSectorsRow);
+                var bauValuesToYears = mapValuesToYear(bauRow);
                 var totalSectorsValuesToYears = mapValuesToYear(totalSectorsRow);
             } else return;
 
             var totalProjectedEmissionsRow = document.getElementById("totalProjectedEmissions");
             if (totalProjectedEmissionsRow) {
                 var totalProjectedEmissionsValues = totalProjectedEmissionsRow.querySelectorAll('[data-attr-year]');
+                var totalProjectedEmissionsValuesToYears = {};
                 [].forEach.call(totalProjectedEmissionsValues, function (totalProjectedEmissionsYearValue) {
                     var year = totalProjectedEmissionsYearValue.getAttribute("data-attr-year");
                     var totalProjectedEmissionsValueToYear = parseFloat(bauValuesToYears[year]) + parseFloat(totalSectorsValuesToYears[year]);
                     totalProjectedEmissionsYearValue.innerHTML = totalProjectedEmissionsValueToYear.toFixed(2);
+                    totalProjectedEmissionsValuesToYears[year] = totalProjectedEmissionsValueToYear;
                 });
-
             } else return;
 
             var modelSeriesValuesToYears = {};
@@ -409,7 +409,7 @@
             var modelAdjustmentValues = modelAdjustmentsRow.querySelectorAll('[data-attr-year]');
             [].forEach.call(modelAdjustmentValues, function (modelAdjustmentValue) {
                 var year = modelAdjustmentValue.getAttribute("data-attr-year");
-                var modelAdjustmentsValueToYear = parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalSectorsValuesToYears[year]);
+                var modelAdjustmentsValueToYear = parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalProjectedEmissionsValuesToYears[year]);
                 modelAdjustmentValue.innerHTML = modelAdjustmentsValueToYear.toFixed(2);
             });
         };
