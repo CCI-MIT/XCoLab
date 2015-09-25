@@ -1601,7 +1601,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @return collection of referenced proposals
      */
     public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest, boolean onlyWithContestIntegrationRelevance) throws SystemException, PortalException {
-        Set<Long> detectedIds = new HashSet<Long>();
+        Set<Long> detectedIds = new HashSet<>();
 
         for (ProposalAttribute attribute: getAttributes(proposalId)) {
 
@@ -1628,12 +1628,12 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                             break;
                         }
                         String[] referencedProposals = attribute.getStringValue().split(",");
-                        for (int i = 0; i < referencedProposals.length; i++) {
-                            detectedIds.add(Long.parseLong(referencedProposals[i]));
+                        for (String referencedProposal : referencedProposals) {
+                            detectedIds.add(Long.parseLong(referencedProposal));
                         }
                         break;
                     case PROPOSAL_LIST_TEXT_REFERENCE:
-                        Pattern proposalLinkPattern = Pattern.compile("(href=|https?://).*?/plans/-/plans/contestId/(\\d*)/planId/(\\d*)");
+                        Pattern proposalLinkPattern = Pattern.compile("(href=|https?://).*?/plans/-/plans/contestId/(\\d*)/(?:phaseId/\\d*/)?planId/(\\d*)");
                         Matcher m = proposalLinkPattern.matcher(attribute.getStringValue());
                         while (m.find()) {
                             detectedIds.add(Long.parseLong(m.group(3)));
@@ -1643,7 +1643,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             }
         }
 
-        List<Proposal> proposals = new ArrayList<Proposal>();
+        List<Proposal> proposals = new ArrayList<>();
         for (Long subProposalId: detectedIds) {
             Proposal p = getProposal(subProposalId);
             if (p != null) {

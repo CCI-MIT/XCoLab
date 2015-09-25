@@ -2,12 +2,17 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ProposalAttributeLocalService;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 
 import java.text.DateFormat;
@@ -124,7 +129,7 @@ public class GlobalContestSimulator {
         this.createLinksBetweenProposals();
     }
 
-    public void deleteContestsAndProposals() throws SystemException, PortalException {
+    public void cleanupPointsSimulator() throws SystemException, PortalException {
         //delete all contestPhases
         for (ContestPhase cp : globalContestPhases) {
             testInstance.contestPhaseLocalService.deleteContestPhase(cp);
@@ -174,31 +179,39 @@ public class GlobalContestSimulator {
     }
 
 
-    private void createUsers() throws SystemException {
-        users = new ArrayList<User>();
-        for (int i = 0; i < amountOfUsers; i++) {
-            users.add(testInstance.createUser(i+1));
+    protected void createUsers() throws SystemException, PortalException {
+        if (users != null && !users.isEmpty()) {
+            deleteUsers();
         }
+
+        users = testInstance.createUsers(amountOfUsers);
+    }
+
+    protected void deleteUsers() throws PortalException, SystemException {
+        testInstance.deleteUsers();
     }
 
 
-    private List<User> setTeamMembers(Proposal proposal, User author) throws SystemException, PortalException {
+    protected List<User> setTeamMembers(Proposal proposal, User author) throws SystemException, PortalException {
         //sometimes the admin user is still in the user group
         testInstance.userLocalService.deleteGroupUser(proposal.getGroupId(), testInstance.adminId);
 
-        List<User> teamMembers = new ArrayList<User>();
-        teamMembers.add(author);
+        // Use a set in order to prevent multiple user entries of the same user in a group
+        Set<User> teamMembersSet = new HashSet<User>();
+        teamMembersSet.add(author);
         for (int i = 1; doWithProbability(probabilityOfAdditionalTeamMember/i); i++) {
-            teamMembers.add(users.get(randomInt(0, amountOfUsers)));
+            teamMembersSet.add(users.get(randomInt(0, amountOfUsers)));
         }
-        testInstance.userLocalService.addGroupUsers(proposal.getGroupId(), teamMembers);
+        List<User> teamMembersList = new ArrayList<>();
+        teamMembersList.addAll(teamMembersSet);
+        testInstance.userLocalService.addGroupUsers(proposal.getGroupId(), teamMembersList);
 
-        return teamMembers;
+        return teamMembersList;
     }
 
 
 
-    private void createGlobalContestAndProposals() throws SystemException, PortalException, ParseException {
+    protected void createGlobalContestAndProposals() throws SystemException, PortalException, ParseException {
         //create global contest
         globalContest = testInstance.contestLocalService.createNewContest(testInstance.adminId, "Test-Global-Contest");
         globalContest.setPoints(pointsToBeDistributed);
@@ -310,7 +323,7 @@ public class GlobalContestSimulator {
 
 
 
-    private List<ContestPhase> createPhasesForContest(Contest contest, List<ContestPhase> baseOnExistingPhases, Integer startPhase) throws ParseException, SystemException {
+    protected List<ContestPhase> createPhasesForContest(Contest contest, List<ContestPhase> baseOnExistingPhases, Integer startPhase) throws ParseException, SystemException {
         List<ContestPhase> createdPhases = new ArrayList<ContestPhase>();
         String sCp1StartDate;
         String[] sCp1To2Transition;
@@ -411,7 +424,7 @@ public class GlobalContestSimulator {
     }
 
 
-    private void initializePhasesForProposal(Proposal proposal, int proposalIndex, int currentPhase, List<ContestPhase> contestPhases, List<Integer> proposalsInLastPhase) throws SystemException {
+    protected void initializePhasesForProposal(Proposal proposal, int proposalIndex, int currentPhase, List<ContestPhase> contestPhases, List<Integer> proposalsInLastPhase) throws SystemException {
         if (currentPhase == 1) {
             proposalsInLastPhase.add(proposalIndex);
         } else if (currentPhase > 1) {
@@ -444,7 +457,7 @@ public class GlobalContestSimulator {
     }
 
 
-    private ContestPhase createContestPhase(Contest c, long type, boolean fellowScreeningActive, String autoPromote, String startDate, String endDate) throws SystemException, ParseException {
+    protected ContestPhase createContestPhase(Contest c, long type, boolean fellowScreeningActive, String autoPromote, String startDate, String endDate) throws SystemException, ParseException {
         ContestPhase cp = testInstance.contestPhaseLocalService.createContestPhase(100000+contestPhaseIdCount++);
         cp.setContestPK(c.getContestPK());
         cp.setContestPhaseType(type);
@@ -463,7 +476,7 @@ public class GlobalContestSimulator {
 
 
 
-    private static void copyProposalToPhase(Proposal p, ContestPhase cp) throws SystemException {
+    protected static void copyProposalToPhase(Proposal p, ContestPhase cp) throws SystemException {
         Proposal2Phase p2p = testInstance.proposal2PhaseLocalService.create(p.getProposalId(), cp.getContestPhasePK());
         p2p.setVersionFrom(1);
         p2p.setVersionTo(1);

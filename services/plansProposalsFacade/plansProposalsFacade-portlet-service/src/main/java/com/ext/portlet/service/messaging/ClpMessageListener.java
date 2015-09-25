@@ -193,22 +193,14 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteServiceUtil;
-import com.ext.portlet.service.Role_LocalServiceUtil;
-import com.ext.portlet.service.Role_ServiceUtil;
-import com.ext.portlet.service.RolesCategoryLocalServiceUtil;
-import com.ext.portlet.service.RolesCategoryServiceUtil;
-import com.ext.portlet.service.SocialActivityLocalServiceUtil;
-import com.ext.portlet.service.SocialActivityServiceUtil;
 import com.ext.portlet.service.StaffMemberLocalServiceUtil;
 import com.ext.portlet.service.StaffMemberServiceUtil;
 import com.ext.portlet.service.TrackedVisitLocalServiceUtil;
 import com.ext.portlet.service.TrackedVisitServiceUtil;
 import com.ext.portlet.service.TrackedVisitor2UserLocalServiceUtil;
 import com.ext.portlet.service.TrackedVisitor2UserServiceUtil;
-import com.ext.portlet.service.User_LocalServiceUtil;
-import com.ext.portlet.service.User_ServiceUtil;
-import com.ext.portlet.service.Users_RolesLocalServiceUtil;
-import com.ext.portlet.service.Users_RolesServiceUtil;
+import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
+import com.ext.portlet.service.Xcolab_UserServiceUtil;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -514,15 +506,6 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalVoteLocalServiceUtil.clearService();
 
             ProposalVoteServiceUtil.clearService();
-            Role_LocalServiceUtil.clearService();
-
-            Role_ServiceUtil.clearService();
-            RolesCategoryLocalServiceUtil.clearService();
-
-            RolesCategoryServiceUtil.clearService();
-            SocialActivityLocalServiceUtil.clearService();
-
-            SocialActivityServiceUtil.clearService();
             StaffMemberLocalServiceUtil.clearService();
 
             StaffMemberServiceUtil.clearService();
@@ -532,12 +515,9 @@ public class ClpMessageListener extends BaseMessageListener {
             TrackedVisitor2UserLocalServiceUtil.clearService();
 
             TrackedVisitor2UserServiceUtil.clearService();
-            User_LocalServiceUtil.clearService();
+            Xcolab_UserLocalServiceUtil.clearService();
 
-            User_ServiceUtil.clearService();
-            Users_RolesLocalServiceUtil.clearService();
-
-            Users_RolesServiceUtil.clearService();
+            Xcolab_UserServiceUtil.clearService();
         }
     }
 }
