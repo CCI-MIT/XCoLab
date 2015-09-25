@@ -227,8 +227,11 @@
                         </tr>
                         <c:if test="${fn:containsIgnoreCase(impactSeries.seriesTypeToDescriptionMap[seriesEntry.key], 'Business as usual')}">
                             <tr>
-                                <td class="blue-bg" style="text-align: left">Emission reductions from BAU (by sector)
-                                </td>
+                                <td class="blue-bg" style="text-align: left">Emission reductions from BAU (by sector)</td>
+                                <td class="impact-value"></td>
+                                <td class="impact-value"></td>
+                                <td class="impact-value"></td>
+                                <td class="impact-value"></td>
                             </tr>
                         </c:if>
                     </c:forEach>
@@ -357,7 +360,7 @@
             selectModelForFetchedScenario(event);
             var modelOutputs = event.scenario.outputs;
 
-            var bauRow = document.getElementById("seriesBusinessasusual(BAU");
+            var bauRow = document.getElementById("seriesBusinessasusual(BAU)");
             var totalSectorsRow = document.getElementById("totalSectors");
 
             if (!!bauRow &amp;&amp; !!totalSectorsRow) {
@@ -371,7 +374,7 @@
                 [].forEach.call(totalProjectedEmissionsValues, function (totalProjectedEmissionsYearValue) {
                     var year = totalProjectedEmissionsYearValue.getAttribute("data-attr-year");
                     var totalProjectedEmissionsValueToYear = parseFloat(bauValuesToYears[year]) + parseFloat(totalSectorsValuesToYears[year]);
-                    totalProjectedEmissionsYearValue.innerHTML = valueToYear.toFixed(2);
+                    totalProjectedEmissionsYearValue.innerHTML = totalProjectedEmissionsValueToYear.toFixed(2);
                 });
 
             } else return;
@@ -398,16 +401,16 @@
             var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
             [].forEach.call(modelTotalValues, function (totalYearValue) {
                 var year = totalYearValue.getAttribute("data-attr-year");
-                var valueToYear = parseFloat(modelSeriesValuesToYears[year]);
-                totalYearValue.innerHTML = valueToYear.toFixed(2);
+                var modelTotalValueToYear = parseFloat(modelSeriesValuesToYears[year]);
+                totalYearValue.innerHTML = modelTotalValueToYear.toFixed(2);
             });
 
             var modelAdjustmentsRow = document.getElementById("modelAdjustments");
             var modelAdjustmentValues = modelAdjustmentsRow.querySelectorAll('[data-attr-year]');
             [].forEach.call(modelAdjustmentValues, function (modelAdjustmentValue) {
                 var year = modelAdjustmentValue.getAttribute("data-attr-year");
-                var valueToYear = parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalSectorsValuesToYears[year]);
-                modelAdjustmentValue.innerHTML = valueToYear.toFixed(2);
+                var modelAdjustmentsValueToYear = parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalSectorsValuesToYears[year]);
+                modelAdjustmentValue.innerHTML = modelAdjustmentsValueToYear.toFixed(2);
             });
         };
 
