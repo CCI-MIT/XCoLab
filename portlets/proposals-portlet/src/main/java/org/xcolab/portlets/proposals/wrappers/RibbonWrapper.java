@@ -74,7 +74,7 @@ public class RibbonWrapper {
         if (getContestPhaseRibbonType() != null) {
             return getContestPhaseRibbonType().getHoverText();
         }
-        return null;
+        return "";
     }
 
     public String getRibbonTitle() {
