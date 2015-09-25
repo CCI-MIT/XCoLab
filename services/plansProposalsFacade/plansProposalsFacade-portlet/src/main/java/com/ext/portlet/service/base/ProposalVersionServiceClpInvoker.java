@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class ProposalVersionServiceClpInvoker {
-    private String _methodName642;
-    private String[] _methodParameterTypes642;
-    private String _methodName643;
-    private String[] _methodParameterTypes643;
+    private String _methodName616;
+    private String[] _methodParameterTypes616;
+    private String _methodName617;
+    private String[] _methodParameterTypes617;
 
     public ProposalVersionServiceClpInvoker() {
-        _methodName642 = "getBeanIdentifier";
+        _methodName616 = "getBeanIdentifier";
 
-        _methodParameterTypes642 = new String[] {  };
+        _methodParameterTypes616 = new String[] {  };
 
-        _methodName643 = "setBeanIdentifier";
+        _methodName617 = "setBeanIdentifier";
 
-        _methodParameterTypes643 = new String[] { "java.lang.String" };
+        _methodParameterTypes617 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName642.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes642, parameterTypes)) {
+        if (_methodName616.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes616, parameterTypes)) {
             return ProposalVersionServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName643.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes643, parameterTypes)) {
+        if (_methodName617.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes617, parameterTypes)) {
             ProposalVersionServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
