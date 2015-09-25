@@ -75,6 +75,7 @@ public enum ReceiverLimitationStrategy {
 					}
 				}
 				if (targets.isEmpty()) {
+					// todo refactor: extract this block into separate method due to DRY
 					// there is no configuration for specific users, distribute equally
 					List<User> members = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
 					for (User u: members) {

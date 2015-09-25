@@ -2,9 +2,10 @@ package com.ext.portlet.service.impl;
 
 
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.ContestTeamMemberLocalService;
-import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestTeamMember;
+import com.ext.portlet.model.Proposal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
@@ -75,8 +76,8 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
     }
 
     @Override
-    public void deleteContestsAndProposals() throws SystemException, PortalException {
-        super.deleteContestsAndProposals();
+    public void cleanupPointsSimulator() throws SystemException, PortalException {
+        super.cleanupPointsSimulator();
         //reset date
         testClock.date = new Date();
         for (Integer cI: allContests.keySet()) {

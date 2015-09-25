@@ -80,8 +80,22 @@ public class Badge implements Serializable {
         return year;
     }
 
+    public String getBadgeYearShort() {
+        final String fullYear = Integer.toString(year);
+        return fullYear.substring(2, fullYear.length());
+    }
+
     public long getContestId(){
         return contestId;
+    }
+
+    public String getContestName() {
+        try {
+            return ContestLocalServiceUtil.getContest(contestId).getContestShortName();
+        } catch (PortalException | SystemException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public long getPlanId(){

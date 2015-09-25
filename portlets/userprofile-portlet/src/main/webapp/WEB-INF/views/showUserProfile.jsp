@@ -30,36 +30,11 @@
 
 		<div id="main" class="${currentUserProfile.viewingOwnProfile ? '' : 'full'} userProfile">
 		<h1>Member Profile</h1>
-		<div class="profile_action">
-		<c:if test="${currentUserProfile.canSendMessage and not currentUserProfile.viewingOwnProfile }">
-			<div class="blue-button">
-			<a href="javascript:;"
-			   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
-				<strong>${userBean.firstName}</strong> a Message </a>
-			</div>
-		</c:if>
-		</div>
 		<div class="comm_member" style="margin-top: 0;">
 
             <!-- <c:if test="${currentUserProfile.attendsConference}">
 				<a href="/web/guest/conference2014" class="attendingConference"><img src="/climatecolab-theme/images/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
 			</c:if> -->
-
-			<div class="badge-container">
-				<c:forEach var="badge" items="${currentUserProfile.badges}">
-					<c:if test="${not badge.hideRibbon}">
-						<div class="badge-big badge-${badge.badgeType}">
-
-                        <span class="badge-title">
-                            <a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}" style="${badge.badgeTitle.length() gt 8 ? 'top: 26px;' : ''};">${badge.badgeTitle}</a>
-                        </span>
-
-							<div class="badge-text" style="${badge.badgeText.length() gt 15 ? 'font-size: 7px;' : ''}${fn:substring(badge.badgeText,0,6) eq 'Judges' ? 'width: 47px;' : ''}">${badge.badgeText.length() gt 13 ? badge.badgeText : ''}</div>
-							<span class="badge-year">${badge.badgeYear}</span>
-						</div>
-					</c:if>
-				</c:forEach>
-			</div>
 
 			<div class="comm_member-photo">
 				<img src="${baseImagePath}${userBean.portrait}" width="150" height="150"
@@ -73,16 +48,35 @@
 							<td colspan="2"><h2>Member Profile</h2></td>
 						</tr> -->
 						<tr>
-							<td class="memname">${currentUserProfile.realName}</td>
-						</tr>
-						<tr>
 							<td>
+								<div class="memname">${currentUserProfile.realName}</div>
 								<div class="role-indicator" style="margin-top: 5px;">
 									<div style="width: 16px">
-                                        <img    src="/climatecolab-theme/images/icon_mem-${currentUserProfile.role.imageUrl}.png"
-                                                width="16" height="16" />
+										<img src="/climatecolab-theme/images/icon_mem-${currentUserProfile.role.imageUrl}.png" width="16" height="16" />
 									</div>
 									${currentUserProfile.role.printName}
+								</div>
+							</td>
+							<td>
+								<div class="badge-container">
+									<c:forEach var="badge" items="${currentUserProfile.badges}">
+										<c:if test="${not badge.hideRibbon}">
+										<a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}">
+											<div class="badge-small badge-${badge.badgeType} fieldWithTooltip tooltipAbove">
+												<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
+														${badge.badgeTitle}
+												</span>
+
+												<div class="badge-small-text">20</div>
+												<span class="badge-small-year">${badge.badgeYearShort}</span>
+												<div class="tooltip">
+														${badge.badgeText} in ${badge.contestName}
+													<div class="tt-arrow"><!--  --></div>
+												</div>
+											</div>
+										</a>
+										</c:if>
+									</c:forEach>
 								</div>
 							</td>
 						</tr>
@@ -91,23 +85,56 @@
 
 				<div class="memdiv" style="background-color:#707070;">.</div>
 
-				<table border="0" cellpadding="0" cellspacing="0" class="colab members otherInfo" style="width:300px;">
+				<table border="0" cellpadding="0" cellspacing="0" class="colab members otherInfo profileTable" style="width:100%;">
 					<tbody>
 					<tr>
-						<td class="b" nowrap="nowrap" width="50%">Screen Name</td>
-						<td>${userBean.screenName}</td>
+						<td class="b" nowrap="nowrap" width="23%">Screen Name</td>
+						<td width="23%">${userBean.screenName}</td>
+						<td class="b" width="43%">Activities</td>
+						<td class="align_right">${currentUserProfile.userActivityCount}</td>
 					</tr>
 					<tr>
-						<td class="b" nowrap="nowrap" width="50%">Member Since</td>
-						<td>
+						<td class="b" nowrap="nowrap" width="23%">Member Since</td>
+						<td width="23%">
 							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
 						</td>
+						<td class="b points_box left_border top_border" width="43%">
+							CoLab Points (actual)
+							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
+							<br />
+							<div style="display: none;" class="addprophelp">
+								CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains.
+								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+							</div>
+							<div class="clearfix"></div>
+						</td>
+						<td class="points_box right_border top_border align_right">${currentUserProfile.actualPoints}</td>
+					</tr>
+
+					<tr>
+						<td class="b" width="23%">Country</td>
+						<td width="23%">
+							<c:choose>
+							<c:when test="${not empty userBean.country}">${userBean.country}</c:when>
+							</c:choose>
+						</td>
+						<td class="b points_box left_border bottom_border" width="43%">
+							CoLab Points (max. potential)
+							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
+							<br />
+							<div style="display: none;" class="addprophelp">
+								The maximum number of CoLab Points this member could receive. This is a measure of how many times the member’s proposals have been included in other proposals and how important it is in those proposals.
+								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+							</div>
+							<div class="clearfix"></div>
+						</td>
+						<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPoints}</td>
 					</tr>
 
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
 						<tr>
-							<td class="b" width="50%">Email</td>
-							<td width="50%" style="white-space: nowrap;">
+							<td class="b" width="23%">Email</td>
+							<td colspan="3" style="white-space: nowrap;">
 								<a href="mailto:${userBean.email}">${userBean.emailStored}</a>
 
 								<c:if test="${currentUserProfile.displayEMailErrorMessage}">
@@ -118,16 +145,9 @@
 						</tr>
 					</c:if>
 
-					<c:if test="${not empty userBean.country}">
-						<tr>
-							<td class="b" width="50%">Country</td>
-							<td width="50%">${userBean.country}</td>
-						</tr>
-					</c:if>
-
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
 						<tr>
-							<td colspan="2">
+							<td colspan="4">
 							<a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/edit">Manage profile and settings</a>
 							</td>
 						</tr>
@@ -138,8 +158,13 @@
 			</div>
 			<div class="clearfix">&#160;</div>
 		</div>
-
-		<h2 style="margin-top: 20px;">Short Bio</h2>
+		<c:if test="${currentUserProfile.canSendMessage and not currentUserProfile.viewingOwnProfile }">
+			<div class="blue-button">
+				<a href="javascript:;"
+				   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
+					<strong>${userBean.firstName}</strong> a Message </a>
+			</div>
+		</c:if>
 		<p>
 			${userBean.shortBio}
 		</p>

@@ -286,7 +286,7 @@ public class ProposalSupporterLocalServiceWrapper
     @Override
     public java.util.List<com.ext.portlet.model.ProposalSupporter> getProposals(
         long userId)
-        throws com.liferay.portal.PortalException,
+        throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _proposalSupporterLocalService.getProposals(userId);
     }
