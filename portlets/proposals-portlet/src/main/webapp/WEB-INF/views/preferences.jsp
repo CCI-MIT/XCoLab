@@ -104,7 +104,7 @@
                             <form:option value="-1" label="no ribbon" />
                             <c:forEach var="ribbon" items="${availableRibbons }">
                                 <c:choose>
-                                    <c:when test="${proposal.ribbon == ribbon.ribbon }">
+                                    <c:when test="${proposal.ribbonWrapper.ribbon == ribbon.ribbon }">
                                         <form:option value="${ribbon.id}" selected="selected" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
                                     </c:when>
                                     <c:otherwise>
