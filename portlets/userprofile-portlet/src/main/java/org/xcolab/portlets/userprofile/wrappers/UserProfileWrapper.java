@@ -12,7 +12,7 @@ import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
-import com.ext.portlet.service.User_LocalServiceUtil;
+import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -27,7 +27,6 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
-import org.springframework.ui.Model;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
@@ -314,7 +313,7 @@ public class
 
     public long getUserActivityCount() {
         try {
-            return User_LocalServiceUtil.getUserActivityCount(getUserId()).get(0).longValue();
+            return Xcolab_UserLocalServiceUtil.getUserActivityCount(getUserId()).get(0).longValue();
         } catch (SystemException e) {
             return 0;
         }

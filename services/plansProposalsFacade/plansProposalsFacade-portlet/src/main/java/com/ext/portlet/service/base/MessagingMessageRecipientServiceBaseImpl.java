@@ -100,15 +100,10 @@ import com.ext.portlet.service.persistence.ProposalRatingValuePersistence;
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
-import com.ext.portlet.service.persistence.Role_Persistence;
-import com.ext.portlet.service.persistence.RolesCategoryPersistence;
-import com.ext.portlet.service.persistence.SocialActivityPersistence;
 import com.ext.portlet.service.persistence.StaffMemberPersistence;
 import com.ext.portlet.service.persistence.TrackedVisitPersistence;
 import com.ext.portlet.service.persistence.TrackedVisitor2UserPersistence;
-import com.ext.portlet.service.persistence.User_Finder;
-import com.ext.portlet.service.persistence.User_Persistence;
-import com.ext.portlet.service.persistence.Users_RolesPersistence;
+import com.ext.portlet.service.persistence.Xcolab_UserFinder;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
@@ -715,24 +710,6 @@ public abstract class MessagingMessageRecipientServiceBaseImpl
     protected com.ext.portlet.service.ProposalVoteService proposalVoteService;
     @BeanReference(type = ProposalVotePersistence.class)
     protected ProposalVotePersistence proposalVotePersistence;
-    @BeanReference(type = com.ext.portlet.service.Role_LocalService.class)
-    protected com.ext.portlet.service.Role_LocalService role_LocalService;
-    @BeanReference(type = com.ext.portlet.service.Role_Service.class)
-    protected com.ext.portlet.service.Role_Service role_Service;
-    @BeanReference(type = Role_Persistence.class)
-    protected Role_Persistence role_Persistence;
-    @BeanReference(type = com.ext.portlet.service.RolesCategoryLocalService.class)
-    protected com.ext.portlet.service.RolesCategoryLocalService rolesCategoryLocalService;
-    @BeanReference(type = com.ext.portlet.service.RolesCategoryService.class)
-    protected com.ext.portlet.service.RolesCategoryService rolesCategoryService;
-    @BeanReference(type = RolesCategoryPersistence.class)
-    protected RolesCategoryPersistence rolesCategoryPersistence;
-    @BeanReference(type = com.ext.portlet.service.SocialActivityLocalService.class)
-    protected com.ext.portlet.service.SocialActivityLocalService socialActivityLocalService;
-    @BeanReference(type = com.ext.portlet.service.SocialActivityService.class)
-    protected com.ext.portlet.service.SocialActivityService socialActivityService;
-    @BeanReference(type = SocialActivityPersistence.class)
-    protected SocialActivityPersistence socialActivityPersistence;
     @BeanReference(type = com.ext.portlet.service.StaffMemberLocalService.class)
     protected com.ext.portlet.service.StaffMemberLocalService staffMemberLocalService;
     @BeanReference(type = com.ext.portlet.service.StaffMemberService.class)
@@ -751,20 +728,12 @@ public abstract class MessagingMessageRecipientServiceBaseImpl
     protected com.ext.portlet.service.TrackedVisitor2UserService trackedVisitor2UserService;
     @BeanReference(type = TrackedVisitor2UserPersistence.class)
     protected TrackedVisitor2UserPersistence trackedVisitor2UserPersistence;
-    @BeanReference(type = com.ext.portlet.service.User_LocalService.class)
-    protected com.ext.portlet.service.User_LocalService user_LocalService;
-    @BeanReference(type = com.ext.portlet.service.User_Service.class)
-    protected com.ext.portlet.service.User_Service user_Service;
-    @BeanReference(type = User_Persistence.class)
-    protected User_Persistence user_Persistence;
-    @BeanReference(type = User_Finder.class)
-    protected User_Finder user_Finder;
-    @BeanReference(type = com.ext.portlet.service.Users_RolesLocalService.class)
-    protected com.ext.portlet.service.Users_RolesLocalService users_RolesLocalService;
-    @BeanReference(type = com.ext.portlet.service.Users_RolesService.class)
-    protected com.ext.portlet.service.Users_RolesService users_RolesService;
-    @BeanReference(type = Users_RolesPersistence.class)
-    protected Users_RolesPersistence users_RolesPersistence;
+    @BeanReference(type = com.ext.portlet.service.Xcolab_UserLocalService.class)
+    protected com.ext.portlet.service.Xcolab_UserLocalService xcolab_UserLocalService;
+    @BeanReference(type = com.ext.portlet.service.Xcolab_UserService.class)
+    protected com.ext.portlet.service.Xcolab_UserService xcolab_UserService;
+    @BeanReference(type = Xcolab_UserFinder.class)
+    protected Xcolab_UserFinder xcolab_UserFinder;
     @BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
     protected com.liferay.counter.service.CounterLocalService counterLocalService;
     @BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
@@ -6285,176 +6254,6 @@ public abstract class MessagingMessageRecipientServiceBaseImpl
     }
 
     /**
-     * Returns the role_ local service.
-     *
-     * @return the role_ local service
-     */
-    public com.ext.portlet.service.Role_LocalService getRole_LocalService() {
-        return role_LocalService;
-    }
-
-    /**
-     * Sets the role_ local service.
-     *
-     * @param role_LocalService the role_ local service
-     */
-    public void setRole_LocalService(
-        com.ext.portlet.service.Role_LocalService role_LocalService) {
-        this.role_LocalService = role_LocalService;
-    }
-
-    /**
-     * Returns the role_ remote service.
-     *
-     * @return the role_ remote service
-     */
-    public com.ext.portlet.service.Role_Service getRole_Service() {
-        return role_Service;
-    }
-
-    /**
-     * Sets the role_ remote service.
-     *
-     * @param role_Service the role_ remote service
-     */
-    public void setRole_Service(
-        com.ext.portlet.service.Role_Service role_Service) {
-        this.role_Service = role_Service;
-    }
-
-    /**
-     * Returns the role_ persistence.
-     *
-     * @return the role_ persistence
-     */
-    public Role_Persistence getRole_Persistence() {
-        return role_Persistence;
-    }
-
-    /**
-     * Sets the role_ persistence.
-     *
-     * @param role_Persistence the role_ persistence
-     */
-    public void setRole_Persistence(Role_Persistence role_Persistence) {
-        this.role_Persistence = role_Persistence;
-    }
-
-    /**
-     * Returns the roles category local service.
-     *
-     * @return the roles category local service
-     */
-    public com.ext.portlet.service.RolesCategoryLocalService getRolesCategoryLocalService() {
-        return rolesCategoryLocalService;
-    }
-
-    /**
-     * Sets the roles category local service.
-     *
-     * @param rolesCategoryLocalService the roles category local service
-     */
-    public void setRolesCategoryLocalService(
-        com.ext.portlet.service.RolesCategoryLocalService rolesCategoryLocalService) {
-        this.rolesCategoryLocalService = rolesCategoryLocalService;
-    }
-
-    /**
-     * Returns the roles category remote service.
-     *
-     * @return the roles category remote service
-     */
-    public com.ext.portlet.service.RolesCategoryService getRolesCategoryService() {
-        return rolesCategoryService;
-    }
-
-    /**
-     * Sets the roles category remote service.
-     *
-     * @param rolesCategoryService the roles category remote service
-     */
-    public void setRolesCategoryService(
-        com.ext.portlet.service.RolesCategoryService rolesCategoryService) {
-        this.rolesCategoryService = rolesCategoryService;
-    }
-
-    /**
-     * Returns the roles category persistence.
-     *
-     * @return the roles category persistence
-     */
-    public RolesCategoryPersistence getRolesCategoryPersistence() {
-        return rolesCategoryPersistence;
-    }
-
-    /**
-     * Sets the roles category persistence.
-     *
-     * @param rolesCategoryPersistence the roles category persistence
-     */
-    public void setRolesCategoryPersistence(
-        RolesCategoryPersistence rolesCategoryPersistence) {
-        this.rolesCategoryPersistence = rolesCategoryPersistence;
-    }
-
-    /**
-     * Returns the social activity local service.
-     *
-     * @return the social activity local service
-     */
-    public com.ext.portlet.service.SocialActivityLocalService getSocialActivityLocalService() {
-        return socialActivityLocalService;
-    }
-
-    /**
-     * Sets the social activity local service.
-     *
-     * @param socialActivityLocalService the social activity local service
-     */
-    public void setSocialActivityLocalService(
-        com.ext.portlet.service.SocialActivityLocalService socialActivityLocalService) {
-        this.socialActivityLocalService = socialActivityLocalService;
-    }
-
-    /**
-     * Returns the social activity remote service.
-     *
-     * @return the social activity remote service
-     */
-    public com.ext.portlet.service.SocialActivityService getSocialActivityService() {
-        return socialActivityService;
-    }
-
-    /**
-     * Sets the social activity remote service.
-     *
-     * @param socialActivityService the social activity remote service
-     */
-    public void setSocialActivityService(
-        com.ext.portlet.service.SocialActivityService socialActivityService) {
-        this.socialActivityService = socialActivityService;
-    }
-
-    /**
-     * Returns the social activity persistence.
-     *
-     * @return the social activity persistence
-     */
-    public SocialActivityPersistence getSocialActivityPersistence() {
-        return socialActivityPersistence;
-    }
-
-    /**
-     * Sets the social activity persistence.
-     *
-     * @param socialActivityPersistence the social activity persistence
-     */
-    public void setSocialActivityPersistence(
-        SocialActivityPersistence socialActivityPersistence) {
-        this.socialActivityPersistence = socialActivityPersistence;
-    }
-
-    /**
      * Returns the staff member local service.
      *
      * @return the staff member local service
@@ -6626,134 +6425,59 @@ public abstract class MessagingMessageRecipientServiceBaseImpl
     }
 
     /**
-     * Returns the user_ local service.
+     * Returns the xcolab_ user local service.
      *
-     * @return the user_ local service
+     * @return the xcolab_ user local service
      */
-    public com.ext.portlet.service.User_LocalService getUser_LocalService() {
-        return user_LocalService;
+    public com.ext.portlet.service.Xcolab_UserLocalService getXcolab_UserLocalService() {
+        return xcolab_UserLocalService;
     }
 
     /**
-     * Sets the user_ local service.
+     * Sets the xcolab_ user local service.
      *
-     * @param user_LocalService the user_ local service
+     * @param xcolab_UserLocalService the xcolab_ user local service
      */
-    public void setUser_LocalService(
-        com.ext.portlet.service.User_LocalService user_LocalService) {
-        this.user_LocalService = user_LocalService;
+    public void setXcolab_UserLocalService(
+        com.ext.portlet.service.Xcolab_UserLocalService xcolab_UserLocalService) {
+        this.xcolab_UserLocalService = xcolab_UserLocalService;
     }
 
     /**
-     * Returns the user_ remote service.
+     * Returns the xcolab_ user remote service.
      *
-     * @return the user_ remote service
+     * @return the xcolab_ user remote service
      */
-    public com.ext.portlet.service.User_Service getUser_Service() {
-        return user_Service;
+    public com.ext.portlet.service.Xcolab_UserService getXcolab_UserService() {
+        return xcolab_UserService;
     }
 
     /**
-     * Sets the user_ remote service.
+     * Sets the xcolab_ user remote service.
      *
-     * @param user_Service the user_ remote service
+     * @param xcolab_UserService the xcolab_ user remote service
      */
-    public void setUser_Service(
-        com.ext.portlet.service.User_Service user_Service) {
-        this.user_Service = user_Service;
+    public void setXcolab_UserService(
+        com.ext.portlet.service.Xcolab_UserService xcolab_UserService) {
+        this.xcolab_UserService = xcolab_UserService;
     }
 
     /**
-     * Returns the user_ persistence.
+     * Returns the xcolab_ user finder.
      *
-     * @return the user_ persistence
+     * @return the xcolab_ user finder
      */
-    public User_Persistence getUser_Persistence() {
-        return user_Persistence;
+    public Xcolab_UserFinder getXcolab_UserFinder() {
+        return xcolab_UserFinder;
     }
 
     /**
-     * Sets the user_ persistence.
+     * Sets the xcolab_ user finder.
      *
-     * @param user_Persistence the user_ persistence
+     * @param xcolab_UserFinder the xcolab_ user finder
      */
-    public void setUser_Persistence(User_Persistence user_Persistence) {
-        this.user_Persistence = user_Persistence;
-    }
-
-    /**
-     * Returns the user_ finder.
-     *
-     * @return the user_ finder
-     */
-    public User_Finder getUser_Finder() {
-        return user_Finder;
-    }
-
-    /**
-     * Sets the user_ finder.
-     *
-     * @param user_Finder the user_ finder
-     */
-    public void setUser_Finder(User_Finder user_Finder) {
-        this.user_Finder = user_Finder;
-    }
-
-    /**
-     * Returns the users_ roles local service.
-     *
-     * @return the users_ roles local service
-     */
-    public com.ext.portlet.service.Users_RolesLocalService getUsers_RolesLocalService() {
-        return users_RolesLocalService;
-    }
-
-    /**
-     * Sets the users_ roles local service.
-     *
-     * @param users_RolesLocalService the users_ roles local service
-     */
-    public void setUsers_RolesLocalService(
-        com.ext.portlet.service.Users_RolesLocalService users_RolesLocalService) {
-        this.users_RolesLocalService = users_RolesLocalService;
-    }
-
-    /**
-     * Returns the users_ roles remote service.
-     *
-     * @return the users_ roles remote service
-     */
-    public com.ext.portlet.service.Users_RolesService getUsers_RolesService() {
-        return users_RolesService;
-    }
-
-    /**
-     * Sets the users_ roles remote service.
-     *
-     * @param users_RolesService the users_ roles remote service
-     */
-    public void setUsers_RolesService(
-        com.ext.portlet.service.Users_RolesService users_RolesService) {
-        this.users_RolesService = users_RolesService;
-    }
-
-    /**
-     * Returns the users_ roles persistence.
-     *
-     * @return the users_ roles persistence
-     */
-    public Users_RolesPersistence getUsers_RolesPersistence() {
-        return users_RolesPersistence;
-    }
-
-    /**
-     * Sets the users_ roles persistence.
-     *
-     * @param users_RolesPersistence the users_ roles persistence
-     */
-    public void setUsers_RolesPersistence(
-        Users_RolesPersistence users_RolesPersistence) {
-        this.users_RolesPersistence = users_RolesPersistence;
+    public void setXcolab_UserFinder(Xcolab_UserFinder xcolab_UserFinder) {
+        this.xcolab_UserFinder = xcolab_UserFinder;
     }
 
     /**

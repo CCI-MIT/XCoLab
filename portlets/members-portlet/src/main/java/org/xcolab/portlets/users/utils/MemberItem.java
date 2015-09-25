@@ -1,11 +1,11 @@
 package org.xcolab.portlets.users.utils;
 
-import com.ext.portlet.model.User_;
 import com.ext.portlet.service.PointsLocalServiceUtil;
-import com.ext.portlet.service.User_LocalServiceUtil;
+import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.io.Serializable;
@@ -16,16 +16,16 @@ import java.util.List;
 
 public class MemberItem implements Serializable {
     private MemberCategory category;
-    private int activityCount;
+    private long activityCount;
     private Date joinDate;
     private Long userId;
     private String screenName;
     private int points;
 
-    public MemberItem(User_ user, String memberCategoryParam) throws PortalException, SystemException {
+    public MemberItem(User user, String memberCategoryParam) throws PortalException, SystemException {
 
         userId = user.getUserId();
-        activityCount = User_LocalServiceUtil.getUserActivityCount(userId).get(0).intValue();
+        activityCount = Xcolab_UserLocalServiceUtil.getUserActivityCount(userId).get(0);
         screenName = user.getScreenName();
         joinDate = user.getCreateDate();
         points = PointsLocalServiceUtil.getUserMaterializedPoints(userId);
@@ -95,7 +95,7 @@ public class MemberItem implements Serializable {
         }
     }
 
-    public int getActivityCount() throws SystemException {
+    public long getActivityCount() throws SystemException {
         return activityCount;
     }
 
