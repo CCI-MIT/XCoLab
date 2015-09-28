@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
@@ -29,11 +30,18 @@ public class RibbonWrapper {
     private ContestPhaseRibbonType getContestPhaseRibbonType() {
         if (contestPhaseRibbonType == null) {
             ProposalContestPhaseAttribute ribbonAttribute;
+            final long proposalId = proposalWrapper.getProposalId();
+            final ContestPhase contestPhase = proposalWrapper.getContestPhase();
+            if (contestPhase == null) {
+                _log.info(String.format("Could not retrieve ribbon type. Wrapper for proposal %d in Contest %d has no contestPhase.",
+                        proposalId, proposalWrapper.getContestPK()));
+                return null;
+            }
             try {
                 ribbonAttribute = ProposalContestPhaseAttributeLocalServiceUtil
                         .getProposalContestPhaseAttribute(
-                                proposalWrapper.getProposalId(),
-                                proposalWrapper.getContestPhase().getContestPhasePK(),
+                                proposalId,
+                                contestPhase.getContestPhasePK(),
                                 ProposalContestPhaseAttributeKeys.RIBBON
                         );
                 if (ribbonAttribute != null) {
@@ -42,16 +50,16 @@ public class RibbonWrapper {
                         contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
                     }
                 } else {
-                    _log.warn(String.format("Could not retrieve ribbon type for proposal %d", proposalWrapper.getProposalId()));
+                    _log.warn(String.format("Could not retrieve ribbon type for proposal %d", proposalId));
                 }
             } catch (NoSuchProposalContestPhaseAttributeException e) {
                 //TODO: can (and should) we cache this failure to prevent repeated failed requests?
                 _log.info(String.format("Could not find attribute RIBBON for proposal %d, contest phase %d",
-                        proposalWrapper.getProposalId(),
-                        proposalWrapper.getContestPhase().getContestPhasePK()));
+                        proposalId,
+                        contestPhase.getContestPhasePK()));
             } catch (PortalException | SystemException e) {
                 _log.error(String.format("Liferay exception occurred while getting ContestPhaseRibbonType for proposal %d",
-                        proposalWrapper.getProposalId()), e);
+                        proposalId), e);
             }
         }
         return contestPhaseRibbonType;
