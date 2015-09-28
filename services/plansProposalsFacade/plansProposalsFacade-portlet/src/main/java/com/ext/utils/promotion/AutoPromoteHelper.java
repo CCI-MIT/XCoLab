@@ -248,9 +248,14 @@ public class AutoPromoteHelper {
                     }
 
                     associateProposalsWithCompletedPhase(allProposals, phase, nextPhase);
-
-                    assignRibbonsToProposals(SEMIFINALIST_RIBBON_ID, semifinalists, nextPhase.getContestPhasePK());
-                    assignRibbonsToProposals(FINALIST_RIBBON_ID, finalists, nextPhase.getContestPhasePK());
+                    if (semifinalists != null) {
+                        assignRibbonsToProposals(SEMIFINALIST_RIBBON_ID, semifinalists, nextPhase.getContestPhasePK());
+                    }
+                    if (finalists != null) {
+                        assignRibbonsToProposals(FINALIST_RIBBON_ID, finalists, nextPhase.getContestPhasePK());
+                    } else {
+                        _log.warn("No finalists found to distribute ribbons to.");
+                    }
 
                     // We want to wait showing all ribbons until the winners are determined
                     contest.setHideRibbons(true);
@@ -286,15 +291,16 @@ public class AutoPromoteHelper {
 
         for (Proposal proposal : proposals) {
             //update the last phase association - set the end version to the current version
-            Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposal.getProposalId());
+            final long proposalId = proposal.getProposalId();
+            Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposalId);
             if (currentProposalVersion <= 0) {
-                _log.error(String.format("Proposal %d not found: version was %d", proposal.getProposalId(), currentProposalVersion));
+                _log.error(String.format("Proposal %d not found: version was %d", proposalId, currentProposalVersion));
                 throw new SystemException("Proposal not found");
             }
 
             try {
                 //make sure that proposals in the phase directly before have final versions
-                Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), previousPhase.getContestPhasePK());
+                Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, previousPhase.getContestPhasePK());
 
                 if (oldP2p != null) {
                     if (oldP2p.getVersionTo() < 0) {
@@ -304,7 +310,17 @@ public class AutoPromoteHelper {
                 }
             } catch (NoSuchProposal2PhaseException ignored) {}
 
-            Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), completedPhase.getContestPhasePK());
+            Proposal2Phase p2p;
+            final long completedPhasePK = completedPhase.getContestPhasePK();
+            try {
+                //make sure the p2p doesn't already exist before creating a new one!
+                p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(
+                        proposalId, completedPhasePK);
+            } catch (NoSuchProposal2PhaseException e) {
+                p2p = Proposal2PhaseLocalServiceUtil.create(
+                        proposalId, completedPhasePK);
+            }
+
             p2p.setVersionFrom(currentProposalVersion.intValue());
             p2p.setVersionTo(currentProposalVersion.intValue());
             Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
