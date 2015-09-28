@@ -263,19 +263,19 @@
 	<script id="proposalPickerProposalEntryTemplate"
 		type="text/x-handlebars-template">
 		
-		<div class="propbox {{#if proposal.featured }} 'featured' {{/if}}">
-			{{#if proposal.ribbonWrapper.ribbon }}
-			<div class="ribbonPlaceholder">
+		<div class="propbox {{#if data.featured }}featured{{/if}}">
+            <div class="row1">
+				{{#if data.ribbon}}
+				<div class="ribbonPlaceholder" style="float: left;">
                 <span class="fieldWithTooltip">
                     <br />
-                    <img src="/climatecolab-theme/images/icon-prize{{ proposal.ribbonWrapper.ribbon }}.png" />
+                    <img src="/climatecolab-theme/images/icon-prize{{ data.ribbon }}.png" />
                 </span>
-                <div class="tooltip">
-                    {{proposal.ribbonWrapper.ribbonText}}
-                </div>
-            </div>
-			{{/if}}
-            <div class="row1">
+					<div class="tooltip">
+						{{data.ribbonText}}
+					</div>
+				</div>
+				{{/if}}
                 <div class="title-author">
                     <h4>
 						<a href="javascript:;">{{data.proposalName}}</a>
