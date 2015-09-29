@@ -103,8 +103,8 @@ public class DiscussionsPermissionsConfig implements Serializable {
 			Arrays.sort(oldActionIds);
 
 			// remove all actions that have been disabled
-			for (int i = 0; i < oldActionIds.length; i++) {
-				if (Arrays.binarySearch(newActionIds, oldActionIds[i]) < 0) {
+			for (String oldActionId : oldActionIds) {
+				if (Arrays.binarySearch(newActionIds, oldActionId) < 0) {
 					ResourcePermissionLocalServiceUtil.removeResourcePermission(companyId, RESOURCE_NAME, scope, primKey, role.getRoleId(), oldActionIds[1]);
 				}
 			}
