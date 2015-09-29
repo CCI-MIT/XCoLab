@@ -657,6 +657,18 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Returns a list of contests that have Proposal points enabled (column 'points' and 'defaultParentPointType' set),
+    * while optionally ignoring contests which are marked as inactive
+    *
+    * @param ignoreInactiveContests    A flag indicating whether the method should include inactive contests or not
+    * @return A list of contests mathing the criteria
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getPointsEnabledContests(
+        boolean ignoreInactiveContests)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * This method adds a year suffix to the passed contest. By passing the flag checkForCompleted, the method will only
     * add the suffix for contests which latest contest phase is of type COMPLETED
     * It automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary

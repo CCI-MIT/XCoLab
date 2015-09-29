@@ -1,6 +1,6 @@
 /** userss list **/
 .userslist.table .column.screenName {
-	width: 345px;
+	width: 330px;
 }
 
 .userslist.table .column.screenName .usersFlag {
@@ -16,17 +16,22 @@
 	width: 35px;
 }
 */
+.userslist.table .column.usersPoints {
+	width: 70px;
+	text-align: right;
+}
+
 .userslist.table .column.usersActivityCount {
-	width: 105px;
-    text-align: right;
+	width: 70px;
+	text-align: right;
 }
 
 .userslist.table .column.usersCategory {
-	width: 105px;
+	width: 95px;
 }
 
 .userslist.table .column.usersSeniority {
-	width: 105px;
+	width: 95px;
 }
 
 .activity {

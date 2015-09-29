@@ -24,6 +24,14 @@
                 </simple>
             </trigger>
         </scheduler-entry>
+		<scheduler-entry>
+			<scheduler-event-listener-class>org.xcolab.services.tasks.ProposalPointsDistributionTask</scheduler-event-listener-class>
+			<trigger>
+				<cron>
+					<cron-trigger-value>0 0 1 * * *</cron-trigger-value>
+				</cron>
+			</trigger>
+		</scheduler-entry>
 		
 		
 		<instanceable>false</instanceable>

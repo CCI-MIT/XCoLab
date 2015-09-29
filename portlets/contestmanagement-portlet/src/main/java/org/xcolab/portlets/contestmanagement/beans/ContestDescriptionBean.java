@@ -175,9 +175,9 @@ public class ContestDescriptionBean implements Serializable{
 
         if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
             ContestWrapper contestWrapper = new ContestWrapper(contest);
-            boolean proposalsInContest = contestWrapper.getTotalProposalsCount() > 0;
-            if(proposalsInContest) {
-                ContestScheduleWrapper.updateContestPhasesOfContestAccordingToContestSchedule(contest, contestScheduleId);
+            boolean contestHasProposals = contestWrapper.getTotalProposalsCount() > 0;
+            if(contestHasProposals) {
+                ContestScheduleWrapper.changeContestScheduleForContest(contest, contestScheduleId);
             }   else{
                 ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleId);
             }
