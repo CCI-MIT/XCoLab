@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.admin.util.OmniadminUtil;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -23,7 +24,6 @@ public class DiscussionPermissions {
     private static final String RESOURCE_NAME = DiscussionCategoryGroup.class.getName();
     
     private User currentUser;
-    private DiscussionCategoryGroup discussion;
     private PermissionChecker permissionChecker;
     private String primKey;
     private long groupId;
@@ -34,9 +34,7 @@ public class DiscussionPermissions {
 
     public DiscussionPermissions(PortletRequest request, DiscussionCategoryGroup discussion) throws
             SystemException, PortalException{
-        this.discussion = discussion;
-        
-         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         this.permissionChecker = themeDisplay.getPermissionChecker();
         primKey = String.valueOf(discussion.getId());
         groupId = themeDisplay.getScopeGroupId();
@@ -44,19 +42,19 @@ public class DiscussionPermissions {
         discussionTabName = getTabName(request);
         proposalId = getProposalId(request);
         contestPhaseId = getContestPhaseId(request);
-
     }
+
     private String getTabName(PortletRequest request){
         String discussionTabName;
         discussionTabName = request.getParameter("tab");
         if(discussionTabName == null) {
             try {
                 discussionTabName = request.getParameter("pageToDisplay").replace("proposalDetails_", "");
-            } catch (Exception e) {
-            }
+            } catch (Exception ignored) { }
         }
         return discussionTabName;
     }
+
     private Integer getProposalId(PortletRequest request){
         Integer proposalId = null;
         try {
@@ -69,10 +67,10 @@ public class DiscussionPermissions {
                     proposalId = Integer.parseInt(proposalIdParameter);
                 }
             }
-        } catch (NumberFormatException e) {
-        }
+        } catch (NumberFormatException ignored) { }
         return proposalId;
     }
+
     private Integer getContestPhaseId(PortletRequest request){
         Integer proposalId = null;
         try {
@@ -80,8 +78,7 @@ public class DiscussionPermissions {
             if (contestPhaseIdParameter != null) {
                 proposalId = Integer.parseInt(contestPhaseIdParameter);
             }
-        } catch (NumberFormatException e) {
-        }
+        } catch (NumberFormatException ignored) { }
         return proposalId;
     }
 
@@ -97,16 +94,20 @@ public class DiscussionPermissions {
         } else {
             canSeeAddCommentButton = true;
         }
-
         return canSeeAddCommentButton;
     }
     
     public boolean getCanAddComment() {
-        return ! currentUser.isDefaultUser();
+        return !currentUser.isDefaultUser();
     }
     
     public boolean getCanAdminMessages() {
-        return getCanAdmin() || permissionChecker.hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADMIN_MESSAGES.name());
+        return isOmniAdmin();
+        //return getCanAdmin() || permissionChecker.hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADMIN_MESSAGES.name());
+    }
+
+    public boolean isOmniAdmin() {
+        return OmniadminUtil.isOmniadmin(currentUser);
     }
 
     public boolean getCanAdmin() {
@@ -123,8 +124,7 @@ public class DiscussionPermissions {
             Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
             isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId) ||
                     isUserProposalAuthorOrTeamMember(user, proposal);
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) { }
         return isUserAllowed;
     }
 
@@ -155,11 +155,8 @@ public class DiscussionPermissions {
         try {
             isAuthor = proposal.getAuthorId() == user.getUserId();
             isMember = ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId());
-        } catch (PortalException | SystemException e) {
-        }
+        } catch (PortalException | SystemException ignored) { }
 
         return isAuthor || isMember;
     }
-
-
 }
