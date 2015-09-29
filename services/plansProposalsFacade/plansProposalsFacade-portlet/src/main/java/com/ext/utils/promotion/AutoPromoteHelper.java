@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ServiceContext;
 import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.mail.EmailToAdminDispatcher;
 
 import java.util.Collection;
 import java.util.Date;
@@ -298,13 +299,14 @@ public class AutoPromoteHelper {
                 throw new SystemException("Proposal not found");
             }
 
+            final int currentProposalVersionNumber = currentProposalVersion.intValue();
             try {
                 //make sure that proposals in the phase directly before have final versions
                 Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, previousPhase.getContestPhasePK());
 
                 if (oldP2p != null) {
                     if (oldP2p.getVersionTo() < 0) {
-                        oldP2p.setVersionTo(currentProposalVersion.intValue());
+                        oldP2p.setVersionTo(currentProposalVersionNumber);
                         Proposal2PhaseLocalServiceUtil.updateProposal2Phase(oldP2p);
                     }
                 }
@@ -313,16 +315,22 @@ public class AutoPromoteHelper {
             Proposal2Phase p2p;
             final long completedPhasePK = completedPhase.getContestPhasePK();
             try {
-                //make sure the p2p doesn't already exist before creating a new one!
+                //This is a workaround for a bug that caused two new p2p's to be created
                 p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(
                         proposalId, completedPhasePK);
+                //If this succeeds, we want to log the error to help diagnose the problem
+                _log.error(String.format("P2p found while associating proposal %d with phase %d.", proposalId, completedPhasePK));
+                new EmailToAdminDispatcher("Duplicate primary key for P2p in auto promotion",
+                        String.format("Unexpectedly found p2p. Setting versionFrom = %d and versionTo = %d: %s",
+                                currentProposalVersionNumber, currentProposalVersionNumber, p2p)).sendMessage();
             } catch (NoSuchProposal2PhaseException e) {
                 p2p = Proposal2PhaseLocalServiceUtil.create(
                         proposalId, completedPhasePK);
+                _log.debug(String.format("Created new p2p: %s", p2p));
             }
 
-            p2p.setVersionFrom(currentProposalVersion.intValue());
-            p2p.setVersionTo(currentProposalVersion.intValue());
+            p2p.setVersionFrom(currentProposalVersionNumber);
+            p2p.setVersionTo(currentProposalVersionNumber);
             Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
         }
     }
