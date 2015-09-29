@@ -28,14 +28,13 @@ import java.io.IOException;
 public class EditDiscussionMessageBaseActionController extends DiscussionsBaseActionController {
 
     @RequestMapping(params = "action=editComment")
-    public void handleAction(ActionRequest request, ActionResponse response, @RequestParam("messageId") long messageId, @RequestParam("comment") String comment)
+    public void handleAction(ActionRequest request, ActionResponse response,
+                             @RequestParam long discussionId,
+                             @RequestParam("messageId") long messageId,
+                             @RequestParam("comment") String comment)
             throws IOException, PortalException, SystemException, DiscussionsException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
-        if (!themeDisplay.getPermissionChecker().isOmniadmin())
-            throw new DiscussionsException("User isn't allowed to edit comment");
-
+        checkPermissions(request, "User isn't allowed to edit message", discussionId);
         DiscussionMessage m = DiscussionMessageLocalServiceUtil.getMessageByMessageId(messageId);
         m.setBody(comment);
         DiscussionMessageLocalServiceUtil.updateDiscussionMessage(m);

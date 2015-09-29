@@ -48,17 +48,23 @@ public class DefaultDiscussionsPermissionsImpl implements DiscussionsPermissions
     
     @Override
     public boolean getCanAddThread() {
-        return getCanAdmin() || getCanAdminMessages() || permCheck().hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADD_THREAD.name());
+        return getCanAdmin()
+                //TODO: for some reason fellows don't have "ADD_MESSAGE" permissions (hence the ADMIN_MESSAGES clause
+                || permCheck().hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADMIN_MESSAGES.name())
+                || permCheck().hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADD_THREAD.name());
     }
     
     @Override
     public boolean getCanAddMessage() {
-        return getCanAdmin() || getCanAdminMessages() || permCheck().hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADD_MESSAGE.name());
+        return getCanAdmin()
+                //TODO: for some reason fellows don't have "ADD_MESSAGE" permissions (hence the ADMIN_MESSAGES clause
+                || permCheck().hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADMIN_MESSAGES.name())
+                || permCheck().hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADD_MESSAGE.name());
     }
     
     @Override
     public boolean getCanAdminMessages() {
-        return getCanAdmin() || permCheck().hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADMIN_MESSAGES.name());
+        return getCanAdmin();
     }
      
     @Override

@@ -44,12 +44,7 @@ public class DiscussionPermission {
     }
 
     public boolean getCanAdminMessages() {
-        return isOmniAdmin();
-        //return getCanAdmin() || portletPermissionChecker.hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADMIN_MESSAGES.name());
-    }
-
-    public boolean isOmniAdmin() {
-        return OmniadminUtil.isOmniadmin(currentUser);
+        return getCanAdmin();
     }
 
     public boolean getCanAdmin() {

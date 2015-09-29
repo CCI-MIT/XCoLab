@@ -102,12 +102,7 @@ public class DiscussionPermissions {
     }
     
     public boolean getCanAdminMessages() {
-        return isOmniAdmin();
-        //return getCanAdmin() || permissionChecker.hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADMIN_MESSAGES.name());
-    }
-
-    public boolean isOmniAdmin() {
-        return OmniadminUtil.isOmniadmin(currentUser);
+        return getCanAdmin();
     }
 
     public boolean getCanAdmin() {
