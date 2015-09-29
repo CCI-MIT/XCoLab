@@ -30,7 +30,7 @@
     </c:if>
 
     <div class="propbox
-                ${proposal.featured ? 'featured' : ''}
+                ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'featured' : ''}
                 ${contest.isContestCompleted(contestPhase) ? 'completed' : ''}
                 ${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? 'judgement-actions' : ''}
                 ${additionalCSSClasses}
@@ -62,7 +62,7 @@
                     </h4>
                     <div class="clear" ><!--  --></div>
                 </div>
-                <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
+                <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                     <div class="voteboxsmall">
                         <collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.votesCount}" />
                     </div>
