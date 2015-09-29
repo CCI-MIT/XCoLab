@@ -79,7 +79,7 @@ public class ProposalWrapper {
         this.proposal = proposal;
         this.version = version;
         this.contest = contest == null ? fetchContest() : contest;
-        this.contestPhase = contestPhase;
+        this.contestPhase = contestPhase == null ? fetchContestPhase() : contestPhase;
         this.proposal2Phase = proposal2Phase;
         this.ribbonWrapper = new RibbonWrapper(this);
 
@@ -396,13 +396,22 @@ public class ProposalWrapper {
         return sections;
     }
 
-    public Contest fetchContest() {
+    private Contest fetchContest() {
         try {
             return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private ContestPhase fetchContestPhase() {
+        try {
+            return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+        } catch (SystemException | PortalException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<ProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {

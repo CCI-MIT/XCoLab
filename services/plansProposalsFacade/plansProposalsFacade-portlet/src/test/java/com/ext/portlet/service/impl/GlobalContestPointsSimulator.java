@@ -1,7 +1,11 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.*;
+import com.ext.portlet.model.PointDistributionTarget;
+import com.ext.portlet.model.Points;
+import com.ext.portlet.model.PointsDistributionConfiguration;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.impl.helper.points.DistributionConfiguration;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -18,18 +22,11 @@ import static org.junit.Assert.assertTrue;
  * Created by Manuel Thurner on 22/09/14.
  */
 public class GlobalContestPointsSimulator extends GlobalContestSimulator {
-    private double probabilityOfPointsDistributionAdditionalNonTeamMembers;
+    protected double probabilityOfPointsDistributionAdditionalNonTeamMembers;
     protected Map<Integer, DistributionConfiguration> globalProposalsDistributions;
     protected Map<Integer, PointDistributionTarget> globalProposalsDistributionTargets;
     protected Map<Integer, Map<Integer, DistributionConfiguration>> sideProposalsDistributions;
     protected List<Points> points;
-
-    class DistributionConfiguration {
-        //the teamMemberShares indizes are the indizes in the proposalTeamMembers field
-        public Map<Integer, Double> teamMemberShares = new HashMap<Integer, Double>();
-        //in additionalShares, the indizes are the indizes of the users field
-        public Map<Integer, Double> additionalShares = new HashMap<Integer, Double>();
-    }
 
     public void deletePointDistributions() throws SystemException {
         //delete points
@@ -152,7 +149,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
      * @throws com.liferay.portal.NoSuchUserException
      * @throws com.liferay.portal.kernel.exception.SystemException
      */
-    private DistributionConfiguration setPointsDistributionForProposal(Proposal proposal, List<User> teamMembers, boolean isGlobal) throws NoSuchUserException, SystemException {
+    protected DistributionConfiguration setPointsDistributionForProposal(Proposal proposal, List<User> teamMembers, boolean isGlobal) throws NoSuchUserException, SystemException {
         DistributionConfiguration config = new DistributionConfiguration();
 
         //ANY TEAM MEMBER
@@ -267,7 +264,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         double matPointsPerSubProposal = amountOfSubProposals > 0 ? ( Math.ceil(materializedPoints)*0.8)/amountOfSubProposals : 0;
 
         //TEAM
-        if (hypPointsPerSubProposal >= 1) {
+        if (hypTeamPoints >= 1) {
             for (int j = 0; j < globalProposalsTeamMembers.get(proposalIndex).size(); j++) {
                 User teamMember = globalProposalsTeamMembers.get(proposalIndex).get(j);
                 double share;
@@ -290,7 +287,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         }
 
         //SUB-PROPOSALS
-        if (Math.ceil(hypotheticalPoints)*0.8 >= 1 && amountOfSubProposals > 0) {
+        if (hypPointsPerSubProposal >= 1 && amountOfSubProposals > 0) {
             //first gather all linked proposal ids and where they are located in our fields
             List<Long> childrenProposalIds = new ArrayList<Long>();
             List<Integer[]> childrenSideProposalIndizes = new ArrayList<Integer[]>();
@@ -399,7 +396,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         assertTrue(points.isEmpty());
     }
 
-    private int getProposalIndexForProposal(Proposal proposal) {
+    protected int getProposalIndexForProposal(Proposal proposal) {
         //find out which index this proposal has
         int index = -1;
         for (int i = 0; i < amountOfGlobalProposals; i++) {
@@ -411,7 +408,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         return index;
     }
 
-    private Long getProposalIdByPointsSourceIdInList(List<Points> points, long pointsSourceId) {
+    protected Long getProposalIdByPointsSourceIdInList(List<Points> points, long pointsSourceId) {
         for (Points p : points) {
             if (p.getPointsSourceId() == pointsSourceId) {
                 return p.getProposalId();
@@ -420,7 +417,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         return null;
     }
 
-    private Points popPointEntryInList(List<Points> points, long proposalId, long userId, long pointsSourceId, double materializedPoints, double hypotheticalPoints) {
+    protected Points popPointEntryInList(List<Points> points, long proposalId, long userId, long pointsSourceId, double materializedPoints, double hypotheticalPoints) {
         Points find = null;
         for (Points p : points) {
             if (p.getProposalId() == proposalId &&

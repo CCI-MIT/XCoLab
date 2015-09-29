@@ -8,6 +8,7 @@ import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.util.PortalUtil;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.interfaces.TabPermissions;
@@ -45,6 +46,10 @@ public class TabWrapper {
 
     public String getDisplayName() {
         return tab.getDisplayName();
+    }
+
+    public String getTabUrl()  {
+        return PortalUtil.getCurrentURL(this.request);
     }
 
     public String getElementType()  {

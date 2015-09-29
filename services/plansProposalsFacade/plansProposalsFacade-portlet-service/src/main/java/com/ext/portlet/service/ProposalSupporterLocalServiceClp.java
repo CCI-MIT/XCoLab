@@ -727,7 +727,7 @@ public class ProposalSupporterLocalServiceClp
     @Override
     public java.util.List<com.ext.portlet.model.ProposalSupporter> getProposals(
         long userId)
-        throws com.liferay.portal.PortalException,
+        throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -737,8 +737,8 @@ public class ProposalSupporterLocalServiceClp
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof com.liferay.portal.PortalException) {
-                throw (com.liferay.portal.PortalException) t;
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {

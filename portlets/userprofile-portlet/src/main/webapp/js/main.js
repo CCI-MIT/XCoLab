@@ -1,3 +1,13 @@
+jQuery(function() {
+    jQuery(".helpTrigger").click(function() {
+        var trigger = jQuery(this);
+        trigger.parent().parent().find(".addprophelp").slideToggle("fast");
+    });
+
+    // tooltips
+    initTooltips();
+});
+
 function clearSendMessageForm() {
     jQuery(".sendMessagePopup, .popuplogin_input, .sendMessagePopup textarea").val('');
 }

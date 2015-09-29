@@ -23,7 +23,7 @@
         <div class="admin_left">
         <c:set var="addBlueClass" value='false' />
         
-		<c:if test="${proposalsPermissions.canAdmin }">
+		<c:if test="${proposalsPermissions.canAdminProposal }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
             	<strong>This proposal can be edited by:</strong>
             	<div>            		
@@ -66,7 +66,7 @@
             				<option value="-1">no ribbon</option>
             				<c:forEach var="ribbon" items="${availableRibbons }">
             					<c:choose>
-            						<c:when test="${proposal.ribbonId == ribbon.id }">
+            						<c:when test="${proposal.ribbonWrapper.ribbonId == ribbon.id }">
             							<option value="${ribbon.id }" selected="selected">${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}</option>
             						</c:when>
             						<c:otherwise>

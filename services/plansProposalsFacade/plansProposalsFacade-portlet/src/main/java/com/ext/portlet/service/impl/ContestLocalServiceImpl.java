@@ -13,6 +13,7 @@ import com.ext.portlet.model.ImpactTemplateSeries;
 import com.ext.portlet.service.ImpactTemplateFocusAreaListLocalServiceUtil;
 import com.ext.portlet.service.persistence.ImpactTemplateSeriesUtil;
 import com.google.common.collect.ImmutableSet;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
@@ -1149,6 +1150,26 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         for (Contest priorContest : getContestsByActivePrivate(true, false)) {
             addContestYearSuffixToContest(priorContest, true);
         }
+    }
+
+    /**
+     * Returns a list of contests that have Proposal points enabled (column 'points' and 'defaultParentPointType' set),
+     * while optionally ignoring contests which are marked as inactive
+     *
+     * @param ignoreInactiveContests    A flag indicating whether the method should include inactive contests or not
+     * @return                          A list of contests mathing the criteria
+     */
+    public List<Contest> getPointsEnabledContests(boolean ignoreInactiveContests) throws SystemException {
+        List<Contest> returnList = new ArrayList<>();
+        for (Contest contest : contestLocalService.getContests(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            if (contest.getPoints() > 0 && contest.getDefaultParentPointType() > 0) {
+                if (!ignoreInactiveContests || contest.getContestActive()) {
+                    returnList.add(contest);
+                }
+            }
+        }
+
+        return returnList;
     }
 
     /**

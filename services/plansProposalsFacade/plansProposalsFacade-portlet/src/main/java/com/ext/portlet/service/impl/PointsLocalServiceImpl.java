@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
+import com.ext.portlet.service.persistence.Xcolab_UserFinderUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.PointsTarget;
 import org.xcolab.points.ReceiverLimitationStrategy;
@@ -46,11 +49,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	 * @throws SystemException
 	 */
 	public int getUserMaterializedPoints(long userId) throws SystemException {
-		int count = 0;
-		for (Points points: pointsPersistence.findByUserId(userId)) {
-			count += points.getMaterializedPoints();
-		}
-		return count;
+		return Xcolab_UserFinderUtil.getUserMaterializedPoints(userId).intValue();
 	}
 	
 	/**
@@ -61,11 +60,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	 * @throws SystemException
 	 */
 	public long getUserHypotheticalPoints(long userId) throws SystemException {
-		int count = 0;
-		for (Points points: pointsPersistence.findByUserId(userId)) {
-			count += points.getHypotheticalPoints();
-		}
-		return count;
+        return Xcolab_UserFinderUtil.getUserHypotheticalPoints(userId).intValue();
 	}
 	
 	/**
@@ -178,6 +173,11 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 
         List<Points> materializedPointsList = new ArrayList<Points>();
 		for (PointsTarget target: targets) {
+            // Skip when we would distribute less than 1 point
+            if (hypotheticalPoints * target.getPercentage() < 1.0 && materializedPoints * target.getPercentage() < 1) {
+                continue;
+            }
+
 			Points points = createPoints(counterLocalService.increment(Points.class.getName()));
 
 			points.setOriginatingContestPK(originatingContest.getContestPK());

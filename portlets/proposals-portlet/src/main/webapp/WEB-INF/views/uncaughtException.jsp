@@ -8,7 +8,7 @@
         version="2.0">
 
 <div id="content">
-    Internal error has ocurred, please contact the administrator.
+    Internal error has occurred, please contact the administrator.
     <div id="stackTrace" style="display:none;">
     <c:if test="${not empty exception}">
         <p><strong>Exception:</strong><br/><c:out value="${exception}"/></p>
