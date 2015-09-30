@@ -1,22 +1,25 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.validation.Valid;
-
 import com.ext.portlet.NoSuchProposal2PhaseException;
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.PlanSectionTypeKeys;
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.ServiceContext;
-
+import com.liferay.portal.theme.ThemeDisplay;
 import org.apache.commons.lang.StringUtils;
-import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,18 +32,17 @@ import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-
-import com.ext.portlet.PlanSectionTypeKeys;
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
-
 import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.emailnotification.ProposalCreationNotification;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -59,11 +61,9 @@ public class AddUpdateProposalDetailsActionController {
     	attributesNotToBeCopiedFromBaseProposal.add(ProposalAttributeKeys.PITCH);
     	attributesNotToBeCopiedFromBaseProposal.add(ProposalAttributeKeys.TEAM);
     }
-    
 
     @Autowired
     private ProposalsContext proposalsContext;
-
     
     @RequestMapping(params = {"action=updateProposalDetails"})
     public void show(ActionRequest request, Model model,
@@ -90,7 +90,7 @@ public class AddUpdateProposalDetailsActionController {
             request.setAttribute("ACTION_ERROR", true);
             return;
         }
-        ProposalWrapper proposal = null;
+        ProposalWrapper proposal;
         if (proposalsContext.getProposal(request) != null) {
             proposal = proposalsContext.getProposalWrapped(request);
             if (updateProposalSectionsBean.isMove() && updateProposalSectionsBean.getMoveToContestPhaseId() > 0) {
@@ -195,14 +195,14 @@ public class AddUpdateProposalDetailsActionController {
         }
         
         if (updateProposalSectionsBean.getPitch() != null && (proposal.getName() == null || !updateProposalSectionsBean.getPitch().equals(proposal.getPitch()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, xssClean(updateProposalSectionsBean.getPitch(), request));
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch()));
         }
         else {
         	filledAll = false;
         }
 
         if (updateProposalSectionsBean.getDescription() != null && (proposal.getName() == null || !updateProposalSectionsBean.getDescription().equals(proposal.getDescription()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.DESCRIPTION, xssClean(updateProposalSectionsBean.getDescription(), request));
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.DESCRIPTION, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription()));
         }
         else {
         	filledAll = false;
@@ -226,7 +226,7 @@ public class AddUpdateProposalDetailsActionController {
             String newSectionValue = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
             if (section.getType() == PlanSectionTypeKeys.TEXT || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                 if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
-                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), xssClean(newSectionValue, request));
+                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), HtmlUtil.cleanSome(newSectionValue));
                 }
                 else {
                 	filledAll = false;
@@ -257,8 +257,9 @@ public class AddUpdateProposalDetailsActionController {
                 String cleanedReferences = "";
                 if (StringUtils.isNotBlank(newSectionValue)){
                     String[]referencedProposals = newSectionValue.split(",");
-                    for (int i = 0; i < referencedProposals.length; i++){
-                        if(StringUtils.isNotBlank(referencedProposals[i]) && StringUtils.isNumeric(referencedProposals[i])) cleanedReferences += referencedProposals[i] + ",";
+                    for (String referencedProposal : referencedProposals) {
+                        if (StringUtils.isNotBlank(referencedProposal) && StringUtils.isNumeric(referencedProposal))
+                            cleanedReferences += referencedProposal + ",";
                     }
                     //if (cleanedReferences.substring(cleanedReferences.length()-2,cleanedReferences.length()-1).equalsIgnoreCase(",")) cleanedReferences = cleanedReferences.substring(0, cleanedReferences.length() - 2);
                 }
@@ -268,20 +269,19 @@ public class AddUpdateProposalDetailsActionController {
         
 
 
-        int analyticsValue = 0;
+        int analyticsValue;
         
         if (filledAll) {
         	analyticsValue = 3;
-        }
-        else {
+        } else {
         	analyticsValue = 2;
         }
         
-        AnalyticsUtil.publishEvent(request, userId, PROPOSAL_ANALYTICS_KEY + analyticsValue, 
-    			PROPOSAL_ANALYTICS_CATEGORY, 
-    			PROPOSAL_ANALYTICS_ACTION , 
-    			PROPOSAL_ANALYTICS_LABEL, 
-    			analyticsValue);
+        AnalyticsUtil.publishEvent(request, userId, PROPOSAL_ANALYTICS_KEY + analyticsValue,
+                PROPOSAL_ANALYTICS_CATEGORY,
+                PROPOSAL_ANALYTICS_ACTION,
+                PROPOSAL_ANALYTICS_LABEL,
+                analyticsValue);
 
         if (createNew) {
             // Send email notification to author
@@ -296,21 +296,6 @@ public class AddUpdateProposalDetailsActionController {
         
         request.setAttribute("ACTION_REDIRECTING", true);
         response.sendRedirect("/web/guest/plans/-/plans/contestId/" + proposalsContext.getContest(request).getContestPK() + "/planId/" + proposal.getProposalId());
-    }
-
-    private String xssClean(String sectionData, PortletRequest request) {
-    	String baseUrl = PortalUtil.getHttpServletRequest(request).getRequestURL().toString();
-    	baseUrl.substring(0, baseUrl.indexOf("/", 9));
-        //http://jsoup.org/cookbook/cleaning-html/whitelist-sanitizer
-        Whitelist w = Whitelist.relaxed().preserveRelativeLinks(true);
-        //allow internal anchors
-        w.addAttributes("a", "name");
-        w.addAttributes("img", "style");
-        //Do not add _blank because it would break internal anchors
-        // /w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
-        w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
-
-        return HtmlUtil.clean(sectionData, w);
     }
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})

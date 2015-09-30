@@ -29,7 +29,7 @@ public class BaseProposalTabController extends BaseProposalsController {
     public void getTabs(Model model, PortletRequest request) throws PortalException, SystemException {
         // populate available tabs
         
-        List<ProposalTabWrapper> tabs = new ArrayList<ProposalTabWrapper>();
+        List<ProposalTabWrapper> tabs = new ArrayList<>();
         
         for (ProposalTab tab: ProposalTab.values()) {
             

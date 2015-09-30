@@ -16,6 +16,7 @@ import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
@@ -281,8 +282,12 @@ public class ProposalWrapper {
             } catch (Exception e) {
                 return selectedJudges;
             }
-            if (s == null || s.length() == 0) return selectedJudges;
-            for (String element : s.split(";")) selectedJudges.add(UserLocalServiceUtil.getUser(Long.parseLong(element)));
+            if (s == null || s.length() == 0) {
+                return selectedJudges;
+            }
+            for (String element : s.split(";")) {
+                selectedJudges.add(UserLocalServiceUtil.getUser(Long.parseLong(element)));
+            }
         }
         return selectedJudges;
     }

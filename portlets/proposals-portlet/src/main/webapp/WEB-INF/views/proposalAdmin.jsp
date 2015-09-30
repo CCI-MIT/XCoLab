@@ -6,7 +6,7 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-<jsp:directive.include file="./init.jspx" />
+<jsp:directive.include file="./init_proposals.jspx" />
 
     <style type="text/css">
         .admin_left {

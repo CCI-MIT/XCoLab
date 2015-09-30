@@ -9,7 +9,11 @@ import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Manuel Thurner on 24/07/14.
@@ -22,7 +26,7 @@ public class AssignPointsBean {
     private List<User> usersNotInTeam;
 
     public AssignPointsBean() {
-        this.assignments = new HashMap<Long, Map<Long, Double>>();
+        this.assignments = new HashMap<>();
     }
 
     public void setupUsers(List<User> teamMembers) throws SystemException {
@@ -35,7 +39,7 @@ public class AssignPointsBean {
     public void addAssignment(PointTypeWrapper pointType, List<User> users, List<PointsDistributionConfiguration> existingDistribution) {
         final double percentMultiplicationFactor = pointType.getPercentageOfTotal() * 100;
 
-        Map<Long, Double> entityPercentages = new HashMap<Long, Double>();
+        Map<Long, Double> entityPercentages = new HashMap<>();
         if (users != null) {
             for (User u : users) {
                 Double percentage = (1.0/users.size()) * percentMultiplicationFactor;

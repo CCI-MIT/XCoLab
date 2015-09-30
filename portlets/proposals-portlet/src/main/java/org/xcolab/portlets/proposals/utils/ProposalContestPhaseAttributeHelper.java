@@ -24,10 +24,10 @@ public class ProposalContestPhaseAttributeHelper {
     private Long contestPhasePK;
     private List<ProposalContestPhaseAttribute> proposalContestPhaseAttributes;
 
-    public ProposalContestPhaseAttributeHelper(Long proposalId, Long contestPhasePK) {
-        this.proposalId = proposalId;
-        this.contestPhasePK = contestPhasePK;
-        if (contestPhasePK != null) {
+    public ProposalContestPhaseAttributeHelper(Proposal proposal, ContestPhase contestPhase) {
+        this.proposalId = proposal.getProposalId();
+        if (contestPhase != null) {
+            this.contestPhasePK = contestPhase.getContestPhasePK();
             try {
                 proposalContestPhaseAttributes = ProposalContestPhaseAttributeLocalServiceUtil.getAllContestPhaseProposalAttributes(contestPhasePK, proposalId);
             } catch (NoSuchProposalContestPhaseAttributeException | SystemException e) {

@@ -28,8 +28,8 @@ public class RatingBean {
     private Long screeningUserId;
 
     public RatingBean(ProposalWrapper wrapper, List<ProposalRatingType> presetRatingTypes) throws PortalException, SystemException {
-        this.ratingValues = new HashMap<Long, String>();
-        this.ratingTypes = new ArrayList<ProposalRatingTypeWrapper>();
+        this.ratingValues = new HashMap<>();
+        this.ratingTypes = new ArrayList<>();
 
         //initialize ratingValues and types
         for (ProposalRatingType type : presetRatingTypes) {

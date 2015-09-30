@@ -7,17 +7,23 @@
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0">
-<jsp:directive.include file="./init.jspx" />
 
-<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
-<jsp:directive.include file="./proposalDetails/header.jspx" />
+    <jsp:directive.include file="./init_proposals.jspx"/>
 
-<style>
-    td em {
-        background: #000; border-radius: 5px; font-style: normal;
-        box-shadow: 0 0 2px #000;
-    }
-</style>
+    <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
+    <jsp:directive.include file="./proposalDetails/header.jspx" />
+
+    <!--ProposalSectionsTabController-->
+    <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper"/>
+    <jsp:useBean id="baseContest" scope="request" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper"/>
+    <jsp:useBean id="updateProposalSectionsBean" scope="request" type="org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean"/>
+
+    <style>
+        td em {
+            background: #000; border-radius: 5px; font-style: normal;
+            box-shadow: 0 0 2px #000;
+        }
+    </style>
 
 
 <div id="content">

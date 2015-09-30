@@ -1,12 +1,11 @@
 package org.xcolab.jsp.tags.discussion;
 
-import javax.portlet.PortletRequest;
-
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.*;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -17,13 +16,14 @@ import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
+import javax.portlet.PortletRequest;
+
 
 public class DiscussionPermissions {
 
     private static final String RESOURCE_NAME = DiscussionCategoryGroup.class.getName();
     
     private User currentUser;
-    private DiscussionCategoryGroup discussion;
     private PermissionChecker permissionChecker;
     private String primKey;
     private long groupId;
@@ -31,12 +31,10 @@ public class DiscussionPermissions {
     private Integer proposalId;
     private Integer contestPhaseId;
 
-
-    public DiscussionPermissions(PortletRequest request, DiscussionCategoryGroup discussion) throws
-            SystemException, PortalException{
-        this.discussion = discussion;
+    public DiscussionPermissions(PortletRequest request, DiscussionCategoryGroup discussion)
+            throws SystemException, PortalException {
         
-         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         this.permissionChecker = themeDisplay.getPermissionChecker();
         primKey = String.valueOf(discussion.getId());
         groupId = themeDisplay.getScopeGroupId();
@@ -52,8 +50,7 @@ public class DiscussionPermissions {
         if(discussionTabName == null) {
             try {
                 discussionTabName = request.getParameter("pageToDisplay").replace("proposalDetails_", "");
-            } catch (Exception e) {
-            }
+            } catch (Exception ignored) { }
         }
         return discussionTabName;
     }
@@ -69,8 +66,7 @@ public class DiscussionPermissions {
                     proposalId = Integer.parseInt(proposalIdParameter);
                 }
             }
-        } catch (NumberFormatException e) {
-        }
+        } catch (NumberFormatException ignored) { }
         return proposalId;
     }
     private Integer getContestPhaseId(PortletRequest request){
@@ -80,8 +76,7 @@ public class DiscussionPermissions {
             if (contestPhaseIdParameter != null) {
                 proposalId = Integer.parseInt(contestPhaseIdParameter);
             }
-        } catch (NumberFormatException e) {
-        }
+        } catch (NumberFormatException ignored) { }
         return proposalId;
     }
 
@@ -102,7 +97,7 @@ public class DiscussionPermissions {
     }
     
     public boolean getCanAddComment() {
-        return ! currentUser.isDefaultUser();
+        return !currentUser.isDefaultUser();
     }
     
     public boolean getCanAdminMessages() {
@@ -123,8 +118,7 @@ public class DiscussionPermissions {
             Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
             isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId) ||
                     isUserProposalAuthorOrTeamMember(user, proposal);
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) { }
         return isUserAllowed;
     }
 
@@ -155,11 +149,8 @@ public class DiscussionPermissions {
         try {
             isAuthor = proposal.getAuthorId() == user.getUserId();
             isMember = ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId());
-        } catch (PortalException | SystemException e) {
-        }
+        } catch (PortalException | SystemException ignored) { }
 
         return isAuthor || isMember;
     }
-
-
 }

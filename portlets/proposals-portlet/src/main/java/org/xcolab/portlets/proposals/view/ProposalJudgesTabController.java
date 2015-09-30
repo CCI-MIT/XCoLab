@@ -96,8 +96,8 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     }
 
     private static List<ProposalRatingsWrapper> wrapProposalRatings(List<ProposalRating> ratings) throws SystemException, PortalException {
-        List<ProposalRatingsWrapper> wrappers = new ArrayList<ProposalRatingsWrapper>();
-        Map<Long, List<ProposalRating>> map = new HashMap<Long, List<ProposalRating>>();
+        List<ProposalRatingsWrapper> wrappers = new ArrayList<>();
+        Map<Long, List<ProposalRating>> map = new HashMap<>();
 
         for (ProposalRating r : ratings) {
 

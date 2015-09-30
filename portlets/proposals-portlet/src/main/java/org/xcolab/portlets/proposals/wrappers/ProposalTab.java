@@ -28,13 +28,9 @@ public enum ProposalTab {
                     try {
                         Long contestPK = context.getContest(request).getContestPK();
                         Long contestPKofFirst2015Contest = 1301101L;
-                        if(contestPK > contestPKofFirst2015Contest){
-                            return false;
-                        }
-                        return context.getProposalWrapped(request).getModelId() > 0;
-                    } catch (PortalException e) {
-                        _log.error("Can't access proposals model id", e);
-                    } catch (SystemException e) {
+                        return contestPK <= contestPKofFirst2015Contest
+                                && context.getProposalWrapped(request).getModelId() > 0;
+                    } catch (PortalException | SystemException e) {
                         _log.error("Can't access proposals model id", e);
                     }
                     return false;

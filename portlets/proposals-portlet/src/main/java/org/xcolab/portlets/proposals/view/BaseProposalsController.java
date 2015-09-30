@@ -36,5 +36,4 @@ public class BaseProposalsController {
         if (StringUtils.isNotBlank(pageSubtitle))
             PortalUtil.setPageSubtitle(pageSubtitle, httpRequest);
     }
-
 }

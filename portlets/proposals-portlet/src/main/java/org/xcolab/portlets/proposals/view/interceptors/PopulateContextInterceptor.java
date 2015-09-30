@@ -1,20 +1,15 @@
 package org.xcolab.portlets.proposals.view.interceptors;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.Proposal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
     

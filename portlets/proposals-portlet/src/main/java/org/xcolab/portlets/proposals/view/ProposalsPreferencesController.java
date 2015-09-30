@@ -57,7 +57,7 @@ public class ProposalsPreferencesController {
         //sort the phases by startdate
         Collections.sort(contestPhases, new Comparator<ContestPhase>() {
             public int compare(ContestPhase cp1, ContestPhase cp2) {
-                return sortModifier*cp1.getPhaseStartDate().compareTo(cp2.getPhaseStartDate());
+                return sortModifier * cp1.getPhaseStartDate().compareTo(cp2.getPhaseStartDate());
             }
         });
 
@@ -72,10 +72,10 @@ public class ProposalsPreferencesController {
         List<Contest> contests = ContestLocalServiceUtil.findByActive(true);
 
         //contestId to contestphases
-        Map<Long, ContestPhaseType> contestPhaseTypeMap = new HashMap<Long, ContestPhaseType>();
-        Map<Long, List<ContestPhase>> contestPhasesMap = new HashMap<Long, List<ContestPhase>>();
+        Map<Long, ContestPhaseType> contestPhaseTypeMap = new HashMap<>();
+        Map<Long, List<ContestPhase>> contestPhasesMap = new HashMap<>();
         //contestphaseId to proposal
-        Map<Long, List<ProposalWrapper>> proposalsMap = new HashMap<Long, List<ProposalWrapper>>();
+        Map<Long, List<ProposalWrapper>> proposalsMap = new HashMap<>();
         for (Contest c : contests) {
             List<ContestPhase> contestPhases = getPhasesByContest(c, 1);
 
@@ -86,7 +86,7 @@ public class ProposalsPreferencesController {
                     contestPhaseTypeMap.put(cp.getContestPhaseType(), ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(cp.getContestPhaseType()));
                 }
                 List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContestPhase(cp.getContestPhasePK());
-                List<ProposalWrapper> wrappers = new ArrayList<ProposalWrapper>();
+                List<ProposalWrapper> wrappers = new ArrayList<>();
                 for (Proposal p : proposals) {
                     wrappers.add(new ProposalWrapper(p));
                 }
@@ -149,7 +149,6 @@ public class ProposalsPreferencesController {
             }
 
             message += "<br/><br/>\nCONTEST: "+c.getContestShortName()+"<br/><br/>\n";
-
 
             for (Proposal p :ProposalLocalServiceUtil.getProposalsInContest(c.getContestPK())) {
                 //author id check
@@ -285,6 +284,9 @@ public class ProposalsPreferencesController {
                             break;
                         }
                     }
+                    if (lastPhaseContainingProposal == null) {
+                        throw new SystemException("Proposal is not contained in any phases");
+                    }
 
                     //let's make sure that the last phase is before the phase which we move the proposal to!
                     boolean proposalAlreadyInTargetPhase = lastPhaseContainingProposal.getContestPhasePK() == moveToContestPhase.getContestPhasePK() ||
@@ -295,7 +297,7 @@ public class ProposalsPreferencesController {
                     } else {
                         //update the last phase association - set the end version to the current version minus one
                         Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposal.getProposalId());
-                        if (currentProposalVersion == null || currentProposalVersion < 0) {
+                        if (currentProposalVersion < 0) {
                             throw new SystemException("Proposal not found");
                         }
 
@@ -327,8 +329,7 @@ public class ProposalsPreferencesController {
                                 attribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
                                         ProposalContestPhaseAttributeKeys.RIBBON);
                             }
-                            catch (NoSuchProposalContestPhaseAttributeException e) {
-                            }
+                            catch (NoSuchProposalContestPhaseAttributeException ignored) { }
 
                             //do not overwrite existing ribbons
                             if (attribute == null) {

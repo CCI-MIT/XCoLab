@@ -1,8 +1,11 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.PointType;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.PointTypeLocalServiceUtil;
+import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -13,7 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.requests.*;
+import org.xcolab.portlets.proposals.requests.AssignPointsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
@@ -78,7 +81,7 @@ public class AssignPointsActionController {
 
                 double sum = 0.0;
                 for (Long targetUserId : assignments.keySet()) {
-                    double percentage = new Double(assignments.get(targetUserId) != null ? assignments.get(targetUserId) : 0.0);
+                    double percentage = assignments.get(targetUserId) != null ? assignments.get(targetUserId) : 0.0;
                     //round and take absolute value
                     percentage = Math.round(Math.abs(percentage)*100)/100.0d;
                     //calculate relative percentage
@@ -109,8 +112,4 @@ public class AssignPointsActionController {
         }
         response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contest.getContestPK()+"/phaseId/"+contestPhaseId+"/planId/"+proposal.getProposalId()+"/tab/POINTS");
     }
-
-
-
-
 }

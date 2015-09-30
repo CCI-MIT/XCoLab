@@ -10,9 +10,12 @@
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
           xmlns:liferay-ui="http://liferay.com/tld/ui">
-    <jsp:directive.include file="./init.jspx"/>
+    <jsp:directive.include file="./init_proposals.jspx"/>
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
+
+    <!--ProposalJudgesTabController-->
+    <jsp:useBean id="proposalAdvancingBean" scope="request" type="org.xcolab.portlets.proposals.requests.ProposalAdvancingBean"/>
 
     <style>h3 {
         margin: 20px 0 10px 0 !important;

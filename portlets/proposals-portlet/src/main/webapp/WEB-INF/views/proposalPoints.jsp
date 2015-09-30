@@ -6,9 +6,13 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-    <jsp:directive.include file="./init.jspx" />
+    <jsp:directive.include file="./init_proposals.jspx"/>
 
     <jsp:directive.include file="./proposalDetails/header.jspx" />
+
+    <!--ProposalPointsTabController-->
+    <jsp:useBean id="assignPointsBean" scope="request" type="org.xcolab.portlets.proposals.requests.AssignPointsBean"/>
+
     <div id="content">
         <h1 class="pointsHeadline">
             Points Distribution
@@ -50,10 +54,11 @@
                 initUserAssignmentInputs();
             });
             $("#expand-help-text").click(function() {
-                if ($("#help-text").is(":visible")) {
-                    $("#help-text").fadeOut('fast');
+                var $helpTextElement = $("#help-text");
+                if ($helpTextElement.is(":visible")) {
+                    $helpTextElement.fadeOut('fast');
                 } else {
-                    $("#help-text").fadeIn('fast');
+                    $helpTextElement.fadeIn('fast');
                 }
             });
         </script>

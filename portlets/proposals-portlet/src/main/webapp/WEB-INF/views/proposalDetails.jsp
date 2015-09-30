@@ -10,7 +10,7 @@
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <jsp:directive.include file="./init.jspx"/>
+    <jsp:directive.include file="./init_proposals.jspx"/>
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
@@ -25,7 +25,7 @@
             }
 
             .historyTable * {
-                border: 0px !important;
+                border: 0 !important;
                 text-align: left !important;
                 font-size: 15px !important;
             }
@@ -55,7 +55,7 @@
 
         <div class="prop-left">
 
-            <div class="edit-prop-wrap" style="width:616px; padding-top: 0px">
+            <div class="edit-prop-wrap" style="width:616px; padding-top: 0">
                 <div class="inner">
                     <div style="display:inline-block; width: 616px;">
                         <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
@@ -120,9 +120,9 @@
             <c:if test="${not empty proposal.sections }">
             	<c:forEach var="section" items="${proposal.sections }" varStatus="status">
                 	<h3>${section.title }</h3>
-                    
+
 					<proposalsPortlet:proposalSectionContent section="${section }" />
-                    	
+
 					<c:if test="${not status.last }">
                     	<div class="div2"><!--  --></div>
                     </c:if>
@@ -184,7 +184,7 @@
 		var currentProposal = {
 				proposalId: ${proposal.proposalId},
 				version: ${proposal.version},
-                contestId: ${proposal.contest.getContestPK()}
+                contestId: ${proposal.contest.contestPK}
 		}
 	</script>
 

@@ -45,6 +45,7 @@ public class HtmlUtil {
     public static String cleanSome(String text) {
         final Whitelist whitelist = Whitelist.basicWithImages();
         whitelist.addAttributes("img", "style");
+        whitelist.addAttributes("a", "name");
         whitelist.preserveRelativeLinks(true);
         return clean(text, whitelist);
     }

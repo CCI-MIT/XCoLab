@@ -22,10 +22,8 @@ public class ContestDiscussionController extends BaseProposalsController {
     @RequestMapping(params = "pageToDisplay=contestDiscussion")
     public String showContestProposals(RenderRequest request, RenderResponse response, Model model) 
             throws PortalException, SystemException {
-        
 
         model.addAttribute("discussionId",  proposalsContext.getContest(request).getDiscussionGroupId());        
         return "contestDiscussion";
-        
     }
 }

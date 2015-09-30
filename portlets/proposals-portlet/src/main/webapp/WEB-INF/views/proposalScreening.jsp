@@ -9,9 +9,12 @@
           xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-    <jsp:directive.include file="./init.jspx"/>
+    <jsp:directive.include file="./init_proposals.jspx"/>
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
+
+    <!--ProposalJudgesTabController-->
+    <jsp:useBean id="fellowProposalScreeningBean" scope="request" type="org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean"/>
 
     <style>h3 {
         margin: 20px 0 10px 0 !important;
@@ -222,8 +225,8 @@
 
 
         function refreshEmailTemplates() {
-            jQuery("#comment-footers > div").hide();
-            jQuery("#comment-headers > div").hide();
+            jQuery("#comment-footers").find("> div").hide();
+            jQuery("#comment-headers").find("> div").hide();
 
 
             var fellowAction = $("#fellowScreeningAction").val();
@@ -243,7 +246,8 @@
 
     <c:if test="${hasNoWritePermission}">
         <script>
-            $("#fellowRatingForm select").add($("#fellowRatingForm input")).add($("#fellowRatingForm textarea")).attr("disabled", "disabled");
+            var $fellowRatingFormElement = $("#fellowRatingForm");
+            $fellowRatingFormElement.find("select").add($fellowRatingFormElement.find("input")).add($fellowRatingFormElement.find("textarea")).attr("disabled", "disabled");
         </script>
     </c:if>
 
