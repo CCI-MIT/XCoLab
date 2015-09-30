@@ -8,5 +8,6 @@
 	<jsp:useBean id="contestPhase" scope="request" type="org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper"/>
 	<jsp:useBean id="preferences" scope="request" type="org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper"/>
 	<jsp:useBean id="proposalsPermissions" scope="request" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"/>
+	<jsp:useBean id="proposalsDisplayPermissions" scope="request" type="org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions"/>
 
 </jsp:root>

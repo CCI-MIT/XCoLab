@@ -26,17 +26,18 @@ import org.springframework.stereotype.Component;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
+import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.wrappers.*;
 
 import javax.portlet.PortletRequest;
-import java.util.List;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
     private static final String PROPOSALS_ATTRIBUTE_PREFIX = "_proposalsProtlet_";
     private static final String CONTEXT_INITIALIZED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contextInitialized";
     private static final String PERMISSIONS_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "permissions";
+    private static final String DISPLAY_PERMISSIONS_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "displayPermissions";
     private static final String CONTEST_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contest";
     private static final String PROPOSAL_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposals";
     private static final String CONTEST_PHASE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestPhase";
@@ -80,7 +81,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     public Proposal getProposal(PortletRequest request) throws PortalException, SystemException {
         return getAttribute(request, PROPOSAL_ATTRIBUTE, Proposal.class);        
     }
-    
+
 
     /* (non-Javadoc)
      * @see org.xcolab.portlets.proposals.utils.ProposalsContext#getPermissions(javax.portlet.PortletRequest)
@@ -88,6 +89,14 @@ public class ProposalsContextImpl implements ProposalsContext {
     @Override
     public ProposalsPermissions getPermissions(PortletRequest request) throws PortalException, SystemException {
         return getAttribute(request, PERMISSIONS_ATTRIBUTE, ProposalsPermissions.class);
+    }
+
+    /* (non-Javadoc)
+     * @see org.xcolab.portlets.proposals.utils.ProposalsContext#getDisplayPermissions(javax.portlet.PortletRequest)
+     */
+    @Override
+    public ProposalsDisplayPermissions getDisplayPermissions(PortletRequest request) throws PortalException, SystemException {
+        return getAttribute(request, DISPLAY_PERMISSIONS_ATTRIBUTE, ProposalsDisplayPermissions.class);
     }
     
     @Override
@@ -255,12 +264,15 @@ public class ProposalsContextImpl implements ProposalsContext {
                 }
             }
         }
+        final ProposalsPermissions proposalsPermissions = new ProposalsPermissions(request, proposal, contestPhase);
 
         request.setAttribute(PROPOSAL_ATTRIBUTE, proposal);
         request.setAttribute(CONTEST_ATTRIBUTE, contest);
         request.setAttribute(CONTEST_PHASE_ATTRIBUTE, contestPhase);
         request.setAttribute(PROPOSAL_2_PHASE_ATTRIBUTE, proposal2Phase);
-        request.setAttribute(PERMISSIONS_ATTRIBUTE, new ProposalsPermissions(request, proposal, contestPhase));
+        request.setAttribute(PERMISSIONS_ATTRIBUTE, proposalsPermissions);
+        request.setAttribute(DISPLAY_PERMISSIONS_ATTRIBUTE, new ProposalsDisplayPermissions(
+                proposalsPermissions, proposal, contestPhase, currentUser));
         request.setAttribute(PROPOSALS_PREFERENCES_ATTRIBUTE, new ProposalsPreferencesWrapper(request));
         
         request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());

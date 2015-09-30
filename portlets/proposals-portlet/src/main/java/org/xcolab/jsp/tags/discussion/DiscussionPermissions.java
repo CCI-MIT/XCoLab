@@ -12,7 +12,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.admin.util.OmniadminUtil;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;

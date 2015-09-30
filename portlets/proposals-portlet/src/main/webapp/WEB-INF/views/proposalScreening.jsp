@@ -94,7 +94,7 @@
                         <div id="comment-headers">
                             <c:forEach var="template" items="${emailTemplates}">
                                 <div class="${template.key}">
-                                    ${template.value.getHeader()}
+                                    ${template.value.header}
                                 </div>
                             </c:forEach>
                         </div>
@@ -106,22 +106,22 @@
                         <div id="comment-footers">
                             <c:forEach var="template" items="${emailTemplates}">
                                 <div class="${template.key}">
-                                        ${template.value.getFooter()}
+                                        ${template.value.footer}
                                 </div>
                             </c:forEach>
                         </div>
                     </div>
                     <c:choose>
-                        <c:when test="${hasNoWritePermission}">
-                            <p class="submitStatus error">
-                                <strong>You have no permission to advance this proposal.</strong>
-                            </p>
-                        </c:when>
-                        <c:otherwise>
+                        <c:when test="${proposalsPermissions.canFellowActions}">
                             <div class="blue-button" style="display:block; float:right;">
                                 <a href="javascript:;" class="requestMembershipSubmitButton"
                                    onclick="jQuery(this).parents('form').submit();">Save proposal decision</a>
                             </div>
+                        </c:when>
+                        <c:otherwise>
+                            <p class="submitStatus error">
+                                <strong>You have no permission to advance this proposal.</strong>
+                            </p>
                         </c:otherwise>
                     </c:choose>
                     <c:if test="${hasAlreadyBeenPromoted}">
@@ -137,12 +137,7 @@
                     <h3 style="margin-top: 0;">My Rating</h3>
                     <i>Your rating will be visible to the Judging team only.</i>
                     <c:choose>
-                        <c:when test="${hasNoWritePermission}">
-                            <p class="submitStatus error">
-                                <strong>You have no permission to rate this proposal.</strong>
-                            </p>
-                        </c:when>
-                        <c:otherwise>
+                        <c:when test="${proposalsPermissions.canFellowActions}">
                             <p>
                                 This is individualized for each Fellow and will be used for research purposes. Your comment (but not your rating) will be seen by other Fellows and Judges.
                             </p>
@@ -156,8 +151,13 @@
                             <form:textarea id="fellowRatingComment" cssClass="commentbox" path="comment" style="width:100%;"/>
                             <div class="blue-button" style="display:block; float:right;">
                                 <a href="javascript:;" class="requestMembershipSubmitButton"
-                                   onclick="jQuery(this).parents('form').submit();">Save</a>
+                                onclick="jQuery(this).parents('form').submit();">Save</a>
                             </div>
+                        </c:when>
+                        <c:otherwise>
+                            <p class="submitStatus error">
+                                <strong>You have no permission to rate this proposal.</strong>
+                            </p>
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -245,7 +245,7 @@
         }
     </script>
 
-    <c:if test="${hasNoWritePermission}">
+    <c:if test="${!proposalsPermissions.canFellowActions}">
         <script>
             var $fellowRatingFormElement = $("#fellowRatingForm");
             $fellowRatingFormElement.find("select").add($fellowRatingFormElement.find("input")).add($fellowRatingFormElement.find("textarea")).attr("disabled", "disabled");

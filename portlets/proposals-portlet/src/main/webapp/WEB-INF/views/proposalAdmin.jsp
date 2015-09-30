@@ -113,7 +113,7 @@
         </c:if>
 
 
-		<c:if test="${ proposalsPermissions.getCanPromoteProposalToNextPhase() }">
+		<c:if test="${ proposalsPermissions.canPromoteProposalToNextPhase }">
 
 			<portlet:actionURL var="promoteProposalURL">
 				<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
@@ -137,7 +137,7 @@
 			</form>
 		</c:if>
 
-        <c:if test="${ proposalsPermissions.getCanMoveProposalAndHideInCurrentContest() }">
+        <c:if test="${ proposalsPermissions.canMoveProposalAndHideInCurrentContest }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
             	<strong>Move proposal to different contest</strong>
             	<div>            		
@@ -151,7 +151,7 @@
 			</div>
 		</c:if>
 
-            <c:if test="${ proposalsPermissions.getCanMoveProposalAndKeepInCurrentContest() }">
+            <c:if test="${ proposalsPermissions.canMoveProposalAndKeepInCurrentContest }">
                 <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                     <strong>Copy proposal to different contest</strong>
                     <div>

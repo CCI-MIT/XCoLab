@@ -178,10 +178,6 @@ public class ProposalWrapper {
         return fellowDiscussionId;
     }
 
-    public void setFellowDiscussionId(long fellowDiscussionId) {
-        proposal.setFellowDiscussionId(fellowDiscussionId);
-    }
-
     public long getAdvisorDiscussionId() {
         return proposal.getAdvisorDiscussionId();
     }
@@ -553,7 +549,6 @@ public class ProposalWrapper {
 
         return subProposalScenarioIds;
     }
-
 
     /**
      * Determine if fellows are done with proposal
