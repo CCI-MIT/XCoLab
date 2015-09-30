@@ -107,19 +107,19 @@ public interface Plan2ProposalModel extends BaseModel<Plan2Proposal> {
     public Object clone();
 
     @Override
-    public int compareTo(Plan2Proposal plan2Proposal);
+    public int compareTo(com.ext.portlet.model.Plan2Proposal plan2Proposal);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<Plan2Proposal> toCacheModel();
+    public CacheModel<com.ext.portlet.model.Plan2Proposal> toCacheModel();
 
     @Override
-    public Plan2Proposal toEscapedModel();
+    public com.ext.portlet.model.Plan2Proposal toEscapedModel();
 
     @Override
-    public Plan2Proposal toUnescapedModel();
+    public com.ext.portlet.model.Plan2Proposal toUnescapedModel();
 
     @Override
     public String toString();

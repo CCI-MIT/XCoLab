@@ -117,19 +117,19 @@ public interface ProposalContestPhaseAttributeTypeModel extends BaseModel<Propos
 
     @Override
     public int compareTo(
-        ProposalContestPhaseAttributeType proposalContestPhaseAttributeType);
+        com.ext.portlet.model.ProposalContestPhaseAttributeType proposalContestPhaseAttributeType);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ProposalContestPhaseAttributeType> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ProposalContestPhaseAttributeType> toCacheModel();
 
     @Override
-    public ProposalContestPhaseAttributeType toEscapedModel();
+    public com.ext.portlet.model.ProposalContestPhaseAttributeType toEscapedModel();
 
     @Override
-    public ProposalContestPhaseAttributeType toUnescapedModel();
+    public com.ext.portlet.model.ProposalContestPhaseAttributeType toUnescapedModel();
 
     @Override
     public String toString();

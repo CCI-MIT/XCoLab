@@ -52,7 +52,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
         boolean editValidated = false;
         if(edit && proposalsContext.getPermissions(request).getCanEdit()){
-            editValidated = edit;
+            editValidated = true;
         }
         model.addAttribute("edit", editValidated);
         model.addAttribute("voted", voted);
@@ -106,8 +106,6 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         	}
         	
         	updateProposalDetailsBean.setMoveToContestPhaseId(contestPhase.getContestPhasePK());
-        	
-        	
         	model.addAttribute("updateProposalSectionsBean", updateProposalDetailsBean);
         	model.addAttribute("hasNotMappedSections", hasNotMappedSections);
         } else {

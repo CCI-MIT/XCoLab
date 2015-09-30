@@ -23,7 +23,7 @@ public class ProposalContestPhaseAutopromoteTask implements MessageListener {
 
 	private Log _log = LogFactoryUtil
 			.getLog(ProposalContestPhaseAutopromoteTask.class);
-	private static Object mutex = new Object();
+	private static final Object mutex = new Object();
 	private boolean isExecuting = false;
 
 	@Override

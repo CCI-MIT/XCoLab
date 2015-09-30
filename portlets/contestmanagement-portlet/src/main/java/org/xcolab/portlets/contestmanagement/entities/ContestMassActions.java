@@ -26,7 +26,8 @@ public enum ContestMassActions{
     SUBSCRIBE("Subscribe to activity", "Unsubscribe from activity", ContestMassActionMethods.class, "changeSubscriptionStatus"),
     SHOW_IN_TILE_VIEW("Show in tile view", "Hide in tile viw", ContestWrapper.class, "setShow_in_tile_view"),
     SHOW_IN_LIST_VIEW("Show in list view", "Hide in list view", ContestWrapper.class, "setShow_in_list_view"),
-    SHOW_IN_OUTLINE_VIEW("Show in outline view", "Hide in outline view", ContestWrapper.class, "setShow_in_outline_view");
+    SHOW_IN_OUTLINE_VIEW("Show in outline view", "Hide in outline view", ContestWrapper.class, "setShow_in_outline_view"),
+    HIDE_RIBBONS("Hide contest ribbons", "Show contest ribbons", ContestWrapper.class, "setHideRibbons");
 
     private Log _log = LogFactoryUtil.getLog(ContestMassActions.class);
     private final String actionDisplayName;

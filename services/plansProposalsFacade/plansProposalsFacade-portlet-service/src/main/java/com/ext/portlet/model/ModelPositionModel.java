@@ -121,19 +121,19 @@ public interface ModelPositionModel extends BaseModel<ModelPosition> {
     public Object clone();
 
     @Override
-    public int compareTo(ModelPosition modelPosition);
+    public int compareTo(com.ext.portlet.model.ModelPosition modelPosition);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ModelPosition> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ModelPosition> toCacheModel();
 
     @Override
-    public ModelPosition toEscapedModel();
+    public com.ext.portlet.model.ModelPosition toEscapedModel();
 
     @Override
-    public ModelPosition toUnescapedModel();
+    public com.ext.portlet.model.ModelPosition toUnescapedModel();
 
     @Override
     public String toString();

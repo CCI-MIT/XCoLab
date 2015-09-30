@@ -89,6 +89,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("show_in_tile_view", getShow_in_tile_view());
         attributes.put("show_in_list_view", getShow_in_list_view());
         attributes.put("show_in_outline_view", getShow_in_outline_view());
+        attributes.put("hideRibbons", getHideRibbons());
 
         return attributes;
     }
@@ -392,6 +393,12 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (show_in_outline_view != null) {
             setShow_in_outline_view(show_in_outline_view);
+        }
+
+        Boolean hideRibbons = (Boolean) attributes.get("hideRibbons");
+
+        if (hideRibbons != null) {
+            setHideRibbons(hideRibbons);
         }
     }
 
@@ -1442,6 +1449,36 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         _contest.setShow_in_outline_view(show_in_outline_view);
     }
 
+    /**
+    * Returns the hide ribbons of this contest.
+    *
+    * @return the hide ribbons of this contest
+    */
+    @Override
+    public boolean getHideRibbons() {
+        return _contest.getHideRibbons();
+    }
+
+    /**
+    * Returns <code>true</code> if this contest is hide ribbons.
+    *
+    * @return <code>true</code> if this contest is hide ribbons; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isHideRibbons() {
+        return _contest.isHideRibbons();
+    }
+
+    /**
+    * Sets whether this contest is hide ribbons.
+    *
+    * @param hideRibbons the hide ribbons of this contest
+    */
+    @Override
+    public void setHideRibbons(boolean hideRibbons) {
+        _contest.setHideRibbons(hideRibbons);
+    }
+
     @Override
     public boolean isNew() {
         return _contest.isNew();
@@ -1506,7 +1543,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     }
 
     @Override
-    public int compareTo(Contest contest) {
+    public int compareTo(com.ext.portlet.model.Contest contest) {
         return _contest.compareTo(contest);
     }
 
@@ -1516,17 +1553,17 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<Contest> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.Contest> toCacheModel() {
         return _contest.toCacheModel();
     }
 
     @Override
-    public Contest toEscapedModel() {
+    public com.ext.portlet.model.Contest toEscapedModel() {
         return new ContestWrapper(_contest.toEscapedModel());
     }
 
     @Override
-    public Contest toUnescapedModel() {
+    public com.ext.portlet.model.Contest toUnescapedModel() {
         return new ContestWrapper(_contest.toUnescapedModel());
     }
 

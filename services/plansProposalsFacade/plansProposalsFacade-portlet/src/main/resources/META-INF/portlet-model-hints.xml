@@ -193,6 +193,7 @@
 		<field name="show_in_outline_view" type="boolean">
 			<hint name="default-value">true</hint>
 		</field>
+		<field name="hideRibbons" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ContestDebate">
 		<field name="id" type="long" />
@@ -1045,19 +1046,6 @@
 		<field name="userId" type="long" />
 		<field name="createDate" type="Date" />
 	</model>
-	<model name="com.ext.portlet.model.Role_">
-		<field name="roleId" type="long" />
-		<field name="name" type="String" />
-	</model>
-	<model name="com.ext.portlet.model.RolesCategory">
-		<field name="roleId" type="long" />
-		<field name="categoryName" type="String" />
-		<field name="roleOrdinal" type="int" />
-	</model>
-	<model name="com.ext.portlet.model.SocialActivity">
-		<field name="activityId" type="long" />
-		<field name="userId" type="long" />
-	</model>
 	<model name="com.ext.portlet.model.StaffMember">
 		<field name="id" type="long" />
 		<field name="userId" type="long" />
@@ -1109,14 +1097,5 @@
 		</field>
 		<field name="userId" type="long" />
 		<field name="createDate" type="Date" />
-	</model>
-	<model name="com.ext.portlet.model.User_">
-		<field name="userId" type="long" />
-		<field name="createDate" type="Date" />
-		<field name="screenName" type="String" />
-	</model>
-	<model name="com.ext.portlet.model.Users_Roles">
-		<field name="userId" type="long" />
-		<field name="roleId" type="long" />
 	</model>
 </model-hints>

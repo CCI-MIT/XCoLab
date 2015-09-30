@@ -174,6 +174,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private String[] _methodParameterTypes82;
     private String _methodName83;
     private String[] _methodParameterTypes83;
+    private String _methodName84;
+    private String[] _methodParameterTypes84;
 
     public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -537,9 +539,13 @@ public class ContestLocalServiceClp implements ContestLocalService {
 
         _methodParameterTypes82 = new String[] {  };
 
-        _methodName83 = "addContestYearSuffixToContest";
+        _methodName83 = "getPointsEnabledContests";
 
-        _methodParameterTypes83 = new String[] {
+        _methodParameterTypes83 = new String[] { "boolean" };
+
+        _methodName84 = "addContestYearSuffixToContest";
+
+        _methodParameterTypes84 = new String[] {
                 "com.ext.portlet.model.Contest", "boolean"
             };
     }
@@ -3054,11 +3060,39 @@ public class ContestLocalServiceClp implements ContestLocalService {
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.Contest> getPointsEnabledContests(
+        boolean ignoreInactiveContests)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName83,
+                    _methodParameterTypes83,
+                    new Object[] { ignoreInactiveContests });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.Contest>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public void addContestYearSuffixToContest(
         com.ext.portlet.model.Contest contest, boolean checkForCompleted) {
         try {
-            _invokableLocalService.invokeMethod(_methodName83,
-                _methodParameterTypes83,
+            _invokableLocalService.invokeMethod(_methodName84,
+                _methodParameterTypes84,
                 new Object[] {
                     ClpSerializer.translateInput(contest),
                     

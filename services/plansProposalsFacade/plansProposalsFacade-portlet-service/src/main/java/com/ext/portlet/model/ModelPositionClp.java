@@ -24,6 +24,7 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
     private long _positionId;
     private long _modelId;
     private BaseModel<?> _modelPositionRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ModelPositionClp() {
     }
@@ -263,6 +264,10 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

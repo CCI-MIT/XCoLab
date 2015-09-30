@@ -781,6 +781,27 @@ public interface ContestModel extends BaseModel<Contest> {
      */
     public void setShow_in_outline_view(boolean show_in_outline_view);
 
+    /**
+     * Returns the hide ribbons of this contest.
+     *
+     * @return the hide ribbons of this contest
+     */
+    public boolean getHideRibbons();
+
+    /**
+     * Returns <code>true</code> if this contest is hide ribbons.
+     *
+     * @return <code>true</code> if this contest is hide ribbons; <code>false</code> otherwise
+     */
+    public boolean isHideRibbons();
+
+    /**
+     * Sets whether this contest is hide ribbons.
+     *
+     * @param hideRibbons the hide ribbons of this contest
+     */
+    public void setHideRibbons(boolean hideRibbons);
+
     @Override
     public boolean isNew();
 
@@ -818,19 +839,19 @@ public interface ContestModel extends BaseModel<Contest> {
     public Object clone();
 
     @Override
-    public int compareTo(Contest contest);
+    public int compareTo(com.ext.portlet.model.Contest contest);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<Contest> toCacheModel();
+    public CacheModel<com.ext.portlet.model.Contest> toCacheModel();
 
     @Override
-    public Contest toEscapedModel();
+    public com.ext.portlet.model.Contest toEscapedModel();
 
     @Override
-    public Contest toUnescapedModel();
+    public com.ext.portlet.model.Contest toUnescapedModel();
 
     @Override
     public String toString();

@@ -35,6 +35,7 @@ public class MessagingMessageClp extends BaseModelImpl<MessagingMessage>
     private Date _createDate;
     private Date _modifiedDate;
     private BaseModel<?> _messagingMessageRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public MessagingMessageClp() {
     }
@@ -553,6 +554,10 @@ public class MessagingMessageClp extends BaseModelImpl<MessagingMessage>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

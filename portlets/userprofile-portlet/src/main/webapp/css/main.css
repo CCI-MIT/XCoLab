@@ -188,3 +188,34 @@ input.cmn-toggle-round:checked ~ label:before {
 input.cmn-toggle-round:checked ~ label:after {
     margin-left: 30px;
 }
+
+
+.profileTable td {
+    padding: 3px;
+}
+
+.profileTable td.points_box {
+    border-color: #30a3fb;
+    border-width: 2px;
+    /*border is invisible unless border-style is set*/
+}
+
+.profileTable td.left_border {
+    border-left-style: solid;
+}
+
+.profileTable td.right_border {
+    border-right-style: solid;
+}
+
+.profileTable td.bottom_border {
+    border-bottom-style: solid;
+}
+
+.profileTable td.top_border {
+    border-top-style: solid;
+}
+
+td.align_right {
+    text-align: right;
+}

@@ -68,7 +68,9 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private boolean _show_in_tile_view;
     private boolean _show_in_list_view;
     private boolean _show_in_outline_view;
+    private boolean _hideRibbons;
     private BaseModel<?> _contestRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ContestClp() {
     }
@@ -159,6 +161,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("show_in_tile_view", getShow_in_tile_view());
         attributes.put("show_in_list_view", getShow_in_list_view());
         attributes.put("show_in_outline_view", getShow_in_outline_view());
+        attributes.put("hideRibbons", getHideRibbons());
 
         return attributes;
     }
@@ -462,6 +465,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (show_in_outline_view != null) {
             setShow_in_outline_view(show_in_outline_view);
+        }
+
+        Boolean hideRibbons = (Boolean) attributes.get("hideRibbons");
+
+        if (hideRibbons != null) {
+            setHideRibbons(hideRibbons);
         }
     }
 
@@ -1566,6 +1575,33 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         }
     }
 
+    @Override
+    public boolean getHideRibbons() {
+        return _hideRibbons;
+    }
+
+    @Override
+    public boolean isHideRibbons() {
+        return _hideRibbons;
+    }
+
+    @Override
+    public void setHideRibbons(boolean hideRibbons) {
+        _hideRibbons = hideRibbons;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setHideRibbons", boolean.class);
+
+                method.invoke(_contestRemoteModel, hideRibbons);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestRemoteModel() {
         return _contestRemoteModel;
     }
@@ -1680,6 +1716,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setShow_in_tile_view(getShow_in_tile_view());
         clone.setShow_in_list_view(getShow_in_list_view());
         clone.setShow_in_outline_view(getShow_in_outline_view());
+        clone.setHideRibbons(getHideRibbons());
 
         return clone;
     }
@@ -1730,6 +1767,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         }
     }
 
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
+    }
+
     @Override
     public int hashCode() {
         return (int) getPrimaryKey();
@@ -1737,7 +1778,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(95);
+        StringBundler sb = new StringBundler(97);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1833,6 +1874,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getShow_in_list_view());
         sb.append(", show_in_outline_view=");
         sb.append(getShow_in_outline_view());
+        sb.append(", hideRibbons=");
+        sb.append(getHideRibbons());
         sb.append("}");
 
         return sb.toString();
@@ -1840,7 +1883,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(145);
+        StringBundler sb = new StringBundler(148);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -2033,6 +2076,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>show_in_outline_view</column-name><column-value><![CDATA[");
         sb.append(getShow_in_outline_view());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>hideRibbons</column-name><column-value><![CDATA[");
+        sb.append(getHideRibbons());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

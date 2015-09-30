@@ -238,19 +238,20 @@ public interface DiscussionCategoryModel extends BaseModel<DiscussionCategory> {
     public Object clone();
 
     @Override
-    public int compareTo(DiscussionCategory discussionCategory);
+    public int compareTo(
+        com.ext.portlet.model.DiscussionCategory discussionCategory);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<DiscussionCategory> toCacheModel();
+    public CacheModel<com.ext.portlet.model.DiscussionCategory> toCacheModel();
 
     @Override
-    public DiscussionCategory toEscapedModel();
+    public com.ext.portlet.model.DiscussionCategory toEscapedModel();
 
     @Override
-    public DiscussionCategory toUnescapedModel();
+    public com.ext.portlet.model.DiscussionCategory toUnescapedModel();
 
     @Override
     public String toString();

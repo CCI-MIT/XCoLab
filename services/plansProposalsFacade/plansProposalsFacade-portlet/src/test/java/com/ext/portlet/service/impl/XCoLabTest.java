@@ -1,30 +1,50 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.ContestPhaseType;
+import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.PointType;
+import com.ext.portlet.service.ContestLocalService;
+import com.ext.portlet.service.ContestPhaseLocalService;
+import com.ext.portlet.service.ContestPhaseTypeLocalService;
+import com.ext.portlet.service.ContestTeamMemberLocalService;
+import com.ext.portlet.service.PlanSectionDefinitionLocalService;
+import com.ext.portlet.service.PointDistributionTargetLocalService;
+import com.ext.portlet.service.PointTypeLocalService;
+import com.ext.portlet.service.PointsDistributionConfigurationLocalService;
+import com.ext.portlet.service.PointsLocalService;
+import com.ext.portlet.service.Proposal2PhaseLocalService;
+import com.ext.portlet.service.ProposalAttributeLocalService;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
+import com.ext.portlet.service.ProposalLocalService;
+import com.ext.portlet.service.persistence.PointTypePersistence;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.Contact;
+import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
-import com.liferay.portal.service.*;
+import com.liferay.portal.service.ContactLocalService;
+import com.liferay.portal.service.GroupLocalService;
+import com.liferay.portal.service.MockContextProvider;
+import com.liferay.portal.service.PasswordPolicyLocalService;
+import com.liferay.portal.service.ResourceActionLocalServiceUtil;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserLocalService;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
 import com.liferay.portal.util.InitUtil;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.xcolab.services.EventBusService;
+import org.xcolab.utils.HtmlUtil;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import javax.jcr.query.Query;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by manu on 17/09/14.
@@ -33,6 +53,7 @@ public class XCoLabTest {
     protected static ContestPhaseTypeLocalService contestPhaseTypeLocalService;
     protected static ContactLocalService contactLocalService;
     protected static UserLocalService userLocalService;
+    protected static GroupLocalService groupLocalService;
     protected static PasswordPolicyLocalService passwordPolicyLocalService;
     protected static ContestLocalService contestLocalService;
     protected static ContestPhaseLocalService contestPhaseLocalService;
@@ -42,11 +63,14 @@ public class XCoLabTest {
     protected static Proposal2PhaseLocalService proposal2PhaseLocalService;
     protected static ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService;
     protected static PointTypeLocalService pointTypeLocalService;
+    protected static PointTypePersistence pointTypePersistence;
     protected static PointsLocalService pointsLocalService;
     protected static PointsDistributionConfigurationLocalService pointsDistributionConfigurationService;
     protected static PointDistributionTargetLocalService pointDistributionTargetService;
     protected static PlanSectionDefinitionLocalService planSectionDefinitionLocalService;
     protected static long adminId = 10144L;
+
+    protected int numberOfCreatedUsers;
 
     @BeforeClass
     public static void beforeTest() throws Exception {
@@ -66,6 +90,7 @@ public class XCoLabTest {
         passwordPolicyLocalService = (PasswordPolicyLocalService) PortalBeanLocatorUtil.locate(PasswordPolicyLocalService.class.getName());
         contactLocalService = (ContactLocalService) PortalBeanLocatorUtil.locate(ContactLocalService.class.getName());
         userLocalService = (UserLocalService) PortalBeanLocatorUtil.locate(UserLocalService.class.getName());
+        groupLocalService = (GroupLocalService) PortalBeanLocatorUtil.locate(GroupLocalService.class.getName());
         contestLocalService = (ContestLocalService) PortalBeanLocatorUtil.locate(ContestLocalService.class.getName());
         contestTeamMemberLocalService = (ContestTeamMemberLocalService) PortalBeanLocatorUtil.locate(ContestTeamMemberLocalService.class.getName());
         contestPhaseLocalService = (ContestPhaseLocalService) PortalBeanLocatorUtil.locate(ContestPhaseLocalService.class.getName());
@@ -74,30 +99,79 @@ public class XCoLabTest {
         proposal2PhaseLocalService = (Proposal2PhaseLocalService) PortalBeanLocatorUtil.locate(Proposal2PhaseLocalService.class.getName());
         proposalContestPhaseAttributeLocalService = (ProposalContestPhaseAttributeLocalService) PortalBeanLocatorUtil.locate(ProposalContestPhaseAttributeLocalService.class.getName());
         pointTypeLocalService = (PointTypeLocalService) PortalBeanLocatorUtil.locate(PointTypeLocalService.class.getName());
+        pointTypePersistence = (PointTypePersistence) PortalBeanLocatorUtil.locate(PointTypePersistence.class.getName());
         pointsLocalService = (PointsLocalService) PortalBeanLocatorUtil.locate(PointsLocalService.class.getName());
         pointsDistributionConfigurationService = (PointsDistributionConfigurationLocalService) PortalBeanLocatorUtil.locate(PointsDistributionConfigurationLocalService.class.getName());
         pointDistributionTargetService = (PointDistributionTargetLocalService) PortalBeanLocatorUtil.locate(PointDistributionTargetLocalService.class.getName());
         planSectionDefinitionLocalService = (PlanSectionDefinitionLocalService) PortalBeanLocatorUtil.locate(PlanSectionDefinitionLocalService.class.getName());
 
         PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(adminId));
+
+        setupBasicDataset();
     }
 
-    protected User createUser(long id) throws SystemException {
+    /**
+     * Create a set of new user model objects
+     * @param numberOfUsers number of objects that should be created
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
+    protected List<User> createUsers(int numberOfUsers) throws PortalException, SystemException {
+        numberOfCreatedUsers = numberOfUsers;
+        List<User> users = new ArrayList<>(numberOfUsers);
+        for (int i = 0; i < numberOfUsers; i++) {
+            users.add(createUser(i+1));
+        }
+
+        return users;
+    }
+
+    private User createUser(long id) throws SystemException, PortalException {
         contactLocalService.addContact(contactLocalService.createContact(id));
 
         User user = userLocalService.createUser(id);
-        user.setScreenName("thurner"+id);
-        user.setEmailAddress("john.doe+"+id+"@example.com");
+        user.setScreenName("thurner" + id);
+        user.setEmailAddress("john.doe+" + id + "@example.com");
         user.setCompanyId(10112L);
         user.setPasswordUnencrypted("test11");
         user.setPasswordEncrypted(false);
         user.setContactId(id);
         userLocalService.addUser(user);
 
+        // Create a matching group for the new user
+        groupLocalService.addGroup(adminId, 0,
+                "com.liferay.portal.model.User",
+                id, 0, "", "User", 0, true, 0, "/" + user.getScreenName(), false, true, new ServiceContext());
+
         return user;
     }
 
-    protected void setupBasicDataset() throws SystemException, PortalException {
+    /**
+     * Clean up all previously created user and utility model objects
+     * @throws SystemException
+     * @throws PortalException
+     */
+    protected void deleteUsers() throws SystemException, PortalException {
+        // Only delete the created users/contacts/groups from the method createUser
+        for (Contact contact : contactLocalService.getContacts(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            if (contact.getContactId() >= 1 && contact.getContactId() <= numberOfCreatedUsers) {
+                contactLocalService.deleteContact(contact);
+            }
+        }
+        for (User user : userLocalService.getUsers(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            if (user.getUserId() >= 1 && user.getUserId() <= numberOfCreatedUsers) {
+                userLocalService.deleteUser(user);
+            }
+        }
+        for (Group userGroup : groupLocalService.getGroups(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            if (userGroup.getClassNameId() == 10038L && userGroup.getClassPK() >= 1 && userGroup.getClassPK() <= numberOfCreatedUsers) {
+                groupLocalService.deleteGroup(userGroup);
+            }
+        }
+    }
+
+    protected static void setupBasicDataset() throws SystemException, PortalException {
         //create default password policy
         passwordPolicyLocalService.addPasswordPolicy(10115L, true, "Default Password Policy", "Default Password Policy", true, false, 0L, false, true, 6, 0, 6, 0, 0, 0, "", false, 0, false, 8640000L, 0L, 0, false, 3, 600L, 0L, 0L, new ServiceContext());
 
@@ -111,12 +185,11 @@ public class XCoLabTest {
         psd.setLocked(false);
         planSectionDefinitionLocalService.addPlanSectionDefinition(psd);
 
-        this.createPointTypes();
-        this.createContestPhaseTypes();
+        createPointTypes();
+        createContestPhaseTypes();
     }
 
-
-    protected void createContestPhaseTypes() throws SystemException {
+    protected static void createContestPhaseTypes() throws SystemException {
         ContestPhaseType cpt = contestPhaseTypeLocalService.createContestPhaseType(1);
         cpt.setName("Proposal creation");
         cpt.setStatus("OPEN_FOR_SUBMISSION");
@@ -148,7 +221,7 @@ public class XCoLabTest {
         contestPhaseTypeLocalService.updateContestPhaseType(cpt);
     }
 
-    protected void createPointTypes() throws SystemException {
+    protected static void createPointTypes() throws SystemException {
         PointType pt = pointTypeLocalService.createPointType(1);
         pt.setParentPointTypeId(0);
         pt.setPercentageOfParent(1);

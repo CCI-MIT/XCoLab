@@ -45,6 +45,12 @@ import java.util.Map;
 @RequestMapping("edit")
 public class ProposalsPreferencesController {
 
+    public static final long WINNERS_AWARDED_PHASE_ID = org.xcolab.enums.ContestPhaseType.WINNERS_AWARDED.getTypeId();
+    public static final long WINNERS_SELECTION_PHASE_ID = org.xcolab.enums.ContestPhaseType.WINNERS_SELECTION.getTypeId();
+    public static final long SELECTION_OF_WINNERS_NEW_PHASE_ID = org.xcolab.enums.ContestPhaseType.SELECTION_OF_WINNERS_NEW.getTypeId();
+    public static final long PROPOSAL_CREATION_PHASE_ID = org.xcolab.enums.ContestPhaseType.PROPOSAL_CREATION.getTypeId();
+    public static final long FINALIST_SELECTION_NEW_PHASE_ID = org.xcolab.enums.ContestPhaseType.FINALIST_SELECTION_NEW.getTypeId();
+
     private static List<ContestPhase> getPhasesByContest(Contest c, final int sortModifier) {
         List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(c);
 
@@ -206,13 +212,14 @@ public class ProposalsPreferencesController {
             ContestPhase proposalCreation = null;
 
             for (ContestPhase cp : contestPhases) {
-                if (cp.getContestPhaseType() == 17) {
+                if (cp.getContestPhaseType() == WINNERS_AWARDED_PHASE_ID) {
                     winnersAwarded = cp;
-                } else if (cp.getContestPhaseType() == 15 || cp.getContestPhaseType() == 20) {
+                } else if (cp.getContestPhaseType() == WINNERS_SELECTION_PHASE_ID
+                        || cp.getContestPhaseType() == SELECTION_OF_WINNERS_NEW_PHASE_ID) {
                     winnersSelection = cp;
-                } else if (cp.getContestPhaseType() == 19) {
+                } else if (cp.getContestPhaseType() == FINALIST_SELECTION_NEW_PHASE_ID) {
                     finalistSelection = cp;
-                } else if (cp.getContestPhaseType() == 1) {
+                } else if (cp.getContestPhaseType() == PROPOSAL_CREATION_PHASE_ID) {
                     proposalCreation = cp;
                 }
             }

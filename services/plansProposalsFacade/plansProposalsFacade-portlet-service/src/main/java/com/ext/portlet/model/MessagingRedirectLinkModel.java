@@ -139,19 +139,20 @@ public interface MessagingRedirectLinkModel extends BaseModel<MessagingRedirectL
     public Object clone();
 
     @Override
-    public int compareTo(MessagingRedirectLink messagingRedirectLink);
+    public int compareTo(
+        com.ext.portlet.model.MessagingRedirectLink messagingRedirectLink);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<MessagingRedirectLink> toCacheModel();
+    public CacheModel<com.ext.portlet.model.MessagingRedirectLink> toCacheModel();
 
     @Override
-    public MessagingRedirectLink toEscapedModel();
+    public com.ext.portlet.model.MessagingRedirectLink toEscapedModel();
 
     @Override
-    public MessagingRedirectLink toUnescapedModel();
+    public com.ext.portlet.model.MessagingRedirectLink toUnescapedModel();
 
     @Override
     public String toString();

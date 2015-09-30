@@ -25,6 +25,7 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
     private String _description;
     private int _order;
     private BaseModel<?> _ontologySpaceRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public OntologySpaceClp() {
     }
@@ -300,6 +301,10 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

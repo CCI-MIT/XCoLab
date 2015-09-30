@@ -391,7 +391,8 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     }
 
     @Override
-    public int compareTo(ActivitySubscription activitySubscription) {
+    public int compareTo(
+        com.ext.portlet.model.ActivitySubscription activitySubscription) {
         return _activitySubscription.compareTo(activitySubscription);
     }
 
@@ -401,17 +402,17 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ActivitySubscription> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ActivitySubscription> toCacheModel() {
         return _activitySubscription.toCacheModel();
     }
 
     @Override
-    public ActivitySubscription toEscapedModel() {
+    public com.ext.portlet.model.ActivitySubscription toEscapedModel() {
         return new ActivitySubscriptionWrapper(_activitySubscription.toEscapedModel());
     }
 
     @Override
-    public ActivitySubscription toUnescapedModel() {
+    public com.ext.portlet.model.ActivitySubscription toUnescapedModel() {
         return new ActivitySubscriptionWrapper(_activitySubscription.toUnescapedModel());
     }
 

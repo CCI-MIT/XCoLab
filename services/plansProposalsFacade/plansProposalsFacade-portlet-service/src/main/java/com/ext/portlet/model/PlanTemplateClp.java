@@ -26,6 +26,7 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
     private Long _impactSeriesTemplateId;
     private Long _focusAreaListTemplateId;
     private BaseModel<?> _planTemplateRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanTemplateClp() {
     }
@@ -328,6 +329,10 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -182,19 +182,19 @@ public interface PlanItemModel extends BaseModel<PlanItem> {
     public Object clone();
 
     @Override
-    public int compareTo(PlanItem planItem);
+    public int compareTo(com.ext.portlet.model.PlanItem planItem);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlanItem> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlanItem> toCacheModel();
 
     @Override
-    public PlanItem toEscapedModel();
+    public com.ext.portlet.model.PlanItem toEscapedModel();
 
     @Override
-    public PlanItem toUnescapedModel();
+    public com.ext.portlet.model.PlanItem toUnescapedModel();
 
     @Override
     public String toString();

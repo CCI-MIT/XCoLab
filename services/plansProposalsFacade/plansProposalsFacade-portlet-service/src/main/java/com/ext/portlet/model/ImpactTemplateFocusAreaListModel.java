@@ -110,19 +110,19 @@ public interface ImpactTemplateFocusAreaListModel extends BaseModel<ImpactTempla
 
     @Override
     public int compareTo(
-        ImpactTemplateFocusAreaList impactTemplateFocusAreaList);
+        com.ext.portlet.model.ImpactTemplateFocusAreaList impactTemplateFocusAreaList);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ImpactTemplateFocusAreaList> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ImpactTemplateFocusAreaList> toCacheModel();
 
     @Override
-    public ImpactTemplateFocusAreaList toEscapedModel();
+    public com.ext.portlet.model.ImpactTemplateFocusAreaList toEscapedModel();
 
     @Override
-    public ImpactTemplateFocusAreaList toUnescapedModel();
+    public com.ext.portlet.model.ImpactTemplateFocusAreaList toUnescapedModel();
 
     @Override
     public String toString();

@@ -263,7 +263,7 @@ public class ContestScheduleWrapper implements ContestSchedule,
     }
 
     @Override
-    public int compareTo(ContestSchedule contestSchedule) {
+    public int compareTo(com.ext.portlet.model.ContestSchedule contestSchedule) {
         return _contestSchedule.compareTo(contestSchedule);
     }
 
@@ -273,17 +273,17 @@ public class ContestScheduleWrapper implements ContestSchedule,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ContestSchedule> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ContestSchedule> toCacheModel() {
         return _contestSchedule.toCacheModel();
     }
 
     @Override
-    public ContestSchedule toEscapedModel() {
+    public com.ext.portlet.model.ContestSchedule toEscapedModel() {
         return new ContestScheduleWrapper(_contestSchedule.toEscapedModel());
     }
 
     @Override
-    public ContestSchedule toUnescapedModel() {
+    public com.ext.portlet.model.ContestSchedule toUnescapedModel() {
         return new ContestScheduleWrapper(_contestSchedule.toUnescapedModel());
     }
 

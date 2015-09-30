@@ -33,6 +33,7 @@ public class ModelOutputItemClp extends BaseModelImpl<ModelOutputItem>
     private String _itemType;
     private long _relatedOutputItem;
     private BaseModel<?> _modelOutputItemRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ModelOutputItemClp() {
     }
@@ -568,6 +569,10 @@ public class ModelOutputItemClp extends BaseModelImpl<ModelOutputItem>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

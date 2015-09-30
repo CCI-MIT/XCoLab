@@ -106,7 +106,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if(scenarioIdValid){
             try {
                 modelId = CollaboratoriumModelingService.repository()
-                        .getScenario(proposalWrapper.getProposalId()).getSimulation().getId();
+                        .getScenario(proposalWrapper.getScenarioId()).getSimulation().getId();
             } catch (Exception e){
                 _log.warn("Could not fetch simulation id for proposal scenario: ", e);
             }

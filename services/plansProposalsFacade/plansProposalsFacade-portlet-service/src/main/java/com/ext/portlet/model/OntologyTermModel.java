@@ -166,19 +166,19 @@ public interface OntologyTermModel extends BaseModel<OntologyTerm> {
     public Object clone();
 
     @Override
-    public int compareTo(OntologyTerm ontologyTerm);
+    public int compareTo(com.ext.portlet.model.OntologyTerm ontologyTerm);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<OntologyTerm> toCacheModel();
+    public CacheModel<com.ext.portlet.model.OntologyTerm> toCacheModel();
 
     @Override
-    public OntologyTerm toEscapedModel();
+    public com.ext.portlet.model.OntologyTerm toEscapedModel();
 
     @Override
-    public OntologyTerm toUnescapedModel();
+    public com.ext.portlet.model.OntologyTerm toUnescapedModel();
 
     @Override
     public String toString();

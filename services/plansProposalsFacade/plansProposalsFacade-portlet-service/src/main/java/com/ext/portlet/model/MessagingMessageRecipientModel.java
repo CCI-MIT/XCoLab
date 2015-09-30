@@ -153,19 +153,20 @@ public interface MessagingMessageRecipientModel extends BaseModel<MessagingMessa
     public Object clone();
 
     @Override
-    public int compareTo(MessagingMessageRecipient messagingMessageRecipient);
+    public int compareTo(
+        com.ext.portlet.model.MessagingMessageRecipient messagingMessageRecipient);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<MessagingMessageRecipient> toCacheModel();
+    public CacheModel<com.ext.portlet.model.MessagingMessageRecipient> toCacheModel();
 
     @Override
-    public MessagingMessageRecipient toEscapedModel();
+    public com.ext.portlet.model.MessagingMessageRecipient toEscapedModel();
 
     @Override
-    public MessagingMessageRecipient toUnescapedModel();
+    public com.ext.portlet.model.MessagingMessageRecipient toUnescapedModel();
 
     @Override
     public String toString();

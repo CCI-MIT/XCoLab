@@ -341,7 +341,8 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     }
 
     @Override
-    public int compareTo(AnalyticsUserEvent analyticsUserEvent) {
+    public int compareTo(
+        com.ext.portlet.model.AnalyticsUserEvent analyticsUserEvent) {
         return _analyticsUserEvent.compareTo(analyticsUserEvent);
     }
 
@@ -351,17 +352,17 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<AnalyticsUserEvent> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.AnalyticsUserEvent> toCacheModel() {
         return _analyticsUserEvent.toCacheModel();
     }
 
     @Override
-    public AnalyticsUserEvent toEscapedModel() {
+    public com.ext.portlet.model.AnalyticsUserEvent toEscapedModel() {
         return new AnalyticsUserEventWrapper(_analyticsUserEvent.toEscapedModel());
     }
 
     @Override
-    public AnalyticsUserEvent toUnescapedModel() {
+    public com.ext.portlet.model.AnalyticsUserEvent toUnescapedModel() {
         return new AnalyticsUserEventWrapper(_analyticsUserEvent.toUnescapedModel());
     }
 

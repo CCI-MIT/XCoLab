@@ -28,6 +28,7 @@ public class ModelInputItemClp extends BaseModelImpl<ModelInputItem>
     private String _type;
     private String _properties;
     private BaseModel<?> _modelInputItemRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ModelInputItemClp() {
     }
@@ -390,6 +391,10 @@ public class ModelInputItemClp extends BaseModelImpl<ModelInputItem>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

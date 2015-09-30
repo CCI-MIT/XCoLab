@@ -1,23 +1,14 @@
 package org.xcolab.portlets.proposals.requests;
 
-import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.model.PointsDistributionConfiguration;
-import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.*;
 
 /**
@@ -35,20 +26,10 @@ public class AssignPointsBean {
     }
 
     public void setupUsers(List<User> teamMembers) throws SystemException {
-        List<Long> teamMembersIds = new ArrayList<Long>();
-        for (User u: teamMembers) {
-            teamMembersIds.add(u.getUserId());
-        }
-
-        DynamicQuery userQuery = DynamicQueryFactoryUtil.forClass(User.class, PortalClassLoaderUtil.getClassLoader());
-        if (teamMembersIds.size() > 0) {
-            userQuery.add(
-                RestrictionsFactoryUtil.not(
-                    RestrictionsFactoryUtil.in("userId", teamMembersIds)
-                )
-            );
-        }
-        usersNotInTeam = UserLocalServiceUtil.dynamicQuery(userQuery);
+        List<User> allUsers = UserLocalServiceUtil.getUsers(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+        List<User> usersNotInTeam = new ArrayList<>(allUsers);
+        usersNotInTeam.removeAll(teamMembers);
+        this.usersNotInTeam = usersNotInTeam;
     }
 
     public void addAssignment(PointTypeWrapper pointType, List<User> users, List<PointsDistributionConfiguration> existingDistribution) {

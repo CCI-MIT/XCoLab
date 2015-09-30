@@ -24,6 +24,7 @@ public class PlanRelatedClp extends BaseModelImpl<PlanRelated>
     private long _sectionId;
     private long _relatedPlanId;
     private BaseModel<?> _planRelatedRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanRelatedClp() {
     }
@@ -227,6 +228,10 @@ public class PlanRelatedClp extends BaseModelImpl<PlanRelated>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

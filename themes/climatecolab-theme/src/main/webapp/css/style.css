@@ -236,8 +236,13 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .headline .days-left {float:right; width:300px; text-align:right; vertical-align:middle; line-height:normal;}
 .headline .days-left span {font-size:24px; font-weight:700; color:#e36f0f; padding-right:5px; vertical-align:middle;}
 
+/* contest page fold */
+.fold {padding: 25px 0 25px 0;}
+.fold .fold-message {padding: 10px 10px; border-top: 1px dashed #00f; border-bottom: 1px dashed #00f; background: #eeeeff; text-align: center;}
+.fold .fold-message h3 {display: inline;}
+
 /* second headline area on the contest page */
-.headline.subhead {margin:50px 0 15px 0; padding-left:15px;}
+.headline.subhead {margin:0 0 15px 0; padding-left:15px;}
 .headline h2 {float:left; display:inline; width:auto; font-weight:400; color:#404040;}
 .headline h2 span {font-size:33px; font-weight:700; color:#66b035;}
 .subhead .right {float:right; width:300px; text-align:right;}
@@ -269,34 +274,36 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar a {font-weight:normal;}
 
 /* list page */
-.blueheaderbar .contest {float:left; width:357px; height:37px; padding-left:9px;}
+.blueheaderbar .contest {float:left; width:404px; height:37px; padding-left:9px;}
 .blueheaderbar .contest a {padding-top:10px; height:27px; display:inline-block;}
-.blueheaderbar .proposal {float:left; width:55px; height:37px; position: relative;}
+.blueheaderbar .proposal {float:left; width:56px; height:37px; position: relative;}
 .blueheaderbar .proposal .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .proposal a {background:url(../images/icon-list-proposals.png) no-repeat 9px 7px; width:33px; height:37px; display:inline-block;}
-.blueheaderbar .comment {float:left; width:55px; height:37px; position: relative;}
+.blueheaderbar .comment {float:left; width:60px; height:37px; position: relative;}
 .blueheaderbar .comment .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .comment a {background:url(../images/icon-list-comment.png) no-repeat 9px 8px; width:33px; height:37px; display:inline-block;}
 .blueheaderbar .voteslist {float:left; width:55px; height:37px; position: relative;}
 .blueheaderbar .voteslist .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .voteslist a {background:url(../images/icon-proposal-vote.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
-.blueheaderbar .what {float:left; width:133px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
+.blueheaderbar .what {float:left; width:151px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
 .blueheaderbar .what a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
-.blueheaderbar .where {float:left;  width:125px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
+.blueheaderbar .where {float:left;  width:177px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
 .blueheaderbar .where a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
-.blueheaderbar .who {float:left; width:120px; height:37px;background:url(../images/icon-list-who.png) no-repeat 10px 6px; }
+.blueheaderbar .who {float:left; width:139px; height:37px;background:url(../images/icon-list-who.png) no-repeat 10px 6px; }
 .blueheaderbar .who a {height:27px; padding-top:10px; margin-left:33px; display:inline-block;}
 .blueheaderbar .how {float:left; padding: 0;  width:105px; height:37px;background:url(../images/contest-icon-how.png) no-repeat 10px 6px; }
 .blueheaderbar .how a {height:27px;padding-top:10px; margin-left:33px; display:inline-block;}
 
-/* users page */
-.blueheaderbar .user {float:left; width:356px; height:37px; padding-left:9px;}
+/* users/members page */
+.blueheaderbar .user {float:left; width:312px; height:37px; padding-left:9px;}
 .blueheaderbar .user a {font-weight: bold; padding-top:10px; height:27px; display:inline-block;}
-.blueheaderbar .activity {float:left; width:125px; height:37px; }
+.blueheaderbar .points {float:left; width:95px; height:37px; }
+.blueheaderbar .points a {font-weight: bold; height:27px; padding-top:10px; margin-left:10px; display:inline-block;}
+.blueheaderbar .activity {float:left; width:90px; height:37px; }
 .blueheaderbar .activity a {font-weight: bold; height:27px; padding-top:10px; margin-left:10px; display:inline-block;}
-.blueheaderbar .category {float:left;  width:125px; height:37px; }
+.blueheaderbar .category {float:left;  width:115px; height:37px; }
 .blueheaderbar .category a {font-weight: bold; height:27px; padding-top:10px; margin-left:10px; display:inline-block;}
-.blueheaderbar .seniority {float:left; width:125px; height:37px; }
+.blueheaderbar .seniority {float:left; width:115px; height:37px; }
 .blueheaderbar .seniority a {font-weight: bold; height:27px; padding-top:10px; margin-left:10px; display:inline-block;}
 
 /* proposal page */

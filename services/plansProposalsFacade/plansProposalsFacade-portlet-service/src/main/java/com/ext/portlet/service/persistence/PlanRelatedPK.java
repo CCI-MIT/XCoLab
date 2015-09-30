@@ -5,7 +5,10 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class PlanRelatedPK implements Comparable<PlanRelatedPK>, Serializable {
     public long sectionId;
     public long relatedPlanId;

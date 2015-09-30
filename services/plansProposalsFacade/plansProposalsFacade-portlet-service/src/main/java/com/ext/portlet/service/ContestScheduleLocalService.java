@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface ContestScheduleLocalService extends BaseLocalService,
     * @return the contest schedule that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ContestSchedule addContestSchedule(
         com.ext.portlet.model.ContestSchedule contestSchedule)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -59,6 +61,7 @@ public interface ContestScheduleLocalService extends BaseLocalService,
     * @throws PortalException if a contest schedule with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ContestSchedule deleteContestSchedule(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -70,6 +73,7 @@ public interface ContestScheduleLocalService extends BaseLocalService,
     * @return the contest schedule that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ContestSchedule deleteContestSchedule(
         com.ext.portlet.model.ContestSchedule contestSchedule)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -209,6 +213,7 @@ public interface ContestScheduleLocalService extends BaseLocalService,
     * @return the contest schedule that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ContestSchedule updateContestSchedule(
         com.ext.portlet.model.ContestSchedule contestSchedule)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -231,4 +236,8 @@ public interface ContestScheduleLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Boolean isContestScheduleUsed(long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

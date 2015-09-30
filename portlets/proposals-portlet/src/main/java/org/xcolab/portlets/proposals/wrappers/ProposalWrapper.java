@@ -45,7 +45,7 @@ public class ProposalWrapper {
     private final ContestPhase contestPhase;
     private final Proposal2Phase proposal2Phase;
     protected ProposalRatingsWrapper proposalRatings;
-    private ContestPhaseRibbonType contestPhaseRibbonType;
+    private RibbonWrapper ribbonWrapper;
     private ProposalWrapper baseProposal;
     private List<ProposalTeamMemberWrapper> members;
     private List<ProposalSectionWrapper> sections;
@@ -65,8 +65,9 @@ public class ProposalWrapper {
         this.proposal = proposal;
         this.version = version;
         this.contest = contest == null ? fetchContest() : contest;
-        this.contestPhase = contestPhase;
+        this.contestPhase = contestPhase == null ? fetchContestPhase() : contestPhase;
         this.proposal2Phase = proposal2Phase;
+        this.ribbonWrapper = new RibbonWrapper(this);
 
         proposalAttributeUtil = new ProposalAttributeUtil(proposal, version);
         initializeContestPhaseAttributes();
@@ -209,30 +210,8 @@ public class ProposalWrapper {
     }
 
     public boolean isFeatured() throws PortalException, SystemException {
-        return getRibbon() > 0;
-    }
-
-    public int getRibbon() throws PortalException, SystemException {
-        getRibbonType();
-        if (contestPhaseRibbonType != null) {
-            return contestPhaseRibbonType.getRibbon();
-        }
-        return 0;
-    }
-    public long getRibbonId() throws PortalException, SystemException {
-        getRibbonType();
-        if (contestPhaseRibbonType != null) {
-            return contestPhaseRibbonType.getId();
-        }
-        return 0L;
-    }
-
-    public String getRibbonText() throws PortalException, SystemException {
-        getRibbonType();
-        if (contestPhaseRibbonType != null) {
-            return contestPhaseRibbonType.getHoverText();
-        }
-        return null;
+        // contest hideRibbons property overrides getRibbon by proposal
+        return getRibbonWrapper().getRibbon() > 0 && !contest.getHideRibbons();
     }
 
     public JudgingSystemActions.AdvanceDecision getJudgeDecision() throws SystemException, PortalException {
@@ -419,13 +398,22 @@ public class ProposalWrapper {
         return sections;
     }
 
-    public Contest fetchContest() {
+    private Contest fetchContest() {
         try {
             return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private ContestPhase fetchContestPhase() {
+        try {
+            return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+        } catch (SystemException | PortalException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<ProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {
@@ -501,18 +489,7 @@ public class ProposalWrapper {
     public Contest getContest() {
         return contest;
     }
-
-    private ContestPhaseRibbonType getRibbonType() throws PortalException, SystemException {
-        if (contestPhaseRibbonType == null) {
-        	long typeId = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.RIBBON, 0, -1);
-        	if (typeId >= 0) {
-        		contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
-        	}
-        }
-        return contestPhaseRibbonType;
-    }
-
-
+    
     public List<MembershipRequestWrapper> getMembershipRequests() {
         if (this.membershipRequests == null) {
             // get all Membershiprequests
@@ -540,7 +517,7 @@ public class ProposalWrapper {
     }
 
     public void setScenarioId(Long scenarioId, Long modelId, Long userId) throws PortalException, SystemException {
-        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID,modelId, scenarioId);
+        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, modelId, scenarioId);
     }
 
     public Long getScenarioId() throws PortalException, SystemException {
@@ -839,6 +816,10 @@ public class ProposalWrapper {
 
     public ContestPhase getContestPhase() {
         return contestPhase;
+    }
+
+    public RibbonWrapper getRibbonWrapper() {
+        return ribbonWrapper;
     }
 
     public enum GenericJudgingStatus {

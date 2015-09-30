@@ -254,19 +254,20 @@ public interface PlanSectionDefinitionModel extends BaseModel<PlanSectionDefinit
     public Object clone();
 
     @Override
-    public int compareTo(PlanSectionDefinition planSectionDefinition);
+    public int compareTo(
+        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<PlanSectionDefinition> toCacheModel();
+    public CacheModel<com.ext.portlet.model.PlanSectionDefinition> toCacheModel();
 
     @Override
-    public PlanSectionDefinition toEscapedModel();
+    public com.ext.portlet.model.PlanSectionDefinition toEscapedModel();
 
     @Override
-    public PlanSectionDefinition toUnescapedModel();
+    public com.ext.portlet.model.PlanSectionDefinition toUnescapedModel();
 
     @Override
     public String toString();

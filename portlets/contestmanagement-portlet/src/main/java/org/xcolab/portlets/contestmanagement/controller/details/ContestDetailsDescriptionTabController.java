@@ -171,9 +171,9 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             Contest contest = getContest(request);
             ContestWrapper contestWrapper = new ContestWrapper(contest);
             Long existingContestScheduleId = contest.getContestScheduleId();
-            Boolean isContestExistingProposalsCountNotNull = contestWrapper.getProposalsCount() > 0;
+            Boolean contestHasProposals = contestWrapper.getProposalsCount() > 0;
             scheduleTemplateSelectionItems =
-                    ContestScheduleWrapper.getScheduleTemplateSelectionItems(existingContestScheduleId, isContestExistingProposalsCountNotNull);
+                    ContestScheduleWrapper.getScheduleTemplateSelectionItems(existingContestScheduleId, contestHasProposals);
         } catch (Exception e){
             _log.warn("Could not get contest schedule selection items: " + e);
         }

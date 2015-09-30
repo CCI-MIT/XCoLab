@@ -618,4 +618,11 @@ public class ContestWrapper {
         return true;
     }
 
+    public boolean getHideRibbons() {
+        return contest.getHideRibbons();
+    }
+
+    public void setHideRibbons(boolean hideRibbons) throws SystemException {
+        contest.setHideRibbons(hideRibbons);
+    }
 }

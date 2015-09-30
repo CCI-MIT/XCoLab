@@ -25,6 +25,7 @@ public class PlanPropertyFilterClp extends BaseModelImpl<PlanPropertyFilter>
     private long _planUserSettingsId;
     private String _value;
     private BaseModel<?> _planPropertyFilterRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PlanPropertyFilterClp() {
     }
@@ -299,6 +300,10 @@ public class PlanPropertyFilterClp extends BaseModelImpl<PlanPropertyFilter>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

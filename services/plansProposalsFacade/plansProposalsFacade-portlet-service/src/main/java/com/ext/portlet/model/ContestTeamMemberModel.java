@@ -153,19 +153,20 @@ public interface ContestTeamMemberModel extends BaseModel<ContestTeamMember> {
     public Object clone();
 
     @Override
-    public int compareTo(ContestTeamMember contestTeamMember);
+    public int compareTo(
+        com.ext.portlet.model.ContestTeamMember contestTeamMember);
 
     @Override
     public int hashCode();
 
     @Override
-    public CacheModel<ContestTeamMember> toCacheModel();
+    public CacheModel<com.ext.portlet.model.ContestTeamMember> toCacheModel();
 
     @Override
-    public ContestTeamMember toEscapedModel();
+    public com.ext.portlet.model.ContestTeamMember toEscapedModel();
 
     @Override
-    public ContestTeamMember toUnescapedModel();
+    public com.ext.portlet.model.ContestTeamMember toUnescapedModel();
 
     @Override
     public String toString();

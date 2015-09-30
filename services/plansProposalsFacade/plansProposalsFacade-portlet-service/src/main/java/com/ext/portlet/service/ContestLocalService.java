@@ -2,12 +2,15 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.service.BaseLocalService;
 import com.liferay.portal.service.InvokableLocalService;
 import com.liferay.portal.service.PersistedModelLocalService;
+
+import java.util.*;
 
 /**
  * Provides the local service interface for Contest. Methods of this
@@ -39,6 +42,7 @@ public interface ContestLocalService extends BaseLocalService,
     * @return the contest that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.Contest addContest(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -59,6 +63,7 @@ public interface ContestLocalService extends BaseLocalService,
     * @throws PortalException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.Contest deleteContest(long ContestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -70,6 +75,7 @@ public interface ContestLocalService extends BaseLocalService,
     * @return the contest that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.Contest deleteContest(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -209,6 +215,7 @@ public interface ContestLocalService extends BaseLocalService,
     * @return the contest that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.Contest updateContest(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -431,6 +438,7 @@ public interface ContestLocalService extends BaseLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public void subscribe(long contestPK, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -443,6 +451,7 @@ public interface ContestLocalService extends BaseLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @com.liferay.portal.kernel.transaction.Transactional
     public void unsubscribe(long contestPK, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -646,6 +655,18 @@ public interface ContestLocalService extends BaseLocalService,
     public void addContestYearSuffixToCompletedContests()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a list of contests that have Proposal points enabled (column 'points' and 'defaultParentPointType' set),
+    * while optionally ignoring contests which are marked as inactive
+    *
+    * @param ignoreInactiveContests    A flag indicating whether the method should include inactive contests or not
+    * @return A list of contests mathing the criteria
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getPointsEnabledContests(
+        boolean ignoreInactiveContests)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * This method adds a year suffix to the passed contest. By passing the flag checkForCompleted, the method will only

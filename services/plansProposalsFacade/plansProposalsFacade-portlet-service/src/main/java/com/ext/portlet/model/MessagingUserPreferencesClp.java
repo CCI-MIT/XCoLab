@@ -29,6 +29,7 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
     private boolean _emailOnActivity;
     private boolean _emailActivityDailyDigest;
     private BaseModel<?> _messagingUserPreferencesRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public MessagingUserPreferencesClp() {
     }
@@ -399,6 +400,10 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -28,6 +28,7 @@ public class TrackedVisitor2UserClp extends BaseModelImpl<TrackedVisitor2User>
     private String _userUuid;
     private Date _createDate;
     private BaseModel<?> _trackedVisitor2UserRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public TrackedVisitor2UserClp() {
     }
@@ -308,6 +309,10 @@ public class TrackedVisitor2UserClp extends BaseModelImpl<TrackedVisitor2User>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

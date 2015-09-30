@@ -2,6 +2,7 @@ package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -39,6 +40,7 @@ public interface ProposalAttributeLocalService extends BaseLocalService,
     * @return the proposal attribute that was added
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ProposalAttribute addProposalAttribute(
         com.ext.portlet.model.ProposalAttribute proposalAttribute)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -60,6 +62,7 @@ public interface ProposalAttributeLocalService extends BaseLocalService,
     * @throws PortalException if a proposal attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ProposalAttribute deleteProposalAttribute(
         long id)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -72,6 +75,7 @@ public interface ProposalAttributeLocalService extends BaseLocalService,
     * @return the proposal attribute that was removed
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
     public com.ext.portlet.model.ProposalAttribute deleteProposalAttribute(
         com.ext.portlet.model.ProposalAttribute proposalAttribute)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -211,6 +215,7 @@ public interface ProposalAttributeLocalService extends BaseLocalService,
     * @return the proposal attribute that was updated
     * @throws SystemException if a system exception occurred
     */
+    @com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
     public com.ext.portlet.model.ProposalAttribute updateProposalAttribute(
         com.ext.portlet.model.ProposalAttribute proposalAttribute)
         throws com.liferay.portal.kernel.exception.SystemException;

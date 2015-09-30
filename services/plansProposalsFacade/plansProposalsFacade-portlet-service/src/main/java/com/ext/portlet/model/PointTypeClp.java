@@ -27,6 +27,7 @@ public class PointTypeClp extends BaseModelImpl<PointType> implements PointType 
     private String _name;
     private long _sort;
     private BaseModel<?> _pointTypeRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public PointTypeClp() {
     }
@@ -393,6 +394,10 @@ public class PointTypeClp extends BaseModelImpl<PointType> implements PointType 
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override

@@ -7,7 +7,9 @@ public enum ContestPhasePromoteType {
     NULL(0, "", "No autopromote specified"),
     PROMOTE(1, "PROMOTE", "Proposals in this phase will automatically promoted to the next contest phase"),
     PROMOTE_JUDGED(2, "PROMOTE_JUDGED", "Proposals in this phase will only be promoted to the next phase if judges decide so"),
-    PROMOTE_DONE(3, "PROMOTE_DONE", "All proposals in that phase have been promoted to the next phase");
+    PROMOTE_DONE(3, "PROMOTE_DONE", "All proposals in that phase have been promoted to the next phase"),
+    PROMOTE_RIBBONIZE(4, "PROMOTE_RIBBONIZE", "All proposals from previous phases will be copied to the next phase" +
+            " and (semi) finalist ribbons will be distributed.");
 
     private int index;
     private String value;

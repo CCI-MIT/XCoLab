@@ -1,18 +1,13 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.ImpactDefaultSeries;
-import com.ext.portlet.model.ImpactDefaultSeriesData;
 import com.ext.portlet.model.ImpactIteration;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
-import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -23,7 +18,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -189,7 +183,7 @@ public class ProposalImpactJSONController {
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
-        if (!permissions.getCanIAFActions() && !permissions.getCanAdmin()) {
+        if (!permissions.getCanIAFActions() && !permissions.getCanAdminProposal()) {
             responseJSON.put("success", false);
             responseJSON.put("message", "You don't have the required permission to perform this action!");
             response.getPortletOutputStream().write(responseJSON.toString().getBytes());

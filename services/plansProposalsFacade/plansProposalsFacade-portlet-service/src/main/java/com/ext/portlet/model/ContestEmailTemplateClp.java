@@ -25,6 +25,7 @@ public class ContestEmailTemplateClp extends BaseModelImpl<ContestEmailTemplate>
     private String _header;
     private String _footer;
     private BaseModel<?> _contestEmailTemplateRemoteModel;
+    private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
     public ContestEmailTemplateClp() {
     }
@@ -289,6 +290,10 @@ public class ContestEmailTemplateClp extends BaseModelImpl<ContestEmailTemplate>
         } else {
             return false;
         }
+    }
+
+    public Class<?> getClpSerializerClass() {
+        return _clpSerializerClass;
     }
 
     @Override
