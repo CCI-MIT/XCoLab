@@ -10,7 +10,8 @@
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
           xmlns:liferay-ui="http://liferay.com/tld/ui">
-    <jsp:directive.include file="./init_proposals.jspx"/>
+
+    <jsp:directive.include file="./init_proposal_tab.jspx" />
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
 

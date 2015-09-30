@@ -6,7 +6,8 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-    <jsp:directive.include file="./init_proposals.jspx"/>
+
+    <jsp:directive.include file="./init_proposal_tab.jspx" />
 
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 

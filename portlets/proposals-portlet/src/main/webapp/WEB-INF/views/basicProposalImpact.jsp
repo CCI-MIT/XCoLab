@@ -7,7 +7,8 @@
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:liferay-ui="http://liferay.com/tld/ui"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-    <jsp:directive.include file="./init.jspx"/>
+
+    <jsp:directive.include file="./init_proposal_tab.jspx"/>
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
@@ -392,8 +393,9 @@
         }
 
         function registerHelpEventHandler() {
-            jQuery("#impact .helpTrigger").off("click");
-            jQuery("#impact .helpTrigger").click(function () {
+            var $impactHelpTriggerElement = jQuery("#impact").find(".helpTrigger");
+            $impactHelpTriggerElement.off("click");
+            $impactHelpTriggerElement.click(function () {
                 var trigger = jQuery(this);
                 trigger.parent().find(".addprophelp").slideToggle("fast");
             });
@@ -421,7 +423,7 @@
             } else {
                 dismissDetailView();
                 userInputOccurred = false;
-                $('#impact tr.selected').removeClass('selected');
+                $('#impact').find('tr.selected').removeClass('selected');
             }
         }
 
@@ -466,10 +468,11 @@
         }
 
         function recalculateEditSeriesValues() {
-            var bauValues = $('#impact table tr#impact-edit-row-BAU td span');
-            var reductionValueElements = $('#impact table tr#impact-edit-row-' + IMPACT_REDUCTION_PLACEHOLDER + ' input');
-            var adoptionValueElements = $('#impact table tr#impact-edit-row-' + IMPACT_ADOPTION_RATE_PLACEHOLDER + ' input');
-            var resultValues = $('#impact table tr#impact-edit-row-RESULT td span');
+            var $impactElement = $('#impact');
+            var bauValues = $impactElement.find('table tr#impact-edit-row-BAU td span');
+            var reductionValueElements = $impactElement.find('table tr#impact-edit-row-' + IMPACT_REDUCTION_PLACEHOLDER + ' input');
+            var adoptionValueElements = $impactElement.find('table tr#impact-edit-row-' + IMPACT_ADOPTION_RATE_PLACEHOLDER + ' input');
+            var resultValues = $impactElement.find('table tr#impact-edit-row-RESULT td span');
 
             $('a#save-button').parent().removeClass('disabled');
 
@@ -589,7 +592,7 @@
                     }
 
                     // Register input event handler
-                    $('#impact table tr.impact-edit-row input').on('blur', function () {
+                    $('#impact').find('table tr.impact-edit-row input').on('blur', function () {
                         // check valid input
                         var floatValue = parseFloat($(this).attr('value'));
 
@@ -609,7 +612,7 @@
                         }
 
                         userInputOccurred = true;
-                        $('a#save-button').parent().removeClass('disabled')
+                        $('a#save-button').parent().removeClass('disabled');
                         recalculateEditSeriesValues();
                     });
 
@@ -627,7 +630,7 @@
             });
 
             regionDropdownElement.on('change', function () {
-                $('#impact a#continue-button').parent().addClass('disabled');
+                $('#impact').find('a#continue-button').parent().addClass('disabled');
 
                 var regionTermId = $(this).val();
                 if (regionTermId == 0) {
@@ -655,13 +658,14 @@
             });
 
             sectorDropdownElement.on('change', function () {
-                $('#impact a#continue-button').parent().addClass('disabled');
+                var $impactElement = $('#impact');
+                $impactElement.find('a#continue-button').parent().addClass('disabled');
                 var sectorTermId = sectorDropdownElement.val();
                 var regionTermId = regionDropdownElement.val();
 
                 if (sectorTermId &gt; 0 &amp;&amp; regionTermId &gt; 0) {
-                    $('#impact a#continue-button').parent().removeClass('disabled');
-                    $('#impact a#continue-button').focus();
+                    $impactElement.find('a#continue-button').parent().removeClass('disabled');
+                    $impactElement.find('a#continue-button').focus();
                 }
             });
         }
@@ -811,22 +815,23 @@
         }
 
         function setDetailViewSpinnerMode(on) {
+            var $impactSeriesDetailElement = $('#impact-series-detail');
             if (on) {
-                $('#impact-series-detail').addClass('disabled');
-                $('#impact-series-detail input').attr('disabled', 'disabled');
-                $('#impact-series-detail a').parent().addClass('button-disabled');
-                $('#impact-summary tr').addClass('disabled');
+                $impactSeriesDetailElement.addClass('disabled');
+                $impactSeriesDetailElement.find('input').attr('disabled', 'disabled');
+                $impactSeriesDetailElement.find('a').parent().addClass('button-disabled');
+                $('#impact-summary').find('tr').addClass('disabled');
 
-                $('#impact-series-detail div#header').spin('large');
-                $('#impact-series-detail div#new-series').spin('large');
+                $impactSeriesDetailElement.find('div#header').spin('large');
+                $impactSeriesDetailElement.find('div#new-series').spin('large');
             } else {
-                $('#impact-series-detail').removeClass('disabled');
-                $('#impact-series-detail input').removeAttr('disabled');
-                $('#impact-series-detail a').parent().removeClass('button-disabled');
-                $('#impact-summary  tr').removeClass('disabled');
+                $impactSeriesDetailElement.removeClass('disabled');
+                $impactSeriesDetailElement.find('input').removeAttr('disabled');
+                $impactSeriesDetailElement.find('a').parent().removeClass('button-disabled');
+                $('#impact-summary').find('tr').removeClass('disabled');
 
-                $('#impact-series-detail div#header').spin(false);
-                $('#impact-series-detail div#new-series').spin(false);
+                $impactSeriesDetailElement.find('div#header').spin(false);
+                $impactSeriesDetailElement.find('div#new-series').spin(false);
             }
         }
 
@@ -868,7 +873,7 @@
         }
         function deleteSeriesRow(event) {
             if (currentEditingRowIndex != ROW_INDEX_NONE_SELECTED) {
-                $('#impact table tr.impact-edit-row').fadeOut('normal', function () {
+                $('#impact').find('table tr.impact-edit-row').fadeOut('normal', function () {
                     $(this).remove();
                 });
 
@@ -910,9 +915,10 @@
         }
 
         function hideDataUploadForm(){
-            var uploadForm = $('div#impact-data-upload-form');
+            var $impactDataUploadFormElement = $('div#impact-data-upload-form');
+            var uploadForm = $impactDataUploadFormElement;
             uploadForm.find('span.hint-text').text(FORM_DATA_INVALID);
-            $('div#impact-data-upload-form').slideUp();
+            $impactDataUploadFormElement.slideUp();
             uploadForm.children('textarea').val("");
         }
 

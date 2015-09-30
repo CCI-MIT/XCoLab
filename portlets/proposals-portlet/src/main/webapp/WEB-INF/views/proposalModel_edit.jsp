@@ -8,9 +8,11 @@
 	xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
     xmlns:collab="http://climatecolab.org/tags/collab_1.0">
-	<jsp:directive.include file="./init_proposals.jspx"/>
+
+	<jsp:directive.include file="./init_proposal.jspx"/>
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
+
 	<div id="content">
 	
 	<c:if test="${not empty availableModels }">

@@ -10,7 +10,8 @@
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <jsp:directive.include file="./init.jspx"/>
+    <jsp:directive.include file="./init_proposal_tab.jspx"/>
+
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
     <!-- Content -->
@@ -403,25 +404,27 @@
         };
 
         function registerHelpEventHandler() {
-            jQuery("#impact .helpTrigger").off("click");
-            jQuery("#impact .helpTrigger").click(function () {
+            var $impactElement = jQuery("#impact");
+            $impactElement.find(".helpTrigger").off("click");
+            $impactElement.find(".helpTrigger").click(function () {
                 var trigger = jQuery(this);
                 trigger.parent().find(".addprophelp").slideToggle("fast");
             });
         }
 
-        var scenarioFetchedCallbackRegisterd = false;
+        var scenarioFetchedCallbackRegistered = false;
         function registerScenarioFetchedCallback(){
-            if (jQuery($("#modelsOutputContainer").data('modeling')).length !== 0) {
-                scenarioFetchedCallbackRegisterd = true;
-                jQuery($("#modelsOutputContainer").data('modeling')).on('scenarioFetched', scenarioFetchedCallback);
+            var $modelsOutputContainerElement = $("#modelsOutputContainer");
+            if (jQuery($modelsOutputContainerElement.data('modeling')).length !== 0) {
+                scenarioFetchedCallbackRegistered = true;
+                jQuery($modelsOutputContainerElement.data('modeling')).on('scenarioFetched', scenarioFetchedCallback);
             }
         }
 
         registerScenarioFetchedCallback();
 
         $().ready(function () {
-            if(!scenarioFetchedCallbackRegisterd){
+            if(!scenarioFetchedCallbackRegistered){
                 registerScenarioFetchedCallback();
             }
             registerHelpEventHandler();

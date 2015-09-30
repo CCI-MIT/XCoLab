@@ -8,15 +8,17 @@
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0">
 
-    <jsp:directive.include file="./init_proposals.jspx"/>
+    <jsp:directive.include file="./init_proposal.jspx"/>
 
     <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
     <!--ProposalSectionsTabController-->
-    <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper"/>
-    <jsp:useBean id="baseContest" scope="request" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper"/>
     <jsp:useBean id="updateProposalSectionsBean" scope="request" type="org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean"/>
+    <c:if test="${move}">
+        <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper"/>
+        <jsp:useBean id="baseContest" scope="request" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper"/>
+    </c:if>
 
     <style>
         td em {

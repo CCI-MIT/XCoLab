@@ -9,9 +9,11 @@
 	xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
 	xmlns:addthis="http://www.addthis.com/help/api-spec"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-	<jsp:directive.include file="./init_proposals.jspx"/>
+
+	<jsp:directive.include file="./init_proposal_tab.jspx" />
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
+
 	<div id="content">
 		<discussionsTagFiles:evaluationComments evaluationDiscussionId="${discussionId }" />
 	</div>

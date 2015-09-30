@@ -5,7 +5,9 @@
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
 	<jsp:directive.include file="./init.jspx" />
+
 	<div id="content">
 		<jsp:directive.include file="./contestsIndex/header.jspx" />
 
