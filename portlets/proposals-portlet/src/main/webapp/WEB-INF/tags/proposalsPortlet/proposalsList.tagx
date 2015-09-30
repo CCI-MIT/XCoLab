@@ -30,12 +30,12 @@
     </c:if>
 
     <div class="propbox
-                ${proposal.featured ? 'featured' : ''}
+                ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'featured' : ''}
                 ${contest.isContestCompleted(contestPhase) ? 'completed' : ''}
                 ${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? 'judgement-actions' : ''}
                 ${additionalCSSClasses}
                 ">
-					<c:if test="${proposal.ribbonWrapper.ribbon != null and proposal.ribbonWrapper.ribbon > 0 and not contest.hideRibbons}">
+					<c:if test="${proposal.ribbonWrapper.ribbon != null and proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
             <div class="ribbonPlaceholder">
                 <span class="fieldWithTooltip">
                     <br />
@@ -62,7 +62,7 @@
                     </h4>
                     <div class="clear" ><!--  --></div>
                 </div>
-                <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and not contest.hideRibbons)}">
+                <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                     <div class="voteboxsmall">
                         <collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.votesCount}" />
                     </div>

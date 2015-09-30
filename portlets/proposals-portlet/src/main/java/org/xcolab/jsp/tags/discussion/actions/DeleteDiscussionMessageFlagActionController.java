@@ -25,8 +25,9 @@ import com.liferay.portal.theme.ThemeDisplay;
 public class DeleteDiscussionMessageFlagActionController extends BaseDiscussionsActionController {
 
         @RequestMapping(params = "action=deleteDiscussionMessageFlag")
-        public void handleAction(ActionRequest request, ActionResponse response, 
-                @RequestParam long discussionId, @RequestParam long messageId) 
+        public void handleAction(
+                ActionRequest request, ActionResponse response,
+                @RequestParam long discussionId, @RequestParam long messageId)
                 throws IOException, PortalException, SystemException, DiscussionsException {
             
             checkPermissions(request, "User isn't allowed to delete message", discussionId);

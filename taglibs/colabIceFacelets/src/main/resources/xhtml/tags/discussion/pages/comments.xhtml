@@ -129,19 +129,21 @@
     <script type="text/javascript">
     <![CDATA[
         function disableAddComment() {
-            if (jQuery.trim(jQuery("#thecomment .commentContent").val()) != '') {
-                jQuery("#thecomment .addCommentButton").attr('disabled', true);
+            var $commentElement = jQuery("#thecomment");
+            if (jQuery.trim($commentElement.find(".commentContent").val()) != '') {
+                $commentElement.find(".addCommentButton").attr('disabled', true);
             }
         }
         
         function isAddCommentFormValid() {
-            var isValid = (jQuery.trim(jQuery("#thecomment .commentContent").val()) != '');
+            var $commentElement = jQuery("#thecomment");
+            var isValid = (jQuery.trim($commentElement.find(".commentContent").val()) != '');
             
             if (isValid) {
-                jQuery('#thecomment .errorMsg').hide();
+                $commentElement.find('.errorMsg').hide();
             }
             else {
-                jQuery('#thecomment .errorMsg').show();
+                $commentElement.find('.errorMsg').show();
             }
             return isValid;
         }
@@ -149,7 +151,7 @@
         window.disableAddComment = disableAddComment;
         
         function enableAddComment() {
-            jQuery("#thecomment .addCommentButton").removeAttr('disabled');
+            jQuery("#thecomment").find(".addCommentButton").removeAttr('disabled');
         }
         
         

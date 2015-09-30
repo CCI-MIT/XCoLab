@@ -223,8 +223,7 @@ public class ProposalWrapper {
     }
 
     public boolean isFeatured() throws PortalException, SystemException {
-        // contest hideRibbons property overrides getRibbon by proposal
-        return getRibbonWrapper().getRibbon() > 0 && !contest.getHideRibbons();
+        return getRibbonWrapper().getRibbon() > 0;
     }
 
     public JudgingSystemActions.AdvanceDecision getJudgeDecision() throws SystemException, PortalException {

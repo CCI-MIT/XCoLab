@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.admin.util.OmniadminUtil;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -33,7 +34,7 @@ public class DiscussionPermissions {
 
     public DiscussionPermissions(PortletRequest request, DiscussionCategoryGroup discussion)
             throws SystemException, PortalException {
-        
+
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         this.permissionChecker = themeDisplay.getPermissionChecker();
         primKey = String.valueOf(discussion.getId());
@@ -42,8 +43,8 @@ public class DiscussionPermissions {
         discussionTabName = getTabName(request);
         proposalId = getProposalId(request);
         contestPhaseId = getContestPhaseId(request);
-
     }
+
     private String getTabName(PortletRequest request){
         String discussionTabName;
         discussionTabName = request.getParameter("tab");
@@ -54,6 +55,7 @@ public class DiscussionPermissions {
         }
         return discussionTabName;
     }
+
     private Integer getProposalId(PortletRequest request){
         Integer proposalId = null;
         try {
@@ -69,6 +71,7 @@ public class DiscussionPermissions {
         } catch (NumberFormatException ignored) { }
         return proposalId;
     }
+
     private Integer getContestPhaseId(PortletRequest request){
         Integer proposalId = null;
         try {
@@ -92,7 +95,6 @@ public class DiscussionPermissions {
         } else {
             canSeeAddCommentButton = true;
         }
-
         return canSeeAddCommentButton;
     }
     
@@ -101,7 +103,7 @@ public class DiscussionPermissions {
     }
     
     public boolean getCanAdminMessages() {
-        return getCanAdmin() || permissionChecker.hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADMIN_MESSAGES.name());
+        return getCanAdmin();
     }
 
     public boolean getCanAdmin() {
