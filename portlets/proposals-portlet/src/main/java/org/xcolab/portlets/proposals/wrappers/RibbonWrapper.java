@@ -53,9 +53,7 @@ public class RibbonWrapper {
                 } else {
                     _log.warn(String.format("Could not retrieve ribbon type for proposal %d", proposalId));
                 }
-            } catch (NoSuchProposalContestPhaseAttributeException e) {
-                _log.info(String.format("Could not find attribute RIBBON for proposal %d, contest phase %d",
-                        proposalId, contestPhase.getContestPhasePK()));
+            } catch (NoSuchProposalContestPhaseAttributeException ignored) {
             } catch (PortalException | SystemException e) {
                 _log.error(String.format("Liferay exception occurred while getting ContestPhaseRibbonType for proposal %d",
                         proposalId), e);
