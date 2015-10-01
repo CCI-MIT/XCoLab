@@ -288,7 +288,7 @@ public class ProposalWrapper {
     }
 
     public boolean isUserAmongSelectedJudge(User user) throws PortalException, SystemException {
-        if (!getFellowScreeningNeccessary()) {
+        if (!getFellowScreeningNecessary()) {
             return isUserAmongJudges(user);
         }
 
@@ -428,7 +428,7 @@ public class ProposalWrapper {
         return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
     }
 
-    protected boolean getFellowScreeningNeccessary() {
+    protected boolean getFellowScreeningNecessary() {
         return contestPhase.getFellowScreeningActive();
     }
 
@@ -446,8 +446,7 @@ public class ProposalWrapper {
     
     public List<MembershipRequestWrapper> getMembershipRequests() {
         if (this.membershipRequests == null) {
-            // get all Membershiprequests
-            membershipRequests = new ArrayList<MembershipRequestWrapper>();
+            membershipRequests = new ArrayList<>();
             try {
                 for (MembershipRequest m : ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId())) {
                     membershipRequests.add(new MembershipRequestWrapper(m));
@@ -455,10 +454,8 @@ public class ProposalWrapper {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
         return this.membershipRequests;
-
     }
 
     public Long getModelId() throws PortalException, SystemException {
@@ -653,7 +650,6 @@ public class ProposalWrapper {
                 if (!wrapper.isReviewComplete()) {
                     return false;
                 }
-
             }
         }
         return true;

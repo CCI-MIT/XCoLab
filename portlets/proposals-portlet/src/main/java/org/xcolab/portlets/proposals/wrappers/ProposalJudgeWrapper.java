@@ -66,7 +66,7 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         if (currentUser == null || !isJudgingContestPhase()) return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
 
         // If the phase does not require initial fellow screening all judges should do the review
-        if (!getFellowScreeningNeccessary() && isUserAmongJudges(currentUser)) {
+        if (!getFellowScreeningNecessary() && isUserAmongJudges(currentUser)) {
             if (isJudgeFinishedWritingReview()) {
                 return JudgingSystemActions.JudgeReviewStatus.DONE;
             } else {
