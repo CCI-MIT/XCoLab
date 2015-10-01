@@ -22,11 +22,11 @@ public class ProposalsDisplayPermissions {
     private User user;
 
     public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions,
-                                       Proposal proposal, ContestPhase contestPhase, User user) {
+                                       Proposal proposal, ContestPhase contestPhase) {
         this.proposalsPermissions = proposalsPermissions;
         this.proposal = proposal;
         this.contestPhase = contestPhase;
-        this.user = user;
+        this.user = proposalsPermissions.getUser();
     }
 
     public boolean getCanSeeRequestMembershipButton() throws SystemException, PortalException {

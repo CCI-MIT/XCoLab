@@ -286,4 +286,8 @@ public class ProposalsPermissions {
         return !getIsCreationAllowedByPhase()
                 && (isOwner() || getCanAdminAll());
     }
+
+    public User getUser() {
+        return user;
+    }
 }
