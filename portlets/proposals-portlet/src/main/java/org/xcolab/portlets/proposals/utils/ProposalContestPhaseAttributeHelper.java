@@ -58,8 +58,6 @@ public class ProposalContestPhaseAttributeHelper {
                 }
             }
         } catch (Exception ignored) { }
-        _log.warn(String.format("No ProposalContestPhaseAttributes were loaded (null was found) for proposal %d and contestPhase %d",
-                proposalId, contestPhasePK));
         return null;
     }
 
