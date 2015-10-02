@@ -199,7 +199,7 @@ public class ProposalPickerFilterUtil {
             for (Long phasePK : contestPhases) {
                 ContestPhase contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(phasePK);
                 final ProposalContestPhaseAttributeHelper attributeHelper = new ProposalContestPhaseAttributeHelper(proposal, contestPhase);
-                if (attributeHelper.getAttributeLongValue(ProposalContestPhaseAttributeKeys.VISIBLE, 0, 1) != 0) {
+                if (attributeHelper.getAttributeLongValue(ProposalContestPhaseAttributeKeys.VISIBLE, 0, 1) == 1) {
                     return false;
                 }
             }
