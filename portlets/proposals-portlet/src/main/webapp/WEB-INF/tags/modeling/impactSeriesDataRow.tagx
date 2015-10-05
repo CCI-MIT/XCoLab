@@ -17,7 +17,8 @@
         <c:forEach var="impactIteration" items="${impactIterations}">
             <fmt:formatNumber var="value"
                               value="${seriesValues.yearToValueMap[impactIteration.year]}"
-                              maxFractionDigits="2"/>
+                              maxFractionDigits="2"
+                              groupingUsed="false"/>
             <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
         </c:forEach>
     </c:catch>
