@@ -437,7 +437,7 @@
         registerScenarioFetchedCallback();
 
         $().ready(function () {
-            if (!scenarioFetchedCallbackRegisterd) {
+            if (!scenarioFetchedCallbackRegistered) {
                 registerScenarioFetchedCallback();
             }
             registerHelpEventHandler();
