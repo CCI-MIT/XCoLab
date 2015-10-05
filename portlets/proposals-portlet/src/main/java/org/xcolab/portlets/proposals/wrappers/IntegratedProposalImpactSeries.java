@@ -94,7 +94,6 @@ public class IntegratedProposalImpactSeries {
             seriesTypeToDescriptionMap.put(seriesType.getSectorOntologyTermId().toString(), seriesType.getSectorName());
         }
 
-
         List<Long> sectorOntologyTermIds = new ArrayList<>();
         for(SectorTypes seriesType : SectorTypes.values()) {
             sectorOntologyTermIds.add(seriesType.getSectorOntologyTermId());

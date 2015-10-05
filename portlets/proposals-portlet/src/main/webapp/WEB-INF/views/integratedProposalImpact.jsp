@@ -328,12 +328,16 @@
          - Land Use CO2 emissions
          */
 
+        function exportFloatFromString(string){
+            return parseFloat(string.replace(",","")).toFixed(2);
+        }
+
         function mapValuesToYear(row) {
             var modelTotalValues = row.querySelectorAll('[data-attr-year]');
             var map = {};
             [].forEach.call(modelTotalValues, function (totalYearValue) {
                 var year = totalYearValue.getAttribute("data-attr-year");
-                var value = parseFloat(totalYearValue.innerHTML).toFixed(2);
+                var value = exportFloatFromString(totalYearValue.innerHTML);
                 map[year] = value;
             });
             return map;
@@ -375,20 +379,17 @@
                 var totalProjectedEmissionsValuesToYears = {};
                 [].forEach.call(totalProjectedEmissionsValues, function (totalProjectedEmissionsYearValue) {
                     var year = totalProjectedEmissionsYearValue.getAttribute("data-attr-year");
-                    var totalProjectedEmissionsValueToYear = parseFloat(bauValuesToYears[year]) + parseFloat(totalSectorsValuesToYears[year]);
-                    totalProjectedEmissionsYearValue.innerHTML = totalProjectedEmissionsValueToYear.toFixed(2);
-                    totalProjectedEmissionsValuesToYears[year] = totalProjectedEmissionsValueToYear;
+                    totalProjectedEmissionsValuesToYears[year] = exportFloatFromString(bauValuesToYears[year]) + exportFloatFromString(totalSectorsValuesToYears[year]);
+                    totalProjectedEmissionsYearValue.innerHTML = totalProjectedEmissionsValuesToYears[year];
                 });
             } else return;
 
             var modelSeriesValuesToYears = {};
             modelOutputs.forEach(function (modelOutput) {
-                console.log("modelOutput", modelOutput);
                 if (modelOutput.name.toLowerCase() === MODEL_DATA_ROW.toLowerCase()) {
                     var modelSeries;
                     if (event.scenario.modelName.toLowerCase().includes("emf")) {
                         modelSeries = calculateAverage(modelOutput.series);
-                        console.log("avg", modelSeries);
                     } else {
                         modelSeries = modelOutput.series[0];
                     }
@@ -403,16 +404,14 @@
             var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
             [].forEach.call(modelTotalValues, function (totalYearValue) {
                 var year = totalYearValue.getAttribute("data-attr-year");
-                var modelTotalValueToYear = parseFloat(modelSeriesValuesToYears[year]);
-                totalYearValue.innerHTML = modelTotalValueToYear.toFixed(2);
+                totalYearValue.innerHTML = exportFloatFromString(modelSeriesValuesToYears[year]);
             });
 
             var modelAdjustmentsRow = document.getElementById("modelAdjustments");
             var modelAdjustmentValues = modelAdjustmentsRow.querySelectorAll('[data-attr-year]');
             [].forEach.call(modelAdjustmentValues, function (modelAdjustmentValue) {
                 var year = modelAdjustmentValue.getAttribute("data-attr-year");
-                var modelAdjustmentsValueToYear = parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalProjectedEmissionsValuesToYears[year]);
-                modelAdjustmentValue.innerHTML = modelAdjustmentsValueToYear.toFixed(2);
+                modelAdjustmentValue.innerHTML = exportFloatFromString(modelSeriesValuesToYears[year]) - exportFloatFromString(totalProjectedEmissionsValuesToYears[year]);
             });
         };
 

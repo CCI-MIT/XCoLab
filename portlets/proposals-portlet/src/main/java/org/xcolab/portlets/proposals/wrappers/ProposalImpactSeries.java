@@ -84,7 +84,7 @@ public class ProposalImpactSeries {
         this.impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
         // Retrieve static serieses
         bauSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_BAU_KEY);
-        Boolean invertSeriesSign = true;
+        Boolean invertSeriesSign = false;
         addSeriesWithType(bauSeries, false, invertSeriesSign);
 
 //        ddppSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_DDPP_KEY);
