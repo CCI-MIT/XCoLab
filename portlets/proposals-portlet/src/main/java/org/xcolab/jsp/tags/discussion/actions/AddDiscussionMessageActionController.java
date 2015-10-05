@@ -54,16 +54,14 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
         indexer.reindex(userId);
         
-        int analyticsValue = 0;
+        int analyticsValue;
         int supportedCount = DiscussionCategoryGroupLocalServiceUtil.getUserMessages(userId);
         if (supportedCount > 0) {
         	if (supportedCount == 1) {
         		analyticsValue = 1;
-        	}
-        	else if ( supportedCount < 5) {
+        	} else if ( supportedCount < 5) {
         		analyticsValue = 2;
-        	}
-        	else {
+        	} else {
         		analyticsValue = 3;
         	}
     	AnalyticsUtil.publishEvent(request, userId, COMMENT_ANALYTICS_KEY + analyticsValue, 
@@ -87,12 +85,10 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         }
 
         redirectToReferer(request, response);
-        
     }
 
     @Override
     public boolean isUserAllowed(DiscussionPermissions permissions) {
         return permissions.getCanAddComment();
     }
-
 }

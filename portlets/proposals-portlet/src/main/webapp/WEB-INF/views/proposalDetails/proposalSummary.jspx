@@ -13,7 +13,7 @@
 	<div class="votebox-wrap">
 		<div class="votebox-shade">
 			<div class="votebox">
-				<c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and not contest.hideRibbons)}">
+				<c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
 					<div class="votebox-top clearfix">
 						<div class="vote">
 							<img src="/climatecolab-theme/images/icon-proposal-vote.png" width="22" height="18" alt="Vote" /> 
@@ -29,7 +29,7 @@
 
 
                                     <a href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-                                        ${proposalsPermissions.canSeeVoteButton ? 'VOTE for proposal' : 'RETRACT vote'}
+                                        ${proposalsDisplayPermissions.canSeeVoteButton ? 'VOTE for proposal' : 'RETRACT vote'}
                                     </a>
                                 </div>
                                 <p style="margin:15px 0 15px 0;font-size:17px">You receive one vote per contest</p>
@@ -43,7 +43,7 @@
                     <div class="votebox-bottom">
                         <img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
                         <span>${proposal.supportersCount}</span> supporters
-                        <c:if test="${(proposalsPermissions.canSeeSupportButton or proposalsPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
+                        <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
 							<portlet:actionURL var="supportProposalActionURL">
 								<portlet:param name="action_forwardToPage" value="proposalDetails" />
 								<portlet:param name="contestId" value="${contest.contestPK }" />
@@ -51,7 +51,7 @@
 								<portlet:param name="action" value="supportProposalAction" />
 							</portlet:actionURL>
                     		<a href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-								${proposalsPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
+								${proposalsDisplayPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
 							</a>
 						</c:if>
                     </div>
@@ -66,7 +66,7 @@
                 <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
 
             </div>
-			<c:if test="${proposalsPermissions.canSeeSubscribeProposalButton || proposalsPermissions.canSeeUnsubscribeProposalButton}">
+			<c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
 				<portlet:actionURL var="subscribeProposalURL">
 					<portlet:param name="contestId" value="${contest.contestPK }" />
 					<portlet:param name="planId" value="${proposal.proposalId }" />
@@ -76,7 +76,7 @@
 				<div class="info subscribe">
 					<a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
 						<c:choose>
-							<c:when test="${proposalsPermissions.canSeeSubscribeProposalButton }">
+							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
 								<img src="/climatecolab-theme/images/icon_star.png" /> Subscribe
 							</c:when>
 							<c:otherwise>
@@ -98,7 +98,7 @@
             <div class="clear"><!--  --></div>
         </div>
 
-        <c:if test="${proposal.ribbonWrapper.ribbon > 0 and not contest.hideRibbons}">
+        <c:if test="${proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
             <div class="badge-big badge-${proposal.ribbonWrapper.ribbon}" style="float:none; text-align:center; margin: 0 0 36px 76px;">
                         <span class="badge-title">
                             <a href="#" style="${(proposal.ribbonWrapper.ribbonText.length() gt 8 and proposal.ribbonWrapper.ribbonText.length() lt 14)  ? 'top: 26px;' : ''}">${proposal.ribbonWrapper.ribbonTitle}</a>

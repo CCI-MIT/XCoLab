@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.admin.util.OmniadminUtil;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.PortletRequest;
@@ -24,7 +25,6 @@ public class DiscussionPermission {
     private String primKey;
     private long groupId;
 
-
     public DiscussionPermission(PortletRequest request, DiscussionCategoryGroup discussion) throws
             SystemException, PortalException{
 
@@ -37,15 +37,14 @@ public class DiscussionPermission {
         portletPermissionChecker = themeDisplay.getPermissionChecker();
         groupId = themeDisplay.getScopeGroupId();
         currentUser = themeDisplay.getUser();
-
     }
 
     public boolean getCanAddComment() {
         return !currentUser.isDefaultUser() && tabWrapper.getCanAddComment();
     }
-    
+
     public boolean getCanAdminMessages() {
-        return getCanAdmin() || portletPermissionChecker.hasPermission(groupId, RESOURCE_NAME, primKey, DiscussionActions.ADMIN_MESSAGES.name());
+        return getCanAdmin();
     }
 
     public boolean getCanAdmin() {
@@ -53,5 +52,4 @@ public class DiscussionPermission {
                 || portletPermissionChecker.isGroupAdmin(groupId)
                 || portletPermissionChecker.isCompanyAdmin();
     }
-
 }

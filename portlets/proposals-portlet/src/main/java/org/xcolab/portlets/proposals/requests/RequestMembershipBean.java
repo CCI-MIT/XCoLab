@@ -1,7 +1,5 @@
 package org.xcolab.portlets.proposals.requests;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 public class RequestMembershipBean {
 
     private String requestComment;
@@ -13,7 +11,4 @@ public class RequestMembershipBean {
     public void setRequestComment(String requestComment) {
         this.requestComment = requestComment;
     }
-    
-    
-
 }

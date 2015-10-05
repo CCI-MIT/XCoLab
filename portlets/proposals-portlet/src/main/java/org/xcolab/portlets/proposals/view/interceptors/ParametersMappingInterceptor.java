@@ -20,9 +20,9 @@ import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
  */
 public class ParametersMappingInterceptor extends HandlerInterceptorAdapter {
     
-    private Map<String, String> parameters = new HashMap<String, String>();
-    private Set<String> ignoreOnError = new HashSet<String>();
-    private Set<String> ignoreOnSuccess = new HashSet<String>();
+    private Map<String, String> parameters = new HashMap<>();
+    private Set<String> ignoreOnError = new HashSet<>();
+    private Set<String> ignoreOnSuccess = new HashSet<>();
     private boolean mapAll;
     
     public Map<String, String> getParameters() {

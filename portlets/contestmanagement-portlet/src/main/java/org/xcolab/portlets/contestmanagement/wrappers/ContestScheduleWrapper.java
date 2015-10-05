@@ -172,6 +172,12 @@ public class ContestScheduleWrapper {
         }
     }
 
+    public static void changeContestScheduleForContest(Contest contest, Long contestScheduleId) throws Exception{
+        List<ContestPhase> contestPhasesForContestSchedule = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleId(contestScheduleId);
+        createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(contest, contestPhasesForContestSchedule, contestScheduleId);
+        updateContestPhasesOfContestAccordingToContestSchedule(contest, contestScheduleId);
+    }
+
     private void persistUpdatedSchedule() throws Exception {
         createNewSchedulesPhases();
         makeSureThatAllContestsUsingScheduleIdHaveCorrectContestPhases(contestSchedule.getId());
@@ -209,11 +215,18 @@ public class ContestScheduleWrapper {
         }
     }
 
-    private void createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(Contest contest, Long contestScheduleId) throws Exception {
-
+    private static void createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(Contest contest, List<ContestPhase> contestPhasesForContestSchedule, Long contestScheduleId) throws Exception {
         List<ContestPhase> existingContestPhasesForContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
-        //List<ContestPhase> contestPhasesForContestSchedule = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleId(contestScheduleId);
+        for (ContestPhase contestPhaseOfContestSchedule : contestPhasesForContestSchedule) {
+            Long contestPhaseType = contestPhaseOfContestSchedule.getContestPhaseType();
+            if (!isContestPhaseTypeInContestPhaseList(existingContestPhasesForContest, contestPhaseType, contestScheduleId)) {
+                createContestPhaseFromExistingContestPhaseWithContestId(contestPhaseOfContestSchedule, contest.getContestPK());
+            }
+        }
+    }
 
+    private void createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(Contest contest, Long contestScheduleId) throws Exception {
+        List<ContestPhase> existingContestPhasesForContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
         for (ContestPhaseBean contestPhaseOfContestSchedule : schedulePhases) {
             Long contestPhaseType = contestPhaseOfContestSchedule.getContestPhaseType();
             if (!isContestPhaseTypeInContestPhaseList(existingContestPhasesForContest, contestPhaseType, contestScheduleId)) {
@@ -243,15 +256,14 @@ public class ContestScheduleWrapper {
         return selectItems;
     }
 
-    public static List<LabelValue> getScheduleTemplateSelectionItems(long existingScheduleId, boolean showOnlySchedulesWithSamePhases) {
+    public static List<LabelValue> getScheduleTemplateSelectionItems(long existingScheduleId, boolean onlyShowSchedulesWithSamePhases) {
         List<LabelValue> selectItems = new ArrayList<>();
-        if (!showOnlySchedulesWithSamePhases) {
+        if (!onlyShowSchedulesWithSamePhases) {
             selectItems = getAllScheduleTemplateSelectionItems();
         } else {
             try {
-                ContestCreatorUtil.insertSeedDataToContestScheduleTableIfNotAvailable();
                 for (ContestSchedule scheduleTemplate : ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE)) {
-                    if (haveContestSchedulesSamePhases(existingScheduleId, scheduleTemplate.getId())) {
+                    if (areAllPhaseTypesOfScheduleAvailableInOtherSchedule(existingScheduleId, scheduleTemplate.getId())) {
                         selectItems.add(new LabelValue(scheduleTemplate.getId(), scheduleTemplate.getName()));
                     }
                 }
@@ -272,26 +284,10 @@ public class ContestScheduleWrapper {
         return contestSchedulePhaseTypes;
     }
 
-    private static boolean haveContestSchedulesSamePhases(Long contestScheduleId1, Long contestScheduleId2) throws Exception {
+    private static boolean areAllPhaseTypesOfScheduleAvailableInOtherSchedule(Long contestScheduleId1, Long contestScheduleId2) throws Exception {
         List<Long> contestSchedule1PhaseTypes = getContestSchedulePhaseTypes(contestScheduleId1);
         List<Long> contestSchedule2PhaseTypes = getContestSchedulePhaseTypes(contestScheduleId2);
-        return areContestSchedulesPhasesEqual(contestSchedule1PhaseTypes, contestSchedule2PhaseTypes);
-    }
-
-    private static boolean areContestSchedulesPhasesEqual(List<Long> referenceContestSchedulePhases, List<Long> testContestSchedulePhases) {
-        boolean haveContestSchedulesSamePhases = true;
-        for (int i = 0; i < referenceContestSchedulePhases.size(); i++) {
-            try {
-                if (!referenceContestSchedulePhases.get(i).equals(testContestSchedulePhases.get(i))) {
-                    haveContestSchedulesSamePhases = false;
-                    break;
-                }
-            } catch (IndexOutOfBoundsException e) {
-                haveContestSchedulesSamePhases = false;
-                break;
-            }
-        }
-        return haveContestSchedulesSamePhases;
+        return contestSchedule2PhaseTypes.containsAll(contestSchedule1PhaseTypes);
     }
 
     public static void updateContestPhasesOfContestAccordingToContestSchedule(Contest contest, Long scheduleTemplateId) throws Exception {

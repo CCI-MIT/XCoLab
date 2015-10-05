@@ -46,7 +46,6 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         Proposal proposal = proposalsContext.getProposal(request);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
-        User currentUser = proposalsContext.getUser(request);
         ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
         bean.setContestPhaseId(contestPhase.getContestPhasePK());
 
@@ -56,10 +55,12 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
 
-        List<ProposalRating> fellowRatingsUnWrapped = ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
+        List<ProposalRating> fellowRatingsUnWrapped = ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(
+                proposal.getProposalId(), contestPhase.getContestPhasePK());
         List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(fellowRatingsUnWrapped);
 
-        List<ProposalRating> judgesRatingsUnWrapped = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
+        List<ProposalRating> judgesRatingsUnWrapped = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(
+                proposal.getProposalId(), contestPhase.getContestPhasePK());
 
         for (Iterator i = judgesRatingsUnWrapped.iterator(); i.hasNext(); ){
             ProposalRating judgesRatingUnWrapped = (ProposalRating) i.next();
@@ -79,13 +80,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
                 0
         );
-
-        boolean hasNoWritePermission = (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
-                !permissions.getCanAdminAll());
-
-        model.addAttribute("hasNoWritePermission", hasNoWritePermission);
-        model.addAttribute("isAdmin", permissions.getCanAdminAll());
-        model.addAttribute("isJudgeReadOnly", permissions.getCanJudgeActions() && !permissions.getCanFellowActions());
+        
         model.addAttribute("isFrozen", isFrozen);
         model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
 
@@ -95,12 +90,12 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         return "proposalAdvancing";
     }
 
-    private static List<ProposalRatingsWrapper> wrapProposalRatings(List<ProposalRating> ratings) throws SystemException, PortalException {
-        List<ProposalRatingsWrapper> wrappers = new ArrayList<ProposalRatingsWrapper>();
-        Map<Long, List<ProposalRating>> map = new HashMap<Long, List<ProposalRating>>();
+    private static List<ProposalRatingsWrapper> wrapProposalRatings(List<ProposalRating> ratings)
+            throws SystemException, PortalException {
+        List<ProposalRatingsWrapper> wrappers = new ArrayList<>();
+        Map<Long, List<ProposalRating>> map = new HashMap<>();
 
         for (ProposalRating r : ratings) {
-
                 if (map.get(r.getUserId()) == null) {
                     map.put(r.getUserId(), new ArrayList<ProposalRating>());
                 }
@@ -111,7 +106,6 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 List<ProposalRating> userRatings = map.get(userId);
                 ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, userRatings);
                 wrappers.add(wrapper);
-
         }
         return wrappers;
     }
@@ -124,25 +118,20 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         Proposal proposal = proposalsContext.getProposal(request);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
-        ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(proposalWrapper, proposalsContext.getUser(request));
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        User currentUser = proposalsContext.getUser(request);
+        ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(
+                proposalWrapper, proposalsContext.getUser(request));
 
-        boolean hasNoWritePermission = (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
-                !permissions.getCanAdminAll());
         boolean hasAlreadyBeenPromoted = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK(),
                 ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
                 0
         );
-        List<ProposalRating> judgeRatingsUnWrapped = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
 
         FellowProposalScreeningBean bean = new FellowProposalScreeningBean(proposalFellowWrapper);
         bean.setContestPhaseId(contestPhase.getContestPhasePK());
 
         model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
-        model.addAttribute("hasNoWritePermission", hasNoWritePermission);
         model.addAttribute("fellowProposalScreeningBean", bean);
         model.addAttribute("emailTemplates", bean.getEmailTemplateBean().getEmailTemplates());
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());

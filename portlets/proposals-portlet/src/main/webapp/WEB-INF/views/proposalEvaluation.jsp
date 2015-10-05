@@ -9,9 +9,14 @@
           xmlns:evaluationTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-    <jsp:directive.include file="./init.jspx"/>
+
+    <jsp:directive.include file="./init_proposal_tab.jspx" />
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
+
+    <!-- ProposalJudgesTabController -->
+    <jsp:useBean id="judgeProposalBean" scope="request" class="org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean"/>
+
     <div id="content">
 
         <c:if test="${showPublicRatingForm}">
@@ -51,7 +56,7 @@
                 <evaluationTagFiles:evaluationComments evaluationDiscussionId="${evaluationDiscussionId }"/>
             </c:when>
             <c:otherwise>
-                <!-- <h2>The results of the judging period will be visible here.</h2> -->
+                <h2>The results of the judging period will be visible here.</h2>
             </c:otherwise>
         </c:choose>
 

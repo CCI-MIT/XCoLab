@@ -2,7 +2,12 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
@@ -10,7 +15,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,7 +66,7 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         if (currentUser == null || !isJudgingContestPhase()) return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
 
         // If the phase does not require initial fellow screening all judges should do the review
-        if (!getFellowScreeningNeccessary() && isUserAmongJudges(currentUser)) {
+        if (!getFellowScreeningNecessary() && isUserAmongJudges(currentUser)) {
             if (isJudgeFinishedWritingReview()) {
                 return JudgingSystemActions.JudgeReviewStatus.DONE;
             } else {
@@ -82,16 +86,13 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
     }
 
-    public boolean shouldShowJudgingTab(long contestPhaseId) {
-        ProposalContestPhaseAttribute a = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
+    public boolean shouldShowJudgingTab() {
+        ProposalContestPhaseAttribute a = proposalContestPhaseAttributeHelper.getAttributeOrCreate(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
         JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) a.getNumericValue());
         return fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES;
     }
 
     private boolean isJudgeFinishedWritingReview() throws SystemException, PortalException {
-        if (!isUserAmongJudges(currentUser)) {
-            return true;
-        }
-        return proposalRatings.isReviewComplete();
+        return !isUserAmongJudges(currentUser) || proposalRatings.isReviewComplete();
     }
 }

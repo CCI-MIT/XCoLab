@@ -6,6 +6,7 @@ import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 
 public class ContestWrapper {
 
@@ -661,7 +662,7 @@ public class ContestWrapper {
             ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
             for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
                 Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == ProposalWrapper.GenericJudgingStatus.STATUS_ACCEPTED)
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED)
                     return false;
             }
         } catch (Exception e) {
@@ -680,7 +681,7 @@ public class ContestWrapper {
             ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
             for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
                 Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getScreeningStatus() == ProposalWrapper.GenericJudgingStatus.STATUS_UNKNOWN)
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN)
                     return false;
             }
         } catch (Exception e) {

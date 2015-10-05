@@ -5,6 +5,7 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
 	version="2.0">
+
 	<jsp:directive.attribute name="scenarioId" type="java.lang.Long" required="false" rtexprvalue="true" description="scenario id" />
 	<jsp:directive.attribute name="modelId" type="java.lang.Long" required="true" rtexprvalue="true" description="model id" />
 	<jsp:directive.attribute name="contestModelDefaultSetting" type="java.lang.String" required="false" rtexprvalue="true" description="model id" />

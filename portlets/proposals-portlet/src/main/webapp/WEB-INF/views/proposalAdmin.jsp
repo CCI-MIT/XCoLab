@@ -6,19 +6,21 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-<jsp:directive.include file="./init.jspx" />
 
-    <style type="text/css">
-        .admin_left {
-            width: 400px;
-            float: left;
-        }
-        .admin_right {
-            float: left;
-        }
-    </style>
+	<jsp:directive.include file="./init_proposal_tab.jspx" />
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
+
+	<style type="text/css">
+		.admin_left {
+			width: 400px;
+			float: left;
+		}
+		.admin_right {
+			float: left;
+		}
+	</style>
+
     <div id="content">
         <div class="admin_left">
         <c:set var="addBlueClass" value='false' />
@@ -66,7 +68,7 @@
             				<option value="-1">no ribbon</option>
             				<c:forEach var="ribbon" items="${availableRibbons }">
             					<c:choose>
-            						<c:when test="${proposal.ribbonId == ribbon.id }">
+            						<c:when test="${proposal.ribbonWrapper.ribbonId == ribbon.id }">
             							<option value="${ribbon.id }" selected="selected">${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}</option>
             						</c:when>
             						<c:otherwise>
@@ -111,7 +113,7 @@
         </c:if>
 
 
-		<c:if test="${ proposalsPermissions.getCanPromoteProposalToNextPhase() }">
+		<c:if test="${ proposalsPermissions.canPromoteProposalToNextPhase }">
 
 			<portlet:actionURL var="promoteProposalURL">
 				<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
@@ -135,7 +137,7 @@
 			</form>
 		</c:if>
 
-        <c:if test="${ proposalsPermissions.getCanMoveProposalAndHideInCurrentContest() }">
+        <c:if test="${ proposalsPermissions.canMoveProposalAndHideInCurrentContest }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
             	<strong>Move proposal to different contest</strong>
             	<div>            		
@@ -149,7 +151,7 @@
 			</div>
 		</c:if>
 
-            <c:if test="${ proposalsPermissions.getCanMoveProposalAndKeepInCurrentContest() }">
+            <c:if test="${ proposalsPermissions.canMoveProposalAndKeepInCurrentContest }">
                 <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                     <strong>Copy proposal to different contest</strong>
                     <div>

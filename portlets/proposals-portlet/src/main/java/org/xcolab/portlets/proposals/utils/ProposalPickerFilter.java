@@ -245,10 +245,8 @@ public class ProposalPickerFilter {
                     List<Long> phases = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
                     boolean winner = false;
                     for (long phase : phases){
-                        try {
-                            ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(), phase, "RIBBON");
-                            winner = true;
-                        } catch (NoSuchProposalContestPhaseAttributeException nspcpae){ /* NO WINNER */ }
+                        winner = winner || ProposalContestPhaseAttributeLocalServiceUtil.hasProposalContestPhaseAttribute(
+                                p.getProposalId(), phase, "RIBBON");
                     }
                     if (!winner) {
                         removedProposals.add(p.getProposalId());

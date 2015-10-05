@@ -8,7 +8,9 @@
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-	<jsp:directive.include file="./init.jspx" />
+
+	<jsp:directive.include file="./init_contest.jspx" />
+
 	<div class="proposal-head">
 		<div class="inner">
 			<div class='headline'>

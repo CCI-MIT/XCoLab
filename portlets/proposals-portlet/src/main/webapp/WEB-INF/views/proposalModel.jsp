@@ -7,9 +7,11 @@
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-<jsp:directive.include file="./init.jspx" />
+
+	<jsp:directive.include file="./init_proposal_tab.jspx" />
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
+
 	<div id="content">
 		<modeling:simulationView scenarioId="${proposal.scenarioId }" modelId="${proposal.modelId }" />
 	</div>

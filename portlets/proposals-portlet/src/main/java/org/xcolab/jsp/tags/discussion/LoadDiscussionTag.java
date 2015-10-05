@@ -36,13 +36,9 @@ public class LoadDiscussionTag extends BodyTagSupport {
             pageContext.setAttribute("discussion", new DiscussionCategoryGroupWrapper(dcg));
             pageContext.setAttribute("newMessage", new NewMessageWrapper());
             pageContext.setAttribute("discussionPermissions", new DiscussionPermissions(portletRequest, dcg));
-        } catch (PortalException e) {
-            e.printStackTrace();
-        } catch (SystemException e) {
+        } catch (PortalException | SystemException e) {
             e.printStackTrace();
         }
         return EVAL_BODY_INCLUDE; 
     }
-    
-    
 }

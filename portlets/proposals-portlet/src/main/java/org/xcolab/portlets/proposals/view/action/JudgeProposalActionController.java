@@ -8,53 +8,12 @@ import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.util.PortalUtil;
-import com.liferay.util.mail.MailEngineException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
-import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
-import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
-import org.xcolab.portlets.proposals.requests.RatingBean;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
-
-import javax.mail.internet.AddressException;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.validation.Valid;
-import java.io.*;
-import java.util.*;
-
-
-import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
@@ -64,6 +23,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,8 +38,10 @@ import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
+import org.xcolab.portlets.proposals.requests.RatingBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.*;
+import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import javax.mail.internet.AddressException;
@@ -88,8 +50,15 @@ import javax.portlet.ActionResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("view")
@@ -364,7 +333,7 @@ public class JudgeProposalActionController {
 
     private void saveRatings(List<ProposalRating> existingRatings, RatingBean ratingBean, long proposalId, long contestPhaseId, long currentUserId, boolean isPublicRating) throws NoSuchUserException, SystemException {
         //initialize a map of existing ratings
-        Map<Long, ProposalRating> typeToRatingMap = new HashMap<Long, ProposalRating>();
+        Map<Long, ProposalRating> typeToRatingMap = new HashMap<>();
         for (ProposalRating r: existingRatings) {
             ProposalRatingWrapper wrapper = new ProposalRatingWrapper(r);
             typeToRatingMap.put(wrapper.getRatingTypeId(), r);

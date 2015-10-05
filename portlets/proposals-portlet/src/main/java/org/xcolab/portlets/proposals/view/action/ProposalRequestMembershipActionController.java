@@ -124,12 +124,12 @@ public class ProposalRequestMembershipActionController {
 
     @RequestMapping(params = {"action=inviteMember"})
     public void invite(ActionRequest request, Model model,
-                     ActionResponse response, @Valid RequestMembershipInviteBean requestMembershipBean, BindingResult result)
+                     ActionResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
             throws PortalException, SystemException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
                 WebKeys.THEME_DISPLAY);
 
-        String input = requestMembershipBean.getInviteRecipient();
+        String input = requestMembershipInviteBean.getInviteRecipient();
         if (input == null || input.equals("")) {
             return;
         }
@@ -146,7 +146,7 @@ public class ProposalRequestMembershipActionController {
 					long contestId = proposalsContext.getContest(request).getContestPK();
 
 					String proposalName = ProposalLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
-					String comment = requestMembershipBean.getInviteComment();
+					String comment = requestMembershipInviteBean.getInviteComment();
 
 					// A comment has to be specified
 					if (Validator.isNull(comment)) {

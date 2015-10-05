@@ -1,6 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.*;
+import com.ext.portlet.model.Proposal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -26,7 +26,8 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * User: patrickhiesel Date: 03/12/13 Time: 09:46
@@ -36,7 +37,7 @@ import java.util.*;
 @RequestMapping("view")
 public class ProposalPickerJSONController {
 
-	private static int MAXCHARS_FOR_NAMES = 75;
+	private static int MAX_CHARS_FOR_NAMES = 75;
 	private static Log _log = LogFactoryUtil.getLog(ProposalPickerJSONController.class);
 
 	@Autowired
@@ -91,7 +92,7 @@ public class ProposalPickerJSONController {
 		} else {
 			totalCount = 0;
 			_log.error("Could not retrieve proposals: proposals variable should not be null for valid filterKeys." +
-					"(filterKey was "+filterText+")");
+					"(filterKey was "+filterType+")");
 		}
 		response.getPortletOutputStream().write(
 				getJSONObjectMapping(proposals, totalCount).getBytes());
@@ -174,9 +175,9 @@ public class ProposalPickerJSONController {
 			JSONObject o = JSONFactoryUtil.createJSONObject();
 			o.put("id", p.getLeft().getProposalId());
 			o.put("proposalName", StringUtils.abbreviate(
-					StringEscapeUtils.unescapeXml(wrappedProposal.getName()), MAXCHARS_FOR_NAMES));
+					StringEscapeUtils.unescapeXml(wrappedProposal.getName()), MAX_CHARS_FOR_NAMES));
 			o.put("contestName", StringUtils.abbreviate(wrappedProposal
-					.getContest().getContestShortName(), MAXCHARS_FOR_NAMES));
+					.getContest().getContestShortName(), MAX_CHARS_FOR_NAMES));
 			o.put("contestId", wrappedProposal.getContest().getContestPK());
 			if (StringUtils.isNotBlank(wrappedProposal.getTeam())) {
 				o.put("team", wrappedProposal.getTeam());
@@ -222,9 +223,9 @@ public class ProposalPickerJSONController {
 
 			o.put("id", p.getLeft().getContestPK());
 			o.put("contestShortName", StringUtils.abbreviate(
-					wrapped.getContestShortName(), MAXCHARS_FOR_NAMES));
+					wrapped.getContestShortName(), MAX_CHARS_FOR_NAMES));
 			o.put("contestName", StringUtils.abbreviate(
-					wrapped.getContestName(), MAXCHARS_FOR_NAMES));
+					wrapped.getContestName(), MAX_CHARS_FOR_NAMES));
 			o.put("contestPK", wrapped.getContestPK());
 			o.put("flagText", wrapped.getFlagText());
 			o.put("flag", wrapped.getFlag());

@@ -9,8 +9,12 @@
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:portlet="http://java.sun.com/portlet_2_0"
 	version="2.0">
+
 	<jsp:directive.attribute name="evaluationDiscussionId" type="java.lang.Long" required="true" rtexprvalue="true" description="Evaluation discussion id" />
 	<discussions:loadDiscussion discussionId="${evaluationDiscussionId }" >
+		 <!--LoadDiscussionTag -->
+		<!--<jsp:useBean id="discussionPermissions" scope="request" type="org.xcolab.jsp.tags.discussion.DiscussionPermissions"/>-->
+		<!--<jsp:useBean id="discussion" scope="request" type="org.xcolab.jsp.tags.discussion.wrappers.DiscussionCategoryGroupWrapper"/>-->
 		<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 			<div class="headline prophead">
         		<h2>
@@ -107,6 +111,7 @@
                                                 <portlet:actionURL var="editCommentURL">
                                                     <portlet:param name="action" value="editComment" />
 													<portlet:param name="tab" value="${currentTab}" />
+													<portlet:param name="discussionId" value="${discussion.id}" />
 													<portlet:param name="proposalId" value="${proposalId}" />
                                                 </portlet:actionURL>
                                                 <a href="javascript:;" onclick="editComment(${message.messageId},'${editCommentURL}');">Edit</a>

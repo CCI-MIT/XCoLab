@@ -10,9 +10,13 @@
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
           xmlns:liferay-ui="http://liferay.com/tld/ui">
-    <jsp:directive.include file="./init.jspx"/>
+
+    <jsp:directive.include file="./init_proposal_tab.jspx" />
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
+
+    <!--ProposalJudgesTabController-->
+    <jsp:useBean id="proposalAdvancingBean" scope="request" type="org.xcolab.portlets.proposals.requests.ProposalAdvancingBean"/>
 
     <style>h3 {
         margin: 20px 0 10px 0 !important;
@@ -33,7 +37,7 @@
     <portlet:resourceURL id="getJudgingCsv" var="getJudgingCsvURL">
     </portlet:resourceURL>
 
-    <div id="content" class="${isJudgeReadOnly ? 'judgeReadOnly' : ''}">
+    <div id="content" class="${proposalsPermissions.canJudgeActions and !proposalsPermissions.canFellowActions ? 'judgeReadOnly' : ''}">
         This page is shared by contest Fellows only.  Advisors and Judges will not be able to view this page.
         <br/>
         <div style="display: inline-block;	float:right; margin-top: 20px;">
@@ -41,8 +45,7 @@
         </div>
         <h1 style="margin-top:15px;">Rating</h1>
 
-
-        <c:if test="${not isJudgeReadOnly}">
+        <c:if test="${!proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
             <div class="judging_left">
                 <c:choose>
                     <c:when test="${not proposal.allJudgesReviewFinished}">
@@ -68,7 +71,7 @@
                                     <div id="comment-footers">
                                         <c:forEach var="template" items="${emailTemplates}">
                                             <div class="${template.key}">
-                                                    ${template.value.getFooter()}
+                                                    ${template.value.footer}
                                             </div>
                                         </c:forEach>
                                     </div>
@@ -81,16 +84,11 @@
                                 <a href="${contest.emailTemplateUrl}" target="_blank">Go to Email Template</a>
                                 <div id="advance-save-buttons">
                                     <c:choose>
-                                        <c:when test="${hasNoWritePermission}">
-                                            <p class="submitStatus error">
-                                                <strong>You don't have the required permission to change the status of this proposal.</strong>
-                                            </p>
-                                        </c:when>
                                         <c:when test="${isFrozen}">
                                             <p class="submitStatus">
                                                 <strong>The advancement is finalized and may not be changed anymore.</strong>
                                             </p>
-                                            <c:if test="${isAdmin}">
+                                            <c:if test="${proposalsPermissions.canAdminAll}">
                                                 <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                                                     <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">
                                                         Save
@@ -104,7 +102,7 @@
                                                 </div>
                                             </c:if>
                                         </c:when>
-                                        <c:otherwise>
+                                        <c:when test="${proposalsPermissions.canFellowActions}">
                                             <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                                                 <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">
                                                     Save
@@ -118,10 +116,15 @@
                                                     </a>
                                                 </div>
                                             </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p class="submitStatus error">
+                                                <strong>You don't have the required permission to change the status of this proposal.</strong>
+                                            </p>
                                         </c:otherwise>
                                     </c:choose>
                                     <div id="advancement-force-button">
-                                        <c:if test="${isAdmin and not hasAlreadyBeenPromoted}">
+                                        <c:if test="${proposalsPermissions.canAdminAll and not hasAlreadyBeenPromoted}">
                                             <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                                                 <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
                                                 <a href="javascript:;" onclick="$('#submit-forcePromotion').click();">
@@ -167,7 +170,7 @@
             <c:choose>
                 <c:when test="${fellowRatings.size() > 0}">
                 <div class="addpropbox">
-                    <proposalsPortlet:proposalRatingComments showRating="${isAdmin ? 'true' : 'false'}" proposalRatingsWrappers="${fellowRatings}" proposalId="${proposal.proposalId}" />
+                    <proposalsPortlet:proposalRatingComments showRating="${proposalsPermissions.canAdminAll ? 'true' : 'false'}" proposalRatingsWrappers="${fellowRatings}" proposalId="${proposal.proposalId}" />
                 </div>
                 </c:when>
                 <c:otherwise>
@@ -202,8 +205,8 @@
         }
 
         function refreshEmailTemplates() {
-            jQuery("#comment-footers > div").hide();
-            jQuery("#comment-headers > div").hide();
+            jQuery("#comment-footers").find("> div").hide();
+            jQuery("#comment-headers").find("> div").hide();
 
             var action = $("#advanceDecision").val();
             var classToBeShown = "";
@@ -220,12 +223,14 @@
         function copyCommentsToTextArea(element) {
             var text = "";
             $(".comment-wrapper", $(element).closest(".comments")).each(function() {text+="\n\n"+$(this).text()});
-            $("#advanceComment").val($("#advanceComment").val()+text);
+            var $advanceCommentElement = $("#advanceComment");
+            $advanceCommentElement.val($advanceCommentElement.val()+text);
         }
     </script>
-    <c:if test="${hasNoWritePermission or (isFrozen and not isAdmin)}">
+    <c:if test="${!proposalsPermissions.canFellowActions or (isFrozen and not proposalsPermissions.canAdminAll)}">
         <script>
-            $("#fellowRatingForm select").add($("#fellowRatingForm input")).add($("#fellowRatingForm textarea")).attr("disabled", "disabled");
+            var $fellowRatingFormElement = $("#fellowRatingForm");
+            $fellowRatingFormElement.find("select").add($fellowRatingFormElement.find("input")).add($fellowRatingFormElement.find("textarea")).attr("disabled", "disabled");
         </script>
     </c:if>
     <c:if test="${not proposal.allJudgesReviewFinished}">

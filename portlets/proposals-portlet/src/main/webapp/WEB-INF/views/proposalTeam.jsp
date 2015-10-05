@@ -7,10 +7,14 @@
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:liferay-ui="http://liferay.com/tld/ui"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-    <jsp:directive.include file="./init.jspx" />
+
+    <jsp:directive.include file="./init_proposal_tab.jspx" />
 
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
+    <!--ProposalTeamTabController-->
+    <jsp:useBean id="requestMembershipBean" scope="request" type="org.xcolab.portlets.proposals.requests.RequestMembershipBean"/>
+    <jsp:useBean id="requestMembershipInviteBean" scope="request" type="org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean"/>
 
     <div id="content">
         <liferay-ui:success key="membershipRequestSent" message="Membership request sent" />
@@ -21,7 +25,7 @@
             <h2>
                 <span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? 'member' : 'members'}
             </h2>
-            <c:if test="${!proposalsPermissions.isTeamMember and !proposalsPermissions.userHasOpenMembershipRequest}">
+            <c:if test="${proposalsDisplayPermissions.canSeeRequestMembershipButton}">
                 <div class="prop-butt-popover">
                     <img src="/climatecolab-theme/images/icon-request-membership.png"
                          width="24" height="22" alt="request membership" class="request-membership-icon"/>
@@ -111,7 +115,7 @@
             <h2>
                 <span>${fn:length(proposal.supporters)}</span> ${fn:length(proposal.supporters) == 1 ? 'supporter' : 'supporters' }
             </h2>
-            <c:if test="${proposalsPermissions.canSeeSupportButton or proposalsPermissions.canSeeUnsupportButton  }">
+            <c:if test="${proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton  }">
                 <portlet:actionURL var="supportProposalActionURL">
                     <portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
                     <portlet:param name="contestId" value="${contest.contestPK }" />
@@ -123,7 +127,7 @@
                     <img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="support proposal" />
                     <div class="blue-button">
                         <a href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-                                ${proposalsPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
+                                ${proposalsDisplayPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
                         </a>
                     </div>
                 </div>

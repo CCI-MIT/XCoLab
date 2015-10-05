@@ -14,7 +14,6 @@ public class ValidateTabPermissionsInterceptor extends HandlerInterceptorAdapter
     @Autowired
     private ProposalsContext proposalsContext;
 
-    
     @Override
     public void postHandleRender(RenderRequest request, RenderResponse response, Object handler,
             org.springframework.web.portlet.ModelAndView modelAndView) throws Exception {
@@ -27,7 +26,6 @@ public class ValidateTabPermissionsInterceptor extends HandlerInterceptorAdapter
                     throw new ProposalsAuthorizationException("User isn't allowed to access requested tab");
                 }
             }
-            
         }
     }
 }
