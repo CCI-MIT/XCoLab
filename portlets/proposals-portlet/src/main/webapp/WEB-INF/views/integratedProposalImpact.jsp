@@ -327,17 +327,13 @@
          - Energy/Industry CO2 emissions
          - Land Use CO2 emissions
          */
-
-        function exportFloatFromString(string){
-            return parseFloat(string.replace(",",""));
-        }
-
+        
         function mapValuesToYear(row) {
             var modelTotalValues = row.querySelectorAll('[data-attr-year]');
             var map = {};
             [].forEach.call(modelTotalValues, function (totalYearValue) {
                 var year = totalYearValue.getAttribute("data-attr-year");
-                var value = exportFloatFromString(totalYearValue.innerHTML);
+                var value = parseFloat(totalYearValue.innerHTML);
                 map[year] = value;
             });
             return map;
@@ -379,7 +375,7 @@
                 var totalProjectedEmissionsValuesToYears = {};
                 [].forEach.call(totalProjectedEmissionsValues, function (totalProjectedEmissionsYearValue) {
                     var year = totalProjectedEmissionsYearValue.getAttribute("data-attr-year");
-                    totalProjectedEmissionsValuesToYears[year] = exportFloatFromString(bauValuesToYears[year]) - exportFloatFromString(totalSectorsValuesToYears[year]);
+                    totalProjectedEmissionsValuesToYears[year] = parseFloat(bauValuesToYears[year]) - parseFloat(totalSectorsValuesToYears[year]);
                     totalProjectedEmissionsYearValue.innerHTML = totalProjectedEmissionsValuesToYears[year].toFixed(2);
                 });
             } else return;
@@ -404,14 +400,14 @@
             var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
             [].forEach.call(modelTotalValues, function (totalYearValue) {
                 var year = totalYearValue.getAttribute("data-attr-year");
-                totalYearValue.innerHTML = exportFloatFromString(modelSeriesValuesToYears[year]).toFixed(2);
+                totalYearValue.innerHTML = parseFloat(modelSeriesValuesToYears[year]).toFixed(2);
             });
 
             var modelAdjustmentsRow = document.getElementById("modelAdjustments");
             var modelAdjustmentValues = modelAdjustmentsRow.querySelectorAll('[data-attr-year]');
             [].forEach.call(modelAdjustmentValues, function (modelAdjustmentValue) {
                 var year = modelAdjustmentValue.getAttribute("data-attr-year");
-                modelAdjustmentValue.innerHTML = (exportFloatFromString(modelSeriesValuesToYears[year]) - exportFloatFromString(totalProjectedEmissionsValuesToYears[year])).toFixed(2);
+                modelAdjustmentValue.innerHTML = (parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalProjectedEmissionsValuesToYears[year])).toFixed(2);
             });
         };
 
