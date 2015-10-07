@@ -91,7 +91,7 @@
 						<td class="b" nowrap="nowrap" width="23%">Screen Name</td>
 						<td width="23%">${userBean.screenName}</td>
 						<td class="b" width="43%">Activities</td>
-						<td class="align_right">${currentUserProfile.userActivityCount}</td>
+						<td class="align_right">${currentUserProfile.userActivityCountFormatted}</td>
 					</tr>
 					<tr>
 						<td class="b" nowrap="nowrap" width="23%">Member Since</td>
@@ -108,7 +108,7 @@
 							</div>
 							<div class="clearfix"></div>
 						</td>
-						<td class="points_box right_border top_border align_right">${currentUserProfile.actualPoints}</td>
+						<td class="points_box right_border top_border align_right">${currentUserProfile.actualPointsFormatted}</td>
 					</tr>
 
 					<tr>
@@ -128,7 +128,7 @@
 							</div>
 							<div class="clearfix"></div>
 						</td>
-						<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPoints}</td>
+						<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPointsFormatted}</td>
 					</tr>
 
 					<c:if test="${currentUserProfile.viewingOwnProfile}">

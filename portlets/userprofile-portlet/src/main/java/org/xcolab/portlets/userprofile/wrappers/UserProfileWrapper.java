@@ -40,6 +40,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class
         UserProfileWrapper implements Serializable {
@@ -296,8 +297,7 @@ public class
             for (SocialActivity activity: ActivityUtil.groupActivities(ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getUserId(), 0, 1000))) {
                 try {
                     subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
-                } catch (Exception e) {
-                }
+                } catch (Exception ignored) { }
             }
         }
         return subscribedActivities;
@@ -319,12 +319,20 @@ public class
         }
     }
 
+    public String getUserActivityCountFormatted() {
+        return String.format("%,d", getUserActivityCount());
+    }
+
     public long getActualPoints() {
         try {
             return PointsLocalServiceUtil.getUserMaterializedPoints(getUserId());
         } catch (SystemException e) {
             return 0;
         }
+    }
+
+    public String getActualPointsFormatted() {
+        return String.format("%,d", getActualPoints());
     }
 
     public long getPotentialPoints() {
@@ -335,4 +343,7 @@ public class
         }
     }
 
+    public String getPotentialPointsFormatted() {
+        return String.format("%,d", getPotentialPoints());
+    }
 }
