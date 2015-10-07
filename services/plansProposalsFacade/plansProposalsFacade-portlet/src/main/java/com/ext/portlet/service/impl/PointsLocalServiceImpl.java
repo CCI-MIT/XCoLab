@@ -1,27 +1,28 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
-import com.ext.portlet.service.persistence.Xcolab_UserFinderUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.points.DistributionStrategy;
-import org.xcolab.points.PointsTarget;
-import org.xcolab.points.ReceiverLimitationStrategy;
-
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.PointDistributionTarget;
 import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.Points;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.PointsLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.Xcolab_UserFinderUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.xcolab.points.DistributionStrategy;
+import org.xcolab.points.PointsTarget;
+import org.xcolab.points.ReceiverLimitationStrategy;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * The implementation of the points local service.
@@ -40,12 +41,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	
 	private final static Log _log = LogFactoryUtil.getLog(PointsLocalServiceImpl.class);
-	
+
 	/**
 	 * Returns number of materialized points for given user.
-	 * 
-	 * @param userId
-	 * @return
+	 *
 	 * @throws SystemException
 	 */
 	public int getUserMaterializedPoints(long userId) throws SystemException {
@@ -54,9 +53,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	
 	/**
 	 * Returns number of points for hypothetical user. 
-	 * 
-	 * @param userId
-	 * @return
+	 *
 	 * @throws SystemException
 	 */
 	public long getUserHypotheticalPoints(long userId) throws SystemException {
@@ -66,19 +63,18 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	/**
 	 * Calculates the hypothetical points for all proposals for a given contest and
      * if the contest ended, materializes the points for winning proposals.
-	 * 
-	 * @param contestPK
+	 *
 	 * @throws SystemException 
 	 * @throws PortalException 
 	 */
 	public void distributePoints(long contestPK) throws PortalException, SystemException {
 		Contest contest = contestLocalService.getContest(contestPK);
         PointType pointType = pointTypeLocalService.getPointType(contest.getDefaultParentPointType());
-        List<Proposal> materializedProposals = new ArrayList<Proposal>();
+        List<Proposal> materializedProposals = new ArrayList<>();
 
 		// clean up old data
 		pointsPersistence.removeByOriginatingContestPK(contestPK);
-		
+
 		for (Points points: pointsPersistence.findByOriginatingContestPK(contestPK)) {
 			deletePoints(points);
 		}
@@ -96,17 +92,16 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         }
 	}
 
-
     public List<Points> previewMaterializedPoints(long contestPK) throws PortalException, SystemException {
         Contest contest = contestLocalService.getContest(contestPK);
         PointType pointType = pointTypeLocalService.getPointType(contest.getDefaultParentPointType());
-        List<Proposal> materializedProposals = new ArrayList<Proposal>();
+        List<Proposal> materializedProposals = new ArrayList<>();
 
         return materializePoints(contest, materializedProposals, pointType, true);
     }
 
     private List<Points> materializePoints(Contest contest, List<Proposal> materializedProposals, PointType pointType, boolean previewOnly) throws PortalException, SystemException {
-        List<Points> materializedPoints = new ArrayList<Points>();
+        List<Points> materializedPoints = new ArrayList<>();
         // check if distribution targets have been defined manually
         Collection<PointDistributionTarget> distributionTargets = pointDistributionTargetPersistence.findByContestId(contest.getContestPK());
         if (distributionTargets.isEmpty()) {
@@ -147,7 +142,11 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
                 " hypotheticalPoints: " + hypotheticalPoints;
         if (hypotheticalPoints < 1 && materializedPoints < 1) {
             _log.info("Points left to be distributed are less than 1 for proposal: " + logString);
-            return new ArrayList<Points>();
+            return new ArrayList<>();
+        }
+        if (proposalIsDeleted(proposal, originatingContest)) {
+            _log.info("Proposal was deleted, so no points are distributed: " + logString);
+            return new ArrayList<>();
         }
 		
 		_log.info("Distributing points to proposal: " + logString);
@@ -156,7 +155,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 		ReceiverLimitationStrategy receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 		
 		if (distributionStrategy == DistributionStrategy.DEFINED_BY_CHILDREN_PERCENTAGES) {
-            List<Points> materializedPointsList = new ArrayList<Points>();
+            List<Points> materializedPointsList = new ArrayList<>();
 			for (PointType subPointType: pointTypePersistence.findByParentPointTypeId(pointType.getId())) {
                 materializedPointsList.addAll(distributePointsToProposal(proposal, originatingProposal,
                         originatingContest,
@@ -171,7 +170,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 		
 		List<PointsTarget> targets = receiverLimitationStrategy.getTargets(proposal, pointType, distributionStrategy);
 
-        List<Points> materializedPointsList = new ArrayList<Points>();
+        List<Points> materializedPointsList = new ArrayList<>();
 		for (PointsTarget target: targets) {
             // Skip when we would distribute less than 1 point
             if (hypotheticalPoints * target.getPercentage() < 1.0 && materializedPoints * target.getPercentage() < 1) {
@@ -217,4 +216,18 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 		}
         return materializedPointsList;
 	}
+
+    private boolean proposalIsDeleted(Proposal proposal, Contest contest) throws SystemException, PortalException {
+        if (!proposal.isVisible())
+            return false;
+        try {
+            final ContestPhase activePhase = contestPhaseLocalService.getActivePhaseForContest(contest);
+            final ProposalContestPhaseAttribute visibleAttribute = proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(
+                    proposal.getProposalId(), activePhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
+            if (visibleAttribute.getNumericValue() == 1) {
+                return false;
+            }
+        } catch (NoSuchProposalContestPhaseAttributeException ignored) { }
+        return true;
+    }
 }
