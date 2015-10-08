@@ -9,7 +9,6 @@ import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.Points;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.PointsLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Xcolab_UserFinderUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -74,10 +73,6 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 
 		// clean up old data
 		pointsPersistence.removeByOriginatingContestPK(contestPK);
-
-		for (Points points: pointsPersistence.findByOriginatingContestPK(contestPK)) {
-			deletePoints(points);
-		}
 		
         //only materialize if the contest has ended.
         if (contestLocalService.hasContestEnded(contest)) {
@@ -144,7 +139,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
             _log.info("Points left to be distributed are less than 1 for proposal: " + logString);
             return new ArrayList<>();
         }
-        if (proposalIsDeleted(proposal, originatingContest)) {
+        if (proposalIsHidden(proposal, originatingContest)) {
             _log.info("Proposal was deleted, so no points are distributed: " + logString);
             return new ArrayList<>();
         }
@@ -217,17 +212,17 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         return materializedPointsList;
 	}
 
-    private boolean proposalIsDeleted(Proposal proposal, Contest contest) throws SystemException, PortalException {
+    private boolean proposalIsHidden(Proposal proposal, Contest contest) throws SystemException, PortalException {
         if (!proposal.isVisible())
-            return false;
+            return true;
         try {
             final ContestPhase activePhase = contestPhaseLocalService.getActivePhaseForContest(contest);
             final ProposalContestPhaseAttribute visibleAttribute = proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(
                     proposal.getProposalId(), activePhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
-            if (visibleAttribute.getNumericValue() == 1) {
-                return false;
+            if (visibleAttribute.getNumericValue() == 0) {
+                return true;
             }
         } catch (NoSuchProposalContestPhaseAttributeException ignored) { }
-        return true;
+        return false;
     }
 }
