@@ -1,37 +1,6 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.mail.internet.AddressException;
-import javax.portlet.PortletRequest;
-
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.service.*;
-import com.liferay.portal.NoSuchUserException;
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
-import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
-import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
-import org.xcolab.proposals.events.ProposalMemberAddedEvent;
-import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
-import org.xcolab.proposals.events.ProposalRemovedVoteEvent;
-import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
-import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
-import org.xcolab.proposals.events.ProposalVotedOnEvent;
-import org.xcolab.services.EventBusService;
-import org.xcolab.utils.ProposalAttributeDetectUpdateAlgorithm;
-import org.xcolab.utils.UrlBuilder;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
-
+import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.NoSuchProposalSupporterException;
@@ -39,12 +8,12 @@ import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
@@ -53,12 +22,17 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
 import com.ext.portlet.service.persistence.ProposalVersionPK;
 import com.ext.portlet.service.persistence.ProposalVotePK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.Criterion;
@@ -91,6 +65,32 @@ import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
+import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
+import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
+import org.xcolab.proposals.events.ProposalMemberAddedEvent;
+import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
+import org.xcolab.proposals.events.ProposalRemovedVoteEvent;
+import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
+import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
+import org.xcolab.proposals.events.ProposalVotedOnEvent;
+import org.xcolab.services.EventBusService;
+import org.xcolab.utils.ProposalAttributeDetectUpdateAlgorithm;
+import org.xcolab.utils.UrlBuilder;
+import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
+
+import javax.mail.internet.AddressException;
+import javax.portlet.PortletRequest;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The implementation of the proposal local service.
@@ -381,11 +381,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
      * it uses nulls/zeros for unspecified values</p>
      *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param stringValue
-     * @return
      * @throws PortalException
      * @throws SystemException
      */
@@ -397,13 +392,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
      * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param additionalId
-     * @param stringValue
-     * @return
      * @throws PortalException
      * @throws SystemException
      */
@@ -414,12 +402,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
      * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param stringValue
-     * @return
      * @throws PortalException
      * @throws SystemException
      */
@@ -430,13 +412,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
      * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param additionalId
-     * @param numericValue
-     * @return
      * @throws PortalException
      * @throws SystemException
      */
@@ -447,12 +422,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
      * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param numericValue
-     * @return
      * @throws PortalException
      * @throws SystemException
      */
@@ -463,13 +432,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
      * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param additionalId
-     * @param realValue
-     * @return
      * @throws PortalException
      * @throws SystemException
      */
@@ -480,12 +442,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
      * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param realValue
-     * @return
      * @throws PortalException
      * @throws SystemException
      */
@@ -546,11 +502,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param attributeName name of an attribute
      * @param additionalId  additionalId of an attribute
      * @return proposal attribute
-     * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      * @author janusz
      */
-    public ProposalAttribute getAttribute(long proposalId, int version, String attributeName, long additionalId) throws NoSuchProposalAttributeException, SystemException {
+    public ProposalAttribute getAttribute(long proposalId, int version, String attributeName, long additionalId)
+            throws NoSuchProposalAttributeException, SystemException {
         List<ProposalAttribute> attribute = proposalAttributePersistence.
                 findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
                         proposalId, version, version, attributeName, additionalId);
@@ -566,13 +522,12 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
     /**
      * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
-     * @param authorId
-     * @param attributeToDelete
-     * @param publishActivity
+     *
      * @throws SystemException
      * @throws PortalException
      */
-    public void removeAttribute(long authorId, ProposalAttribute attributeToDelete, boolean publishActivity) throws SystemException, PortalException {
+    public void removeAttribute(long authorId, ProposalAttribute attributeToDelete, boolean publishActivity)
+            throws SystemException, PortalException {
         Proposal proposal = getProposal(attributeToDelete.getProposalId());
 
         int currentVersion = proposal.getCurrentVersion();
@@ -585,7 +540,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // for each attribute, if it isn't the one that we are deleting, simply
         // update it to the most recent version
         for (ProposalAttribute attribute : currentProposalAttributes) {
-            ProposalAttributeDetectUpdateAlgorithm updateAlgorithm = new ProposalAttributeDetectUpdateAlgorithm(attribute);
             if (attribute.getId() != attributeToDelete.getId()) {
                 // clone the attribute and set its version to the new value
                 attribute.setVersion(newVersion);
@@ -609,8 +563,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
      *
-     * @param authorId
-     * @param attributeToDelete
      * @throws PortalException
      * @throws SystemException
      */
@@ -787,7 +739,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 } catch (NoSuchProposalContestPhaseAttributeException e) {
                     // We ignore the exception here since it does not have an impact
                 }
-
             }
 
             // Either we don't have an invisible entry in the attributes table or there is at least one visible
@@ -876,7 +827,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
     }
 
-
     /**
      * <p>Adds supporter to a proposal</p>
      *
@@ -950,7 +900,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposalId     proposal id
      * @param contestPhaseId contest phase id
      * @return number of votes
-     * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
     public long getVotesCount(long proposalId, long contestPhaseId) throws SystemException {
@@ -1020,11 +969,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             proposalVoteLocalService.deleteProposalVote(proposalVote);
             eventBus.post(new ProposalRemovedVoteEvent(getProposal(proposalVote.getProposalId()), userLocalService.getUser(userId)));
 
-        } catch (NoSuchProposalVoteException e) {
-            // ignore
-            return;
-        }
-
+        } catch (NoSuchProposalVoteException ignored) { }
     }
 
     /**
@@ -1119,7 +1064,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment, null);
     }
 
-
     /**
      * <p>Remove a user from a proposal team</p>
      *
@@ -1134,7 +1078,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         eventBus.post(new ProposalMemberRemovedEvent(proposal, userLocalService.getUser(userId)));
     }
-
 
     /**
      * <p>Denies user as a member of proposal team</p>
@@ -1248,7 +1191,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         activitySubscriptionLocalService.addSubscription(DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", userId, automatic);
     }
 
-
     /**
      * <p>Unsubscribes user from given proposal</p>
      *
@@ -1260,7 +1202,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public void unsubscribe(long proposalId, long userId) throws PortalException, SystemException {
         unsubscribe(proposalId, userId, false);
     }
-
 
     /**
      * <p>Unsubscribes user from given proposal (supports removal of automatic subscriptions).
@@ -1303,8 +1244,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * Returns number of proposals that user supports
      *
-     * @param userId
-     * @return
      * @throws SystemException
      */
     public int getUserSupportedProposalsCount(long userId) throws SystemException {
@@ -1314,8 +1253,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * Returns number of proposals that user has given his vote to
      *
-     * @param userId
-     * @return
      * @throws SystemException
      */
     public int getUserVotedProposalsCount(long userId) throws SystemException {
@@ -1369,7 +1306,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         Long discussionId = proposal.getResultsDiscussionId();
 
-        if(discussionId == null || discussionId == 0) {
+        if(discussionId == 0) {
 
             DiscussionCategoryGroup resultsDiscussion = DiscussionCategoryGroupLocalServiceUtil.
                     createDiscussionCategoryGroup("Proposal " + proposal.getProposalId() + " results discussion");
@@ -1383,7 +1320,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return discussionId;
     }
 
-
     private List<Long> getMemberUserIds(Proposal proposal) throws PortalException, SystemException {
         List<Long> recipientIds = new ArrayList<>();
 
@@ -1393,6 +1329,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         return recipientIds;
     }
+
     /**
      * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>
      *
@@ -1481,7 +1418,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         String[] guestActions = {};
 
-        Map<Long, String[]> rolesActionsMap = new HashMap<Long, String[]>();
+        Map<Long, String[]> rolesActionsMap = new HashMap<>();
 
         rolesActionsMap.put(owner.getRoleId(), ownerActions);
         rolesActionsMap.put(admin.getRoleId(), adminActions);
@@ -1514,7 +1451,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                                               long additionalId) throws SystemException {
         createPlanVersionDescription(authorId, proposalId, version, updateType, additionalId, new Date());
     }
-
 
     /**
      * <p>Creates new plan version descriptor</p>
@@ -1567,15 +1503,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return String.format(link, contest.getContestPK(), contestPhase.getContestPhasePK(), proposal.getProposalId());
     }
 
-
     /**
      * Returns list of proposals referenced by given proposal that are relevant for the ingtegration contests
      * @param proposalId                        The proposal for which subproposals should be returned
      * @return collection of referenced proposals
      */
     public List<Proposal> getContestIntegrationRelevantSubproposals(long proposalId) throws SystemException, PortalException {
-        boolean onlyWithContestIntegrationRelevance = true;
-        boolean includeProposalsInSameContest = false;
+        final boolean onlyWithContestIntegrationRelevance = true;
+        final boolean includeProposalsInSameContest = false;
         return getSubproposals(proposalId, includeProposalsInSameContest, onlyWithContestIntegrationRelevance);
     }
 
@@ -1587,7 +1522,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @return collection of referenced proposals
      */
     public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest) throws SystemException, PortalException {
-        boolean onlyWithContestIntegrationRelevance = false;
+        final boolean onlyWithContestIntegrationRelevance = false;
         return getSubproposals(proposalId, includeProposalsInSameContest, onlyWithContestIntegrationRelevance);
     }
 
@@ -1685,8 +1620,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return contestPhaseLocalService.getContestPhase(latestP2p.getContestPhaseId());
     }
 
-
-
     /**
      * Returns latest contest to which proposal was submited
      * 
@@ -1717,8 +1650,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * Returns all focus areas, for which entered proposal impact data is available
      *
-     * @param proposal
-     * @return
      */
     public List<FocusArea> getImpactProposalFocusAreas(Proposal proposal) throws SystemException, PortalException {
         Set<Long> focusAreaIdSet = new HashSet<>();
