@@ -412,11 +412,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param stringValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -434,12 +429,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param additionalId
-    * @param stringValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -457,11 +446,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param stringValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -479,12 +463,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param additionalId
-    * @param numericValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -502,11 +480,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param numericValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -523,12 +496,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param additionalId
-    * @param realValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -546,11 +513,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param realValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -626,7 +588,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param attributeName name of an attribute
     * @param additionalId  additionalId of an attribute
     * @return proposal attribute
-    * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     * @author janusz
     */
@@ -643,9 +604,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
     *
-    * @param authorId
-    * @param attributeToDelete
-    * @param publishActivity
     * @throws SystemException
     * @throws PortalException
     */
@@ -662,8 +620,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
     *
-    * @param authorId
-    * @param attributeToDelete
     * @throws PortalException
     * @throws SystemException
     */
@@ -929,7 +885,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param proposalId     proposal id
     * @param contestPhaseId contest phase id
     * @return number of votes
-    * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
     @Override
@@ -1272,8 +1227,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * Returns number of proposals that user supports
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     @Override
@@ -1285,8 +1238,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * Returns number of proposals that user has given his vote to
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     @Override
@@ -1427,10 +1378,10 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
-    * Returns latest contest phase to which proposal was submited
+    * Returns latest contest phase to which proposal was submitted
     *
     * @param proposalId id of a proposal
-    * @return last contest phase to which proposal was submited
+    * @return last contest phase to which proposal was submitted
     * @throws PortalException
     * @throws SystemException
     */
@@ -1476,9 +1427,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
 
     /**
     * Returns all focus areas, for which entered proposal impact data is available
-    *
-    * @param proposal
-    * @return
     */
     @Override
     public java.util.List<com.ext.portlet.model.FocusArea> getImpactProposalFocusAreas(
@@ -1486,6 +1434,21 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.getImpactProposalFocusAreas(proposal);
+    }
+
+    @Override
+    public boolean isDeleted(com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.isDeleted(proposal);
+    }
+
+    @Override
+    public boolean isVisibleInContest(com.ext.portlet.model.Proposal proposal,
+        long contestId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.isVisibleInContest(proposal, contestId);
     }
 
     /**

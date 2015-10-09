@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Created by johannes on 9/24/15.
  * Utility class to retrieve ProposalContestPhaseAttributes in various formats
+ * TODO: use new ProposalContestPhaseAttributeLocalServiceUtil methods!
  */
 public class ProposalContestPhaseAttributeHelper {
     private final static Log _log = LogFactoryUtil.getLog(ProposalContestPhaseAttributeHelper.class);

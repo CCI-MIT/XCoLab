@@ -25,6 +25,7 @@ import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
@@ -1594,10 +1595,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     }
 
     /**
-     * Returns latest contest phase to which proposal was submited
+     * Returns latest contest phase to which proposal was submitted
      *
      * @param proposalId id of a proposal
-     * @return last contest phase to which proposal was submited
+     * @return last contest phase to which proposal was submitted
      * @throws PortalException
      * @throws SystemException
      */
@@ -1617,7 +1618,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 }
             }
         }
-        return contestPhaseLocalService.getContestPhase(latestP2p.getContestPhaseId());
+        if (latestP2p != null) {
+            return contestPhaseLocalService.getContestPhase(latestP2p.getContestPhaseId());
+        }
+        return null;
     }
 
     /**
@@ -1663,5 +1667,20 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
 
         return impactSeriesFocusAreas;
+    }
+
+    public boolean isDeleted(Proposal proposal) throws SystemException, PortalException {
+        final ContestPhase contestPhase = getLatestProposalContestPhase(proposal.getProposalId());
+        long visibleAttributeValue = 1;
+        if (contestPhase != null) {
+            visibleAttributeValue = ProposalContestPhaseAttributeLocalServiceUtil.getAttributeLongValue(proposal.getProposalId(),
+                    contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE, 0, 1);
+        }
+        return !proposal.isVisible() || visibleAttributeValue == 0;
+    }
+
+    public boolean isVisibleInContest(Proposal proposal, long contestId) throws PortalException, SystemException {
+        final Contest currentContest = proposal2PhaseLocalService.getCurrentContestForProposal(proposal.getProposalId());
+        return !isDeleted(proposal) && currentContest.getContestPK() == contestId;
     }
 }

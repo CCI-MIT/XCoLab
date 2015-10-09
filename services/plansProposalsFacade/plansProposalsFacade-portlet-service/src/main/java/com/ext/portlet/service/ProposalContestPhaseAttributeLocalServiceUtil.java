@@ -492,6 +492,36 @@ public class ProposalContestPhaseAttributeLocalServiceUtil {
             attributeName);
     }
 
+    public static com.ext.portlet.model.ProposalContestPhaseAttribute getAttributeOrNull(
+        long proposalId, long contestPhaseId, java.lang.String attributeName,
+        long additionalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getAttributeOrNull(proposalId, contestPhaseId,
+            attributeName, additionalId);
+    }
+
+    public static long getAttributeLongValue(long proposalId,
+        long contestPhaseId, java.lang.String attributeName, long additionalId,
+        long defaultVal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getAttributeLongValue(proposalId, contestPhaseId,
+            attributeName, additionalId, defaultVal);
+    }
+
+    public static java.lang.String getAttributeStringValue(long proposalId,
+        long contestPhaseId, java.lang.String attributeName, long additionalId,
+        java.lang.String defaultVal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getAttributeStringValue(proposalId, contestPhaseId,
+            attributeName, additionalId, defaultVal);
+    }
+
     public static void clearService() {
         _service = null;
     }

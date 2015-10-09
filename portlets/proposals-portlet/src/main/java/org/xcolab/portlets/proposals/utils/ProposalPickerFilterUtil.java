@@ -1,19 +1,13 @@
 package org.xcolab.portlets.proposals.utils;
 
-import java.util.*;
-
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.model.ProposalContestPhaseAttributeType;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -22,12 +16,16 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import org.apache.commons.lang3.tuple.Pair;
-
-import com.ext.portlet.model.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -184,30 +182,12 @@ public class ProposalPickerFilterUtil {
         ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
     }
 
-    public static void filterByVisibility(List<Pair<Proposal, Date>> proposals) {
+    public static void filterByVisibility(List<Pair<Proposal, Date>> proposals) throws SystemException, PortalException {
         for (Iterator<Pair<Proposal, Date>> iterator = proposals.iterator(); iterator.hasNext(); ) {
             Proposal proposal = iterator.next().getLeft();
-            if (proposalIsHiddenInAllPhases(proposal)) {
+            if (ProposalLocalServiceUtil.isDeleted(proposal)) {
                 iterator.remove();
             }
         }
-    }
-
-    private static boolean proposalIsHiddenInAllPhases(Proposal proposal) {
-        try {
-            final List<Long> contestPhases = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposal.getProposalId());
-            for (Long phasePK : contestPhases) {
-                ContestPhase contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(phasePK);
-                final ProposalContestPhaseAttributeHelper attributeHelper = new ProposalContestPhaseAttributeHelper(proposal, contestPhase);
-                if (attributeHelper.getAttributeLongValue(ProposalContestPhaseAttributeKeys.VISIBLE, 0, 1) == 1) {
-                    return false;
-                }
-            }
-        } catch (PortalException | SystemException e) {
-            _log.warn(String.format("Exception while determining visibility of proposal %d", proposal.getProposalId()),e);
-            //default to not hidden on errors - we don't want to accidentally hide proposals
-            return false;
-        }
-        return true;
     }
 }

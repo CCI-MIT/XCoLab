@@ -399,11 +399,6 @@ public class ProposalLocalServiceUtil {
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param stringValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -421,12 +416,6 @@ public class ProposalLocalServiceUtil {
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param additionalId
-    * @param stringValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -444,11 +433,6 @@ public class ProposalLocalServiceUtil {
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param stringValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -466,12 +450,6 @@ public class ProposalLocalServiceUtil {
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param additionalId
-    * @param numericValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -489,11 +467,6 @@ public class ProposalLocalServiceUtil {
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param numericValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -511,12 +484,6 @@ public class ProposalLocalServiceUtil {
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param additionalId
-    * @param realValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -534,11 +501,6 @@ public class ProposalLocalServiceUtil {
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param realValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -610,7 +572,6 @@ public class ProposalLocalServiceUtil {
     * @param attributeName name of an attribute
     * @param additionalId  additionalId of an attribute
     * @return proposal attribute
-    * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     * @author janusz
     */
@@ -627,9 +588,6 @@ public class ProposalLocalServiceUtil {
     /**
     * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
     *
-    * @param authorId
-    * @param attributeToDelete
-    * @param publishActivity
     * @throws SystemException
     * @throws PortalException
     */
@@ -645,8 +603,6 @@ public class ProposalLocalServiceUtil {
     /**
     * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
     *
-    * @param authorId
-    * @param attributeToDelete
     * @throws PortalException
     * @throws SystemException
     */
@@ -896,7 +852,6 @@ public class ProposalLocalServiceUtil {
     * @param proposalId     proposal id
     * @param contestPhaseId contest phase id
     * @return number of votes
-    * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
     public static long getVotesCount(long proposalId, long contestPhaseId)
@@ -1218,8 +1173,6 @@ public class ProposalLocalServiceUtil {
     /**
     * Returns number of proposals that user supports
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     public static int getUserSupportedProposalsCount(long userId)
@@ -1230,8 +1183,6 @@ public class ProposalLocalServiceUtil {
     /**
     * Returns number of proposals that user has given his vote to
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     public static int getUserVotedProposalsCount(long userId)
@@ -1364,10 +1315,10 @@ public class ProposalLocalServiceUtil {
     }
 
     /**
-    * Returns latest contest phase to which proposal was submited
+    * Returns latest contest phase to which proposal was submitted
     *
     * @param proposalId id of a proposal
-    * @return last contest phase to which proposal was submited
+    * @return last contest phase to which proposal was submitted
     * @throws PortalException
     * @throws SystemException
     */
@@ -1408,15 +1359,25 @@ public class ProposalLocalServiceUtil {
 
     /**
     * Returns all focus areas, for which entered proposal impact data is available
-    *
-    * @param proposal
-    * @return
     */
     public static java.util.List<com.ext.portlet.model.FocusArea> getImpactProposalFocusAreas(
         com.ext.portlet.model.Proposal proposal)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getImpactProposalFocusAreas(proposal);
+    }
+
+    public static boolean isDeleted(com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().isDeleted(proposal);
+    }
+
+    public static boolean isVisibleInContest(
+        com.ext.portlet.model.Proposal proposal, long contestId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().isVisibleInContest(proposal, contestId);
     }
 
     public static void clearService() {

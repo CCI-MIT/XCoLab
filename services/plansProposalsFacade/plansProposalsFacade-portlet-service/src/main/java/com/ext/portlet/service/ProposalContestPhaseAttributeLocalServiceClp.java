@@ -77,6 +77,12 @@ public class ProposalContestPhaseAttributeLocalServiceClp
     private String[] _methodParameterTypes33;
     private String _methodName34;
     private String[] _methodParameterTypes34;
+    private String _methodName35;
+    private String[] _methodParameterTypes35;
+    private String _methodName36;
+    private String[] _methodParameterTypes36;
+    private String _methodName37;
+    private String[] _methodParameterTypes37;
 
     public ProposalContestPhaseAttributeLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -259,6 +265,24 @@ public class ProposalContestPhaseAttributeLocalServiceClp
 
         _methodParameterTypes34 = new String[] {
                 "long", "long", "java.lang.String"
+            };
+
+        _methodName35 = "getAttributeOrNull";
+
+        _methodParameterTypes35 = new String[] {
+                "long", "long", "java.lang.String", "long"
+            };
+
+        _methodName36 = "getAttributeLongValue";
+
+        _methodParameterTypes36 = new String[] {
+                "long", "long", "java.lang.String", "long", "long"
+            };
+
+        _methodName37 = "getAttributeStringValue";
+
+        _methodParameterTypes37 = new String[] {
+                "long", "long", "java.lang.String", "long", "java.lang.String"
             };
     }
 
@@ -1318,5 +1342,134 @@ public class ProposalContestPhaseAttributeLocalServiceClp
                     " is not a valid exception");
             }
         }
+    }
+
+    @Override
+    public com.ext.portlet.model.ProposalContestPhaseAttribute getAttributeOrNull(
+        long proposalId, long contestPhaseId, java.lang.String attributeName,
+        long additionalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName35,
+                    _methodParameterTypes35,
+                    new Object[] {
+                        proposalId,
+                        
+                    contestPhaseId,
+                        
+                    ClpSerializer.translateInput(attributeName),
+                        
+                    additionalId
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ProposalContestPhaseAttribute) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public long getAttributeLongValue(long proposalId, long contestPhaseId,
+        java.lang.String attributeName, long additionalId, long defaultVal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName36,
+                    _methodParameterTypes36,
+                    new Object[] {
+                        proposalId,
+                        
+                    contestPhaseId,
+                        
+                    ClpSerializer.translateInput(attributeName),
+                        
+                    additionalId,
+                        
+                    defaultVal
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    @Override
+    public java.lang.String getAttributeStringValue(long proposalId,
+        long contestPhaseId, java.lang.String attributeName, long additionalId,
+        java.lang.String defaultVal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName37,
+                    _methodParameterTypes37,
+                    new Object[] {
+                        proposalId,
+                        
+                    contestPhaseId,
+                        
+                    ClpSerializer.translateInput(attributeName),
+                        
+                    additionalId,
+                        
+                    ClpSerializer.translateInput(defaultVal)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 }

@@ -187,6 +187,10 @@ public class ProposalLocalServiceClpInvoker {
     private String[] _methodParameterTypes713;
     private String _methodName714;
     private String[] _methodParameterTypes714;
+    private String _methodName715;
+    private String[] _methodParameterTypes715;
+    private String _methodName716;
+    private String[] _methodParameterTypes716;
 
     public ProposalLocalServiceClpInvoker() {
         _methodName0 = "addProposal";
@@ -618,6 +622,16 @@ public class ProposalLocalServiceClpInvoker {
         _methodName714 = "getImpactProposalFocusAreas";
 
         _methodParameterTypes714 = new String[] { "com.ext.portlet.model.Proposal" };
+
+        _methodName715 = "isDeleted";
+
+        _methodParameterTypes715 = new String[] { "com.ext.portlet.model.Proposal" };
+
+        _methodName716 = "isVisibleInContest";
+
+        _methodParameterTypes716 = new String[] {
+                "com.ext.portlet.model.Proposal", "long"
+            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -1215,6 +1229,17 @@ public class ProposalLocalServiceClpInvoker {
         if (_methodName714.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes714, parameterTypes)) {
             return ProposalLocalServiceUtil.getImpactProposalFocusAreas((com.ext.portlet.model.Proposal) arguments[0]);
+        }
+
+        if (_methodName715.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes715, parameterTypes)) {
+            return ProposalLocalServiceUtil.isDeleted((com.ext.portlet.model.Proposal) arguments[0]);
+        }
+
+        if (_methodName716.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes716, parameterTypes)) {
+            return ProposalLocalServiceUtil.isVisibleInContest((com.ext.portlet.model.Proposal) arguments[0],
+                ((Long) arguments[1]).longValue());
         }
 
         throw new UnsupportedOperationException();

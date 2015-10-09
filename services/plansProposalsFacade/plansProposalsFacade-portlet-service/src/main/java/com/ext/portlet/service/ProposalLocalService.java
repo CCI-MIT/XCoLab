@@ -1,7 +1,5 @@
 package com.ext.portlet.service;
 
-import com.ext.portlet.service.*;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -367,11 +365,6 @@ public interface ProposalLocalService extends BaseLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param stringValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -385,12 +378,6 @@ public interface ProposalLocalService extends BaseLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param additionalId
-    * @param stringValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -404,11 +391,6 @@ public interface ProposalLocalService extends BaseLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param stringValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -422,12 +404,6 @@ public interface ProposalLocalService extends BaseLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param additionalId
-    * @param numericValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -441,11 +417,6 @@ public interface ProposalLocalService extends BaseLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param numericValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -458,12 +429,6 @@ public interface ProposalLocalService extends BaseLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param additionalId
-    * @param realValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -477,11 +442,6 @@ public interface ProposalLocalService extends BaseLocalService,
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *
-    * @param authorId
-    * @param proposalId
-    * @param attributeName
-    * @param realValue
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -546,7 +506,6 @@ public interface ProposalLocalService extends BaseLocalService,
     * @param attributeName name of an attribute
     * @param additionalId  additionalId of an attribute
     * @return proposal attribute
-    * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     * @author janusz
     */
@@ -560,9 +519,6 @@ public interface ProposalLocalService extends BaseLocalService,
     /**
     * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
     *
-    * @param authorId
-    * @param attributeToDelete
-    * @param publishActivity
     * @throws SystemException
     * @throws PortalException
     */
@@ -575,8 +531,6 @@ public interface ProposalLocalService extends BaseLocalService,
     /**
     * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
     *
-    * @param authorId
-    * @param attributeToDelete
     * @throws PortalException
     * @throws SystemException
     */
@@ -805,7 +759,6 @@ public interface ProposalLocalService extends BaseLocalService,
     * @param proposalId     proposal id
     * @param contestPhaseId contest phase id
     * @return number of votes
-    * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -1090,8 +1043,6 @@ public interface ProposalLocalService extends BaseLocalService,
     /**
     * Returns number of proposals that user supports
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -1101,8 +1052,6 @@ public interface ProposalLocalService extends BaseLocalService,
     /**
     * Returns number of proposals that user has given his vote to
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -1216,10 +1165,10 @@ public interface ProposalLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns latest contest phase to which proposal was submited
+    * Returns latest contest phase to which proposal was submitted
     *
     * @param proposalId id of a proposal
-    * @return last contest phase to which proposal was submited
+    * @return last contest phase to which proposal was submitted
     * @throws PortalException
     * @throws SystemException
     */
@@ -1256,13 +1205,21 @@ public interface ProposalLocalService extends BaseLocalService,
 
     /**
     * Returns all focus areas, for which entered proposal impact data is available
-    *
-    * @param proposal
-    * @return
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.FocusArea> getImpactProposalFocusAreas(
         com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isDeleted(com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isVisibleInContest(com.ext.portlet.model.Proposal proposal,
+        long contestId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 }
