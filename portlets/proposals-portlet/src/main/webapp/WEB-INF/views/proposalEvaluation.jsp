@@ -56,7 +56,7 @@
                 <evaluationTagFiles:evaluationComments evaluationDiscussionId="${evaluationDiscussionId }"/>
             </c:when>
             <c:otherwise>
-                <!-- <h2>The results of the judging period will be visible here.</h2> -->
+                <h2>The results of the judging period will be visible here.</h2>
             </c:otherwise>
         </c:choose>
 

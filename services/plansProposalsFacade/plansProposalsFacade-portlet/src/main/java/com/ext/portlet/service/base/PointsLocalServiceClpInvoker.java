@@ -53,6 +53,10 @@ public class PointsLocalServiceClpInvoker {
     private String[] _methodParameterTypes640;
     private String _methodName641;
     private String[] _methodParameterTypes641;
+    private String _methodName644;
+    private String[] _methodParameterTypes644;
+    private String _methodName645;
+    private String[] _methodParameterTypes645;
 
     public PointsLocalServiceClpInvoker() {
         _methodName0 = "addPoints";
@@ -154,6 +158,14 @@ public class PointsLocalServiceClpInvoker {
         _methodName641 = "previewMaterializedPoints";
 
         _methodParameterTypes641 = new String[] { "long" };
+
+        _methodName644 = "getLinkingProposals";
+
+        _methodParameterTypes644 = new String[] { "long" };
+
+        _methodName645 = "getLinkingProposalsForUser";
+
+        _methodParameterTypes645 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -277,6 +289,16 @@ public class PointsLocalServiceClpInvoker {
         if (_methodName641.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes641, parameterTypes)) {
             return PointsLocalServiceUtil.previewMaterializedPoints(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName644.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
+            return PointsLocalServiceUtil.getLinkingProposals(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName645.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
+            return PointsLocalServiceUtil.getLinkingProposalsForUser(((Long) arguments[0]).longValue());
         }
 
         throw new UnsupportedOperationException();

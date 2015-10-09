@@ -4,8 +4,6 @@ import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -52,6 +50,10 @@ public class ProposalWrapper {
 
     public Date getProposalCreationDate() {
         return proposal.getCreateDate();
+    }
+
+    public Date getLastModifiedDate() {
+        return proposal.getUpdatedDate();
     }
 
     public Long getContestId(){

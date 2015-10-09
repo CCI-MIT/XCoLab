@@ -91,7 +91,7 @@
 						<td class="b" nowrap="nowrap" width="23%">Screen Name</td>
 						<td width="23%">${userBean.screenName}</td>
 						<td class="b" width="43%">Activities</td>
-						<td class="align_right">${currentUserProfile.userActivityCount}</td>
+						<td class="align_right">${currentUserProfile.userActivityCountFormatted}</td>
 					</tr>
 					<tr>
 						<td class="b" nowrap="nowrap" width="23%">Member Since</td>
@@ -108,7 +108,7 @@
 							</div>
 							<div class="clearfix"></div>
 						</td>
-						<td class="points_box right_border top_border align_right">${currentUserProfile.actualPoints}</td>
+						<td class="points_box right_border top_border align_right">${currentUserProfile.actualPointsFormatted}</td>
 					</tr>
 
 					<tr>
@@ -128,7 +128,7 @@
 							</div>
 							<div class="clearfix"></div>
 						</td>
-						<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPoints}</td>
+						<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPointsFormatted}</td>
 					</tr>
 
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
@@ -190,6 +190,30 @@
 					</c:if>
 				</c:forEach>
 			</table>
+
+			<c:if test="${currentUserProfile.viewingOwnProfile}">
+				<h2 style="margin-top: 20px;">Proposals that include my proposals</h2>
+				<c:if test="${empty currentUserProfile.linkingProposals}">
+						There are no proposals linking to your proposals yet.
+				</c:if>
+
+				<table class="colab">
+					<c:forEach var="proposal" items="${currentUserProfile.linkingProposals}">
+						<c:if test="${proposal.proposalInActiveContest}">
+							<tr class="colabRow">
+								<td>
+									<collab:planLink planId="${proposal.planId}"
+													 contestId="${proposal.contestId}"
+													 text="${proposal.proposalName}" />
+
+								</td>
+								<td style="text-align: right;"><fmt:formatDate value="${proposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+							</tr>
+						</c:if>
+					</c:forEach>
+				</table>
+
+			</c:if>
 
 
 			<h2>Supporting</h2>

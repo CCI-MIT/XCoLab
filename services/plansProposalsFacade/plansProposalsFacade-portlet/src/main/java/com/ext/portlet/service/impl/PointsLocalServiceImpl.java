@@ -1,27 +1,23 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
-import com.ext.portlet.service.persistence.Xcolab_UserFinderUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.points.DistributionStrategy;
-import org.xcolab.points.PointsTarget;
-import org.xcolab.points.ReceiverLimitationStrategy;
-
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.PointDistributionTarget;
 import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.Points;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.base.PointsLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.Xcolab_UserFinderUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.xcolab.points.DistributionStrategy;
+import org.xcolab.points.PointsTarget;
+import org.xcolab.points.ReceiverLimitationStrategy;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * The implementation of the points local service.
@@ -40,34 +36,29 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	
 	private final static Log _log = LogFactoryUtil.getLog(PointsLocalServiceImpl.class);
-	
-	/**
-	 * Returns number of materialized points for given user.
-	 * 
-	 * @param userId
-	 * @return
-	 * @throws SystemException
-	 */
-	public int getUserMaterializedPoints(long userId) throws SystemException {
-		return Xcolab_UserFinderUtil.getUserMaterializedPoints(userId).intValue();
-	}
-	
-	/**
-	 * Returns number of points for hypothetical user. 
-	 * 
-	 * @param userId
-	 * @return
-	 * @throws SystemException
-	 */
-	public long getUserHypotheticalPoints(long userId) throws SystemException {
+
+    /**
+     * Returns number of materialized points for given user.
+     *
+     * @throws SystemException
+     */
+    public int getUserMaterializedPoints(long userId) throws SystemException {
+        return Xcolab_UserFinderUtil.getUserMaterializedPoints(userId).intValue();
+    }
+
+    /**
+     * Returns number of points for hypothetical user.
+     *
+     * @throws SystemException
+     */
+    public long getUserHypotheticalPoints(long userId) throws SystemException {
         return Xcolab_UserFinderUtil.getUserHypotheticalPoints(userId).intValue();
 	}
 	
 	/**
 	 * Calculates the hypothetical points for all proposals for a given contest and
      * if the contest ended, materializes the points for winning proposals.
-	 * 
-	 * @param contestPK
+	 *
 	 * @throws SystemException 
 	 * @throws PortalException 
 	 */
@@ -217,4 +208,27 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 		}
         return materializedPointsList;
 	}
+
+    public List<Proposal> getLinkingProposals(long proposalId) throws SystemException, PortalException {
+        final List<Points> linkingPoints = pointsPersistence.findByProposalId(proposalId);
+        return getDistinctOriginatingProposals(linkingPoints);
+    }
+
+    public List<Proposal> getLinkingProposalsForUser(long userId) throws SystemException, PortalException {
+        final List<Points> linkingPoints = pointsPersistence.findByUserId(userId);
+        return getDistinctOriginatingProposals(linkingPoints);
+    }
+
+    private List<Proposal> getDistinctOriginatingProposals(List<Points> linkingPoints)
+            throws SystemException, PortalException {
+        List<Proposal> linkingProposals = new ArrayList<>();
+        for (Points points : linkingPoints) {
+            final long originatingProposalId = points.getOriginatingProposalId();
+            final Proposal proposal = proposalLocalService.getProposal(originatingProposalId);
+            if (!linkingProposals.contains(proposal)) {
+                linkingProposals.add(proposal);
+            }
+        }
+        return linkingProposals;
+    }
 }

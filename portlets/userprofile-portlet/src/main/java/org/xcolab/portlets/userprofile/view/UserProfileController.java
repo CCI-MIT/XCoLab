@@ -359,8 +359,8 @@ public class UserProfileController {
         model.addAttribute("messageBean", new MessageBean());
     }
 
-    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, String userId
-    ) throws PortalException, SystemException {
+    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, String userId)
+            throws PortalException, SystemException {
         try {
             populateUserWrapper(new UserProfileWrapper(userId,request) ,model);
             return "showUserProfile";

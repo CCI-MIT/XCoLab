@@ -21,19 +21,17 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
 import org.xcolab.utils.SendMessagePermissionChecker;
-
 
 import javax.portlet.PortletRequest;
 import java.io.Serializable;
@@ -61,8 +59,9 @@ public class
 
     private SendMessagePermissionChecker messagePermissionChecker;
     private List<MessageBean> messages;
-    private List<SupportedPlanWrapper> supportedPlans = new ArrayList<SupportedPlanWrapper>();
-    private List<ProposalWrapper> userProposals = new ArrayList<ProposalWrapper>();
+    private List<SupportedPlanWrapper> supportedPlans = new ArrayList<>();
+    private List<ProposalWrapper> userProposals = new ArrayList<>();
+    private List<ProposalWrapper> linkingProposals;
     private ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
@@ -274,10 +273,7 @@ public class
     }
 
     public boolean getCanSendMessage() throws SystemException {
-        if (messagePermissionChecker != null) {
-            return messagePermissionChecker.canSendToUser(this.user);
-        }
-        return false;
+        return messagePermissionChecker != null && messagePermissionChecker.canSendToUser(this.user);
     }
 
     public List<MessageBean> getMessages() throws SystemException, PortalException {
@@ -296,8 +292,7 @@ public class
             for (SocialActivity activity: ActivityUtil.groupActivities(ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getUserId(), 0, 1000))) {
                 try {
                     subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
-                } catch (Exception e) {
-                }
+                } catch (Exception ignored) { }
             }
         }
         return subscribedActivities;
@@ -313,10 +308,14 @@ public class
 
     public long getUserActivityCount() {
         try {
-            return Xcolab_UserLocalServiceUtil.getUserActivityCount(getUserId()).get(0).longValue();
+            return Xcolab_UserLocalServiceUtil.getUserActivityCount(getUserId()).get(0);
         } catch (SystemException e) {
             return 0;
         }
+    }
+
+    public String getUserActivityCountFormatted() {
+        return String.format("%,d", getUserActivityCount());
     }
 
     public long getActualPoints() {
@@ -327,6 +326,10 @@ public class
         }
     }
 
+    public String getActualPointsFormatted() {
+        return String.format("%,d", getActualPoints());
+    }
+
     public long getPotentialPoints() {
         try {
             return PointsLocalServiceUtil.getUserHypotheticalPoints(getUserId());
@@ -335,4 +338,20 @@ public class
         }
     }
 
+    public String getPotentialPointsFormatted() {
+        return String.format("%,d", getPotentialPoints());
+    }
+
+    public List<ProposalWrapper> getLinkingProposals() {
+        if (linkingProposals == null) {
+            try {
+                linkingProposals = new ArrayList<>();
+                List<Proposal> proposals = PointsLocalServiceUtil.getLinkingProposalsForUser(getUserId());
+                for (Proposal p : proposals) {
+                    linkingProposals.add(new ProposalWrapper(p));
+                }
+            } catch (PortalException | SystemException ignored) { }
+        }
+        return linkingProposals;
+    }
 }

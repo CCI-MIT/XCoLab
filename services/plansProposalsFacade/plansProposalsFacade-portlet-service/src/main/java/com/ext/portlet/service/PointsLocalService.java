@@ -239,8 +239,6 @@ public interface PointsLocalService extends BaseLocalService,
     /**
     * Returns number of materialized points for given user.
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -250,8 +248,6 @@ public interface PointsLocalService extends BaseLocalService,
     /**
     * Returns number of points for hypothetical user.
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -262,7 +258,6 @@ public interface PointsLocalService extends BaseLocalService,
     * Calculates the hypothetical points for all proposals for a given contest and
     * if the contest ended, materializes the points for winning proposals.
     *
-    * @param contestPK
     * @throws SystemException
     * @throws PortalException
     */
@@ -272,6 +267,18 @@ public interface PointsLocalService extends BaseLocalService,
 
     public java.util.List<com.ext.portlet.model.Points> previewMaterializedPoints(
         long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Proposal> getLinkingProposals(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Proposal> getLinkingProposalsForUser(
+        long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 }

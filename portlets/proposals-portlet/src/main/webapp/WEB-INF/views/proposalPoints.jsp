@@ -44,6 +44,21 @@
                 </div>
             </c:if>
         </form:form>
+        <h3 class="colab">Proposals that include this proposal</h3>
+        <table class="colab">
+            <tbody>
+            <c:forEach var="linkingProposal" items="${linkingProposals}">
+                <tr class="colabRow">
+                    <td>
+                        <a href="${linkingProposal.proposalURL}">${linkingProposal.name}</a>
+                    </td>
+                    <td style="text-align: right;">
+                        <fmt:formatDate value="${linkingProposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" />
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
         <script type="text/javascript">
             var usersMap = {<c:forEach var="user" items="${assignPointsBean.usersNotInTeam}">'<c:out value="${user.screenName}"/>':'<c:out value="${user.userId}"/>',</c:forEach>};
             var userNamesMap = {<c:forEach var="user" items="${assignPointsBean.usersNotInTeam}">'<c:out value="${user.userId}"/>':'<c:out value="${user.fullName}"/>',</c:forEach>};
