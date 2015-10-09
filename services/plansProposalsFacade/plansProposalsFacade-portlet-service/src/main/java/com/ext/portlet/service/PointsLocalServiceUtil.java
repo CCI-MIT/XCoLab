@@ -299,7 +299,7 @@ public class PointsLocalServiceUtil {
         return getService().previewMaterializedPoints(contestPK);
     }
 
-    public static java.util.Set<com.ext.portlet.model.Proposal> getLinkingProposals(
+    public static java.util.List<com.ext.portlet.model.Proposal> getLinkingProposals(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {

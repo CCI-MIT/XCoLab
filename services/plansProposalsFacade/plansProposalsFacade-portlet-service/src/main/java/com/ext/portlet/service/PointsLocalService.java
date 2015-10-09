@@ -270,7 +270,8 @@ public interface PointsLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
-    public java.util.Set<com.ext.portlet.model.Proposal> getLinkingProposals(
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Proposal> getLinkingProposals(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;

@@ -211,12 +211,15 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         return materializedPointsList;
 	}
 
-    public Set<Proposal> getLinkingProposals(long proposalId) throws SystemException, PortalException {
-        final HashSet<Proposal> linkingProposals = new HashSet<>();
+    public List<Proposal> getLinkingProposals(long proposalId) throws SystemException, PortalException {
+        List<Proposal> linkingProposals = new ArrayList<>();
         final List<Points> linkingPoints = pointsPersistence.findByProposalId(proposalId);
         for (Points points : linkingPoints) {
             final long originatingProposalId = points.getOriginatingProposalId();
-            linkingProposals.add(proposalLocalService.getProposal(originatingProposalId));
+            final Proposal proposal = proposalLocalService.getProposal(originatingProposalId);
+            if (!linkingProposals.contains(proposal)) {
+                linkingProposals.add(proposal);
+            }
         }
         return linkingProposals;
     }

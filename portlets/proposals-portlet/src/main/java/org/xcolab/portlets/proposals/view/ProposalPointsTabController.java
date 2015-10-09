@@ -66,7 +66,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             }
 
             List<ProposalWrapper> linkingProposalsWrapped = new ArrayList<>();
-            final Set<Proposal> linkingProposals = PointsLocalServiceUtil.getLinkingProposals(proposal.getProposalId());
+            final List<Proposal> linkingProposals = PointsLocalServiceUtil.getLinkingProposals(proposal.getProposalId());
             for (Proposal p : linkingProposals) {
                 linkingProposalsWrapped.add(new ProposalWrapper(p));
             }

@@ -784,7 +784,7 @@ public class PointsLocalServiceClp implements PointsLocalService {
     }
 
     @Override
-    public java.util.Set<com.ext.portlet.model.Proposal> getLinkingProposals(
+    public java.util.List<com.ext.portlet.model.Proposal> getLinkingProposals(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -812,6 +812,6 @@ public class PointsLocalServiceClp implements PointsLocalService {
             }
         }
 
-        return (java.util.Set<com.ext.portlet.model.Proposal>) ClpSerializer.translateOutput(returnObj);
+        return (java.util.List<com.ext.portlet.model.Proposal>) ClpSerializer.translateOutput(returnObj);
     }
 }
