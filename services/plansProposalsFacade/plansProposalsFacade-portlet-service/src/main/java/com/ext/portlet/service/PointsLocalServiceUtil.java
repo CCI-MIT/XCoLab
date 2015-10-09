@@ -262,8 +262,6 @@ public class PointsLocalServiceUtil {
     /**
     * Returns number of materialized points for given user.
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     public static int getUserMaterializedPoints(long userId)
@@ -274,8 +272,6 @@ public class PointsLocalServiceUtil {
     /**
     * Returns number of points for hypothetical user.
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     public static long getUserHypotheticalPoints(long userId)
@@ -287,7 +283,6 @@ public class PointsLocalServiceUtil {
     * Calculates the hypothetical points for all proposals for a given contest and
     * if the contest ended, materializes the points for winning proposals.
     *
-    * @param contestPK
     * @throws SystemException
     * @throws PortalException
     */
@@ -302,6 +297,13 @@ public class PointsLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().previewMaterializedPoints(contestPK);
+    }
+
+    public static java.util.Set<com.ext.portlet.model.Proposal> getLinkingProposals(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getLinkingProposals(proposalId);
     }
 
     public static void clearService() {

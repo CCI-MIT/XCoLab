@@ -4,7 +4,10 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.*;
+import com.ext.portlet.service.PointTypeLocalServiceUtil;
+import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
+import com.ext.portlet.service.PointsLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -23,6 +26,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import javax.portlet.PortletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("view")
@@ -56,9 +60,15 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             PointTypeWrapper parentPointType = new PointTypeWrapper(contestParentPointType);
 
             List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
-            List<ProposalWrapper> subProposalsWrapped = new ArrayList<ProposalWrapper>();
+            List<ProposalWrapper> subProposalsWrapped = new ArrayList<>();
             for (Proposal p: subProposals) {
                 subProposalsWrapped.add(new ProposalWrapper(p));
+            }
+
+            List<ProposalWrapper> linkingProposalsWrapped = new ArrayList<>();
+            final Set<Proposal> linkingProposals = PointsLocalServiceUtil.getLinkingProposals(proposal.getProposalId());
+            for (Proposal p : linkingProposals) {
+                linkingProposalsWrapped.add(new ProposalWrapper(p));
             }
 
             members = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
@@ -76,6 +86,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             model.addAttribute("members", members);
             model.addAttribute("proposal", proposal);
             model.addAttribute("contest", contest);
+            model.addAttribute("linkingProposals", linkingProposalsWrapped);
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
@@ -84,7 +95,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
     private void initializeAssignPointsBean(PointTypeWrapper pointType) throws SystemException {
         if (DistributionStrategy.USER_DEFINED.name().equals(pointType.getDistributionStrategy())) {
-            List<String> userStrategies = new ArrayList<String>();
+            List<String> userStrategies = new ArrayList<>();
             userStrategies.add(ReceiverLimitationStrategy.ANY_TEAM_MEMBER.name());
             userStrategies.add(ReceiverLimitationStrategy.ANY_NON_TEAM_MEMBER.name());
             userStrategies.add(ReceiverLimitationStrategy.ANY_USER.name());
@@ -109,7 +120,4 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             this.initializeAssignPointsBean(p);
         }
     }
-    
-    
-
 }
