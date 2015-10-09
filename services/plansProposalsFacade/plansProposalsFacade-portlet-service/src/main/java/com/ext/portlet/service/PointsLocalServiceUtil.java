@@ -306,6 +306,13 @@ public class PointsLocalServiceUtil {
         return getService().getLinkingProposals(proposalId);
     }
 
+    public static java.util.List<com.ext.portlet.model.Proposal> getLinkingProposalsForUser(
+        long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getLinkingProposalsForUser(userId);
+    }
+
     public static void clearService() {
         _service = null;
     }

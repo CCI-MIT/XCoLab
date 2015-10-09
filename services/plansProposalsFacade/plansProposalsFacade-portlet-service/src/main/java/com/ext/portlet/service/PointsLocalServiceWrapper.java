@@ -319,6 +319,14 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
         return _pointsLocalService.getLinkingProposals(proposalId);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getLinkingProposalsForUser(
+        long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _pointsLocalService.getLinkingProposalsForUser(userId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

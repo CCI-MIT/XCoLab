@@ -53,7 +53,7 @@
                         <a href="${linkingProposal.proposalURL}">${linkingProposal.name}</a>
                     </td>
                     <td style="text-align: right;">
-                        <fmt:formatDate value="${linkingProposal.lastModifiedDate}" pattern="MM/dd/yy" />
+                        <fmt:formatDate value="${linkingProposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" />
                     </td>
                 </tr>
             </c:forEach>
