@@ -1,55 +1,25 @@
 package org.xcolab.portlets.loginregister;
 
-import java.io.IOException;
-import java.util.Date;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletSession;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.validation.Valid;
-
-import com.ext.utils.iptranslation.Location;
-import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
-import com.liferay.portal.NoSuchUserException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.HttpUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import com.ext.portlet.Activity.LoginRegisterActivityKeys;
-import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableException;
-import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
-
 import com.ext.portlet.NoSuchBalloonUserTrackingException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
+import com.ext.utils.iptranslation.Location;
+import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
+import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.captcha.CaptchaException;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Image;
@@ -66,7 +36,35 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableException;
+import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 import org.xcolab.utils.HtmlUtil;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.portlet.PortletSession;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Date;
 
 //import javax.validation.Validator;
 
@@ -82,7 +80,7 @@ public class MainViewController {
 
     public static final String PRE_LOGIN_REFERRER_KEY = "PRE_LOGIN_REFERRER_KEY";
 
-    private static long DEFAULT_COMPANY_ID = 10112L;
+    private static final long DEFAULT_COMPANY_ID = 10112L;
 
 	@Autowired
 	private Validator validator;
@@ -98,12 +96,8 @@ public class MainViewController {
 	}
 
 	/**
-	 * Main view displayed for contactform
-	 * 
-	 * @param request
-	 * @param response
-	 * @param model
-	 * @return
+	 * Main view displayed for contact form
+	 *
 	 */
 		@RequestMapping
 		public String register(PortletRequest request, PortletResponse response,
@@ -241,8 +235,6 @@ public class MainViewController {
 				try {
 					completeRegistration(request, response, newAccountBean, redirect, false);
 
-				} catch (PortalException | SystemException e) {
-					e.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -286,13 +278,13 @@ public class MainViewController {
 
         json.getJSONObject("bio").put("success", true);
         if ((bio != null && bio.length() > 0 && bio.length() <= 2000)) {
-            ExpandoValueLocalServiceUtil.addValue(
+            ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID,
                     User.class.getName(),
                     CommunityConstants.EXPANDO,
                     CommunityConstants.BIO, loggedInUser.getUserId(),
                     HtmlUtil.cleanSome(bio));
         } else {
-            if (bio.length() > 2000) {
+            if (bio != null && bio.length() > 2000) {
                 json.getJSONObject("bio").put("success", false);
             }
         }
@@ -304,7 +296,6 @@ public class MainViewController {
 	
 	@ResourceMapping
 	public void captchaHandler(ResourceRequest request, ResourceResponse response) throws IOException {
-	    
 	    CaptchaUtil.serveImage(request, response);
 	}
 
@@ -397,7 +388,7 @@ public class MainViewController {
                         .parseLong(newAccountBean.getImageId()));
                 // we need to set permission checker for liferay
                 PermissionChecker permissionChecker = PermissionCheckerFactoryUtil
-                        .create(user, true);
+                        .create(user);
                 PermissionThreadLocal
                         .setPermissionChecker(permissionChecker);
                 if (img != null) {

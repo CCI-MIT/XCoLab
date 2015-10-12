@@ -1,12 +1,12 @@
 package org.xcolab.hooks.climatecolab.utils;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
+import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.model.Image;
+import com.liferay.portal.service.ImageLocalServiceUtil;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;
 import javax.servlet.Filter;
@@ -17,17 +17,20 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
-
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.model.Image;
-import com.liferay.portal.service.ImageLocalServiceUtil;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 
 public class FileUploadFilter implements Filter {
+
+	public static final int IMAGE_CROP_WIDTH_PIXELS = 300;
+	public static final int IMAGE_CROP_HEIGHT_PIXELS = 300;
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
@@ -97,9 +100,6 @@ public class FileUploadFilter implements Filter {
 	}
 
 	private byte[] resizeAndCropImage(byte[] imgBArr) throws IOException {
-		int newW = 150;
-		int newH = 150;
-
 		BufferedImage img = ImageIO.read(new ByteArrayInputStream(imgBArr));
 		// crop image
 
@@ -119,13 +119,13 @@ public class FileUploadFilter implements Filter {
 		}
 
 		BufferedImage cropedImage = img.getSubimage(cropX, cropY, cropSize, cropSize);
-		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage dimg = new BufferedImage(IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = dimg.createGraphics();
 		g.setComposite(AlphaComposite.Clear);
-		g.fillRect(0,0,newW, newH);
+		g.fillRect(0,0, IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g.setComposite(AlphaComposite.Src);
-		g.drawImage(cropedImage, 0, 0, newW, newH, 0, 0, cropSize, cropSize, null);
+		g.drawImage(cropedImage, 0, 0, IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS, 0, 0, cropSize, cropSize, null);
 		g.dispose();
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();

@@ -21,7 +21,7 @@ public enum ReceiverLimitationStrategy {
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) throws SystemException {
 			// check if there is any configuration, if there is create appropriate targets
-			List<PointsTarget> targets = new ArrayList<PointsTarget>();
+			List<PointsTarget> targets = new ArrayList<>();
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
 				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType(proposal, pointType)) {
 					if (pdc.getTargetUserId() > 0) {
@@ -42,7 +42,7 @@ public enum ReceiverLimitationStrategy {
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal,
 				PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException {
-			List<PointsTarget> targets = new ArrayList<PointsTarget>();
+			List<PointsTarget> targets = new ArrayList<>();
 			
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
 				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType(proposal, pointType)) {
@@ -63,7 +63,7 @@ public enum ReceiverLimitationStrategy {
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal,
 				PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException {
-			List<PointsTarget> targets = new ArrayList<PointsTarget>();
+			List<PointsTarget> targets = new ArrayList<>();
 			
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
 				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType(proposal, pointType)) {
@@ -104,10 +104,10 @@ public enum ReceiverLimitationStrategy {
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal,
 				PointType pointType, DistributionStrategy distributionStrategy) throws SystemException, PortalException {
-			List<PointsTarget> targets = new ArrayList<PointsTarget>();
+			List<PointsTarget> targets = new ArrayList<>();
 			
 			Collection<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
-			Set<Long> proposalIds = new HashSet<Long>();
+			Set<Long> proposalIds = new HashSet<>();
 			for (Proposal p: subProposals) {
                 if (p.getProposalId() != proposal.getProposalId()) {
                     proposalIds.add(p.getProposalId());
@@ -147,7 +147,7 @@ public enum ReceiverLimitationStrategy {
 	
 	private final ReceiverLimitationTargetsPickerAlgorithm targetsPickerAlgorithm;
 	
-	private ReceiverLimitationStrategy(ReceiverLimitationTargetsPickerAlgorithm algorithm) {
+	ReceiverLimitationStrategy(ReceiverLimitationTargetsPickerAlgorithm algorithm) {
 		targetsPickerAlgorithm = algorithm;
 	}
 	
@@ -157,7 +157,7 @@ public enum ReceiverLimitationStrategy {
 	}
 	
 	
-	public static interface ReceiverLimitationTargetsPickerAlgorithm {
+	public interface ReceiverLimitationTargetsPickerAlgorithm {
 		List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException;
 	}
 }
