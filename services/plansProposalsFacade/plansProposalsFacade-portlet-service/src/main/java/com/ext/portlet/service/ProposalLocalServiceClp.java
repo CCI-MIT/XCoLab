@@ -186,6 +186,10 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private String[] _methodParameterTypes88;
     private String _methodName89;
     private String[] _methodParameterTypes89;
+    private String _methodName90;
+    private String[] _methodParameterTypes90;
+    private String _methodName91;
+    private String[] _methodParameterTypes91;
 
     public ProposalLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -615,6 +619,16 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         _methodName89 = "getImpactProposalFocusAreas";
 
         _methodParameterTypes89 = new String[] { "com.ext.portlet.model.Proposal" };
+
+        _methodName90 = "isDeleted";
+
+        _methodParameterTypes90 = new String[] { "com.ext.portlet.model.Proposal" };
+
+        _methodName91 = "isVisibleInContest";
+
+        _methodParameterTypes91 = new String[] {
+                "com.ext.portlet.model.Proposal", "long"
+            };
     }
 
     @Override
@@ -3512,5 +3526,74 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         }
 
         return (java.util.List<com.ext.portlet.model.FocusArea>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public boolean isDeleted(com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName90,
+                    _methodParameterTypes90,
+                    new Object[] { ClpSerializer.translateInput(proposal) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
+    }
+
+    @Override
+    public boolean isVisibleInContest(com.ext.portlet.model.Proposal proposal,
+        long contestId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName91,
+                    _methodParameterTypes91,
+                    new Object[] {
+                        ClpSerializer.translateInput(proposal),
+                        
+                    contestId
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
     }
 }

@@ -1,18 +1,10 @@
 package org.xcolab.portlets.proposals.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
@@ -29,7 +21,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
-import com.ext.portlet.model.Proposal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.

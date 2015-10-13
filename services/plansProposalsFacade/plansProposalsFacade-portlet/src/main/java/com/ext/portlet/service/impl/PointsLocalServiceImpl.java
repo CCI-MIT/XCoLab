@@ -22,6 +22,7 @@ import org.xcolab.points.ReceiverLimitationStrategy;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 /**
  * The implementation of the points local service.
  *
@@ -213,8 +214,18 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	}
 
     public List<Proposal> getLinkingProposals(long proposalId) throws SystemException, PortalException {
-        List<Proposal> linkingProposals = new ArrayList<>();
         final List<Points> linkingPoints = pointsPersistence.findByProposalId(proposalId);
+        return getDistinctOriginatingProposals(linkingPoints);
+    }
+
+    public List<Proposal> getLinkingProposalsForUser(long userId) throws SystemException, PortalException {
+        final List<Points> linkingPoints = pointsPersistence.findByUserId(userId);
+        return getDistinctOriginatingProposals(linkingPoints);
+    }
+
+    private List<Proposal> getDistinctOriginatingProposals(List<Points> linkingPoints)
+            throws SystemException, PortalException {
+        List<Proposal> linkingProposals = new ArrayList<>();
         for (Points points : linkingPoints) {
             final long originatingProposalId = points.getOriginatingProposalId();
             final Proposal proposal = proposalLocalService.getProposal(originatingProposalId);

@@ -6,6 +6,7 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalContestPhaseAttributeLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.List;
@@ -244,7 +245,7 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      */
     public void setProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName, 
             long longValue, String stringValue, double realValue) throws SystemException {
-        ProposalContestPhaseAttribute attribute = null;
+        ProposalContestPhaseAttribute attribute;
         try {
             attribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName);
         }
@@ -278,7 +279,26 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
         try {
             proposalContestPhaseAttributeLocalService.deleteProposalContestPhaseAttribute(getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName));
         }
-        catch (NoSuchProposalContestPhaseAttributeException e) {
-        }
+        catch (NoSuchProposalContestPhaseAttributeException ignored) { }
+    }
+
+    public ProposalContestPhaseAttribute getAttributeOrNull(long proposalId, long contestPhaseId, String attributeName, long additionalId)
+            throws PortalException, SystemException {
+        try {
+            return proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, additionalId);
+        } catch (NoSuchProposalContestPhaseAttributeException ignored) { }
+        return null;
+    }
+
+    public long getAttributeLongValue(long proposalId, long contestPhaseId, String attributeName, long additionalId, long defaultVal)
+            throws PortalException, SystemException {
+        ProposalContestPhaseAttribute pa = proposalContestPhaseAttributeLocalService.getAttributeOrNull(proposalId, contestPhaseId, attributeName, additionalId);
+        return pa == null ? defaultVal : pa.getNumericValue();
+    }
+
+    public String getAttributeStringValue(long proposalId, long contestPhaseId, String attributeName, long additionalId, String defaultVal)
+            throws PortalException, SystemException {
+        ProposalContestPhaseAttribute pa = proposalContestPhaseAttributeLocalService.getAttributeOrNull(proposalId, contestPhaseId, attributeName, additionalId);
+        return pa == null ? defaultVal : pa.getStringValue();
     }
 }

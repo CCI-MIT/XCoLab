@@ -1,10 +1,9 @@
 package org.xcolab.portlets.proposals.utils;
 
-import java.util.*;
-
 import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -17,12 +16,16 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import org.apache.commons.lang3.tuple.Pair;
-
-import com.ext.portlet.model.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -161,6 +164,7 @@ public class ProposalPickerFilterUtil {
                                        String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         filterByParameter(filterKey, proposals);
+        filterByVisibility(proposals);
 
         PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
 
@@ -176,5 +180,14 @@ public class ProposalPickerFilterUtil {
                 Pair.of(sectionFocusAreaId, contestFocusAreaId));
 
         ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
+    }
+
+    public static void filterByVisibility(List<Pair<Proposal, Date>> proposals) throws SystemException, PortalException {
+        for (Iterator<Pair<Proposal, Date>> iterator = proposals.iterator(); iterator.hasNext(); ) {
+            Proposal proposal = iterator.next().getLeft();
+            if (ProposalLocalServiceUtil.isDeleted(proposal)) {
+                iterator.remove();
+            }
+        }
     }
 }

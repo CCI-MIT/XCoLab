@@ -77,6 +77,12 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
     private String[] _methodParameterTypes652;
     private String _methodName653;
     private String[] _methodParameterTypes653;
+    private String _methodName654;
+    private String[] _methodParameterTypes654;
+    private String _methodName655;
+    private String[] _methodParameterTypes655;
+    private String _methodName656;
+    private String[] _methodParameterTypes656;
 
     public ProposalContestPhaseAttributeLocalServiceClpInvoker() {
         _methodName0 = "addProposalContestPhaseAttribute";
@@ -256,6 +262,24 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
 
         _methodParameterTypes653 = new String[] {
                 "long", "long", "java.lang.String"
+            };
+
+        _methodName654 = "getAttributeOrNull";
+
+        _methodParameterTypes654 = new String[] {
+                "long", "long", "java.lang.String", "long"
+            };
+
+        _methodName655 = "getAttributeLongValue";
+
+        _methodParameterTypes655 = new String[] {
+                "long", "long", "java.lang.String", "long", "long"
+            };
+
+        _methodName656 = "getAttributeStringValue";
+
+        _methodParameterTypes656 = new String[] {
+                "long", "long", "java.lang.String", "long", "java.lang.String"
             };
     }
 
@@ -488,6 +512,32 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
                 (java.lang.String) arguments[2]);
 
             return null;
+        }
+
+        if (_methodName654.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes654, parameterTypes)) {
+            return ProposalContestPhaseAttributeLocalServiceUtil.getAttributeOrNull(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2],
+                ((Long) arguments[3]).longValue());
+        }
+
+        if (_methodName655.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes655, parameterTypes)) {
+            return ProposalContestPhaseAttributeLocalServiceUtil.getAttributeLongValue(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2],
+                ((Long) arguments[3]).longValue(),
+                ((Long) arguments[4]).longValue());
+        }
+
+        if (_methodName656.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes656, parameterTypes)) {
+            return ProposalContestPhaseAttributeLocalServiceUtil.getAttributeStringValue(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2],
+                ((Long) arguments[3]).longValue(),
+                (java.lang.String) arguments[4]);
         }
 
         throw new UnsupportedOperationException();

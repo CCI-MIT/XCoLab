@@ -412,4 +412,24 @@ public interface ProposalContestPhaseAttributeLocalService
     public void deleteProposalContestPhaseAttribute(long proposalId,
         long contestPhaseId, java.lang.String attributeName)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ProposalContestPhaseAttribute getAttributeOrNull(
+        long proposalId, long contestPhaseId, java.lang.String attributeName,
+        long additionalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public long getAttributeLongValue(long proposalId, long contestPhaseId,
+        java.lang.String attributeName, long additionalId, long defaultVal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getAttributeStringValue(long proposalId,
+        long contestPhaseId, java.lang.String attributeName, long additionalId,
+        java.lang.String defaultVal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

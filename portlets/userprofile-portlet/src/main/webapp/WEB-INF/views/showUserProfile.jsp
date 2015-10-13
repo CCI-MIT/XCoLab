@@ -191,6 +191,30 @@
 				</c:forEach>
 			</table>
 
+			<c:if test="${currentUserProfile.viewingOwnProfile}">
+				<h2 style="margin-top: 20px;">Proposals that include my proposals</h2>
+				<c:if test="${empty currentUserProfile.linkingProposals}">
+						There are no proposals linking to your proposals yet.
+				</c:if>
+
+				<table class="colab">
+					<c:forEach var="proposal" items="${currentUserProfile.linkingProposals}">
+						<c:if test="${proposal.proposalInActiveContest}">
+							<tr class="colabRow">
+								<td>
+									<collab:planLink planId="${proposal.planId}"
+													 contestId="${proposal.contestId}"
+													 text="${proposal.proposalName}" />
+
+								</td>
+								<td style="text-align: right;"><fmt:formatDate value="${proposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+							</tr>
+						</c:if>
+					</c:forEach>
+				</table>
+
+			</c:if>
+
 
 			<h2>Supporting</h2>
 			<c:if test="${empty currentUserProfile.supportedPlans}">
