@@ -186,6 +186,8 @@ import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingTypeServiceUtil;
 import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingValueServiceUtil;
+import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
+import com.ext.portlet.service.ProposalReferenceServiceUtil;
 import com.ext.portlet.service.ProposalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterServiceUtil;
@@ -497,6 +499,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalRatingValueLocalServiceUtil.clearService();
 
             ProposalRatingValueServiceUtil.clearService();
+            ProposalReferenceLocalServiceUtil.clearService();
+
+            ProposalReferenceServiceUtil.clearService();
             ProposalSupporterLocalServiceUtil.clearService();
 
             ProposalSupporterServiceUtil.clearService();

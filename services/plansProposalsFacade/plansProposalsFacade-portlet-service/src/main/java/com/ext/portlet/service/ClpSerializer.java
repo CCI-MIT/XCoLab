@@ -92,6 +92,7 @@ import com.ext.portlet.model.ProposalContestPhaseAttributeTypeClp;
 import com.ext.portlet.model.ProposalRatingClp;
 import com.ext.portlet.model.ProposalRatingTypeClp;
 import com.ext.portlet.model.ProposalRatingValueClp;
+import com.ext.portlet.model.ProposalReferenceClp;
 import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
@@ -561,6 +562,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ProposalRatingValueClp.class.getName())) {
             return translateInputProposalRatingValue(oldModel);
+        }
+
+        if (oldModelClassName.equals(ProposalReferenceClp.class.getName())) {
+            return translateInputProposalReference(oldModel);
         }
 
         if (oldModelClassName.equals(ProposalSupporterClp.class.getName())) {
@@ -1547,6 +1552,16 @@ public class ClpSerializer {
         ProposalRatingValueClp oldClpModel = (ProposalRatingValueClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getProposalRatingValueRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalReference(BaseModel<?> oldModel) {
+        ProposalReferenceClp oldClpModel = (ProposalReferenceClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalReferenceRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -4837,6 +4852,41 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalReferenceImpl")) {
+            return translateOutputProposalReference(oldModel);
+        } else if (oldModelClassName.endsWith("Clp")) {
+            try {
+                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+                Method getClpSerializerClassMethod = oldModelClass.getMethod(
+                        "getClpSerializerClass");
+
+                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
+
+                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+                        BaseModel.class);
+
+                Class<?> oldModelModelClass = oldModel.getModelClass();
+
+                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+                        oldModelModelClass.getSimpleName() + "RemoteModel");
+
+                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
+                        oldRemoteModel);
+
+                return newModel;
+            } catch (Throwable t) {
+                if (_log.isInfoEnabled()) {
+                    _log.info("Unable to translate " + oldModelClassName, t);
+                }
+            }
+        }
+
+        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ProposalSupporterImpl")) {
             return translateOutputProposalSupporter(oldModel);
         } else if (oldModelClassName.endsWith("Clp")) {
@@ -5672,6 +5722,10 @@ public class ClpSerializer {
         if (className.equals(
                     "com.ext.portlet.NoSuchProposalRatingValueException")) {
             return new com.ext.portlet.NoSuchProposalRatingValueException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchProposalReferenceException")) {
+            return new com.ext.portlet.NoSuchProposalReferenceException();
         }
 
         if (className.equals("com.ext.portlet.NoSuchProposalSupporterException")) {
@@ -6657,6 +6711,16 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setProposalRatingValueRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputProposalReference(BaseModel<?> oldModel) {
+        ProposalReferenceClp newModel = new ProposalReferenceClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setProposalReferenceRemoteModel(oldModel);
 
         return newModel;
     }

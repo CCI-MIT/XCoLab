@@ -41,26 +41,26 @@ public class PlanMetaLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName632;
-    private String[] _methodParameterTypes632;
-    private String _methodName633;
-    private String[] _methodParameterTypes633;
     private String _methodName638;
     private String[] _methodParameterTypes638;
     private String _methodName639;
     private String[] _methodParameterTypes639;
-    private String _methodName640;
-    private String[] _methodParameterTypes640;
-    private String _methodName641;
-    private String[] _methodParameterTypes641;
-    private String _methodName642;
-    private String[] _methodParameterTypes642;
-    private String _methodName643;
-    private String[] _methodParameterTypes643;
     private String _methodName644;
     private String[] _methodParameterTypes644;
     private String _methodName645;
     private String[] _methodParameterTypes645;
+    private String _methodName646;
+    private String[] _methodParameterTypes646;
+    private String _methodName647;
+    private String[] _methodParameterTypes647;
+    private String _methodName648;
+    private String[] _methodParameterTypes648;
+    private String _methodName649;
+    private String[] _methodParameterTypes649;
+    private String _methodName650;
+    private String[] _methodParameterTypes650;
+    private String _methodName651;
+    private String[] _methodParameterTypes651;
 
     public PlanMetaLocalServiceClpInvoker() {
         _methodName0 = "addPlanMeta";
@@ -139,49 +139,49 @@ public class PlanMetaLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.PlanMeta" };
 
-        _methodName632 = "getBeanIdentifier";
+        _methodName638 = "getBeanIdentifier";
 
-        _methodParameterTypes632 = new String[] {  };
+        _methodParameterTypes638 = new String[] {  };
 
-        _methodName633 = "setBeanIdentifier";
+        _methodName639 = "setBeanIdentifier";
 
-        _methodParameterTypes633 = new String[] { "java.lang.String" };
+        _methodParameterTypes639 = new String[] { "java.lang.String" };
 
-        _methodName638 = "createPlanMeta";
+        _methodName644 = "createPlanMeta";
 
-        _methodParameterTypes638 = new String[] {
+        _methodParameterTypes644 = new String[] {
                 "com.ext.portlet.model.PlanItem", "java.lang.Long"
             };
 
-        _methodName639 = "getCurrentForPlan";
+        _methodName645 = "getCurrentForPlan";
 
-        _methodParameterTypes639 = new String[] { "com.ext.portlet.model.PlanItem" };
+        _methodParameterTypes645 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName640 = "getAllForPlan";
+        _methodName646 = "getAllForPlan";
 
-        _methodParameterTypes640 = new String[] { "com.ext.portlet.model.PlanItem" };
+        _methodParameterTypes646 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName641 = "createNewVersionForPlan";
+        _methodName647 = "createNewVersionForPlan";
 
-        _methodParameterTypes641 = new String[] { "com.ext.portlet.model.PlanItem" };
+        _methodParameterTypes647 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName642 = "createNewVersionForPlan";
+        _methodName648 = "createNewVersionForPlan";
 
-        _methodParameterTypes642 = new String[] {
+        _methodParameterTypes648 = new String[] {
                 "com.ext.portlet.model.PlanItem", "boolean"
             };
 
-        _methodName643 = "store";
+        _methodName649 = "store";
 
-        _methodParameterTypes643 = new String[] { "com.ext.portlet.model.PlanMeta" };
+        _methodParameterTypes649 = new String[] { "com.ext.portlet.model.PlanMeta" };
 
-        _methodName644 = "vote";
+        _methodName650 = "vote";
 
-        _methodParameterTypes644 = new String[] { "com.ext.portlet.model.PlanMeta" };
+        _methodParameterTypes650 = new String[] { "com.ext.portlet.model.PlanMeta" };
 
-        _methodName645 = "unvote";
+        _methodName651 = "unvote";
 
-        _methodParameterTypes645 = new String[] { "com.ext.portlet.model.PlanMeta" };
+        _methodParameterTypes651 = new String[] { "com.ext.portlet.model.PlanMeta" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -273,61 +273,61 @@ public class PlanMetaLocalServiceClpInvoker {
             return PlanMetaLocalServiceUtil.updatePlanMeta((com.ext.portlet.model.PlanMeta) arguments[0]);
         }
 
-        if (_methodName632.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
-            return PlanMetaLocalServiceUtil.getBeanIdentifier();
-        }
-
-        if (_methodName633.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
-            PlanMetaLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
-
-            return null;
-        }
-
         if (_methodName638.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
-            return PlanMetaLocalServiceUtil.createPlanMeta((com.ext.portlet.model.PlanItem) arguments[0],
-                (java.lang.Long) arguments[1]);
+            return PlanMetaLocalServiceUtil.getBeanIdentifier();
         }
 
         if (_methodName639.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
-            return PlanMetaLocalServiceUtil.getCurrentForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
-        }
-
-        if (_methodName640.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes640, parameterTypes)) {
-            return PlanMetaLocalServiceUtil.getAllForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
-        }
-
-        if (_methodName641.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes641, parameterTypes)) {
-            return PlanMetaLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
-        }
-
-        if (_methodName642.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes642, parameterTypes)) {
-            return PlanMetaLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0],
-                ((Boolean) arguments[1]).booleanValue());
-        }
-
-        if (_methodName643.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes643, parameterTypes)) {
-            PlanMetaLocalServiceUtil.store((com.ext.portlet.model.PlanMeta) arguments[0]);
+            PlanMetaLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
         if (_methodName644.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
+            return PlanMetaLocalServiceUtil.createPlanMeta((com.ext.portlet.model.PlanItem) arguments[0],
+                (java.lang.Long) arguments[1]);
+        }
+
+        if (_methodName645.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
+            return PlanMetaLocalServiceUtil.getCurrentForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
+        }
+
+        if (_methodName646.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes646, parameterTypes)) {
+            return PlanMetaLocalServiceUtil.getAllForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
+        }
+
+        if (_methodName647.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes647, parameterTypes)) {
+            return PlanMetaLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
+        }
+
+        if (_methodName648.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes648, parameterTypes)) {
+            return PlanMetaLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0],
+                ((Boolean) arguments[1]).booleanValue());
+        }
+
+        if (_methodName649.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes649, parameterTypes)) {
+            PlanMetaLocalServiceUtil.store((com.ext.portlet.model.PlanMeta) arguments[0]);
+
+            return null;
+        }
+
+        if (_methodName650.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes650, parameterTypes)) {
             PlanMetaLocalServiceUtil.vote((com.ext.portlet.model.PlanMeta) arguments[0]);
 
             return null;
         }
 
-        if (_methodName645.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
+        if (_methodName651.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes651, parameterTypes)) {
             PlanMetaLocalServiceUtil.unvote((com.ext.portlet.model.PlanMeta) arguments[0]);
 
             return null;

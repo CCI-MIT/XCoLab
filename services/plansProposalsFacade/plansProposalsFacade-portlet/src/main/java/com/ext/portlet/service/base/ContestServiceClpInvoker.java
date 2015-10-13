@@ -9,54 +9,54 @@ import java.util.Arrays;
  * @generated
  */
 public class ContestServiceClpInvoker {
-    private String _methodName616;
-    private String[] _methodParameterTypes616;
-    private String _methodName617;
-    private String[] _methodParameterTypes617;
     private String _methodName622;
     private String[] _methodParameterTypes622;
     private String _methodName623;
     private String[] _methodParameterTypes623;
+    private String _methodName628;
+    private String[] _methodParameterTypes628;
+    private String _methodName629;
+    private String[] _methodParameterTypes629;
 
     public ContestServiceClpInvoker() {
-        _methodName616 = "getBeanIdentifier";
-
-        _methodParameterTypes616 = new String[] {  };
-
-        _methodName617 = "setBeanIdentifier";
-
-        _methodParameterTypes617 = new String[] { "java.lang.String" };
-
-        _methodName622 = "getContestsOpenForProposals";
+        _methodName622 = "getBeanIdentifier";
 
         _methodParameterTypes622 = new String[] {  };
 
-        _methodName623 = "getNumberOfUnreadMessages";
+        _methodName623 = "setBeanIdentifier";
 
-        _methodParameterTypes623 = new String[] {  };
+        _methodParameterTypes623 = new String[] { "java.lang.String" };
+
+        _methodName628 = "getContestsOpenForProposals";
+
+        _methodParameterTypes628 = new String[] {  };
+
+        _methodName629 = "getNumberOfUnreadMessages";
+
+        _methodParameterTypes629 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName616.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes616, parameterTypes)) {
+        if (_methodName622.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes622, parameterTypes)) {
             return ContestServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName617.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes617, parameterTypes)) {
+        if (_methodName623.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes623, parameterTypes)) {
             ContestServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName622.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes622, parameterTypes)) {
+        if (_methodName628.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes628, parameterTypes)) {
             return ContestServiceUtil.getContestsOpenForProposals();
         }
 
-        if (_methodName623.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes623, parameterTypes)) {
+        if (_methodName629.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes629, parameterTypes)) {
             return ContestServiceUtil.getNumberOfUnreadMessages();
         }
 

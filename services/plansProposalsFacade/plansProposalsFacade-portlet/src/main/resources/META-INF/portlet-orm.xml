@@ -1489,6 +1489,17 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalReferenceModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ProposalReferencePK" />
+		<attributes>
+			<id name="proposalId" />
+			<id name="subProposalId" />
+			<basic name="sectionAttributeId" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ProposalSupporterModelImpl">
 		<id-class class="com.ext.portlet.service.persistence.ProposalSupporterPK" />
 		<attributes>
@@ -1961,6 +1972,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalRatingValueImpl" name="ProposalRatingValue">
 		<table name="xcolab_ProposalRatingValue" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalReferenceImpl" name="ProposalReference">
+		<table name="xcolab_ProposalReference" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalSupporterImpl" name="ProposalSupporter">

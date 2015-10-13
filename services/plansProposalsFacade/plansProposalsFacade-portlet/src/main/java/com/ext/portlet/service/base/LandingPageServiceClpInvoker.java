@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class LandingPageServiceClpInvoker {
-    private String _methodName616;
-    private String[] _methodParameterTypes616;
-    private String _methodName617;
-    private String[] _methodParameterTypes617;
+    private String _methodName622;
+    private String[] _methodParameterTypes622;
+    private String _methodName623;
+    private String[] _methodParameterTypes623;
 
     public LandingPageServiceClpInvoker() {
-        _methodName616 = "getBeanIdentifier";
+        _methodName622 = "getBeanIdentifier";
 
-        _methodParameterTypes616 = new String[] {  };
+        _methodParameterTypes622 = new String[] {  };
 
-        _methodName617 = "setBeanIdentifier";
+        _methodName623 = "setBeanIdentifier";
 
-        _methodParameterTypes617 = new String[] { "java.lang.String" };
+        _methodParameterTypes623 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName616.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes616, parameterTypes)) {
+        if (_methodName622.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes622, parameterTypes)) {
             return LandingPageServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName617.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes617, parameterTypes)) {
+        if (_methodName623.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes623, parameterTypes)) {
             LandingPageServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
