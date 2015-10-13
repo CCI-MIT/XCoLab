@@ -277,6 +277,20 @@ public class ProposalReferenceLocalServiceWrapper
             parameterTypes, arguments);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.ProposalReference> getByProposalId(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalReferenceLocalService.getByProposalId(proposalId);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ProposalReference> getBySubProposalId(
+        long subProposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalReferenceLocalService.getBySubProposalId(subProposalId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

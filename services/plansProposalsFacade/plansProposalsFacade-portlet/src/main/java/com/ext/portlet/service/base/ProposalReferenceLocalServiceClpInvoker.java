@@ -45,6 +45,10 @@ public class ProposalReferenceLocalServiceClpInvoker {
     private String[] _methodParameterTypes638;
     private String _methodName639;
     private String[] _methodParameterTypes639;
+    private String _methodName644;
+    private String[] _methodParameterTypes644;
+    private String _methodName645;
+    private String[] _methodParameterTypes645;
 
     public ProposalReferenceLocalServiceClpInvoker() {
         _methodName0 = "addProposalReference";
@@ -144,6 +148,14 @@ public class ProposalReferenceLocalServiceClpInvoker {
         _methodName639 = "setBeanIdentifier";
 
         _methodParameterTypes639 = new String[] { "java.lang.String" };
+
+        _methodName644 = "getByProposalId";
+
+        _methodParameterTypes644 = new String[] { "long" };
+
+        _methodName645 = "getBySubProposalId";
+
+        _methodParameterTypes645 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -245,6 +257,16 @@ public class ProposalReferenceLocalServiceClpInvoker {
             ProposalReferenceLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
+        }
+
+        if (_methodName644.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
+            return ProposalReferenceLocalServiceUtil.getByProposalId(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName645.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
+            return ProposalReferenceLocalServiceUtil.getBySubProposalId(((Long) arguments[0]).longValue());
         }
 
         throw new UnsupportedOperationException();

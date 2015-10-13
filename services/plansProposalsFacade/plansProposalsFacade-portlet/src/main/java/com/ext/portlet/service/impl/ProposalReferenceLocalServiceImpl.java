@@ -1,6 +1,10 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.model.ProposalReference;
 import com.ext.portlet.service.base.ProposalReferenceLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the proposal reference local service.
@@ -23,4 +27,12 @@ public class ProposalReferenceLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalReferenceLocalServiceUtil} to access the proposal reference local service.
      */
+
+    public List<ProposalReference> getByProposalId(long proposalId) throws SystemException {
+        return proposalReferencePersistence.findByProposalId(proposalId);
+    }
+
+    public List<ProposalReference> getBySubProposalId(long subProposalId) throws SystemException {
+        return proposalReferencePersistence.findBySubProposalId(subProposalId);
+    }
 }

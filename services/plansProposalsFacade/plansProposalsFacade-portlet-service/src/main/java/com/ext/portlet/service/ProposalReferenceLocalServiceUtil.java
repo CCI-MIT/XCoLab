@@ -263,6 +263,18 @@ public class ProposalReferenceLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static java.util.List<com.ext.portlet.model.ProposalReference> getByProposalId(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByProposalId(proposalId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ProposalReference> getBySubProposalId(
+        long subProposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getBySubProposalId(subProposalId);
+    }
+
     public static void clearService() {
         _service = null;
     }
