@@ -137,7 +137,7 @@
 			</form>
 		</c:if>
 
-        <c:if test="${ proposalsPermissions.canMoveProposalAndHideInCurrentContest }">
+        <c:if test="${ proposalsPermissions.canMoveProposal }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
             	<strong>Move proposal to different contest</strong>
             	<div>            		
@@ -151,7 +151,7 @@
 			</div>
 		</c:if>
 
-            <c:if test="${ proposalsPermissions.canMoveProposalAndKeepInCurrentContest }">
+            <c:if test="${ proposalsPermissions.canCopyProposal }">
                 <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                     <strong>Copy proposal to different contest</strong>
                     <div>

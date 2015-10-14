@@ -4,7 +4,6 @@ import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
@@ -23,7 +22,6 @@ import org.xcolab.portlets.proposals.utils.ProposalsActions;
 
 import javax.portlet.PortletRequest;
 import java.util.Date;
-import java.util.List;
 
 public class ProposalsPermissions {
     private final PermissionChecker permissionChecker;
@@ -231,27 +229,26 @@ public class ProposalsPermissions {
         return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
     }
 
-    public boolean getCanMoveProposalAndHideInCurrentContest() throws SystemException, PortalException {
+    public boolean getCanMoveProposal() throws SystemException, PortalException {
         if(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()){
             // Proposal is currently associated with a different contest and is active there (i.e. has been moved before) (3)
             return false;
         }
         // In Submission Phase, owner and admin should be able to move
         if (getIsCreationAllowedByPhase()){
-            return isOwner() || getCanAdminAll();
+            return getCanAdminProposal();
         }
 
         // Otherwise just the admin should be able to move between contests
     	return getCanAdminAll();
     }
 
-    public boolean getCanMoveProposalAndKeepInCurrentContest() throws SystemException, PortalException {
+    public boolean getCanCopyProposal() throws SystemException, PortalException {
         /**
          * Allow this type of movement if:
-         *   1) Proposal did not make it to the currently active or last phase
-         *   2) User is trying to move this proposal away from the last phase it was advanced to (i.e. the last phase it shows up in)
+         *   The proposal is not currently in a creation phase
          * Do not move if:
-         *   3) Proposal has been moved before and is active in a different contest
+         *   Proposal has been moved before and is active in a different contest
          */
 
         if (Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()) {
@@ -259,32 +256,9 @@ public class ProposalsPermissions {
             return false;
         }
 
-        ContestPhase lastPhase = ContestLocalServiceUtil.getActiveOrLastPhase(ContestLocalServiceUtil.getContest(contestPhase.getContestPK()));
-        Proposal2Phase p2p;
-        try {
-            p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-        } catch (Exception e) {
-            // no phase found
-            return false;
-        }
-
-        if (p2p == null || p2p.getVersionTo() >= 0) {
-            // User is not viewing latest version/phase this proposal was advanced to (Violation of 2)
-            return false;
-        }
-        if (p2p.getContestPhaseId() == lastPhase.getContestPhasePK()) {
-            // Check of this is the last phase in the contest (2)
-            List<ContestPhase> phases = ContestPhaseLocalServiceUtil.getPhasesForContest(contestPhase.getContestPK());
-            ContestPhase lastPhaseofContest = phases.get(phases.size() - 1);
-            if (lastPhaseofContest.getContestPhasePK() != p2p.getContestPhaseId()) {
-                // This is the current active phase (Violation of 1)
-                return false;
-            }
-        }
-
         // allow copy only if the current contest is not in creation phase anymore, in this case "move" should be used instead of "copy"
         return !getIsCreationAllowedByPhase()
-                && (isOwner() || getCanAdminAll());
+                && getCanAdminProposal();
     }
 
     public User getUser() {
