@@ -291,6 +291,21 @@ public class ProposalReferenceLocalServiceWrapper
         return _proposalReferenceLocalService.getBySubProposalId(subProposalId);
     }
 
+    @Override
+    public void populateTable()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalReferenceLocalService.populateTable();
+    }
+
+    @Override
+    public void populateTableWithProposal(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalReferenceLocalService.populateTableWithProposal(proposal);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

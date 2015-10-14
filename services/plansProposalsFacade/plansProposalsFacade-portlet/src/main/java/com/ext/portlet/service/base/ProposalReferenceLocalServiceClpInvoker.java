@@ -49,6 +49,10 @@ public class ProposalReferenceLocalServiceClpInvoker {
     private String[] _methodParameterTypes644;
     private String _methodName645;
     private String[] _methodParameterTypes645;
+    private String _methodName646;
+    private String[] _methodParameterTypes646;
+    private String _methodName647;
+    private String[] _methodParameterTypes647;
 
     public ProposalReferenceLocalServiceClpInvoker() {
         _methodName0 = "addProposalReference";
@@ -156,6 +160,14 @@ public class ProposalReferenceLocalServiceClpInvoker {
         _methodName645 = "getBySubProposalId";
 
         _methodParameterTypes645 = new String[] { "long" };
+
+        _methodName646 = "populateTable";
+
+        _methodParameterTypes646 = new String[] {  };
+
+        _methodName647 = "populateTableWithProposal";
+
+        _methodParameterTypes647 = new String[] { "com.ext.portlet.model.Proposal" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -267,6 +279,20 @@ public class ProposalReferenceLocalServiceClpInvoker {
         if (_methodName645.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
             return ProposalReferenceLocalServiceUtil.getBySubProposalId(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName646.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes646, parameterTypes)) {
+            ProposalReferenceLocalServiceUtil.populateTable();
+
+            return null;
+        }
+
+        if (_methodName647.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes647, parameterTypes)) {
+            ProposalReferenceLocalServiceUtil.populateTableWithProposal((com.ext.portlet.model.Proposal) arguments[0]);
+
+            return null;
         }
 
         throw new UnsupportedOperationException();

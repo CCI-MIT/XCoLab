@@ -250,4 +250,13 @@ public interface ProposalReferenceLocalService extends BaseLocalService,
     public java.util.List<com.ext.portlet.model.ProposalReference> getBySubProposalId(
         long subProposalId)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void populateTable()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void populateTableWithProposal(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }
