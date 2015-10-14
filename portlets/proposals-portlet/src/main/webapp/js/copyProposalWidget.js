@@ -71,28 +71,26 @@ function loadProposalSections() {
     		html.push("</td>");
     		html.push("<td>");
     		html.push('<div class="blue-button"><a href="javascript:;" class="copySectionBtn" data-section-id="');
-    	    html.push(obj.sectionId)
+    	    html.push(obj.sectionId);
     	    html.push('">Copy</a></div>');
     		html.push("</td></tr>");
     	});
     	html.push("</table>");
+
+		var $copyProposalContestsElement = jQuery("#copyProposalContests");
+		$copyProposalContestsElement.html(html.join(""));
     	
-    	
-    	jQuery("#copyProposalContests").html(html.join(""));
-    	
-    	jQuery("#copyProposalContests a.copySectionBtn").click(function() {
+    	$copyProposalContestsElement.find("a.copySectionBtn").click(function() {
     		var copyFromSectionId = jQuery(this).attr('data-section-id');
     		
     		CKEDITOR.instances['sectionsContent' + targetSectionId].insertHtml(availableSections[copyFromSectionId].content);
     		jQuery("#copyProposalContainer").hide();
     	});
     	
-    	jQuery("#copyProposalContests a.toggleContent").click(function() {
+    	$copyProposalContestsElement.find("a.toggleContent").click(function() {
     		var container = jQuery(this).parent();
     		container.toggleClass("expanded").find(".sectionContent").toggle();
     		container.find(".toggleContent").toggle();
-    		
-    		
     	});
     	proposalsLoaded = true;
     	
@@ -104,7 +102,6 @@ function updatePopupSize() {
 	container.find("#copyProposalPopup").css({top: "20px"});
 	var availableHeight = jQuery(window).height();
 	container.find(".popup").css({height: (availableHeight - 200), "overflow-x": "auto"});
-	
 }
 
 jQuery(function() {
@@ -113,9 +110,6 @@ jQuery(function() {
 		loadProposalSections();
 		jQuery("#copyProposalContainer").show();
 		updatePopupSize();
-		
-		
-		
 	});
 });
 
@@ -124,6 +118,3 @@ function showCopyProposalPopup(move, hideOnMove) {
 	jQuery("#copyProposalContainer").show();
 	updatePopupSize();
 }
-
-
-   
