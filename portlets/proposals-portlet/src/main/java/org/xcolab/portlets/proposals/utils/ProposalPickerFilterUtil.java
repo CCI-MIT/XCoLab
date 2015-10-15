@@ -46,13 +46,15 @@ public class ProposalPickerFilterUtil {
         if (filterKey != null && filterKey.equalsIgnoreCase("WINNERSONLY")) {
             ProposalPickerFilter.WINNERSONLY.filter(proposals);
         } else {
-            ProposalPickerFilter.ACCEPTALL.filter(proposals);
+            ProposalPickerFilter.ACCEPT_ALL.filter(proposals);
         }
     }
 
     public static List<Pair<ContestWrapper, Date>> getFilteredContests(
             long sectionId, ResourceRequest request, ProposalsContext proposalsContext) throws SystemException,
             PortalException {
+
+
 
         List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
 
@@ -62,6 +64,7 @@ public class ProposalPickerFilterUtil {
         }
 
         PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
+        List<Long> alwaysIncludedContestIds = PlanSectionDefinitionLocalServiceUtil.getAdditionalIds(planSectionDefinition);
 
         final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
         final long contestFocusAreaId;
@@ -73,7 +76,7 @@ public class ProposalPickerFilterUtil {
         }
         _log.debug(String.format("%d contests before filtering", contests.size()));
         ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
-                Pair.of(sectionFocusAreaId, contestFocusAreaId));
+                new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId, alwaysIncludedContestIds));
         _log.debug(String.format("%d contests left after filtering for focus areas %d and %d",
                 contests.size(), sectionFocusAreaId, contestFocusAreaId));
         final long filterTier = planSectionDefinition.getTier();
@@ -167,6 +170,7 @@ public class ProposalPickerFilterUtil {
         filterByVisibility(proposals);
 
         PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
+        List<Long> filterExceptionContestIds = PlanSectionDefinitionLocalServiceUtil.getAdditionalIds(planSectionDefinition);
 
         final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
         final long contestFocusAreaId;
@@ -177,7 +181,7 @@ public class ProposalPickerFilterUtil {
             contestFocusAreaId = 0;
         }
         ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
-                Pair.of(sectionFocusAreaId, contestFocusAreaId));
+                new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId, filterExceptionContestIds));
 
         ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
     }
@@ -188,6 +192,31 @@ public class ProposalPickerFilterUtil {
             if (ProposalLocalServiceUtil.isDeleted(proposal)) {
                 iterator.remove();
             }
+        }
+    }
+
+    public static class SectionDefFocusAreaArgument {
+        private final Long sectionFocusAreaId;
+        private final Long contestFocusAreaId;
+        private final List<Long> filterExceptionContestIds;
+
+
+        public SectionDefFocusAreaArgument(Long sectionFocusAreaId, Long contestFocusAreaId, List<Long> filterExceptionContestIds) {
+            this.sectionFocusAreaId = sectionFocusAreaId;
+            this.contestFocusAreaId = contestFocusAreaId;
+            this.filterExceptionContestIds = filterExceptionContestIds;
+        }
+
+        public Long getSectionFocusAreaId() {
+            return sectionFocusAreaId;
+        }
+
+        public Long getContestFocusAreaId() {
+            return contestFocusAreaId;
+        }
+
+        public List<Long> getFilterExceptionContestIds() {
+            return filterExceptionContestIds;
         }
     }
 }

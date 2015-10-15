@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import static org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil.SectionDefFocusAreaArgument;
+
 /**
  * Created with IntelliJ IDEA.
  * User: patrickhiesel
@@ -67,17 +69,28 @@ public class ProposalPickerFilter {
         return new HashSet<>();
     }
 
-    public static ProposalPickerFilter ACCEPTALL = new ProposalPickerFilter();
+    public static ProposalPickerFilter ACCEPT_ALL = new ProposalPickerFilter();
 
     public static ProposalPickerFilter SECTION_DEF_FOCUS_AREA_FILTER = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
             try {
-                List<OntologyTerm> terms = getOntologyTermsFromSectionAndContest((Pair) additionalFilterCriterion);
+                final SectionDefFocusAreaArgument additionalArguments = (SectionDefFocusAreaArgument) additionalFilterCriterion;
+                final List<Long> filterExceptionContestIds = additionalArguments.getFilterExceptionContestIds();
+                final Long sectionFocusAreaId = additionalArguments.getSectionFocusAreaId();
+                final Long contestFocusAreaId = additionalArguments.getContestFocusAreaId();
+
+                List<OntologyTerm> terms = getOntologyTermsFromSectionAndContest(sectionFocusAreaId, contestFocusAreaId);
 
                 if (terms.size() > 0) {
                     List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
+                    for (long filterExceptionContestId : filterExceptionContestIds) {
+                        final Contest filterExceptionContest = ContestLocalServiceUtil.fetchContest(filterExceptionContestId);
+                        if (!contests.contains(filterExceptionContest)) {
+                            contests.add(filterExceptionContest);
+                        }
+                    }
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                         Proposal p = i.next().getLeft();
                         try {
@@ -102,9 +115,18 @@ public class ProposalPickerFilter {
                                         Object additionalFilterCriterion) {
             Set<Long> removedContests = new HashSet<>();
             try {
-                List<OntologyTerm> requiredTerms = getOntologyTermsFromSectionAndContest((Pair) additionalFilterCriterion);
+                final SectionDefFocusAreaArgument additionalArguments = (SectionDefFocusAreaArgument) additionalFilterCriterion;
+                final List<Long> filterExceptionContestIds = additionalArguments.getFilterExceptionContestIds();
+                final Long sectionFocusAreaId = additionalArguments.getSectionFocusAreaId();
+                final Long contestFocusAreaId = additionalArguments.getContestFocusAreaId();
+
+                List<OntologyTerm> requiredTerms = getOntologyTermsFromSectionAndContest(sectionFocusAreaId, contestFocusAreaId);
+
                 for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
                     ContestWrapper contest = i.next().getLeft();
+                    if (filterExceptionContestIds.contains(contest.getContestPK())) {
+                        continue;
+                    }
                     try {
                         FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
                         List<OntologyTerm> contestTerms = FocusAreaLocalServiceUtil.getTerms(focusArea);
@@ -129,19 +151,18 @@ public class ProposalPickerFilter {
             return removedContests;
         }
 
-        private List<OntologyTerm> getOntologyTermsFromSectionAndContest(Pair focusAreaIds) throws SystemException, PortalException {
-            Long focusAreaId = (Long) focusAreaIds.getLeft();
-            Long contestFocusAreaId;
+        private List<OntologyTerm> getOntologyTermsFromSectionAndContest(Long focusAreaId, Long contestFocusAreaId) throws SystemException, PortalException {
+            Long localContestFocusAreaId;
             if (focusAreaId < 0) {
-                contestFocusAreaId = (Long) focusAreaIds.getRight();
+                localContestFocusAreaId = contestFocusAreaId;
                 focusAreaId = Math.abs(focusAreaId);
             } else {
-                contestFocusAreaId = 0L;
+                localContestFocusAreaId = 0L;
             }
             List<OntologyTerm> terms = new ArrayList<>();
 
             FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
-            FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(contestFocusAreaId);
+            FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(localContestFocusAreaId);
             if (focusArea != null) {
                 final List<OntologyTerm> sectionTerms = FocusAreaLocalServiceUtil.getTerms(focusArea);
                 removeRootTerms(sectionTerms);
@@ -167,7 +188,7 @@ public class ProposalPickerFilter {
         }
     };
 
-    public static ProposalPickerFilter TEXTBASED = new ProposalPickerFilter() {
+    public static ProposalPickerFilter TEXT_BASED = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
@@ -299,7 +320,7 @@ public class ProposalPickerFilter {
                 for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
                     ContestWrapper contest = i.next().getLeft();
                     try {
-                        if (allowedContestTiers.contains(contest.getContestTier())) {
+                        if (!allowedContestTiers.contains(contest.getContestTier())) {
                             removedContests.add(contest.getContestPK());
                             i.remove();
                         }

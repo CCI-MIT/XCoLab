@@ -7,13 +7,13 @@ import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.base.PlanSectionDefinitionLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactory;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-import org.xcolab.enums.ContestTier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +39,8 @@ public class PlanSectionDefinitionLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil} to access the plan section definition local service.
      */
+
+    private static Log _log = LogFactoryUtil.getLog(PlanSectionDefinitionServiceImpl.class);
 
     public void store(PlanSectionDefinition psd) throws SystemException {
         if (psd.isNew()) {
@@ -90,7 +92,14 @@ public class PlanSectionDefinitionLocalServiceImpl
         if (stringOfStringIds != null) {
             String[] stringIds = stringOfStringIds.split(",");
             for (String stringId : stringIds) {
-                longIds.add(Long.parseLong(stringId));
+                if (!stringId.isEmpty()) {
+                    try {
+                        longIds.add(Long.parseLong(stringId));
+                    } catch (NumberFormatException e) {
+                        _log.error(String.format("Could not parse the additionalId of '%s' for PlansSectionDefinition %d",
+                                stringId, planSectionDefinition.getId()), e);
+                    }
+                }
             }
         }
         return longIds;
