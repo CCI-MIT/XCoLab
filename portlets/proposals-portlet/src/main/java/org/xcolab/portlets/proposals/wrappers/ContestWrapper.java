@@ -672,7 +672,7 @@ public class ContestWrapper {
     }
 
     /**
-     * Determine if fellow are done with proposal
+     * Determine if fellows are done with proposal
      *
      * @return 0 if fellow action is incomplete, 1 fellow action completed
      */
