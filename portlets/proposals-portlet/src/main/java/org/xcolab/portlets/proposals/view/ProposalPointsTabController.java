@@ -26,7 +26,6 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import javax.portlet.PortletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("view")

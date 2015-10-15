@@ -1,21 +1,19 @@
 package org.xcolab.points;
 
+import com.ext.portlet.model.PointType;
+import com.ext.portlet.model.PointsDistributionConfiguration;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.ext.portlet.model.PointType;
-import com.ext.portlet.model.PointsDistributionConfiguration;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalReference;
-import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
 
 public enum ReceiverLimitationStrategy {
 	ANY_USER(new ReceiverLimitationTargetsPickerAlgorithm() {
