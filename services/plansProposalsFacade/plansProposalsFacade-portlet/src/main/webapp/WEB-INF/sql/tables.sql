@@ -674,6 +674,7 @@ create table xcolab_PlanSectionDefinition (
 	characterLimit INTEGER,
 	focusAreaId LONG,
 	tier LONG,
+	additionalIds VARCHAR(75) null,
 	locked BOOLEAN,
 	contestIntegrationRelevance BOOLEAN
 );

@@ -47,6 +47,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
         attributes.put("characterLimit", getCharacterLimit());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("tier", getTier());
+        attributes.put("additionalIds", getAdditionalIds());
         attributes.put("locked", getLocked());
         attributes.put("contestIntegrationRelevance",
             getContestIntegrationRelevance());
@@ -108,6 +109,12 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
 
         if (tier != null) {
             setTier(tier);
+        }
+
+        String additionalIds = (String) attributes.get("additionalIds");
+
+        if (additionalIds != null) {
+            setAdditionalIds(additionalIds);
         }
 
         Boolean locked = (Boolean) attributes.get("locked");
@@ -322,6 +329,26 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     @Override
     public void setTier(long tier) {
         _planSectionDefinition.setTier(tier);
+    }
+
+    /**
+    * Returns the additional IDs of this plan section definition.
+    *
+    * @return the additional IDs of this plan section definition
+    */
+    @Override
+    public java.lang.String getAdditionalIds() {
+        return _planSectionDefinition.getAdditionalIds();
+    }
+
+    /**
+    * Sets the additional IDs of this plan section definition.
+    *
+    * @param additionalIds the additional IDs of this plan section definition
+    */
+    @Override
+    public void setAdditionalIds(java.lang.String additionalIds) {
+        _planSectionDefinition.setAdditionalIds(additionalIds);
     }
 
     /**

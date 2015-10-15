@@ -809,6 +809,7 @@
 		<field name="characterLimit" type="int" />
 		<field name="focusAreaId" type="long" />
 		<field name="tier" type="long" />
+		<field name="additionalIds" type="String" />
 		<field name="locked" type="boolean" />
 		<field name="contestIntegrationRelevance" type="boolean" />
 	</model>

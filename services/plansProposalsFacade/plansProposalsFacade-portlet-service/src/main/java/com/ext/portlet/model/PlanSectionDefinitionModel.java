@@ -175,6 +175,21 @@ public interface PlanSectionDefinitionModel extends BaseModel<PlanSectionDefinit
     public void setTier(long tier);
 
     /**
+     * Returns the additional IDs of this plan section definition.
+     *
+     * @return the additional IDs of this plan section definition
+     */
+    @AutoEscape
+    public String getAdditionalIds();
+
+    /**
+     * Sets the additional IDs of this plan section definition.
+     *
+     * @param additionalIds the additional IDs of this plan section definition
+     */
+    public void setAdditionalIds(String additionalIds);
+
+    /**
      * Returns the locked of this plan section definition.
      *
      * @return the locked of this plan section definition

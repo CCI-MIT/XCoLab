@@ -441,6 +441,7 @@
         <column name="characterLimit" type="int" />
         <column name="focusAreaId" type="long" />
         <column name="tier" type="long" />
+        <column name="additionalIds" type="String" />
         <column name="locked" type="boolean" />
         <column name="contestIntegrationRelevance" type="boolean" />
     </entity>

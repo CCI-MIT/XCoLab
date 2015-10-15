@@ -1109,6 +1109,7 @@
 			<basic name="characterLimit" />
 			<basic name="focusAreaId" />
 			<basic name="tier" />
+			<basic name="additionalIds" />
 			<basic name="locked" />
 			<basic name="contestIntegrationRelevance" />
 			<transient name="modelAttributes" />

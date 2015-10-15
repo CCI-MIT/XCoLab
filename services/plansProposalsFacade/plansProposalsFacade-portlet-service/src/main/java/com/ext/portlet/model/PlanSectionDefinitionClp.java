@@ -29,6 +29,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     private int _characterLimit;
     private long _focusAreaId;
     private long _tier;
+    private String _additionalIds;
     private boolean _locked;
     private boolean _contestIntegrationRelevance;
     private BaseModel<?> _planSectionDefinitionRemoteModel;
@@ -80,6 +81,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         attributes.put("characterLimit", getCharacterLimit());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("tier", getTier());
+        attributes.put("additionalIds", getAdditionalIds());
         attributes.put("locked", getLocked());
         attributes.put("contestIntegrationRelevance",
             getContestIntegrationRelevance());
@@ -141,6 +143,12 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
         if (tier != null) {
             setTier(tier);
+        }
+
+        String additionalIds = (String) attributes.get("additionalIds");
+
+        if (additionalIds != null) {
+            setAdditionalIds(additionalIds);
         }
 
         Boolean locked = (Boolean) attributes.get("locked");
@@ -356,6 +364,28 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     }
 
     @Override
+    public String getAdditionalIds() {
+        return _additionalIds;
+    }
+
+    @Override
+    public void setAdditionalIds(String additionalIds) {
+        _additionalIds = additionalIds;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setAdditionalIds", String.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, additionalIds);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public boolean getLocked() {
         return _locked;
     }
@@ -490,6 +520,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         clone.setCharacterLimit(getCharacterLimit());
         clone.setFocusAreaId(getFocusAreaId());
         clone.setTier(getTier());
+        clone.setAdditionalIds(getAdditionalIds());
         clone.setLocked(getLocked());
         clone.setContestIntegrationRelevance(getContestIntegrationRelevance());
 
@@ -541,7 +572,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(23);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("{id=");
         sb.append(getId());
@@ -561,6 +592,8 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         sb.append(getFocusAreaId());
         sb.append(", tier=");
         sb.append(getTier());
+        sb.append(", additionalIds=");
+        sb.append(getAdditionalIds());
         sb.append(", locked=");
         sb.append(getLocked());
         sb.append(", contestIntegrationRelevance=");
@@ -572,7 +605,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(37);
+        StringBundler sb = new StringBundler(40);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanSectionDefinition");
@@ -613,6 +646,10 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         sb.append(
             "<column><column-name>tier</column-name><column-value><![CDATA[");
         sb.append(getTier());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>additionalIds</column-name><column-value><![CDATA[");
+        sb.append(getAdditionalIds());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>locked</column-name><column-value><![CDATA[");
