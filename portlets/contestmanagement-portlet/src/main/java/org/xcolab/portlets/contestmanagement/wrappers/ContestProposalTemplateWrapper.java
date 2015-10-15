@@ -267,6 +267,7 @@ public class ContestProposalTemplateWrapper {
         planSectionDefinition.setHelpText(sectionDefinitionBean.getHelpText());
         planSectionDefinition.setTier(sectionDefinitionBean.getLevel());
         planSectionDefinition.setFocusAreaId(sectionDefinitionBean.getFocusAreaId());
+        planSectionDefinition.setAdditionalIds(sectionDefinitionBean.getAdditionalIds());
         planSectionDefinition.setContestIntegrationRelevance(sectionDefinitionBean.isContestIntegrationRelevance());
     }
 
@@ -391,9 +392,9 @@ public class ContestProposalTemplateWrapper {
                     planSectionDefinition.getCharacterLimit() == sectionDefinitionBean.getCharacterLimit() &&
                     planSectionDefinition.getContestIntegrationRelevance() == sectionDefinitionBean.isContestIntegrationRelevance() &&
                     planSectionDefinition.getFocusAreaId() == sectionDefinitionBean.getFocusAreaId() &&
+                    planSectionDefinition.getAdditionalIds().equalsIgnoreCase(sectionDefinitionBean.getAdditionalIds()) &&
                     planSectionDefinition.getTier() == sectionDefinitionBean.getLevel());
-        } catch(Exception e){
-        }
+        } catch(Exception ignored){ }
         return isSectionDifferentFromDefinition;
     }
 
@@ -407,8 +408,8 @@ public class ContestProposalTemplateWrapper {
 
     private boolean isSectionIdPartOfBaseProposalTemplateOld(SectionDefinitionBean sectionDefinitionBean) throws Exception{
 
-        Long planTemplateId = new Long(planTemplate.getBaseTemplateId());
-        Long planSectionId = new Long(sectionDefinitionBean.getSectionDefinitionId());
+        Long planTemplateId = planTemplate.getBaseTemplateId();
+        Long planSectionId = sectionDefinitionBean.getSectionDefinitionId();
         // TODO check why class not found exception occurs,
         // for now this function is replaced by isSectionIdPartOfBaseProposalTemplate
         DynamicQuery queryCountSectionIdInBaseProposalTemplate =
@@ -492,8 +493,7 @@ public class ContestProposalTemplateWrapper {
         try {
             Long planTemplateId = planTemplate.getId();
             contestsUsingSelectedTemplateList = ContestLocalServiceUtil.getContestsByPlanTemplateId(planTemplateId);
-        } catch (Exception e){
-        }
+        } catch (Exception ignored){ }
 
         for(Contest contest : contestsUsingSelectedTemplateList) {
             contestsUsingSelectedTemplate.add(new org.xcolab.wrapper.ContestWrapper(contest));

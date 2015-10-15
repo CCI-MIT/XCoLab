@@ -159,6 +159,9 @@
 									<form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
 								</form:select>
 							</div>
+							<div>
+								<strong>Exclude the following contest ids from ontology term filtering (Comma-separated list):</strong><br/><form:input path="sections[${x.index}].additionalIds" data-form-name="additionalIds"/>
+							</div>
 						</div>
 						<div class="clearfix"><!-- --></div>
 						<div>

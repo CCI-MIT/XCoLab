@@ -33,6 +33,7 @@ public class SectionDefinitionBean implements Serializable{
     private Long id;
     private Long sectionDefinitionId;
     private String type = "";
+    private String additionalIds = "";
     private String title = "";
     private String defaultText = "";
     private String helpText = "";
@@ -89,10 +90,10 @@ public class SectionDefinitionBean implements Serializable{
         this.helpText = planSectionDefinition.getHelpText();
         this.characterLimit = planSectionDefinition.getCharacterLimit();
         this.focusAreaId = planSectionDefinition.getFocusAreaId();
+        this.additionalIds = planSectionDefinition.getAdditionalIds();
         this.locked = planSectionDefinition.getLocked();
         this.level = planSectionDefinition.getTier();
         this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
-        this.focusAreaId = planSectionDefinition.getFocusAreaId();
 
         try {
             initOntologyTermIdsWithFocusAreaId();
@@ -321,6 +322,14 @@ public class SectionDefinitionBean implements Serializable{
     }
 
     public static final Comparator<SectionDefinitionBean> sectionListComparator = new MyComparator();
+
+    public String getAdditionalIds() {
+        return additionalIds;
+    }
+
+    public void setAdditionalIds(String additionalIds) {
+        this.additionalIds = additionalIds;
+    }
 
     static class MyComparator implements Comparator<SectionDefinitionBean>{
 

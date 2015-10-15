@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contestmanagement.controller.common;
 
-import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
@@ -11,7 +10,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.enums.ContestTier;
@@ -23,8 +24,8 @@ import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.entities.SectionTypes;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.faces.model.SelectItem;
-import javax.portlet.*;
+import javax.portlet.PortletRequest;
+import javax.portlet.ResourceResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -93,10 +94,9 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         List<LabelValue> selectItems = new ArrayList<>();
         try {
             for (ContestTier contestLevel : ContestTier.values()) {
-                selectItems.add(new LabelValue(new Long(contestLevel.getTierType()), contestLevel.getTierName()));
+                selectItems.add(new LabelValue(contestLevel.getTierType(), contestLevel.getTierName()));
             }
-        } catch (Exception e){
-        }
+        } catch (Exception ignored){ }
         return selectItems;
     }
 
@@ -106,8 +106,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
             for (SectionTypes sectionTypes : SectionTypes.values()) {
                 selectItems.add(new LabelStringValue(sectionTypes.getSectionType(), sectionTypes.getDisplayName()));
             }
-        } catch (Exception e){
-        }
+        } catch (Exception ignored){ }
         return selectItems;
     }
 
@@ -196,7 +195,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
 
     private Stack<OntologyTerm> getOntologyTermParentPath(OntologyTerm term) throws SystemException, PortalException {
-        Stack<OntologyTerm> parentsPath = new Stack<OntologyTerm>();
+        Stack<OntologyTerm> parentsPath = new Stack<>();
         OntologyTerm current = term;
         while (current != null) {
             parentsPath.push(current);
