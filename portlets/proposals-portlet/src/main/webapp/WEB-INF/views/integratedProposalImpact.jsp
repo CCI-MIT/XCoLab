@@ -391,7 +391,7 @@
                     }
                     var modelSeriesValues = modelSeries.variable.values;
                     modelSeriesValues.forEach(function (modelSeriesValue) {
-                        modelSeriesValuesToYears[modelSeriesValue[0]] = modelSeriesValue[1];
+                        modelSeriesValuesToYears[modelSeriesValue[0]] = modelSeriesValue[1]*1000.0;
                     });
                 }
             });
