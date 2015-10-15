@@ -276,7 +276,12 @@ public class ProposalImpactScenarioCombinationWrapper {
         Scenario scenario = getScenarioForScenarioId(scenarioId);
         Map<Long, Object> scenarioInputs = mapVariableInputParameters(scenario.getInputSet());
         for( Long inputId : scenarioInputs.keySet()){
-            if(!combinedInputParametersMap.get(inputId).equals(scenarioInputs.get(inputId))){
+            if(Validator.isNotNull(combinedInputParametersMap)) {
+                if (!combinedInputParametersMap.get(inputId).equals(scenarioInputs.get(inputId))) {
+                    return false;
+                }
+            } else {
+                _log.warn("combinedInputParametersMap empty");
                 return false;
             }
         }
