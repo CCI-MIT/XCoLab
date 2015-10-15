@@ -607,9 +607,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         // remove terms that are root elements
         for (Iterator<OntologyTerm> i = ontologyTerms.iterator(); i.hasNext();){
             OntologyTerm o = i.next();
-
-            if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) i.remove();
-
+            if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) {
+                i.remove();
+            }
         }
 
         if (ontologyTerms.size() == 0) {
@@ -1042,7 +1042,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         ImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);
         return impactTemplateMaxFocusAreaPersistence.findByFocusAreaListId(focusAreaList.getFocusAreaListId());
     }
-
 
     public List<Contest> getContestsByTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTermIds) throws Exception{
 
