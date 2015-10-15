@@ -14,6 +14,7 @@ import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -221,12 +222,16 @@ public class AddUpdateProposalDetailsActionController {
         else {
         	filledAll = false;
         }
-        
+
+        boolean updateProposalReferences = false;
         for (ProposalSectionWrapper section: proposal.getSections()) {
             String newSectionValue = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
             if (section.getType() == PlanSectionTypeKeys.TEXT || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                 if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
                     ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), HtmlUtil.cleanSome(newSectionValue));
+                    if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
+                        updateProposalReferences = true;
+                    }
                 }
                 else {
                 	filledAll = false;
@@ -247,7 +252,11 @@ public class AddUpdateProposalDetailsActionController {
             }
             if (section.getType() == PlanSectionTypeKeys.PROPOSAL_REFERENCE) {
                 if (StringUtils.isNumeric(newSectionValue) && StringUtils.isNotBlank(newSectionValue)) {
-                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), Long.parseLong(newSectionValue));
+                    final long newNumericValue = Long.parseLong(newSectionValue);
+                    if (section.getNumericValue() != newNumericValue) {
+                        ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericValue);
+                        updateProposalReferences = true;
+                    }
                 } else if (StringUtils.isBlank(newSectionValue)) {
                     ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0l);
                 }
@@ -263,11 +272,16 @@ public class AddUpdateProposalDetailsActionController {
                     }
                     //if (cleanedReferences.substring(cleanedReferences.length()-2,cleanedReferences.length()-1).equalsIgnoreCase(",")) cleanedReferences = cleanedReferences.substring(0, cleanedReferences.length() - 2);
                 }
-                ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences);
+                if (!section.getStringValue().equals(cleanedReferences)) {
+                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences);
+                    updateProposalReferences = true;
+                }
             }
         }
-        
 
+        if (updateProposalReferences) {
+            ProposalReferenceLocalServiceUtil.populateTableWithProposal(proposal.getWrapped());
+        }
 
         int analyticsValue;
         
@@ -290,7 +304,6 @@ public class AddUpdateProposalDetailsActionController {
             Contest contest = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(proposalsContext.getContestPhase(request).getContestPhasePK()));
             new ProposalCreationNotification(proposal.getWrapped(), contest, serviceContext).sendMessage();
         }
-        
         
         proposalsContext.invalidateContext(request);
         

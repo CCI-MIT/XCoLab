@@ -41,16 +41,16 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName632;
-    private String[] _methodParameterTypes632;
-    private String _methodName633;
-    private String[] _methodParameterTypes633;
     private String _methodName638;
     private String[] _methodParameterTypes638;
     private String _methodName639;
     private String[] _methodParameterTypes639;
-    private String _methodName640;
-    private String[] _methodParameterTypes640;
+    private String _methodName644;
+    private String[] _methodParameterTypes644;
+    private String _methodName645;
+    private String[] _methodParameterTypes645;
+    private String _methodName646;
+    private String[] _methodParameterTypes646;
 
     public PointsDistributionConfigurationLocalServiceClpInvoker() {
         _methodName0 = "addPointsDistributionConfiguration";
@@ -135,28 +135,28 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
                 "com.ext.portlet.model.PointsDistributionConfiguration"
             };
 
-        _methodName632 = "getBeanIdentifier";
+        _methodName638 = "getBeanIdentifier";
 
-        _methodParameterTypes632 = new String[] {  };
+        _methodParameterTypes638 = new String[] {  };
 
-        _methodName633 = "setBeanIdentifier";
+        _methodName639 = "setBeanIdentifier";
 
-        _methodParameterTypes633 = new String[] { "java.lang.String" };
+        _methodParameterTypes639 = new String[] { "java.lang.String" };
 
-        _methodName638 = "findByProposalPointType";
+        _methodName644 = "findByProposalPointType";
 
-        _methodParameterTypes638 = new String[] {
+        _methodParameterTypes644 = new String[] {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.PointType"
             };
 
-        _methodName639 = "removeByProposalId";
+        _methodName645 = "removeByProposalId";
 
-        _methodParameterTypes639 = new String[] { "long" };
+        _methodParameterTypes645 = new String[] { "long" };
 
-        _methodName640 = "addDistributionConfiguration";
+        _methodName646 = "addDistributionConfiguration";
 
-        _methodParameterTypes640 = new String[] {
+        _methodParameterTypes646 = new String[] {
                 "long", "long", "java.lang.Long", "java.lang.Long", "double",
                 "long"
             };
@@ -251,33 +251,33 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
             return PointsDistributionConfigurationLocalServiceUtil.updatePointsDistributionConfiguration((com.ext.portlet.model.PointsDistributionConfiguration) arguments[0]);
         }
 
-        if (_methodName632.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
+        if (_methodName638.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
             return PointsDistributionConfigurationLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName633.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
+        if (_methodName639.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
             PointsDistributionConfigurationLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName644.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
             return PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType((com.ext.portlet.model.Proposal) arguments[0],
                 (com.ext.portlet.model.PointType) arguments[1]);
         }
 
-        if (_methodName639.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+        if (_methodName645.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
             PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(((Long) arguments[0]).longValue());
 
             return null;
         }
 
-        if (_methodName640.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes640, parameterTypes)) {
+        if (_methodName646.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes646, parameterTypes)) {
             return PointsDistributionConfigurationLocalServiceUtil.addDistributionConfiguration(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.Long) arguments[2], (java.lang.Long) arguments[3],

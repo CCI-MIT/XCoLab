@@ -232,8 +232,22 @@
         <column name="name" type="String" />
         <column name="description" type="String" />
 
-        <column name="proposalRatings" type="Collection" entity="ProposalRating" mapping-key="ratingValueId"/>
-    </entity>
+		<column name="proposalRatings" type="Collection" entity="ProposalRating" mapping-key="ratingValueId"/>
+	</entity>
+
+	<entity name="ProposalReference" local-service="true">
+		<column name="proposalId" type="long" primary="true"/>
+		<column name="subProposalId" type="long" primary="true"/>
+		<column name="sectionAttributeId" type="long" />
+
+		<finder return-type="Collection" name="ProposalId">
+			<finder-column name="proposalId" />
+		</finder>
+
+		<finder return-type="Collection" name="SubProposalId">
+			<finder-column name="subProposalId" />
+		</finder>
+	</entity>
 
 	<!-- Proposal impact -->
 

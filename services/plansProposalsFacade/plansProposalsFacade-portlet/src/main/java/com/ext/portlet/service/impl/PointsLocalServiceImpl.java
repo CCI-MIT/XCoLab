@@ -9,6 +9,7 @@ import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.Points;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.model.ProposalReference;
 import com.ext.portlet.service.base.PointsLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Xcolab_UserFinderUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -214,24 +215,22 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	}
 
     public List<Proposal> getLinkingProposals(long proposalId) throws SystemException, PortalException {
-        final List<Points> linkingPoints = pointsPersistence.findByProposalId(proposalId);
-        return getDistinctOriginatingProposals(linkingPoints);
-    }
-
-    public List<Proposal> getLinkingProposalsForUser(long userId) throws SystemException, PortalException {
-        final List<Points> linkingPoints = pointsPersistence.findByUserId(userId);
-        return getDistinctOriginatingProposals(linkingPoints);
-    }
-
-    private List<Proposal> getDistinctOriginatingProposals(List<Points> linkingPoints)
-            throws SystemException, PortalException {
+        List<ProposalReference> proposalReferences = proposalReferenceLocalService.getBySubProposalId(proposalId);
         List<Proposal> linkingProposals = new ArrayList<>();
-        for (Points points : linkingPoints) {
-            final long originatingProposalId = points.getOriginatingProposalId();
-            final Proposal proposal = proposalLocalService.getProposal(originatingProposalId);
+        for (ProposalReference proposalReference : proposalReferences) {
+            final Proposal proposal = proposalLocalService.fetchProposal(proposalReference.getProposalId());
             if (!linkingProposals.contains(proposal)) {
                 linkingProposals.add(proposal);
             }
+        }
+        return linkingProposals;
+    }
+
+    public List<Proposal> getLinkingProposalsForUser(long userId) throws SystemException, PortalException {
+        final List<Proposal> userProposals = proposalLocalService.getUserProposals(userId);
+        List<Proposal> linkingProposals = new ArrayList<>();
+        for (Proposal proposal : userProposals) {
+            linkingProposals.addAll(getLinkingProposals(proposal.getProposalId()));
         }
         return linkingProposals;
     }

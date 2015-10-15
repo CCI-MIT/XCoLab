@@ -41,22 +41,22 @@ public class ContestTeamMemberLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName632;
-    private String[] _methodParameterTypes632;
-    private String _methodName633;
-    private String[] _methodParameterTypes633;
     private String _methodName638;
     private String[] _methodParameterTypes638;
     private String _methodName639;
     private String[] _methodParameterTypes639;
-    private String _methodName640;
-    private String[] _methodParameterTypes640;
-    private String _methodName641;
-    private String[] _methodParameterTypes641;
-    private String _methodName642;
-    private String[] _methodParameterTypes642;
-    private String _methodName643;
-    private String[] _methodParameterTypes643;
+    private String _methodName644;
+    private String[] _methodParameterTypes644;
+    private String _methodName645;
+    private String[] _methodParameterTypes645;
+    private String _methodName646;
+    private String[] _methodParameterTypes646;
+    private String _methodName647;
+    private String[] _methodParameterTypes647;
+    private String _methodName648;
+    private String[] _methodParameterTypes648;
+    private String _methodName649;
+    private String[] _methodParameterTypes649;
 
     public ContestTeamMemberLocalServiceClpInvoker() {
         _methodName0 = "addContestTeamMember";
@@ -141,45 +141,45 @@ public class ContestTeamMemberLocalServiceClpInvoker {
                 "com.ext.portlet.model.ContestTeamMember"
             };
 
-        _methodName632 = "getBeanIdentifier";
+        _methodName638 = "getBeanIdentifier";
 
-        _methodParameterTypes632 = new String[] {  };
+        _methodParameterTypes638 = new String[] {  };
 
-        _methodName633 = "setBeanIdentifier";
+        _methodName639 = "setBeanIdentifier";
 
-        _methodParameterTypes633 = new String[] { "java.lang.String" };
+        _methodParameterTypes639 = new String[] { "java.lang.String" };
 
-        _methodName638 = "addContestTeamMember";
+        _methodName644 = "addContestTeamMember";
 
-        _methodParameterTypes638 = new String[] {
+        _methodParameterTypes644 = new String[] {
                 "java.lang.Long", "java.lang.Long", "java.lang.String"
             };
 
-        _methodName639 = "findForContest";
+        _methodName645 = "findForContest";
 
-        _methodParameterTypes639 = new String[] { "java.lang.Long" };
+        _methodParameterTypes645 = new String[] { "java.lang.Long" };
 
-        _methodName640 = "store";
+        _methodName646 = "store";
 
-        _methodParameterTypes640 = new String[] {
+        _methodParameterTypes646 = new String[] {
                 "com.ext.portlet.model.ContestTeamMember"
             };
 
-        _methodName641 = "delete";
+        _methodName647 = "delete";
 
-        _methodParameterTypes641 = new String[] {
+        _methodParameterTypes647 = new String[] {
                 "com.ext.portlet.model.ContestTeamMember"
             };
 
-        _methodName642 = "getUser";
+        _methodName648 = "getUser";
 
-        _methodParameterTypes642 = new String[] {
+        _methodParameterTypes648 = new String[] {
                 "com.ext.portlet.model.ContestTeamMember"
             };
 
-        _methodName643 = "getContest";
+        _methodName649 = "getContest";
 
-        _methodParameterTypes643 = new String[] {
+        _methodParameterTypes649 = new String[] {
                 "com.ext.portlet.model.ContestTeamMember"
             };
     }
@@ -273,50 +273,50 @@ public class ContestTeamMemberLocalServiceClpInvoker {
             return ContestTeamMemberLocalServiceUtil.updateContestTeamMember((com.ext.portlet.model.ContestTeamMember) arguments[0]);
         }
 
-        if (_methodName632.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
+        if (_methodName638.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
             return ContestTeamMemberLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName633.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
+        if (_methodName639.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
             ContestTeamMemberLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName644.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
             return ContestTeamMemberLocalServiceUtil.addContestTeamMember((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1], (java.lang.String) arguments[2]);
         }
 
-        if (_methodName639.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+        if (_methodName645.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
             return ContestTeamMemberLocalServiceUtil.findForContest((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName640.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes640, parameterTypes)) {
+        if (_methodName646.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes646, parameterTypes)) {
             ContestTeamMemberLocalServiceUtil.store((com.ext.portlet.model.ContestTeamMember) arguments[0]);
 
             return null;
         }
 
-        if (_methodName641.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes641, parameterTypes)) {
+        if (_methodName647.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes647, parameterTypes)) {
             ContestTeamMemberLocalServiceUtil.delete((com.ext.portlet.model.ContestTeamMember) arguments[0]);
 
             return null;
         }
 
-        if (_methodName642.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes642, parameterTypes)) {
+        if (_methodName648.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes648, parameterTypes)) {
             return ContestTeamMemberLocalServiceUtil.getUser((com.ext.portlet.model.ContestTeamMember) arguments[0]);
         }
 
-        if (_methodName643.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes643, parameterTypes)) {
+        if (_methodName649.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes649, parameterTypes)) {
             return ContestTeamMemberLocalServiceUtil.getContest((com.ext.portlet.model.ContestTeamMember) arguments[0]);
         }
 

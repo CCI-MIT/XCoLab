@@ -95,6 +95,7 @@
 	<import class="com.ext.portlet.model.ProposalRating" />
 	<import class="com.ext.portlet.model.ProposalRatingType" />
 	<import class="com.ext.portlet.model.ProposalRatingValue" />
+	<import class="com.ext.portlet.model.ProposalReference" />
 	<import class="com.ext.portlet.model.ProposalSupporter" />
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
@@ -1175,6 +1176,14 @@
 		<property name="value" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalReferenceImpl" table="xcolab_ProposalReference">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ProposalReferencePK">
+			<key-property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="subProposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
+		<property name="sectionAttributeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalSupporterImpl" table="xcolab_ProposalSupporter">
 		<cache usage="read-write" />

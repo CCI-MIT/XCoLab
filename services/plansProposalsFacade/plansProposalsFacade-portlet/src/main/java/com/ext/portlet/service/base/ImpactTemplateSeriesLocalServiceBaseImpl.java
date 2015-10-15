@@ -97,6 +97,7 @@ import com.ext.portlet.service.persistence.ProposalRatingFinder;
 import com.ext.portlet.service.persistence.ProposalRatingPersistence;
 import com.ext.portlet.service.persistence.ProposalRatingTypePersistence;
 import com.ext.portlet.service.persistence.ProposalRatingValuePersistence;
+import com.ext.portlet.service.persistence.ProposalReferencePersistence;
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
@@ -705,6 +706,12 @@ public abstract class ImpactTemplateSeriesLocalServiceBaseImpl
     protected com.ext.portlet.service.ProposalRatingValueService proposalRatingValueService;
     @BeanReference(type = ProposalRatingValuePersistence.class)
     protected ProposalRatingValuePersistence proposalRatingValuePersistence;
+    @BeanReference(type = com.ext.portlet.service.ProposalReferenceLocalService.class)
+    protected com.ext.portlet.service.ProposalReferenceLocalService proposalReferenceLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalReferenceService.class)
+    protected com.ext.portlet.service.ProposalReferenceService proposalReferenceService;
+    @BeanReference(type = ProposalReferencePersistence.class)
+    protected ProposalReferencePersistence proposalReferencePersistence;
     @BeanReference(type = com.ext.portlet.service.ProposalSupporterLocalService.class)
     protected com.ext.portlet.service.ProposalSupporterLocalService proposalSupporterLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalSupporterService.class)
@@ -6311,6 +6318,63 @@ public abstract class ImpactTemplateSeriesLocalServiceBaseImpl
     public void setProposalRatingValuePersistence(
         ProposalRatingValuePersistence proposalRatingValuePersistence) {
         this.proposalRatingValuePersistence = proposalRatingValuePersistence;
+    }
+
+    /**
+     * Returns the proposal reference local service.
+     *
+     * @return the proposal reference local service
+     */
+    public com.ext.portlet.service.ProposalReferenceLocalService getProposalReferenceLocalService() {
+        return proposalReferenceLocalService;
+    }
+
+    /**
+     * Sets the proposal reference local service.
+     *
+     * @param proposalReferenceLocalService the proposal reference local service
+     */
+    public void setProposalReferenceLocalService(
+        com.ext.portlet.service.ProposalReferenceLocalService proposalReferenceLocalService) {
+        this.proposalReferenceLocalService = proposalReferenceLocalService;
+    }
+
+    /**
+     * Returns the proposal reference remote service.
+     *
+     * @return the proposal reference remote service
+     */
+    public com.ext.portlet.service.ProposalReferenceService getProposalReferenceService() {
+        return proposalReferenceService;
+    }
+
+    /**
+     * Sets the proposal reference remote service.
+     *
+     * @param proposalReferenceService the proposal reference remote service
+     */
+    public void setProposalReferenceService(
+        com.ext.portlet.service.ProposalReferenceService proposalReferenceService) {
+        this.proposalReferenceService = proposalReferenceService;
+    }
+
+    /**
+     * Returns the proposal reference persistence.
+     *
+     * @return the proposal reference persistence
+     */
+    public ProposalReferencePersistence getProposalReferencePersistence() {
+        return proposalReferencePersistence;
+    }
+
+    /**
+     * Sets the proposal reference persistence.
+     *
+     * @param proposalReferencePersistence the proposal reference persistence
+     */
+    public void setProposalReferencePersistence(
+        ProposalReferencePersistence proposalReferencePersistence) {
+        this.proposalReferencePersistence = proposalReferencePersistence;
     }
 
     /**
