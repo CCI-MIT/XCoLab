@@ -19,14 +19,18 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.model.ProposalReference;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
@@ -1536,60 +1540,29 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *
      * @return collection of referenced proposals
      */
-    public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest, boolean onlyWithContestIntegrationRelevance) throws SystemException, PortalException {
-        Set<Long> detectedIds = new HashSet<>();
-
-        for (ProposalAttribute attribute: getAttributes(proposalId)) {
-
-            if (attribute.getName().equals(ProposalAttributeKeys.SECTION)) {
-                PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
-
-                if (StringUtils.isBlank(psd.getType())) {
-                    continue;
-                }
-
-                if(onlyWithContestIntegrationRelevance && !psd.getContestIntegrationRelevance()){
-                    continue;
-                }
-
-                PlanSectionTypeKeys type = PlanSectionTypeKeys.valueOf(psd.getType());
-                switch (type) {
-                    case PROPOSAL_REFERENCE:
-                        if (attribute.getNumericValue() != 0) {
-                            detectedIds.add(attribute.getNumericValue());
-                        }
-                        break;
-                    case PROPOSAL_LIST_REFERENCE:
-                        if (Validator.isNull(attribute.getStringValue())) {
-                            break;
-                        }
-                        String[] referencedProposals = attribute.getStringValue().split(",");
-                        for (String referencedProposal : referencedProposals) {
-                            detectedIds.add(Long.parseLong(referencedProposal));
-                        }
-                        break;
-                    case PROPOSAL_LIST_TEXT_REFERENCE:
-                        Pattern proposalLinkPattern = Pattern.compile("(href=|https?://).*?/plans/-/plans/contestId/(\\d*)/(?:phaseId/\\d*/)?planId/(\\d*)");
-                        Matcher m = proposalLinkPattern.matcher(attribute.getStringValue());
-                        while (m.find()) {
-                            detectedIds.add(Long.parseLong(m.group(3)));
-                        }
-                        break;
-                }
-            }
-        }
+    public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest, boolean onlyWithContestIntegrationRelevance)
+            throws SystemException, PortalException {
+        List<ProposalReference> proposalReferences = ProposalReferenceLocalServiceUtil.getByProposalId(proposalId);
 
         List<Proposal> proposals = new ArrayList<>();
-        for (Long subProposalId: detectedIds) {
-            Proposal p = getProposal(subProposalId);
-            if (p != null) {
-                //do not allow subproposals to be in the same contest as the current proposal if specified.
-                // this saves a lot of headaches regarding transitive loops
-                if (includeProposalsInSameContest || !getLatestProposalContest(proposalId).equals(getLatestProposalContest(subProposalId))) {
-                    proposals.add(p);
+        for (ProposalReference proposalReference : proposalReferences) {
+            if (onlyWithContestIntegrationRelevance) {
+                ProposalAttribute attribute = ProposalAttributeLocalServiceUtil.fetchProposalAttribute(proposalReference.getSectionAttributeId());
+                PlanSectionDefinition psd = PlanSectionDefinitionLocalServiceUtil.fetchPlanSectionDefinition(attribute.getAdditionalId());
+                if (!psd.getContestIntegrationRelevance()) {
+                    continue;
                 }
             }
-
+            final long subProposalId = proposalReference.getSubProposalId();
+            Proposal p = getProposal(subProposalId);
+            if (p != null) {
+                if (!includeProposalsInSameContest) {
+                    if (getLatestProposalContest(proposalId).equals(getLatestProposalContest(subProposalId))) {
+                        continue;
+                    }
+                }
+                proposals.add(p);
+            }
         }
         return proposals;
     }
