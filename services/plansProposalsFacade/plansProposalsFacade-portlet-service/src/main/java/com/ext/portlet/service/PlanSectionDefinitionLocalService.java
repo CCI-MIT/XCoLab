@@ -264,4 +264,8 @@ public interface PlanSectionDefinitionLocalService extends BaseLocalService,
         com.ext.portlet.model.FocusArea focusArea, java.lang.String type,
         long contestTierType)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<java.lang.Long> getAdditionalIds(
+        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition);
 }

@@ -310,6 +310,12 @@ public class PlanSectionDefinitionLocalServiceWrapper
             type, contestTierType);
     }
 
+    @Override
+    public java.util.List<java.lang.Long> getAdditionalIds(
+        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition) {
+        return _planSectionDefinitionLocalService.getAdditionalIds(planSectionDefinition);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

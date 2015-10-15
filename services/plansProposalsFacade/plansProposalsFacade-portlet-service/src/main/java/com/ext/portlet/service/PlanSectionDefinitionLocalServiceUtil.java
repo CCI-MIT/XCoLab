@@ -292,6 +292,11 @@ public class PlanSectionDefinitionLocalServiceUtil {
                    .getPlanSectionDefinition(focusArea, type, contestTierType);
     }
 
+    public static java.util.List<java.lang.Long> getAdditionalIds(
+        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition) {
+        return getService().getAdditionalIds(planSectionDefinition);
+    }
+
     public static void clearService() {
         _service = null;
     }

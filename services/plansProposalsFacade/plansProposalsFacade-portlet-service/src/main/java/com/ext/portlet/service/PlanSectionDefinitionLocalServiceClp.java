@@ -51,6 +51,8 @@ public class PlanSectionDefinitionLocalServiceClp
     private String[] _methodParameterTypes20;
     private String _methodName21;
     private String[] _methodParameterTypes21;
+    private String _methodName22;
+    private String[] _methodParameterTypes22;
 
     public PlanSectionDefinitionLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -162,6 +164,12 @@ public class PlanSectionDefinitionLocalServiceClp
 
         _methodParameterTypes21 = new String[] {
                 "com.ext.portlet.model.FocusArea", "java.lang.String", "long"
+            };
+
+        _methodName22 = "getAdditionalIds";
+
+        _methodParameterTypes22 = new String[] {
+                "com.ext.portlet.model.PlanSectionDefinition"
             };
     }
 
@@ -773,5 +781,30 @@ public class PlanSectionDefinitionLocalServiceClp
         }
 
         return (com.ext.portlet.model.PlanSectionDefinition) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<java.lang.Long> getAdditionalIds(
+        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22,
+                    new Object[] {
+                        ClpSerializer.translateInput(planSectionDefinition)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
     }
 }

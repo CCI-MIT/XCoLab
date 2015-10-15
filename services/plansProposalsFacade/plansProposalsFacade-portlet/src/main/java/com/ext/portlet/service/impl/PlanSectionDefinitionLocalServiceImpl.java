@@ -83,4 +83,16 @@ public class PlanSectionDefinitionLocalServiceImpl
 
         return null;
     }
+
+    public List<Long> getAdditionalIds(PlanSectionDefinition planSectionDefinition) {
+        List<Long> longIds = new ArrayList<>();
+        final String stringOfStringIds = planSectionDefinition.getAdditionalIds();
+        if (stringOfStringIds != null) {
+            String[] stringIds = stringOfStringIds.split(",");
+            for (String stringId : stringIds) {
+                longIds.add(Long.parseLong(stringId));
+            }
+        }
+        return longIds;
+    }
 }

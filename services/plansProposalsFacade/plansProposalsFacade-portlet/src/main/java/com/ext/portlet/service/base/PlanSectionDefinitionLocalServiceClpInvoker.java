@@ -51,6 +51,8 @@ public class PlanSectionDefinitionLocalServiceClpInvoker {
     private String[] _methodParameterTypes645;
     private String _methodName646;
     private String[] _methodParameterTypes646;
+    private String _methodName647;
+    private String[] _methodParameterTypes647;
 
     public PlanSectionDefinitionLocalServiceClpInvoker() {
         _methodName0 = "addPlanSectionDefinition";
@@ -159,6 +161,12 @@ public class PlanSectionDefinitionLocalServiceClpInvoker {
 
         _methodParameterTypes646 = new String[] {
                 "com.ext.portlet.model.FocusArea", "java.lang.String", "long"
+            };
+
+        _methodName647 = "getAdditionalIds";
+
+        _methodParameterTypes647 = new String[] {
+                "com.ext.portlet.model.PlanSectionDefinition"
             };
     }
 
@@ -280,6 +288,11 @@ public class PlanSectionDefinitionLocalServiceClpInvoker {
             return PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition((com.ext.portlet.model.FocusArea) arguments[0],
                 (java.lang.String) arguments[1],
                 ((Long) arguments[2]).longValue());
+        }
+
+        if (_methodName647.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes647, parameterTypes)) {
+            return PlanSectionDefinitionLocalServiceUtil.getAdditionalIds((com.ext.portlet.model.PlanSectionDefinition) arguments[0]);
         }
 
         throw new UnsupportedOperationException();
