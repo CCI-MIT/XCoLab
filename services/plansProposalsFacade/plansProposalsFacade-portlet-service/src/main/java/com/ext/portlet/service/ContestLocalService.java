@@ -10,8 +10,6 @@ import com.liferay.portal.service.BaseLocalService;
 import com.liferay.portal.service.InvokableLocalService;
 import com.liferay.portal.service.PersistedModelLocalService;
 
-import java.util.*;
-
 /**
  * Provides the local service interface for Contest. Methods of this
  * service will not have security checks based on the propagated JAAS
@@ -352,18 +350,6 @@ public interface ContestLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
-    public void setLogo(com.ext.portlet.model.Contest contest,
-        java.io.File logoFile)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException;
-
-    public void setSponsorLogo(com.ext.portlet.model.Contest contest,
-        java.io.File logoFile)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException;
-
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.String getLogoPath(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -538,7 +524,6 @@ public interface ContestLocalService extends BaseLocalService,
     * @param contest           The contest for which the review should be created
     * @param currentPhase      The currently active ContestPhase which should be used for proposal filtering
     * @param serviceContext    A serviceContext which must include the Portal's base URL
-    * @return
     * @throws SystemException
     * @throws PortalException
     */

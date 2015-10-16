@@ -104,6 +104,7 @@ import com.ext.portlet.service.persistence.StaffMemberPersistence;
 import com.ext.portlet.service.persistence.TrackedVisitPersistence;
 import com.ext.portlet.service.persistence.TrackedVisitor2UserPersistence;
 import com.ext.portlet.service.persistence.Xcolab_UserFinder;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
@@ -121,9 +122,11 @@ import com.liferay.portal.service.BaseLocalServiceImpl;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.service.persistence.UserPersistence;
 
-import javax.sql.DataSource;
 import java.io.Serializable;
+
 import java.util.List;
+
+import javax.sql.DataSource;
 
 /**
  * Provides the base implementation for the contest local service.

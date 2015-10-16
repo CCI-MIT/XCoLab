@@ -381,24 +381,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 null;
     }
 
-    public void setLogo(Contest contest, File logoFile) throws IOException, SystemException, PortalException {
-//        Image i = ImageLocalServiceUtil.getImage(logoFile);//.getImage(logoFile);   
-//        i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
-//        
-//        ImageLocalServiceUtil.addImage(i);
-//        ImageLocalServiceUtil.updateImage(i.getImageId(), i.getTextObj());
-//        contest.setContestLogoId(i.getImageId());
-    }
-
-    public void setSponsorLogo(Contest contest, File logoFile) throws IOException, SystemException, PortalException {
-//        Image i = ImageLocalServiceUtil.getImage(logoFile);//.getImage(logoFile);   
-//        i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
-//        
-//        ImageLocalServiceUtil.addImage(i);
-//        ImageLocalServiceUtil.updateImage(i.getImageId(), i.getTextObj());
-//        contest.setSponsorLogoId(i.getImageId());
-    }
-
     public String getLogoPath(Contest contest) throws PortalException, SystemException {
         Image i = getLogo(contest);
         if (i != null) {
@@ -414,7 +396,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
         return "";
     }
-
 
     public long getProposalsCount(Contest contest) throws PortalException, SystemException {
         // first - get current phase
@@ -581,7 +562,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return ret;
     }
 
-
     public Long getDefaultModelId(long contestPK) throws PortalException, SystemException {
         Contest contest = getContest(contestPK);
         return contest.getDefaultModelId();
@@ -734,7 +714,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             	continue;
             }
 
-
             // Directly transfer the support to a vote
             if (proposals.size() == 1) {
                 voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK());
@@ -765,7 +744,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         List<Proposal> stillActiveProposals = proposalLocalService.getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
         Set<ProposalRatingType> occurringRatingTypes = new HashSet<>();
         Set<User> occurringJudges = new HashSet<>();
-
 
         for (ContestPhase judgingPhase : getAllPhases(contest)) {
             if(!judgingPhase.getFellowScreeningActive()){

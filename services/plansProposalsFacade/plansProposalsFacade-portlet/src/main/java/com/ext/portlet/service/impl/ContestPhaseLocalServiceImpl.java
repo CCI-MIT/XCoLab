@@ -23,6 +23,7 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.ext.utils.promotion.AutoPromoteHelper;
+import com.ext.utils.promotion.PhasePromotionHelper;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -42,21 +43,18 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 import com.liferay.util.portlet.PortletProps;
-
 import org.apache.commons.lang3.StringUtils;
-import com.ext.utils.promotion.PhasePromotionHelper;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.utils.Clock;
 import org.xcolab.utils.ClockImpl;
 
 import javax.mail.internet.AddressException;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * The implementation of the contest phase local service.

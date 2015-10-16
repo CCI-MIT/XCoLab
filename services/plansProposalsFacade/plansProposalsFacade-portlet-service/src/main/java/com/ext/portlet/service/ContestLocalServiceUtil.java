@@ -402,22 +402,6 @@ public class ContestLocalServiceUtil {
         return getService().getSponsorLogo(contest);
     }
 
-    public static void setLogo(com.ext.portlet.model.Contest contest,
-        java.io.File logoFile)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException {
-        getService().setLogo(contest, logoFile);
-    }
-
-    public static void setSponsorLogo(com.ext.portlet.model.Contest contest,
-        java.io.File logoFile)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException {
-        getService().setSponsorLogo(contest, logoFile);
-    }
-
     public static java.lang.String getLogoPath(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -620,7 +604,6 @@ public class ContestLocalServiceUtil {
     * @param contest           The contest for which the review should be created
     * @param currentPhase      The currently active ContestPhase which should be used for proposal filtering
     * @param serviceContext    A serviceContext which must include the Portal's base URL
-    * @return
     * @throws SystemException
     * @throws PortalException
     */
