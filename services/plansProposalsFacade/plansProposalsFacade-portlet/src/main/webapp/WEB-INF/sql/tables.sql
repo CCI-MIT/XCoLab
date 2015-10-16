@@ -185,7 +185,8 @@ create table xcolab_ContestPhaseRibbonType (
 	ribbon INTEGER,
 	hoverText VARCHAR(75) null,
 	description VARCHAR(75) null,
-	copyOnPromote BOOLEAN
+	copyOnPromote BOOLEAN,
+	sortOrder INTEGER
 );
 
 create table xcolab_ContestPhaseType (

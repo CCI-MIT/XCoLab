@@ -164,6 +164,7 @@
     	<column name="hoverText" type="String" />
     	<column name="description" type="String" />
     	<column name="copyOnPromote" type="boolean" />
+		<column name="sortOrder" type="int" />
     </entity>
     
     <entity name="ProposalContestPhaseAttribute" local-service="true">

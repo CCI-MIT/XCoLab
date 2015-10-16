@@ -25,6 +25,7 @@ public class ContestPhaseRibbonTypeClp extends BaseModelImpl<ContestPhaseRibbonT
     private String _hoverText;
     private String _description;
     private boolean _copyOnPromote;
+    private int _sortOrder;
     private BaseModel<?> _contestPhaseRibbonTypeRemoteModel;
     private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
@@ -70,6 +71,7 @@ public class ContestPhaseRibbonTypeClp extends BaseModelImpl<ContestPhaseRibbonT
         attributes.put("hoverText", getHoverText());
         attributes.put("description", getDescription());
         attributes.put("copyOnPromote", getCopyOnPromote());
+        attributes.put("sortOrder", getSortOrder());
 
         return attributes;
     }
@@ -104,6 +106,12 @@ public class ContestPhaseRibbonTypeClp extends BaseModelImpl<ContestPhaseRibbonT
 
         if (copyOnPromote != null) {
             setCopyOnPromote(copyOnPromote);
+        }
+
+        Integer sortOrder = (Integer) attributes.get("sortOrder");
+
+        if (sortOrder != null) {
+            setSortOrder(sortOrder);
         }
     }
 
@@ -223,6 +231,28 @@ public class ContestPhaseRibbonTypeClp extends BaseModelImpl<ContestPhaseRibbonT
         }
     }
 
+    @Override
+    public int getSortOrder() {
+        return _sortOrder;
+    }
+
+    @Override
+    public void setSortOrder(int sortOrder) {
+        _sortOrder = sortOrder;
+
+        if (_contestPhaseRibbonTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestPhaseRibbonTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setSortOrder", int.class);
+
+                method.invoke(_contestPhaseRibbonTypeRemoteModel, sortOrder);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestPhaseRibbonTypeRemoteModel() {
         return _contestPhaseRibbonTypeRemoteModel;
     }
@@ -297,6 +327,7 @@ public class ContestPhaseRibbonTypeClp extends BaseModelImpl<ContestPhaseRibbonT
         clone.setHoverText(getHoverText());
         clone.setDescription(getDescription());
         clone.setCopyOnPromote(getCopyOnPromote());
+        clone.setSortOrder(getSortOrder());
 
         return clone;
     }
@@ -346,7 +377,7 @@ public class ContestPhaseRibbonTypeClp extends BaseModelImpl<ContestPhaseRibbonT
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{id=");
         sb.append(getId());
@@ -358,6 +389,8 @@ public class ContestPhaseRibbonTypeClp extends BaseModelImpl<ContestPhaseRibbonT
         sb.append(getDescription());
         sb.append(", copyOnPromote=");
         sb.append(getCopyOnPromote());
+        sb.append(", sortOrder=");
+        sb.append(getSortOrder());
         sb.append("}");
 
         return sb.toString();
@@ -365,7 +398,7 @@ public class ContestPhaseRibbonTypeClp extends BaseModelImpl<ContestPhaseRibbonT
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhaseRibbonType");
@@ -390,6 +423,10 @@ public class ContestPhaseRibbonTypeClp extends BaseModelImpl<ContestPhaseRibbonT
         sb.append(
             "<column><column-name>copyOnPromote</column-name><column-value><![CDATA[");
         sb.append(getCopyOnPromote());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>sortOrder</column-name><column-value><![CDATA[");
+        sb.append(getSortOrder());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

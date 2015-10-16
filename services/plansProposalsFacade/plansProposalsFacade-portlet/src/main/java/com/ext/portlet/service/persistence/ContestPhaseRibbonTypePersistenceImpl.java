@@ -343,6 +343,7 @@ public class ContestPhaseRibbonTypePersistenceImpl extends BasePersistenceImpl<C
         contestPhaseRibbonTypeImpl.setHoverText(contestPhaseRibbonType.getHoverText());
         contestPhaseRibbonTypeImpl.setDescription(contestPhaseRibbonType.getDescription());
         contestPhaseRibbonTypeImpl.setCopyOnPromote(contestPhaseRibbonType.isCopyOnPromote());
+        contestPhaseRibbonTypeImpl.setSortOrder(contestPhaseRibbonType.getSortOrder());
 
         return contestPhaseRibbonTypeImpl;
     }

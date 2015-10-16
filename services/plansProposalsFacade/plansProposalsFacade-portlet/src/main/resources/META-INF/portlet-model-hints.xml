@@ -252,6 +252,7 @@
 		<field name="hoverText" type="String" />
 		<field name="description" type="String" />
 		<field name="copyOnPromote" type="boolean" />
+		<field name="sortOrder" type="int" />
 	</model>
 	<model name="com.ext.portlet.model.ContestPhaseType">
 		<field name="id" type="long" />
