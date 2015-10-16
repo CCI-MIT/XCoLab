@@ -307,6 +307,7 @@
 			<basic name="contestPhaseAutopromoteDefault" />
 			<basic name="invisible" />
 			<basic name="pointsAccessible" />
+			<basic name="defaultPromotionType" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

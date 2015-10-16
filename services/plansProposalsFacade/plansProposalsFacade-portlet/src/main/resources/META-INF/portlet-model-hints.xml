@@ -267,6 +267,7 @@
 		<field name="contestPhaseAutopromoteDefault" type="String" />
 		<field name="invisible" type="boolean" />
 		<field name="pointsAccessible" type="int" />
+		<field name="defaultPromotionType" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.ContestSchedule">
 		<field name="id" type="long" />

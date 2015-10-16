@@ -47,6 +47,7 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
             getContestPhaseAutopromoteDefault());
         attributes.put("invisible", getInvisible());
         attributes.put("pointsAccessible", getPointsAccessible());
+        attributes.put("defaultPromotionType", getDefaultPromotionType());
 
         return attributes;
     }
@@ -101,6 +102,13 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
 
         if (pointsAccessible != null) {
             setPointsAccessible(pointsAccessible);
+        }
+
+        String defaultPromotionType = (String) attributes.get(
+                "defaultPromotionType");
+
+        if (defaultPromotionType != null) {
+            setDefaultPromotionType(defaultPromotionType);
         }
     }
 
@@ -304,6 +312,26 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
     @Override
     public void setPointsAccessible(int pointsAccessible) {
         _contestPhaseType.setPointsAccessible(pointsAccessible);
+    }
+
+    /**
+    * Returns the default promotion type of this contest phase type.
+    *
+    * @return the default promotion type of this contest phase type
+    */
+    @Override
+    public java.lang.String getDefaultPromotionType() {
+        return _contestPhaseType.getDefaultPromotionType();
+    }
+
+    /**
+    * Sets the default promotion type of this contest phase type.
+    *
+    * @param defaultPromotionType the default promotion type of this contest phase type
+    */
+    @Override
+    public void setDefaultPromotionType(java.lang.String defaultPromotionType) {
+        _contestPhaseType.setDefaultPromotionType(defaultPromotionType);
     }
 
     @Override

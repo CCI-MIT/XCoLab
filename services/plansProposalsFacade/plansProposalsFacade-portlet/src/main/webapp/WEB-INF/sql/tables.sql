@@ -197,7 +197,8 @@ create table xcolab_ContestPhaseType (
 	fellowScreeningActiveDefault BOOLEAN,
 	contestPhaseAutopromoteDefault VARCHAR(75) null,
 	invisible BOOLEAN,
-	pointsAccessible INTEGER
+	pointsAccessible INTEGER,
+	defaultPromotionType VARCHAR(75) null
 );
 
 create table xcolab_ContestSchedule (
