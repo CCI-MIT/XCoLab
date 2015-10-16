@@ -121,10 +121,10 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes681;
     private String _methodName682;
     private String[] _methodParameterTypes682;
-    private String _methodName683;
-    private String[] _methodParameterTypes683;
     private String _methodName684;
     private String[] _methodParameterTypes684;
+    private String _methodName685;
+    private String[] _methodParameterTypes685;
     private String _methodName686;
     private String[] _methodParameterTypes686;
     private String _methodName687;
@@ -133,20 +133,22 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes688;
     private String _methodName689;
     private String[] _methodParameterTypes689;
-    private String _methodName690;
-    private String[] _methodParameterTypes690;
     private String _methodName691;
     private String[] _methodParameterTypes691;
+    private String _methodName692;
+    private String[] _methodParameterTypes692;
     private String _methodName693;
     private String[] _methodParameterTypes693;
     private String _methodName694;
     private String[] _methodParameterTypes694;
-    private String _methodName695;
-    private String[] _methodParameterTypes695;
     private String _methodName696;
     private String[] _methodParameterTypes696;
     private String _methodName699;
     private String[] _methodParameterTypes699;
+    private String _methodName700;
+    private String[] _methodParameterTypes700;
+    private String _methodName701;
+    private String[] _methodParameterTypes701;
     private String _methodName702;
     private String[] _methodParameterTypes702;
     private String _methodName703;
@@ -171,12 +173,6 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes712;
     private String _methodName713;
     private String[] _methodParameterTypes713;
-    private String _methodName714;
-    private String[] _methodParameterTypes714;
-    private String _methodName715;
-    private String[] _methodParameterTypes715;
-    private String _methodName716;
-    private String[] _methodParameterTypes716;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -355,196 +351,184 @@ public class ContestLocalServiceClpInvoker {
 
         _methodParameterTypes666 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName667 = "setLogo";
+        _methodName667 = "getLogoPath";
 
-        _methodParameterTypes667 = new String[] {
-                "com.ext.portlet.model.Contest", "java.io.File"
-            };
+        _methodParameterTypes667 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName668 = "setSponsorLogo";
+        _methodName668 = "getSponsorLogoPath";
 
-        _methodParameterTypes668 = new String[] {
-                "com.ext.portlet.model.Contest", "java.io.File"
-            };
+        _methodParameterTypes668 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName669 = "getLogoPath";
+        _methodName669 = "getProposalsCount";
 
         _methodParameterTypes669 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName670 = "getSponsorLogoPath";
+        _methodName670 = "getDiscussionCategoryGroup";
 
         _methodParameterTypes670 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName671 = "getProposalsCount";
+        _methodName671 = "getTotalCommentsCount";
 
         _methodParameterTypes671 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName672 = "getDiscussionCategoryGroup";
+        _methodName672 = "getCommentsCount";
 
         _methodParameterTypes672 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName673 = "getTotalCommentsCount";
+        _methodName673 = "getProposalsCommentsCount";
 
         _methodParameterTypes673 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName674 = "getCommentsCount";
+        _methodName674 = "getVotesCount";
 
         _methodParameterTypes674 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName675 = "getProposalsCommentsCount";
+        _methodName675 = "getTotalComments";
 
         _methodParameterTypes675 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName676 = "getVotesCount";
+        _methodName676 = "getTeamMembers";
 
         _methodParameterTypes676 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName677 = "getTotalComments";
+        _methodName677 = "isSubscribed";
 
-        _methodParameterTypes677 = new String[] { "com.ext.portlet.model.Contest" };
+        _methodParameterTypes677 = new String[] { "long", "long" };
 
-        _methodName678 = "getTeamMembers";
+        _methodName678 = "subscribe";
 
-        _methodParameterTypes678 = new String[] { "com.ext.portlet.model.Contest" };
+        _methodParameterTypes678 = new String[] { "long", "long" };
 
-        _methodName679 = "isSubscribed";
+        _methodName679 = "unsubscribe";
 
         _methodParameterTypes679 = new String[] { "long", "long" };
 
-        _methodName680 = "subscribe";
+        _methodName680 = "getModelIds";
 
-        _methodParameterTypes680 = new String[] { "long", "long" };
+        _methodParameterTypes680 = new String[] { "long" };
 
-        _methodName681 = "unsubscribe";
+        _methodName681 = "getModelIdsAndNames";
 
-        _methodParameterTypes681 = new String[] { "long", "long" };
+        _methodParameterTypes681 = new String[] { "long" };
 
-        _methodName682 = "getModelIds";
+        _methodName682 = "getDefaultModelId";
 
         _methodParameterTypes682 = new String[] { "long" };
 
-        _methodName683 = "getModelIdsAndNames";
+        _methodName684 = "getContestsByActivePrivate";
 
-        _methodParameterTypes683 = new String[] { "long" };
+        _methodParameterTypes684 = new String[] { "boolean", "boolean" };
 
-        _methodName684 = "getDefaultModelId";
+        _methodName685 = "getContestsMatchingOntologyTerms";
 
-        _methodParameterTypes684 = new String[] { "long" };
+        _methodParameterTypes685 = new String[] { "java.util.List" };
 
-        _methodName686 = "getContestsByActivePrivate";
+        _methodName686 = "getContestsMatchingTier";
 
-        _methodParameterTypes686 = new String[] { "boolean", "boolean" };
+        _methodParameterTypes686 = new String[] { "long" };
 
-        _methodName687 = "getContestsMatchingOntologyTerms";
+        _methodName687 = "getContestsMatchingOntologyTermsAndTier";
 
-        _methodParameterTypes687 = new String[] { "java.util.List" };
+        _methodParameterTypes687 = new String[] { "java.util.List", "long" };
 
-        _methodName688 = "getContestsMatchingTier";
+        _methodName688 = "transferSupportsToVote";
 
-        _methodParameterTypes688 = new String[] { "long" };
-
-        _methodName689 = "getContestsMatchingOntologyTermsAndTier";
-
-        _methodParameterTypes689 = new String[] { "java.util.List", "long" };
-
-        _methodName690 = "transferSupportsToVote";
-
-        _methodParameterTypes690 = new String[] {
+        _methodParameterTypes688 = new String[] {
                 "com.ext.portlet.model.Contest",
                 "com.liferay.portal.service.ServiceContext"
             };
 
-        _methodName691 = "getProposalJudgeReviewCsv";
+        _methodName689 = "getProposalJudgeReviewCsv";
 
-        _methodParameterTypes691 = new String[] {
+        _methodParameterTypes689 = new String[] {
                 "com.ext.portlet.model.Contest",
                 "com.ext.portlet.model.ContestPhase",
                 "com.liferay.portal.service.ServiceContext"
             };
 
-        _methodName693 = "getAdvisorsForContest";
+        _methodName691 = "getAdvisorsForContest";
+
+        _methodParameterTypes691 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName692 = "getJudgesForContest";
+
+        _methodParameterTypes692 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName693 = "getFellowsForContest";
 
         _methodParameterTypes693 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName694 = "getJudgesForContest";
+        _methodName694 = "getContestManagersForContest";
 
         _methodParameterTypes694 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName695 = "getFellowsForContest";
-
-        _methodParameterTypes695 = new String[] { "com.ext.portlet.model.Contest" };
-
-        _methodName696 = "getContestManagersForContest";
+        _methodName696 = "getContestLinkUrl";
 
         _methodParameterTypes696 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName699 = "getContestLinkUrl";
+        _methodName699 = "hasContestEnded";
 
-        _methodParameterTypes699 = new String[] { "com.ext.portlet.model.Contest" };
+        _methodParameterTypes699 = new String[] { "long" };
 
-        _methodName702 = "hasContestEnded";
+        _methodName700 = "hasContestEnded";
 
-        _methodParameterTypes702 = new String[] { "long" };
+        _methodParameterTypes700 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName703 = "hasContestEnded";
+        _methodName701 = "getWinnerProposal";
+
+        _methodParameterTypes701 = new String[] { "long" };
+
+        _methodName702 = "getPointsAccessibleForActivePhaseOfContest";
+
+        _methodParameterTypes702 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName703 = "getContestImpactTemplateSeries";
 
         _methodParameterTypes703 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName704 = "getWinnerProposal";
+        _methodName704 = "getContestImpactIterations";
 
-        _methodParameterTypes704 = new String[] { "long" };
+        _methodParameterTypes704 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName705 = "getPointsAccessibleForActivePhaseOfContest";
+        _methodName705 = "getContestImpactFocusAreaList";
 
         _methodParameterTypes705 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName706 = "getContestImpactTemplateSeries";
+        _methodName706 = "getContestImpactFocusAreas";
 
         _methodParameterTypes706 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName707 = "getContestImpactIterations";
+        _methodName707 = "getContestsByTierLevelAndOntologyTermIds";
 
-        _methodParameterTypes707 = new String[] { "com.ext.portlet.model.Contest" };
-
-        _methodName708 = "getContestImpactFocusAreaList";
-
-        _methodParameterTypes708 = new String[] { "com.ext.portlet.model.Contest" };
-
-        _methodName709 = "getContestImpactFocusAreas";
-
-        _methodParameterTypes709 = new String[] { "com.ext.portlet.model.Contest" };
-
-        _methodName710 = "getContestsByTierLevelAndOntologyTermIds";
-
-        _methodParameterTypes710 = new String[] {
+        _methodParameterTypes707 = new String[] {
                 "java.lang.Long", "java.util.List"
             };
 
-        _methodName711 = "getContestsByContestScheduleId";
+        _methodName708 = "getContestsByContestScheduleId";
 
-        _methodParameterTypes711 = new String[] { "java.lang.Long" };
+        _methodParameterTypes708 = new String[] { "java.lang.Long" };
 
-        _methodName712 = "getContestsByPlanTemplateId";
+        _methodName709 = "getContestsByPlanTemplateId";
 
-        _methodParameterTypes712 = new String[] { "java.lang.Long" };
+        _methodParameterTypes709 = new String[] { "java.lang.Long" };
 
-        _methodName713 = "getSubContestsByOntologySpaceId";
+        _methodName710 = "getSubContestsByOntologySpaceId";
 
-        _methodParameterTypes713 = new String[] {
+        _methodParameterTypes710 = new String[] {
                 "com.ext.portlet.model.Contest", "java.lang.Long"
             };
 
-        _methodName714 = "addContestYearSuffixToCompletedContests";
+        _methodName711 = "addContestYearSuffixToCompletedContests";
 
-        _methodParameterTypes714 = new String[] {  };
+        _methodParameterTypes711 = new String[] {  };
 
-        _methodName715 = "getPointsEnabledContests";
+        _methodName712 = "getPointsEnabledContests";
 
-        _methodParameterTypes715 = new String[] { "boolean" };
+        _methodParameterTypes712 = new String[] { "boolean" };
 
-        _methodName716 = "addContestYearSuffixToContest";
+        _methodName713 = "addContestYearSuffixToContest";
 
-        _methodParameterTypes716 = new String[] {
+        _methodParameterTypes713 = new String[] {
                 "com.ext.portlet.model.Contest", "boolean"
             };
     }
@@ -773,245 +757,229 @@ public class ContestLocalServiceClpInvoker {
 
         if (_methodName667.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes667, parameterTypes)) {
-            ContestLocalServiceUtil.setLogo((com.ext.portlet.model.Contest) arguments[0],
-                (java.io.File) arguments[1]);
-
-            return null;
+            return ContestLocalServiceUtil.getLogoPath((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName668.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes668, parameterTypes)) {
-            ContestLocalServiceUtil.setSponsorLogo((com.ext.portlet.model.Contest) arguments[0],
-                (java.io.File) arguments[1]);
-
-            return null;
+            return ContestLocalServiceUtil.getSponsorLogoPath((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName669.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes669, parameterTypes)) {
-            return ContestLocalServiceUtil.getLogoPath((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getProposalsCount((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName670.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes670, parameterTypes)) {
-            return ContestLocalServiceUtil.getSponsorLogoPath((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getDiscussionCategoryGroup((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName671.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes671, parameterTypes)) {
-            return ContestLocalServiceUtil.getProposalsCount((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getTotalCommentsCount((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName672.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes672, parameterTypes)) {
-            return ContestLocalServiceUtil.getDiscussionCategoryGroup((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getCommentsCount((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName673.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes673, parameterTypes)) {
-            return ContestLocalServiceUtil.getTotalCommentsCount((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getProposalsCommentsCount((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName674.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes674, parameterTypes)) {
-            return ContestLocalServiceUtil.getCommentsCount((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getVotesCount((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName675.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes675, parameterTypes)) {
-            return ContestLocalServiceUtil.getProposalsCommentsCount((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getTotalComments((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName676.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes676, parameterTypes)) {
-            return ContestLocalServiceUtil.getVotesCount((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getTeamMembers((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName677.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes677, parameterTypes)) {
-            return ContestLocalServiceUtil.getTotalComments((com.ext.portlet.model.Contest) arguments[0]);
-        }
-
-        if (_methodName678.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes678, parameterTypes)) {
-            return ContestLocalServiceUtil.getTeamMembers((com.ext.portlet.model.Contest) arguments[0]);
-        }
-
-        if (_methodName679.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes679, parameterTypes)) {
             return ContestLocalServiceUtil.isSubscribed(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName680.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes680, parameterTypes)) {
+        if (_methodName678.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes678, parameterTypes)) {
             ContestLocalServiceUtil.subscribe(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
 
             return null;
         }
 
-        if (_methodName681.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes681, parameterTypes)) {
+        if (_methodName679.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes679, parameterTypes)) {
             ContestLocalServiceUtil.unsubscribe(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
 
             return null;
         }
 
-        if (_methodName682.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes682, parameterTypes)) {
+        if (_methodName680.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes680, parameterTypes)) {
             return ContestLocalServiceUtil.getModelIds(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName683.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes683, parameterTypes)) {
+        if (_methodName681.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes681, parameterTypes)) {
             return ContestLocalServiceUtil.getModelIdsAndNames(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName682.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes682, parameterTypes)) {
+            return ContestLocalServiceUtil.getDefaultModelId(((Long) arguments[0]).longValue());
         }
 
         if (_methodName684.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes684, parameterTypes)) {
-            return ContestLocalServiceUtil.getDefaultModelId(((Long) arguments[0]).longValue());
-        }
-
-        if (_methodName686.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes686, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsByActivePrivate(((Boolean) arguments[0]).booleanValue(),
                 ((Boolean) arguments[1]).booleanValue());
         }
 
-        if (_methodName687.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes687, parameterTypes)) {
+        if (_methodName685.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes685, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsMatchingOntologyTerms((java.util.List<com.ext.portlet.model.OntologyTerm>) arguments[0]);
         }
 
-        if (_methodName688.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes688, parameterTypes)) {
+        if (_methodName686.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes686, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsMatchingTier(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName689.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes689, parameterTypes)) {
+        if (_methodName687.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes687, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsMatchingOntologyTermsAndTier((java.util.List<com.ext.portlet.model.OntologyTerm>) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName690.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes690, parameterTypes)) {
+        if (_methodName688.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes688, parameterTypes)) {
             ContestLocalServiceUtil.transferSupportsToVote((com.ext.portlet.model.Contest) arguments[0],
                 (com.liferay.portal.service.ServiceContext) arguments[1]);
 
             return null;
         }
 
-        if (_methodName691.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes691, parameterTypes)) {
+        if (_methodName689.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes689, parameterTypes)) {
             return ContestLocalServiceUtil.getProposalJudgeReviewCsv((com.ext.portlet.model.Contest) arguments[0],
                 (com.ext.portlet.model.ContestPhase) arguments[1],
                 (com.liferay.portal.service.ServiceContext) arguments[2]);
         }
 
+        if (_methodName691.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes691, parameterTypes)) {
+            return ContestLocalServiceUtil.getAdvisorsForContest((com.ext.portlet.model.Contest) arguments[0]);
+        }
+
+        if (_methodName692.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes692, parameterTypes)) {
+            return ContestLocalServiceUtil.getJudgesForContest((com.ext.portlet.model.Contest) arguments[0]);
+        }
+
         if (_methodName693.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes693, parameterTypes)) {
-            return ContestLocalServiceUtil.getAdvisorsForContest((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getFellowsForContest((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName694.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes694, parameterTypes)) {
-            return ContestLocalServiceUtil.getJudgesForContest((com.ext.portlet.model.Contest) arguments[0]);
-        }
-
-        if (_methodName695.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes695, parameterTypes)) {
-            return ContestLocalServiceUtil.getFellowsForContest((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getContestManagersForContest((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName696.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes696, parameterTypes)) {
-            return ContestLocalServiceUtil.getContestManagersForContest((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getContestLinkUrl((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName699.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes699, parameterTypes)) {
-            return ContestLocalServiceUtil.getContestLinkUrl((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.hasContestEnded(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName700.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes700, parameterTypes)) {
+            return ContestLocalServiceUtil.hasContestEnded((com.ext.portlet.model.Contest) arguments[0]);
+        }
+
+        if (_methodName701.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes701, parameterTypes)) {
+            return ContestLocalServiceUtil.getWinnerProposal(((Long) arguments[0]).longValue());
         }
 
         if (_methodName702.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes702, parameterTypes)) {
-            return ContestLocalServiceUtil.hasContestEnded(((Long) arguments[0]).longValue());
+            return ContestLocalServiceUtil.getPointsAccessibleForActivePhaseOfContest((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName703.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes703, parameterTypes)) {
-            return ContestLocalServiceUtil.hasContestEnded((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getContestImpactTemplateSeries((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName704.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes704, parameterTypes)) {
-            return ContestLocalServiceUtil.getWinnerProposal(((Long) arguments[0]).longValue());
+            return ContestLocalServiceUtil.getContestImpactIterations((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName705.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes705, parameterTypes)) {
-            return ContestLocalServiceUtil.getPointsAccessibleForActivePhaseOfContest((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getContestImpactFocusAreaList((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName706.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes706, parameterTypes)) {
-            return ContestLocalServiceUtil.getContestImpactTemplateSeries((com.ext.portlet.model.Contest) arguments[0]);
+            return ContestLocalServiceUtil.getContestImpactFocusAreas((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName707.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes707, parameterTypes)) {
-            return ContestLocalServiceUtil.getContestImpactIterations((com.ext.portlet.model.Contest) arguments[0]);
-        }
-
-        if (_methodName708.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes708, parameterTypes)) {
-            return ContestLocalServiceUtil.getContestImpactFocusAreaList((com.ext.portlet.model.Contest) arguments[0]);
-        }
-
-        if (_methodName709.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes709, parameterTypes)) {
-            return ContestLocalServiceUtil.getContestImpactFocusAreas((com.ext.portlet.model.Contest) arguments[0]);
-        }
-
-        if (_methodName710.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes710, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds((java.lang.Long) arguments[0],
                 (java.util.List<java.lang.Long>) arguments[1]);
         }
 
-        if (_methodName711.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes711, parameterTypes)) {
+        if (_methodName708.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes708, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsByContestScheduleId((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName712.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes712, parameterTypes)) {
+        if (_methodName709.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes709, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsByPlanTemplateId((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName713.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes713, parameterTypes)) {
+        if (_methodName710.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes710, parameterTypes)) {
             return ContestLocalServiceUtil.getSubContestsByOntologySpaceId((com.ext.portlet.model.Contest) arguments[0],
                 (java.lang.Long) arguments[1]);
         }
 
-        if (_methodName714.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes714, parameterTypes)) {
+        if (_methodName711.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes711, parameterTypes)) {
             ContestLocalServiceUtil.addContestYearSuffixToCompletedContests();
 
             return null;
         }
 
-        if (_methodName715.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes715, parameterTypes)) {
+        if (_methodName712.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes712, parameterTypes)) {
             return ContestLocalServiceUtil.getPointsEnabledContests(((Boolean) arguments[0]).booleanValue());
         }
 
-        if (_methodName716.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes716, parameterTypes)) {
+        if (_methodName713.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes713, parameterTypes)) {
             ContestLocalServiceUtil.addContestYearSuffixToContest((com.ext.portlet.model.Contest) arguments[0],
                 ((Boolean) arguments[1]).booleanValue());
 

@@ -1,24 +1,24 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.ext.portlet.model.FocusAreaOntologyTerm;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.OntologyTermEntity;
+import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermEntityLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalService;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.base.OntologyTermLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The implementation of the ontology term local service.
@@ -140,8 +140,6 @@ public class OntologyTermLocalServiceImpl
     }
     
     public List<Long> findTagedIdsForClass(OntologyTerm ontologyTerm, Class clasz) throws SystemException  {
-        Long classNameId = ClassNameLocalServiceUtil.getClassNameId(clasz);
-        
         return OntologyTermEntityLocalServiceUtil.findTagedIdsForClass(ontologyTerm.getId(), clasz);
     }
 
