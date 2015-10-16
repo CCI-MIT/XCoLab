@@ -1,20 +1,34 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestSchedule;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalRating;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
 import org.xcolab.wrapper.ContestWrapper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Thomas on 2/20/2015.
@@ -43,7 +57,6 @@ public class ContestScheduleWrapper {
         }
     }
 
-
     private void initContestPhases(Long scheduleId) throws Exception {
         schedulePhases = new ArrayList<>();
         List<ContestPhase> contestPhases =
@@ -62,10 +75,7 @@ public class ContestScheduleWrapper {
                 List<ContestSchedule> contestScheduleList = ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE);
                 contestSchedule = contestScheduleList.get(0);
             }
-        } catch (Exception e) {
-
-        }
-
+        } catch (Exception ignored) { }
     }
 
     private void addDummySchedulePhase() throws Exception {
@@ -76,6 +86,7 @@ public class ContestScheduleWrapper {
         dummyContestPhaseBean.setContestScheduleId(getScheduleId());
         dummyContestPhaseBean.setContestPhasePK(ContestPhaseBean.CREATE_PHASE_CONTEST_PK);
         dummyContestPhaseBean.setContestSchedulePK(ContestPhaseBean.CREATE_PHASE_CONTEST_PK);
+        dummyContestPhaseBean.setContestPhaseAutopromote(ContestPhasePromoteType.DEFAULT.getValue());
         schedulePhases.add(dummyContestPhaseBean);
         ContestPhaseLocalServiceUtil.deleteContestPhase(dummyContestPhase);
     }
@@ -251,8 +262,7 @@ public class ContestScheduleWrapper {
                 selectItems.add(new LabelValue(scheduleTemplate.getId(), scheduleTemplate.getName()));
             }
             Collections.sort(selectItems);
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) { }
         return selectItems;
     }
 
@@ -376,18 +386,15 @@ public class ContestScheduleWrapper {
     public static void deleteProposal2PhasesWithContestPhaseId(Long contestPhaseId) throws Exception {
         List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByContestPhaseId(contestPhaseId);
 
-        for (Iterator i = proposal2Phases.iterator(); i.hasNext(); ) {
-            Proposal2Phase proposal2Phase = (Proposal2Phase) i.next();
+        for (Proposal2Phase proposal2Phase : proposal2Phases) {
             Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(proposal2Phase);
         }
     }
 
-    public static void deleteProposalRatingsWithContestPhaseId
-            (Long contestPhaseId) throws Exception {
+    public static void deleteProposalRatingsWithContestPhaseId(Long contestPhaseId) throws Exception {
         List<ProposalRating> proposalRatings = new ArrayList<>(); // ProposalRatingLocalServiceUtil.getRatingsForContestPhase(contestPhaseId);
 
-        for (Iterator i = proposalRatings.iterator(); i.hasNext(); ) {
-            ProposalRating proposalRating = (ProposalRating) i.next();
+        for (ProposalRating proposalRating : proposalRatings) {
             ProposalRatingLocalServiceUtil.deleteProposalRating(proposalRating);
         }
     }
@@ -477,5 +484,4 @@ public class ContestScheduleWrapper {
     private static void removeContestSchedule(Long scheduleId) throws Exception {
         ContestScheduleLocalServiceUtil.deleteContestSchedule(scheduleId);
     }
-
 }

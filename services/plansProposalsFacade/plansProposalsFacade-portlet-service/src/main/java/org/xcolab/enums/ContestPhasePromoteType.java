@@ -4,6 +4,7 @@ package org.xcolab.enums;
  * Created by kmang on 27/05/14.
  */
 public enum ContestPhasePromoteType {
+    DEFAULT(-1, "DEFAULT", "Default autopromote used"),
     NULL(0, "", "No autopromote specified"),
     PROMOTE(1, "PROMOTE", "Proposals in this phase will automatically promoted to the next contest phase"),
     PROMOTE_JUDGED(2, "PROMOTE_JUDGED", "Proposals in this phase will only be promoted to the next phase if judges decide so"),
@@ -39,7 +40,6 @@ public enum ContestPhasePromoteType {
                 return aType;
             }
         }
-
         return null;
     }
 
@@ -49,7 +49,6 @@ public enum ContestPhasePromoteType {
                 return aType;
             }
         }
-
         return null;
     }
 }

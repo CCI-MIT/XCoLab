@@ -1,9 +1,18 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseType;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.xcolab.enums.ContestPhasePromoteType;
 
 import javax.validation.constraints.NotNull;
 import java.text.DateFormat;
@@ -67,8 +76,7 @@ public class ContestPhaseBean {
         this.nextStatus = contestPhase.getNextStatus();
         try {
             this.contestPhaseTypeObj = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseType);
-        } catch (Exception e){
-        }
+        } catch (Exception ignored){ }
         try {
             this.contestPhaseHasProposalAssociations = false;
             List<Contest> contestsUsingThisContestPhase =  ContestLocalServiceUtil.getContestsByContestScheduleId(this.contestScheduleId);
@@ -84,8 +92,7 @@ public class ContestPhaseBean {
                     }
                 }
             }
-        } catch (Exception e){
-        }
+        } catch (Exception ignored){ }
     }
 
     public ContestPhaseBean( Long contestPhaseType, Date phaseStartDate, Date phaseEndDate, String contestPhaseAutopromote,  Boolean fellowScreeningActive) {
@@ -157,7 +164,7 @@ public class ContestPhaseBean {
         return phaseEndDateFormatted;
     }
 
-    public void setPhaseEndDateFormatted(String phaseEndDateFormatted){
+    public void setPhaseEndDateFormatted(String phaseEndDateFormatted) {
         if(phaseEndDateFormatted != null){
             try {
                 this.phaseEndDate = dateFormat.parse(phaseEndDateFormatted);
@@ -199,7 +206,7 @@ public class ContestPhaseBean {
         this.contestPhaseAutopromote = contestPhaseAutopromote;
     }
 
-    public String getContestPhaseTypeTitle(){
+    public String getContestPhaseTypeTitle() {
         String contestPhaseTypeTitle = "";
         if(contestPhaseTypeObj != null){
             contestPhaseTypeTitle = contestPhaseTypeObj.getName();
@@ -207,7 +214,7 @@ public class ContestPhaseBean {
         return contestPhaseTypeTitle;
     }
 
-    public boolean getHasBuffer(){
+    public boolean getHasBuffer() {
         boolean isPhaseBufferEndDateAfterPhaseEndDate = false;
         if(this.phaseBufferEndDated != null) {
             isPhaseBufferEndDateAfterPhaseEndDate = (this.phaseBufferEndDated.after(this.phaseEndDate));
@@ -239,7 +246,7 @@ public class ContestPhaseBean {
         this.contestPhaseHasProposalAssociations = contestPhaseHasProposalAssociations;
     }
 
-    public void persist() throws Exception{
+    public void persist() throws SystemException, PortalException {
 
         if(contestPhasePK.equals(CREATE_PHASE_CONTEST_PK)){
             createNewContestPhase();
@@ -252,7 +259,7 @@ public class ContestPhaseBean {
         }
     }
     
-    private void createNewContestPhase() throws Exception {
+    private void createNewContestPhase() throws SystemException {
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.createContestPhase(CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
         contestPhase.persist();
         contestPhasePK = contestPhase.getContestPhasePK();
@@ -274,7 +281,7 @@ public class ContestPhaseBean {
         this.contestPhaseTypeOld = contestPhaseTypeOld;
     }
 
-    public ContestPhase getContestPhase() throws Exception {
+    public ContestPhase getContestPhase() throws SystemException, PortalException {
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
         contestPhase.setContestPK(contestPK);
         contestPhase.setContestPhaseType(contestPhaseType);
@@ -283,7 +290,14 @@ public class ContestPhaseBean {
         contestPhase.setPhaseEndDate(phaseEndDate);
         contestPhase.setPhaseBufferEndDated(phaseBufferEndDated);
         contestPhase.setFellowScreeningActive(fellowScreeningActive);
-        contestPhase.setContestPhaseAutopromote(contestPhaseAutopromote);
+
+        if (contestPhaseAutopromote.equalsIgnoreCase(ContestPhasePromoteType.DEFAULT.getValue())) {
+            ContestPhaseType type = ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(contestPhaseType);
+            contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
+        } else {
+            contestPhase.setContestPhaseAutopromote(contestPhaseAutopromote);
+        }
+
         contestPhase.setContestPhaseDescriptionOverride(contestPhaseDescriptionOverride);
         contestPhase.setPhaseActiveOverride(phaseActiveOverride);
         contestPhase.setPhaseInactiveOverride(phaseInactiveOverride);
@@ -291,13 +305,13 @@ public class ContestPhaseBean {
         return contestPhase;
     }
 
-    private void  persistContestPhase() throws Exception{
+    private void  persistContestPhase() throws SystemException, PortalException {
         ContestPhase contestPhase = getContestPhase();
         contestPhase.persist();
         ContestPhaseLocalServiceUtil.updateContestPhase(contestPhase);
     }
 
-    private void deleteContestPhase() throws Exception{
+    private void deleteContestPhase() throws SystemException, PortalException {
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
         ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
     }
