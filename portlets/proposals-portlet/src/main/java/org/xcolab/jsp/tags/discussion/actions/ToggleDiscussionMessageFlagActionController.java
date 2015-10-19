@@ -27,7 +27,7 @@ public class ToggleDiscussionMessageFlagActionController extends BaseDiscussions
                 @RequestParam long discussionId, @RequestParam long messageId, @RequestParam String flag) 
                 throws IOException, PortalException, SystemException, DiscussionsException {
             
-            checkPermissions(request, "User isn't allowed to modify message flags", discussionId);
+            checkPermissions(request, "User isn't allowed to modify message flags", discussionId, 0L);
             
             ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
             DiscussionMessage message = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
@@ -42,7 +42,7 @@ public class ToggleDiscussionMessageFlagActionController extends BaseDiscussions
         }
 
         @Override
-        public boolean isUserAllowed(DiscussionPermissions permissions) {
+        public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId) {
             return permissions.getCanAdminMessages();
         }
         

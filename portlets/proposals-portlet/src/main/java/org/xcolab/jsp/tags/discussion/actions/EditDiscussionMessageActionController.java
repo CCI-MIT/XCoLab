@@ -1,23 +1,21 @@
 package org.xcolab.jsp.tags.discussion.actions;
 
-import java.io.IOException;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-
+import com.ext.portlet.NoSuchDiscussionMessageException;
+import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.jsp.tags.discussion.DiscussionPermissions;
 import org.xcolab.jsp.tags.discussion.exceptions.DiscussionsException;
-
-import com.ext.portlet.model.DiscussionMessage;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
+import org.xcolab.jsp.tags.discussion.wrappers.DiscussionMessageWrapper;
 import org.xcolab.utils.HtmlUtil;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,7 +35,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
                 @RequestParam("comment") String comment)
             throws IOException, PortalException, SystemException, DiscussionsException {
 
-        checkPermissions(request, "User isn't allowed to edit message", discussionId);
+        checkPermissions(request, "User isn't allowed to edit message", discussionId, messageId);
         DiscussionMessage m = DiscussionMessageLocalServiceUtil.getMessageByMessageId(messageId);
         m.setBody(HtmlUtil.cleanSome(comment));
         DiscussionMessageLocalServiceUtil.updateDiscussionMessage(m);
@@ -46,8 +44,10 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
     }
 
     @Override
-    public boolean isUserAllowed(DiscussionPermissions permissions) {
-        return permissions.getCanAdminMessages();
+    public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId)
+            throws SystemException, NoSuchDiscussionMessageException {
+        final DiscussionMessage message = DiscussionMessageLocalServiceUtil.getMessageByMessageId(additionalId);
+        final DiscussionMessageWrapper messageWrapper = new DiscussionMessageWrapper(message);
+        return permissions.getCanAdminMessage(messageWrapper);
     }
-
 }

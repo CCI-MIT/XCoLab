@@ -12,6 +12,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import com.ext.portlet.NoSuchDiscussionMessageException;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.xcolab.jsp.tags.discussion.DiscussionPermissions;
@@ -22,16 +23,17 @@ import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
+import org.xcolab.jsp.tags.discussion.wrappers.DiscussionMessageWrapper;
 
 public abstract class BaseDiscussionsActionController {
 
-    public void checkPermissions(ActionRequest request, String accessDeniedMessage, long discussionId)
+    public void checkPermissions(ActionRequest request, String accessDeniedMessage, long discussionId, long additionalId)
             throws DiscussionsException, PortalException, SystemException {
 
         DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
         DiscussionPermissions permissions = new DiscussionPermissions(request, dcg);
 
-        if (!isUserAllowed(permissions)) {
+        if (!isUserAllowed(permissions, additionalId)) {
             throw new DiscussionsException(accessDeniedMessage);
         }
     }
@@ -79,7 +81,8 @@ public abstract class BaseDiscussionsActionController {
         response.sendRedirect(referer);
     }
 
-    public abstract boolean isUserAllowed(DiscussionPermissions permissions);
+    public abstract boolean isUserAllowed(DiscussionPermissions permissions, long additionalId)
+            throws SystemException, NoSuchDiscussionMessageException;
 
     private class SimpleNameValuePair implements NameValuePair {
         String name, value;

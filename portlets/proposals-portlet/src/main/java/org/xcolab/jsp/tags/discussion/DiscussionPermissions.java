@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
+import org.xcolab.jsp.tags.discussion.wrappers.DiscussionMessageWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -72,14 +73,14 @@ public class DiscussionPermissions {
     }
 
     private Integer getContestPhaseId(PortletRequest request){
-        Integer proposalId = null;
+        Integer phaseId = null;
         try {
             String contestPhaseIdParameter = request.getParameter("phaseId");
             if (contestPhaseIdParameter != null) {
-                proposalId = Integer.parseInt(contestPhaseIdParameter);
+                phaseId = Integer.parseInt(contestPhaseIdParameter);
             }
         } catch (NumberFormatException ignored) { }
-        return proposalId;
+        return phaseId;
     }
 
     public boolean getCanSeeAddCommentButton(){
@@ -102,6 +103,18 @@ public class DiscussionPermissions {
     }
     
     public boolean getCanAdminMessages() {
+        return getCanAdmin();
+    }
+
+    public boolean getCanAdminMessage(DiscussionMessageWrapper message) {
+        if (message.getAuthorId() == currentUser.getUserId() && proposalId != null) {
+            try {
+                Proposal proposal = ProposalLocalServiceUtil.fetchProposal(proposalId);
+                ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
+
+                return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdmin();
+            } catch (PortalException | SystemException ignored) { }
+        }
         return getCanAdmin();
     }
 

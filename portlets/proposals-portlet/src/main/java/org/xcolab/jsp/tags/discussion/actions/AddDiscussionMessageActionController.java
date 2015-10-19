@@ -46,7 +46,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(newMessage.getDiscussionId());
 
 
-        checkPermissions(request, "User isn't allowed to add comment", newMessage.getDiscussionId());
+        checkPermissions(request, "User isn't allowed to add comment", newMessage.getDiscussionId(), 0L);
         long userId = themeDisplay.getUser().getUserId();
 
         DiscussionCategoryGroupLocalServiceUtil.addComment(dcg, HtmlUtil.cleanAll(newMessage.getTitle()), HtmlUtil.cleanSome(newMessage.getDescription()), themeDisplay.getUser());
@@ -88,7 +88,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     }
 
     @Override
-    public boolean isUserAllowed(DiscussionPermissions permissions) {
+    public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId) {
         return permissions.getCanAddComment();
     }
 }
