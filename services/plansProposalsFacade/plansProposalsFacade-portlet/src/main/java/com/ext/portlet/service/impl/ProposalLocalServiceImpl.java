@@ -329,7 +329,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Transactional
     public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
-                                          String stringValue, long numericValue, double realValue, Date updatedDate, boolean publishActivity) throws PortalException, SystemException {
+                                          String stringValue, long numericValue, double realValue, Date updatedDate, boolean publishActivity)
+            throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
         ProposalAttribute oldAttribute = null;
 
