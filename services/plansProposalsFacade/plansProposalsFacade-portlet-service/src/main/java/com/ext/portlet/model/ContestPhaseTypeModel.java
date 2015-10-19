@@ -175,6 +175,21 @@ public interface ContestPhaseTypeModel extends BaseModel<ContestPhaseType> {
      */
     public void setPointsAccessible(int pointsAccessible);
 
+    /**
+     * Returns the default promotion type of this contest phase type.
+     *
+     * @return the default promotion type of this contest phase type
+     */
+    @AutoEscape
+    public String getDefaultPromotionType();
+
+    /**
+     * Sets the default promotion type of this contest phase type.
+     *
+     * @param defaultPromotionType the default promotion type of this contest phase type
+     */
+    public void setDefaultPromotionType(String defaultPromotionType);
+
     @Override
     public boolean isNew();
 

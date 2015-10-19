@@ -28,6 +28,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
     private String _contestPhaseAutopromoteDefault;
     private boolean _invisible;
     private int _pointsAccessible;
+    private String _defaultPromotionType;
     private BaseModel<?> _contestPhaseTypeRemoteModel;
     private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
@@ -78,6 +79,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
             getContestPhaseAutopromoteDefault());
         attributes.put("invisible", getInvisible());
         attributes.put("pointsAccessible", getPointsAccessible());
+        attributes.put("defaultPromotionType", getDefaultPromotionType());
 
         return attributes;
     }
@@ -132,6 +134,13 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
 
         if (pointsAccessible != null) {
             setPointsAccessible(pointsAccessible);
+        }
+
+        String defaultPromotionType = (String) attributes.get(
+                "defaultPromotionType");
+
+        if (defaultPromotionType != null) {
+            setDefaultPromotionType(defaultPromotionType);
         }
     }
 
@@ -327,6 +336,29 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         }
     }
 
+    @Override
+    public String getDefaultPromotionType() {
+        return _defaultPromotionType;
+    }
+
+    @Override
+    public void setDefaultPromotionType(String defaultPromotionType) {
+        _defaultPromotionType = defaultPromotionType;
+
+        if (_contestPhaseTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestPhaseTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setDefaultPromotionType",
+                        String.class);
+
+                method.invoke(_contestPhaseTypeRemoteModel, defaultPromotionType);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestPhaseTypeRemoteModel() {
         return _contestPhaseTypeRemoteModel;
     }
@@ -404,6 +436,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         clone.setContestPhaseAutopromoteDefault(getContestPhaseAutopromoteDefault());
         clone.setInvisible(getInvisible());
         clone.setPointsAccessible(getPointsAccessible());
+        clone.setDefaultPromotionType(getDefaultPromotionType());
 
         return clone;
     }
@@ -453,7 +486,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(getId());
@@ -471,6 +504,8 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         sb.append(getInvisible());
         sb.append(", pointsAccessible=");
         sb.append(getPointsAccessible());
+        sb.append(", defaultPromotionType=");
+        sb.append(getDefaultPromotionType());
         sb.append("}");
 
         return sb.toString();
@@ -478,7 +513,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhaseType");
@@ -515,6 +550,10 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         sb.append(
             "<column><column-name>pointsAccessible</column-name><column-value><![CDATA[");
         sb.append(getPointsAccessible());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>defaultPromotionType</column-name><column-value><![CDATA[");
+        sb.append(getDefaultPromotionType());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

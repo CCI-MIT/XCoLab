@@ -1,31 +1,27 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.portlets.proposals.utils.ProposalsColumn;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.commons.beans.SortFilterPage;
-import org.xcolab.portlets.proposals.utils.ProposalsColumn;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 public class ProposalsSortFilterBean {
     private final List<ProposalWrapper> proposals;
-    private final SortFilterPage sortFilterPage;
     private Comparator<ProposalWrapper> proposalComparator;
     
-    private List<ProposalWrapper> proposalsWithRibbons = new ArrayList<ProposalWrapper>();
-    private List<ProposalWrapper> proposalsNormal = new ArrayList<ProposalWrapper>();
-    
+    private List<ProposalWrapper> proposalsWithRibbons = new ArrayList<>();
+    private List<ProposalWrapper> proposalsNormal = new ArrayList<>();
 
     public ProposalsSortFilterBean(List<ProposalWrapper> proposals, final SortFilterPage sortFilterPage) throws PortalException, SystemException {
         super();
-        this.sortFilterPage = sortFilterPage;
         this.proposals = proposals;
         
         // sort proposals
@@ -42,7 +38,6 @@ public class ProposalsSortFilterBean {
 
             if (sortFilterPage.getSortColumn().equalsIgnoreCase("OVERALLSTATUS")) proposalComparator = ProposalsColumn.OVERALLSTATUS.getComparator();
         }
-
         
         if (StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
             proposalComparator = ProposalsColumn.valueOf(sortFilterPage.getSortColumn()).getComparator();
@@ -52,13 +47,20 @@ public class ProposalsSortFilterBean {
             sortFilterPage.setSortAscending(!sortFilterPage.isSortAscending()); // default sort is date DESC
         }
         
-        
         Collections.sort(this.proposals, new Comparator<ProposalWrapper>() {
             @Override
             public int compare(ProposalWrapper o1, ProposalWrapper o2) {
                 if (StringUtils.isBlank(sortFilterPage.getSortColumn())) {
                     try {
-                        int ribbonDiff = o1.getRibbonWrapper().getRibbon() - o2.getRibbonWrapper().getRibbon();
+                        final RibbonWrapper ribbon1 = o1.getRibbonWrapper();
+                        final RibbonWrapper ribbon2 = o2.getRibbonWrapper();
+
+                        int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
+                        if (sortOrderDiff != 0) {
+                            return sortOrderDiff;
+                        }
+
+                        int ribbonDiff = ribbon1.getRibbon() - ribbon2.getRibbon();
                         if (ribbonDiff != 0) {
                             return ribbonDiff;
                         }
@@ -79,13 +81,9 @@ public class ProposalsSortFilterBean {
         }
     }
 
-    
-    
     public List<ProposalWrapper> getProposalsWithRibbons() {
         return proposalsWithRibbons;
     }
-
-
 
     public void setProposalsWithRibbons(List<ProposalWrapper> proposalsWithRibbons) {
         this.proposalsWithRibbons = proposalsWithRibbons;
@@ -95,19 +93,13 @@ public class ProposalsSortFilterBean {
         return proposalsNormal;
     }
 
-
-
     public void setProposalsNormal(List<ProposalWrapper> proposalsNormal) {
         this.proposalsNormal = proposalsNormal;
     }
 
-
-
     public List<ProposalWrapper> getProposals() {
         return proposals;
     }
-
-
 
     private final static Log _log = LogFactoryUtil.getLog(ProposalsSortFilterBean.class);
 }

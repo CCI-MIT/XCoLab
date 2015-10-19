@@ -59,7 +59,6 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
                                          @RequestParam(value = "elementId", required = false) Long elementId)
             throws PortalException, SystemException {
 
-
         if(!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
@@ -77,7 +76,6 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         }
         return NOT_FOUND_TAB_VIEW;
     }
-
 
     @RequestMapping(params = "action=createContestSchedule")
     public void createNewScheduleTabController(ActionRequest request, Model model, ActionResponse response) {
@@ -101,7 +99,6 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
     public void deleteScheduleTabController(ActionRequest request, Model model,
                                             @RequestParam(value = "scheduleId", required = true) Long scheduleId,
                                             ActionResponse response) {
-
         if(!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
@@ -119,7 +116,6 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
     public void updateScheduleTabController(ActionRequest request, Model model,
                                         @ModelAttribute ContestScheduleWrapper updateContestScheduleWrapper,
                                         BindingResult result, ActionResponse response) throws Exception{
-
         if(!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
@@ -134,7 +130,6 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         }
 
         try {
-            //throw new Exception("Test");
             updateContestScheduleWrapper.persist();
             SetRenderParameterUtil.addActionSuccessMessageToSession(request);
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), updateContestScheduleWrapper.getScheduleId());
@@ -149,7 +144,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         return TAB_VIEW;
     }
 
-    private Long getFirstScheduleId()throws Exception{
+    private Long getFirstScheduleId() throws SystemException {
         return ContestScheduleLocalServiceUtil.getContestSchedules(0,Integer.MAX_VALUE).get(0).getId();
     }
 
@@ -173,5 +168,4 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         }
         return contestPhaseAutopromoteSelectionItems;
     }
-
 }

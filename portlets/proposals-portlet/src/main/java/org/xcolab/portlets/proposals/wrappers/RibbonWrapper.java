@@ -82,6 +82,13 @@ public class RibbonWrapper {
         return "";
     }
 
+    public int getSortOrder() {
+        if (contestPhaseRibbonType != null) {
+            return contestPhaseRibbonType.getSortOrder();
+        }
+        return Integer.MAX_VALUE;
+    }
+
     public String getRibbonTitle() {
         if (contestPhaseRibbonType != null) {
             if (getRibbonText().equalsIgnoreCase("Finalist") || getRibbonText().equalsIgnoreCase("Judges' Special Commendation")){

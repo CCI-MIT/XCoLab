@@ -311,6 +311,7 @@
 		<property name="hoverText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="copyOnPromote" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="sortOrder" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestPhaseTypeImpl" table="xcolab_ContestPhaseType">
 		<cache usage="read-write" />
@@ -324,6 +325,7 @@
 		<property name="contestPhaseAutopromoteDefault" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="invisible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="pointsAccessible" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="defaultPromotionType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestScheduleImpl" table="xcolab_ContestSchedule">
 		<cache usage="read-write" />

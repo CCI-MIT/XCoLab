@@ -43,6 +43,7 @@ public class ContestPhaseRibbonTypeWrapper implements ContestPhaseRibbonType,
         attributes.put("hoverText", getHoverText());
         attributes.put("description", getDescription());
         attributes.put("copyOnPromote", getCopyOnPromote());
+        attributes.put("sortOrder", getSortOrder());
 
         return attributes;
     }
@@ -77,6 +78,12 @@ public class ContestPhaseRibbonTypeWrapper implements ContestPhaseRibbonType,
 
         if (copyOnPromote != null) {
             setCopyOnPromote(copyOnPromote);
+        }
+
+        Integer sortOrder = (Integer) attributes.get("sortOrder");
+
+        if (sortOrder != null) {
+            setSortOrder(sortOrder);
         }
     }
 
@@ -208,6 +215,26 @@ public class ContestPhaseRibbonTypeWrapper implements ContestPhaseRibbonType,
     @Override
     public void setCopyOnPromote(boolean copyOnPromote) {
         _contestPhaseRibbonType.setCopyOnPromote(copyOnPromote);
+    }
+
+    /**
+    * Returns the sort order of this contest phase ribbon type.
+    *
+    * @return the sort order of this contest phase ribbon type
+    */
+    @Override
+    public int getSortOrder() {
+        return _contestPhaseRibbonType.getSortOrder();
+    }
+
+    /**
+    * Sets the sort order of this contest phase ribbon type.
+    *
+    * @param sortOrder the sort order of this contest phase ribbon type
+    */
+    @Override
+    public void setSortOrder(int sortOrder) {
+        _contestPhaseRibbonType.setSortOrder(sortOrder);
     }
 
     @Override

@@ -18,6 +18,7 @@ public class ContestPhaseRibbonTypeSoap implements Serializable {
     private String _hoverText;
     private String _description;
     private boolean _copyOnPromote;
+    private int _sortOrder;
 
     public ContestPhaseRibbonTypeSoap() {
     }
@@ -31,6 +32,7 @@ public class ContestPhaseRibbonTypeSoap implements Serializable {
         soapModel.setHoverText(model.getHoverText());
         soapModel.setDescription(model.getDescription());
         soapModel.setCopyOnPromote(model.getCopyOnPromote());
+        soapModel.setSortOrder(model.getSortOrder());
 
         return soapModel;
     }
@@ -124,5 +126,13 @@ public class ContestPhaseRibbonTypeSoap implements Serializable {
 
     public void setCopyOnPromote(boolean copyOnPromote) {
         _copyOnPromote = copyOnPromote;
+    }
+
+    public int getSortOrder() {
+        return _sortOrder;
+    }
+
+    public void setSortOrder(int sortOrder) {
+        _sortOrder = sortOrder;
     }
 }

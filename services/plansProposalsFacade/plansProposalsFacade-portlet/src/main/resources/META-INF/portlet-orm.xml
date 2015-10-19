@@ -289,6 +289,7 @@
 			<basic name="hoverText" />
 			<basic name="description" />
 			<basic name="copyOnPromote" />
+			<basic name="sortOrder" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -306,6 +307,7 @@
 			<basic name="contestPhaseAutopromoteDefault" />
 			<basic name="invisible" />
 			<basic name="pointsAccessible" />
+			<basic name="defaultPromotionType" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

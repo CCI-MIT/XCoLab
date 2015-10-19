@@ -184,6 +184,7 @@
         <column name="contestPhaseAutopromoteDefault" type="String" />
         <column name="invisible" type="boolean" />
         <column name="pointsAccessible" type="int" />
+        <column name="defaultPromotionType" type="String" />
       </entity>
       
       <entity name="ContestPhaseColumn" local-service="true">

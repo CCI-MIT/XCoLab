@@ -28,10 +28,11 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
     public String contestPhaseAutopromoteDefault;
     public boolean invisible;
     public int pointsAccessible;
+    public String defaultPromotionType;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(id);
@@ -49,6 +50,8 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
         sb.append(invisible);
         sb.append(", pointsAccessible=");
         sb.append(pointsAccessible);
+        sb.append(", defaultPromotionType=");
+        sb.append(defaultPromotionType);
         sb.append("}");
 
         return sb.toString();
@@ -89,6 +92,12 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
         contestPhaseTypeImpl.setInvisible(invisible);
         contestPhaseTypeImpl.setPointsAccessible(pointsAccessible);
 
+        if (defaultPromotionType == null) {
+            contestPhaseTypeImpl.setDefaultPromotionType(StringPool.BLANK);
+        } else {
+            contestPhaseTypeImpl.setDefaultPromotionType(defaultPromotionType);
+        }
+
         contestPhaseTypeImpl.resetOriginalValues();
 
         return contestPhaseTypeImpl;
@@ -104,6 +113,7 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
         contestPhaseAutopromoteDefault = objectInput.readUTF();
         invisible = objectInput.readBoolean();
         pointsAccessible = objectInput.readInt();
+        defaultPromotionType = objectInput.readUTF();
     }
 
     @Override
@@ -139,5 +149,11 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
 
         objectOutput.writeBoolean(invisible);
         objectOutput.writeInt(pointsAccessible);
+
+        if (defaultPromotionType == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(defaultPromotionType);
+        }
     }
 }
