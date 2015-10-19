@@ -1330,10 +1330,10 @@ public class ProposalLocalServiceUtil {
     }
 
     /**
-    * Returns latest contest to which proposal was submited
+    * Returns latest contest to which proposal was submitted
     *
     * @param proposalId id of a proposal
-    * @return last contest to which proposal was submited
+    * @return last contest to which proposal was submitted
     * @throws PortalException
     * @throws SystemException
     */

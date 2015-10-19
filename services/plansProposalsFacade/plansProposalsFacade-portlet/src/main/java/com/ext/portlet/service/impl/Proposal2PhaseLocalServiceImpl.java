@@ -66,7 +66,7 @@ public class Proposal2PhaseLocalServiceImpl
     	return proposal2PhasePersistence.findByProposalId(proposalId);
     }
 
-    public int getLatestProposalVersionInActiveContest(Long proposalId) throws Exception{
+    public int getLatestProposalVersionInActiveContest(Long proposalId) throws SystemException {
         int newestVersion = 0;
 
         List<Proposal2Phase> proposal2Phases = proposal2PhasePersistence.findByProposalId(proposalId);
@@ -88,9 +88,9 @@ public class Proposal2PhaseLocalServiceImpl
         } else {
             throw new SystemException("Proposal " + proposalId + " has no active association.");
         }
-
     }
-    public ContestPhase getLatestContestPhaseInContest(Long proposalId) throws SystemException, PortalException{
+
+    public ContestPhase getLatestContestPhaseInContest(Long proposalId) throws SystemException, PortalException {
         int newestVersion = 0;
         long newestVersionContestPhaseId = 0;
 
@@ -122,7 +122,7 @@ public class Proposal2PhaseLocalServiceImpl
         return contestLocalService.getContest(contestPhase.getContestPK());
     }
 
-    public boolean isContestPhaseOfProposal2PhaseValidInContest(Proposal2Phase proposal2Phase){
+    public boolean isContestPhaseOfProposal2PhaseValidInContest(Proposal2Phase proposal2Phase) {
         long contestPhaseId = proposal2Phase.getContestPhaseId();
         return isContestPhaseValidInContest(contestPhaseId);
     }
@@ -189,7 +189,7 @@ public class Proposal2PhaseLocalServiceImpl
         return ret;
     }
 
-    public List<Proposal2Phase> getByContestPhaseId(long contestPhaseId) throws Exception{
+    public List<Proposal2Phase> getByContestPhaseId(long contestPhaseId) throws SystemException {
         final DynamicQuery contestPhasesByContestPhaseId = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
         contestPhasesByContestPhaseId.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
         return dynamicQuery(contestPhasesByContestPhaseId);

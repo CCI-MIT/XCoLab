@@ -884,7 +884,8 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
 
     @Override
     public int getLatestProposalVersionInActiveContest(
-        java.lang.Long proposalId) throws java.lang.Exception {
+        java.lang.Long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -894,8 +895,8 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof java.lang.Exception) {
-                throw (java.lang.Exception) t;
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
 
             if (t instanceof RuntimeException) {
@@ -1154,7 +1155,8 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
 
     @Override
     public java.util.List<com.ext.portlet.model.Proposal2Phase> getByContestPhaseId(
-        long contestPhaseId) throws java.lang.Exception {
+        long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -1163,8 +1165,8 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof java.lang.Exception) {
-                throw (java.lang.Exception) t;
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
 
             if (t instanceof RuntimeException) {
