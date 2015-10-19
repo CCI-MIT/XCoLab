@@ -280,7 +280,7 @@ public class AddUpdateProposalDetailsActionController {
         }
 
         final Proposal2Phase p2p = proposalsContext.getProposal2Phase(request);
-        if (p2p.getVersionTo() != -1) {
+        if (p2p != null && p2p.getVersionTo() != -1) {
             // we are in a completed phase - need to adjust the end version
             final Proposal updatedProposal = ProposalLocalServiceUtil.fetchProposal(proposal.getProposalId());
             p2p.setVersionTo(updatedProposal.getCurrentVersion());
