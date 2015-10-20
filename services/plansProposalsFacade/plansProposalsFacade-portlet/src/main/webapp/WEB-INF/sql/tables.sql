@@ -220,6 +220,7 @@ create table xcolab_ContestTeamMember (
 create table xcolab_ContestType (
 	id_ LONG not null primary key,
 	contestName VARCHAR(75) null,
+	contestNamePlural VARCHAR(75) null,
 	proposalName VARCHAR(75) null,
 	proposalNamePlural VARCHAR(75) null,
 	hasDiscussion BOOLEAN

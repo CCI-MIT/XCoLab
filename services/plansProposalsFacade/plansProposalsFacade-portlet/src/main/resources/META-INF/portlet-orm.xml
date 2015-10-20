@@ -348,6 +348,7 @@
 				<column name="ID_" />
 			</id>
 			<basic name="contestName" />
+			<basic name="contestNamePlural" />
 			<basic name="proposalName" />
 			<basic name="proposalNamePlural" />
 			<basic name="hasDiscussion" />

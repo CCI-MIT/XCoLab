@@ -73,6 +73,21 @@ public interface ContestTypeModel extends BaseModel<ContestType> {
     public void setContestName(String contestName);
 
     /**
+     * Returns the contest name plural of this contest type.
+     *
+     * @return the contest name plural of this contest type
+     */
+    @AutoEscape
+    public String getContestNamePlural();
+
+    /**
+     * Sets the contest name plural of this contest type.
+     *
+     * @param contestNamePlural the contest name plural of this contest type
+     */
+    public void setContestNamePlural(String contestNamePlural);
+
+    /**
      * Returns the proposal name of this contest type.
      *
      * @return the proposal name of this contest type

@@ -15,6 +15,7 @@ import java.util.List;
 public class ContestTypeSoap implements Serializable {
     private long _id;
     private String _contestName;
+    private String _contestNamePlural;
     private String _proposalName;
     private String _proposalNamePlural;
     private boolean _hasDiscussion;
@@ -27,6 +28,7 @@ public class ContestTypeSoap implements Serializable {
 
         soapModel.setId(model.getId());
         soapModel.setContestName(model.getContestName());
+        soapModel.setContestNamePlural(model.getContestNamePlural());
         soapModel.setProposalName(model.getProposalName());
         soapModel.setProposalNamePlural(model.getProposalNamePlural());
         soapModel.setHasDiscussion(model.getHasDiscussion());
@@ -92,6 +94,14 @@ public class ContestTypeSoap implements Serializable {
 
     public void setContestName(String contestName) {
         _contestName = contestName;
+    }
+
+    public String getContestNamePlural() {
+        return _contestNamePlural;
+    }
+
+    public void setContestNamePlural(String contestNamePlural) {
+        _contestNamePlural = contestNamePlural;
     }
 
     public String getProposalName() {

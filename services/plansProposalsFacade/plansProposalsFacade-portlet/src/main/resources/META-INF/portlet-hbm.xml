@@ -354,6 +354,7 @@
 			<generator class="assigned" />
 		</id>
 		<property name="contestName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="contestNamePlural" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="proposalName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="proposalNamePlural" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="hasDiscussion" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />

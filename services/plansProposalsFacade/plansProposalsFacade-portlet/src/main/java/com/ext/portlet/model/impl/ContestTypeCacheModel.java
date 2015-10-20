@@ -22,18 +22,21 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
     Externalizable {
     public long id;
     public String contestName;
+    public String contestNamePlural;
     public String proposalName;
     public String proposalNamePlural;
     public boolean hasDiscussion;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{id=");
         sb.append(id);
         sb.append(", contestName=");
         sb.append(contestName);
+        sb.append(", contestNamePlural=");
+        sb.append(contestNamePlural);
         sb.append(", proposalName=");
         sb.append(proposalName);
         sb.append(", proposalNamePlural=");
@@ -55,6 +58,12 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
             contestTypeImpl.setContestName(StringPool.BLANK);
         } else {
             contestTypeImpl.setContestName(contestName);
+        }
+
+        if (contestNamePlural == null) {
+            contestTypeImpl.setContestNamePlural(StringPool.BLANK);
+        } else {
+            contestTypeImpl.setContestNamePlural(contestNamePlural);
         }
 
         if (proposalName == null) {
@@ -80,6 +89,7 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
     public void readExternal(ObjectInput objectInput) throws IOException {
         id = objectInput.readLong();
         contestName = objectInput.readUTF();
+        contestNamePlural = objectInput.readUTF();
         proposalName = objectInput.readUTF();
         proposalNamePlural = objectInput.readUTF();
         hasDiscussion = objectInput.readBoolean();
@@ -94,6 +104,12 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(contestName);
+        }
+
+        if (contestNamePlural == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(contestNamePlural);
         }
 
         if (proposalName == null) {

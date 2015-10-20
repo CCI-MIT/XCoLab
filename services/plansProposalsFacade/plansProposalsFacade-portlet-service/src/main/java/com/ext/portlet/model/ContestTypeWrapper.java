@@ -39,6 +39,7 @@ public class ContestTypeWrapper implements ContestType,
 
         attributes.put("id", getId());
         attributes.put("contestName", getContestName());
+        attributes.put("contestNamePlural", getContestNamePlural());
         attributes.put("proposalName", getProposalName());
         attributes.put("proposalNamePlural", getProposalNamePlural());
         attributes.put("hasDiscussion", getHasDiscussion());
@@ -58,6 +59,12 @@ public class ContestTypeWrapper implements ContestType,
 
         if (contestName != null) {
             setContestName(contestName);
+        }
+
+        String contestNamePlural = (String) attributes.get("contestNamePlural");
+
+        if (contestNamePlural != null) {
+            setContestNamePlural(contestNamePlural);
         }
 
         String proposalName = (String) attributes.get("proposalName");
@@ -138,6 +145,26 @@ public class ContestTypeWrapper implements ContestType,
     @Override
     public void setContestName(java.lang.String contestName) {
         _contestType.setContestName(contestName);
+    }
+
+    /**
+    * Returns the contest name plural of this contest type.
+    *
+    * @return the contest name plural of this contest type
+    */
+    @Override
+    public java.lang.String getContestNamePlural() {
+        return _contestType.getContestNamePlural();
+    }
+
+    /**
+    * Sets the contest name plural of this contest type.
+    *
+    * @param contestNamePlural the contest name plural of this contest type
+    */
+    @Override
+    public void setContestNamePlural(java.lang.String contestNamePlural) {
+        _contestType.setContestNamePlural(contestNamePlural);
     }
 
     /**

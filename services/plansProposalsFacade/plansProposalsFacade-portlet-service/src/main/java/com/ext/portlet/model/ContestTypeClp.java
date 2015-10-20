@@ -22,6 +22,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
     implements ContestType {
     private long _id;
     private String _contestName;
+    private String _contestNamePlural;
     private String _proposalName;
     private String _proposalNamePlural;
     private boolean _hasDiscussion;
@@ -67,6 +68,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
         attributes.put("id", getId());
         attributes.put("contestName", getContestName());
+        attributes.put("contestNamePlural", getContestNamePlural());
         attributes.put("proposalName", getProposalName());
         attributes.put("proposalNamePlural", getProposalNamePlural());
         attributes.put("hasDiscussion", getHasDiscussion());
@@ -86,6 +88,12 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
         if (contestName != null) {
             setContestName(contestName);
+        }
+
+        String contestNamePlural = (String) attributes.get("contestNamePlural");
+
+        if (contestNamePlural != null) {
+            setContestNamePlural(contestNamePlural);
         }
 
         String proposalName = (String) attributes.get("proposalName");
@@ -146,6 +154,29 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
                 Method method = clazz.getMethod("setContestName", String.class);
 
                 method.invoke(_contestTypeRemoteModel, contestName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getContestNamePlural() {
+        return _contestNamePlural;
+    }
+
+    @Override
+    public void setContestNamePlural(String contestNamePlural) {
+        _contestNamePlural = contestNamePlural;
+
+        if (_contestTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestNamePlural",
+                        String.class);
+
+                method.invoke(_contestTypeRemoteModel, contestNamePlural);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -294,6 +325,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
         clone.setId(getId());
         clone.setContestName(getContestName());
+        clone.setContestNamePlural(getContestNamePlural());
         clone.setProposalName(getProposalName());
         clone.setProposalNamePlural(getProposalNamePlural());
         clone.setHasDiscussion(getHasDiscussion());
@@ -346,12 +378,14 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{id=");
         sb.append(getId());
         sb.append(", contestName=");
         sb.append(getContestName());
+        sb.append(", contestNamePlural=");
+        sb.append(getContestNamePlural());
         sb.append(", proposalName=");
         sb.append(getProposalName());
         sb.append(", proposalNamePlural=");
@@ -365,7 +399,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestType");
@@ -378,6 +412,10 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         sb.append(
             "<column><column-name>contestName</column-name><column-value><![CDATA[");
         sb.append(getContestName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestNamePlural</column-name><column-value><![CDATA[");
+        sb.append(getContestNamePlural());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>proposalName</column-name><column-value><![CDATA[");

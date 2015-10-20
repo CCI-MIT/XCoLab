@@ -51,11 +51,12 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
     public static final Object[][] TABLE_COLUMNS = {
             { "id_", Types.BIGINT },
             { "contestName", Types.VARCHAR },
+            { "contestNamePlural", Types.VARCHAR },
             { "proposalName", Types.VARCHAR },
             { "proposalNamePlural", Types.VARCHAR },
             { "hasDiscussion", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestType (id_ LONG not null primary key,contestName VARCHAR(75) null,proposalName VARCHAR(75) null,proposalNamePlural VARCHAR(75) null,hasDiscussion BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestType (id_ LONG not null primary key,contestName VARCHAR(75) null,contestNamePlural VARCHAR(75) null,proposalName VARCHAR(75) null,proposalNamePlural VARCHAR(75) null,hasDiscussion BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestType";
     public static final String ORDER_BY_JPQL = " ORDER BY contestType.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestType.id_ ASC";
@@ -77,6 +78,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         };
     private long _id;
     private String _contestName;
+    private String _contestNamePlural;
     private String _proposalName;
     private String _proposalNamePlural;
     private boolean _hasDiscussion;
@@ -100,6 +102,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
         model.setId(soapModel.getId());
         model.setContestName(soapModel.getContestName());
+        model.setContestNamePlural(soapModel.getContestNamePlural());
         model.setProposalName(soapModel.getProposalName());
         model.setProposalNamePlural(soapModel.getProposalNamePlural());
         model.setHasDiscussion(soapModel.getHasDiscussion());
@@ -163,6 +166,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
         attributes.put("id", getId());
         attributes.put("contestName", getContestName());
+        attributes.put("contestNamePlural", getContestNamePlural());
         attributes.put("proposalName", getProposalName());
         attributes.put("proposalNamePlural", getProposalNamePlural());
         attributes.put("hasDiscussion", getHasDiscussion());
@@ -182,6 +186,12 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
         if (contestName != null) {
             setContestName(contestName);
+        }
+
+        String contestNamePlural = (String) attributes.get("contestNamePlural");
+
+        if (contestNamePlural != null) {
+            setContestNamePlural(contestNamePlural);
         }
 
         String proposalName = (String) attributes.get("proposalName");
@@ -228,6 +238,21 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
     @Override
     public void setContestName(String contestName) {
         _contestName = contestName;
+    }
+
+    @JSON
+    @Override
+    public String getContestNamePlural() {
+        if (_contestNamePlural == null) {
+            return StringPool.BLANK;
+        } else {
+            return _contestNamePlural;
+        }
+    }
+
+    @Override
+    public void setContestNamePlural(String contestNamePlural) {
+        _contestNamePlural = contestNamePlural;
     }
 
     @JSON
@@ -305,6 +330,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
         contestTypeImpl.setId(getId());
         contestTypeImpl.setContestName(getContestName());
+        contestTypeImpl.setContestNamePlural(getContestNamePlural());
         contestTypeImpl.setProposalName(getProposalName());
         contestTypeImpl.setProposalNamePlural(getProposalNamePlural());
         contestTypeImpl.setHasDiscussion(getHasDiscussion());
@@ -371,6 +397,14 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
             contestTypeCacheModel.contestName = null;
         }
 
+        contestTypeCacheModel.contestNamePlural = getContestNamePlural();
+
+        String contestNamePlural = contestTypeCacheModel.contestNamePlural;
+
+        if ((contestNamePlural != null) && (contestNamePlural.length() == 0)) {
+            contestTypeCacheModel.contestNamePlural = null;
+        }
+
         contestTypeCacheModel.proposalName = getProposalName();
 
         String proposalName = contestTypeCacheModel.proposalName;
@@ -394,12 +428,14 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{id=");
         sb.append(getId());
         sb.append(", contestName=");
         sb.append(getContestName());
+        sb.append(", contestNamePlural=");
+        sb.append(getContestNamePlural());
         sb.append(", proposalName=");
         sb.append(getProposalName());
         sb.append(", proposalNamePlural=");
@@ -413,7 +449,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestType");
@@ -426,6 +462,10 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         sb.append(
             "<column><column-name>contestName</column-name><column-value><![CDATA[");
         sb.append(getContestName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestNamePlural</column-name><column-value><![CDATA[");
+        sb.append(getContestNamePlural());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>proposalName</column-name><column-value><![CDATA[");
