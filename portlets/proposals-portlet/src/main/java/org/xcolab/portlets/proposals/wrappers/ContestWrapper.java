@@ -1,12 +1,37 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import java.util.*;
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseType;
+import com.ext.portlet.model.ContestTeamMember;
+import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
+import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class ContestWrapper {
 
@@ -21,9 +46,9 @@ public class ContestWrapper {
     private static final String WHO = "who";
     private static final String HOW = "how";
     private static final String EMAIL_TEMPLATE_URL = "/web/guest/generic-advancing-email-template";
-    private final static Map<Long, FocusArea> faCache = new HashMap<Long, FocusArea>();
-    private Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<String, List<OntologyTerm>>();
-    private Map<String, String> ontologyJoinedNames = new HashMap<String, String>();
+    private final static Map<Long, FocusArea> faCache = new HashMap<>();
+    private Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
+    private Map<String, String> ontologyJoinedNames = new HashMap<>();
     private List<ContestPhaseWrapper> phases;
     private List<ContestPhaseWrapper> visiblePhases;
     private ContestPhaseWrapper activePhase;
@@ -100,29 +125,24 @@ public class ContestWrapper {
         return contest.getDefaultModelSettings();
     }
 
-    public void setDefaultModelSettings(String defaultModelSettings){
+    public void setDefaultModelSettings(String defaultModelSettings) {
         contest.setDefaultModelSettings(defaultModelSettings);
     }
 
     public String getEmailTemplateUrl() {
         if (contest.getEmailTemplateUrl().isEmpty()) {
             return EMAIL_TEMPLATE_URL;
-        } else
+        } else {
             return contest.getEmailTemplateUrl();
+        }
     }
 
-    public void setEmailTemplateUrl(String emailTemplateUrl){contest.setEmailTemplateUrl(emailTemplateUrl);}
+    public void setEmailTemplateUrl(String emailTemplateUrl) {
+        contest.setEmailTemplateUrl(emailTemplateUrl);
+    }
 
     public boolean getShowInTileView(){
-        Boolean contestShowInTileView =  (Boolean) contest.getShow_in_tile_view();
-
-        if (contestShowInTileView != null) {
-            return contest.getShow_in_tile_view();
-        }
-        else {
-            contest.setShow_in_tile_view(true);
-            return true;
-        }
+        return contest.getShow_in_tile_view();
     }
 
     public boolean isShowInTileView(){
@@ -134,15 +154,7 @@ public class ContestWrapper {
     }
 
     public boolean getShowInListView(){
-        Boolean contestShowInListView =  (Boolean) contest.getShow_in_list_view();
-
-        if (contestShowInListView != null) {
-            return contest.getShow_in_list_view();
-        }
-        else {
-            contest.setShow_in_list_view(true);
-            return true;
-        }
+        return contest.getShow_in_list_view();
     }
 
     public boolean isShowInListView(){
@@ -154,16 +166,7 @@ public class ContestWrapper {
     }
 
     public boolean getShowInOutlineView(){
-        Boolean contestShowInOutlineView =  (Boolean) contest.getShow_in_outline_view();
-
-        if (contestShowInOutlineView != null) {
-            return contest.getShow_in_outline_view();
-        }
-        else {
-            contest.setShow_in_outline_view(true);
-            return true;
-        }
-
+        return contest.getShow_in_outline_view();
     }
 
     public boolean isShowInOutlineView(){
@@ -490,11 +493,7 @@ public class ContestWrapper {
         return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS - 1;
     }
 
-    public List<Contest> getSubContests() throws Exception{
-        long ONTOLOGY_SPACE_ID_WHERE = 104L;
-        //long ONTOLOGY_SPACE_ID_WHO = 102L;
-        //long ONTOLOGY_SPACE_ID_WHAT = 103L;
-        //long ONTOLOGY_SPACE_ID_HOW = 103L;
+    public List<Contest> getSubContests() throws SystemException, PortalException {
         List <Contest> subContests = ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
         Collections.sort(subContests, new Comparator<Contest>() {
             @Override
@@ -505,7 +504,7 @@ public class ContestWrapper {
         return subContests;
     }
 
-    public Contest getParentContest() throws Exception{
+    public Contest getParentContest() throws SystemException, PortalException {
         List<Long> focusAreaOntologyTermIds =
                 FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(contest.getFocusAreaId(), ONTOLOGY_SPACE_ID_WHERE);
         List<Contest> contests = ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
@@ -569,7 +568,7 @@ public class ContestWrapper {
 
     public List<ContestPhaseWrapper> getPhases() throws SystemException, PortalException {
         if (phases == null) {
-            phases = new ArrayList<ContestPhaseWrapper>();
+            phases = new ArrayList<>();
             for (ContestPhase phase : ContestLocalServiceUtil.getAllPhases(contest)) {
                 phases.add(new ContestPhaseWrapper(phase));
             }
@@ -579,7 +578,7 @@ public class ContestWrapper {
 
     public List<ContestPhaseWrapper> getVisiblePhases() throws SystemException, PortalException {
         if (visiblePhases == null) {
-            visiblePhases = new ArrayList<ContestPhaseWrapper>();
+            visiblePhases = new ArrayList<>();
             for (ContestPhase phase : ContestLocalServiceUtil.getVisiblePhases(contest)) {
                 visiblePhases.add(new ContestPhaseWrapper(phase));
             }
@@ -593,12 +592,12 @@ public class ContestWrapper {
 
     public List<ContestTeamRoleWrapper> getContestTeamMembersByRole() throws PortalException, SystemException {
         if (contestTeamMembersByRole == null) {
-            contestTeamMembersByRole = new ArrayList<ContestTeamRoleWrapper>();
-            Map<String, List<User>> teamRoleUsersMap = new TreeMap<String, List<User>>();
+            contestTeamMembersByRole = new ArrayList<>();
+            Map<String, List<User>> teamRoleUsersMap = new TreeMap<>();
             for (ContestTeamMember ctm : ContestLocalServiceUtil.getTeamMembers(contest)) {
                 List<User> roleUsers = teamRoleUsersMap.get(ctm.getRole());
                 if (roleUsers == null) {
-                    roleUsers = new ArrayList<User>();
+                    roleUsers = new ArrayList<>();
                     teamRoleUsersMap.put(ctm.getRole(), roleUsers);
                 }
                 roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
