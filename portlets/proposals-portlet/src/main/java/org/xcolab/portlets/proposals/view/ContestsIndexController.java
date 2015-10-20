@@ -12,6 +12,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.Cookie;
 
+import com.ext.portlet.model.ContestType;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
@@ -41,6 +42,7 @@ import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
 @Controller
 @RequestMapping("view")
@@ -59,6 +61,9 @@ public class ContestsIndexController extends BaseProposalsController {
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
             SortFilterPage sortFilterPage) 
                     throws PortalException, SystemException {
+
+        ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(request);
+        ContestType contestType = preferences.getContestType();
         if (viewType == null) {
             // view type wasn't set
             try{
@@ -82,7 +87,7 @@ public class ContestsIndexController extends BaseProposalsController {
         if (viewType == null) {
             viewType = VIEW_TYPE_DEFAULT;
         }
-        List<ContestWrapper> contests = new ArrayList<ContestWrapper>();
+        List<ContestWrapper> contests = new ArrayList<>();
         List<Contest> contestsToWrap = showAllContests ? ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE) :
         	ContestLocalServiceUtil.getContestsByActivePrivate(showActiveContests, false);
         
@@ -139,7 +144,7 @@ public class ContestsIndexController extends BaseProposalsController {
         		focusAreas.get(faTerm.getFocusAreaId()).addOntologyTerm(ontologyTerms.get(faTerm.getOntologyTermId()));
         	}
 
-            List<ContestWrapper> otherContests = new ArrayList<ContestWrapper>();
+            List<ContestWrapper> otherContests = new ArrayList<>();
             for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(!showActiveContests, false)) {
             	otherContests.add(new ContestWrapper(contest));
             }
@@ -157,7 +162,7 @@ public class ContestsIndexController extends BaseProposalsController {
         	model.addAttribute("ontologyTerms", ontologyTerms.values());
         	model.addAttribute("ontologySpaces", sortedSpaces);
         	model.addAttribute("otherContests", otherContests);
-        	
+        	model.addAttribute("contestType", contestType);
         }
         
         return "contestsIndex";

@@ -4,6 +4,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.model.ContestTeamMember;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
@@ -11,6 +12,7 @@ import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
@@ -52,6 +54,7 @@ public class ContestWrapper {
     private List<ContestPhaseWrapper> phases;
     private List<ContestPhaseWrapper> visiblePhases;
     private ContestPhaseWrapper activePhase;
+    private ContestType contestType;
 
     private List<ContestTeamRoleWrapper> contestTeamMembersByRole;
 
@@ -699,6 +702,13 @@ public class ContestWrapper {
 
     public boolean getHideRibbons() {
         return contest.getHideRibbons();
+    }
+
+    public ContestType getContestType() throws SystemException {
+        if (contestType == null) {
+            contestType = ContestTypeLocalServiceUtil.fetchContestType(contest.getContestTypeId());
+        }
+        return contestType;
     }
 
 }

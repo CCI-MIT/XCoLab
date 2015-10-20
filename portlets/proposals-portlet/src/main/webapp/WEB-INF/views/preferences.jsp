@@ -128,6 +128,17 @@
 
             <h2>General</h2>
             <p>
+                <label for="contestTypeId">Contest type:</label>
+                <form:select path="contestTypeId" id="contestTypeId">
+                    <c:forEach var="option" items="${contestTypes}">
+                        <form:option value="${option.id}" label="${option.id} - ${option.contestName} with ${option.proposalNamePlural}"/>
+                    </c:forEach>
+                </form:select>
+                <form:errors path="contestType"/>
+                <input type="submit" value="Save" />
+            </p>
+
+            <p>
                 <label for="callToAction">Call to action:</label>
                 <form:textarea path="callToAction" id="callToAction" cssStyle="width: 100%; height: 100px;"/>
                 <form:errors path="callToAction"/>

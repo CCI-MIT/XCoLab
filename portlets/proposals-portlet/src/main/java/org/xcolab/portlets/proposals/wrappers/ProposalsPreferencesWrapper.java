@@ -1,7 +1,9 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.model.ContestEmailTemplate;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.exception.PortalException;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
@@ -17,6 +19,7 @@ public class ProposalsPreferencesWrapper {
 
     private final static String TERMS_OF_SERVICE_PREF = "TERMS_OF_SERVICE";
     private final static String CALL_TO_ACTION = "CALL_TO_ACTION";
+    private final static String CONTEST_TYPE_ID = "CONTEST_TYPE_ID";
 
     private final static String CALL_TO_ACTION_DEFAULT = "The public voting period is open until September 12!" +
             "<a href=\"/community/-/blogs/finalists-selected-vote-to-select-popular-choice-winner-2\">" +
@@ -24,6 +27,8 @@ public class ProposalsPreferencesWrapper {
 
     private String termsOfService;
     private String callToAction;
+    private String contestTypeId;
+    private ContestType contestType;
 
     private String proposalIdsToBeMoved;
     private long moveFromContestId;
@@ -46,6 +51,7 @@ public class ProposalsPreferencesWrapper {
             throw new RuntimeException(e);
         }
         callToAction = preferences.getValue(CALL_TO_ACTION, CALL_TO_ACTION_DEFAULT);
+        contestTypeId = preferences.getValue(CONTEST_TYPE_ID, "1");
         proposalIdsToBeMoved = "";
         moveFromContestId = -1;
         moveToContestPhaseId = -1;
@@ -80,6 +86,7 @@ public class ProposalsPreferencesWrapper {
             e.printStackTrace();
         }
         preferences.setValue(CALL_TO_ACTION, callToAction);
+        preferences.setValue(CONTEST_TYPE_ID, contestTypeId);
         preferences.store();
     }
 
@@ -129,5 +136,20 @@ public class ProposalsPreferencesWrapper {
 
     public void setCallToAction(String callToAction) {
         this.callToAction = callToAction;
+    }
+
+    public String getContestTypeId() {
+        return contestTypeId;
+    }
+
+    public void setContestTypeId(String contestTypeId) {
+        this.contestTypeId = contestTypeId;
+    }
+
+    public ContestType getContestType() throws SystemException {
+        if (contestType == null) {
+            contestType = ContestTypeLocalServiceUtil.fetchContestType(Long.parseLong(contestTypeId));
+        }
+        return contestType;
     }
 }

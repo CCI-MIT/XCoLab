@@ -5,6 +5,7 @@ import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -48,6 +49,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     private static final String REQUEST_PHASE_ID_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "requestPhaseId";
     private static final String CONTEST_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestWrapped";
     private static final String CONTEST_PHASE_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestPhaseWrapped";
+    private static final String CONTEST_TYPE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestType";
     private static final String PROPOSAL_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposalWrapped";
     
     public static final String PROPOSAL_ID_PARAM = "planId";
@@ -122,6 +124,11 @@ public class ProposalsContextImpl implements ProposalsContext {
     @Override
     public ContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) throws PortalException, SystemException {
         return getAttribute(request, CONTEST_PHASE_WRAPPED_ATTRIBUTE, ContestPhaseWrapper.class);
+    }
+
+    @Override
+    public ContestType getContestType(PortletRequest request) throws PortalException, SystemException {
+        return getAttribute(request, CONTEST_TYPE_ATTRIBUTE, ContestType.class);
     }
 
     @Override
@@ -273,7 +280,9 @@ public class ProposalsContextImpl implements ProposalsContext {
         request.setAttribute(PERMISSIONS_ATTRIBUTE, proposalsPermissions);
         request.setAttribute(DISPLAY_PERMISSIONS_ATTRIBUTE, new ProposalsDisplayPermissions(
                 proposalsPermissions, proposal, contestPhase));
-        request.setAttribute(PROPOSALS_PREFERENCES_ATTRIBUTE, new ProposalsPreferencesWrapper(request));
+        ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(request);
+        request.setAttribute(PROPOSALS_PREFERENCES_ATTRIBUTE, preferences);
+        request.setAttribute(CONTEST_TYPE_ATTRIBUTE, preferences.getContestType());
         
         request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
         if (phaseId > 0) {
