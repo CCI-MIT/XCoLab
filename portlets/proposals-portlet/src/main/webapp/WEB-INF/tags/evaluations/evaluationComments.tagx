@@ -125,7 +125,7 @@
 														<portlet:param name="tab" value="${currentTab}" />
 														<portlet:param name="proposalId" value="${proposal.proposalId}" />
 													</portlet:actionURL>
-													<a href="${toggleExpertReviewURL }">${message.expertReview ? 'Remove expert review mark' : 'Mark as expert review'}</a>
+													<a style="margin-left: 10px;" href="${toggleExpertReviewURL }">${message.expertReview ? 'Remove expert review mark' : 'Mark as expert review'}</a>
 
 													<portlet:actionURL var="deleteMessageURL">
 														<portlet:param name="action" value="deleteDiscussionMessageFlag" />
@@ -134,7 +134,7 @@
 														<portlet:param name="tab" value="${currentTab}" />
 														<portlet:param name="proposalId" value="${proposal.proposalId}" />
 													</portlet:actionURL>
-													<a href="javascript:;" data-url="${deleteMessageURL }" onclick="if (confirm('Are you sure you want to delete this message?')) window.location = $(this).attr('data-url');">Delete message</a>
+													<a style="margin-left: 10px;" href="javascript:;" data-url="${deleteMessageURL }" onclick="if (confirm('Are you sure you want to delete this message?')) window.location = $(this).attr('data-url');">Delete message</a>
 												</c:if>
 
                                             </div>
