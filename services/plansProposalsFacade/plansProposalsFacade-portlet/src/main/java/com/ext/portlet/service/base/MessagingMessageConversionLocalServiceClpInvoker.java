@@ -41,20 +41,20 @@ public class MessagingMessageConversionLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName638;
-    private String[] _methodParameterTypes638;
-    private String _methodName639;
-    private String[] _methodParameterTypes639;
     private String _methodName644;
     private String[] _methodParameterTypes644;
     private String _methodName645;
     private String[] _methodParameterTypes645;
-    private String _methodName646;
-    private String[] _methodParameterTypes646;
-    private String _methodName647;
-    private String[] _methodParameterTypes647;
-    private String _methodName648;
-    private String[] _methodParameterTypes648;
+    private String _methodName650;
+    private String[] _methodParameterTypes650;
+    private String _methodName651;
+    private String[] _methodParameterTypes651;
+    private String _methodName652;
+    private String[] _methodParameterTypes652;
+    private String _methodName653;
+    private String[] _methodParameterTypes653;
+    private String _methodName654;
+    private String[] _methodParameterTypes654;
 
     public MessagingMessageConversionLocalServiceClpInvoker() {
         _methodName0 = "addMessagingMessageConversion";
@@ -139,43 +139,43 @@ public class MessagingMessageConversionLocalServiceClpInvoker {
                 "com.ext.portlet.model.MessagingMessageConversion"
             };
 
-        _methodName638 = "getBeanIdentifier";
+        _methodName644 = "getBeanIdentifier";
 
-        _methodParameterTypes638 = new String[] {  };
+        _methodParameterTypes644 = new String[] {  };
 
-        _methodName639 = "setBeanIdentifier";
+        _methodName645 = "setBeanIdentifier";
 
-        _methodParameterTypes639 = new String[] { "java.lang.String" };
+        _methodParameterTypes645 = new String[] { "java.lang.String" };
 
-        _methodName644 = "countByType";
+        _methodName650 = "countByType";
 
-        _methodParameterTypes644 = new String[] {
+        _methodParameterTypes650 = new String[] {
                 "java.lang.Long",
                 "com.ext.portlet.model.MessagingMessageConversionType"
             };
 
-        _methodName645 = "countByType";
+        _methodName651 = "countByType";
 
-        _methodParameterTypes645 = new String[] {
+        _methodParameterTypes651 = new String[] {
                 "java.lang.Long", "java.lang.String"
             };
 
-        _methodName646 = "addConversion";
+        _methodName652 = "addConversion";
 
-        _methodParameterTypes646 = new String[] {
+        _methodParameterTypes652 = new String[] {
                 "java.lang.Long", "java.lang.String", "java.lang.String",
                 "java.lang.Object", "java.lang.Object"
             };
 
-        _methodName647 = "countConversionsByIP";
+        _methodName653 = "countConversionsByIP";
 
-        _methodParameterTypes647 = new String[] {
+        _methodParameterTypes653 = new String[] {
                 "java.lang.Long", "java.lang.String"
             };
 
-        _methodName648 = "countConversionsByRecipient";
+        _methodName654 = "countConversionsByRecipient";
 
-        _methodParameterTypes648 = new String[] {
+        _methodParameterTypes654 = new String[] {
                 "java.lang.Long", "java.lang.String"
             };
     }
@@ -269,32 +269,32 @@ public class MessagingMessageConversionLocalServiceClpInvoker {
             return MessagingMessageConversionLocalServiceUtil.updateMessagingMessageConversion((com.ext.portlet.model.MessagingMessageConversion) arguments[0]);
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName644.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
             return MessagingMessageConversionLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName639.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+        if (_methodName645.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
             MessagingMessageConversionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName644.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
+        if (_methodName650.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes650, parameterTypes)) {
             return MessagingMessageConversionLocalServiceUtil.countByType((java.lang.Long) arguments[0],
                 (com.ext.portlet.model.MessagingMessageConversionType) arguments[1]);
         }
 
-        if (_methodName645.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
+        if (_methodName651.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes651, parameterTypes)) {
             return MessagingMessageConversionLocalServiceUtil.countByType((java.lang.Long) arguments[0],
                 (java.lang.String) arguments[1]);
         }
 
-        if (_methodName646.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes646, parameterTypes)) {
+        if (_methodName652.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes652, parameterTypes)) {
             MessagingMessageConversionLocalServiceUtil.addConversion((java.lang.Long) arguments[0],
                 (java.lang.String) arguments[1],
                 (java.lang.String) arguments[2],
@@ -303,14 +303,14 @@ public class MessagingMessageConversionLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName647.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes647, parameterTypes)) {
+        if (_methodName653.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes653, parameterTypes)) {
             return MessagingMessageConversionLocalServiceUtil.countConversionsByIP((java.lang.Long) arguments[0],
                 (java.lang.String) arguments[1]);
         }
 
-        if (_methodName648.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes648, parameterTypes)) {
+        if (_methodName654.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes654, parameterTypes)) {
             return MessagingMessageConversionLocalServiceUtil.countConversionsByRecipient((java.lang.Long) arguments[0],
                 (java.lang.String) arguments[1]);
         }

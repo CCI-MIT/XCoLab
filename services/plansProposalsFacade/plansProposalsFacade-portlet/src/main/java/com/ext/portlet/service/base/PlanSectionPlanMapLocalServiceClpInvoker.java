@@ -41,14 +41,14 @@ public class PlanSectionPlanMapLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName638;
-    private String[] _methodParameterTypes638;
-    private String _methodName639;
-    private String[] _methodParameterTypes639;
     private String _methodName644;
     private String[] _methodParameterTypes644;
     private String _methodName645;
     private String[] _methodParameterTypes645;
+    private String _methodName650;
+    private String[] _methodParameterTypes650;
+    private String _methodName651;
+    private String[] _methodParameterTypes651;
 
     public PlanSectionPlanMapLocalServiceClpInvoker() {
         _methodName0 = "addPlanSectionPlanMap";
@@ -141,21 +141,21 @@ public class PlanSectionPlanMapLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanSectionPlanMap"
             };
 
-        _methodName638 = "getBeanIdentifier";
+        _methodName644 = "getBeanIdentifier";
 
-        _methodParameterTypes638 = new String[] {  };
+        _methodParameterTypes644 = new String[] {  };
 
-        _methodName639 = "setBeanIdentifier";
+        _methodName645 = "setBeanIdentifier";
 
-        _methodParameterTypes639 = new String[] { "java.lang.String" };
+        _methodParameterTypes645 = new String[] { "java.lang.String" };
 
-        _methodName644 = "findPlanIdsForSection";
+        _methodName650 = "findPlanIdsForSection";
 
-        _methodParameterTypes644 = new String[] { "java.lang.Long" };
+        _methodParameterTypes650 = new String[] { "java.lang.Long" };
 
-        _methodName645 = "store";
+        _methodName651 = "store";
 
-        _methodParameterTypes645 = new String[] {
+        _methodParameterTypes651 = new String[] {
                 "com.ext.portlet.model.PlanSectionPlanMap"
             };
     }
@@ -249,25 +249,25 @@ public class PlanSectionPlanMapLocalServiceClpInvoker {
             return PlanSectionPlanMapLocalServiceUtil.updatePlanSectionPlanMap((com.ext.portlet.model.PlanSectionPlanMap) arguments[0]);
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName644.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
             return PlanSectionPlanMapLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName639.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+        if (_methodName645.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
             PlanSectionPlanMapLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName644.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
+        if (_methodName650.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes650, parameterTypes)) {
             return PlanSectionPlanMapLocalServiceUtil.findPlanIdsForSection((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName645.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
+        if (_methodName651.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes651, parameterTypes)) {
             PlanSectionPlanMapLocalServiceUtil.store((com.ext.portlet.model.PlanSectionPlanMap) arguments[0]);
 
             return null;

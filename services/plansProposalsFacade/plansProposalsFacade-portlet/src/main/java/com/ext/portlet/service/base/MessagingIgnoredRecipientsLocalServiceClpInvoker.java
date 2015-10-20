@@ -41,14 +41,14 @@ public class MessagingIgnoredRecipientsLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName638;
-    private String[] _methodParameterTypes638;
-    private String _methodName639;
-    private String[] _methodParameterTypes639;
     private String _methodName644;
     private String[] _methodParameterTypes644;
     private String _methodName645;
     private String[] _methodParameterTypes645;
+    private String _methodName650;
+    private String[] _methodParameterTypes650;
+    private String _methodName651;
+    private String[] _methodParameterTypes651;
 
     public MessagingIgnoredRecipientsLocalServiceClpInvoker() {
         _methodName0 = "addMessagingIgnoredRecipients";
@@ -133,21 +133,21 @@ public class MessagingIgnoredRecipientsLocalServiceClpInvoker {
                 "com.ext.portlet.model.MessagingIgnoredRecipients"
             };
 
-        _methodName638 = "getBeanIdentifier";
+        _methodName644 = "getBeanIdentifier";
 
-        _methodParameterTypes638 = new String[] {  };
+        _methodParameterTypes644 = new String[] {  };
 
-        _methodName639 = "setBeanIdentifier";
-
-        _methodParameterTypes639 = new String[] { "java.lang.String" };
-
-        _methodName644 = "findByUserId";
-
-        _methodParameterTypes644 = new String[] { "java.lang.Long" };
-
-        _methodName645 = "findByEmail";
+        _methodName645 = "setBeanIdentifier";
 
         _methodParameterTypes645 = new String[] { "java.lang.String" };
+
+        _methodName650 = "findByUserId";
+
+        _methodParameterTypes650 = new String[] { "java.lang.Long" };
+
+        _methodName651 = "findByEmail";
+
+        _methodParameterTypes651 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -239,25 +239,25 @@ public class MessagingIgnoredRecipientsLocalServiceClpInvoker {
             return MessagingIgnoredRecipientsLocalServiceUtil.updateMessagingIgnoredRecipients((com.ext.portlet.model.MessagingIgnoredRecipients) arguments[0]);
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName644.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
             return MessagingIgnoredRecipientsLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName639.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+        if (_methodName645.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
             MessagingIgnoredRecipientsLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName644.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
+        if (_methodName650.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes650, parameterTypes)) {
             return MessagingIgnoredRecipientsLocalServiceUtil.findByUserId((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName645.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
+        if (_methodName651.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes651, parameterTypes)) {
             return MessagingIgnoredRecipientsLocalServiceUtil.findByEmail((java.lang.String) arguments[0]);
         }
 

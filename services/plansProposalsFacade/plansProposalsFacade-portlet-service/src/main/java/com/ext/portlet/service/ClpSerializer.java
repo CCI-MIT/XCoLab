@@ -16,6 +16,7 @@ import com.ext.portlet.model.ContestPhaseRibbonTypeClp;
 import com.ext.portlet.model.ContestPhaseTypeClp;
 import com.ext.portlet.model.ContestScheduleClp;
 import com.ext.portlet.model.ContestTeamMemberClp;
+import com.ext.portlet.model.ContestTypeClp;
 import com.ext.portlet.model.DiscussionCategoryClp;
 import com.ext.portlet.model.DiscussionCategoryGroupClp;
 import com.ext.portlet.model.DiscussionMessageClp;
@@ -248,6 +249,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ContestTeamMemberClp.class.getName())) {
             return translateInputContestTeamMember(oldModel);
+        }
+
+        if (oldModelClassName.equals(ContestTypeClp.class.getName())) {
+            return translateInputContestType(oldModel);
         }
 
         if (oldModelClassName.equals(DiscussionCategoryClp.class.getName())) {
@@ -765,6 +770,16 @@ public class ClpSerializer {
         ContestTeamMemberClp oldClpModel = (ContestTeamMemberClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getContestTeamMemberRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputContestType(BaseModel<?> oldModel) {
+        ContestTypeClp oldClpModel = (ContestTypeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getContestTypeRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -2171,6 +2186,41 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ContestTeamMemberImpl")) {
             return translateOutputContestTeamMember(oldModel);
+        } else if (oldModelClassName.endsWith("Clp")) {
+            try {
+                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+                Method getClpSerializerClassMethod = oldModelClass.getMethod(
+                        "getClpSerializerClass");
+
+                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
+
+                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+                        BaseModel.class);
+
+                Class<?> oldModelModelClass = oldModel.getModelClass();
+
+                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+                        oldModelModelClass.getSimpleName() + "RemoteModel");
+
+                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
+                        oldRemoteModel);
+
+                return newModel;
+            } catch (Throwable t) {
+                if (_log.isInfoEnabled()) {
+                    _log.info("Unable to translate " + oldModelClassName, t);
+                }
+            }
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ContestTypeImpl")) {
+            return translateOutputContestType(oldModel);
         } else if (oldModelClassName.endsWith("Clp")) {
             try {
                 ClassLoader classLoader = ClpSerializer.class.getClassLoader();
@@ -5387,6 +5437,10 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchContestTeamMemberException();
         }
 
+        if (className.equals("com.ext.portlet.NoSuchContestTypeException")) {
+            return new com.ext.portlet.NoSuchContestTypeException();
+        }
+
         if (className.equals(
                     "com.ext.portlet.NoSuchDiscussionCategoryException")) {
             return new com.ext.portlet.NoSuchDiscussionCategoryException();
@@ -5918,6 +5972,16 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setContestTeamMemberRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputContestType(BaseModel<?> oldModel) {
+        ContestTypeClp newModel = new ContestTypeClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestTypeRemoteModel(oldModel);
 
         return newModel;
     }

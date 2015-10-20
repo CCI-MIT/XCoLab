@@ -41,18 +41,18 @@ public class ProposalReferenceLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName638;
-    private String[] _methodParameterTypes638;
-    private String _methodName639;
-    private String[] _methodParameterTypes639;
     private String _methodName644;
     private String[] _methodParameterTypes644;
     private String _methodName645;
     private String[] _methodParameterTypes645;
-    private String _methodName646;
-    private String[] _methodParameterTypes646;
-    private String _methodName647;
-    private String[] _methodParameterTypes647;
+    private String _methodName650;
+    private String[] _methodParameterTypes650;
+    private String _methodName651;
+    private String[] _methodParameterTypes651;
+    private String _methodName652;
+    private String[] _methodParameterTypes652;
+    private String _methodName653;
+    private String[] _methodParameterTypes653;
 
     public ProposalReferenceLocalServiceClpInvoker() {
         _methodName0 = "addProposalReference";
@@ -145,29 +145,29 @@ public class ProposalReferenceLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalReference"
             };
 
-        _methodName638 = "getBeanIdentifier";
+        _methodName644 = "getBeanIdentifier";
 
-        _methodParameterTypes638 = new String[] {  };
+        _methodParameterTypes644 = new String[] {  };
 
-        _methodName639 = "setBeanIdentifier";
+        _methodName645 = "setBeanIdentifier";
 
-        _methodParameterTypes639 = new String[] { "java.lang.String" };
+        _methodParameterTypes645 = new String[] { "java.lang.String" };
 
-        _methodName644 = "getByProposalId";
+        _methodName650 = "getByProposalId";
 
-        _methodParameterTypes644 = new String[] { "long" };
+        _methodParameterTypes650 = new String[] { "long" };
 
-        _methodName645 = "getBySubProposalId";
+        _methodName651 = "getBySubProposalId";
 
-        _methodParameterTypes645 = new String[] { "long" };
+        _methodParameterTypes651 = new String[] { "long" };
 
-        _methodName646 = "populateTable";
+        _methodName652 = "populateTable";
 
-        _methodParameterTypes646 = new String[] {  };
+        _methodParameterTypes652 = new String[] {  };
 
-        _methodName647 = "populateTableWithProposal";
+        _methodName653 = "populateTableWithProposal";
 
-        _methodParameterTypes647 = new String[] { "com.ext.portlet.model.Proposal" };
+        _methodParameterTypes653 = new String[] { "com.ext.portlet.model.Proposal" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -259,37 +259,37 @@ public class ProposalReferenceLocalServiceClpInvoker {
             return ProposalReferenceLocalServiceUtil.updateProposalReference((com.ext.portlet.model.ProposalReference) arguments[0]);
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName644.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
             return ProposalReferenceLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName639.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+        if (_methodName645.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
             ProposalReferenceLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName644.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
+        if (_methodName650.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes650, parameterTypes)) {
             return ProposalReferenceLocalServiceUtil.getByProposalId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName645.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
+        if (_methodName651.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes651, parameterTypes)) {
             return ProposalReferenceLocalServiceUtil.getBySubProposalId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName646.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes646, parameterTypes)) {
+        if (_methodName652.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes652, parameterTypes)) {
             ProposalReferenceLocalServiceUtil.populateTable();
 
             return null;
         }
 
-        if (_methodName647.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes647, parameterTypes)) {
+        if (_methodName653.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes653, parameterTypes)) {
             ProposalReferenceLocalServiceUtil.populateTableWithProposal((com.ext.portlet.model.Proposal) arguments[0]);
 
             return null;

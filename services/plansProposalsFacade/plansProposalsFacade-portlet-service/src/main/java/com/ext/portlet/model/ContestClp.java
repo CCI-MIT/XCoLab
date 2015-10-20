@@ -22,6 +22,7 @@ import java.util.Map;
 
 public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private long _ContestPK;
+    private long _contestTypeId;
     private String _ContestName;
     private String _ContestShortName;
     private String _ContestDescription;
@@ -110,6 +111,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
         attributes.put("ContestPK", getContestPK());
+        attributes.put("contestTypeId", getContestTypeId());
         attributes.put("ContestName", getContestName());
         attributes.put("ContestShortName", getContestShortName());
         attributes.put("ContestDescription", getContestDescription());
@@ -172,6 +174,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (ContestPK != null) {
             setContestPK(ContestPK);
+        }
+
+        Long contestTypeId = (Long) attributes.get("contestTypeId");
+
+        if (contestTypeId != null) {
+            setContestTypeId(contestTypeId);
         }
 
         String ContestName = (String) attributes.get("ContestName");
@@ -490,6 +498,28 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                 Method method = clazz.getMethod("setContestPK", long.class);
 
                 method.invoke(_contestRemoteModel, ContestPK);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public long getContestTypeId() {
+        return _contestTypeId;
+    }
+
+    @Override
+    public void setContestTypeId(long contestTypeId) {
+        _contestTypeId = contestTypeId;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestTypeId", long.class);
+
+                method.invoke(_contestRemoteModel, contestTypeId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -1670,6 +1700,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         ContestClp clone = new ContestClp();
 
         clone.setContestPK(getContestPK());
+        clone.setContestTypeId(getContestTypeId());
         clone.setContestName(getContestName());
         clone.setContestShortName(getContestShortName());
         clone.setContestDescription(getContestDescription());
@@ -1778,10 +1809,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(99);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
+        sb.append(", contestTypeId=");
+        sb.append(getContestTypeId());
         sb.append(", ContestName=");
         sb.append(getContestName());
         sb.append(", ContestShortName=");
@@ -1883,7 +1916,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(148);
+        StringBundler sb = new StringBundler(151);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1892,6 +1925,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>ContestPK</column-name><column-value><![CDATA[");
         sb.append(getContestPK());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestTypeId</column-name><column-value><![CDATA[");
+        sb.append(getContestTypeId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>ContestName</column-name><column-value><![CDATA[");

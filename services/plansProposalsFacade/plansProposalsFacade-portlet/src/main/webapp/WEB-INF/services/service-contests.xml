@@ -11,6 +11,7 @@
     
     <entity name="Contest" local-service="true" remote-service="true">
         <column name="ContestPK" type="long" primary="true" />
+        <column name="contestTypeId" type="long" />
         <column name="ContestName" type="String" />
         <column name="ContestShortName" type="String" />
         <column name="ContestDescription" type="String" />
@@ -81,7 +82,7 @@
             <finder-column name="contestPrivate" />
         </finder>
         
-	<finder name="ContestActive" return-type="Collection">
+	    <finder name="ContestActive" return-type="Collection">
             <finder-column name="contestActive" />
         </finder>
         <finder name="ActiveFeatured" return-type="Collection">
@@ -111,6 +112,17 @@
             <finder-column name="flagText" />
             <finder-column name="contestPrivate" />
         </finder>
+        <finder name="ContestType" return-type="Collection">
+            <finder-column name="contestTypeId" />
+        </finder>
+    </entity>
+
+    <entity name="ContestType" local-service="true">
+        <column name="id" type="long" primary="true" />
+        <column name="contestName" type="String" />
+        <column name="proposalName" type="String" />
+        <column name="proposalNamePlural" type="String" />
+        <column name="hasDiscussion" type="boolean" />
     </entity>
     
     <entity name="ContestDebate" local-service="true">

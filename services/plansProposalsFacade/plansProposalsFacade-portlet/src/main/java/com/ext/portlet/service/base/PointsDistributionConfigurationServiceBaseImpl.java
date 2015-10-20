@@ -18,6 +18,7 @@ import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
 import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
 import com.ext.portlet.service.persistence.ContestSchedulePersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
+import com.ext.portlet.service.persistence.ContestTypePersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
 import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
@@ -227,6 +228,12 @@ public abstract class PointsDistributionConfigurationServiceBaseImpl
     protected com.ext.portlet.service.ContestTeamMemberService contestTeamMemberService;
     @BeanReference(type = ContestTeamMemberPersistence.class)
     protected ContestTeamMemberPersistence contestTeamMemberPersistence;
+    @BeanReference(type = com.ext.portlet.service.ContestTypeLocalService.class)
+    protected com.ext.portlet.service.ContestTypeLocalService contestTypeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestTypeService.class)
+    protected com.ext.portlet.service.ContestTypeService contestTypeService;
+    @BeanReference(type = ContestTypePersistence.class)
+    protected ContestTypePersistence contestTypePersistence;
     @BeanReference(type = com.ext.portlet.service.DiscussionCategoryLocalService.class)
     protected com.ext.portlet.service.DiscussionCategoryLocalService discussionCategoryLocalService;
     @BeanReference(type = com.ext.portlet.service.DiscussionCategoryService.class)
@@ -1670,6 +1677,63 @@ public abstract class PointsDistributionConfigurationServiceBaseImpl
     public void setContestTeamMemberPersistence(
         ContestTeamMemberPersistence contestTeamMemberPersistence) {
         this.contestTeamMemberPersistence = contestTeamMemberPersistence;
+    }
+
+    /**
+     * Returns the contest type local service.
+     *
+     * @return the contest type local service
+     */
+    public com.ext.portlet.service.ContestTypeLocalService getContestTypeLocalService() {
+        return contestTypeLocalService;
+    }
+
+    /**
+     * Sets the contest type local service.
+     *
+     * @param contestTypeLocalService the contest type local service
+     */
+    public void setContestTypeLocalService(
+        com.ext.portlet.service.ContestTypeLocalService contestTypeLocalService) {
+        this.contestTypeLocalService = contestTypeLocalService;
+    }
+
+    /**
+     * Returns the contest type remote service.
+     *
+     * @return the contest type remote service
+     */
+    public com.ext.portlet.service.ContestTypeService getContestTypeService() {
+        return contestTypeService;
+    }
+
+    /**
+     * Sets the contest type remote service.
+     *
+     * @param contestTypeService the contest type remote service
+     */
+    public void setContestTypeService(
+        com.ext.portlet.service.ContestTypeService contestTypeService) {
+        this.contestTypeService = contestTypeService;
+    }
+
+    /**
+     * Returns the contest type persistence.
+     *
+     * @return the contest type persistence
+     */
+    public ContestTypePersistence getContestTypePersistence() {
+        return contestTypePersistence;
+    }
+
+    /**
+     * Sets the contest type persistence.
+     *
+     * @param contestTypePersistence the contest type persistence
+     */
+    public void setContestTypePersistence(
+        ContestTypePersistence contestTypePersistence) {
+        this.contestTypePersistence = contestTypePersistence;
     }
 
     /**

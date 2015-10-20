@@ -63,6 +63,9 @@
 	<bean id="com.ext.portlet.service.ContestTeamMemberLocalService" class="com.ext.portlet.service.impl.ContestTeamMemberLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestTeamMemberService" class="com.ext.portlet.service.impl.ContestTeamMemberServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestTeamMemberPersistence" class="com.ext.portlet.service.persistence.ContestTeamMemberPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ContestTypeLocalService" class="com.ext.portlet.service.impl.ContestTypeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ContestTypeService" class="com.ext.portlet.service.impl.ContestTypeServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ContestTypePersistence" class="com.ext.portlet.service.persistence.ContestTypePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.DiscussionCategoryLocalService" class="com.ext.portlet.service.impl.DiscussionCategoryLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.DiscussionCategoryService" class="com.ext.portlet.service.impl.DiscussionCategoryServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.DiscussionCategoryPersistence" class="com.ext.portlet.service.persistence.DiscussionCategoryPersistenceImpl" parent="basePersistence" />

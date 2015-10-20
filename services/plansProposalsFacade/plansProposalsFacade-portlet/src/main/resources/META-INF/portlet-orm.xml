@@ -140,6 +140,7 @@
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestModelImpl">
 		<attributes>
 			<id name="ContestPK" />
+			<basic name="contestTypeId" />
 			<basic name="ContestName" />
 			<basic name="ContestShortName" />
 			<basic name="ContestDescription" />
@@ -339,6 +340,20 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ContestTypeModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="contestName" />
+			<basic name="proposalName" />
+			<basic name="proposalNamePlural" />
+			<basic name="hasDiscussion" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.DiscussionCategoryModelImpl">
@@ -1671,6 +1686,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestTeamMemberImpl" name="ContestTeamMember">
 		<table name="xcolab_ContestTeamMember" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ContestTypeImpl" name="ContestType">
+		<table name="xcolab_ContestType" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.DiscussionCategoryImpl" name="DiscussionCategory">

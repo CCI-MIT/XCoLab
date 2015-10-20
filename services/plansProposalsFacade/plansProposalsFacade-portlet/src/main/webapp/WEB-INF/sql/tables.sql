@@ -79,6 +79,7 @@ create table xcolab_BalloonUserTracking (
 
 create table xcolab_Contest (
 	ContestPK LONG not null primary key,
+	contestTypeId LONG,
 	ContestName VARCHAR(1024) null,
 	ContestShortName VARCHAR(512) null,
 	ContestDescription TEXT null,
@@ -214,6 +215,14 @@ create table xcolab_ContestTeamMember (
 	contestId LONG,
 	userId LONG,
 	role VARCHAR(75) null
+);
+
+create table xcolab_ContestType (
+	id_ LONG not null primary key,
+	contestName VARCHAR(75) null,
+	proposalName VARCHAR(75) null,
+	proposalNamePlural VARCHAR(75) null,
+	hasDiscussion BOOLEAN
 );
 
 create table xcolab_DiscussionCategory (

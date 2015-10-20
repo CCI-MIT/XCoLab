@@ -33,6 +33,8 @@ import com.ext.portlet.service.ContestScheduleServiceUtil;
 import com.ext.portlet.service.ContestServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
@@ -268,6 +270,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ContestTeamMemberLocalServiceUtil.clearService();
 
             ContestTeamMemberServiceUtil.clearService();
+            ContestTypeLocalServiceUtil.clearService();
+
+            ContestTypeServiceUtil.clearService();
             DiscussionCategoryLocalServiceUtil.clearService();
 
             DiscussionCategoryServiceUtil.clearService();

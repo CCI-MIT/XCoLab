@@ -22,6 +22,7 @@ import java.util.Date;
  */
 public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public long ContestPK;
+    public long contestTypeId;
     public String ContestName;
     public String ContestShortName;
     public String ContestDescription;
@@ -72,10 +73,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(99);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
+        sb.append(", contestTypeId=");
+        sb.append(contestTypeId);
         sb.append(", ContestName=");
         sb.append(ContestName);
         sb.append(", ContestShortName=");
@@ -180,6 +183,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         ContestImpl contestImpl = new ContestImpl();
 
         contestImpl.setContestPK(ContestPK);
+        contestImpl.setContestTypeId(contestTypeId);
 
         if (ContestName == null) {
             contestImpl.setContestName(StringPool.BLANK);
@@ -355,6 +359,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     @Override
     public void readExternal(ObjectInput objectInput) throws IOException {
         ContestPK = objectInput.readLong();
+        contestTypeId = objectInput.readLong();
         ContestName = objectInput.readUTF();
         ContestShortName = objectInput.readUTF();
         ContestDescription = objectInput.readUTF();
@@ -408,6 +413,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public void writeExternal(ObjectOutput objectOutput)
         throws IOException {
         objectOutput.writeLong(ContestPK);
+        objectOutput.writeLong(contestTypeId);
 
         if (ContestName == null) {
             objectOutput.writeUTF(StringPool.BLANK);

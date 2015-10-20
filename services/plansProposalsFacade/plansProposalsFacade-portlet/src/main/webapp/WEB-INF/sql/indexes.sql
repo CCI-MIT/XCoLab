@@ -25,6 +25,7 @@ create index IX_7D5C9136 on xcolab_Contest (contestActive, flagText, contestPriv
 create index IX_DF091CF8 on xcolab_Contest (contestActive, flagText, privateContest);
 create index IX_FC5EA30B on xcolab_Contest (contestActive, privateContest);
 create index IX_168D6722 on xcolab_Contest (contestTier);
+create index IX_95122F5 on xcolab_Contest (contestTypeId);
 
 create index IX_379DF74A on xcolab_ContestDebate (ContestPK);
 

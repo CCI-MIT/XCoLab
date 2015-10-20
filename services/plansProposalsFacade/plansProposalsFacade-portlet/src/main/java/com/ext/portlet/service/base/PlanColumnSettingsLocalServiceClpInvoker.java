@@ -41,12 +41,12 @@ public class PlanColumnSettingsLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName638;
-    private String[] _methodParameterTypes638;
-    private String _methodName639;
-    private String[] _methodParameterTypes639;
     private String _methodName644;
     private String[] _methodParameterTypes644;
+    private String _methodName645;
+    private String[] _methodParameterTypes645;
+    private String _methodName650;
+    private String[] _methodParameterTypes650;
 
     public PlanColumnSettingsLocalServiceClpInvoker() {
         _methodName0 = "addPlanColumnSettings";
@@ -131,17 +131,17 @@ public class PlanColumnSettingsLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanColumnSettings"
             };
 
-        _methodName638 = "getBeanIdentifier";
+        _methodName644 = "getBeanIdentifier";
 
-        _methodParameterTypes638 = new String[] {  };
+        _methodParameterTypes644 = new String[] {  };
 
-        _methodName639 = "setBeanIdentifier";
+        _methodName645 = "setBeanIdentifier";
 
-        _methodParameterTypes639 = new String[] { "java.lang.String" };
+        _methodParameterTypes645 = new String[] { "java.lang.String" };
 
-        _methodName644 = "findByPlanUserSettingsIdColumnName";
+        _methodName650 = "findByPlanUserSettingsIdColumnName";
 
-        _methodParameterTypes644 = new String[] {
+        _methodParameterTypes650 = new String[] {
                 "java.lang.Long", "java.lang.String"
             };
     }
@@ -235,20 +235,20 @@ public class PlanColumnSettingsLocalServiceClpInvoker {
             return PlanColumnSettingsLocalServiceUtil.updatePlanColumnSettings((com.ext.portlet.model.PlanColumnSettings) arguments[0]);
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName644.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
             return PlanColumnSettingsLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName639.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+        if (_methodName645.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
             PlanColumnSettingsLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName644.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
+        if (_methodName650.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes650, parameterTypes)) {
             return PlanColumnSettingsLocalServiceUtil.findByPlanUserSettingsIdColumnName((java.lang.Long) arguments[0],
                 (java.lang.String) arguments[1]);
         }

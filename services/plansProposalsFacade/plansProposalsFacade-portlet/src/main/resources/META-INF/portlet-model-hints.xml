@@ -111,6 +111,7 @@
 	</model>
 	<model name="com.ext.portlet.model.Contest">
 		<field name="ContestPK" type="long" />
+		<field name="contestTypeId" type="long" />
 		<field name="ContestName" type="String">
 			<hint name="max-length">1024</hint>
 		</field>
@@ -281,6 +282,13 @@
 		<field name="contestId" type="long" />
 		<field name="userId" type="long" />
 		<field name="role" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.ContestType">
+		<field name="id" type="long" />
+		<field name="contestName" type="String" />
+		<field name="proposalName" type="String" />
+		<field name="proposalNamePlural" type="String" />
+		<field name="hasDiscussion" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.DiscussionCategory">
 		<field name="pk" type="long" />

@@ -38,6 +38,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
         attributes.put("ContestPK", getContestPK());
+        attributes.put("contestTypeId", getContestTypeId());
         attributes.put("ContestName", getContestName());
         attributes.put("ContestShortName", getContestShortName());
         attributes.put("ContestDescription", getContestDescription());
@@ -100,6 +101,12 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (ContestPK != null) {
             setContestPK(ContestPK);
+        }
+
+        Long contestTypeId = (Long) attributes.get("contestTypeId");
+
+        if (contestTypeId != null) {
+            setContestTypeId(contestTypeId);
         }
 
         String ContestName = (String) attributes.get("ContestName");
@@ -440,6 +447,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setContestPK(long ContestPK) {
         _contest.setContestPK(ContestPK);
+    }
+
+    /**
+    * Returns the contest type ID of this contest.
+    *
+    * @return the contest type ID of this contest
+    */
+    @Override
+    public long getContestTypeId() {
+        return _contest.getContestTypeId();
+    }
+
+    /**
+    * Sets the contest type ID of this contest.
+    *
+    * @param contestTypeId the contest type ID of this contest
+    */
+    @Override
+    public void setContestTypeId(long contestTypeId) {
+        _contest.setContestTypeId(contestTypeId);
     }
 
     /**

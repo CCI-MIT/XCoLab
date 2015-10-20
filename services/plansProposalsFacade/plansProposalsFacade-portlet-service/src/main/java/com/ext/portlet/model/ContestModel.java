@@ -60,6 +60,20 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setContestPK(long ContestPK);
 
     /**
+     * Returns the contest type ID of this contest.
+     *
+     * @return the contest type ID of this contest
+     */
+    public long getContestTypeId();
+
+    /**
+     * Sets the contest type ID of this contest.
+     *
+     * @param contestTypeId the contest type ID of this contest
+     */
+    public void setContestTypeId(long contestTypeId);
+
+    /**
      * Returns the contest name of this contest.
      *
      * @return the contest name of this contest
