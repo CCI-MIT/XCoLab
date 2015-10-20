@@ -323,7 +323,9 @@ public class FocusAreaOntologyTermLocalServiceWrapper
 
     @Override
     public java.util.List<java.lang.Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(
-        long focusAreaId, long ontologySpaceId) throws java.lang.Exception {
+        long focusAreaId, long ontologySpaceId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return _focusAreaOntologyTermLocalService.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(focusAreaId,
             ontologySpaceId);
     }

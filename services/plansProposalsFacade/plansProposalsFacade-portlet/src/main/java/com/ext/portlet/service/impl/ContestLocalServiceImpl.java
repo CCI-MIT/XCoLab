@@ -1021,8 +1021,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return impactTemplateMaxFocusAreaPersistence.findByFocusAreaListId(focusAreaList.getFocusAreaListId());
     }
 
-    public List<Contest> getContestsByTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTermIds) throws Exception{
-
+    public List<Contest> getContestsByTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTermIds)
+            throws SystemException {
         DynamicQuery queryContestsByTierLevelAndOntologyTermIds =
             DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
                     .add(PropertyFactoryUtil.forName("contestTier").eq(contestTier))
@@ -1031,7 +1031,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return contestPersistence.findWithDynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
     }
 
-    public List<Contest> getContestsByContestScheduleId(Long contestScheduleId) throws Exception{
+    public List<Contest> getContestsByContestScheduleId(Long contestScheduleId) throws SystemException {
 
         DynamicQuery queryContestsByTierLevelAndOntologyTermIds =
                 DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
@@ -1041,7 +1041,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return contestPersistence.findWithDynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
     }
 
-    public List<Contest> getContestsByPlanTemplateId(Long planTemplateId) throws Exception{
+    public List<Contest> getContestsByPlanTemplateId(Long planTemplateId) throws SystemException {
 
         DynamicQuery queryContestsByPlanTemplateId =
                 DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
@@ -1052,13 +1052,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
 
-    public List<Contest> getSubContestsByOntologySpaceId(Contest contest, Long ontologySpaceId) throws Exception{
+    public List<Contest> getSubContestsByOntologySpaceId(Contest contest, Long ontologySpaceId)
+            throws SystemException, PortalException {
         long focusAreaId = contest.getFocusAreaId();
         long contestTier =  contest.getContestTier();
         long lowerContestTier = contestTier - 1;
 
         if(lowerContestTier < 1) {
-            throw new Exception("Contest " + contest.getContestPK() + " has no sub-contests!" );
+            throw new PortalException("Contest " + contest.getContestPK() + " has no sub-contests!" );
         }
 
         List<Long> focusAreaOntologyTermIds =

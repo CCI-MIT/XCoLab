@@ -775,27 +775,30 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     public java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
         java.lang.Long contestTier,
         java.util.List<java.lang.Long> focusAreaOntologyTermIds)
-        throws java.lang.Exception {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestsByTierLevelAndOntologyTermIds(contestTier,
             focusAreaOntologyTermIds);
     }
 
     @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsByContestScheduleId(
-        java.lang.Long contestScheduleId) throws java.lang.Exception {
+        java.lang.Long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestsByContestScheduleId(contestScheduleId);
     }
 
     @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsByPlanTemplateId(
-        java.lang.Long planTemplateId) throws java.lang.Exception {
+        java.lang.Long planTemplateId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestsByPlanTemplateId(planTemplateId);
     }
 
     @Override
     public java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
         com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
-        throws java.lang.Exception {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getSubContestsByOntologySpaceId(contest,
             ontologySpaceId);
     }
