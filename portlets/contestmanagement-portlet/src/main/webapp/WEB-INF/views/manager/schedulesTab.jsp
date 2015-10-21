@@ -12,7 +12,7 @@
     <portlet:actionURL var="changeElementURL">
         <portlet:param name="tab" value="${param.tab}"/>
         <portlet:param name="manager" value="${param.manager}"/>
-        <portlet:param name="elementId" value="${contestProposalTemplateWrapper.planTemplate.id}"/>
+        <portlet:param name="elementId" value="${scheduleId}"/>
     </portlet:actionURL>
 
     <portlet:actionURL var="createContestScheduleURL">
@@ -92,129 +92,130 @@
                 </div>
             </div>
         </form:form>
+        <c:if test="${scheduleId >= 0}">
+            <form:form action="${updateContestScheduleURL }" commandName="contestScheduleWrapper" id="editForm"
+                       method="post">
+                <form:hidden path="scheduleId"/>
 
-        <form:form action="${updateContestScheduleURL }" commandName="contestScheduleWrapper" id="editForm"
-                   method="post">
-            <form:hidden path="scheduleId"/>
+                <form:hidden path="createNew" id="createNewFlag"/>
 
-            <form:hidden path="createNew" id="createNewFlag"/>
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Schedule name:</strong>
+                    <form:input path="scheduleName" cssClass="wideLargeInput"/>
 
-            <div class="addpropbox">
-                <strong class="inputTitleLeft">Schedule name:</strong>
-                <form:input path="scheduleName" cssClass="wideLargeInput"/>
-
-                <div class="reg_errors"><!--  -->
-                    <form:errors cssClass="alert alert-error" path="scheduleName"/>
-                </div>
-            </div>
-
-            <div class="addpropbox">
-                <strong class="inputTitleLeft">Contest phases for this schedule:</strong>
-
-                <div class="outerVerticalCenter floatRight">
-                    <div class="blue-button innerVerticalCenter">
-                        <a href="#" onclick="addContestPhase(event)">Add contest phase</a>
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="alert alert-error" path="scheduleName"/>
                     </div>
                 </div>
-                <table class="contestOverview">
-                    <col span="1" class="extraSmallColumn"/>
-                    <!-- <col span="1" class="extraSmallColumn"/> -->
-                    <col span="4" class="mediumColumn"/>
-                    <col span="1" class="extraSmallColumn"/>
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Phase Type</th>
-                        <!-- <th>Buffer</th> -->
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Autopromote</th>
-                        <th>Fellow <br/>Screening</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody id="contestOverviewBody" class="contestPhases">
-                    <c:set var="dateTimePickerIndex" value="0"/>
-                    <c:forEach var="schedulePhase" items="${contestScheduleWrapper.schedulePhases}" varStatus="x">
-                        <tr data-filter-attribute="${fn:length(contestScheduleWrapper.schedulePhases) - 1 eq x.index ? 'dummyPhase' : ''}"
-                            data-form-index="${x.index}"
-                            style="${fn:length(contestScheduleWrapper.schedulePhases) - 1 eq x.index ? 'display:none' : ''}"
-                                >
 
-                            <form:hidden path="schedulePhases[${x.index}].contestScheduleId"
-                                         data-form-name="contestScheduleId"/>
-                            <form:hidden path="schedulePhases[${x.index}].contestPhasePK"
-                                         data-form-name="contestPhasePK"/>
-                            <form:hidden path="schedulePhases[${x.index}].contestPK" data-form-name="contestPK"/>
-                            <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
-                                         data-form-name="contestPhaseDeleted"/>
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Contest phases for this schedule:</strong>
 
-                            <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-error"
-                                             path="schedulePhases[${x.index}].phaseStartDate"/>
-                            </div>
-
-                            <td data-form-attribute="indexLable">${x.index + 1}</td>
-                            <td>
-                                <form:hidden path="schedulePhases[${x.index}].contestPhaseTypeOld" data-form-name="contestPhaseTypeOld"/>
-                                <form:select path="schedulePhases[${x.index}].contestPhaseType" class="autoWidth"
-                                             data-form-name="contestPhaseType">
-                                    <form:options items="${contestPhaseTypesSelectionItems}" itemValue="value"
-                                                  itemLabel="lable"/>
-                                </form:select>
-                            </td>
-                            <!-- <td>
-									<form:checkbox path="schedulePhases[${x.index}].hasBuffer"
-												   data-select-attribute="hasBufferCheckbox"/></td> -->
-                            <td>
-                                <fmt:formatDate value="${schedulePhase.phaseStartDate}" pattern="MM/dd/yyyy HH:mm"
-                                                type="date" dateStyle="short" timeZone="America/New_York"
-                                                var="formatDate"/>
-
-                                <form:input path="schedulePhases[${x.index}].phaseStartDate"
-                                            cssClass="datetimepicker" value="${formatDate}"
-                                            data-type-attribute="start"
-                                            data-index-attribute="${dateTimePickerIndex}"
-                                            data-select-attribute="datetimepicker"
-                                            data-form-name="phaseStartDate"
-                                        />
-                            </td>
-
-                            <td>
-                                <form:input path="schedulePhases[${x.index}].phaseEndDateFormatted"
-                                            cssClass="datetimepicker"
-                                            data-type-attribute="end"
-                                            data-index-attribute="${dateTimePickerIndex + 1}"
-                                            data-select-attribute="datetimepicker"
-                                            data-form-name="phaseEndDateFormatted"
-                                        />
-                            </td>
-                            <td>
-                                <form:select path="schedulePhases[${x.index}].contestPhaseAutopromote" class="autoWidth"
-                                             data-form-name="contestPhaseAutopromote">
-                                    <form:options items="${contestPhaseAutopromoteSelectionItems}" itemValue="value"
-                                                  itemLabel="lable"/>
-                                </form:select>
-                            </td>
-                            <td>
-                                <form:checkbox path="schedulePhases[${x.index}].fellowScreeningActive"
-                                               data-form-name="fellowScreeningActive">
-                                </form:checkbox>
-                            </td>
-                            <td>
-                                <c:if test="${not schedulePhase.contestPhaseHasProposalAssociations}">
-                                    <div class="deleteIcon"> <!-- --></div>
-                                </c:if>
-                            </td>
+                    <div class="outerVerticalCenter floatRight">
+                        <div class="blue-button innerVerticalCenter">
+                            <a href="#" onclick="addContestPhase(event)">Add contest phase</a>
+                        </div>
+                    </div>
+                    <table class="contestOverview">
+                        <col span="1" class="extraSmallColumn"/>
+                        <!-- <col span="1" class="extraSmallColumn"/> -->
+                        <col span="4" class="mediumColumn"/>
+                        <col span="1" class="extraSmallColumn"/>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Phase Type</th>
+                            <!-- <th>Buffer</th> -->
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Autopromote</th>
+                            <th>Fellow <br/>Screening</th>
+                            <th></th>
                         </tr>
-                        <c:set var="dateTimePickerIndex" value="${dateTimePickerIndex + 2}"/>
-                    </c:forEach>
-                    </tbody>
-                </table>
-                <i>Please do not put and end date to the last phase, otherwise the mass messaging function can't detect
-                    the contest!</i>
-            </div>
-        </form:form>
+                        </thead>
+                        <tbody id="contestOverviewBody" class="contestPhases">
+                        <c:set var="dateTimePickerIndex" value="0"/>
+                        <c:forEach var="schedulePhase" items="${contestScheduleWrapper.schedulePhases}" varStatus="x">
+                            <tr data-filter-attribute="${fn:length(contestScheduleWrapper.schedulePhases) - 1 eq x.index ? 'dummyPhase' : ''}"
+                                data-form-index="${x.index}"
+                                style="${fn:length(contestScheduleWrapper.schedulePhases) - 1 eq x.index ? 'display:none' : ''}"
+                                    >
+
+                                <form:hidden path="schedulePhases[${x.index}].contestScheduleId"
+                                             data-form-name="contestScheduleId"/>
+                                <form:hidden path="schedulePhases[${x.index}].contestPhasePK"
+                                             data-form-name="contestPhasePK"/>
+                                <form:hidden path="schedulePhases[${x.index}].contestPK" data-form-name="contestPK"/>
+                                <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
+                                             data-form-name="contestPhaseDeleted"/>
+
+                                <div class="reg_errors"><!--  -->
+                                    <form:errors cssClass="alert alert-error"
+                                                 path="schedulePhases[${x.index}].phaseStartDate"/>
+                                </div>
+
+                                <td data-form-attribute="indexLable">${x.index + 1}</td>
+                                <td>
+                                    <form:hidden path="schedulePhases[${x.index}].contestPhaseTypeOld" data-form-name="contestPhaseTypeOld"/>
+                                    <form:select path="schedulePhases[${x.index}].contestPhaseType" class="autoWidth"
+                                                 data-form-name="contestPhaseType">
+                                        <form:options items="${contestPhaseTypesSelectionItems}" itemValue="value"
+                                                      itemLabel="lable"/>
+                                    </form:select>
+                                </td>
+                                <!-- <td>
+                                        <form:checkbox path="schedulePhases[${x.index}].hasBuffer"
+                                                       data-select-attribute="hasBufferCheckbox"/></td> -->
+                                <td>
+                                    <fmt:formatDate value="${schedulePhase.phaseStartDate}" pattern="MM/dd/yyyy HH:mm"
+                                                    type="date" dateStyle="short" timeZone="America/New_York"
+                                                    var="formatDate"/>
+
+                                    <form:input path="schedulePhases[${x.index}].phaseStartDate"
+                                                cssClass="datetimepicker" value="${formatDate}"
+                                                data-type-attribute="start"
+                                                data-index-attribute="${dateTimePickerIndex}"
+                                                data-select-attribute="datetimepicker"
+                                                data-form-name="phaseStartDate"
+                                            />
+                                </td>
+
+                                <td>
+                                    <form:input path="schedulePhases[${x.index}].phaseEndDateFormatted"
+                                                cssClass="datetimepicker"
+                                                data-type-attribute="end"
+                                                data-index-attribute="${dateTimePickerIndex + 1}"
+                                                data-select-attribute="datetimepicker"
+                                                data-form-name="phaseEndDateFormatted"
+                                            />
+                                </td>
+                                <td>
+                                    <form:select path="schedulePhases[${x.index}].contestPhaseAutopromote" class="autoWidth"
+                                                 data-form-name="contestPhaseAutopromote">
+                                        <form:options items="${contestPhaseAutopromoteSelectionItems}" itemValue="value"
+                                                      itemLabel="lable"/>
+                                    </form:select>
+                                </td>
+                                <td>
+                                    <form:checkbox path="schedulePhases[${x.index}].fellowScreeningActive"
+                                                   data-form-name="fellowScreeningActive">
+                                    </form:checkbox>
+                                </td>
+                                <td>
+                                    <c:if test="${not schedulePhase.contestPhaseHasProposalAssociations}">
+                                        <div class="deleteIcon"> <!-- --></div>
+                                    </c:if>
+                                </td>
+                            </tr>
+                            <c:set var="dateTimePickerIndex" value="${dateTimePickerIndex + 2}"/>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                    <i>Please do not put and end date to the last phase, otherwise the mass messaging function can't detect
+                        the contest!</i>
+                </div>
+            </form:form>
+        </c:if>
     </div>
 
 
