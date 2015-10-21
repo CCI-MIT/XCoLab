@@ -24,7 +24,7 @@
     <div id="content">
         <form:errors cssClass="alert alert-error" />
 
-        This page is shared by contest Fellows only. Advisors and Judges will not be able to view this page
+        This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
         <portlet:actionURL var="saveScreeningURL">
             <portlet:param name="action_forwardToPage" value="proposalDetails_SCREENING"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
@@ -43,14 +43,14 @@
             <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
                        commandName="fellowProposalScreeningBean">
                 <div class="addpropbox">
-                    <h3>Advance Proposal to Judges for Review?</h3>
+                    <h3>Advance ${contestType.proposalName} to Judges for Review?</h3>
 
                     <form:hidden path="contestPhaseId" />
                     <form:select id="fellowScreeningAction" path="fellowScreeningAction" items="${judgingOptions}" itemValue="attributeValue" itemLabel="description"/>
 
                     <div id="fellowSelectJudgesContainer" style="display: none;">
                         <h3>Select Judge(s)</h3>
-                        Select which Judge(s) will review this proposal.
+                        Select which Judge(s) will review this ${contestType.proposalName}.
                         <table class="judgingForm">
                             <tbody>
                             <tr>
@@ -115,18 +115,18 @@
                         <c:when test="${proposalsPermissions.canFellowActions}">
                             <div class="blue-button" style="display:block; float:right;">
                                 <a href="javascript:;" class="requestMembershipSubmitButton"
-                                   onclick="jQuery(this).parents('form').submit();">Save proposal decision</a>
+                                   onclick="jQuery(this).parents('form').submit();">Save ${contestType.proposalName} decision</a>
                             </div>
                         </c:when>
                         <c:otherwise>
                             <p class="submitStatus error">
-                                <strong>You have no permission to advance this proposal.</strong>
+                                <strong>You have no permission to advance this ${contestType.proposalName}.</strong>
                             </p>
                         </c:otherwise>
                     </c:choose>
                     <c:if test="${hasAlreadyBeenPromoted}">
                         <p class="submitStatus error">
-                            <strong>This proposal has already been promoted to the next phase. Thus, changes have no effect.</strong>
+                            <strong>This ${contestType.proposalName} has already been promoted to the next phase. Thus, changes have no effect.</strong>
                         </p>
                     </c:if>
 
@@ -156,7 +156,7 @@
                         </c:when>
                         <c:otherwise>
                             <p class="submitStatus error">
-                                <strong>You have no permission to rate this proposal.</strong>
+                                <strong>You have no permission to rate this ${contestType.proposalName}.</strong>
                             </p>
                         </c:otherwise>
                     </c:choose>

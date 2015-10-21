@@ -38,7 +38,7 @@
     </portlet:resourceURL>
 
     <div id="content" class="${proposalsPermissions.canJudgeActions and !proposalsPermissions.canFellowActions ? 'judgeReadOnly' : ''}">
-        This page is shared by contest Fellows only.  Advisors and Judges will not be able to view this page.
+        This page is shared by ${contestType.contestName} Fellows only.  Advisors and Judges will not be able to view this page.
         <br/>
         <div style="display: inline-block;	float:right; margin-top: 20px;">
             <liferay-ui:icon image="download" url="${resourceUrl}" /><a href="#" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
@@ -49,14 +49,14 @@
             <div class="judging_left">
                 <c:choose>
                     <c:when test="${not proposal.allJudgesReviewFinished}">
-                        Not all judges have completed the review yet or this proposal was not forwarded to any judges.
+                        Not all judges have completed the review yet or this ${contestType.proposalName} was not forwarded to any judges.
                     </c:when>
                     <c:otherwise>
                         <form:form id="fellowRatingForm" action="${saveAdvanceDetailsURL}" method="post"
                                    commandName="proposalAdvancingBean">
                             <form:hidden path="contestPhaseId" />
                             <div class="addpropbox">
-                                <h3>Advance Proposal to Next Round?</h3>
+                                <h3>Advance ${contestType.proposalName} to Next Round?</h3>
                                 <form:select id="advanceDecision" path="advanceDecision" items="${advanceOptions}" itemValue="attributeValue" itemLabel="description"/>
 
                                 <div id="comment-container">
@@ -119,7 +119,7 @@
                                         </c:when>
                                         <c:otherwise>
                                             <p class="submitStatus error">
-                                                <strong>You don't have the required permission to change the status of this proposal.</strong>
+                                                <strong>You don't have the required permission to change the status of this ${contestType.proposalName}.</strong>
                                             </p>
                                         </c:otherwise>
                                     </c:choose>
@@ -135,7 +135,7 @@
                                     </div>
                                     <c:if test="${hasAlreadyBeenPromoted}">
                                         <p class="submitStatus error">
-                                            <strong>This proposal has already been promoted to the next phase. Thus, changes have no effect.</strong>
+                                            <strong>This ${contestType.proposalName} has already been promoted to the next phase. Thus, changes have no effect.</strong>
                                         </p>
                                     </c:if>
 

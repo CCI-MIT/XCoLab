@@ -72,12 +72,12 @@
 						</a></li>
 						<li class=""><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'all');"> Search
-								by proposal
+								by ${contestType.proposalName}
 								<div id="numberOfProposals">&#160;</div>
 						</a></li>
 						<li class=""><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'subscriptionsAndSupporting');">
-								Proposals I support or subscribe to
+							${contestType.proposalNamePlural} I support or subscribe to
 								<div id="numberOfSubscriptionsSupporting">&#160;</div>
 						</a></li>
 					</ul>
@@ -109,7 +109,7 @@
 							<div class="proposal">
 								<a href="#" data-sort-column="Proposals"><!--  --></a>
 								<div class="tooltip">
-									click to sort by<br />number of proposals
+									click to sort by<br />number of ${contestType.proposalNamePlural}
 									<div class="tt-arrow"><!-- --></div>
 								</div>
 							</div>
@@ -160,7 +160,7 @@
 						<div class="blueheaderbar tooltips" data-entity='proposal'>
 							<div class="proposalname">
 								<div style="display: inline-block">
-									<a href="#" data-sort-column="Proposal">Proposal name</a>
+									<a href="#" data-sort-column="Proposal">${contestType.proposalName} name</a>
 									<div class="tooltip">
 										click to sort by name
 										<div class="tt-arrow"><!-- --></div>
@@ -251,7 +251,7 @@
 				</div>
 				<div id="warning"></div>
 				<div class="pickerButtons">
-                	<div class="blue-button btn"><a href="#" id="savePickedProposals">Choose proposal</a></div>
+                	<div class="blue-button btn"><a href="#" id="savePickedProposals">Choose ${contestType.proposalName}</a></div>
                 	<div class="gray-button btn"><a href="#" id="cancelPickedProposals">Cancel</a></div>
 					<div class="clearfix clear"><!--  --></div>
                 </div>

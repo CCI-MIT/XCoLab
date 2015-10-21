@@ -38,7 +38,7 @@
                 </c:forEach>
             </select>
         </c:if>
-        <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
+        <i style="font-size:10pt;">Please rate this ${contestType.proposalName} and write your comments in the box below. All your responses
             are saved when clicking on save.
             <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions or proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
                 Your rating will be visible to the Judging team only.
@@ -72,7 +72,8 @@
     <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
         <script type="text/javascript">
             jQuery(document).ready(function() {
-                jQuery('#judges-select').ddslick({
+                var $judgesSelectElement = jQuery('#judges-select');
+                $judgesSelectElement.ddslick({
                     showSelectedHTML: true,
                     width: 260,
                     imagePosition: "left",
@@ -81,7 +82,7 @@
                     }
                 });
 
-                jQuery('#judges-select').css({'float': 'right'});
+                $judgesSelectElement.css({'float': 'right'});
             });
         </script>
     </c:if>

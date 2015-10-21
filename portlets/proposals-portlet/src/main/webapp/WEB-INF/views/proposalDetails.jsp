@@ -73,7 +73,7 @@
 
 
                         <c:if test="${proposal.wasMovedToContest != null}">
-                            <div>This proposal was moved to: <proposalsPortlet:contestLink contestId="${proposal.wasMovedToContest.contestPK}"
+                            <div>This ${contestType.proposalName} was moved to: <proposalsPortlet:contestLink contestId="${proposal.wasMovedToContest.contestPK}"
                                                                                  text="${proposal.wasMovedToContest.contestShortName}"/></div>
                         </c:if>
 
@@ -142,7 +142,7 @@
 	<div id="copyProposalContainer" style="display: none;">
     	<div class="popup-wrap p1" id="copyProposalPopup">
 			<div class="popup">
-				<h4>Please choose contest to which you'd like to copy this proposal</h4>
+				<h4>Please choose ${contestType.contestName} to which you'd like to copy this ${contestType.proposalName}</h4>
 				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
 					<div id="copyProposalContests"><!--  --></div>
 					<center>
@@ -162,7 +162,7 @@
                 <div>
                     <p style="color: #545454; margin-top: 5px;">You just voted for ${proposal.name}.
                         <c:if test="${not empty votingDeadline}">The Voting Period ends ${votingDeadline}.</c:if> </p>
-                    <p style="color: #545454; margin-top: 5px;">Vote for more proposals <a href="/web/guest/plans">here</a>.</p>
+                    <p style="color: #545454; margin-top: 5px;">Vote for more ${contestType.proposalNamePlural} <a href="/web/guest/plans">here</a>.</p>
                     <h4 style="color: #30a3fb;">Share your vote:</h4>
                     <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="align: center; width: 205px;">
                         <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>

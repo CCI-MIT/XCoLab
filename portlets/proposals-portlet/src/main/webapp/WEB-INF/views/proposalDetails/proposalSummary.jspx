@@ -29,10 +29,11 @@
 
 
                                     <a href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-                                        ${proposalsDisplayPermissions.canSeeVoteButton ? 'VOTE for proposal' : 'RETRACT vote'}
+                                        <c:set var="voteForText" value="VOTE for ${contestType.proposalName}" />
+                                        ${proposalsDisplayPermissions.canSeeVoteButton ? voteForText  : 'RETRACT vote'}
                                     </a>
                                 </div>
-                                <p style="margin:15px 0 15px 0;font-size:17px">You receive one vote per contest</p>
+                                <p style="margin:15px 0 15px 0;font-size:17px">You receive one vote per ${contestType.contestName}</p>
                             </c:if>
                             </div>
                             <div class="question"><a href="/web/guest/resources/-/wiki/Main/contest+rules#Voting" target="_blank">
@@ -51,7 +52,8 @@
 								<portlet:param name="action" value="supportProposalAction" />
 							</portlet:actionURL>
                     		<a href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-								${proposalsDisplayPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
+                                <c:set var="supportText" value="Support ${contestType.proposalName}" />
+								${proposalsDisplayPermissions.canSeeSupportButton ? supportText : 'Retract support' }
 							</a>
 						</c:if>
                     </div>
@@ -108,7 +110,7 @@
             </div>
         </c:if>
 
-        <h5 class="topbox">Proposal Summary</h5>
+        <h5 class="topbox">${contestType.proposalName} Summary</h5>
   
         <div class="prop-title addprop">
             ${proposal.name}
@@ -118,11 +120,11 @@
         <div class="prop-settings">
             <c:choose>
                 <c:when test="${proposal.open }">
-                    <strong>Public Proposal:</strong> Anyone will be able to edit this proposal. To change this, click Save below and open the proposal’s Admin tab. &#160;
+                    <strong>Public ${contestType.proposalName}:</strong> Anyone will be able to edit this ${contestType.proposalName}. To change this, click Save below and open the ${contestType.proposalName}’s Admin tab. &#160;
                 </c:when>
                 <c:otherwise>
-                <strong>Team Proposal:</strong> Only members that you invite as contributors will be able to edit this proposal.
-                    To open this proposal for anyone to edit, click Save below and open the proposal’s Admin tab. &#160;
+                <strong>Team ${contestType.proposalName}:</strong> Only members that you invite as contributors will be able to edit this ${contestType.proposalName}.
+                    To open this ${contestType.proposalName} for anyone to edit, click Save below and open the ${contestType.proposalName}’s Admin tab. &#160;
                 </c:otherwise>
             </c:choose>
 
@@ -146,14 +148,14 @@
         </div>
 
         <div class="prop-contest">
-            <strong>Contest: </strong>
+            <strong>${contestType.contestName}: </strong>
             <proposalsPortlet:contestLink contestId="${contest.contestPK }" text="${ contest.contestShortName }"/><br />
             ${contest.contestName}
         </div>
 
         <c:if test="${not empty linkedProposalList}">
             <div class="prop-contest">
-                <strong>Related Proposals: </strong> <br />
+                <strong>Related ${contestType.proposalNamePlural}: </strong> <br />
                 <c:forEach var="linkedProposal" items="${linkedProposalList}">
                     <li>
                     <collab:proposalLink proposalId="${linkedProposal.proposalId }" contestId="${linkedProposal.contestPK}" text="${linkedProposal.name }" /> <br />

@@ -25,7 +25,7 @@
 				</div>
 				<div class="proposal-title">
 					<div class="prop-description">
-						Proposal for&amp;nbsp;
+						${contestType.proposalName} for&amp;nbsp;
 						<proposalsPortlet:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName} " />
 						by&amp;nbsp;
 						<c:choose>
@@ -42,7 +42,7 @@
 			</div>
 			<c:if test="${not proposal.visible }">
 				<h3 class='portlet-msg-error'>
-					This proposal has been deleted!
+					This ${contestType.proposalName} has been deleted!
 				</h3>
 			</c:if>
 			<div class="prop-tabs">

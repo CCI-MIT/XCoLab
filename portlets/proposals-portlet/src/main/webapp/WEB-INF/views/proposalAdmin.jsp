@@ -27,7 +27,7 @@
         
 		<c:if test="${proposalsPermissions.canAdminProposal }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-            	<strong>This proposal can be edited by:</strong>
+            	<strong>This ${contestType.proposalName} can be edited by:</strong>
             	<div>            		
             		<portlet:actionURL var="deleteProposalURL">
                     	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
@@ -55,7 +55,7 @@
         
         <c:if test="${proposalsPermissions.canAssignRibbon }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-            	<strong>Proposal ribbon in contest phase</strong>
+            	<strong>${contestType.proposalName} ribbon in contest phase</strong>
             	<div><!--  -->
             		<portlet:actionURL var="assignRibbonURL">
                     	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
@@ -102,7 +102,7 @@
             		<form action="${deleteProposalURL }" method="post" id="deleteProposalForm">
             			<div class="blue-button">
                 			<a href="javascript:;" onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; } jQuery('#deleteProposalForm').submit();">
-                    		    DELETE proposal
+                    		    DELETE ${contestType.proposalName}
                     		</a>
                     	</div>
             		</form>
@@ -125,11 +125,11 @@
 
 			<form action="${promoteProposalURL }" method="post">
 				<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-					<strong>Promote proposal to latest contest phase</strong>
+					<strong>Promote ${contestType.proposalName} to latest contest phase</strong>
 					<div>
 						<div class="blue-button">
 							<a href="javascript:;" onclick="jQuery(this).parents('form').submit();">
-								<span>Promote</span> proposal
+								<span>Promote</span> ${contestType.proposalName}
 							</a>
 						</div>
 					</div>
@@ -139,12 +139,12 @@
 
         <c:if test="${ proposalsPermissions.canMoveProposal }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-            	<strong>Move proposal to different contest</strong>
+            	<strong>Move ${contestType.proposalName} to different ${contestType.contestName}</strong>
             	<div>            		
 					<div class="blue-button">
 						<a href="javascript:;"
 							onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true,true)">
-							<span>Move</span> this proposal
+							<span>Move</span> this ${contestType.proposalName}
 						</a>
 					</div>
 				</div>
@@ -153,12 +153,12 @@
 
             <c:if test="${ proposalsPermissions.canCopyProposal }">
                 <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-                    <strong>Copy proposal to different contest</strong>
+                    <strong>Copy ${contestType.proposalName} to different ${contestType.contestName}</strong>
                     <div>
                         <div class="blue-button">
                             <a href="javascript:;"
                                onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true,false)">
-                                <span>Copy</span> this proposal
+                                <span>Copy</span> this ${contestType.proposalName}
                             </a>
                         </div>
                     </div>
@@ -237,7 +237,7 @@
             		</a>
         		</div>
 			
-				<h4>Please choose contest to which you'd like to copy this proposal</h4>
+				<h4>Please choose ${contestType.contestName} to which you'd like to copy this proposal</h4>
 				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
 					<div id="copyProposalContests"><!--  --></div>
 					<center>

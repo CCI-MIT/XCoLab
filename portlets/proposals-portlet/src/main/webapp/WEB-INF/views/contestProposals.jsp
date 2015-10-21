@@ -23,7 +23,7 @@
         </div>
         <div class="headline subhead">
             <h2>
-                <span>${fn:length(proposals.proposals)}</span> proposals
+                <span>${fn:length(proposals.proposals)}</span> ${contestType.proposalNamePlural}
             </h2>
             <div class="right">
                 <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
@@ -34,7 +34,7 @@
                         </portlet:renderURL>
                         <a href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
                            onclick="if(!deferUntilLoginTargeted('${createProposalURL}')) return false;">
-                            <span>CREATE</span> proposal
+                            <span>CREATE</span> ${contestType.proposalName}
                         </a>
                     </div>
                 </c:if>
@@ -54,7 +54,7 @@
                         <portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
                         <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'NAME' ? not sortFilterPage.sortAscending : true }" />
                     </portlet:renderURL>
-                    <a href="${sortURL }">Proposal name</a>
+                    <a href="${sortURL }">${contestType.proposalName} name</a>
                     <div class="tooltip">
                         click to sort by name
                         <div class="tt-arrow"><!-- --></div>

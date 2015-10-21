@@ -20,8 +20,8 @@
             <div class="count">
                 <div class="prop"><strong>${contest.proposalsCount}</strong>
                     <c:choose>
-                        <c:when test="${contest.proposalsCount == 1}"> proposal</c:when>
-                        <c:otherwise> proposals</c:otherwise>
+                        <c:when test="${contest.proposalsCount == 1}"> ${contestType.proposalName}</c:when>
+                        <c:otherwise> ${contestType.proposalNamePlural}</c:otherwise>
                     </c:choose>
                 </div>
 

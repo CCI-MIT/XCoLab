@@ -16,7 +16,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
         	<a href="#" class="showall" style="display: inline;">Expand All</a>
         	<a href="#" class="hideall" style="display: none;">Collapse All</a>
         </div>
-        <div class="contest-count">Contests <span class="count">0</span></div>
+        <div class="contest-count">${contestType.contestNamePlural} <span class="count">0</span></div>
         
         <ul class="level0 accordion">
         <c:forEach var="ontologySpace" items="${ontologySpaces }" varStatus="status">
@@ -92,7 +92,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
                 </span>)
             </div>
         </div>
-        <div class="prop-head">Proposals</div>
+        <div class="prop-head">${contestType.proposalNamePlural}</div>
         <div class="contest-list">
        		<!--  -->
         </div> <!-- / contest-list -->

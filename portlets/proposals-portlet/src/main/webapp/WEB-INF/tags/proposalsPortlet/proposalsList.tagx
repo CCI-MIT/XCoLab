@@ -100,13 +100,13 @@
                             <div class="tooltip">
                                 <c:choose>
                                     <c:when test="${proposal.screeningStatus.statusValue == 0}">
-                                        Fellows have not decided yet if the proposal will be forwarded to judges.
+                                        Fellows have not decided yet if the ${contestType.proposalName} will be forwarded to judges.
                                     </c:when>
                                     <c:when test="${proposal.screeningStatus.statusValue == 1}">
-                                        Fellows decided that the proposal will not proceed to next round.
+                                        Fellows decided that the ${contestType.proposalName} will not proceed to next round.
                                     </c:when>
                                     <c:otherwise>
-                                        Fellows decided that the proposal should be forwarded to judges.
+                                        Fellows decided that the ${contestType.proposalName} should be forwarded to judges.
                                     </c:otherwise>
                                 </c:choose>
                             </div>
@@ -116,10 +116,10 @@
                         <div class="tooltip">
                             <c:choose>
                                 <c:when test="${proposal.judgeStatus.statusValue == 0}">
-                                    The judges have not rated this proposal yet.
+                                    The judges have not rated this ${contestType.proposalName} yet.
                                 </c:when>
                                 <c:when test="${proposal.judgeStatus.statusValue == 1}">
-                                    Fellows decided that the proposal will not proceed to next round.
+                                    Fellows decided that the ${contestType.proposalName} will not proceed to next round.
                                 </c:when>
                                 <c:otherwise>
                                     All judges have completed the reviewing process.
@@ -131,13 +131,13 @@
                         <div class="tooltip">
                             <c:choose>
                                 <c:when test="${proposal.overallStatus.statusValue == 0}">
-                                    The proposal review has not been done yet.
+                                    The ${contestType.proposalName} review has not been done yet.
                                 </c:when>
                                 <c:when test="${proposal.overallStatus.statusValue == 1}">
-                                    Proposal review has been prepared and proposal will not advance.
+                                    ${contestType.proposalName} review has been prepared and ${contestType.proposalName} will not advance.
                                 </c:when>
                                 <c:otherwise>
-                                    Proposal review has been prepared and proposal will advance.
+                                    ${contestType.proposalName} review has been prepared and ${contestType.proposalName} will advance.
                                 </c:otherwise>
                             </c:choose>
                         </div>
