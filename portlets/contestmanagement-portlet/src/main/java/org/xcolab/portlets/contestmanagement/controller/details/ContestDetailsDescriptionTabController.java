@@ -1,11 +1,12 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
-import javax.portlet.*;
-import javax.validation.Valid;
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.xcolab.enums.ContestTier;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
@@ -34,6 +34,11 @@ import org.xcolab.utils.emailnotification.ContestCreationNotification;
 import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,6 +71,11 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     @ModelAttribute("contestLevelSelectionItems")
     public List<LabelValue> populateContestLevelSelectionItems(){
         return getContestLevelSelectionItems();
+    }
+
+    @ModelAttribute("contestTypeSelectionItems")
+    public List<LabelValue> populateContestTypeSelectionItems(){
+        return getContestTypeSelectionItems();
     }
 
     @ModelAttribute("scheduleTemplateSelectionItems")
@@ -157,10 +167,24 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         List<LabelValue> selectItems = new ArrayList<>();
         try {
             for (ContestTier contestLevel : ContestTier.values()) {
-                selectItems.add(new LabelValue(new Long(contestLevel.getTierType()), contestLevel.getTierName()));
+                selectItems.add(new LabelValue(contestLevel.getTierType(), contestLevel.getTierName()));
             }
         } catch (Exception e){
             _log.warn("Could not get contest level selection items: " + e);
+        }
+        return selectItems;
+    }
+
+    private List<LabelValue> getContestTypeSelectionItems(){
+        List<LabelValue> selectItems = new ArrayList<>();
+        try {
+            for (ContestType contestType : ContestTypeLocalServiceUtil.getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+                selectItems.add(new LabelValue(contestType.getId(),
+                        String.format("%d - %s with %s", contestType.getId(),
+                                contestType.getContestName(), contestType.getProposalNamePlural())));
+            }
+        } catch (SystemException e){
+            _log.warn("Could not get contest type selection items: " + e);
         }
         return selectItems;
     }

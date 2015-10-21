@@ -2,6 +2,8 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
@@ -42,6 +44,9 @@ public class ContestDescriptionBean implements Serializable{
     @NotNull(message = "A contest tier must be selected.")
     private Long contestTier;
 
+    @NotNull(message = "A contest type must be selected.")
+    private Long contestType;
+
     public ContestDescriptionBean() {
     }
 
@@ -55,6 +60,7 @@ public class ContestDescriptionBean implements Serializable{
             planTemplateId = contest.getPlanTemplateId();
             scheduleTemplateId = contest.getContestScheduleId();
             contestTier = contest.getContestTier();
+            contestType = contest.getContestTypeId();
             contestLogoId = contest.getContestLogoId();
             emailTemplateUrl = contest.getEmailTemplateUrl();
             sponsorLogoId = contest.getSponsorLogoId();
@@ -149,6 +155,14 @@ public class ContestDescriptionBean implements Serializable{
         this.contestTier = contestTier;
     }
 
+    public Long getContestType() {
+        return contestType;
+    }
+
+    public void setContestType(Long contestType) {
+        this.contestType = contestType;
+    }
+
     private void updateContestDescription(Contest contest) throws Exception{
         contest.setContestName(contestName);
         contest.setEmailTemplateUrl(emailTemplateUrl);
@@ -158,6 +172,7 @@ public class ContestDescriptionBean implements Serializable{
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setContestTier(contestTier);
+        contest.setContestTypeId(contestType);
         contest.persist();
     }
 

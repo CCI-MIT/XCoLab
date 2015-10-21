@@ -203,6 +203,23 @@
 			</div>
 		</div>
 
+		<div class="addpropbox">
+			<label>
+				<strong>Contest type</strong>
+				<a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+			</label>
+			<div class="addprophelp">Select the type of this contest. Types determine the name of the contest-entity and the proposal-entities and where they will appear. If you have a question about which type to select, please submit a comment below for the CoLab team.</div>
+			<div class="clearfix"><!-- --></div>
+			<div class="addpropInputContainer">
+				<form:select path="contestType">
+					<form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
+				</form:select>
+				<div class="reg_errors"><!--  -->
+					<form:errors cssClass="alert alert-error" path="contestType" />
+				</div>
+			</div>
+		</div>
+
 	</form:form>
 	</div>
 

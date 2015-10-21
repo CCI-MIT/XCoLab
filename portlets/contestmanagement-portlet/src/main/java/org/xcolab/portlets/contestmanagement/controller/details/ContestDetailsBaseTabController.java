@@ -4,7 +4,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.ui.Model;
@@ -15,7 +14,6 @@ import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import java.util.List;
 
@@ -45,20 +43,16 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         try {
             initContest(request);
             return contestWrapper;
-        } catch (Exception e){
+        } catch (SystemException | PortalException e) {
             _log.warn("Could not get contest: ", e);
         }
         return null;
     }
 
-    private void initContest(PortletRequest request) throws Exception{
-            Long contestId = getContestIdFromRequest(request);
-        if (contestId != null) {
-            contest = ContestLocalServiceUtil.getContest(contestId);
-            contestWrapper = new ContestWrapper(contest);
-        } else {
-            throw new Exception("Severe. No contest Id provided.");
-        }
+    private void initContest(PortletRequest request) throws SystemException, PortalException {
+        Long contestId = getContestIdFromRequest(request);
+        contest = ContestLocalServiceUtil.getContest(contestId);
+        contestWrapper = new ContestWrapper(contest);
     }
 
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)

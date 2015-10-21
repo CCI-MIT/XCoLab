@@ -88,8 +88,8 @@ public class ContestsIndexController extends BaseProposalsController {
             viewType = VIEW_TYPE_DEFAULT;
         }
         List<ContestWrapper> contests = new ArrayList<>();
-        List<Contest> contestsToWrap = showAllContests ? ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE) :
-        	ContestLocalServiceUtil.getContestsByActivePrivate(showActiveContests, false);
+        List<Contest> contestsToWrap = showAllContests ? ContestLocalServiceUtil.getContestsByContestType(contestType.getId()) :
+        	ContestLocalServiceUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId());
         
         for (Contest contest: contestsToWrap) {
         	if (! contest.isContestPrivate())
