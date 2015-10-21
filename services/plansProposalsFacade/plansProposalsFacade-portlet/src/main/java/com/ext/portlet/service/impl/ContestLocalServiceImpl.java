@@ -90,7 +90,6 @@ import org.xcolab.utils.judging.ProposalRatingWrapper;
 import org.xcolab.utils.judging.ProposalReview;
 import org.xcolab.utils.judging.ProposalReviewCsvExporter;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -138,7 +137,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
     public Contest getContestByActiveFlag(boolean contestActive) throws SystemException, NoSuchContestException {
-        List<Contest> contests = contestPersistence.findByContestActive(contestActive);
+        List<Contest> contests = contestPersistence.findByActive(contestActive);
         if (contests.isEmpty()) {
         	throw new NoSuchContestException();
         }
@@ -236,7 +235,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
     
     public List<Contest> findByActive(boolean active) throws SystemException {
-        return contestPersistence.findByContestActive(active);
+        return contestPersistence.findByActive(active);
     }
     
     public List<Contest> findByActiveFeatured(boolean active, boolean featured) throws SystemException {
@@ -578,8 +577,13 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
     }
     
-    public List<Contest> getContestsByActivePrivate(boolean active, boolean privateContest) throws SystemException {
-    	return contestPersistence.findByContestActivecontestPrivate(active, privateContest);	
+    public List<Contest> getContestsByActivePrivate(boolean contestActive, boolean contestPrivate) throws SystemException {
+    	return contestPersistence.findByActivePrivate(contestActive, contestPrivate);
+    }
+
+    public List<Contest> getContestsByActivePrivateType(boolean contestActive, boolean contestPrivate, long contestTypeId)
+            throws SystemException {
+        return contestPersistence.findByActivePrivateType(contestActive, contestPrivate, contestTypeId);
     }
 
     public List<Contest> getContestsMatchingOntologyTerms(List<OntologyTerm> ontologyTerms) throws PortalException, SystemException{
@@ -647,7 +651,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         if (ContestTier.getContestTierByTierType(contestTierType) == ContestTier.NONE) {
             return contestPersistence.findAll();
         }
-        return contestPersistence.findByContestTier(contestTierType);
+        return contestPersistence.findByTier(contestTierType);
+    }
+
+    public List<Contest> getContestsMatchingTierInType(long contestTierType, long contestTypeId) throws PortalException, SystemException {
+        if (ContestTier.getContestTierByTierType(contestTierType) == ContestTier.NONE) {
+            return contestPersistence.findByContestType(contestTypeId);
+        }
+        return contestPersistence.findByTierType(contestTierType, contestTypeId);
     }
 
     /**
@@ -1019,6 +1030,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) throws PortalException, SystemException {
         ImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);
         return impactTemplateMaxFocusAreaPersistence.findByFocusAreaListId(focusAreaList.getFocusAreaListId());
+    }
+
+    public List<Contest> getContestsByContestType(Long contestTypeId) throws SystemException {
+        return contestPersistence.findByContestType(contestTypeId);
     }
 
     public List<Contest> getContestsByTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTermIds)

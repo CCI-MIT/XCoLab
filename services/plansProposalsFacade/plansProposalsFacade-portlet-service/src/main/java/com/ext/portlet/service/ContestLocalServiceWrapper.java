@@ -575,10 +575,18 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 
     @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
-        boolean active, boolean privateContest)
+        boolean contestActive, boolean contestPrivate)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.getContestsByActivePrivate(active,
-            privateContest);
+        return _contestLocalService.getContestsByActivePrivate(contestActive,
+            contestPrivate);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivateType(
+        boolean contestActive, boolean contestPrivate, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestsByActivePrivateType(contestActive,
+            contestPrivate, contestTypeId);
     }
 
     @Override
@@ -604,6 +612,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestsMatchingTier(contestTierType);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingTierInType(
+        long contestTierType, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestsMatchingTierInType(contestTierType,
+            contestTypeId);
     }
 
     /**
@@ -769,6 +786,13 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestImpactFocusAreas(contest);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByContestType(
+        java.lang.Long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestsByContestType(contestTypeId);
     }
 
     @Override

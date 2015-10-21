@@ -530,9 +530,18 @@ public class ContestLocalServiceUtil {
     }
 
     public static java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
-        boolean active, boolean privateContest)
+        boolean contestActive, boolean contestPrivate)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getContestsByActivePrivate(active, privateContest);
+        return getService()
+                   .getContestsByActivePrivate(contestActive, contestPrivate);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivateType(
+        boolean contestActive, boolean contestPrivate, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getContestsByActivePrivateType(contestActive,
+            contestPrivate, contestTypeId);
     }
 
     public static java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
@@ -556,6 +565,14 @@ public class ContestLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestsMatchingTier(contestTierType);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsMatchingTierInType(
+        long contestTierType, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getContestsMatchingTierInType(contestTierType, contestTypeId);
     }
 
     /**
@@ -709,6 +726,12 @@ public class ContestLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestImpactFocusAreas(contest);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsByContestType(
+        java.lang.Long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestsByContestType(contestTypeId);
     }
 
     public static java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
