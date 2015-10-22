@@ -66,21 +66,11 @@ public class ContestWrapper implements Serializable {
     public boolean isContestActive() {
         return contest.getContestActive();
     }
-    
-    public Long getModelId() throws PortalException, SystemException {
-        
-        return ContestLocalServiceUtil.getPlanType(contest).getDefaultModelId();
-    }
-    
-    
+
     public Long getContestId() {
         return contest.getContestPK();
     }
-    
-    public boolean getHasModel() throws PortalException, SystemException {
-        Long modelId = ContestLocalServiceUtil.getPlanType(contest).getDefaultModelId();
-        return modelId != null && modelId > 0;
-    }
+
     
     public long getProposalsCount() throws SystemException, PortalException {
         return ContestLocalServiceUtil.getProposalsCount(contest);

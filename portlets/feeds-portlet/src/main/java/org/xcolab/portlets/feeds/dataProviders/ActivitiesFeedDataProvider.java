@@ -5,7 +5,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -21,7 +20,11 @@ import org.xcolab.portlets.feeds.wrappers.SocialActivityWrapper;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
@@ -32,13 +35,13 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
 		HttpServletRequest originalRequest = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
 
-		List<SocialActivityWrapper >activities = new ArrayList<SocialActivityWrapper>();
+		List<SocialActivityWrapper >activities = new ArrayList<>();
 		int lastDaysBetween = -1;
 		Date now = new Date();
 		int i = 0;
 		Map<String, String[]> parameters = request.getParameterMap();
 		long filterUserId = 0L;
-		User filterUser = null;
+		User filterUser;
 		final int pageSize = feedsPreferences.getFeedSize();
 		String userIdStr = null;
 		if (parameters.containsKey("userId")) {
@@ -54,9 +57,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 				model.addAttribute("filterUserId", filterUserId);
 				model.addAttribute("filterUser", filterUser);
 			}
-			catch (Throwable t) {
-				// ignore
-			}
+			catch (Throwable ignored) { }
 		}
 
         List<SocialActivity> windowedActivities;
@@ -91,16 +92,12 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
 		model.addAttribute("activities", activities);
 
-
         if (filterUserId == 0) {
             model.addAttribute("isLastPage", ((pageSize * (sortFilterPage.getPage() + 1)) >= ActivityUtil.getAllActivitiesCount()));
         } else {
             model.addAttribute("isLastPage", ((pageSize * (sortFilterPage.getPage() + 1) >= ActivityUtil.getActivitiesCount(filterUserId))));
         }
 
-
 		return "activities";
-
 	}
-
 }

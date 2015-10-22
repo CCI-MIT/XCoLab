@@ -166,11 +166,6 @@ public class AdminTasksBean {
         return null;
     }
 
-	public String syncSupporters() throws SystemException, PortalException {
-		new SyncProposalSupportersBetweenPhasesTask().syncSupporters();
-		return null;
-	}
-
 	public void addMissingCommentsSocialActivities() throws SystemException,
 			PortalException {
 

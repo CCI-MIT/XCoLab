@@ -6,29 +6,24 @@
 
 package org.xcolab.hooks.climatecolab;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.facebook.FacebookConnectUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Theme;
 import com.liferay.portal.service.ThemeLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EXTServicePreAction extends Action {
     private static final String COLLABORATORIUM_THEME_NAME = "climatecolab-theme";
@@ -59,20 +54,6 @@ public class EXTServicePreAction extends Action {
             try {
                 Contest contest = ContestLocalServiceUtil.getContest(Long.parseLong(contestIdStr));
                 vmVariables.put("collab_contest", contest);
-            } catch (NumberFormatException e) {
-                _log.error("An exception has been thrown when trying to parse contest id " + contestIdStr, e);
-            } catch (PortalException e) {
-                _log.error("An exception has been thrown when loading contest with id " + contestIdStr, e);
-            } catch (SystemException e) {
-                _log.error("An exception has been thrown when loading contest with id " + contestIdStr, e);
-            }
-        }
-
-        String planIdStr = req.getParameter("_collab_paramplanId");
-        if (planIdStr != null) {
-            try {
-                PlanItem plan = PlanItemLocalServiceUtil.getPlan(Long.parseLong(planIdStr));
-                vmVariables.put("collab_plan", plan);
             } catch (NumberFormatException e) {
                 _log.error("An exception has been thrown when trying to parse contest id " + contestIdStr, e);
             } catch (PortalException e) {

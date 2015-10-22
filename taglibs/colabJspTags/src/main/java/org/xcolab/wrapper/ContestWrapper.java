@@ -1,15 +1,35 @@
 package org.xcolab.wrapper;
 
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseType;
+import com.ext.portlet.model.ContestTeamMember;
+import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
-import org.xcolab.enums.MemberRole;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class ContestWrapper {
     private final static Log _log = LogFactoryUtil.getLog(ContestWrapper.class);
@@ -103,22 +123,6 @@ public class ContestWrapper {
 
     public void setContestPositionsDescription(String ContestPositionsDescription) {
         contest.setContestPositionsDescription(ContestPositionsDescription);
-    }
-
-    public String getDefaultPlanDescription() {
-        return contest.getDefaultPlanDescription();
-    }
-
-    public void setDefaultPlanDescription(String defaultPlanDescription) {
-        contest.setDefaultPlanDescription(defaultPlanDescription);
-    }
-
-    public long getPlanTypeId() {
-        return contest.getPlanTypeId();
-    }
-
-    public void setPlanTypeId(long PlanTypeId) {
-        contest.setPlanTypeId(PlanTypeId);
     }
 
     public Date getCreated() {
@@ -437,10 +441,9 @@ public class ContestWrapper {
         } catch (IllegalArgumentException | NullPointerException | SystemException | PortalException e) {
             return false;
         }
-        if (type == null || activePhase == null || contestPhase.getContestPhasePK() != activePhase.getContestPhasePK()) {
-            return false;
-        }
-        return  ("COMPLETED".equals(type.getStatus()));
+        return !(type == null || activePhase == null
+                    || contestPhase.getContestPhasePK() != activePhase.getContestPhasePK()
+                ) && ("COMPLETED".equals(type.getStatus()));
     }
 
 
@@ -458,7 +461,7 @@ public class ContestWrapper {
                 }
                 faCache.put(fa.getId(), fa);
             }
-            List<OntologyTerm> terms = new ArrayList<OntologyTerm>();
+            List<OntologyTerm> terms = new ArrayList<>();
             StringBuilder joinedTerms = new StringBuilder();
             for (OntologyTerm t : FocusAreaLocalServiceUtil.getTerms(faCache.get(contest.getFocusAreaId()))) {
                 if (OntologyTermLocalServiceUtil.getSpace(t).getName()
@@ -476,7 +479,7 @@ public class ContestWrapper {
 
     public List<ContestPhaseWrapper> getPhases() throws SystemException, PortalException {
         if (phases == null) {
-            phases = new ArrayList<ContestPhaseWrapper>();
+            phases = new ArrayList<>();
             for (ContestPhase phase : ContestLocalServiceUtil.getAllPhases(contest)) {
                 phases.add(new ContestPhaseWrapper(phase));
             }
@@ -486,7 +489,7 @@ public class ContestWrapper {
 
     public List<ContestPhaseWrapper> getVisiblePhases() throws SystemException, PortalException {
         if (visiblePhases == null) {
-            visiblePhases = new ArrayList<ContestPhaseWrapper>();
+            visiblePhases = new ArrayList<>();
             for (ContestPhase phase : ContestLocalServiceUtil.getVisiblePhases(contest)) {
                 visiblePhases.add(new ContestPhaseWrapper(phase));
             }
@@ -500,12 +503,12 @@ public class ContestWrapper {
 
     public List<ContestTeamRoleWrapper> getContestTeamMembersByRole() throws PortalException, SystemException {
         if (contestTeamMembersByRole == null) {
-            contestTeamMembersByRole = new ArrayList<ContestTeamRoleWrapper>();
-            Map<String, List<User>> teamRoleUsersMap = new TreeMap<String, List<User>>();
+            contestTeamMembersByRole = new ArrayList<>();
+            Map<String, List<User>> teamRoleUsersMap = new TreeMap<>();
             for (ContestTeamMember ctm : ContestLocalServiceUtil.getTeamMembers(contest)) {
                 List<User> roleUsers = teamRoleUsersMap.get(ctm.getRole());
                 if (roleUsers == null) {
-                    roleUsers = new ArrayList<User>();
+                    roleUsers = new ArrayList<>();
                     teamRoleUsersMap.put(ctm.getRole(), roleUsers);
                 }
                 try {

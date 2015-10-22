@@ -192,22 +192,6 @@ public class ContestWrapper {
         contest.setContestPositionsDescription(ContestPositionsDescription);
     }
 
-    public String getDefaultPlanDescription() {
-        return contest.getDefaultPlanDescription();
-    }
-
-    public void setDefaultPlanDescription(String defaultPlanDescription) {
-        contest.setDefaultPlanDescription(defaultPlanDescription);
-    }
-
-    public long getPlanTypeId() {
-        return contest.getPlanTypeId();
-    }
-
-    public void setPlanTypeId(long PlanTypeId) {
-        contest.setPlanTypeId(PlanTypeId);
-    }
-
     public Date getCreated() {
         return contest.getCreated();
     }
@@ -537,12 +521,10 @@ public class ContestWrapper {
         } catch (IllegalArgumentException | NullPointerException | SystemException | PortalException e) {
             return false;
         }
-        if (type == null || activePhase == null || contestPhase.getContestPhasePK() != activePhase.getContestPhasePK()) {
-            return false;
-        }
-        return  ("COMPLETED".equals(type.getStatus()));
+        return !(type == null || activePhase == null
+                    || contestPhase.getContestPhasePK() != activePhase.getContestPhasePK()
+                ) && ("COMPLETED".equals(type.getStatus()));
     }
-
 
     private List<OntologyTerm> getTermFromSpace(String space)
             throws PortalException, SystemException {

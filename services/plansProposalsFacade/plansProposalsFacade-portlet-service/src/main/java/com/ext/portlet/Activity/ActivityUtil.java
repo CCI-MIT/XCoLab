@@ -6,9 +6,6 @@
 
 package com.ext.portlet.Activity;
 
-import java.util.*;
-
-import org.xcolab.enums.ColabConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -34,20 +31,27 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+import org.xcolab.enums.ColabConstants;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class ActivityUtil {
 
     private static Log _log = LogFactoryUtil.getLog(ActivityUtil.class);
 
-    public static final long AGGREGATION_TIME_WINDOW = 1000 * 60 * 60 * 1l; // 1h
+    public static final long AGGREGATION_TIME_WINDOW = (long) 1000 * 60 * 60; // 1h
 
     private static final String ADMINISTRATOR_ROLE_NAME = "Administrator";
 
     public static List<SocialActivity> retrieveAllActivities(int pagestart, int next) throws SystemException {
-
-        List<SocialActivity> activities = SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
-
-        return activities;
+        return SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
     }
 
     public static List<SocialActivity> retrieveWindowedActivities(int start, int end) throws SystemException, PortalException {
@@ -82,7 +86,6 @@ public class ActivityUtil {
                 _log.error(e);
             }
         }
-
         return aggregatedSocialActivities;
     }
 
@@ -103,11 +106,7 @@ public class ActivityUtil {
             }
             activitiesMap.get(getSocialActivityKey(a)).add(a);
         }
-
-        List<SocialActivity> aggregatedActivities = clusterActivities(activitiesMap);
-
-
-        return aggregatedActivities;
+        return clusterActivities(activitiesMap);
     }
 
 
@@ -240,7 +239,7 @@ public class ActivityUtil {
     private static List<Long> getAdministratorIds() throws SystemException, PortalException {
         Role r = RoleLocalServiceUtil.getRole(ColabConstants.COLAB_COMPANY_ID, ADMINISTRATOR_ROLE_NAME);
 
-        List<Long> administratorsIds = new ArrayList<Long>();
+        List<Long> administratorsIds = new ArrayList<>();
         for (long userId : UserLocalServiceUtil.getRoleUserIds(r.getRoleId())) {
             administratorsIds.add(userId);
         }
@@ -251,7 +250,7 @@ public class ActivityUtil {
     public static HashMap<Long,Integer> getUsersActivityCount() throws SystemException, PortalException {
 
         List<User> liferayUsers = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
-        HashMap<Long, Integer> activityCounts = new HashMap<Long, Integer>();
+        HashMap<Long, Integer> activityCounts = new HashMap<>();
 
         for(User u:liferayUsers)
         {
@@ -260,6 +259,5 @@ public class ActivityUtil {
         }
 
         return activityCounts;
-
-}
+    }
 }

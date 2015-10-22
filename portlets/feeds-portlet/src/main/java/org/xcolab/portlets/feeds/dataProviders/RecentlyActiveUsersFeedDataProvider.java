@@ -1,17 +1,10 @@
 package org.xcolab.portlets.feeds.dataProviders;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.prefs.PreferenceChangeEvent;
-
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-
+import com.ext.portlet.Activity.ActivityUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portlet.social.model.SocialActivity;
 import org.springframework.ui.Model;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.enums.MemberRole;
@@ -21,11 +14,12 @@ import org.xcolab.portlets.feeds.Helper;
 import org.xcolab.portlets.feeds.wrappers.MemberWrapper;
 import org.xcolab.portlets.feeds.wrappers.SocialActivityWrapper;
 
-import com.ext.portlet.Activity.ActivityUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portlet.social.model.SocialActivity;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class RecentlyActiveUsersFeedDataProvider implements
 		FeedTypeDataProvider {
@@ -36,16 +30,11 @@ public class RecentlyActiveUsersFeedDataProvider implements
 			FeedsPreferences feedsPreferences, Model model)
 			throws SystemException, PortalException {
 
-		
 		List<MemberWrapper> recentlyActiveUsers = new ArrayList<>();
-		recentlyActiveUsers = new ArrayList<MemberWrapper>();
-		Set<Long> usersAlreadyAdded = new HashSet<Long>();
+		Set<Long> usersAlreadyAdded = new HashSet<>();
 		int activitiesCount = ActivityUtil.getAllActivitiesCount();
 		int currentStart = 0;
 		int feedSize = feedsPreferences.getFeedSize();
-
-		int lastDaysBetween = -1;
-		Date now = new Date();
 
 		while (usersAlreadyAdded.size() < feedSize
 				&& currentStart < activitiesCount) {
@@ -62,11 +51,7 @@ public class RecentlyActiveUsersFeedDataProvider implements
 
 				usersAlreadyAdded.add(activity.getUserId());
 
-				int curDaysBetween = DateUtil.getDaysBetween(
-						new Date(activity.getCreateDate()), now,
-						TimeZone.getDefault());
 				recentlyActiveUsers.add(new MemberWrapper(activity, request));
-				lastDaysBetween = curDaysBetween;
 
 				if (recentlyActiveUsers.size() == feedSize) {
 					break;
@@ -77,7 +62,5 @@ public class RecentlyActiveUsersFeedDataProvider implements
 		model.addAttribute("recentlyActiveUsers", recentlyActiveUsers);
 
 		return "recentlyActiveUsers";
-
 	}
-
 }

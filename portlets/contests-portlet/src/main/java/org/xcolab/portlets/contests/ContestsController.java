@@ -27,7 +27,7 @@ public class ContestsController {
 
         ContestPreferences contestPreferences = new ContestPreferences(request);
 
-        List<ContestWrapper> ret = new ArrayList<>();
+        List<ContestWrapper> contestWrappers = new ArrayList<>();
         List<Contest> contests;
         if (contestPreferences.getSelectedContests().length == 0) {
              contests = ContestLocalServiceUtil.findByActiveFeatured(true,true);
@@ -40,16 +40,16 @@ public class ContestsController {
 
         Collections.shuffle(contests);
         for (Contest contest: contests) {
-            if(ret.size() >= contestPreferences.getFeedSize()) {
+            if(contestWrappers.size() >= contestPreferences.getFeedSize()) {
             	break;
             }
             if (contest.getContestPrivate()) {
             	continue;
             }
-            ret.add(new ContestWrapper(contest));
+            contestWrappers.add(new ContestWrapper(contest));
         }
         
-        model.addAttribute("contests", ret);
+        model.addAttribute("contests", contestWrappers);
         model.addAttribute("title", contestPreferences.getTitle());
     	return "showContests";
     }
