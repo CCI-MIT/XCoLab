@@ -282,12 +282,6 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.PlanType getPlanType(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.ContestPhase> getActivePhases(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -312,15 +306,6 @@ public interface ContestLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<java.lang.Long> getDebatesIds(
         com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.Integer getTotalVotes(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void updateDefaultPlanDescription(
-        com.ext.portlet.model.Contest contest, java.lang.String description)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public void store(com.ext.portlet.model.Contest contest)

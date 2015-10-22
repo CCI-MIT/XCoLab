@@ -150,35 +150,6 @@ public interface ContestModel extends BaseModel<Contest> {
         String ContestPositionsDescription);
 
     /**
-     * Returns the default plan description of this contest.
-     *
-     * @return the default plan description of this contest
-     */
-    @AutoEscape
-    public String getDefaultPlanDescription();
-
-    /**
-     * Sets the default plan description of this contest.
-     *
-     * @param defaultPlanDescription the default plan description of this contest
-     */
-    public void setDefaultPlanDescription(String defaultPlanDescription);
-
-    /**
-     * Returns the plan type ID of this contest.
-     *
-     * @return the plan type ID of this contest
-     */
-    public long getPlanTypeId();
-
-    /**
-     * Sets the plan type ID of this contest.
-     *
-     * @param PlanTypeId the plan type ID of this contest
-     */
-    public void setPlanTypeId(long PlanTypeId);
-
-    /**
      * Returns the created of this contest.
      *
      * @return the created of this contest

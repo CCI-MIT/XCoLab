@@ -127,10 +127,6 @@
 		<field name="ContestPositionsDescription" type="String">
 			<hint name="max-length">10000</hint>
 		</field>
-		<field name="defaultPlanDescription" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="PlanTypeId" type="long" />
 		<field name="created" type="Date" />
 		<field name="updated" type="Date" />
 		<field name="authorId" type="long" />

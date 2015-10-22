@@ -19,7 +19,6 @@ import com.ext.portlet.model.ImpactTemplateMaxFocusArea;
 import com.ext.portlet.model.ImpactTemplateSeries;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanTemplate;
-import com.ext.portlet.model.PlanType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalRating;
@@ -28,7 +27,6 @@ import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
-import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
@@ -40,8 +38,6 @@ import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ImpactTemplateFocusAreaListLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.ext.portlet.service.PlanTypeLocalServiceUtil;
-import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
@@ -278,15 +274,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return visiblePhases;
     }
 
-    public PlanType getPlanType(Contest contest) throws SystemException, PortalException {
-        try {
-            return (PlanType) ClpSerializer.translateOutput(PlanTypeLocalServiceUtil.getPlanType(contest.getPlanTypeId()));
-        } catch (PortalException | SystemException e) {
-            _log.error(e);
-            return null;
-        }
-    }
-
     public List<ContestPhase> getActivePhases(Contest contest) throws SystemException, PortalException {
         List<ContestPhase> result = getVisiblePhases(contest);
         for (Iterator<ContestPhase> i = result.iterator(); i.hasNext(); ) {
@@ -330,15 +317,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             ret.add(pos.getDebateId());
         }
         return ret;
-    }
-
-    public Integer getTotalVotes(Contest contest) throws SystemException {
-        return PlanVoteLocalServiceUtil.countPlanVotes(contest);
-    }
-
-    public void updateDefaultPlanDescription(Contest contest, String description) throws SystemException {
-        contest.setDefaultPlanDescription(description);
-        ContestLocalServiceUtil.updateContest(contest);
     }
 
     public void store(Contest contest) throws SystemException {

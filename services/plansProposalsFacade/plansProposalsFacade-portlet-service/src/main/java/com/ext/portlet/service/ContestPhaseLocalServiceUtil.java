@@ -270,13 +270,6 @@ public class ContestPhaseLocalServiceUtil {
         getService().overrideClock(clock);
     }
 
-    public static java.util.List<com.ext.portlet.model.PlanItem> getPlans(
-        com.ext.portlet.model.ContestPhase contestPhase)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getPlans(contestPhase);
-    }
-
     public static com.ext.portlet.contests.ContestStatus getContestStatus(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.PortalException,

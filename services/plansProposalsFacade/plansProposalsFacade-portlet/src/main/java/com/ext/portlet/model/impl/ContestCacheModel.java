@@ -28,8 +28,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public String ContestDescription;
     public String ContestModelDescription;
     public String ContestPositionsDescription;
-    public String defaultPlanDescription;
-    public long PlanTypeId;
     public long created;
     public long updated;
     public long authorId;
@@ -73,7 +71,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(99);
+        StringBundler sb = new StringBundler(95);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -89,10 +87,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(ContestModelDescription);
         sb.append(", ContestPositionsDescription=");
         sb.append(ContestPositionsDescription);
-        sb.append(", defaultPlanDescription=");
-        sb.append(defaultPlanDescription);
-        sb.append(", PlanTypeId=");
-        sb.append(PlanTypeId);
         sb.append(", created=");
         sb.append(created);
         sb.append(", updated=");
@@ -214,14 +208,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         } else {
             contestImpl.setContestPositionsDescription(ContestPositionsDescription);
         }
-
-        if (defaultPlanDescription == null) {
-            contestImpl.setDefaultPlanDescription(StringPool.BLANK);
-        } else {
-            contestImpl.setDefaultPlanDescription(defaultPlanDescription);
-        }
-
-        contestImpl.setPlanTypeId(PlanTypeId);
 
         if (created == Long.MIN_VALUE) {
             contestImpl.setCreated(null);
@@ -365,8 +351,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         ContestDescription = objectInput.readUTF();
         ContestModelDescription = objectInput.readUTF();
         ContestPositionsDescription = objectInput.readUTF();
-        defaultPlanDescription = objectInput.readUTF();
-        PlanTypeId = objectInput.readLong();
         created = objectInput.readLong();
         updated = objectInput.readLong();
         authorId = objectInput.readLong();
@@ -445,13 +429,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             objectOutput.writeUTF(ContestPositionsDescription);
         }
 
-        if (defaultPlanDescription == null) {
-            objectOutput.writeUTF(StringPool.BLANK);
-        } else {
-            objectOutput.writeUTF(defaultPlanDescription);
-        }
-
-        objectOutput.writeLong(PlanTypeId);
         objectOutput.writeLong(created);
         objectOutput.writeLong(updated);
         objectOutput.writeLong(authorId);

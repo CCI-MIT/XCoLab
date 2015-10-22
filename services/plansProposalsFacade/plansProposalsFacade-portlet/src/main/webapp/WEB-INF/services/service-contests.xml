@@ -17,8 +17,6 @@
         <column name="ContestDescription" type="String" />
         <column name="ContestModelDescription" type="String" />
         <column name="ContestPositionsDescription" type="String" />
-        <column name="defaultPlanDescription" type="String" />
-        <column name="PlanTypeId" type="long" />
         <column name="created" type="Date" />
         <column name="updated" type="Date" />
         <column name="authorId" type="long" />
@@ -68,10 +66,6 @@
             <order-column name="weight" />
             <order-column name="created" />
         </order>
-        
-        <finder name="PlanType" return-type="Collection">
-            <finder-column name="PlanTypeId" />
-        </finder>
 
         <finder name="Tier" return-type="Collection">
             <finder-column name="contestTier" />

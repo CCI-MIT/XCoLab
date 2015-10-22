@@ -28,8 +28,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private String _ContestDescription;
     private String _ContestModelDescription;
     private String _ContestPositionsDescription;
-    private String _defaultPlanDescription;
-    private long _PlanTypeId;
     private Date _created;
     private Date _updated;
     private long _authorId;
@@ -118,8 +116,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("ContestModelDescription", getContestModelDescription());
         attributes.put("ContestPositionsDescription",
             getContestPositionsDescription());
-        attributes.put("defaultPlanDescription", getDefaultPlanDescription());
-        attributes.put("PlanTypeId", getPlanTypeId());
         attributes.put("created", getCreated());
         attributes.put("updated", getUpdated());
         attributes.put("authorId", getAuthorId());
@@ -213,19 +209,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (ContestPositionsDescription != null) {
             setContestPositionsDescription(ContestPositionsDescription);
-        }
-
-        String defaultPlanDescription = (String) attributes.get(
-                "defaultPlanDescription");
-
-        if (defaultPlanDescription != null) {
-            setDefaultPlanDescription(defaultPlanDescription);
-        }
-
-        Long PlanTypeId = (Long) attributes.get("PlanTypeId");
-
-        if (PlanTypeId != null) {
-            setPlanTypeId(PlanTypeId);
         }
 
         Date created = (Date) attributes.get("created");
@@ -635,51 +618,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                         String.class);
 
                 method.invoke(_contestRemoteModel, ContestPositionsDescription);
-            } catch (Exception e) {
-                throw new UnsupportedOperationException(e);
-            }
-        }
-    }
-
-    @Override
-    public String getDefaultPlanDescription() {
-        return _defaultPlanDescription;
-    }
-
-    @Override
-    public void setDefaultPlanDescription(String defaultPlanDescription) {
-        _defaultPlanDescription = defaultPlanDescription;
-
-        if (_contestRemoteModel != null) {
-            try {
-                Class<?> clazz = _contestRemoteModel.getClass();
-
-                Method method = clazz.getMethod("setDefaultPlanDescription",
-                        String.class);
-
-                method.invoke(_contestRemoteModel, defaultPlanDescription);
-            } catch (Exception e) {
-                throw new UnsupportedOperationException(e);
-            }
-        }
-    }
-
-    @Override
-    public long getPlanTypeId() {
-        return _PlanTypeId;
-    }
-
-    @Override
-    public void setPlanTypeId(long PlanTypeId) {
-        _PlanTypeId = PlanTypeId;
-
-        if (_contestRemoteModel != null) {
-            try {
-                Class<?> clazz = _contestRemoteModel.getClass();
-
-                Method method = clazz.getMethod("setPlanTypeId", long.class);
-
-                method.invoke(_contestRemoteModel, PlanTypeId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -1706,8 +1644,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setContestDescription(getContestDescription());
         clone.setContestModelDescription(getContestModelDescription());
         clone.setContestPositionsDescription(getContestPositionsDescription());
-        clone.setDefaultPlanDescription(getDefaultPlanDescription());
-        clone.setPlanTypeId(getPlanTypeId());
         clone.setCreated(getCreated());
         clone.setUpdated(getUpdated());
         clone.setAuthorId(getAuthorId());
@@ -1809,7 +1745,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(99);
+        StringBundler sb = new StringBundler(95);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1825,10 +1761,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getContestModelDescription());
         sb.append(", ContestPositionsDescription=");
         sb.append(getContestPositionsDescription());
-        sb.append(", defaultPlanDescription=");
-        sb.append(getDefaultPlanDescription());
-        sb.append(", PlanTypeId=");
-        sb.append(getPlanTypeId());
         sb.append(", created=");
         sb.append(getCreated());
         sb.append(", updated=");
@@ -1916,7 +1848,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(151);
+        StringBundler sb = new StringBundler(145);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1949,14 +1881,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>ContestPositionsDescription</column-name><column-value><![CDATA[");
         sb.append(getContestPositionsDescription());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>defaultPlanDescription</column-name><column-value><![CDATA[");
-        sb.append(getDefaultPlanDescription());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>PlanTypeId</column-name><column-value><![CDATA[");
-        sb.append(getPlanTypeId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>created</column-name><column-value><![CDATA[");

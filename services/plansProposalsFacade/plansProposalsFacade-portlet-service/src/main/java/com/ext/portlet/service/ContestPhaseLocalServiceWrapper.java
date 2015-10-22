@@ -284,14 +284,6 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.PlanItem> getPlans(
-        com.ext.portlet.model.ContestPhase contestPhase)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestPhaseLocalService.getPlans(contestPhase);
-    }
-
-    @Override
     public com.ext.portlet.contests.ContestStatus getContestStatus(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.PortalException,

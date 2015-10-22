@@ -85,8 +85,6 @@ create table xcolab_Contest (
 	ContestDescription TEXT null,
 	ContestModelDescription TEXT null,
 	ContestPositionsDescription TEXT null,
-	defaultPlanDescription TEXT null,
-	PlanTypeId LONG,
 	created DATE null,
 	updated DATE null,
 	authorId LONG,

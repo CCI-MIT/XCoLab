@@ -318,13 +318,6 @@ public class ContestLocalServiceUtil {
         return getService().getVisiblePhases(contest);
     }
 
-    public static com.ext.portlet.model.PlanType getPlanType(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getPlanType(contest);
-    }
-
     public static java.util.List<com.ext.portlet.model.ContestPhase> getActivePhases(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -355,18 +348,6 @@ public class ContestLocalServiceUtil {
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getDebatesIds(contest);
-    }
-
-    public static java.lang.Integer getTotalVotes(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getTotalVotes(contest);
-    }
-
-    public static void updateDefaultPlanDescription(
-        com.ext.portlet.model.Contest contest, java.lang.String description)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().updateDefaultPlanDescription(contest, description);
     }
 
     public static void store(com.ext.portlet.model.Contest contest)

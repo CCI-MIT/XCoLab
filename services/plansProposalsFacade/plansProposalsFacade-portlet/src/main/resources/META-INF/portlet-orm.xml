@@ -146,8 +146,6 @@
 			<basic name="ContestDescription" />
 			<basic name="ContestModelDescription" />
 			<basic name="ContestPositionsDescription" />
-			<basic name="defaultPlanDescription" />
-			<basic name="PlanTypeId" />
 			<basic name="created">
 				<temporal>TIMESTAMP</temporal>
 			</basic>

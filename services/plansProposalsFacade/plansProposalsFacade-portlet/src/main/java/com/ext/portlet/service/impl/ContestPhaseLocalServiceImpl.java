@@ -8,14 +8,12 @@ import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseColumn;
-import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -89,12 +87,6 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     /** This can be used by unit tests to set a different clock than the standard one */
     public void overrideClock(Clock clock) {
         this.clock = clock;
-    }
-
-    public List<PlanItem> getPlans(ContestPhase contestPhase) throws SystemException, PortalException {
-        return PlanItemLocalServiceUtil.getPlans(Collections.emptyMap(), Collections.emptyMap(), 0L,
-                contestPhase.getContestPhasePK(), 0, Integer.MAX_VALUE, "", "", false);
-        // return PlanItemLocalServiceUtil.getPlansInContestPhase(this);
     }
 
     public ContestStatus getContestStatus(ContestPhase contestPhase) throws SystemException, PortalException {

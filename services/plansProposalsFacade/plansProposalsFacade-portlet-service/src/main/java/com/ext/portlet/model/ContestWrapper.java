@@ -45,8 +45,6 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("ContestModelDescription", getContestModelDescription());
         attributes.put("ContestPositionsDescription",
             getContestPositionsDescription());
-        attributes.put("defaultPlanDescription", getDefaultPlanDescription());
-        attributes.put("PlanTypeId", getPlanTypeId());
         attributes.put("created", getCreated());
         attributes.put("updated", getUpdated());
         attributes.put("authorId", getAuthorId());
@@ -140,19 +138,6 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (ContestPositionsDescription != null) {
             setContestPositionsDescription(ContestPositionsDescription);
-        }
-
-        String defaultPlanDescription = (String) attributes.get(
-                "defaultPlanDescription");
-
-        if (defaultPlanDescription != null) {
-            setDefaultPlanDescription(defaultPlanDescription);
-        }
-
-        Long PlanTypeId = (Long) attributes.get("PlanTypeId");
-
-        if (PlanTypeId != null) {
-            setPlanTypeId(PlanTypeId);
         }
 
         Date created = (Date) attributes.get("created");
@@ -569,47 +554,6 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     public void setContestPositionsDescription(
         java.lang.String ContestPositionsDescription) {
         _contest.setContestPositionsDescription(ContestPositionsDescription);
-    }
-
-    /**
-    * Returns the default plan description of this contest.
-    *
-    * @return the default plan description of this contest
-    */
-    @Override
-    public java.lang.String getDefaultPlanDescription() {
-        return _contest.getDefaultPlanDescription();
-    }
-
-    /**
-    * Sets the default plan description of this contest.
-    *
-    * @param defaultPlanDescription the default plan description of this contest
-    */
-    @Override
-    public void setDefaultPlanDescription(
-        java.lang.String defaultPlanDescription) {
-        _contest.setDefaultPlanDescription(defaultPlanDescription);
-    }
-
-    /**
-    * Returns the plan type ID of this contest.
-    *
-    * @return the plan type ID of this contest
-    */
-    @Override
-    public long getPlanTypeId() {
-        return _contest.getPlanTypeId();
-    }
-
-    /**
-    * Sets the plan type ID of this contest.
-    *
-    * @param PlanTypeId the plan type ID of this contest
-    */
-    @Override
-    public void setPlanTypeId(long PlanTypeId) {
-        _contest.setPlanTypeId(PlanTypeId);
     }
 
     /**

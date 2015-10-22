@@ -337,14 +337,6 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
-    public com.ext.portlet.model.PlanType getPlanType(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.getPlanType(contest);
-    }
-
-    @Override
     public java.util.List<com.ext.portlet.model.ContestPhase> getActivePhases(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -379,20 +371,6 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getDebatesIds(contest);
-    }
-
-    @Override
-    public java.lang.Integer getTotalVotes(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.getTotalVotes(contest);
-    }
-
-    @Override
-    public void updateDefaultPlanDescription(
-        com.ext.portlet.model.Contest contest, java.lang.String description)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contestLocalService.updateDefaultPlanDescription(contest, description);
     }
 
     @Override
