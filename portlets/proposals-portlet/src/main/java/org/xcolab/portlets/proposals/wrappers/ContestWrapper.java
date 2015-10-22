@@ -403,19 +403,24 @@ public class ContestWrapper {
         List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
         for(ContestPhase contestPhase : contestPhases){
             List<Proposal> proposals = ProposalLocalServiceUtil.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
-            proposals.addAll(proposals);
+            proposalList.addAll(proposals);
         }
         return proposalList.size();
     }
 
     public long getCommentsCount() throws PortalException, SystemException {
-        return ContestLocalServiceUtil.getCommentsCount(contest);
+        if (getContestType().getHasDiscussion()) {
+            return ContestLocalServiceUtil.getCommentsCount(contest);
+        }
+        return 0;
     }
 
     public long getTotalCommentsCount() throws PortalException, SystemException {
-        return ContestLocalServiceUtil.getTotalCommentsCount(contest);
+        if (getContestType().getHasDiscussion()) {
+            return ContestLocalServiceUtil.getTotalCommentsCount(contest);
+        }
+        return ContestLocalServiceUtil.getProposalsCommentsCount(contest);
     }
-
 
     public long getVotesCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getVotesCount(contest);
