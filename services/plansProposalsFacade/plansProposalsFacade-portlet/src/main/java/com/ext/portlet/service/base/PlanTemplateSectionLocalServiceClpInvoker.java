@@ -41,22 +41,22 @@ public class PlanTemplateSectionLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName644;
-    private String[] _methodParameterTypes644;
-    private String _methodName645;
-    private String[] _methodParameterTypes645;
-    private String _methodName650;
-    private String[] _methodParameterTypes650;
-    private String _methodName651;
-    private String[] _methodParameterTypes651;
-    private String _methodName652;
-    private String[] _methodParameterTypes652;
-    private String _methodName653;
-    private String[] _methodParameterTypes653;
-    private String _methodName654;
-    private String[] _methodParameterTypes654;
-    private String _methodName655;
-    private String[] _methodParameterTypes655;
+    private String _methodName492;
+    private String[] _methodParameterTypes492;
+    private String _methodName493;
+    private String[] _methodParameterTypes493;
+    private String _methodName498;
+    private String[] _methodParameterTypes498;
+    private String _methodName499;
+    private String[] _methodParameterTypes499;
+    private String _methodName500;
+    private String[] _methodParameterTypes500;
+    private String _methodName501;
+    private String[] _methodParameterTypes501;
+    private String _methodName502;
+    private String[] _methodParameterTypes502;
+    private String _methodName503;
+    private String[] _methodParameterTypes503;
 
     public PlanTemplateSectionLocalServiceClpInvoker() {
         _methodName0 = "addPlanTemplateSection";
@@ -149,43 +149,43 @@ public class PlanTemplateSectionLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanTemplateSection"
             };
 
-        _methodName644 = "getBeanIdentifier";
+        _methodName492 = "getBeanIdentifier";
 
-        _methodParameterTypes644 = new String[] {  };
+        _methodParameterTypes492 = new String[] {  };
 
-        _methodName645 = "setBeanIdentifier";
+        _methodName493 = "setBeanIdentifier";
 
-        _methodParameterTypes645 = new String[] { "java.lang.String" };
+        _methodParameterTypes493 = new String[] { "java.lang.String" };
 
-        _methodName650 = "findByPlanTemplateId";
+        _methodName498 = "findByPlanTemplateId";
 
-        _methodParameterTypes650 = new String[] { "java.lang.Long" };
+        _methodParameterTypes498 = new String[] { "java.lang.Long" };
 
-        _methodName651 = "findByPlanSectionDefinitionId";
+        _methodName499 = "findByPlanSectionDefinitionId";
 
-        _methodParameterTypes651 = new String[] { "java.lang.Long" };
+        _methodParameterTypes499 = new String[] { "java.lang.Long" };
 
-        _methodName652 = "addPlanTemplateSection";
+        _methodName500 = "addPlanTemplateSection";
 
-        _methodParameterTypes652 = new String[] {
+        _methodParameterTypes500 = new String[] {
                 "java.lang.Long", "java.lang.Long", "int"
             };
 
-        _methodName653 = "removePlanTemplateSection";
+        _methodName501 = "removePlanTemplateSection";
 
-        _methodParameterTypes653 = new String[] {
+        _methodParameterTypes501 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName654 = "store";
+        _methodName502 = "store";
 
-        _methodParameterTypes654 = new String[] {
+        _methodParameterTypes502 = new String[] {
                 "com.ext.portlet.model.PlanTemplateSection"
             };
 
-        _methodName655 = "remove";
+        _methodName503 = "remove";
 
-        _methodParameterTypes655 = new String[] {
+        _methodParameterTypes503 = new String[] {
                 "com.ext.portlet.model.PlanTemplateSection"
             };
     }
@@ -279,52 +279,52 @@ public class PlanTemplateSectionLocalServiceClpInvoker {
             return PlanTemplateSectionLocalServiceUtil.updatePlanTemplateSection((com.ext.portlet.model.PlanTemplateSection) arguments[0]);
         }
 
-        if (_methodName644.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes644, parameterTypes)) {
+        if (_methodName492.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes492, parameterTypes)) {
             return PlanTemplateSectionLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName645.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes645, parameterTypes)) {
+        if (_methodName493.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes493, parameterTypes)) {
             PlanTemplateSectionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName650.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes650, parameterTypes)) {
+        if (_methodName498.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes498, parameterTypes)) {
             return PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName651.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes651, parameterTypes)) {
+        if (_methodName499.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes499, parameterTypes)) {
             return PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName652.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes652, parameterTypes)) {
+        if (_methodName500.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes500, parameterTypes)) {
             return PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1],
                 ((Integer) arguments[2]).intValue());
         }
 
-        if (_methodName653.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes653, parameterTypes)) {
+        if (_methodName501.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes501, parameterTypes)) {
             PlanTemplateSectionLocalServiceUtil.removePlanTemplateSection((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
 
             return null;
         }
 
-        if (_methodName654.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes654, parameterTypes)) {
+        if (_methodName502.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes502, parameterTypes)) {
             PlanTemplateSectionLocalServiceUtil.store((com.ext.portlet.model.PlanTemplateSection) arguments[0]);
 
             return null;
         }
 
-        if (_methodName655.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes655, parameterTypes)) {
+        if (_methodName503.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes503, parameterTypes)) {
             PlanTemplateSectionLocalServiceUtil.remove((com.ext.portlet.model.PlanTemplateSection) arguments[0]);
 
             return null;

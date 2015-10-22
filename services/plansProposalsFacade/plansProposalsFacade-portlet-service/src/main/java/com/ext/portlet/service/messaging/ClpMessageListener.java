@@ -107,62 +107,12 @@ import com.ext.portlet.service.OntologyTermEntityLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermEntityServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermServiceUtil;
-import com.ext.portlet.service.Plan2ProposalLocalServiceUtil;
-import com.ext.portlet.service.Plan2ProposalServiceUtil;
-import com.ext.portlet.service.PlanAttributeFilterLocalServiceUtil;
-import com.ext.portlet.service.PlanAttributeFilterServiceUtil;
-import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
-import com.ext.portlet.service.PlanAttributeServiceUtil;
-import com.ext.portlet.service.PlanColumnSettingsLocalServiceUtil;
-import com.ext.portlet.service.PlanColumnSettingsServiceUtil;
-import com.ext.portlet.service.PlanDescriptionLocalServiceUtil;
-import com.ext.portlet.service.PlanDescriptionServiceUtil;
-import com.ext.portlet.service.PlanFanLocalServiceUtil;
-import com.ext.portlet.service.PlanFanServiceUtil;
-import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
-import com.ext.portlet.service.PlanItemGroupServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.service.PlanItemServiceUtil;
-import com.ext.portlet.service.PlanMetaLocalServiceUtil;
-import com.ext.portlet.service.PlanMetaServiceUtil;
-import com.ext.portlet.service.PlanModelRunLocalServiceUtil;
-import com.ext.portlet.service.PlanModelRunServiceUtil;
-import com.ext.portlet.service.PlanPositionItemLocalServiceUtil;
-import com.ext.portlet.service.PlanPositionItemServiceUtil;
-import com.ext.portlet.service.PlanPositionLocalServiceUtil;
-import com.ext.portlet.service.PlanPositionServiceUtil;
-import com.ext.portlet.service.PlanPositionsLocalServiceUtil;
-import com.ext.portlet.service.PlanPositionsServiceUtil;
-import com.ext.portlet.service.PlanPropertyFilterLocalServiceUtil;
-import com.ext.portlet.service.PlanPropertyFilterServiceUtil;
-import com.ext.portlet.service.PlanRelatedLocalServiceUtil;
-import com.ext.portlet.service.PlanRelatedServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionServiceUtil;
-import com.ext.portlet.service.PlanSectionLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionPlanMapLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionPlanMapServiceUtil;
-import com.ext.portlet.service.PlanSectionServiceUtil;
-import com.ext.portlet.service.PlanTeamHistoryLocalServiceUtil;
-import com.ext.portlet.service.PlanTeamHistoryServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateSectionServiceUtil;
 import com.ext.portlet.service.PlanTemplateServiceUtil;
-import com.ext.portlet.service.PlanTypeAttributeLocalServiceUtil;
-import com.ext.portlet.service.PlanTypeAttributeServiceUtil;
-import com.ext.portlet.service.PlanTypeColumnLocalServiceUtil;
-import com.ext.portlet.service.PlanTypeColumnServiceUtil;
-import com.ext.portlet.service.PlanTypeLocalServiceUtil;
-import com.ext.portlet.service.PlanTypeServiceUtil;
-import com.ext.portlet.service.PlanVoteLocalServiceUtil;
-import com.ext.portlet.service.PlanVoteServiceUtil;
-import com.ext.portlet.service.PlansFilterLocalServiceUtil;
-import com.ext.portlet.service.PlansFilterPositionLocalServiceUtil;
-import com.ext.portlet.service.PlansFilterPositionServiceUtil;
-import com.ext.portlet.service.PlansFilterServiceUtil;
-import com.ext.portlet.service.PlansUserSettingsLocalServiceUtil;
-import com.ext.portlet.service.PlansUserSettingsServiceUtil;
 import com.ext.portlet.service.PointDistributionTargetLocalServiceUtil;
 import com.ext.portlet.service.PointDistributionTargetServiceUtil;
 import com.ext.portlet.service.PointTypeLocalServiceUtil;
@@ -381,90 +331,15 @@ public class ClpMessageListener extends BaseMessageListener {
             OntologyTermEntityLocalServiceUtil.clearService();
 
             OntologyTermEntityServiceUtil.clearService();
-            Plan2ProposalLocalServiceUtil.clearService();
-
-            Plan2ProposalServiceUtil.clearService();
-            PlanAttributeLocalServiceUtil.clearService();
-
-            PlanAttributeServiceUtil.clearService();
-            PlanAttributeFilterLocalServiceUtil.clearService();
-
-            PlanAttributeFilterServiceUtil.clearService();
-            PlanColumnSettingsLocalServiceUtil.clearService();
-
-            PlanColumnSettingsServiceUtil.clearService();
-            PlanDescriptionLocalServiceUtil.clearService();
-
-            PlanDescriptionServiceUtil.clearService();
-            PlanFanLocalServiceUtil.clearService();
-
-            PlanFanServiceUtil.clearService();
-            PlanItemLocalServiceUtil.clearService();
-
-            PlanItemServiceUtil.clearService();
-            PlanItemGroupLocalServiceUtil.clearService();
-
-            PlanItemGroupServiceUtil.clearService();
-            PlanMetaLocalServiceUtil.clearService();
-
-            PlanMetaServiceUtil.clearService();
-            PlanModelRunLocalServiceUtil.clearService();
-
-            PlanModelRunServiceUtil.clearService();
-            PlanPositionLocalServiceUtil.clearService();
-
-            PlanPositionServiceUtil.clearService();
-            PlanPositionItemLocalServiceUtil.clearService();
-
-            PlanPositionItemServiceUtil.clearService();
-            PlanPositionsLocalServiceUtil.clearService();
-
-            PlanPositionsServiceUtil.clearService();
-            PlanPropertyFilterLocalServiceUtil.clearService();
-
-            PlanPropertyFilterServiceUtil.clearService();
-            PlanRelatedLocalServiceUtil.clearService();
-
-            PlanRelatedServiceUtil.clearService();
-            PlanSectionLocalServiceUtil.clearService();
-
-            PlanSectionServiceUtil.clearService();
             PlanSectionDefinitionLocalServiceUtil.clearService();
 
             PlanSectionDefinitionServiceUtil.clearService();
-            PlanSectionPlanMapLocalServiceUtil.clearService();
-
-            PlanSectionPlanMapServiceUtil.clearService();
-            PlansFilterLocalServiceUtil.clearService();
-
-            PlansFilterServiceUtil.clearService();
-            PlansFilterPositionLocalServiceUtil.clearService();
-
-            PlansFilterPositionServiceUtil.clearService();
-            PlansUserSettingsLocalServiceUtil.clearService();
-
-            PlansUserSettingsServiceUtil.clearService();
-            PlanTeamHistoryLocalServiceUtil.clearService();
-
-            PlanTeamHistoryServiceUtil.clearService();
             PlanTemplateLocalServiceUtil.clearService();
 
             PlanTemplateServiceUtil.clearService();
             PlanTemplateSectionLocalServiceUtil.clearService();
 
             PlanTemplateSectionServiceUtil.clearService();
-            PlanTypeLocalServiceUtil.clearService();
-
-            PlanTypeServiceUtil.clearService();
-            PlanTypeAttributeLocalServiceUtil.clearService();
-
-            PlanTypeAttributeServiceUtil.clearService();
-            PlanTypeColumnLocalServiceUtil.clearService();
-
-            PlanTypeColumnServiceUtil.clearService();
-            PlanVoteLocalServiceUtil.clearService();
-
-            PlanVoteServiceUtil.clearService();
             PointDistributionTargetLocalServiceUtil.clearService();
 
             PointDistributionTargetServiceUtil.clearService();
