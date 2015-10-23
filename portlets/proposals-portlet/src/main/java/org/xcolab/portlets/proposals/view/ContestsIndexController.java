@@ -1,21 +1,22 @@
 package org.xcolab.portlets.proposals.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.servlet.http.Cookie;
-
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
-import com.liferay.portal.model.User;
+import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.model.FocusAreaOntologyTerm;
+import com.ext.portlet.model.OntologySpace;
+import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
+import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
+import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.PermissionCheckerUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.util.PortalUtil;
 import org.springframework.stereotype.Controller;
@@ -29,24 +30,27 @@ import org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean;
 import org.xcolab.portlets.proposals.wrappers.FocusAreaWrapper;
 import org.xcolab.portlets.proposals.wrappers.OntologySpaceWrapper;
 import org.xcolab.portlets.proposals.wrappers.OntologyTermWrapper;
-
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.FocusAreaOntologyTerm;
-import com.ext.portlet.model.OntologySpace;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
-import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.servlet.http.Cookie;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Controller
 @RequestMapping("view")
 public class ContestsIndexController extends BaseProposalsController {
+
+    private static Log _log = LogFactoryUtil.getLog(ContestsIndexController.class);
 
     private final static String COOKIE_VIEW_TYPE = "cc_contests_viewType";
     private final static String VIEW_TYPE_GRID = "GRID";
@@ -55,7 +59,7 @@ public class ContestsIndexController extends BaseProposalsController {
     private final static String VIEW_TYPE_DEFAULT = VIEW_TYPE_GRID;
     
     @RequestMapping
-    public String showContestsIndex(PortletRequest request, PortletResponse response, Model model, 
+    public String showContestsIndex(PortletRequest request, PortletResponse response, Model model,
             @RequestParam(required = false) String viewType, 
             @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
@@ -90,7 +94,18 @@ public class ContestsIndexController extends BaseProposalsController {
         List<ContestWrapper> contests = new ArrayList<>();
         List<Contest> contestsToWrap = showAllContests ? ContestLocalServiceUtil.getContestsByContestType(contestType.getId()) :
         	ContestLocalServiceUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId());
-        
+
+        if (contestsToWrap.size() == 1) {
+            final Contest contest = contestsToWrap.get(0);
+            final String contestLinkUrl = ContestLocalServiceUtil.getContestLinkUrl(contest);
+            try {
+                PortalUtil.getHttpServletResponse(response).sendRedirect(contestLinkUrl);
+                return "";
+            } catch (IOException e) {
+                _log.error("Failed to redirect to only contest in this contest type", e);
+            }
+        }
+
         for (Contest contest: contestsToWrap) {
         	if (! contest.isContestPrivate())
         		contests.add(new ContestWrapper(contest));
