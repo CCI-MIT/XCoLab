@@ -10,7 +10,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.persistence.ContestUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;

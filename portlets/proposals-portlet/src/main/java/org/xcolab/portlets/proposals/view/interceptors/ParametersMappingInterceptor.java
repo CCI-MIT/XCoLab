@@ -1,21 +1,20 @@
 package org.xcolab.portlets.proposals.view.interceptors;
 
+import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-
-import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
 
 /**
  * Take a look at:
  http://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/portlet.html#portlet-handlermapping-parameterinterceptor
 
  Parameters passed to ACTION_PHASE aren't by default transferred to RENDER_PHASE, so this interceptor is responsible for that. I haven't 
- used Intercepotr provided by string, because it supports passing only one parameter and we can have many of them (take a look at 
+ used Interceptor provided by string, because it supports passing only one parameter and we can have many of them (take a look at
  proposalsportlet-portlet.xml out there you'll find bean definitions for interceptors together with necessary configuration.
  */
 public class ParametersMappingInterceptor extends HandlerInterceptorAdapter {
@@ -55,9 +54,7 @@ public class ParametersMappingInterceptor extends HandlerInterceptorAdapter {
      */
     
     @Override
-    public void afterActionCompletion(ActionRequest request, ActionResponse response, Object handler, Exception ex)
-            throws Exception {
-        
+    public void afterActionCompletion(ActionRequest request, ActionResponse response, Object handler, Exception ex) {
 
         if (request.getAttribute("ACTION_REDIRECTING") != null) return;
         

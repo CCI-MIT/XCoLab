@@ -27,14 +27,8 @@
 				<bean class="org.xcolab.portlets.proposals.view.interceptors.ParametersMappingInterceptor">
 					<property name="parameters">
 						<map>
-							<entry>
-								<key><value>action_forwardToPage</value></key>
-								<value>pageToDisplay</value>
-							</entry>
-							<entry>
-								<key><value>action_errorForwardToPage</value></key>
-								<value>pageToDisplay</value>
-							</entry>
+							<entry key="action_forwardToPage" value="pageToDisplay"/>
+							<entry key="action_errorForwardToPage" value="pageToDisplay"/>
 						</map>
 					</property>
 					<property name="ignoreOnError">

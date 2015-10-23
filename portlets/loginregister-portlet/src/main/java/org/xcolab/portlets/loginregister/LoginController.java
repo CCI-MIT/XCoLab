@@ -1,28 +1,10 @@
 package org.xcolab.portlets.loginregister;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import com.ext.portlet.NoSuchMessagingIgnoredRecipientsException;
-import com.ext.portlet.service.LoginLogLocalServiceUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Validator;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
-
-import com.ext.portlet.NoSuchBalloonUserTrackingException;
 import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.model.MessagingIgnoredRecipients;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
+import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.CookieNotSupportedException;
@@ -39,13 +21,25 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "view", params = "isLoggingIn=true")
@@ -140,7 +134,7 @@ public class LoginController {
         
         if (!SessionErrors.isEmpty(request)) {
             // url parameters
-            Map<String, String> parameters = new HashMap<String, String>();
+            Map<String, String> parameters = new HashMap<>();
             //boolean isSigningInPopup = ParamUtil.getBoolean(actionRequest, "isSigningInPopup");
 
             parameters.put("isSigningIn", "true");
@@ -169,13 +163,7 @@ public class LoginController {
         			BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
         		}
         	}
-        	catch (NoSuchBalloonUserTrackingException e) {
-        		// ignore
-        	} catch (SystemException e) {
-        		// ignore
-			} catch (PortalException e) {
-        		// ignore
-			}
+        	catch (SystemException | PortalException ignored) { }
         }
 
         response.sendRedirect(redirect);
