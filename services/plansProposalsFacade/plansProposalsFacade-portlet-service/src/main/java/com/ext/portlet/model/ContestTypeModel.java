@@ -133,6 +133,36 @@ public interface ContestTypeModel extends BaseModel<ContestType> {
     public void setPortletName(String portletName);
 
     /**
+     * Returns the portlet url of this contest type.
+     *
+     * @return the portlet url of this contest type
+     */
+    @AutoEscape
+    public String getPortletUrl();
+
+    /**
+     * Sets the portlet url of this contest type.
+     *
+     * @param portletUrl the portlet url of this contest type
+     */
+    public void setPortletUrl(String portletUrl);
+
+    /**
+     * Returns the menu item name of this contest type.
+     *
+     * @return the menu item name of this contest type
+     */
+    @AutoEscape
+    public String getMenuItemName();
+
+    /**
+     * Sets the menu item name of this contest type.
+     *
+     * @param menuItemName the menu item name of this contest type
+     */
+    public void setMenuItemName(String menuItemName);
+
+    /**
      * Returns the has discussion of this contest type.
      *
      * @return the has discussion of this contest type

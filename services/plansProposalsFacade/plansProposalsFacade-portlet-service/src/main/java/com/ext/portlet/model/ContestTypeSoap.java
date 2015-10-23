@@ -19,6 +19,8 @@ public class ContestTypeSoap implements Serializable {
     private String _proposalName;
     private String _proposalNamePlural;
     private String _portletName;
+    private String _portletUrl;
+    private String _menuItemName;
     private boolean _hasDiscussion;
 
     public ContestTypeSoap() {
@@ -33,6 +35,8 @@ public class ContestTypeSoap implements Serializable {
         soapModel.setProposalName(model.getProposalName());
         soapModel.setProposalNamePlural(model.getProposalNamePlural());
         soapModel.setPortletName(model.getPortletName());
+        soapModel.setPortletUrl(model.getPortletUrl());
+        soapModel.setMenuItemName(model.getMenuItemName());
         soapModel.setHasDiscussion(model.getHasDiscussion());
 
         return soapModel;
@@ -128,6 +132,22 @@ public class ContestTypeSoap implements Serializable {
 
     public void setPortletName(String portletName) {
         _portletName = portletName;
+    }
+
+    public String getPortletUrl() {
+        return _portletUrl;
+    }
+
+    public void setPortletUrl(String portletUrl) {
+        _portletUrl = portletUrl;
+    }
+
+    public String getMenuItemName() {
+        return _menuItemName;
+    }
+
+    public void setMenuItemName(String menuItemName) {
+        _menuItemName = menuItemName;
     }
 
     public boolean getHasDiscussion() {

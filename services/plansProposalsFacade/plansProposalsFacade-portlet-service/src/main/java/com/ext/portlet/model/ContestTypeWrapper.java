@@ -43,6 +43,8 @@ public class ContestTypeWrapper implements ContestType,
         attributes.put("proposalName", getProposalName());
         attributes.put("proposalNamePlural", getProposalNamePlural());
         attributes.put("portletName", getPortletName());
+        attributes.put("portletUrl", getPortletUrl());
+        attributes.put("menuItemName", getMenuItemName());
         attributes.put("hasDiscussion", getHasDiscussion());
 
         return attributes;
@@ -85,6 +87,18 @@ public class ContestTypeWrapper implements ContestType,
 
         if (portletName != null) {
             setPortletName(portletName);
+        }
+
+        String portletUrl = (String) attributes.get("portletUrl");
+
+        if (portletUrl != null) {
+            setPortletUrl(portletUrl);
+        }
+
+        String menuItemName = (String) attributes.get("menuItemName");
+
+        if (menuItemName != null) {
+            setMenuItemName(menuItemName);
         }
 
         Boolean hasDiscussion = (Boolean) attributes.get("hasDiscussion");
@@ -232,6 +246,46 @@ public class ContestTypeWrapper implements ContestType,
     @Override
     public void setPortletName(java.lang.String portletName) {
         _contestType.setPortletName(portletName);
+    }
+
+    /**
+    * Returns the portlet url of this contest type.
+    *
+    * @return the portlet url of this contest type
+    */
+    @Override
+    public java.lang.String getPortletUrl() {
+        return _contestType.getPortletUrl();
+    }
+
+    /**
+    * Sets the portlet url of this contest type.
+    *
+    * @param portletUrl the portlet url of this contest type
+    */
+    @Override
+    public void setPortletUrl(java.lang.String portletUrl) {
+        _contestType.setPortletUrl(portletUrl);
+    }
+
+    /**
+    * Returns the menu item name of this contest type.
+    *
+    * @return the menu item name of this contest type
+    */
+    @Override
+    public java.lang.String getMenuItemName() {
+        return _contestType.getMenuItemName();
+    }
+
+    /**
+    * Sets the menu item name of this contest type.
+    *
+    * @param menuItemName the menu item name of this contest type
+    */
+    @Override
+    public void setMenuItemName(java.lang.String menuItemName) {
+        _contestType.setMenuItemName(menuItemName);
     }
 
     /**

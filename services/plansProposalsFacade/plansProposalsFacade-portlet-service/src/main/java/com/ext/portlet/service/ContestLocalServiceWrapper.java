@@ -774,6 +774,12 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
+    public int countContestsByContestType(java.lang.Long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.countContestsByContestType(contestTypeId);
+    }
+
+    @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
         java.lang.Long contestTier,
         java.util.List<java.lang.Long> focusAreaOntologyTermIds)

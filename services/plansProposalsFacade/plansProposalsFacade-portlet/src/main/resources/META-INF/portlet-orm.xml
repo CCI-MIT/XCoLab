@@ -350,6 +350,8 @@
 			<basic name="proposalName" />
 			<basic name="proposalNamePlural" />
 			<basic name="portletName" />
+			<basic name="portletUrl" />
+			<basic name="menuItemName" />
 			<basic name="hasDiscussion" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />

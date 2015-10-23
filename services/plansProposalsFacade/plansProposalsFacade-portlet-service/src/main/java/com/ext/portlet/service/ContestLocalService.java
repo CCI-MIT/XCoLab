@@ -615,6 +615,9 @@ public interface ContestLocalService extends BaseLocalService,
         java.lang.Long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
+    public int countContestsByContestType(java.lang.Long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
         java.lang.Long contestTier,

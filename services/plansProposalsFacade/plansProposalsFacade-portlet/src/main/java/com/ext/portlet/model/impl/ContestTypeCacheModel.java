@@ -26,11 +26,13 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
     public String proposalName;
     public String proposalNamePlural;
     public String portletName;
+    public String portletUrl;
+    public String menuItemName;
     public boolean hasDiscussion;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(id);
@@ -44,6 +46,10 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         sb.append(proposalNamePlural);
         sb.append(", portletName=");
         sb.append(portletName);
+        sb.append(", portletUrl=");
+        sb.append(portletUrl);
+        sb.append(", menuItemName=");
+        sb.append(menuItemName);
         sb.append(", hasDiscussion=");
         sb.append(hasDiscussion);
         sb.append("}");
@@ -87,6 +93,18 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
             contestTypeImpl.setPortletName(portletName);
         }
 
+        if (portletUrl == null) {
+            contestTypeImpl.setPortletUrl(StringPool.BLANK);
+        } else {
+            contestTypeImpl.setPortletUrl(portletUrl);
+        }
+
+        if (menuItemName == null) {
+            contestTypeImpl.setMenuItemName(StringPool.BLANK);
+        } else {
+            contestTypeImpl.setMenuItemName(menuItemName);
+        }
+
         contestTypeImpl.setHasDiscussion(hasDiscussion);
 
         contestTypeImpl.resetOriginalValues();
@@ -102,6 +120,8 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         proposalName = objectInput.readUTF();
         proposalNamePlural = objectInput.readUTF();
         portletName = objectInput.readUTF();
+        portletUrl = objectInput.readUTF();
+        menuItemName = objectInput.readUTF();
         hasDiscussion = objectInput.readBoolean();
     }
 
@@ -138,6 +158,18 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(portletName);
+        }
+
+        if (portletUrl == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(portletUrl);
+        }
+
+        if (menuItemName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(menuItemName);
         }
 
         objectOutput.writeBoolean(hasDiscussion);

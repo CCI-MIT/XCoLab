@@ -1014,6 +1014,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return contestPersistence.findByContestType(contestTypeId);
     }
 
+    public int countContestsByContestType(Long contestTypeId) throws SystemException {
+        return contestPersistence.countByContestType(contestTypeId);
+    }
+
     public List<Contest> getContestsByTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTermIds)
             throws SystemException {
         DynamicQuery queryContestsByTierLevelAndOntologyTermIds =

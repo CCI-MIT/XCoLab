@@ -715,6 +715,11 @@ public class ContestLocalServiceUtil {
         return getService().getContestsByContestType(contestTypeId);
     }
 
+    public static int countContestsByContestType(java.lang.Long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().countContestsByContestType(contestTypeId);
+    }
+
     public static java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
         java.lang.Long contestTier,
         java.util.List<java.lang.Long> focusAreaOntologyTermIds)
