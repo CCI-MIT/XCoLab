@@ -25,11 +25,12 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
     public String contestNamePlural;
     public String proposalName;
     public String proposalNamePlural;
+    public String portletName;
     public boolean hasDiscussion;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{id=");
         sb.append(id);
@@ -41,6 +42,8 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         sb.append(proposalName);
         sb.append(", proposalNamePlural=");
         sb.append(proposalNamePlural);
+        sb.append(", portletName=");
+        sb.append(portletName);
         sb.append(", hasDiscussion=");
         sb.append(hasDiscussion);
         sb.append("}");
@@ -78,6 +81,12 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
             contestTypeImpl.setProposalNamePlural(proposalNamePlural);
         }
 
+        if (portletName == null) {
+            contestTypeImpl.setPortletName(StringPool.BLANK);
+        } else {
+            contestTypeImpl.setPortletName(portletName);
+        }
+
         contestTypeImpl.setHasDiscussion(hasDiscussion);
 
         contestTypeImpl.resetOriginalValues();
@@ -92,6 +101,7 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         contestNamePlural = objectInput.readUTF();
         proposalName = objectInput.readUTF();
         proposalNamePlural = objectInput.readUTF();
+        portletName = objectInput.readUTF();
         hasDiscussion = objectInput.readBoolean();
     }
 
@@ -122,6 +132,12 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(proposalNamePlural);
+        }
+
+        if (portletName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(portletName);
         }
 
         objectOutput.writeBoolean(hasDiscussion);

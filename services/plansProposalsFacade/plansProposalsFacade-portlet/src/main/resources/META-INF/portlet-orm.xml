@@ -349,6 +349,7 @@
 			<basic name="contestNamePlural" />
 			<basic name="proposalName" />
 			<basic name="proposalNamePlural" />
+			<basic name="portletName" />
 			<basic name="hasDiscussion" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />

@@ -42,6 +42,7 @@ public class ContestTypeWrapper implements ContestType,
         attributes.put("contestNamePlural", getContestNamePlural());
         attributes.put("proposalName", getProposalName());
         attributes.put("proposalNamePlural", getProposalNamePlural());
+        attributes.put("portletName", getPortletName());
         attributes.put("hasDiscussion", getHasDiscussion());
 
         return attributes;
@@ -78,6 +79,12 @@ public class ContestTypeWrapper implements ContestType,
 
         if (proposalNamePlural != null) {
             setProposalNamePlural(proposalNamePlural);
+        }
+
+        String portletName = (String) attributes.get("portletName");
+
+        if (portletName != null) {
+            setPortletName(portletName);
         }
 
         Boolean hasDiscussion = (Boolean) attributes.get("hasDiscussion");
@@ -205,6 +212,26 @@ public class ContestTypeWrapper implements ContestType,
     @Override
     public void setProposalNamePlural(java.lang.String proposalNamePlural) {
         _contestType.setProposalNamePlural(proposalNamePlural);
+    }
+
+    /**
+    * Returns the portlet name of this contest type.
+    *
+    * @return the portlet name of this contest type
+    */
+    @Override
+    public java.lang.String getPortletName() {
+        return _contestType.getPortletName();
+    }
+
+    /**
+    * Sets the portlet name of this contest type.
+    *
+    * @param portletName the portlet name of this contest type
+    */
+    @Override
+    public void setPortletName(java.lang.String portletName) {
+        _contestType.setPortletName(portletName);
     }
 
     /**

@@ -118,6 +118,21 @@ public interface ContestTypeModel extends BaseModel<ContestType> {
     public void setProposalNamePlural(String proposalNamePlural);
 
     /**
+     * Returns the portlet name of this contest type.
+     *
+     * @return the portlet name of this contest type
+     */
+    @AutoEscape
+    public String getPortletName();
+
+    /**
+     * Sets the portlet name of this contest type.
+     *
+     * @param portletName the portlet name of this contest type
+     */
+    public void setPortletName(String portletName);
+
+    /**
      * Returns the has discussion of this contest type.
      *
      * @return the has discussion of this contest type

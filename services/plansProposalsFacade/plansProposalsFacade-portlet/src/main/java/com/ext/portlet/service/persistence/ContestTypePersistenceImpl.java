@@ -331,6 +331,7 @@ public class ContestTypePersistenceImpl extends BasePersistenceImpl<ContestType>
         contestTypeImpl.setContestNamePlural(contestType.getContestNamePlural());
         contestTypeImpl.setProposalName(contestType.getProposalName());
         contestTypeImpl.setProposalNamePlural(contestType.getProposalNamePlural());
+        contestTypeImpl.setPortletName(contestType.getPortletName());
         contestTypeImpl.setHasDiscussion(contestType.isHasDiscussion());
 
         return contestTypeImpl;

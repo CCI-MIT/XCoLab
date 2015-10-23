@@ -163,6 +163,7 @@
         <column name="contestNamePlural" type="String" />
         <column name="proposalName" type="String" />
         <column name="proposalNamePlural" type="String" />
+        <column name="portletName" type="String" />
         <column name="hasDiscussion" type="boolean" />
     </entity>
     

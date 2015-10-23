@@ -285,6 +285,7 @@
 		<field name="contestNamePlural" type="String" />
 		<field name="proposalName" type="String" />
 		<field name="proposalNamePlural" type="String" />
+		<field name="portletName" type="String" />
 		<field name="hasDiscussion" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.DiscussionCategory">

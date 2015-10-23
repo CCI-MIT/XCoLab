@@ -25,6 +25,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
     private String _contestNamePlural;
     private String _proposalName;
     private String _proposalNamePlural;
+    private String _portletName;
     private boolean _hasDiscussion;
     private BaseModel<?> _contestTypeRemoteModel;
     private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
@@ -71,6 +72,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         attributes.put("contestNamePlural", getContestNamePlural());
         attributes.put("proposalName", getProposalName());
         attributes.put("proposalNamePlural", getProposalNamePlural());
+        attributes.put("portletName", getPortletName());
         attributes.put("hasDiscussion", getHasDiscussion());
 
         return attributes;
@@ -107,6 +109,12 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
         if (proposalNamePlural != null) {
             setProposalNamePlural(proposalNamePlural);
+        }
+
+        String portletName = (String) attributes.get("portletName");
+
+        if (portletName != null) {
+            setPortletName(portletName);
         }
 
         Boolean hasDiscussion = (Boolean) attributes.get("hasDiscussion");
@@ -229,6 +237,28 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
     }
 
     @Override
+    public String getPortletName() {
+        return _portletName;
+    }
+
+    @Override
+    public void setPortletName(String portletName) {
+        _portletName = portletName;
+
+        if (_contestTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPortletName", String.class);
+
+                method.invoke(_contestTypeRemoteModel, portletName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public boolean getHasDiscussion() {
         return _hasDiscussion;
     }
@@ -328,6 +358,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         clone.setContestNamePlural(getContestNamePlural());
         clone.setProposalName(getProposalName());
         clone.setProposalNamePlural(getProposalNamePlural());
+        clone.setPortletName(getPortletName());
         clone.setHasDiscussion(getHasDiscussion());
 
         return clone;
@@ -378,7 +409,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{id=");
         sb.append(getId());
@@ -390,6 +421,8 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         sb.append(getProposalName());
         sb.append(", proposalNamePlural=");
         sb.append(getProposalNamePlural());
+        sb.append(", portletName=");
+        sb.append(getPortletName());
         sb.append(", hasDiscussion=");
         sb.append(getHasDiscussion());
         sb.append("}");
@@ -399,7 +432,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestType");
@@ -424,6 +457,10 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         sb.append(
             "<column><column-name>proposalNamePlural</column-name><column-value><![CDATA[");
         sb.append(getProposalNamePlural());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>portletName</column-name><column-value><![CDATA[");
+        sb.append(getPortletName());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>hasDiscussion</column-name><column-value><![CDATA[");
