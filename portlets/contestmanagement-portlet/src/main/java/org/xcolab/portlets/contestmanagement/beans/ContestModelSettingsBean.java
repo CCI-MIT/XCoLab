@@ -2,6 +2,7 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.models.CollaboratoriumModelingService;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -29,7 +30,7 @@ public class ContestModelSettingsBean implements Serializable {
     public ContestModelSettingsBean() {
     }
 
-    public ContestModelSettingsBean(Contest contest) throws Exception {
+    public ContestModelSettingsBean(Contest contest){
         this.defaultModelId = contest.getDefaultModelId();
         this.otherModels = contest.getOtherModels();
         this.defaultModelSettings = contest.getDefaultModelSettings();
@@ -38,7 +39,7 @@ public class ContestModelSettingsBean implements Serializable {
         initOtherModelsAndRegion();
     }
 
-    private void initOtherModelsAndRegion() throws Exception{
+    private void initOtherModelsAndRegion(){
         if (Validator.isNotNull(this.otherModels)) {
             for (String otherModelId : this.otherModels.split(",")) {
                 otherModelIds.add(Long.parseLong(otherModelId.trim()));
@@ -47,11 +48,14 @@ public class ContestModelSettingsBean implements Serializable {
         this.modelRegion = getRegionFromDefaultModelSettings(this.defaultModelSettings);
     }
 
-    private String getRegionFromDefaultModelSettings(String defaultModelSettingsString) throws Exception {
-        JSONObject defaultModelSettings = JSONFactoryUtil.createJSONObject(defaultModelSettingsString);
+    private String getRegionFromDefaultModelSettings(String defaultModelSettingsString) {
         String region = "";
-        if (Validator.isNotNull(defaultModelSettings)) {
-            region = defaultModelSettings.has("region") ? defaultModelSettings.getString("region") : "";
+        try {
+            JSONObject defaultModelSettings = JSONFactoryUtil.createJSONObject(defaultModelSettingsString);
+            if (Validator.isNotNull(defaultModelSettings)) {
+                region = defaultModelSettings.has("region") ? defaultModelSettings.getString("region") : "";
+            }
+        } catch (JSONException ignored){
         }
         return region;
     }
