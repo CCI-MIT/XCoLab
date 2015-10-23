@@ -12,12 +12,15 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
+import org.xcolab.portlets.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.*;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,17 +74,27 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
     @RequestMapping(params = "action=updateContestOverview")
     public void updateContestOverviewTabController(ActionRequest request, Model model,
                                         @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
-                                        ActionResponse response) {
+                                        ActionResponse response) throws IOException{
         if(!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
         try {
-            updateContestOverviewWrapper.executeMassAction(request, null);
-            String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
-            SetRenderParameterUtil.addActionSuccessMessageToSession(request, massActionTitle);
-            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName());
-        } catch(Exception e){
+            try {
+                updateContestOverviewWrapper.executeMassAction(request, response);
+                String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
+                SetRenderParameterUtil.addActionSuccessMessageToSession(request, massActionTitle);
+                SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName());
+            } catch (InvocationTargetException e) {
+                Boolean massActionRequiresConfirmation = e.getTargetException() instanceof MassActionRequiresConfirmationException;
+                if (massActionRequiresConfirmation) {
+                    SetRenderParameterUtil.setConfirmMassActionRenderRedirect(response, updateContestOverviewWrapper);
+                } else {
+                    throw e;
+                }
+            }
+        }
+        catch(Exception e){
             _log.warn("Update contest overview failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }

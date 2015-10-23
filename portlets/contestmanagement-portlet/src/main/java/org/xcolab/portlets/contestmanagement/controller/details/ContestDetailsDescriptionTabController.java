@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
+import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
+import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
@@ -71,6 +73,15 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     @ModelAttribute("scheduleTemplateSelectionItems")
     public List<LabelValue> populateScheduleSelectionItems(PortletRequest request){
         return getContestScheduleSelectionItems(request);
+    }
+
+    @ModelAttribute("modelIdsSelectionItems")
+    public List<LabelValue> populateModelIdsSelectionItems(){
+        return ContestModelSettingsBean.getAllModelIds();
+    }
+    @ModelAttribute("modelRegionsSelectionItems")
+    public List<LabelStringValue> populateModelRegionsSelectionItems(){
+        return ContestModelSettingsBean.getAllModelRegions();
     }
 
     @ModelAttribute("currentTabWrapped")

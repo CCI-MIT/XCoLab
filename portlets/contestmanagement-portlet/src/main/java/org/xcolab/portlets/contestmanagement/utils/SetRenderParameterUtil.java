@@ -1,8 +1,11 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
+import org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper;
+
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -63,12 +66,18 @@ public class SetRenderParameterUtil {
         response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId/" + contestPK + "/tab/" + tabName);
     }
 
-    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName) throws Exception{
+    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName) throws IOException {
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName);
     }
 
     public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName, Long elementId) throws Exception{
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName + "/elementId/" + elementId);
+    }
+
+    public static void setConfirmMassActionRenderRedirect (ActionResponse response, ContestOverviewWrapper contestOverviewWrapper){
+        response.setRenderParameter("action", "showMassActionConfirmation");
+        response.setRenderParameter("massActionId", contestOverviewWrapper.getSelectedMassAction().toString());
+        response.setRenderParameter("contestIds", contestOverviewWrapper.getSelectedContestIds().toString());
     }
 
 }

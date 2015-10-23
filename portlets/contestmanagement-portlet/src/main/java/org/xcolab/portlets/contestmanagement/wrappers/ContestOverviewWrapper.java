@@ -8,10 +8,10 @@ import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
 import org.xcolab.wrapper.ContestWrapper;
 
 import javax.portlet.PortletRequest;
-import javax.portlet.ResourceResponse;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,22 +142,10 @@ public class ContestOverviewWrapper {
     }
 
     public String getSelectedMassActionTitle() throws Exception {
-        String selectedMassActionTitle = "";
-        Long selectedMassActionAbsolute = Math.abs(selectedMassAction.longValue());
-        for (ContestMassActions contestMassAction : ContestMassActions.values()) {
-            if (selectedMassActionAbsolute == contestMassAction.ordinal()) {
-                if (selectedMassAction.longValue() < 0) {
-                    selectedMassActionTitle = contestMassAction.getReverseActionDisplayName();
-                } else {
-                    selectedMassActionTitle = contestMassAction.getActionDisplayName();
-                }
-                break;
-            }
-        }
-        return selectedMassActionTitle;
+        return MassActionUtil.getSelectedMassActionTitle(selectedMassAction.longValue());
     }
 
-    public void executeMassAction(PortletRequest request, ResourceResponse response) throws Exception {
+    public void executeMassAction(PortletRequest request, Object response) throws Exception {
         boolean isOrderMassAction = selectedMassAction == ContestMassActions.ORDER.ordinal();
         if(isOrderMassAction){
             persistOrder();
@@ -168,7 +156,7 @@ public class ContestOverviewWrapper {
         Class massActionClass = massActionMethod.getDeclaringClass();
         selectedContestIds = getSelectedContestIds();
 
-        Boolean isReportMassAction =
+        Boolean isResponseObjectRequiredForMassAction =
                 (selectedMassAction == ContestMassActions.REPORT_PEOPLE_IN_CURRENT_PHASE.ordinal());
         Boolean isMessageMassAction =
                 (selectedMassAction == ContestMassActions.MESSAGE.ordinal());
@@ -179,7 +167,7 @@ public class ContestOverviewWrapper {
         Boolean isMethodFromContestWrapper =
                 (massActionClass == ContestWrapper.class);
 
-        if (isReportMassAction) {
+        if (isResponseObjectRequiredForMassAction) {
             invokeMassActionReportMethod(massActionMethod, request, response);
         } else if (isMessageMassAction) {
             invokeMassActionMessageMethod(massActionMethod, request);
@@ -195,7 +183,7 @@ public class ContestOverviewWrapper {
         }
     }
 
-    private void invokeMassActionReportMethod(Method massActionMethod, PortletRequest request, ResourceResponse response) throws Exception {
+    private void invokeMassActionReportMethod(Method massActionMethod, PortletRequest request, Object response) throws Exception {
         massActionMethod.invoke(null, selectedContestIds, response, request);
     }
 
@@ -222,7 +210,7 @@ public class ContestOverviewWrapper {
         }
     }
 
-    private List<Long> getSelectedContestIds() {
+    public List<Long> getSelectedContestIds() {
         List<Long> contestIds = new ArrayList<>();
         for (ContestWrapper contestWrapper : contestWrappers) {
             int index = contestWrappers.indexOf(contestWrapper);

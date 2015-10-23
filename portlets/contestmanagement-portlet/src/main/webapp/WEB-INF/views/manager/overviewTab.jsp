@@ -24,8 +24,6 @@
 		<portlet:param name="manager" value="true" />
 	</portlet:resourceURL>
 
-
-
 	<div class="cmsDetailsBox">
 		<div style="margin-bottom: 40px;">
 			<div class="floatRight outerVerticalCenter">
@@ -50,7 +48,7 @@
 			</div>
 		</div>
 
-		<form:form action="${updateContestOverviewURL }" commandName="contestOverviewWrapper" id="editForm" method="post">
+		<form:form action="${updateContestOverviewURL }" modelAttribute="contestOverviewWrapper" id="editForm" method="post">
 			<div class="outerVerticalCenter">
 				<div class="innerVerticalCenter">
 					<form:select path="selectedMassAction" id="selectedMassAction">
