@@ -35,6 +35,7 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.portlets.proposals.utils.ProposalAttributeUtil;
 import org.xcolab.portlets.proposals.utils.ProposalContestPhaseAttributeHelper;
@@ -458,12 +459,36 @@ public class ProposalWrapper {
         return this.membershipRequests;
     }
 
+    public List<String[]> getAllModelRegions() {
+        List<String[]> modelRegions = new ArrayList<>();
+        for (ModelRegions modelRegion : ModelRegions.values()) {
+            modelRegions.add(new String[] {modelRegion.getModelRegionName(), modelRegion.getModelRegionTitle()});
+        }
+        return modelRegions;
+    }
+
+    public String getModelRegion() throws PortalException, SystemException {
+        ProposalAttribute attr = proposalAttributeUtil.getLatestAttributeOrNull(ProposalAttributeKeys.REGION);
+        if (attr == null) {
+            return "";
+        }
+        return attr.getStringValue();
+    }
+
+    public void setModelRegion(String region, Long userId) throws PortalException, SystemException {
+        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.REGION, region);
+    }
+
     public Long getModelId() throws PortalException, SystemException {
         Long modelId = 0L;
         try {
             modelId = ContestLocalServiceUtil.getDefaultModelId(contest.getContestPK());
         } catch(Exception ignored){ }
         return modelId;
+    }
+
+    public void setModelId(Long scenarioId, Long modelId, Long userId) throws PortalException, SystemException {
+        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, modelId, scenarioId);
     }
 
     public void setScenarioId(Long scenarioId, Long modelId, Long userId) throws PortalException, SystemException {

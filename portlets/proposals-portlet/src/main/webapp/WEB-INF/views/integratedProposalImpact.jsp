@@ -89,10 +89,13 @@
                         </div>
                     </c:if>
 
-                    <div id="modelContent">
-                        <modeling:simulationEdit scenarioId="${scenarioId }" modelId="${modelId }"
-                                                 contestModelDefaultSetting="${contest.defaultModelSettings}"/>
-                    </div>
+
+                    <modeling:simulationEdit scenarioId="${scenarioId }" modelId="${modelId }"
+                                             contestModelDefaultSetting="${contest.defaultModelSettings}"
+                                             isRegionalContest="${isRegionalContest}"
+                                             proposalRegion="${proposal.modelRegion}"
+                                             modelRegions="${proposal.allModelRegions}"/>
+
 
                     <portlet:actionURL var="updateProposalScenarioURL">
                         <portlet:param name="action_forwardToPage" value="proposalDetails_IMPACT"/>
@@ -101,9 +104,11 @@
                         <portlet:param name="action" value="updateProposalScenario"/>
                     </portlet:actionURL>
 
+
                     <form action="${updateProposalScenarioURL }" id="updateProposalScenarioForm" method="post">
                         <input type="text" id="proposalScenarioId" name="scenarioId" class="hidden"/>
                         <input type="text" id="scenarioModelId" name="modelId" class="hidden"/>
+                        <input type="text" id="proposalModelRegion" name="region" class="hidden" value="${proposal.modelRegion}"/>
                     </form>
 
                     <div class="admin-overlay-wrap">
@@ -413,7 +418,7 @@
         }
 
         var scenarioFetchedCallbackRegistered = false;
-        function registerScenarioFetchedCallback(){
+        function registerScenarioFetchedCallback() {
             var $modelsOutputContainerElement = $("#modelsOutputContainer");
             if (jQuery($modelsOutputContainerElement.data('modeling')).length !== 0) {
                 scenarioFetchedCallbackRegistered = true;
@@ -424,7 +429,7 @@
         registerScenarioFetchedCallback();
 
         $().ready(function () {
-            if(!scenarioFetchedCallbackRegistered){
+            if (!scenarioFetchedCallbackRegistered) {
                 registerScenarioFetchedCallback();
             }
             registerHelpEventHandler();

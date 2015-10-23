@@ -379,9 +379,11 @@ ModelingWidget.prototype.showStackTrace = function(data) {
  */
 ModelingWidget.prototype.toggleEditMask = function(isInEditMode) {
 	if (isInEditMode) {
-		$('div.act-edit_left').fadeIn();
+		$("div.act-edit_left :input").prop("disabled", true);
+		//$('div.act-edit_left').fadeIn();
 	} else {
-		$('div.act-edit_left').fadeOut();
+		//$("div.act-edit_left :input").prop("disabled", false);
+		//$('div.act-edit_left').fadeOut();
 	}
 };
 

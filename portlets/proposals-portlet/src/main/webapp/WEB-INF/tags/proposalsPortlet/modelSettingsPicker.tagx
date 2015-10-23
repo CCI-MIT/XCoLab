@@ -79,8 +79,10 @@
             if (consolidationPossible) {
                 checkModelSetRadioWithId(consolidatedModelId);
                 setModelSetRadiosState(true);
+                enableInputs();
             } else {
                 checkModelSetRadioWithId(modelId);
+                enableInputs();
             }
         });
 
