@@ -123,7 +123,7 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 #logo {float:left; width:227px; margin-top:12px;}
 
 /* top menus */
-#menu {float:left; width:400px; height:67px;}
+#menu {float:left; width:460px; height:67px;}
 #menu li {float:left; list-style:none; border-left:1px solid #bebeb8;}
 #menu li:hover {color:#454545;}
 #menu li.c {background:#fff; border-left:1px solid #888782;}

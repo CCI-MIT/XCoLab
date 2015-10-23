@@ -7,7 +7,11 @@
 package org.xcolab.hooks.climatecolab;
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
+import com.ext.portlet.service.persistence.ContestUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -21,6 +25,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +52,20 @@ public class EXTServicePreAction extends Action {
             if (theme.getName().equals(COLLABORATORIUM_THEME_NAME)) {
                 themeTimestamp = String.valueOf(theme.getTimestamp());
             }
+        }
+
+        //Decide whether to show contest menu items
+        try {
+            final List<ContestType> contestTypes = ContestTypeLocalServiceUtil.getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+            List<ContestType> contestPages = new ArrayList<ContestType>();
+            for (ContestType contestType : contestTypes) {
+                if (ContestLocalServiceUtil.countContestsByContestType(contestType.getId()) > 0) {
+                    contestPages.add(contestType);
+                }
+            }
+            vmVariables.put("_contest_pages", contestPages);
+        } catch (SystemException e) {
+            _log.error("Could not retrieve contest types to populate menu items", e);
         }
 
         String contestIdStr = req.getParameter("_collab_paramcontestId");

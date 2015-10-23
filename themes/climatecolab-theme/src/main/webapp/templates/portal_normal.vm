@@ -118,8 +118,10 @@
  <div class="inner">
   <div id="logo"><a href="/"><img src="$images_folder/logo-climate-colab.png" width="203" height="42" alt="Climate Colab" /></a></div>
   <ul id="menu">
-   <li class="#if ($pageName== 'about' || $parentPageName == 'about')) c #end"><a href="/web/guest/about">About</a></li>
-   <li class="#if ($pageName == 'proposals') c #end"><a href="/web/guest/plans">Contests</a></li>
+   <li class="#if ($pageName== 'about' || $parentPageName == 'about') c #end"><a href="/web/guest/about">About</a></li>
+   #foreach( $contest_page in $_contest_pages)
+       <li class="#if ($pageName == $contest_page.portletName) c #end"><a href="$contest_page.portletUrl">$contest_page.menuItemName</a></li>
+   #end
    <li class="#if ($pageName== 'community' || $parentPageName == 'community')) c #end" ><a href="/web/guest/members">Community</a></li>
    <li class="#if ($pageName == 'search') c #end"><a href="javascript:;" class="search" id="searchPopupTrigger" >Search</a></li>
   </ul>
