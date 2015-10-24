@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.utils.RequestParameterParser;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
@@ -24,6 +25,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +46,14 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
+    }
+    @ModelAttribute("anyOntologyTermIds")
+    public List<Long> populateAnyOntologyTermIds() {
+        List<Long> anyOntologyTermIds = new ArrayList<>();
+        for(OntologySpaceEnum ontologySpaceEnum : OntologySpaceEnum.values()){
+            anyOntologyTermIds.add(ontologySpaceEnum.getAnyOntologyTermId());
+        }
+        return anyOntologyTermIds;
     }
 
     @RequestMapping(params = "tab=ONTOLOGY")
@@ -102,7 +112,7 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
 
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
         } catch(Exception e){
-            _log.warn("Update contest overview failed with: ", e);
+            _log.warn("Update contest ontology failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
