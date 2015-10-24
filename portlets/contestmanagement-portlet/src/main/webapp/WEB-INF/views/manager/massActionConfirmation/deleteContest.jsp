@@ -37,7 +37,7 @@
                         <a href="#" id="submitButton">DELETE contest(s) and phases</a>
                     </div>
                     <div class="gray-button innerVerticalCenter">
-                        <a href="/web/guest/cms/-/contestmanagement/manage">DISCARD &amp; go back to overview</a>
+                        <a href="/web/guest/cms/-/contestmanagement/manager">DISCARD &amp; go back to overview</a>
                     </div>
                 </div>
             </div>
