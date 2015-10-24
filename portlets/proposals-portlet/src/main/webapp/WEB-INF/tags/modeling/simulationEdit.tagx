@@ -91,6 +91,7 @@
             if(!!contestModelRegionSetting) {
                 console.debug("Setting region", contestModelRegionSetting);
                 updateModelRegionSetting(contestModelRegionSetting);
+				jQuery("#modelRegion").val(contestModelRegionSetting);
             }
         });
 
