@@ -87,6 +87,8 @@ public class ContestPhaseLocalServiceClpInvoker {
     private String[] _methodParameterTypes517;
     private String _methodName518;
     private String[] _methodParameterTypes518;
+    private String _methodName519;
+    private String[] _methodParameterTypes519;
 
     public ContestPhaseLocalServiceClpInvoker() {
         _methodName0 = "addContestPhase";
@@ -286,6 +288,12 @@ public class ContestPhaseLocalServiceClpInvoker {
 
         _methodParameterTypes518 = new String[] {
                 "com.liferay.portal.model.User",
+                "com.ext.portlet.model.ContestPhase"
+            };
+
+        _methodName519 = "getContestPhaseLinkUrl";
+
+        _methodParameterTypes519 = new String[] {
                 "com.ext.portlet.model.ContestPhase"
             };
     }
@@ -508,6 +516,11 @@ public class ContestPhaseLocalServiceClpInvoker {
                 Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.getNumberOfProposalsForJudge((com.liferay.portal.model.User) arguments[0],
                 (com.ext.portlet.model.ContestPhase) arguments[1]);
+        }
+
+        if (_methodName519.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+            return ContestPhaseLocalServiceUtil.getContestPhaseLinkUrl((com.ext.portlet.model.ContestPhase) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

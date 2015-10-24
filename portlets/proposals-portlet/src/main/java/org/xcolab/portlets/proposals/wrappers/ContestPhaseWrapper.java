@@ -168,11 +168,13 @@ public class ContestPhaseWrapper {
         if (StringUtils.isBlank(descriptionOverride)) {
             try {
                 return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getDescription();
-            } catch (NoSuchContestPhaseException e) {
-                // ignore
-            }
+            } catch (NoSuchContestPhaseException ignored) { }
             return null;
         }
         return descriptionOverride;
+    }
+
+    public String getContestPhaseUrl() throws SystemException {
+        return ContestPhaseLocalServiceUtil.getContestPhaseLinkUrl(contestPhase);
     }
 }

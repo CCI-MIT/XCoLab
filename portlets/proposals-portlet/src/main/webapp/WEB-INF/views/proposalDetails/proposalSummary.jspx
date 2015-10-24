@@ -149,7 +149,7 @@
 
         <div class="prop-contest">
             <strong>${contestType.contestName}: </strong>
-            <proposalsPortlet:contestLink contestId="${contest.contestPK }" text="${ contest.contestShortName }"/><br />
+            <proposalsPortlet:contestLink contest="${contest }" /><br />
             ${contest.contestName}
         </div>
 

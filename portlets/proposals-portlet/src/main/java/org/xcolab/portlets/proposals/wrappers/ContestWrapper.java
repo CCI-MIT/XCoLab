@@ -698,4 +698,8 @@ public class ContestWrapper {
         return contestType;
     }
 
+    public String getContestUrl() {
+        return ContestLocalServiceUtil.getContestLinkUrl(contest);
+    }
+
 }

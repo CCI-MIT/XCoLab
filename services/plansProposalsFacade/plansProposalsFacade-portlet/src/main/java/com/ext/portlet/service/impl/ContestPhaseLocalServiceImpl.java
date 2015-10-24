@@ -403,4 +403,22 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         }
         return counter;
     }
+
+    /**
+     * Returns the URL link address for the passed contest phase
+     *
+     * @param contestPhase   The contest object
+     * @return          Contest phase URL as String
+     */
+    public String getContestPhaseLinkUrl(ContestPhase contestPhase) {
+        String portletLink;
+        try {
+            Contest contest = contestLocalService.fetchContest(contestPhase.getContestPK());
+            portletLink = contestTypeLocalService.fetchContestType(contest.getContestTypeId()).getPortletUrl();
+        } catch (SystemException e) {
+            portletLink = "/web/guest/plans";
+        }
+        String link = portletLink+"/-/plans/contestId/%d/contestPhase/%d";
+        return String.format(link, contestPhase.getContestPK(), contestPhase.getContestPhasePK());
+    }
 }

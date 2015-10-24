@@ -902,7 +902,13 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @return          Contest URL as String
      */
     public String getContestLinkUrl(Contest contest) {
-        String link = "/web/guest/plans/-/plans/contestId/%d";
+        String portletLink;
+        try {
+            portletLink = contestTypeLocalService.fetchContestType(contest.getContestTypeId()).getPortletUrl();
+        } catch (SystemException e) {
+            portletLink = "/web/guest/plans";
+        }
+        String link = portletLink+"/-/plans/contestId/%d";
         return String.format(link, contest.getContestPK());
     }
 

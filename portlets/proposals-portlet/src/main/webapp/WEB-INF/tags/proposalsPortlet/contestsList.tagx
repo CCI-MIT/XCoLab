@@ -22,7 +22,7 @@
                                     <div class="tooltip">${contest.flagTooltip}<div class="tt-arrow"><!--  --></div></div>
                                 </c:if>
                             </c:if>
-                            <collab:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName}:" />
+                            <proposalsPortlet:contestLink contest="${contest}" text="${contest.contestShortName}:" />
                             ${contest.contestName}
                         </div>
                     </td>

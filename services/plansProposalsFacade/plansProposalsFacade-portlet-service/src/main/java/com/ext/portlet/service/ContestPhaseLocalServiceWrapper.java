@@ -453,6 +453,18 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     /**
+    * Returns the URL link address for the passed contest phase
+    *
+    * @param contestPhase   The contest object
+    * @return Contest phase URL as String
+    */
+    @Override
+    public java.lang.String getContestPhaseLinkUrl(
+        com.ext.portlet.model.ContestPhase contestPhase) {
+        return _contestPhaseLocalService.getContestPhaseLinkUrl(contestPhase);
+    }
+
+    /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ContestPhaseLocalService getWrappedContestPhaseLocalService() {

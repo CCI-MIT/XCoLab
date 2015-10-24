@@ -419,6 +419,17 @@ public class ContestPhaseLocalServiceUtil {
         return getService().getNumberOfProposalsForJudge(judge, phase);
     }
 
+    /**
+    * Returns the URL link address for the passed contest phase
+    *
+    * @param contestPhase   The contest object
+    * @return Contest phase URL as String
+    */
+    public static java.lang.String getContestPhaseLinkUrl(
+        com.ext.portlet.model.ContestPhase contestPhase) {
+        return getService().getContestPhaseLinkUrl(contestPhase);
+    }
+
     public static void clearService() {
         _service = null;
     }
