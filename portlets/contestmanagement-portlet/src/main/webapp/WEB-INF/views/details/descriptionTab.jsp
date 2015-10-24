@@ -284,6 +284,7 @@
                             </td>
                             <td>
                                 <form:select path="contestModelSettings.defaultModelId">
+                                    <form:option value="" label="None"/>
                                     <form:options items="${modelIdsSelectionItems}" itemValue="value"
                                                   itemLabel="lable"/>
                                 </form:select>
