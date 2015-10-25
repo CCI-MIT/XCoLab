@@ -14,7 +14,7 @@
         </div>
         <div class="text-wrap">
 			<h3>
-            	<proposalsPortlet:contestLink contest="${contest}" />
+            	<collab:contestLink contest="${contest}" />
             </h3>
             ${contest.contestName }
             <div class="count">

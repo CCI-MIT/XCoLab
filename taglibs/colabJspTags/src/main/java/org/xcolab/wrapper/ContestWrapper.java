@@ -628,4 +628,8 @@ public class ContestWrapper {
     public void setHideRibbons(boolean hideRibbons) throws SystemException {
         contest.setHideRibbons(hideRibbons);
     }
+
+    public String getContestUrl() {
+        return ContestLocalServiceUtil.getContestLinkUrl(contest);
+    }
 }

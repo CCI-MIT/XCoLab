@@ -1,6 +1,7 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	xmlns:portlet="http://java.sun.com/portlet_2_0"
+    xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0">
 
     <div>
         <h2> ${title} <span><a href="/web/guest/plans">see all contests</a></span></h2>
@@ -17,7 +18,7 @@
                     </a>
                 </div>
                 <div class="text-wrap">
-                    <h3><a href="/web/guest/plans/-/plans/contestId/${contest.primaryKey}">${contest.contestShortName}</a></h3>
+                    <h3><collab:contestLink contest="${contest}"/></h3>
                     ${contest.contestName}
                     <div class="count">
                         <div class="icePnlGrp prop"><strong>${contest.proposalsCount}</strong> proposals</div>
