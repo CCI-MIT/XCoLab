@@ -21,19 +21,22 @@
             <c:set var="modelId" value="${modelId}"/>
             <c:set var="scenarioId" value="${scenarioId }"/>
 
-            <c:if test="${not empty consolidatedModelId}">
-                <c:set var="modelId" value="${consolidatedModelId}"/>
-            </c:if>
+            <c:if test="${isProposalUsingCombinedScenario}">
+                <c:if test="${not empty consolidatedModelId}">
+                    <c:set var="modelId" value="${consolidatedModelId}"/>
+                </c:if>
 
-            <c:if test="${not empty consolidatedScenarioId}">
-                <c:set var="scenarioId" value="${consolidatedScenarioId}"/>
+                <c:if test="${not empty consolidatedScenarioId}">
+                    <c:set var="scenarioId" value="${consolidatedScenarioId}"/>
+                </c:if>
             </c:if>
 
             <c:choose>
                 <c:when test="${edit and (modelId > 0 or scenarioId > 0)}">
                     <c:if test="${not empty consolidateOptions }">
                         <proposalsPortlet:modelSettingsPicker consolidateOptions="${consolidateOptions }"
-                                                              contestPK="${contest.contestPK }" modelId="${modelId}"
+                                                              contestPK="${contest.contestPK }"
+                                                              modelId="${modelId}"
                                                               scenarioId="${scenarioId }"/>
 
                         <div id="proposalToModelMap" class="addpropbox" style="display: none;">
@@ -90,7 +93,8 @@
                     </c:if>
 
 
-                    <modeling:simulationEdit scenarioId="${scenarioId }" modelId="${modelId }"
+                    <modeling:simulationEdit scenarioId="${scenarioId }"
+                                             modelId="${modelId }"
                                              contestModelDefaultSetting="${contest.defaultModelSettings}"
                                              isRegionalContest="${isRegionalContest}"
                                              proposalRegion="${proposal.modelRegion}"
@@ -108,7 +112,9 @@
                     <form action="${updateProposalScenarioURL }" id="updateProposalScenarioForm" method="post">
                         <input type="text" id="proposalScenarioId" name="scenarioId" class="hidden"/>
                         <input type="text" id="scenarioModelId" name="modelId" class="hidden"/>
-                        <input type="text" id="proposalModelRegion" name="region" class="hidden" value="${proposal.modelRegion}"/>
+                        <input type="text" id="isConsolidatedScenario" name="isConsolidatedScenario" class="hidden"/>
+                        <input type="text" id="proposalModelRegion" name="region" class="hidden"
+                               value="${proposal.modelRegion}"/>
                     </form>
 
                     <div class="admin-overlay-wrap">

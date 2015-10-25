@@ -41,7 +41,8 @@ public class UpdateProposalScenarioActionController {
             ActionResponse response,
                      @RequestParam(required = true) long scenarioId,
                      @RequestParam(required = true) long modelId,
-                     @RequestParam(required = false) String region)
+                     @RequestParam(required = false) String region,
+                     @RequestParam(required = false) Boolean isConsolidatedScenario)
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
 
 
@@ -51,7 +52,8 @@ public class UpdateProposalScenarioActionController {
         }
 
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
-        proposal.setScenarioId(scenarioId, modelId, proposalsContext.getUser(request).getUserId());
+        Long consolidatedScenario = Validator.isNotNull(isConsolidatedScenario) && isConsolidatedScenario ? 1L : 0L;
+        proposal.setScenarioId(scenarioId, consolidatedScenario, proposalsContext.getUser(request).getUserId());
         if(!Validator.isBlank(region)){
             proposal.setModelRegion(region, proposalsContext.getUser(request).getUserId());
         }

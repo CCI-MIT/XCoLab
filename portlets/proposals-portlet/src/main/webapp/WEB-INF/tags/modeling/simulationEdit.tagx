@@ -15,7 +15,6 @@
 	<jsp:directive.attribute name="modelRegions" type="java.util.List" required="false" rtexprvalue="true" description="has the proposal a region stored" />
 
     <c:set var="inConsolidationMode" value="${(empty inConsolidationMode) ? false : true}" />
-    ${contestModelDefaultSetting}
     <c:if test="${isRegionalContest and empty contestModelDefaultSetting}">
         <c:choose>
             <c:when test="${not empty proposalRegion}">
@@ -98,8 +97,8 @@
 		jQuery(modeling).on("scenarioFetched", function(event) {
 			jQuery("#modelingScenarioId").val(event.scenario.scenarioId).addClass("editorDirty");
 			jQuery("#modelingModelId").val(event.scenario.modelId).addClass("editorDirty");
-			modeling.toggleEditMask(!${inConsolidationMode});
-
+			modeling.updateEditMaskAppearance();
+			//!${inConsolidationMode});
 		}).on("valueChanged", function(event) {
 			jQuery("#modelingScenarioId").addClass("editorDirty");
 			jQuery("#modelingModelId").addClass("editorDirty");

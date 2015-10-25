@@ -428,7 +428,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			var found = false;
 			for (var i = 0; i < self.model.inputs.length; i++) {
 				var input = self.model.inputs[i];
-				if (input.metaData.internalName == key) {
+				if (!!input.metaData && input.metaData.internalName == key) {
 					self.container.append("<input type='hidden' data-id='" + input.metaData.id + "' value='" + outputs[key] + "' class='valueBinding' />");
 					found = true; 
 					break;

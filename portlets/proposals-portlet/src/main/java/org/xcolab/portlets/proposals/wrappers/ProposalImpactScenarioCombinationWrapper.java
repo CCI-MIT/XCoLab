@@ -140,11 +140,6 @@ public class ProposalImpactScenarioCombinationWrapper {
         return getScenarioForScenarioId(scenarioId).getSimulation();
     }
 
-    public boolean isCombinedScenario(Long scenarioId) throws Exception{
-        Long modelId = getModelIdForScenarioId(scenarioId);
-        return (modelId == EMF_MODEL_ID || modelId == ENROADS_MODEL_ID);
-    }
-
     private ClientRepository getRomaClient(){
         if(romaClient == null) {
             initRomaClient();

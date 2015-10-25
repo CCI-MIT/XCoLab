@@ -41,7 +41,7 @@ function ModelingWidget(selector, options) {
 		throw "Missing renderers";
 	}
 	this.inEditMode = 'edit' in options ? options.edit : false;
-
+	this.inputFreezed = this.inEditMode ? false : true;
 	var that = this;
 	this.renderers = [];
 	jQuery(options.renderers).each(function(idx, renderer) {
@@ -373,17 +373,29 @@ ModelingWidget.prototype.showStackTrace = function(data) {
         jQuery('.modal-body').html(jQuery('#main', tempDom));
     }
 };
+/**
+ * Toggles the model's edit mode setting
+ */
+ModelingWidget.prototype.updateEditMaskAppearance = function() {
+	console.debug("updateEditMaskAppearance", this.inputFreezed);
+	if(this.inputFreezed){
+		$("div.act-edit_left :input").not(".btn").prop("disabled", true);
+		$("div.act-edit_left .sliderCol").not(".btn").hide();
+	} else {
+		$("div.act-edit_left :input").not(".btn").prop("disabled", false);
+		$("div.act-edit_left .sliderCol").not(".btn").show();
+	}
+};
 
 /**
  * Toggles the model's edit mode setting
  */
-ModelingWidget.prototype.toggleEditMask = function(isInEditMode) {
-	if (isInEditMode) {
-		$("div.act-edit_left :input").prop("disabled", true);
-		//$('div.act-edit_left').fadeIn();
+ModelingWidget.prototype.toggleEditMask = function(allowInputEdit) {
+	console.debug("toggleEditMask", allowInputEdit);
+	if (allowInputEdit) {
+		this.inputFreezed = false;
 	} else {
-		//$("div.act-edit_left :input").prop("disabled", false);
-		//$('div.act-edit_left').fadeOut();
+		this.inputFreezed = true;
 	}
 };
 

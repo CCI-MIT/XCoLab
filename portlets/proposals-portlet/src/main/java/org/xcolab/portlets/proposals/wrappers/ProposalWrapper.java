@@ -487,12 +487,8 @@ public class ProposalWrapper {
         return modelId;
     }
 
-    public void setModelId(Long scenarioId, Long modelId, Long userId) throws PortalException, SystemException {
-        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, modelId, scenarioId);
-    }
-
-    public void setScenarioId(Long scenarioId, Long modelId, Long userId) throws PortalException, SystemException {
-        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, modelId, scenarioId);
+    public void setScenarioId(Long scenarioId, Long isConsolidatedScenario, Long userId) throws PortalException, SystemException {
+        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, isConsolidatedScenario, scenarioId);
     }
 
     public Long getScenarioId() throws PortalException, SystemException {
@@ -501,6 +497,14 @@ public class ProposalWrapper {
             return 0L;
         }
         return attr.getNumericValue();
+    }
+
+    public Boolean isConsolidatedScenario(Long scenarioId) throws PortalException, SystemException {
+        ProposalAttribute attr = proposalAttributeUtil.getLatestAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
+	    if (attr == null) {
+            return false;
+        }
+        return attr.getAdditionalId() == 1 ? true : false;
     }
 
     public Map<Long,List<ProposalWrapper>> getSubProposalPerModel() throws PortalException, SystemException {
