@@ -89,7 +89,7 @@ public class ProposalSectionWrapper {
         		continue;
         	}
 
-        	if (! (aTagElements.hasClass("utube") || aTagElements.text().toLowerCase().startsWith("embed"))) {
+        	if (! (aTagElements.hasClass("utube") || aTagElements.text().toLowerCase().startsWith("embed") || aTagElements.text().equalsIgnoreCase("v"))) {
         		// only links with "embed" text or "utube" class should be replaced by an iframe
         		continue;
         	}
@@ -104,7 +104,7 @@ public class ProposalSectionWrapper {
                 }
         	}
         	else {
-        		final Pattern videoIdPattern = Pattern.compile("\\/(\\p{Alnum}{11})");
+        		final Pattern videoIdPattern = Pattern.compile("\\/([\\p{Alnum}\\-_]{11})");
         		Matcher m = videoIdPattern.matcher(curURL);
         		if (m.find()) {
         			videoId = m.group(1);

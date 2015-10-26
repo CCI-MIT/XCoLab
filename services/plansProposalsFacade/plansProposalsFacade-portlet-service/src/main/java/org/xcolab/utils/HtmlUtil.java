@@ -46,6 +46,7 @@ public class HtmlUtil {
         final Whitelist whitelist = Whitelist.basicWithImages();
         whitelist.addAttributes("img", "style");
         whitelist.addAttributes("a", "name");
+        whitelist.addAttributes("a", "class");
         whitelist.preserveRelativeLinks(true);
         return clean(text, whitelist);
     }
