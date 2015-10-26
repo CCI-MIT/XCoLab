@@ -388,7 +388,7 @@ public class ProposalWrapper {
                 PlanTemplate planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
                 if (planTemplate != null) {
                     for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
-                        sections.add(new ProposalSectionWrapper(psd, proposal, version, this));
+                        sections.add(new ProposalSectionWrapper(psd, this));
                     }
                 }
             }
