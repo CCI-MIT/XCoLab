@@ -270,7 +270,7 @@ public class ProposalSectionWrapper {
             return null;
         }
         */
-        return this.wrappedProposal.getProposalAttributeUtil().getAttributeOrNull("SECTION", definition.getId());
+        return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", definition.getId());
 
     }
 }

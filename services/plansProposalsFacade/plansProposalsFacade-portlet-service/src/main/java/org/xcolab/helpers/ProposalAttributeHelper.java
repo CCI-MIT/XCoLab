@@ -1,4 +1,4 @@
-package org.xcolab.portlets.proposals.utils;
+package org.xcolab.helpers;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.model.Proposal;
@@ -13,12 +13,12 @@ import java.util.List;
  * @author pdeboer
  *         First created on 28/10/13 at 11:36
  */
-public class ProposalAttributeUtil {
+public class ProposalAttributeHelper {
     Proposal proposal;
     int version;
     private List<ProposalAttribute> attributes;
 
-    public ProposalAttributeUtil(Proposal proposal, int version) {
+    public ProposalAttributeHelper(Proposal proposal, int version) {
         this.proposal = proposal;
         this.version = version;
     }

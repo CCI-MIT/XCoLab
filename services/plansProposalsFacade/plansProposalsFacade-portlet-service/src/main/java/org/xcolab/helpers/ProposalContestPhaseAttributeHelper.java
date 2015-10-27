@@ -1,4 +1,4 @@
-package org.xcolab.portlets.proposals.utils;
+package org.xcolab.helpers;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.model.ContestPhase;

@@ -164,15 +164,15 @@
             </div>
         </c:if>
 
-        <c:if test="${proposal.proposalAttributeUtil.hasAttribute('REGION') }">
+        <c:if test="${proposal.proposalAttributeHelper.hasAttribute('REGION') }">
 			<div class="prop-avatar" style="font-size: 13px">
                 <strong>REGION</strong><br />
-                <c:if test="${proposal.proposalAttributeUtil.hasAttribute('REGION_ECONOMY') }">
-                	<em>Economy:</em> ${proposal.proposalAttributeUtil.attributeString('REGION_ECONOMY')}<br />
+                <c:if test="${proposal.proposalAttributeHelper.hasAttribute('REGION_ECONOMY') }">
+                	<em>Economy:</em> ${proposal.proposalAttributeHelper.attributeString('REGION_ECONOMY')}<br />
                 </c:if>
-                <em>Transnational group/large country:</em> ${proposal.proposalAttributeUtil.attributeString('REGION')}<br />
-                <c:if test="${proposal.proposalAttributeUtil.hasAttribute('SUBREGION') }">
-                    <em>Country within transnational group:</em> ${proposal.proposalAttributeUtil.attributeString('SUBREGION')}
+                <em>Transnational group/large country:</em> ${proposal.proposalAttributeHelper.attributeString('REGION')}<br />
+                <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SUBREGION') }">
+                    <em>Country within transnational group:</em> ${proposal.proposalAttributeHelper.attributeString('SUBREGION')}
                 </c:if>  
         	</div>
         </c:if>
@@ -184,21 +184,21 @@
 			</div>
         </c:if>
         
-        <c:if test="${proposal.proposalAttributeUtil.hasAttribute('SCENARIO_ID') }">
+        <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_ID') }">
             <h5 class="toppad">Model Results Summary</h5>
             <div class="div3"></div>
             <div class="prop-results">
-            	<c:if test="${proposal.proposalAttributeUtil.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
-                	<div><strong>CO2 concentration</strong><br />${proposal.proposalAttributeUtil.attributeString('SCENARIO_CO2_CONCENTRATION')} ppm in 2100</div>
+            	<c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
+                	<div><strong>CO2 concentration</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_CO2_CONCENTRATION')} ppm in 2100</div>
                 </c:if>
-            	<c:if test="${proposal.proposalAttributeUtil.hasAttribute('SCENARIO_MITIGATION_COST_NO_ERRORS')}">
-                	<div><strong>Temperature Increase</strong><br />${proposal.proposalAttributeUtil.attributeString('SCENARIO_MITIGATION_COST_NO_ERRORS')} &amp;deg;C</div>
+            	<c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_MITIGATION_COST_NO_ERRORS')}">
+                	<div><strong>Temperature Increase</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_MITIGATION_COST_NO_ERRORS')} &amp;deg;C</div>
                 </c:if>
-            	<c:if test="${proposal.proposalAttributeUtil.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
-                	<div><strong>Mitigation Costs</strong><br />${proposal.proposalAttributeUtil.attributeString('SCENARIO_CO2_CONCENTRATION')} %GDP in 2100</div>
+            	<c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
+                	<div><strong>Mitigation Costs</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_CO2_CONCENTRATION')} %GDP in 2100</div>
                 </c:if>
-            	<c:if test="${proposal.proposalAttributeUtil.hasAttribute('SCENARIO_DAMAGE_COST')}">
-                	<div><strong>Damage Costs</strong><br />${proposal.proposalAttributeUtil.attributeString('SCENARIO_DAMAGE_COST')} %GDP in 2100</div>
+            	<c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_DAMAGE_COST')}">
+                	<div><strong>Damage Costs</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_DAMAGE_COST')} %GDP in 2100</div>
                 </c:if>
             </div>
         </c:if>
