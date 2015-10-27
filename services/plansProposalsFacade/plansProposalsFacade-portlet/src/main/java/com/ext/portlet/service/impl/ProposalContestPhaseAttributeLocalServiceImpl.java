@@ -8,6 +8,8 @@ import com.ext.portlet.service.base.ProposalContestPhaseAttributeLocalServiceBas
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.List;
 
@@ -27,12 +29,15 @@ import java.util.List;
  */
 public class ProposalContestPhaseAttributeLocalServiceImpl
     extends ProposalContestPhaseAttributeLocalServiceBaseImpl {
+
+    private final static Log _log = LogFactoryUtil.getLog(ProposalContestPhaseAttributeLocalServiceImpl.class);
     /*
      * NOTE FOR DEVELOPERS:
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil} to access the proposal contest phase attribute local service.
      */
 
+    @Override
     public boolean isAttributeSetAndTrue(long proposalId, long contestPhaseId, String attributeName, long additionalId) throws SystemException {
         boolean isTrue = false;
         try {
@@ -46,6 +51,7 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
         return isTrue;
     }
 
+    @Override
     public boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, long numericValue) {
         ProposalContestPhaseAttribute attribute = getOrCreateAttribute(proposalId, contestPhaseId, attributeName, additionalId);
 
@@ -54,13 +60,15 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
 
         try {
             updateProposalContestPhaseAttribute(attribute);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SystemException e) {
+            _log.error(String.format("Error persisting attribute for proposal %d, contest phase %d, attribute name %s, additionalId %d, numericValue %d.",
+                    proposalId, contestPhaseId, attributeName, additionalId, numericValue), e);
             return false;
         }
         return true;
     }
 
+    @Override
     public boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, String stringValue) {
         ProposalContestPhaseAttribute attribute = getOrCreateAttribute(proposalId, contestPhaseId, attributeName, additionalId);
 
@@ -69,32 +77,38 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
 
         try {
             updateProposalContestPhaseAttribute(attribute);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SystemException e) {
+            _log.error(String.format("Error persisting attribute for proposal %d, contest phase %d, attribute name %s, additionalId %d, stringValue %s.",
+                    proposalId, contestPhaseId, attributeName, additionalId, stringValue), e);
             return false;
         }
         return true;
     }
 
+    @Override
     public boolean persistSelectedJudgesAttribute(long proposalId, long contestPhaseId, List<Long> selectedJudges) {
         ProposalContestPhaseAttribute judges = getOrCreateAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0);
 
 
         String attributeValue = "";
         if (selectedJudges != null) {
-            for (Long userId : selectedJudges) attributeValue += userId + ";";
+            for (Long userId : selectedJudges) {
+                attributeValue += userId + ";";
+            }
         }
         judges.setStringValue(attributeValue.replaceAll(";$", ""));
 
         try {
             updateProposalContestPhaseAttribute(judges);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SystemException e) {
+            _log.error(String.format("Error persisting attribute for selected judges in proposal %d, contest phase %d.",
+                    proposalId, contestPhaseId), e);
             return false;
         }
         return true;
     }
 
+    @Override
     public ProposalContestPhaseAttribute getOrCreateAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId) {
         try {
             return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, additionalId);
@@ -107,12 +121,14 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
                 attribute.setName(attributeName);
                 addProposalContestPhaseAttribute(attribute);
                 return attribute;
-            } catch (Exception e2) {
-                e.printStackTrace();
+            } catch (SystemException e1) {
+                _log.error(String.format("Error creating attribute for proposal %d, contest phase %d, attribute name %s, additionalId %d.",
+                        proposalId, contestPhaseId, attributeName, additionalId), e);
                 return null;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SystemException e) {
+            _log.error(String.format("Error retrieving attribute for proposal %d, contest phase %d, attribute name %s, additionalId %d.",
+                    proposalId, contestPhaseId, attributeName, additionalId), e);
             return null;
         }
     }
@@ -124,6 +140,7 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @return list of proposal phase attributes
      * @throws SystemException in case of LR error
      */
+    @Override
     public List<ProposalContestPhaseAttribute> getProposalContestPhaseAttributes(long proposalId, long contestPhaseId) throws SystemException {
         return proposalContestPhaseAttributePersistence.findByProposalIdContestPhaseId(proposalId, contestPhaseId);
     }
@@ -136,6 +153,7 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
          * @return proposal phase attribute
          * @throws SystemException in case of LR error
          */
+    @Override
     public ProposalContestPhaseAttribute getProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName,long additionalId) throws SystemException, NoSuchProposalContestPhaseAttributeException {
         return proposalContestPhaseAttributePersistence.findByProposalIdContestPhaseIdNameAdditionalId(proposalId, contestPhaseId,attributeName, additionalId);
     }
@@ -149,7 +167,8 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @throws NoSuchProposalContestPhaseAttributeException if there is no attribute with given name
      * @throws SystemException in case of lr error
      */
-    public ProposalContestPhaseAttribute getProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName) 
+    @Override
+    public ProposalContestPhaseAttribute getProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName)
             throws NoSuchProposalContestPhaseAttributeException, SystemException {
         return proposalContestPhaseAttributePersistence.findByProposalIdContestPhaseIdNameAdditionalId(proposalId, contestPhaseId, attributeName, 0);
     }
@@ -162,6 +181,7 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @return true if the attribute exists, false otherwise
      * @throws SystemException in case of lr error
      */
+    @Override
     public boolean hasProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName)
             throws SystemException {
         final ProposalContestPhaseAttribute proposalContestPhaseAttribute = proposalContestPhaseAttributePersistence.fetchByProposalIdContestPhaseIdNameAdditionalId(proposalId,
@@ -176,7 +196,8 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @throws NoSuchProposalContestPhaseAttributeException if there is no attribute with given name
      * @throws SystemException in case of lr error
      */
-    public List<ProposalContestPhaseAttribute> getAllContestPhaseAttributes(long contestPhaseId) 
+    @Override
+    public List<ProposalContestPhaseAttribute> getAllContestPhaseAttributes(long contestPhaseId)
             throws NoSuchProposalContestPhaseAttributeException, SystemException {
         return proposalContestPhaseAttributePersistence.findByContestPhaseId(contestPhaseId);
     }
@@ -188,6 +209,7 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @throws NoSuchProposalContestPhaseAttributeException if there is no attribute with given name
      * @throws SystemException in case of lr error
      */
+    @Override
     public List<ProposalContestPhaseAttribute> getAllContestPhaseProposalAttributes(long contestPhaseId, long proposalId)
             throws NoSuchProposalContestPhaseAttributeException, SystemException {
         return proposalContestPhaseAttributePersistence.findByContestPhaseIdAndProposalId(contestPhaseId, proposalId);
@@ -202,7 +224,8 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @param value value to be set 
      * @throws SystemException in case of LR error
      */
-    public void setProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName, long value) 
+    @Override
+    public void setProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName, long value)
             throws SystemException {
         setProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, value, null, 0);
     }
@@ -216,7 +239,8 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @param value value to be set 
      * @throws SystemException in case of LR error
      */
-    public void setProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName, String value) 
+    @Override
+    public void setProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName, String value)
             throws SystemException {
         setProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, 0L, value, 0);
     }
@@ -230,7 +254,8 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @param value value to be set 
      * @throws SystemException in case of LR error
      */
-    public void setProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName, double value) 
+    @Override
+    public void setProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName, double value)
             throws SystemException {
         setProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, 0L, null, value);
     }
@@ -243,7 +268,8 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @param attributeName name of an attribute
      * @throws SystemException in case of LR error
      */
-    public void setProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName, 
+    @Override
+    public void setProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName,
             long longValue, String stringValue, double realValue) throws SystemException {
         ProposalContestPhaseAttribute attribute;
         try {
@@ -275,6 +301,7 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @param attributeName name of an attribute
      * @throws SystemException in case of LR error
      */
+    @Override
     public void deleteProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName) throws SystemException {
         try {
             proposalContestPhaseAttributeLocalService.deleteProposalContestPhaseAttribute(getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName));
@@ -282,6 +309,7 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
         catch (NoSuchProposalContestPhaseAttributeException ignored) { }
     }
 
+    @Override
     public ProposalContestPhaseAttribute getAttributeOrNull(long proposalId, long contestPhaseId, String attributeName, long additionalId)
             throws PortalException, SystemException {
         try {
@@ -290,12 +318,14 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
         return null;
     }
 
+    @Override
     public long getAttributeLongValue(long proposalId, long contestPhaseId, String attributeName, long additionalId, long defaultVal)
             throws PortalException, SystemException {
         ProposalContestPhaseAttribute pa = proposalContestPhaseAttributeLocalService.getAttributeOrNull(proposalId, contestPhaseId, attributeName, additionalId);
         return pa == null ? defaultVal : pa.getNumericValue();
     }
 
+    @Override
     public String getAttributeStringValue(long proposalId, long contestPhaseId, String attributeName, long additionalId, String defaultVal)
             throws PortalException, SystemException {
         ProposalContestPhaseAttribute pa = proposalContestPhaseAttributeLocalService.getAttributeOrNull(proposalId, contestPhaseId, attributeName, additionalId);

@@ -1,14 +1,13 @@
 package org.xcolab.portlets.proposals.utils;
 
-import java.util.List;
-
 import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * @author pdeboer
@@ -35,7 +34,6 @@ public class ProposalAttributeUtil {
     public String getAttributeValueString(String attributeName, String defaultVal) throws PortalException, SystemException {
         return getAttributeValueString(attributeName, 0, defaultVal);
     }
-
 
     public String getAttributeValueString(String attributeName, long additionalId, String defaultVal) throws PortalException, SystemException {
         ProposalAttribute pa = getAttributeOrNull(attributeName, additionalId);
@@ -68,8 +66,7 @@ public class ProposalAttributeUtil {
         		}
         	}
         }
-        catch (NoSuchProposalAttributeException e) {
-        }
+        catch (NoSuchProposalAttributeException ignored) { }
         return null;
     }
 
@@ -81,14 +78,14 @@ public class ProposalAttributeUtil {
         	ProposalAttribute retAttr = null;
         	for (ProposalAttribute attr: attributes) {
         		if (attr.getName().equals(attributeName)) { 
-        			if (retAttr == null || retAttr.getVersionWhenCreated() < attr.getVersionWhenCreated()) 
-        				retAttr = attr;
+        			if (retAttr == null || retAttr.getVersionWhenCreated() < attr.getVersionWhenCreated()) {
+                        retAttr = attr;
+                    }
         		}
         	}
         	return retAttr;
         }
-        catch (NoSuchProposalAttributeException e) {
-        }
+        catch (NoSuchProposalAttributeException ignored) { }
         return null;
     }    
 }
