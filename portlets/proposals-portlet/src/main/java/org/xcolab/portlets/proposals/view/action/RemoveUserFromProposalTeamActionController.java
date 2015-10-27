@@ -1,8 +1,12 @@
 package org.xcolab.portlets.proposals.view.action;
 
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +29,8 @@ import javax.portlet.ActionResponse;
 @RequestMapping("view")
 public class RemoveUserFromProposalTeamActionController {
 
+    private final static Log _log = LogFactoryUtil.getLog(RemoveUserFromProposalTeamActionController.class);
+
     @Autowired
     private ProposalsContext proposalsContext;
 
@@ -32,12 +38,25 @@ public class RemoveUserFromProposalTeamActionController {
     public void handleAction(ActionRequest request, Model model, ActionResponse response, @RequestParam("member") long memberUserId)
             throws PortalException, SystemException, ProposalsAuthorizationException {
 
-        if (proposalsContext.getPermissions(request).getCanManageUsers()) {
-        	long proposalId = proposalsContext.getProposal(request).getProposalId();
+        final Proposal proposal = proposalsContext.getProposal(request);
+        final User user = proposalsContext.getUser(request);
+        final long proposalId = proposal.getProposalId();
+        final long userId = user.getUserId();
 
-        	ProposalLocalServiceUtil.removeUserFromTeam(proposalId,memberUserId);
+        if (!proposalsContext.getPermissions(request).getCanManageUsers()) {
+            final String errorMessage = String.format(
+                    "User %d does not have the necessary permissions to remove a user from the team of proposal %d",
+                    userId, proposalId);
+            _log.error(errorMessage);
+            throw new ProposalsAuthorizationException(errorMessage);
+        }
+        if (memberUserId == proposal.getAuthorId()) {
+            final String errorMessage = String.format("User %d is trying to remove the owner of proposal %d",
+                    userId, proposalId);
+            _log.error(errorMessage);
+            throw new ProposalsAuthorizationException(errorMessage);
         }
 
+        ProposalLocalServiceUtil.removeUserFromTeam(proposalId,memberUserId);
     }
-
 }
