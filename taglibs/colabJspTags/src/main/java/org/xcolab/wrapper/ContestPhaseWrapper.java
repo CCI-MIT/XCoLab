@@ -118,20 +118,18 @@ public class ContestPhaseWrapper {
     }
 
     public boolean getCanVote() throws PortalException, SystemException {
-        if (getStatus() == null) return false;
-        return getStatus().isCanVote();
+        return getStatus() != null && getStatus().isCanVote();
     }
 
     public boolean getCanEdit() throws PortalException, SystemException {
-        if (getStatus() == null) return false;
-        return getStatus().isCanEdit();
+        return getStatus() != null && getStatus().isCanEdit();
     }
 
     public boolean isActive() {
         return ContestPhaseLocalServiceUtil.getPhaseActive(contestPhase);
     }
 
-    public long getMilisecondsTillEnd() {
+    public long getMillisecondsTillEnd() {
         return contestPhase.getPhaseEndDate() != null ? contestPhase.getPhaseEndDate().getTime() - System.currentTimeMillis() : -1;
     }
 
@@ -141,8 +139,7 @@ public class ContestPhaseWrapper {
 
     public boolean isEnded() {
         Date now = new Date();
-        if (contestPhase.getPhaseEndDate() != null) return contestPhase.getPhaseEndDate().before(now);
-        return false;
+        return contestPhase.getPhaseEndDate() != null && contestPhase.getPhaseEndDate().before(now);
     }
 
     public boolean isAlreadyStarted() {

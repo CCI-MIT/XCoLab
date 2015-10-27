@@ -540,7 +540,7 @@ public class ContestWrapper {
                 }
                 faCache.put(fa.getId(), fa);
             }
-            List<OntologyTerm> terms = new ArrayList<OntologyTerm>();
+            List<OntologyTerm> terms = new ArrayList<>();
             StringBuilder joinedTerms = new StringBuilder();
             for (OntologyTerm t : FocusAreaLocalServiceUtil.getTerms(faCache.get(contest.getFocusAreaId()))) {
                 if (OntologyTermLocalServiceUtil.getSpace(t).getName()
