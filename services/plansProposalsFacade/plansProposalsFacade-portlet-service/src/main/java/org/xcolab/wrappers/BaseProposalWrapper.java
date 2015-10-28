@@ -84,6 +84,9 @@ public class BaseProposalWrapper {
     }
 
     private Proposal2Phase fetchProposal2Phase() {
+        if (proposal.getProposalId() == 0 || contestPhase.getContestPhasePK() == 0) {
+            return null;
+        }
         try {
             return Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
         } catch (PortalException | SystemException e) {
@@ -258,6 +261,10 @@ public class BaseProposalWrapper {
         return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
     }
 
+    public String getProposalURL(ContestPhase inPhase) {
+        return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, inPhase);
+    }
+
     public List<User> getSupporters() throws PortalException, SystemException {
         return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
     }
@@ -316,6 +323,20 @@ public class BaseProposalWrapper {
 
     public Proposal getWrapped() {
         return proposal;
+    }
+
+    public boolean isVisible() {
+        try {
+            return !ProposalLocalServiceUtil.isDeleted(proposal);
+        } catch (PortalException | SystemException ignored) { }
+        return true;
+    }
+
+    public boolean isVisibleInContest(long contestId) {
+        try {
+            return !ProposalLocalServiceUtil.isVisibleInContest(proposal, contestId);
+        } catch (PortalException | SystemException ignored) { }
+        return true;
     }
 
     public ContestPhase getContestPhase() {

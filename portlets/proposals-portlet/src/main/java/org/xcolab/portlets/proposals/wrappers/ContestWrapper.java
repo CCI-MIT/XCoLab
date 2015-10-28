@@ -3,19 +3,10 @@ package org.xcolab.portlets.proposals.wrappers;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.model.ContestTeamMember;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -29,14 +20,10 @@ import org.xcolab.wrappers.BaseContestWrapper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 public class ContestWrapper extends BaseContestWrapper {
 
@@ -51,7 +38,6 @@ public class ContestWrapper extends BaseContestWrapper {
     private Map<String, String> ontologyJoinedNames = new HashMap<>();
     private List<ContestPhaseWrapper> visiblePhases;
     private ContestPhaseWrapper activePhase;
-    private ContestType contestType;
 
     public ContestWrapper(Contest contest) {
         super(contest);
@@ -207,38 +193,16 @@ public class ContestWrapper extends BaseContestWrapper {
         return activePhase;
     }
 
-    @Override
-    public List<OntologyTerm> getWho() throws PortalException, SystemException {
-        return getTermFromSpace(WHO);
-    }
-
     public String getWhoName() throws PortalException, SystemException {
         return getTermNameFromSpace(WHO);
-    }
-
-    @Override
-    public List<OntologyTerm> getWhat() throws PortalException, SystemException {
-        return getTermFromSpace(WHAT);
     }
 
     public String getWhatName() throws PortalException, SystemException {
         return getTermNameFromSpace(WHAT);
     }
 
-    @Override
-    public List<OntologyTerm> getWhere() throws PortalException,
-            SystemException {
-        return getTermFromSpace(WHERE);
-    }
-
     public String getWhereName() throws PortalException, SystemException {
         return getTermNameFromSpace(WHERE);
-    }
-
-    @Override
-    public List<OntologyTerm> getHow() throws PortalException,
-            SystemException {
-        return getTermFromSpace(HOW);
     }
 
     public String getHowName() throws PortalException, SystemException {
@@ -408,32 +372,4 @@ public class ContestWrapper extends BaseContestWrapper {
         }
         return true;
     }
-
-    @Override
-    public long getContestTier() {
-        return contest.getContestTier();
-    }
-
-    @Override
-    public void setContestTier(long contestTier) {
-        contest.setContestTier(contestTier);
-    }
-
-    @Override
-    public boolean getHideRibbons() {
-        return contest.getHideRibbons();
-    }
-
-    public ContestType getContestType() throws SystemException {
-        if (contestType == null) {
-            contestType = ContestTypeLocalServiceUtil.fetchContestType(contest.getContestTypeId());
-        }
-        return contestType;
-    }
-
-    @Override
-    public String getContestUrl() {
-        return ContestLocalServiceUtil.getContestLinkUrl(contest);
-    }
-
 }

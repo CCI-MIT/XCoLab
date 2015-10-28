@@ -1,6 +1,7 @@
 package org.xcolab.wrappers;
 
 import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.ContestPhase;
@@ -156,7 +157,7 @@ public class BaseContestPhaseWrapper {
         try {
             ProposalContestPhaseAttribute attr = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
             return attr.getNumericValue() == 1;
-        } catch (Throwable e) {
+        } catch (SystemException | NoSuchProposalContestPhaseAttributeException e) {
             return true;
         }
     }
@@ -165,7 +166,7 @@ public class BaseContestPhaseWrapper {
         try {
             ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE, visible ? 1 : 0);
             return true;
-        } catch (Throwable e) {
+        } catch (SystemException e) {
             return false;
         }
     }
@@ -185,5 +186,9 @@ public class BaseContestPhaseWrapper {
 
     public boolean getFellowScreeningActive(){
         return contestPhase.getFellowScreeningActive();
+    }
+
+    public ContestPhase getWrapped() {
+        return contestPhase;
     }
 }

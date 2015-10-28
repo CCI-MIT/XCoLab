@@ -2,7 +2,6 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core" 
 	xmlns:jsp="http://java.sun.com/JSP/Page"  
 	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	version="2.0">
 	<jsp:directive.attribute name="section" type="org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper" 
@@ -48,7 +47,7 @@
                     </c:when>
                     <c:otherwise>
                         <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${p.proposalId }" />
-                        <span><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}" />
+                        <span><collab:proposalLink proposal="${p}" />
                         (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</span><br />
                     </c:otherwise>
                 </c:choose>
@@ -60,7 +59,7 @@
                 <table>
                     <c:forEach var="p" items="${pl}">
                 		<tr>
-                			<td><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}"/> </td>
+                			<td><collab:proposalLink proposal="${p}" /> </td>
                 			<td class="removeProposalFromList"><a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a></td>
                 		</tr>
                 	</c:forEach>

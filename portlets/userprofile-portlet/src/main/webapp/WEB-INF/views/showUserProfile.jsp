@@ -2,7 +2,6 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:form="http://www.springframework.org/tags/form"
     xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
@@ -177,15 +176,10 @@
 
 			<table class="colab">
 				<c:forEach var="proposal" items="${currentUserProfile.proposals}">
-					<c:if test="${proposal.proposalInActiveContest}">
+					<c:if test="${proposal.visible}">
 						<tr class="colabRow">
-							<td>
-									<collab:planLink planId="${proposal.planId}"
-													 contestId="${proposal.contestId}"
-													 text="${proposal.proposalName}" />
-
-							</td>
-							<td style="text-align: right;"><fmt:formatDate value="${proposal.proposalCreationDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+							<td> <collab:proposalLink proposal="${proposal}" /> </td>
+							<td style="text-align: right;"><fmt:formatDate value="${proposal.createDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
 						</tr>
 					</c:if>
 				</c:forEach>
@@ -198,14 +192,9 @@
 
 			<table class="colab">
 				<c:forEach var="proposal" items="${currentUserProfile.linkingProposals}">
-					<c:if test="${proposal.proposalInActiveContest}">
+					<c:if test="${proposal.visible}">
 						<tr class="colabRow">
-							<td>
-								<collab:planLink planId="${proposal.planId}"
-												 contestId="${proposal.contestId}"
-												 text="${proposal.proposalName}" />
-
-							</td>
+							<td> <collab:proposalLink proposal="${proposal}" /> </td>
 							<td style="text-align: right;"><fmt:formatDate value="${proposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
 						</tr>
 					</c:if>
@@ -219,14 +208,10 @@
 			</c:if>
 
 			<table class="colab">
-				<c:forEach var="supportedPlan" items="${currentUserProfile.supportedPlans}">
+				<c:forEach var="supportedProposal" items="${currentUserProfile.supportedProposals}">
 					<tr class="colabRow">
-						<td>
-							<collab:planLink planId="${supportedPlan.planId}"
-															 contestId="${supportedPlan.contestId}"
-															 text="${supportedPlan.planName}" />
-						</td>
-						<td style="text-align: right;"><fmt:formatDate value="${supportedPlan.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+						<td> <collab:proposalLink proposal="${supportedProposal.proposalWrapper}" /> </td>
+						<td style="text-align: right;"><fmt:formatDate value="${supportedProposal.supportedSinceDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
 					</tr>
 				</c:forEach>
 			</table>

@@ -14,6 +14,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ProposalsSortFilterBean {
+    private final static Log _log = LogFactoryUtil.getLog(ProposalsSortFilterBean.class);
+
     private final List<ProposalWrapper> proposals;
     private Comparator<ProposalWrapper> proposalComparator;
     
@@ -26,17 +28,28 @@ public class ProposalsSortFilterBean {
         
         // sort proposals
         if (sortFilterPage != null && StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("NAME")) proposalComparator = ProposalsColumn.NAME.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("AUTHOR")) proposalComparator = ProposalsColumn.AUTHOR.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("COMMENTS")) proposalComparator = ProposalsColumn.COMMENTS.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("CONTRIBUTORS")) proposalComparator = ProposalsColumn.CONTRIBUTORS.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("MODIFIED")) proposalComparator = ProposalsColumn.MODIFIED.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("SUPPORTERS")) proposalComparator = ProposalsColumn.SUPPORTERS.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("VOTES")) proposalComparator = ProposalsColumn.VOTES.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("JUDGESTATUS")) proposalComparator = ProposalsColumn.JUDGESTATUS.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("SCREENINGSTATUS")) proposalComparator = ProposalsColumn.SCREENINGSTATUS.getComparator();
-
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("OVERALLSTATUS")) proposalComparator = ProposalsColumn.OVERALLSTATUS.getComparator();
+            switch (sortFilterPage.getSortColumn().toUpperCase()) {
+                case "NAME":
+                    proposalComparator = ProposalsColumn.NAME.getComparator(); break;
+                case "AUTHOR":
+                    proposalComparator = ProposalsColumn.AUTHOR.getComparator(); break;
+                case "COMMENTS":
+                    proposalComparator = ProposalsColumn.COMMENTS.getComparator(); break;
+                case "CONTRIBUTORS":
+                    proposalComparator = ProposalsColumn.CONTRIBUTORS.getComparator(); break;
+                case "MODIFIED":
+                    proposalComparator = ProposalsColumn.MODIFIED.getComparator(); break;
+                case "SUPPORTERS":
+                    proposalComparator = ProposalsColumn.SUPPORTERS.getComparator(); break;
+                case "VOTES":
+                    proposalComparator = ProposalsColumn.VOTES.getComparator(); break;
+                case "JUDGESTATUS":
+                    proposalComparator = ProposalsColumn.JUDGESTATUS.getComparator(); break;
+                case "SCREENINGSTATUS":
+                    proposalComparator = ProposalsColumn.SCREENINGSTATUS.getComparator(); break;
+                case "OVERALLSTATUS":
+                    proposalComparator = ProposalsColumn.OVERALLSTATUS.getComparator(); break;
+            }
         }
         
         if (StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
@@ -51,22 +64,17 @@ public class ProposalsSortFilterBean {
             @Override
             public int compare(ProposalWrapper o1, ProposalWrapper o2) {
                 if (StringUtils.isBlank(sortFilterPage.getSortColumn())) {
-                    try {
-                        final RibbonWrapper ribbon1 = o1.getRibbonWrapper();
-                        final RibbonWrapper ribbon2 = o2.getRibbonWrapper();
+                    final RibbonWrapper ribbon1 = o1.getRibbonWrapper();
+                    final RibbonWrapper ribbon2 = o2.getRibbonWrapper();
 
-                        int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
-                        if (sortOrderDiff != 0) {
-                            return sortOrderDiff;
-                        }
-
-                        int ribbonDiff = ribbon1.getRibbon() - ribbon2.getRibbon();
-                        if (ribbonDiff != 0) {
-                            return ribbonDiff;
-                        }
+                    int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
+                    if (sortOrderDiff != 0) {
+                        return sortOrderDiff;
                     }
-                    catch (Exception e) {
-                        _log.error("can't compare proposals", e);
+
+                    int ribbonDiff = ribbon1.getRibbon() - ribbon2.getRibbon();
+                    if (ribbonDiff != 0) {
+                        return ribbonDiff;
                     }
                 }
                 int ret = proposalComparator.compare(o1, o2);
@@ -76,8 +84,11 @@ public class ProposalsSortFilterBean {
         });
         
         for (ProposalWrapper contest: this.proposals) {
-            if (contest.getRibbonWrapper().getRibbon() > 0) proposalsWithRibbons.add(contest);
-            else proposalsNormal.add(contest);
+            if (contest.getRibbonWrapper().getRibbon() > 0) {
+                proposalsWithRibbons.add(contest);
+            } else {
+                proposalsNormal.add(contest);
+            }
         }
     }
 
@@ -100,6 +111,4 @@ public class ProposalsSortFilterBean {
     public List<ProposalWrapper> getProposals() {
         return proposals;
     }
-
-    private final static Log _log = LogFactoryUtil.getLog(ProposalsSortFilterBean.class);
 }

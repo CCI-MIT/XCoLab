@@ -1,8 +1,6 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
@@ -56,25 +54,25 @@
             <c:when test="${move }">
                 <p>
                     You're about to move a ${contestType.proposalName}
-                    <collab:proposalLink proposalId="${baseProposal.proposalId}" contestId="${baseContest.contestPK}" text="${baseProposal.name}" escape="true" />
+                    <collab:proposalLink proposal="${baseProposal}" escape="true" />
                     from ${contestType.contestName}
-                    <proposalsPortlet:contestLink contestId="${baseContest.contestPK}" text="${baseContest.contestShortName} " />
+                    <collab:contestLink contest="${baseContest}" />
                     to ${contestType.contestName}
-                    <proposalsPortlet:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName} " />.
+                    <collab:contestLink contest="${contest}" />.
                 </p>
             </c:when>
             <c:when test="${not empty baseProposal}">
                 <p>
                     You're about to create a ${contestType.proposalName} that will be based on
-                    <collab:proposalLink proposalId="${baseProposal.proposalId}" contestId="${baseContest.contestPK}" text="${baseProposal.name}" escape="true" />.
+                    <collab:proposalLink proposal="${baseProposal}" escape="true" />.
                 </p>
             </c:when>
         </c:choose>
         <p>
             Please complete your ${contestType.proposalName} based on the template below.
-            If you have input on the template, please send it in a&#160;<a href="/web/guest/feedback" target="_blank">feedback message</a>.
-            To save your ${contestType.proposalName}, you must agree to the&#160;<a href="/web/guest/resources/-/wiki/Main/Contest+Rules" target="_blank">Contest rules</a>
-            and&#160;<a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
+            If you have input on the template, please send it in a <a href="/web/guest/feedback" target="_blank">feedback message</a>.
+            To save your ${contestType.proposalName}, you must agree to the <a href="/web/guest/resources/-/wiki/Main/Contest+Rules" target="_blank">Contest rules</a>
+            and <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
             <br/>Please note that you may be automatically logged out of your account after
             30 minutes. Please save all ${contestType.proposalName} content offline before clicking
             PUBLISH or else it may be lost.
@@ -264,12 +262,12 @@
                 <div class="gray-button">
                     <c:choose>
                         <c:when test="${proposal.currentVersion > 0 }">
-                            <collab:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }"
+                            <collab:proposalLink proposal="${proposal}"
                                                  linkId="discardChangesButton" text="DISCARD changes" />
                         </c:when>
                         <c:otherwise>
                             <!--  proposal creation, return to contest proposals page on discard -->
-                            <proposalsPortlet:contestLink contestId="${contest.contestPK }" linkId="discardChangesButton"
+                            <collab:contestLink contest="${contest}" linkId="discardChangesButton"
                                                           text="DISCARD changes" />
                         </c:otherwise>
                     </c:choose>

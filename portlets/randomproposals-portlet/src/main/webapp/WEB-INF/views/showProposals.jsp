@@ -1,6 +1,7 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+    xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	version="2.0">
 	
 	<div>
         <h2> ${proposalsModel.preferences.title}<span>
@@ -9,7 +10,7 @@
         <c:forEach items="${proposalsModel.proposals}" var="proposal">
         	<div class="contestbox">
                 <div class="img-wrap">
-                    <a href="/web/guest/plans/-/plans/contestId/${proposal.contestId}/planId/${proposal.proposalId}">
+                    <a href="${proposal.proposalURL}">
                         <c:if test="${proposal.image > 0}">
                             <img src="${proposalsModel.baseImagePath}${proposal.image}" width="151" height="151" alt="${proposal.name}" />
                        	</c:if>
@@ -19,7 +20,7 @@
                     </a>
                 </div>
                 <div class="text-wrap">
-                    <h3><a href="/web/guest/plans/-/plans/contestId/${proposal.contestId}/planId/${proposal.proposalId}">${proposal.name}</a></h3>
+                    <h3><collab:proposalLink proposal="${proposal}" /></h3>
                     ${proposal.pitch}
                 </div>
             </div> 

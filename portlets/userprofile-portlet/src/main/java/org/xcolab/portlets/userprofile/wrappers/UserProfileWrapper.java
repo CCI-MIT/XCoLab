@@ -32,6 +32,7 @@ import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
 import org.xcolab.utils.SendMessagePermissionChecker;
+import org.xcolab.wrappers.BaseProposalWrapper;
 
 import javax.portlet.PortletRequest;
 import java.io.Serializable;
@@ -39,41 +40,36 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class
-        UserProfileWrapper implements Serializable {
+public class UserProfileWrapper implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     private static final long DEFAULT_COMPANY_ID = 10112L;
-    private User user = null;
-    private UserBean userBean = null;
+    private User user;
+    private UserBean userBean;
 
     private String realName;
     private Boolean attendsConference;
     private MemberRole role;
     private int subscriptionsPageSize = 20;
-    private int subscriptionsPaginationPageId = 0;
-    private int maxActivitiesCount = 50;
+    private int subscriptionsPaginationPageId;
+    private static final int MAX_ACTIVITIES_COUNT = 50;
 
     private SendMessagePermissionChecker messagePermissionChecker;
     private List<MessageBean> messages;
-    private List<SupportedPlanWrapper> supportedPlans = new ArrayList<>();
-    private List<ProposalWrapper> userProposals = new ArrayList<>();
-    private List<ProposalWrapper> linkingProposals;
-    private ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
+    private final List<SupportedProposalWrapper> supportedProposals = new ArrayList<>();
+    private final List<BaseProposalWrapper> userProposals = new ArrayList<>();
+    private List<BaseProposalWrapper> linkingProposals;
+    private final ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
     private BadgeBean badges;
 
-    private boolean profileWasComplete = false;
-    private boolean fireGoogleEvent = false;
-    private boolean displayEMailErrorMessage = false;
-    private boolean viewingOwnProfile = false;
+    private static final boolean FIRE_GOOGLE_EVENT = false;
+    private static final boolean DISPLAY_EMAIL_ERROR_MESSAGE = false;
+    private boolean viewingOwnProfile;
 
     private String messagingPortletId = "messagingportlet_WAR_messagingportlet";
-    private ThemeDisplay themeDisplay;
+    private final ThemeDisplay themeDisplay;
 
     private final static Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
 
@@ -106,19 +102,17 @@ public class
             realName = user.getFirstName();
         }
 
-        profileWasComplete = profileIsComplete();
         attendsConference = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO, CommunityConstants.CONFERENCE2014, user.getUserId(), "").equals("1");
         badges = new BadgeBean(user.getUserId());
 
         List<Role> roles = user.getRoles();
         // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
-        MemberRole currentRole = MemberRole.MEMBER;
         role = MemberRole.MEMBER;
 
         for (Role r: roles) {
             final String roleString = r.getName();
 
-            currentRole = MemberRole.getMember(roleString);
+            MemberRole currentRole = MemberRole.getMember(roleString);
             if (currentRole != null && role != null) {
                 if (currentRole.ordinal() > role.ordinal()) {
                     role = currentRole;
@@ -126,41 +120,48 @@ public class
             }
         }
 
-        if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
+        if (role == MemberRole.MODERATOR) {
+            role = MemberRole.STAFF;
+        }
 
         userSubscriptions = new UserSubscriptionsWrapper(user);
-        supportedPlans.clear();
+        supportedProposals.clear();
         userActivities.clear();
         userProposals.clear();
         for (Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
             ProposalSupporter ps = (ProposalSupporter) o;
             try {
                 Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(ps.getProposalId());
-                supportedPlans.add(new SupportedPlanWrapper(ps));
-            } catch (Exception e) {
+                supportedProposals.add(new SupportedProposalWrapper(ps));
+            } catch (SystemException | PortalException e) {
                 _log.warn("Could not add supported plan with id: " + ps.getProposalId());
                 //e.printStackTrace();
             }
         }
 
         for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
-                .getUserActivities(user.getUserId(), 0, maxActivitiesCount))) {
+                .getUserActivities(user.getUserId(), 0, MAX_ACTIVITIES_COUNT))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
-            if (a.getBody() != null && !a.getBody().equals(""))
+            if (a.getBody() != null && !a.getBody().equals("")) {
                 userActivities.add(a);
+            }
         }
 
         List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
         for (Proposal p : proposals) {
-            userProposals.add(new ProposalWrapper(p));
+            userProposals.add(new BaseProposalWrapper(p));
         }
     }
 
     private boolean profileIsComplete() {
         //ignore mandatory fields, only care about optional ones
         String[] blankCheck = {userBean.getShortBio(), userBean.getCountry()};
-        for (String s : blankCheck) if (s == null || s.equals(StringPool.BLANK)) return false;
+        for (String s : blankCheck) {
+            if (s == null || s.equals(StringPool.BLANK)) {
+                return false;
+            }
+        }
 
         return true;
     }
@@ -224,14 +225,14 @@ public class
             double d2=subscriptionsPageSize;
             return (int) Math.ceil(d1/d2);
         }
-        else return 0;
+        return 0;
     }
 
     public int getSubscribedActivitiesCount() {
         if (subscribedActivities != null) {
             return subscribedActivities.size();
         }
-        else return 0;
+        return 0;
     }
 
     // TODO check this
@@ -259,13 +260,13 @@ public class
     }
 
     public boolean isFireGoogleEvent() {
-        return fireGoogleEvent;
+        return FIRE_GOOGLE_EVENT;
     }
 
     public MemberRole getRole() { return role; }
 
     public boolean isDisplayEMailErrorMessage() {
-        return displayEMailErrorMessage;
+        return DISPLAY_EMAIL_ERROR_MESSAGE;
     }
 
     public ThemeDisplay getThemeDisplay() {
@@ -298,11 +299,11 @@ public class
         return subscribedActivities;
     }
 
-    public List<SupportedPlanWrapper> getSupportedPlans() { return supportedPlans; }
+    public List<SupportedProposalWrapper> getSupportedProposals() { return supportedProposals; }
 
     public List<UserActivityWrapper> getActivities() { return userActivities; }
 
-    public List<ProposalWrapper> getProposals() { return userProposals; }
+    public List<BaseProposalWrapper> getProposals() { return userProposals; }
 
     public List<Badge> getBadges() { return badges.getBadges(); }
 
@@ -342,13 +343,13 @@ public class
         return String.format("%,d", getPotentialPoints());
     }
 
-    public List<ProposalWrapper> getLinkingProposals() {
+    public List<BaseProposalWrapper> getLinkingProposals() {
         if (linkingProposals == null) {
             try {
                 linkingProposals = new ArrayList<>();
                 List<Proposal> proposals = PointsLocalServiceUtil.getLinkingProposalsForUser(getUserId());
                 for (Proposal p : proposals) {
-                    linkingProposals.add(new ProposalWrapper(p));
+                    linkingProposals.add(new BaseProposalWrapper(p));
                 }
             } catch (PortalException | SystemException ignored) { }
         }
