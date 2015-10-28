@@ -44,7 +44,7 @@ import java.util.Map;
 
 public class ActivityUtil {
 
-    private static Log _log = LogFactoryUtil.getLog(ActivityUtil.class);
+    private static final Log _log = LogFactoryUtil.getLog(ActivityUtil.class);
 
     public static final long AGGREGATION_TIME_WINDOW = (long) 1000 * 60 * 60; // 1h
 
@@ -70,7 +70,7 @@ public class ActivityUtil {
         return retrieveAggregatedSocialActivities(hits);
     }
 
-    public static List<SocialActivity> retrieveWindowedActivities(long userId, int start, int end) throws SystemException, PortalException {
+    public static List<SocialActivity> retrieveWindowedActivities(long userId, int start, int end) throws SystemException, SearchException {
         Hits hits = getAggregatedActivitySearchResults(userId, start, end);
         return retrieveAggregatedSocialActivities(hits);
     }
@@ -82,7 +82,7 @@ public class ActivityUtil {
             try {
                 SocialActivity sa = SocialActivityLocalServiceUtil.getSocialActivity(GetterUtil.getLong(activityDoc.getField("activityId").getValue()));
                 aggregatedSocialActivities.add(sa);
-            } catch (Exception e) {
+            } catch (SystemException | PortalException e) {
                 _log.error(e);
             }
         }
@@ -110,7 +110,7 @@ public class ActivityUtil {
     }
 
 
-    public static int getAllActivitiesCount() throws SystemException, PortalException {
+    public static int getAllActivitiesCount() throws SystemException, SearchException {
         int searchResultCount = getAllAggregatedActivitySearchResults(QueryUtil.ALL_POS, QueryUtil.ALL_POS).getLength();
         if (searchResultCount == 0) {
             return groupAllActivities().size();
@@ -119,7 +119,7 @@ public class ActivityUtil {
         return searchResultCount;
     }
 
-    public static int getActivitiesCount(long userId) throws SystemException, PortalException {
+    public static int getActivitiesCount(long userId) throws SystemException, SearchException {
 
         int searchResultCount = getAggregatedActivitySearchResults(userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS).getLength();
         if (searchResultCount == 0) {
@@ -141,7 +141,7 @@ public class ActivityUtil {
     }
 
     public static Long[] getIdsFromExtraData(String extraData) {
-        if (extraData == null || extraData.trim().length() == 0) {
+        if (extraData == null || extraData.trim().isEmpty()) {
             return new Long[]{};
         }
         String[] idStrs = extraData.split(",");
@@ -252,8 +252,7 @@ public class ActivityUtil {
         List<User> liferayUsers = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
         HashMap<Long, Integer> activityCounts = new HashMap<>();
 
-        for(User u:liferayUsers)
-        {
+        for(User u:liferayUsers) {
             Long userId = u.getUserId();
             activityCounts.put(userId, SocialActivityLocalServiceUtil.getUserActivitiesCount(userId));
         }

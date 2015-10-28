@@ -15,26 +15,28 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ext.portlet.model.LandingPage;
 import com.ext.portlet.service.LandingPageLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 public class LandingpageFilter implements Filter {
-
-    private static final long serialVersionUID = 3534776054953153891L;
-    
     private static final Pattern landingPageUrlPattern = Pattern.compile("/landingpage/(\\d*)/.*"); 
     private static final Log _log =  LogFactoryUtil.getLog(LandingpageFilter.class);
     
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         
     }
 
+    @Override
     public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain chain) throws IOException,
             ServletException {
         try {
 
-            if (!(arg0 instanceof HttpServletRequest) || ! (arg1 instanceof HttpServletResponse)) 
+            if (!(arg0 instanceof HttpServletRequest) || ! (arg1 instanceof HttpServletResponse)) {
                 return;
+            }
             
             HttpServletRequest request = (HttpServletRequest) arg0;
             HttpServletResponse response = (HttpServletResponse) arg1;
@@ -50,15 +52,13 @@ public class LandingpageFilter implements Filter {
             else {
                 _log.error("Invalid landing page requested, should be in format /landingpage/LANDINGPAGE_ID/name");
             }
-        } catch (Exception e) {
+        } catch (IOException | SystemException | PortalException | NumberFormatException e) {
             _log.error("Can't process landing page request" , e);
         }
-        
     }
 
+    @Override
     public void destroy() {
         
     }
-    
-
 }

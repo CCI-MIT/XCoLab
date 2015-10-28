@@ -1,13 +1,5 @@
 package org.xcolab.hooks.climatecolab.users;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 import com.ext.portlet.Activity.ActivityUtil;
 import com.liferay.portal.NoSuchCountryException;
 import com.liferay.portal.NoSuchRegionException;
@@ -29,21 +21,25 @@ import com.liferay.portal.security.auth.DefaultFullNameGenerator;
 import com.liferay.portal.service.CountryServiceUtil;
 import com.liferay.portal.service.RegionServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.util.PortletKeys;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 
 	private final static Log _log = LogFactoryUtil
 			.getLog(UserIndexerPostProcessor.class);
 
-	public static final String[] CLASS_NAMES = { User.class.getName() };
-
-	public static final String PORTLET_ID = PortletKeys.USERS_ADMIN;
-
 	private static Map<Long, MemberCategory> roleIdToCategoryMap;
 	private final static long DEFAULT_COMPANY_ID = 10112L;
+	@Override
 	public void postProcessDocument(Document document, Object object)
-			throws Exception {
+			throws SystemException, PortalException {
 		
 		User user = (User) object;
 		document.addDate("joinDate", user.getCreateDate());
@@ -63,9 +59,9 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 			List<Address> addresses, long regionId, long countryId)
 			throws PortalException, SystemException {
 
-		List<String> cities = new ArrayList<String>();
+		List<String> cities = new ArrayList<>();
 
-		List<String> countries = new ArrayList<String>();
+		List<String> countries = new ArrayList<>();
 
 		if (countryId > 0) {
 			try {
@@ -79,7 +75,7 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 			}
 		}
 
-		List<String> regions = new ArrayList<String>();
+		List<String> regions = new ArrayList<>();
 
 		if (regionId > 0) {
 			try {
@@ -93,8 +89,8 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 			}
 		}
 
-		List<String> streets = new ArrayList<String>();
-		List<String> zips = new ArrayList<String>();
+		List<String> streets = new ArrayList<>();
+		List<String> zips = new ArrayList<>();
 
 		for (Address address : addresses) {
 			cities.add(StringUtil.toLowerCase(address.getCity()));
@@ -115,7 +111,7 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 	}
 
 	protected Set<String> getLocalizedCountryNames(Country country) {
-		Set<String> countryNames = new HashSet<String>();
+		Set<String> countryNames = new HashSet<>();
 
 		Locale[] locales = LanguageUtil.getAvailableLocales();
 
@@ -130,11 +126,9 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 		return countryNames;
 	}
 
-	private static final boolean _PERMISSION_AWARE = true;
-
 	private static String[] getUserCategories(User user) throws SystemException {
 		initRoleIdToCategoryMap();
-		List<String> categories = new ArrayList<String>();
+		List<String> categories = new ArrayList<>();
 
 		for (Long roleId : user.getRoleIds()) {
 
@@ -148,21 +142,20 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 	}
 
 	private static synchronized void initRoleIdToCategoryMap() {
-		roleIdToCategoryMap = new HashMap<Long, MemberCategory>();
+		roleIdToCategoryMap = new HashMap<>();
 
 		for (MemberCategory category : MemberCategory.values()) {
 			try {
 				if (category.equals(MemberCategory.ALL)
-						|| category.equals(MemberCategory.DEFAULT))
+						|| category.equals(MemberCategory.DEFAULT)) {
 					continue;
+				}
 				for (String roleName : category.getRoleNames()) {
 					Role role = RoleLocalServiceUtil.getRole(
 							DEFAULT_COMPANY_ID, roleName);
 					roleIdToCategoryMap.put(role.getRoleId(), category);
 				}
-			} catch (PortalException e) {
-				_log.error("Can't find role for user category " + category, e);
-			} catch (SystemException e) {
+			} catch (PortalException | SystemException e) {
 				_log.error("Can't find role for user category " + category, e);
 			}
 		}

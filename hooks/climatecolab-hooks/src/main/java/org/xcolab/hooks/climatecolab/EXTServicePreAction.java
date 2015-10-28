@@ -34,13 +34,14 @@ public class EXTServicePreAction extends Action {
     private static final String THEME_TIMESTAMP_ATTRIBUTE = "THEME_TIMESTAMP";
     private static final Log _log = LogFactoryUtil.getLog(EXTServicePreAction.class);
 
+    @Override
     public void run(HttpServletRequest req, HttpServletResponse res) throws ActionException {
 
         
         ThemeDisplay themeDisplay = (ThemeDisplay) req.getAttribute(WebKeys.THEME_DISPLAY);
         Map<String, Object> vmVariables = (Map<String, Object>) req.getAttribute(WebKeys.VM_VARIABLES);
         if (vmVariables == null) {
-            vmVariables = new HashMap<String, Object>();
+            vmVariables = new HashMap<>();
         }
 
         List<Theme> themes = ThemeLocalServiceUtil.getThemes(themeDisplay.getCompanyId());
@@ -56,7 +57,7 @@ public class EXTServicePreAction extends Action {
         //Decide whether to show contest menu items
         try {
             final List<ContestType> contestTypes = ContestTypeLocalServiceUtil.getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-            List<ContestType> contestPages = new ArrayList<ContestType>();
+            List<ContestType> contestPages = new ArrayList<>();
             for (ContestType contestType : contestTypes) {
                 if (ContestLocalServiceUtil.countContestsByContestType(contestType.getId()) > 0) {
                     contestPages.add(contestType);
@@ -74,9 +75,7 @@ public class EXTServicePreAction extends Action {
                 vmVariables.put("collab_contest", contest);
             } catch (NumberFormatException e) {
                 _log.error("An exception has been thrown when trying to parse contest id " + contestIdStr, e);
-            } catch (PortalException e) {
-                _log.error("An exception has been thrown when loading contest with id " + contestIdStr, e);
-            } catch (SystemException e) {
+            } catch (PortalException | SystemException e) {
                 _log.error("An exception has been thrown when loading contest with id " + contestIdStr, e);
             }
         }

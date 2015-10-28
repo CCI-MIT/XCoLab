@@ -2,6 +2,7 @@ package org.xcolab.hooks.climatecolab.service;
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.MembershipRequestCommentsException;
+import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
@@ -36,7 +37,7 @@ public class CustomMembershipRequestLocalServiceImpl extends MembershipRequestLo
 	public MembershipRequest addMembershipRequest(
 			long userId, long groupId, String comments,
 			ServiceContext serviceContext)
-			throws PortalException, SystemException {
+			throws SystemException, NoSuchUserException, MembershipRequestCommentsException {
 
 		User user = UserUtil.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -61,8 +62,6 @@ public class CustomMembershipRequestLocalServiceImpl extends MembershipRequestLo
 
 		return membershipRequest;
 	}
-
-
 
 	@Override
 	public void updateStatus(
@@ -95,14 +94,14 @@ public class CustomMembershipRequestLocalServiceImpl extends MembershipRequestLo
 		if ((statusId == MembershipRequestConstants.STATUS_APPROVED) &&
 				addUserToGroup) {
 
-			long[] addUserIds = new long[] {membershipRequest.getUserId()};
+			long[] addUserIds = {membershipRequest.getUserId()};
 
 			UserLocalServiceUtil.addGroupUsers(
 					membershipRequest.getGroupId(), addUserIds);
 		}
 	}
 
-	protected void validate(String comments) throws PortalException {
+	protected void validate(String comments) throws MembershipRequestCommentsException {
 		if (Validator.isNull(comments) || Validator.isNumber(comments)) {
 			throw new MembershipRequestCommentsException();
 		}

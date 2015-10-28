@@ -1,6 +1,8 @@
 package org.xcolab.hooks.climatecolab.strutsaction;
 
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
@@ -24,9 +26,10 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 	private static final String LOCAL_IPv4_ADDRESS = "127.0.0.1";
 
 	private static final String LOCAL_IPv6_ADDRESS = "0:0:0:0:0:0:0:1";
-	private static Object mutex = new Object();
-	private boolean isRunning = false;
+	private static final Object mutex = new Object();
+	private boolean isRunning;
 
+	@Override
 	public String execute(HttpServletRequest request,
 			HttpServletResponse response) throws MessageListenerException {
 
@@ -55,11 +58,8 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 		try {
 			ActivitySubscriptionLocalServiceUtil
 					.sendEmailNotifications(serviceContext);
-		} catch (Throwable e) {
-            e.printStackTrace();
-			_log.error(
-					"Could not process email notification of proposal subscription feature",
-					e);
+		} catch (SystemException | PortalException e) {
+			_log.error( "Could not process email notification of proposal subscription feature", e);
 		}
 
 		resetIsRunning();

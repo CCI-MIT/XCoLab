@@ -14,15 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ext.portlet.model.MessagingRedirectLink;
 import com.ext.portlet.service.MessagingRedirectLinkLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 public class MassMessagingFilter implements Filter {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -1937254429148377314L;
-
     private final static byte[] BLANK_GIF_RESPONSE = { 71, 73, 70, 56, 57, 97, 1, 0, 1, 0, -128, 0, 0, -1, -1, -1, -1,
             -1, -1, 33, -7, 4, 1, 10, 0, 1, 0, 44, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 2, 76, 1, 0, 59 };
 
@@ -33,15 +30,18 @@ public class MassMessagingFilter implements Filter {
     private static final String CONTENT_TYPE_GIF = "image/gif";
     
     private final static Log _log = LogFactoryUtil.getLog(MassMessagingFilter.class);
+    @Override
     public void destroy() {
 
     }
 
+    @Override
     public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2) throws IOException,
             ServletException {
         
-        if (!(arg0 instanceof HttpServletRequest) || ! (arg1 instanceof HttpServletResponse)) 
+        if (!(arg0 instanceof HttpServletRequest) || ! (arg1 instanceof HttpServletResponse)) {
             return;
+        }
         
         HttpServletRequest request = (HttpServletRequest) arg0;
         HttpServletResponse response = (HttpServletResponse) arg1;
@@ -60,7 +60,7 @@ public class MassMessagingFilter implements Filter {
                 response.setContentType(CONTENT_TYPE_GIF);
                 
                 String referer = request.getHeader(REFERER_HEADER);
-                if (referer == null || referer.indexOf(request.getServerName()) == -1) {
+                if (referer == null || !referer.contains(request.getServerName())) {
                     // add conversion only when request doesn't come from portal
                     MessagingUtils.addConversion(messageId, MessagingConversionTypes.EMAIL_OPENED, request, null, null);
                 }
@@ -77,8 +77,7 @@ public class MassMessagingFilter implements Filter {
                     MessagingUtils.addConversion(messageId, MessagingConversionTypes.EMAIL_LINK_CLICKED, request,
                             redirectId, recipientId);
                     redirectURL = redirectLink.getLink();
-                }
-                catch (Exception e) {
+                } catch (NumberFormatException | PortalException | SystemException e) {
                     // log the exception and continue processing
                     _log.error("There was an exception when accessing redirect data", e);
                 }
@@ -96,6 +95,7 @@ public class MassMessagingFilter implements Filter {
         }
     }
 
+    @Override
     public void init(FilterConfig arg0) throws ServletException {
     }
 

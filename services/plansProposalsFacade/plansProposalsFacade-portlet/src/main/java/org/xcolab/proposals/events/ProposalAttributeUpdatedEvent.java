@@ -27,7 +27,4 @@ public class ProposalAttributeUpdatedEvent  extends BaseProposalUserActivityEven
     public ProposalAttribute getNewAttribute() {
         return newAttribute;
     }
-    
-    
-
 }

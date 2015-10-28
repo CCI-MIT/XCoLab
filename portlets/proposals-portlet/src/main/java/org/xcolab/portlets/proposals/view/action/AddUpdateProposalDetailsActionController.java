@@ -70,17 +70,16 @@ public class AddUpdateProposalDetailsActionController {
     public void show(ActionRequest request, Model model,
             ActionResponse response, @Valid UpdateProposalDetailsBean updateProposalSectionsBean, BindingResult result) 
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
-        boolean createNew = false;
-        
+
         if (proposalsContext.getProposal(request) != null && ! proposalsContext.getPermissions(request).getCanEdit()) {
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: " +
                     proposalsContext.getUser(request).getUserId() + ", proposal: " + proposalsContext.getProposal(request).getProposalId());
         }
-        else if (proposalsContext.getProposal(request) == null && ! proposalsContext.getPermissions(request).getCanCreate()) {
+        if (proposalsContext.getProposal(request) == null && ! proposalsContext.getPermissions(request).getCanCreate()) {
             throw new ProposalsAuthorizationException("User is not allowed to create proposal, user: " +
                     proposalsContext.getUser(request).getUserId() + ", contest: " + proposalsContext.getContest(request).getContestPK());
         }
-        
+
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         long userId = themeDisplay.getUserId();
         
@@ -92,6 +91,7 @@ public class AddUpdateProposalDetailsActionController {
             return;
         }
         ProposalWrapper proposal;
+        boolean createNew = false;
         if (proposalsContext.getProposal(request) != null) {
             proposal = proposalsContext.getProposalWrapped(request);
             if (updateProposalSectionsBean.isMove() && updateProposalSectionsBean.getMoveToContestPhaseId() > 0) {
@@ -104,7 +104,9 @@ public class AddUpdateProposalDetailsActionController {
                         break;
                     }
                 }
-                if (targetPhase == null) throw new SystemException("No Proposal creation phase is associated with target contest.");
+                if (targetPhase == null) {
+                    throw new SystemException("No Proposal creation phase is associated with target contest.");
+                }
 
                 //check if the proposal is already in the target phase
                 try {
@@ -267,8 +269,9 @@ public class AddUpdateProposalDetailsActionController {
                 if (StringUtils.isNotBlank(newSectionValue)){
                     String[]referencedProposals = newSectionValue.split(",");
                     for (String referencedProposal : referencedProposals) {
-                        if (StringUtils.isNotBlank(referencedProposal) && StringUtils.isNumeric(referencedProposal))
+                        if (StringUtils.isNotBlank(referencedProposal) && StringUtils.isNumeric(referencedProposal)) {
                             cleanedReferences += referencedProposal + ",";
+                        }
                     }
                     //if (cleanedReferences.substring(cleanedReferences.length()-2,cleanedReferences.length()-1).equalsIgnoreCase(",")) cleanedReferences = cleanedReferences.substring(0, cleanedReferences.length() - 2);
                 }
