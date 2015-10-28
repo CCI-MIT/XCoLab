@@ -1,15 +1,25 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.PlanTemplate;
+import com.ext.portlet.model.PlanTemplateSection;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
+import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.*;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
-import org.xcolab.wrapper.ContestWrapper;
+import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -481,22 +491,21 @@ public class ContestProposalTemplateWrapper {
             for (PlanTemplate planTemplateItem : PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE)) {
                 selectItems.add(new LabelValue(planTemplateItem.getId(), planTemplateItem.getName()));
             }
-        } catch (Exception e){
-        }
+        } catch (SystemException ignored){ }
         return selectItems;
     }
 
-    public List<ContestWrapper> getContestsUsingSelectedTemplate(){
-        List<ContestWrapper> contestsUsingSelectedTemplate = new ArrayList<>();
+    public List<BaseContestWrapper> getContestsUsingSelectedTemplate(){
+        List<BaseContestWrapper> contestsUsingSelectedTemplate = new ArrayList<>();
         List<Contest> contestsUsingSelectedTemplateList = new ArrayList<>();
 
         try {
             Long planTemplateId = planTemplate.getId();
             contestsUsingSelectedTemplateList = ContestLocalServiceUtil.getContestsByPlanTemplateId(planTemplateId);
-        } catch (Exception ignored){ }
+        } catch (SystemException ignored){ }
 
         for(Contest contest : contestsUsingSelectedTemplateList) {
-            contestsUsingSelectedTemplate.add(new org.xcolab.wrapper.ContestWrapper(contest));
+            contestsUsingSelectedTemplate.add(new BaseContestWrapper(contest));
         }
 
         return contestsUsingSelectedTemplate;

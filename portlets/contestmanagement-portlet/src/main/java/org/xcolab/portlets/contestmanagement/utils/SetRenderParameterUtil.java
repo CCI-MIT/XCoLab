@@ -3,6 +3,7 @@ package org.xcolab.portlets.contestmanagement.utils;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -59,15 +60,15 @@ public class SetRenderParameterUtil {
         response.setRenderParameter("action", errorActionParameter);
     }
 
-    public static void setSuccessRenderRedirectDetailsTab (ActionResponse response, Long contestPK, String tabName) throws Exception{
+    public static void setSuccessRenderRedirectDetailsTab (ActionResponse response, Long contestPK, String tabName) throws IOException {
         response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId/" + contestPK + "/tab/" + tabName);
     }
 
-    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName) throws Exception{
+    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName) throws IOException {
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName);
     }
 
-    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName, Long elementId) throws Exception{
+    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName, Long elementId) throws IOException {
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName + "/elementId/" + elementId);
     }
 

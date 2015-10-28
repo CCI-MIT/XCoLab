@@ -22,8 +22,8 @@ import java.util.Date;
  * More specific wrappers should inherit from this one.
  */
 public class BaseContestPhaseWrapper {
-    private final ContestPhase contestPhase;
-    private ContestStatus status;
+    protected final ContestPhase contestPhase;
+    protected ContestStatus status;
 
     public BaseContestPhaseWrapper(ContestPhase contestPhase) {
         if (contestPhase == null){

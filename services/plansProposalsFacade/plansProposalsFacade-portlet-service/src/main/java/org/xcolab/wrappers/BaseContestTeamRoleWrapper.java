@@ -2,6 +2,7 @@ package org.xcolab.wrappers;
 
 import com.liferay.portal.model.User;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * A wrapper class for contest team roles to be shared across portlets.
  * More specific wrappers should inherit from this one.
  */
-public class BaseContestTeamRoleWrapper {
+public class BaseContestTeamRoleWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String roleName;

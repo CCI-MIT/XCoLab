@@ -13,7 +13,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Component;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabPermissions;
-import org.xcolab.wrapper.ContestWrapper;
+import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.PortletRequest;
 
@@ -37,8 +37,8 @@ public class ContestsContextImpl implements TabContext {
     }
 
     @Override
-    public ContestWrapper getContestWrapped(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, CONTEST_WRAPPED_ATTRIBUTE, ContestWrapper.class);
+    public BaseContestWrapper getContestWrapped(PortletRequest request) throws PortalException, SystemException {
+        return getAttribute(request, CONTEST_WRAPPED_ATTRIBUTE, BaseContestWrapper.class);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ContestsContextImpl implements TabContext {
 
                 if (contest != null) {
                     request.setAttribute(CONTEST_ATTRIBUTE, contest);
-                    request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contest));
+                    request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new BaseContestWrapper(contest));
                     request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestPermissions(request, contest));
                 }
             }

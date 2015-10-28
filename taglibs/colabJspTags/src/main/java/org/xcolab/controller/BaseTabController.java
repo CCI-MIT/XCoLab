@@ -10,7 +10,6 @@ import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,7 @@ public abstract class BaseTabController extends BaseController {
 
     public List<TabWrapper> getAllVisibleTabsWrapped(Model model, PortletRequest request, TabEnum[] Tabs) throws PortalException, SystemException{
 
-        List<TabWrapper> availableTabs = new ArrayList<TabWrapper>();
+        List<TabWrapper> availableTabs = new ArrayList<>();
         for (TabEnum tab: Tabs) {
             TabWrapper tabWrapper = new TabWrapper(tab, request, tabContext);
             if (tabWrapper.getCanView()) {
@@ -46,7 +45,7 @@ public abstract class BaseTabController extends BaseController {
         return availableTabs;
     }
 
-    public static Long getContestIdFromRequest(PortletRequest request){
+    public static long getContestIdFromRequest(PortletRequest request){
         String contestIdParameter = request.getParameter("contestId");
         return Long.parseLong(contestIdParameter);
     }

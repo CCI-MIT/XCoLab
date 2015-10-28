@@ -2,16 +2,17 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
-import org.xcolab.wrapper.ContestWrapper;
+import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by Thomas on 2/8/2015.
@@ -67,7 +68,7 @@ public class ContestDescriptionBean implements Serializable{
         }
     }
 
-    public void persist(Contest contest) throws Exception {
+    public void persist(Contest contest) throws SystemException, UnsupportedEncodingException, PortalException {
         String oldContestTitle = contest.getContestShortName();
         updateContestDescription(contest);
         updateContestSchedule(contest, scheduleTemplateId);
@@ -117,8 +118,9 @@ public class ContestDescriptionBean implements Serializable{
     public String getEmailTemplateUrl() {
         if (emailTemplateUrl != null) {
             return emailTemplateUrl;
-        } else
+        } else {
             return "";
+        }
     }
 
     public void setEmailTemplateUrl(String emailTemplateUrl) {this.emailTemplateUrl = emailTemplateUrl;}
@@ -163,7 +165,7 @@ public class ContestDescriptionBean implements Serializable{
         this.contestType = contestType;
     }
 
-    private void updateContestDescription(Contest contest) throws Exception{
+    private void updateContestDescription(Contest contest) throws SystemException {
         contest.setContestName(contestName);
         contest.setEmailTemplateUrl(emailTemplateUrl);
         contest.setContestShortName(contestShortName);
@@ -176,7 +178,7 @@ public class ContestDescriptionBean implements Serializable{
         contest.persist();
     }
 
-    public static void updateContestWiki(Contest contest, String oldContestTitle) throws Exception{
+    public static void updateContestWiki(Contest contest, String oldContestTitle) throws SystemException, PortalException, UnsupportedEncodingException {
         String newContestTitle = contest.getContestShortName();
         if(!oldContestTitle.equals(newContestTitle)) {
             WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
@@ -184,12 +186,12 @@ public class ContestDescriptionBean implements Serializable{
         }
     }
 
-    public static void updateContestSchedule(Contest contest, Long contestScheduleId) throws Exception{
+    public static void updateContestSchedule(Contest contest, Long contestScheduleId) throws SystemException, PortalException {
         Long oldScheduleTemplateId = contest.getContestScheduleId();
         boolean noScheduleSelected = contestScheduleId.equals(0L);
 
         if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
-            ContestWrapper contestWrapper = new ContestWrapper(contest);
+            BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
             boolean contestHasProposals = contestWrapper.getTotalProposalsCount() > 0;
             if(contestHasProposals) {
                 ContestScheduleWrapper.changeContestScheduleForContest(contest, contestScheduleId);

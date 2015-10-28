@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
-import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
+import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.PortletRequest;
 import java.util.List;
@@ -22,7 +22,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
 
     private final static Log _log = LogFactoryUtil.getLog(ContestDetailsBaseTabController.class);
     private Contest contest;
-    private ContestWrapper contestWrapper;
+    private BaseContestWrapper contestWrapper;
     protected TabWrapper tabWrapper;
 
     public static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
@@ -39,7 +39,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException;
 
     @ModelAttribute("contestWrapper")
-    public ContestWrapper populateContestWrapper(Model model, PortletRequest request){
+    public BaseContestWrapper populateContestWrapper(Model model, PortletRequest request){
         try {
             initContest(request);
             return contestWrapper;
@@ -52,9 +52,10 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     private void initContest(PortletRequest request) throws SystemException, PortalException {
         Long contestId = getContestIdFromRequest(request);
         contest = ContestLocalServiceUtil.getContest(contestId);
-        contestWrapper = new ContestWrapper(contest);
+        contestWrapper = new BaseContestWrapper(contest);
     }
 
+    @Override
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
             throws PortalException, SystemException {
 
@@ -81,7 +82,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         } else {
             try {
                 initContest(request);
-            } catch (Exception e){
+            } catch (SystemException | PortalException e){
                 _log.warn("Could not get contest: ", e);
             }
         }
@@ -100,11 +101,11 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         this.tabWrapper = tabWrapper;
     }
 
-    public ContestWrapper getContestWrapper() {
+    public BaseContestWrapper getContestWrapper() {
         return contestWrapper;
     }
 
-    public void setContestWrapper(ContestWrapper contestWrapper) {
+    public void setContestWrapper(BaseContestWrapper contestWrapper) {
         this.contestWrapper = contestWrapper;
     }
 

@@ -36,19 +36,19 @@ import java.util.TreeMap;
  */
 public class BaseContestWrapper {
 
-    private final static Log _log = LogFactoryUtil.getLog(BaseContestWrapper.class);
-    private static final String WHERE = "where";
-    private static final String WHAT = "what";
-    private static final String WHO = "who";
-    private static final String HOW = "how";
+    protected final static Log _log = LogFactoryUtil.getLog(BaseContestWrapper.class);
+    protected static final String WHERE = "where";
+    protected static final String WHAT = "what";
+    protected static final String WHO = "who";
+    protected static final String HOW = "how";
 
-    private final static Map<Long, FocusArea> faCache = new HashMap<>();
-    private Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
-    private List<BaseContestPhaseWrapper> phases;
+    protected final static Map<Long, FocusArea> faCache = new HashMap<>();
+    protected Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
+    protected List<BaseContestPhaseWrapper> phases;
 
-    private List<BaseContestTeamRoleWrapper> contestTeamMembersByRole;
+    protected List<BaseContestTeamRoleWrapper> contestTeamMembersByRole;
 
-    private final Contest contest;
+    protected final Contest contest;
 
     public BaseContestWrapper(Contest contest) {
         this.contest = contest;
@@ -322,7 +322,7 @@ public class BaseContestWrapper {
         return getTermFromSpace(HOW);
     }
 
-    private List<OntologyTerm> getTermFromSpace(String space)
+    protected List<OntologyTerm> getTermFromSpace(String space)
             throws PortalException, SystemException {
 
         if (!ontologySpaceCache.containsKey(space) && (getFocusAreaId() > 0)) {

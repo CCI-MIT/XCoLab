@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-import com.ext.portlet.model.Contest;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -10,7 +9,6 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.interfaces.TabPermissions;
-import org.xcolab.wrapper.ContestWrapper;
 
 import javax.portlet.PortletRequest;
 
