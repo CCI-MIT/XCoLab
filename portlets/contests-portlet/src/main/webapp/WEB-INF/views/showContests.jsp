@@ -1,6 +1,5 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:portlet="http://java.sun.com/portlet_2_0"
     xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0">
 
     <div>
@@ -8,7 +7,7 @@
         <c:forEach var="contest" items="${contests }">
             <div class="contestbox">
                 <div class="img-wrap">
-                    <a href="/web/guest/plans/-/plans/contestId/${contest.primaryKey}">
+                    <a href="${contest.contestUrl}">
                         <c:if test="${not empty contest.logoPath}">
                             <img src="/image/${contestsBean.themeDisplay.pathImage}${contest.logoPath}" width="151" height="151" alt="${contest.contestShortName}" />
                         </c:if>
