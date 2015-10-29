@@ -289,7 +289,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
             tmp = StringUtil.replace(tmp, THREAD_TOPIC_PLACEHOLDER, getCategoryGroupLink(DiscussionMessageLocalServiceUtil.getCategoryGroup(message)));
             tmp = StringUtil.replace(tmp, MESSAGE_BODY_PLACEHOLDER, message.getBody().replace("\\n", "<br/>"));
             return tmp;
-        } catch (Throwable t) {
+        } catch (SystemException | PortalException t) {
             _log.error(t);
         }
         return StringPool.BLANK;

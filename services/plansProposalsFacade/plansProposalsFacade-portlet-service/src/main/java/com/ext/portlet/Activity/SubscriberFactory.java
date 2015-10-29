@@ -12,8 +12,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 public interface SubscriberFactory {
 	
-	public void subcribe(long userid, long entityid, SubscriptionProvider service) throws SystemException;
-	public void unsubcribe(long userid, long entityid, SubscriptionProvider service) throws SystemException;
-	public boolean isSubscribed(long userid, long entityid, SubscriptionProvider service) throws SystemException;
-    public String getPrettyName();
+	void subscribe(long userId, long entityId, SubscriptionProvider service) throws SystemException;
+	void unsubscribe(long userId, long entityId, SubscriptionProvider service) throws SystemException;
+	boolean isSubscribed(long userId, long entityId, SubscriptionProvider service) throws SystemException;
+    String getPrettyName();
 }

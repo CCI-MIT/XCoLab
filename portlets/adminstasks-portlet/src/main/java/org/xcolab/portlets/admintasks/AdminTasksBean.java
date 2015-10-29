@@ -6,15 +6,16 @@ import com.ext.portlet.Activity.LoginRegisterActivityKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
@@ -40,7 +41,6 @@ import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
-import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
@@ -73,8 +73,8 @@ import java.util.Set;
 public class AdminTasksBean {
 	private Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
 
-	private DataBean dataBean = new DataBean();
-	private List<String> messages;
+	private final DataBean dataBean = new DataBean();
+	private final List<String> messages;
 
 	public List<String> getMessages() {
 		return messages;
@@ -83,7 +83,7 @@ public class AdminTasksBean {
 
     public AdminTasksBean(){
         SessionRenderer.addCurrentSession("pushMessages");
-        messages = new ArrayList<String>();
+        messages = new ArrayList<>();
     }
 
 	private final static String REQUEST_PARAM_NAME = "com.liferay.portal.kernel.servlet.PortletServletRequest";
@@ -99,9 +99,10 @@ public class AdminTasksBean {
 
 	public String fixWikiPermissions() throws SystemException, PortalException {
 
-		if (true)
+		if (true) {
 			throw new PortalException(
 					"Fix wiki permissions method needs to be adjusted to liferay 6.2");
+		}
 		Long companyId = defaultCompanyId;
 		Role guest = RoleLocalServiceUtil.getRole(companyId,
 				RoleConstants.GUEST);
@@ -109,12 +110,10 @@ public class AdminTasksBean {
 				RoleConstants.USER);
 		Role siteMemberRole = RoleLocalServiceUtil.getRole(companyId,
 				RoleConstants.SITE_MEMBER);
-		String[] guestActions = { ActionKeys.VIEW };
 
 		int idx = 0;
 		int total = WikiPageLocalServiceUtil.getWikiPagesCount();
 
-		String[] actionIds = { ActionKeys.VIEW };
 		for (WikiPage wp : WikiPageLocalServiceUtil.getWikiPages(0,
 				Integer.MAX_VALUE)) {
 			idx++;
@@ -177,7 +176,7 @@ public class AdminTasksBean {
 		ClassName cn = ClassNameLocalServiceUtil
 				.getClassName(DiscussionCategoryGroup.class.getName());
 
-		Set<String> discussionNamesToIgnore = new HashSet<String>();
+		Set<String> discussionNamesToIgnore = new HashSet<>();
 		List<DiscussionCategoryGroup> dcgs = DiscussionCategoryGroupLocalServiceUtil
 				.getDiscussionCategoryGroups(0, 10000);
 		Collections.sort(dcgs, new Comparator<DiscussionCategoryGroup>() {
@@ -185,8 +184,9 @@ public class AdminTasksBean {
 			public int compare(DiscussionCategoryGroup o1,
 					DiscussionCategoryGroup o2) {
 				if (o1.getCommentsThread() <= 0) {
-					if (o2.getCommentsThread() <= 0)
+					if (o2.getCommentsThread() <= 0) {
 						return (int) (o1.getId() - o2.getId());
+					}
 					return 1;
 				}
 				if (o2.getCommentsThread() <= 0) {
@@ -197,10 +197,11 @@ public class AdminTasksBean {
 							.getCommentThread(o1);
 					DiscussionMessage o2m = DiscussionCategoryGroupLocalServiceUtil
 							.getCommentThread(o2);
-					if (o1m.getCreateDate().before(o2m.getCreateDate()))
+					if (o1m.getCreateDate().before(o2m.getCreateDate())) {
 						return -1;
-					else if (o2m.getCreateDate().before(o1m.getCreateDate()))
+					} else if (o2m.getCreateDate().before(o1m.getCreateDate())) {
 						return 1;
+					}
 					return 0;
 
 				} catch (Exception e) {
@@ -212,13 +213,15 @@ public class AdminTasksBean {
 
 		Collections.reverse(dcgs);
 		for (DiscussionCategoryGroup dcg : dcgs) {
-			if (dcg.getCommentsThread() <= 0)
+			if (dcg.getCommentsThread() <= 0) {
 				continue;
+			}
 			DiscussionMessage message = DiscussionCategoryGroupLocalServiceUtil
 					.getCommentThread(dcg);
 
-			if (discussionNamesToIgnore.contains(message.getSubject().trim()))
+			if (discussionNamesToIgnore.contains(message.getSubject().trim())) {
 				continue;
+			}
 			discussionNamesToIgnore.add(message.getSubject().trim());
 
 			DynamicQuery activityQuery = DynamicQueryFactoryUtil
@@ -240,8 +243,7 @@ public class AdminTasksBean {
 
 			activityQuery.addOrder(OrderFactoryUtil.desc("createDate"));
 
-			List<SocialActivity> activities = SocialActivityLocalServiceUtil
-					.dynamicQuery(activityQuery);
+			List<SocialActivity> activities = SocialActivityLocalServiceUtil.dynamicQuery(activityQuery);
 			if (activities.isEmpty()) {
 				System.out.println("---\tNo activity for discussion "
 						+ dcg.getId());
@@ -332,9 +334,11 @@ public class AdminTasksBean {
 				Integer.MAX_VALUE)) {
 			DiscussionCategoryGroup proposalDiscussion = DiscussionCategoryGroupLocalServiceUtil
 					.getDiscussionCategoryGroup(proposal.getDiscussionId());
-			proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(proposal.getProposalId()));
+			final Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
+			proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contest, proposal));
             String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-            proposalDiscussion.setDescription(String.format(DiscussionActivityKeys.PROPOSAL_DISCUSSION_FORMAT_STRING, proposalName));
+			ContestType contestType = ContestTypeLocalServiceUtil.getCurrentContestTypeForProposal(proposal.getProposalId());
+			proposalDiscussion.setDescription(String.format("%s %s", contestType.getProposalName(), proposalName));
 			DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(proposalDiscussion);
 		}
 		return null;
@@ -354,7 +358,7 @@ public class AdminTasksBean {
 				activity.setExtraData(extraDataJSONObject.toString());
 				SocialActivityLocalServiceUtil.updateSocialActivity(activity);
 			}
-			catch (Exception e) {
+			catch (SystemException e) {
 				e.printStackTrace();
 			}
 		}
@@ -440,71 +444,81 @@ public class AdminTasksBean {
     public void removeUsers() throws SearchException, SystemException {
         pushAjaxUpdate("Removing Users from index");
         Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
-        for (User u : UserLocalServiceUtil.getUsers(0,Integer.MAX_VALUE))
-            indexer.delete(u);
+        for (User u : UserLocalServiceUtil.getUsers(0,Integer.MAX_VALUE)) {
+			indexer.delete(u);
+		}
         pushAjaxUpdateFinishedIndexerTask();
     }
     public void removeProposals() throws SearchException, SystemException {
         pushAjaxUpdate("Removing Proposals from index");
         Indexer indexer = IndexerRegistryUtil.getIndexer(Proposal.class);
-        for (Proposal p : ProposalLocalServiceUtil.getProposals(0,Integer.MAX_VALUE))
-            indexer.delete(p);
+        for (Proposal p : ProposalLocalServiceUtil.getProposals(0,Integer.MAX_VALUE)) {
+			indexer.delete(p);
+		}
         pushAjaxUpdateFinishedIndexerTask();
     }
     public void removeContests() throws SearchException, SystemException {
         pushAjaxUpdate("Removing Contests from index");
         Indexer indexer = IndexerRegistryUtil.getIndexer(Contest.class);
-        for (Contest c : ContestLocalServiceUtil.getContests(0,Integer.MAX_VALUE))
-            indexer.delete(c);
+        for (Contest c : ContestLocalServiceUtil.getContests(0,Integer.MAX_VALUE)) {
+			indexer.delete(c);
+		}
         pushAjaxUpdateFinishedIndexerTask();
     }
     public void removeActivities() throws SearchException, SystemException {
         pushAjaxUpdate("Removing Activities from index");
         Indexer indexer = IndexerRegistryUtil.getIndexer(SocialActivity.class);
-        for (SocialActivity s : SocialActivityLocalServiceUtil.getSocialActivities(0,Integer.MAX_VALUE))
-            indexer.delete(s);
+        for (SocialActivity s : SocialActivityLocalServiceUtil.getSocialActivities(0,Integer.MAX_VALUE)) {
+			indexer.delete(s);
+		}
         pushAjaxUpdateFinishedIndexerTask();
     }
     public void removeDiscussions() throws SearchException, SystemException {
         pushAjaxUpdate("Removing Discussions from index");
         Indexer indexer = IndexerRegistryUtil.getIndexer(DiscussionMessage.class);
-        for (DiscussionMessage m : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0,Integer.MAX_VALUE))
-            indexer.delete(m);
+        for (DiscussionMessage m : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0,Integer.MAX_VALUE)) {
+			indexer.delete(m);
+		}
         pushAjaxUpdateFinishedIndexerTask();
     }
     public void reindexUsers() throws SearchException, SystemException {
         pushAjaxUpdate("Reindexing Users index");
         Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
-        for (User u : UserLocalServiceUtil.getUsers(0,Integer.MAX_VALUE))
-           indexer.reindex(u);
+        for (User u : UserLocalServiceUtil.getUsers(0,Integer.MAX_VALUE)) {
+			indexer.reindex(u);
+		}
         pushAjaxUpdateFinishedIndexerTask();
     }
     public void reindexProposals() throws SearchException, SystemException {
         pushAjaxUpdate("Reindexing Proposals index");
         Indexer indexer = IndexerRegistryUtil.getIndexer(Proposal.class);
-        for (Proposal p : ProposalLocalServiceUtil.getProposals(0,Integer.MAX_VALUE))
-            indexer.reindex(p);
+        for (Proposal p : ProposalLocalServiceUtil.getProposals(0,Integer.MAX_VALUE)) {
+			indexer.reindex(p);
+		}
         pushAjaxUpdateFinishedIndexerTask();
     }
     public void reindexContests() throws SearchException, SystemException {
         pushAjaxUpdate("Reindexing Contests index");
         Indexer indexer = IndexerRegistryUtil.getIndexer(Contest.class);
-        for (Contest c : ContestLocalServiceUtil.getContests(0,Integer.MAX_VALUE))
-            indexer.reindex(c);
+        for (Contest c : ContestLocalServiceUtil.getContests(0,Integer.MAX_VALUE)) {
+			indexer.reindex(c);
+		}
         pushAjaxUpdateFinishedIndexerTask();
     }
     public void reindexActivities() throws SearchException, SystemException {
         pushAjaxUpdate("Reindexing Activities from index");
         Indexer indexer = IndexerRegistryUtil.getIndexer(SocialActivity.class);
-        for (SocialActivity s : SocialActivityLocalServiceUtil.getSocialActivities(0,Integer.MAX_VALUE))
-            indexer.reindex(s);
+        for (SocialActivity s : SocialActivityLocalServiceUtil.getSocialActivities(0,Integer.MAX_VALUE)) {
+			indexer.reindex(s);
+		}
         pushAjaxUpdateFinishedIndexerTask();
     }
     public void reindexDiscussions() throws SearchException, SystemException {
         pushAjaxUpdate("Reindexing Users Discussions index");
         Indexer indexer = IndexerRegistryUtil.getIndexer(DiscussionMessage.class);
-        for (DiscussionMessage m : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0,Integer.MAX_VALUE))
-            indexer.reindex(m);
+        for (DiscussionMessage m : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0,Integer.MAX_VALUE)) {
+			indexer.reindex(m);
+		}
         pushAjaxUpdateFinishedIndexerTask();
     }
 
@@ -514,12 +528,6 @@ public class AdminTasksBean {
 
     private void pushAjaxUpdate(String message){
         messages.add(message);
-        SessionRenderer.render("pushMessages");
-    }
-
-    private void updateLastAjaxUpdate(String message){
-        messages.remove(messages.size()-1);
-        messages.add((message));
         SessionRenderer.render("pushMessages");
     }
 

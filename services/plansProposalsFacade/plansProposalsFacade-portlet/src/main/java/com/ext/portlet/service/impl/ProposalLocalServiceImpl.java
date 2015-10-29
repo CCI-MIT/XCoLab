@@ -206,7 +206,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         DiscussionCategoryGroup proposalDiscussion = discussionCategoryGroupLocalService
                 .createDiscussionCategoryGroup(proposalEntityName + proposalId + " main discussion");
 
-        proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(proposalId));
+        proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contest, proposal));
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(proposalDiscussion);
         proposal.setDiscussionId(proposalDiscussion.getId());
 
@@ -367,7 +367,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // Update the proposal name in the discussion category
         if (attributeName.equals(ProposalAttributeKeys.NAME)) {
             DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
-            dcg.setDescription(String.format(DiscussionActivityKeys.PROPOSAL_DISCUSSION_FORMAT_STRING, stringValue));
+            ContestType contestType = contestTypeLocalService.getCurrentContestTypeForProposal(proposalId);
+            dcg.setDescription(String.format("%s %s", contestType.getProposalName(), stringValue));
             discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(dcg);
         }
 
