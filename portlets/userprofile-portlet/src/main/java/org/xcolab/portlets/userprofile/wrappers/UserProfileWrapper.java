@@ -4,15 +4,19 @@ import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageConstants;
 import com.ext.portlet.messaging.MessageUtil;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Message;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -37,35 +41,42 @@ import org.xcolab.wrappers.BaseProposalWrapper;
 import javax.portlet.PortletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class UserProfileWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final long DEFAULT_COMPANY_ID = 10112L;
+
+    private static final int MAX_ACTIVITIES_COUNT = 50;
+    private static final boolean FIRE_GOOGLE_EVENT = false;
+    private static final boolean DISPLAY_EMAIL_ERROR_MESSAGE = false;
+
     private User user;
     private UserBean userBean;
-
     private String realName;
     private Boolean attendsConference;
     private MemberRole role;
     private int subscriptionsPageSize = 20;
     private int subscriptionsPaginationPageId;
-    private static final int MAX_ACTIVITIES_COUNT = 50;
+    private String proposalsString;
 
     private SendMessagePermissionChecker messagePermissionChecker;
     private List<MessageBean> messages;
     private final List<SupportedProposalWrapper> supportedProposals = new ArrayList<>();
-    private final List<BaseProposalWrapper> userProposals = new ArrayList<>();
+    private final Map<Long, ContestTypeProposalWrapper> proposalsByContestType = new HashMap<>();
     private List<BaseProposalWrapper> linkingProposals;
     private final ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
     private BadgeBean badges;
 
-    private static final boolean FIRE_GOOGLE_EVENT = false;
-    private static final boolean DISPLAY_EMAIL_ERROR_MESSAGE = false;
     private boolean viewingOwnProfile;
 
     private String messagingPortletId = "messagingportlet_WAR_messagingportlet";
@@ -127,16 +138,8 @@ public class UserProfileWrapper implements Serializable {
         userSubscriptions = new UserSubscriptionsWrapper(user);
         supportedProposals.clear();
         userActivities.clear();
-        userProposals.clear();
-        for (Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
-            ProposalSupporter ps = (ProposalSupporter) o;
-            try {
-                Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(ps.getProposalId());
-                supportedProposals.add(new SupportedProposalWrapper(ps));
-            } catch (SystemException | PortalException e) {
-                _log.warn("Could not add supported plan with id: " + ps.getProposalId());
-                //e.printStackTrace();
-            }
+        for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
+            supportedProposals.add(new SupportedProposalWrapper(ps));
         }
 
         for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
@@ -149,8 +152,21 @@ public class UserProfileWrapper implements Serializable {
         }
 
         List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
+        Map<Long, Long> contestIdToContestTypeIdMap = new HashMap<>();
+        final List<ContestType> contestTypes = ContestTypeLocalServiceUtil.getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+        for (ContestType contestType : contestTypes) {
+            final List<Contest> contests = ContestLocalServiceUtil.getContestsByContestType(contestType.getId());
+            if (!contests.isEmpty()) {
+                proposalsByContestType.put(contestType.getId(), new ContestTypeProposalWrapper(contestType, new ArrayList<BaseProposalWrapper>()));
+            }
+            for (Contest contest : contests) {
+                contestIdToContestTypeIdMap.put(contest.getContestPK(), contestType.getId());
+            }
+        }
         for (Proposal p : proposals) {
-            userProposals.add(new BaseProposalWrapper(p));
+            final long contestPK = ProposalLocalServiceUtil.getLatestProposalContest(p.getProposalId()).getContestPK();
+            Long contestTypeId = contestIdToContestTypeIdMap.get(contestPK);
+            proposalsByContestType.get(contestTypeId).getProposals().add(new BaseProposalWrapper(p));
         }
     }
 
@@ -235,10 +251,6 @@ public class UserProfileWrapper implements Serializable {
         return 0;
     }
 
-    // TODO check this
-    // public void setAbout(String about) throws UserInputException { this.about = UserInputFilterUtil.filterHtml(about); }
-    //public String getFilteredAbout() {        return filteredAbout;    }
-
     public boolean getHasFacebookId() {
         return user.getFacebookId() != 0;
     }
@@ -289,7 +301,7 @@ public class UserProfileWrapper implements Serializable {
 
     public List<UserActivityWrapper> getSubscribedActivities() throws SystemException, PortalException {
         if (subscribedActivities == null) {
-            subscribedActivities = new ArrayList<UserActivityWrapper>();
+            subscribedActivities = new ArrayList<>();
             for (SocialActivity activity: ActivityUtil.groupActivities(ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getUserId(), 0, 1000))) {
                 try {
                     subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
@@ -303,7 +315,9 @@ public class UserProfileWrapper implements Serializable {
 
     public List<UserActivityWrapper> getActivities() { return userActivities; }
 
-    public List<BaseProposalWrapper> getProposals() { return userProposals; }
+    public Collection<ContestTypeProposalWrapper> getProposalsByContestType() {
+        return proposalsByContestType.values();
+    }
 
     public List<Badge> getBadges() { return badges.getBadges(); }
 
@@ -354,5 +368,32 @@ public class UserProfileWrapper implements Serializable {
             } catch (PortalException | SystemException ignored) { }
         }
         return linkingProposals;
+    }
+
+    public String getProposalsString() {
+        if (proposalsString == null) {
+            try {
+                StringBuilder stringBuilder = new StringBuilder();
+                final List<Long> contestTypeIds = new ArrayList<>(proposalsByContestType.keySet());
+                Iterator<Long> iterator = contestTypeIds.iterator();
+                int currentWord = 1, totalWords = contestTypeIds.size();
+                while (iterator.hasNext()) {
+                    ContestType contestType = ContestTypeLocalServiceUtil.fetchContestType(iterator.next());
+                    if (currentWord > 1) {
+                        if (currentWord == totalWords) {
+                            stringBuilder.append(" or ");
+                        } else {
+                            stringBuilder.append(", ");
+                        }
+                    }
+                    stringBuilder.append(contestType.getProposalNamePlural());
+                    currentWord++;
+                }
+                proposalsString = stringBuilder.toString();
+            } catch (SystemException e) {
+                proposalsString = "Proposals";
+            }
+        }
+        return proposalsString;
     }
 }

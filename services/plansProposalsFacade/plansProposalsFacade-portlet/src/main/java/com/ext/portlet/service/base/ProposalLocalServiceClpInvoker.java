@@ -167,6 +167,8 @@ public class ProposalLocalServiceClpInvoker {
     private String[] _methodParameterTypes558;
     private String _methodName559;
     private String[] _methodParameterTypes559;
+    private String _methodName564;
+    private String[] _methodParameterTypes564;
     private String _methodName565;
     private String[] _methodParameterTypes565;
     private String _methodName566;
@@ -572,6 +574,10 @@ public class ProposalLocalServiceClpInvoker {
         _methodName559 = "getDiscussionIdAndGenerateIfNull";
 
         _methodParameterTypes559 = new String[] { "com.ext.portlet.model.Proposal" };
+
+        _methodName564 = "getProposalLinkUrl";
+
+        _methodParameterTypes564 = new String[] { "java.lang.Long" };
 
         _methodName565 = "getProposalLinkUrl";
 
@@ -1172,6 +1178,11 @@ public class ProposalLocalServiceClpInvoker {
         if (_methodName559.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes559, parameterTypes)) {
             return ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull((com.ext.portlet.model.Proposal) arguments[0]);
+        }
+
+        if (_methodName564.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes564, parameterTypes)) {
+            return ProposalLocalServiceUtil.getProposalLinkUrl((java.lang.Long) arguments[0]);
         }
 
         if (_methodName565.equals(name) &&

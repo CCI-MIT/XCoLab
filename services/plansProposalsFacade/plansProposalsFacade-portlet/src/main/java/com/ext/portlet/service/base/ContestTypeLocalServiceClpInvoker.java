@@ -45,6 +45,8 @@ public class ContestTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes492;
     private String _methodName493;
     private String[] _methodParameterTypes493;
+    private String _methodName498;
+    private String[] _methodParameterTypes498;
 
     public ContestTypeLocalServiceClpInvoker() {
         _methodName0 = "addContestType";
@@ -136,6 +138,10 @@ public class ContestTypeLocalServiceClpInvoker {
         _methodName493 = "setBeanIdentifier";
 
         _methodParameterTypes493 = new String[] { "java.lang.String" };
+
+        _methodName498 = "getCurrentContestTypeForProposal";
+
+        _methodParameterTypes498 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -237,6 +243,11 @@ public class ContestTypeLocalServiceClpInvoker {
             ContestTypeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
+        }
+
+        if (_methodName498.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes498, parameterTypes)) {
+            return ContestTypeLocalServiceUtil.getCurrentContestTypeForProposal(((Long) arguments[0]).longValue());
         }
 
         throw new UnsupportedOperationException();

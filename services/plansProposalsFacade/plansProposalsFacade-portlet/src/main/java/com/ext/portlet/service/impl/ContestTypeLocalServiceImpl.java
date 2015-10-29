@@ -1,6 +1,10 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.base.ContestTypeLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * The implementation of the contest type local service.
@@ -22,4 +26,10 @@ public class ContestTypeLocalServiceImpl extends ContestTypeLocalServiceBaseImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestTypeLocalServiceUtil} to access the contest type local service.
      */
+
+    @Override
+    public ContestType getCurrentContestTypeForProposal(long proposalId) throws SystemException, PortalException {
+        final Contest latestProposalContest = proposalLocalService.getLatestProposalContest(proposalId);
+        return fetchContestType(latestProposalContest.getContestTypeId());
+    }
 }

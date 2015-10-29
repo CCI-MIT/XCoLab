@@ -259,6 +259,13 @@ public class ContestTypeLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static com.ext.portlet.model.ContestType getCurrentContestTypeForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getCurrentContestTypeForProposal(proposalId);
+    }
+
     public static void clearService() {
         _service = null;
     }

@@ -271,6 +271,14 @@ public class ContestTypeLocalServiceWrapper implements ContestTypeLocalService,
             arguments);
     }
 
+    @Override
+    public com.ext.portlet.model.ContestType getCurrentContestTypeForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestTypeLocalService.getCurrentContestTypeForProposal(proposalId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

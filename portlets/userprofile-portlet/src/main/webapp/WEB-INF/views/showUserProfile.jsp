@@ -7,6 +7,9 @@
 
     <jsp:directive.include file="./init.jspx" />
 
+    <jsp:useBean id="currentUserProfile" type="org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper" scope="request" />
+    <jsp:useBean id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean" scope="request" />
+
 	<c:if test="${updateSuccess}">
 		<script type="text/javascript" >
 			updateSuccess();
@@ -43,9 +46,6 @@
 			<div class="comm_member-info">
 				<table border="0" cellpadding="0" cellspacing="0" class="colab members topInfo">
 					<tbody>
-					<!-- <tr>
-							<td colspan="2"><h2>Member Profile</h2></td>
-						</tr> -->
 						<tr>
 							<td>
 								<div class="memname">${currentUserProfile.realName}</div>
@@ -169,25 +169,25 @@
 		</p>
 
 		<c:if test="${not currentUserProfile.staffMemberProfile}">
-			<h2 style="margin-top: 20px;">Proposals</h2>
-			<c:if test="${empty currentUserProfile.proposals}">
-					${userBean.firstName} has not yet contributed to any Climate CoLab proposals.
-			</c:if>
+			<c:forEach var="contestTypeProposals" items="${currentUserProfile.proposalsByContestType}">
+				<h2 style="margin-top: 20px;">${contestTypeProposals.contestType.proposalNamePlural}</h2>
+				<c:if test="${empty contestTypeProposals.proposals}">
+						${userBean.firstName} has not yet contributed to any ${contestTypeProposals.contestType.proposalNamePlural}.
+				</c:if>
 
-			<table class="colab">
-				<c:forEach var="proposal" items="${currentUserProfile.proposals}">
-					<c:if test="${proposal.visible}">
+				<table class="colab">
+					<c:forEach var="proposal" items="${contestTypeProposals.proposals}">
 						<tr class="colabRow">
 							<td> <collab:proposalLink proposal="${proposal}" /> </td>
 							<td style="text-align: right;"><fmt:formatDate value="${proposal.createDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
 						</tr>
-					</c:if>
-				</c:forEach>
-			</table>
+					</c:forEach>
+				</table>
+			</c:forEach>
 
-			<h2 style="margin-top: 20px;">Links to this user's proposals</h2>
+			<h2 style="margin-top: 20px;">Links to this user's ${currentUserProfile.proposalsString}</h2>
 			<c:if test="${empty currentUserProfile.linkingProposals}">
-					There are no proposals linking to this user's proposals yet.
+					There are no proposals linking to this user's ${currentUserProfile.proposalsString} yet.
 			</c:if>
 
 			<table class="colab">
@@ -201,10 +201,9 @@
 				</c:forEach>
 			</table>
 
-
 			<h2>Supporting</h2>
-			<c:if test="${empty currentUserProfile.supportedPlans}">
-					${userBean.firstName} has not yet supported any Climate CoLab proposals.
+			<c:if test="${empty currentUserProfile.supportedProposals}">
+					${userBean.firstName} has not yet supported any ${currentUserProfile.proposalsString}.
 			</c:if>
 
 			<table class="colab">

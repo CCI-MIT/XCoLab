@@ -2,7 +2,6 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
@@ -11,6 +10,7 @@ import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.FocusArea;
@@ -90,6 +90,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -198,37 +199,39 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposal.setCreateDate(new Date());
 
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-
+        final Contest contest = contestLocalService.fetchContest(contestPhase.getContestPK());
+        ContestType contestType = contestTypeLocalService.fetchContestType(contest.getContestTypeId());
         // create discussions
+        final String proposalEntityName = contestType.getProposalName()+" ";
         DiscussionCategoryGroup proposalDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " main discussion");
+                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " main discussion");
 
-        proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contestPhase.getContestPK(), proposalId));
+        proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(proposalId));
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(proposalDiscussion);
         proposal.setDiscussionId(proposalDiscussion.getId());
 
         DiscussionCategoryGroup resultsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " results discussion");
+                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " results discussion");
         resultsDiscussion.setIsQuiet(true);
 
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(resultsDiscussion);
         proposal.setResultsDiscussionId(resultsDiscussion.getId());
 
         DiscussionCategoryGroup judgesDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " judges discussion");
+                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " judges discussion");
         judgesDiscussion.setIsQuiet(true);
 
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(judgesDiscussion);
         proposal.setJudgeDiscussionId(judgesDiscussion.getId());
 
         DiscussionCategoryGroup advisorsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " advisors discussion");
+                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " advisors discussion");
         advisorsDiscussion.setIsQuiet(true);
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(advisorsDiscussion);
         proposal.setAdvisorDiscussionId(advisorsDiscussion.getId());
 
         DiscussionCategoryGroup fellowsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " fellows discussion");
+                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " fellows discussion");
         fellowsDiscussion.setIsQuiet(true);
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(fellowsDiscussion);
         proposal.setFellowDiscussionId(fellowsDiscussion.getId());
@@ -738,38 +741,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 .addOrder(OrderFactoryUtil.desc("createDate"));
         List<Proposal> proposals = proposalLocalService.dynamicQuery(query);
 
-        // Filter out "deleted" proposals
-        List<Proposal> returnList = new ArrayList<>();
-        for (Proposal proposal : proposals) {
-            List<Proposal2Phase> p2Phases = proposal2PhaseLocalService.getByProposalId(proposal.getProposalId());
-
-            // Count number of invisible attributes
-            int invisibleCount = 0;
-            int overallCount = 0;
-            for (Proposal2Phase phase : p2Phases) {
-                overallCount++;
-
-                // Try to get
-                try {
-                    final ProposalContestPhaseAttribute visibleAttribute = proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(
-                            phase.getProposalId(), phase.getContestPhaseId(), ProposalContestPhaseAttributeKeys.VISIBLE);
-
-                    if (visibleAttribute.getNumericValue() == 0) {
-                        invisibleCount++;
-                    }
-
-                } catch (NoSuchProposalContestPhaseAttributeException e) {
-                    // We ignore the exception here since it does not have an impact
-                }
-            }
-
-            // Either we don't have an invisible entry in the attributes table or there is at least one visible
-            if ((overallCount == 0) || (overallCount != invisibleCount)) {
-                returnList.add(proposal);
+        for (Iterator<Proposal> iterator = proposals.iterator(); iterator.hasNext(); ) {
+            Proposal proposal = iterator.next();
+            if (isDeleted(proposal)) {
+                iterator.remove();
             }
         }
 
-        return returnList;
+        return proposals;
     }
 
     /**
@@ -1520,6 +1499,25 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposalVersion.setCreateDate(updatedDate);
 
         proposalVersionLocalService.addProposalVersion(proposalVersion);
+    }
+
+    /**
+     * Returns the URL link address for the passed proposal in the latest contest
+     *
+     * @param proposalId The proposal id
+     * @return Proposal URL as String
+     */
+    @Override
+    public String getProposalLinkUrl(Long proposalId) throws SystemException, PortalException {
+        Contest contest = proposalLocalService.getLatestProposalContest(proposalId);
+        String portletLink;
+        try {
+            portletLink = contestTypeLocalService.fetchContestType(contest.getContestTypeId()).getPortletUrl();
+        } catch (SystemException e) {
+            portletLink = "/web/guest/plans";
+        }
+        String link = portletLink + "/-/plans/contestId/%d/planId/%d";
+        return String.format(link, contest.getContestPK(), proposalId);
     }
 
     /**

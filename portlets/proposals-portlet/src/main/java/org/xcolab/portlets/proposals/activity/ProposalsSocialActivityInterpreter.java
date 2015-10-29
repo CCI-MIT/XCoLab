@@ -3,9 +3,10 @@ package org.xcolab.portlets.proposals.activity;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ext.portlet.model.ContestType;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.xcolab.portlets.proposals.activity.generators.DefaultFeedEntryGenerator;
-import org.xcolab.portlets.proposals.utils.ProposalsURLGenerator;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import com.ext.portlet.Activity.ProposalActivityKeys;
@@ -24,23 +25,21 @@ import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 public class ProposalsSocialActivityInterpreter extends BaseSocialActivityInterpreter 
 implements ICollabActivityInterpreter {
     
-    private Map<ProposalActivityKeys, ProposalActivityFeedEntryGenerator> feedGenerators = 
-            new HashMap<ProposalActivityKeys, ProposalActivityFeedEntryGenerator>();
+    private final Map<ProposalActivityKeys, ProposalActivityFeedEntryGenerator> feedGenerators = new HashMap<>();
 
     public static final String hyperlink = "<a href=\"%s\">%s</a>";
     
     public ProposalsSocialActivityInterpreter() {
-        feedGenerators.put(ProposalActivityKeys.ATTRIBUTE_UPDATE, new DefaultFeedEntryGenerator("Proposal updated", "updated proposal"));
-        feedGenerators.put(ProposalActivityKeys.ATTRIBUTE_REMOVE, new DefaultFeedEntryGenerator("Proposal updated", "updated proposal"));
-        feedGenerators.put(ProposalActivityKeys.PROPOSAL_CREATE, new DefaultFeedEntryGenerator("Created proposal", "created proposal"));
-        feedGenerators.put(ProposalActivityKeys.SUPPORTER_ADD, new DefaultFeedEntryGenerator("New proposal supporter", "is supporting proposal"));
-        feedGenerators.put(ProposalActivityKeys.SUPPORTER_REMOVE, new DefaultFeedEntryGenerator("New proposal supporter", "retracted support for proposal"));
-        feedGenerators.put(ProposalActivityKeys.USER_ADD, new DefaultFeedEntryGenerator("New proposal member", "became a team member of proposal"));
-        feedGenerators.put(ProposalActivityKeys.USER_REMOVE, new DefaultFeedEntryGenerator("Proposal member removed", "is no longer a team member of proposal"));
-        feedGenerators.put(ProposalActivityKeys.VOTE, new DefaultFeedEntryGenerator("Proposal vote", "voted for proposal"));
-        feedGenerators.put(ProposalActivityKeys.VOTE_RETRACT, new DefaultFeedEntryGenerator("Vote retracted", "retracted vote for proposal"));
-        feedGenerators.put(ProposalActivityKeys.VOTE_SWITCH, new DefaultFeedEntryGenerator("Vote switched", "voted for proposal"));
-        
+        feedGenerators.put(ProposalActivityKeys.ATTRIBUTE_UPDATE, new DefaultFeedEntryGenerator("<proposal/> updated", "updated <proposal/>"));
+        feedGenerators.put(ProposalActivityKeys.ATTRIBUTE_REMOVE, new DefaultFeedEntryGenerator("<proposal/> updated", "updated <proposal/>"));
+        feedGenerators.put(ProposalActivityKeys.PROPOSAL_CREATE, new DefaultFeedEntryGenerator("Created <proposal/>", "created <proposal/>"));
+        feedGenerators.put(ProposalActivityKeys.SUPPORTER_ADD, new DefaultFeedEntryGenerator("New <proposal/> supporter", "is supporting <proposal/>"));
+        feedGenerators.put(ProposalActivityKeys.SUPPORTER_REMOVE, new DefaultFeedEntryGenerator("New <proposal/> supporter", "retracted support for <proposal/>"));
+        feedGenerators.put(ProposalActivityKeys.USER_ADD, new DefaultFeedEntryGenerator("New team member", "became a team member of <proposal/>"));
+        feedGenerators.put(ProposalActivityKeys.USER_REMOVE, new DefaultFeedEntryGenerator("Team member removed", "is no longer a team member of <proposal/>"));
+        feedGenerators.put(ProposalActivityKeys.VOTE, new DefaultFeedEntryGenerator("<proposal/> vote", "voted for <proposal/>"));
+        feedGenerators.put(ProposalActivityKeys.VOTE_RETRACT, new DefaultFeedEntryGenerator("Vote retracted", "retracted vote for <proposal/>"));
+        feedGenerators.put(ProposalActivityKeys.VOTE_SWITCH, new DefaultFeedEntryGenerator("Vote switched", "voted for <proposal/>"));
     }
 
     @Override
@@ -66,22 +65,21 @@ implements ICollabActivityInterpreter {
 
     @Override
     public String getName(Long classNameId, Long classPK, Integer type, String extraData) {
-        // name of activity "stream" for given parameters is name of a plan that this activity relates to
+        // name of activity "stream" for given parameters is name of the proposal that this activity relates to
         try {
             Proposal rawProposal = ProposalLocalServiceUtil.getProposal(classPK);
+            ContestType contestType = ContestTypeLocalServiceUtil.getCurrentContestTypeForProposal(rawProposal.getProposalId());
             ProposalWrapper proposal = new ProposalWrapper(rawProposal);
-            return "Proposal: " + String.format(hyperlink, StringEscapeUtils.escapeHtml(ProposalsURLGenerator.getProposalURL(rawProposal)), proposal.getName());
+            return contestType.getProposalName()+": " + String.format(hyperlink, StringEscapeUtils.escapeHtml(proposal.getProposalURL()), proposal.getName());
             
-        } catch (SystemException e) {
-            _log.error("Can't find plan for id: " + classPK, e);
-        } catch (PortalException e) {
-            _log.error("Can't find plan for id: " + classPK, e);
+        } catch (SystemException | PortalException e) {
+            _log.error("Can't find proposal for id: " + classPK, e);
         }
-        
+
         return "";
     }
     
-    private final static String[] CLASS_NAMES = new String[] { Proposal.class.getName() };
+    private final static String[] CLASS_NAMES = { Proposal.class.getName() };
 
     @Override
     public String[] getClassNames() {

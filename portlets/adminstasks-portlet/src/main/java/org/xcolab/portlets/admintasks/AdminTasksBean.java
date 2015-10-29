@@ -330,16 +330,12 @@ public class AdminTasksBean {
 	public String fixProposalDiscussionUrlsAndDescriptions() throws SystemException, PortalException {
 		for (Proposal proposal : ProposalLocalServiceUtil.getProposals(0,
 				Integer.MAX_VALUE)) {
-			Contest contest = Proposal2PhaseLocalServiceUtil
-					.getCurrentContestForProposal(proposal.getProposalId());
 			DiscussionCategoryGroup proposalDiscussion = DiscussionCategoryGroupLocalServiceUtil
 					.getDiscussionCategoryGroup(proposal.getDiscussionId());
-			proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(
-					contest.getContestPK(), proposal.getProposalId()));
+			proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(proposal.getProposalId()));
             String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
             proposalDiscussion.setDescription(String.format(DiscussionActivityKeys.PROPOSAL_DISCUSSION_FORMAT_STRING, proposalName));
-			DiscussionCategoryGroupLocalServiceUtil
-					.updateDiscussionCategoryGroup(proposalDiscussion);
+			DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(proposalDiscussion);
 		}
 		return null;
 	}
