@@ -148,10 +148,10 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     private void init(PortletRequest request) throws PortalException, SystemException {
-        final Long proposalId = (Long) ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
-        final Long contestId = (Long) ParamUtil.getLong(request, CONTEST_ID_PARAM);
-        final Long phaseId = (Long) ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
-        final Integer version = (Integer) ParamUtil.getInteger(request, VERSION_PARAM);
+        final long proposalId = ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
+        final long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
+        final long phaseId = ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
+        final int version = ParamUtil.getInteger(request, VERSION_PARAM);
 
         Contest contest = null;
         ContestPhase contestPhase = null;
@@ -167,14 +167,14 @@ public class ProposalsContextImpl implements ProposalsContext {
             // No user is logged in
         }
 
-        if (contestId != null && contestId > 0) {
+        if (contestId > 0) {
             try {
                 contest = ContestLocalServiceUtil.getContest(contestId);
             } catch (NoSuchContestException e) {
                 handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
             }
 
-            if (phaseId != null && phaseId > 0) {
+            if (phaseId > 0) {
                 try {
                     contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
                 } catch (NoSuchContestPhaseException e){
@@ -185,7 +185,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                 contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
             }
             
-            if (proposalId != null && proposalId > 0) {
+            if (proposalId > 0) {
                 try {
                       proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhase.getContestPhasePK());
                 }
@@ -198,7 +198,7 @@ public class ProposalsContextImpl implements ProposalsContext {
 
                         ContestPhase mostRecentPhaseInRequestedContest = null;
                         ContestPhase mostRecentPhaseInOtherContest = null;
-                        if (phaseId == null || phaseId <= 0) {
+                        if (phaseId <= 0) {
                             _log.info("Can't find association between proposal " + proposalId + " and phase " + contestPhase.getContestPhasePK());
                             for (Long contestPhaseId: Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposalId)) {
 
@@ -249,18 +249,23 @@ public class ProposalsContextImpl implements ProposalsContext {
                     ProposalWrapper proposalWrapper;
                     User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
 
-                    if (version != null && version > 0) {
-                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) proposalWrapper = new ProposalJudgeWrapper(proposal, version, contest, contestPhase, proposal2Phase, u);
-                        else proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
-                    }
-                    else {
-                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) proposalWrapper = new ProposalJudgeWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
-                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase, u);
-                        else proposalWrapper = new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
-                                proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
+                    if (version > 0) {
+                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) {
+                            proposalWrapper = new ProposalJudgeWrapper(proposal, version, contest, contestPhase, proposal2Phase, u);
+                        } else {
+                            proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
+                        }
+                    } else {
+                        final boolean hasVersionTo = proposal2Phase != null && proposal2Phase.getVersionTo() > 0;
+                        final int localVersion = hasVersionTo ? proposal2Phase.getVersionTo() : proposal.getCurrentVersion();
+
+                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) {
+                            proposalWrapper = new ProposalJudgeWrapper(proposal, localVersion, contest, contestPhase, proposal2Phase, u);
+                        } else {
+                            proposalWrapper = new ProposalWrapper(proposal, localVersion, contest, contestPhase, proposal2Phase);
+                        }
                     }
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
-
                 }
             }
         }
