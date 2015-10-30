@@ -1,15 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.apache.commons.lang.StringUtils;
-
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
@@ -21,6 +11,9 @@ import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Jsoup;
@@ -29,29 +22,22 @@ import org.jsoup.nodes.Element;
 import org.xcolab.portlets.proposals.utils.LinkUtils;
 import org.xcolab.utils.HtmlUtil;
 
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ProposalSectionWrapper {
 
     private final static Log _log = LogFactoryUtil.getLog(ProposalSectionWrapper.class);
     private PlanSectionDefinition definition;
-    private Proposal proposal;
     private ProposalWrapper wrappedProposal;
-    private Integer version;
 
-    public ProposalSectionWrapper(PlanSectionDefinition definition, Proposal proposal, ProposalWrapper wrappedProposal) {
-        super();
+    public ProposalSectionWrapper(PlanSectionDefinition definition, ProposalWrapper wrappedProposal) {
         this.definition = definition;
-        this.proposal = proposal;
         this.wrappedProposal = wrappedProposal;
     }
-
-    public ProposalSectionWrapper(PlanSectionDefinition definition, Proposal proposal, int version, ProposalWrapper wrappedProposal) {
-        super();
-        this.definition = definition;
-        this.proposal = proposal;
-        this.version = version;
-        this.wrappedProposal = wrappedProposal;
-    }
-
 
     public String getTitle() {
         return definition.getTitle();
@@ -60,8 +46,10 @@ public class ProposalSectionWrapper {
     public String getContent() throws PortalException, SystemException {
         ProposalAttribute attr = getSectionAttribute();
 
-        if (attr == null) return null;
-        else return attr.getStringValue().trim();
+        if (attr == null) {
+            return null;
+        }
+        return attr.getStringValue().trim();
     }
 
     public String getContentFormatted() throws SystemException, PortalException, URISyntaxException {
@@ -69,7 +57,6 @@ public class ProposalSectionWrapper {
         if (content == null) {
             //default text if available
             return (definition!=null && !StringUtils.isEmpty(definition.getDefaultText())) ? definition.getDefaultText() : null;
-
         }
         Document contentDocument = Jsoup.parse(content.trim());
         contentDocument = HtmlUtil.addNoFollowToLinkTagsInDocument(contentDocument);
@@ -88,8 +75,7 @@ public class ProposalSectionWrapper {
         	if (!isYoutube) {
         		continue;
         	}
-
-        	if (! (aTagElements.hasClass("utube") || aTagElements.text().toLowerCase().startsWith("embed"))) {
+        	if (!(aTagElements.hasClass("utube") || aTagElements.text().toLowerCase().startsWith("embed") || aTagElements.text().equalsIgnoreCase("v"))) {
         		// only links with "embed" text or "utube" class should be replaced by an iframe
         		continue;
         	}
@@ -102,9 +88,8 @@ public class ProposalSectionWrapper {
                     	videoId = nvp.getValue();
                     }
                 }
-        	}
-        	else {
-        		final Pattern videoIdPattern = Pattern.compile("\\/(\\p{Alnum}{11})");
+        	} else {
+        		final Pattern videoIdPattern = Pattern.compile("\\/([\\p{Alnum}\\-_]{11})");
         		Matcher m = videoIdPattern.matcher(curURL);
         		if (m.find()) {
         			videoId = m.group(1);
@@ -115,7 +100,6 @@ public class ProposalSectionWrapper {
                 aTagElements.after("<iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/" + videoId + "\" frameborder=\"0\" allowfullscreen></iframe><br/>");
                 aTagElements.remove();
         	}
-        	
         }
 
         // Regex pattern originated from
@@ -137,7 +121,7 @@ public class ProposalSectionWrapper {
             // Separate the <p> tags by the space character and process potential URLs
             String html = pTagElements.html();
 
-            // Eliminates wierd &nbsp; ASCII val 160 characters
+            // Eliminates weird &nbsp; ASCII val 160 characters
             String text = pTagElements.text().replaceAll("[\\u00A0]", " ");
             String[] words = text.split("\\s");
             for (int i = 0; i < words.length; i++) {
@@ -257,20 +241,6 @@ public class ProposalSectionWrapper {
     }
 
     private ProposalAttribute getSectionAttribute() throws SystemException, PortalException {
-        /*
-        try {
-            if (version != null && version > 0) {
-                return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), version, "SECTION", definition.getId());
-            } else {
-                return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), "SECTION", definition.getId());
-            }
-        } catch (NoSuchProposalAttributeException linkElement) {
-            return null;
-        } catch (NoSuchProposalException linkElement) {
-            return null;
-        }
-        */
         return this.wrappedProposal.getProposalAttributeUtil().getAttributeOrNull("SECTION", definition.getId());
-
     }
 }

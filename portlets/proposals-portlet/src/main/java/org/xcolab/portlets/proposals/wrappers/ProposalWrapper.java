@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -36,6 +37,7 @@ import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ModelRegions;
+import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.portlets.proposals.utils.ProposalAttributeUtil;
 import org.xcolab.portlets.proposals.utils.ProposalContestPhaseAttributeHelper;
@@ -389,7 +391,7 @@ public class ProposalWrapper {
                 PlanTemplate planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
                 if (planTemplate != null) {
                     for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
-                        sections.add(new ProposalSectionWrapper(psd, proposal, version, this));
+                        sections.add(new ProposalSectionWrapper(psd, this));
                     }
                 }
             }
@@ -418,10 +420,26 @@ public class ProposalWrapper {
     public List<ProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {
         if (members == null) {
             members = new ArrayList<>();
+            boolean hasOwner = false;
             for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
-                members.add(new ProposalTeamMemberWrapper(proposal, user));
+                final ProposalTeamMemberWrapper teamMemberWrapper = new ProposalTeamMemberWrapper(proposal, user);
+                members.add(teamMemberWrapper);
+                if (teamMemberWrapper.getMemberType().equalsIgnoreCase("owner")) {
+                    hasOwner = true;
+                }
+            }
+            if (!hasOwner) {
+                //TODO: remove debug email
+                GroupLocalServiceUtil.addUserGroups(proposal.getAuthorId(), new long[]{proposal.getGroupId()});
+                final User owner = UserLocalServiceUtil.fetchUser(proposal.getAuthorId());
+                members.add(new ProposalTeamMemberWrapper(proposal, owner));
+                new EmailToAdminDispatcher(String.format("Owner %s not in proposal %d's group", owner.getScreenName(), proposal.getProposalId()),
+                        String.format("The owner %s (%d) of proposal %d is not in its group %d and was just re-added.",
+                                owner.getScreenName(), owner.getUserId(), proposal.getProposalId(), proposal.getGroupId())
+                ).sendMessage();
             }
         }
+
         return members;
     }
 

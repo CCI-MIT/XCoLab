@@ -2,14 +2,12 @@ package com.ext.utils.promotion;
 
 import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
 import com.ext.portlet.NoSuchProposal2PhaseException;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
