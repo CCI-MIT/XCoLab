@@ -25,8 +25,7 @@ public class DefaultFeedEntryGenerator extends BaseProposalsFeedEntryGenerator {
         System.out.println("generateFeedEntry");
         String body = String.format(
                 defaultFeedEntryPattern,
-                StringPool.BLANK,
-                //getUserLink(activity.getUserId()), //FIXME
+                getUserLink(activity.getUserId()),
                 actionName, 
                 getProposalLink(getProposal(activity)));
         
