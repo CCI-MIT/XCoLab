@@ -17,7 +17,14 @@ import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.portlet.*;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +49,9 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
         List<LabelValue> contestMassActionItems= new ArrayList<>();
 
         for(ContestMassActions contestMassAction : ContestMassActions.values()){
-            contestMassActionItems.add(new LabelValue(new Long(contestMassAction.ordinal()), contestMassAction.getActionDisplayName()));
+            contestMassActionItems.add(new LabelValue((long) contestMassAction.ordinal(), contestMassAction.getActionDisplayName()));
             if(contestMassAction.getHasReverseAction()) {
-                contestMassActionItems.add(new LabelValue(new Long(-contestMassAction.ordinal()), contestMassAction.getReverseActionDisplayName()));
+                contestMassActionItems.add(new LabelValue((long) -contestMassAction.ordinal(), contestMassAction.getReverseActionDisplayName()));
             }
         }
 
@@ -61,7 +68,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
             setPageAttributes(request, model, tab);
             model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(request));
             return TAB_VIEW;
-        }catch (Exception e){
+        }catch (SystemException | PortalException e){
             _log.warn("Exception while rendering CMS overview tab", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
@@ -81,7 +88,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
             String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
             SetRenderParameterUtil.addActionSuccessMessageToSession(request, massActionTitle);
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName());
-        } catch(Exception e){
+        } catch(SystemException | PortalException | InvocationTargetException | IllegalAccessException | IOException e){
             _log.warn("Update contest overview failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -96,7 +103,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
         }
         try {
             updateContestOverviewWrapper.executeMassAction(request, response);
-        } catch(Exception e){
+        } catch(SystemException | PortalException | InvocationTargetException | IllegalAccessException e){
             _log.warn("Export failed with: ", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }

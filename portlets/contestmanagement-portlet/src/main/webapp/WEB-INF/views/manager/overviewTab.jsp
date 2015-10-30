@@ -1,11 +1,12 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:spring="http://www.springframework.org/tags"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
+    <jsp:useBean id="contestOverviewWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper" scope="request" />
+
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
 
@@ -175,8 +176,7 @@
 												 <span>${contestWrapper.weight}</span>
 								</td>
 								<td >
-									<collab:contestLink contestId="${contestWrapper.contestPK}" text="${contestWrapper.contestShortName}"
-														/>
+									<collab:contestLink contest="${contestWrapper}" />
 								</td>
 								<td >${contestWrapper.activePhase.name}</td>
 								<td><form:checkbox path="contestWrappers[${x.index}].contestActive" disabled="true" /></td>

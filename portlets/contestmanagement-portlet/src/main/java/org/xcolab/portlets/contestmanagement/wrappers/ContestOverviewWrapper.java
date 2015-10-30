@@ -141,7 +141,7 @@ public class ContestOverviewWrapper {
         }
     }
 
-    public String getSelectedMassActionTitle() throws Exception {
+    public String getSelectedMassActionTitle() {
         String selectedMassActionTitle = "";
         long selectedMassActionAbsolute = Math.abs(selectedMassAction.longValue());
         for (ContestMassActions contestMassAction : ContestMassActions.values()) {

@@ -1,19 +1,14 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:spring="http://www.springframework.org/tags"
-	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:cms="urn:jsptagdir:/WEB-INF/tags"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
-    xmlns:collab="http://climatecolab.org/tags/collab_1.0">
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:portlet="http://java.sun.com/portlet_2_0"
+    xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	version="2.0">
 
 	<portlet:resourceURL var="submitContest" id="submitContest"/>
 
 	<div class="actionItems">
 		<div class="blue-button"><a href="#" id="saveChangesButton">SAVE ${currentTabWrapped.elementType}</a></div>
 		<div class="blue-button">
-			<collab:contestLink contestId="${contestWrapper.contestPK}" text="PREVIEW contest"
+			<collab:contestLink contest="${contestWrapper}" text="PREVIEW contest"
 								linkId="previewContestButton" target="_blank"/>
 		</div>
 		<div class="blue-button"><a href="#" id="submitContestButton">SUBMIT contest</a></div>

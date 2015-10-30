@@ -2,7 +2,6 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
@@ -247,8 +246,7 @@
                            varStatus="x">
                     <tr>
                         <td data-form-name="index">${x.index + 1}</td>
-                        <td><collab:contestLink contestId="${contestWrapper.contestPK}"
-                                                text="${contestWrapper.contestShortName}"/></td>
+                        <td><collab:contestLink contest="${contestWrapper}" /></td>
                         <td>Tier ${contestWrapper.contestTier}</td>
                         <c:choose>
                             <c:when test="${not empty contestWrapper.activePhase}">

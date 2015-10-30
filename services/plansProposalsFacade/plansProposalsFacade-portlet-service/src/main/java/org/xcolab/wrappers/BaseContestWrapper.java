@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,6 +54,7 @@ public class BaseContestWrapper {
     protected List<BaseContestTeamRoleWrapper> contestTeamMembersByRole;
 
     protected final Contest contest;
+    private BaseContestPhaseWrapper activePhase;
 
     public BaseContestWrapper(Contest contest) {
         this.contest = contest;
@@ -398,6 +400,53 @@ public class BaseContestWrapper {
         }
 
         return false;
+    }
+
+    public BaseContestPhaseWrapper getActivePhase() throws PortalException, SystemException {
+        if (activePhase == null) {
+            ContestPhase phase = ContestLocalServiceUtil.getActivePhase(contest);
+            if (phase == null) {
+                return null;
+            }
+            activePhase = new BaseContestPhaseWrapper(phase);
+        }
+        return activePhase;
+    }
+
+    public List<User> getContestJudges() throws PortalException, SystemException {
+        List<User> judges = null;
+        for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("Judge")) {
+                judges = c.getUsers();
+            }
+        }
+        if(judges == null) {
+            return Collections.emptyList(); //return empty list if null
+        }
+        return judges;
+    }
+
+    public List<User> getContestFellows() throws PortalException, SystemException {
+        List<User> fellows = null;
+        for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("Fellow")) {
+                fellows = c.getUsers();
+            }
+        }
+        return fellows;
+    }
+
+    public List<User> getContestAdvisors() throws PortalException, SystemException {
+        List<User> advisors = null;
+        for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("Advisor")) {
+                advisors = c.getUsers();
+            }
+        }
+        if(advisors == null) {
+            return Collections.emptyList(); //return empty list if null
+        }
+        return advisors;
     }
 
     public ContestType getContestType() throws SystemException {
