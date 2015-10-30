@@ -33,7 +33,7 @@
                 </c:when>
                 <c:otherwise>
                     <c:set var="modelToLoadId" value="${modelId}"/>
-                    <c:set var="modelToLoadId" value="${scenarioId}"/>
+                    <c:set var="scenarioToLoadId" value="${scenarioId}"/>
                 </c:otherwise>
             </c:choose>
 
