@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.activity.generators;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 
@@ -22,8 +23,9 @@ public class DefaultFeedEntryGenerator extends BaseProposalsFeedEntryGenerator {
     @Override
     public SocialActivityFeedEntry generateFeedEntry(SocialActivity activity) throws PortalException, SystemException {
         String body = String.format(
-                defaultFeedEntryPattern, 
-                getUserLink(activity.getUserId()), 
+                defaultFeedEntryPattern,
+                StringPool.BLANK,
+                //getUserLink(activity.getUserId()), //FIXME
                 actionName, 
                 getProposalLink(getProposal(activity)));
         
