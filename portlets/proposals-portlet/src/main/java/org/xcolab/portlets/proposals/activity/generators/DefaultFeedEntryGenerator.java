@@ -22,7 +22,6 @@ public class DefaultFeedEntryGenerator extends BaseProposalsFeedEntryGenerator {
 
     @Override
     public SocialActivityFeedEntry generateFeedEntry(SocialActivity activity) throws PortalException, SystemException {
-        System.out.println("generateFeedEntry");
         String body = String.format(
                 defaultFeedEntryPattern,
                 getUserLink(activity.getUserId()),
