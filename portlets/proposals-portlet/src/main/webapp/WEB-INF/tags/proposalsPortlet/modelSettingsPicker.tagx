@@ -16,6 +16,10 @@
                              description="Selected modelId"/>
     <jsp:directive.attribute name="scenarioId" type="java.lang.Long" required="false" rtexprvalue="true"
                              description="Selected modelId"/>
+    <jsp:directive.attribute name="consolidatedModelId" type="java.lang.Long" required="false" rtexprvalue="true"
+                             description="Selected modelId"/>
+    <jsp:directive.attribute name="consolidatedScenarioId" type="java.lang.Long" required="false" rtexprvalue="true"
+                             description="Selected modelId"/>
 
     <div class='addpropbox'>
         <div>
@@ -88,6 +92,7 @@
                 modeling.toggleEditMask(true);
                 jQuery("#isConsolidatedScenario").val(false);
             }
+            modeling.updateEditMaskAppearance();
         });
 
 
@@ -106,7 +111,6 @@
                     setModelSetRadiosState(true);
                     checkModelSetRadioWithId(consolidatedModelId);
                     if (consolidatedScenarioId > 0) {
-                        modeling.toggleEditMask(false);
                         modeling.loadScenario(consolidatedScenarioId);
                     }
                     modeling.toggleEditMask(false);
@@ -128,12 +132,13 @@
                 if(modelId > 0){
                     checkModelSetRadioWithId(modelId);
                 }
-                if(scenarioId > 0){
+                if(scenarioId > 0 &amp;&amp; !isProposalUsingCombinedScenario){
                     modeling.loadScenario(scenarioId);
                 } else if(modelId > 0) {
                     modeling.loadModel(modelId);
                 }
                 modeling.toggleEditMask(true);
+                modeling.updateEditMaskAppearance();
                 jQuery("#isConsolidatedScenario").val(false);
             }
 

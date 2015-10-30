@@ -21,15 +21,22 @@
             <c:set var="modelId" value="${modelId}"/>
             <c:set var="scenarioId" value="${scenarioId }"/>
 
-            <c:if test="${isProposalUsingCombinedScenario}">
-                <c:if test="${not empty consolidatedModelId}">
-                    <c:set var="modelId" value="${consolidatedModelId}"/>
-                </c:if>
+            <c:choose>
+                <c:when test="${isProposalUsingCombinedScenario}">
+                    <c:if test="${not empty consolidatedModelId}">
+                        <c:set var="modelToLoadId" value="${consolidatedModelId}"/>
+                    </c:if>
 
-                <c:if test="${not empty consolidatedScenarioId}">
-                    <c:set var="scenarioId" value="${consolidatedScenarioId}"/>
-                </c:if>
-            </c:if>
+                    <c:if test="${not empty consolidatedScenarioId}">
+                        <c:set var="scenarioToLoadId" value="${consolidatedScenarioId}"/>
+                    </c:if>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="modelToLoadId" value="${modelId}"/>
+                    <c:set var="modelToLoadId" value="${scenarioId}"/>
+                </c:otherwise>
+            </c:choose>
+
 
             <c:choose>
                 <c:when test="${edit and (modelId > 0 or scenarioId > 0)}">
@@ -37,7 +44,9 @@
                         <proposalsPortlet:modelSettingsPicker consolidateOptions="${consolidateOptions }"
                                                               contestPK="${contest.contestPK }"
                                                               modelId="${modelId}"
-                                                              scenarioId="${scenarioId }"/>
+                                                              scenarioId="${scenarioId}"
+                                                              consolidatedScenarioId="${consolidatedScenarioId }"
+                                                              consolidatedModelId="${consolidatedModelId }"/>
 
                         <div id="proposalToModelMap" class="addpropbox" style="display: none;">
                             <c:if test="${not empty proposalToModelMap}">
@@ -93,8 +102,8 @@
                     </c:if>
 
 
-                    <modeling:simulationEdit scenarioId="${scenarioId }"
-                                             modelId="${modelId }"
+                    <modeling:simulationEdit scenarioId="${scenarioToLoadId }"
+                                             modelId="${modelToLoadId }"
                                              contestModelDefaultSetting="${contest.defaultModelSettings}"
                                              isRegionalContest="${isRegionalContest}"
                                              proposalRegion="${proposal.modelRegion}"
@@ -162,7 +171,7 @@
                 </c:when>
                 <c:when test="${modelId > 0 and scenarioId > 0}">
                     <div id="modelContent">
-                        <modeling:simulationView scenarioId="${scenarioId }" modelId="${modelId }"
+                        <modeling:simulationView scenarioId="${senarioToLoadId }" modelId="${modelToLoadId }"
                                                  contestModelDefaultSetting="${contest.defaultModelSettings}"/>
                     </div>
                 </c:when>

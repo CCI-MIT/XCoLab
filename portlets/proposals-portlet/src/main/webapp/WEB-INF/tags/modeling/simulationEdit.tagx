@@ -98,7 +98,6 @@
 			jQuery("#modelingScenarioId").val(event.scenario.scenarioId).addClass("editorDirty");
 			jQuery("#modelingModelId").val(event.scenario.modelId).addClass("editorDirty");
 			modeling.updateEditMaskAppearance();
-			//!${inConsolidationMode});
 		}).on("valueChanged", function(event) {
 			jQuery("#modelingScenarioId").addClass("editorDirty");
 			jQuery("#modelingModelId").addClass("editorDirty");
