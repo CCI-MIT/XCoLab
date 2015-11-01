@@ -171,7 +171,7 @@
                 </c:when>
                 <c:when test="${modelId > 0 and scenarioId > 0}">
                     <div id="modelContent">
-                        <modeling:simulationView scenarioId="${senarioToLoadId }" modelId="${modelToLoadId }"
+                        <modeling:simulationView scenarioId="${scenarioId }" modelId="${modelId }"
                                                  contestModelDefaultSetting="${contest.defaultModelSettings}"/>
                     </div>
                 </c:when>
