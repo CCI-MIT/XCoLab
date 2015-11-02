@@ -51,6 +51,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
@@ -1066,7 +1067,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public MembershipRequest addMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
 
-        return MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment, null);
+        return MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment == null? StringPool.BLANK : comment, null);
     }
 
     /**
