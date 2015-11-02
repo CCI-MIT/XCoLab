@@ -2,11 +2,9 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.ImpactIteration;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -103,7 +101,7 @@ public class ProposalImpactJSONController {
             ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), selectedFocusArea);
 
             response.getPortletOutputStream().write(impactSeries.toJSONObject().toString().getBytes());
-        } catch (Exception e) {
+        } catch (PortalException | SystemException | IOException e) {
             _log.error("Could not load impact series for contestId " + proposalsContext.getContest(request).getContestPK(), e);
             JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
             responseJSON.put("success", false);
@@ -118,7 +116,6 @@ public class ProposalImpactJSONController {
             @RequestParam(value = "focusAreaId", required = true) Long focusAreaId) throws IOException,
             SystemException, PortalException {
 
-
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
@@ -130,7 +127,6 @@ public class ProposalImpactJSONController {
 
         FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
         Contest contest = proposalsContext.getContest(request);
-        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
 
         JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
         try {
@@ -204,8 +200,7 @@ public class ProposalImpactJSONController {
             _log.info(e);
             responseJSON.put("success", false);
             responseJSON.put("message", e.getMessage());
-        }
-        catch(Exception e) {
+        } catch(PortalException | SystemException e) {
             _log.error(e);
             responseJSON.put("success", false);
         }
