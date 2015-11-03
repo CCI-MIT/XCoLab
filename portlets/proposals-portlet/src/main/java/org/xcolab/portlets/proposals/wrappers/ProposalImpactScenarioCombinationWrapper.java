@@ -142,6 +142,10 @@ public class ProposalImpactScenarioCombinationWrapper {
         return getScenarioForScenarioId(scenarioId).getSimulation();
     }
 
+    public Boolean isScenarioUsingSameModelId(Long scenarioId) throws Exception{
+        return !getModelIdForScenarioId(scenarioId).equals(combinedSimulation.getId());
+    }
+
     private ClientRepository getRomaClient() {
         if (romaClient == null) {
             initRomaClient();

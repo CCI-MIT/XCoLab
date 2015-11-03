@@ -97,7 +97,7 @@
                     <c:if test="${not empty availableModels }">
                         <div id="modelPickerDiv">
                             <proposalsPortlet:modelPicker availableModels="${availableModels }"
-                                                          contestPK="${contest.contestPK }" modelId="${modelId}"/>
+                                                          contestPK="${contest.contestPK }" modelId="${modelToLoadId}"/>
                         </div>
                     </c:if>
 

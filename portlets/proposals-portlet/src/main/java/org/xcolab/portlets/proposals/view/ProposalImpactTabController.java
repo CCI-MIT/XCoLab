@@ -141,14 +141,14 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 new ProposalImpactScenarioCombinationWrapper(subProposals);
         boolean isConsolidationPossible =
                 proposalImpactScenarioCombinationWrapper.isConsolidationOfScenariosPossible();
+        boolean isProposalUsingCombinedScenario = false;
 
         if(isConsolidationPossible){
-            boolean isProposalUsingCombinedScenario = false;
             boolean isValidScenario = (proposalWrapper.getScenarioId() != null && proposalWrapper.getScenarioId() != 0);
             if (isValidScenario) {
-
                 Long proposalScenarioId = proposalWrapper.getScenarioId();
-                if (proposalWrapper.isConsolidatedScenario(proposalScenarioId)) {
+                boolean isScenarioUsingSameModelId = proposalImpactScenarioCombinationWrapper.isScenarioUsingSameModelId(proposalScenarioId);
+                if (proposalWrapper.isConsolidatedScenario(proposalScenarioId) && isScenarioUsingSameModelId) {
                     isProposalUsingCombinedScenario = true;
                     proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
 
@@ -177,12 +177,12 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 model.addAttribute("consolidatedModelId",
                         proposalImpactScenarioCombinationWrapper.getOutputModelId());
             }
-            model.addAttribute("isProposalUsingCombinedScenario", isProposalUsingCombinedScenario);
         } else{
             model.addAttribute("proposalToModelMap",
                     proposalImpactScenarioCombinationWrapper.getRegionToProposalSimulationScenarioMap());
         }
 
+        model.addAttribute("isProposalUsingCombinedScenario", isProposalUsingCombinedScenario);
         model.addAttribute("consolidationPossible", isConsolidationPossible);
         model.addAttribute("consolidateOptions", getConsolidationOptions());
 

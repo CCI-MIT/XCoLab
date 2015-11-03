@@ -54,17 +54,11 @@
 	<input type="text" id="modelingModelId" class="hidden"/>
 	<script>
 	    var options = {};
-		<c:choose>
-			<c:when test="${not empty isRegionalContest and not empty contestModelDefaultSetting}">
-				options.defaultValues = ${contestModelDefaultSetting};
-				//options.defaultValues = {805: "US"};
-			</c:when>
-			<c:otherwise>
-				//options.defaultValues = {805: "US"};
-			</c:otherwise>
-		</c:choose>
+        options.edit = true;
+        <c:if test="${not empty isRegionalContest and not empty contestModelDefaultSetting}">
+            options.defaultValues = ${contestModelDefaultSetting};
+        </c:if>
 
-		options.edit = true;
 		var modeling = XCoLab.modeling('#modelsOutputContainer', options);
         <c:choose>
 			<c:when test="${not empty scenarioId and scenarioId > 0}">
