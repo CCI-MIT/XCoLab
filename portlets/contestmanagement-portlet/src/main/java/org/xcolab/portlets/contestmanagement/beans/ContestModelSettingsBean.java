@@ -2,19 +2,24 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.models.CollaboratoriumModelingService;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.comm.ClientRepository;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
-import edu.mit.cci.roma.client.Simulation;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by Thomas on 6/16/2015.
@@ -99,7 +104,11 @@ public class ContestModelSettingsBean implements Serializable {
     }
 
     public void setOtherModelIds(List<Long> otherModelIds) {
-        this.otherModelIds = otherModelIds;
+        if (otherModelIds == null) {
+            this.otherModelIds = new ArrayList<>();
+        } else {
+            this.otherModelIds = otherModelIds;
+        }
         this.otherModels = this.otherModelIds.toString().replaceAll("\\[", "").replaceAll("\\]", "");
     }
 
@@ -114,8 +123,8 @@ public class ContestModelSettingsBean implements Serializable {
         }
     }
 
-    public void persist(Contest contest) throws Exception {
-        if (!otherModels.isEmpty()) {
+    public void persist(Contest contest) throws SystemException {
+        if (otherModels != null) {
             contest.setOtherModels(otherModels);
         }
         if (defaultModelId != null) {
@@ -130,7 +139,13 @@ public class ContestModelSettingsBean implements Serializable {
     public static List<LabelValue> getAllModelIds() {
         List<LabelValue> allModelIds = new ArrayList<>();
         try {
-            List<Simulation> simulationsSorted = new ArrayList<Simulation>(CollaboratoriumModelingService.repository().getAllSimulations());
+            final ClientRepository repository = CollaboratoriumModelingService.repository();
+            List<Simulation> simulationsSorted;
+            if (repository != null) { //will be null on very first call - fail gracefully
+                simulationsSorted = new ArrayList<>(repository.getAllSimulations());
+            } else {
+                simulationsSorted = Collections.emptyList();
+            }
             Collections.sort(simulationsSorted, new Comparator<Simulation>() {
                 @Override
                 public int compare(Simulation o1, Simulation o2) {
@@ -140,7 +155,7 @@ public class ContestModelSettingsBean implements Serializable {
             for (Simulation simulation : simulationsSorted) {
                 allModelIds.add(new LabelValue(simulation.getId(), "(Id: " + simulation.getId() + ") " + simulation.getName()));
             }
-        } catch (Exception e) {
+        } catch (SystemException e) {
             _log.warn("Couldn't fetch contest model Ids.", e);
         }
         return allModelIds;
