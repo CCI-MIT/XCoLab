@@ -1,26 +1,18 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.apache.commons.lang.StringUtils;
-
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Jsoup;
@@ -29,29 +21,22 @@ import org.jsoup.nodes.Element;
 import org.xcolab.portlets.proposals.utils.LinkUtils;
 import org.xcolab.utils.HtmlUtil;
 
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ProposalSectionWrapper {
 
     private final static Log _log = LogFactoryUtil.getLog(ProposalSectionWrapper.class);
-    private PlanSectionDefinition definition;
-    private Proposal proposal;
-    private ProposalWrapper wrappedProposal;
-    private Integer version;
+    private final PlanSectionDefinition definition;
+    private final ProposalWrapper wrappedProposal;
 
-    public ProposalSectionWrapper(PlanSectionDefinition definition, Proposal proposal, ProposalWrapper wrappedProposal) {
-        super();
+    public ProposalSectionWrapper(PlanSectionDefinition definition, ProposalWrapper wrappedProposal) {
         this.definition = definition;
-        this.proposal = proposal;
         this.wrappedProposal = wrappedProposal;
     }
-
-    public ProposalSectionWrapper(PlanSectionDefinition definition, Proposal proposal, int version, ProposalWrapper wrappedProposal) {
-        super();
-        this.definition = definition;
-        this.proposal = proposal;
-        this.version = version;
-        this.wrappedProposal = wrappedProposal;
-    }
-
 
     public String getTitle() {
         return definition.getTitle();
@@ -60,8 +45,10 @@ public class ProposalSectionWrapper {
     public String getContent() throws PortalException, SystemException {
         ProposalAttribute attr = getSectionAttribute();
 
-        if (attr == null) return null;
-        else return attr.getStringValue().trim();
+        if (attr == null) {
+            return null;
+        }
+        return attr.getStringValue().trim();
     }
 
     public String getContentFormatted() throws SystemException, PortalException, URISyntaxException {
@@ -69,7 +56,6 @@ public class ProposalSectionWrapper {
         if (content == null) {
             //default text if available
             return (definition!=null && !StringUtils.isEmpty(definition.getDefaultText())) ? definition.getDefaultText() : null;
-
         }
         Document contentDocument = Jsoup.parse(content.trim());
         contentDocument = HtmlUtil.addNoFollowToLinkTagsInDocument(contentDocument);
@@ -159,8 +145,9 @@ public class ProposalSectionWrapper {
                     String newLinkElementWithNoFollow = HtmlUtil.createLink(link, elementName);
                     // Replace exactly this word in the HTML code with leading and trailing spaces
                     if (words.length == 1) { // In this case there are no leading and trailing spaces in the html code
-                        if (!html.contains("<"))
+                        if (!html.contains("<")) {
                             html = html.replaceFirst(Pattern.quote(word), newLinkElementWithNoFollow);
+                        }
                     } else if (i == 0) {
                         html = html.replaceFirst(Pattern.quote(word) + "(\\s|&nbsp;)", newLinkElementWithNoFollow);
                     } else if (i == words.length - 1) {
@@ -224,13 +211,15 @@ public class ProposalSectionWrapper {
             return null;
         }
 
-        String props[] = attr.getStringValue().split(",");
+        String[] props = attr.getStringValue().split(",");
         ProposalWrapper[] ret = new ProposalWrapper[props.length];
         for (int i = 0; i < props.length; i++) {
             try {
                 ret[i] = new ProposalWrapper(ProposalLocalServiceUtil.getProposal(Long.parseLong(props[i])));
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (NumberFormatException e) {
+                _log.error(String.format("Could not parse proposalId %s as a number", props[i]));
+            } catch (SystemException | PortalException e) {
+                _log.error(String.format("Could not retrieve proposal with id %s", props[i]), e);
             }
         }
         return ret;
@@ -249,7 +238,9 @@ public class ProposalSectionWrapper {
     }
 
     public List<OntologyTerm> getFocusAreaTerms() throws PortalException, SystemException {
-        if (definition.getFocusAreaId() <= 0) return null;
+        if (definition.getFocusAreaId() <= 0) {
+            return null;
+        }
 
         FocusArea area = FocusAreaLocalServiceUtil.getFocusArea(definition.getFocusAreaId());
 
@@ -257,20 +248,6 @@ public class ProposalSectionWrapper {
     }
 
     private ProposalAttribute getSectionAttribute() throws SystemException, PortalException {
-        /*
-        try {
-            if (version != null && version > 0) {
-                return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), version, "SECTION", definition.getId());
-            } else {
-                return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), "SECTION", definition.getId());
-            }
-        } catch (NoSuchProposalAttributeException linkElement) {
-            return null;
-        } catch (NoSuchProposalException linkElement) {
-            return null;
-        }
-        */
         return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", definition.getId());
-
     }
 }

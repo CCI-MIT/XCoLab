@@ -10,6 +10,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -65,7 +66,7 @@ public class ProposalsContextImpl implements ProposalsContext {
      */
     @Override
     public Contest getContest(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, CONTEST_ATTRIBUTE, Contest.class);
+        return getAttribute(request, CONTEST_ATTRIBUTE);
     }
     
     /* (non-Javadoc)
@@ -73,7 +74,7 @@ public class ProposalsContextImpl implements ProposalsContext {
      */
     @Override
     public ContestPhase getContestPhase(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, CONTEST_PHASE_ATTRIBUTE, ContestPhase.class);
+        return getAttribute(request, CONTEST_PHASE_ATTRIBUTE);
     }
     
     /* (non-Javadoc)
@@ -81,7 +82,7 @@ public class ProposalsContextImpl implements ProposalsContext {
      */
     @Override
     public Proposal getProposal(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, PROPOSAL_ATTRIBUTE, Proposal.class);        
+        return getAttribute(request, PROPOSAL_ATTRIBUTE);
     }
 
 
@@ -90,7 +91,7 @@ public class ProposalsContextImpl implements ProposalsContext {
      */
     @Override
     public ProposalsPermissions getPermissions(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, PERMISSIONS_ATTRIBUTE, ProposalsPermissions.class);
+        return getAttribute(request, PERMISSIONS_ATTRIBUTE);
     }
 
     /* (non-Javadoc)
@@ -98,47 +99,47 @@ public class ProposalsContextImpl implements ProposalsContext {
      */
     @Override
     public ProposalsDisplayPermissions getDisplayPermissions(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, DISPLAY_PERMISSIONS_ATTRIBUTE, ProposalsDisplayPermissions.class);
+        return getAttribute(request, DISPLAY_PERMISSIONS_ATTRIBUTE);
     }
     
     @Override
     public Proposal2Phase getProposal2Phase(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, PROPOSAL_2_PHASE_ATTRIBUTE, Proposal2Phase.class);        
+        return getAttribute(request, PROPOSAL_2_PHASE_ATTRIBUTE);
     }
     
     @Override
     public Long getViewContestPhaseId(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, REQUEST_PHASE_ID_ATTRIBUTE, Long.class);        
+        return getAttribute(request, REQUEST_PHASE_ID_ATTRIBUTE);
     }
     
     @Override
     public ProposalWrapper getProposalWrapped(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, PROPOSAL_WRAPPED_ATTRIBUTE, ProposalWrapper.class);
+        return getAttribute(request, PROPOSAL_WRAPPED_ATTRIBUTE);
     }
     
     @Override
     public ContestWrapper getContestWrapped(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, CONTEST_WRAPPED_ATTRIBUTE, ContestWrapper.class);
+        return getAttribute(request, CONTEST_WRAPPED_ATTRIBUTE);
     }
     
     @Override
     public ContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, CONTEST_PHASE_WRAPPED_ATTRIBUTE, ContestPhaseWrapper.class);
+        return getAttribute(request, CONTEST_PHASE_WRAPPED_ATTRIBUTE);
     }
 
     @Override
     public ContestType getContestType(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, CONTEST_TYPE_ATTRIBUTE, ContestType.class);
+        return getAttribute(request, CONTEST_TYPE_ATTRIBUTE);
     }
 
     @Override
     public ProposalsPreferencesWrapper getProposalsPreferences(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, PROPOSALS_PREFERENCES_ATTRIBUTE, ProposalsPreferencesWrapper.class);
+        return getAttribute(request, PROPOSALS_PREFERENCES_ATTRIBUTE);
     }
     
     @Override
     public User getUser(PortletRequest request) throws PortalException, SystemException {
-        return getAttribute(request, USER_ATTRIBUTE, User.class);
+        return getAttribute(request, USER_ATTRIBUTE);
     }
     
     @Override
@@ -146,7 +147,7 @@ public class ProposalsContextImpl implements ProposalsContext {
         request.removeAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
     }
     
-    private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clazz) throws PortalException, SystemException {
+    private <T> T getAttribute(PortletRequest request, String attributeName) throws PortalException, SystemException {
         Object contextInitialized =  request.getAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
         if (contextInitialized == null) {
             init(request);
@@ -155,33 +156,33 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     private void init(PortletRequest request) throws PortalException, SystemException {
-        final Long proposalId = (Long) ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
-        final Long contestId = (Long) ParamUtil.getLong(request, CONTEST_ID_PARAM);
-        final Long phaseId = (Long) ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
-        final Integer version = (Integer) ParamUtil.getInteger(request, VERSION_PARAM);
+        final Long proposalId = ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
+        final Long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
+        final Long phaseId = ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
+        final Integer version = ParamUtil.getInteger(request, VERSION_PARAM);
 
-        Contest contest = null;
-        ContestPhase contestPhase = null;
-        Proposal proposal = null;
-        Proposal2Phase proposal2Phase = null;
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         String currentUrl = themeDisplay.getPortalURL() + themeDisplay.getURLCurrent();
         User currentUser = null;
 
         try {
             currentUser = PortalUtil.getUser(request);
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             // No user is logged in
         }
 
-        if (contestId != null && contestId > 0) {
+        Contest contest = null;
+        ContestPhase contestPhase = null;
+        Proposal proposal = null;
+        Proposal2Phase proposal2Phase = null;
+        if (contestId > 0) {
             try {
                 contest = ContestLocalServiceUtil.getContest(contestId);
             } catch (NoSuchContestException e) {
                 handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
             }
 
-            if (phaseId != null && phaseId > 0) {
+            if (phaseId > 0) {
                 try {
                     contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
                 } catch (NoSuchContestPhaseException e){
@@ -192,7 +193,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                 contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
             }
             
-            if (proposalId != null && proposalId > 0) {
+            if (proposalId > 0) {
                 try {
                       proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhase.getContestPhasePK());
                 }
@@ -200,17 +201,17 @@ public class ProposalsContextImpl implements ProposalsContext {
                     // there is no connection between proposal and selected contest phase, check if phaseId was given by the user, if it was
                     // rethrow the exception, if it wasn't check if there is a connection and any phase for given contest if there is such connection
                     // fetch most recent one
-                    // if proposal is beeing moved ignore missing p2p mapping
+                    // if proposal is being moved ignore missing p2p mapping
                     if (request.getParameter("move")==null){
 
-                        ContestPhase mostRecentPhaseInRequestedContest = null;
-                        ContestPhase mostRecentPhaseInOtherContest = null;
-                        if (phaseId == null || phaseId <= 0) {
+                        if (phaseId <= 0) {
                             _log.info("Can't find association between proposal " + proposalId + " and phase " + contestPhase.getContestPhasePK());
+                            ContestPhase mostRecentPhaseInRequestedContest = null;
+                            ContestPhase mostRecentPhaseInOtherContest = null;
                             for (Long contestPhaseId: Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposalId)) {
 
                                 ContestPhase cp = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-                                boolean isContestPhaseAssociatedWithRequestedContest = cp.getContestPK() == contest.getContestPK();
+                                boolean isContestPhaseAssociatedWithRequestedContest = contest != null && cp.getContestPK() == contest.getContestPK();
                                 if (isContestPhaseAssociatedWithRequestedContest) {
                                     if (mostRecentPhaseInRequestedContest == null || mostRecentPhaseInRequestedContest.compareTo(cp) < 0) {
                                         mostRecentPhaseInRequestedContest = cp;
@@ -245,29 +246,36 @@ public class ProposalsContextImpl implements ProposalsContext {
                 proposal = ProposalLocalServiceUtil.getProposal(proposalId);
             }
         }
-        
+        ContestType contestType = null;
         if (contest != null) {
             request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contest));
-            
             if (contestPhase != null) {
                 request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new ContestPhaseWrapper(contestPhase));
-                
-                if (proposal != null) {
+
+                if (proposal == null) {
+                    contestType = ContestTypeLocalServiceUtil.fetchContestType(contest.getContestTypeId());
+                } else {
+                    contestType = ContestTypeLocalServiceUtil.getCurrentContestTypeForProposal(proposal.getProposalId());
                     ProposalWrapper proposalWrapper;
                     User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
 
-                    if (version != null && version > 0) {
-                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) proposalWrapper = new ProposalJudgeWrapper(proposal, version, contest, contestPhase, proposal2Phase, u);
-                        else proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
+                    if (version > 0) {
+                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) {
+                            proposalWrapper = new ProposalJudgeWrapper(proposal, version, contest, contestPhase, proposal2Phase, u);
+                        } else {
+                            proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
+                        }
                     }
                     else {
-                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) proposalWrapper = new ProposalJudgeWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
-                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase, u);
-                        else proposalWrapper = new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
-                                proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
+                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) {
+                            proposalWrapper = new ProposalJudgeWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
+                                    proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase, u);
+                        } else {
+                            proposalWrapper = new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
+                                    proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
+                        }
                     }
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
-
                 }
             }
         }
@@ -282,7 +290,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                 proposalsPermissions, proposal, contestPhase));
         ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(request);
         request.setAttribute(PROPOSALS_PREFERENCES_ATTRIBUTE, preferences);
-        request.setAttribute(CONTEST_TYPE_ATTRIBUTE, preferences.getContestType());
+        request.setAttribute(CONTEST_TYPE_ATTRIBUTE, contestType == null ? preferences.getContestType() : contestType);
         
         request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
         if (phaseId > 0) {

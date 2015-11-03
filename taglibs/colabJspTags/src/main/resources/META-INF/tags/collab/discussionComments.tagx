@@ -10,9 +10,7 @@
 	<jsp:directive.attribute name="discussionId" type="java.lang.Long" required="true" rtexprvalue="true" description="Discussion id" />
 
 	<discussions:loadDiscussion discussionId="${discussionId }" >
-		<jsp:useBean id="discussion" type="org.xcolab.jspTags.discussion.wrappers.DiscussionCategoryGroupWrapper" scope="request" />
-		<jsp:useBean id="discussionPermissions" type="org.xcolab.jspTags.discussion.DiscussionPermission" scope="request" />
-			<div class="headline prophead">
+		<div class="headline prophead">
         		<h2>
 					<span>${discussion.commentsCount}</span>
 					<c:choose>

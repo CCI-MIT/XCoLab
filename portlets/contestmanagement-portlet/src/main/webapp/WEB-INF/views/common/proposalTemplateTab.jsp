@@ -224,7 +224,7 @@
 					<c:forEach items="${contestProposalTemplateWrapper.contestsUsingSelectedTemplate}" var="contestWrapper" varStatus="x">
 						<tr>
 							<td data-form-name="index">${x.index + 1}</td>
-							<td ><collab:contestLink contestId="${contestWrapper.contestPK}" text="${contestWrapper.contestShortName}"/></td>
+							<td ><collab:contestLink contest="${contestWrapper}" /></td>
 							<td>Tier ${contestWrapper.contestTier}</td>
 							<td>
 								<div class="blue-button innerVerticalCenter" >
