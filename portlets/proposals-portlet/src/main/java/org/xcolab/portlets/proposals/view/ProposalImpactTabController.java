@@ -148,11 +148,12 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             if (isValidScenario) {
                 Long proposalScenarioId = proposalWrapper.getScenarioId();
                 boolean isScenarioUsingSameModelId = proposalImpactScenarioCombinationWrapper.isScenarioUsingSameModelId(proposalScenarioId);
-                if (proposalWrapper.isConsolidatedScenario(proposalScenarioId) && isScenarioUsingSameModelId) {
+                if (proposalWrapper.isConsolidatedScenario(proposalScenarioId)){
                     isProposalUsingCombinedScenario = true;
                     proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
 
-                    if (proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)) {
+                    if (!isScenarioUsingSameModelId ||
+                            proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)) {
                         proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
                         model.addAttribute("consolidatedScenarioId",
                                 proposalImpactScenarioCombinationWrapper.getOutputScenarioId());
