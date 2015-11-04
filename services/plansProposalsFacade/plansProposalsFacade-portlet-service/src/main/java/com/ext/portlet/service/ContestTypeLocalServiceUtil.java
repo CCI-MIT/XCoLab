@@ -288,7 +288,7 @@ public class ContestTypeLocalServiceUtil {
         return getService().getActiveContestTypes();
     }
 
-    public static java.util.List<com.ext.portlet.model.Proposal> groupProposalsByContestType(
+    public static java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>> groupProposalsByContestType(
         java.util.List<com.ext.portlet.model.Proposal> proposals)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {

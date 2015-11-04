@@ -150,15 +150,19 @@
             ${contest.contestName}
         </div>
 
-        <c:if test="${not empty linkedProposalList}">
-            <div class="prop-contest">
-                <strong>Related ${contestType.proposalNamePlural}: </strong> <br />
-                <c:forEach var="linkedProposal" items="${linkedProposalList}">
-                    <li>
-                    <collab:proposalLink proposal="${linkedProposal}" /> <br />
-                    </li>
-                </c:forEach>
-            </div>
+        <c:if test="${not empty linkedProposalContestTypeProposalWrappersByContestTypeId}">
+            <c:forEach var="contestTypeProposalWrapper" items="${linkedProposalContestTypeProposalWrappersByContestTypeId}">
+                <c:if test="${not empty contestTypeProposalWrapper.value.proposals}">
+                    <div class="prop-contest">
+                        <strong>Related ${contestTypeProposalWrapper.value.contestType.proposalNamePlural}</strong> <br />
+                        <c:forEach var="linkedProposal" items="${contestTypeProposalWrapper.value.proposals}">
+                            <li>
+                                <collab:proposalLink proposal="${linkedProposal}" /> <br />
+                            </li>
+                        </c:forEach>
+                    </div>
+                </c:if>
+            </c:forEach>
         </c:if>
 
         <c:if test="${proposal.proposalAttributeHelper.hasAttribute('REGION') }">

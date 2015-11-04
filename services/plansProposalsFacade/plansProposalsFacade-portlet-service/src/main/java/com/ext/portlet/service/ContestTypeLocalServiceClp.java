@@ -826,7 +826,7 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.Proposal> groupProposalsByContestType(
+    public java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>> groupProposalsByContestType(
         java.util.List<com.ext.portlet.model.Proposal> proposals)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -855,6 +855,6 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
             }
         }
 
-        return (java.util.List<com.ext.portlet.model.Proposal>) ClpSerializer.translateOutput(returnObj);
+        return (java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>>) ClpSerializer.translateOutput(returnObj);
     }
 }

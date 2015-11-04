@@ -169,17 +169,17 @@
 		</p>
 
 		<c:if test="${not currentUserProfile.staffMemberProfile}">
-			<c:forEach var="contestTypeProposalWrappers" items="${currentUserProfile.contestTypeProposalWrappersByContestTypeId}">
-				<h2 style="margin-top: 20px;">${contestTypeProposalWrappers.contestType.proposalNamePlural}</h2>
-				<c:if test="${empty contestTypeProposalWrappers.proposals}">
-						${userBean.firstName} has not yet contributed to any ${contestTypeProposalWrappers.contestType.proposalNamePlural}.
+			<c:forEach var="contestTypeProposalWrapper" items="${currentUserProfile.contestTypeProposalWrappersByContestTypeId}">
+				<h2 style="margin-top: 20px;">${contestTypeProposalWrapper.contestType.proposalNamePlural}</h2>
+				<c:if test="${empty contestTypeProposalWrapper.proposals}">
+						${userBean.firstName} has not yet contributed to any ${contestTypeProposalWrapper.contestType.proposalNamePlural}.
 				</c:if>
 
 				<table class="colab">
-					<c:forEach var="proposal" items="${contestTypeProposalWrappers.proposals}">
+					<c:forEach var="userProposal" items="${contestTypeProposalWrapper.proposals}">
 						<tr class="colabRow">
-							<td> <collab:proposalLink proposal="${proposal}" /> </td>
-							<td style="text-align: right;"><fmt:formatDate value="${proposal.createDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+							<td> <collab:proposalLink proposal="${userProposal}" /> </td>
+							<td style="text-align: right;"><fmt:formatDate value="${userProposal.createDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -191,11 +191,11 @@
 			</c:if>
 
 			<table class="colab">
-				<c:forEach var="proposal" items="${currentUserProfile.linkingProposals}">
-					<c:if test="${proposal.visible}">
+				<c:forEach var="linkingProposal" items="${currentUserProfile.linkingProposals}">
+					<c:if test="${linkingProposal.visible}">
 						<tr class="colabRow">
-							<td> <collab:proposalLink proposal="${proposal}" /> </td>
-							<td style="text-align: right;"><fmt:formatDate value="${proposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+							<td> <collab:proposalLink proposal="${linkingProposal}" /> </td>
+							<td style="text-align: right;"><fmt:formatDate value="${linkingProposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
 						</tr>
 					</c:if>
 				</c:forEach>

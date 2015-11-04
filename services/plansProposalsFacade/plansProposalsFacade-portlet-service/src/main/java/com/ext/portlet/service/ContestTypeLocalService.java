@@ -261,7 +261,7 @@ public interface ContestTypeLocalService extends BaseLocalService,
     public java.util.List<com.ext.portlet.model.ContestType> getActiveContestTypes()
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public java.util.List<com.ext.portlet.model.Proposal> groupProposalsByContestType(
+    public java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>> groupProposalsByContestType(
         java.util.List<com.ext.portlet.model.Proposal> proposals)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;

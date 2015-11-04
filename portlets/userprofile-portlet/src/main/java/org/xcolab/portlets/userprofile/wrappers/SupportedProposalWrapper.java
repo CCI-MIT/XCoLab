@@ -20,7 +20,7 @@ public class SupportedProposalWrapper implements Serializable {
         this.proposalWrapper = new BaseProposalWrapper(ProposalLocalServiceUtil.getProposal(ps.getProposalId()));
     }
 
-    public Date getSupportSinceDate() {
+    public Date getSupportedSinceDate() {
         return proposalSupporter.getCreateDate();
     }
 

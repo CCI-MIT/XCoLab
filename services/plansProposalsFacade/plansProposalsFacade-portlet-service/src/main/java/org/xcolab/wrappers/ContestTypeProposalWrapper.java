@@ -1,4 +1,4 @@
-package org.xcolab.portlets.userprofile.wrappers;
+package org.xcolab.wrappers;
 
 import com.ext.portlet.model.ContestType;
 import org.xcolab.wrappers.BaseProposalWrapper;

@@ -3,9 +3,6 @@ package com.ext.portlet.service.impl;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ContestTypeLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -15,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * The implementation of the contest type local service.
@@ -56,12 +52,12 @@ public class ContestTypeLocalServiceImpl extends ContestTypeLocalServiceBaseImpl
 
     @Override
     public List<ContestType> getAllContestTypes() throws SystemException {
-        return contestTypeLocalService.getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+        return getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
     }
 
     @Override
     public List<ContestType> getActiveContestTypes() throws SystemException {
-        final List<ContestType> contestTypes = contestTypeLocalService.getAllContestTypes();
+        final List<ContestType> contestTypes = getAllContestTypes();
         List<ContestType> activeContestTypes = new ArrayList<>();
         for (ContestType contestType : contestTypes) {
             if (contestLocalService.countContestsByContestType(contestType.getId()) > 0) {
@@ -71,29 +67,28 @@ public class ContestTypeLocalServiceImpl extends ContestTypeLocalServiceBaseImpl
         return activeContestTypes;
     }
 
+    // TODO: COLAB-770 replace local methods in UserProfileWrapper and ProposalSectionsTabController
     @Override
-    public List<Proposal> groupProposalsByContestType(List<Proposal> proposals) throws SystemException, PortalException {
-        Map<Long, ContestType> contestIdToContestTypeMap = new TreeMap<>();
-        Map<ContestType, List<Proposal>> proposalsByContestType = new TreeMap<>();
-        final List<ContestType> contestTypes = ContestTypeLocalServiceUtil.getActiveContestTypes();
+    public Map<ContestType, List<Proposal>> groupProposalsByContestType(List<Proposal> proposals) throws SystemException, PortalException {
+        Map<Long, ContestType> contestIdToContestTypeMap = new HashMap<>();
+        Map<ContestType, List<Proposal>> proposalsByContestType = new HashMap<>();
+        final List<ContestType> contestTypes = getActiveContestTypes();
         if (contestTypes.size()  == 1) {
             proposalsByContestType.put(contestTypes.get(0), proposals);
         } else {
             for (ContestType contestType : contestTypes) {
-                final List<Contest> contests = ContestLocalServiceUtil.getContestsByContestType(contestType.getId());
+                final List<Contest> contests = contestLocalService.getContestsByContestType(contestType.getId());
                 proposalsByContestType.put(contestType, new ArrayList<Proposal>());
                 for (Contest contest : contests) {
                     contestIdToContestTypeMap.put(contest.getContestPK(), contestType);
                 }
             }
             for (Proposal p : proposals) {
-                final long contestPK = ProposalLocalServiceUtil.getLatestProposalContest(p.getProposalId()).getContestPK();
+                final long contestPK = proposalLocalService.getLatestProposalContest(p.getProposalId()).getContestPK();
                 ContestType contestType = contestIdToContestTypeMap.get(contestPK);
                 proposalsByContestType.get(contestType).add(p);
             }
         }
-//        return proposalsByContestType;
-        return proposals;
+        return proposalsByContestType;
     }
-
 }
