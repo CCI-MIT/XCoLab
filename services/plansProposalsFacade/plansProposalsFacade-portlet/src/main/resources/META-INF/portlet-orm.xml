@@ -880,6 +880,7 @@
 			<basic name="characterLimit" />
 			<basic name="focusAreaId" />
 			<basic name="tier" />
+			<basic name="allowedContestTypeIds" />
 			<basic name="additionalIds" />
 			<basic name="locked" />
 			<basic name="contestIntegrationRelevance" />

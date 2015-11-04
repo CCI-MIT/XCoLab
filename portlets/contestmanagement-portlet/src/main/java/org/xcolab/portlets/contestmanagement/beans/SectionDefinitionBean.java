@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import org.xcolab.enums.OntologySpaceEnum;
+import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.OntologyTermToFocusAreaMapper;
 
 import java.io.Serializable;
@@ -38,15 +39,17 @@ public class SectionDefinitionBean implements Serializable{
     private String defaultText = "";
     private String helpText = "";
     private Integer characterLimit = 200;
-    private long focusAreaId = 0L;
+    private long focusAreaId;
     private Long level;
     private String content = "";
-    private boolean locked = false;
+    private boolean locked;
     private boolean deletable = true;
-    private boolean isSectionNew = false;
-    private boolean templateSection = false;
-    private boolean contestIntegrationRelevance = false;
+    private boolean isSectionNew;
+    private boolean templateSection;
+    private boolean contestIntegrationRelevance;
     private int weight;
+
+    private List<Long> allowedContestTypeIds = new ArrayList<>();
 
     private List<Long> whatTermIds = new ArrayList<>();
     private List<Long> whereTermIds = new ArrayList<>();
@@ -60,7 +63,7 @@ public class SectionDefinitionBean implements Serializable{
         initPlanSectionDefinition(planSectionDefinition);
     }
 
-    public SectionDefinitionBean(PlanSectionDefinition planSectionDefinition, Long planTemplateId) throws Exception{
+    public SectionDefinitionBean(PlanSectionDefinition planSectionDefinition, Long planTemplateId) throws SystemException, PortalException {
         initPlanSectionDefinition(planSectionDefinition);
 
         List<PlanTemplateSection> planTemplateSections =
@@ -94,6 +97,7 @@ public class SectionDefinitionBean implements Serializable{
         this.locked = planSectionDefinition.getLocked();
         this.level = planSectionDefinition.getTier();
         this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
+        this.allowedContestTypeIds = IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds());
 
         try {
             initOntologyTermIdsWithFocusAreaId();
@@ -318,10 +322,9 @@ public class SectionDefinitionBean implements Serializable{
     }
 
     private boolean ontologyTermsSet() {
-        return (getWhatTermIds().size() > 0 && getWhereTermIds().size() > 0 && getWhoTermIds().size() > 0 && getHowTermIds().size() > 0);
+        return !(getWhatTermIds().isEmpty() || getWhereTermIds().isEmpty()
+                || getWhoTermIds().isEmpty() || getHowTermIds().isEmpty());
     }
-
-    public static final Comparator<SectionDefinitionBean> sectionListComparator = new MyComparator();
 
     public String getAdditionalIds() {
         return additionalIds;
@@ -329,6 +332,14 @@ public class SectionDefinitionBean implements Serializable{
 
     public void setAdditionalIds(String additionalIds) {
         this.additionalIds = additionalIds;
+    }
+
+    public List<Long> getAllowedContestTypeIds() {
+        return allowedContestTypeIds;
+    }
+
+    public void setAllowedContestTypeIds(List<Long> allowedContestTypeIds) {
+        this.allowedContestTypeIds = allowedContestTypeIds;
     }
 
     static class MyComparator implements Comparator<SectionDefinitionBean>{
@@ -373,7 +384,7 @@ public class SectionDefinitionBean implements Serializable{
     }
 
     private List<OntologyTerm> getAllSelectedOntologyTerms() throws SystemException, PortalException {
-        List[] ontologyTermIdLists = new List[] {
+        List[] ontologyTermIdLists = {
                 getWhatTermIds(), getWhereTermIds(), getWhoTermIds(), getHowTermIds()
         };
 

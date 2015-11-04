@@ -717,6 +717,7 @@
 		<property name="characterLimit" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="tier" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="allowedContestTypeIds" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="additionalIds" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="locked" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="contestIntegrationRelevance" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />

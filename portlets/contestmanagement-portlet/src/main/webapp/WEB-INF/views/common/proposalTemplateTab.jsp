@@ -4,6 +4,7 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
 	<jsp:directive.include file="../init.jspx" />
 
 	<c:choose>
@@ -106,10 +107,19 @@
 
 							<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
 								<div>
-								<strong>Level:</strong><br/>
-								<form:select path="sections[${x.index}].level" data-form-name="level">
-									<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
-								</form:select>
+									<strong>Contest Types allowed:</strong>
+									<span class="ontology-term-label"><!-- --></span> <br/>
+									<form:select multiple="true" path="sections[${x.index}].allowedContestTypeIds" data-form-name="allowedContestTypeIds"
+												 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+										<form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
+									</form:select>
+								</div>
+
+								<div>
+									<strong>Level:</strong><br/>
+									<form:select path="sections[${x.index}].level" data-form-name="level">
+										<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
+									</form:select>
 								</div>
 
 								<div>
