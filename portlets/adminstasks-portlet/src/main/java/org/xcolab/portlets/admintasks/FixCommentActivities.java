@@ -19,6 +19,9 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+import org.xcolab.utils.IdListUtil;
+
+import java.util.List;
 
 public class FixCommentActivities {
 	
@@ -40,10 +43,10 @@ public class FixCommentActivities {
 		for (SocialActivity sa: SocialActivityLocalServiceUtil.getActivities(DiscussionCategoryGroup.class.getName(), 0, Integer.MAX_VALUE)) {
 			try {
 				if (sa.getType() == 4) {
-					Long[] ids = ActivityUtil.getIdsFromExtraData(sa.getExtraData());
-					if (ids.length == 3) {
+					List<Long> ids = IdListUtil.getIdsFromString(sa.getExtraData());
+					if (ids.size() == 3) {
 						try {
-							DiscussionMessage dm = DiscussionMessageLocalServiceUtil.getDiscussionMessage(ids[2]);
+							DiscussionMessage dm = DiscussionMessageLocalServiceUtil.getDiscussionMessage(ids.get(2));
 						}
 						catch (NoSuchDiscussionMessageException e){
 							SocialActivityLocalServiceUtil.deleteActivity(sa);

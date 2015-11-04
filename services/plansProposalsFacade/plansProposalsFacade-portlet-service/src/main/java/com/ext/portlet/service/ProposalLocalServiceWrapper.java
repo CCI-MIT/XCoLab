@@ -270,6 +270,12 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
             arguments);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getProposalsFromIds(
+        java.util.List<java.lang.Long> longList) {
+        return _proposalLocalService.getProposalsFromIds(longList);
+    }
+
     /**
     * <p>
     * Creates new proposal, initializes it and associates it with contest phase. All related entities are

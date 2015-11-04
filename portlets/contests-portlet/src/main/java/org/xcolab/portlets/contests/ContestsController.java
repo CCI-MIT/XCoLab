@@ -29,7 +29,7 @@ public class ContestsController {
 
         List<ContestWrapper> contestWrappers = new ArrayList<>();
         List<Contest> contests;
-        if (contestPreferences.getSelectedContests().length == 0) {
+        if (contestPreferences.getSelectedContests().isEmpty()) {
              contests = ContestLocalServiceUtil.findByActiveFeatured(true,true);
         } else {
             contests = new ArrayList<>();

@@ -56,6 +56,8 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
     private String[] _methodParameterTypes23;
     private String _methodName24;
     private String[] _methodParameterTypes24;
+    private String _methodName25;
+    private String[] _methodParameterTypes25;
 
     public ContestTypeLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -171,9 +173,15 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
 
         _methodParameterTypes23 = new String[] {  };
 
-        _methodName24 = "groupProposalsByContestType";
+        _methodName24 = "getLabelName";
 
-        _methodParameterTypes24 = new String[] { "java.util.List" };
+        _methodParameterTypes24 = new String[] {
+                "com.ext.portlet.model.ContestType"
+            };
+
+        _methodName25 = "groupProposalsByContestType";
+
+        _methodParameterTypes25 = new String[] { "java.util.List" };
     }
 
     @Override
@@ -826,6 +834,29 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
     }
 
     @Override
+    public java.lang.String getLabelName(
+        com.ext.portlet.model.ContestType contestType) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24,
+                    new Object[] { ClpSerializer.translateInput(contestType) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>> groupProposalsByContestType(
         java.util.List<com.ext.portlet.model.Proposal> proposals)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -833,8 +864,8 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName24,
-                    _methodParameterTypes24,
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25,
                     new Object[] { ClpSerializer.translateInput(proposals) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);

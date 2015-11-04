@@ -12,6 +12,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.xcolab.utils.IdListUtil;
+
+import java.util.List;
 
 public class DiscussionSubscriptionNameGenerator extends BaseSubscriptionNameGenerator {
 
@@ -42,28 +45,24 @@ public class DiscussionSubscriptionNameGenerator extends BaseSubscriptionNameGen
             DiscussionCategoryGroup group = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(classPK);
             name.append(getCategoryGroup(group));
 
-            if (extraData != null && extraData.length() > 0) {
-                String[] ids = extraData.split(",");
-                if (ids.length > 0) {
-                    Long categoryId = Long.parseLong(ids[0]);
+            if (extraData != null && !extraData.isEmpty()) {
+                List<Long> ids = IdListUtil.getIdsFromString(extraData);
+                if (!ids.isEmpty()) {
+                    long categoryId = ids.get(0);
                     DiscussionCategory category = DiscussionCategoryLocalServiceUtil
                             .getDiscussionCategoryById(categoryId);
                     name.append(" &gt; ");
                     name.append(getCategory(category));
                 }
-                if (ids.length > 1) {
-                    Long threadId = Long.parseLong(ids[1]);
+                if (ids.size()> 1) {
+                    long threadId = ids.get(1);
                     DiscussionMessage message = DiscussionMessageLocalServiceUtil.getThreadByThreadId(threadId);
 
                     name.append(" &gt; ");
                     name.append(getDiscussion(message));
                 }
             }
-        } catch (PortalException e) {
-            _log.error("Can't read activity name for discussion classPk: " + classPK + "\textra data: " + extraData, e);
-        } catch (SystemException e) {
-            _log.error("Can't read activity name for discussion classPk: " + classPK + "\textra data: " + extraData, e);
-        } catch (NumberFormatException e) {
+        } catch (PortalException | SystemException | NumberFormatException e) {
             _log.error("Can't read activity name for discussion classPk: " + classPK + "\textra data: " + extraData, e);
         }
 

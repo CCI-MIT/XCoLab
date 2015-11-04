@@ -140,23 +140,6 @@ public class ActivityUtil {
         return sb.toString();
     }
 
-    public static Long[] getIdsFromExtraData(String extraData) {
-        if (extraData == null || extraData.trim().isEmpty()) {
-            return new Long[]{};
-        }
-        String[] idStrs = extraData.split(",");
-        Long[] ret = new Long[idStrs.length];
-
-        for (int i = 0; i < idStrs.length; i++) {
-            try {
-                ret[i] = Long.parseLong(idStrs[i]);
-            } catch (NumberFormatException e) {
-                ret[i] = 0L;
-            }
-        }
-        return ret;
-    }
-
     private static List<SocialActivity> clusterActivities(Map<String, List<SocialActivity>> activitiesMap) {
         //cluster
         List<SocialActivity> aggregatedActivities = new LinkedList<>();

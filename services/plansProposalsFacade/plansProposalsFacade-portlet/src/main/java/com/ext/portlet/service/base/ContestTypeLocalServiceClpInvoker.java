@@ -57,6 +57,8 @@ public class ContestTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes502;
     private String _methodName503;
     private String[] _methodParameterTypes503;
+    private String _methodName504;
+    private String[] _methodParameterTypes504;
 
     public ContestTypeLocalServiceClpInvoker() {
         _methodName0 = "addContestType";
@@ -169,9 +171,15 @@ public class ContestTypeLocalServiceClpInvoker {
 
         _methodParameterTypes502 = new String[] {  };
 
-        _methodName503 = "groupProposalsByContestType";
+        _methodName503 = "getLabelName";
 
-        _methodParameterTypes503 = new String[] { "java.util.List" };
+        _methodParameterTypes503 = new String[] {
+                "com.ext.portlet.model.ContestType"
+            };
+
+        _methodName504 = "groupProposalsByContestType";
+
+        _methodParameterTypes504 = new String[] { "java.util.List" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -302,6 +310,11 @@ public class ContestTypeLocalServiceClpInvoker {
 
         if (_methodName503.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes503, parameterTypes)) {
+            return ContestTypeLocalServiceUtil.getLabelName((com.ext.portlet.model.ContestType) arguments[0]);
+        }
+
+        if (_methodName504.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes504, parameterTypes)) {
             return ContestTypeLocalServiceUtil.groupProposalsByContestType((java.util.List<com.ext.portlet.model.Proposal>) arguments[0]);
         }
 

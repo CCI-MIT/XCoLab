@@ -237,6 +237,10 @@ public interface ProposalLocalService extends BaseLocalService,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Proposal> getProposalsFromIds(
+        java.util.List<java.lang.Long> longList);
+
     /**
     * <p>
     * Creates new proposal, initializes it and associates it with contest phase. All related entities are

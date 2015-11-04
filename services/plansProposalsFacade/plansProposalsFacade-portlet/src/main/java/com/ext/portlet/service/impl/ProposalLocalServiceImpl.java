@@ -135,6 +135,20 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public ProposalLocalServiceImpl() {
     }
 
+    @Override
+    public List<Proposal> getProposalsFromIds(List<Long> longList) {
+        List<Proposal> ids = new ArrayList<>(longList.size());
+        for (long proposalId : longList) {
+            try {
+                ids.add(ProposalLocalServiceUtil.fetchProposal(proposalId));
+            } catch (SystemException e) {
+                _log.error(String.format("Error converting id list to proposal list: Proposal %d does not exist",
+                        proposalId), e);
+            }
+        }
+        return ids;
+    }
+
     /**
      * <p>
      * Creates new proposal, initializes it and associates it with contest phase. All related entities are
@@ -267,7 +281,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposal.setVisible(visibility);
         ProposalLocalServiceUtil.updateProposal(proposal);
 
-        setAttribute(authorId, proposalId, ProposalAttributeKeys.VISIBLE, (visibility) ? 1l : 0l);
+        setAttribute(authorId, proposalId, ProposalAttributeKeys.VISIBLE, (visibility) ? 1L : 0L);
 
     }
 

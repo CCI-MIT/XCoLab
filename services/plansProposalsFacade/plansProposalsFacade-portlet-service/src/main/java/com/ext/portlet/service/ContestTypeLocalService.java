@@ -261,6 +261,10 @@ public interface ContestTypeLocalService extends BaseLocalService,
     public java.util.List<com.ext.portlet.model.ContestType> getActiveContestTypes()
         throws com.liferay.portal.kernel.exception.SystemException;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getLabelName(
+        com.ext.portlet.model.ContestType contestType);
+
     public java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>> groupProposalsByContestType(
         java.util.List<com.ext.portlet.model.Proposal> proposals)
         throws com.liferay.portal.kernel.exception.PortalException,

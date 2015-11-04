@@ -13,7 +13,10 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.portlets.messaging.Helper;
+import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.MessageLimitManager;
+
+import java.util.List;
 
 /**
  * Validates if user is allowed to send more messages.
@@ -27,11 +30,8 @@ public class MessagesLimitValidator implements Validator {
     @Override
     public void validate(FacesContext arg0, UIComponent arg1, Object arg2) throws ValidatorException {
         try {
-            String[] recipientIds =  ((String) arg2).split(",");
-            int count = 0;
-            for (String recipientId: recipientIds) {
-                if (StringUtils.isNotBlank(recipientId)) count ++;
-            }
+            List<Long> recipientIds = IdListUtil.getIdsFromString((String) arg2);
+            int count = recipientIds.size();
             
             if (! MessageLimitManager.canSendMessages(count, Helper.getLiferayUser())) {
                 FacesMessage message = new FacesMessage("Messages limit has been exceeded, if you want to send more messages, please contact the administrators");
@@ -41,7 +41,7 @@ public class MessagesLimitValidator implements Validator {
         } catch (PortalException | SystemException e) {
             _log.error("Can't validate user messages limit", e);
 
-            FacesMessage message = new FacesMessage("An error has ocurred, please contact the administrators");
+            FacesMessage message = new FacesMessage("An error has occurred, please contact the administrators");
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }

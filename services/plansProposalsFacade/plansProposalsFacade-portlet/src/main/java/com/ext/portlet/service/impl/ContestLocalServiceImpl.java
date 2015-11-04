@@ -80,6 +80,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.emailnotification.ContestVoteNotification;
 import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
 import org.xcolab.utils.judging.ProposalRatingWrapper;
@@ -541,23 +542,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Override
     public List<Long> getModelIds(long contestPK) throws SystemException, PortalException {
         Contest contest = getContest(contestPK);
-        List<Long> ret = new ArrayList<>();
-        boolean addedDefault = false;
+        List<Long> modelIds = new ArrayList<>();
 
         if (StringUtils.isNotBlank(contest.getOtherModels())) {
-        	for (String modelId:  contest.getOtherModels().split(",")) {
-        		long modelIdLong = Long.parseLong(modelId);
-        		ret.add(modelIdLong);
-        		if (modelIdLong == contest.getDefaultModelId()) {
-        			addedDefault = true;
-        		}
-        	}
+            modelIds.addAll(IdListUtil.getIdsFromString(contest.getOtherModels()));
         }
-        if (! addedDefault) {
-        	ret.add(contest.getDefaultModelId());
+        if (!modelIds.contains(contest.getDefaultModelId())) {
+        	modelIds.add(contest.getDefaultModelId());
         }
 
-        return ret;
+        return modelIds;
     }
     
     @Override

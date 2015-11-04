@@ -259,6 +259,11 @@ public class ProposalLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static java.util.List<com.ext.portlet.model.Proposal> getProposalsFromIds(
+        java.util.List<java.lang.Long> longList) {
+        return getService().getProposalsFromIds(longList);
+    }
+
     /**
     * <p>
     * Creates new proposal, initializes it and associates it with contest phase. All related entities are

@@ -67,6 +67,11 @@ public class ContestTypeLocalServiceImpl extends ContestTypeLocalServiceBaseImpl
         return activeContestTypes;
     }
 
+    public String getLabelName(ContestType contestType) {
+        return String.format("%d - %s with %s",
+                contestType.getId(), contestType.getContestName(), contestType.getProposalNamePlural());
+    }
+
     // TODO: COLAB-770 replace local methods in UserProfileWrapper and ProposalSectionsTabController
     @Override
     public Map<ContestType, List<Proposal>> groupProposalsByContestType(List<Proposal> proposals) throws SystemException, PortalException {

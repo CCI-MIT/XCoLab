@@ -246,7 +246,8 @@ public interface PlanTemplateSectionLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public java.util.List<com.ext.portlet.model.PlanTemplateSection> findByPlanSectionDefinitionId(
-        java.lang.Long planSectionDefinitionId) throws java.lang.Exception;
+        java.lang.Long planSectionDefinitionId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.PlanTemplateSection addPlanTemplateSection(
         java.lang.Long planTemplateId, java.lang.Long sectionId, int weight)

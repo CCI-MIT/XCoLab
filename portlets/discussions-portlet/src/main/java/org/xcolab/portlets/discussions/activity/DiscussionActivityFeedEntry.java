@@ -6,7 +6,6 @@
 
 package org.xcolab.portlets.discussions.activity;
 
-import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.Activity.BaseFeedEntryWithMailInfo;
 import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.Activity.ICollabActivityInterpreter;
@@ -32,6 +31,9 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.climatecollaboratorium.facelets.discussions.activity.NavigationUrl;
+import org.xcolab.utils.IdListUtil;
+
+import java.util.List;
 
 public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter implements ICollabActivityInterpreter {
 
@@ -79,13 +81,13 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
             String mailSubject = activityType.getPrettyName();
             String mailBody = "";
             String title = activityType.getPrettyName();
-            Long[] ids = ActivityUtil.getIdsFromExtraData(activity.getExtraData());
+            List<Long> ids = IdListUtil.getIdsFromString(activity.getExtraData());
 
             if (activityType == DiscussionActivityKeys.ADD_CATEGORY) {
                 DiscussionCategory category;
 
                 if (activity.getClassName().equals(DiscussionCategoryGroup.class.getName())) {
-                    category = DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(ids[0]);
+                    category = DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(ids.get(0));
                 } else {
                     category = DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(activity.getClassPK());
                 }
@@ -109,7 +111,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
                 DiscussionMessage discussion;
                 try{
                     if (activity.getClassName().equals(DiscussionCategoryGroup.class.getName())) {
-                        discussion = DiscussionMessageLocalServiceUtil.getThreadByThreadId(ids[1]);
+                        discussion = DiscussionMessageLocalServiceUtil.getThreadByThreadId(ids.get(1));
                     } else {
                         discussion = DiscussionMessageLocalServiceUtil.getThreadByThreadId(activity.getClassPK());
                     }
@@ -126,7 +128,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
                 DiscussionMessage comment;
 
                 if (activity.getClassName().equals(DiscussionCategoryGroup.class.getName())) {
-                    comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(ids[2]);
+                    comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(ids.get(2));
                 } else {
                     comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(activity.getClassPK());
                 }
@@ -146,7 +148,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
                 DiscussionMessage comment;
 
                 if (activity.getClassName().equals(DiscussionCategoryGroup.class.getName())) {
-                    comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(ids[2]);
+                    comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(ids.get(2));
                 } else {
                     comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(activity.getClassPK());
                 }
@@ -248,16 +250,16 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
             name.append(getCategoryGroupLink(group));
 
             if (extraData != null && !extraData.isEmpty()) {
-                String[] ids = extraData.split(",");
-                if (ids.length > 0) {
-                    Long categoryId = Long.parseLong(ids[0]);
+                List<Long> ids = IdListUtil.getIdsFromString(extraData);
+                if (!ids.isEmpty()) {
+                    long categoryId = ids.get(0);
                     DiscussionCategory category = DiscussionCategoryLocalServiceUtil
                             .getDiscussionCategoryById(categoryId);
                     name.append(" &gt; ");
                     name.append(getDiscussionCategoryLink(category));
                 }
-                if (ids.length > 1) {
-                    Long threadId = Long.parseLong(ids[1]);
+                if (ids.size() > 1) {
+                    long threadId = ids.get(1);
                     DiscussionMessage message = DiscussionMessageLocalServiceUtil.getThreadByThreadId(threadId);
 
                     name.append(" &gt; ");
