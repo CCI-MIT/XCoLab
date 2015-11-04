@@ -22,15 +22,15 @@ public class Badge implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int badgeType; // 1,2,3
-    private long planId; // ID of connected Plan
-    private String badgeTitle;    // "Winner", "Finalist", "Semi-Finalist"
-    private String badgeText; // "Popular Choice", "Judges Choice", etc
+    private final int badgeType; // 1,2,3
+    private final long planId; // ID of connected Plan
+    private final String badgeTitle;    // "Winner", "Finalist", "Semi-Finalist"
+    private final String badgeText; // "Popular Choice", "Judges Choice", etc
     private int year = 2013;
     private boolean hideRibbon;
 
-    private long contestId;
-    private String planTitle;
+    private final long contestId;
+    private final String planTitle;
 
 
     public Badge(int ribbonType, String ribbonText, long planId, String planTitle, long contestId){

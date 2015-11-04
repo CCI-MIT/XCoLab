@@ -19,10 +19,12 @@ public class HibernatePersistenceProviderResolver implements PersistenceProvider
 
     private volatile PersistenceProvider persistenceProvider = new HibernatePersistence();
 
+    @Override
     public List<PersistenceProvider> getPersistenceProviders() {
         return Collections.singletonList(persistenceProvider);
     }
 
+    @Override
     public void clearCachedProviders() {
         persistenceProvider = new HibernatePersistence();
     }

@@ -148,13 +148,18 @@ public class UserProfileWrapper implements Serializable {
         }
 
         List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
-        Map<ContestType, List<Proposal>> proposalsByContestType = ContestTypeLocalServiceUtil.groupProposalsByContestType(proposals);
-        for (ContestType contestType : proposalsByContestType.keySet()) {
-            contestTypeProposalWrappersByContestTypeId.put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
-            for (Proposal p : proposalsByContestType.get(contestType)) {
-                contestTypeProposalWrappersByContestTypeId.get(contestType.getId()).getProposals().add(new BaseProposalWrapper(p));
-            }
+//        Map<ContestType, List<Proposal>> proposalsByContestType = ContestTypeLocalServiceUtil.groupProposalsByContestType(proposals);
+        List<Proposal> props = ContestTypeLocalServiceUtil.groupProposalsByContestType(proposals);
+        for (Proposal proposal : props) {
+            System.out.println(proposal.getProposalId());
         }
+//        for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
+//            contestTypeProposalWrappersByContestTypeId.put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
+//            final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
+//            for (Proposal p : proposalsInContestType) {
+//                contestTypeProposalWrappersByContestTypeId.get(contestType.getId()).getProposals().add(new BaseProposalWrapper(p));
+//            }
+//        }
     }
 
     private boolean profileIsComplete() {

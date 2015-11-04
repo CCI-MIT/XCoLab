@@ -1,13 +1,13 @@
 package org.xcolab.portlets.userprofile.view;
 
-import javax.mail.internet.InternetAddress;
-import javax.portlet.*;
-
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.liferay.portal.PwdEncryptorException;
+import com.liferay.portal.UserPortraitSizeException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -24,6 +24,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
+import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,20 +35,22 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.xcolab.commons.utils.PwdEncryptor;
-import org.xcolab.portlets.userprofile.beans.NewsletterBean;
-import org.xcolab.portlets.userprofile.utils.Helper;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
+import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
-import com.liferay.portal.UserPortraitSizeException;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.portlets.userprofile.utils.Helper;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
 import org.xcolab.utils.HtmlUtil;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import java.io.IOException;
 
 @Controller
@@ -61,39 +64,38 @@ public class UserProfileController {
     private SmartValidator validator;
 
     @InitBinder("userBean")
-    public void initUserWrapperBeanBinder(WebDataBinder binder) { binder.setValidator(validator);    }
+    public void initUserWrapperBeanBinder(WebDataBinder binder) {
+        binder.setValidator(validator);
+    }
 
     public UserProfileController() {
     }
 
     @RenderMapping
-    public String defaultShowUserProfileNotInitializedView(PortletRequest request) throws SystemException, PortalException {
+    public String defaultShowUserProfileNotInitializedView(PortletRequest request) {
         return "showProfileNotInitialized";
     }
 
     @RequestMapping(params = "page=view")
     public String showUserProfileView(PortletRequest request, PortletResponse response, Model model,
-                                     @RequestParam(required = true) String userId
-    ) throws SystemException, PortalException {
+                                     @RequestParam(required = true) String userId)
+            throws SystemException, PortalException {
         return showUserProfileOrNotInitialized(request, model, userId);
     }
 
     @RequestMapping(params = "page=edit")
     public String showUserProfileEdit(PortletRequest request, PortletResponse response, Model model,
-                                     @RequestParam(required = true) String userId
-    ) throws SystemException, PortalException {
+                                     @RequestParam(required = true) String userId) {
 
         try{
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
             populateUserWrapper(currentUserProfile, model);
             if (currentUserProfile.isViewingOwnProfile()) {
-                if (currentUserProfile.isViewingOwnProfile()) {
-                    model.addAttribute("newsletterBean",
-                            new NewsletterBean(currentUserProfile.getUserBean().getEmailStored(), request));
-                }
+                model.addAttribute("newsletterBean",
+                        new NewsletterBean(currentUserProfile.getUserBean().getEmailStored(), request));
                 return "editUserProfile";
             }
-        } catch(Exception e){
+        } catch (SystemException | PortalException e){
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -103,38 +105,33 @@ public class UserProfileController {
     @RequestMapping(params = "page=subscriptions")
     public String showUserProfileSubscriptions(PortletRequest request, PortletResponse response, Model model,
                                       @RequestParam(required = true) String userId,
-                                      @RequestParam(required = false, defaultValue = "1") int paginationId
-    ) throws SystemException, PortalException {
-
-        try{
+                                      @RequestParam(required = false, defaultValue = "1") int paginationId) {
+        try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
             populateUserWrapper(currentUserProfile, model);
             currentUserProfile.setSubscriptionsPaginationPageId(paginationId);
             return "showUserSubscriptions";
-        } catch(Exception e){
+        } catch (SystemException | PortalException e){
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
-
     }
 
     @RequestMapping(params = "page=subscriptionsManage")
     public String showUserSubscriptionsManage(PortletRequest request, PortletResponse response, Model model,
                                                @RequestParam(required = true) String userId,
-                                               @RequestParam(required = false) String typeFilter
-    ) throws SystemException, PortalException {
-
-        try{
+                                               @RequestParam(required = false) String typeFilter) {
+        try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
             populateUserWrapper(currentUserProfile, model);
-            if(typeFilter != null){
+            if (typeFilter != null) {
                 currentUserProfile.getUserSubscriptions().setFilterType(typeFilter);
             }
             model.addAttribute("userSubscriptions", currentUserProfile.getUserSubscriptions());
             if (currentUserProfile.isViewingOwnProfile()) {
                 return "showUserSubscriptionsManage";
             }
-        } catch(Exception e){
+        } catch (SystemException | PortalException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -143,18 +140,18 @@ public class UserProfileController {
 
     @RequestMapping(params = "action=navigateSubscriptions")
     public void navigateSubscriptions(ActionRequest request, Model model, ActionResponse response,
-                                      @RequestParam(required = true) String paginationAction
-    ) throws Exception {
+                                      @RequestParam(required = true) String paginationAction)
+            throws SystemException, PortalException, IOException {
 
         Integer paginationPageId = 1;
         UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
-        switch(paginationAction){
+        switch (paginationAction) {
             case "First": paginationPageId = 1; break;
             case "<Previous": paginationPageId = currentUserProfile.getSubscriptionsPaginationPageId() - 1; break;
             case "Next>": paginationPageId = currentUserProfile.getSubscriptionsPaginationPageId() + 1; break;
             case "Last": paginationPageId = currentUserProfile.getSubscriptionsPaginationPageMax(); break;
         }
-        response.sendRedirect("/web/guest/member/-/member/userId/" + currentUserProfile.getUserId().toString()+
+        response.sendRedirect("/web/guest/member/-/member/userId/" + currentUserProfile.getUserId().toString() +
                 "/page/subscriptions/"+paginationPageId.toString());
     }
 
@@ -177,7 +174,7 @@ public class UserProfileController {
                         new NewsletterBean(currentUserProfile.getUserBean().getEmailStored(), request));
                 return "editUserProfile";
             }
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -192,7 +189,7 @@ public class UserProfileController {
         model.addAttribute("updateSuccess", true);
         try{
             populateUserWrapper(new UserProfileWrapper(request.getRemoteUser(), request), model);
-        } catch(Exception e){
+        } catch(SystemException | PortalException e){
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -200,16 +197,8 @@ public class UserProfileController {
     }
 
     @RequestMapping(params = "action=update")
-    public void updateUserProfile(ActionRequest request, Model model,
-                             ActionResponse response,
-                             @ModelAttribute UserBean updatedUserBean,
-                             BindingResult result
-    ) throws IOException, PwdEncryptorException{
-
-        boolean changedUserPart = false;
-        boolean validationError = false;
-        boolean eMailChanged = false;
-
+    public void updateUserProfile(ActionRequest request, Model model, ActionResponse response,
+                             @ModelAttribute UserBean updatedUserBean, BindingResult result) throws IOException {
         Long loggedInUserId = Long.parseLong(request.getRemoteUser());
         if(!loggedInUserId.equals(updatedUserBean.getUserId())){
             response.sendRedirect("/web/guest/member/-/member/userId/" + updatedUserBean.getUserId());
@@ -221,7 +210,9 @@ public class UserProfileController {
             model.addAttribute("messageBean", new MessageBean());
             model.addAttribute("userBean", updatedUserBean);
 
-        if (updatedUserBean.getPassword() != null  && updatedUserBean.getPassword().trim().length() > 0) {
+            boolean validationError = false;
+            boolean changedUserPart = false;
+            if (updatedUserBean.getPassword() != null  && !updatedUserBean.getPassword().trim().isEmpty()) {
             if(isPasswordMatchingExistingPassword(currentUserProfile, updatedUserBean.getCurrentPassword().trim())){
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
@@ -256,7 +247,8 @@ public class UserProfileController {
             }
         }
 
-        if (updatedUserBean.getEmail()!= null && updatedUserBean.getEmail().trim().length() > 0 &&
+            boolean eMailChanged = false;
+            if (updatedUserBean.getEmail()!= null && !updatedUserBean.getEmail().trim().isEmpty() &&
                 !updatedUserBean.getEmail().equals(currentUserProfile.getUserBean().getEmailStored())) {
             validator.validate(updatedUserBean, result, UserBean.EmailChanged.class);
 
@@ -318,9 +310,7 @@ public class UserProfileController {
             response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
             response.setRenderParameter("updateSuccess", "true");
 
-            if(updatedUserBean.getImageId() == null){
-                updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
-            }
+            updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
 
             try {
                 UserLocalServiceUtil.updateUser(currentUserProfile.getUser());
@@ -335,7 +325,7 @@ public class UserProfileController {
                 updatedUserBean.setEmailStored(updatedUserBean.getEmail());
                 try {
                     sendUpdatedEmail(currentUserProfile.getUser());
-                } catch(Exception e){
+                } catch(MailEngineException | AddressException e){
                     _log.warn("Sending eMail confirmation after email change failed for userId: " + currentUserProfile.getUser().getUserId());
                     _log.warn(e);
                 }
@@ -346,8 +336,8 @@ public class UserProfileController {
 
         SessionErrors.clear(request);
         SessionMessages.clear(request);
-        } catch(Exception e){
-            _log.warn("Could not update user profile for " + loggedInUserId);
+        } catch(SystemException | PortalException e){
+            _log.warn("Could not update user profile for " + loggedInUserId, e);
             response.sendRedirect("/web/guest/member/-/member/userId/" + loggedInUserId);
         }
     }
@@ -359,12 +349,11 @@ public class UserProfileController {
         model.addAttribute("messageBean", new MessageBean());
     }
 
-    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, String userId)
-            throws PortalException, SystemException {
+    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, String userId) {
         try {
             populateUserWrapper(new UserProfileWrapper(userId,request) ,model);
             return "showUserProfile";
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             _log.warn("Could not create user profile for " + userId);
         }
         return "showProfileNotInitialized";
@@ -400,13 +389,12 @@ public class UserProfileController {
             }
         }
 
-        if (!existingCountry.equals(updatedUserBean.getCountry())) {
+        if (updatedUserBean.getCountry() != null && !updatedUserBean.getCountry().equals(existingCountry)) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
                     currentUserProfile.getUser().getUserId(), Helper.getCountryForCode(updatedUserBean.getCountry()));
             changedDetails = true;
         }
-
 
         // TODO
         //	if(changedExpando || changedUserPart) {
@@ -414,7 +402,7 @@ public class UserProfileController {
         //}
 
 
-        if (updatedUserBean.getImageId() != null && updatedUserBean.getImageId() != currentUserProfile.getUserBean().getImageId()) {
+        if (updatedUserBean.getImageId() != currentUserProfile.getUserBean().getImageId()) {
             Image img = ImageLocalServiceUtil.getImage(updatedUserBean.getImageId());
             // we need to set permission checker for liferay
             PermissionChecker permissionChecker = PermissionCheckerFactoryUtil
@@ -464,12 +452,11 @@ public class UserProfileController {
             final String existingPasswordWithoutSHA1 = currentUserProfile.getUser().getPassword().substring(7);
             existing = PwdEncryptor.encrypt(password).equals(existingPassword) ||
                    PwdEncryptor.encrypt(password).equals(existingPasswordWithoutSHA1);
-        } catch (Exception e) {
-        }
+        } catch (PwdEncryptorException ignored) { }
         return existing;
     }
 
-    private void sendUpdatedEmail(User user) throws Exception{
+    private void sendUpdatedEmail(User user) throws MailEngineException, AddressException {
         String messageSubject = "Your email address on the Climate CoLab has been updated";
         String messageBody = "Dear " + user.getFirstName() + ",\n" +
                 "\n" +
@@ -485,7 +472,7 @@ public class UserProfileController {
         InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
         InternetAddress[] addressTo = {new InternetAddress(user.getEmailAddress())};
 
-        InternetAddress replyTo[] = {addressFrom};
+        InternetAddress[] replyTo = {addressFrom};
             MailEngine.send(addressFrom, addressTo, null, null, null,
                     messageSubject, messageBody, false, replyTo, null, null);
     }

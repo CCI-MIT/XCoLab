@@ -33,7 +33,7 @@ public class MessageBean implements Serializable {
 
 	private Message message;
     private boolean selected;
-    private List<User> recipients = new ArrayList<User>();
+    private final List<User> recipients = new ArrayList<>();
 
     public MessageBean(){
         messageHoneypotPosition = ((new Random()).nextInt(10)) % 2;
@@ -41,8 +41,8 @@ public class MessageBean implements Serializable {
 
     public MessageBean(Message message) throws PortalException, SystemException {
         this.message = message;
-        for (MessageRecipientStatus receipient: MessageLocalServiceUtil.getRecipients(message)) {
-            recipients.add(UserLocalServiceUtil.getUser(receipient.getUserId()));
+        for (MessageRecipientStatus recipient : MessageLocalServiceUtil.getRecipients(message)) {
+            recipients.add(UserLocalServiceUtil.getUser(recipient.getUserId()));
         }
     }
 
@@ -73,9 +73,9 @@ public class MessageBean implements Serializable {
     }
 
     public long getDaysAgo() {
-        final int milisecondsInDay = 1000 * 60 * 60 * 24;
-        long createDay = message.getCreateDate().getTime() / milisecondsInDay;
-        long daysNow = new Date().getTime() / milisecondsInDay;
+        final int millisecondsInDay = 1000 * 60 * 60 * 24;
+        long createDay = message.getCreateDate().getTime() / millisecondsInDay;
+        long daysNow = new Date().getTime() / millisecondsInDay;
         return daysNow - createDay;
     }
 
@@ -93,7 +93,6 @@ public class MessageBean implements Serializable {
 
     public Message getMessage() {
         return message;
-
     }
 
     public List<User> getTo() {

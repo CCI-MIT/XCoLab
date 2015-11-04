@@ -2,6 +2,7 @@ package org.xcolab.utils.validation;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -28,7 +29,7 @@ public abstract class ConstraintValidatorHelper {
                     try {
                         Object propertyValue = readMethod.invoke(instance);
                         returnValue = requiredType.cast(propertyValue);
-                    } catch (Exception e) {
+                    } catch (InvocationTargetException | IllegalAccessException e) {
                         e.printStackTrace(); // unable to invoke readMethod
                     }
                 }
@@ -46,7 +47,7 @@ public abstract class ConstraintValidatorHelper {
                 ignoreCase = true;
             }
 
-            List<String> values = new ArrayList<String> (propertyValues.size());
+            List<String> values = new ArrayList<> (propertyValues.size());
             for(String propertyValue : propertyValues) {
                 if(ignoreCase) {
                     values.add(propertyValue.toLowerCase());
@@ -58,13 +59,13 @@ public abstract class ConstraintValidatorHelper {
             switch (comparisonMode) {
             case EQUAL:
             case EQUAL_IGNORE_CASE:
-                Set<String> uniqueValues = new HashSet<String> (values);
+                Set<String> uniqueValues = new HashSet<> (values);
                 // support all nulls
-                return uniqueValues.size() == 1 || uniqueValues.size() == 0 ? true : false;
+                return uniqueValues.size() == 1 || uniqueValues.isEmpty();
             case NOT_EQUAL:
             case NOT_EQUAL_IGNORE_CASE:
-                Set<String> allValues = new HashSet<String> (values);
-                return allValues.size() == values.size() ? true : false;
+                Set<String> allValues = new HashSet<> (values);
+                return allValues.size() == values.size();
             }
 
             return true;

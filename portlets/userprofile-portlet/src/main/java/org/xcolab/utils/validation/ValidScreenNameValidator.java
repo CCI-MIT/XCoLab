@@ -7,7 +7,6 @@ import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 public class ValidScreenNameValidator implements
 		ConstraintValidator<ValidScreenName, Object> {
 	private String screenNameProperty;
-	private long DEFAULT_COMPANY_ID = 10112L;
 
 	@Override
 	public void initialize(ValidScreenName constraintAnnotation) {
@@ -33,13 +32,10 @@ public class ValidScreenNameValidator implements
 			 * the default message
 			 */
 			if (isDefaultMessage) {
-				StringBuilder sb = new StringBuilder();
-				sb.append("Please provide a ");
-				sb.append(screenNameProperty);
-				sb.append(" containing only alphanumeric characters - no whitespaces or other special signs");
 				context.disableDefaultConstraintViolation();
-				ConstraintViolationBuilder violationBuilder = context
-						.buildConstraintViolationWithTemplate(sb.toString());
+				final String message = "Please provide a " + screenNameProperty +
+						" containing only alphanumeric characters - no whitespaces or other special signs";
+				ConstraintViolationBuilder violationBuilder = context.buildConstraintViolationWithTemplate(message);
 				violationBuilder.addConstraintViolation();
 			}
 
