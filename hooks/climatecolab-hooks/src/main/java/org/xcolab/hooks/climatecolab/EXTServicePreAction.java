@@ -7,10 +7,8 @@
 package org.xcolab.hooks.climatecolab;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -24,7 +22,6 @@ import com.liferay.portal.theme.ThemeDisplay;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +36,7 @@ public class EXTServicePreAction extends Action {
 
         
         ThemeDisplay themeDisplay = (ThemeDisplay) req.getAttribute(WebKeys.THEME_DISPLAY);
-        Map<String, Object> vmVariables = (Map<String, Object>) req.getAttribute(WebKeys.VM_VARIABLES);
+        Map<String, Object> vmVariables = (Map) req.getAttribute(WebKeys.VM_VARIABLES);
         if (vmVariables == null) {
             vmVariables = new HashMap<>();
         }
@@ -56,14 +53,7 @@ public class EXTServicePreAction extends Action {
 
         //Decide whether to show contest menu items
         try {
-            final List<ContestType> contestTypes = ContestTypeLocalServiceUtil.getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-            List<ContestType> contestPages = new ArrayList<>();
-            for (ContestType contestType : contestTypes) {
-                if (ContestLocalServiceUtil.countContestsByContestType(contestType.getId()) > 0) {
-                    contestPages.add(contestType);
-                }
-            }
-            vmVariables.put("_contest_pages", contestPages);
+            vmVariables.put("_contest_pages", ContestTypeLocalServiceUtil.getActiveContestTypes());
         } catch (SystemException e) {
             _log.error("Could not retrieve contest types to populate menu items", e);
         }
@@ -74,14 +64,13 @@ public class EXTServicePreAction extends Action {
                 Contest contest = ContestLocalServiceUtil.getContest(Long.parseLong(contestIdStr));
                 vmVariables.put("collab_contest", contest);
             } catch (NumberFormatException e) {
-                _log.error("An exception has been thrown when trying to parse contest id " + contestIdStr, e);
+                _log.error("An exception has been thrown when trying to parse contest id " + contestIdStr);
             } catch (PortalException | SystemException e) {
                 _log.error("An exception has been thrown when loading contest with id " + contestIdStr, e);
             }
         }
 
         vmVariables.put("themeTimestamp", themeTimestamp);
-
 
         req.setAttribute(WebKeys.VM_VARIABLES, vmVariables);
         req.setAttribute(THEME_TIMESTAMP_ATTRIBUTE, themeTimestamp);

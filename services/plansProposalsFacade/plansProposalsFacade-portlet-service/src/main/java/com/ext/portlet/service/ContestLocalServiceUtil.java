@@ -339,8 +339,7 @@ public class ContestLocalServiceUtil {
         return getService().getActiveOrLastPhase(contest);
     }
 
-    public static boolean isActive(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public static boolean isActive(com.ext.portlet.model.Contest contest) {
         return getService().isActive(contest);
     }
 

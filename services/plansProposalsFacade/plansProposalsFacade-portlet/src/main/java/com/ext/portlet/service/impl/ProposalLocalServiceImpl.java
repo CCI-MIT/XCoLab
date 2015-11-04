@@ -1,6 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.NoSuchProposalSupporterException;
@@ -200,7 +199,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
         final Contest contest = contestLocalService.fetchContest(contestPhase.getContestPK());
-        ContestType contestType = contestTypeLocalService.fetchContestType(contest.getContestTypeId());
+        ContestType contestType = contestTypeLocalService.getContestType(contest);
         // create discussions
         final String proposalEntityName = contestType.getProposalName()+" ";
         DiscussionCategoryGroup proposalDiscussion = discussionCategoryGroupLocalService
@@ -367,7 +366,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // Update the proposal name in the discussion category
         if (attributeName.equals(ProposalAttributeKeys.NAME)) {
             DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
-            ContestType contestType = contestTypeLocalService.getCurrentContestTypeForProposal(proposalId);
+            ContestType contestType = contestTypeLocalService.getContestTypeFromProposalId(proposalId);
             dcg.setDescription(String.format("%s %s", contestType.getProposalName(), stringValue));
             discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(dcg);
         }
@@ -740,7 +739,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 .add(criterion)
                 .add(PropertyFactoryUtil.forName("visible").eq(true))
                 .addOrder(OrderFactoryUtil.desc("createDate"));
-        List<Proposal> proposals = proposalLocalService.dynamicQuery(query);
+        //make an editable copy so we can remove proposals
+        List<Proposal> proposals = new ArrayList<>(proposalLocalService.dynamicQuery(query));
 
         for (Iterator<Proposal> iterator = proposals.iterator(); iterator.hasNext(); ) {
             Proposal proposal = iterator.next();
@@ -1513,7 +1513,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         Contest contest = proposalLocalService.getLatestProposalContest(proposalId);
         String portletLink;
         try {
-            portletLink = contestTypeLocalService.fetchContestType(contest.getContestTypeId()).getPortletUrl();
+            portletLink = contestTypeLocalService.getContestType(contest).getPortletUrl();
         } catch (SystemException e) {
             portletLink = "/web/guest/plans";
         }
@@ -1532,7 +1532,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public String getProposalLinkUrl(Contest contest, Proposal proposal) {
         String portletLink;
         try {
-            portletLink = contestTypeLocalService.fetchContestType(contest.getContestTypeId()).getPortletUrl();
+            portletLink = contestTypeLocalService.getContestType(contest).getPortletUrl();
         } catch (SystemException e) {
             portletLink = "/web/guest/plans";
         }
@@ -1552,7 +1552,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public String getProposalLinkUrl(Contest contest, Proposal proposal, ContestPhase contestPhase) {
         String portletLink;
         try {
-            portletLink = contestTypeLocalService.fetchContestType(contest.getContestTypeId()).getPortletUrl();
+            portletLink = contestTypeLocalService.getContestType(contest).getPortletUrl();
         } catch (SystemException e) {
             portletLink = "/web/guest/plans";
         }

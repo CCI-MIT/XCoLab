@@ -361,8 +361,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
-    public boolean isActive(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public boolean isActive(com.ext.portlet.model.Contest contest) {
         return _contestLocalService.isActive(contest);
     }
 

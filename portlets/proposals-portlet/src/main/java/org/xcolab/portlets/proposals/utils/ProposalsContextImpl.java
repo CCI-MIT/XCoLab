@@ -255,7 +255,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                 if (proposal == null) {
                     contestType = ContestTypeLocalServiceUtil.fetchContestType(contest.getContestTypeId());
                 } else {
-                    contestType = ContestTypeLocalServiceUtil.getCurrentContestTypeForProposal(proposal.getProposalId());
+                    contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposal.getProposalId());
                     ProposalWrapper proposalWrapper;
                     User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
 

@@ -47,6 +47,16 @@ public class ContestTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes493;
     private String _methodName498;
     private String[] _methodParameterTypes498;
+    private String _methodName499;
+    private String[] _methodParameterTypes499;
+    private String _methodName500;
+    private String[] _methodParameterTypes500;
+    private String _methodName501;
+    private String[] _methodParameterTypes501;
+    private String _methodName502;
+    private String[] _methodParameterTypes502;
+    private String _methodName503;
+    private String[] _methodParameterTypes503;
 
     public ContestTypeLocalServiceClpInvoker() {
         _methodName0 = "addContestType";
@@ -139,9 +149,29 @@ public class ContestTypeLocalServiceClpInvoker {
 
         _methodParameterTypes493 = new String[] { "java.lang.String" };
 
-        _methodName498 = "getCurrentContestTypeForProposal";
+        _methodName498 = "getContestTypeFromProposalId";
 
         _methodParameterTypes498 = new String[] { "long" };
+
+        _methodName499 = "getContestTypeFromContestId";
+
+        _methodParameterTypes499 = new String[] { "long" };
+
+        _methodName500 = "getContestType";
+
+        _methodParameterTypes500 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName501 = "getAllContestTypes";
+
+        _methodParameterTypes501 = new String[] {  };
+
+        _methodName502 = "getActiveContestTypes";
+
+        _methodParameterTypes502 = new String[] {  };
+
+        _methodName503 = "groupProposalsByContestType";
+
+        _methodParameterTypes503 = new String[] { "java.util.List" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -247,7 +277,32 @@ public class ContestTypeLocalServiceClpInvoker {
 
         if (_methodName498.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes498, parameterTypes)) {
-            return ContestTypeLocalServiceUtil.getCurrentContestTypeForProposal(((Long) arguments[0]).longValue());
+            return ContestTypeLocalServiceUtil.getContestTypeFromProposalId(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName499.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes499, parameterTypes)) {
+            return ContestTypeLocalServiceUtil.getContestTypeFromContestId(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName500.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes500, parameterTypes)) {
+            return ContestTypeLocalServiceUtil.getContestType((com.ext.portlet.model.Contest) arguments[0]);
+        }
+
+        if (_methodName501.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes501, parameterTypes)) {
+            return ContestTypeLocalServiceUtil.getAllContestTypes();
+        }
+
+        if (_methodName502.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes502, parameterTypes)) {
+            return ContestTypeLocalServiceUtil.getActiveContestTypes();
+        }
+
+        if (_methodName503.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes503, parameterTypes)) {
+            return ContestTypeLocalServiceUtil.groupProposalsByContestType((java.util.List<com.ext.portlet.model.Proposal>) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

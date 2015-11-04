@@ -1410,8 +1410,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
     }
 
     @Override
-    public boolean isActive(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public boolean isActive(com.ext.portlet.model.Contest contest) {
         Object returnObj = null;
 
         try {
@@ -1420,10 +1419,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
                     new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
 
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;

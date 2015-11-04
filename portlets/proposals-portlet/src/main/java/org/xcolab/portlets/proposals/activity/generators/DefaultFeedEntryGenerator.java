@@ -21,7 +21,7 @@ public class DefaultFeedEntryGenerator extends BaseProposalsFeedEntryGenerator {
     @Override
     public SocialActivityFeedEntry generateFeedEntry(SocialActivity activity) throws PortalException, SystemException {
         final long proposalId = activity.getClassPK();
-        ContestType contestType = ContestTypeLocalServiceUtil.getCurrentContestTypeForProposal(proposalId);
+        ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposalId);
         String body = String.format(
                 defaultFeedEntryPattern, 
                 getUserLink(activity.getUserId()), 

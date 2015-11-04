@@ -238,8 +238,31 @@ public interface ContestTypeLocalService extends BaseLocalService,
         throws java.lang.Throwable;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ContestType getCurrentContestTypeForProposal(
+    public com.ext.portlet.model.ContestType getContestTypeFromProposalId(
         long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ContestType getContestTypeFromContestId(
+        long contestId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ContestType getContestType(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ContestType> getAllContestTypes()
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ContestType> getActiveContestTypes()
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public java.util.List<com.ext.portlet.model.Proposal> groupProposalsByContestType(
+        java.util.List<com.ext.portlet.model.Proposal> proposals)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 }

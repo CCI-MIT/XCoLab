@@ -1,7 +1,6 @@
 package org.xcolab.portlets.admintasks;
 
 import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.Activity.LoginRegisterActivityKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.BalloonUserTracking;
@@ -337,7 +336,7 @@ public class AdminTasksBean {
 			final Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
 			proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contest, proposal));
             String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-			ContestType contestType = ContestTypeLocalServiceUtil.getCurrentContestTypeForProposal(proposal.getProposalId());
+			ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposal.getProposalId());
 			proposalDiscussion.setDescription(String.format("%s %s", contestType.getProposalName(), proposalName));
 			DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(proposalDiscussion);
 		}

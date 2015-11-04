@@ -4,19 +4,16 @@ import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageConstants;
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Message;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -47,7 +44,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class UserProfileWrapper implements Serializable {
 
@@ -70,7 +66,7 @@ public class UserProfileWrapper implements Serializable {
     private SendMessagePermissionChecker messagePermissionChecker;
     private List<MessageBean> messages;
     private final List<SupportedProposalWrapper> supportedProposals = new ArrayList<>();
-    private final Map<Long, ContestTypeProposalWrapper> proposalsByContestType = new HashMap<>();
+    private final Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
     private List<BaseProposalWrapper> linkingProposals;
     private final ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
@@ -152,21 +148,12 @@ public class UserProfileWrapper implements Serializable {
         }
 
         List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
-        Map<Long, Long> contestIdToContestTypeIdMap = new HashMap<>();
-        final List<ContestType> contestTypes = ContestTypeLocalServiceUtil.getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-        for (ContestType contestType : contestTypes) {
-            final List<Contest> contests = ContestLocalServiceUtil.getContestsByContestType(contestType.getId());
-            if (!contests.isEmpty()) {
-                proposalsByContestType.put(contestType.getId(), new ContestTypeProposalWrapper(contestType, new ArrayList<BaseProposalWrapper>()));
+        Map<ContestType, List<Proposal>> proposalsByContestType = ContestTypeLocalServiceUtil.groupProposalsByContestType(proposals);
+        for (ContestType contestType : proposalsByContestType.keySet()) {
+            contestTypeProposalWrappersByContestTypeId.put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
+            for (Proposal p : proposalsByContestType.get(contestType)) {
+                contestTypeProposalWrappersByContestTypeId.get(contestType.getId()).getProposals().add(new BaseProposalWrapper(p));
             }
-            for (Contest contest : contests) {
-                contestIdToContestTypeIdMap.put(contest.getContestPK(), contestType.getId());
-            }
-        }
-        for (Proposal p : proposals) {
-            final long contestPK = ProposalLocalServiceUtil.getLatestProposalContest(p.getProposalId()).getContestPK();
-            Long contestTypeId = contestIdToContestTypeIdMap.get(contestPK);
-            proposalsByContestType.get(contestTypeId).getProposals().add(new BaseProposalWrapper(p));
         }
     }
 
@@ -291,7 +278,7 @@ public class UserProfileWrapper implements Serializable {
 
     public List<MessageBean> getMessages() throws SystemException, PortalException {
         if (messages == null) {
-            messages = new ArrayList<MessageBean>();
+            messages = new ArrayList<>();
             for (Message msg: MessageUtil.getMessages(this.user.getUserId(), 0, 2, MessageConstants.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
@@ -303,9 +290,7 @@ public class UserProfileWrapper implements Serializable {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
             for (SocialActivity activity: ActivityUtil.groupActivities(ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getUserId(), 0, 1000))) {
-                try {
-                    subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
-                } catch (Exception ignored) { }
+                subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
             }
         }
         return subscribedActivities;
@@ -315,8 +300,8 @@ public class UserProfileWrapper implements Serializable {
 
     public List<UserActivityWrapper> getActivities() { return userActivities; }
 
-    public Collection<ContestTypeProposalWrapper> getProposalsByContestType() {
-        return proposalsByContestType.values();
+    public Collection<ContestTypeProposalWrapper> getContestTypeProposalWrappersByContestTypeId() {
+        return contestTypeProposalWrappersByContestTypeId.values();
     }
 
     public List<Badge> getBadges() { return badges.getBadges(); }
@@ -374,7 +359,7 @@ public class UserProfileWrapper implements Serializable {
         if (proposalsString == null) {
             try {
                 StringBuilder stringBuilder = new StringBuilder();
-                final List<Long> contestTypeIds = new ArrayList<>(proposalsByContestType.keySet());
+                final List<Long> contestTypeIds = new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet());
                 Iterator<Long> iterator = contestTypeIds.iterator();
                 int currentWord = 1, totalWords = contestTypeIds.size();
                 while (iterator.hasNext()) {

@@ -68,7 +68,7 @@ implements ICollabActivityInterpreter {
         // name of activity "stream" for given parameters is name of the proposal that this activity relates to
         try {
             Proposal rawProposal = ProposalLocalServiceUtil.getProposal(classPK);
-            ContestType contestType = ContestTypeLocalServiceUtil.getCurrentContestTypeForProposal(rawProposal.getProposalId());
+            ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(rawProposal.getProposalId());
             ProposalWrapper proposal = new ProposalWrapper(rawProposal);
             return contestType.getProposalName()+": " + String.format(hyperlink, StringEscapeUtils.escapeHtml(proposal.getProposalURL()), proposal.getName());
             

@@ -259,11 +259,40 @@ public class ContestTypeLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.ContestType getCurrentContestTypeForProposal(
+    public static com.ext.portlet.model.ContestType getContestTypeFromProposalId(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().getCurrentContestTypeForProposal(proposalId);
+        return getService().getContestTypeFromProposalId(proposalId);
+    }
+
+    public static com.ext.portlet.model.ContestType getContestTypeFromContestId(
+        long contestId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestTypeFromContestId(contestId);
+    }
+
+    public static com.ext.portlet.model.ContestType getContestType(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestType(contest);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ContestType> getAllContestTypes()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAllContestTypes();
+    }
+
+    public static java.util.List<com.ext.portlet.model.ContestType> getActiveContestTypes()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getActiveContestTypes();
+    }
+
+    public static java.util.List<com.ext.portlet.model.Proposal> groupProposalsByContestType(
+        java.util.List<com.ext.portlet.model.Proposal> proposals)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().groupProposalsByContestType(proposals);
     }
 
     public static void clearService() {
