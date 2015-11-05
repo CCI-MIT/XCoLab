@@ -288,6 +288,10 @@ public class BaseContestWrapper {
         return contest.getHideRibbons();
     }
 
+    public long getContestTypeId() {
+        return contest.getContestTypeId();
+    }
+
     public void setHideRibbons(boolean hideRibbons) throws SystemException {
         contest.setHideRibbons(hideRibbons);
     }
@@ -421,7 +425,7 @@ public class BaseContestWrapper {
             }
         }
         if(judges == null) {
-            return Collections.emptyList(); //return empty list if null
+            return Collections.emptyList();
         }
         return judges;
     }
@@ -444,7 +448,7 @@ public class BaseContestWrapper {
             }
         }
         if(advisors == null) {
-            return Collections.emptyList(); //return empty list if null
+            return Collections.emptyList();
         }
         return advisors;
     }

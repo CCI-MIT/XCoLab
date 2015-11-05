@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.util.PortalUtil;
@@ -32,8 +31,6 @@ import org.xcolab.portlets.proposals.wrappers.OntologySpaceWrapper;
 import org.xcolab.portlets.proposals.wrappers.OntologyTermWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.Cookie;
@@ -50,7 +47,7 @@ import java.util.TreeMap;
 @RequestMapping("view")
 public class ContestsIndexController extends BaseProposalsController {
 
-    private static Log _log = LogFactoryUtil.getLog(ContestsIndexController.class);
+    private static final Log _log = LogFactoryUtil.getLog(ContestsIndexController.class);
 
     private final static String COOKIE_VIEW_TYPE = "cc_contests_viewType";
     private final static String VIEW_TYPE_GRID = "GRID";
@@ -70,14 +67,13 @@ public class ContestsIndexController extends BaseProposalsController {
         ContestType contestType = preferences.getContestType();
         if (viewType == null) {
             // view type wasn't set
-            try{
-                for (Cookie cookie: request.getCookies()) {
+            final Cookie[] cookies = request.getCookies(); //null if cookies are disabled
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
                     if (cookie.getName().equals(COOKIE_VIEW_TYPE)) {
                         viewType = cookie.getValue();
                     }
                 }
-            } catch (Exception e){
-                // User has cookies disabled
             }
         }
         else {
@@ -100,15 +96,16 @@ public class ContestsIndexController extends BaseProposalsController {
             final String contestLinkUrl = ContestLocalServiceUtil.getContestLinkUrl(contest);
             try {
                 PortalUtil.getHttpServletResponse(response).sendRedirect(contestLinkUrl);
-                return "";
+                return "contestsIndex"; //won't be shown, but avoid null pointer exception during redirection
             } catch (IOException e) {
                 _log.error("Failed to redirect to only contest in this contest type", e);
             }
         }
 
         for (Contest contest: contestsToWrap) {
-        	if (! contest.isContestPrivate())
-        		contests.add(new ContestWrapper(contest));
+        	if (! contest.isContestPrivate()) {
+                contests.add(new ContestWrapper(contest));
+            }
         }
 
         model.addAttribute("contests", contests);

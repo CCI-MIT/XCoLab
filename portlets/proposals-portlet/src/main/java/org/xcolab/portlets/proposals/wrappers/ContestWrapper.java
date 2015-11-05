@@ -182,17 +182,6 @@ public class ContestWrapper extends BaseContestWrapper {
         return last;
     }
 
-    public ContestPhaseWrapper getActivePhase() throws PortalException, SystemException {
-        if (activePhase == null) {
-            ContestPhase phase = ContestLocalServiceUtil.getActivePhase(contest);
-            if (phase == null) {
-                return null;
-            }
-            activePhase = new ContestPhaseWrapper(phase);
-        }
-        return activePhase;
-    }
-
     public String getWhoName() throws PortalException, SystemException {
         return getTermNameFromSpace(WHO);
     }
@@ -288,19 +277,6 @@ public class ContestWrapper extends BaseContestWrapper {
         return contest.getFocusAreaId() > 0;
     }
 
-    public List<User> getContestAdvisors() throws PortalException, SystemException {
-        List<User> advisors = null;
-        for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
-            if (c.getRoleName().equalsIgnoreCase("Advisor")) {
-                advisors = c.getUsers();
-            }
-        }
-        if(advisors == null) {
-            return new LinkedList<>(); //return empty list if null
-        }
-        return advisors;
-    }
-
     public boolean isUserAmongAdvisors(User userInQuestion) throws SystemException, PortalException {
         for (User judge : getContestAdvisors()) {
             if (judge.getUserId() == userInQuestion.getUserId()) {
@@ -308,29 +284,6 @@ public class ContestWrapper extends BaseContestWrapper {
             }
         }
         return false;
-    }
-
-    public List<User> getContestJudges() throws PortalException, SystemException {
-        List<User> judges = null;
-        for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
-            if (c.getRoleName().equalsIgnoreCase("Judge")) {
-                judges = c.getUsers();
-            }
-        }
-        if(judges == null) {
-            return new LinkedList<>(); //return empty list if null
-        }
-        return judges;
-    }
-
-    public List<User> getContestFellows() throws PortalException, SystemException {
-        List<User> fellows = null;
-        for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
-            if (c.getRoleName().equalsIgnoreCase("Fellow")) {
-                fellows = c.getUsers();
-            }
-        }
-        return fellows;
     }
 
     /**

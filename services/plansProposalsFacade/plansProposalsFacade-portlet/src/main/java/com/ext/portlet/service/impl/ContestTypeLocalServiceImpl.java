@@ -67,6 +67,7 @@ public class ContestTypeLocalServiceImpl extends ContestTypeLocalServiceBaseImpl
         return activeContestTypes;
     }
 
+    @Override
     public String getLabelName(ContestType contestType) {
         return String.format("%d - %s with %s",
                 contestType.getId(), contestType.getContestName(), contestType.getProposalNamePlural());

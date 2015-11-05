@@ -175,6 +175,8 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes567;
     private String _methodName568;
     private String[] _methodParameterTypes568;
+    private String _methodName569;
+    private String[] _methodParameterTypes569;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -498,41 +500,45 @@ public class ContestLocalServiceClpInvoker {
 
         _methodParameterTypes560 = new String[] { "java.lang.Long" };
 
-        _methodName561 = "countContestsByContestType";
+        _methodName561 = "getContestsByContestTypeIds";
 
-        _methodParameterTypes561 = new String[] { "java.lang.Long" };
+        _methodParameterTypes561 = new String[] { "java.util.List" };
 
-        _methodName562 = "getContestsByTierLevelAndOntologyTermIds";
+        _methodName562 = "countContestsByContestType";
 
-        _methodParameterTypes562 = new String[] {
+        _methodParameterTypes562 = new String[] { "java.lang.Long" };
+
+        _methodName563 = "getContestsByTierLevelAndOntologyTermIds";
+
+        _methodParameterTypes563 = new String[] {
                 "java.lang.Long", "java.util.List"
             };
 
-        _methodName563 = "getContestsByContestScheduleId";
-
-        _methodParameterTypes563 = new String[] { "java.lang.Long" };
-
-        _methodName564 = "getContestsByPlanTemplateId";
+        _methodName564 = "getContestsByContestScheduleId";
 
         _methodParameterTypes564 = new String[] { "java.lang.Long" };
 
-        _methodName565 = "getSubContestsByOntologySpaceId";
+        _methodName565 = "getContestsByPlanTemplateId";
 
-        _methodParameterTypes565 = new String[] {
+        _methodParameterTypes565 = new String[] { "java.lang.Long" };
+
+        _methodName566 = "getSubContestsByOntologySpaceId";
+
+        _methodParameterTypes566 = new String[] {
                 "com.ext.portlet.model.Contest", "java.lang.Long"
             };
 
-        _methodName566 = "addContestYearSuffixToCompletedContests";
+        _methodName567 = "addContestYearSuffixToCompletedContests";
 
-        _methodParameterTypes566 = new String[] {  };
+        _methodParameterTypes567 = new String[] {  };
 
-        _methodName567 = "getPointsEnabledContests";
+        _methodName568 = "getPointsEnabledContests";
 
-        _methodParameterTypes567 = new String[] { "boolean" };
+        _methodParameterTypes568 = new String[] { "boolean" };
 
-        _methodName568 = "addContestYearSuffixToContest";
+        _methodName569 = "addContestYearSuffixToContest";
 
-        _methodParameterTypes568 = new String[] {
+        _methodParameterTypes569 = new String[] {
                 "com.ext.portlet.model.Contest", "boolean"
             };
     }
@@ -950,45 +956,50 @@ public class ContestLocalServiceClpInvoker {
 
         if (_methodName561.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes561, parameterTypes)) {
-            return ContestLocalServiceUtil.countContestsByContestType((java.lang.Long) arguments[0]);
+            return ContestLocalServiceUtil.getContestsByContestTypeIds((java.util.List<java.lang.Long>) arguments[0]);
         }
 
         if (_methodName562.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes562, parameterTypes)) {
-            return ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds((java.lang.Long) arguments[0],
-                (java.util.List<java.lang.Long>) arguments[1]);
+            return ContestLocalServiceUtil.countContestsByContestType((java.lang.Long) arguments[0]);
         }
 
         if (_methodName563.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes563, parameterTypes)) {
-            return ContestLocalServiceUtil.getContestsByContestScheduleId((java.lang.Long) arguments[0]);
+            return ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds((java.lang.Long) arguments[0],
+                (java.util.List<java.lang.Long>) arguments[1]);
         }
 
         if (_methodName564.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes564, parameterTypes)) {
-            return ContestLocalServiceUtil.getContestsByPlanTemplateId((java.lang.Long) arguments[0]);
+            return ContestLocalServiceUtil.getContestsByContestScheduleId((java.lang.Long) arguments[0]);
         }
 
         if (_methodName565.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes565, parameterTypes)) {
-            return ContestLocalServiceUtil.getSubContestsByOntologySpaceId((com.ext.portlet.model.Contest) arguments[0],
-                (java.lang.Long) arguments[1]);
+            return ContestLocalServiceUtil.getContestsByPlanTemplateId((java.lang.Long) arguments[0]);
         }
 
         if (_methodName566.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes566, parameterTypes)) {
+            return ContestLocalServiceUtil.getSubContestsByOntologySpaceId((com.ext.portlet.model.Contest) arguments[0],
+                (java.lang.Long) arguments[1]);
+        }
+
+        if (_methodName567.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes567, parameterTypes)) {
             ContestLocalServiceUtil.addContestYearSuffixToCompletedContests();
 
             return null;
         }
 
-        if (_methodName567.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes567, parameterTypes)) {
+        if (_methodName568.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes568, parameterTypes)) {
             return ContestLocalServiceUtil.getPointsEnabledContests(((Boolean) arguments[0]).booleanValue());
         }
 
-        if (_methodName568.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes568, parameterTypes)) {
+        if (_methodName569.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes569, parameterTypes)) {
             ContestLocalServiceUtil.addContestYearSuffixToContest((com.ext.portlet.model.Contest) arguments[0],
                 ((Boolean) arguments[1]).booleanValue());
 

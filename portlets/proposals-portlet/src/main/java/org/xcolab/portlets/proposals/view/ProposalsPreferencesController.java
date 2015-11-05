@@ -133,7 +133,7 @@ public class ProposalsPreferencesController {
         Long ribbonId = preferences.getRibbonId();
 
         //moving parameters are set
-        String message = moveProposals(ProposalLocalServiceUtil.getProposalsFromIds(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false);
+        String message = moveProposals(IdListUtil.getProposalsFromIds(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false);
         model.addAttribute("message", message);
     }
 

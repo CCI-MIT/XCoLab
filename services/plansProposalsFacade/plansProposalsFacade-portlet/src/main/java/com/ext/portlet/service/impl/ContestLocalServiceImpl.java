@@ -1074,6 +1074,15 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     @Override
+    public List<Contest> getContestsByContestTypeIds(List<Long> contestTypeIds) throws SystemException {
+        List<Contest> contests = new ArrayList<>();
+        for (long contestTypeId : contestTypeIds) {
+            contests.addAll(getContestsByContestType(contestTypeId));
+        }
+        return contests;
+    }
+
+    @Override
     public int countContestsByContestType(Long contestTypeId) throws SystemException {
         return contestPersistence.countByContestType(contestTypeId);
     }
