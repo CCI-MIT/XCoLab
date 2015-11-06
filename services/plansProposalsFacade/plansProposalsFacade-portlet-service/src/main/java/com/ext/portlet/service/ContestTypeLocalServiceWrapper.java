@@ -312,15 +312,19 @@ public class ContestTypeLocalServiceWrapper implements ContestTypeLocalService,
     }
 
     @Override
-    public java.lang.String getProposalNamesOrString(
-        java.util.List<java.lang.Long> contestTypeIds) {
-        return _contestTypeLocalService.getProposalNamesOrString(contestTypeIds);
+    public java.lang.String getProposalNames(
+        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
+        java.lang.String conjunction) {
+        return _contestTypeLocalService.getProposalNames(contestTypeIds,
+            isSingular, conjunction);
     }
 
     @Override
-    public java.lang.String getProposalNamesAndString(
-        java.util.List<java.lang.Long> contestTypeIds) {
-        return _contestTypeLocalService.getProposalNamesAndString(contestTypeIds);
+    public java.lang.String getContestNames(
+        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
+        java.lang.String conjunction) {
+        return _contestTypeLocalService.getContestNames(contestTypeIds,
+            isSingular, conjunction);
     }
 
     @Override

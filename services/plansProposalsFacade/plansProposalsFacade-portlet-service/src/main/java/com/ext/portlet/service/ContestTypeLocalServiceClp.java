@@ -183,13 +183,17 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
                 "com.ext.portlet.model.ContestType"
             };
 
-        _methodName25 = "getProposalNamesOrString";
+        _methodName25 = "getProposalNames";
 
-        _methodParameterTypes25 = new String[] { "java.util.List" };
+        _methodParameterTypes25 = new String[] {
+                "java.util.List", "boolean", "java.lang.String"
+            };
 
-        _methodName26 = "getProposalNamesAndString";
+        _methodName26 = "getContestNames";
 
-        _methodParameterTypes26 = new String[] { "java.util.List" };
+        _methodParameterTypes26 = new String[] {
+                "java.util.List", "boolean", "java.lang.String"
+            };
 
         _methodName27 = "groupProposalsByContestType";
 
@@ -869,14 +873,21 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
     }
 
     @Override
-    public java.lang.String getProposalNamesOrString(
-        java.util.List<java.lang.Long> contestTypeIds) {
+    public java.lang.String getProposalNames(
+        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
+        java.lang.String conjunction) {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName25,
                     _methodParameterTypes25,
-                    new Object[] { ClpSerializer.translateInput(contestTypeIds) });
+                    new Object[] {
+                        ClpSerializer.translateInput(contestTypeIds),
+                        
+                    isSingular,
+                        
+                    ClpSerializer.translateInput(conjunction)
+                    });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -892,14 +903,21 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
     }
 
     @Override
-    public java.lang.String getProposalNamesAndString(
-        java.util.List<java.lang.Long> contestTypeIds) {
+    public java.lang.String getContestNames(
+        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
+        java.lang.String conjunction) {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName26,
                     _methodParameterTypes26,
-                    new Object[] { ClpSerializer.translateInput(contestTypeIds) });
+                    new Object[] {
+                        ClpSerializer.translateInput(contestTypeIds),
+                        
+                    isSingular,
+                        
+                    ClpSerializer.translateInput(conjunction)
+                    });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

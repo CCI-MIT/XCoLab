@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.helpers.ProposalContestPhaseAttributeHelper;
+import org.xcolab.utils.IdListUtil;
 
 import java.util.Date;
 import java.util.List;

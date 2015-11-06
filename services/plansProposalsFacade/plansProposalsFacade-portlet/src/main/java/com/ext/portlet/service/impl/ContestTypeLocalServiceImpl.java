@@ -75,15 +75,17 @@ public class ContestTypeLocalServiceImpl extends ContestTypeLocalServiceBaseImpl
                 contestType.getId(), contestType.getContestName(), contestType.getProposalNamePlural());
     }
 
-    public String getProposalNamesOrString(List<Long> contestTypeIds) {
-        return getProposalNamesString(contestTypeIds, false);
+    @Override
+    public String getProposalNames(List<Long> contestTypeIds, boolean isSingular, String conjunction) {
+        return getJoinedNameString(contestTypeIds, true, isSingular, conjunction);
     }
 
-    public String getProposalNamesAndString(List<Long> contestTypeIds) {
-        return getProposalNamesString(contestTypeIds, true);
+    @Override
+    public String getContestNames(List<Long> contestTypeIds, boolean isSingular, String conjunction) {
+        return getJoinedNameString(contestTypeIds, false, isSingular, conjunction);
     }
 
-    private String getProposalNamesString(List<Long> contestTypeIds, boolean isAndRelation) {
+    private String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal, boolean isSingular, String conjuction) {
         String proposalsString;
         try {
             StringBuilder stringBuilder = new StringBuilder();
@@ -93,12 +95,17 @@ public class ContestTypeLocalServiceImpl extends ContestTypeLocalServiceBaseImpl
                 ContestType contestType = ContestTypeLocalServiceUtil.fetchContestType(iterator.next());
                 if (currentWord > 1) {
                     if (currentWord == totalWords) {
-                        stringBuilder.append(isAndRelation? " and " :" or ");
+                        stringBuilder.append(String.format(" %s ", conjuction));
                     } else {
                         stringBuilder.append(", ");
                     }
                 }
-                stringBuilder.append(contestType.getProposalNamePlural());
+                if (isProposal) {
+                    stringBuilder.append(isSingular ? contestType.getProposalName() : contestType.getProposalNamePlural());
+                } else {
+                    stringBuilder.append(isSingular ? contestType.getContestName() : contestType.getContestNamePlural());
+                }
+
                 currentWord++;
             }
             proposalsString = stringBuilder.toString();

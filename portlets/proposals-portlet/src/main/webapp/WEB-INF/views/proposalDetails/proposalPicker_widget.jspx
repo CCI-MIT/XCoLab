@@ -61,18 +61,16 @@
 					<ul>
 						<li class="c"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'contests');"> Search
-								by contest<!-- 
-								<div id="numberOfProposals">&#160;</div>
-								 -->
+								by <span class="contestTypeContestNames">&#160;</span>
 						</a></li>
 						<li class=""><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'all');"> Search
-								by ${contestType.proposalName}
+								by <span class="contestTypeProposalNames">&#160;</span>
 								<div id="numberOfProposals">&#160;</div>
 						</a></li>
 						<li class=""><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'subscriptionsAndSupporting');">
-							${contestType.proposalNamePlural} I support or subscribe to
+							<span class="contestTypeProposalNamesPlural">&#160;</span> I support or subscribe to
 								<div id="numberOfSubscriptionsSupporting">&#160;</div>
 						</a></li>
 					</ul>
@@ -94,7 +92,7 @@
 					<div id="proposalPickerTableContests">
 						<div class="blueheaderbar tooltips" data-entity='contest'>
 							<div class="contest" style="">
-								<a href="#" data-sort-column="Name">Contest</a>
+								<a href="#" data-sort-column="Name"><span class="contestTypeContestNames">&#160;</span></a>
 								<div class="tooltip">
 									click to sort by name
 									<div class="tt-arrow"><!-- --></div>
@@ -104,7 +102,7 @@
 							<div class="proposal">
 								<a href="#" data-sort-column="Proposals"><!--  --></a>
 								<div class="tooltip">
-									click to sort by<br />number of ${contestType.proposalNamePlural}
+									click to sort by<br />number of <div class="contestTypeProposalNames">&#160;</div>
 									<div class="tt-arrow"><!-- --></div>
 								</div>
 							</div>
@@ -147,7 +145,7 @@
 
 					<div id="proposalsPicker_proposalsContainer">
 						<div class="breadcrumb">
-							<span><a href="#" id="breadContestsList">Contests</a></span>
+							<span><a href="#" id="breadContestsList"><span class="contestTypeContestNamesPlural">&#160;</span></a></span>
 							&amp;raquo; <span id="breadContestName">
 								<!--  -->
 							</span>
@@ -155,7 +153,7 @@
 						<div class="blueheaderbar tooltips" data-entity='proposal'>
 							<div class="proposalname">
 								<div style="display: inline-block">
-									<a href="#" data-sort-column="Proposal">${contestType.proposalName} name</a>
+									<a href="#" data-sort-column="Proposal"><span class="contestTypeProposalNames">&#160;</span> name</a>
 									<div class="tooltip">
 										click to sort by name
 										<div class="tt-arrow"><!-- --></div>
@@ -191,7 +189,7 @@
 								</div>
 							</div>
 							<div class="modified">
-								<span class='text'>Contests</span>
+								<span class='text'><span class="contestTypeContestNamesPlural">&#160;</span></span>
 							</div>
 
 						</div>
@@ -246,7 +244,7 @@
 				</div>
 				<div id="warning"></div>
 				<div class="pickerButtons">
-                	<div class="blue-button btn"><a href="#" id="savePickedProposals">Choose ${contestType.proposalName}</a></div>
+                	<div class="blue-button btn"><a href="#" id="savePickedProposals">Choose <span class="contestTypeProposalNames">&#160;</span></a></div>
                 	<div class="gray-button btn"><a href="#" id="cancelPickedProposals">Cancel</a></div>
 					<div class="clearfix clear"><!--  --></div>
                 </div>
