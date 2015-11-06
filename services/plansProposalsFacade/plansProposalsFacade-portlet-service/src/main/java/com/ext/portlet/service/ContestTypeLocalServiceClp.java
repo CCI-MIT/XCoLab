@@ -58,6 +58,10 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
     private String[] _methodParameterTypes24;
     private String _methodName25;
     private String[] _methodParameterTypes25;
+    private String _methodName26;
+    private String[] _methodParameterTypes26;
+    private String _methodName27;
+    private String[] _methodParameterTypes27;
 
     public ContestTypeLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -179,9 +183,17 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
                 "com.ext.portlet.model.ContestType"
             };
 
-        _methodName25 = "groupProposalsByContestType";
+        _methodName25 = "getProposalNamesOrString";
 
         _methodParameterTypes25 = new String[] { "java.util.List" };
+
+        _methodName26 = "getProposalNamesAndString";
+
+        _methodParameterTypes26 = new String[] { "java.util.List" };
+
+        _methodName27 = "groupProposalsByContestType";
+
+        _methodParameterTypes27 = new String[] { "java.util.List" };
     }
 
     @Override
@@ -857,6 +869,52 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
     }
 
     @Override
+    public java.lang.String getProposalNamesOrString(
+        java.util.List<java.lang.Long> contestTypeIds) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25,
+                    new Object[] { ClpSerializer.translateInput(contestTypeIds) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.lang.String getProposalNamesAndString(
+        java.util.List<java.lang.Long> contestTypeIds) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName26,
+                    _methodParameterTypes26,
+                    new Object[] { ClpSerializer.translateInput(contestTypeIds) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>> groupProposalsByContestType(
         java.util.List<com.ext.portlet.model.Proposal> proposals)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -864,8 +922,8 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName25,
-                    _methodParameterTypes25,
+            returnObj = _invokableLocalService.invokeMethod(_methodName27,
+                    _methodParameterTypes27,
                     new Object[] { ClpSerializer.translateInput(proposals) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);

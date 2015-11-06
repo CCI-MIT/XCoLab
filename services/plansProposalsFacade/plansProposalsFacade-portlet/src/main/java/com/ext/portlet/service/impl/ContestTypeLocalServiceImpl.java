@@ -3,6 +3,7 @@ package com.ext.portlet.service.impl;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.base.ContestTypeLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -10,6 +11,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +73,39 @@ public class ContestTypeLocalServiceImpl extends ContestTypeLocalServiceBaseImpl
     public String getLabelName(ContestType contestType) {
         return String.format("%d - %s with %s",
                 contestType.getId(), contestType.getContestName(), contestType.getProposalNamePlural());
+    }
+
+    public String getProposalNamesOrString(List<Long> contestTypeIds) {
+        return getProposalNamesString(contestTypeIds, false);
+    }
+
+    public String getProposalNamesAndString(List<Long> contestTypeIds) {
+        return getProposalNamesString(contestTypeIds, true);
+    }
+
+    private String getProposalNamesString(List<Long> contestTypeIds, boolean isAndRelation) {
+        String proposalsString;
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
+            Iterator<Long> iterator = contestTypeIds.iterator();
+            int currentWord = 1, totalWords = contestTypeIds.size();
+            while (iterator.hasNext()) {
+                ContestType contestType = ContestTypeLocalServiceUtil.fetchContestType(iterator.next());
+                if (currentWord > 1) {
+                    if (currentWord == totalWords) {
+                        stringBuilder.append(isAndRelation? " and " :" or ");
+                    } else {
+                        stringBuilder.append(", ");
+                    }
+                }
+                stringBuilder.append(contestType.getProposalNamePlural());
+                currentWord++;
+            }
+            proposalsString = stringBuilder.toString();
+        } catch (SystemException e) {
+            proposalsString = "Proposals";
+        }
+        return proposalsString;
     }
 
     // TODO: COLAB-770 replace local methods in UserProfileWrapper and ProposalSectionsTabController

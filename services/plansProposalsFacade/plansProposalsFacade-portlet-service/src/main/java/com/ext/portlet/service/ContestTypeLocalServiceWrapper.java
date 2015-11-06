@@ -312,6 +312,18 @@ public class ContestTypeLocalServiceWrapper implements ContestTypeLocalService,
     }
 
     @Override
+    public java.lang.String getProposalNamesOrString(
+        java.util.List<java.lang.Long> contestTypeIds) {
+        return _contestTypeLocalService.getProposalNamesOrString(contestTypeIds);
+    }
+
+    @Override
+    public java.lang.String getProposalNamesAndString(
+        java.util.List<java.lang.Long> contestTypeIds) {
+        return _contestTypeLocalService.getProposalNamesAndString(contestTypeIds);
+    }
+
+    @Override
     public java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>> groupProposalsByContestType(
         java.util.List<com.ext.portlet.model.Proposal> proposals)
         throws com.liferay.portal.kernel.exception.PortalException,
