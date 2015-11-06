@@ -21,11 +21,59 @@ import java.util.List;
  * Utility class for common conversions of ids lists to strings or models.
  */
 public class IdListUtil {
-
     private final static Log _log = LogFactoryUtil.getLog(IdListUtil.class);
 
+    /**
+     * Utility class to convert between lists of Contests, their ids, and comma separated id strings
+     */
+    public static final IdListObjectConverter<Contest> CONTESTS = new IdListObjectConverter<Contest>() {
+        @Override
+        public Contest getObject(long id) throws SystemException {
+            return ContestLocalServiceUtil.fetchContest(id);
+        }
+
+        @Override
+        public long getId(Contest object) {
+            return object.getContestPK();
+        }
+    };
+
+    /**
+     * Utility class to convert between lists of Proposals, their ids, and comma separated id strings
+     */
+    public final static IdListObjectConverter<Proposal> PROPOSALS = new IdListObjectConverter<Proposal>() {
+        @Override
+        public Proposal getObject(long id) throws SystemException {
+            return ProposalLocalServiceUtil.fetchProposal(id);
+        }
+
+        @Override
+        public long getId(Proposal object) {
+            return object.getProposalId();
+        }
+    };
+
+    /**
+     * Utility class to convert between lists of ContestTypes, their ids, and comma separated id strings
+     */
+    public final static IdListObjectConverter<ContestType> CONTEST_TYPES = new IdListObjectConverter<ContestType>() {
+        @Override
+        public ContestType getObject(long id) throws SystemException {
+            return ContestTypeLocalServiceUtil.fetchContestType(id);
+        }
+
+        @Override
+        public long getId(ContestType object) {
+            return object.getId();
+        }
+    };
+
+    /**
+     * Converts a string representation of id lists into an actual list
+     * The list should only consists of numbers, commas, and (optionally) any amount of spaces.
+     */
     public static List<Long> getIdsFromString(String commaSeparated) {
-        String[] stringIds = commaSeparated.split("\\s*,\\s*");
+        String[] stringIds = commaSeparated.trim().split("\\s*,\\s*");
         List<Long> longsIds = new ArrayList<>(stringIds.length);
         for (String stringId : stringIds) {
             try {
@@ -37,70 +85,57 @@ public class IdListUtil {
         return longsIds;
     }
 
+    /**
+     * Converts a list of ids into a comma separated string
+     */
     public static String getStringFromIds(List<Long> ids) {
         return StringUtils.join(ids, ',');
     }
 
-    public static List<Long> getIdsFromContests(List<Contest> contests) {
-        List<Long> ids = new ArrayList<>(contests.size());
-        for (Contest contest : contests) {
-            ids.add(contest.getContestPK());
-        }
-        return ids;
-    }
+    public static abstract class IdListObjectConverter<T> {
 
-    public static List<Long> getIdsFromProposals(List<Proposal> proposals) {
-        List<Long> ids = new ArrayList<>(proposals.size());
-        for (Proposal proposal : proposals) {
-            ids.add(proposal.getProposalId());
-        }
-        return ids;
-    }
-
-    public static List<Long> getIdsFromContestTypes(List<ContestType> contestTypes) {
-        List<Long> ids = new ArrayList<>(contestTypes.size());
-        for (ContestType contestType : contestTypes) {
-            ids.add(contestType.getId());
-        }
-        return ids;
-    }
-
-    public static List<ContestType> getContestTypesFromIds(List<Long> contestTypeIds) {
-        List<ContestType> contestTypes = new ArrayList<>(contestTypeIds.size());
-        for (long id : contestTypeIds) {
-            try {
-                contestTypes.add(ContestTypeLocalServiceUtil.fetchContestType(id));
-            } catch (SystemException e) {
-                _log.error(String.format("Error converting id list to ContestType list: ContestType %d does not exist",
-                        id), e);
+        public final List<T> fromIdList(List<Long> idList) {
+            List<T> objects = new ArrayList<>(idList.size());
+            for (long id : idList) {
+                try {
+                    objects.add(getObject(id));
+                } catch (SystemException e) {
+                    _log.error(String.format("Error converting id list to object list: object with id %d does not exist",
+                            id), e);
+                }
             }
+            return objects;
         }
-        return contestTypes;
-    }
 
-    public static List<Contest> getContestsFromIds(List<Long> contestIds) {
-        List<Contest> contests = new ArrayList<>(contestIds.size());
-        for (long id : contestIds) {
-            try {
-                contests.add(ContestLocalServiceUtil.fetchContest(id));
-            } catch (SystemException e) {
-                _log.error(String.format("Error converting id list to Contest list: Contest %d does not exist",
-                        id), e);
+        public final List<Long> toIdList(List<T> objectList) {
+            List<Long> ids = new ArrayList<>(objectList.size());
+            for (T object : objectList) {
+                ids.add(getId(object));
             }
+            return ids;
         }
-        return contests;
-    }
 
-    public static List<Proposal> getProposalsFromIds(List<Long> proposalIds) {
-        List<Proposal> proposals = new ArrayList<>(proposalIds.size());
-        for (long id : proposalIds) {
-            try {
-                proposals.add(ProposalLocalServiceUtil.fetchProposal(id));
-            } catch (SystemException e) {
-                _log.error(String.format("Error converting id list to Proposal list: Proposal %d does not exist",
-                        id), e);
-            }
+        public final String toIdString(List<T> objects) {
+            return getStringFromIds(toIdList(objects));
         }
-        return proposals;
+
+        public final List<T> fromIdString(String idString) {
+            return fromIdList(getIdsFromString(idString));
+        }
+
+        /**
+         * Retrieves a single object of type T from an id.
+         * @param id the id of the object to be fetched
+         * @return an object of type T
+         * @throws SystemException when the object is not found
+         */
+        public abstract T getObject(long id) throws SystemException;
+
+        /**
+         * Gets the id of a single object of type T
+         * @param object the object
+         * @return the object's id
+         */
+        public abstract long getId(T object);
     }
 }
