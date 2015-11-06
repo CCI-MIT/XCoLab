@@ -48,13 +48,13 @@
 	<modeling:simulationLoadScripts />
 
 	<link rel="stylesheet" href="/proposals-portlet/css/simulation.css" ></link>
+        <div class="spinner-area" style="margin: auto; padding-top: 100px; margin-bottom: -100px;"><!-- --> </div>
 	<div id="modelsOutputContainer"></div>
 
 	<input type="text" id="modelingScenarioId" class="hidden"/>
 	<input type="text" id="modelingModelId" class="hidden"/>
 	<script>
-	    var options = {};
-        options.edit = true;
+	    var options = {edit: true};
         <c:if test="${not empty isRegionalContest and not empty contestModelDefaultSetting}">
             options.defaultValues = ${contestModelDefaultSetting};
         </c:if>

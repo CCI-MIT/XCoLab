@@ -8,6 +8,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	function DefaultInputsRenderer(modelingWidget) {
 		this.modelingWidget = modelingWidget;		
 		this.modelId = -1;
+		this.scenarioId = -1;
 		var that = this;
 		
 		jQuery(modelingWidget).on('scenarioFetched', function(event) {
@@ -15,6 +16,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				that.render(modelingWidget.container, event.scenario);
 			}
 			that.modelId = event.scenario.modelId;
+			that.scenarioId = event.scenario.scenarioId;
 		});
 		
 		jQuery(modelingWidget).on('modelFetched', function(event) {
@@ -22,6 +24,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				that.render(modelingWidget.container, event.model);
 			}
 			that.modelId = event.model.modelId;
+			that.scenarioId = -1;
 		});
 	}
 	
@@ -91,8 +94,14 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		});
 	};
 	DefaultInputsRenderer.prototype.render = function(container, scenario) {
-		if (scenario.modelId != this.modelId) {
-			XCoLab.modeling.BaseXCoLabModelingRenderer.prototype.render.apply(this, [container, scenario]);
+		var updateScenario = scenario.scenarioId != this.scenarioId;
+		if(updateScenario){
+			if(updateScenario && container.find(".act-edit_left").length > 0){
+				container.find(".act-edit_left").remove();
+			}
+		}
+		if (scenario.modelId != this.modelId || updateScenario) {
+			XCoLab.modeling.BaseXCoLabModelingRenderer.prototype.render.apply(this, [container, scenario, updateScenario]);
 		}
 	};
 	

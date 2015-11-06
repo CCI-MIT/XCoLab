@@ -539,6 +539,7 @@
          chart.draw(data, options);
          }
          */
+
     </script>
 
 </jsp:root>

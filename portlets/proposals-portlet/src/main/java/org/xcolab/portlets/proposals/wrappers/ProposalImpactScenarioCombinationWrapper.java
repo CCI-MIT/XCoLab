@@ -49,7 +49,8 @@ public class ProposalImpactScenarioCombinationWrapper {
     private final static Long ENROADS_REGION_INPUT_ID = 814L;
 
     private final static Long EMF_MODEL_ID = 17L;
-    private final static Long EMF_REGION_INPUT_ID = 805L;
+    private final static Long EMF_REGIONAL_MODEL_ID = 39L;
+    private final static Long EMF_REGION_INPUT_ID = 812L;
     private final static Long EMF_SCENARIO_INPUT_ID = 366L;
 
 
@@ -247,8 +248,10 @@ public class ProposalImpactScenarioCombinationWrapper {
                         combinedInputParametersMap.put(inputId, String.valueOf(weightedValue));
                     }
                 } catch (NumberFormatException ignoreRegionString) {
+                    if(!inputId.equals(regionInputId)){
+                        combinedInputParametersMap.put(inputId, (String) currentScenarioInputParameters.get(inputId));
+                    }
                     // This seems to be not numerical input -> region
-                    //combinedInputParametersMap.put(inputId, currentScenarioInputParameters.get(inputId));
                 }
             }
         }
@@ -290,14 +293,10 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     public void runCombinedScenarioSimulation() throws PortalException, SystemException, IOException, ScenarioNotFoundException, ModelNotFoundException {
         if (isConsolidationOfScenariosPossible()) {
-            if (isUsedModelEMF()) {
-                combinedScenario = (Scenario) scenarios.toArray()[0];
-            } else {
-                if (combinedInputParametersMap == null) {
-                    calculateCombinedInputParameters();
-                }
-                combinedScenario = getRomaClient().runModel(combinedSimulation, combinedInputParametersMap, 0L, false);
+            if (combinedInputParametersMap == null) {
+                calculateCombinedInputParameters();
             }
+            combinedScenario = getRomaClient().runModel(combinedSimulation, combinedInputParametersMap, 0L, false);
         }
     }
 
