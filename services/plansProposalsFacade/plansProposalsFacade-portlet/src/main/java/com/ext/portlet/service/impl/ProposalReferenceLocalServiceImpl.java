@@ -50,14 +50,17 @@ public class ProposalReferenceLocalServiceImpl
 
     private final static Log _log = LogFactoryUtil.getLog(ProposalReferenceLocalServiceImpl.class);
 
+    @Override
     public List<ProposalReference> getByProposalId(long proposalId) throws SystemException {
         return proposalReferencePersistence.findByProposalId(proposalId);
     }
 
+    @Override
     public List<ProposalReference> getBySubProposalId(long subProposalId) throws SystemException {
         return proposalReferencePersistence.findBySubProposalId(subProposalId);
     }
 
+    @Override
     public void populateTable() throws SystemException, PortalException {
 
         Set<Long> processedProposals = new HashSet<>();
@@ -76,7 +79,12 @@ public class ProposalReferenceLocalServiceImpl
         }
     }
 
+    @Override
     public void populateTableWithProposal(Proposal proposal) throws PortalException, SystemException {
+        final List<ProposalReference> existingReferences = getByProposalId(proposal.getProposalId());
+        for (ProposalReference existingReference : existingReferences) {
+            deleteProposalReference(existingReference);
+        }
         populateTableWithProposal(proposal, new HashSet<Long>());
     }
 
@@ -120,7 +128,7 @@ public class ProposalReferenceLocalServiceImpl
                 }
                 case PROPOSAL_LIST_TEXT_REFERENCE: {
                     Pattern proposalLinkPattern = Pattern.compile(
-                            "(href=|https?://).*?/plans/-/plans/contestId/(\\d*)/(?:phaseId/\\d*/)?planId/(\\d*)");
+                            "(href=|https?://).*?/-/plans/contestId/(\\d*)/(?:phaseId/\\d*/)?planId/(\\d*)");
                     Matcher m = proposalLinkPattern.matcher(attribute.getStringValue());
                     while (m.find()) {
                         final long subProposalId = Long.parseLong(m.group(3));
@@ -130,7 +138,7 @@ public class ProposalReferenceLocalServiceImpl
                     break;
                 }
             }
-            if (subProposalIds.size() > 0) {
+            if (!subProposalIds.isEmpty()) {
                 for (long subProposalId : subProposalIds) {
                     addProposalReference(proposal.getProposalId(), subProposalId, attribute.getId());
                     populateTableWithProposal(proposalLocalService.fetchProposal(subProposalId), processedProposals);
