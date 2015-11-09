@@ -36,8 +36,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
         var that = this;
         this.container = container;
 
-        container.append('' +
-            '<a class="model_name_description" target="_blank">' +
+        container.append('<a class="model_name_description" target="_blank">' +
             '<h2 class="model_name"></h2></a><p class="model_description"></p>' +
             '<div class="act_left">' +
             '<div class="acthead-l">Actions</div>' +
@@ -51,9 +50,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
             '</div>' +
             '</a></div></div></div></div> <!-- /act_right -->' +
             '<div class="clearfix"></div>' +
-            "<div class='actions_wrap'><div class='act_charts-top2'></div></div>" +
-            //"<span class='spinner-area'><!-- --> </span>" +pr
-            "");
+            "<div class='actions_wrap'><div class='act_charts-top2'></div></div>");
 
         container.find(".runmodel").click(function () {
             that.modelingWidget.runTheModel();

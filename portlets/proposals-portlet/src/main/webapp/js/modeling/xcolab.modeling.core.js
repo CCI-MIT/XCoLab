@@ -73,27 +73,19 @@ function ModelingWidget(selector, options) {
 	});
 	
 	initActTooltips(this.container);
-	
+
 
 	jQuery(this).on('scenarioFetched', function(event) {
 		that.modelId = event.scenario.modelId;
 		that.scenario = event.scenario;
 		that.model = event.scenario;
-		that.container.fadeIn();
-		that.spinner.stop();
 	});
 
-    jQuery(this).on('scenarioFetchedWithErrors', function(event){
-		ModelingWidget.prototype.showStackTrace();
-		that.container.fadeIn();
-		that.spinner.stop();
-	});
+	jQuery(this).on('scenarioFetchedWithErrors', ModelingWidget.prototype.showStackTrace);
 
 	jQuery(this).on('modelFetched', function(event) {
 		that.modelId = event.model.modelId;
 		that.model = event.model;
-		that.container.fadeIn();
-		that.spinner.stop();
 	});
 
 	this.container.data('modeling', this);
@@ -265,15 +257,17 @@ ModelingWidget.prototype.loadScenario = function(scenarioId) {
 		console.debug('scenario loaded', scenarioId, data, textStatus, jqXHR);
 		var event = jQuery.Event( "scenarioFetched" );
 		event.scenario = data;
+		modelingWidget.container.fadeIn();
 		jQuery(modelingWidget).trigger(event);
-		
+		modelingWidget.spinner.stop();
 	}).fail(function(data, textStatus, errorThrown) {
         console.log('error');
 		console.debug("can't load scenario", scenarioId, data, textStatus, errorThrown);
 		var event = jQuery.Event( "scenarioFetchingError" );
 		event.scenario = data;
+		modelingWidget.container.fadeIn();
 		jQuery(modelingWidget).trigger(event);
-		
+		modelingWidget.spinner.stop();
 	});
 };
 
@@ -365,14 +359,16 @@ ModelingWidget.prototype.loadModel = function(modelId) {
 		
 		var event = jQuery.Event( "modelFetched" );
 		event.model = data;
+		modelingWidget.container.fadeIn();
 		jQuery(modelingWidget).trigger(event);
-		
+		modelingWidget.spinner.stop();
 	}).fail(function(data, textStatus, errorThrown) {
 		console.debug("can't load model", scenarioId, data, textStatus, errorThrown);
 		var event = jQuery.Event( "modelFetchingError" );
 		event.scenario = data;
+		modelingWidget.container.fadeIn();
 		jQuery(modelingWidget).trigger(event);
-		
+		modelingWidget.spinner.stop();
 	});
 };
 
