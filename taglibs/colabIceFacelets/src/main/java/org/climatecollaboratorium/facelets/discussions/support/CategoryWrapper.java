@@ -12,7 +12,7 @@ import javax.faces.event.ActionEvent;
 
 import com.ext.portlet.Activity.DiscussionActivityKeys;
 import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
-import org.climatecollaboratorium.facelets.discussions.ThreadSortClumns;
+import org.climatecollaboratorium.facelets.discussions.ThreadSortColumns;
 import org.climatecollaboratorium.utils.ContentFilterHelper;
 import org.climatecollaboratorium.utils.Helper;
 import org.climatecollaboratorium.utils.HumanTime;
@@ -49,7 +49,7 @@ public class CategoryWrapper implements Serializable {
     private boolean added = false;
     private boolean byNewest = true;
 
-    private String sortColumn = ThreadSortClumns.DATE.name();
+    private String sortColumn = ThreadSortColumns.DATE.name();
     private Boolean sortAscending = true;
 
 
@@ -117,7 +117,6 @@ public class CategoryWrapper implements Serializable {
     
     public void save(ActionEvent e) throws SystemException, PortalException {
         if (!added && discussionBean.getPermissions().getCanAddCategory()) {
-            UIInput descriptionInput = (UIInput) e.getComponent().getParent().findComponent("categoryDescription"); 
             UIInput nameInput = (UIInput) e.getComponent().getParent().findComponent("categoryName"); 
             if (!ValueRequiredValidator.validateComponent(nameInput) || 
                     !CategoryNameValidator.validateComponent(nameInput)) {
@@ -237,17 +236,17 @@ public class CategoryWrapper implements Serializable {
             public int compare(MessageWrapper o1, MessageWrapper o2) {
                 int ret = 0;
                 
-                if (sortColumn.equals(ThreadSortClumns.QUESTION.name())) {
+                if (sortColumn.equals(ThreadSortColumns.QUESTION.name())) {
                     ret = o1.getTitle().compareToIgnoreCase(o2.getTitle());
                 }
-                else if (sortColumn.equals(ThreadSortClumns.REPLIES.name())) {
+                else if (sortColumn.equals(ThreadSortColumns.REPLIES.name())) {
                     try {
                         ret = o1.getThreadMessagesCount() - o2.getThreadMessagesCount();
                     } catch (SystemException e) {
                         // ignore
                     }
                 }
-                else if (sortColumn.equals(ThreadSortClumns.LAST_COMMENT.name())) {
+                else if (sortColumn.equals(ThreadSortColumns.LAST_COMMENT.name())) {
                     try {
                         ret = o1.getLastActivityAuthor().getScreenName().compareToIgnoreCase(o2.getLastActivityAuthor().getScreenName());
                     } catch (PortalException e) {

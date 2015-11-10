@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.PrintWriter;
 import java.util.Enumeration;
@@ -30,26 +32,26 @@ public class UserTrackingServlet extends HttpServlet {
 
     private static String getClientIpAddress(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_CLIENT_IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
         return ip;
     }
 
     private static String getHeadersAsString(HttpServletRequest request) {
-        String headerString = "";
+        StringBuilder headerStringBuilder = new StringBuilder();
         Enumeration<String> headerNames = request.getHeaderNames();
 
         while (headerNames.hasMoreElements()) {
@@ -57,18 +59,17 @@ public class UserTrackingServlet extends HttpServlet {
             Enumeration<String> headers = request.getHeaders(headerName);
 
             while (headers.hasMoreElements()) {
-                headerString += headers.nextElement()+"\n";
+                headerStringBuilder.append(headers.nextElement()).append("\n");
             }
         }
-        return headerString;
+        return headerStringBuilder.toString();
     }
 
     private static User getLoggedInUser(HttpServletRequest request) {
         String userIdStr = request.getParameter("userId");
-        Integer userId;
         User user = null;
         try {
-            userId = Integer.parseInt(userIdStr);
+            Integer userId = Integer.parseInt(userIdStr);
             if (userId > 0) {
                 try {
                     user = UserLocalServiceUtil.getUser(userId);
@@ -78,14 +79,11 @@ public class UserTrackingServlet extends HttpServlet {
                             user = null;
                         }//else the user is fine.
                     }
-                } catch (PortalException e) {
-                    user = null;
-                } catch (SystemException e) {
+                } catch (PortalException | SystemException e) {
                     user = null;
                 }
             }
-        } catch (NumberFormatException e) {
-        }
+        } catch (NumberFormatException ignored) { }
 
         return user;
     }
@@ -130,8 +128,7 @@ public class UserTrackingServlet extends HttpServlet {
                     if (uuid != null) {
                         uuidFoundInTrackedVisitor2UserTable = true;
                     }
-                } catch (SystemException e) {
-                }
+                } catch (SystemException ignored) { }
             }
 
             //if the previous attempts were not successful, generate a new uuid
@@ -152,7 +149,7 @@ public class UserTrackingServlet extends HttpServlet {
         String isTrackedVisitor = request.getParameter("isTrackedVisitor");
         if (user != null && !uuidFoundInTrackedVisitor2UserTable && (isTrackedVisitor == null || isTrackedVisitor.isEmpty())) {
             try {
-                TrackedVisitor2User trackedVisitor2User = TrackedVisitor2UserLocalServiceUtil.addIfNotExists(uuid, user.getUserId());
+                TrackedVisitor2UserLocalServiceUtil.addIfNotExists(uuid, user.getUserId());
                 isTrackedVisitor = "true";
             } catch (SystemException e) {
                 _log.debug("Could not track visitor: " + e.getMessage() + " " + uuid + " " + user.getUserId() + " " + url + " " + ip);
@@ -164,10 +161,10 @@ public class UserTrackingServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         out.print("{");
-        out.print("\"uuid\":\""+uuid+"\"");
+        out.print("\"uuid\":\""+ StringEscapeUtils.escapeEcmaScript(uuid)+"\"");
         //return the isTrackedVisitor to prevent additional unnecessary database queries
         if (isTrackedVisitor != null && !isTrackedVisitor.isEmpty()) {
-            out.print(",\"isTrackedVisitor\":\""+isTrackedVisitor+"\"");
+            out.print(",\"isTrackedVisitor\":\""+StringEscapeUtils.escapeEcmaScript(isTrackedVisitor)+"\"");
         }
         out.print("}");
         out.flush();

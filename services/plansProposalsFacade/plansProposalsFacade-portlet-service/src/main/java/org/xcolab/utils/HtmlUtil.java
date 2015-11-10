@@ -132,10 +132,11 @@ public class HtmlUtil {
                 String linkURL = aTagElement.attr("href");
                 String linkText = aTagElement.text();
                 String linkWithNoFollow;
-                if(linkText.equals(""))
+                if(linkText.equals("")) {
                     linkWithNoFollow = createLink(linkURL, linkURL);
-                else
+                } else {
                     linkWithNoFollow = createLink(linkURL, linkText);
+                }
                 aTagElement.after(linkWithNoFollow);
                 aTagElement.remove();
             }

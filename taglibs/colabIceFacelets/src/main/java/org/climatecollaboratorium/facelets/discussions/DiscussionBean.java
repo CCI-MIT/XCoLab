@@ -68,7 +68,7 @@ public class DiscussionBean implements Serializable {
     private List<SelectItem> categoriesItems;
     private MessageWrapper newThread = new MessageWrapper(this);
 
-    private String sortColumn = ThreadSortClumns.DATE.name();
+    private String sortColumn = ThreadSortColumns.DATE.name();
     private Boolean sortAscending = true;
 
     private DiscussionCategoryGroup discussion;
@@ -256,27 +256,34 @@ public class DiscussionBean implements Serializable {
         }
         if (showOnlyComments) {
             pageType = DiscussionPageType.COMMENTS;
-            if (commentsThread == null && DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion) != null) { 
-                commentsThread = new MessageWrapper(DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion), null, this, 0);
-            }
         }
-        else if (pageType == DiscussionPageType.CATEGORY) {
-            getCategories();
-            currentCategory = categoriesById.get(categoryId);
-        } else if (pageType == DiscussionPageType.THREAD) {
-            getThreads();
-            getCategories();
-            currentThread = threadsById.get(threadId);
-            if (currentThread != null) {
-                currentCategory = categoriesById.get(currentThread.getWrapped().getCategoryId());
-            }
-        } else if (pageType == DiscussionPageType.CATEGORY_ADD) {
-            newCategory = new CategoryWrapper(this);
-        } else if (pageType == DiscussionPageType.THREAD_ADD) {
-            newThread = new MessageWrapper(this);
-            if (prevPage == DiscussionPageType.CATEGORY || prevPage == DiscussionPageType.THREAD) {
-                newThread.setCategoryId(currentCategory.getId());
-            }
+        switch(pageType) {
+            case CATEGORY:
+                getCategories();
+                currentCategory = categoriesById.get(categoryId);
+                break;
+            case THREAD:
+                getThreads();
+                getCategories();
+                currentThread = threadsById.get(threadId);
+                if (currentThread != null) {
+                    currentCategory = categoriesById.get(currentThread.getWrapped().getCategoryId());
+                }
+                break;
+            case CATEGORY_ADD:
+                newCategory = new CategoryWrapper(this);
+                break;
+            case THREAD_ADD:
+                newThread = new MessageWrapper(this);
+                if (prevPage == DiscussionPageType.CATEGORY || prevPage == DiscussionPageType.THREAD) {
+                    newThread.setCategoryId(currentCategory.getId());
+                }
+                break;
+            case COMMENTS:
+                if (commentsThread == null && DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion) != null) {
+                    commentsThread = new MessageWrapper(DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion), null, this, 0);
+                }
+                break;
         }
         prevPage = pageType;
     }
@@ -551,15 +558,15 @@ public class DiscussionBean implements Serializable {
             public int compare(MessageWrapper o1, MessageWrapper o2) {
                 int ret = 0;
                 
-                if (sortColumn.equals(ThreadSortClumns.QUESTION.name())) {
+                if (sortColumn.equals(ThreadSortColumns.QUESTION.name())) {
                     ret = o1.getTitle().compareToIgnoreCase(o2.getTitle());
                 }
-                else if (sortColumn.equals(ThreadSortClumns.REPLIES.name())) {
+                else if (sortColumn.equals(ThreadSortColumns.REPLIES.name())) {
                     try {
                         ret = o1.getThreadMessagesCount() - o2.getThreadMessagesCount();
                     } catch (SystemException ignored) {  }
                 }
-                else if (sortColumn.equals(ThreadSortClumns.LAST_COMMENT.name())) {
+                else if (sortColumn.equals(ThreadSortColumns.LAST_COMMENT.name())) {
                     try {
                         ret = o1.getLastActivityAuthor().getScreenName().compareToIgnoreCase(o2.getLastActivityAuthor().getScreenName());
                     } catch (PortalException | SystemException ignored) { }

@@ -91,7 +91,7 @@ public class MessageWrapper implements Serializable {
     public MessageWrapper(DiscussionBean discussionBean) {
         this.discussionBean = discussionBean; 
         empty = true;
-        messages = new ArrayList<MessageWrapper>();
+        messages = new ArrayList<>();
     }
     
     public MessageWrapper(MessageWrapper thread) {
@@ -366,7 +366,7 @@ public class MessageWrapper implements Serializable {
             if (category != null) {
                 category.messageDeleted(this);
             }
-            if (discussionBean != null && discussionBean.getCommentsThread() == this) {
+            if (discussionBean.getCommentsThread() == this) {
                 discussionBean.comentsThreadDeleted();
             }
             

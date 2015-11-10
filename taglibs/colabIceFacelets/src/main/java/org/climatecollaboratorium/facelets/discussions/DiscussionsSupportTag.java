@@ -1,22 +1,19 @@
 package org.climatecollaboratorium.facelets.discussions;
 
-import java.io.IOException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.climatecollaboratorium.facelets.discussions.permissions.DiscussionsPermissions;
 
 import javax.el.ELException;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.FaceletException;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
-
-import org.climatecollaboratorium.facelets.discussions.permissions.DiscussionsPermissions;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import java.io.IOException;
 
 public class DiscussionsSupportTag extends TagHandler {
     private final TagAttribute discussionBeanParam;
@@ -25,7 +22,7 @@ public class DiscussionsSupportTag extends TagHandler {
     private final TagAttribute owningGroupIdParam;
     private final TagAttribute commentsParam;
     
-    private static Log _log = LogFactoryUtil.getLog(DiscussionsSupportTag.class);
+    private static final Log _log = LogFactoryUtil.getLog(DiscussionsSupportTag.class);
 
     public DiscussionsSupportTag(TagConfig config) {
         super(config);
@@ -37,13 +34,12 @@ public class DiscussionsSupportTag extends TagHandler {
     }
 
     @Override
-    public void apply(FaceletContext ctx, UIComponent parent) throws IOException, FacesException, FaceletException,
-            ELException {
+    public void apply(FaceletContext ctx, UIComponent parent) throws IOException, ELException, FaceletException {
 
         DiscussionBean discussionBean = (DiscussionBean) discussionBeanParam.getObject(ctx);
         Long discussionId = (Long) discussionIdParam.getValueExpression(ctx, Long.class).getValue(ctx);
         Long owningGroupId = owningGroupIdParam == null ? null : (Long) owningGroupIdParam.getObject(ctx, Long.class);
-        Boolean comments = commentsParam != null ? commentsParam.getBoolean(ctx) : false;
+        boolean comments = commentsParam != null && commentsParam.getBoolean(ctx);
         DiscussionsPermissions permissions = permissionsParam == null ? null : (DiscussionsPermissions) permissionsParam.getObject(ctx, DiscussionsPermissions.class);
         try {
             if (discussionBean.init(discussionId, owningGroupId, permissions, comments)) {
@@ -51,17 +47,10 @@ public class DiscussionsSupportTag extends TagHandler {
                 nextHandler.apply(ctx, parent);
             }
         }
-        catch (SystemException e) {
-            _log.error(e);
-            throw new FaceletException(e);
-        } catch (PortalException e) {
-            // TODO Auto-generated catch block
+        catch (SystemException | PortalException e) {
             _log.error(e);
             throw new FaceletException(e);
         }
-        
-    }
-    
-    
 
+    }
 }
