@@ -864,13 +864,13 @@ display: inline;
 }
 
 .popup .error-message {
-    border: 1px dashed #f00;
+    border: 1px dashed #555555;
     background: #ffeeee;
 }
 
 .popup .popup-message {
-    border: 1px dashed #00f;
-    background: #eeeeff;
+    border: 1px dashed #555555;
+    background: #e7f1f5;
 }
 
 .popup .error-message, .popup .popup-message, .error-message-registerOrLogin {
@@ -880,12 +880,9 @@ display: inline;
     margin: 0 0 15px 0;
 }
 
-
 .popup .error-message p, .popup .popup-message p, .error-message-registerOrLogin p {
 	margin: 0;
 }
-
-
 
 .popup .login_popup_box {
     /* width: 374px;*/
