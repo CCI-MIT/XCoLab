@@ -1,28 +1,5 @@
 package org.climatecollaboratorium.facelets.discussions;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.model.SelectItem;
-
-import org.climatecollaboratorium.events.EventBus;
-import org.climatecollaboratorium.events.EventHandler;
-import org.climatecollaboratorium.events.HandlerRegistration;
-import org.climatecollaboratorium.facelets.discussions.permissions.DefaultDiscussionsPermissionsImpl;
-import org.climatecollaboratorium.facelets.discussions.permissions.DiscussionsPermissions;
-import org.climatecollaboratorium.facelets.discussions.permissions.DiscussionsPermissionsConfig;
-import org.climatecollaboratorium.facelets.discussions.support.CategoryWrapper;
-import org.climatecollaboratorium.facelets.discussions.support.MessageWrapper;
-import org.climatecollaboratorium.navigation.NavigationEvent;
-import org.climatecollaboratorium.utils.Helper;
-
 import com.ext.portlet.NoSuchDiscussionCategoryException;
 import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.model.DiscussionCategory;
@@ -35,6 +12,28 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.model.User;
+import org.climatecollaboratorium.events.EventBus;
+import org.climatecollaboratorium.events.EventHandler;
+import org.climatecollaboratorium.events.HandlerRegistration;
+import org.climatecollaboratorium.facelets.discussions.permissions.DefaultDiscussionsPermissionsImpl;
+import org.climatecollaboratorium.facelets.discussions.permissions.DiscussionsPermissions;
+import org.climatecollaboratorium.facelets.discussions.permissions.DiscussionsPermissionsConfig;
+import org.climatecollaboratorium.facelets.discussions.support.CategoryWrapper;
+import org.climatecollaboratorium.facelets.discussions.support.MessageWrapper;
+import org.climatecollaboratorium.navigation.NavigationEvent;
+import org.climatecollaboratorium.utils.Helper;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DiscussionBean implements Serializable {
     /**
@@ -73,10 +72,10 @@ public class DiscussionBean implements Serializable {
     private Boolean sortAscending = true;
 
     private DiscussionCategoryGroup discussion;
-    private static Log _log = LogFactoryUtil.getLog(DiscussionBean.class);
+    private static final Log _log = LogFactoryUtil.getLog(DiscussionBean.class);
     private DiscussionsPermissions permissions;
     private DiscussionsPermissionsConfig permissionsConfig;
-    private List<HandlerRegistration> handlerRegistrations = new ArrayList<>();
+    private final List<HandlerRegistration> handlerRegistrations = new ArrayList<>();
 
 
     public DiscussionBean() {
@@ -123,7 +122,7 @@ public class DiscussionBean implements Serializable {
             if (DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion) != null) { 
                 commentsThread = new MessageWrapper(DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion), null, this, 0);
             }
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             _log.error("Error when initializing discussion bean", e);
             return false;
         }
@@ -221,7 +220,7 @@ public class DiscussionBean implements Serializable {
         if (e.getComponent().getAttributes().containsKey("pageType")) {
             try {
                 Object obj = e.getComponent().getAttributes().get("pageType");
-                if (obj != null && obj.toString().trim().length() > 0) {
+                if (obj != null && !obj.toString().trim().isEmpty()) {
                     pageType = DiscussionPageType.valueOf(e.getComponent().getAttributes().get("pageType").toString());
                 }
             } catch (IllegalArgumentException ex) {
@@ -231,7 +230,7 @@ public class DiscussionBean implements Serializable {
         if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("categoryId")) {
             try {
                 Object obj = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("categoryId");
-                if (obj != null && obj.toString().trim().length() > 0) {
+                if (obj != null && !obj.toString().trim().isEmpty()) {
                 
                     categoryId = Long.parseLong(FacesContext.getCurrentInstance().getExternalContext()
                             .getRequestParameterMap().get("categoryId"));
@@ -243,7 +242,7 @@ public class DiscussionBean implements Serializable {
         if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("threadId")) {
             try {
                 String threadIdStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("threadId");
-                threadId = threadIdStr != null && threadIdStr.trim().length() > 0 ? Long.parseLong(threadIdStr) : null;
+                threadId = threadIdStr != null && !threadIdStr.trim().isEmpty() ? Long.parseLong(threadIdStr) : null;
             } catch (NumberFormatException ex) {
                 _log.error("Can't read thread id from request", ex);
             }
@@ -292,7 +291,7 @@ public class DiscussionBean implements Serializable {
                     threadsById.put(thread.getId(), thread);
                 }
             }
-            resort(null);
+            resort();
         }
         return threads;
     }
@@ -306,6 +305,12 @@ public class DiscussionBean implements Serializable {
                 categories.add(catWrapper);
                 categoriesById.put(catWrapper.getId(), catWrapper);
             }
+            Collections.sort(categories, new Comparator<CategoryWrapper>() {
+                @Override
+                public int compare(CategoryWrapper o1, CategoryWrapper o2) {
+                    return (int) (o1.getId() - o2.getId());
+                }
+            });
         }
         return categories;
     }
@@ -333,8 +338,6 @@ public class DiscussionBean implements Serializable {
     public void categoryAdded(CategoryWrapper category) throws SystemException {
         getCategories().add(category);
         categoriesById.put(category.getId(), category);
-        //this.pageType = DiscussionPageType.CATEGORY;
-        //currentCategory = category;
         if (categoriesItems != null) {
             categoriesItems.add(new SelectItem(category.getId(), category.getTitle()));
         }
@@ -343,7 +346,6 @@ public class DiscussionBean implements Serializable {
     public void threadAdded(MessageWrapper thread) throws SystemException {
         getThreads().add(thread);
         threadsById.put(thread.getId(), thread);
-        //this.pageType = DiscussionPageType.THREAD;
         this.currentThread = thread;
     }
 
@@ -356,7 +358,7 @@ public class DiscussionBean implements Serializable {
     }
 
     public void search(ActionEvent e) throws SystemException {
-        if (searchQuery.trim().length() == 0) {
+        if (searchQuery.trim().isEmpty()) {
             return;
         }
         pageType = DiscussionPageType.SEARCH_RESULTS;
@@ -439,7 +441,6 @@ public class DiscussionBean implements Serializable {
     
     public void subscribe(ActionEvent e) throws SystemException, PortalException {
         if (Helper.isUserLoggedIn()) {
-            //ActivityUtil.addSubscription(DiscussionActivityKeys.ALL, Helper.getLiferayUser().getUserId(), discussionId);
             StringBuilder extraData = new StringBuilder();
             if (pageType == DiscussionPageType.CATEGORY) {
                 extraData.append(currentCategory.getId());
@@ -450,14 +451,18 @@ public class DiscussionBean implements Serializable {
                 extraData.append(currentThread.getId());
                 
             }
-            if (isSubscribed()) {
-                // user is subscribed, unsubscribe
-                ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(),
-                        DiscussionCategoryGroup.class, getDiscussionId(), 0, extraData.toString());
-            }
-            else {
-                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, getDiscussionId(), 
-                        0, extraData.toString(), Helper.getLiferayUser().getUserId());
+            final User liferayUser = Helper.getLiferayUser();
+            if (liferayUser != null) {
+                if (isSubscribed()) {
+                    // user is subscribed, unsubscribe
+                    ActivitySubscriptionLocalServiceUtil.deleteSubscription(liferayUser.getUserId(),
+                            DiscussionCategoryGroup.class, getDiscussionId(), 0, extraData.toString());
+                } else {
+                    ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, getDiscussionId(),
+                            0, extraData.toString(), liferayUser.getUserId());
+                }
+            } else {
+                _log.error("Could not retrieve user for subscription: user was null");
             }
         }
     }
@@ -476,8 +481,13 @@ public class DiscussionBean implements Serializable {
                 extraData.append(",");
                 extraData.append(currentThread.getId());   
             }
+            final User liferayUser = Helper.getLiferayUser();
+            if (liferayUser == null) {
+                _log.error("Could not retrieve user to test subscription: user was null");
+                return false;
+            }
             return ActivitySubscriptionLocalServiceUtil.isSubscribed(
-                    Helper.getLiferayUser().getUserId(), DiscussionCategoryGroup.class, getDiscussionId(), 0, extraData.toString());
+                    liferayUser.getUserId(), DiscussionCategoryGroup.class, getDiscussionId(), 0, extraData.toString());
         }
         return false;
     }
@@ -533,7 +543,7 @@ public class DiscussionBean implements Serializable {
         return SORT_BY_NEWEST;
     }
     
-    public void resort(ActionEvent e) {
+    public void resort() {
         
         Collections.sort(threads, new Comparator<MessageWrapper>() {
 
@@ -564,7 +574,7 @@ public class DiscussionBean implements Serializable {
 
     public void setSortAscending(Boolean sortAscending) {
         this.sortAscending = sortAscending;
-        resort(null);
+        resort();
     }
 
     public Boolean getSortAscending() {
@@ -573,7 +583,7 @@ public class DiscussionBean implements Serializable {
 
     public void setSortColumn(String sortColumn) {
         this.sortColumn = sortColumn;
-        resort(null);
+        resort();
     }
 
     public String getSortColumn() {

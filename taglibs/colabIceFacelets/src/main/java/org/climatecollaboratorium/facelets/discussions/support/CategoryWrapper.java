@@ -73,7 +73,7 @@ public class CategoryWrapper implements Serializable {
         this.discussionBean = discussionBean;
     }
 
-    public Long getId() {
+    public long getId() {
         return wrapped.getCategoryId();
     }
     
@@ -150,11 +150,11 @@ public class CategoryWrapper implements Serializable {
         return wrapped;
     }
     
-    public Long getAuthorId() {
+    public long getAuthorId() {
         return wrapped.getAuthorId();
     }
     
-    public Long getLastActivityAuthorId() {
+    public long getLastActivityAuthorId() {
         return wrapped.getLastActivityAuthorId();
     }
     

@@ -47,7 +47,7 @@ public class MessageWrapper implements Serializable {
     private List<MessageWrapper> messages;
     private MessageWrapper newMessage;
     private MessageWrapper thread;
-    private Long categoryId;
+    private long categoryId;
     private DiscussionBean discussionBean;
     private boolean editing;
     private String filteredDescription;
@@ -99,7 +99,7 @@ public class MessageWrapper implements Serializable {
         this.discussionBean = thread.discussionBean;
     }
     
-    public Long getId() {
+    public long getId() {
         return wrapped.getMessageId();
     }
 
@@ -261,7 +261,7 @@ public class MessageWrapper implements Serializable {
         }
     }
     
-    private Long getThreadId(DiscussionMessage msg) {
+    private long getThreadId(DiscussionMessage msg) {
         return msg.getThreadId() > 0 ? msg.getThreadId() : msg.getMessageId();
     }
     
@@ -324,11 +324,11 @@ public class MessageWrapper implements Serializable {
         return wrapped;
     }
     
-    public Long getAuthorId() {
+    public long getAuthorId() {
         return wrapped.getAuthorId();
     }
     
-    public Long getLastActivityAuthorId() {
+    public long getLastActivityAuthorId() {
         return wrapped.getLastActivityAuthorId();
     }
     
@@ -348,11 +348,11 @@ public class MessageWrapper implements Serializable {
         return DiscussionMessageLocalServiceUtil.getLastActivityAuthor(wrapped);
     }
 
-    public Long getCategoryId() {
+    public long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
     }
     
@@ -396,7 +396,7 @@ public class MessageWrapper implements Serializable {
         return editing;
     }
     
-    public Long getThreadId() {
+    public long getThreadId() {
         return wrapped.getThreadId() > 0 ? wrapped.getThreadId() : wrapped.getMessageId();
     }
 
