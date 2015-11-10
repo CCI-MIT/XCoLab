@@ -641,8 +641,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
         var that = this;
 
         // render tab headers
-        var inputsContainer = jQuery("<div class='act-edit_left-top'></div>").appendTo(container);
-
+		var inputsContainer = jQuery("<div class='act_left act_left-list'></div>").appendTo(container);
         var result = this.findScenarioResult();
 
         var selectedOptionsHtml = [];
