@@ -41,22 +41,19 @@ if (typeof(XCoLab.modeling) == 'undefined')
         });
 
         jQuery(modelingWidget).on('modelFetched', function (event) {
-            var prevModel = that.model;
             if (event.model.usesCustomInputs) {
-                var modelChanged = (prevModel && prevModel.modelId != event.model.modelId);
+                var modelChanged = (that.modelId != event.model.modelId);
                 that.model = event.model;
                 if (modelChanged || !this.rendered) {
                     // if widget is in edit mode then there is no need to rerender
                     this.rendered = true;
                     that.render(modelingWidget.container, event.model);
                 }
-                that.modelId = event.model.modelId;
-                that.scenarioId = -1;
             } else {
-				that.modelId = event.model.modelId;
-                that.scenarioId = -1;
                 that.rendered = false;
             }
+			that.scenarioId = -1;
+			that.modelId = event.model.modelId;
             that.values = {};
         });
         jQuery(modelingWidget).on('runTheModelMessageRendered', function (event) {
@@ -74,10 +71,10 @@ if (typeof(XCoLab.modeling) == 'undefined')
                     that.render(modelingWidget.container, event.scenario);
                 }
                 that.scenarioId = event.scenario.scenarioId;
-                that.modelId = event.scenario.modelId;
             } else {
                 that.scenarioId = -1;
             }
+			that.modelId = event.scenario.modelId;
         });
 
     }
