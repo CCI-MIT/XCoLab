@@ -53,6 +53,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
                 that.modelId = event.model.modelId;
                 that.scenarioId = -1;
             } else {
+				that.modelId = event.model.modelId;
                 that.scenarioId = -1;
                 that.rendered = false;
             }
