@@ -1,0 +1,33 @@
+@import "compass";
+
+//color names - don't use these in style sheets
+$dodger-blue: #30a3fb;
+$christine-orange: #e36f0f;
+$catskill-white: #e7f1f5;
+$sail-light-blue: #a7d7fb;
+$rock-blue: #9cbcca;
+$apple-green: #66b035;
+$cararra-grey: #efefe7;
+$natural-grey: #888782;
+$emperor-grey: #555555;
+
+
+//main colors:
+$primary-color: $dodger-blue;
+$secondary-color: $apple-green;
+$accent-color: $christine-orange;
+
+//variations:
+$primary-light: $rock-blue; //a very light version of the primary color for backgrounds
+
+//greys
+$light-grey: $cararra-grey;
+$medium-grey: $natural-grey;
+$dark-grey: $emperor-grey;
+
+//alert and message colors:
+$alert-color: #f00;
+$alert-light: #faa;
+
+$info-color: #00f;
+$info-background: $catskill-white;

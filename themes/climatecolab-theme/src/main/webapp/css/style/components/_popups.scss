@@ -1,0 +1,81 @@
+/* OTHER POPUP STYLES ------------------------------------------------------------------------------------- */
+.popup-wrap {
+  background: url(../images/adminoverlay-bg.png);
+  width: 642px;
+  padding: 11px 10px;
+  margin-left: -321px;
+  position: fixed;
+  left: 50%;
+  top: 150px;
+  z-index: 99;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+#acceptTosPopup .popup-wrap {
+  top: 30px
+}
+
+.popup {
+  background: #fff;
+  padding: 30px 30px 32px 30px;
+  position: relative;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.popup h4 {
+  font-size: 22px;
+  color: #545454;
+  margin-bottom: 30px;
+  font-weight: 400;
+}
+
+.popup p {
+  font-size: 15px;
+  color: #000;
+  line-height: 22px;
+  margin-bottom: 20px;
+}
+
+.popup p a {
+  font-weight: 700;
+}
+
+.popup .terms {
+  height: 260px;
+  overflow: auto;
+}
+
+/*padding:5px; margin-bottom:30px; border:1px solid #9b9b9b; background:url(../images/popup-txtbox-bg.png) no-repeat; font-family:Arial, Helvetica, sans-serif;}
+.popup .terms p {font-size:12px; line-height:20px}
+*/
+.popup .btns {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.popup .close {
+  position: absolute;
+  width: 15px;
+  height: 16px;
+  top: 10px;
+  right: 10px;
+  background: url(../images/x.png) no-repeat left top;
+  cursor: pointer;
+}
+
+.popup .close:hover {
+  background: url(../images/x.png) no-repeat left bottom;
+}
+
+.popup p span {
+  color: #666;
+}
+
+//TODO: maybe contest?
+#suggestContestPopupContainer {
+  display: none;
+}

@@ -1,0 +1,556 @@
+/* CONTESTS ------------------------------------------------------------------------------------- */
+
+/* columns  ------------- */
+.contest-left {
+  float: left;
+  width: 500px;
+}
+
+.contest-right {
+  float: left;
+  width: 484px;
+}
+
+/* grid-view / list-view button */
+.grid, .list, .outline {
+  float: left;
+  height: 34px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.gridview .grid {
+  background: url(../images/view-switch.png) no-repeat;
+  width: 123px;
+}
+
+.gridview .grid div {
+  background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px;
+  color: #fff;
+  height: 25px;
+  padding: 9px 0 0 37px;
+}
+
+.gridview .list {
+  background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
+  width: 82px;
+  padding: 9px 0 0 29px;
+}
+
+.gridview .outline {
+  background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
+  width: 104px;
+  padding: 9px 0 0 29px;
+}
+
+.listview .list {
+  background: url(../images/view-switch.png) no-repeat;
+  width: 123px;
+}
+
+.listview .list div {
+  background: url(../images/icon-list_view-on.png) no-repeat 9px 8px;
+  color: #fff;
+  height: 25px;
+  padding: 9px 0 0 34px;
+}
+
+.listview .grid {
+  background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
+  width: 76px;
+  padding: 9px 0 0 34px;
+}
+
+.listview .outline {
+  background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
+  width: 104px;
+  padding: 9px 0 0 29px;
+}
+
+.outlineview .outline {
+  background: url(../images/view-switch2.png) no-repeat;
+  width: 133px;
+}
+
+.outlineview .outline div {
+  background: url(../images/icon-list_outline-on.png) no-repeat 9px 8px;
+  color: #fff;
+  height: 25px;
+  padding: 9px 0 0 34px;
+}
+
+.outlineview .list {
+  background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
+  width: 82px;
+  padding: 9px 0 0 29px;
+}
+
+.outlineview .grid {
+  background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
+  width: 76px;
+  padding: 9px 0 0 34px;
+}
+
+.list a {
+  width: 100%;
+}
+
+.grid a {
+  width: 100%;
+}
+
+.filter {
+  float: right;
+  width: 180px;
+  height: 27px;
+}
+
+.filter input {
+  width: 170px;
+  height: 27px;
+  padding: 1px 0 0 8px;
+  border: 1px solid #bdb7b2;
+  font: 12px "Lucida Grande", Arial, sans-serif; /*color:#bdb7b2;*/
+}
+
+.users-filter {
+  float: right;
+  padding-right: 240px;
+  height: 27px;
+}
+
+.users-filter input {
+  font: 12px "Lucida Grande", Arial, sans-serif; /*color:#bdb7b2;*/
+}
+
+#userFilterInput {
+  height: 24px;
+}
+
+#usersFilterSubmit {
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+
+.users-pagination {
+  float: left;
+  margin-top: 40px;
+  margin-left: 10px;
+}
+
+/* contest boxes - rounded corners ------------- */
+.contestbox {
+  width: 452px;
+  height: 152px;
+  border: 4px solid #e8e7dc;
+  background: #fff;
+  padding: 9px 8px;
+  margin-bottom: 24px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  position: relative;
+  float: left;
+}
+
+.contestbox .img-wrap {
+  float: left;
+  width: 169px;
+}
+
+.contestbox .text-wrap {
+  float: left;
+  width: 283px;
+  font-size: 14px;
+  padding-top: 3px;
+  line-height: 20px;
+  color: #545454;
+  position: relative;
+}
+
+.contestbox h3 {
+  margin-bottom: 8px;
+  color: #404040;
+}
+
+.contestbox .count {
+  position: absolute;
+  top: 128px;
+  left: 0;
+  color: #969696;
+}
+
+.contest-featured-seperator {
+  width: 50%;
+  border-bottom: 1px solid gray;
+  float: left;
+  margin: 20px 25% 44px 25%;
+  height: 0;
+}
+
+.prop {
+  float: left;
+  display: inline;
+  padding-right: 18px;
+}
+
+.comm {
+  float: left;
+  display: inline;
+}
+
+.prop a, .comm a {
+  font-weight: 700;
+}
+
+.contestbox:hover {
+  -moz-box-shadow: 0 0 10px #666;
+  -webkit-box-shadow: 0 0 10px #666;
+  box-shadow: 0 0 10px #666;
+}
+
+.contestbox .featured {
+  background: url(../images/contest-featured.png) no-repeat;
+  width: 109px;
+  height: 36px;
+  position: absolute;
+  top: 115px;
+  left: -20px;
+  z-index: 5;
+}
+
+.contestbox .indevelopment {
+  background: url(../images/contest-in_dev.png) no-repeat;
+  width: 149px;
+  height: 36px;
+  position: absolute;
+  top: 115px;
+  left: -20px;
+  z-index: 5;
+}
+
+/* top section of the contests page under the headline, above the sub-headline */
+.contest-detail {
+  background-color: #f2f1e9;
+  border-bottom: 1px solid #bdbcb7;
+  margin-top: -4px;
+  color: #404040;
+}
+
+.contest-detail .heading {
+  background: url(../images/pattern-6x6-lite.png) #e6e4d5;
+  min-height: 24px;
+  padding: 7px 0 5px 20px;
+  font-size: 22px;
+}
+
+.contest-detail .heading-title {
+  margin: 20px 0;
+}
+
+.contest-detail .description {
+  padding: 18px 16px 20px 18px;
+}
+
+.contest-detail .description p {
+  padding-right: 22px;
+  line-height: 24px;
+  margin: 0;
+}
+
+.fixed-position-container {
+  position: relative;
+}
+
+.fixed-position-inner-relative {
+  overflow: auto;
+}
+
+.fixed-position-inner-fixed {
+  position: absolute;
+}
+
+.contest-detail .what, .contest-detail .where, .contest-detail .who, .contest-detail .how {
+  float: left;
+  font-size: 16px;
+  height: 24px;
+  display: inline;
+  padding-top: 1px;
+  padding-right: 10px;
+  background: none;
+  width: auto;
+}
+
+.contest-detail .what {
+  background: url(../images/icon-list-what.png) no-repeat;
+  padding-left: 30px;
+}
+
+.contest-detail .where {
+  background: url(../images/icon-list-where.png) no-repeat;
+  padding-left: 33px;
+}
+
+.contest-detail .who {
+  background: url(../images/icon-list-who.png) no-repeat;
+  padding-left: 25px;
+}
+
+.contest-detail .moreinfo {
+  clear: both;
+  padding: 14px 16px 16px 18px;
+  position: relative;
+  min-height: 37px;
+}
+
+.contest-detail .advisors {
+  font-size: 14px;
+  font-weight: 700;
+  padding-top: 0;
+  color: #757572;
+  float: left;
+}
+
+.contest-detail .advisors img {
+  margin-left: 5px;
+  margin-right: 10px;
+  vertical-align: bottom;
+}
+
+.contest-detail .contestTeamRole {
+  padding: 5px 0;
+}
+
+.contest-detail .buttons {
+  float: right;
+  width: 270px;
+  text-align: right;
+  position: absolute;
+  right: 15px;
+  bottom: 20px;
+}
+
+.contest-detail .buttons a, a.detailbutton {
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 115px;
+  height: 27px;
+  display: inline-block;
+  padding-top: 8px;
+  margin-left: 3px;
+  background: #fcfbf9;
+  border: 1px solid #6a96a7;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+/* the table with rows of contests  */
+.contestlist {
+  clear: both;
+  margin-top: -4px;
+}
+
+.contestlist td {
+  height: 57px;
+  padding: 11px 10px 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #404041;
+  border-bottom: 1px solid #d2d1d0;
+}
+
+.contestlist a {
+  font-weight: 700;
+}
+
+.contestlist tr.top td {
+  height: 61px;
+  padding-top: 15px;
+}
+
+.contestlist td.g {
+  background-image: url(../images/pattern-tbl-6x6.png);
+}
+
+.contestlist.featured td {
+  background-color: #f2f1e9;
+}
+
+.contestlist tr.feat-bot {
+  border-bottom: 1px solid #9cbcca;
+}
+
+/* the table with rows of users  */
+.userslist {
+  clear: both;
+  margin-top: -4px;
+}
+
+.userslist td {
+  height: 30px;
+  padding: 11px 10px 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #404041;
+  border-bottom: 1px solid #d2d1d0;
+}
+
+.userslist a {
+  font-weight: 700;
+}
+
+.userslist tr.top td {
+  height: 61px;
+  padding-top: 15px;
+}
+
+.userslist td.g {
+  background-image: url(../images/pattern-tbl-6x6.png);
+}
+
+.userslist.featured td {
+  background-color: #f2f1e9;
+}
+
+.userslist tr.feat-bot {
+  border-bottom: 1px solid #9cbcca;
+}
+
+/* to be replaced ???  edit and wiki buttons next to a proposal title */
+.butt {
+  float: left;
+  margin-left: 12px;
+  min-width: 78px;
+  height: 18px;
+}
+
+.butt a {
+  font: 10px Verdana, Geneva, sans-serif;
+  color: #404040;
+  min-width: 66px;
+  height: 14px;
+  padding: 2px 5px 0;
+  display: inline-block;
+  background: #e7f1f5;
+  border: 1px solid #2ea5d6;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.butt a:hover {
+  color: #66b035;
+  background: #fff;
+}
+
+
+//TODO: these also somewhat relate to blueheaderbar
+.contestbar .phaseSeparatorContainer {
+  width: 16px;
+  display: inline-block;
+  padding-left: 7px;
+  padding-right: 7px;
+
+}
+
+.contestbar .phaseSeparator {
+  width: 16px;
+  height: 37px;
+  top: 0;
+  position: absolute;
+  background: url(../images/contest_blueheader_separator.png) no-repeat;
+}
+
+.contestbar .phaseActive, .contestbar .phaseActive a {
+  font-weight: 700;
+}
+
+.contestbar .phaseFuture {
+  color: #858585;
+}
+
+.phaseLinkContainer {
+  display: inline-block;
+  position: relative;
+  font-size: 13px;
+}
+
+#priorActiveAllWidget {
+  border: 1px solid #30a3fb;
+  -moz-box-shadow: 0 2px 2px #666;
+  -webkit-box-shadow: 0 2px 2px #666;
+  box-shadow: 0 2px 2px #666;
+  position: absolute;
+  display: none;
+  z-index: 1000;
+  background: #fff;
+  text-align: left;
+  padding: 10px 10px 10px 10px;
+  width: 125px;
+}
+
+#priorActiveAllWidget ul {
+  margin-left: 0;
+  list-style: none;
+}
+
+#priorActiveAllWidget ul li {
+  margin-left: 0;
+  list-style: none;
+  background: none;
+  padding: 5px;
+}
+
+#priorActiveAllWidget ul li.active,
+#priorActiveAllWidget ul li:hover {
+  background: #D6EDFF;
+}
+
+#priorActiveAllWidget ul li.active,
+#priorActiveAllWidget ul li:hover {
+  background: #D6EDFF;
+}
+
+#priorActiveAllWidget ul li a,
+#priorActiveAllWidget ul li a:after {
+  background: none;
+  border: 0;
+}
+
+@import 'style/pages/outline_view';
+
+
+//TODO: what exactly are these?
+#contestsFilterClear {
+  background: url(../images/filter-cancel.png) no-repeat;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  display: block;
+
+}
+
+#archivedContestsMarkerContainer {
+  margin-bottom: 15px;
+}
+
+#archivedContestsMarkerContainer img {
+  vertical-align: middle;
+  margin-right: 20px;
+}
+
+//TODO: prop-description is for proposals?
+.contest-discussion .prop-description a {
+  font-size: 18px;
+}
+
+.contest-detail .heading {
+  padding-right: 27px;
+}
