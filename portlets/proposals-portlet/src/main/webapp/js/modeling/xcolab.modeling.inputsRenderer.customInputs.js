@@ -50,7 +50,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
                     that.render(modelingWidget.container, event.model);
                 }
             } else {
-                that.rendered = false;
+                this.rendered = false;
             }
 			that.scenarioId = -1;
 			that.modelId = event.model.modelId;
@@ -62,7 +62,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 
         jQuery(modelingWidget).on('scenarioFetched', function (event) {
             if (event.scenario.usesCustomInputs) {
-                var modelChanged = (that.model && that.model.modelId != event.scenario.modelId);
+                var modelChanged = (that.modelId != event.scenario.modelId);
                 var scenarioChanged = event.scenario.scenarioId != this.scenarioId;
                 that.model = event.scenario;
                 if (modelChanged || scenarioChanged || !this.rendered) {
@@ -72,6 +72,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
                 }
                 that.scenarioId = event.scenario.scenarioId;
             } else {
+                this.rendered = false;
                 that.scenarioId = -1;
             }
 			that.modelId = event.scenario.modelId;
