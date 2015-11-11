@@ -38,8 +38,6 @@
 	
     <link rel="stylesheet" href="$css_folder/jquery.jqplot.min.css?tt=$themeTimestamp" type="text/css"/>
     <link rel="stylesheet" href="$css_folder/style.css?tt=$themeTimestamp" type="text/css" />
-    <link rel="stylesheet" href="$css_folder/style_additions.css?tt=$themeTimestamp" type="text/css" />
-    <link rel="stylesheet" href="$css_folder/style_lr6.css?tt=$themeTimestamp" type="text/css" />
     <link rel="stylesheet" href="$css_folder/autoSuggest.css?tt=$themeTimestamp" type="text/css" />
     <link rel="stylesheet" href="$css_folder/ui.dynatree.css?tt=$themeTimestamp" type="text/css" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
