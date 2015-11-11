@@ -1,16 +1,20 @@
 package org.xcolab.hooks.climatecolab.errorreporting;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.util.mail.MailEngine;
 import org.parboiled.common.StringUtils;
 import org.xcolab.mail.EmailToAdminDispatcher;
 
-import javax.mail.internet.InternetAddress;
-import javax.servlet.*;
-import javax.servlet.http.HttpServlet;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -52,16 +56,14 @@ public class ErrorReporting implements Filter {
         String descriptionInHtmlFormat = request.getParameter("description").replaceAll("(\r\n|\n)", "<br />");
         String stackTrace = request.getParameter("stackTrace");
         String userScreenName = "no user was logged in";
-        
+
         try {
             userScreenName = PortalUtil.getUser(request).getScreenName();
-            if(email.isEmpty()) {
+
+            if (email.isEmpty()) {
                 email = PortalUtil.getUser(request).getEmailAddress();
             }
-        }
-        catch(Exception e){
-            // Couldn't find user or no user is logged in
-        }
+        } catch (PortalException | SystemException ignored) { /* no user logged in */}
 
         if (Validator.isNotNull(url)) {
             String body = buildErrorReportBody(url, userScreenName, email, stackTrace, descriptionInHtmlFormat);
@@ -70,14 +72,17 @@ public class ErrorReporting implements Filter {
         response.sendRedirect("/");
     }
 
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
         doPost((HttpServletRequest) request, (HttpServletResponse) response);
     }
 
+    @Override
     public void destroy() {
 
     }

@@ -24,24 +24,18 @@ public class CategoryNameValidator {
         
         
         boolean isValid = true;
-        if (value == null) {
-            isValid = false;
-        }
-        if (isValid && categoryId != null) {
+        if (categoryId != null) {
             try {
                 DiscussionCategory category = DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(categoryId);
                 if (category.getName().equals(value)) {
                     // value hasn't changed ... it's ok
                     return true;
                 }
-            } catch (NoSuchDiscussionCategoryException e) {
-                isValid = false;
-                _log.error("Exception thrown when validating new category name", e);
-            } catch (SystemException e) {
+            } catch (NoSuchDiscussionCategoryException | SystemException e) {
                 isValid = false;
                 _log.error("Exception thrown when validating new category name", e);
             }
-            
+
         }
         if (isValid && categoryGroupId != null) {
             try {
@@ -53,14 +47,11 @@ public class CategoryNameValidator {
                         isValid = false;
                     }
                 }
-            } catch (SystemException e) {
-                isValid = false;
-                _log.error("Exception thrown when validating new category name", e);
-            } catch (PortalException e) {
+            } catch (SystemException | PortalException e) {
                 isValid = false;
                 _log.error("Exception thrown when validating new category name", e);
             }
-            
+
         }
         else {
             isValid = false;

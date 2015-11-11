@@ -68,11 +68,11 @@ public class MessagingUtils {
         link.append(getPortalURL(request));
         link.append(MessagingConstants.CONVERTION_PATH);
         
-        for(String parameterName: linkParameters.keySet()) {
+        for(Map.Entry<String, String> entry: linkParameters.entrySet()) {
             link.append(MessagingConstants.CONVERSION_PARAMETER_DELIMITER);
-            link.append(parameterName);
+            link.append(entry.getKey());
             link.append(MessagingConstants.CONVERSION_PARAMETER_DELIMITER);
-            link.append(linkParameters.get(parameterName));
+            link.append(entry.getValue());
             
         }
         return link.toString();
@@ -82,7 +82,7 @@ public class MessagingUtils {
         String pathInfo = request.getRequestURL().toString();
         
         pathInfo = pathInfo.substring(pathInfo.indexOf("/", 10)+1);
-        String parameters[] = pathInfo.split(MessagingConstants.CONVERSION_PARAMETER_DELIMITER);
+        String[] parameters = pathInfo.split(MessagingConstants.CONVERSION_PARAMETER_DELIMITER);
         
         Map<String, String> parametersMap = new HashMap<String, String>();
         for (int i = 1; i < parameters.length; i += 2) {
