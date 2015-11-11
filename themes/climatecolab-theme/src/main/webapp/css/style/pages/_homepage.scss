@@ -83,9 +83,7 @@ a.get:hover {
   margin: 25px 0 25px;
   position: relative;
   border: 1px solid #a3a39e;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
+  @include border-radius(6px);
 }
 
 .newsbox h3 {
@@ -280,19 +278,13 @@ a.get:hover {
 
 .top {
   top: 0;
-  -moz-transform-origin: center bottom;
-  -webkit-transform-origin: center bottom;
-  -o-transform-origin: center bottom;
-  transform-origin: center bottom;
+  @include transform-origin(center bottom);
   background: url('../images/flip_top.png') no-repeat;
 }
 
 .bottom {
   top: 19px;
-  -moz-transform-origin: center top;
-  -webkit-transform-origin: center top;
-  -o-transform-origin: center top;
-  transform-origin: center top;
+  @include transform-origin(center top);
   background: url('../images/flip_bottom.png') no-repeat;
 }
 
@@ -323,59 +315,43 @@ a.get:hover {
 }
 
 .ani1 .top.front {
-  -moz-transform: skew(5deg) scaleY(.90);
-  -webkit-transform: skew(5deg) scaleY(.90);
-  -o-transform: skew(5deg) scaleY(.90);
-  transform: skew(5deg) scaleY(.90);
+  @include skew(5deg);
+  @include scaleY(.90);
 }
 
 .ani2 .top.front {
-  -moz-transform: skew(10deg) scaleY(.60);
-  -webkit-transform: skew(10deg) scaleY(.60);
-  -o-transform: skew(10deg) scaleY(.60);
-  transform: skew(10deg) scaleY(.60);
+  @include skew(10deg);
+  @include scaleY(.60);
 }
 
 .ani3 .top.front {
-  -moz-transform: skew(20deg) scaleY(.30);
-  -webkit-transform: skew(20deg) scaleY(.30);
-  -o-transform: skew(20deg) scaleY(.30);
-  transform: skew(20deg) scaleY(.30);
+  @include skew(20deg);
+  @include scaleY(.30);
 }
 
 .ani4 .top.front {
-  -moz-transform: skew(50deg) scaleY(0.10);
-  -webkit-transform: skew(50deg) scaleY(0.10);
-  -o-transform: skew(50deg) scaleY(0.10);
-  transform: skew(50deg) scaleY(0.10);
+  @include skew(50deg);
+  @include scaleY(0.10);
 }
 
 .ani4 .bottom.front {
-  -moz-transform: skew(-50deg) scaleY(0.10);
-  -webkit-transform: skew(-50deg) scaleY(0.10);
-  -o-transform: skew(-50deg) scaleY(0.10);
-  transform: skew(-50deg) scaleY(0.10);
+  @include skew(-50deg);
+  @include scaleY(0.10);
 }
 
 .ani3 .bottom.front {
-  -moz-transform: skew(-20deg) scaleY(.30);
-  -webkit-transform: skew(-20deg) scaleY(.30);
-  -o-transform: skew(-20deg) scaleY(.30);
-  transform: skew(-20deg) scaleY(.30);
+  @include skew(-20deg);
+  @include scaleY(.30);
 }
 
 .ani2 .bottom.front {
-  -moz-transform: skew(-10deg) scaleY(.60);
-  -webkit-transform: skew(-10deg) scaleY(.60);
-  -o-transform: skew(-10deg) scaleY(.60);
-  transform: skew(-10deg) scaleY(.60);
+  @include skew(-10deg);
+  @include scaleY(.60);
 }
 
 .ani1 .bottom.front {
-  -moz-transform: skew(-5deg) scaleY(.90);
-  -webkit-transform: skew(-5deg) scaleY(.90);
-  -o-transform: skew(-5deg) scaleY(.90);
-  transform: skew(-5deg) scaleY(.90);
+  @include skew(-5deg);
+  @include scaleY(.90);
 }
 
 /* </ Conference Countdown Flipclock>*/

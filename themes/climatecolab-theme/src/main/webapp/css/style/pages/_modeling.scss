@@ -8,10 +8,7 @@
   line-height: 20px;
   background: url(../images/grid_t.gif) #fff;
   border: 1px solid #dad7cf;
-  -webkit-border: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -khtml-border-radius: 10px;
+  @include border-radius(10px);
   padding-bottom: 15px;
 }
 
@@ -578,10 +575,7 @@
   margin: 0 7px 7px 0;
   font: 11px Verdana, Geneva, sans-serif;
   line-height: normal;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -khtml-border-radius: 5px;
+  @include border-radius(5px);
 }
 
 .rounded_button a {
@@ -589,10 +583,7 @@
   padding: 6px 10px 0 10px;
   display: inline-block;
   line-height: normal;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -khtml-border-radius: 5px;
+  @include border-radius(5px);
 }
 
 .rounded_button.brn a {
@@ -650,9 +641,7 @@
   overflow: hidden;
   margin-left: -6px;
   background: url(../images/control-grab.gif) no-repeat;
-  -moz-border-radius: 0;
-  -webkit-border-radius: 0;
-  border-radius: 0;
+  @include border-radius(0);
   border: 0;
 
 }

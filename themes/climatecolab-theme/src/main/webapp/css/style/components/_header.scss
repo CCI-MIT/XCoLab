@@ -169,12 +169,8 @@
   height: 30px;
   padding: 12px 0 0 12px;
   background: #454544;
-  -moz-border-radius-topleft: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-left-radius: 3px;
-  -webkit-border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  @include border-top-left-radius(3px);
+  @include border-top-right-radius(3px);
 }
 
 .searchbox {
@@ -182,15 +178,9 @@
   height: 42px;
   padding: 17px 0 0 12px;
   background: url(../images/search-bg.png);
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
-  border-top-right-radius: 3px;
+  @include border-bottom-left-radius(3px);
+  @include border-bottom-right-radius(3px);
+  @include border-top-right-radius(3px);
 }
 
 .search-term {
@@ -214,9 +204,7 @@
   font-weight: 700;
   color: #fff;
   text-align: center;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  @include border-radius(3px);
   cursor: pointer;
 }
 
@@ -239,12 +227,8 @@
   padding: 12px 0 0 12px;
   margin-left: 242px;
   background: #454544;
-  -moz-border-radius-topleft: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-left-radius: 3px;
-  -webkit-border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  @include border-top-left-radius(3px);
+  @include border-top-right-radius(3px);
 }
 
 .loginbox {
@@ -254,15 +238,9 @@
   font-size: 14px;
   color: #d4d4d4;
   font-weight: 700;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
-  border-top-left-radius: 3px;
+  @include border-bottom-left-radius(3px);
+  @include border-bottom-right-radius(3px);
+  @include border-top-left-radius(3px);
 }
 
 .loginbox span a {
@@ -297,9 +275,7 @@
   margin-bottom: 8px;
   border: none;
   font: 12px "Lucida Grande", Arial, sans-serif;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  @include border-radius(3px);
 }
 
 .forgot {
@@ -317,9 +293,7 @@
   font-weight: 700;
   color: #fff;
   text-align: center;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  @include border-radius(3px);
   cursor: pointer;
 }
 
@@ -334,9 +308,7 @@
   color: #fff;
   padding: 0 5px;
   margin-left: 5px;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
+  @include border-radius(8px);
   position: absolute;
 }
 
@@ -367,12 +339,8 @@
   padding: 8px 0 0 8px;
   margin-left: 120px;
   background: url(../images/arrow-white_down.png) no-repeat 39px center #454544;
-  -moz-border-radius-topleft: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-left-radius: 3px;
-  -webkit-border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  @include border-top-left-radius(3px);
+  @include border-top-right-radius(3px);
 }
 
 .usertop img {
@@ -386,15 +354,9 @@
   font-size: 14px;
   color: #d4d4d4;
   font-weight: 700;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
-  border-top-left-radius: 3px;
+  @include border-bottom-left-radius(3px);
+  @include border-bottom-right-radius(3px);
+  @include border-top-left-radius(3px);
 }
 
 .userbox ul {

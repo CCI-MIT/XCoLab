@@ -5,12 +5,8 @@
   padding: 8px 15px;
   color: #fff;
   font: 13px Arial, Helvetica, sans-serif;
-  -moz-box-shadow: 0 0 6px #666;
-  -webkit-box-shadow: 0 0 6px #666;
-  box-shadow: 0 0 6px #666;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  @include box-shadow(0 0 6px #666);
+  @include border-radius(5px);
   position: absolute;
   min-width: 150px;
 }

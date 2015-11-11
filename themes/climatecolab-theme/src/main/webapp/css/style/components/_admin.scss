@@ -4,12 +4,7 @@ Admin interface fixes
 
 div#p_p_id_145_ {
   height: 44px;
-  background-color: #118ade;
-  background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #118ade), color-stop(100%, #1273c7));
-  background-image: -webkit-linear-gradient(top, #118ade, #1273c7);
-  background-image: -moz-linear-gradient(top, #118ade, #1273c7);
-  background-image: -o-linear-gradient(top, #118ade, #1273c7);
-  background-image: linear-gradient(top, #118ade, #1273c7);
+  @include background(linear-gradient(#118ade, #1273c7));
 }
 
 #p_p_id_145_ ul {
@@ -146,9 +141,7 @@ div#p_p_id_145_ {
   left: 50%;
   bottom: 350px;
   z-index: 99;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  @include border-radius(5px);
 }
 
 .sendMessagePopup .savechanges-wrap {
@@ -159,9 +152,7 @@ div#p_p_id_145_ {
 .savechanges {
   background: #fff;
   padding: 42px 60px 32px 46px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  @include border-radius(5px);
 }
 
 .savechanges h4 {

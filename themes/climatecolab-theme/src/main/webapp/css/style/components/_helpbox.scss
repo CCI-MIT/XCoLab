@@ -4,8 +4,7 @@
   width: 970px;
   border-radius: 10px;
   background: #fff;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
+  @include border-radius(10px);
   border: 1px solid #339fb8;
   margin: 15px 0;
   line-height: normal;

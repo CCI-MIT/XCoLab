@@ -149,9 +149,7 @@
   font-weight: 700;
   text-align: center;
   vertical-align: middle;
-  -webkit-border-radius: 12px;
-  -moz-border-radius: 12px;
-  border-radius: 12px;
+  @include border-radius(12px);
 }
 
 .continue a img {
@@ -189,9 +187,7 @@
   padding: 7px 12px 0;
   display: inline-block;
   margin-top: 6px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  @include border-radius(5px);
 }
 
 .two {

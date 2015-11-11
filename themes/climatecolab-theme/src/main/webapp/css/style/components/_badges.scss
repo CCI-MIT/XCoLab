@@ -58,9 +58,7 @@
   position: absolute;
   left: 44px;
   top: 36px;
-  -webkit-transform: rotate(323deg);
-  -moz-transform: rotate(323deg);
-  -o-transform: rotate(323deg);
+  @include rotate(323deg);
 }
 
 .badge-small-text {
@@ -71,9 +69,7 @@
   position: absolute;
   left: 10px;
   top: 36px;
-  -webkit-transform: rotate(396deg);
-  -moz-transform: rotate(396deg);
-  -o-transform: rotate(396deg);
+  @include rotate(396deg);
 }
 
 .badge-title a {
@@ -95,9 +91,7 @@
   position: absolute;
   left: 124px;
   top: 106px;
-  -webkit-transform: rotate(323deg);
-  -moz-transform: rotate(323deg);
-  -o-transform: rotate(323deg);
+  @include rotate(323deg);
 }
 
 .badge-text {
@@ -109,7 +103,5 @@
   position: absolute;
   left: 20px;
   top: 101px;
-  -webkit-transform: rotate(396deg);
-  -moz-transform: rotate(396deg);
-  -o-transform: rotate(396deg);
+  @include rotate(396deg);
 }

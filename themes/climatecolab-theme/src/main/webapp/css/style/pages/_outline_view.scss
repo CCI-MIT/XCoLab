@@ -6,9 +6,7 @@
   min-height: 600px;
   border-right: 1px solid #e3e0d9;
   padding-bottom: 150px;
-  -webkit-box-shadow: inset -14px 0 10px -10px #ccc;
-  -moz-box-shadow: inset -14px 0 10px -10px #ccc;
-  box-shadow: inset -14px 0 10px -10px #ccc;
+  @include box-shadow(inset -14px 0 10px -10px #ccc);
 }
 
 .contest-outline-right {
@@ -19,9 +17,7 @@
 }
 
 .contest-outline-left, .contest-outline-right div {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  @include box-sizing(border-box);
 }
 
 .contest-outline-right div.ctest {
@@ -60,9 +56,7 @@
 #content .contest-outline-left ul li,
 .contest-outline-left li a {
   margin-bottom: 0;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  @include box-sizing(border-box);
 }
 
 #content .contest-outline-left ul {
@@ -97,9 +91,7 @@
   display: inline-block;
   width: 100%;
   color: #000;
-  -webkit-box-shadow: inset -14px 0 10px -10px #ccc;
-  -moz-box-shadow: inset -14px 0 10px -10px #ccc;
-  box-shadow: inset -14px 0 10px -10px #ccc;
+  @include box-shadow(inset -14px 0 10px -10px #ccc);
 }
 
 .contest-outline-left li a:hover, .section-head.open {

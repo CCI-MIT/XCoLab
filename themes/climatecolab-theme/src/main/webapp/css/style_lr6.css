@@ -1,3 +1,5 @@
+@import "compass";
+
 @import 'style/components/admin';
 
 .portlet-content, .portlet-minimized .portlet-content-container {
@@ -52,9 +54,7 @@
 
 .aui .portlet-content .lfr-icon-actions {
   border: none !important;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
+  @include box-shadow(none);
 }
 
 .aui .portlet-topper .portlet-title .taglib-text {

@@ -147,9 +147,7 @@
   background: #fff;
   padding: 9px 8px;
   margin-bottom: 24px;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
+  @include border-radius(8px);
   position: relative;
   float: left;
 }
