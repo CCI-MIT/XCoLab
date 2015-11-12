@@ -169,7 +169,7 @@
 
 .contestbox h3 {
   margin-bottom: 8px;
-  color: #404040;
+  color: #454545;
 }
 
 .contestbox .count {
@@ -230,10 +230,10 @@
 
 /* top section of the contests page under the headline, above the sub-headline */
 .contest-detail {
-  background-color: #f2f1e9;
+  background-color: #efefe7;
   border-bottom: 1px solid #bdbcb7;
   margin-top: -4px;
-  color: #404040;
+  color: #454545;
 }
 
 .contest-detail .heading {
@@ -306,7 +306,7 @@
   font-size: 14px;
   font-weight: 700;
   padding-top: 0;
-  color: #757572;
+  color: #7f7f7f;
   float: left;
 }
 
@@ -337,7 +337,7 @@
   display: inline-block;
   padding-top: 8px;
   margin-left: 3px;
-  background: #fcfbf9;
+  background: $primary-light-grey;
   border: 1px solid $primary-dark-grey;
   font-size: 16px;
   font-weight: 700;
@@ -358,8 +358,8 @@
   padding: 11px 10px 0;
   font-size: 14px;
   line-height: 20px;
-  color: #404041;
-  border-bottom: 1px solid #d2d1d0;
+  color: #454545;
+  border-bottom: 1px solid #d4d4d4;
 }
 
 .contestlist a {
@@ -376,7 +376,7 @@
 }
 
 .contestlist.featured td {
-  background-color: #f2f1e9;
+  background-color: #efefe7;
 }
 
 .contestlist tr.feat-bot {
@@ -394,8 +394,8 @@
   padding: 11px 10px 0;
   font-size: 14px;
   line-height: 20px;
-  color: #404041;
-  border-bottom: 1px solid #d2d1d0;
+  color: #454545;
+  border-bottom: 1px solid #d4d4d4;
 }
 
 .userslist a {
@@ -412,7 +412,7 @@
 }
 
 .userslist.featured td {
-  background-color: #f2f1e9;
+  background-color: #efefe7;
 }
 
 .userslist tr.feat-bot {

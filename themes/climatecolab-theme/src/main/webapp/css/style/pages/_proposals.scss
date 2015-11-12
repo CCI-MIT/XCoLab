@@ -4,7 +4,7 @@
 .proposal-head {
   padding-top: 28px;
   background: url(../images/pattern-6x6-blue.png);
-  border-bottom: 1px solid #8e8d8a;
+  border-bottom: 1px solid #969696;
 }
 
 .proposal-head:after {
@@ -37,7 +37,7 @@
 .proposal-title {
   float: left;
   width: 910px;
-  color: #231f20;
+  color: #272727;
   overflow: hidden;
 }
 
@@ -87,9 +87,9 @@
   height: 24px;
   padding: 12px 11px 1px;
   background: $primary-darkest;
-  border-top: 1px solid #8e8d8a;
-  border-left: 1px solid #8e8d8a;
-  border-right: 1px solid #8e8d8a;
+  border-top: 1px solid #969696;
+  border-left: 1px solid #969696;
+  border-right: 1px solid #969696;
 }
 
 .prop-tabs li.c a {
@@ -97,9 +97,9 @@
   padding: 12px 11px 0;
   color: $primary-color;
   background: white;
-  border-top: 1px solid #8e8d8a;
-  border-left: 1px solid #8e8d8a;
-  border-right: 1px solid #8e8d8a;
+  border-top: 1px solid #969696;
+  border-left: 1px solid #969696;
+  border-right: 1px solid #969696;
 }
 
 .prop-tabs li a div {
@@ -200,7 +200,7 @@
 .prop-left h3 {
   font-size: 22px;
   margin-bottom: 13px;
-  color: #404040;
+  color: #454545;
 }
 
 .prop-left p {
@@ -213,19 +213,19 @@
 }
 
 .div1 {
-  background: #ecece5;
+  background: #efefe7;
   height: 6px;
   margin: 30px 0 30px;
 }
 
 .div2 {
-  background: #a0a0a0;
+  background: #a3a39e;
   height: 1px;
   margin: 38px 0 30px;
 }
 
 .div3 {
-  border-top: 1px dotted #807f71;
+  border-top: 1px dotted #7f7f7f;
   height: 1px;
 }
 
@@ -234,11 +234,11 @@
   clear: both;
   height: 78px;
   padding: 0 0 0 14px;
-  border-bottom: 1px solid #d2d1d0;
+  border-bottom: 1px solid #d4d4d4;
 }
 
 .propbox.featured {
-  background: #f2f1e9;
+  background: #efefe7;
 }
 
 .propbox.top {
@@ -253,7 +253,7 @@
 .propbox .row2 {
   height: 30px;
   font-size: 13px;
-  color: #494949;
+  color: #454545;
   clear: both;
 }
 
@@ -281,7 +281,7 @@
   float: left;
   display: inline;
   font-weight: 700;
-  color: #404040;
+  color: #454545;
 }
 
 .propbox h4 span {
@@ -299,17 +299,17 @@
 }
 
 .thumbbox {
-  background: url(../images/icon-proposal-support.png) no-repeat 11px 5px #f2f1e9;
+  background: url(../images/icon-proposal-support.png) no-repeat 11px 5px #efefe7;
   margin-right: 6px;
 }
 
 .commbox {
-  background: url(../images/icon-proposal-comments.png) no-repeat 11px 5px #f2f1e9;
+  background: url(../images/icon-proposal-comments.png) no-repeat 11px 5px #efefe7;
   margin-right: 18px;
 }
 
 .voteboxsmall {
-  background: url(../images/icon-proposal-vote-small.png) no-repeat 11px 5px #f2f1e9;
+  background: url(../images/icon-proposal-vote-small.png) no-repeat 11px 5px #efefe7;
   margin-right: 6px;
 }
 
@@ -357,21 +357,21 @@
 
 .votebox-shade {
   width: 331px;
-  background: #a0a0a0;
+  background: #a3a39e;
   margin: 3px 0 0 3px;
 }
 
 .votebox {
   width: 331px;
-  background: #f2f1e9;
-  border: 1px solid #c4c3c0;
+  background: #efefe7;
+  border: 1px solid #c5c5c5;
   position: relative;
   top: -5px;
   left: -5px;
 }
 
 .votebox-top {
-  border-bottom: 1px dotted #807f71;
+  border-bottom: 1px dotted #7f7f7f;
   padding: 10px 10px 20px 18px;
 }
 
@@ -380,7 +380,7 @@
   width: 260px;
   padding-top: 17px;
   font-size: 27px;
-  color: #404040;
+  color: #454545;
 }
 
 .votebox-top .vote span {
@@ -452,17 +452,17 @@
 .prop-right h5.topbox {
   padding: 10px 0 10px 12px;
   margin-bottom: 9px;
-  background: #f2f1e9;
+  background: #efefe7;
   font-size: 13px;
-  color: #676767;
-  border-top: 1px dotted #807f71;
+  color: #6a6a6a;
+  border-top: 1px dotted #7f7f7f;
 }
 
 .prop-title {
-  background: #f2f1e9;
-  border-bottom: 1px solid #c9c8c4;
+  background: #efefe7;
+  border-bottom: 1px solid #c5c5c5;
   line-height: 21px;
-  color: #231f20;
+  color: #272727;
   padding: 13px 18px 13px 12px;
 }
 
@@ -476,7 +476,7 @@
 .prop-avatar {
   padding: 10px 12px 11px 12px;
   font-size: 15px;
-  color: #231f20;
+  color: #272727;
 }
 
 .prop-avatar img {
@@ -484,22 +484,22 @@
 }
 
 .prop-contest {
-  background: #f2f1e9;
-  border-top: 1px solid #c9c9c5;
-  border-bottom: 1px solid #c9c8c4;
+  background: #efefe7;
+  border-top: 1px solid #c5c5c5;
+  border-bottom: 1px solid #c5c5c5;
   font-size: 13px;
   line-height: 18px;
-  color: #231f20;
+  color: #272727;
   padding: 10px 18px 12px 12px;
   margin-bottom: 3px;
 }
 
 .prop-settings {
-  background: #f2f1e9;
-  border-bottom: 1px solid #c9c8c4;
+  background: #efefe7;
+  border-bottom: 1px solid #c5c5c5;
   font-size: 13px;
   line-height: 18px;
-  color: #231f20;
+  color: #272727;
   padding: 8px 18px 10px 12px;
 }
 
@@ -539,7 +539,7 @@
 }
 
 .contributors tr.odd td {
-  background: #f2f1e9;
+  background: #efefe7;
 }
 
 .contributors tr.bottom td {
@@ -557,7 +557,7 @@
 }
 
 .comments tr.odd td {
-  background-color: #f2f1e9;
+  background-color: #efefe7;
 }
 
 .commentor {
@@ -580,12 +580,12 @@
   width: 693px;
   padding: 26px 20px 15px 23px;
   line-height: 22px;
-  color: #404041;
+  color: #454545;
 }
 
 /* add proposal boxes */
 .addpropbox {
-  background: #f2f1e9;
+  background: #efefe7;
   @include border-radius(12px);
   padding: 13px 15px 12px 12px;
   margin-bottom: 13px;
@@ -622,7 +622,7 @@
   width: 110px;
   display: inline-block;
   font-size: 16px;
-  color: #6d6d6d;
+  color: #6a6a6a;
 }
 
 .addpropform label strong, .addpropform .blue span {
@@ -636,7 +636,7 @@
 
 .addpropform input, .addpropform textarea {
   float: right;
-  border: 1px solid #838383;
+  border: 1px solid #858585;
   font-size: 16px;
 }
 
