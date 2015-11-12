@@ -143,18 +143,6 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                 proposalId,
                 contestPhaseId);
 
-        if (!existingRatings.isEmpty()) {
-            Map<Long, String> existingJudgeRating = new LinkedHashMap<>();
-            Long index = 1L;
-            for (ProposalRating proposalRating : existingRatings) {
-                existingJudgeRating.put(index, "" + proposalRating.getRatingValueId());
-                index++;
-            }
-            String existingComment = existingRatings.get(0).getComment();
-            judgeProposalBean.setRatingValues(existingJudgeRating);
-            judgeProposalBean.setComment(existingComment);
-        }
-
         model.addAttribute("judgeProposalBean", judgeProposalBean);
 
         List<Proposal> linkedProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
