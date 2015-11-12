@@ -40,7 +40,7 @@
 }
 
 .about-left li a:hover {
-  color: #6a6a6a;
+  color: $medium-grey;
 }
 
 .about-left li ul {
@@ -343,7 +343,7 @@
 }
 
 .checkout-wrap {
-  border: 1px dashed #7f7f7f;
+  border: 1px dashed $medium-grey;
   width: 553px;
   padding: 5px;
   margin: 52px auto 0;

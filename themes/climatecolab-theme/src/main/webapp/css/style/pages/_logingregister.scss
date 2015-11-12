@@ -8,7 +8,7 @@
 
 .is-required {
   font-style: italic;
-  color: #606060;
+  color: $dark-grey;
   margin-bottom: 20px;
 }
 
@@ -39,7 +39,7 @@
   width: 220px;
   height: 27px;
   padding: 6px 20px 0 0;
-  color: #444444;
+  color: $darkest-grey;
 }
 
 .popupreg_input_container {
@@ -48,7 +48,7 @@
 
 .popupreg_input {
   float: left;
-  border: 1px solid #898989;
+  border: 1px solid $medium-grey;
   width: 300px;
   height: 33px;
   padding: 2px 0 0 8px;
@@ -98,7 +98,7 @@
 
 #menu-right li.c {
   background: white;
-  border-left: 1px solid #858585;
+  border-left: 1px solid $medium-grey;
 }
 
 /*** POPUPS ****/
@@ -115,12 +115,12 @@
 }
 
 .popup .error-message {
-  border: 1px dashed #555555;
+  border: 1px dashed $dark-grey;
   background: $alert-light;
 }
 
 .popup .popup-message {
-  border: 1px dashed #555555;
+  border: 1px dashed $dark-grey;
   background: $primary-light-grey;
 }
 
@@ -140,7 +140,7 @@
   padding: 17px 0 10px 13px;
   /*background: url(../images/search-bg.png);*/
   font-size: 14px;
-  color: #545454;
+  color: $dark-grey;
   font-weight: 700;
 }
 

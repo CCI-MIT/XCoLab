@@ -36,7 +36,7 @@
   float: left;
   width: 500px;
   font-size: 21px;
-  color: #878787;
+  color: $medium-grey;
   font-weight: 400;
 }
 
@@ -139,7 +139,7 @@
 
 .comm_list h2 {
   font-size: 20px;
-  color: #454545;
+  color: $darkest-grey;
   margin-bottom: 18px;
 }
 
@@ -198,7 +198,7 @@
   background: #E7F1F5;
   border-top: 1px solid #A7D7FB;
   border-bottom: 1px solid #9CBCCA;
-  color: #454545;
+  color: $darkest-grey;
   padding-top: 10px;
   padding-left: 5px;
 }
@@ -211,7 +211,7 @@
   padding: 2px 0 0 8px;
   background: #f9f9f7;
   border: 1px solid #bcb6b1;
-  color: #565656;
+  color: $dark-grey;
   font-size: 13px;
   font-weight: 400;
 }
@@ -264,7 +264,7 @@
 
 .comm_member td div.memname {
   font-size: 21px;
-  color: #707070;
+  color: $medium-grey;
 }
 
 .wf-active .comm_member td div.memname {
@@ -378,7 +378,7 @@ input.comm_search {
   padding: 2px 0 0 8px;
   background: #F9F9F7;
   border: 1px solid #BCB6B1;
-  color: #565656;
+  color: $dark-grey;
   font-size: 13px;
   font-weight: 400;
   margin-top: 5px;

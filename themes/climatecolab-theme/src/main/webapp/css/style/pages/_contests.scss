@@ -163,20 +163,20 @@
   font-size: 14px;
   padding-top: 3px;
   line-height: 20px;
-  color: #545454;
+  color: $dark-grey;
   position: relative;
 }
 
 .contestbox h3 {
   margin-bottom: 8px;
-  color: #454545;
+  color: $darkest-grey;
 }
 
 .contestbox .count {
   position: absolute;
   top: 128px;
   left: 0;
-  color: #969696;
+  color: $medium-grey;
 }
 
 .contest-featured-seperator {
@@ -233,7 +233,7 @@
   background-color: #efefe7;
   border-bottom: 1px solid #bdbcb7;
   margin-top: -4px;
-  color: #454545;
+  color: $darkest-grey;
 }
 
 .contest-detail .heading {
@@ -306,7 +306,7 @@
   font-size: 14px;
   font-weight: 700;
   padding-top: 0;
-  color: #7f7f7f;
+  color: $medium-grey;
   float: left;
 }
 
@@ -358,7 +358,7 @@
   padding: 11px 10px 0;
   font-size: 14px;
   line-height: 20px;
-  color: #454545;
+  color: $darkest-grey;
   border-bottom: 1px solid #d4d4d4;
 }
 
@@ -394,7 +394,7 @@
   padding: 11px 10px 0;
   font-size: 14px;
   line-height: 20px;
-  color: #454545;
+  color: $darkest-grey;
   border-bottom: 1px solid #d4d4d4;
 }
 
@@ -441,7 +441,7 @@
 }
 
 .contestbar .phaseFuture {
-  color: #858585;
+  color: $medium-grey;
 }
 
 .phaseLinkContainer {

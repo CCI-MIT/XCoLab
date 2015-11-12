@@ -35,7 +35,7 @@
 .contest-count {
   display: inline-block;
   font: 12px "Lucida Grande", Arial, sans-serif;
-  color: #858585;
+  color: $medium-grey;
   margin-right: 20px;
   padding: 10px 0 20px 10px;
 }
@@ -124,7 +124,7 @@
   vertical-align: middle;
   font-size: 12px;
   font-weight: 700;
-  color: #858585;
+  color: $medium-grey;
 }
 
 .section-head {
@@ -157,7 +157,7 @@
 .section-head h2 span {
   font-size: 13px;
   font-weight: 200;
-  color: #828282;
+  color: $medium-grey;
   vertical-align: middle;
 }
 
@@ -274,21 +274,21 @@
   text-align: center;
   padding: 15px 0;
   line-height: 24px;
-  color: #828282;
+  color: $medium-grey;
 }
 
 .cintro h2 {
   margin-bottom: 24px;
-  color: #272727;
+  color: black;
 }
 
 .cintro strong {
-  color: #545454;
+  color: $dark-grey;
 }
 
 .contest-outline-right .contest-count {
   font: 18px "proxima-nova", Arial, Helvetica, sans-serif;
-  color: #858585;
+  color: $medium-grey;
   padding: 0 0 0 0;
 }
 
@@ -308,7 +308,7 @@
 
 .other-contest-count {
   font: 13px "Lucida Grande", Arial, sans-serif;
-  color: #858585;
+  color: $medium-grey;
   margin-right: 20px;
   padding: 10px 0 20px 10px;
 }
@@ -383,7 +383,7 @@
 .prop-head {
   text-align: right;
   font: 10px "Lucida Grande", Arial, sans-serif;
-  color: #858585;
+  color: $medium-grey;
   padding: 0 0 10px 0;
 }
 
@@ -419,7 +419,7 @@
 .txt {
   background-color: #e8e8e8;
   padding: 10px;
-  border-top: 1px solid #939393;
+  border-top: 1px solid $medium-grey;
 }
 
 .section a {
@@ -484,14 +484,14 @@
   vertical-align: middle;
   font-size: 12px;
   font-weight: 700;
-  color: #858585;
+  color: $medium-grey;
 }
 
 .detail {
   font-size: 12px;
   margin: 0 0 15px 29px;
   padding: 5px 0;
-  color: #858585;
+  color: $medium-grey;
   line-height: 19px;
   border-bottom: 1px solid #e8e8e8;
   display: none;

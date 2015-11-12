@@ -4,7 +4,7 @@
 .proposal-head {
   padding-top: 28px;
   background: url(../images/pattern-6x6-blue.png);
-  border-bottom: 1px solid #969696;
+  border-bottom: 1px solid $medium-grey;
 }
 
 .proposal-head:after {
@@ -37,7 +37,7 @@
 .proposal-title {
   float: left;
   width: 910px;
-  color: #272727;
+  color: black;
   overflow: hidden;
 }
 
@@ -87,9 +87,9 @@
   height: 24px;
   padding: 12px 11px 1px;
   background: $primary-darkest;
-  border-top: 1px solid #969696;
-  border-left: 1px solid #969696;
-  border-right: 1px solid #969696;
+  border-top: 1px solid $medium-grey;
+  border-left: 1px solid $medium-grey;
+  border-right: 1px solid $medium-grey;
 }
 
 .prop-tabs li.c a {
@@ -97,9 +97,9 @@
   padding: 12px 11px 0;
   color: $primary-color;
   background: white;
-  border-top: 1px solid #969696;
-  border-left: 1px solid #969696;
-  border-right: 1px solid #969696;
+  border-top: 1px solid $medium-grey;
+  border-left: 1px solid $medium-grey;
+  border-right: 1px solid $medium-grey;
 }
 
 .prop-tabs li a div {
@@ -200,11 +200,11 @@
 .prop-left h3 {
   font-size: 22px;
   margin-bottom: 13px;
-  color: #454545;
+  color: $darkest-grey;
 }
 
 .prop-left p {
-  color: #545454;
+  color: $dark-grey;
 }
 
 .prop-left p.intro {
@@ -225,7 +225,7 @@
 }
 
 .div3 {
-  border-top: 1px dotted #7f7f7f;
+  border-top: 1px dotted $medium-grey;
   height: 1px;
 }
 
@@ -253,7 +253,7 @@
 .propbox .row2 {
   height: 30px;
   font-size: 13px;
-  color: #454545;
+  color: $darkest-grey;
   clear: both;
 }
 
@@ -281,7 +281,7 @@
   float: left;
   display: inline;
   font-weight: 700;
-  color: #454545;
+  color: $darkest-grey;
 }
 
 .propbox h4 span {
@@ -371,7 +371,7 @@
 }
 
 .votebox-top {
-  border-bottom: 1px dotted #7f7f7f;
+  border-bottom: 1px dotted $medium-grey;
   padding: 10px 10px 20px 18px;
 }
 
@@ -380,7 +380,7 @@
   width: 260px;
   padding-top: 17px;
   font-size: 27px;
-  color: #454545;
+  color: $darkest-grey;
 }
 
 .votebox-top .vote span {
@@ -406,7 +406,7 @@
 
 .votebox-bottom {
   font-size: 16px;
-  color: #545454;
+  color: $dark-grey;
   background: #e6e4d5;
   padding: 14px 0 17px 18px;
 }
@@ -454,15 +454,15 @@
   margin-bottom: 9px;
   background: #efefe7;
   font-size: 13px;
-  color: #6a6a6a;
-  border-top: 1px dotted #7f7f7f;
+  color: $medium-grey;
+  border-top: 1px dotted $medium-grey;
 }
 
 .prop-title {
   background: #efefe7;
   border-bottom: 1px solid #c5c5c5;
   line-height: 21px;
-  color: #272727;
+  color: black;
   padding: 13px 18px 13px 12px;
 }
 
@@ -476,7 +476,7 @@
 .prop-avatar {
   padding: 10px 12px 11px 12px;
   font-size: 15px;
-  color: #272727;
+  color: black;
 }
 
 .prop-avatar img {
@@ -489,7 +489,7 @@
   border-bottom: 1px solid #c5c5c5;
   font-size: 13px;
   line-height: 18px;
-  color: #272727;
+  color: black;
   padding: 10px 18px 12px 12px;
   margin-bottom: 3px;
 }
@@ -499,7 +499,7 @@
   border-bottom: 1px solid #c5c5c5;
   font-size: 13px;
   line-height: 18px;
-  color: #272727;
+  color: black;
   padding: 8px 18px 10px 12px;
 }
 
@@ -510,7 +510,7 @@
 .prop-results div {
   font-size: 13px;
   line-height: 16px;
-  color: #545454;
+  color: $dark-grey;
   margin-bottom: 10px;
 }
 
@@ -524,7 +524,7 @@
 }
 
 .contributors td {
-  color: #545454;
+  color: $dark-grey;
   padding: 6px 10px;
   vertical-align: middle;
 }
@@ -580,7 +580,7 @@
   width: 693px;
   padding: 26px 20px 15px 23px;
   line-height: 22px;
-  color: #454545;
+  color: $darkest-grey;
 }
 
 /* add proposal boxes */
@@ -622,7 +622,7 @@
   width: 110px;
   display: inline-block;
   font-size: 16px;
-  color: #6a6a6a;
+  color: $medium-grey;
 }
 
 .addpropform label strong, .addpropform .blue span {
@@ -636,7 +636,7 @@
 
 .addpropform input, .addpropform textarea {
   float: right;
-  border: 1px solid #858585;
+  border: 1px solid $medium-grey;
   font-size: 16px;
 }
 
@@ -653,7 +653,7 @@
 
 .addpropform .notation {
   font-size: 15px;
-  color: #545454;
+  color: $dark-grey;
   margin: 1px 0 25px 12px;
 }
 
@@ -682,7 +682,7 @@
   float: right;
   width: 454px;
   padding: 0 0 5px 11px;
-  color: #545454;
+  color: $dark-grey;
 }
 
 .proposals #contactForm {

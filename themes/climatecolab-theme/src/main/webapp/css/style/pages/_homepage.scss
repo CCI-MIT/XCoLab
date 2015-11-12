@@ -24,7 +24,7 @@
   float: left;
   width: 530px;
   padding-left: 10px;
-  color: #454545;
+  color: $darkest-grey;
   position: relative;
   font-size: 16px;
 }
@@ -373,7 +373,7 @@ a.get:hover {
 
 .home #content h2 {
   font-size: 20px;
-  color: #454545;
+  color: $darkest-grey;
   margin-bottom: 18px;
 }
 
@@ -395,7 +395,7 @@ a.get:hover {
 .activitybox {
   border-bottom: 1px solid #c5c5c5;
   font-size: 14px;
-  color: #545454;
+  color: $dark-grey;
 }
 
 .activitybox:after {
@@ -440,7 +440,7 @@ a.get:hover {
 
 .activitybox h3 {
   font-size: 14px;
-  color: #545454;
+  color: $dark-grey;
 }
 
 .activitybox .status {
