@@ -3,11 +3,12 @@ FILENAME:               css/style.css
 DESCRIPTION:        CSS for climatecollaboratorium.org
 AUTHOR:                         Chip Sheppard
 AUTHOR URI:             http://sheppco.com/
-VERSION:             2.1
+VERSION:             2.22
 CREATION DATE: 05/04/2012
-LAST MODIFIED:  11/10/2015
+LAST MODIFIED:  11/12/2015
 ***************************************************************************************/
 @import "compass";
+@import "style/global/color_scheme";
 
 @import 'style/global/reset';
 
@@ -227,7 +228,7 @@ body.colab {
   font-size: 10pt;
   font-weight: normal;
   margin-left: 10px;
-  color: darkgray;
+  color: darkgray; //#A9A9A9
 }
 
 .taglib-header h3 {

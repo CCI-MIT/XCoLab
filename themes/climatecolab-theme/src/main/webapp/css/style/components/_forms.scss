@@ -12,7 +12,7 @@ div.selectbox-wrapper {
   margin-top: -3px;
   text-align: left;
   overflow: auto;
-  background-color: #fff;
+  background-color: white;
   border: 1px solid #b3b0aa;
 }
 
@@ -67,7 +67,7 @@ div.selectbox-wrapper ul li {
   font-size: 11px;
   font-style: normal;
   font-weight: 600;
-  color: #e36f0f;
+  color: $accent-color;
 }
 
 .wf-active .selectbox span {
@@ -95,7 +95,7 @@ input.selectbox span {
   font-size: 13px;
   font-style: normal;
   font-weight: 600;
-  color: #e36f0f;
+  color: $accent-color;
 }
 
 ul.dropdown-menu {

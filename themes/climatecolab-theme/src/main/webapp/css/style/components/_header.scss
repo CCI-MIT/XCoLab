@@ -22,14 +22,14 @@
 }
 
 #menu li.c {
-  background: #fff;
+  background: white;
   border-left: 1px solid #888782;
 }
 
 #menu li a {
   height: 41px;
   padding: 26px 16px 0 15px;
-  color: #0090ff;
+  color: $primary-color;
   font-weight: 700;
   display: inline-block;
   box-sizing: content-box;
@@ -56,7 +56,7 @@
 
 #menu li a.search:hover, #menu li.c a.search {
   height: 22px;
-  color: #000;
+  color: black;
 }
 
 .home #menu li:hover {
@@ -96,7 +96,7 @@
 }
 
 #menu-right li a:hover {
-  color: #000;
+  color: black;
 }
 
 #menu-right li.register {
@@ -135,7 +135,7 @@
 #menu-right li.user a {
   height: 47px;
   padding: 20px 15px 0 0;
-  color: #0090ff;
+  color: $primary-color;
   font-size: 15px;
   text-transform: none;
 }
@@ -198,18 +198,18 @@
   width: 52px;
   height: 30px;
   padding-top: 3px;
-  background: #0090ff;
+  background: $primary-color;
   border: none;
   font-size: 15px;
   font-weight: 700;
-  color: #fff;
+  color: white;
   text-align: center;
   @include border-radius(3px);
   cursor: pointer;
 }
 
 .search-submit:hover {
-  background: #0081e6;
+  background: $primary-dark;
 }
 
 /* LOGIN POP */
@@ -244,11 +244,11 @@
 }
 
 .loginbox span a {
-  color: #fff;
+  color: white;
 }
 
 .loginbox span a:hover {
-  border-bottom: 1px dashed #fff;
+  border-bottom: 1px dashed white;
 }
 
 .loginbox span {
@@ -287,25 +287,25 @@
   width: 88px;
   height: 30px;
   padding-top: 3px;
-  background: #0090ff;
+  background: $primary-color;
   border: none;
   font-size: 15px;
   font-weight: 700;
-  color: #fff;
+  color: white;
   text-align: center;
   @include border-radius(3px);
   cursor: pointer;
 }
 
 .login-submit:hover {
-  background: #0081e6;
+  background: $primary-dark;
 }
 
 .user-notification {
   display: inline;
   text-align: center;
   font: 12px Arial, Helvetica, sans-serif;
-  color: #fff;
+  color: white;
   padding: 0 5px;
   margin-left: 5px;
   @include border-radius(8px);
@@ -315,13 +315,13 @@
 .user-notification-top {
   top: 13px;
   right: 78px;
-  background: #0f558a;
+  background: $primary-darkest;
 }
 
 .user-notification-message {
   top: 84px;
   left: 105px;
-  background: #66b035;
+  background: $secondary-color;
 }
 
 /* USER POP */
@@ -372,10 +372,10 @@
   padding-top: 10px;
   font-size: 14px;
   font-weight: 700;
-  color: #fff;
+  color: white;
   display: inline-block;
 }
 
 .userbox a:hover {
-  border-bottom: 1px dashed #fff;
+  border-bottom: 1px dashed white;
 }

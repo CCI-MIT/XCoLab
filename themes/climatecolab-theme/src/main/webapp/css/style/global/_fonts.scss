@@ -49,10 +49,10 @@ b, strong {
 }
 
 a {
-  color: #30a3fb;
+  color: $primary-color;
   text-decoration: none !important;
 }
 
 a:hover {
-  color: #000;
+  color: black;
 }

@@ -50,21 +50,21 @@ a.learn, a.get {
   font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
-  color: #fff;
+  color: white;
 }
 
 a.learn {
   background: url(../images/homespot-learn.png) no-repeat;
   width: 127px;
   padding-left: 48px;
-  text-shadow: 1px 1px 0 #114c65;
+  text-shadow: 1px 1px 0 $primary-darkest;
 }
 
 a.get {
   background: url(../images/homespot-get.png) no-repeat;
   width: 132px;
   padding-left: 43px;
-  text-shadow: 1px 1px 0 #205b0b;
+  text-shadow: 1px 1px 0 $secondary-darkest;
 }
 
 a.learn:hover {
@@ -89,7 +89,7 @@ a.get:hover {
 .newsbox h3 {
   float: left;
   font-size: 15px;
-  color: #000;
+  color: black;
   width: 55px;
 }
 
@@ -128,11 +128,11 @@ a.get:hover {
 }
 
 .newslinks a.readmore {
-  color: #000;
+  color: black;
 }
 
 .newslinks a.readmore:hover {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid black;
 }
 
 .social-icon {
@@ -185,11 +185,11 @@ a.get:hover {
   display: block;
   float: left;
   padding: 8px 0 0 41px;
-  color: #000000 !important;
+  color: black !important;
 }
 
 .sketchy-icon span:hover {
-  border-bottom: 1px dashed #fff;
+  border-bottom: 1px dashed white;
 }
 
 .facebook-sketchy {
@@ -239,7 +239,7 @@ a.get:hover {
 }
 
 .conference-days {
-  color: #e36f0f;
+  color: $accent-color;
   font-weight: bold;
   margin: 16px 0 0 60px;
   display: block;
@@ -419,7 +419,7 @@ a.get:hover {
 }
 
 .activitybox.blu {
-  background: #f3f8fa;
+  background: $primary-light-grey;
 }
 
 .activitybox.bottom {

@@ -43,7 +43,7 @@
 .contest-count span.count {
   font: 16px "proxima-nova", Arial, Helvetica, sans-serif;
   font-weight: 700;
-  color: #000;
+  color: black;
   padding: 10px 0 20px 10px;
 }
 
@@ -90,7 +90,7 @@
   border-bottom: 1px solid #ccc;
   display: inline-block;
   width: 100%;
-  color: #000;
+  color: black;
   @include box-shadow(inset -14px 0 10px -10px #ccc);
 }
 
@@ -133,11 +133,11 @@
 }
 
 .contest-section1 .section-head {
-  color: #ef7b22;
+  color: $accent-color;
 }
 
 .contest-section2 .section-head {
-  color: #66af45;
+  color: $secondary-color;
 }
 
 .contest-section3 .section-head {
@@ -238,7 +238,7 @@
 }
 
 .level1 li.active > a {
-  color: #ffffff;
+  color: white;
   background-color: #3192b1
 }
 
@@ -251,7 +251,7 @@
 }
 
 .level1 li.active a.open.active .count {
-  color: #ffffff;
+  color: white;
 }
 
 .level1 li.no-child a, .level1 li.no-child a.open {
@@ -259,7 +259,7 @@
 }
 
 .level1 li.anything a {
-  background: #ffffff url(../images/pattern-6x6-lite.png) repeat top left;
+  background: white url(../images/pattern-6x6-lite.png) repeat top left;
 }
 
 /* Right side */
@@ -270,7 +270,7 @@
 }
 
 .cintro {
-  background: #ffffff;
+  background: white;
   text-align: center;
   padding: 15px 0;
   line-height: 24px;
@@ -388,7 +388,7 @@
 }
 
 .spacr {
-  background-color: #ffffff;
+  background-color: white;
   padding-left: 4px;
 }
 
@@ -425,7 +425,7 @@
 .section a {
   display: block;
   text-decoration: none;
-  color: #000;
+  color: black;
   cursor: pointer;
 }
 
@@ -435,8 +435,8 @@
 
 .section.active .txt {
   background-color: #3192b1;
-  color: #ffffff;
-  border-top: 1px solid #ffffff;
+  color: white;
+  border-top: 1px solid white;
 }
 
 .section.active:after {
@@ -507,11 +507,11 @@
 }
 
 .what {
-  color: #ef7b22;
+  color: $accent-color;
 }
 
 .where {
-  color: #66af45;
+  color: $secondary-color;
 }
 
 .who {

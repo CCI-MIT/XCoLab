@@ -14,8 +14,8 @@
   height: 31px;
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
-  text-shadow: 1px 1px 0 #114c65;
+  color: white;
+  text-shadow: 1px 1px 0 $primary-darkest;
   display: inline-block;
   box-sizing: initial;
 }
@@ -52,8 +52,8 @@
   height: 31px;
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
-  text-shadow: 1px 1px 0 #114c65;
+  color: white;
+  text-shadow: 1px 1px 0 $primary-darkest;
   display: inline-block;
   box-sizing: initial;
 }
@@ -62,5 +62,5 @@
   color: inherit;
 }
 
-/* .gray-button a:hover {color:#000; text-shadow:1px 1px 0 #ccc;} */
+/* .gray-button a:hover {color:black; text-shadow:1px 1px 0 #ccc;} */
 /* ------------------------------------------------------------------------------------------------------- */

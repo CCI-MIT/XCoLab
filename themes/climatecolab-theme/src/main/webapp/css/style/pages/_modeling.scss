@@ -6,7 +6,7 @@
   font-size: 15px;
   color: #464646;
   line-height: 20px;
-  background: url(../images/grid_t.gif) #fff;
+  background: url(../images/grid_t.gif) white;
   border: 1px solid #dad7cf;
   @include border-radius(10px);
   padding-bottom: 15px;
@@ -98,11 +98,11 @@
   margin-left: -10px;
   font: normal 12px/20px Verdana, sans-serif;
   color: #464646;
-  border: 1px solid #fff;
+  border: 1px solid white;
 }
 
 .act_left-list li ul li:hover {
-  background: #e7f1f5;
+  background: $primary-light-grey;
   border: 1px solid #2498b3;
 }
 
@@ -144,7 +144,7 @@
   margin-left: 8px;
   padding: 0 16px;
   font: 11px/17px Verdana, sans-serif;
-  color: #fff;
+  color: white;
   min-height: 30px;
 }
 
@@ -385,21 +385,21 @@
   display: inline-block;
   font-family: Verdana, Geneva, sans-serif;
   font-size: 12px;
-  background: url(../images/actions_chart-list-shade.png) repeat-y #fff;
+  background: url(../images/actions_chart-list-shade.png) repeat-y white;
 }
 
 .chart_sub-menu li a:hover {
   padding: 11px 0 11px 20px;
   margin: 0;
   background: #a6a59c;
-  color: #fff;
+  color: white;
 }
 
 .chart_sub-menu li.c a, #content .chart_sub-menu li.c a {
   padding: 11px 0 11px 20px;
   margin: 0;
   background: #a6a59c;
-  color: #fff;
+  color: white;
 }
 
 .chart_sub-description {
@@ -477,14 +477,14 @@
 
 .control_title {
   font: 12px Verdana, sans-serif;
-  color: #000;
+  color: black;
   margin-top: 15px;
 }
 
 .control_title span {
   font-size: 18px;
   font-weight: bold;
-  color: #66b035;
+  color: $secondary-color;
 }
 
 .control_wrap {
@@ -554,7 +554,7 @@
   text-align: right;
   border: none;
   font-size: 18px;
-  color: #000;
+  color: black;
 }
 
 .control_div {
@@ -592,31 +592,31 @@
 }
 
 .rounded_button.brn a:hover {
-  color: #e65608;
+  color: $accent-color;
 }
 
 .rounded_button.blu a {
-  background: #e7f1f5;
+  background: $primary-light-grey;
   color: #444341;
 }
 
 .rounded_button.blu a:hover {
-  color: #e65608;
+  color: $accent-color;
 }
 
 .rounded_button.blugrid a {
   background: url(../images/grid_blue-bg.gif);
-  color: #fff;
+  color: white;
   border: 1px solid #2498b3;
 }
 
 .rounded_button.blugrid a:hover {
-  background: #fff;
+  background: white;
   color: #2498b3;
 }
 
 .rounded_button.blugrid.c a {
-  background: #fff;
+  background: white;
   color: #2498b3;
 }
 
@@ -665,7 +665,7 @@
 
 .ui-dialog {
   font-size: .9em;
-  background: #ffffff url(../images/slider_bg.gif) 0 0 repeat-x;
+  background: white url(../images/slider_bg.gif) 0 0 repeat-x;
   color: #222222;
   border: 4px solid #dddddd;
   position: relative;
@@ -718,11 +718,11 @@
 }
 
 .act_left-list li.act_left-list-child {
-  border: 1px solid #ffffff;
+  border: 1px solid white;
 }
 
 .act_left-list li.act_left-list-child:hover {
-  background: #e7f1f5;
+  background: $primary-light-grey;
   border: 1px solid #2498b3;
 }
 
@@ -750,7 +750,7 @@ td.jqplot-table-legend div.act_tt-txt_label {
   background: url(../images/actions_tooltip-bg.png);
   padding: 0 16px;
   font: 11px/17px Verdana, sans-serif;
-  color: #fff;
+  color: white;
 }
 
 td.jqplot-table-legend div.act_tt-bot_label {

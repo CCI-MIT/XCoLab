@@ -130,7 +130,7 @@ input.comm_butt[type="submit"]:focus {
 }
 
 .comm_rightcol-bdr {
-  border-bottom: 3px solid #e7f1f5;
+  border-bottom: 3px solid $primary-light-grey;
   padding-bottom: 10px;
   margin-top: 0;
 }
@@ -147,7 +147,7 @@ input.comm_butt[type="submit"]:focus {
 }
 
 .comm_rightcol-title2 {
-  background: #e7f1f5;
+  background: $primary-light-grey;
   height: 22px;
   padding: 10px 0 0 8px;
   font-size: 12px;
@@ -162,7 +162,7 @@ input.comm_butt[type="submit"]:focus {
 }
 
 .comm_rightcol-time {
-  color: #000;
+  color: black;
   padding: 0 10px;
   font: 12px/21px Verdana, Geneva, sans-serif;
 }

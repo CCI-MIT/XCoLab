@@ -3,7 +3,7 @@
   display: none;
   background: transparent url(../images/tooltip-bg.png);
   padding: 8px 15px;
-  color: #fff;
+  color: white;
   font: 13px Arial, Helvetica, sans-serif;
   @include box-shadow(0 0 6px #666);
   @include border-radius(5px);
@@ -50,7 +50,7 @@
   margin-left: 8px;
   padding: 0 16px;
   font: 11px/17px Verdana, sans-serif;
-  color: #fff;
+  color: white;
   min-height: 30px;
 }
 

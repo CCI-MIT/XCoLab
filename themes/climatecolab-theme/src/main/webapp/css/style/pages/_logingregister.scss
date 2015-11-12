@@ -18,7 +18,7 @@
 }
 
 .popupreg_head h1 {
-  color: #000;
+  color: black;
   font-size: 36px;
 }
 
@@ -116,12 +116,12 @@
 
 .popup .error-message {
   border: 1px dashed #555555;
-  background: #ffeeee;
+  background: $alert-light;
 }
 
 .popup .popup-message {
   border: 1px dashed #555555;
-  background: #e7f1f5;
+  background: $primary-light-grey;
 }
 
 .popup .error-message, .popup .popup-message, .error-message-registerOrLogin {

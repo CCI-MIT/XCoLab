@@ -74,8 +74,8 @@
   padding: 13px 12px 0;
   display: inline-block;
   font-size: 13px;
-  color: #fff;
-  background: #30a3fb;
+  color: white;
+  background: $primary-color;
   text-transform: uppercase;
   font-weight: 700;
   @include border-top-left-radius(5px);
@@ -86,7 +86,7 @@
 .prop-tabs li a:hover {
   height: 24px;
   padding: 12px 11px 1px;
-  background: #0f558a;
+  background: $primary-darkest;
   border-top: 1px solid #8e8d8a;
   border-left: 1px solid #8e8d8a;
   border-right: 1px solid #8e8d8a;
@@ -95,8 +95,8 @@
 .prop-tabs li.c a {
   height: 25px;
   padding: 12px 11px 0;
-  color: #30a3fb;
-  background: #fff;
+  color: $primary-color;
+  background: white;
   border-top: 1px solid #8e8d8a;
   border-left: 1px solid #8e8d8a;
   border-right: 1px solid #8e8d8a;
@@ -106,8 +106,8 @@
   display: inline;
   text-align: center;
   font: 12px Arial, Helvetica, sans-serif;
-  color: #fff;
-  background: #0f558a;
+  color: white;
+  background: $primary-darkest;
   padding: 0 5px;
   margin-left: 5px;
   @include border-radius(8px);
@@ -120,8 +120,8 @@
   display: inline;
   text-align: center;
   font: 12px Arial, Helvetica, sans-serif;
-  color: #fff;
-  background: #0f558a;
+  color: white;
+  background: $primary-darkest;
   padding: 0 5px;
   margin-left: 5px;
   @include border-radius(8px);
@@ -160,9 +160,9 @@
   padding: 3px 10px 0;
   margin-right: 5px;
   display: inline-block;
-  background: #0f558a;
+  background: $primary-darkest;
   font-size: 14px;
-  color: #fff;
+  color: white;
   @include border-radius(3px);
 }
 
@@ -192,7 +192,7 @@
 
 .prop-left h2 {
   font-size: 27px;
-  color: #66b035;
+  color: $secondary-color;
   margin: 10px 0 16px;
   text-align: justify;
 }
@@ -285,7 +285,7 @@
 }
 
 .propbox h4 span {
-  color: #000;
+  color: black;
 }
 
 .thumbbox, .commbox, .voteboxsmall {
@@ -293,7 +293,7 @@
   width: 30px;
   height: 22px;
   font-weight: 700;
-  color: #000;
+  color: black;
   padding: 4px 0 0 31px;
   @include border-radius(3px);
 }
@@ -325,9 +325,6 @@
   padding-top: 4px;
 }
 
-.propbox.featured h4 { /*height:23px;*/
-}
-
 .propbox.featured .ribbonPlaceholder {
   height: 28px;
   width: 30px;
@@ -339,11 +336,11 @@
 }
 
 .propbox-red {
-  background-color: #ff8686 !important;
+  background-color: $alert-color !important;
 }
 
 .propbox-green {
-  background-color: lightgreen !important;
+  background-color: $secondary-light !important;
 }
 
 /* right column */
@@ -388,7 +385,7 @@
 
 .votebox-top .vote span {
   font-size: 33px;
-  color: #66b035;
+  color: $secondary-color;
   font-weight: 700;
 }
 
@@ -445,7 +442,7 @@
   padding: 10px 0 10px 12px;
   line-height: normal;
   text-transform: uppercase;
-  color: #66b035;
+  color: $secondary-color;
 }
 
 .prop-right h5.toppad {
@@ -556,7 +553,7 @@
 }
 
 .comments td {
-  border-bottom: 3px solid #fff;
+  border-bottom: 3px solid white;
 }
 
 .comments tr.odd td {
@@ -568,7 +565,7 @@
   width: 212px;
   padding: 16px 20px 26px 16px;
   line-height: 19px;
-  color: #000;
+  color: black;
 }
 
 .commentor img {
@@ -616,7 +613,7 @@
 }
 
 .addpropbox.blue {
-  background: #e7f1f5;
+  background: $primary-light-grey;
 }
 
 /* form fields */
@@ -629,7 +626,7 @@
 }
 
 .addpropform label strong, .addpropform .blue span {
-  color: #000;
+  color: black;
 }
 
 .addpropform label img {
@@ -676,7 +673,7 @@
   float: left;
   width: 50px;
   height: 50px;
-  border: 1px dashed #000;
+  border: 1px dashed black;
   margin-right: 20px;
 }
 
@@ -726,7 +723,7 @@
   height: 36px;
   font-family: "proxima-nova", "proxima-nova-1", Arial, Helvetica, sans-serif;
   font-weight: bold;
-  color: #ffffff;
+  color: white;
   padding: 9px;
 }
 
@@ -779,7 +776,7 @@
 }
 
 .historyTable .ui-datatable-highlighted a, #proposalPickerTable .ui-datatable-highlight {
-  color: #66b035 !important;
+  color: $secondary-color !important;
 }
 
 //TODO: popup?

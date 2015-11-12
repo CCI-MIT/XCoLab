@@ -3,7 +3,7 @@
 #content .help {
   width: 970px;
   border-radius: 10px;
-  background: #fff;
+  background: white;
   @include border-radius(10px);
   border: 1px solid #339fb8;
   margin: 15px 0;
@@ -14,7 +14,7 @@
   background: url(../images/grid_t.gif);
   height: 24px;
   padding: 14px 10px 0 19px;
-  color: #000;
+  color: black;
   font-size: 15px;
 }
 
@@ -24,7 +24,7 @@
 
 .helptop span {
   font-weight: 600;
-  color: #66b035;
+  color: $secondary-color;
 }
 
 .helptop .closehelp {

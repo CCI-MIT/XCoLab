@@ -112,7 +112,7 @@
 }
 
 .comm_info-left span {
-  color: #66b035;
+  color: $secondary-color;
   font-size: 30px;
   font-weight: 600;
   padding-right: 5px;
@@ -229,7 +229,7 @@
   background: url(../images/search_btn.gif) no-repeat;
   border: none;
   cursor: pointer;
-  color: #fff;
+  color: white;
   font-size: 13px;
   font-weight: 400;
 }
@@ -239,7 +239,7 @@
 }
 
 .comm_submit:hover {
-  color: #000;
+  color: black;
 }
 
 .comm_member {

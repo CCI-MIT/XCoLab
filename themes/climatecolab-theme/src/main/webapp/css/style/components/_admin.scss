@@ -53,7 +53,7 @@ div#p_p_id_145_ {
 
 #p_p_id_145_ li.open ul {
   display: block;
-  background-color: #30a3fb;
+  background-color: $primary-color;
 }
 
 #p_p_id_145_ ul.nav.nav-account-controls li.dropdown a {
@@ -112,7 +112,7 @@ div#p_p_id_145_ {
 .admin-overlay {
   background: url(../images/adminoverlay-bg.png);
   width: 100%;
-  color: #fff;
+  color: white;
 }
 
 .admin-left {
@@ -150,7 +150,7 @@ div#p_p_id_145_ {
 }
 
 .savechanges {
-  background: #fff;
+  background: white;
   padding: 42px 60px 32px 46px;
   @include border-radius(5px);
 }
@@ -164,7 +164,7 @@ div#p_p_id_145_ {
 
 .savechanges p {
   font-size: 15px;
-  color: #000;
+  color: black;
   line-height: 24px;
   margin-bottom: 30px;
 }

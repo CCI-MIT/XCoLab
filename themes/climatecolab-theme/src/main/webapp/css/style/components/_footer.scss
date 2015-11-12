@@ -13,11 +13,11 @@
 #footmenu li a {
   display: inline-block;
   padding: 15px 15px 0 0;
-  color: #fff;
+  color: white;
 }
 
 #footmenu li a:hover, #footmenu li.c a {
-  color: #e65608;
+  color: $accent-color;
 }
 
 #footleft {
@@ -50,7 +50,7 @@
 }
 
 #footright #txt a:hover {
-  color: #e65608;
+  color: $accent-color;
 }
 
 #footright #cc {
@@ -81,7 +81,7 @@ ul li {
 }
 
 .commentor.expertReview, .comments tr.odd td.commentor.expertReview {
-  background-color: #FFC0C0;
+  background-color: $alert-light;
 }
 
 .whatWhoWhere {

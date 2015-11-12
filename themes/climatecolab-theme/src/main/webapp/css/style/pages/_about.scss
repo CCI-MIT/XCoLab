@@ -12,7 +12,7 @@
   width: 736px;
   font-size: 16px;
   line-height: 21px;
-  color: #000;
+  color: black;
   position: relative;
 }
 
@@ -34,7 +34,7 @@
   padding: 11px 0 0 4px;
   font-size: 18px;
   font-weight: 700;
-  color: #0090ff;
+  color: $primary-color;
   border-bottom: 1px solid #ccc;
   display: inline-block;
 }
@@ -57,7 +57,7 @@
   height: 21px;
   padding: 6px 0 1px 28px;
   font-size: 14px;
-  color: #0090ff;
+  color: $primary-color;
   border-bottom: none;
 }
 
@@ -71,19 +71,19 @@
 
 .about-right h1 {
   font-size: 36px;
-  color: #000;
+  color: black;
   margin: 8px 0 31px 0;
 }
 
 .about-right h2 {
   font-size: 24px;
-  color: #000;
+  color: black;
   margin: 0 0 17px 0;
 }
 
 .about-right h3 {
   font-size: 18px;
-  color: #000;
+  color: black;
 }
 
 .about-right h2.ex {
@@ -144,7 +144,7 @@
 .continue a {
   padding: 28px 24px 24px;
   display: inline-block;
-  background: #e7f1f5;
+  background: $primary-light-grey;
   font-size: 18px;
   font-weight: 700;
   text-align: center;
@@ -181,8 +181,8 @@
 }
 
 .one-butt {
-  background: #e7f1f5;
-  border: 1px solid #30a3fb;
+  background: $primary-light-grey;
+  border: 1px solid $primary-color;
   height: 27px;
   padding: 7px 12px 0;
   display: inline-block;
@@ -312,7 +312,7 @@
 
 .getinvolved h4 {
   font-size: 22px;
-  color: #000;
+  color: black;
   margin-bottom: 10px;
   text-transform: uppercase;
 }
@@ -350,7 +350,7 @@
 }
 
 .checkout {
-  background: url(../images/pattern-6x6-white.png) #e7f1f5;
+  background: url(../images/pattern-6x6-white.png) $primary-light-grey;
   width: 505px;
   padding: 24px 16px 26px 32px;
   font-size: 17px;
