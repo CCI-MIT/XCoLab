@@ -1,33 +1,33 @@
 @import "compass";
 
-//color names - don't use these in style sheets
-$dodger-blue: #30a3fb;
-$christine-orange: #e36f0f;
-$catskill-white: #e7f1f5;
-$sail-light-blue: #a7d7fb;
-$rock-blue: #9cbcca;
-$apple-green: #66b035;
-$cararra-grey: #efefe7;
-$natural-grey: #888782;
-$emperor-grey: #555555;
-
-
 //main colors:
-$primary-color: $dodger-blue;
-$secondary-color: $apple-green;
-$accent-color: $christine-orange;
+$primary-color: #30a3fb;//$dodger-blue;
+$secondary-color: #66b035; //$apple-green;
+$accent-color: #e36f0f; //$christine-orange;
 
-//variations:
-$primary-light: $rock-blue; //a very light version of the primary color for backgrounds
+//lightness variations
+$primary-light: lighten($primary-color, 24); $__hex: #aad9fd; // - replaces sail-blue #a7d7fb (difference HSL -0.3098, 4.0980, 0.9804)
+$secondary-light: lighten($secondary-color, 24); $__hex: #a7da85; //unused so far
+
+$primary-dark: darken($primary-color, 13); $__hex: #0481e1; // - replaces #0081e6 (difference HSL 0.2845, 3.4934, 0.1961)
+$secondary-dark: darken($secondary-color, 13); $__hex: #467a25; //unused so far
+
+$primary-darkest: darken($primary-color, 30); $__hex: #03518c; //for text shadows
+$secondary-darkest: darken($secondary-color, 30); $__hex: #14230b; //for text shadows
+
+//grey variations of the primary color
+$primary-dark-grey: desaturate($primary-color, 61); $__hex: #719aba; //unused
+$primary-grey: lighten($primary-dark-grey, 11); $__hex: #9cb6c9; // - replaces rock-blue #9cbcca (difference HSL 7.0725, 0.8514, 0.1961)
+$primary-light-grey: lighten($primary-grey, 35); $__hex: #e9f0f6; // - replaces catskill-white #e7f1f5 (difference HSL 10.5495, 0.7590, 0.5882)
 
 //greys
-$light-grey: $cararra-grey;
-$medium-grey: $natural-grey;
-$dark-grey: $emperor-grey;
+$light-grey: #efefe7; //$cararra-grey;
+$medium-grey: #888782; //$natural-grey;
+$dark-grey: #555555; //$emperor-grey;
 
 //alert and message colors:
-$alert-color: #f00;
-$alert-light: #faa;
+$alert-color: #b94a48;
+$alert-light: #ffeeee;
 
 $info-color: #00f;
-$info-background: $catskill-white;
+$info-background: $primary-light-grey; $__hex: #e9f0f6;
