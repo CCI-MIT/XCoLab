@@ -242,8 +242,7 @@ public class JudgeProposalActionController {
         this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(), contestPhase.getContestPhasePK(), currentUser.getUserId(), isPublicRating);
 
 
-         response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhase.getContestPhasePK()+"/planId/"+proposal.getProposalId()+"/");
-
+         response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(ContestLocalServiceUtil.fetchContest(contestId), proposal.getWrapped(), contestPhase));
     }
 
     @RequestMapping(params = {"action=saveScreening"})
