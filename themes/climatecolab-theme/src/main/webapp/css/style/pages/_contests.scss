@@ -111,7 +111,7 @@
   height: 27px;
   padding: 1px 0 0 8px;
   border: 1px solid #bdb7b2;
-  font: 12px "Lucida Grande", Arial, sans-serif; /*color:#bdb7b2;*/
+  font: 12px "Lucida Grande", Arial, sans-serif;
 }
 
 .users-filter {
@@ -121,7 +121,7 @@
 }
 
 .users-filter input {
-  font: 12px "Lucida Grande", Arial, sans-serif; /*color:#bdb7b2;*/
+  font: 12px "Lucida Grande", Arial, sans-serif;
 }
 
 #userFilterInput {
@@ -418,34 +418,6 @@
 .userslist tr.feat-bot {
   border-bottom: 1px solid #9cbcca;
 }
-
-/* to be replaced ???  edit and wiki buttons next to a proposal title */
-.butt {
-  float: left;
-  margin-left: 12px;
-  min-width: 78px;
-  height: 18px;
-}
-
-.butt a {
-  font: 10px Verdana, Geneva, sans-serif;
-  color: #404040;
-  min-width: 66px;
-  height: 14px;
-  padding: 2px 5px 0;
-  display: inline-block;
-  background: #e7f1f5;
-  border: 1px solid #2ea5d6;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
-
-.butt a:hover {
-  color: #66b035;
-  background: #fff;
-}
-
 
 //TODO: these also somewhat relate to blueheaderbar
 .contestbar .phaseSeparatorContainer {

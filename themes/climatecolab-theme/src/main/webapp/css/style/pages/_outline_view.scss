@@ -2,7 +2,7 @@
 
 .contest-outline-left {
   float: left;
-  width: 490px; /* 51% */
+  width: 490px;
   min-height: 600px;
   border-right: 1px solid #e3e0d9;
   padding-bottom: 150px;
@@ -11,9 +11,9 @@
 
 .contest-outline-right {
   width: 470px;
-  padding-bottom: 150px; /*position:fixed; left:50%;*/
+  padding-bottom: 150px;
   float: right;
-  margin-left: 20px; /* display: none;*/
+  margin-left: 20px;
 }
 
 .contest-outline-left, .contest-outline-right div {
