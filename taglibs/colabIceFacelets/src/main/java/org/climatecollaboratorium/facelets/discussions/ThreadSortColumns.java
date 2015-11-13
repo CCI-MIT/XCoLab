@@ -1,6 +1,6 @@
 package org.climatecollaboratorium.facelets.discussions;
 
-public enum ThreadSortClumns {
+public enum ThreadSortColumns {
     QUESTION,
     DATE,
     REPLIES,

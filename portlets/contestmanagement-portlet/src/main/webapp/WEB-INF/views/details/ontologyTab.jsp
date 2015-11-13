@@ -47,6 +47,12 @@
 		var ontologyTerms = {};
 		var ontologySpaces = {};
 		var selectedOntologyTerms = [];
+		var anyOntologyTermIds = [];
+
+		<c:forEach var="anyOntologyTermId" items="${anyOntologyTermIds}">
+			anyOntologyTermIds.push(${anyOntologyTermId});
+		</c:forEach>
+		console.debug("anyOntologyTermIds", anyOntologyTermIds);
 
 		<c:forEach var="ontologySpace" items="${ontologySpaces}">
 			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}", order: ${ontologySpace.order}, contests: [], otherContests: [], isSpace: true};
@@ -102,6 +108,19 @@
 				jQuery(ontologyTermIdSelector + " a input").prop('checked', true);
 			}
 
+
+			function removeAnySelectionFromContainer(container, termId) {
+				container.find("> li > a").map(function () {
+					if (this.getElementsByTagName("input")[0].checked) {
+						var siblingTermId = jQuery(this).attr("data-term-id");
+						if (siblingTermId !== termId && anyOntologyTermIds.indexOf(parseInt(siblingTermId)) >= 0) {
+							jQuery(this).find("input:first").prop('checked', false);
+							removeOntologyTermFromSelection(siblingTermId);
+						}
+					}
+				});
+			}
+
 			jQuery(".contest-outline-left").on('click', 'a', function (event) {
 				var that = this;
 				var self = jQuery(this);
@@ -152,6 +171,8 @@
 							removeOntologyTermFromSelection(termId);
 						})
 
+						var topLevelTermsContainer = jQuery("[data-term-id="+termId+"]").closest("[data-space-id] > ul");
+						removeAnySelectionFromContainer(topLevelTermsContainer, termId);
 					}
 					event.stopPropagation();
 				} else {

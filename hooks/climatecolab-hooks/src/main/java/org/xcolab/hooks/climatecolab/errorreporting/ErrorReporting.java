@@ -41,11 +41,7 @@ public class ErrorReporting implements Filter {
 
     private static final String EMAIL_SUBJECT = "Error Report from User";
 
-    protected Log _log;
-
-    public ErrorReporting(){
-        _log = LogFactoryUtil.getLog(this.getClass());
-    }
+    protected static final Log _log = LogFactoryUtil.getLog(ErrorReporting.class);
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,16 +52,14 @@ public class ErrorReporting implements Filter {
         String descriptionInHtmlFormat = request.getParameter("description").replaceAll("(\r\n|\n)", "<br />");
         String stackTrace = request.getParameter("stackTrace");
         String userScreenName = "no user was logged in";
-        
+
         try {
             userScreenName = PortalUtil.getUser(request).getScreenName();
-            if(email.isEmpty()) {
+
+            if (email.isEmpty()) {
                 email = PortalUtil.getUser(request).getEmailAddress();
             }
-        }
-        catch(SystemException | PortalException e){
-            // Couldn't find user or no user is logged in
-        }
+        } catch (PortalException | SystemException ignored) { /* no user logged in */}
 
         if (Validator.isNotNull(url)) {
             String body = buildErrorReportBody(url, userScreenName, email, stackTrace, descriptionInHtmlFormat);

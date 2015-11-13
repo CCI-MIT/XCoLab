@@ -46,6 +46,7 @@ public class HtmlUtil {
         final Whitelist whitelist = Whitelist.basicWithImages();
         whitelist.addAttributes("img", "style");
         whitelist.addAttributes("a", "name");
+        whitelist.addAttributes("a", "class");
         whitelist.preserveRelativeLinks(true);
         return clean(text, whitelist);
     }
@@ -131,10 +132,11 @@ public class HtmlUtil {
                 String linkURL = aTagElement.attr("href");
                 String linkText = aTagElement.text();
                 String linkWithNoFollow;
-                if(linkText.equals(""))
+                if(linkText.equals("")) {
                     linkWithNoFollow = createLink(linkURL, linkURL);
-                else
+                } else {
                     linkWithNoFollow = createLink(linkURL, linkText);
+                }
                 aTagElement.after(linkWithNoFollow);
                 aTagElement.remove();
             }

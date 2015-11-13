@@ -1,23 +1,11 @@
 package org.climatecollaboratorium.facelets.discussions.permissions;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.faces.event.ActionEvent;
-import javax.faces.model.SelectItem;
-
-import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
-import org.climatecollaboratorium.utils.Helper;
-
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.Permission;
 import com.liferay.portal.model.Resource;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.ResourcePermission;
@@ -26,6 +14,15 @@ import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.service.ResourceLocalServiceUtil;
 import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
+import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
+import org.climatecollaboratorium.utils.Helper;
+
+import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DiscussionsPermissionsConfig implements Serializable {
 	/**
@@ -34,30 +31,23 @@ public class DiscussionsPermissionsConfig implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final String RESOURCE_NAME = DiscussionCategoryGroup.class
 			.getName();
-	// private static final Long companyId =
-	// Helper.getThemeDisplay().getCompanyId();
-	private static Long companyId;
-	private Resource resource = null;
-	private String primKey;
-	private List<PermissionItem> permissionItems;
-	private int scope = ResourceConstants.SCOPE_GROUP;
-	private Long groupId;
-	private DiscussionBean discussionBean;
 
-	private static Log _log = LogFactoryUtil
+	private final long companyId;
+	private final String primKey;
+	private List<PermissionItem> permissionItems;
+	private final int scope = ResourceConstants.SCOPE_GROUP;
+	private final DiscussionBean discussionBean;
+
+	private static final Log _log = LogFactoryUtil
 			.getLog(DiscussionsPermissionsConfig.class);
 
 	public DiscussionsPermissionsConfig(DiscussionBean discussionBean)
 			throws SystemException {
 		// check if resource has been added, if not, add it
-		groupId = discussionBean.getOwningGroupId();
+		Long groupId = discussionBean.getOwningGroupId();
 		primKey = groupId.toString();
 		this.discussionBean = discussionBean;
-		long companyId = Helper.getThemeDisplay().getCompanyId();
-
-		resource = ResourceLocalServiceUtil.getResource(companyId,
-				RESOURCE_NAME, scope, primKey);
-
+		companyId = Helper.getThemeDisplay().getCompanyId();
 	}
 
 	public class PermissionItem implements Serializable {
@@ -65,7 +55,7 @@ public class DiscussionsPermissionsConfig implements Serializable {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		private Role role;
+		private final Role role;
 		private String[] actionIds;
 
 		public PermissionItem(Role role) {
@@ -79,7 +69,7 @@ public class DiscussionsPermissionsConfig implements Serializable {
 		public String[] getActionIds() throws SystemException {
 			Resource res = getResource();
 			List<ResourcePermission> permissions = ResourcePermissionLocalServiceUtil
-					.getResourcePermissions(companyId, res.getName(), 
+					.getResourcePermissions(companyId, res.getName(),
 							res.getScope(), res.getPrimKey());
 			actionIds = new String[permissions.size()];
 			int i = 0;
@@ -92,7 +82,7 @@ public class DiscussionsPermissionsConfig implements Serializable {
 		}
 
 		public void setActionIds(String[] actionIds) {
-			this.actionIds = actionIds;
+			this.actionIds = actionIds.clone();
 		}
 
 		public void updatePermissions() throws PortalException, SystemException {
@@ -120,7 +110,7 @@ public class DiscussionsPermissionsConfig implements Serializable {
 				RoleConstants.ADMINISTRATOR, RoleConstants.USER,
 				RoleConstants.USER, RoleConstants.GUEST, "Moderator" };
 		if (permissionItems == null) {
-			permissionItems = new ArrayList<PermissionItem>();
+			permissionItems = new ArrayList<>();
 			for (String roleName : supportedRolesNames) {
 				Role role = RoleLocalServiceUtil.getRole(companyId, roleName);
 				permissionItems.add(new PermissionItem(role));

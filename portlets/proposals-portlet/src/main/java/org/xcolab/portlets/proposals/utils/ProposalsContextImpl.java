@@ -30,7 +30,11 @@ import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.wrappers.*;
+import org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
 import javax.portlet.PortletRequest;
 
@@ -156,10 +160,10 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     private void init(PortletRequest request) throws PortalException, SystemException {
-        final Long proposalId = ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
-        final Long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
-        final Long phaseId = ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
-        final Integer version = ParamUtil.getInteger(request, VERSION_PARAM);
+        final long proposalId = ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
+        final long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
+        final long phaseId = ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
+        final int version = ParamUtil.getInteger(request, VERSION_PARAM);
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         String currentUrl = themeDisplay.getPortalURL() + themeDisplay.getURLCurrent();
@@ -203,7 +207,6 @@ public class ProposalsContextImpl implements ProposalsContext {
                     // fetch most recent one
                     // if proposal is being moved ignore missing p2p mapping
                     if (request.getParameter("move")==null){
-
                         if (phaseId <= 0) {
                             _log.info("Can't find association between proposal " + proposalId + " and phase " + contestPhase.getContestPhasePK());
                             ContestPhase mostRecentPhaseInRequestedContest = null;
@@ -265,14 +268,14 @@ public class ProposalsContextImpl implements ProposalsContext {
                         } else {
                             proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
                         }
-                    }
-                    else {
+                    } else {
+                        final boolean hasVersionTo = proposal2Phase != null && proposal2Phase.getVersionTo() > 0;
+                        final int localVersion = hasVersionTo ? proposal2Phase.getVersionTo() : proposal.getCurrentVersion();
+
                         if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) {
-                            proposalWrapper = new ProposalJudgeWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
-                                    proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase, u);
+                            proposalWrapper = new ProposalJudgeWrapper(proposal, localVersion, contest, contestPhase, proposal2Phase, u);
                         } else {
-                            proposalWrapper = new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
-                                    proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
+                            proposalWrapper = new ProposalWrapper(proposal, localVersion, contest, contestPhase, proposal2Phase);
                         }
                     }
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);

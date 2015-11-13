@@ -51,6 +51,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
@@ -69,6 +70,8 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
@@ -1084,7 +1087,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public MembershipRequest addMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
 
-        return MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment, null);
+        return MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment == null? StringPool.BLANK : comment, null);
     }
 
     /**
@@ -1098,6 +1101,23 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Override
     public void removeUserFromTeam(long proposalId, long userId) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
+        if (userId == proposal.getAuthorId()) {
+            final String errorMessage = String.format("Cannot delete user %d from proposal %d: userId == proposal.getAuthorId()", userId, proposalId);
+            try {
+                throw new PortalException(errorMessage);
+            } catch(PortalException e) {
+                //TODO: remove debug email
+                StringBuilder stringBuilder = new StringBuilder();
+                User deletedUser = UserLocalServiceUtil.fetchUser(userId);
+                stringBuilder.append(String.format("Deleted member: %s, %d <br/>", deletedUser.getScreenName(), deletedUser.getUserId()));
+                stringBuilder.append(String.format("Deleted from group: %d <br/>", proposal.getGroupId()));
+                stringBuilder.append(String.format("Proposal: %d <br/>",  proposalId));
+                stringBuilder.append("<br/>Stack trace: <br/>");
+                stringBuilder.append(ExceptionUtils.getStackTrace(e));
+                new EmailToAdminDispatcher(errorMessage, stringBuilder.toString()).sendMessage();
+                throw e;
+            }
+        }
         GroupLocalServiceUtil.unsetUserGroups(userId, new long[]{proposal.getGroupId()});
 
         eventBus.post(new ProposalMemberRemovedEvent(proposal, userLocalService.getUser(userId)));

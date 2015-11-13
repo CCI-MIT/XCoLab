@@ -17,20 +17,32 @@
             <c:set var="modelId" value="${modelId}"/>
             <c:set var="scenarioId" value="${scenarioId }"/>
 
-            <c:if test="${not empty consolidatedModelId}">
-                <c:set var="modelId" value="${consolidatedModelId}"/>
-            </c:if>
+            <c:choose>
+                <c:when test="${isProposalUsingCombinedScenario}">
+                    <c:if test="${not empty consolidatedModelId}">
+                        <c:set var="modelToLoadId" value="${consolidatedModelId}"/>
+                    </c:if>
 
-            <c:if test="${not empty consolidatedScenarioId}">
-                <c:set var="scenarioId" value="${consolidatedScenarioId}"/>
-            </c:if>
+                    <c:if test="${not empty consolidatedScenarioId}">
+                        <c:set var="scenarioToLoadId" value="${consolidatedScenarioId}"/>
+                    </c:if>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="modelToLoadId" value="${modelId}"/>
+                    <c:set var="scenarioToLoadId" value="${scenarioId}"/>
+                </c:otherwise>
+            </c:choose>
+
 
             <c:choose>
                 <c:when test="${edit and (modelId > 0 or scenarioId > 0)}">
                     <c:if test="${not empty consolidateOptions }">
                         <proposalsPortlet:modelSettingsPicker consolidateOptions="${consolidateOptions }"
-                                                              contestPK="${contest.contestPK }" modelId="${modelId}"
-                                                              scenarioId="${scenarioId }"/>
+                                                              contestPK="${contest.contestPK }"
+                                                              modelId="${modelId}"
+                                                              scenarioId="${scenarioId}"
+                                                              consolidatedScenarioId="${consolidatedScenarioId }"
+                                                              consolidatedModelId="${consolidatedModelId }"/>
 
                         <div id="proposalToModelMap" class="addpropbox" style="display: none;">
                             <c:if test="${not empty proposalToModelMap}">
@@ -81,14 +93,18 @@
                     <c:if test="${not empty availableModels }">
                         <div id="modelPickerDiv">
                             <proposalsPortlet:modelPicker availableModels="${availableModels }"
-                                                          contestPK="${contest.contestPK }" modelId="${modelId}"/>
+                                                          contestPK="${contest.contestPK }" modelId="${modelToLoadId}"/>
                         </div>
                     </c:if>
 
-                    <div id="modelContent">
-                        <modeling:simulationEdit scenarioId="${scenarioId }" modelId="${modelId }"
-                                                 contestModelDefaultSetting="${contest.defaultModelSettings}"/>
-                    </div>
+
+                    <modeling:simulationEdit scenarioId="${scenarioToLoadId }"
+                                             modelId="${modelToLoadId }"
+                                             contestModelDefaultSetting="${contest.defaultModelSettings}"
+                                             isRegionalContest="${isRegionalContest}"
+                                             proposalRegion="${proposal.modelRegion}"
+                                             modelRegions="${proposal.allModelRegions}"/>
+
 
                     <portlet:actionURL var="updateProposalScenarioURL">
                         <portlet:param name="action_forwardToPage" value="proposalDetails_IMPACT"/>
@@ -97,9 +113,13 @@
                         <portlet:param name="action" value="updateProposalScenario"/>
                     </portlet:actionURL>
 
+
                     <form action="${updateProposalScenarioURL }" id="updateProposalScenarioForm" method="post">
                         <input type="text" id="proposalScenarioId" name="scenarioId" class="hidden"/>
                         <input type="text" id="scenarioModelId" name="modelId" class="hidden"/>
+                        <input type="text" id="isConsolidatedScenario" name="isConsolidatedScenario" class="hidden"/>
+                        <input type="text" id="proposalModelRegion" name="region" class="hidden"
+                               value="${proposal.modelRegion}"/>
                     </form>
 
                     <div class="admin-overlay-wrap">
@@ -409,7 +429,7 @@
         }
 
         var scenarioFetchedCallbackRegistered = false;
-        function registerScenarioFetchedCallback(){
+        function registerScenarioFetchedCallback() {
             var $modelsOutputContainerElement = $("#modelsOutputContainer");
             if (jQuery($modelsOutputContainerElement.data('modeling')).length !== 0) {
                 scenarioFetchedCallbackRegistered = true;
@@ -420,7 +440,7 @@
         registerScenarioFetchedCallback();
 
         $().ready(function () {
-            if(!scenarioFetchedCallbackRegistered){
+            if (!scenarioFetchedCallbackRegistered) {
                 registerScenarioFetchedCallback();
             }
             registerHelpEventHandler();
@@ -515,6 +535,7 @@
          chart.draw(data, options);
          }
          */
+
     </script>
 
 </jsp:root>

@@ -71,6 +71,11 @@
     font-size: 16px;
 }
 
+.cmsDetailsBox .addpropbox select.multi{
+    height: initial;
+    min-height: 150px;
+}
+
 .cmsDetailsBox .addpropbox select.autoWidth{
     width: auto;
 }

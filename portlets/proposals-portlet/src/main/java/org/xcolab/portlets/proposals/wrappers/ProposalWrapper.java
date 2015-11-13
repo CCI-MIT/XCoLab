@@ -23,11 +23,14 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
+import org.xcolab.enums.ModelRegions;
+import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.wrappers.BaseProposalWrapper;
 
@@ -201,10 +204,26 @@ public class ProposalWrapper extends BaseProposalWrapper {
     public List<ProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {
         if (members == null) {
             members = new ArrayList<>();
+            boolean hasOwner = false;
             for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
-                members.add(new ProposalTeamMemberWrapper(proposal, user));
+                final ProposalTeamMemberWrapper teamMemberWrapper = new ProposalTeamMemberWrapper(proposal, user);
+                members.add(teamMemberWrapper);
+                if (teamMemberWrapper.getMemberType().equalsIgnoreCase("owner")) {
+                    hasOwner = true;
+                }
+            }
+            if (!hasOwner) {
+                //TODO: remove debug email
+                GroupLocalServiceUtil.addUserGroups(proposal.getAuthorId(), new long[]{proposal.getGroupId()});
+                final User owner = UserLocalServiceUtil.fetchUser(proposal.getAuthorId());
+                members.add(new ProposalTeamMemberWrapper(proposal, owner));
+                new EmailToAdminDispatcher(String.format("Owner %s not in proposal %d's group", owner.getScreenName(), proposal.getProposalId()),
+                        String.format("The owner %s (%d) of proposal %d is not in its group %d and was just re-added.",
+                                owner.getScreenName(), owner.getUserId(), proposal.getProposalId(), proposal.getGroupId())
+                ).sendMessage();
             }
         }
+
         return members;
     }
 
@@ -226,6 +245,26 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return this.membershipRequests;
     }
 
+    public List<String[]> getAllModelRegions() {
+        List<String[]> modelRegions = new ArrayList<>();
+        for (ModelRegions modelRegion : ModelRegions.values()) {
+            modelRegions.add(new String[] {modelRegion.getModelRegionName(), modelRegion.getModelRegionTitle()});
+        }
+        return modelRegions;
+    }
+
+    public String getModelRegion() throws PortalException, SystemException {
+        ProposalAttribute attr = proposalAttributeHelper.getLatestAttributeOrNull(ProposalAttributeKeys.REGION);
+        if (attr == null) {
+            return "";
+        }
+        return attr.getStringValue();
+    }
+
+    public void setModelRegion(String region, Long userId) throws PortalException, SystemException {
+        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.REGION, region);
+    }
+
     public Long getModelId() throws PortalException, SystemException {
         Long modelId = 0L;
         try {
@@ -234,8 +273,8 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return modelId;
     }
 
-    public void setScenarioId(Long scenarioId, Long modelId, Long userId) throws PortalException, SystemException {
-        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, modelId, scenarioId);
+    public void setScenarioId(Long scenarioId, Long isConsolidatedScenario, Long userId) throws PortalException, SystemException {
+        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, isConsolidatedScenario, scenarioId);
     }
 
     public Long getScenarioId() throws PortalException, SystemException {
@@ -244,6 +283,11 @@ public class ProposalWrapper extends BaseProposalWrapper {
             return 0L;
         }
         return attr.getNumericValue();
+    }
+
+    public Boolean isConsolidatedScenario(Long scenarioId) throws PortalException, SystemException {
+        ProposalAttribute attr = proposalAttributeHelper.getLatestAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
+        return attr != null && attr.getAdditionalId() == 1;
     }
 
     public Map<Long,List<ProposalWrapper>> getSubProposalPerModel() throws PortalException, SystemException {

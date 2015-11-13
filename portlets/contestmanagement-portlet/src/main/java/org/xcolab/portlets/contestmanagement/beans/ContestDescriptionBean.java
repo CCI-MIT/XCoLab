@@ -17,14 +17,15 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by Thomas on 2/8/2015.
  */
-public class ContestDescriptionBean implements Serializable{
+public class ContestDescriptionBean implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final String NO_SPECIAL_CHAR_REGEX ="^[a-zA-Z:,;'’0-9äöüÄÖÜ?! ]*$";
+    private static final String NO_SPECIAL_CHAR_REGEX = "^[a-zA-Z:,;'’0-9äöüÄÖÜ?! ]*$";
 
     private Long ContestPK;
     private Long contestLogoId;
     private Long sponsorLogoId;
     private String emailTemplateUrl;
+    private ContestModelSettingsBean contestModelSettings;
 
     @Length(min = 5, max = 150, message = "The contest question must be at least 5 characters and not more than 150 characters.")
     private String contestName;
@@ -53,7 +54,7 @@ public class ContestDescriptionBean implements Serializable{
 
     public ContestDescriptionBean(Contest contest) {
 
-        if(contest != null) {
+        if (contest != null) {
             ContestPK = contest.getContestPK();
             contestName = contest.getContestName();
             contestShortName = contest.getContestShortName();
@@ -65,6 +66,7 @@ public class ContestDescriptionBean implements Serializable{
             contestLogoId = contest.getContestLogoId();
             emailTemplateUrl = contest.getEmailTemplateUrl();
             sponsorLogoId = contest.getSponsorLogoId();
+            contestModelSettings = new ContestModelSettingsBean(contest);
         }
     }
 
@@ -123,7 +125,9 @@ public class ContestDescriptionBean implements Serializable{
         }
     }
 
-    public void setEmailTemplateUrl(String emailTemplateUrl) {this.emailTemplateUrl = emailTemplateUrl;}
+    public void setEmailTemplateUrl(String emailTemplateUrl) {
+        this.emailTemplateUrl = emailTemplateUrl;
+    }
 
     public String getContestDescription() {
         return contestDescription;
@@ -165,6 +169,14 @@ public class ContestDescriptionBean implements Serializable{
         this.contestType = contestType;
     }
 
+    public ContestModelSettingsBean getContestModelSettings() {
+        return contestModelSettings;
+    }
+
+    public void setContestModelSettings(ContestModelSettingsBean contestModelSettings) {
+        this.contestModelSettings = contestModelSettings;
+    }
+
     private void updateContestDescription(Contest contest) throws SystemException {
         contest.setContestName(contestName);
         contest.setEmailTemplateUrl(emailTemplateUrl);
@@ -176,11 +188,13 @@ public class ContestDescriptionBean implements Serializable{
         contest.setContestTier(contestTier);
         contest.setContestTypeId(contestType);
         contest.persist();
+        contestModelSettings.persist(contest);
     }
 
     public static void updateContestWiki(Contest contest, String oldContestTitle) throws SystemException, PortalException, UnsupportedEncodingException {
+
         String newContestTitle = contest.getContestShortName();
-        if(!oldContestTitle.equals(newContestTitle)) {
+        if (!oldContestTitle.equals(newContestTitle)) {
             WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
             WikiPageWrapper.updateContestResourceUrl(contest, newContestTitle);
         }
@@ -193,9 +207,9 @@ public class ContestDescriptionBean implements Serializable{
         if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
             BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
             boolean contestHasProposals = contestWrapper.getTotalProposalsCount() > 0;
-            if(contestHasProposals) {
+            if (contestHasProposals) {
                 ContestScheduleWrapper.changeContestScheduleForContest(contest, contestScheduleId);
-            }   else{
+            } else {
                 ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleId);
             }
             contest.setContestScheduleId(contestScheduleId);

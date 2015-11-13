@@ -15,8 +15,6 @@
 
     <portlet:actionURL var="submitUrl">
         <portlet:param name="action" value="reportException"/>
-        <portlet:param name="exceptionMessage" value="${exceptionMessage}"/>
-        <portlet:param name="exceptionStacktrace" value="${exceptionStacktrace}"/>
     </portlet:actionURL>
 
     <div id="content" style="width: 500px;">
@@ -26,8 +24,10 @@
 
         <p>${exceptionMessage}</p>
 
-        <form action="${submitUrl }" method="POST">
+        <form action="${submitUrl }" method="post">
             <input type="hidden" name="url" id="url-field"/>
+            <input type="hidden" name="exceptionMessage" value="${exceptionMessage}"/>
+            <input type="hidden" name="exceptionStacktrace" value="${exceptionStacktrace}"/>
 
             <p style="margin-top:15px">Please tell us the steps you took before receiving this message so our web development team can figure out how this could have happened.</p>
             <textarea style="width: 100%; padding: 3px;" name="stepsToReproduce" id="steps-entry" type="text" rows="4"
@@ -63,7 +63,6 @@
 
         function isInputValid() {
             var stepsToReproduce = $('textarea#steps-entry').val();
-
             return stepsToReproduce.length > 0;
         }
     </script>

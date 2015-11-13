@@ -50,7 +50,9 @@ public class PortletServlet extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         if (request.getAttribute(EXTEND_SESSION) != null) {
-            if (request.getSession(false) == null) return;
+            if (request.getSession(false) == null) {
+                return;
+            }
             request.removeAttribute(EXTEND_SESSION);
 
             HttpSession session = request.getSession(false);
@@ -59,8 +61,8 @@ public class PortletServlet extends HttpServlet {
                 session.setAttribute(EXTEND_SESSION, Boolean.TRUE);
 
                 session.removeAttribute(EXTEND_SESSION);
+                XCoLabSessionTracker.extendSession(session);
             }
-            XCoLabSessionTracker.extendSession(session);
             return;
         }
         String portletId = (String) request.getAttribute(WebKeys.PORTLET_ID);

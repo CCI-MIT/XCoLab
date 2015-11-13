@@ -5,15 +5,14 @@ import com.liferay.portal.MembershipRequestCommentsException;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.MembershipRequestConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.MembershipRequestLocalService;
 import com.liferay.portal.service.MembershipRequestLocalServiceWrapper;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.persistence.MembershipRequestUtil;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.persistence.UserUtil;
 
 import java.util.Date;
@@ -21,7 +20,7 @@ import java.util.Date;
 /**
  * IMPORTANT
  * This class overrides the default behaviour of LR to disable sending out new email notifications when a new MembershipRequest is created
- * or updated. The class excludes the logic for sending the email notifications
+ * or updated. The class excludes the logic for sending the email notifications. This class also removes unnecessary validators that disallow empty comments.
  *
  * REVIEW this class when updating LR version. Changes in the class {@link com.liferay.portal.service.impl.MembershipRequestLocalServiceImpl} may break this code
  *
@@ -39,10 +38,9 @@ public class CustomMembershipRequestLocalServiceImpl extends MembershipRequestLo
 			ServiceContext serviceContext)
 			throws SystemException, NoSuchUserException, MembershipRequestCommentsException {
 
+
 		User user = UserUtil.findByPrimaryKey(userId);
 		Date now = new Date();
-
-		validate(comments);
 
 		long membershipRequestId = CounterLocalServiceUtil.increment();
 
@@ -59,7 +57,6 @@ public class CustomMembershipRequestLocalServiceImpl extends MembershipRequestLo
 
 		MembershipRequestUtil.update(membershipRequest);
 
-
 		return membershipRequest;
 	}
 
@@ -68,8 +65,6 @@ public class CustomMembershipRequestLocalServiceImpl extends MembershipRequestLo
 			long replierUserId, long membershipRequestId, String replyComments,
 			int statusId, boolean addUserToGroup, ServiceContext serviceContext)
 			throws PortalException, SystemException {
-
-		validate(replyComments);
 
 		MembershipRequest membershipRequest =
 				MembershipRequestUtil.findByPrimaryKey(membershipRequestId);
@@ -98,12 +93,6 @@ public class CustomMembershipRequestLocalServiceImpl extends MembershipRequestLo
 
 			UserLocalServiceUtil.addGroupUsers(
 					membershipRequest.getGroupId(), addUserIds);
-		}
-	}
-
-	protected void validate(String comments) throws MembershipRequestCommentsException {
-		if (Validator.isNull(comments) || Validator.isNumber(comments)) {
-			throw new MembershipRequestCommentsException();
 		}
 	}
 }

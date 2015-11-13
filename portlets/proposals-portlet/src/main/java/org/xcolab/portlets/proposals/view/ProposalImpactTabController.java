@@ -141,20 +141,19 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 new ProposalImpactScenarioCombinationWrapper(subProposals);
         boolean isConsolidationPossible =
                 proposalImpactScenarioCombinationWrapper.isConsolidationOfScenariosPossible();
+        boolean isProposalUsingCombinedScenario = false;
 
         if(isConsolidationPossible){
             boolean isValidScenario = (proposalWrapper.getScenarioId() != null && proposalWrapper.getScenarioId() != 0);
             if (isValidScenario) {
-
                 Long proposalScenarioId = proposalWrapper.getScenarioId();
-                boolean isCombinedScenario =
-                        proposalImpactScenarioCombinationWrapper.isCombinedScenario(proposalScenarioId);
-
-                if (isCombinedScenario) {
+                boolean isScenarioUsingSameModelId = proposalImpactScenarioCombinationWrapper.isScenarioUsingSameModelId(proposalScenarioId);
+                if (proposalWrapper.isConsolidatedScenario(proposalScenarioId)){
+                    isProposalUsingCombinedScenario = true;
                     proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
 
-                    if (proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)) {
-
+                    if (!isScenarioUsingSameModelId ||
+                            proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)) {
                         proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
                         model.addAttribute("consolidatedScenarioId",
                                 proposalImpactScenarioCombinationWrapper.getOutputScenarioId());
@@ -165,8 +164,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                         model.addAttribute("consolidatedModelId",
                                 proposalImpactScenarioCombinationWrapper.getModelIdForScenarioId(proposalScenarioId));
                     }
+                } else {
+                    proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
+                    model.addAttribute("consolidatedScenarioId",
+                            proposalImpactScenarioCombinationWrapper.getOutputScenarioId());
+                    model.addAttribute("consolidatedModelId",
+                            proposalImpactScenarioCombinationWrapper.getOutputModelId());
                 }
-
             } else {
                 proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
                 model.addAttribute("consolidatedScenarioId",
@@ -174,12 +178,12 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 model.addAttribute("consolidatedModelId",
                         proposalImpactScenarioCombinationWrapper.getOutputModelId());
             }
-
         } else{
             model.addAttribute("proposalToModelMap",
                     proposalImpactScenarioCombinationWrapper.getRegionToProposalSimulationScenarioMap());
         }
 
+        model.addAttribute("isProposalUsingCombinedScenario", isProposalUsingCombinedScenario);
         model.addAttribute("consolidationPossible", isConsolidationPossible);
         model.addAttribute("consolidateOptions", getConsolidationOptions());
 

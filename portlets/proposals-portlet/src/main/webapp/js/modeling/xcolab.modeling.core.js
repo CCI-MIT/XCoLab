@@ -26,6 +26,29 @@ function initActTooltips(container) {
 }
 
 
+// -- SPINNING (LOADING) WHEEL --
+
+var loadingWheelOpts = {
+	lines: 13, // The number of lines to draw
+	length: 20, // The length of each line
+	width: 10, // The line thickness
+	radius: 30, // The radius of the inner circle
+	corners: 1, // Corner roundness (0..1)
+	rotate: 0, // The rotation offset
+	direction: 1, // 1: clockwise, -1: counterclockwise
+	color: '#000', // #rgb or #rrggbb or array of colors
+	speed: 1, // Rounds per second
+	trail: 60, // Afterglow percentage
+	shadow: false, // Whether to render a shadow
+	hwaccel: false, // Whether to use hardware acceleration
+	className: 'spinner', // The CSS class to assign to the spinner
+	zIndex: 2e9, // The z-index (defaults to 2000000000)
+	top: 'auto', // Top position relative to parent in px
+	left: 'auto' // Left position relative to parent in px
+};
+
+
+
 /** 
  * Base object responsible for handling rendering of ROMA modeling widget.
  * 
@@ -34,6 +57,7 @@ function initActTooltips(container) {
  */
 function ModelingWidget(selector, options) {
 	this.container = $(selector);
+	this.spinner = new Spinner(loadingWheelOpts);
 	if (typeof(options) == 'undefined') {
 		throw "Options have to be defined for modeling widget";
 	}
@@ -41,7 +65,7 @@ function ModelingWidget(selector, options) {
 		throw "Missing renderers";
 	}
 	this.inEditMode = 'edit' in options ? options.edit : false;
-
+	this.inputFreezed = this.inEditMode ? false : true;
 	var that = this;
 	this.renderers = [];
 	jQuery(options.renderers).each(function(idx, renderer) {
@@ -49,7 +73,7 @@ function ModelingWidget(selector, options) {
 	});
 	
 	initActTooltips(this.container);
-	
+
 
 	jQuery(this).on('scenarioFetched', function(event) {
 		that.modelId = event.scenario.modelId;
@@ -57,7 +81,7 @@ function ModelingWidget(selector, options) {
 		that.model = event.scenario;
 	});
 
-    jQuery(this).on('scenarioFetchedWithErrors', ModelingWidget.prototype.showStackTrace);
+	jQuery(this).on('scenarioFetchedWithErrors', ModelingWidget.prototype.showStackTrace);
 
 	jQuery(this).on('modelFetched', function(event) {
 		that.modelId = event.model.modelId;
@@ -220,6 +244,8 @@ ModelingWidget.prototype.getInputValue = function(input) {
  */
 ModelingWidget.prototype.loadScenario = function(scenarioId) {
 	console.debug('loading scenario', scenarioId);
+	this.spinner.spin(document.getElementsByClassName("spinner-area")[0]);
+	this.container.fadeOut();
 	var modelingWidget = this;
 
 	jQuery(modelingWidget).trigger("fetchingScenario");
@@ -231,15 +257,17 @@ ModelingWidget.prototype.loadScenario = function(scenarioId) {
 		console.debug('scenario loaded', scenarioId, data, textStatus, jqXHR);
 		var event = jQuery.Event( "scenarioFetched" );
 		event.scenario = data;
+		modelingWidget.container.fadeIn();
 		jQuery(modelingWidget).trigger(event);
-		
+		modelingWidget.spinner.stop();
 	}).fail(function(data, textStatus, errorThrown) {
         console.log('error');
 		console.debug("can't load scenario", scenarioId, data, textStatus, errorThrown);
 		var event = jQuery.Event( "scenarioFetchingError" );
 		event.scenario = data;
+		modelingWidget.container.fadeIn();
 		jQuery(modelingWidget).trigger(event);
-		
+		modelingWidget.spinner.stop();
 	});
 };
 
@@ -293,6 +321,8 @@ ModelingWidget.prototype.runTheModel = function() {
 		dataType: 'jsonp'
 	}).done(function(data) {
 		var event;
+		jQuery(modelingWidget).show();
+		jQuery(modelingWidget).hide();
         if(data.error){
             event = jQuery.Event( "scenarioFetchedWithErrors" );
         } else{
@@ -315,6 +345,8 @@ ModelingWidget.prototype.runTheModel = function() {
  */
 ModelingWidget.prototype.loadModel = function(modelId) {
 	console.debug('loading model', modelId);
+	this.spinner.spin(document.getElementsByClassName("spinner-area")[0]);
+	this.container.fadeOut();
 	var modelingWidget = this;
 
 	jQuery(modelingWidget).trigger("fetchingModel");
@@ -327,14 +359,16 @@ ModelingWidget.prototype.loadModel = function(modelId) {
 		
 		var event = jQuery.Event( "modelFetched" );
 		event.model = data;
+		modelingWidget.container.fadeIn();
 		jQuery(modelingWidget).trigger(event);
-		
+		modelingWidget.spinner.stop();
 	}).fail(function(data, textStatus, errorThrown) {
 		console.debug("can't load model", scenarioId, data, textStatus, errorThrown);
 		var event = jQuery.Event( "modelFetchingError" );
 		event.scenario = data;
+		modelingWidget.container.fadeIn();
 		jQuery(modelingWidget).trigger(event);
-		
+		modelingWidget.spinner.stop();
 	});
 };
 
@@ -373,15 +407,27 @@ ModelingWidget.prototype.showStackTrace = function(data) {
         jQuery('.modal-body').html(jQuery('#main', tempDom));
     }
 };
+/**
+ * Toggles the model's edit mode setting
+ */
+ModelingWidget.prototype.updateEditMaskAppearance = function() {
+	if(this.inputFreezed){
+		$("div.act-edit_left :input").prop("disabled", true);
+		$("div.act-edit_left .sliderCol").hide();
+	} else {
+		$("div.act-edit_left :input").prop("disabled", false);
+		$("div.act-edit_left .sliderCol").show();
+	}
+};
 
 /**
  * Toggles the model's edit mode setting
  */
-ModelingWidget.prototype.toggleEditMask = function(isInEditMode) {
-	if (isInEditMode) {
-		$('div.act-edit_left').fadeIn();
+ModelingWidget.prototype.toggleEditMask = function(allowInputEdit) {
+	if (allowInputEdit) {
+		this.inputFreezed = false;
 	} else {
-		$('div.act-edit_left').fadeOut();
+		this.inputFreezed = true;
 	}
 };
 

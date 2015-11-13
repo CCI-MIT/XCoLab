@@ -24,8 +24,7 @@
 	<c:if test="${not empty availableModels }">
 		<proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" />
 	</c:if>
-	
-			<modeling:simulationEdit  modelId="${modelId }" />
+			<modeling:simulationEdit  modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}"/>
 	</div>
 	
 </jsp:root>

@@ -1,18 +1,13 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import javax.portlet.PortletRequest;
-
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
+import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
-import java.util.List;
+import javax.portlet.PortletRequest;
 
 public enum ProposalTab {
     DESCRIPTION("Description", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
@@ -35,7 +30,7 @@ public enum ProposalTab {
                     }
                     return false;
                 }
-                private Log _log = LogFactoryUtil.getLog(ProposalTabActivityCountAlgorithm.class);
+                private final Log _log = LogFactoryUtil.getLog(ProposalTabActivityCountAlgorithm.class);
     }
             , ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero), // TODO might need to change this
     IMPACT("Impact", ProposalTabCanAccessAlgorithm.impactViewAccess, ProposalTabCanAccessAlgorithm.impactEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
@@ -48,16 +43,14 @@ public enum ProposalTab {
     ADMIN("Admin", ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     POINTS("Points", ProposalTabCanAccessAlgorithm.pointsViewAccess, ProposalTabCanAccessAlgorithm.pointsEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero);
 
-
-
     private final String displayName;
     private final ProposalTabCanAccessAlgorithm canAccessTabAlgorithm;
     private final ProposalTabCanAccessAlgorithm canEditAlgorithm;
     private final ProposalTabActivityCountAlgorithm activitiesCountAlgorithm;
     
-    private ProposalTab(String displayName, ProposalTabCanAccessAlgorithm canAccessTabAlgorithm, 
-            ProposalTabCanAccessAlgorithm canEditAlgorithm, 
-            ProposalTabActivityCountAlgorithm activitiesCountAlgorithm) {
+    ProposalTab(String displayName, ProposalTabCanAccessAlgorithm canAccessTabAlgorithm,
+                ProposalTabCanAccessAlgorithm canEditAlgorithm,
+                ProposalTabActivityCountAlgorithm activitiesCountAlgorithm) {
         this.displayName = displayName;
         this.canAccessTabAlgorithm = canAccessTabAlgorithm;
         this.canEditAlgorithm = canEditAlgorithm;

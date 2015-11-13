@@ -1,14 +1,14 @@
 package org.climatecollaboratorium.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.xcolab.utils.HtmlUtil;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class ContentFilterHelper {
 
-    public static int MAX_SHORTENED_LENGTH=80;
+    public static final int MAX_SHORTENED_LENGTH=80;
 
     public static String filterLineBreaks(String content) {
         return content.replaceAll("\n", " <br />\n");
@@ -36,48 +36,6 @@ public class ContentFilterHelper {
         return strBuilder.toString();
     }
     
-    public static String filterLinkifyUrls(String content) {
-        Pattern existingLinksPattern = Pattern.compile("(<a[^>]*>[^<]*</a>)|(\\[url=[^\\[]*\\[/url\\])");
-        Matcher existingLinksMatcher = existingLinksPattern.matcher(content);
-        
-        List<Integer[]> linksBeginEnd = new ArrayList<Integer[]>(); 
-        while (existingLinksMatcher.find()) {
-            linksBeginEnd.add(new Integer[] {existingLinksMatcher.start(), existingLinksMatcher.end()});
-        }
-        
-
-        Pattern pattern = Pattern.compile("(http://|www\\.)([{\\w-]*\\.)+\\w{1,4}([^\\s]*)");
-        Matcher matcher = pattern.matcher(content);
-        StringBuilder strBuilder = new StringBuilder();
-        
-        int lastIndex = 0;
-        while (matcher.find()) {
-            // check if this link isn't already part of existing <a href=...
-            boolean partOfAnchor = false;
-            for (Integer[] linkStartEnd: linksBeginEnd) {
-                if (matcher.start() > linkStartEnd[0] && matcher.start() < linkStartEnd[1]) {
-                    partOfAnchor = true;
-                    break;
-                }
-            }
-            if (partOfAnchor) {
-                continue;
-            }
-            
-            strBuilder.append(content.substring(lastIndex, matcher.start()));
-            String url = content.substring(matcher.start(), matcher.end());
-            strBuilder.append(createLink(url, url));
-            
-            strBuilder.append(content.substring(matcher.end(), matcher.end()));
-            lastIndex = matcher.end();
-        }
-        
-
-        strBuilder.append(content.substring(lastIndex));
-        return strBuilder.toString();
-    }
-
-    
      public static String getShortString(String content) {
 
         //strip leading whitespace, breaks
@@ -89,13 +47,15 @@ public class ContentFilterHelper {
         Pattern p = Pattern.compile("((?:\\s*<br\\s*/\\s*>)*).*");
         Matcher m = p.matcher(content);
         m.find();
-        if (m.group(1).length()> 0) {
+        if (!m.group(1).isEmpty()) {
             content = content.substring(m.group(1).length(),content.length());
         }
 
         //replace remaining breaks
 
-        if (content.length() <= MAX_SHORTENED_LENGTH) return content;
+        if (content.length() <= MAX_SHORTENED_LENGTH) {
+            return content;
+        }
         String remainder = content.substring(MAX_SHORTENED_LENGTH,content.length());
         content = content.substring(0,MAX_SHORTENED_LENGTH);
 
@@ -128,10 +88,8 @@ public class ContentFilterHelper {
             tmp = filterLineBreaks(tmp);
         }
         tmp = filterUrlEmbeddedLinks(tmp);
-        tmp = filterLinkifyUrls(tmp);
+        tmp = HtmlUtil.linkifyUrls(tmp);
         
         return tmp;
     }
-
-   
 }

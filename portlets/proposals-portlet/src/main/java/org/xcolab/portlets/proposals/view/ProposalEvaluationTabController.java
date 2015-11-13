@@ -111,26 +111,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                 new JudgeProposalFeedbackBean(proposalJudgeWrapper);
 
         Long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
-        Long userId = proposalsContext.getUser(request).getUserId();
         proposalRatingBean.setContestPhaseId(contestPhaseId);
-
-        //find existing ratings
-        List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
-                userId,
-                proposalWrapper.getProposalId(),
-                contestPhaseId);
-
-        if (!existingRatings.isEmpty()) {
-            Map<Long, String> existingJudgeRating = new LinkedHashMap<>();
-            Long index = 1L;
-            for (ProposalRating proposalRating : existingRatings) {
-                existingJudgeRating.put(index, "" + proposalRating.getRatingValueId());
-                index++;
-            }
-            String existingComment = existingRatings.get(0).getComment();
-            proposalRatingBean.setRatingValues(existingJudgeRating);
-            proposalRatingBean.setComment(existingComment);
-        }
 
         return proposalRatingBean;
     }

@@ -17,7 +17,7 @@ public enum ContestMassActions{
     MESSAGE("Message contributors in active phase", ContestMassActionMethods.class, "sendMassMessage"),
     CAST_SUPPORT_TO_VOTES("Message proposal supporters to vote", ContestMassActionMethods.class, "sendSupport2VotesEmail"),
     REPORT_PEOPLE_IN_CURRENT_PHASE("Generate report of contributors in active phase", ContestMassActionMethods.class, "reportOfPeopleInCurrentPhase"),
-    DELETE("Delete contest", ContestMassActionMethods.class, "deleteContest"),
+    DELETE("Delete contests including phases", "Delete contests", ContestMassActionMethods.class, "deleteContest"),
     ACTIVE("Active", "Prior", BaseContestWrapper.class,"setContestActive"),
     PRIVATE("Private", "Public", BaseContestWrapper.class, "setContestPrivate"),
     FEATURED("Feature", "Remove feature", BaseContestWrapper.class, "setFeatured"),

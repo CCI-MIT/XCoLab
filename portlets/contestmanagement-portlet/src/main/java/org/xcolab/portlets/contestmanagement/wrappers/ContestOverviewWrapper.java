@@ -10,10 +10,10 @@ import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.PortletRequest;
-import javax.portlet.ResourceResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -142,22 +142,10 @@ public class ContestOverviewWrapper {
     }
 
     public String getSelectedMassActionTitle() {
-        String selectedMassActionTitle = "";
-        long selectedMassActionAbsolute = Math.abs(selectedMassAction.longValue());
-        for (ContestMassActions contestMassAction : ContestMassActions.values()) {
-            if (selectedMassActionAbsolute == contestMassAction.ordinal()) {
-                if (selectedMassAction < 0) {
-                    selectedMassActionTitle = contestMassAction.getReverseActionDisplayName();
-                } else {
-                    selectedMassActionTitle = contestMassAction.getActionDisplayName();
-                }
-                break;
-            }
-        }
-        return selectedMassActionTitle;
+        return MassActionUtil.getSelectedMassActionTitle(selectedMassAction);
     }
 
-    public void executeMassAction(PortletRequest request, ResourceResponse response)
+    public void executeMassAction(PortletRequest request, Object response)
             throws PortalException, SystemException, IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         boolean isOrderMassAction = selectedMassAction == ContestMassActions.ORDER.ordinal();
         if(isOrderMassAction){
@@ -169,7 +157,7 @@ public class ContestOverviewWrapper {
         Class massActionClass = massActionMethod.getDeclaringClass();
         selectedContestIds = getSelectedContestIds();
 
-        Boolean isReportMassAction =
+        Boolean isResponseObjectRequiredForMassAction =
                 (selectedMassAction == ContestMassActions.REPORT_PEOPLE_IN_CURRENT_PHASE.ordinal());
         Boolean isMessageMassAction =
                 (selectedMassAction == ContestMassActions.MESSAGE.ordinal());
@@ -180,7 +168,7 @@ public class ContestOverviewWrapper {
         Boolean isMethodFromContestWrapper =
                 (massActionClass == BaseContestWrapper.class);
 
-        if (isReportMassAction) {
+        if (isResponseObjectRequiredForMassAction) {
             invokeMassActionReportMethod(massActionMethod, request, response);
         } else if (isMessageMassAction) {
             invokeMassActionMessageMethod(massActionMethod, request);
@@ -196,7 +184,7 @@ public class ContestOverviewWrapper {
         }
     }
 
-    private void invokeMassActionReportMethod(Method massActionMethod, PortletRequest request, ResourceResponse response) throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+    private void invokeMassActionReportMethod(Method massActionMethod, PortletRequest request, Object response) throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, response, request);
     }
 
@@ -223,7 +211,7 @@ public class ContestOverviewWrapper {
         }
     }
 
-    private List<Long> getSelectedContestIds() {
+    public List<Long> getSelectedContestIds() {
         List<Long> contestIds = new ArrayList<>();
         for (BaseContestWrapper contestWrapper : contestWrappers) {
             int index = contestWrappers.indexOf(contestWrapper);
@@ -235,7 +223,7 @@ public class ContestOverviewWrapper {
     }
 
     private Method getSelectedMassActionMethod(Long selectedMassAction) {
-        Long selectedMassActionAbsolute = Math.abs(selectedMassAction.longValue());
+        Long selectedMassActionAbsolute = Math.abs(selectedMassAction);
         Method massActionMethod = null;
         for (ContestMassActions contestMassAction : ContestMassActions.values()) {
             if (selectedMassActionAbsolute == contestMassAction.ordinal()) {

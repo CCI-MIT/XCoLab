@@ -76,8 +76,7 @@ public class ProposalSectionWrapper {
         	if (!isYoutube) {
         		continue;
         	}
-
-        	if (! (aTagElements.hasClass("utube") || aTagElements.text().toLowerCase().startsWith("embed"))) {
+        	if (!(aTagElements.hasClass("utube") || aTagElements.text().toLowerCase().startsWith("embed") || aTagElements.text().equalsIgnoreCase("v"))) {
         		// only links with "embed" text or "utube" class should be replaced by an iframe
         		continue;
         	}
@@ -90,9 +89,8 @@ public class ProposalSectionWrapper {
                     	videoId = nvp.getValue();
                     }
                 }
-        	}
-        	else {
-        		final Pattern videoIdPattern = Pattern.compile("\\/(\\p{Alnum}{11})");
+        	} else {
+        		final Pattern videoIdPattern = Pattern.compile("\\/([\\p{Alnum}\\-_]{11})");
         		Matcher m = videoIdPattern.matcher(curURL);
         		if (m.find()) {
         			videoId = m.group(1);
@@ -103,7 +101,6 @@ public class ProposalSectionWrapper {
                 aTagElements.after("<iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/" + videoId + "\" frameborder=\"0\" allowfullscreen></iframe><br/>");
                 aTagElements.remove();
         	}
-        	
         }
 
         // Regex pattern originated from
@@ -125,7 +122,7 @@ public class ProposalSectionWrapper {
             // Separate the <p> tags by the space character and process potential URLs
             String html = pTagElements.html();
 
-            // Eliminates wierd &nbsp; ASCII val 160 characters
+            // Eliminates weird &nbsp; ASCII val 160 characters
             String text = pTagElements.text().replaceAll("[\\u00A0]", " ");
             String[] words = text.split("\\s");
             for (int i = 0; i < words.length; i++) {

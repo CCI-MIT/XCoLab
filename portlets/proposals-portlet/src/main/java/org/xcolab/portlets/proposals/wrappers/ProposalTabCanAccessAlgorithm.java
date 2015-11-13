@@ -116,9 +116,7 @@ interface ProposalTabCanAccessAlgorithm {
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
 			try {
 				return permissions.getCanEdit();
-			} catch (SystemException e) {
-				_log.error("can't check if user is allowed to edit proposal", e);
-			} catch (PortalException e) {
+			} catch (SystemException | PortalException e) {
 				_log.error("can't check if user is allowed to edit proposal", e);
 			}
 			return false;
@@ -185,9 +183,7 @@ interface ProposalTabCanAccessAlgorithm {
 				boolean isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm =
 						OntologyTermLocalServiceUtil.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId, ADAPTATION_ONTOLOGY_TERM_ID);
 
-				if ((contest != null && contest.getContestTier() != ContestTier.NONE.getTierType() &&
-						contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType() &&
-						!isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
+				if ((contest.getContestTier() != ContestTier.NONE.getTierType() && contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType() && !isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
 					return true;
 				}
 			} catch (Exception e) {
@@ -207,11 +203,11 @@ interface ProposalTabCanAccessAlgorithm {
 				Contest contest = context.getContest(request);
 
 				// Only let team members, IAF fellows or admins edit impact
-				if ((contest != null && (
-						contest.getContestTier() == ContestTier.BASIC.getTierType()) ||
-						contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType() ||
-						contest.getContestTier() == ContestTier.GLOBAL.getTierType()) &&
-						(permissions.getIsTeamMember() || permissions.getCanAdminProposal() || permissions.getCanIAFActions())) {
+				if (contest != null && (
+							contest.getContestTier() == ContestTier.BASIC.getTierType() ||
+							contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType() ||
+							contest.getContestTier() == ContestTier.GLOBAL.getTierType()
+						) && (permissions.getIsTeamMember() || permissions.getCanAdminProposal() || permissions.getCanIAFActions())) {
 					return true;
 				}
 			} catch (SystemException | PortalException e) {

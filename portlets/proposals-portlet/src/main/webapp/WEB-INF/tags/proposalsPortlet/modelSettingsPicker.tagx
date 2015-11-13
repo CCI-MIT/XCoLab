@@ -10,6 +10,10 @@
                              description="Selected modelId"/>
     <jsp:directive.attribute name="scenarioId" type="java.lang.Long" required="false" rtexprvalue="true"
                              description="Selected modelId"/>
+    <jsp:directive.attribute name="consolidatedModelId" type="java.lang.Long" required="false" rtexprvalue="true"
+                             description="Selected modelId"/>
+    <jsp:directive.attribute name="consolidatedScenarioId" type="java.lang.Long" required="false" rtexprvalue="true"
+                             description="Selected modelId"/>
 
     <div class='addpropbox'>
         <div>
@@ -27,8 +31,9 @@
                     <c:forEach var="model" items="${consolidateOptions}">
 
                         <c:choose>
-                            <c:when test="${consolidationPossible and model.key eq 'CONSOLIDATE' or
-										not consolidationPossible and model.key eq 'SEPARATE'}">
+                            <c:when test="${consolidationPossible and isProposalUsingCombinedScenario and model.key eq 'CONSOLIDATE' or
+                                            consolidationPossible and not isProposalUsingCombinedScenario and model.key eq 'SEPARATE' or
+										    not consolidationPossible and model.key eq 'SEPARATE'}">
                                 <input type="radio" name="modelSettingsSet" id="${model.key }" value="${model.key }"
                                        checked="checked"/>
                             </c:when>
@@ -63,6 +68,7 @@
         var consolidatedScenarioId = parseInt("${consolidatedScenarioId}");
         var consolidatedModelId = parseInt("${consolidatedModelId}");
         var consolidationPossible = ${consolidationPossible};
+        var isProposalUsingCombinedScenario = ${isProposalUsingCombinedScenario};
 
         var scenarioId = parseInt("${scenarioId}");
         var modelId = parseInt("${modelId}");
@@ -70,12 +76,17 @@
         jQuery().ready(function () {
             var proposalToModelMap = document.getElementById("proposalToModelMap");
             proposalToModelMap.style.display = "none";
-            if (consolidationPossible) {
+            if (consolidationPossible &amp;&amp; isProposalUsingCombinedScenario) {
                 checkModelSetRadioWithId(consolidatedModelId);
                 setModelSetRadiosState(true);
+                modeling.toggleEditMask(false);
+                jQuery("#isConsolidatedScenario").val(true);
             } else {
                 checkModelSetRadioWithId(modelId);
+                modeling.toggleEditMask(true);
+                jQuery("#isConsolidatedScenario").val(false);
             }
+            modeling.updateEditMaskAppearance();
         });
 
 
@@ -94,14 +105,16 @@
                     setModelSetRadiosState(true);
                     checkModelSetRadioWithId(consolidatedModelId);
                     if (consolidatedScenarioId > 0) {
-                        modeling.toggleEditMask(false);
                         modeling.loadScenario(consolidatedScenarioId);
                     }
+                    modeling.toggleEditMask(false);
+                    jQuery("#isConsolidatedScenario").val(true);
                 } else {
                     modelsSelectBox.style.display = "none";
                     modelContent.style.display = "none";
                     proposalToModelMap.style.display = "";
-
+                    modeling.toggleEditMask(true);
+                    jQuery("#isConsolidatedScenario").val(false);
                 }
             } else {
                 modelsSelectBox.style.display = "";
@@ -109,10 +122,18 @@
                 proposalToModelMap.style.display = "none";
 
                 setModelSetRadiosState(false);
-                checkModelSetRadioWithId(modelId);
-                modeling.toggleEditMask(true);
-                modeling.loadModel(modelId);
 
+                if(modelId > 0){
+                    checkModelSetRadioWithId(modelId);
+                }
+                if(scenarioId > 0 &amp;&amp; !isProposalUsingCombinedScenario){
+                    modeling.loadScenario(scenarioId);
+                } else if(modelId > 0) {
+                    modeling.loadModel(modelId);
+                }
+                modeling.toggleEditMask(true);
+                modeling.updateEditMaskAppearance();
+                jQuery("#isConsolidatedScenario").val(false);
             }
 
         });

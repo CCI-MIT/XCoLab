@@ -260,7 +260,7 @@ public class AddUpdateProposalDetailsActionController {
                         updateProposalReferences = true;
                     }
                 } else if (StringUtils.isBlank(newSectionValue)) {
-                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0l);
+                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0L);
                 }
             }
             if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_REFERENCE) {
