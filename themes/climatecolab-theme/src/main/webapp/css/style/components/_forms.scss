@@ -23,12 +23,12 @@ div.selectbox-wrapper ul {
 
 #main div.selectbox-wrapper ul li.selected,
 div.selectbox-wrapper ul li.selected {
-  background-color: #eaf2fb;
+  background-color: $primary-light-grey;
 }
 
 #main div.selectbox-wrapper ul li.current,
 div.selectbox-wrapper ul li.current {
-  background-color: #cdd8e4;
+  background-color: $primary-grey;
 }
 
 #main div.selectbox-wrapper ul li,

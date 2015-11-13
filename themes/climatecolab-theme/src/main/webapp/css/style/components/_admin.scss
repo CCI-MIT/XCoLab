@@ -4,7 +4,7 @@ Admin interface fixes
 
 div#p_p_id_145_ {
   height: 44px;
-  @include background(linear-gradient(#118ade, #1273c7));
+  @include background(linear-gradient($primary-color, $primary-dark));
 }
 
 #p_p_id_145_ ul {
@@ -70,7 +70,7 @@ div#p_p_id_145_ {
 }
 
 #p_p_id_145_ ul.nav.nav-add-controls li > a {
-  background: #118ade;
+  background: $primary-color;
   border: 1px solid;
   border-radius: 3px;
   padding-top: 2px;
@@ -186,7 +186,6 @@ div#p_p_id_145_ {
   margin: 0 0 0 56px;
 }
 
-/*.admin_left h2, .admin_right h2 { font-size:18px; color:#2498b3; line-height:normal;}*/
 .admin_box {
   background: $lightest-grey;
   padding: 18px 20px;
@@ -210,7 +209,6 @@ div#p_p_id_145_ {
   margin: 0 0 40px 0;
 }
 
-/*.adm2 td { }*/
 .adm2 td.createdate {
   padding: 5px 0 2px 10px;
 }

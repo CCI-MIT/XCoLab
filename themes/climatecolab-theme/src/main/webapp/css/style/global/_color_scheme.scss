@@ -4,6 +4,7 @@
 $primary-color: #30a3fb;//$dodger-blue;
 $secondary-color: #66b035; //$apple-green;
 $accent-color: #e36f0f; //$christine-orange;
+$auxiliary-color: #e46970; //used as 4th color when needed (ontology terms)
 
 //lightness variations
 $primary-light: lighten($primary-color, 24); $__hex: #aad9fd; // - replaces sail-blue #a7d7fb (difference HSL -0.3098, 4.0980, 0.9804)
@@ -30,6 +31,10 @@ $darkest-grey: #404040;
 //alert and message colors:
 $alert-color: #b94a48;
 $alert-light: #ffeeee;
+$alert-message: #c09853; //TODO: check if this is used anywhere
 
-$info-color: #00f;
-$info-background: $primary-light-grey; $__hex: #e9f0f6;
+//outline view TODO: see if we can adapt this to use our colors
+$outline-level1: #e0dacb; // background slevel1
+$outline-level2: #d1cbbf; // background slevel2
+$outline-level3: #c1bcb2; // background slevel3
+$outline-level4: #aaa69f; // background slevel4-6

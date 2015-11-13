@@ -103,7 +103,7 @@
 
 .act_left-list li ul li:hover {
   background: $primary-light-grey;
-  border: 1px solid #2498b3;
+  border: 1px solid $primary-dark-grey;
 }
 
 .act_left-list li.d ul li a {
@@ -607,17 +607,17 @@
 .rounded_button.blugrid a {
   background: url(../images/grid_blue-bg.gif);
   color: white;
-  border: 1px solid #2498b3;
+  border: 1px solid $primary-dark-grey;
 }
 
 .rounded_button.blugrid a:hover {
   background: white;
-  color: #2498b3;
+  color: $primary-dark-grey;
 }
 
 .rounded_button.blugrid.c a {
   background: white;
-  color: #2498b3;
+  color: $primary-dark-grey;
 }
 
 .ui-slider {
@@ -723,7 +723,7 @@
 
 .act_left-list li.act_left-list-child:hover {
   background: $primary-light-grey;
-  border: 1px solid #2498b3;
+  border: 1px solid $primary-dark-grey;
 }
 
 tr.jqplot-table-legend {
@@ -759,7 +759,7 @@ td.jqplot-table-legend div.act_tt-bot_label {
 }
 
 td.jqplot-table-legend a:hover {
-  color: #8ECCE6;
+  color: $primary-light;
 }
 
 #impact .shaded-bg {

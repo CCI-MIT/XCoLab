@@ -5,7 +5,7 @@
   border-radius: 10px;
   background: white;
   @include border-radius(10px);
-  border: 1px solid #339fb8;
+  border: 1px solid $primary-dark-grey;
   margin: 15px 0;
   line-height: normal;
 }

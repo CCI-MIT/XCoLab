@@ -95,7 +95,7 @@
 }
 
 .contest-outline-left li a:hover, .section-head.open {
-  background-color: #e7f0f5;
+  background-color: $primary-light-grey;
 }
 
 .contest-outline-left ul.level1 li a {
@@ -141,11 +141,11 @@
 }
 
 .contest-section3 .section-head {
-  color: #539bd4;
+  color: $primary-color;
 }
 
 .contest-section4 .section-head {
-  color: #e46970;
+  color: $auxiliary-color;
 }
 
 .section-head h2 {
@@ -230,7 +230,7 @@
 }
 
 .level1 li.anything a.open {
-  background-color: #3192b1;
+  background-color: $primary-darkest;
 }
 
 .level1 li a {
@@ -239,7 +239,7 @@
 
 .level1 li.active > a {
   color: white;
-  background-color: #3192b1
+  background-color: $primary-darkest
 }
 
 .level1 li a.open {
@@ -335,7 +335,7 @@
   height: 0;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-top: 4px solid #3192b1;
+  border-top: 4px solid $primary-darkest;
 }
 
 .section-list {
@@ -344,32 +344,32 @@
 }
 
 .slevel1 {
-  background: #e0dacb url(../images/contest-1x1-white.gif) repeat-x top;
+  background: $outline-level1 url(../images/contest-1x1-white.gif) repeat-x top;
   margin-left: 0;
 }
 
 .slevel2 {
-  background: #d1cbbf url(../images/contest-1x1-white.gif) repeat-x top;
+  background: $outline-level2 url(../images/contest-1x1-white.gif) repeat-x top;
   margin-left: 9px;
 }
 
 .slevel3 {
-  background: #c1bcb2 url(../images/contest-1x1-white.gif) repeat-x top;
+  background: $outline-level3 url(../images/contest-1x1-white.gif) repeat-x top;
   margin-left: 16px;
 }
 
 .slevel4 {
-  background: #aaa69f url(../images/contest-1x1-white.gif) repeat-x top;
+  background: $outline-level4 url(../images/contest-1x1-white.gif) repeat-x top;
   margin-left: 21px;
 }
 
 .slevel5 {
-  background: #aaa69f url(../images/contest-1x1-white.gif) repeat-x top;
+  background: $outline-level4 url(../images/contest-1x1-white.gif) repeat-x top;
   margin-left: 23px;
 }
 
 .slevel6 {
-  background: #aaa69f url(../images/contest-1x1-white.gif) repeat-x top;
+  background: $outline-level4 url(../images/contest-1x1-white.gif) repeat-x top;
   margin-left: 25px;
 }
 
@@ -434,7 +434,7 @@
 }
 
 .section.active .txt {
-  background-color: #3192b1;
+  background-color: $primary-darkest;
   color: white;
   border-top: 1px solid white;
 }
@@ -448,7 +448,7 @@
   height: 0;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
-  border-top: 20px solid #3192b1;
+  border-top: 20px solid $primary-darkest;
 }
 
 .contest-list a.trigger {
@@ -515,11 +515,11 @@
 }
 
 .who {
-  color: #539bd4;
+  color: $primary-color;
 }
 
 .how {
-  color: #e46970;
+  color: $auxiliary-color;
 }
 
 .detail .how, .detail .what, .detail .where, .detail .who {

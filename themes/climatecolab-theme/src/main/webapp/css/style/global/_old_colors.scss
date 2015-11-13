@@ -1,70 +1,20 @@
-
-//TODO
+$__old: #2ea5d6; $__new: #30a3fb; // $primary-color // (1) border color .butt (edit and wiki buttons next to a proposal title)
+$__old: #539bd4; $__new: #30a3fb; // $primary-color // () text color contest section
+$__old: #2498b3; $__new: #719aba; // $primary-dark-grey // () text color:hover act_list
+$__old: #3192b1; $__new: #03518c; // $primary-darkest // ()
+$__old: #339fb8; $__new: #719aba; // $primary-dark-grey // () border content help
+$__old: #8ECCE6; $__new: #aad9fd; // $primary-light // (1) text color (act_tooltip a:hover)
+$__old: #e46970; $__new: #e46970; // $auxiliary-color // () text color contest section/ontology how //TODO 4th ontology color
 $__old: #eed3d7; $__new: #efefe7; // $lightest-grey // #dddddd looks good // () border alert danger
-$__old: #2ea5d6; $__new: #000000; // (1) border color .butt (edit and wiki buttons next to a proposal title)
-$__old: #539bd4; $__new: #000000; // () text color contest section
-$__old: #c09853; $__new: #000000; // () text alert
-$__old: #e46970; $__new: #000000; // () text color contest section/ontology how //TODO 4th ontology color
-$__old: #2498b3; $__new: #000000; // () text color:hover act_list
-$__old: #3192b1; $__new: #000000; // ()
-$__old: #339fb8; $__new: #000000; // () border content help
-$__old: #8ECCE6; $__new: #000000; // (1) text color (act_tooltip a:hover)
-
-//TODO: blue greys
-$__old: #cdd8e4; $__new: #000000;
-$__old: #e7f0f5; $__new: #000000; // () text color :hover contest-outline-left
-$__old: #eaf2fb; $__new: #000000;
-
-//TODO
-$__old: #a3a39e; $__new: #bababa; // $light-grey // (1+3) border color .newsbox
-$__old: #a6a59c; $__new: #bababa; // $light-grey // () background
-$__old: #a9a9a9; $__new: #bababa; // $light-grey // (1+1)
-$__old: #b3b0aa; $__new: #bababa; // $light-grey
-$__old: #b4b4b4; $__new: #bababa; // $light-grey // (1) background .edit-prop-butts span
-$__old: #b7b6ae; $__new: #bababa; // $light-grey // ()
-$__old: #b7b6b2; $__new: #bababa; // $light-grey // () border
-$__old: #bcb6b1; $__new: #bababa; // $light-grey
-$__old: #bdb7b2; $__new: #bababa; // $light-grey // (1) border input
-$__old: #bdbcb7; $__new: #bababa; // $light-grey // (1) border-bottom .contest-detail
-$__old: #bebeb8; $__new: #bababa; // $light-grey // (1) border-left menu
-$__old: #bfbfbf; $__new: #bababa; // $light-grey
-$__old: #c5c5c5; $__new: #bababa; // $light-grey // (1+5) border-bottom activity
-$__old: #cbcbca; $__new: #bababa; // $light-grey // (1) border-left menu (help)
-$__old: #cccccc; $__new: #bababa; // $light-grey // () box-shadow contest-outline-left
-$__old: #d4d4d4; $__new: #efefe7; // $lightest-grey // (3+3) text color (userbox/loginbox)
-$__old: #dad7cf; $__new: #efefe7; // $lightest-grey
-$__old: #dddddd; $__new: #efefe7; // $lightest-grey // ()
-$__old: #dedede; $__new: #efefe7; // $lightest-grey
-$__old: #e1ddd6; $__new: #efefe7; // $lightest-grey // ()
-$__old: #e3e0d9; $__new: #efefe7; // $lightest-grey // () border-right contest-outline-left
-$__old: #e5e1da; $__new: #efefe7; // $lightest-grey // ()
-$__old: #e6e4d5; $__new: #efefe7; // $lightest-grey // (2) background votebox
-$__old: #e8e7dc; $__new: #efefe7; // $lightest-grey // (1) border contestbox
-$__old: #e8e8e8; $__new: #efefe7; // $lightest-grey
-$__old: #efeee3; $__new: #efefe7; // $lightest-grey
-$__old: #eaeaea; $__new: #efefe7; // $lightest-grey // () liferay
-$__old: #efefe7; $__new: #efefe7; // $lightest-grey // (17+6) background votebox, comments, contributors, etc
-$__old: #f1f1e9; $__new: #efefe7; // $lightest-grey
-$__old: #f2f0ec; $__new: #efefe7; // $lightest-grey // ()
-$__old: #f3f3ed; $__new: #efefe7; // $lightest-grey // ()
-$__old: #f7f6f2; $__new: #efefe7; // $lightest-grey
-$__old: #f9f9f7; $__new: #efefe7; // $lightest-grey
-
-//TODO: yellow-ish
-$__old: #fbeed5; $__new: #000000;
-$__old: #fcf8e3; $__new: #000000;
-
-
-
-//61 more colors
-
-
-//admin/just keep this
-$__old: #118ade; $__new: #000000; // () admin interface
-$__old: #1273c7; $__new: #000000; // ()
-
-//TODO: where are these used? sounds like they need to be distinguished
-$__old: #e0dacb; $__new: #000000; // () background slevelx
-$__old: #d1cbbf; $__new: #000000; // () background slevelx
-$__old: #aaa69f; $__new: #000000; // () background slevelx
-$__old: #c1bcb2; $__new: #000000; // () background slevelx
+$__old: #118ade; $__new: #30a3fb; // $primary-color // () admin interface
+$__old: #1273c7; $__new: #0481e1; // $primary-dark // ()
+$__old: #cdd8e4; $__new: #9cb6c9; // $primary-grey
+$__old: #e7f0f5; $__new: #e9f0f6; // $primary-light-grey // () text color :hover contest-outline-left
+$__old: #eaf2fb; $__new: #e9f0f6; // $primary-light-grey
+$__old: #e0dacb; $__new: #e0dacb; // $outline-level1 // () background slevel1
+$__old: #d1cbbf; $__new: #d1cbbf; // $outline-level2 // () background slevel2
+$__old: #c1bcb2; $__new: #c1bcb2; // $outline-level3 // () background slevel3
+$__old: #aaa69f; $__new: #aaa69f; // $outline-level4 // ()
+$__old: #c09853; $__new: #c09853; // $alert-message // () text alert
+$__old: #fbeed5; $__new: #bababa; // $light-grey
+$__old: #fcf8e3; $__new: #efefe7; // $lightest-grey
