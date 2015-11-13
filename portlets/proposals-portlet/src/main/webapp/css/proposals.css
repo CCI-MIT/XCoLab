@@ -1,241 +1,255 @@
 /** Contests list **/
 .contestlist.table .column.contestName {
-	width: 366px;
+  width: 366px;
 }
 
 .contestlist.table .column.contestName .contestFlag {
-	position: relative;
+  position: relative;
 }
 
 .contestlist.table .column.contestProposalsCount {
-	width: 31px;
+  width: 31px;
 }
 
 .contestlist.table .column.contestCommentsCount {
-	width: 35px;
+  width: 35px;
 }
 
 .contestlist.table .column.contestWhat {
-	width: 118px;
+  width: 118px;
 }
 
 .contestlist.table .column.contestWhere {
-	width: 105px;
+  width: 105px;
 }
 
 .contestlist.table .column.contestWho {
-	width: 105px;
+  width: 105px;
 }
+
 .contestlist.table .column.contestHow {
-	width: 105px;
+  width: 105px;
 }
 
 .contestSubscribe img {
-	width: 25px;
-	vertical-align: bottom;
-	margin-right: 5px;
+  width: 25px;
+  vertical-align: bottom;
+  margin-right: 5px;
 }
 
 td .ontologyItem {
-	padding-right:30px;
-	padding-top:2px;
+  padding-right: 30px;
+  padding-top: 2px;
 }
 
-
-
 div.sponsorLogo {
-	max-width:320px;
-	min-width:0;
-	display:inline-block;
-	margin-top:20px;
-	font-size:14px;
-	/*margin-left:10px;*/
+  max-width: 320px;
+  min-width: 0;
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 14px;
+  /*margin-left:10px;*/
 }
 
 div.sponsorLogo table {
-	width:100%;
+  width: 100%;
 }
 
 .heading-sponsor-logo img {
-    max-width: 100%;
-    max-height: 110px;
-    height: auto;
-    width: auto;
+  max-width: 100%;
+  max-height: 110px;
+  height: auto;
+  width: auto;
 }
 
 .heading-sponsor-logo {
-    max-width: 300px;
-    min-height: 30px;
-    max-height: 110px;
-    float: right;
-    margin: 0 0 0 3px;
-    padding: 3px;
+  max-width: 300px;
+  min-height: 30px;
+  max-height: 110px;
+  float: right;
+  margin: 0 0 0 3px;
+  padding: 3px;
 }
 
-
 div.sponsorLogo img {
-	height:54px;	
-	padding-right:5px;
+  height: 54px;
+  padding-right: 5px;
 }
 
 .noSponsor .contestTeamRole {
-	white-space: normal;
-	min-width: 435px;
-	max-width: 755px;
+  white-space: normal;
+  min-width: 435px;
+  max-width: 755px;
 }
 
 .contestTeamRole .contestTeamRoleName {
-	padding-top: 15px;
-	width:70px; 
+  padding-top: 15px;
+  width: 70px;
 }
 
 .contestTeamRole .contestTeamMembers {
-	width: 100%;
-}
-.contestTeamRole .contestTeamMember {
-	white-space: nowrap;
-	float: left;
-	padding-right: 10px;
-}
-.contestTeamRole .contestTeamMember img {
-	margin-right: 5px;
+  width: 100%;
 }
 
+.contestTeamRole .contestTeamMember {
+  white-space: nowrap;
+  float: left;
+  padding-right: 10px;
+}
+
+.contestTeamRole .contestTeamMember img {
+  margin-right: 5px;
+}
 
 /** PROPOSAL DETAILS **/
 
 .contributors td, .judgingForm td {
-	width: 525px;
+  width: 525px;
 }
 
 /** edit proposal sections **/
 .addprophelp {
-    display: none;
+  display: none;
 }
 
 .addpropInputContainer {
-    float: right;
-    font-size: 16px;
-    width: 490px;
-    /*padding: 5px;*/
-    position: relative;
+  float: right;
+  font-size: 16px;
+  width: 490px;
+  /*padding: 5px;*/
+  position: relative;
 }
 
 .addpropInputContainer > select {
-    width: 100%;
+  width: 100%;
 }
 
 #uploadWidget {
-    background: url(../img/image_upload-button.png) no-repeat;
-    width: 219px;
-    height: 30px;
-    margin-top: 12px;
-    cursor: pointer;
-    float: left;
+  background: url(../img/image_upload-button.png) no-repeat;
+  width: 219px;
+  height: 30px;
+  margin-top: 12px;
+  cursor: pointer;
+  float: left;
 }
 
 #uploadWidget:hover {
-    background: url(../img/image_upload-button-hover.png) no-repeat;
+  background: url(../img/image_upload-button-hover.png) no-repeat;
 }
 
 #proposalPitchInput {
-	height: 100px;
+  height: 100px;
 }
 
 #fileUploadForm input {
-	opacity:0;
-	filter:alpha(opacity=0); /* For IE8 and earlier */
-	cursor: pointer;
-	width: 219px;
-	height: 30px;
-	z-index: 100000;	
+  opacity: 0;
+  filter: alpha(opacity=0); /* For IE8 and earlier */
+  cursor: pointer;
+  width: 219px;
+  height: 30px;
+  z-index: 100000;
 }
 
-.requestMembershipSubmitFormButton{
-    width: 60px;
-    text-align: center;
+.requestMembershipSubmitFormButton {
+  width: 60px;
+  text-align: center;
 }
 
-
-.prop-butt-popover{
-    z-index: 10;
-    padding: 20px;
-    top: -20px;
-    position: absolute;
-    left: 486px;
-    width: 240px;
-    font-size: 14px;
-    color: #d4d4d4;
-    font-weight: 700;
-    -moz-border-radius-bottomleft: 3px;
-    -webkit-border-bottom-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    -moz-border-radius-bottomright: 3px;
-    -webkit-border-bottom-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    -moz-border-radius-topleft: 3px;
-    -webkit-border-top-left-radius: 3px;
-    border-top-left-radius: 3px;
+.prop-butt-popover {
+  z-index: 10;
+  padding: 20px;
+  top: -20px;
+  position: absolute;
+  left: 486px;
+  width: 240px;
+  font-size: 14px;
+  color: #d4d4d4;
+  font-weight: 700;
+  -moz-border-radius-bottomleft: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
 }
 
-.sendButton{
-    width: 75px;
-    height: 28px;
-    display: inline-block;
-    padding-top: 9px;
-    margin-left: 3px;
-    background: #fcfbf9;
-    border: 1px solid #6a96a7;
-    font-size: 16px;
-    font-weight: 700;
-    text-align: center;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    vertical-align: top;
+.sendButton {
+  width: 75px;
+  height: 28px;
+  display: inline-block;
+  padding-top: 9px;
+  margin-left: 3px;
+  background: #fcfbf9;
+  border: 1px solid #6a96a7;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  vertical-align: top;
 }
 
-.allow-deny-membership-box{
-    width: 87px;
-    display: inline-block;
-    margin-left: 10px;
-    vertical-align: top;
+.allow-deny-membership-box {
+  width: 87px;
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: top;
 }
 
-.requestComment{
-    margin: 6px 0 10px 3px;
-    width:192px;
-    height: 32px;
-    max-width: 192px;
-    font: 12px 'Lucida Grande', Arial, sans-serif;
+.requestComment {
+  margin: 6px 0 10px 3px;
+  width: 192px;
+  height: 32px;
+  max-width: 192px;
+  font: 12px 'Lucida Grande', Arial, sans-serif;
 }
 
-.request-membership-icon{
-    float:left;
-    margin-top:8px;
-    padding-right: 10px;
+.request-membership-icon {
+  float: left;
+  margin-top: 8px;
+  padding-right: 10px;
 }
 
-.membership-request-comment-admin{
-    max-width: 245px;
-    width: 245px;
-    height: 33px;
-    margin-top: 2px;
+.membership-request-comment-admin {
+  max-width: 245px;
+  width: 245px;
+  height: 33px;
+  margin-top: 2px;
 }
 
-.judgingForm tr.odd td{
-    background:#f2f1e9;
+.judgingForm tr.odd td {
+  background: #f2f1e9;
 }
 
-.judgingForm td{
-    text-align: center;
-    vertical-align: middle;
+.judgingForm td {
+  text-align: center;
+  vertical-align: middle;
 }
 
-.judging_left { float:left; width:474px; margin-top:50px;}
-.judging_right { float:left; width:454px; margin:50px 0 0 56px;}
+.judging_left {
+  float: left;
+  width: 474px;
+  margin-top: 50px;
+}
 
-.fellow-judge-action {float:left; width:147px; padding-top:4px; text-align: center; margin-left: 12px;}
+.judging_right {
+  float: left;
+  width: 454px;
+  margin: 50px 0 0 56px;
+}
+
+.fellow-judge-action {
+  float: left;
+  width: 147px;
+  padding-top: 4px;
+  text-align: center;
+  margin-left: 12px;
+}
+
 /*
 #copyProposalPopupContent {
 	overflow-y: scroll;
@@ -244,171 +258,185 @@ div.sponsorLogo img {
 }*/
 
 #copyProposalPopupContent tr:nth-child(even) {
-	background-color: #f3f8fa;
+  background-color: #f3f8fa;
 }
+
 #copyProposalPopupContent td {
-	padding: 5px;
+  padding: 5px;
 
 }
 
 #copyProposalPopupContent td .sectionContent {
-	display: none;
+  display: none;
 }
 
 #copyProposalPopupContent td .hideContent {
-	display: none;
+  display: none;
 }
 
 #copyProposalPopupContent .sectionPresent {
-	font-size: 0.8em;
-	color: #FF4444;
+  font-size: 0.8em;
+  color: #FF4444;
 }
 
 .addpropbox.empty .copyFromBaseProposalTriggerContainer {
-	display: block;
+  display: block;
 }
 
 .addpropbox.notempty .copyFromBaseProposalTriggerContainer {
-	display: none;
+  display: none;
 }
 
 .ui-autocomplete.ui-menu {
-    z-index: 100;
+  z-index: 100;
 }
 
 .recipient-error {
-    color: red;
-    font-weight: bold;
+  color: red;
+  font-weight: bold;
 }
 
 .message-share-button {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 #share-proposal-container table.colab td.b {
-    vertical-align: middle;
-    padding-right: 10px;
+  vertical-align: middle;
+  padding-right: 10px;
 }
 
 #share-proposal-container table.colab td input {
-    width: 90%;
+  width: 90%;
 }
 
 .thread-creator-overlay {
-    background: url(/climatecolab-theme/images/Thread-creator-overlay.png) no-repeat;
-    float: left;
-    line-height: 0;
-    font-size: 0;
-    color: transparent;
-    position: absolute;
-    top: -7px;
-    right: -7px;
+  background: url(/climatecolab-theme/images/Thread-creator-overlay.png) no-repeat;
+  float: left;
+  line-height: 0;
+  font-size: 0;
+  color: transparent;
+  position: absolute;
+  top: -7px;
+  right: -7px;
 }
 
 .commentor-header {
-    float:left;
+  float: left;
 }
 
-
 div.review-status-container {
-    position: relative;
-    display: inline-block;
-    margin-top: 10px;
+  position: relative;
+  display: inline-block;
+  margin-top: 10px;
 }
 
 img.review-status-icon {
-    width:15px;
-    position:absolute;
-    top:-7px;
-    right:-7px;
+  width: 15px;
+  position: absolute;
+  top: -7px;
+  right: -7px;
 }
 
 #judge-evaluation-criteria {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 #judge-evaluation-criteria span.help-text {
-    font-style: italic;
-    font-size: 9pt;
-    margin: 5px 0 0 20px;
+  font-style: italic;
+  font-size: 9pt;
+  margin: 5px 0 0 20px;
 }
+
 table.judgingForm {
-    margin-bottom: 1em;
-    margin-top: -0.5em;
+  margin-bottom: 1em;
+  margin-top: -0.5em;
 }
+
 .addpropbox h5 {
-    margin-bottom: 0.75em;
+  margin-bottom: 0.75em;
 }
+
 .judging_comments {
-    clear: both;
+  clear: both;
 }
+
 .judging_comments .comment {
-    width: 49%;
-    display: inline-block;
+  width: 49%;
+  display: inline-block;
 }
+
 .judging_comments .comment .commentor, .judging_comments .comment .the-comment {
-    box-sizing:border-box;
-    -moz-box-sizing:border-box;
-    -webkit-box-sizing:border-box;
-    display: inline-block;
-    vertical-align: top;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  display: inline-block;
+  vertical-align: top;
 }
+
 .judging_comments .comment .commentor {
-    width: 30%;
+  width: 30%;
 }
+
 .judging_comments .comment .the-comment {
-    width: 70%;
+  width: 70%;
 }
+
 .judging_comments h2 {
-    margin: 0.5em 0;
+  margin: 0.5em 0;
 }
+
 .submitStatus {
-    margin-top: 1em;
+  margin-top: 1em;
 }
+
 .submitStatus.error {
-    color: #900;
+  color: #900;
 }
 
 .propbox.judgement-actions.featured .title-author {
-    width: 455px;
+  width: 455px;
 }
+
 .propbox.judgement-actions .title-author {
-    width: 485px;
+  width: 485px;
 }
+
 .blueheaderbar.judgement-actions .proposalname {
-    width: 489px;
+  width: 489px;
 }
 
 #advanceDecision {
-    width: 100%;
-    font-size: 14px;
-    color: black;
+  width: 100%;
+  font-size: 14px;
+  color: black;
 }
 
 #proposalPickerSearchContainer {
-	text-align: left;
-	padding: 10px;
+  text-align: left;
+  padding: 10px;
 }
 
 #proposalPickerSearchContainer .blue-button {
-	display: inline-block;
+  display: inline-block;
 }
 
 #proposalPicker_proposalsContainer h4 {
-	font-size: 15px;
-	font-weight: bold;
-	margin-bottom: 0;
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 0;
 }
+
 #proposalPicker_proposalsContainer .propbox ul {
-	margin-left: 0;
-	padding-left: 0;
-	list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+  list-style: none;
 }
+
 #proposalPicker_proposalsContainer .propbox li {
-	list-style: none;
-	margin-left: 0;
-	padding-left: 0;
-	background: none;
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+  background: none;
 }
 
 /*
@@ -418,298 +446,298 @@ table.judgingForm {
 */
 
 #proposalPicker_proposalsContainer .propbox .row2 {
-	width: 650px;
+  width: 650px;
 }
 
 #popup_proposalPicker {
-	top: 30px;
+  top: 30px;
 }
+
 #popup_proposalPicker .popup {
-	padding: 10px;
+  padding: 10px;
 }
 
 .pickerButtons .btn {
-	float: right;
+  float: right;
 }
 
 #proposalPicker_proposalsContainer .higlightText1,
 #proposalPicker_contestsContainer .higlightText1 {
-	background: #fdff62;
-	font-style: italic;
+  background: #fdff62;
+  font-style: italic;
 }
 
 #proposalPicker_proposalsContainer .tooltip .higlightText1,
 #proposalPicker_contestsContainer .tooltip .higlightText1 {
-	background: none;
-	text-decoration: none;
-	font-style: normal;
+  background: none;
+  text-decoration: none;
+  font-style: normal;
 }
 
-#popup_proposalPicker .contestlist td{
-	height: 45px;
+#popup_proposalPicker .contestlist td {
+  height: 45px;
 }
 
 #popup_proposalPicker .propbox {
-	height: auto;
+  height: auto;
 }
 
 #popup_proposalPicker h4 {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .proposalPicker_contestsScrollContainer {
-	height: 300px;
-	overflow-y: scroll;
+  height: 300px;
+  overflow-y: scroll;
 }
 
 div.selected {
-    background-color: #eaf2fb;
+  background-color: #eaf2fb;
 }
 
 .addpropbox.PROPOSAL_LIST_REFERENCE,
 .addpropbox.PROPOSAL_REFERENCE,
 .addpropbox.PROPOSAL_LIST_TEXT_REFERENCE {
-	background: #e7f1f5;
+  background: #e7f1f5;
 }
 
 .removeProposalFromList a {
-	display: inline-block;
-	background: #fffff7;
-	padding: 3px 10px;
+  display: inline-block;
+  background: #fffff7;
+  padding: 3px 10px;
 }
 
-.wizardSelectedOptionsInfo li  {
-	font-weight: normal !important;
+.wizardSelectedOptionsInfo li {
+  font-weight: normal !important;
 }
 
 .modelSelector {
-	background: #e8e7dc;
-	padding: 10px;
+  background: #e8e7dc;
+  padding: 10px;
 }
 
 #portlet-preferences h2 {
-    margin: 1em 0;
+  margin: 1em 0;
 }
 
 /* fix problem with the tooltip library, where tooltips overlay the phase names */
 .contestbar .phaseLinkContainer div.tooltip {
-    top: -102px !important;
+  top: -102px !important;
 }
 
-.dd-options li{
-    margin-left: 0px !important;
-    padding: inherit!important;
-    background: none!important;
+.dd-options li {
+  margin-left: 0px !important;
+  padding: inherit !important;
+  background: none !important;
 }
 
 .button-disabled {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .button-disabled a,
 .disabled {
-    pointer-events: none;
+  pointer-events: none;
 }
-
 
 /* Impact tab */
 
 #impact table td, #impact table th {
-    padding: 10px;
-    max-width: 200px;
+  padding: 10px;
+  max-width: 200px;
 }
 
 #impact th.blue-text {
-    color: #30a3fb;
+  color: #30a3fb;
 }
 
 #impact .blue-bg {
-    font-size: 13px;
-    color: white;
-    background: #30a3fb;
-    border: 2px white solid;
+  font-size: 13px;
+  color: white;
+  background: #30a3fb;
+  border: 2px white solid;
 }
 
 #impact .impact-value {
-    font-weight: bold;
-    text-align: center;
-    border-left: 2px black solid;
+  font-weight: bold;
+  text-align: center;
+  border-left: 2px black solid;
 }
 
 #impact :not(tr:last-child) .impact-value {
-    border-right: 2px black solid;
+  border-right: 2px black solid;
 }
 
 #impact-series-detail table#edit-table tr {
-    border-left: 2px black solid;
+  border-left: 2px black solid;
 }
 
 #impact-series-detail table#edit-table thead th,
 #impact table#impact-summary,
-#impact-series-detail table#edit-table
-{
-    border-left: 2px solid black;
-    border-right: 2px solid black;
+#impact-series-detail table#edit-table {
+  border-left: 2px solid black;
+  border-right: 2px solid black;
 }
 
 #impact-series-detail table#edit-table tbody,
 #impact-series-detail table#edit-table tbody,
-#impact table#impact-summary
-{
-    border-bottom: 2px solid black;
+#impact table#impact-summary {
+  border-bottom: 2px solid black;
 }
 
 #impact tr.selected {
-    background-color: #e0e0e0;
+  background-color: #e0e0e0;
 }
 
 #impact tr select {
-    margin: 0px;
-    width: 202px;
+  margin: 0px;
+  width: 202px;
 }
 
 #impact table#impact-summary tbody {
-    max-height: 350px;
-    overflow: auto;
+  max-height: 350px;
+  overflow: auto;
 }
 
 #impact input {
-    width: 30px;
-    text-align: center;
-    padding: 5px;
+  width: 30px;
+  text-align: center;
+  padding: 5px;
 }
 
 #impact input.error {
-    border: 2px solid red;
+  border: 2px solid red;
 }
 
 #impact td.shaded-bg {
-    text-align: center;
+  text-align: center;
 }
 
 #impact table#impact-series-edit span {
-    margin: 0 auto;
-    padding-left: 5px;
+  margin: 0 auto;
+  padding-left: 5px;
 }
 
 #impact-chart {
-    display: block;
-    width: 500px;
-    margin: 0 auto 20px auto;
+  display: block;
+  width: 500px;
+  margin: 0 auto 20px auto;
 }
 
 #impact-series-detail div#new-series {
-    vertical-align: middle;
-    display: table-cell;
+  vertical-align: middle;
+  display: table-cell;
 }
 
 #impact-series-detail div#new-series select {
-    margin-right: 15px;
-    width: 21.5%;
-    height: 32px;
+  margin-right: 15px;
+  width: 21.5%;
+  height: 32px;
 }
 
 #impact-series-detail div#header {
-    padding-top: 15px;
-    vertical-align: middle;
-    display: table-cell;
+  padding-top: 15px;
+  vertical-align: middle;
+  display: table-cell;
 }
 
 #impact-series-detail div#header h3 {
-    margin-right: 10px;
-    display: inline-block;
+  margin-right: 10px;
+  display: inline-block;
 }
 
-#impact div#sgrip{
-    bottom: -5px;
-    left: 50%;
+#impact div#sgrip {
+  bottom: -5px;
+  left: 50%;
 
-    width: 10px;
-    height: 10px;
-    background-color: #ffffff;
-    border: 1px solid #000000;
+  width: 10px;
+  height: 10px;
+  background-color: #ffffff;
+  border: 1px solid #000000;
 }
 
 #impact div.addprophelp {
-    text-align: left;
-    font-weight: normal;
-    width: 90%;
+  text-align: left;
+  font-weight: normal;
+  width: 90%;
 }
 
 div.spinner {
-    left: 50% !important;
-    top: 20px !important;
+  left: 50% !important;
+  top: 20px !important;
 }
 
 #impact-summary tr {
-    opacity: 1.0;
+  opacity: 1.0;
 }
-.subcontests{
-    padding-bottom: 30px;
-    padding-top: 20px;
+
+.subcontests {
+  padding-bottom: 30px;
+  padding-top: 20px;
 }
 
 select[disabled] {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 tr.impact-series-clickable:hover,
 tr#impact-new-series-row:hover {
-    background-color: #eaf2fb;
+  background-color: #eaf2fb;
 }
 
 .subcontests .title {
-    font-size: 16px;
-    color:#66af45;
+  font-size: 16px;
+  color: #66af45;
 }
 
-.subcontests ul{
-    margin-left: 0px;
-    width: 100%;
-    overflow:hidden;
+.subcontests ul {
+  margin-left: 0px;
+  width: 100%;
+  overflow: hidden;
 }
-.subcontests li{
-    margin-left: 0px;
-    width:49%;
-    line-height:1.5em;
-    float:left;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    display: inline-block;
+
+.subcontests li {
+  margin-left: 0px;
+  width: 49%;
+  line-height: 1.5em;
+  float: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
 }
 
 .red-text {
-    color: red;
+  color: red;
 }
 
 span.stars, span.stars span {
-    display: block;
-    background: url(../img/stars.png) 0 -16px repeat-x;
-    width: 80px;
-    height: 16px;
+  display: block;
+  background: url(../img/stars.png) 0 -16px repeat-x;
+  width: 80px;
+  height: 16px;
 }
 
 span.stars span {
-    background-position: 0 0;
+  background-position: 0 0;
 }
 
-.impact-value{
-    background-color: #b9b8b3;
+.impact-value {
+  background-color: #b9b8b3;
 }
 
-.sector.total{
-    background-color: #666666;
+.sector.total {
+  background-color: #666666;
 }
 
-.sector.model{
-    background-color: #66af45;
+.sector.model {
+  background-color: #66af45;
 }
 
 .modelSettingsSelectBox input[type=radio] {
-    margin-right:5px;
+  margin-right: 5px;
 }
 
 .modelsSelectBox input[type=radio] {
-    margin-right:5px;
+  margin-right: 5px;
 }

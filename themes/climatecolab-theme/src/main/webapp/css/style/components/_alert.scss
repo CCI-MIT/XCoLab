@@ -1,0 +1,20 @@
+.alert {
+  padding: 4px 35px 4px 14px;
+  margin: 10px auto;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  background-color: $lightest-grey;
+  border: 1px solid $light-grey;
+  @include border-radius(4px);
+  font-size: 12px;
+  display: inline-block;
+}
+
+.alert, .alert h4 {
+  color: $alert-message;
+}
+
+.alert-danger, .alert-error {
+  color: $alert-color;
+  background-color: #f2dede;
+  border-color: $lightest-grey;
+}

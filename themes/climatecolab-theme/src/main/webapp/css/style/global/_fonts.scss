@@ -1,0 +1,58 @@
+/*  TYPEKIT / FONTS / GLOBAL TYPE SETTINGS   -----------------------------------------------------------------------
+
+Regular "bree"  400 normal
+Regular "proxima-nova"  400 normal
+Regular Italic  "proxima-nova"  400 italic
+Bold    "proxima-nova"  700 normal
+Bold Italic "proxima-nova"  700 italic
+*/
+
+body, .homespot-left h1, .proposal-head h1, .search-submit, .login-submit {
+  line-height: normal;
+  font-family: "proxima-nova", "proxima-nova-1", Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-family: "Bree serif", Verdana, sans-serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 32px;
+  color: $darkest-grey;
+  line-height: 1em;
+}
+
+h2 {
+  font-size: 27px;
+}
+
+h3 {
+  font-size: 19px;
+}
+
+h4 {
+  font-size: 15px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+p {
+  margin: 0 0 20px 0;
+}
+
+b, strong {
+  font-weight: 700;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: black;
+}
