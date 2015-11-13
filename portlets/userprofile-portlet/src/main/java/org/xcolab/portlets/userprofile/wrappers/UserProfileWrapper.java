@@ -44,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -386,27 +385,8 @@ public class UserProfileWrapper implements Serializable {
 
     public String getProposalsString() {
         if (proposalsString == null) {
-            try {
-                StringBuilder stringBuilder = new StringBuilder();
-                final List<Long> contestTypeIds = new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet());
-                Iterator<Long> iterator = contestTypeIds.iterator();
-                int currentWord = 1, totalWords = contestTypeIds.size();
-                while (iterator.hasNext()) {
-                    ContestType contestType = ContestTypeLocalServiceUtil.fetchContestType(iterator.next());
-                    if (currentWord > 1) {
-                        if (currentWord == totalWords) {
-                            stringBuilder.append(" or ");
-                        } else {
-                            stringBuilder.append(", ");
-                        }
-                    }
-                    stringBuilder.append(contestType.getProposalNamePlural());
-                    currentWord++;
-                }
-                proposalsString = stringBuilder.toString();
-            } catch (SystemException e) {
-                proposalsString = "Proposals";
-            }
+                proposalsString = ContestTypeLocalServiceUtil.getProposalNames(
+                        new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), false, "or");
         }
         return proposalsString;
     }

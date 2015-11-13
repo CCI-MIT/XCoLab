@@ -132,9 +132,10 @@ function initializePickedProposals() {
 
 
 /* Pick just a single proposal */
-function pickProposal(sectionId){
+function pickProposal(sectionId, proposalNames, proposalNamesPlural, contestNames, contestNamesPlural) {
     currentSectionId = sectionId;
     initializePickedProposals();
+    replaceContestTypeNameVariables(proposalNames, proposalNamesPlural, contestNames, contestNamesPlural);
     
     pickMultipleProposals = false;
     updateTabRibbons();
@@ -143,14 +144,33 @@ function pickProposal(sectionId){
 }
 
 /* Pick a list of proposals */
-function pickProposalList(sectionId){
+function pickProposalList(sectionId, proposalNames, proposalNamePlural, contestNames, contestNamesPlural) {
     currentSectionId = sectionId;
     initializePickedProposals();
+    replaceContestTypeNameVariables(proposalNames, proposalNamePlural, contestNames, contestNamesPlural);
     
     pickMultipleProposals = true;
     updateTabRibbons();
     $('#popup_proposalPicker').show();
     proposalPickerTabSelected($('#popup_proposalPicker > div > .prop-tabs > ul > li:first > a'),'contests');
+}
+
+function replaceContestTypeNameVariables(proposalNames, proposalNamesPlural, contestNames, contestNamesPlural) {
+    if (!proposalNames) {
+        console.trace();
+    }
+    $('.contestTypeProposalNames').each(function() {
+        $(this).text(proposalNames);
+    });
+    $('.contestTypeProposalNamesPlural').each(function() {
+        $(this).text(proposalNamesPlural);
+    });
+    $('.contestTypeContestNames').each(function() {
+        $(this).text(contestNames);
+    });
+    $('.contestTypeContestNamesPlural').each(function() {
+        $(this).text(contestNamesPlural);
+    });
 }
 
 /* click "select" in the picker */

@@ -293,6 +293,20 @@ public class ContestTypeLocalServiceUtil {
         return getService().getLabelName(contestType);
     }
 
+    public static java.lang.String getProposalNames(
+        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
+        java.lang.String conjunction) {
+        return getService()
+                   .getProposalNames(contestTypeIds, isSingular, conjunction);
+    }
+
+    public static java.lang.String getContestNames(
+        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
+        java.lang.String conjunction) {
+        return getService()
+                   .getContestNames(contestTypeIds, isSingular, conjunction);
+    }
+
     public static java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>> groupProposalsByContestType(
         java.util.List<com.ext.portlet.model.Proposal> proposals)
         throws com.liferay.portal.kernel.exception.PortalException,

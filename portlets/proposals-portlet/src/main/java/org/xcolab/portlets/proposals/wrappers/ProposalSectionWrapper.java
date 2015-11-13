@@ -5,6 +5,7 @@ import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -20,6 +21,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.xcolab.portlets.proposals.utils.LinkUtils;
 import org.xcolab.utils.HtmlUtil;
+import org.xcolab.utils.IdListUtil;
 
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -245,6 +247,26 @@ public class ProposalSectionWrapper {
         FocusArea area = FocusAreaLocalServiceUtil.getFocusArea(definition.getFocusAreaId());
 
         return FocusAreaLocalServiceUtil.getTerms(area);
+    }
+
+    public List<Long> getAllowedContestTypeIds() {
+        return IdListUtil.getIdsFromString(definition.getAllowedContestTypeIds());
+    }
+
+    public String getProposalNames() {
+        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), true, "or");
+    }
+
+    public String getProposalNamesPlural() {
+        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), false, "and");
+    }
+
+    public String getContestNames() {
+        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), true, "or");
+    }
+
+    public String getContestNamesPlural() {
+        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), false, "or");
     }
 
     private ProposalAttribute getSectionAttribute() throws SystemException, PortalException {
