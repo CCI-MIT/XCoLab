@@ -167,7 +167,7 @@
 }
 
 .edit-prop-butts span {
-  background: #b4b4b4;
+  background: $light-grey;
   font-weight: 700;
 }
 
@@ -213,13 +213,13 @@
 }
 
 .div1 {
-  background: #efefe7;
+  background: $lightest-grey;
   height: 6px;
   margin: 30px 0 30px;
 }
 
 .div2 {
-  background: #a3a39e;
+  background: $light-grey;
   height: 1px;
   margin: 38px 0 30px;
 }
@@ -234,11 +234,11 @@
   clear: both;
   height: 78px;
   padding: 0 0 0 14px;
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid $lightest-grey;
 }
 
 .propbox.featured {
-  background: #efefe7;
+  background: $lightest-grey;
 }
 
 .propbox.top {
@@ -299,17 +299,17 @@
 }
 
 .thumbbox {
-  background: url(../images/icon-proposal-support.png) no-repeat 11px 5px #efefe7;
+  background: url(../images/icon-proposal-support.png) no-repeat 11px 5px $lightest-grey;
   margin-right: 6px;
 }
 
 .commbox {
-  background: url(../images/icon-proposal-comments.png) no-repeat 11px 5px #efefe7;
+  background: url(../images/icon-proposal-comments.png) no-repeat 11px 5px $lightest-grey;
   margin-right: 18px;
 }
 
 .voteboxsmall {
-  background: url(../images/icon-proposal-vote-small.png) no-repeat 11px 5px #efefe7;
+  background: url(../images/icon-proposal-vote-small.png) no-repeat 11px 5px $lightest-grey;
   margin-right: 6px;
 }
 
@@ -357,14 +357,14 @@
 
 .votebox-shade {
   width: 331px;
-  background: #a3a39e;
+  background: $light-grey;
   margin: 3px 0 0 3px;
 }
 
 .votebox {
   width: 331px;
-  background: #efefe7;
-  border: 1px solid #c5c5c5;
+  background: $lightest-grey;
+  border: 1px solid $light-grey;
   position: relative;
   top: -5px;
   left: -5px;
@@ -407,7 +407,7 @@
 .votebox-bottom {
   font-size: 16px;
   color: $dark-grey;
-  background: #e6e4d5;
+  background: $lightest-grey;
   padding: 14px 0 17px 18px;
 }
 
@@ -452,15 +452,15 @@
 .prop-right h5.topbox {
   padding: 10px 0 10px 12px;
   margin-bottom: 9px;
-  background: #efefe7;
+  background: $lightest-grey;
   font-size: 13px;
   color: $medium-grey;
   border-top: 1px dotted $medium-grey;
 }
 
 .prop-title {
-  background: #efefe7;
-  border-bottom: 1px solid #c5c5c5;
+  background: $lightest-grey;
+  border-bottom: 1px solid $light-grey;
   line-height: 21px;
   color: black;
   padding: 13px 18px 13px 12px;
@@ -484,9 +484,9 @@
 }
 
 .prop-contest {
-  background: #efefe7;
-  border-top: 1px solid #c5c5c5;
-  border-bottom: 1px solid #c5c5c5;
+  background: $lightest-grey;
+  border-top: 1px solid $light-grey;
+  border-bottom: 1px solid $light-grey;
   font-size: 13px;
   line-height: 18px;
   color: black;
@@ -495,8 +495,8 @@
 }
 
 .prop-settings {
-  background: #efefe7;
-  border-bottom: 1px solid #c5c5c5;
+  background: $lightest-grey;
+  border-bottom: 1px solid $light-grey;
   font-size: 13px;
   line-height: 18px;
   color: black;
@@ -539,7 +539,7 @@
 }
 
 .contributors tr.odd td {
-  background: #efefe7;
+  background: $lightest-grey;
 }
 
 .contributors tr.bottom td {
@@ -557,7 +557,7 @@
 }
 
 .comments tr.odd td {
-  background-color: #efefe7;
+  background-color: $lightest-grey;
 }
 
 .commentor {
@@ -585,7 +585,7 @@
 
 /* add proposal boxes */
 .addpropbox {
-  background: #efefe7;
+  background: $lightest-grey;
   @include border-radius(12px);
   padding: 13px 15px 12px 12px;
   margin-bottom: 13px;
@@ -771,7 +771,7 @@
 }
 
 .historyTable .even td, #proposalPickerTable .ui-datatable-odd {
-  background-color: #f1f1e9;
+  background-color: $lightest-grey;
 
 }
 

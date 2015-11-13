@@ -4,7 +4,7 @@
   float: left;
   width: 490px;
   min-height: 600px;
-  border-right: 1px solid #e3e0d9;
+  border-right: 1px solid $lightest-grey;
   padding-bottom: 150px;
   @include box-shadow(inset -14px 0 10px -10px #ccc);
 }
@@ -128,7 +128,7 @@
 }
 
 .section-head {
-  background: #efefe7 url(../images/pattern-6x6-white.png);
+  background: $lightest-grey url(../images/pattern-6x6-white.png);
   padding: 15px 20px 15px 15px;
 }
 
@@ -417,7 +417,7 @@
 }
 
 .txt {
-  background-color: #e8e8e8;
+  background-color: $lightest-grey;
   padding: 10px;
   border-top: 1px solid $medium-grey;
 }
@@ -493,7 +493,7 @@
   padding: 5px 0;
   color: $medium-grey;
   line-height: 19px;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid $lightest-grey;
   display: none;
 }
 

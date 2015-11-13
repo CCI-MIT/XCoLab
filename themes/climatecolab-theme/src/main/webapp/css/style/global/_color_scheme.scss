@@ -21,9 +21,11 @@ $primary-grey: lighten($primary-dark-grey, 11); $__hex: #9cb6c9; // - replaces r
 $primary-light-grey: lighten($primary-grey, 35); $__hex: #e9f0f6; // - replaces catskill-white #e7f1f5 (difference HSL 10.5495, 0.7590, 0.5882)
 
 //greys
-$light-grey: #efefe7; //$cararra-grey;
-$medium-grey: #888782; //$natural-grey;
-$dark-grey: #555555; //$emperor-grey;
+$lightest-grey: #efefe7; //$cararra-grey;
+$light-grey: #bababa;
+$medium-grey: #888888; //$natural-grey;
+$dark-grey: #575757; //$emperor-grey;
+$darkest-grey: #404040;
 
 //alert and message colors:
 $alert-color: #b94a48;

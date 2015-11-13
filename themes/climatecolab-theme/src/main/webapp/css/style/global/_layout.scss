@@ -5,7 +5,7 @@ body {
 
 #header {
   height: 67px;
-  background: url(../images/bg-noise.jpg) #efefe7;
+  background: url(../images/bg-noise.jpg) $lightest-grey;
   border-bottom: 1px solid #aaa9a5;
 }
 
@@ -15,7 +15,7 @@ body {
 
 #footer {
   height: 190px;
-  background: url(../images/bg-noise.jpg) #efefe7;
+  background: url(../images/bg-noise.jpg) $lightest-grey;
 }
 
 .inner, #content, #footmenu ul {

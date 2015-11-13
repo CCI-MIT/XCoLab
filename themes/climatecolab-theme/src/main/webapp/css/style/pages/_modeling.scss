@@ -7,7 +7,7 @@
   color: $darkest-grey;
   line-height: 20px;
   background: url(../images/grid_t.gif) white;
-  border: 1px solid #dad7cf;
+  border: 1px solid $lightest-grey;
   @include border-radius(10px);
   padding-bottom: 15px;
 }
@@ -240,8 +240,8 @@
   float: left;
   width: 683px;
   height: 380px;
-  border-left: 1px solid #b7b6b2;
-  border-bottom: 1px solid #b7b6b2;
+  border-left: 1px solid $light-grey;
+  border-bottom: 1px solid $light-grey;
   background: url(../images/actions_grid.png);
 }
 
@@ -341,8 +341,8 @@
   float: left;
   width: 433px;
   height: 380px;
-  border-left: 1px solid #b7b6b2;
-  border-bottom: 1px solid #b7b6b2;
+  border-left: 1px solid $light-grey;
+  border-bottom: 1px solid $light-grey;
   background: url(../images/actions_grid.png);
 }
 
@@ -391,14 +391,14 @@
 .chart_sub-menu li a:hover {
   padding: 11px 0 11px 20px;
   margin: 0;
-  background: #a6a59c;
+  background: $light-grey;
   color: white;
 }
 
 .chart_sub-menu li.c a, #content .chart_sub-menu li.c a {
   padding: 11px 0 11px 20px;
   margin: 0;
-  background: #a6a59c;
+  background: $light-grey;
   color: white;
 }
 
@@ -435,7 +435,7 @@
   float: left;
   width: 455px;
   margin-right: 10px;
-  background: #e8e7dc;
+  background: $lightest-grey;
   padding: 17px 15px 6px 15px;
   font-size: 13px;
   color: #444;
@@ -448,7 +448,7 @@
 .act-edit-box_right {
   float: left;
   width: 459px;
-  background: #e8e7dc;
+  background: $lightest-grey;
   padding: 17px 15px 6px 15px;
   font-size: 13px;
   color: #444;
@@ -560,7 +560,7 @@
 .control_div {
   clear: both;
   height: 2px;
-  background: #f3f3ed;
+  background: $lightest-grey;
   margin-bottom: 10px;
 }
 
@@ -587,7 +587,7 @@
 }
 
 .rounded_button.brn a {
-  background: #e5e1da;
+  background: $lightest-grey;
   color: $darkest-grey;
 }
 
@@ -667,7 +667,7 @@
   font-size: .9em;
   background: white url(../images/slider_bg.gif) 0 0 repeat-x;
   color: black;
-  border: 4px solid #dddddd;
+  border: 4px solid $lightest-grey;
   position: relative;
 }
 

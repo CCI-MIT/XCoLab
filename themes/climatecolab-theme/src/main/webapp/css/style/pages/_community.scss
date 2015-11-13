@@ -209,8 +209,8 @@
   width: 222px;
   height: 25px;
   padding: 2px 0 0 8px;
-  background: #f9f9f7;
-  border: 1px solid #bcb6b1;
+  background: $lightest-grey;
+  border: 1px solid $light-grey;
   color: $dark-grey;
   font-size: 13px;
   font-weight: 400;
@@ -280,7 +280,7 @@
 }
 
 .comm_member .memdiv {
-  background: #efeee3;
+  background: $lightest-grey;
   height: 4px;
   margin: 7px 0 10px 0;
 }

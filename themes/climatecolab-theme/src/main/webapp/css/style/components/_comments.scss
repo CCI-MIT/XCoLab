@@ -2,7 +2,7 @@
 #commentbox {
   height: 178px;
   width: 788px;
-  border: 2px solid #b7b6ae;
+  border: 2px solid $light-grey;
   margin-bottom: 25px;
 }
 
@@ -41,7 +41,7 @@
 .commentbox {
   height: 178px;
   width: 788px;
-  border: 2px solid #b7b6ae;
+  border: 2px solid $light-grey;
   margin-bottom: 25px;
 }
 
@@ -88,13 +88,13 @@ input.comm_butt[type="submit"]:focus {
 }
 
 .featured_expert {
-  background: #f2f0ec;
+  background: $lightest-grey;
   padding: 0 0 10px 0;
-  border-bottom: 3px solid #e1ddd6;
+  border-bottom: 3px solid $lightest-grey;
 }
 
 .featured_expert-title {
-  background: #e1ddd6;
+  background: $lightest-grey;
   height: 26px;
   padding: 6px 0 0 101px;
   font-size: 12px;

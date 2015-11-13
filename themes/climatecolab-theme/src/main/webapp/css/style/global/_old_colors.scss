@@ -1,6 +1,6 @@
 
 //TODO
-$__old: #eed3d7; $__new: #000000; // #dddddd looks good // () border alert danger
+$__old: #eed3d7; $__new: #efefe7; // $lightest-grey // #dddddd looks good // () border alert danger
 $__old: #2ea5d6; $__new: #000000; // (1) border color .butt (edit and wiki buttons next to a proposal title)
 $__old: #539bd4; $__new: #000000; // () text color contest section
 $__old: #c09853; $__new: #000000; // () text alert
@@ -10,77 +10,51 @@ $__old: #3192b1; $__new: #000000; // ()
 $__old: #339fb8; $__new: #000000; // () border content help
 $__old: #8ECCE6; $__new: #000000; // (1) text color (act_tooltip a:hover)
 
-$light-grey: #efefe7; //$cararra-grey;
-$medium-grey: #888888; //$natural-grey;
-$dark-grey: #575757; //$emperor-grey;
-$darkest-grey: #404040;
+//TODO: blue greys
+$__old: #cdd8e4; $__new: #000000;
+$__old: #e7f0f5; $__new: #000000; // () text color :hover contest-outline-left
+$__old: #eaf2fb; $__new: #000000;
 
 //TODO
-$__old: #272727; $__new: black; // (1+5) text color #footright #txt a
-$__old: #222222; $__new: black; // ()
+$__old: #a3a39e; $__new: #bababa; // $light-grey // (1+3) border color .newsbox
+$__old: #a6a59c; $__new: #bababa; // $light-grey // () background
+$__old: #a9a9a9; $__new: #bababa; // $light-grey // (1+1)
+$__old: #b3b0aa; $__new: #bababa; // $light-grey
+$__old: #b4b4b4; $__new: #bababa; // $light-grey // (1) background .edit-prop-butts span
+$__old: #b7b6ae; $__new: #bababa; // $light-grey // ()
+$__old: #b7b6b2; $__new: #bababa; // $light-grey // () border
+$__old: #bcb6b1; $__new: #bababa; // $light-grey
+$__old: #bdb7b2; $__new: #bababa; // $light-grey // (1) border input
+$__old: #bdbcb7; $__new: #bababa; // $light-grey // (1) border-bottom .contest-detail
+$__old: #bebeb8; $__new: #bababa; // $light-grey // (1) border-left menu
+$__old: #bfbfbf; $__new: #bababa; // $light-grey
+$__old: #c5c5c5; $__new: #bababa; // $light-grey // (1+5) border-bottom activity
+$__old: #cbcbca; $__new: #bababa; // $light-grey // (1) border-left menu (help)
+$__old: #cccccc; $__new: #bababa; // $light-grey // () box-shadow contest-outline-left
+$__old: #d4d4d4; $__new: #efefe7; // $lightest-grey // (3+3) text color (userbox/loginbox)
+$__old: #dad7cf; $__new: #efefe7; // $lightest-grey
+$__old: #dddddd; $__new: #efefe7; // $lightest-grey // ()
+$__old: #dedede; $__new: #efefe7; // $lightest-grey
+$__old: #e1ddd6; $__new: #efefe7; // $lightest-grey // ()
+$__old: #e3e0d9; $__new: #efefe7; // $lightest-grey // () border-right contest-outline-left
+$__old: #e5e1da; $__new: #efefe7; // $lightest-grey // ()
+$__old: #e6e4d5; $__new: #efefe7; // $lightest-grey // (2) background votebox
+$__old: #e8e7dc; $__new: #efefe7; // $lightest-grey // (1) border contestbox
+$__old: #e8e8e8; $__new: #efefe7; // $lightest-grey
+$__old: #efeee3; $__new: #efefe7; // $lightest-grey
+$__old: #eaeaea; $__new: #efefe7; // $lightest-grey // () liferay
+$__old: #efefe7; $__new: #efefe7; // $lightest-grey // (17+6) background votebox, comments, contributors, etc
+$__old: #f1f1e9; $__new: #efefe7; // $lightest-grey
+$__old: #f2f0ec; $__new: #efefe7; // $lightest-grey // ()
+$__old: #f3f3ed; $__new: #efefe7; // $lightest-grey // ()
+$__old: #f7f6f2; $__new: #efefe7; // $lightest-grey
+$__old: #f9f9f7; $__new: #efefe7; // $lightest-grey
 
-$__old: #444341; $__new: #404040; // $darkest-grey // ()
-$__old: #444444; $__new: #404040; // $darkest-grey // ()
-$__old: #454545; $__new: #404040; // $darkest-grey // (2+18) text color (menu links:hover)
-$__old: #464646; $__new: #404040; // $darkest-grey // () text act_boxtop
-$__old: #545454; $__new: #575757; // $dark-grey // (10+3) text color proposals/contestbox
-$__old: #555555; $__new: #575757; // $dark-grey // ()
-$__old: #565656; $__new: #575757; // $dark-grey ()
-$__old: #606060; $__new: #575757; // $dark-grey // ()
-$__old: #656562; $__new: #575757; // $dark-grey // () text color
-$__old: #666666; $__new: #575757; // $dark-grey // () box shadow tooltip
-$__old: #6a6a6a; $__new: #888888; // $medium-grey // (1+2) text color link:hover
-$__old: #707070; $__new: #888888; // $medium-grey // ()
-$__old: #898989; $__new: #888888; // $medium-grey // ()
-$__old: #727272; $__new: #888888; // $medium-grey // () text
-$__old: #7f7f7f; $__new: #888888; // $medium-grey // (1+7) border color .checkout-wrap
-$__old: #828282; $__new: #888888; // $medium-grey // ()
-$__old: #858585; $__new: #888888; // $medium-grey // (1+5) text color contest phase bar
-$__old: #878787; $__new: #888888; // $medium-grey // ()
-$__old: #939393; $__new: #888888; // $medium-grey // () border color
-$__old: #969696; $__new: #888888; // $medium-grey // (1+8) text color contest count
-
-
-$__old: #a3a39e; $__new: #a3a39e; // (1+3) border color .newsbox
-$__old: #a6a59c; $__new: #000000; // () background
-$__old: #a9a9a9; $__new: #a9a9a9; // (1+1)
-$__old: #b3b0aa; $__new: #000000;
-$__old: #b4b4b4; $__new: #000000; // (1) background .edit-prop-butts span
-$__old: #b7b6ae; $__new: #000000; // ()
-$__old: #b7b6b2; $__new: #000000; // () border
-$__old: #bcb6b1; $__new: #000000;
-$__old: #bdb7b2; $__new: #000000; // (1) border input
-$__old: #bdbcb7; $__new: #000000; // (1) border-bottom .contest-detail
-$__old: #bebeb8; $__new: #000000; // (1) border-left menu
-$__old: #bfbfbf; $__new: #000000;
-$__old: #c5c5c5; $__new: #c5c5c5; // (1+5) border-bottom activity
-$__old: #cbcbca; $__new: #000000; // (1) border-left menu (help)
-$__old: #cccccc; $__new: #000000; // () box-shadow contest-outline-left
-$__old: #cdd8e4; $__new: #000000;
-$__old: #d4d4d4; $__new: #d4d4d4; // (3+3) text color (userbox/loginbox)
-$__old: #dad7cf; $__new: #000000;
-$__old: #dddddd; $__new: #000000; // ()
-$__old: #dedede; $__new: #000000;
-$__old: #e1ddd6; $__new: #000000; // ()
-$__old: #e3e0d9; $__new: #000000; // () border-right contest-outline-left
-$__old: #e5e1da; $__new: #000000; // ()
-$__old: #e6e4d5; $__new: #000000; // (2) background votebox
-$__old: #e7f0f5; $__new: #000000; // () text color :hover contest-outline-left
-$__old: #e8e7dc; $__new: #000000; // (1) border contestbox
-$__old: #e8e8e8; $__new: #000000;
-$__old: #eaf2fb; $__new: #000000;
-$__old: #efeee3; $__new: #000000;
-$__old: #eaeaea; $__new: #000000; // () liferay
-$__old: #f1f1e9; $__new: #000000;
-$__old: #f2f0ec; $__new: #000000; // ()
-$__old: #f3f3ed; $__new: #000000; // ()
-$__old: #f7f6f2; $__new: #000000;
-$__old: #f9f9f7; $__new: #000000;
+//TODO: yellow-ish
 $__old: #fbeed5; $__new: #000000;
 $__old: #fcf8e3; $__new: #000000;
 
 
-$__old: #efefe7; $__new: #efefe7; // $light-grey // (17+6) background votebox, comments, contributors, etc
 
 //61 more colors
 

@@ -14,7 +14,7 @@
 #menu li {
   float: left;
   list-style: none;
-  border-left: 1px solid #bebeb8;
+  border-left: 1px solid $light-grey;
 }
 
 #menu li:hover {
@@ -111,7 +111,7 @@
 #menu-right li.help {
   background: url(../images/icon-menu-help.png) no-repeat 20px 15px;
   padding-left: 7px;
-  border-left: 1px solid #cbcbca;
+  border-left: 1px solid $light-grey;
 }
 
 #menu-right li.register:hover {
@@ -236,7 +236,7 @@
   padding: 17px 0 10px 13px;
   background: url(../images/search-bg.png);
   font-size: 14px;
-  color: #d4d4d4;
+  color: $lightest-grey;
   font-weight: 700;
   @include border-bottom-left-radius(3px);
   @include border-bottom-right-radius(3px);
@@ -352,7 +352,7 @@
   padding: 10px 0 18px 17px;
   background: url(../images/search-bg.png);
   font-size: 14px;
-  color: #d4d4d4;
+  color: $lightest-grey;
   font-weight: 700;
   @include border-bottom-left-radius(3px);
   @include border-bottom-right-radius(3px);
