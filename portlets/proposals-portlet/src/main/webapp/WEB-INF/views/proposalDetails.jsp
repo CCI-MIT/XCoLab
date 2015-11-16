@@ -162,7 +162,6 @@
                 <div>
                     <p style="color: #545454; margin-top: 5px;">You just voted for ${proposal.name}.
                         <c:if test="${not empty votingDeadline}">The Voting Period ends ${votingDeadline}.</c:if> </p>
-                    <p style="color: #545454; margin-top: 5px;">Vote for more proposals <a href="/web/guest/plans">here</a>.</p>
                     <h4 style="color: #30a3fb;">Share your vote:</h4>
                     <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="align: center; width: 205px;">
                         <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
