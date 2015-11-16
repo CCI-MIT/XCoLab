@@ -39,8 +39,7 @@ public abstract class MemberRoleChoiceAlgorithm {
 
         @Override
         public MemberRole[] getPrioritizedMemberRoles() {
-            MemberRole[] roles = {MemberRole.IMPACT_ASSESSMENT_FELLOW, MemberRole.STAFF, MemberRole.FELLOW, MemberRole.MEMBER, MemberRole.GUEST};
-            return roles;
+            return new MemberRole[]{MemberRole.IMPACT_ASSESSMENT_FELLOW, MemberRole.STAFF, MemberRole.FELLOW, MemberRole.MEMBER, MemberRole.GUEST};
         }
 
         @Override
@@ -76,9 +75,6 @@ public abstract class MemberRoleChoiceAlgorithm {
     /**
      * Returns the preferred description string for a given MemberRole. Returns the first general description
      * (according to MemberRole class) of the member role if none specific is present
-     *
-     * @param memberRole
-     * @return
      */
     public abstract String getMemberRoleDescription(MemberRole memberRole);
     public abstract Map<MemberRole, String> getMemberRoleToMemberDescriptionMap();

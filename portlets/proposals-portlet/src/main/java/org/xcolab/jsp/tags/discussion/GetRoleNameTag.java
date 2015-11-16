@@ -56,7 +56,7 @@ public class GetRoleNameTag extends BodyTagSupport {
             for (Role r: roles) {
                 final String roleString = r.getName();
 
-                currentRole = MemberRole.getMember(roleString);
+                currentRole = MemberRole.fromRoleName(roleString);
                 if (currentRole != null && role != null) {
                 	if (currentRole.ordinal() > role.ordinal()) {
                 		role = currentRole;

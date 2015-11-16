@@ -263,7 +263,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                     User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
 
                     if (version > 0) {
-                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) {
+                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGE.getRoleId(),u.getUserId())) {
                             proposalWrapper = new ProposalJudgeWrapper(proposal, version, contest, contestPhase, proposal2Phase, u);
                         } else {
                             proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
@@ -272,7 +272,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                         final boolean hasVersionTo = proposal2Phase != null && proposal2Phase.getVersionTo() > 0;
                         final int localVersion = hasVersionTo ? proposal2Phase.getVersionTo() : proposal.getCurrentVersion();
 
-                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) {
+                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGE.getRoleId(),u.getUserId())) {
                             proposalWrapper = new ProposalJudgeWrapper(proposal, localVersion, contest, contestPhase, proposal2Phase, u);
                         } else {
                             proposalWrapper = new ProposalWrapper(proposal, localVersion, contest, contestPhase, proposal2Phase);

@@ -41,7 +41,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -279,7 +278,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         boolean isJudge = false;
 
         // TODO this only checks for the Role but not whether the user has this role in this contest
-        isJudge = RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.JUDGES.getRoleId());
+        isJudge = RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.JUDGE.getRoleId());
         isFellow = RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.FELLOW.getRoleId());
         return isFellow || isJudge;
     }

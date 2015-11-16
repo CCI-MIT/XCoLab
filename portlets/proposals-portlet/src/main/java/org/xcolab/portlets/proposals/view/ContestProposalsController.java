@@ -54,7 +54,7 @@ public class ContestProposalsController extends BaseProposalsController {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
             ProposalWrapper proposalWrapper;
 
-            if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(), u.getUserId())) {
+            if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGE.getRoleId(), u.getUserId())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, u);
 
             } else {

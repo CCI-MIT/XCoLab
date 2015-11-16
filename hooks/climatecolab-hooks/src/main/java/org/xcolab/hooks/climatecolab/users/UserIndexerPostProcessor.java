@@ -21,6 +21,7 @@ import com.liferay.portal.security.auth.DefaultFullNameGenerator;
 import com.liferay.portal.service.CountryServiceUtil;
 import com.liferay.portal.service.RegionServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
+import org.xcolab.enums.MemberRole;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 	private final static Log _log = LogFactoryUtil
 			.getLog(UserIndexerPostProcessor.class);
 
-	private static Map<Long, MemberCategory> roleIdToCategoryMap;
+	private static Map<Long, MemberRole> roleIdToCategoryMap;
 	private final static long DEFAULT_COMPANY_ID = 10112L;
 	@Override
 	public void postProcessDocument(Document document, Object object)
@@ -144,10 +145,10 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 	private static synchronized void initRoleIdToCategoryMap() {
 		roleIdToCategoryMap = new HashMap<>();
 
-		for (MemberCategory category : MemberCategory.values()) {
+		for (MemberRole category : MemberRole.values()) {
 			try {
-				if (category.equals(MemberCategory.ALL)
-						|| category.equals(MemberCategory.DEFAULT)) {
+				if (category.equals(MemberRole.ALL)
+						|| category.equals(MemberRole.DEFAULT)) {
 					continue;
 				}
 				for (String roleName : category.getRoleNames()) {

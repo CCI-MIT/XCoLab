@@ -121,7 +121,7 @@ public class UserProfileWrapper implements Serializable {
         for (Role r: roles) {
             final String roleString = r.getName();
 
-            MemberRole currentRole = MemberRole.getMember(roleString);
+            MemberRole currentRole = MemberRole.fromRoleName(roleString);
             if (currentRole != null && role != null) {
                 if (currentRole.ordinal() > role.ordinal()) {
                     role = currentRole;

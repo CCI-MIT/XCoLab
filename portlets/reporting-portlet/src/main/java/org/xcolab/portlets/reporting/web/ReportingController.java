@@ -63,7 +63,7 @@ public class ReportingController {
     }
 
     @RequestMapping(params="report=getProposalActivity2013")
-    public void getProposalActivity(ResourceRequest request, ResourceResponse response) throws Exception {
+    public void getProposalActivity(ResourceRequest request, ResourceResponse response) throws IOException, SystemException, PortalException {
         ProposalActivityExport pae = new ProposalActivityExport();
 
         Writer w = response.getWriter();
@@ -74,7 +74,9 @@ public class ReportingController {
         for (ProposalActivities a : pae.get()) {
             String authorIds = "";
             for (User u : ProposalLocalServiceUtil.getMembers(a.getProposal().getProposalId())) {
-                if (!"".equals(authorIds)) authorIds += " - ";
+                if (!"".equals(authorIds)) {
+                    authorIds += " - ";
+                }
                 authorIds += u.getUserId();
             }
 
@@ -230,9 +232,9 @@ public class ReportingController {
         }
         String[] csvHeader = new String[contestNames.length+initialCells.length];
         for (int i = 0; i < csvHeader.length; i++) {
-            if(i < initialCells.length)
+            if(i < initialCells.length) {
                 csvHeader[i] = initialCells[i];
-            else {
+            } else {
                 int targetIndex = i-initialCells.length;
                 csvHeader[i] = contestNames[targetIndex];
             }
@@ -281,12 +283,16 @@ public class ReportingController {
             userActivities.put(user.getUserId(), new UserActivityReportBean(user));
         }
         for (SocialActivity activity : SocialActivityLocalServiceUtil.getSocialActivities(0, Integer.MAX_VALUE)) {
-            if (!userActivities.containsKey(activity.getUserId())) continue;
+            if (!userActivities.containsKey(activity.getUserId())) {
+                continue;
+            }
             userActivities.get(activity.getUserId()).addActivity();
         }
 
         for (DiscussionMessage message : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0, Integer.MAX_VALUE)) {
-            if (!userActivities.containsKey(message.getAuthorId())) continue;
+            if (!userActivities.containsKey(message.getAuthorId())) {
+                continue;
+            }
             userActivities.get(message.getAuthorId()).addComment();
         }
         Map<Long, Set<Long>> proposalToTeamMemberIds = new HashMap<>();
@@ -296,10 +302,12 @@ public class ReportingController {
             //determine all team members of this proposal
             boolean authorIsInMembers = false;
             for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
-                if (!userActivities.containsKey(user.getUserId())) continue;
+                if (!userActivities.containsKey(user.getUserId())) {
+                    continue;
+                }
 
                 if (proposalToTeamMemberIds.get(proposal.getProposalId()) == null) {
-                    Set<Long> userIds = new HashSet<Long>();
+                    Set<Long> userIds = new HashSet<>();
                     userIds.add(user.getUserId());
                     proposalToTeamMemberIds.put(proposal.getProposalId(), userIds);
                 } else {
@@ -323,7 +331,9 @@ public class ReportingController {
 
         Set<Long> winningRibbonTypes = new HashSet<>();
         for (ContestPhaseRibbonType cprt : ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonTypes(0, Integer.MAX_VALUE)) {
-            if (cprt.getRibbon() == 1) winningRibbonTypes.add(cprt.getId());
+            if (cprt.getRibbon() == 1) {
+                winningRibbonTypes.add(cprt.getId());
+            }
         }
 
         Set<Long> finalistsContestPhases = new HashSet<>();
@@ -343,7 +353,9 @@ public class ReportingController {
                 if (proposalToTeamMemberIds.get(pcpa.getProposalId()) != null) {
                     for (Long userId : proposalToTeamMemberIds.get(pcpa.getProposalId())) {
                         UserActivityReportBean uarb = userActivities.get(userId);
-                        if (uarb == null) continue;
+                        if (uarb == null) {
+                            continue;
+                        }
                         uarb.addProposalWinnerContributedTo();
                         uarb.addProposalWinnerAuthoredOrContributedTo();
                         if (userId.equals(authorId)) {
@@ -354,7 +366,9 @@ public class ReportingController {
                 //author
                 if (authorId != null) {
                     UserActivityReportBean uarb = userActivities.get(authorId);
-                    if (uarb == null) continue;
+                    if (uarb == null) {
+                        continue;
+                    }
                     uarb.addProposalWinnerAuthored();
                     if (!authorIsInMembers) {
                         uarb.addProposalWinnerAuthoredOrContributedTo();
@@ -365,7 +379,9 @@ public class ReportingController {
 
         for (ProposalVote proposalVote : ProposalVoteLocalServiceUtil.getProposalVotes(0, Integer.MAX_VALUE)) {
             UserActivityReportBean uarb = userActivities.get(proposalVote.getUserId());
-            if(uarb == null) continue;
+            if(uarb == null) {
+                continue;
+            }
             uarb.addProposalVote();
         }
 
@@ -377,7 +393,9 @@ public class ReportingController {
                 if (proposalToTeamMemberIds.get(p2p.getProposalId()) != null) {
                     for (Long userId : proposalToTeamMemberIds.get(p2p.getProposalId())) {
                         UserActivityReportBean uarb = userActivities.get(userId);
-                        if (uarb == null) continue;
+                        if (uarb == null) {
+                            continue;
+                        }
                         uarb.addProposalFinalistContributedTo();
                         uarb.addProposalFinalistAuthoredOrContributedTo();
                         if (userId.equals(authorId)) {
@@ -388,7 +406,9 @@ public class ReportingController {
                 //author
                 if (authorId != null) {
                     UserActivityReportBean uarb = userActivities.get(authorId);
-                    if (uarb == null) continue;
+                    if (uarb == null) {
+                        continue;
+                    }
                     uarb.addProposalFinalistAuthored();
                     if (!authorIsInMembers) {
                         uarb.addProposalFinalistAuthoredOrContributedTo();
@@ -419,8 +439,8 @@ public class ReportingController {
             for (Role r: roles) {
                 final String roleString = r.getName();
 
-                currentRole = MemberRole.getMember(roleString);
-                if (currentRole != null && role != null) {
+                currentRole = MemberRole.fromRoleName(roleString);
+                if (currentRole != null) {
                     if (currentRole.ordinal() > role.ordinal()) {
                         role = currentRole;
                     }

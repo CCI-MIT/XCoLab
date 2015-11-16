@@ -1,5 +1,6 @@
 package org.xcolab.portlets.users;
 
+import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -10,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
-import org.xcolab.portlets.users.utils.MemberCategory;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.users.utils.MemberItem;
 
 import javax.portlet.PortletRequest;
@@ -70,7 +71,7 @@ public class MembersController {
             switch (sortColumn) {
                 case "USER_NAME":
                     dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenName(firstUser, endUser,
-                            filter,sortFilterPage.isSortAscending());
+                            filter, sortFilterPage.isSortAscending());
                     break;
 
                 case "POINTS":
@@ -93,10 +94,10 @@ public class MembersController {
                             filter, sortFilterPage.isSortAscending());
                     break;
                 default:
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCount(firstUser, endUser,
-                            filter, false);
                     sortFilterPage.setSortColumn("ACTIVITY");
                     sortFilterPage.setSortAscending(false);
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCount(firstUser, endUser,
+                            filter, sortFilterPage.isSortAscending());
 
             }
             request.getPortletSession().setAttribute("previousSortColumn", sortColumn);
@@ -104,7 +105,7 @@ public class MembersController {
 
             for (User user : dBUsers) {
                 MemberItem memberItem = new MemberItem(user, memberCategoryParam);
-                if (memberItem.getCategory()!= MemberCategory.STAFF) {
+                if (memberItem.getMemberRole() != MemberRole.STAFF) {
                     users.add(memberItem);
                 } else {
                     usersCount--;
@@ -164,6 +165,8 @@ public class MembersController {
         model.addAttribute("users", users);
         model.addAttribute("usersCount", usersCount);
         model.addAttribute("memberCategory", memberCategoryParam);
+        model.addAttribute("memberCategories", MemberCategoryLocalServiceUtil
+                .getVisibleMemberCategories());
 
         return "users";
     }
