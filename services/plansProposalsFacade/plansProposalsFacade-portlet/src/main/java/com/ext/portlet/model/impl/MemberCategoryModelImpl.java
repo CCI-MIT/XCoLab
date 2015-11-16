@@ -69,7 +69,12 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
     public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.finder.cache.enabled.com.ext.portlet.model.MemberCategory"),
             true);
-    public static final boolean COLUMN_BITMASK_ENABLED = false;
+    public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+                "value.object.column.bitmask.enabled.com.ext.portlet.model.MemberCategory"),
+            true);
+    public static long DISPLAYNAME_COLUMN_BITMASK = 1L;
+    public static long SHOWINLIST_COLUMN_BITMASK = 2L;
+    public static long ROLEID_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.MemberCategory"));
     private static ClassLoader _classLoader = MemberCategory.class.getClassLoader();
@@ -78,10 +83,14 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
         };
     private long _roleId;
     private String _displayName;
+    private String _originalDisplayName;
     private String _categoryName;
     private long _sortOrder;
     private boolean _showInList;
+    private boolean _originalShowInList;
+    private boolean _setOriginalShowInList;
     private String _imageName;
+    private long _columnBitmask;
     private MemberCategory _escapedModel;
 
     public MemberCategoryModelImpl() {
@@ -236,7 +245,17 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
 
     @Override
     public void setDisplayName(String displayName) {
+        _columnBitmask |= DISPLAYNAME_COLUMN_BITMASK;
+
+        if (_originalDisplayName == null) {
+            _originalDisplayName = _displayName;
+        }
+
         _displayName = displayName;
+    }
+
+    public String getOriginalDisplayName() {
+        return GetterUtil.getString(_originalDisplayName);
     }
 
     @JSON
@@ -278,7 +297,19 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
 
     @Override
     public void setShowInList(boolean showInList) {
+        _columnBitmask |= SHOWINLIST_COLUMN_BITMASK;
+
+        if (!_setOriginalShowInList) {
+            _setOriginalShowInList = true;
+
+            _originalShowInList = _showInList;
+        }
+
         _showInList = showInList;
+    }
+
+    public boolean getOriginalShowInList() {
+        return _originalShowInList;
     }
 
     @JSON
@@ -294,6 +325,10 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
     @Override
     public void setImageName(String imageName) {
         _imageName = imageName;
+    }
+
+    public long getColumnBitmask() {
+        return _columnBitmask;
     }
 
     @Override
@@ -376,6 +411,15 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
 
     @Override
     public void resetOriginalValues() {
+        MemberCategoryModelImpl memberCategoryModelImpl = this;
+
+        memberCategoryModelImpl._originalDisplayName = memberCategoryModelImpl._displayName;
+
+        memberCategoryModelImpl._originalShowInList = memberCategoryModelImpl._showInList;
+
+        memberCategoryModelImpl._setOriginalShowInList = false;
+
+        memberCategoryModelImpl._columnBitmask = 0;
     }
 
     @Override

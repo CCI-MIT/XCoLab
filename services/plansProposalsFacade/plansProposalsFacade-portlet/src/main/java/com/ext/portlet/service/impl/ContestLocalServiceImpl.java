@@ -894,8 +894,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Override
     public List<User> getJudgesForContest(Contest contest) throws SystemException, PortalException {
         Map<MemberRole, List<User>> roleToUserMap = getContestTeamMembersByRole(contest);
-        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.JUDGES))) {
-            return roleToUserMap.get(MemberRole.JUDGES);
+        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.JUDGE))) {
+            return roleToUserMap.get(MemberRole.JUDGE);
         }
         return new ArrayList<>();
     }
@@ -912,8 +912,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Override
     public List<User> getContestManagersForContest(Contest contest) throws SystemException, PortalException {
         Map<MemberRole, List<User>> roleToUserMap = getContestTeamMembersByRole(contest);
-        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.CONTESTMANAGER))) {
-            return roleToUserMap.get(MemberRole.CONTESTMANAGER);
+        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.CONTEST_MANAGER))) {
+            return roleToUserMap.get(MemberRole.CONTEST_MANAGER);
         }
         return new ArrayList<>();
     }
@@ -929,7 +929,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     private Map<MemberRole, List<User>> getContestTeamMembersByRole(Contest contest) throws PortalException, SystemException {
         Map<MemberRole, List<User>> teamRoleToUsersMap = new TreeMap<>();
         for (ContestTeamMember ctm : ContestLocalServiceUtil.getTeamMembers(contest)) {
-            MemberRole teamRole = MemberRole.getMember(ctm.getRole());
+            MemberRole teamRole = MemberRole.fromRoleName(ctm.getRole());
             List<User> roleUsers = teamRoleToUsersMap.get(teamRole);
             if (roleUsers == null) {
                 roleUsers = new ArrayList<>();

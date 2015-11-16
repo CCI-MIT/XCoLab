@@ -1,6 +1,11 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.NoSuchMemberCategoryException;
+import com.ext.portlet.model.MemberCategory;
 import com.ext.portlet.service.base.MemberCategoryLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the member category local service.
@@ -23,4 +28,13 @@ public class MemberCategoryLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.MemberCategoryLocalServiceUtil} to access the member category local service.
      */
+
+    @Override
+    public MemberCategory getByDisplayName(String displayName) {
+        return null;
+    }
+
+    public List<MemberCategory> getVisibleMemberCategories() throws NoSuchMemberCategoryException, SystemException {
+        return memberCategoryPersistence.findByshowInList(true);
+    }
 }

@@ -86,6 +86,9 @@ create index IX_512E56E1 on xcolab_ImpactIteration (iterationId);
 
 create index IX_E0F07F11 on xcolab_ImpactTemplateMaxFocusArea (focusAreaListId);
 
+create index IX_B3858EE9 on xcolab_MemberCategory (displayName);
+create index IX_8336AE28 on xcolab_MemberCategory (showInList);
+
 create index IX_9DF5C6F0 on xcolab_Message (fromId);
 
 create index IX_E4B60412 on xcolab_MessageRecipientStatus (messageId);

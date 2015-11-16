@@ -274,6 +274,19 @@ public class MemberCategoryLocalServiceWrapper
             arguments);
     }
 
+    @Override
+    public com.ext.portlet.model.MemberCategory getByDisplayName(
+        java.lang.String displayName) {
+        return _memberCategoryLocalService.getByDisplayName(displayName);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.MemberCategory> getVisibleMemberCategories()
+        throws com.ext.portlet.NoSuchMemberCategoryException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _memberCategoryLocalService.getVisibleMemberCategories();
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

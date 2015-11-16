@@ -20,6 +20,15 @@
         <column name="sortOrder" type="long"/>
         <column name="showInList" type="boolean"/>
         <column name="imageName" type="String"/>
+        
+        <finder name="displayName" return-type="MemberCategory">
+            <finder-column name="displayName"/>
+        </finder>
+
+        <finder name="showInList" return-type="Collection">
+            <finder-column name="showInList"/>
+        </finder>
+
     </entity>
 
 </service-builder>

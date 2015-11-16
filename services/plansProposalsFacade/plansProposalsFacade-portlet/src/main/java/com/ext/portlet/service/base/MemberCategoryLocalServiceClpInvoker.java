@@ -45,6 +45,10 @@ public class MemberCategoryLocalServiceClpInvoker {
     private String[] _methodParameterTypes498;
     private String _methodName499;
     private String[] _methodParameterTypes499;
+    private String _methodName504;
+    private String[] _methodParameterTypes504;
+    private String _methodName505;
+    private String[] _methodParameterTypes505;
 
     public MemberCategoryLocalServiceClpInvoker() {
         _methodName0 = "addMemberCategory";
@@ -136,6 +140,14 @@ public class MemberCategoryLocalServiceClpInvoker {
         _methodName499 = "setBeanIdentifier";
 
         _methodParameterTypes499 = new String[] { "java.lang.String" };
+
+        _methodName504 = "getByDisplayName";
+
+        _methodParameterTypes504 = new String[] { "java.lang.String" };
+
+        _methodName505 = "getVisibleMemberCategories";
+
+        _methodParameterTypes505 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -237,6 +249,16 @@ public class MemberCategoryLocalServiceClpInvoker {
             MemberCategoryLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
+        }
+
+        if (_methodName504.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes504, parameterTypes)) {
+            return MemberCategoryLocalServiceUtil.getByDisplayName((java.lang.String) arguments[0]);
+        }
+
+        if (_methodName505.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes505, parameterTypes)) {
+            return MemberCategoryLocalServiceUtil.getVisibleMemberCategories();
         }
 
         throw new UnsupportedOperationException();
