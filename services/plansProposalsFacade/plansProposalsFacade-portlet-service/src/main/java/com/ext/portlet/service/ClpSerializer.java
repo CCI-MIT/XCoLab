@@ -32,6 +32,7 @@ import com.ext.portlet.model.ImpactTemplateMaxFocusAreaClp;
 import com.ext.portlet.model.ImpactTemplateSeriesClp;
 import com.ext.portlet.model.LandingPageClp;
 import com.ext.portlet.model.LoginLogClp;
+import com.ext.portlet.model.MemberCategoryClp;
 import com.ext.portlet.model.MessageClp;
 import com.ext.portlet.model.MessageRecipientStatusClp;
 import com.ext.portlet.model.MessagingIgnoredRecipientsClp;
@@ -290,6 +291,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(LoginLogClp.class.getName())) {
             return translateInputLoginLog(oldModel);
+        }
+
+        if (oldModelClassName.equals(MemberCategoryClp.class.getName())) {
+            return translateInputMemberCategory(oldModel);
         }
 
         if (oldModelClassName.equals(MessageClp.class.getName())) {
@@ -813,6 +818,16 @@ public class ClpSerializer {
         LoginLogClp oldClpModel = (LoginLogClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getLoginLogRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputMemberCategory(BaseModel<?> oldModel) {
+        MemberCategoryClp oldClpModel = (MemberCategoryClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getMemberCategoryRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -2366,6 +2381,41 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals("com.ext.portlet.model.impl.LoginLogImpl")) {
             return translateOutputLoginLog(oldModel);
+        } else if (oldModelClassName.endsWith("Clp")) {
+            try {
+                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+                Method getClpSerializerClassMethod = oldModelClass.getMethod(
+                        "getClpSerializerClass");
+
+                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
+
+                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+                        BaseModel.class);
+
+                Class<?> oldModelModelClass = oldModel.getModelClass();
+
+                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+                        oldModelModelClass.getSimpleName() + "RemoteModel");
+
+                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
+                        oldRemoteModel);
+
+                return newModel;
+            } catch (Throwable t) {
+                if (_log.isInfoEnabled()) {
+                    _log.info("Unable to translate " + oldModelClassName, t);
+                }
+            }
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MemberCategoryImpl")) {
+            return translateOutputMemberCategory(oldModel);
         } else if (oldModelClassName.endsWith("Clp")) {
             try {
                 ClassLoader classLoader = ClpSerializer.class.getClassLoader();
@@ -4247,6 +4297,10 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchLoginLogException();
         }
 
+        if (className.equals("com.ext.portlet.NoSuchMemberCategoryException")) {
+            return new com.ext.portlet.NoSuchMemberCategoryException();
+        }
+
         if (className.equals("com.ext.portlet.NoSuchMessageException")) {
             return new com.ext.portlet.NoSuchMessageException();
         }
@@ -4773,6 +4827,16 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setLoginLogRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputMemberCategory(BaseModel<?> oldModel) {
+        MemberCategoryClp newModel = new MemberCategoryClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setMemberCategoryRemoteModel(oldModel);
 
         return newModel;
     }

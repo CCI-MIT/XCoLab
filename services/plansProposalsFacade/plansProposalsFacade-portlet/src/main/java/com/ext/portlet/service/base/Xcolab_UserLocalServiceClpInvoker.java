@@ -9,22 +9,10 @@ import java.util.Arrays;
  * @generated
  */
 public class Xcolab_UserLocalServiceClpInvoker {
-    private String _methodName476;
-    private String[] _methodParameterTypes476;
-    private String _methodName477;
-    private String[] _methodParameterTypes477;
-    private String _methodName480;
-    private String[] _methodParameterTypes480;
-    private String _methodName481;
-    private String[] _methodParameterTypes481;
     private String _methodName482;
     private String[] _methodParameterTypes482;
     private String _methodName483;
     private String[] _methodParameterTypes483;
-    private String _methodName484;
-    private String[] _methodParameterTypes484;
-    private String _methodName485;
-    private String[] _methodParameterTypes485;
     private String _methodName486;
     private String[] _methodParameterTypes486;
     private String _methodName487;
@@ -33,99 +21,111 @@ public class Xcolab_UserLocalServiceClpInvoker {
     private String[] _methodParameterTypes488;
     private String _methodName489;
     private String[] _methodParameterTypes489;
+    private String _methodName490;
+    private String[] _methodParameterTypes490;
+    private String _methodName491;
+    private String[] _methodParameterTypes491;
+    private String _methodName492;
+    private String[] _methodParameterTypes492;
+    private String _methodName493;
+    private String[] _methodParameterTypes493;
+    private String _methodName494;
+    private String[] _methodParameterTypes494;
+    private String _methodName495;
+    private String[] _methodParameterTypes495;
 
     public Xcolab_UserLocalServiceClpInvoker() {
-        _methodName476 = "getBeanIdentifier";
+        _methodName482 = "getBeanIdentifier";
 
-        _methodParameterTypes476 = new String[] {  };
+        _methodParameterTypes482 = new String[] {  };
 
-        _methodName477 = "setBeanIdentifier";
+        _methodName483 = "setBeanIdentifier";
 
-        _methodParameterTypes477 = new String[] { "java.lang.String" };
+        _methodParameterTypes483 = new String[] { "java.lang.String" };
 
-        _methodName480 = "getUsersSortedByScreenName";
-
-        _methodParameterTypes480 = new String[] {
-                "int", "int", "java.lang.String", "boolean"
-            };
-
-        _methodName481 = "getUsersSortedByScreenNameFilteredByCategory";
-
-        _methodParameterTypes481 = new String[] {
-                "int", "int", "java.lang.String", "java.lang.String", "boolean"
-            };
-
-        _methodName482 = "getUsersSortedByRoleName";
-
-        _methodParameterTypes482 = new String[] {
-                "int", "int", "java.lang.String", "boolean"
-            };
-
-        _methodName483 = "getUsersSortedByMemberSince";
-
-        _methodParameterTypes483 = new String[] {
-                "int", "int", "java.lang.String", "boolean"
-            };
-
-        _methodName484 = "getUsersSortedByMemberSinceFilteredByCategory";
-
-        _methodParameterTypes484 = new String[] {
-                "int", "int", "java.lang.String", "java.lang.String", "boolean"
-            };
-
-        _methodName485 = "getUsersSortedByActivityCount";
-
-        _methodParameterTypes485 = new String[] {
-                "int", "int", "java.lang.String", "boolean"
-            };
-
-        _methodName486 = "getUsersSortedByActivityCountFilteredByCategory";
+        _methodName486 = "getUsersSortedByScreenName";
 
         _methodParameterTypes486 = new String[] {
-                "int", "int", "java.lang.String", "java.lang.String", "boolean"
-            };
-
-        _methodName487 = "getUsersSortedByPoints";
-
-        _methodParameterTypes487 = new String[] {
                 "int", "int", "java.lang.String", "boolean"
             };
 
-        _methodName488 = "getUsersSortedByPointsFilteredByCategory";
+        _methodName487 = "getUsersSortedByScreenNameFilteredByCategory";
 
-        _methodParameterTypes488 = new String[] {
+        _methodParameterTypes487 = new String[] {
                 "int", "int", "java.lang.String", "java.lang.String", "boolean"
             };
 
-        _methodName489 = "getUserActivityCount";
+        _methodName488 = "getUsersSortedByRoleName";
 
-        _methodParameterTypes489 = new String[] { "java.lang.Long" };
+        _methodParameterTypes488 = new String[] {
+                "int", "int", "java.lang.String", "boolean"
+            };
+
+        _methodName489 = "getUsersSortedByMemberSince";
+
+        _methodParameterTypes489 = new String[] {
+                "int", "int", "java.lang.String", "boolean"
+            };
+
+        _methodName490 = "getUsersSortedByMemberSinceFilteredByCategory";
+
+        _methodParameterTypes490 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String", "boolean"
+            };
+
+        _methodName491 = "getUsersSortedByActivityCount";
+
+        _methodParameterTypes491 = new String[] {
+                "int", "int", "java.lang.String", "boolean"
+            };
+
+        _methodName492 = "getUsersSortedByActivityCountFilteredByCategory";
+
+        _methodParameterTypes492 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String", "boolean"
+            };
+
+        _methodName493 = "getUsersSortedByPoints";
+
+        _methodParameterTypes493 = new String[] {
+                "int", "int", "java.lang.String", "boolean"
+            };
+
+        _methodName494 = "getUsersSortedByPointsFilteredByCategory";
+
+        _methodParameterTypes494 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String", "boolean"
+            };
+
+        _methodName495 = "getUserActivityCount";
+
+        _methodParameterTypes495 = new String[] { "java.lang.Long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName476.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes476, parameterTypes)) {
+        if (_methodName482.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes482, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName477.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes477, parameterTypes)) {
+        if (_methodName483.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes483, parameterTypes)) {
             Xcolab_UserLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName480.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes480, parameterTypes)) {
+        if (_methodName486.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes486, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getUsersSortedByScreenName(((Integer) arguments[0]).intValue(),
                 ((Integer) arguments[1]).intValue(),
                 (java.lang.String) arguments[2],
                 ((Boolean) arguments[3]).booleanValue());
         }
 
-        if (_methodName481.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes481, parameterTypes)) {
+        if (_methodName487.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes487, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameFilteredByCategory(((Integer) arguments[0]).intValue(),
                 ((Integer) arguments[1]).intValue(),
                 (java.lang.String) arguments[2],
@@ -133,24 +133,24 @@ public class Xcolab_UserLocalServiceClpInvoker {
                 ((Boolean) arguments[4]).booleanValue());
         }
 
-        if (_methodName482.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes482, parameterTypes)) {
+        if (_methodName488.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getUsersSortedByRoleName(((Integer) arguments[0]).intValue(),
                 ((Integer) arguments[1]).intValue(),
                 (java.lang.String) arguments[2],
                 ((Boolean) arguments[3]).booleanValue());
         }
 
-        if (_methodName483.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes483, parameterTypes)) {
+        if (_methodName489.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getUsersSortedByMemberSince(((Integer) arguments[0]).intValue(),
                 ((Integer) arguments[1]).intValue(),
                 (java.lang.String) arguments[2],
                 ((Boolean) arguments[3]).booleanValue());
         }
 
-        if (_methodName484.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
+        if (_methodName490.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getUsersSortedByMemberSinceFilteredByCategory(((Integer) arguments[0]).intValue(),
                 ((Integer) arguments[1]).intValue(),
                 (java.lang.String) arguments[2],
@@ -158,16 +158,16 @@ public class Xcolab_UserLocalServiceClpInvoker {
                 ((Boolean) arguments[4]).booleanValue());
         }
 
-        if (_methodName485.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes485, parameterTypes)) {
+        if (_methodName491.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCount(((Integer) arguments[0]).intValue(),
                 ((Integer) arguments[1]).intValue(),
                 (java.lang.String) arguments[2],
                 ((Boolean) arguments[3]).booleanValue());
         }
 
-        if (_methodName486.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes486, parameterTypes)) {
+        if (_methodName492.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes492, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountFilteredByCategory(((Integer) arguments[0]).intValue(),
                 ((Integer) arguments[1]).intValue(),
                 (java.lang.String) arguments[2],
@@ -175,16 +175,16 @@ public class Xcolab_UserLocalServiceClpInvoker {
                 ((Boolean) arguments[4]).booleanValue());
         }
 
-        if (_methodName487.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes487, parameterTypes)) {
+        if (_methodName493.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes493, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getUsersSortedByPoints(((Integer) arguments[0]).intValue(),
                 ((Integer) arguments[1]).intValue(),
                 (java.lang.String) arguments[2],
                 ((Boolean) arguments[3]).booleanValue());
         }
 
-        if (_methodName488.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
+        if (_methodName494.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getUsersSortedByPointsFilteredByCategory(((Integer) arguments[0]).intValue(),
                 ((Integer) arguments[1]).intValue(),
                 (java.lang.String) arguments[2],
@@ -192,8 +192,8 @@ public class Xcolab_UserLocalServiceClpInvoker {
                 ((Boolean) arguments[4]).booleanValue());
         }
 
-        if (_methodName489.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
+        if (_methodName495.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes495, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getUserActivityCount((java.lang.Long) arguments[0]);
         }
 

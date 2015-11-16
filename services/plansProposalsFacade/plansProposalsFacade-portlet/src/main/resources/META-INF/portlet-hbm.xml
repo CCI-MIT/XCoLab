@@ -34,6 +34,7 @@
 	<import class="com.ext.portlet.model.ImpactTemplateSeries" />
 	<import class="com.ext.portlet.model.LandingPage" />
 	<import class="com.ext.portlet.model.LoginLog" />
+	<import class="com.ext.portlet.model.MemberCategory" />
 	<import class="com.ext.portlet.model.Message" />
 	<import class="com.ext.portlet.model.MessageRecipientStatus" />
 	<import class="com.ext.portlet.model.MessagingIgnoredRecipients" />
@@ -483,6 +484,17 @@
 		<property name="city" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="country" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="entryUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.MemberCategoryImpl" table="xcolab_MemberCategory">
+		<cache usage="read-write" />
+		<id name="roleId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="displayName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="categoryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="sortOrder" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="showInList" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="imageName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.MessageImpl" table="xcolab_Message">
 		<cache usage="read-write" />

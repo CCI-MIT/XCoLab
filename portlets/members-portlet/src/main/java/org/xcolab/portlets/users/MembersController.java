@@ -27,7 +27,7 @@ public class MembersController {
     @RequestMapping
     public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage,
                             @RequestParam(value = "page", required = false) Long pageParam,
-                            @RequestParam(value="memberCategory", required = false) String memberCategoryParam, Model model)
+                            @RequestParam(value = "memberCategory", required = false) String memberCategoryParam, Model model)
             throws SystemException, PortalException {
         int page = 1;
         if (pageParam != null) {

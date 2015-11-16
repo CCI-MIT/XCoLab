@@ -351,6 +351,15 @@ create table xcolab_LoginLog (
 	entryUrl VARCHAR(255) null
 );
 
+create table xcolab_MemberCategory (
+	roleId LONG not null primary key,
+	displayName VARCHAR(75) null,
+	categoryName VARCHAR(75) null,
+	sortOrder LONG,
+	showInList BOOLEAN,
+	imageName VARCHAR(75) null
+);
+
 create table xcolab_Message (
 	messageId LONG not null primary key,
 	fromId LONG,

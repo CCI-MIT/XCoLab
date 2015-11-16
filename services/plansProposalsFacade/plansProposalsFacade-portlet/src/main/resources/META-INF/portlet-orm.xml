@@ -576,6 +576,19 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.MemberCategoryModelImpl">
+		<attributes>
+			<id name="roleId" />
+			<basic name="displayName" />
+			<basic name="categoryName" />
+			<basic name="sortOrder" />
+			<basic name="showInList" />
+			<basic name="imageName" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.MessageModelImpl">
 		<attributes>
 			<id name="messageId" />
@@ -1365,6 +1378,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.LoginLogImpl" name="LoginLog">
 		<table name="xcolab_LoginLog" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.MemberCategoryImpl" name="MemberCategory">
+		<table name="xcolab_MemberCategory" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.MessageImpl" name="Message">

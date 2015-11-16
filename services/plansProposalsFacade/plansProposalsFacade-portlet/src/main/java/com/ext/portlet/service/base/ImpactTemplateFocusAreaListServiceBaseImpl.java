@@ -34,6 +34,7 @@ import com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPersistence
 import com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistence;
 import com.ext.portlet.service.persistence.LandingPagePersistence;
 import com.ext.portlet.service.persistence.LoginLogPersistence;
+import com.ext.portlet.service.persistence.MemberCategoryPersistence;
 import com.ext.portlet.service.persistence.MessagePersistence;
 import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
 import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
@@ -298,6 +299,12 @@ public abstract class ImpactTemplateFocusAreaListServiceBaseImpl
     protected com.ext.portlet.service.LoginLogService loginLogService;
     @BeanReference(type = LoginLogPersistence.class)
     protected LoginLogPersistence loginLogPersistence;
+    @BeanReference(type = com.ext.portlet.service.MemberCategoryLocalService.class)
+    protected com.ext.portlet.service.MemberCategoryLocalService memberCategoryLocalService;
+    @BeanReference(type = com.ext.portlet.service.MemberCategoryService.class)
+    protected com.ext.portlet.service.MemberCategoryService memberCategoryService;
+    @BeanReference(type = MemberCategoryPersistence.class)
+    protected MemberCategoryPersistence memberCategoryPersistence;
     @BeanReference(type = com.ext.portlet.service.MessageLocalService.class)
     protected com.ext.portlet.service.MessageLocalService messageLocalService;
     @BeanReference(type = com.ext.portlet.service.MessageService.class)
@@ -2410,6 +2417,63 @@ public abstract class ImpactTemplateFocusAreaListServiceBaseImpl
      */
     public void setLoginLogPersistence(LoginLogPersistence loginLogPersistence) {
         this.loginLogPersistence = loginLogPersistence;
+    }
+
+    /**
+     * Returns the member category local service.
+     *
+     * @return the member category local service
+     */
+    public com.ext.portlet.service.MemberCategoryLocalService getMemberCategoryLocalService() {
+        return memberCategoryLocalService;
+    }
+
+    /**
+     * Sets the member category local service.
+     *
+     * @param memberCategoryLocalService the member category local service
+     */
+    public void setMemberCategoryLocalService(
+        com.ext.portlet.service.MemberCategoryLocalService memberCategoryLocalService) {
+        this.memberCategoryLocalService = memberCategoryLocalService;
+    }
+
+    /**
+     * Returns the member category remote service.
+     *
+     * @return the member category remote service
+     */
+    public com.ext.portlet.service.MemberCategoryService getMemberCategoryService() {
+        return memberCategoryService;
+    }
+
+    /**
+     * Sets the member category remote service.
+     *
+     * @param memberCategoryService the member category remote service
+     */
+    public void setMemberCategoryService(
+        com.ext.portlet.service.MemberCategoryService memberCategoryService) {
+        this.memberCategoryService = memberCategoryService;
+    }
+
+    /**
+     * Returns the member category persistence.
+     *
+     * @return the member category persistence
+     */
+    public MemberCategoryPersistence getMemberCategoryPersistence() {
+        return memberCategoryPersistence;
+    }
+
+    /**
+     * Sets the member category persistence.
+     *
+     * @param memberCategoryPersistence the member category persistence
+     */
+    public void setMemberCategoryPersistence(
+        MemberCategoryPersistence memberCategoryPersistence) {
+        this.memberCategoryPersistence = memberCategoryPersistence;
     }
 
     /**

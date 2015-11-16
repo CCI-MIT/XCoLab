@@ -110,6 +110,9 @@
 	<bean id="com.ext.portlet.service.LoginLogLocalService" class="com.ext.portlet.service.impl.LoginLogLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.LoginLogService" class="com.ext.portlet.service.impl.LoginLogServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.LoginLogPersistence" class="com.ext.portlet.service.persistence.LoginLogPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.MemberCategoryLocalService" class="com.ext.portlet.service.impl.MemberCategoryLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.MemberCategoryService" class="com.ext.portlet.service.impl.MemberCategoryServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.MemberCategoryPersistence" class="com.ext.portlet.service.persistence.MemberCategoryPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.MessageLocalService" class="com.ext.portlet.service.impl.MessageLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.MessageService" class="com.ext.portlet.service.impl.MessageServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.MessagePersistence" class="com.ext.portlet.service.persistence.MessagePersistenceImpl" parent="basePersistence" />

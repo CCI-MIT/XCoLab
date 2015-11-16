@@ -422,6 +422,14 @@
 			<hint name="max-length">255</hint>
 		</field>
 	</model>
+	<model name="com.ext.portlet.model.MemberCategory">
+		<field name="roleId" type="long" />
+		<field name="displayName" type="String" />
+		<field name="categoryName" type="String" />
+		<field name="sortOrder" type="long" />
+		<field name="showInList" type="boolean" />
+		<field name="imageName" type="String" />
+	</model>
 	<model name="com.ext.portlet.model.Message">
 		<field name="messageId" type="long" />
 		<field name="fromId" type="long" />

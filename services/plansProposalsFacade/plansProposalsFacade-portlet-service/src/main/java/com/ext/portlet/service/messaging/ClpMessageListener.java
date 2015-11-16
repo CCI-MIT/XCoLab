@@ -65,6 +65,8 @@ import com.ext.portlet.service.LandingPageLocalServiceUtil;
 import com.ext.portlet.service.LandingPageServiceUtil;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.portlet.service.LoginLogServiceUtil;
+import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
+import com.ext.portlet.service.MemberCategoryServiceUtil;
 import com.ext.portlet.service.MessageLocalServiceUtil;
 import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import com.ext.portlet.service.MessageRecipientStatusServiceUtil;
@@ -268,6 +270,9 @@ public class ClpMessageListener extends BaseMessageListener {
             LoginLogLocalServiceUtil.clearService();
 
             LoginLogServiceUtil.clearService();
+            MemberCategoryLocalServiceUtil.clearService();
+
+            MemberCategoryServiceUtil.clearService();
             MessageLocalServiceUtil.clearService();
 
             MessageServiceUtil.clearService();

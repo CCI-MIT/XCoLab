@@ -12,5 +12,14 @@
         <reference package-path="com.liferay.portal" entity="User" />
 
     </entity>
+    
+    <entity name="MemberCategory" local-service="true">
+        <column name="roleId" type="long" primary="true" />
+        <column name="displayName" type="String"/>
+        <column name="categoryName" type="String"/>
+        <column name="sortOrder" type="long"/>
+        <column name="showInList" type="boolean"/>
+        <column name="imageName" type="String"/>
+    </entity>
 
 </service-builder>
