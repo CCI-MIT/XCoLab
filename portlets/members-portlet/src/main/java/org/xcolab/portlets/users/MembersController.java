@@ -1,23 +1,22 @@
 package org.xcolab.portlets.users;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.portlets.users.utils.MemberCategory;
 import org.xcolab.portlets.users.utils.MemberItem;
 
-import java.util.*;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -26,183 +25,135 @@ public class MembersController {
     private static final int USERS_PER_PAGE = 20;
 
     @RequestMapping
-    public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage, @RequestParam(value = "page", required = false) Long pageParam, @RequestParam(value="memberCategory", required = false) String memberCategoryParam, Model model) throws SystemException, PortalException {
-
-        int page=1;
-        if (pageParam!=null)
+    public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage,
+                            @RequestParam(value = "page", required = false) Long pageParam,
+                            @RequestParam(value="memberCategory", required = false) String memberCategoryParam, Model model)
+            throws SystemException, PortalException {
+        int page = 1;
+        if (pageParam != null) {
             page = pageParam.intValue();
+        }
 
         int startPage = 1;
-        if (page - 5 > 0)
-            startPage=page - 5;
+        if (page - 5 > 0) {
+            startPage = page - 5;
+        }
 
         int firstUser = 0;
-        if (page > 1)
-            firstUser = (page-1) * USERS_PER_PAGE;
+        if (page > 1) {
+            firstUser = (page - 1) * USERS_PER_PAGE;
+        }
 
         int endUser = firstUser + USERS_PER_PAGE;
 
-        List<User> dBUsers = null;
-
         String filter = "%";
         String filterParam = request.getParameter("filter");
-        if (filterParam!=null) {
+        if (filterParam != null) {
             filter = "%" + filterParam + "%";
             sortFilterPage.setFilter(filterParam);
         }
         int usersCount;
-        int pagesCount;
-        int endPage;
 
         List<MemberItem> users = new ArrayList<>();
 
-        if (memberCategoryParam==null || memberCategoryParam.compareTo("")==0) {
+        final String sortColumn = sortFilterPage.getSortColumn() != null ? sortFilterPage.getSortColumn() : "";
+        List<User> dBUsers;
+        if (memberCategoryParam == null || memberCategoryParam.compareTo("") == 0) {
 
-            if (filterParam!=null){
-                usersCount = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameAsc(0, Integer.MAX_VALUE, filter).size();
-            }
-            else
+            if (filterParam != null){
+                usersCount = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenName(0, Integer.MAX_VALUE,
+                        filter, true).size();
+            } else {
                 usersCount = UserLocalServiceUtil.getUsersCount();
-
-            if (sortFilterPage.getSortColumn() != null) {
-
-                switch (sortFilterPage.getSortColumn()) {
-                    case "USER_NAME":
-                        if (sortFilterPage.isSortAscending())
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameAsc(firstUser, endUser, filter);
-                        else
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameDesc(firstUser, endUser, filter);
-                        break;
-
-                    case "POINTS":
-                        if (sortFilterPage.isSortAscending())
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPointsAsc(firstUser, endUser, filter);
-                        else
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPointsDesc(firstUser, endUser, filter);
-                        break;
-
-                    case "ACTIVITY":
-                        if (sortFilterPage.isSortAscending())
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountAsc(firstUser, endUser, filter);
-                        else
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountDesc(firstUser, endUser, filter);
-                        break;
-
-                    case "CATEGORY":
-                        if (sortFilterPage.isSortAscending())
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByRoleNameAsc(firstUser, endUser, filter);
-                        else
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByRoleNameDesc(firstUser, endUser, filter);
-                        break;
-
-                    case "MEMBER_SINCE":
-                        if (sortFilterPage.isSortAscending())
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByMemberSinceAsc(firstUser, endUser, filter);
-                        else
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByMemberSinceDesc(firstUser, endUser, filter);
-                        break;
-                }
-
-                request.getPortletSession().setAttribute("previousSortColumn", sortFilterPage.getSortColumn());
-                request.getPortletSession().setAttribute("previousSortOrder", sortFilterPage.isSortAscending());
-            }
-            else {
-                dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountDesc(firstUser, endUser, filter);
-                sortFilterPage.setSortColumn("ACTIVITY");
-                sortFilterPage.setSortAscending(false);
             }
 
-            for (User user : dBUsers)
-            {
-                MemberItem memberItem = new MemberItem(user,memberCategoryParam);
-                if (memberItem.getCategory()!= MemberCategory.STAFF)
+            switch (sortColumn) {
+                case "USER_NAME":
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenName(firstUser, endUser,
+                            filter,sortFilterPage.isSortAscending());
+                    break;
+
+                case "POINTS":
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPoints(firstUser, endUser,
+                            filter, sortFilterPage.isSortAscending());
+                    break;
+
+                case "ACTIVITY":
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCount(firstUser, endUser,
+                            filter, sortFilterPage.isSortAscending());
+                    break;
+
+                case "CATEGORY":
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByRoleName(firstUser, endUser,
+                            filter, sortFilterPage.isSortAscending());
+                    break;
+
+                case "MEMBER_SINCE":
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByMemberSince(firstUser, endUser,
+                            filter, sortFilterPage.isSortAscending());
+                    break;
+                default:
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCount(firstUser, endUser,
+                            filter, false);
+                    sortFilterPage.setSortColumn("ACTIVITY");
+                    sortFilterPage.setSortAscending(false);
+
+            }
+            request.getPortletSession().setAttribute("previousSortColumn", sortColumn);
+            request.getPortletSession().setAttribute("previousSortOrder", sortFilterPage.isSortAscending());
+
+            for (User user : dBUsers) {
+                MemberItem memberItem = new MemberItem(user, memberCategoryParam);
+                if (memberItem.getCategory()!= MemberCategory.STAFF) {
                     users.add(memberItem);
-                else
+                } else {
                     usersCount--;
+                }
             }
-
-            //Pagination
-
-            pagesCount = (int)Math.ceil((double)usersCount/(double)USERS_PER_PAGE);
-
-            endPage = pagesCount;
-            if (startPage + 10<pagesCount)
-                endPage=startPage+10;
-        }
-        else {
-
+        } else { //Filtering by category
             String memberCategoryFilter="%" + memberCategoryParam + "%";
 
             //Pagination
-            usersCount = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(0, Integer.MAX_VALUE, filter, memberCategoryFilter).size();
-            pagesCount = (int)Math.ceil((double)usersCount/(double)USERS_PER_PAGE);
-            endPage = pagesCount;
-            if (startPage + 10<pagesCount)
-                endPage=startPage+10;
+            usersCount = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameFilteredByCategory(0, Integer.MAX_VALUE, filter, memberCategoryFilter, true).size();
 
-            //Filtering by category
-
-            if (sortFilterPage.getSortColumn()!=null)
-                switch (sortFilterPage.getSortColumn())
-                {
-                    case "UserNAME":
-                        if (sortFilterPage.isSortAscending()) {
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                        }
-                        else {
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                        }
-                        break;
-
-                    case "POINTS":
-                        if (sortFilterPage.isSortAscending()) {
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPointsAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                        }
-                        else {
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPointsDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                        }
-                        break;
-
-                    case "ACTIVITY":
-                        if (sortFilterPage.isSortAscending()) {
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                        }
-                        else {
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                        }
-                        break;
-
-                    case "CATEGORY":
-                        if (sortFilterPage.isSortAscending()) {
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                        }
-                        else {
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                        }
-                        break;
-
-                    case "MEMBER_SINCE":
-                        if (sortFilterPage.isSortAscending()) {
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByMemberSinceAscFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                        }
-                        else {
-                            dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByMemberSinceDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                        }
-
-                        break;
-                }
-            else {
-                dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountDescFilteredByCategory(firstUser, endUser, filter, memberCategoryFilter);
-                sortFilterPage.setSortColumn("ACTIVITY");
-                sortFilterPage.setSortAscending(false);
+            switch (sortColumn) {
+                case "UserNAME":
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameFilteredByCategory(firstUser,
+                            endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
+                    break;
+                case "POINTS":
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPointsFilteredByCategory(firstUser,
+                            endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
+                    break;
+                case "ACTIVITY":
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountFilteredByCategory(firstUser,
+                            endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
+                    break;
+                case "CATEGORY":
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameFilteredByCategory(firstUser,
+                            endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
+                    break;
+                case "MEMBER_SINCE":
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByMemberSinceFilteredByCategory(firstUser,
+                            endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
+                    break;
+                default:
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountFilteredByCategory(firstUser,
+                            endUser, filter, memberCategoryFilter, false);
+                    sortFilterPage.setSortColumn("ACTIVITY");
+                    sortFilterPage.setSortAscending(false);
             }
 
-            for (User user : dBUsers)
-            {
-                MemberItem memberItem = new MemberItem(user,memberCategoryParam);
+            for (User user : dBUsers) {
+                MemberItem memberItem = new MemberItem(user, memberCategoryParam);
                 users.add(memberItem);
             }
+        }
 
+        int pagesCount = (int) Math.ceil(usersCount / (double) USERS_PER_PAGE);
+        int endPage = pagesCount;
+        if (startPage + 10 < pagesCount) {
+            endPage = startPage + 10;
         }
 
         model.addAttribute("pageNumber", page);
@@ -215,7 +166,5 @@ public class MembersController {
         model.addAttribute("memberCategory", memberCategoryParam);
 
         return "users";
-
     }
-
 }

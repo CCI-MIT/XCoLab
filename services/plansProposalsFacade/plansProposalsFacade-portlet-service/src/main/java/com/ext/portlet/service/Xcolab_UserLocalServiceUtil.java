@@ -51,132 +51,76 @@ public class Xcolab_UserLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameAsc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getUsersSortedByScreenNameAsc(begin, end, filter);
-    }
-
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameAscFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenName(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getUsersSortedByScreenNameAscFilteredByCategory(begin, end,
-            filter, memberCategory);
+                   .getUsersSortedByScreenName(begin, end, filter,
+            ascendingOrder);
     }
 
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameDesc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getUsersSortedByScreenNameDesc(begin, end, filter);
-    }
-
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameDescFilteredByCategory(
+    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+        java.lang.String memberCategory, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getUsersSortedByScreenNameDescFilteredByCategory(begin,
-            end, filter, memberCategory);
+                   .getUsersSortedByScreenNameFilteredByCategory(begin, end,
+            filter, memberCategory, ascendingOrder);
     }
 
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleNameAsc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getUsersSortedByRoleNameAsc(begin, end, filter);
-    }
-
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleNameDesc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getUsersSortedByRoleNameDesc(begin, end, filter);
-    }
-
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceAsc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getUsersSortedByMemberSinceAsc(begin, end, filter);
-    }
-
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceAscFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleName(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getUsersSortedByMemberSinceAscFilteredByCategory(begin,
-            end, filter, memberCategory);
+                   .getUsersSortedByRoleName(begin, end, filter, ascendingOrder);
     }
 
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceDesc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getUsersSortedByMemberSinceDesc(begin, end, filter);
-    }
-
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceDescFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSince(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getUsersSortedByMemberSinceDescFilteredByCategory(begin,
-            end, filter, memberCategory);
+                   .getUsersSortedByMemberSince(begin, end, filter,
+            ascendingOrder);
     }
 
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountAsc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getUsersSortedByActivityCountAsc(begin, end, filter);
-    }
-
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountAscFilteredByCategory(
+    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+        java.lang.String memberCategory, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getUsersSortedByActivityCountAscFilteredByCategory(begin,
-            end, filter, memberCategory);
+                   .getUsersSortedByMemberSinceFilteredByCategory(begin, end,
+            filter, memberCategory, ascendingOrder);
     }
 
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountDesc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getUsersSortedByActivityCountDesc(begin, end, filter);
-    }
-
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountDescFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCount(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getUsersSortedByActivityCountDescFilteredByCategory(begin,
-            end, filter, memberCategory);
+                   .getUsersSortedByActivityCount(begin, end, filter,
+            ascendingOrder);
     }
 
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsAsc(
-        int begin, int end, java.lang.String filter) {
-        return getService().getUsersSortedByPointsAsc(begin, end, filter);
-    }
-
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsDesc(
-        int begin, int end, java.lang.String filter) {
-        return getService().getUsersSortedByPointsDesc(begin, end, filter);
-    }
-
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsAscFilteredByCategory(
+    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategoryFilter) {
+        java.lang.String memberCategory, boolean ascendingOrder)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getUsersSortedByPointsAscFilteredByCategory(begin, end,
-            filter, memberCategoryFilter);
+                   .getUsersSortedByActivityCountFilteredByCategory(begin, end,
+            filter, memberCategory, ascendingOrder);
     }
 
-    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsDescFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategoryFilter) {
+    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByPoints(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder) {
         return getService()
-                   .getUsersSortedByPointsDescFilteredByCategory(begin, end,
-            filter, memberCategoryFilter);
+                   .getUsersSortedByPoints(begin, end, filter, ascendingOrder);
+    }
+
+    public static java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategoryFilter, boolean ascendingOrder) {
+        return getService()
+                   .getUsersSortedByPointsFilteredByCategory(begin, end,
+            filter, memberCategoryFilter, ascendingOrder);
     }
 
     public static java.util.List<java.lang.Long> getUserActivityCount(

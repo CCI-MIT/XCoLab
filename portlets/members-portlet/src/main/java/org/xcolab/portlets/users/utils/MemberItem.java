@@ -30,9 +30,7 @@ public class MemberItem implements Serializable {
         joinDate = user.getCreateDate();
         points = PointsLocalServiceUtil.getUserMaterializedPoints(userId);
 
-
-        if (memberCategoryParam!=null && memberCategoryParam.compareTo("")!=0)
-        {
+        if (memberCategoryParam != null && memberCategoryParam.compareTo("") != 0) {
             switch (memberCategoryParam){
                 case "Member":
                     category=MemberCategory.MEMBER;
@@ -61,37 +59,34 @@ public class MemberItem implements Serializable {
                 case "Staff":
                     category=MemberCategory.STAFF;
             }
-        }
-
-        else {
+        } else {
 
             List<Role> roles = UserLocalServiceUtil.getUser(userId).getRoles();
-            if (roles.size() > 0) {
+            if (!roles.isEmpty()) {
 
-                MemberCategory currentCat = MemberCategory.MEMBER;
                 category = MemberCategory.MEMBER;
 
 
+                MemberCategory currentCat = MemberCategory.MEMBER;
                 for (Role role: roles) {
                     String roleName = role.getName();
 
-                    for (MemberCategory memberCategory : MemberCategory.values())
-
+                    for (MemberCategory memberCategory : MemberCategory.values()) {
                         if (Arrays.asList(memberCategory.getRoleNames()).contains(roleName)) {
                             currentCat = memberCategory;
                             break;
                         }
+                    }
 
                     if (currentCat.ordinal() > category.ordinal()) {
                         category = currentCat;
                     }
                 }
 
-                if (category == MemberCategory.MODERATOR) category = MemberCategory.STAFF;
-
-
+                if (category == MemberCategory.MODERATOR) {
+                    category = MemberCategory.STAFF;
+                }
             }
-
         }
     }
 
@@ -141,6 +136,4 @@ public class MemberItem implements Serializable {
     public String getScreenName() {
     	return screenName;
     }
-    
-
 }

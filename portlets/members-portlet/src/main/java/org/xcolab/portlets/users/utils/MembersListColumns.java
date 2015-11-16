@@ -23,6 +23,4 @@ public enum MembersListColumns {
     public int getType() {
         return type;
     }
-    
-    
 }

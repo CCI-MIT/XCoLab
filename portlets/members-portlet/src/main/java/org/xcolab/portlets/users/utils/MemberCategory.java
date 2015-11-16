@@ -43,7 +43,7 @@ public enum MemberCategory {
 
     public String getImageUrl() {
         String imageUrl = name();
-        if (imageUrl == MemberCategory.IMPACT_ASSESSMENT_FELLOW.name()){
+        if (imageUrl.equals(MemberCategory.IMPACT_ASSESSMENT_FELLOW.name())){
             imageUrl = MemberCategory.FELLOW.name();
         }
         return imageUrl.toLowerCase();
