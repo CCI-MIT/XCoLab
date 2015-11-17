@@ -1215,6 +1215,9 @@
 		</composite-id>
 		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="isValid" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="confirmationEmailSendDate" type="org.hibernate.type.TimestampType" />
+		<property name="confirmationToken" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.StaffMemberImpl" table="xcolab_StaffMember">
 		<cache usage="read-write" />

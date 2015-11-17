@@ -260,4 +260,9 @@ public interface ProposalVoteLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean hasUserVoted(long contestPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.model.ProposalVote findByProposalIdUserId(
+        long proposalId, long userId)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

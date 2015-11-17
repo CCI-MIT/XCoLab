@@ -51,6 +51,8 @@ public class ProposalVoteLocalServiceClpInvoker {
     private String[] _methodParameterTypes645;
     private String _methodName646;
     private String[] _methodParameterTypes646;
+    private String _methodName647;
+    private String[] _methodParameterTypes647;
 
     public ProposalVoteLocalServiceClpInvoker() {
         _methodName0 = "addProposalVote";
@@ -162,6 +164,10 @@ public class ProposalVoteLocalServiceClpInvoker {
         _methodName646 = "hasUserVoted";
 
         _methodParameterTypes646 = new String[] { "long", "long" };
+
+        _methodName647 = "findByProposalIdUserId";
+
+        _methodParameterTypes647 = new String[] { "long", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -280,6 +286,12 @@ public class ProposalVoteLocalServiceClpInvoker {
         if (_methodName646.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes646, parameterTypes)) {
             return ProposalVoteLocalServiceUtil.hasUserVoted(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
+        }
+
+        if (_methodName647.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes647, parameterTypes)) {
+            return ProposalVoteLocalServiceUtil.findByProposalIdUserId(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 

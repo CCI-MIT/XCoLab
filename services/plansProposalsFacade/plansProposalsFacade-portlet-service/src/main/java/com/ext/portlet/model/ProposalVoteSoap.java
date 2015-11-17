@@ -20,6 +20,9 @@ public class ProposalVoteSoap implements Serializable {
     private long _contestPhaseId;
     private long _userId;
     private Date _createDate;
+    private boolean _isValid;
+    private Date _confirmationEmailSendDate;
+    private String _confirmationToken;
 
     public ProposalVoteSoap() {
     }
@@ -31,6 +34,9 @@ public class ProposalVoteSoap implements Serializable {
         soapModel.setContestPhaseId(model.getContestPhaseId());
         soapModel.setUserId(model.getUserId());
         soapModel.setCreateDate(model.getCreateDate());
+        soapModel.setIsValid(model.getIsValid());
+        soapModel.setConfirmationEmailSendDate(model.getConfirmationEmailSendDate());
+        soapModel.setConfirmationToken(model.getConfirmationToken());
 
         return soapModel;
     }
@@ -110,5 +116,33 @@ public class ProposalVoteSoap implements Serializable {
 
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
+    }
+
+    public boolean getIsValid() {
+        return _isValid;
+    }
+
+    public boolean isIsValid() {
+        return _isValid;
+    }
+
+    public void setIsValid(boolean isValid) {
+        _isValid = isValid;
+    }
+
+    public Date getConfirmationEmailSendDate() {
+        return _confirmationEmailSendDate;
+    }
+
+    public void setConfirmationEmailSendDate(Date confirmationEmailSendDate) {
+        _confirmationEmailSendDate = confirmationEmailSendDate;
+    }
+
+    public String getConfirmationToken() {
+        return _confirmationToken;
+    }
+
+    public void setConfirmationToken(String confirmationToken) {
+        _confirmationToken = confirmationToken;
     }
 }

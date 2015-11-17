@@ -2,6 +2,7 @@ package com.ext.portlet.model;
 
 import com.ext.portlet.service.persistence.ProposalVotePK;
 
+import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -117,6 +118,56 @@ public interface ProposalVoteModel extends BaseModel<ProposalVote> {
      * @param createDate the create date of this proposal vote
      */
     public void setCreateDate(Date createDate);
+
+    /**
+     * Returns the is valid of this proposal vote.
+     *
+     * @return the is valid of this proposal vote
+     */
+    public boolean getIsValid();
+
+    /**
+     * Returns <code>true</code> if this proposal vote is is valid.
+     *
+     * @return <code>true</code> if this proposal vote is is valid; <code>false</code> otherwise
+     */
+    public boolean isIsValid();
+
+    /**
+     * Sets whether this proposal vote is is valid.
+     *
+     * @param isValid the is valid of this proposal vote
+     */
+    public void setIsValid(boolean isValid);
+
+    /**
+     * Returns the confirmation email send date of this proposal vote.
+     *
+     * @return the confirmation email send date of this proposal vote
+     */
+    public Date getConfirmationEmailSendDate();
+
+    /**
+     * Sets the confirmation email send date of this proposal vote.
+     *
+     * @param confirmationEmailSendDate the confirmation email send date of this proposal vote
+     */
+    public void setConfirmationEmailSendDate(Date confirmationEmailSendDate);
+
+    /**
+     * Returns the confirmation token of this proposal vote.
+     *
+     * @return the confirmation token of this proposal vote
+     */
+    @AutoEscape
+    public String getConfirmationToken();
+
+    /**
+     * Sets the confirmation token of this proposal vote.
+     *
+     * @param confirmationToken the confirmation token of this proposal vote
+     */
+    public void setConfirmationToken(String confirmationToken);
 
     @Override
     public boolean isNew();

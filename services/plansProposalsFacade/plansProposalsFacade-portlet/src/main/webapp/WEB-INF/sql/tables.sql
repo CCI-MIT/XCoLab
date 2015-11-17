@@ -948,6 +948,9 @@ create table xcolab_ProposalVote (
 	contestPhaseId LONG not null,
 	userId LONG not null,
 	createDate DATE null,
+	isValid BOOLEAN,
+	confirmationEmailSendDate DATE null,
+	confirmationToken VARCHAR(75) null,
 	primary key (contestPhaseId, userId)
 );
 

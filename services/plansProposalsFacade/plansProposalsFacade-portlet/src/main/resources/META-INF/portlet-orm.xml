@@ -1542,6 +1542,11 @@
 			<basic name="createDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="isValid" />
+			<basic name="confirmationEmailSendDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="confirmationToken" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

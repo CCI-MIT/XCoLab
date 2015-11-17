@@ -1053,6 +1053,9 @@
 		<field name="contestPhaseId" type="long" />
 		<field name="userId" type="long" />
 		<field name="createDate" type="Date" />
+		<field name="isValid" type="boolean" />
+		<field name="confirmationEmailSendDate" type="Date" />
+		<field name="confirmationToken" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.StaffMember">
 		<field name="id" type="long" />
