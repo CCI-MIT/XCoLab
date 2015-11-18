@@ -30,8 +30,9 @@ $darkest-grey: #404040;
 
 //alert and message colors:
 $alert-color: #b94a48;
-$alert-light: #ffeeee;
-$alert-message: #c09853; //TODO: check if this is used anywhere
+$alert-light: #f2dede;
+$info-background: $primary-light-grey;
+$success-background: $secondary-light;
 
 //outline view TODO: see if we can adapt this to use our colors
 $outline-level1: #e0dacb; // background slevel1

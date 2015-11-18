@@ -114,31 +114,8 @@
   margin-left: -522px;
 }
 
-.popup .error-message {
-  border: 1px dashed $dark-grey;
-  background: $alert-light;
-}
-
-.popup .popup-message {
-  border: 1px dashed $dark-grey;
-  background: $primary-light-grey;
-}
-
-.popup .error-message, .popup .popup-message, .error-message-registerOrLogin {
-  border-left: 0;
-  border-right: 0;
-  padding: 10px 10px;
-  margin: 0 0 15px 0;
-}
-
-.popup .error-message p, .popup .popup-message p, .error-message-registerOrLogin p {
-  margin: 0;
-}
-
 .popup .login_popup_box {
-  /* width: 374px;*/
   padding: 17px 0 10px 13px;
-  /*background: url(../images/search-bg.png);*/
   font-size: 14px;
   color: $dark-grey;
   font-weight: 700;
