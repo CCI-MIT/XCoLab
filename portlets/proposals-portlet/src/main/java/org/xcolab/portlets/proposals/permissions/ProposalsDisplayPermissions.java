@@ -16,10 +16,10 @@ import com.liferay.portal.model.User;
  */
 public class ProposalsDisplayPermissions {
 
-    private ProposalsPermissions proposalsPermissions;
-    private Proposal proposal;
-    private ContestPhase contestPhase;
-    private User user;
+    private final ProposalsPermissions proposalsPermissions;
+    private final Proposal proposal;
+    private final ContestPhase contestPhase;
+    private final User user;
 
     public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions,
                                        Proposal proposal, ContestPhase contestPhase) {

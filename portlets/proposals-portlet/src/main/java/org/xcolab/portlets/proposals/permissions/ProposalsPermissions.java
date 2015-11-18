@@ -170,7 +170,7 @@ public class ProposalsPermissions {
         long contestGroupId;
         try {
             contestGroupId = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getGroupId();
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             return getCanAdminAll();
         }
         return permissionChecker.hasPermission(contestGroupId, portletId, primKey, ProposalsActions.CAN_FELLOW_ACTIONS)
@@ -181,7 +181,7 @@ public class ProposalsPermissions {
         long contestGroupId;
         try {
             contestGroupId = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getGroupId();
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             return getCanAdminAll();
         }
         return permissionChecker.hasPermission(contestGroupId, portletId, primKey, ProposalsActions.CAN_JUDGE_ACTIONS)
@@ -193,7 +193,7 @@ public class ProposalsPermissions {
         try {
             MemberRole memberRole = MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm.getHighestMemberRoleForUser(user);
             canContestManagerActions = (memberRole == MemberRole.CONTEST_MANAGER || memberRole == MemberRole.STAFF);
-        } catch (Exception ignored){ }
+        } catch (SystemException ignored){ }
         return canContestManagerActions;
     }
 
@@ -202,15 +202,15 @@ public class ProposalsPermissions {
         try {
             MemberRole memberRole = MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm.getHighestMemberRoleForUser(user);
             canIAFAction = (memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW);
-        } catch (Exception ignored){ }
+        } catch (SystemException ignored){ }
         return canIAFAction;
     }
 
-    public boolean getCanPromoteProposalToNextPhase() throws Exception {
+    public boolean getCanPromoteProposalToNextPhase() throws PortalException, SystemException {
         return contestPhase != null && getCanPromoteProposalToNextPhase(contestPhase);
     }
 
-    public boolean getCanPromoteProposalToNextPhase(ContestPhase contestPhase) throws Exception {
+    public boolean getCanPromoteProposalToNextPhase(ContestPhase contestPhase) throws PortalException, SystemException {
         //getViewContestPhaseId
         if (Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()) {
             // Proposal is currently associated with a different contest and is active there
