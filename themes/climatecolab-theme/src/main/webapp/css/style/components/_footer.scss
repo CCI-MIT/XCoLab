@@ -1,0 +1,101 @@
+/*  FOOTER  --------------------------------------------------------------------------- */
+
+#footmenu {
+  height: 49px;
+  background: url(../images/bg-footer.jpg) repeat-x;
+}
+
+#footmenu li {
+  float: left;
+  list-style: none;
+}
+
+#footmenu li a {
+  display: inline-block;
+  padding: 15px 15px 0 0;
+  color: white;
+}
+
+#footmenu li a:hover, #footmenu li.c a {
+  color: $accent-color;
+}
+
+#footleft {
+  float: left;
+  width: 213px;
+  padding-top: 21px;
+}
+
+#footright {
+  float: right;
+  width: 490px;
+  padding-top: 34px;
+}
+
+#footright #txt {
+  float: left;
+  width: 380px;
+  margin-right: 16px;
+  font-size: 13px;
+  color: $dark-grey;
+  line-height: 20px;
+}
+
+#footright #txt a {
+  padding-bottom: 2px;
+  border-bottom: 1px solid $light-grey;
+  font-size: 12px;
+  font-weight: 600;
+  color: black;
+}
+
+#footright #txt a:hover {
+  color: $accent-color;
+}
+
+#footright #cc {
+  padding-top: 6px;
+}
+
+ol, ul {
+  margin-left: 0;
+}
+
+.portlet-journal-content ul, .portlet-journal-content ol, .portlet-wiki ul, .portlet-wiki ol {
+  margin-bottom: 15px;
+}
+
+ol li {
+  margin-left: 20px;
+}
+
+ul li {
+  margin-left: 11px;
+}
+
+#footmenu li, #menu li, .prop-tabs li, .userbox li {
+  list-style: none;
+  background: none;
+  padding: 0;
+  margin-left: 0;
+}
+
+.commentor.expertReview, .comments tr.odd td.commentor.expertReview {
+  background-color: $alert-light;
+}
+
+.whatWhoWhere {
+  display: inline;
+}
+
+.delta-selector {
+  display: none;
+}
+
+.popup-tabcontainer {
+  border: 1px solid $medium-grey;
+}
+
+#proposalPickerTable td {
+  padding: 10px;
+}

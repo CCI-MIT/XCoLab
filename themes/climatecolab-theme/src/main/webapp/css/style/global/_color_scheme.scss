@@ -1,0 +1,41 @@
+@import "compass";
+
+//main colors:
+$primary-color: #30a3fb;
+$secondary-color: #66b035;
+$accent-color: #e36f0f;
+$auxiliary-color: #e46970; // 4th color when needed (e.g. ontology)
+
+//lightness variations
+$primary-light: lighten($primary-color, 24); $__hex: #aad9fd;
+$secondary-light: lighten($secondary-color, 24); $__hex: #a7da85;
+
+$primary-dark: darken($primary-color, 13); $__hex: #0481e1;
+$secondary-dark: darken($secondary-color, 13); $__hex: #467a25;
+
+$primary-darkest: darken($primary-color, 30); $__hex: #03518c;
+$secondary-darkest: darken($secondary-color, 30); $__hex: #14230b;
+
+//grey variations of the primary color
+$primary-dark-grey: desaturate($primary-color, 61); $__hex: #719aba;
+$primary-grey: lighten($primary-dark-grey, 11); $__hex: #9cb6c9;
+$primary-light-grey: lighten($primary-dark-grey, 35); $__hex: #eaf0f5;
+
+//greys
+$lightest-grey: #efefe7;
+$light-grey: #bababa;
+$medium-grey: #888888;
+$dark-grey: #575757;
+$darkest-grey: #404040;
+
+//alert and message colors:
+$alert-color: #b94a48;
+$alert-light: #f2dede;
+$info-background: $primary-light-grey;
+$success-background: $secondary-light;
+
+//outline view TODO: see if we can adapt this to use our colors
+$outline-level1: #e0dacb; // background slevel1
+$outline-level2: #d1cbbf; // background slevel2
+$outline-level3: #c1bcb2; // background slevel3
+$outline-level4: #aaa69f; // background slevel4-6

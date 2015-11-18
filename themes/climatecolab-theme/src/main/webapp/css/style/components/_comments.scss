@@ -1,0 +1,186 @@
+/* COMMENTS *****************/
+#commentbox {
+  height: 178px;
+  width: 788px;
+  border: 2px solid $light-grey;
+  margin-bottom: 25px;
+}
+
+#thecomment {
+  float: left;
+  width: 790px
+}
+
+.comm_butt {
+  background: url(../images/comment_submit.gif);
+  border: none;
+  width: 119px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.comm_butt.right {
+  float: right;
+}
+
+.addcomment {
+  font-size: 14px;
+  margin-top: 25px;
+}
+
+.addcomment #add {
+  float: left;
+  width: 188px;
+  padding: 10px 6px 0 0;
+}
+
+.addcomment strong {
+  font-weight: 600;
+}
+
+.commentbox {
+  height: 178px;
+  width: 788px;
+  border: 2px solid $light-grey;
+  margin-bottom: 25px;
+}
+
+.commentbox.discussion {
+  width: 700px
+}
+
+input.comm_butt[type="submit"],
+input.comm_butt[type="submit"]:hover,
+input.comm_butt[type="submit"]:focus {
+  background: url(/climatecolab-theme/images/comment_submit.gif);
+  border: none;
+  width: 119px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.commentsActions {
+  margin-top: 15px;
+  text-align: right;
+}
+
+.the-comment {
+  padding-bottom: 55px;
+  position: relative;
+}
+
+.addpropbox.evaluation .commentor {
+  float: left;
+}
+
+.addpropbox.evaluation .the-comment {
+  padding-bottom: 40px;
+  padding-top: 10px;
+  display: table-footer-group;
+}
+
+.addpropbox.evaluation .the-comment li {
+  background: none;
+}
+
+.icon_share {
+  padding-left: 20px;
+}
+
+.featured_expert {
+  background: $lightest-grey;
+  padding: 0 0 10px 0;
+  border-bottom: 3px solid $lightest-grey;
+}
+
+.featured_expert-title {
+  background: $lightest-grey;
+  height: 26px;
+  padding: 6px 0 0 101px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #444;
+}
+
+.wf-active .featured_expert-title {
+  font-size: 14px;
+}
+
+.featired_expert-img {
+  width: 72px;
+  float: left;
+  margin: -24px 8px 0 15px;
+}
+
+.featured_expert-name {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 0 20px 103px;
+  line-height: 20px;
+}
+
+.wf-active .featured_expert-name {
+  font-size: 16px;
+}
+
+.featured_expert p {
+  padding: 0 15px;
+  margin-bottom: 10px;
+  font: 12px/21px Verdana, Geneva, sans-serif;
+}
+
+.comm_rightcol-bdr {
+  border-bottom: 3px solid $primary-light-grey;
+  padding-bottom: 10px;
+  margin-top: 0;
+}
+
+.comm_rightcol {
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+.comm_rightcol-title {
+  font-size: 19px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.comm_rightcol-title2 {
+  background: $primary-light-grey;
+  height: 22px;
+  padding: 10px 0 0 8px;
+  font-size: 12px;
+  line-height: normal;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 5px;
+}
+
+.wf-active .comm_rightcol-title2 {
+  font-size: 14px;
+}
+
+.comm_rightcol-time {
+  color: black;
+  padding: 0 10px;
+  font: 12px/21px Verdana, Geneva, sans-serif;
+}
+
+.comm_rightcol p, .comm_rightcol-bdr p {
+  color: #666;
+  padding: 0 10px;
+  margin-bottom: 15px;
+  font: 12px/21px Verdana, Geneva, sans-serif;
+}
+
+ul#blogArchives li {
+  list-style: none;
+  margin-bottom: 10px;
+  background: none;
+}
+
+.add-comment textarea.field {
+  width: 100%;
+  max-width: 100% !important;
+}

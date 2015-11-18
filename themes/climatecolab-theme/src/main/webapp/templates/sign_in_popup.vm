@@ -9,7 +9,7 @@
     #else 
         #set($loginMessageClass='')
     #end
-        <div class="popup-message $loginMessageClass ">
+        <div class="info-message $loginMessageClass ">
             <p>Welcome!  To access the link you clicked, please login or register as a free member using Facebook, Google, or your username &amp; password.</p>
         </div>
         <div class="loginwith">
@@ -55,7 +55,7 @@
         #if ($request.getParameter('isPasswordReminder')) 
         	#parse ("$full_templates_path/signin_reg_error_message_translator.vm")
         #else
-        	<div class="popup-message"><p>Enter your email or screen name to get new password</p></div>
+        	<div class="info-message"><p>Enter your email or screen name to get new password</p></div>
         #end            
         <div class="login_popup_box">
             <form id="forgotPasswordForm" method="post" action="/web/guest/loginregister?p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=1&_loginregisterportlet_WAR_loginregisterportlet_isForgotpass=true"
