@@ -185,6 +185,11 @@ public class Xcolab_UserLocalServiceUtil {
         return getService().getUserActivityCount(userId);
     }
 
+    public static java.util.List<com.liferay.portal.model.User> findUsersByLoginIP(
+        java.lang.String loginIP) {
+        return getService().findUsersByLoginIP(loginIP);
+    }
+
     public static void clearService() {
         _service = null;
     }

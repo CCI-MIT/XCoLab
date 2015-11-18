@@ -154,4 +154,10 @@ ORDER BY r.categoryName DESC
 		]]>
     </sql>
 
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.findUsersByLoginIP'>
+        <![CDATA[
+			SELECT * FROM User_ WHERE loginIP = ? or lastLoginIP = ?
+		]]>
+    </sql>
+
 </custom-sql>

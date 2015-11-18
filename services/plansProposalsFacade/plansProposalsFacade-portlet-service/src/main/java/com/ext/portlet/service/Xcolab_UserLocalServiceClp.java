@@ -50,6 +50,8 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     private String[] _methodParameterTypes20;
     private String _methodName21;
     private String[] _methodParameterTypes21;
+    private String _methodName22;
+    private String[] _methodParameterTypes22;
 
     public Xcolab_UserLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -154,6 +156,10 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
         _methodName21 = "getUserActivityCount";
 
         _methodParameterTypes21 = new String[] { "java.lang.Long" };
+
+        _methodName22 = "findUsersByLoginIP";
+
+        _methodParameterTypes22 = new String[] { "java.lang.String" };
     }
 
     @Override
@@ -844,5 +850,28 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
         }
 
         return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.liferay.portal.model.User> findUsersByLoginIP(
+        java.lang.String loginIP) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22,
+                    new Object[] { ClpSerializer.translateInput(loginIP) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.liferay.portal.model.User>) ClpSerializer.translateOutput(returnObj);
     }
 }

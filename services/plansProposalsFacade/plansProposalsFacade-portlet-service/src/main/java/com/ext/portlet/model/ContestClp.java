@@ -38,6 +38,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private String _proposalCreationTemplateString;
     private String _voteTemplateString;
     private String _proposalVoteTemplateString;
+    private String _proposalVoteConfirmationTemplateString;
     private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
@@ -129,6 +130,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("voteTemplateString", getVoteTemplateString());
         attributes.put("proposalVoteTemplateString",
             getProposalVoteTemplateString());
+        attributes.put("proposalVoteConfirmationTemplateString",
+            getProposalVoteConfirmationTemplateString());
         attributes.put("voteQuestionTemplateString",
             getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
@@ -275,6 +278,13 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (proposalVoteTemplateString != null) {
             setProposalVoteTemplateString(proposalVoteTemplateString);
+        }
+
+        String proposalVoteConfirmationTemplateString = (String) attributes.get(
+                "proposalVoteConfirmationTemplateString");
+
+        if (proposalVoteConfirmationTemplateString != null) {
+            setProposalVoteConfirmationTemplateString(proposalVoteConfirmationTemplateString);
         }
 
         String voteQuestionTemplateString = (String) attributes.get(
@@ -860,6 +870,31 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                         String.class);
 
                 method.invoke(_contestRemoteModel, proposalVoteTemplateString);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getProposalVoteConfirmationTemplateString() {
+        return _proposalVoteConfirmationTemplateString;
+    }
+
+    @Override
+    public void setProposalVoteConfirmationTemplateString(
+        String proposalVoteConfirmationTemplateString) {
+        _proposalVoteConfirmationTemplateString = proposalVoteConfirmationTemplateString;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setProposalVoteConfirmationTemplateString",
+                        String.class);
+
+                method.invoke(_contestRemoteModel,
+                    proposalVoteConfirmationTemplateString);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -1686,6 +1721,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setProposalCreationTemplateString(getProposalCreationTemplateString());
         clone.setVoteTemplateString(getVoteTemplateString());
         clone.setProposalVoteTemplateString(getProposalVoteTemplateString());
+        clone.setProposalVoteConfirmationTemplateString(getProposalVoteConfirmationTemplateString());
         clone.setVoteQuestionTemplateString(getVoteQuestionTemplateString());
         clone.setFocusAreaId(getFocusAreaId());
         clone.setContestTier(getContestTier());
@@ -1778,7 +1814,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(99);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1814,6 +1850,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getVoteTemplateString());
         sb.append(", proposalVoteTemplateString=");
         sb.append(getProposalVoteTemplateString());
+        sb.append(", proposalVoteConfirmationTemplateString=");
+        sb.append(getProposalVoteConfirmationTemplateString());
         sb.append(", voteQuestionTemplateString=");
         sb.append(getVoteQuestionTemplateString());
         sb.append(", focusAreaId=");
@@ -1883,7 +1921,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(148);
+        StringBundler sb = new StringBundler(151);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1956,6 +1994,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>proposalVoteTemplateString</column-name><column-value><![CDATA[");
         sb.append(getProposalVoteTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>proposalVoteConfirmationTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getProposalVoteConfirmationTemplateString());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>voteQuestionTemplateString</column-name><column-value><![CDATA[");

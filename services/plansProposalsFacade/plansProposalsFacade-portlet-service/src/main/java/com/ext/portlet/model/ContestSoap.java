@@ -31,6 +31,7 @@ public class ContestSoap implements Serializable {
     private String _proposalCreationTemplateString;
     private String _voteTemplateString;
     private String _proposalVoteTemplateString;
+    private String _proposalVoteConfirmationTemplateString;
     private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
@@ -86,6 +87,7 @@ public class ContestSoap implements Serializable {
         soapModel.setProposalCreationTemplateString(model.getProposalCreationTemplateString());
         soapModel.setVoteTemplateString(model.getVoteTemplateString());
         soapModel.setProposalVoteTemplateString(model.getProposalVoteTemplateString());
+        soapModel.setProposalVoteConfirmationTemplateString(model.getProposalVoteConfirmationTemplateString());
         soapModel.setVoteQuestionTemplateString(model.getVoteQuestionTemplateString());
         soapModel.setFocusAreaId(model.getFocusAreaId());
         soapModel.setContestTier(model.getContestTier());
@@ -305,6 +307,15 @@ public class ContestSoap implements Serializable {
 
     public void setProposalVoteTemplateString(String proposalVoteTemplateString) {
         _proposalVoteTemplateString = proposalVoteTemplateString;
+    }
+
+    public String getProposalVoteConfirmationTemplateString() {
+        return _proposalVoteConfirmationTemplateString;
+    }
+
+    public void setProposalVoteConfirmationTemplateString(
+        String proposalVoteConfirmationTemplateString) {
+        _proposalVoteConfirmationTemplateString = proposalVoteConfirmationTemplateString;
     }
 
     public String getVoteQuestionTemplateString() {

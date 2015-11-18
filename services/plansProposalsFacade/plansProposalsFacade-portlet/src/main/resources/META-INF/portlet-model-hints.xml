@@ -145,6 +145,7 @@
 		<field name="proposalVoteTemplateString" type="String">
 			<hint name="default-value">PROPOSAL_VOTE_DEFAULT</hint>
 		</field>
+		<field name="proposalVoteConfirmationTemplateString" type="String" />
 		<field name="voteQuestionTemplateString" type="String">
 			<hint name="default-value">CONTEST_VOTE_QUESTION_DEFAULT</hint>
 		</field>

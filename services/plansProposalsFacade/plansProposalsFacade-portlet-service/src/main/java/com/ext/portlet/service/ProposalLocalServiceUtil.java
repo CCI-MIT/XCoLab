@@ -664,7 +664,7 @@ public class ProposalLocalServiceUtil {
     public static java.util.List<com.ext.portlet.model.Proposal> getProposalsInContestPhase(
         long contestPhaseId, java.lang.String sortProperty,
         boolean sortAscending, int start, int end)
-        throws com.liferay.portal.kernel.exception.PortalException,
+        throws com.ext.portlet.NoSuchProposalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .getProposalsInContestPhase(contestPhaseId, sortProperty,

@@ -160,6 +160,7 @@
 			<basic name="proposalCreationTemplateString" />
 			<basic name="voteTemplateString" />
 			<basic name="proposalVoteTemplateString" />
+			<basic name="proposalVoteConfirmationTemplateString" />
 			<basic name="voteQuestionTemplateString" />
 			<basic name="focusAreaId" />
 			<basic name="contestTier" />

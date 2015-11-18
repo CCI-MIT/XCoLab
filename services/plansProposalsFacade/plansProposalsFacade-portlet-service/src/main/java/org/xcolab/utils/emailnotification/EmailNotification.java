@@ -220,7 +220,7 @@ public abstract class EmailNotification {
     }
 
     public void sendMessage() throws SystemException, PortalException {
-        List<Long> recipients = new ArrayList<Long>();
+        List<Long> recipients = new ArrayList<>();
         recipients.add(getRecipient().getUserId());
         EmailTemplateWrapper template = getTemplateWrapper();
         try {

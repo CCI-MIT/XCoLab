@@ -69,4 +69,7 @@ public interface Xcolab_UserFinder {
     public java.lang.Long getUserMaterializedPoints(java.lang.Long userId);
 
     public java.lang.Long getUserHypotheticalPoints(java.lang.Long userId);
+
+    public java.util.List<com.liferay.portal.model.User> findUsersByLoginIP(
+        int begin, int end, java.lang.String filter);
 }

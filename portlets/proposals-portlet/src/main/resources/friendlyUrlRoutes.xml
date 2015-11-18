@@ -205,5 +205,13 @@
         <generated-parameter name="p_p_lifecycle">1</generated-parameter>
         <generated-parameter name="action">sendProposalActivityNotifications</generated-parameter>
     </route>
+
+    <route>
+        <pattern>/confirmVote/{proposalId}/{userId}/{confirmationToken}</pattern>
+        <generated-parameter name="pageToDisplay">confirmVote</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="userId">{userId}</generated-parameter>
+        <generated-parameter name="confirmationToken">{confirmationToken}</generated-parameter>
+    </route>
     
 </routes>

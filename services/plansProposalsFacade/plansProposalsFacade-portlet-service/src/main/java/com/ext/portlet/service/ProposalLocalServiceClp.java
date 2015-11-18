@@ -1969,7 +1969,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     public java.util.List<com.ext.portlet.model.Proposal> getProposalsInContestPhase(
         long contestPhaseId, java.lang.String sortProperty,
         boolean sortAscending, int start, int end)
-        throws com.liferay.portal.kernel.exception.PortalException,
+        throws com.ext.portlet.NoSuchProposalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -1990,8 +1990,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            if (t instanceof com.ext.portlet.NoSuchProposalException) {
+                throw (com.ext.portlet.NoSuchProposalException) t;
             }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {

@@ -38,6 +38,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public String proposalCreationTemplateString;
     public String voteTemplateString;
     public String proposalVoteTemplateString;
+    public String proposalVoteConfirmationTemplateString;
     public String voteQuestionTemplateString;
     public long focusAreaId;
     public long contestTier;
@@ -72,7 +73,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(99);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -108,6 +109,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(voteTemplateString);
         sb.append(", proposalVoteTemplateString=");
         sb.append(proposalVoteTemplateString);
+        sb.append(", proposalVoteConfirmationTemplateString=");
+        sb.append(proposalVoteConfirmationTemplateString);
         sb.append(", voteQuestionTemplateString=");
         sb.append(voteQuestionTemplateString);
         sb.append(", focusAreaId=");
@@ -254,6 +257,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             contestImpl.setProposalVoteTemplateString(proposalVoteTemplateString);
         }
 
+        if (proposalVoteConfirmationTemplateString == null) {
+            contestImpl.setProposalVoteConfirmationTemplateString(StringPool.BLANK);
+        } else {
+            contestImpl.setProposalVoteConfirmationTemplateString(proposalVoteConfirmationTemplateString);
+        }
+
         if (voteQuestionTemplateString == null) {
             contestImpl.setVoteQuestionTemplateString(StringPool.BLANK);
         } else {
@@ -371,6 +380,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         proposalCreationTemplateString = objectInput.readUTF();
         voteTemplateString = objectInput.readUTF();
         proposalVoteTemplateString = objectInput.readUTF();
+        proposalVoteConfirmationTemplateString = objectInput.readUTF();
         voteQuestionTemplateString = objectInput.readUTF();
         focusAreaId = objectInput.readLong();
         contestTier = objectInput.readLong();
@@ -469,6 +479,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(proposalVoteTemplateString);
+        }
+
+        if (proposalVoteConfirmationTemplateString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(proposalVoteConfirmationTemplateString);
         }
 
         if (voteQuestionTemplateString == null) {

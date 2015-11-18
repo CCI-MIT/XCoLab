@@ -1,8 +1,8 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.service.base.Xcolab_UserLocalServiceBaseImpl;
-import com.ext.portlet.service.persistence.Xcolab_UserFinder;
 import com.ext.portlet.service.persistence.Xcolab_UserFinderUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
@@ -30,106 +30,125 @@ public class Xcolab_UserLocalServiceImpl extends Xcolab_UserLocalServiceBaseImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.Xcolab_UserLocalServiceUtil} to access the xcolab_ user local service.
      */
+    @Override
     public List<User> getUsersSortedByScreenNameAsc(int begin, int end, String filter)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByScreenNameAsc(begin, end, filter);
     }
 
+    @Override
     public List<User> getUsersSortedByScreenNameAscFilteredByCategory(int begin, int end, String filter, String memberCategory)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByScreenNameAscFilteredByCategory(begin, end, filter, memberCategory);
     }
 
+    @Override
     public List<User> getUsersSortedByScreenNameDesc(int begin, int end, String filter)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByScreenNameDesc(begin, end, filter);
     }
 
+    @Override
     public List<User> getUsersSortedByScreenNameDescFilteredByCategory(int begin, int end, String filter, String memberCategory)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByScreenNameDescFilteredByCategory(begin, end, filter, memberCategory);
     }
 
+    @Override
     public List<User> getUsersSortedByRoleNameAsc(int begin, int end, String filter)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByRoleNameAsc(begin, end, filter);
     }
 
+    @Override
     public List<User> getUsersSortedByRoleNameDesc(int begin, int end, String filter)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByRoleNameDesc(begin, end, filter);
     }
 
+    @Override
     public List<User> getUsersSortedByMemberSinceAsc(int begin, int end, String filter)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByMemberSinceAsc(begin, end, filter);
     }
 
+    @Override
     public List<User> getUsersSortedByMemberSinceAscFilteredByCategory(int begin, int end, String filter, String memberCategory)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByMemberSinceAscFilteredByCategory(begin, end, filter, memberCategory);
     }
 
+    @Override
     public List<User> getUsersSortedByMemberSinceDesc(int begin, int end, String filter)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByMemberSinceDesc(begin, end, filter);
     }
 
+    @Override
     public List<User> getUsersSortedByMemberSinceDescFilteredByCategory(int begin, int end, String filter, String memberCategory)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByMemberSinceDescFilteredByCategoryName(begin, end, filter, memberCategory);
     }
 
+    @Override
     public List<User> getUsersSortedByActivityCountAsc(int begin, int end, String filter)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByActivityCountAsc(begin, end, filter);
     }
 
+    @Override
     public List<User> getUsersSortedByActivityCountAscFilteredByCategory(int begin, int end, String filter, String memberCategory)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByActivityCountAscFilteredByCategory(begin, end, filter, memberCategory);
     }
 
+    @Override
     public List<User> getUsersSortedByActivityCountDesc(int begin, int end, String filter)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByActivityCountDesc(begin, end, filter);
     }
 
+    @Override
     public List<User> getUsersSortedByActivityCountDescFilteredByCategory(int begin, int end, String filter, String memberCategory)
             throws SystemException {
 
         return Xcolab_UserFinderUtil.getUsersSortedByActivityCountDescFilteredByCategory(begin, end, filter, memberCategory);
     }
 
+    @Override
     public List<User> getUsersSortedByPointsAsc(int begin, int end, String filter) {
         return Xcolab_UserFinderUtil.getUsersSortedByPointsAsc(begin, end, filter);
     }
 
+    @Override
     public List<User> getUsersSortedByPointsDesc(int begin, int end, String filter) {
         return Xcolab_UserFinderUtil.getUsersSortedByPointsDesc(begin, end, filter);
     }
 
+    @Override
     public List<User> getUsersSortedByPointsAscFilteredByCategory(int begin, int end, String filter, String memberCategoryFilter) {
         return Xcolab_UserFinderUtil.getUsersSortedByPointsAscFilteredByCategory(begin, end, filter, memberCategoryFilter);
     }
 
+    @Override
     public List<User> getUsersSortedByPointsDescFilteredByCategory(int begin, int end, String filter, String memberCategoryFilter) {
         return Xcolab_UserFinderUtil.getUsersSortedByPointsDescFilteredByCategory(begin, end, filter, memberCategoryFilter);
     }
 
+    @Override
     public List<Long> getUserActivityCount(Long userId)
             throws SystemException {
 
@@ -141,5 +160,10 @@ public class Xcolab_UserLocalServiceImpl extends Xcolab_UserLocalServiceBaseImpl
         }
 
         return userActivityCountLongValues;
+    }
+
+    @Override
+    public List<User> findUsersByLoginIP(String loginIP) {
+        return Xcolab_UserFinderUtil.findUsersByLoginIP(QueryUtil.ALL_POS, QueryUtil.ALL_POS, loginIP);
     }
 }

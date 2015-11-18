@@ -95,6 +95,7 @@ create table xcolab_Contest (
 	proposalCreationTemplateString VARCHAR(75) null,
 	voteTemplateString VARCHAR(75) null,
 	proposalVoteTemplateString VARCHAR(75) null,
+	proposalVoteConfirmationTemplateString VARCHAR(75) null,
 	voteQuestionTemplateString VARCHAR(75) null,
 	focusAreaId LONG,
 	contestTier LONG,

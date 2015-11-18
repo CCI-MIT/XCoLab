@@ -23,9 +23,9 @@ public class ContestVoteQuestionNotification extends EmailNotification {
 
     private static final String SUPPORTED_PROPOSALS_PLACEHOLDER = "supported-proposals";
 
-    private User recipient;
-    private Contest contest;
-    private List<Proposal> supportedProposals;
+    private final User recipient;
+    private final Contest contest;
+    private final List<Proposal> supportedProposals;
     private ContestVoteQuestionTemplate templateWrapper;
 
     public ContestVoteQuestionNotification(User recipient, Contest contest, List<Proposal> supportedProposals, ServiceContext serviceContext) {
@@ -52,7 +52,7 @@ public class ContestVoteQuestionNotification extends EmailNotification {
         }
 
         String voteQuestionTemplateString = contest.getVoteQuestionTemplateString();
-        if (voteQuestionTemplateString.length() == 0) {
+        if (voteQuestionTemplateString.isEmpty()) {
             voteQuestionTemplateString = DEFAULT_TEMPLATE_STRING;
         }
         final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(voteQuestionTemplateString);

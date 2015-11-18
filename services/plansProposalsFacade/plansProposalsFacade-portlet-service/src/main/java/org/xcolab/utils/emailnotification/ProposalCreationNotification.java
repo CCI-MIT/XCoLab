@@ -35,7 +35,6 @@ public class ProposalCreationNotification extends EmailNotification {
     private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_CREATION_DEFAULT";
 
     private static final String YEAR_FALLBACK = "2015";
-    //private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
 
     // Additional placeholder strings
     private static final String YEAR_PLACEHOLDER = "year";
@@ -44,10 +43,10 @@ public class ProposalCreationNotification extends EmailNotification {
 
     private static final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, HH:mm:ss a", Locale.US);
 
-    private Proposal createdProposal;
-    private Contest contest;
+    private final Proposal createdProposal;
+    private final Contest contest;
 
-    private ProposalCreationTemplate templateWrapper = null;
+    private ProposalCreationTemplate templateWrapper;
 
     public ProposalCreationNotification(Proposal createdProposal, Contest contest, ServiceContext serviceContext) {
         super(serviceContext);
@@ -79,7 +78,7 @@ public class ProposalCreationNotification extends EmailNotification {
         final String proposalName = ProposalLocalServiceUtil.getAttribute(createdProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
         String proposalCreationTemplateString = contest.getProposalCreationTemplateString();
-        if (proposalCreationTemplateString.length() == 0) {
+        if (proposalCreationTemplateString.isEmpty()) {
             proposalCreationTemplateString = DEFAULT_TEMPLATE_STRING;
         }
         final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(proposalCreationTemplateString);
