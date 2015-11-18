@@ -1,11 +1,10 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
 	<jsp:directive.include file="../init.jspx" />
 
 	<c:choose>
@@ -22,7 +21,7 @@
 	<portlet:actionURL var="changeElementURL">
 		<portlet:param name="tab" value="${param.tab}" />
 		<portlet:param name="manager" value="${param.manager}" />
-		<portlet:param name="elementId" value="${contestProposalTemplateWrapper.planTemplateId}" />
+		<portlet:param name="elementId" value="${planTemplateId}" />
 	</portlet:actionURL>
 
 	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
@@ -53,192 +52,202 @@
 			</div>
 		</form:form>
 
-		<div id="resourcesSections">
-			<form:form action="${updateElementFormURL }" commandName="contestProposalTemplateWrapper"
-			 cssClass="addpropform" id="editForm" method="post">
+		<c:if test="${planTemplateId >= 0}">
+			<div id="resourcesSections">
+				<form:form action="${updateElementFormURL }" commandName="contestProposalTemplateWrapper"
+				 cssClass="addpropform" id="editForm" method="post">
 
-				<form:hidden path="createNew" id="createNew"/>
-				<form:hidden path="numberOfSections"/>
-				<form:hidden path="planTemplateId"/>
+					<form:hidden path="createNew" id="createNew"/>
+					<form:hidden path="numberOfSections"/>
+					<form:hidden path="planTemplateId"/>
 
-				<div class="reg_errors"><!--  -->
-					<form:errors cssClass="alert alert-error" path="*" />
-				</div>
-
-				<div class="addpropbox">
-					<strong class="inputTitleLeft">Template name:</strong>
-					<form:input path="templateName"/>
 					<div class="reg_errors"><!--  -->
-						<form:errors cssClass="alert alert-error" path="templateName" />
+						<form:errors cssClass="alert alert-error" path="*" />
 					</div>
-				</div>
 
-				<h3>Proposal template sections</h3>
-				<c:forEach var="section" items="${contestProposalTemplateWrapper.sections}" varStatus="x" >
-
-					<div class="dropzone" style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
-						 ondrop="drop(event)" ondragenter="dragEnter(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)"
-							data-bind-id="${x.index}"
-							id="dropzone${x.index}"><span class="counter" style="float: left;">Position # ${x.index +1}</span><span style="float:right">To change order drag a section and drop it on any of these areas.</span></div>
-
-					<div class="addpropbox ${section.deletable ? 'blue deletable' : ''} ${section.type}"
-						style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
-						id="section${x.index}"
-						data-section-id="${x.index}"
-						draggable="true"
-						ondragend="dragEnd(event)"
-						ondragstart="dragStart(event)">
-
-						<form:hidden path="sections[${x.index}].templateSection" data-form-name="templateSection"/>
-						<form:hidden path="sections[${x.index}].sectionNew" data-form-name="sectionNew"/>
-						<form:hidden path="sections[${x.index}].weight" cssClass="weightInput" data-form-name="weight" />
-						<form:hidden path="sections[${x.index}].sectionDefinitionId" data-form-name="sectionDefinitionId" />
-
-						<c:if test="${section.deletable}">
-							<div class="deleteIcon"><!-- --></div>
-						</c:if>
-
-						<div>
-							<strong>Section type:</strong><br/>
-							<form:select path="sections[${x.index}].type" data-form-name="type" class="type-select">
-								<form:option value="NONE" label="--- Select ---" />
-								<form:options items="${sectionTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
-							</form:select>
+					<div class="addpropbox">
+						<strong class="inputTitleLeft">Template name:</strong>
+						<form:input path="templateName"/>
+						<div class="reg_errors"><!--  -->
+							<form:errors cssClass="alert alert-error" path="templateName" />
 						</div>
+					</div>
+					<h3>Proposal template sections</h3>
+					<c:forEach var="section" items="${contestProposalTemplateWrapper.sections}" varStatus="x" >
 
-						<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
-							<div>
-							<strong>Level:</strong><br/>
-							<form:select path="sections[${x.index}].level" data-form-name="level">
-								<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
-							</form:select>
-							</div>
+						<div class="dropzone" style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
+							 ondrop="drop(event)" ondragenter="dragEnter(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)"
+								data-bind-id="${x.index}"
+								id="dropzone${x.index}"><span class="counter" style="float: left;">Position # ${x.index +1}</span><span style="float:right">To change order drag a section and drop it on any of these areas.</span></div>
+
+						<div class="addpropbox ${section.deletable ? 'blue deletable' : ''} ${section.type}"
+							style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
+							id="section${x.index}"
+							data-section-id="${x.index}"
+							draggable="true"
+							ondragend="dragEnd(event)"
+							ondragstart="dragStart(event)">
+
+							<form:hidden path="sections[${x.index}].templateSection" data-form-name="templateSection"/>
+							<form:hidden path="sections[${x.index}].sectionNew" data-form-name="sectionNew"/>
+							<form:hidden path="sections[${x.index}].weight" cssClass="weightInput" data-form-name="weight" />
+							<form:hidden path="sections[${x.index}].sectionDefinitionId" data-form-name="sectionDefinitionId" />
+
+							<c:if test="${section.deletable}">
+								<div class="deleteIcon"><!-- --></div>
+							</c:if>
 
 							<div>
-								<strong>Is this proposal reference field used for contest integration?</strong><br/>
-								<form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
-											   id="sections${x.index}.contestIntegrationRelevance"
-											   data-form-name="contestIntegrationRelevance">
-								</form:checkbox>
+								<strong>Section type:</strong><br/>
+								<form:select path="sections[${x.index}].type" data-form-name="type" class="type-select">
+									<form:option value="NONE" label="--- Select ---" />
+									<form:options items="${sectionTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
+								</form:select>
 							</div>
-						</div>
 
-						<div class="clearfix"><!-- --></div>
-						<div class="ontology-select-container" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
-							<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
-							<div>
-								<strong>WHAT Ontology term:</strong>
-								<span class="ontology-term-label"><!-- --></span>
-								<br/>
-								<form:select multiple="true" path="sections[${x.index}].whatTermIds" data-form-name="whatTermId"
-											 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
-									<form:options items="${whatTerms}" itemValue="value" itemLabel="lable"/>
-								</form:select>
+							<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+								<div>
+									<strong>Contest Types allowed:</strong>
+									<span class="ontology-term-label"><!-- --></span> <br/>
+									<form:select multiple="true" path="sections[${x.index}].allowedContestTypeIds" data-form-name="allowedContestTypeIds"
+												 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+										<form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
+									</form:select>
+								</div>
+
+								<div>
+									<strong>Level:</strong><br/>
+									<form:select path="sections[${x.index}].level" data-form-name="level">
+										<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
+									</form:select>
+								</div>
+
+								<div>
+									<strong>Is this proposal reference field used for contest integration?</strong><br/>
+									<form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
+												   id="sections${x.index}.contestIntegrationRelevance"
+												   data-form-name="contestIntegrationRelevance">
+									</form:checkbox>
+								</div>
 							</div>
-							<div>
-								<strong>WHERE Ontology term:</strong>
-								<span class="ontology-term-label"><!-- --></span><br/>
-								<form:select multiple="true" path="sections[${x.index}].whereTermIds" data-form-name="whereTermId"
-											 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
-									<form:options items="${whereTerms}" itemValue="value" itemLabel="lable"/>
-								</form:select>
-							</div>
-							<div>
-								<strong>WHO Ontology term:</strong>
-								<span class="ontology-term-label"><!-- --></span><br/>
-								<form:select multiple="true" path="sections[${x.index}].whoTermIds" data-form-name="whoTermId"
-											 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
-									<form:options items="${whoTerms}" itemValue="value" itemLabel="lable"/>
-								</form:select>
-							</div>
-							<div>
-								<strong>HOW Ontology term:</strong>
-								<span class="ontology-term-label"><!-- --></span><br/>
-								<form:select multiple="true" path="sections[${x.index}].howTermIds" data-form-name="howTermId"
-											 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
-									<form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
-								</form:select>
-							</div>
-							<div>
-								<strong>Exclude the following contest ids from ontology term filtering (Comma-separated list):</strong><br/><form:input path="sections[${x.index}].additionalIds" data-form-name="additionalIds"/>
-							</div>
-						</div>
-						<div class="clearfix"><!-- --></div>
-						<div>
-							<div>
-								<strong>Title:</strong><br/><form:input path="sections[${x.index}].title" data-form-name="title"/>
+
+							<div class="clearfix"><!-- --></div>
+							<div class="ontology-select-container" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+								<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
+								<div>
+									<strong>WHAT Ontology term:</strong>
+									<span class="ontology-term-label"><!-- --></span>
+									<br/>
+									<form:select multiple="true" path="sections[${x.index}].whatTermIds" data-form-name="whatTermId"
+												 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+										<form:options items="${whatTerms}" itemValue="value" itemLabel="lable"/>
+									</form:select>
+								</div>
+								<div>
+									<strong>WHERE Ontology term:</strong>
+									<span class="ontology-term-label"><!-- --></span><br/>
+									<form:select multiple="true" path="sections[${x.index}].whereTermIds" data-form-name="whereTermId"
+												 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+										<form:options items="${whereTerms}" itemValue="value" itemLabel="lable"/>
+									</form:select>
+								</div>
+								<div>
+									<strong>WHO Ontology term:</strong>
+									<span class="ontology-term-label"><!-- --></span><br/>
+									<form:select multiple="true" path="sections[${x.index}].whoTermIds" data-form-name="whoTermId"
+												 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+										<form:options items="${whoTerms}" itemValue="value" itemLabel="lable"/>
+									</form:select>
+								</div>
+								<div>
+									<strong>HOW Ontology term:</strong>
+									<span class="ontology-term-label"><!-- --></span><br/>
+									<form:select multiple="true" path="sections[${x.index}].howTermIds" data-form-name="howTermId"
+												 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+										<form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
+									</form:select>
+								</div>
+								<div>
+									<strong>Exclude the following contest ids from ontology term filtering (Comma-separated list):</strong><br/><form:input path="sections[${x.index}].additionalIds" data-form-name="additionalIds"/>
+								</div>
 							</div>
 							<div class="clearfix"><!-- --></div>
 							<div>
-								<span class="floatLeft"><strong>Character limit:</strong></span><br/>
-								<form:input path="sections[${x.index}].characterLimit" data-form-name="characterLimit"/>
+								<div>
+									<strong>Title:</strong><br/><form:input path="sections[${x.index}].title" data-form-name="title"/>
+								</div>
+								<div class="clearfix"><!-- --></div>
+								<div>
+									<span class="floatLeft"><strong>Character limit:</strong></span><br/>
+									<form:input path="sections[${x.index}].characterLimit" data-form-name="characterLimit"/>
+								</div>
 							</div>
-						</div>
 
-						<div class="clearfix"><!--  --></div>
-						<strong>Help text:</strong><br/>
-						<div class="addpropInputContainer">
-							<form:textarea path="sections[${x.index}].helpText"  data-form-name="helpText"  />   <!-- cssClass="ckeditor_placeholder" -->
-							<div class="reg_errors">
-								<form:errors cssClass="alert alert-error" path="sections[${x.index}].helpText" />
+							<div class="clearfix"><!--  --></div>
+							<strong>Help text:</strong><br/>
+							<div class="addpropInputContainer">
+								<form:textarea path="sections[${x.index}].helpText"  data-form-name="helpText"  />   <!-- cssClass="ckeditor_placeholder" -->
+								<div class="reg_errors">
+									<form:errors cssClass="alert alert-error" path="sections[${x.index}].helpText" />
+								</div>
 							</div>
-						</div>
-						<div class="clearfix"><!--  --></div>
-						<strong>Default text:</strong><br/>
-						<div class="addpropInputContainer">
-							<form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText"  />   <!-- cssClass="ckeditor_placeholder" -->
-							<div class="reg_errors">
-								<form:errors cssClass="alert alert-error" path="sections[${x.index}].defaultText" />
+							<div class="clearfix"><!--  --></div>
+							<strong>Default text:</strong><br/>
+							<div class="addpropInputContainer">
+								<form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText"  />   <!-- cssClass="ckeditor_placeholder" -->
+								<div class="reg_errors">
+									<form:errors cssClass="alert alert-error" path="sections[${x.index}].defaultText" />
+								</div>
 							</div>
-						</div>
 
+						</div>
+					</c:forEach>
+
+						<div class="addSection" id="addSection" name="addSection">
+							<div class="blue-button">
+								<a id="addSectionButton" href="#addSection">ADD section</a>
+						</div>
 					</div>
-				</c:forEach>
-
-					<div class="addSection" id="addSection" name="addSection">
-						<div class="blue-button">
-							<a id="addSectionButton" href="#addSection">ADD section</a>
-					</div>
-				</div>
-
-			</form:form>
-		</div>
-	</div>
-
-	<c:if test="${param.manager}">
-		<div class="cmsDetailsBox">
-			<h3>Contests using this template:</h3>
-			<div class="addpropbox" style="margin-top: 20px;">
-			<table class="contestOverview">
-				<col span="1" class="extraSmallColumn"/>
-				<col span="1" class="wideColumn" style="text-align: left;"/>
-				<col span="1" class="smallColumn"/>
-				<col span="1" class="smallColumn"/>
-				<thead>
-				<tr>
-					<th>#</th>
-					<th>Title</th>
-					<th>Tier</th>
-					<th></th>
-				</tr>
-				</thead>
-				<tbody>
-				<c:forEach items="${contestProposalTemplateWrapper.contestsUsingSelectedTemplate}" var="contestWrapper" varStatus="x">
-					<tr>
-						<td data-form-name="index">${x.index + 1}</td>
-						<td ><collab:contestLink contestId="${contestWrapper.contestPK}" text="${contestWrapper.contestShortName}"/></td>
-						<td>Tier ${contestWrapper.contestTier}</td>
-						<td>
-							<div class="blue-button innerVerticalCenter" >
-								<a href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
-							</div>
-						</td>
-					</tr>
-				</c:forEach>
-				</tbody>
-			</table>
+				</form:form>
 			</div>
-		</div>
+		</c:if>
+	</div>
+	<c:if test="${planTemplateId >= 0}">
+		<c:if test="${param.manager}">
+			<div class="cmsDetailsBox">
+				<h3>Contests using this template:</h3>
+				<div class="addpropbox" style="margin-top: 20px;">
+				<table class="contestOverview">
+					<col span="1" class="extraSmallColumn"/>
+					<col span="1" class="wideColumn" style="text-align: left;"/>
+					<col span="1" class="smallColumn"/>
+					<col span="1" class="smallColumn"/>
+					<thead>
+					<tr>
+						<th>#</th>
+						<th>Title</th>
+						<th>Tier</th>
+						<th></th>
+					</tr>
+					</thead>
+					<tbody>
+					<c:forEach items="${contestProposalTemplateWrapper.contestsUsingSelectedTemplate}" var="contestWrapper" varStatus="x">
+						<tr>
+							<td data-form-name="index">${x.index + 1}</td>
+							<td ><collab:contestLink contest="${contestWrapper}" /></td>
+							<td>Tier ${contestWrapper.contestTier}</td>
+							<td>
+								<div class="blue-button innerVerticalCenter" >
+									<a href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+								</div>
+							</td>
+						</tr>
+					</c:forEach>
+					</tbody>
+				</table>
+				</div>
+			</div>
+		</c:if>
 	</c:if>
 
 	<script type="text/javascript">

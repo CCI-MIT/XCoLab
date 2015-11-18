@@ -1,6 +1,7 @@
 package org.xcolab.hooks.climatecolab.service;
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.MembershipRequestCommentsException;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -35,7 +36,8 @@ public class CustomMembershipRequestLocalServiceImpl extends MembershipRequestLo
 	public MembershipRequest addMembershipRequest(
 			long userId, long groupId, String comments,
 			ServiceContext serviceContext)
-			throws SystemException, NoSuchUserException {
+			throws SystemException, NoSuchUserException, MembershipRequestCommentsException {
+
 
 		User user = UserUtil.findByPrimaryKey(userId);
 		Date now = new Date();

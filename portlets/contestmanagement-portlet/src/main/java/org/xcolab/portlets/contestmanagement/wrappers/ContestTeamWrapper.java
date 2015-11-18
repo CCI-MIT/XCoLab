@@ -35,10 +35,10 @@ public class ContestTeamWrapper {
     public void updateContestTeamMembers()
             throws Exception {
         removeAllContestTeamMembersForContest();
-        assignMemberToContest(MemberRole.JUDGES, contestTeamBean.getUserIdsJudges());
+        assignMemberToContest(MemberRole.JUDGE, contestTeamBean.getUserIdsJudges());
         assignMemberToContest(MemberRole.ADVISOR, contestTeamBean.getUserIdsAdvisors());
         assignMemberToContest(MemberRole.FELLOW, contestTeamBean.getUserIdsFellows());
-        assignMemberToContest(MemberRole.CONTESTMANAGER, contestTeamBean.getUserIdsContestManagers());
+        assignMemberToContest(MemberRole.CONTEST_MANAGER, contestTeamBean.getUserIdsContestManagers());
     }
 
     private void assignMemberToContest(MemberRole memberRole, List<Long> userIds)
@@ -61,7 +61,7 @@ public class ContestTeamWrapper {
     private void assignMemberWithRoleToContest(MemberRole memberRole, List<Long> userIds)
             throws SystemException, PortalException {
         String memberRoleName = memberRole.getPrintName();
-        if (memberRole == MemberRole.JUDGES) memberRoleName = "Judge"; // TODO change in config file
+        if (memberRole == MemberRole.JUDGE) memberRoleName = "Judge"; // TODO change in config file
         for (Long userId : userIds) {
             Long contestMemberId = CounterLocalServiceUtil.increment(ContestTeamMember.class.getName());
             if(contestMemberId < 400){ // TODO check how the value is currently generated
@@ -103,7 +103,7 @@ public class ContestTeamWrapper {
             Long roleCount =  (Long) queryResult.get(0);
 
             if ( roleCount ==  0 ) {
-                MemberRole memberRole = MemberRole.getMember(memberRoleName);
+                MemberRole memberRole = MemberRole.fromRoleName(memberRoleName);
                 Long roleId = memberRole.getRoleId();
                 RoleLocalServiceUtil.deleteUserRole(userId, roleId);
             }

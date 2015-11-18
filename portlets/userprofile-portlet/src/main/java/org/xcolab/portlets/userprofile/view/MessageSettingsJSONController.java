@@ -81,7 +81,9 @@ public class MessageSettingsJSONController extends JSONHelper{
         try {
             User user = PortalUtil.getUser(request);
             updateUserSendEmailOnActivityPreferences(user, messageSetting);
-            if(!messageSetting) updateUserSendDailyEmailOnActivityPreferences(user, messageSetting);
+            if(!messageSetting) {
+                updateUserSendDailyEmailOnActivityPreferences(user, false);
+            }
         } catch (PortalException | SystemException e) {
             return false;
         }

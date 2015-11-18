@@ -9,9 +9,7 @@ import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
 import java.util.List;
 
 
@@ -33,6 +31,7 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
     @Override
     public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException;
 
+    @Override
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
             throws PortalException, SystemException {
         String pageTitle = "Contest Management Tool";

@@ -11,7 +11,6 @@ import javax.validation.ConstraintValidatorContext;
 public class ValidBioLengthValidator implements
 		ConstraintValidator<ValidBioLength, Object> {
 	private String bioProperty;
-	private long DEFAULT_COMPANY_ID = 10112L;
 
 	private static final int BIO_MAX_LENGTH = 2000;
 
@@ -39,13 +38,10 @@ public class ValidBioLengthValidator implements
 			 * the default message
 			 */
 			if (isDefaultMessage) {
-				StringBuilder sb = new StringBuilder();
-				sb.append("The length of your bio must be less than or equal ");
-				sb.append(BIO_MAX_LENGTH);
-				sb.append(" characters");
 				context.disableDefaultConstraintViolation();
+				final String message = "The length of your bio must be less than or equal " + BIO_MAX_LENGTH + " characters";
 				ConstraintValidatorContext.ConstraintViolationBuilder violationBuilder = context
-						.buildConstraintViolationWithTemplate(sb.toString());
+						.buildConstraintViolationWithTemplate(message);
 				violationBuilder.addConstraintViolation();
 			}
 

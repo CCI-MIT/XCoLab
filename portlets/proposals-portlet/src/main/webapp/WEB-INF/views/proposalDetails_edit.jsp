@@ -1,8 +1,6 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
@@ -55,28 +53,28 @@
         <c:choose>
             <c:when test="${move }">
                 <p>
-                    You're about to move a proposal
-                    <collab:proposalLink proposalId="${baseProposal.proposalId}" contestId="${baseContest.contestPK}" text="${baseProposal.name}" escape="true" />
-                    from contest
-                    <proposalsPortlet:contestLink contestId="${baseContest.contestPK}" text="${baseContest.contestShortName} " />
-                    to contest
-                    <proposalsPortlet:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName} " />.
+                    You're about to move a ${contestType.proposalName}
+                    <collab:proposalLink proposal="${baseProposal}" escape="true" />
+                    from ${contestType.contestName}
+                    <collab:contestLink contest="${baseContest}" />
+                    to ${contestType.contestName}
+                    <collab:contestLink contest="${contest}" />.
                 </p>
             </c:when>
             <c:when test="${not empty baseProposal}">
                 <p>
-                    You're about to create a proposal that will be based on
-                    <collab:proposalLink proposalId="${baseProposal.proposalId}" contestId="${baseContest.contestPK}" text="${baseProposal.name}" escape="true" />.
+                    You're about to create a ${contestType.proposalName} that will be based on
+                    <collab:proposalLink proposal="${baseProposal}" escape="true" />.
                 </p>
             </c:when>
         </c:choose>
         <p>
-            Please complete your proposal based on the template below.
-            If you have input on the template, please send it in a&#160;<a href="/web/guest/feedback" target="_blank">feedback message</a>.
-            To save your proposal, you must agree to the&#160;<a href="/web/guest/resources/-/wiki/Main/Contest+Rules" target="_blank">Contest rules</a>
-            and&#160;<a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
+            Please complete your ${contestType.proposalName} based on the template below.
+            If you have input on the template, please send it in a <a href="/web/guest/feedback" target="_blank">feedback message</a>.
+            To save your ${contestType.proposalName}, you must agree to the <a href="/web/guest/resources/-/wiki/Main/Contest+Rules" target="_blank">Contest rules</a>
+            and <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
             <br/>Please note that you may be automatically logged out of your account after
-            30 minutes. Please save all proposal content offline before clicking
+            30 minutes. Please save all ${contestType.proposalName} content offline before clicking
             PUBLISH or else it may be lost.
         </p>
     </div> <!-- /headline -->
@@ -101,7 +99,7 @@
                 <a class="helpTrigger" href="javascript:;"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
                 80 characters
             </label>
-            <div class="addprophelp">Give your proposal a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
+            <div class="addprophelp">Give your ${contestType.proposalName} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
             <div class="addpropInputContainer">
                 <form:input path="name" id="proposalName" />
                 <form:errors path="name" cssClass="alert alert-error" />
@@ -119,7 +117,7 @@
                 <a class="helpTrigger" href="javascript:;"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
                 20 characters
             </label>
-            <div class="addprophelp">If you'd like to have your proposal appear under a team name, insert it here. Otherwise, the proposal will appear under the user name of its owner.</div>
+            <div class="addprophelp">If you'd like to have your ${contestType.proposalName} appear under a team name, insert it here. Otherwise, the ${contestType.proposalName} will appear under the user name of its owner.</div>
             <div class="addpropInputContainer">
                 <form:input path="team" id="proposalTeam" />
                 <form:errors path="team" />
@@ -128,11 +126,11 @@
                 <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">20</span> characters</div>
             </div>
         </div>
-        <div class="notation">Note: If you enter a team name, it will replace the proposal owner's name in the Author field.</div>
+        <div class="notation">Note: If you enter a team name, it will replace the ${contestType.proposalName} owner's name in the Author field.</div>
 
         <div class="addpropbox blue">
             <label>
-                <span><strong>Proposal image</strong><br />
+                <span><strong>${contestType.proposalName} image</strong><br />
                 <em>optional</em></span>
             </label>
 
@@ -161,7 +159,7 @@
                 <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
                 140 characters
             </label>
-            <div class="addprophelp">Insert a tweet-length (140 character) message that conveys the key idea behind your proposal.</div>
+            <div class="addprophelp">Insert a tweet-length (140 character) message that conveys the key idea behind your ${contestType.proposalName}.</div>
             <div class="addpropInputContainer">
                 <form:textarea path="pitch" id="proposalPitchInput" cssClass="proposalPitchInput" />
                 <form:errors path="pitch" />
@@ -216,11 +214,11 @@
 <div id="acceptTosPopup" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
     <div class="popup-wrap p1" id="acceptTosPopup">
         <div class="popup">
-            <h4>By saving your proposal you are entering the Climate CoLab contest and agree to the&#160;
+            <h4>By saving your ${contestType.proposalName} you are entering the Climate CoLab ${contestType.contestName} and agree to the&#160;
                 <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of Use</a>
-                &#160;and Contest Rules.</h4>
+                &#160;and ${contestType.contestName} Rules.</h4>
 
-            <h5>CONTEST RULES:</h5>
+            <h5>${fn:toUpperCase(contestType.contestName)} RULES:</h5>
             <div class="terms">
                     ${preferences.termsOfService}
             </div>
@@ -251,10 +249,10 @@
                 <p>
                     <c:choose>
                         <c:when test="${proposal.currentVersion le 1}">
-                            You are currently editing a new proposal
+                            You are currently editing a new ${contestType.proposalName}
                         </c:when>
                         <c:otherwise>
-                            You are editing a proposal
+                            You are editing a ${contestType.proposalName}
                         </c:otherwise>
                     </c:choose>
                     <br />
@@ -264,12 +262,12 @@
                 <div class="gray-button">
                     <c:choose>
                         <c:when test="${proposal.currentVersion > 0 }">
-                            <collab:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }"
+                            <collab:proposalLink proposal="${proposal}"
                                                  linkId="discardChangesButton" text="DISCARD changes" />
                         </c:when>
                         <c:otherwise>
                             <!--  proposal creation, return to contest proposals page on discard -->
-                            <proposalsPortlet:contestLink contestId="${contest.contestPK }" linkId="discardChangesButton"
+                            <collab:contestLink contest="${contest}" linkId="discardChangesButton"
                                                           text="DISCARD changes" />
                         </c:otherwise>
                     </c:choose>
@@ -344,8 +342,6 @@
             updateUploadBtnOffset();
             $(window).resize(updateUploadBtnOffset);
 
-
-
             jQuery("#saveChangesButton").click(function() {
                 if (${proposal.proposalId > 0}) {
                     disableButtons(true);
@@ -387,7 +383,7 @@
                 </a>
             </div>
 
-            <h4>Choose section from base proposal, which content you want to copy</h4>
+            <h4>Choose section from base ${contestType.proposalName}, which content you want to copy</h4>
             <div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
                 <div id="copyProposalContests"><!--  --></div>
                 <center>

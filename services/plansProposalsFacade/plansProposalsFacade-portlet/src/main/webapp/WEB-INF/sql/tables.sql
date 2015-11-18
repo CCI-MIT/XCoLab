@@ -79,13 +79,12 @@ create table xcolab_BalloonUserTracking (
 
 create table xcolab_Contest (
 	ContestPK LONG not null primary key,
+	contestTypeId LONG,
 	ContestName VARCHAR(1024) null,
 	ContestShortName VARCHAR(512) null,
 	ContestDescription TEXT null,
 	ContestModelDescription TEXT null,
 	ContestPositionsDescription TEXT null,
-	defaultPlanDescription TEXT null,
-	PlanTypeId LONG,
 	created DATE null,
 	updated DATE null,
 	authorId LONG,
@@ -216,6 +215,18 @@ create table xcolab_ContestTeamMember (
 	role VARCHAR(75) null
 );
 
+create table xcolab_ContestType (
+	id_ LONG not null primary key,
+	contestName VARCHAR(75) null,
+	contestNamePlural VARCHAR(75) null,
+	proposalName VARCHAR(75) null,
+	proposalNamePlural VARCHAR(75) null,
+	portletName VARCHAR(75) null,
+	portletUrl VARCHAR(75) null,
+	menuItemName VARCHAR(75) null,
+	hasDiscussion BOOLEAN
+);
+
 create table xcolab_DiscussionCategory (
 	pk LONG not null primary key,
 	categoryId LONG,
@@ -338,6 +349,15 @@ create table xcolab_LoginLog (
 	city VARCHAR(75) null,
 	country VARCHAR(75) null,
 	entryUrl VARCHAR(255) null
+);
+
+create table xcolab_MemberCategory (
+	roleId LONG not null primary key,
+	displayName VARCHAR(75) null,
+	categoryName VARCHAR(75) null,
+	sortOrder LONG,
+	showInList BOOLEAN,
+	imageName VARCHAR(75) null
 );
 
 create table xcolab_Message (
@@ -676,6 +696,7 @@ create table xcolab_PlanSectionDefinition (
 	characterLimit INTEGER,
 	focusAreaId LONG,
 	tier LONG,
+	allowedContestTypeIds VARCHAR(75) null,
 	additionalIds VARCHAR(75) null,
 	locked BOOLEAN,
 	contestIntegrationRelevance BOOLEAN

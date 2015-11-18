@@ -1,14 +1,10 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
-          xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:judging="http://climatecolab.org/tags/xcollab_judging_1.0"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+          xmlns:addthis="http://www.addthis.com/help/api-spec"
+          version="2.0">
 
     <jsp:directive.include file="./init_proposal_tab.jspx" />
 
@@ -73,8 +69,7 @@
 
 
                         <c:if test="${proposal.wasMovedToContest != null}">
-                            <div>This proposal was moved to: <proposalsPortlet:contestLink contestId="${proposal.wasMovedToContest.contestPK}"
-                                                                                 text="${proposal.wasMovedToContest.contestShortName}"/></div>
+                            <div>This ${contestType.proposalName} was moved to: <collab:contestLink contest="${proposal.wasMovedToContest}" /></div>
                         </c:if>
 
 
@@ -142,7 +137,7 @@
 	<div id="copyProposalContainer" style="display: none;">
     	<div class="popup-wrap p1" id="copyProposalPopup">
 			<div class="popup">
-				<h4>Please choose contest to which you'd like to copy this proposal</h4>
+				<h4>Please choose ${contestType.contestName} to which you'd like to copy this ${contestType.proposalName}</h4>
 				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
 					<div id="copyProposalContests"><!--  --></div>
 					<center>

@@ -3,7 +3,8 @@ package org.xcolab.portlets.contestmanagement.controller.details;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
-import com.ext.portlet.service.*;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -15,16 +16,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.interfaces.TabEnum;
-import org.xcolab.portlets.contestmanagement.utils.RequestParameterParser;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.OntologyWrapper;
+import org.xcolab.utils.IdListUtil;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,13 +89,11 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
         }
 
         try{
-            RequestParameterParser requestParameterParser = new RequestParameterParser();
-            List<Long> selectedOntologyTerms =
-                    requestParameterParser.parseStringParameterFromRequestToLongList(request, "selectedOntologyTerms");
+            List<Long> selectedOntologyTerms = IdListUtil.getIdsFromString(request.getParameter("selectedOntologyTerms"));
 
             Contest contest = getContest();
             Long focusAreaId = contest.getFocusAreaId();
-            if(focusAreaId == null || focusAreaId <= 0) {
+            if(focusAreaId <= 0) {
                 FocusArea focusArea = FocusAreaLocalServiceUtil.createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
                 focusArea.persist();
                 FocusAreaLocalServiceUtil.updateFocusArea(focusArea);
@@ -111,8 +111,8 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
             }
 
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch(Exception e){
-            _log.warn("Update contest ontology failed with: ", e);
+        } catch(SystemException | PortalException | IOException e){
+            _log.warn("Update contest overview failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }

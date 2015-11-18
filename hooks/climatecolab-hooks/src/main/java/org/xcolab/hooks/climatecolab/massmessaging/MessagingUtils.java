@@ -25,9 +25,6 @@ import com.liferay.portal.util.PortalUtil;
 public class MessagingUtils {
 
     private final static Log _log = LogFactoryUtil.getLog(MessagingUtils.class);
-    private static final String PROPERTY_IP_ADDRESS = "ipAddress";
-    private static final String PROPERTY_MESSAGE_ID = "messageId";
-    
     
     public static void addConversion(Long messageId, MessagingConversionTypes typeName, PortletRequest request, 
             Object extraData, Object extraData2)
@@ -56,26 +53,11 @@ public class MessagingUtils {
 
         try {
             MessagingUtils.addConversion(messageId, MessagingConversionTypes.USER_REGISTERED, actionRequest, userId, null);
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             // no exception should be rethrown
             _log.error("Can't add message conversion details after user registration", e);
         }
 
-    }
-
-    public static String createConvertionLink(Map<String, String> linkParameters, PortletRequest request) {
-        StringBuilder link = new StringBuilder();
-        link.append(getPortalURL(request));
-        link.append(MessagingConstants.CONVERTION_PATH);
-        
-        for(Map.Entry<String, String> entry: linkParameters.entrySet()) {
-            link.append(MessagingConstants.CONVERSION_PARAMETER_DELIMITER);
-            link.append(entry.getKey());
-            link.append(MessagingConstants.CONVERSION_PARAMETER_DELIMITER);
-            link.append(entry.getValue());
-            
-        }
-        return link.toString();
     }
     
     public static Map<String, String> getLinkParameters(HttpServletRequest request) {
@@ -84,7 +66,7 @@ public class MessagingUtils {
         pathInfo = pathInfo.substring(pathInfo.indexOf("/", 10)+1);
         String[] parameters = pathInfo.split(MessagingConstants.CONVERSION_PARAMETER_DELIMITER);
         
-        Map<String, String> parametersMap = new HashMap<String, String>();
+        Map<String, String> parametersMap = new HashMap<>();
         for (int i = 1; i < parameters.length; i += 2) {
             parametersMap.put(parameters[i], parameters[i+1]);
         }

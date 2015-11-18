@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.utils;
 
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.model.ContestType;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper;
@@ -38,6 +39,8 @@ public interface ProposalsContext {
     ContestWrapper getContestWrapped(PortletRequest request) throws PortalException, SystemException;
 
     ContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) throws PortalException, SystemException;
+
+    ContestType getContestType(PortletRequest request) throws PortalException, SystemException;
     
     User getUser(PortletRequest request) throws PortalException, SystemException;
 

@@ -1,9 +1,5 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:spring="http://www.springframework.org/tags"
-	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
@@ -17,7 +13,7 @@
         	</portlet:renderURL>
            	<a href="${sortURL }">Contest</a>
            	<div class="tooltip">
-           		click to sort by contest title <div class="tt-arrow"><!--  --></div>
+           		click to sort by ${contestType.contestName} title <div class="tt-arrow"><!--  --></div>
            	</div>
 			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTEST_NAME" />
         </div>
@@ -30,7 +26,7 @@
         	<a href="${sortURLProposalsCount}"><!--  --> </a>
         	
             <div class="tooltip">
-            	click to sort by<br />number of proposals<div class="tt-arrow"><!--  --></div>
+            	click to sort by<br />number of ${contestType.proposalNamePlural}<div class="tt-arrow"><!--  --></div>
             </div>
 			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="PROPOSALS_COUNT" />
         </div>
@@ -107,12 +103,12 @@
         <c:if test="${proposalsPermissions.canJudgeActions}">
             <div class="proposal">
                 <a href="#" style="background: none; margin-top: 9px;">Judge</a>
-                <div class="tooltip">see if judges are done<br />with this contest<div class="tt-arrow"><!--  --></div></div>
+                <div class="tooltip">see if judges are done<br />with this ${contestType.contestName}<div class="tt-arrow"><!--  --></div></div>
             </div>
             <div class="proposal">
                 <c:if test="${proposalsPermissions.canFellowActions}">
                     <a href="#" style="background: none; margin-top: 9px;">Fellow</a>
-                    <div class="tooltip">see if fellows are done<br />with this contest<div class="tt-arrow"><!--  --></div></div>
+                    <div class="tooltip">see if fellows are done<br />with this ${contestType.contestName}<div class="tt-arrow"><!--  --></div></div>
                 </c:if>
             </div>
         </c:if>

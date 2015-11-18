@@ -10,6 +10,7 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -58,12 +59,14 @@ public class ProposalPickerFilterUtil {
 
         List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
 
-        for (Contest c: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
+        for (Contest c: ContestLocalServiceUtil.getContests(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
             contests.add(Pair.of(new ContestWrapper(c),
                     c.getCreated() == null ? new Date(0) : c.getCreated()));
         }
 
         PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
+        ProposalPickerFilter.CONTEST_TYPE_FILTER.filterContests(contests, planSectionDefinition.getAllowedContestTypeIds());
+
         List<Long> alwaysIncludedContestIds = PlanSectionDefinitionLocalServiceUtil.getAdditionalIds(planSectionDefinition);
 
         final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
@@ -98,8 +101,9 @@ public class ProposalPickerFilterUtil {
         }
         for (Pair<Proposal, Date> entry : getFilteredSupportingProposalsForUser(
                 userId, filterKey, sectionId, request, proposalsContext)) {
-            if (includedProposals.contains(entry.getLeft().getProposalId()))
+            if (includedProposals.contains(entry.getLeft().getProposalId())) {
                 continue;
+            }
             proposals.add(entry);
         }
 
@@ -170,6 +174,8 @@ public class ProposalPickerFilterUtil {
         filterByVisibility(proposals);
 
         PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
+        ProposalPickerFilter.CONTEST_TYPE_FILTER.filter(proposals, planSectionDefinition.getAllowedContestTypeIds());
+
         List<Long> filterExceptionContestIds = PlanSectionDefinitionLocalServiceUtil.getAdditionalIds(planSectionDefinition);
 
         final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();

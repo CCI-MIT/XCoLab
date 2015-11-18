@@ -51,98 +51,51 @@ public interface Xcolab_UserLocalService extends BaseLocalService,
         throws java.lang.Throwable;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameAsc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenName(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameAscFilteredByCategory(
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+        java.lang.String memberCategory, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameDesc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleName(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameDescFilteredByCategory(
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSince(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+        java.lang.String memberCategory, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleNameAsc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCount(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleNameDesc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceAsc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceAscFilteredByCategory(
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+        java.lang.String memberCategory, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceDesc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException;
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPoints(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceDescFilteredByCategory(
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountAsc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountAscFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountDesc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountDescFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsAsc(
-        int begin, int end, java.lang.String filter);
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsDesc(
-        int begin, int end, java.lang.String filter);
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsAscFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategoryFilter);
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsDescFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategoryFilter);
+        java.lang.String memberCategoryFilter, boolean ascendingOrder);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<java.lang.Long> getUserActivityCount(

@@ -8,13 +8,13 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.util.mail.MailEngineException;
 
+import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -44,6 +44,7 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 	private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED = "Your invitation of %s to join the proposal %s has been rejected.";
 
 
+	@Override
 	public String execute(
 			HttpServletRequest request, HttpServletResponse response) throws PortalException, SystemException, IOException {
 
@@ -54,7 +55,7 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 
 		MembershipRequest membershipRequest = MembershipRequestLocalServiceUtil.getMembershipRequest(membershipId);
 
-		List<Long> recipients = new ArrayList<Long>();
+		List<Long> recipients = new ArrayList<>();
 		List<User> contributors = ProposalLocalServiceUtil.getMembers(proposalId);
 
 		for (User user : contributors) {
@@ -83,7 +84,7 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 		try{
 			MessageUtil.sendMessage(subject, content, sender,
 					sender, recipients, null);
-		} catch (Exception e) {
+		} catch (AddressException | SystemException | PortalException | MailEngineException e) {
 			e.printStackTrace();
 		}
 	}

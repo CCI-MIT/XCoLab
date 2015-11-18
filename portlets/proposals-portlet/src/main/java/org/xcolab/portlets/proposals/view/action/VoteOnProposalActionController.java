@@ -1,11 +1,12 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
@@ -17,13 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import org.xcolab.portlets.proposals.utils.ProposalsURLGenerator;
 import org.xcolab.utils.emailnotification.ProposalVoteNotification;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import java.io.IOException;
 
 @Controller
@@ -44,6 +42,7 @@ public class VoteOnProposalActionController {
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
         boolean hasVoted = false;
         final Proposal proposal = proposalsContext.getProposal(request);
+        final Contest contest = proposalsContext.getContest(request);
         final User user = proposalsContext.getUser(request);
         if (proposalsContext.getPermissions(request).getCanVote()) {
             long proposalId = proposal.getProposalId();
@@ -75,8 +74,7 @@ public class VoteOnProposalActionController {
             			VOTE_ANALYTICS_LABEL,
             			1);
             }
-        }
-        else {
+        } else {
             if (user == null || user.getUserId() == 10115) {
                 /* User is not logged in - don't count vote and let user log in*/
                 request.setAttribute("promptLoginWindow","true");
@@ -87,7 +85,7 @@ public class VoteOnProposalActionController {
         }
         // Redirect to prevent page-refreshing from influencing the vote
         final String arguments = hasVoted ? "?voted=true" : "";
-        response.sendRedirect(ProposalsURLGenerator.getProposalURL(proposal) + arguments);
+        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + arguments);
     }
 
 }

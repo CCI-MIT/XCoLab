@@ -7,16 +7,20 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
 
-import javax.portlet.*;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,7 +98,7 @@ public class MessageJSONController extends JSONHelper{
         }
     }
     private void sendMessageToRecipientsInMessageBean()  throws Exception{
-        List<Long> recipients = new ArrayList<Long>();
+        List<Long> recipients = new ArrayList<>();
         for(User recipient: messageBean.getTo()){
             recipients.add(recipient.getUserId());
         }

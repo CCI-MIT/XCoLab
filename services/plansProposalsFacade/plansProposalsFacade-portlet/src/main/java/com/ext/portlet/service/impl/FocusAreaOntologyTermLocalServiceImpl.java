@@ -70,12 +70,14 @@ public class FocusAreaOntologyTermLocalServiceImpl
         return FocusAreaLocalServiceUtil.getFocusArea(faot.getFocusAreaId());
     }
 
-    public List<Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(long focusAreaId, long ontologySpaceId) throws Exception{
+    public List<Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(long focusAreaId, long ontologySpaceId)
+            throws PortalException, SystemException {
         long ontologyTermId = getOntologyTermIdByFocusAreaAndSpaceId(focusAreaId, ontologySpaceId);
         return getFocusAreaIdsByOntologyTermId(ontologyTermId);
     }
 
-    private long getOntologyTermIdByFocusAreaAndSpaceId(Long focusAreaId, Long ontologySpaceId) throws Exception{
+    private long getOntologyTermIdByFocusAreaAndSpaceId(Long focusAreaId, Long ontologySpaceId)
+            throws SystemException, PortalException {
         List<FocusAreaOntologyTerm> ontologyTermsForFocusArea;
 
         DynamicQuery retrieveOntologyTermsForFocusArea =
@@ -91,11 +93,11 @@ public class FocusAreaOntologyTermLocalServiceImpl
             }
         }
 
-        throw new Exception("Could not find ontologyTermId for focusAreaId: " + focusAreaId.toString() +
+        throw new PortalException("Could not find ontologyTermId for focusAreaId: " + focusAreaId.toString() +
                 " and ontologySpaceId: " + ontologySpaceId.toString());
     }
 
-    private List<Long> getFocusAreaIdsByOntologyTermId(Long ontologyTermId) throws Exception{
+    private List<Long> getFocusAreaIdsByOntologyTermId(Long ontologyTermId) throws SystemException {
 
         ProjectionList projectionList = ProjectionFactoryUtil.projectionList();
         projectionList.add(ProjectionFactoryUtil.property("primaryKey.focusAreaId"));

@@ -14,7 +14,6 @@ public class JSONHelper {
     private final static String JSON_SUCCESS_RESPONSE_MESSAGE = "success";
     private final static String JSON_ERROR_RESPONSE_MESSAGE = "error";
     private final static boolean JSON_FALSE_RESPONSE_MESSAGE = false;
-    private final static boolean JSON_TRUE_RESPONSE_MESSAGE = true;
 
     private static JSONObject createSuccessResultResponseJson(boolean success){
         JSONObject resultResponseJson = JSONFactoryUtil.createJSONObject();
@@ -32,8 +31,7 @@ public class JSONHelper {
     private void writeResponseJSON(String message,ResourceResponse response){
         try {
             response.getPortletOutputStream().write(message.getBytes());
-        } catch (IOException e) {
-        }
+        } catch (IOException ignored) { }
     }
     public void writeSuccessResultResponseJSON(boolean successStatus, ResourceResponse response){
             JSONObject resultResponseJson = createSuccessResultResponseJson(successStatus);

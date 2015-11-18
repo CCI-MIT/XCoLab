@@ -6,7 +6,6 @@
     <groupId>org.xcolab.portlets</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-	<groupId>org.xcolab.portlets</groupId>
 	<artifactId>contests-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>contests-portlet Portlet</name>
@@ -119,6 +118,12 @@
 					<artifactId>simulation</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.xcolab.taglibs</groupId>
+			<artifactId>colabJspTags</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
             
 		<dependency>

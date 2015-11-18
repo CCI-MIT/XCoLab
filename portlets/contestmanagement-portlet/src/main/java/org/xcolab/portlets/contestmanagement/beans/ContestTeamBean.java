@@ -5,7 +5,7 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import org.xcolab.portlets.contestmanagement.utils.RequestParameterParser;
+import org.xcolab.utils.IdListUtil;
 
 import javax.portlet.PortletRequest;
 import java.io.Serializable;
@@ -41,18 +41,15 @@ public class ContestTeamBean implements Serializable{
                 populateFellows();
                 populateAdvisors();
                 //populateContestManagers();
-            } catch (Exception e){
-
-            }
+            } catch (SystemException | PortalException ignored){ }
         }
     }
 
     private void parseAndPopulateMember() throws NumberFormatException{
-        RequestParameterParser requestParameterParser = new RequestParameterParser();
-        userIdsJudges = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsJudges");
-        userIdsFellows = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsFellows");
-        userIdsAdvisors = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsAdvisors");
-        //userIdsContestManagers = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsManagers");
+        userIdsJudges = IdListUtil.getIdsFromString(request.getParameter("userIdsJudges"));
+        userIdsFellows = IdListUtil.getIdsFromString(request.getParameter("userIdsFellows"));
+        userIdsAdvisors = IdListUtil.getIdsFromString(request.getParameter("userIdsAdvisors"));
+        //userIdsContestManagers = IdListUtil.getIdsFromString(request.getParameter("userIdsManagers"));
     }
 
     private void populateJudges() throws SystemException, PortalException{
@@ -77,10 +74,6 @@ public class ContestTeamBean implements Serializable{
         for (User contestManager : ContestLocalServiceUtil.getContestManagersForContest(contest)) {
             userIdsContestManagers.add(contestManager.getUserId());
         }
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 
     public List<Long> getUserIdsJudges() {

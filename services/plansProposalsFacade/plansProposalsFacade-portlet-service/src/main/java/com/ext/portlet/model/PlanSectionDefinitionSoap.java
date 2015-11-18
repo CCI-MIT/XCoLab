@@ -22,6 +22,7 @@ public class PlanSectionDefinitionSoap implements Serializable {
     private int _characterLimit;
     private long _focusAreaId;
     private long _tier;
+    private String _allowedContestTypeIds;
     private String _additionalIds;
     private boolean _locked;
     private boolean _contestIntegrationRelevance;
@@ -42,6 +43,7 @@ public class PlanSectionDefinitionSoap implements Serializable {
         soapModel.setCharacterLimit(model.getCharacterLimit());
         soapModel.setFocusAreaId(model.getFocusAreaId());
         soapModel.setTier(model.getTier());
+        soapModel.setAllowedContestTypeIds(model.getAllowedContestTypeIds());
         soapModel.setAdditionalIds(model.getAdditionalIds());
         soapModel.setLocked(model.getLocked());
         soapModel.setContestIntegrationRelevance(model.getContestIntegrationRelevance());
@@ -166,6 +168,14 @@ public class PlanSectionDefinitionSoap implements Serializable {
 
     public void setTier(long tier) {
         _tier = tier;
+    }
+
+    public String getAllowedContestTypeIds() {
+        return _allowedContestTypeIds;
+    }
+
+    public void setAllowedContestTypeIds(String allowedContestTypeIds) {
+        _allowedContestTypeIds = allowedContestTypeIds;
     }
 
     public String getAdditionalIds() {

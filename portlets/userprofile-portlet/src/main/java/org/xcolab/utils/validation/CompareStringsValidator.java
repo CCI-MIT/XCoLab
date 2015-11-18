@@ -26,10 +26,10 @@ public class CompareStringsValidator implements ConstraintValidator<CompareStrin
 
         for(int i=0; i<propertyNames.length; i++) {
             //explode
-            List<String> propertyValues = new ArrayList<String> (propertyNames.length);
+            List<String> propertyValues = new ArrayList<> (propertyNames.length);
             String[] valueIdentifiers = propertyNames[i].split(",");
-            for (int j=0; j<valueIdentifiers.length; j++) {
-                String propertyValue = ConstraintValidatorHelper.getPropertyValue(String.class, valueIdentifiers[j], target);
+            for (String valueIdentifier : valueIdentifiers) {
+                String propertyValue = ConstraintValidatorHelper.getPropertyValue(String.class, valueIdentifier, target);
                 if (propertyValue == null) {
                     if (!allowNull) {
                         isValid = false;

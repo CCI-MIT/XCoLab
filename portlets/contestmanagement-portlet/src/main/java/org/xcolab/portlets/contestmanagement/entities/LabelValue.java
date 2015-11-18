@@ -29,6 +29,7 @@ public class LabelValue implements Comparable<LabelValue>{
         this.lable = lable;
     }
 
+    @Override
     public int compareTo(LabelValue o)
     {
         return this.getLable().compareTo(o.getLable());

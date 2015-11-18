@@ -1,12 +1,7 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:addthis="http://www.addthis.com/help/api-spec"
-	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
     <portlet:actionURL var="saveJudgingFeedbackURL">
@@ -38,7 +33,7 @@
                 </c:forEach>
             </select>
         </c:if>
-        <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
+        <i style="font-size:10pt;">Please rate this ${contestType.proposalName} and write your comments in the box below. All your responses
             are saved when clicking on save.
             <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions or proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
                 Your rating will be visible to the Judging team only.
@@ -72,7 +67,8 @@
     <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
         <script type="text/javascript">
             jQuery(document).ready(function() {
-                jQuery('#judges-select').ddslick({
+                var $judgesSelectElement = jQuery('#judges-select');
+                $judgesSelectElement.ddslick({
                     showSelectedHTML: true,
                     width: 260,
                     imagePosition: "left",
@@ -81,7 +77,7 @@
                     }
                 });
 
-                jQuery('#judges-select').css({'float': 'right'});
+                $judgesSelectElement.css({'float': 'right'});
             });
         </script>
     </c:if>

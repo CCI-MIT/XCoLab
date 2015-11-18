@@ -1,15 +1,5 @@
 package org.xcolab.portlets.plansadmin.wrappers;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
-
-import com.ext.portlet.model.Contest;
-import org.apache.commons.lang.StringUtils;
-
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.PlanSectionDefinition;
@@ -17,7 +7,14 @@ import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.apache.commons.lang.StringUtils;
 import org.xcolab.enums.ContestTier;
+
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlanSectionDefinitionWrapper implements Serializable {
 
@@ -65,7 +62,7 @@ public class PlanSectionDefinitionWrapper implements Serializable {
     }
     
     public List<SelectItem> getAvailableFocusAreas() throws SystemException {
-        List<SelectItem> ret = new ArrayList<SelectItem>();
+        List<SelectItem> ret = new ArrayList<>();
         
         for (FocusArea fa: FocusAreaLocalServiceUtil.getFocusAreas(0, Integer.MAX_VALUE)) {
             ret.add(new SelectItem(fa.getId(), fa.getName()));
@@ -74,7 +71,7 @@ public class PlanSectionDefinitionWrapper implements Serializable {
     }
 
     public List<SelectItem> getAvailableTiers() throws SystemException {
-        List<SelectItem> ret = new ArrayList<SelectItem>();
+        List<SelectItem> ret = new ArrayList<>();
 
         for (ContestTier contestTier: ContestTier.values()) {
             ret.add(new SelectItem(contestTier.getTierType(), contestTier.getTierName()));
@@ -83,7 +80,7 @@ public class PlanSectionDefinitionWrapper implements Serializable {
     }
 
     public List<SelectItem> getAvailableTypes() throws SystemException {
-        List<SelectItem> ret = new ArrayList<SelectItem>();
+        List<SelectItem> ret = new ArrayList<>();
         
         for (PlanSectionTypeKeys key: PlanSectionTypeKeys.values()) {
             ret.add(new SelectItem(key.name(), key.name()));
@@ -130,5 +127,4 @@ public class PlanSectionDefinitionWrapper implements Serializable {
             definition.setType(type);
         }
     }
-    
 }

@@ -916,7 +916,9 @@ public class FocusAreaOntologyTermLocalServiceClp
 
     @Override
     public java.util.List<java.lang.Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(
-        long focusAreaId, long ontologySpaceId) throws java.lang.Exception {
+        long focusAreaId, long ontologySpaceId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -926,8 +928,12 @@ public class FocusAreaOntologyTermLocalServiceClp
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof java.lang.Exception) {
-                throw (java.lang.Exception) t;
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
 
             if (t instanceof RuntimeException) {

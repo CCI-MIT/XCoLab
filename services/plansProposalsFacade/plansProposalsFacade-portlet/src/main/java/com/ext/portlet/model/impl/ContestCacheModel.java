@@ -22,13 +22,12 @@ import java.util.Date;
  */
 public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public long ContestPK;
+    public long contestTypeId;
     public String ContestName;
     public String ContestShortName;
     public String ContestDescription;
     public String ContestModelDescription;
     public String ContestPositionsDescription;
-    public String defaultPlanDescription;
-    public long PlanTypeId;
     public long created;
     public long updated;
     public long authorId;
@@ -72,10 +71,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(95);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
+        sb.append(", contestTypeId=");
+        sb.append(contestTypeId);
         sb.append(", ContestName=");
         sb.append(ContestName);
         sb.append(", ContestShortName=");
@@ -86,10 +87,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(ContestModelDescription);
         sb.append(", ContestPositionsDescription=");
         sb.append(ContestPositionsDescription);
-        sb.append(", defaultPlanDescription=");
-        sb.append(defaultPlanDescription);
-        sb.append(", PlanTypeId=");
-        sb.append(PlanTypeId);
         sb.append(", created=");
         sb.append(created);
         sb.append(", updated=");
@@ -180,6 +177,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         ContestImpl contestImpl = new ContestImpl();
 
         contestImpl.setContestPK(ContestPK);
+        contestImpl.setContestTypeId(contestTypeId);
 
         if (ContestName == null) {
             contestImpl.setContestName(StringPool.BLANK);
@@ -210,14 +208,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         } else {
             contestImpl.setContestPositionsDescription(ContestPositionsDescription);
         }
-
-        if (defaultPlanDescription == null) {
-            contestImpl.setDefaultPlanDescription(StringPool.BLANK);
-        } else {
-            contestImpl.setDefaultPlanDescription(defaultPlanDescription);
-        }
-
-        contestImpl.setPlanTypeId(PlanTypeId);
 
         if (created == Long.MIN_VALUE) {
             contestImpl.setCreated(null);
@@ -355,13 +345,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     @Override
     public void readExternal(ObjectInput objectInput) throws IOException {
         ContestPK = objectInput.readLong();
+        contestTypeId = objectInput.readLong();
         ContestName = objectInput.readUTF();
         ContestShortName = objectInput.readUTF();
         ContestDescription = objectInput.readUTF();
         ContestModelDescription = objectInput.readUTF();
         ContestPositionsDescription = objectInput.readUTF();
-        defaultPlanDescription = objectInput.readUTF();
-        PlanTypeId = objectInput.readLong();
         created = objectInput.readLong();
         updated = objectInput.readLong();
         authorId = objectInput.readLong();
@@ -408,6 +397,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public void writeExternal(ObjectOutput objectOutput)
         throws IOException {
         objectOutput.writeLong(ContestPK);
+        objectOutput.writeLong(contestTypeId);
 
         if (ContestName == null) {
             objectOutput.writeUTF(StringPool.BLANK);
@@ -439,13 +429,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             objectOutput.writeUTF(ContestPositionsDescription);
         }
 
-        if (defaultPlanDescription == null) {
-            objectOutput.writeUTF(StringPool.BLANK);
-        } else {
-            objectOutput.writeUTF(defaultPlanDescription);
-        }
-
-        objectOutput.writeLong(PlanTypeId);
         objectOutput.writeLong(created);
         objectOutput.writeLong(updated);
         objectOutput.writeLong(authorId);

@@ -34,7 +34,7 @@ public class SendMessagePermissionChecker {
         // Set up blacklist
         List<MemberRole> memberBlacklist = new ArrayList<>();
         memberBlacklist.add(MemberRole.ADVISOR);
-        memberBlacklist.add(MemberRole.JUDGES);
+        memberBlacklist.add(MemberRole.JUDGE);
 
         blacklistedRolesMap = new EnumMap<>(MemberRole.class);
         blacklistedRolesMap.put(MemberRole.MEMBER, memberBlacklist);
@@ -53,7 +53,7 @@ public class SendMessagePermissionChecker {
         MemberRole destinationRole = getHighestUserRole(user);
 
         for (Role role : originator.getRoles()) {
-            MemberRole currentRole = MemberRole.getMember(role.getName());
+            MemberRole currentRole = MemberRole.fromRoleName(role.getName());
             List<MemberRole> blacklist = blacklistedRolesMap.get(currentRole);
             if (blacklist == null || !blacklist.contains(destinationRole)) {
                 return true;
@@ -77,7 +77,7 @@ public class SendMessagePermissionChecker {
         // Count the number of blacklist entries for each of the users roles
         Map<MemberRole, Integer> blacklistCountMap = new EnumMap<>(MemberRole.class);
         for (Role role : originator.getRoles()) {
-            MemberRole currentRole = MemberRole.getMember(role.getName());
+            MemberRole currentRole = MemberRole.fromRoleName(role.getName());
             List<MemberRole> blacklist = blacklistedRolesMap.get(currentRole);
             if (blacklist != null) {
                 for (MemberRole mr : blacklist) {
@@ -110,7 +110,7 @@ public class SendMessagePermissionChecker {
         for (Role r: roles) {
             final String roleString = r.getName();
 
-            currentRole = MemberRole.getMember(roleString);
+            currentRole = MemberRole.fromRoleName(roleString);
             if (currentRole != null && role != null) {
                 if (currentRole.ordinal() > role.ordinal()) {
                     role = currentRole;

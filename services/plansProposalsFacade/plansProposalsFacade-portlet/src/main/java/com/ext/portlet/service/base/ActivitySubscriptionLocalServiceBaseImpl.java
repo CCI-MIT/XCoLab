@@ -18,6 +18,7 @@ import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
 import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
 import com.ext.portlet.service.persistence.ContestSchedulePersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
+import com.ext.portlet.service.persistence.ContestTypePersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
 import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
@@ -33,6 +34,7 @@ import com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPersistence
 import com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistence;
 import com.ext.portlet.service.persistence.LandingPagePersistence;
 import com.ext.portlet.service.persistence.LoginLogPersistence;
+import com.ext.portlet.service.persistence.MemberCategoryPersistence;
 import com.ext.portlet.service.persistence.MessagePersistence;
 import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
 import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
@@ -53,35 +55,9 @@ import com.ext.portlet.service.persistence.ModelPositionPersistence;
 import com.ext.portlet.service.persistence.OntologySpacePersistence;
 import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
 import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemFinder;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
 import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
 import com.ext.portlet.service.persistence.PlanTemplatePersistence;
 import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
 import com.ext.portlet.service.persistence.PointDistributionTargetPersistence;
 import com.ext.portlet.service.persistence.PointTypePersistence;
 import com.ext.portlet.service.persistence.PointsDistributionConfigurationPersistence;
@@ -240,6 +216,12 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
     protected com.ext.portlet.service.ContestTeamMemberService contestTeamMemberService;
     @BeanReference(type = ContestTeamMemberPersistence.class)
     protected ContestTeamMemberPersistence contestTeamMemberPersistence;
+    @BeanReference(type = com.ext.portlet.service.ContestTypeLocalService.class)
+    protected com.ext.portlet.service.ContestTypeLocalService contestTypeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestTypeService.class)
+    protected com.ext.portlet.service.ContestTypeService contestTypeService;
+    @BeanReference(type = ContestTypePersistence.class)
+    protected ContestTypePersistence contestTypePersistence;
     @BeanReference(type = com.ext.portlet.service.DiscussionCategoryLocalService.class)
     protected com.ext.portlet.service.DiscussionCategoryLocalService discussionCategoryLocalService;
     @BeanReference(type = com.ext.portlet.service.DiscussionCategoryService.class)
@@ -330,6 +312,12 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
     protected com.ext.portlet.service.LoginLogService loginLogService;
     @BeanReference(type = LoginLogPersistence.class)
     protected LoginLogPersistence loginLogPersistence;
+    @BeanReference(type = com.ext.portlet.service.MemberCategoryLocalService.class)
+    protected com.ext.portlet.service.MemberCategoryLocalService memberCategoryLocalService;
+    @BeanReference(type = com.ext.portlet.service.MemberCategoryService.class)
+    protected com.ext.portlet.service.MemberCategoryService memberCategoryService;
+    @BeanReference(type = MemberCategoryPersistence.class)
+    protected MemberCategoryPersistence memberCategoryPersistence;
     @BeanReference(type = com.ext.portlet.service.MessageLocalService.class)
     protected com.ext.portlet.service.MessageLocalService messageLocalService;
     @BeanReference(type = com.ext.portlet.service.MessageService.class)
@@ -454,140 +442,12 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
     protected com.ext.portlet.service.OntologyTermEntityService ontologyTermEntityService;
     @BeanReference(type = OntologyTermEntityPersistence.class)
     protected OntologyTermEntityPersistence ontologyTermEntityPersistence;
-    @BeanReference(type = com.ext.portlet.service.Plan2ProposalLocalService.class)
-    protected com.ext.portlet.service.Plan2ProposalLocalService plan2ProposalLocalService;
-    @BeanReference(type = com.ext.portlet.service.Plan2ProposalService.class)
-    protected com.ext.portlet.service.Plan2ProposalService plan2ProposalService;
-    @BeanReference(type = Plan2ProposalPersistence.class)
-    protected Plan2ProposalPersistence plan2ProposalPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanAttributeLocalService.class)
-    protected com.ext.portlet.service.PlanAttributeLocalService planAttributeLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanAttributeService.class)
-    protected com.ext.portlet.service.PlanAttributeService planAttributeService;
-    @BeanReference(type = PlanAttributePersistence.class)
-    protected PlanAttributePersistence planAttributePersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanAttributeFilterLocalService.class)
-    protected com.ext.portlet.service.PlanAttributeFilterLocalService planAttributeFilterLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanAttributeFilterService.class)
-    protected com.ext.portlet.service.PlanAttributeFilterService planAttributeFilterService;
-    @BeanReference(type = PlanAttributeFilterPersistence.class)
-    protected PlanAttributeFilterPersistence planAttributeFilterPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanColumnSettingsLocalService.class)
-    protected com.ext.portlet.service.PlanColumnSettingsLocalService planColumnSettingsLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanColumnSettingsService.class)
-    protected com.ext.portlet.service.PlanColumnSettingsService planColumnSettingsService;
-    @BeanReference(type = PlanColumnSettingsPersistence.class)
-    protected PlanColumnSettingsPersistence planColumnSettingsPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanDescriptionLocalService.class)
-    protected com.ext.portlet.service.PlanDescriptionLocalService planDescriptionLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanDescriptionService.class)
-    protected com.ext.portlet.service.PlanDescriptionService planDescriptionService;
-    @BeanReference(type = PlanDescriptionPersistence.class)
-    protected PlanDescriptionPersistence planDescriptionPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanFanLocalService.class)
-    protected com.ext.portlet.service.PlanFanLocalService planFanLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanFanService.class)
-    protected com.ext.portlet.service.PlanFanService planFanService;
-    @BeanReference(type = PlanFanPersistence.class)
-    protected PlanFanPersistence planFanPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanItemLocalService.class)
-    protected com.ext.portlet.service.PlanItemLocalService planItemLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanItemService.class)
-    protected com.ext.portlet.service.PlanItemService planItemService;
-    @BeanReference(type = PlanItemPersistence.class)
-    protected PlanItemPersistence planItemPersistence;
-    @BeanReference(type = PlanItemFinder.class)
-    protected PlanItemFinder planItemFinder;
-    @BeanReference(type = com.ext.portlet.service.PlanItemGroupLocalService.class)
-    protected com.ext.portlet.service.PlanItemGroupLocalService planItemGroupLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanItemGroupService.class)
-    protected com.ext.portlet.service.PlanItemGroupService planItemGroupService;
-    @BeanReference(type = PlanItemGroupPersistence.class)
-    protected PlanItemGroupPersistence planItemGroupPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanMetaLocalService.class)
-    protected com.ext.portlet.service.PlanMetaLocalService planMetaLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanMetaService.class)
-    protected com.ext.portlet.service.PlanMetaService planMetaService;
-    @BeanReference(type = PlanMetaPersistence.class)
-    protected PlanMetaPersistence planMetaPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanModelRunLocalService.class)
-    protected com.ext.portlet.service.PlanModelRunLocalService planModelRunLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanModelRunService.class)
-    protected com.ext.portlet.service.PlanModelRunService planModelRunService;
-    @BeanReference(type = PlanModelRunPersistence.class)
-    protected PlanModelRunPersistence planModelRunPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanPositionLocalService.class)
-    protected com.ext.portlet.service.PlanPositionLocalService planPositionLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanPositionService.class)
-    protected com.ext.portlet.service.PlanPositionService planPositionService;
-    @BeanReference(type = PlanPositionPersistence.class)
-    protected PlanPositionPersistence planPositionPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanPositionItemLocalService.class)
-    protected com.ext.portlet.service.PlanPositionItemLocalService planPositionItemLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanPositionItemService.class)
-    protected com.ext.portlet.service.PlanPositionItemService planPositionItemService;
-    @BeanReference(type = PlanPositionItemPersistence.class)
-    protected PlanPositionItemPersistence planPositionItemPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanPositionsLocalService.class)
-    protected com.ext.portlet.service.PlanPositionsLocalService planPositionsLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanPositionsService.class)
-    protected com.ext.portlet.service.PlanPositionsService planPositionsService;
-    @BeanReference(type = PlanPositionsPersistence.class)
-    protected PlanPositionsPersistence planPositionsPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanPropertyFilterLocalService.class)
-    protected com.ext.portlet.service.PlanPropertyFilterLocalService planPropertyFilterLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanPropertyFilterService.class)
-    protected com.ext.portlet.service.PlanPropertyFilterService planPropertyFilterService;
-    @BeanReference(type = PlanPropertyFilterPersistence.class)
-    protected PlanPropertyFilterPersistence planPropertyFilterPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanRelatedLocalService.class)
-    protected com.ext.portlet.service.PlanRelatedLocalService planRelatedLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanRelatedService.class)
-    protected com.ext.portlet.service.PlanRelatedService planRelatedService;
-    @BeanReference(type = PlanRelatedPersistence.class)
-    protected PlanRelatedPersistence planRelatedPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanSectionLocalService.class)
-    protected com.ext.portlet.service.PlanSectionLocalService planSectionLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanSectionService.class)
-    protected com.ext.portlet.service.PlanSectionService planSectionService;
-    @BeanReference(type = PlanSectionPersistence.class)
-    protected PlanSectionPersistence planSectionPersistence;
     @BeanReference(type = com.ext.portlet.service.PlanSectionDefinitionLocalService.class)
     protected com.ext.portlet.service.PlanSectionDefinitionLocalService planSectionDefinitionLocalService;
     @BeanReference(type = com.ext.portlet.service.PlanSectionDefinitionService.class)
     protected com.ext.portlet.service.PlanSectionDefinitionService planSectionDefinitionService;
     @BeanReference(type = PlanSectionDefinitionPersistence.class)
     protected PlanSectionDefinitionPersistence planSectionDefinitionPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanSectionPlanMapLocalService.class)
-    protected com.ext.portlet.service.PlanSectionPlanMapLocalService planSectionPlanMapLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanSectionPlanMapService.class)
-    protected com.ext.portlet.service.PlanSectionPlanMapService planSectionPlanMapService;
-    @BeanReference(type = PlanSectionPlanMapPersistence.class)
-    protected PlanSectionPlanMapPersistence planSectionPlanMapPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlansFilterLocalService.class)
-    protected com.ext.portlet.service.PlansFilterLocalService plansFilterLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlansFilterService.class)
-    protected com.ext.portlet.service.PlansFilterService plansFilterService;
-    @BeanReference(type = PlansFilterPersistence.class)
-    protected PlansFilterPersistence plansFilterPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlansFilterPositionLocalService.class)
-    protected com.ext.portlet.service.PlansFilterPositionLocalService plansFilterPositionLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlansFilterPositionService.class)
-    protected com.ext.portlet.service.PlansFilterPositionService plansFilterPositionService;
-    @BeanReference(type = PlansFilterPositionPersistence.class)
-    protected PlansFilterPositionPersistence plansFilterPositionPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlansUserSettingsLocalService.class)
-    protected com.ext.portlet.service.PlansUserSettingsLocalService plansUserSettingsLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlansUserSettingsService.class)
-    protected com.ext.portlet.service.PlansUserSettingsService plansUserSettingsService;
-    @BeanReference(type = PlansUserSettingsPersistence.class)
-    protected PlansUserSettingsPersistence plansUserSettingsPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanTeamHistoryLocalService.class)
-    protected com.ext.portlet.service.PlanTeamHistoryLocalService planTeamHistoryLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanTeamHistoryService.class)
-    protected com.ext.portlet.service.PlanTeamHistoryService planTeamHistoryService;
-    @BeanReference(type = PlanTeamHistoryPersistence.class)
-    protected PlanTeamHistoryPersistence planTeamHistoryPersistence;
     @BeanReference(type = com.ext.portlet.service.PlanTemplateLocalService.class)
     protected com.ext.portlet.service.PlanTemplateLocalService planTemplateLocalService;
     @BeanReference(type = com.ext.portlet.service.PlanTemplateService.class)
@@ -600,30 +460,6 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
     protected com.ext.portlet.service.PlanTemplateSectionService planTemplateSectionService;
     @BeanReference(type = PlanTemplateSectionPersistence.class)
     protected PlanTemplateSectionPersistence planTemplateSectionPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanTypeLocalService.class)
-    protected com.ext.portlet.service.PlanTypeLocalService planTypeLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanTypeService.class)
-    protected com.ext.portlet.service.PlanTypeService planTypeService;
-    @BeanReference(type = PlanTypePersistence.class)
-    protected PlanTypePersistence planTypePersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanTypeAttributeLocalService.class)
-    protected com.ext.portlet.service.PlanTypeAttributeLocalService planTypeAttributeLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanTypeAttributeService.class)
-    protected com.ext.portlet.service.PlanTypeAttributeService planTypeAttributeService;
-    @BeanReference(type = PlanTypeAttributePersistence.class)
-    protected PlanTypeAttributePersistence planTypeAttributePersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanTypeColumnLocalService.class)
-    protected com.ext.portlet.service.PlanTypeColumnLocalService planTypeColumnLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanTypeColumnService.class)
-    protected com.ext.portlet.service.PlanTypeColumnService planTypeColumnService;
-    @BeanReference(type = PlanTypeColumnPersistence.class)
-    protected PlanTypeColumnPersistence planTypeColumnPersistence;
-    @BeanReference(type = com.ext.portlet.service.PlanVoteLocalService.class)
-    protected com.ext.portlet.service.PlanVoteLocalService planVoteLocalService;
-    @BeanReference(type = com.ext.portlet.service.PlanVoteService.class)
-    protected com.ext.portlet.service.PlanVoteService planVoteService;
-    @BeanReference(type = PlanVotePersistence.class)
-    protected PlanVotePersistence planVotePersistence;
     @BeanReference(type = com.ext.portlet.service.PointDistributionTargetLocalService.class)
     protected com.ext.portlet.service.PointDistributionTargetLocalService pointDistributionTargetLocalService;
     @BeanReference(type = com.ext.portlet.service.PointDistributionTargetService.class)
@@ -1904,6 +1740,63 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
     }
 
     /**
+     * Returns the contest type local service.
+     *
+     * @return the contest type local service
+     */
+    public com.ext.portlet.service.ContestTypeLocalService getContestTypeLocalService() {
+        return contestTypeLocalService;
+    }
+
+    /**
+     * Sets the contest type local service.
+     *
+     * @param contestTypeLocalService the contest type local service
+     */
+    public void setContestTypeLocalService(
+        com.ext.portlet.service.ContestTypeLocalService contestTypeLocalService) {
+        this.contestTypeLocalService = contestTypeLocalService;
+    }
+
+    /**
+     * Returns the contest type remote service.
+     *
+     * @return the contest type remote service
+     */
+    public com.ext.portlet.service.ContestTypeService getContestTypeService() {
+        return contestTypeService;
+    }
+
+    /**
+     * Sets the contest type remote service.
+     *
+     * @param contestTypeService the contest type remote service
+     */
+    public void setContestTypeService(
+        com.ext.portlet.service.ContestTypeService contestTypeService) {
+        this.contestTypeService = contestTypeService;
+    }
+
+    /**
+     * Returns the contest type persistence.
+     *
+     * @return the contest type persistence
+     */
+    public ContestTypePersistence getContestTypePersistence() {
+        return contestTypePersistence;
+    }
+
+    /**
+     * Sets the contest type persistence.
+     *
+     * @param contestTypePersistence the contest type persistence
+     */
+    public void setContestTypePersistence(
+        ContestTypePersistence contestTypePersistence) {
+        this.contestTypePersistence = contestTypePersistence;
+    }
+
+    /**
      * Returns the discussion category local service.
      *
      * @return the discussion category local service
@@ -2755,6 +2648,63 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
      */
     public void setLoginLogPersistence(LoginLogPersistence loginLogPersistence) {
         this.loginLogPersistence = loginLogPersistence;
+    }
+
+    /**
+     * Returns the member category local service.
+     *
+     * @return the member category local service
+     */
+    public com.ext.portlet.service.MemberCategoryLocalService getMemberCategoryLocalService() {
+        return memberCategoryLocalService;
+    }
+
+    /**
+     * Sets the member category local service.
+     *
+     * @param memberCategoryLocalService the member category local service
+     */
+    public void setMemberCategoryLocalService(
+        com.ext.portlet.service.MemberCategoryLocalService memberCategoryLocalService) {
+        this.memberCategoryLocalService = memberCategoryLocalService;
+    }
+
+    /**
+     * Returns the member category remote service.
+     *
+     * @return the member category remote service
+     */
+    public com.ext.portlet.service.MemberCategoryService getMemberCategoryService() {
+        return memberCategoryService;
+    }
+
+    /**
+     * Sets the member category remote service.
+     *
+     * @param memberCategoryService the member category remote service
+     */
+    public void setMemberCategoryService(
+        com.ext.portlet.service.MemberCategoryService memberCategoryService) {
+        this.memberCategoryService = memberCategoryService;
+    }
+
+    /**
+     * Returns the member category persistence.
+     *
+     * @return the member category persistence
+     */
+    public MemberCategoryPersistence getMemberCategoryPersistence() {
+        return memberCategoryPersistence;
+    }
+
+    /**
+     * Sets the member category persistence.
+     *
+     * @param memberCategoryPersistence the member category persistence
+     */
+    public void setMemberCategoryPersistence(
+        MemberCategoryPersistence memberCategoryPersistence) {
+        this.memberCategoryPersistence = memberCategoryPersistence;
     }
 
     /**
@@ -3935,933 +3885,6 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
     }
 
     /**
-     * Returns the plan2 proposal local service.
-     *
-     * @return the plan2 proposal local service
-     */
-    public com.ext.portlet.service.Plan2ProposalLocalService getPlan2ProposalLocalService() {
-        return plan2ProposalLocalService;
-    }
-
-    /**
-     * Sets the plan2 proposal local service.
-     *
-     * @param plan2ProposalLocalService the plan2 proposal local service
-     */
-    public void setPlan2ProposalLocalService(
-        com.ext.portlet.service.Plan2ProposalLocalService plan2ProposalLocalService) {
-        this.plan2ProposalLocalService = plan2ProposalLocalService;
-    }
-
-    /**
-     * Returns the plan2 proposal remote service.
-     *
-     * @return the plan2 proposal remote service
-     */
-    public com.ext.portlet.service.Plan2ProposalService getPlan2ProposalService() {
-        return plan2ProposalService;
-    }
-
-    /**
-     * Sets the plan2 proposal remote service.
-     *
-     * @param plan2ProposalService the plan2 proposal remote service
-     */
-    public void setPlan2ProposalService(
-        com.ext.portlet.service.Plan2ProposalService plan2ProposalService) {
-        this.plan2ProposalService = plan2ProposalService;
-    }
-
-    /**
-     * Returns the plan2 proposal persistence.
-     *
-     * @return the plan2 proposal persistence
-     */
-    public Plan2ProposalPersistence getPlan2ProposalPersistence() {
-        return plan2ProposalPersistence;
-    }
-
-    /**
-     * Sets the plan2 proposal persistence.
-     *
-     * @param plan2ProposalPersistence the plan2 proposal persistence
-     */
-    public void setPlan2ProposalPersistence(
-        Plan2ProposalPersistence plan2ProposalPersistence) {
-        this.plan2ProposalPersistence = plan2ProposalPersistence;
-    }
-
-    /**
-     * Returns the plan attribute local service.
-     *
-     * @return the plan attribute local service
-     */
-    public com.ext.portlet.service.PlanAttributeLocalService getPlanAttributeLocalService() {
-        return planAttributeLocalService;
-    }
-
-    /**
-     * Sets the plan attribute local service.
-     *
-     * @param planAttributeLocalService the plan attribute local service
-     */
-    public void setPlanAttributeLocalService(
-        com.ext.portlet.service.PlanAttributeLocalService planAttributeLocalService) {
-        this.planAttributeLocalService = planAttributeLocalService;
-    }
-
-    /**
-     * Returns the plan attribute remote service.
-     *
-     * @return the plan attribute remote service
-     */
-    public com.ext.portlet.service.PlanAttributeService getPlanAttributeService() {
-        return planAttributeService;
-    }
-
-    /**
-     * Sets the plan attribute remote service.
-     *
-     * @param planAttributeService the plan attribute remote service
-     */
-    public void setPlanAttributeService(
-        com.ext.portlet.service.PlanAttributeService planAttributeService) {
-        this.planAttributeService = planAttributeService;
-    }
-
-    /**
-     * Returns the plan attribute persistence.
-     *
-     * @return the plan attribute persistence
-     */
-    public PlanAttributePersistence getPlanAttributePersistence() {
-        return planAttributePersistence;
-    }
-
-    /**
-     * Sets the plan attribute persistence.
-     *
-     * @param planAttributePersistence the plan attribute persistence
-     */
-    public void setPlanAttributePersistence(
-        PlanAttributePersistence planAttributePersistence) {
-        this.planAttributePersistence = planAttributePersistence;
-    }
-
-    /**
-     * Returns the plan attribute filter local service.
-     *
-     * @return the plan attribute filter local service
-     */
-    public com.ext.portlet.service.PlanAttributeFilterLocalService getPlanAttributeFilterLocalService() {
-        return planAttributeFilterLocalService;
-    }
-
-    /**
-     * Sets the plan attribute filter local service.
-     *
-     * @param planAttributeFilterLocalService the plan attribute filter local service
-     */
-    public void setPlanAttributeFilterLocalService(
-        com.ext.portlet.service.PlanAttributeFilterLocalService planAttributeFilterLocalService) {
-        this.planAttributeFilterLocalService = planAttributeFilterLocalService;
-    }
-
-    /**
-     * Returns the plan attribute filter remote service.
-     *
-     * @return the plan attribute filter remote service
-     */
-    public com.ext.portlet.service.PlanAttributeFilterService getPlanAttributeFilterService() {
-        return planAttributeFilterService;
-    }
-
-    /**
-     * Sets the plan attribute filter remote service.
-     *
-     * @param planAttributeFilterService the plan attribute filter remote service
-     */
-    public void setPlanAttributeFilterService(
-        com.ext.portlet.service.PlanAttributeFilterService planAttributeFilterService) {
-        this.planAttributeFilterService = planAttributeFilterService;
-    }
-
-    /**
-     * Returns the plan attribute filter persistence.
-     *
-     * @return the plan attribute filter persistence
-     */
-    public PlanAttributeFilterPersistence getPlanAttributeFilterPersistence() {
-        return planAttributeFilterPersistence;
-    }
-
-    /**
-     * Sets the plan attribute filter persistence.
-     *
-     * @param planAttributeFilterPersistence the plan attribute filter persistence
-     */
-    public void setPlanAttributeFilterPersistence(
-        PlanAttributeFilterPersistence planAttributeFilterPersistence) {
-        this.planAttributeFilterPersistence = planAttributeFilterPersistence;
-    }
-
-    /**
-     * Returns the plan column settings local service.
-     *
-     * @return the plan column settings local service
-     */
-    public com.ext.portlet.service.PlanColumnSettingsLocalService getPlanColumnSettingsLocalService() {
-        return planColumnSettingsLocalService;
-    }
-
-    /**
-     * Sets the plan column settings local service.
-     *
-     * @param planColumnSettingsLocalService the plan column settings local service
-     */
-    public void setPlanColumnSettingsLocalService(
-        com.ext.portlet.service.PlanColumnSettingsLocalService planColumnSettingsLocalService) {
-        this.planColumnSettingsLocalService = planColumnSettingsLocalService;
-    }
-
-    /**
-     * Returns the plan column settings remote service.
-     *
-     * @return the plan column settings remote service
-     */
-    public com.ext.portlet.service.PlanColumnSettingsService getPlanColumnSettingsService() {
-        return planColumnSettingsService;
-    }
-
-    /**
-     * Sets the plan column settings remote service.
-     *
-     * @param planColumnSettingsService the plan column settings remote service
-     */
-    public void setPlanColumnSettingsService(
-        com.ext.portlet.service.PlanColumnSettingsService planColumnSettingsService) {
-        this.planColumnSettingsService = planColumnSettingsService;
-    }
-
-    /**
-     * Returns the plan column settings persistence.
-     *
-     * @return the plan column settings persistence
-     */
-    public PlanColumnSettingsPersistence getPlanColumnSettingsPersistence() {
-        return planColumnSettingsPersistence;
-    }
-
-    /**
-     * Sets the plan column settings persistence.
-     *
-     * @param planColumnSettingsPersistence the plan column settings persistence
-     */
-    public void setPlanColumnSettingsPersistence(
-        PlanColumnSettingsPersistence planColumnSettingsPersistence) {
-        this.planColumnSettingsPersistence = planColumnSettingsPersistence;
-    }
-
-    /**
-     * Returns the plan description local service.
-     *
-     * @return the plan description local service
-     */
-    public com.ext.portlet.service.PlanDescriptionLocalService getPlanDescriptionLocalService() {
-        return planDescriptionLocalService;
-    }
-
-    /**
-     * Sets the plan description local service.
-     *
-     * @param planDescriptionLocalService the plan description local service
-     */
-    public void setPlanDescriptionLocalService(
-        com.ext.portlet.service.PlanDescriptionLocalService planDescriptionLocalService) {
-        this.planDescriptionLocalService = planDescriptionLocalService;
-    }
-
-    /**
-     * Returns the plan description remote service.
-     *
-     * @return the plan description remote service
-     */
-    public com.ext.portlet.service.PlanDescriptionService getPlanDescriptionService() {
-        return planDescriptionService;
-    }
-
-    /**
-     * Sets the plan description remote service.
-     *
-     * @param planDescriptionService the plan description remote service
-     */
-    public void setPlanDescriptionService(
-        com.ext.portlet.service.PlanDescriptionService planDescriptionService) {
-        this.planDescriptionService = planDescriptionService;
-    }
-
-    /**
-     * Returns the plan description persistence.
-     *
-     * @return the plan description persistence
-     */
-    public PlanDescriptionPersistence getPlanDescriptionPersistence() {
-        return planDescriptionPersistence;
-    }
-
-    /**
-     * Sets the plan description persistence.
-     *
-     * @param planDescriptionPersistence the plan description persistence
-     */
-    public void setPlanDescriptionPersistence(
-        PlanDescriptionPersistence planDescriptionPersistence) {
-        this.planDescriptionPersistence = planDescriptionPersistence;
-    }
-
-    /**
-     * Returns the plan fan local service.
-     *
-     * @return the plan fan local service
-     */
-    public com.ext.portlet.service.PlanFanLocalService getPlanFanLocalService() {
-        return planFanLocalService;
-    }
-
-    /**
-     * Sets the plan fan local service.
-     *
-     * @param planFanLocalService the plan fan local service
-     */
-    public void setPlanFanLocalService(
-        com.ext.portlet.service.PlanFanLocalService planFanLocalService) {
-        this.planFanLocalService = planFanLocalService;
-    }
-
-    /**
-     * Returns the plan fan remote service.
-     *
-     * @return the plan fan remote service
-     */
-    public com.ext.portlet.service.PlanFanService getPlanFanService() {
-        return planFanService;
-    }
-
-    /**
-     * Sets the plan fan remote service.
-     *
-     * @param planFanService the plan fan remote service
-     */
-    public void setPlanFanService(
-        com.ext.portlet.service.PlanFanService planFanService) {
-        this.planFanService = planFanService;
-    }
-
-    /**
-     * Returns the plan fan persistence.
-     *
-     * @return the plan fan persistence
-     */
-    public PlanFanPersistence getPlanFanPersistence() {
-        return planFanPersistence;
-    }
-
-    /**
-     * Sets the plan fan persistence.
-     *
-     * @param planFanPersistence the plan fan persistence
-     */
-    public void setPlanFanPersistence(PlanFanPersistence planFanPersistence) {
-        this.planFanPersistence = planFanPersistence;
-    }
-
-    /**
-     * Returns the plan item local service.
-     *
-     * @return the plan item local service
-     */
-    public com.ext.portlet.service.PlanItemLocalService getPlanItemLocalService() {
-        return planItemLocalService;
-    }
-
-    /**
-     * Sets the plan item local service.
-     *
-     * @param planItemLocalService the plan item local service
-     */
-    public void setPlanItemLocalService(
-        com.ext.portlet.service.PlanItemLocalService planItemLocalService) {
-        this.planItemLocalService = planItemLocalService;
-    }
-
-    /**
-     * Returns the plan item remote service.
-     *
-     * @return the plan item remote service
-     */
-    public com.ext.portlet.service.PlanItemService getPlanItemService() {
-        return planItemService;
-    }
-
-    /**
-     * Sets the plan item remote service.
-     *
-     * @param planItemService the plan item remote service
-     */
-    public void setPlanItemService(
-        com.ext.portlet.service.PlanItemService planItemService) {
-        this.planItemService = planItemService;
-    }
-
-    /**
-     * Returns the plan item persistence.
-     *
-     * @return the plan item persistence
-     */
-    public PlanItemPersistence getPlanItemPersistence() {
-        return planItemPersistence;
-    }
-
-    /**
-     * Sets the plan item persistence.
-     *
-     * @param planItemPersistence the plan item persistence
-     */
-    public void setPlanItemPersistence(PlanItemPersistence planItemPersistence) {
-        this.planItemPersistence = planItemPersistence;
-    }
-
-    /**
-     * Returns the plan item finder.
-     *
-     * @return the plan item finder
-     */
-    public PlanItemFinder getPlanItemFinder() {
-        return planItemFinder;
-    }
-
-    /**
-     * Sets the plan item finder.
-     *
-     * @param planItemFinder the plan item finder
-     */
-    public void setPlanItemFinder(PlanItemFinder planItemFinder) {
-        this.planItemFinder = planItemFinder;
-    }
-
-    /**
-     * Returns the plan item group local service.
-     *
-     * @return the plan item group local service
-     */
-    public com.ext.portlet.service.PlanItemGroupLocalService getPlanItemGroupLocalService() {
-        return planItemGroupLocalService;
-    }
-
-    /**
-     * Sets the plan item group local service.
-     *
-     * @param planItemGroupLocalService the plan item group local service
-     */
-    public void setPlanItemGroupLocalService(
-        com.ext.portlet.service.PlanItemGroupLocalService planItemGroupLocalService) {
-        this.planItemGroupLocalService = planItemGroupLocalService;
-    }
-
-    /**
-     * Returns the plan item group remote service.
-     *
-     * @return the plan item group remote service
-     */
-    public com.ext.portlet.service.PlanItemGroupService getPlanItemGroupService() {
-        return planItemGroupService;
-    }
-
-    /**
-     * Sets the plan item group remote service.
-     *
-     * @param planItemGroupService the plan item group remote service
-     */
-    public void setPlanItemGroupService(
-        com.ext.portlet.service.PlanItemGroupService planItemGroupService) {
-        this.planItemGroupService = planItemGroupService;
-    }
-
-    /**
-     * Returns the plan item group persistence.
-     *
-     * @return the plan item group persistence
-     */
-    public PlanItemGroupPersistence getPlanItemGroupPersistence() {
-        return planItemGroupPersistence;
-    }
-
-    /**
-     * Sets the plan item group persistence.
-     *
-     * @param planItemGroupPersistence the plan item group persistence
-     */
-    public void setPlanItemGroupPersistence(
-        PlanItemGroupPersistence planItemGroupPersistence) {
-        this.planItemGroupPersistence = planItemGroupPersistence;
-    }
-
-    /**
-     * Returns the plan meta local service.
-     *
-     * @return the plan meta local service
-     */
-    public com.ext.portlet.service.PlanMetaLocalService getPlanMetaLocalService() {
-        return planMetaLocalService;
-    }
-
-    /**
-     * Sets the plan meta local service.
-     *
-     * @param planMetaLocalService the plan meta local service
-     */
-    public void setPlanMetaLocalService(
-        com.ext.portlet.service.PlanMetaLocalService planMetaLocalService) {
-        this.planMetaLocalService = planMetaLocalService;
-    }
-
-    /**
-     * Returns the plan meta remote service.
-     *
-     * @return the plan meta remote service
-     */
-    public com.ext.portlet.service.PlanMetaService getPlanMetaService() {
-        return planMetaService;
-    }
-
-    /**
-     * Sets the plan meta remote service.
-     *
-     * @param planMetaService the plan meta remote service
-     */
-    public void setPlanMetaService(
-        com.ext.portlet.service.PlanMetaService planMetaService) {
-        this.planMetaService = planMetaService;
-    }
-
-    /**
-     * Returns the plan meta persistence.
-     *
-     * @return the plan meta persistence
-     */
-    public PlanMetaPersistence getPlanMetaPersistence() {
-        return planMetaPersistence;
-    }
-
-    /**
-     * Sets the plan meta persistence.
-     *
-     * @param planMetaPersistence the plan meta persistence
-     */
-    public void setPlanMetaPersistence(PlanMetaPersistence planMetaPersistence) {
-        this.planMetaPersistence = planMetaPersistence;
-    }
-
-    /**
-     * Returns the plan model run local service.
-     *
-     * @return the plan model run local service
-     */
-    public com.ext.portlet.service.PlanModelRunLocalService getPlanModelRunLocalService() {
-        return planModelRunLocalService;
-    }
-
-    /**
-     * Sets the plan model run local service.
-     *
-     * @param planModelRunLocalService the plan model run local service
-     */
-    public void setPlanModelRunLocalService(
-        com.ext.portlet.service.PlanModelRunLocalService planModelRunLocalService) {
-        this.planModelRunLocalService = planModelRunLocalService;
-    }
-
-    /**
-     * Returns the plan model run remote service.
-     *
-     * @return the plan model run remote service
-     */
-    public com.ext.portlet.service.PlanModelRunService getPlanModelRunService() {
-        return planModelRunService;
-    }
-
-    /**
-     * Sets the plan model run remote service.
-     *
-     * @param planModelRunService the plan model run remote service
-     */
-    public void setPlanModelRunService(
-        com.ext.portlet.service.PlanModelRunService planModelRunService) {
-        this.planModelRunService = planModelRunService;
-    }
-
-    /**
-     * Returns the plan model run persistence.
-     *
-     * @return the plan model run persistence
-     */
-    public PlanModelRunPersistence getPlanModelRunPersistence() {
-        return planModelRunPersistence;
-    }
-
-    /**
-     * Sets the plan model run persistence.
-     *
-     * @param planModelRunPersistence the plan model run persistence
-     */
-    public void setPlanModelRunPersistence(
-        PlanModelRunPersistence planModelRunPersistence) {
-        this.planModelRunPersistence = planModelRunPersistence;
-    }
-
-    /**
-     * Returns the plan position local service.
-     *
-     * @return the plan position local service
-     */
-    public com.ext.portlet.service.PlanPositionLocalService getPlanPositionLocalService() {
-        return planPositionLocalService;
-    }
-
-    /**
-     * Sets the plan position local service.
-     *
-     * @param planPositionLocalService the plan position local service
-     */
-    public void setPlanPositionLocalService(
-        com.ext.portlet.service.PlanPositionLocalService planPositionLocalService) {
-        this.planPositionLocalService = planPositionLocalService;
-    }
-
-    /**
-     * Returns the plan position remote service.
-     *
-     * @return the plan position remote service
-     */
-    public com.ext.portlet.service.PlanPositionService getPlanPositionService() {
-        return planPositionService;
-    }
-
-    /**
-     * Sets the plan position remote service.
-     *
-     * @param planPositionService the plan position remote service
-     */
-    public void setPlanPositionService(
-        com.ext.portlet.service.PlanPositionService planPositionService) {
-        this.planPositionService = planPositionService;
-    }
-
-    /**
-     * Returns the plan position persistence.
-     *
-     * @return the plan position persistence
-     */
-    public PlanPositionPersistence getPlanPositionPersistence() {
-        return planPositionPersistence;
-    }
-
-    /**
-     * Sets the plan position persistence.
-     *
-     * @param planPositionPersistence the plan position persistence
-     */
-    public void setPlanPositionPersistence(
-        PlanPositionPersistence planPositionPersistence) {
-        this.planPositionPersistence = planPositionPersistence;
-    }
-
-    /**
-     * Returns the plan position item local service.
-     *
-     * @return the plan position item local service
-     */
-    public com.ext.portlet.service.PlanPositionItemLocalService getPlanPositionItemLocalService() {
-        return planPositionItemLocalService;
-    }
-
-    /**
-     * Sets the plan position item local service.
-     *
-     * @param planPositionItemLocalService the plan position item local service
-     */
-    public void setPlanPositionItemLocalService(
-        com.ext.portlet.service.PlanPositionItemLocalService planPositionItemLocalService) {
-        this.planPositionItemLocalService = planPositionItemLocalService;
-    }
-
-    /**
-     * Returns the plan position item remote service.
-     *
-     * @return the plan position item remote service
-     */
-    public com.ext.portlet.service.PlanPositionItemService getPlanPositionItemService() {
-        return planPositionItemService;
-    }
-
-    /**
-     * Sets the plan position item remote service.
-     *
-     * @param planPositionItemService the plan position item remote service
-     */
-    public void setPlanPositionItemService(
-        com.ext.portlet.service.PlanPositionItemService planPositionItemService) {
-        this.planPositionItemService = planPositionItemService;
-    }
-
-    /**
-     * Returns the plan position item persistence.
-     *
-     * @return the plan position item persistence
-     */
-    public PlanPositionItemPersistence getPlanPositionItemPersistence() {
-        return planPositionItemPersistence;
-    }
-
-    /**
-     * Sets the plan position item persistence.
-     *
-     * @param planPositionItemPersistence the plan position item persistence
-     */
-    public void setPlanPositionItemPersistence(
-        PlanPositionItemPersistence planPositionItemPersistence) {
-        this.planPositionItemPersistence = planPositionItemPersistence;
-    }
-
-    /**
-     * Returns the plan positions local service.
-     *
-     * @return the plan positions local service
-     */
-    public com.ext.portlet.service.PlanPositionsLocalService getPlanPositionsLocalService() {
-        return planPositionsLocalService;
-    }
-
-    /**
-     * Sets the plan positions local service.
-     *
-     * @param planPositionsLocalService the plan positions local service
-     */
-    public void setPlanPositionsLocalService(
-        com.ext.portlet.service.PlanPositionsLocalService planPositionsLocalService) {
-        this.planPositionsLocalService = planPositionsLocalService;
-    }
-
-    /**
-     * Returns the plan positions remote service.
-     *
-     * @return the plan positions remote service
-     */
-    public com.ext.portlet.service.PlanPositionsService getPlanPositionsService() {
-        return planPositionsService;
-    }
-
-    /**
-     * Sets the plan positions remote service.
-     *
-     * @param planPositionsService the plan positions remote service
-     */
-    public void setPlanPositionsService(
-        com.ext.portlet.service.PlanPositionsService planPositionsService) {
-        this.planPositionsService = planPositionsService;
-    }
-
-    /**
-     * Returns the plan positions persistence.
-     *
-     * @return the plan positions persistence
-     */
-    public PlanPositionsPersistence getPlanPositionsPersistence() {
-        return planPositionsPersistence;
-    }
-
-    /**
-     * Sets the plan positions persistence.
-     *
-     * @param planPositionsPersistence the plan positions persistence
-     */
-    public void setPlanPositionsPersistence(
-        PlanPositionsPersistence planPositionsPersistence) {
-        this.planPositionsPersistence = planPositionsPersistence;
-    }
-
-    /**
-     * Returns the plan property filter local service.
-     *
-     * @return the plan property filter local service
-     */
-    public com.ext.portlet.service.PlanPropertyFilterLocalService getPlanPropertyFilterLocalService() {
-        return planPropertyFilterLocalService;
-    }
-
-    /**
-     * Sets the plan property filter local service.
-     *
-     * @param planPropertyFilterLocalService the plan property filter local service
-     */
-    public void setPlanPropertyFilterLocalService(
-        com.ext.portlet.service.PlanPropertyFilterLocalService planPropertyFilterLocalService) {
-        this.planPropertyFilterLocalService = planPropertyFilterLocalService;
-    }
-
-    /**
-     * Returns the plan property filter remote service.
-     *
-     * @return the plan property filter remote service
-     */
-    public com.ext.portlet.service.PlanPropertyFilterService getPlanPropertyFilterService() {
-        return planPropertyFilterService;
-    }
-
-    /**
-     * Sets the plan property filter remote service.
-     *
-     * @param planPropertyFilterService the plan property filter remote service
-     */
-    public void setPlanPropertyFilterService(
-        com.ext.portlet.service.PlanPropertyFilterService planPropertyFilterService) {
-        this.planPropertyFilterService = planPropertyFilterService;
-    }
-
-    /**
-     * Returns the plan property filter persistence.
-     *
-     * @return the plan property filter persistence
-     */
-    public PlanPropertyFilterPersistence getPlanPropertyFilterPersistence() {
-        return planPropertyFilterPersistence;
-    }
-
-    /**
-     * Sets the plan property filter persistence.
-     *
-     * @param planPropertyFilterPersistence the plan property filter persistence
-     */
-    public void setPlanPropertyFilterPersistence(
-        PlanPropertyFilterPersistence planPropertyFilterPersistence) {
-        this.planPropertyFilterPersistence = planPropertyFilterPersistence;
-    }
-
-    /**
-     * Returns the plan related local service.
-     *
-     * @return the plan related local service
-     */
-    public com.ext.portlet.service.PlanRelatedLocalService getPlanRelatedLocalService() {
-        return planRelatedLocalService;
-    }
-
-    /**
-     * Sets the plan related local service.
-     *
-     * @param planRelatedLocalService the plan related local service
-     */
-    public void setPlanRelatedLocalService(
-        com.ext.portlet.service.PlanRelatedLocalService planRelatedLocalService) {
-        this.planRelatedLocalService = planRelatedLocalService;
-    }
-
-    /**
-     * Returns the plan related remote service.
-     *
-     * @return the plan related remote service
-     */
-    public com.ext.portlet.service.PlanRelatedService getPlanRelatedService() {
-        return planRelatedService;
-    }
-
-    /**
-     * Sets the plan related remote service.
-     *
-     * @param planRelatedService the plan related remote service
-     */
-    public void setPlanRelatedService(
-        com.ext.portlet.service.PlanRelatedService planRelatedService) {
-        this.planRelatedService = planRelatedService;
-    }
-
-    /**
-     * Returns the plan related persistence.
-     *
-     * @return the plan related persistence
-     */
-    public PlanRelatedPersistence getPlanRelatedPersistence() {
-        return planRelatedPersistence;
-    }
-
-    /**
-     * Sets the plan related persistence.
-     *
-     * @param planRelatedPersistence the plan related persistence
-     */
-    public void setPlanRelatedPersistence(
-        PlanRelatedPersistence planRelatedPersistence) {
-        this.planRelatedPersistence = planRelatedPersistence;
-    }
-
-    /**
-     * Returns the plan section local service.
-     *
-     * @return the plan section local service
-     */
-    public com.ext.portlet.service.PlanSectionLocalService getPlanSectionLocalService() {
-        return planSectionLocalService;
-    }
-
-    /**
-     * Sets the plan section local service.
-     *
-     * @param planSectionLocalService the plan section local service
-     */
-    public void setPlanSectionLocalService(
-        com.ext.portlet.service.PlanSectionLocalService planSectionLocalService) {
-        this.planSectionLocalService = planSectionLocalService;
-    }
-
-    /**
-     * Returns the plan section remote service.
-     *
-     * @return the plan section remote service
-     */
-    public com.ext.portlet.service.PlanSectionService getPlanSectionService() {
-        return planSectionService;
-    }
-
-    /**
-     * Sets the plan section remote service.
-     *
-     * @param planSectionService the plan section remote service
-     */
-    public void setPlanSectionService(
-        com.ext.portlet.service.PlanSectionService planSectionService) {
-        this.planSectionService = planSectionService;
-    }
-
-    /**
-     * Returns the plan section persistence.
-     *
-     * @return the plan section persistence
-     */
-    public PlanSectionPersistence getPlanSectionPersistence() {
-        return planSectionPersistence;
-    }
-
-    /**
-     * Sets the plan section persistence.
-     *
-     * @param planSectionPersistence the plan section persistence
-     */
-    public void setPlanSectionPersistence(
-        PlanSectionPersistence planSectionPersistence) {
-        this.planSectionPersistence = planSectionPersistence;
-    }
-
-    /**
      * Returns the plan section definition local service.
      *
      * @return the plan section definition local service
@@ -4916,291 +3939,6 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
     public void setPlanSectionDefinitionPersistence(
         PlanSectionDefinitionPersistence planSectionDefinitionPersistence) {
         this.planSectionDefinitionPersistence = planSectionDefinitionPersistence;
-    }
-
-    /**
-     * Returns the plan section plan map local service.
-     *
-     * @return the plan section plan map local service
-     */
-    public com.ext.portlet.service.PlanSectionPlanMapLocalService getPlanSectionPlanMapLocalService() {
-        return planSectionPlanMapLocalService;
-    }
-
-    /**
-     * Sets the plan section plan map local service.
-     *
-     * @param planSectionPlanMapLocalService the plan section plan map local service
-     */
-    public void setPlanSectionPlanMapLocalService(
-        com.ext.portlet.service.PlanSectionPlanMapLocalService planSectionPlanMapLocalService) {
-        this.planSectionPlanMapLocalService = planSectionPlanMapLocalService;
-    }
-
-    /**
-     * Returns the plan section plan map remote service.
-     *
-     * @return the plan section plan map remote service
-     */
-    public com.ext.portlet.service.PlanSectionPlanMapService getPlanSectionPlanMapService() {
-        return planSectionPlanMapService;
-    }
-
-    /**
-     * Sets the plan section plan map remote service.
-     *
-     * @param planSectionPlanMapService the plan section plan map remote service
-     */
-    public void setPlanSectionPlanMapService(
-        com.ext.portlet.service.PlanSectionPlanMapService planSectionPlanMapService) {
-        this.planSectionPlanMapService = planSectionPlanMapService;
-    }
-
-    /**
-     * Returns the plan section plan map persistence.
-     *
-     * @return the plan section plan map persistence
-     */
-    public PlanSectionPlanMapPersistence getPlanSectionPlanMapPersistence() {
-        return planSectionPlanMapPersistence;
-    }
-
-    /**
-     * Sets the plan section plan map persistence.
-     *
-     * @param planSectionPlanMapPersistence the plan section plan map persistence
-     */
-    public void setPlanSectionPlanMapPersistence(
-        PlanSectionPlanMapPersistence planSectionPlanMapPersistence) {
-        this.planSectionPlanMapPersistence = planSectionPlanMapPersistence;
-    }
-
-    /**
-     * Returns the plans filter local service.
-     *
-     * @return the plans filter local service
-     */
-    public com.ext.portlet.service.PlansFilterLocalService getPlansFilterLocalService() {
-        return plansFilterLocalService;
-    }
-
-    /**
-     * Sets the plans filter local service.
-     *
-     * @param plansFilterLocalService the plans filter local service
-     */
-    public void setPlansFilterLocalService(
-        com.ext.portlet.service.PlansFilterLocalService plansFilterLocalService) {
-        this.plansFilterLocalService = plansFilterLocalService;
-    }
-
-    /**
-     * Returns the plans filter remote service.
-     *
-     * @return the plans filter remote service
-     */
-    public com.ext.portlet.service.PlansFilterService getPlansFilterService() {
-        return plansFilterService;
-    }
-
-    /**
-     * Sets the plans filter remote service.
-     *
-     * @param plansFilterService the plans filter remote service
-     */
-    public void setPlansFilterService(
-        com.ext.portlet.service.PlansFilterService plansFilterService) {
-        this.plansFilterService = plansFilterService;
-    }
-
-    /**
-     * Returns the plans filter persistence.
-     *
-     * @return the plans filter persistence
-     */
-    public PlansFilterPersistence getPlansFilterPersistence() {
-        return plansFilterPersistence;
-    }
-
-    /**
-     * Sets the plans filter persistence.
-     *
-     * @param plansFilterPersistence the plans filter persistence
-     */
-    public void setPlansFilterPersistence(
-        PlansFilterPersistence plansFilterPersistence) {
-        this.plansFilterPersistence = plansFilterPersistence;
-    }
-
-    /**
-     * Returns the plans filter position local service.
-     *
-     * @return the plans filter position local service
-     */
-    public com.ext.portlet.service.PlansFilterPositionLocalService getPlansFilterPositionLocalService() {
-        return plansFilterPositionLocalService;
-    }
-
-    /**
-     * Sets the plans filter position local service.
-     *
-     * @param plansFilterPositionLocalService the plans filter position local service
-     */
-    public void setPlansFilterPositionLocalService(
-        com.ext.portlet.service.PlansFilterPositionLocalService plansFilterPositionLocalService) {
-        this.plansFilterPositionLocalService = plansFilterPositionLocalService;
-    }
-
-    /**
-     * Returns the plans filter position remote service.
-     *
-     * @return the plans filter position remote service
-     */
-    public com.ext.portlet.service.PlansFilterPositionService getPlansFilterPositionService() {
-        return plansFilterPositionService;
-    }
-
-    /**
-     * Sets the plans filter position remote service.
-     *
-     * @param plansFilterPositionService the plans filter position remote service
-     */
-    public void setPlansFilterPositionService(
-        com.ext.portlet.service.PlansFilterPositionService plansFilterPositionService) {
-        this.plansFilterPositionService = plansFilterPositionService;
-    }
-
-    /**
-     * Returns the plans filter position persistence.
-     *
-     * @return the plans filter position persistence
-     */
-    public PlansFilterPositionPersistence getPlansFilterPositionPersistence() {
-        return plansFilterPositionPersistence;
-    }
-
-    /**
-     * Sets the plans filter position persistence.
-     *
-     * @param plansFilterPositionPersistence the plans filter position persistence
-     */
-    public void setPlansFilterPositionPersistence(
-        PlansFilterPositionPersistence plansFilterPositionPersistence) {
-        this.plansFilterPositionPersistence = plansFilterPositionPersistence;
-    }
-
-    /**
-     * Returns the plans user settings local service.
-     *
-     * @return the plans user settings local service
-     */
-    public com.ext.portlet.service.PlansUserSettingsLocalService getPlansUserSettingsLocalService() {
-        return plansUserSettingsLocalService;
-    }
-
-    /**
-     * Sets the plans user settings local service.
-     *
-     * @param plansUserSettingsLocalService the plans user settings local service
-     */
-    public void setPlansUserSettingsLocalService(
-        com.ext.portlet.service.PlansUserSettingsLocalService plansUserSettingsLocalService) {
-        this.plansUserSettingsLocalService = plansUserSettingsLocalService;
-    }
-
-    /**
-     * Returns the plans user settings remote service.
-     *
-     * @return the plans user settings remote service
-     */
-    public com.ext.portlet.service.PlansUserSettingsService getPlansUserSettingsService() {
-        return plansUserSettingsService;
-    }
-
-    /**
-     * Sets the plans user settings remote service.
-     *
-     * @param plansUserSettingsService the plans user settings remote service
-     */
-    public void setPlansUserSettingsService(
-        com.ext.portlet.service.PlansUserSettingsService plansUserSettingsService) {
-        this.plansUserSettingsService = plansUserSettingsService;
-    }
-
-    /**
-     * Returns the plans user settings persistence.
-     *
-     * @return the plans user settings persistence
-     */
-    public PlansUserSettingsPersistence getPlansUserSettingsPersistence() {
-        return plansUserSettingsPersistence;
-    }
-
-    /**
-     * Sets the plans user settings persistence.
-     *
-     * @param plansUserSettingsPersistence the plans user settings persistence
-     */
-    public void setPlansUserSettingsPersistence(
-        PlansUserSettingsPersistence plansUserSettingsPersistence) {
-        this.plansUserSettingsPersistence = plansUserSettingsPersistence;
-    }
-
-    /**
-     * Returns the plan team history local service.
-     *
-     * @return the plan team history local service
-     */
-    public com.ext.portlet.service.PlanTeamHistoryLocalService getPlanTeamHistoryLocalService() {
-        return planTeamHistoryLocalService;
-    }
-
-    /**
-     * Sets the plan team history local service.
-     *
-     * @param planTeamHistoryLocalService the plan team history local service
-     */
-    public void setPlanTeamHistoryLocalService(
-        com.ext.portlet.service.PlanTeamHistoryLocalService planTeamHistoryLocalService) {
-        this.planTeamHistoryLocalService = planTeamHistoryLocalService;
-    }
-
-    /**
-     * Returns the plan team history remote service.
-     *
-     * @return the plan team history remote service
-     */
-    public com.ext.portlet.service.PlanTeamHistoryService getPlanTeamHistoryService() {
-        return planTeamHistoryService;
-    }
-
-    /**
-     * Sets the plan team history remote service.
-     *
-     * @param planTeamHistoryService the plan team history remote service
-     */
-    public void setPlanTeamHistoryService(
-        com.ext.portlet.service.PlanTeamHistoryService planTeamHistoryService) {
-        this.planTeamHistoryService = planTeamHistoryService;
-    }
-
-    /**
-     * Returns the plan team history persistence.
-     *
-     * @return the plan team history persistence
-     */
-    public PlanTeamHistoryPersistence getPlanTeamHistoryPersistence() {
-        return planTeamHistoryPersistence;
-    }
-
-    /**
-     * Sets the plan team history persistence.
-     *
-     * @param planTeamHistoryPersistence the plan team history persistence
-     */
-    public void setPlanTeamHistoryPersistence(
-        PlanTeamHistoryPersistence planTeamHistoryPersistence) {
-        this.planTeamHistoryPersistence = planTeamHistoryPersistence;
     }
 
     /**
@@ -5315,232 +4053,6 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
     public void setPlanTemplateSectionPersistence(
         PlanTemplateSectionPersistence planTemplateSectionPersistence) {
         this.planTemplateSectionPersistence = planTemplateSectionPersistence;
-    }
-
-    /**
-     * Returns the plan type local service.
-     *
-     * @return the plan type local service
-     */
-    public com.ext.portlet.service.PlanTypeLocalService getPlanTypeLocalService() {
-        return planTypeLocalService;
-    }
-
-    /**
-     * Sets the plan type local service.
-     *
-     * @param planTypeLocalService the plan type local service
-     */
-    public void setPlanTypeLocalService(
-        com.ext.portlet.service.PlanTypeLocalService planTypeLocalService) {
-        this.planTypeLocalService = planTypeLocalService;
-    }
-
-    /**
-     * Returns the plan type remote service.
-     *
-     * @return the plan type remote service
-     */
-    public com.ext.portlet.service.PlanTypeService getPlanTypeService() {
-        return planTypeService;
-    }
-
-    /**
-     * Sets the plan type remote service.
-     *
-     * @param planTypeService the plan type remote service
-     */
-    public void setPlanTypeService(
-        com.ext.portlet.service.PlanTypeService planTypeService) {
-        this.planTypeService = planTypeService;
-    }
-
-    /**
-     * Returns the plan type persistence.
-     *
-     * @return the plan type persistence
-     */
-    public PlanTypePersistence getPlanTypePersistence() {
-        return planTypePersistence;
-    }
-
-    /**
-     * Sets the plan type persistence.
-     *
-     * @param planTypePersistence the plan type persistence
-     */
-    public void setPlanTypePersistence(PlanTypePersistence planTypePersistence) {
-        this.planTypePersistence = planTypePersistence;
-    }
-
-    /**
-     * Returns the plan type attribute local service.
-     *
-     * @return the plan type attribute local service
-     */
-    public com.ext.portlet.service.PlanTypeAttributeLocalService getPlanTypeAttributeLocalService() {
-        return planTypeAttributeLocalService;
-    }
-
-    /**
-     * Sets the plan type attribute local service.
-     *
-     * @param planTypeAttributeLocalService the plan type attribute local service
-     */
-    public void setPlanTypeAttributeLocalService(
-        com.ext.portlet.service.PlanTypeAttributeLocalService planTypeAttributeLocalService) {
-        this.planTypeAttributeLocalService = planTypeAttributeLocalService;
-    }
-
-    /**
-     * Returns the plan type attribute remote service.
-     *
-     * @return the plan type attribute remote service
-     */
-    public com.ext.portlet.service.PlanTypeAttributeService getPlanTypeAttributeService() {
-        return planTypeAttributeService;
-    }
-
-    /**
-     * Sets the plan type attribute remote service.
-     *
-     * @param planTypeAttributeService the plan type attribute remote service
-     */
-    public void setPlanTypeAttributeService(
-        com.ext.portlet.service.PlanTypeAttributeService planTypeAttributeService) {
-        this.planTypeAttributeService = planTypeAttributeService;
-    }
-
-    /**
-     * Returns the plan type attribute persistence.
-     *
-     * @return the plan type attribute persistence
-     */
-    public PlanTypeAttributePersistence getPlanTypeAttributePersistence() {
-        return planTypeAttributePersistence;
-    }
-
-    /**
-     * Sets the plan type attribute persistence.
-     *
-     * @param planTypeAttributePersistence the plan type attribute persistence
-     */
-    public void setPlanTypeAttributePersistence(
-        PlanTypeAttributePersistence planTypeAttributePersistence) {
-        this.planTypeAttributePersistence = planTypeAttributePersistence;
-    }
-
-    /**
-     * Returns the plan type column local service.
-     *
-     * @return the plan type column local service
-     */
-    public com.ext.portlet.service.PlanTypeColumnLocalService getPlanTypeColumnLocalService() {
-        return planTypeColumnLocalService;
-    }
-
-    /**
-     * Sets the plan type column local service.
-     *
-     * @param planTypeColumnLocalService the plan type column local service
-     */
-    public void setPlanTypeColumnLocalService(
-        com.ext.portlet.service.PlanTypeColumnLocalService planTypeColumnLocalService) {
-        this.planTypeColumnLocalService = planTypeColumnLocalService;
-    }
-
-    /**
-     * Returns the plan type column remote service.
-     *
-     * @return the plan type column remote service
-     */
-    public com.ext.portlet.service.PlanTypeColumnService getPlanTypeColumnService() {
-        return planTypeColumnService;
-    }
-
-    /**
-     * Sets the plan type column remote service.
-     *
-     * @param planTypeColumnService the plan type column remote service
-     */
-    public void setPlanTypeColumnService(
-        com.ext.portlet.service.PlanTypeColumnService planTypeColumnService) {
-        this.planTypeColumnService = planTypeColumnService;
-    }
-
-    /**
-     * Returns the plan type column persistence.
-     *
-     * @return the plan type column persistence
-     */
-    public PlanTypeColumnPersistence getPlanTypeColumnPersistence() {
-        return planTypeColumnPersistence;
-    }
-
-    /**
-     * Sets the plan type column persistence.
-     *
-     * @param planTypeColumnPersistence the plan type column persistence
-     */
-    public void setPlanTypeColumnPersistence(
-        PlanTypeColumnPersistence planTypeColumnPersistence) {
-        this.planTypeColumnPersistence = planTypeColumnPersistence;
-    }
-
-    /**
-     * Returns the plan vote local service.
-     *
-     * @return the plan vote local service
-     */
-    public com.ext.portlet.service.PlanVoteLocalService getPlanVoteLocalService() {
-        return planVoteLocalService;
-    }
-
-    /**
-     * Sets the plan vote local service.
-     *
-     * @param planVoteLocalService the plan vote local service
-     */
-    public void setPlanVoteLocalService(
-        com.ext.portlet.service.PlanVoteLocalService planVoteLocalService) {
-        this.planVoteLocalService = planVoteLocalService;
-    }
-
-    /**
-     * Returns the plan vote remote service.
-     *
-     * @return the plan vote remote service
-     */
-    public com.ext.portlet.service.PlanVoteService getPlanVoteService() {
-        return planVoteService;
-    }
-
-    /**
-     * Sets the plan vote remote service.
-     *
-     * @param planVoteService the plan vote remote service
-     */
-    public void setPlanVoteService(
-        com.ext.portlet.service.PlanVoteService planVoteService) {
-        this.planVoteService = planVoteService;
-    }
-
-    /**
-     * Returns the plan vote persistence.
-     *
-     * @return the plan vote persistence
-     */
-    public PlanVotePersistence getPlanVotePersistence() {
-        return planVotePersistence;
-    }
-
-    /**
-     * Sets the plan vote persistence.
-     *
-     * @param planVotePersistence the plan vote persistence
-     */
-    public void setPlanVotePersistence(PlanVotePersistence planVotePersistence) {
-        this.planVotePersistence = planVotePersistence;
     }
 
     /**

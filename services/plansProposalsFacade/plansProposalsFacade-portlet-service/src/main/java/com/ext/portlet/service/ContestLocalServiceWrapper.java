@@ -337,14 +337,6 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
-    public com.ext.portlet.model.PlanType getPlanType(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.getPlanType(contest);
-    }
-
-    @Override
     public java.util.List<com.ext.portlet.model.ContestPhase> getActivePhases(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -369,8 +361,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
-    public boolean isActive(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public boolean isActive(com.ext.portlet.model.Contest contest) {
         return _contestLocalService.isActive(contest);
     }
 
@@ -379,20 +370,6 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getDebatesIds(contest);
-    }
-
-    @Override
-    public java.lang.Integer getTotalVotes(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.getTotalVotes(contest);
-    }
-
-    @Override
-    public void updateDefaultPlanDescription(
-        com.ext.portlet.model.Contest contest, java.lang.String description)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contestLocalService.updateDefaultPlanDescription(contest, description);
     }
 
     @Override
@@ -575,10 +552,18 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 
     @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
-        boolean active, boolean privateContest)
+        boolean contestActive, boolean contestPrivate)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.getContestsByActivePrivate(active,
-            privateContest);
+        return _contestLocalService.getContestsByActivePrivate(contestActive,
+            contestPrivate);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivateType(
+        boolean contestActive, boolean contestPrivate, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestsByActivePrivateType(contestActive,
+            contestPrivate, contestTypeId);
     }
 
     @Override
@@ -604,6 +589,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestsMatchingTier(contestTierType);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingTierInType(
+        long contestTierType, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestsMatchingTierInType(contestTierType,
+            contestTypeId);
     }
 
     /**
@@ -772,30 +766,53 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByContestType(
+        java.lang.Long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestsByContestType(contestTypeId);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByContestTypeIds(
+        java.util.List<java.lang.Long> contestTypeIds)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestsByContestTypeIds(contestTypeIds);
+    }
+
+    @Override
+    public int countContestsByContestType(java.lang.Long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.countContestsByContestType(contestTypeId);
+    }
+
+    @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
         java.lang.Long contestTier,
         java.util.List<java.lang.Long> focusAreaOntologyTermIds)
-        throws java.lang.Exception {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestsByTierLevelAndOntologyTermIds(contestTier,
             focusAreaOntologyTermIds);
     }
 
     @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsByContestScheduleId(
-        java.lang.Long contestScheduleId) throws java.lang.Exception {
+        java.lang.Long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestsByContestScheduleId(contestScheduleId);
     }
 
     @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsByPlanTemplateId(
-        java.lang.Long planTemplateId) throws java.lang.Exception {
+        java.lang.Long planTemplateId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestsByPlanTemplateId(planTemplateId);
     }
 
     @Override
     public java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
         com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
-        throws java.lang.Exception {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getSubContestsByOntologySpaceId(contest,
             ontologySpaceId);
     }

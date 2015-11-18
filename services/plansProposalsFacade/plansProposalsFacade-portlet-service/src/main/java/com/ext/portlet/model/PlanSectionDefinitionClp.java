@@ -29,6 +29,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     private int _characterLimit;
     private long _focusAreaId;
     private long _tier;
+    private String _allowedContestTypeIds;
     private String _additionalIds;
     private boolean _locked;
     private boolean _contestIntegrationRelevance;
@@ -81,6 +82,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         attributes.put("characterLimit", getCharacterLimit());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("tier", getTier());
+        attributes.put("allowedContestTypeIds", getAllowedContestTypeIds());
         attributes.put("additionalIds", getAdditionalIds());
         attributes.put("locked", getLocked());
         attributes.put("contestIntegrationRelevance",
@@ -143,6 +145,13 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
         if (tier != null) {
             setTier(tier);
+        }
+
+        String allowedContestTypeIds = (String) attributes.get(
+                "allowedContestTypeIds");
+
+        if (allowedContestTypeIds != null) {
+            setAllowedContestTypeIds(allowedContestTypeIds);
         }
 
         String additionalIds = (String) attributes.get("additionalIds");
@@ -364,6 +373,30 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     }
 
     @Override
+    public String getAllowedContestTypeIds() {
+        return _allowedContestTypeIds;
+    }
+
+    @Override
+    public void setAllowedContestTypeIds(String allowedContestTypeIds) {
+        _allowedContestTypeIds = allowedContestTypeIds;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setAllowedContestTypeIds",
+                        String.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel,
+                    allowedContestTypeIds);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public String getAdditionalIds() {
         return _additionalIds;
     }
@@ -520,6 +553,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         clone.setCharacterLimit(getCharacterLimit());
         clone.setFocusAreaId(getFocusAreaId());
         clone.setTier(getTier());
+        clone.setAllowedContestTypeIds(getAllowedContestTypeIds());
         clone.setAdditionalIds(getAdditionalIds());
         clone.setLocked(getLocked());
         clone.setContestIntegrationRelevance(getContestIntegrationRelevance());
@@ -572,7 +606,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(27);
 
         sb.append("{id=");
         sb.append(getId());
@@ -592,6 +626,8 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         sb.append(getFocusAreaId());
         sb.append(", tier=");
         sb.append(getTier());
+        sb.append(", allowedContestTypeIds=");
+        sb.append(getAllowedContestTypeIds());
         sb.append(", additionalIds=");
         sb.append(getAdditionalIds());
         sb.append(", locked=");
@@ -605,7 +641,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(40);
+        StringBundler sb = new StringBundler(43);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanSectionDefinition");
@@ -646,6 +682,10 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         sb.append(
             "<column><column-name>tier</column-name><column-value><![CDATA[");
         sb.append(getTier());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>allowedContestTypeIds</column-name><column-value><![CDATA[");
+        sb.append(getAllowedContestTypeIds());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>additionalIds</column-name><column-value><![CDATA[");

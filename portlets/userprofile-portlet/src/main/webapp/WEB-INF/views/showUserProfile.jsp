@@ -2,11 +2,13 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:form="http://www.springframework.org/tags/form"
     xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
     <jsp:directive.include file="./init.jspx" />
+
+    <jsp:useBean id="currentUserProfile" type="org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper" scope="request" />
+    <jsp:useBean id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean" scope="request" />
 
 	<c:if test="${updateSuccess}">
 		<script type="text/javascript" >
@@ -44,9 +46,6 @@
 			<div class="comm_member-info">
 				<table border="0" cellpadding="0" cellspacing="0" class="colab members topInfo">
 					<tbody>
-					<!-- <tr>
-							<td colspan="2"><h2>Member Profile</h2></td>
-						</tr> -->
 						<tr>
 							<td>
 								<div class="memname">${currentUserProfile.realName}</div>
@@ -170,63 +169,48 @@
 		</p>
 
 		<c:if test="${not currentUserProfile.staffMemberProfile}">
-			<h2 style="margin-top: 20px;">Proposals</h2>
-			<c:if test="${empty currentUserProfile.proposals}">
-					${userBean.firstName} has not yet contributed to any Climate CoLab proposals.
-			</c:if>
+			<c:forEach var="contestTypeProposalWrapper" items="${currentUserProfile.contestTypeProposalWrappersByContestTypeId}">
+				<h2 style="margin-top: 20px;">${contestTypeProposalWrapper.contestType.proposalNamePlural}</h2>
+				<c:if test="${empty contestTypeProposalWrapper.proposals}">
+						${userBean.firstName} has not yet contributed to any ${contestTypeProposalWrapper.contestType.proposalNamePlural}.
+				</c:if>
 
-			<table class="colab">
-				<c:forEach var="proposal" items="${currentUserProfile.proposals}">
-					<c:if test="${proposal.proposalInActiveContest}">
+				<table class="colab">
+					<c:forEach var="userProposal" items="${contestTypeProposalWrapper.proposals}">
 						<tr class="colabRow">
-							<td>
-									<collab:planLink planId="${proposal.planId}"
-													 contestId="${proposal.contestId}"
-													 text="${proposal.proposalName}" />
-
-							</td>
-							<td style="text-align: right;"><fmt:formatDate value="${proposal.proposalCreationDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+							<td> <collab:proposalLink proposal="${userProposal}" /> </td>
+							<td style="text-align: right;"><fmt:formatDate value="${userProposal.createDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
 						</tr>
-					</c:if>
-				</c:forEach>
-			</table>
+					</c:forEach>
+				</table>
+			</c:forEach>
 
-			<h2 style="margin-top: 20px;">Links to this user's proposals</h2>
+			<h2 style="margin-top: 20px;">Links to this user's ${currentUserProfile.proposalsString}</h2>
 			<c:if test="${empty currentUserProfile.linkingProposals}">
-					There are no proposals linking to this user's proposals yet.
+					There are no proposals linking to this user's ${currentUserProfile.proposalsString} yet.
 			</c:if>
 
 			<table class="colab">
-				<c:forEach var="proposal" items="${currentUserProfile.linkingProposals}">
-					<c:if test="${proposal.proposalInActiveContest}">
+				<c:forEach var="linkingProposal" items="${currentUserProfile.linkingProposals}">
+					<c:if test="${linkingProposal.visible}">
 						<tr class="colabRow">
-							<td>
-								<collab:planLink planId="${proposal.planId}"
-												 contestId="${proposal.contestId}"
-												 text="${proposal.proposalName}" />
-
-							</td>
-							<td style="text-align: right;"><fmt:formatDate value="${proposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+							<td> <collab:proposalLink proposal="${linkingProposal}" /> </td>
+							<td style="text-align: right;"><fmt:formatDate value="${linkingProposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
 						</tr>
 					</c:if>
 				</c:forEach>
 			</table>
-
 
 			<h2>Supporting</h2>
-			<c:if test="${empty currentUserProfile.supportedPlans}">
-					${userBean.firstName} has not yet supported any Climate CoLab proposals.
+			<c:if test="${empty currentUserProfile.supportedProposals}">
+					${userBean.firstName} has not yet supported any ${currentUserProfile.proposalsString}.
 			</c:if>
 
 			<table class="colab">
-				<c:forEach var="supportedPlan" items="${currentUserProfile.supportedPlans}">
+				<c:forEach var="supportedProposal" items="${currentUserProfile.supportedProposals}">
 					<tr class="colabRow">
-						<td>
-							<collab:planLink planId="${supportedPlan.planId}"
-															 contestId="${supportedPlan.contestId}"
-															 text="${supportedPlan.planName}" />
-						</td>
-						<td style="text-align: right;"><fmt:formatDate value="${supportedPlan.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+						<td> <collab:proposalLink proposal="${supportedProposal.proposalWrapper}" /> </td>
+						<td style="text-align: right;"><fmt:formatDate value="${supportedProposal.supportedSinceDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
 					</tr>
 				</c:forEach>
 			</table>

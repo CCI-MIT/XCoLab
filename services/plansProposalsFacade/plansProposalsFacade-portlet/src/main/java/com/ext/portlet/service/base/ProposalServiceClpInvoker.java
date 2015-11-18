@@ -9,81 +9,81 @@ import java.util.Arrays;
  * @generated
  */
 public class ProposalServiceClpInvoker {
-    private String _methodName622;
-    private String[] _methodParameterTypes622;
-    private String _methodName623;
-    private String[] _methodParameterTypes623;
-    private String _methodName628;
-    private String[] _methodParameterTypes628;
-    private String _methodName629;
-    private String[] _methodParameterTypes629;
-    private String _methodName630;
-    private String[] _methodParameterTypes630;
-    private String _methodName631;
-    private String[] _methodParameterTypes631;
-    private String _methodName632;
-    private String[] _methodParameterTypes632;
+    private String _methodName482;
+    private String[] _methodParameterTypes482;
+    private String _methodName483;
+    private String[] _methodParameterTypes483;
+    private String _methodName488;
+    private String[] _methodParameterTypes488;
+    private String _methodName489;
+    private String[] _methodParameterTypes489;
+    private String _methodName490;
+    private String[] _methodParameterTypes490;
+    private String _methodName491;
+    private String[] _methodParameterTypes491;
+    private String _methodName492;
+    private String[] _methodParameterTypes492;
 
     public ProposalServiceClpInvoker() {
-        _methodName622 = "getBeanIdentifier";
+        _methodName482 = "getBeanIdentifier";
 
-        _methodParameterTypes622 = new String[] {  };
+        _methodParameterTypes482 = new String[] {  };
 
-        _methodName623 = "setBeanIdentifier";
+        _methodName483 = "setBeanIdentifier";
 
-        _methodParameterTypes623 = new String[] { "java.lang.String" };
+        _methodParameterTypes483 = new String[] { "java.lang.String" };
 
-        _methodName628 = "getProposalVersionFirstIndex";
+        _methodName488 = "getProposalVersionFirstIndex";
 
-        _methodParameterTypes628 = new String[] { "long", "long" };
+        _methodParameterTypes488 = new String[] { "long", "long" };
 
-        _methodName629 = "getProposalVersionIndex";
+        _methodName489 = "getProposalVersionIndex";
 
-        _methodParameterTypes629 = new String[] { "long", "long" };
+        _methodParameterTypes489 = new String[] { "long", "long" };
 
-        _methodName630 = "getProposalVersions";
+        _methodName490 = "getProposalVersions";
 
-        _methodParameterTypes630 = new String[] {
+        _methodParameterTypes490 = new String[] {
                 "long", "long", "long", "int", "int"
             };
 
-        _methodName631 = "getProposalVersions";
+        _methodName491 = "getProposalVersions";
 
-        _methodParameterTypes631 = new String[] { "long", "int", "int" };
+        _methodParameterTypes491 = new String[] { "long", "int", "int" };
 
-        _methodName632 = "getProposalContestSections";
+        _methodName492 = "getProposalContestSections";
 
-        _methodParameterTypes632 = new String[] { "long", "int", "long" };
+        _methodParameterTypes492 = new String[] { "long", "int", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName622.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes622, parameterTypes)) {
+        if (_methodName482.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes482, parameterTypes)) {
             return ProposalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName623.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes623, parameterTypes)) {
+        if (_methodName483.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes483, parameterTypes)) {
             ProposalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName628.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes628, parameterTypes)) {
+        if (_methodName488.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
             return ProposalServiceUtil.getProposalVersionFirstIndex(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName629.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes629, parameterTypes)) {
+        if (_methodName489.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
             return ProposalServiceUtil.getProposalVersionIndex(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName630.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes630, parameterTypes)) {
+        if (_methodName490.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
             return ProposalServiceUtil.getProposalVersions(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
@@ -91,15 +91,15 @@ public class ProposalServiceClpInvoker {
                 ((Integer) arguments[4]).intValue());
         }
 
-        if (_methodName631.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes631, parameterTypes)) {
+        if (_methodName491.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
             return ProposalServiceUtil.getProposalVersions(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 ((Integer) arguments[2]).intValue());
         }
 
-        if (_methodName632.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
+        if (_methodName492.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes492, parameterTypes)) {
             return ProposalServiceUtil.getProposalContestSections(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 ((Long) arguments[2]).longValue());

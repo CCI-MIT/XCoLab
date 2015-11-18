@@ -3,7 +3,7 @@ package org.xcolab.portlets.contestmanagement.entities;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.portlets.contestmanagement.utils.ContestMassActionMethods;
-import org.xcolab.wrapper.ContestWrapper;
+import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.PortletRequest;
 import java.lang.reflect.Method;
@@ -18,18 +18,18 @@ public enum ContestMassActions{
     CAST_SUPPORT_TO_VOTES("Message proposal supporters to vote", ContestMassActionMethods.class, "sendSupport2VotesEmail"),
     REPORT_PEOPLE_IN_CURRENT_PHASE("Generate report of contributors in active phase", ContestMassActionMethods.class, "reportOfPeopleInCurrentPhase"),
     DELETE("Delete contests including phases", "Delete contests", ContestMassActionMethods.class, "deleteContest"),
-    ACTIVE("Active", "Prior", ContestWrapper.class,"setContestActive"),
-    PRIVATE("Private", "Public", ContestWrapper.class, "setContestPrivate"),
-    FEATURED("Feature", "Remove feature", ContestWrapper.class, "setFeatured"),
+    ACTIVE("Active", "Prior", BaseContestWrapper.class,"setContestActive"),
+    PRIVATE("Private", "Public", BaseContestWrapper.class, "setContestPrivate"),
+    FEATURED("Feature", "Remove feature", BaseContestWrapper.class, "setFeatured"),
     FLAG("Set contest flag", ContestMassActionMethods.class, "setFlag"),
     MODEL_SETTINGS("Set model settings", ContestMassActionMethods.class, "setModelSettings"),
     SUBSCRIBE("Subscribe to activity", "Unsubscribe from activity", ContestMassActionMethods.class, "changeSubscriptionStatus"),
-    SHOW_IN_TILE_VIEW("Show in tile view", "Hide in tile viw", ContestWrapper.class, "setShow_in_tile_view"),
-    SHOW_IN_LIST_VIEW("Show in list view", "Hide in list view", ContestWrapper.class, "setShow_in_list_view"),
-    SHOW_IN_OUTLINE_VIEW("Show in outline view", "Hide in outline view", ContestWrapper.class, "setShow_in_outline_view"),
-    HIDE_RIBBONS("Hide contest ribbons", "Show contest ribbons", ContestWrapper.class, "setHideRibbons");
+    SHOW_IN_TILE_VIEW("Show in tile view", "Hide in tile viw", BaseContestWrapper.class, "setShow_in_tile_view"),
+    SHOW_IN_LIST_VIEW("Show in list view", "Hide in list view", BaseContestWrapper.class, "setShow_in_list_view"),
+    SHOW_IN_OUTLINE_VIEW("Show in outline view", "Hide in outline view", BaseContestWrapper.class, "setShow_in_outline_view"),
+    HIDE_RIBBONS("Hide contest ribbons", "Show contest ribbons", BaseContestWrapper.class, "setHideRibbons");
 
-    private Log _log = LogFactoryUtil.getLog(ContestMassActions.class);
+    private final Log _log = LogFactoryUtil.getLog(ContestMassActions.class);
     private final String actionDisplayName;
     private String reverseActionDisplayName = "";
     private Boolean hasReverseAction = false;
@@ -53,7 +53,7 @@ public enum ContestMassActions{
 
     private void setMethodFromClassName(String methodName, Class className){
         try {
-            if(className == ContestWrapper.class){
+            if(className == BaseContestWrapper.class){
                 this.method = className.getMethod(methodName, boolean.class);
             } else if(className == ContestMassActionMethods.class) {
                 this.method = className.getMethod(methodName, List.class, Object.class, PortletRequest.class);

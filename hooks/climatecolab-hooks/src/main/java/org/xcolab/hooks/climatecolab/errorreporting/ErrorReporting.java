@@ -41,11 +41,7 @@ public class ErrorReporting implements Filter {
 
     private static final String EMAIL_SUBJECT = "Error Report from User";
 
-    protected Log _log;
-
-    public ErrorReporting(){
-        _log = LogFactoryUtil.getLog(this.getClass());
-    }
+    protected static final Log _log = LogFactoryUtil.getLog(ErrorReporting.class);
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

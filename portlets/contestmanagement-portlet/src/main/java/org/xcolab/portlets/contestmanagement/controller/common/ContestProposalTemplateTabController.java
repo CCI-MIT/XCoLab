@@ -1,7 +1,9 @@
 package org.xcolab.portlets.contestmanagement.controller.common;
 
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -45,9 +47,6 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
     protected TabWrapper tabWrapper;
 
-    @ModelAttribute("currentTabWrapped")
-    public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException;
-
     @ModelAttribute("levelSelectionItems")
     public List<LabelValue> populateLevelSelectionItems(){
         return getContestLevelSelectionItems();
@@ -56,6 +55,11 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     @ModelAttribute("sectionTypeSelectionItems")
     public List<LabelStringValue> populateSectionTypesSelectionItems(){
         return getSectionTypesSelectionItems();
+    }
+
+    @ModelAttribute("contestTypeSelectionItems")
+    public List<LabelValue> populateContestTypeSelectionItems() throws PortalException, SystemException {
+        return getContestTypeSelectionItems();
     }
 
     @ModelAttribute("whatTerms")
@@ -77,10 +81,8 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
     @ResourceMapping(value="getSectionDefinition")
     public @ResponseBody
-    void getSectionDefinition(
-            @RequestParam("sectionDefinitionId") Long sectionDefinitionId,
-            ResourceResponse response
-    ) throws Exception{
+    void getSectionDefinition(@RequestParam("sectionDefinitionId") Long sectionDefinitionId, ResourceResponse response)
+            throws PortalException, SystemException, java.io.IOException {
 
         PlanSectionDefinition planSectionDefinition =
                 PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionDefinitionId);
@@ -92,21 +94,25 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
     private List<LabelValue> getContestLevelSelectionItems(){
         List<LabelValue> selectItems = new ArrayList<>();
-        try {
-            for (ContestTier contestLevel : ContestTier.values()) {
-                selectItems.add(new LabelValue(contestLevel.getTierType(), contestLevel.getTierName()));
-            }
-        } catch (Exception ignored){ }
+        for (ContestTier contestLevel : ContestTier.values()) {
+            selectItems.add(new LabelValue(contestLevel.getTierType(), contestLevel.getTierName()));
+        }
+        return selectItems;
+    }
+
+    private List<LabelValue> getContestTypeSelectionItems() throws SystemException {
+        List<LabelValue> selectItems = new ArrayList<>();
+        for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
+            selectItems.add(new LabelValue(contestType.getId(), ContestTypeLocalServiceUtil.getLabelName(contestType)));
+        }
         return selectItems;
     }
 
     private List<LabelStringValue> getSectionTypesSelectionItems(){
         List<LabelStringValue> selectItems = new ArrayList<>();
-        try {
-            for (SectionTypes sectionTypes : SectionTypes.values()) {
-                selectItems.add(new LabelStringValue(sectionTypes.getSectionType(), sectionTypes.getDisplayName()));
-            }
-        } catch (Exception ignored){ }
+        for (SectionTypes sectionTypes : SectionTypes.values()) {
+            selectItems.add(new LabelStringValue(sectionTypes.getSectionType(), sectionTypes.getDisplayName()));
+        }
         return selectItems;
     }
 
@@ -161,13 +167,13 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     }
 
     private int compareOntologyTermStacks(Stack<OntologyTerm> stack1, Stack<OntologyTerm> stack2) {
-        String stack1FirstItemName = null;
-        String stack2FirstItemName = null;
+        String stack1FirstItemName;
         try {
             stack1FirstItemName = stack1.pop().getName();
         } catch (EmptyStackException e) {
             return -1;
         }
+        String stack2FirstItemName;
         try {
             stack2FirstItemName = stack2.pop().getName();
         } catch (EmptyStackException e) {
@@ -186,7 +192,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
         for (Stack<OntologyTerm> ontologyTermParentsPath : allParentsPaths) {
             OntologyTerm childTerm = ontologyTermParentsPath.firstElement();
-            String ontologyTermPathString = buildOntologyTermPathString(ontologyTermParentsPath, childTerm);
+            String ontologyTermPathString = buildOntologyTermPathString(ontologyTermParentsPath);
             termSelectItems.add(new LabelValue(childTerm.getId(), ontologyTermPathString));
         }
 
@@ -205,7 +211,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return parentsPath;
     }
 
-    private String buildOntologyTermPathString(Stack<OntologyTerm> parentsPath, OntologyTerm childTerm) throws SystemException, PortalException {
+    private String buildOntologyTermPathString(Stack<OntologyTerm> parentsPath) throws SystemException, PortalException {
         if (parentsPath.size() == 1) {
             return parentsPath.pop().getName();
         }
@@ -234,6 +240,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 //        return inputString.substring(0, maxChars) + "...";
 //    }
 
+    @Override
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
             throws PortalException, SystemException {
     }

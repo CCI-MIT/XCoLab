@@ -41,10 +41,10 @@ public class ImpactTemplateSeriesLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName638;
-    private String[] _methodParameterTypes638;
-    private String _methodName639;
-    private String[] _methodParameterTypes639;
+    private String _methodName498;
+    private String[] _methodParameterTypes498;
+    private String _methodName499;
+    private String[] _methodParameterTypes499;
 
     public ImpactTemplateSeriesLocalServiceClpInvoker() {
         _methodName0 = "addImpactTemplateSeries";
@@ -129,13 +129,13 @@ public class ImpactTemplateSeriesLocalServiceClpInvoker {
                 "com.ext.portlet.model.ImpactTemplateSeries"
             };
 
-        _methodName638 = "getBeanIdentifier";
+        _methodName498 = "getBeanIdentifier";
 
-        _methodParameterTypes638 = new String[] {  };
+        _methodParameterTypes498 = new String[] {  };
 
-        _methodName639 = "setBeanIdentifier";
+        _methodName499 = "setBeanIdentifier";
 
-        _methodParameterTypes639 = new String[] { "java.lang.String" };
+        _methodParameterTypes499 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -227,13 +227,13 @@ public class ImpactTemplateSeriesLocalServiceClpInvoker {
             return ImpactTemplateSeriesLocalServiceUtil.updateImpactTemplateSeries((com.ext.portlet.model.ImpactTemplateSeries) arguments[0]);
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName498.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes498, parameterTypes)) {
             return ImpactTemplateSeriesLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName639.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+        if (_methodName499.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes499, parameterTypes)) {
             ImpactTemplateSeriesLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

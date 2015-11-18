@@ -1,6 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.PointDistributionTarget;
 import com.ext.portlet.model.Points;
 import com.ext.portlet.model.PointsDistributionConfiguration;
@@ -11,9 +10,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

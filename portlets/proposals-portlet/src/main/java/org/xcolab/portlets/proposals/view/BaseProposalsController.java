@@ -1,16 +1,15 @@
 package org.xcolab.portlets.proposals.view;
 
-import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.util.PortalUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.util.PortalUtil;
+import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class BaseProposalsController {

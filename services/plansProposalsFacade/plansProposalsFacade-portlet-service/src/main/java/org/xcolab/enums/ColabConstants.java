@@ -1,9 +1,5 @@
 package org.xcolab.enums;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by Klemens Mang on 15/06/15.
  */

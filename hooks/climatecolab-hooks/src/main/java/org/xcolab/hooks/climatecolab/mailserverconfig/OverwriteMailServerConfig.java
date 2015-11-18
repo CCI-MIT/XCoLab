@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 public class OverwriteMailServerConfig extends SimpleAction {
 
+    @Override
     public void run(String[] ids) {
         String root = PropsUtil.get("liferay.home");
 

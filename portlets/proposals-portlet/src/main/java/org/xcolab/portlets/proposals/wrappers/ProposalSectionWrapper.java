@@ -4,8 +4,8 @@ import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -21,6 +21,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.xcolab.portlets.proposals.utils.LinkUtils;
 import org.xcolab.utils.HtmlUtil;
+import org.xcolab.utils.IdListUtil;
 
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -31,8 +32,8 @@ import java.util.regex.Pattern;
 public class ProposalSectionWrapper {
 
     private final static Log _log = LogFactoryUtil.getLog(ProposalSectionWrapper.class);
-    private PlanSectionDefinition definition;
-    private ProposalWrapper wrappedProposal;
+    private final PlanSectionDefinition definition;
+    private final ProposalWrapper wrappedProposal;
 
     public ProposalSectionWrapper(PlanSectionDefinition definition, ProposalWrapper wrappedProposal) {
         this.definition = definition;
@@ -143,8 +144,9 @@ public class ProposalSectionWrapper {
                     String newLinkElementWithNoFollow = HtmlUtil.createLink(link, elementName);
                     // Replace exactly this word in the HTML code with leading and trailing spaces
                     if (words.length == 1) { // In this case there are no leading and trailing spaces in the html code
-                        if (!html.contains("<"))
+                        if (!html.contains("<")) {
                             html = html.replaceFirst(Pattern.quote(word), newLinkElementWithNoFollow);
+                        }
                     } else if (i == 0) {
                         html = html.replaceFirst(Pattern.quote(word) + "(\\s|&nbsp;)", newLinkElementWithNoFollow);
                     } else if (i == words.length - 1) {
@@ -208,13 +210,15 @@ public class ProposalSectionWrapper {
             return null;
         }
 
-        String props[] = attr.getStringValue().split(",");
+        String[] props = attr.getStringValue().split(",");
         ProposalWrapper[] ret = new ProposalWrapper[props.length];
         for (int i = 0; i < props.length; i++) {
             try {
                 ret[i] = new ProposalWrapper(ProposalLocalServiceUtil.getProposal(Long.parseLong(props[i])));
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (NumberFormatException e) {
+                _log.error(String.format("Could not parse proposalId %s as a number", props[i]));
+            } catch (SystemException | PortalException e) {
+                _log.error(String.format("Could not retrieve proposal with id %s", props[i]), e);
             }
         }
         return ret;
@@ -233,14 +237,36 @@ public class ProposalSectionWrapper {
     }
 
     public List<OntologyTerm> getFocusAreaTerms() throws PortalException, SystemException {
-        if (definition.getFocusAreaId() <= 0) return null;
+        if (definition.getFocusAreaId() <= 0) {
+            return null;
+        }
 
         FocusArea area = FocusAreaLocalServiceUtil.getFocusArea(definition.getFocusAreaId());
 
         return FocusAreaLocalServiceUtil.getTerms(area);
     }
 
+    public List<Long> getAllowedContestTypeIds() {
+        return IdListUtil.getIdsFromString(definition.getAllowedContestTypeIds());
+    }
+
+    public String getProposalNames() {
+        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), true, "or");
+    }
+
+    public String getProposalNamesPlural() {
+        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), false, "and");
+    }
+
+    public String getContestNames() {
+        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), true, "or");
+    }
+
+    public String getContestNamesPlural() {
+        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), false, "or");
+    }
+
     private ProposalAttribute getSectionAttribute() throws SystemException, PortalException {
-        return this.wrappedProposal.getProposalAttributeUtil().getAttributeOrNull("SECTION", definition.getId());
+        return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", definition.getId());
     }
 }

@@ -61,9 +61,12 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
 
         try {
             Long planTemplateId = elementId != null ? elementId : getFirstPlanTemplateId();
-            ContestProposalTemplateWrapper contestProposalTemplateWrapper = new ContestProposalTemplateWrapper(planTemplateId);
+            model.addAttribute("planTemplateId", planTemplateId);
+            if (planTemplateId >= 0) {
+                ContestProposalTemplateWrapper contestProposalTemplateWrapper = new ContestProposalTemplateWrapper(planTemplateId);
+                model.addAttribute("contestProposalTemplateWrapper", contestProposalTemplateWrapper);
+            }
             model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId, ContestProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
-            model.addAttribute("contestProposalTemplateWrapper", contestProposalTemplateWrapper);
             model.addAttribute("elementId", planTemplateId);
             return ContestProposalTemplateTabController.TAB_VIEW;
         } catch (Exception e){
@@ -143,6 +146,10 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
 
 
     private Long getFirstPlanTemplateId()throws Exception{
-        return PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE).get(0).getId();
+        final List<PlanTemplate> planTemplates = PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE);
+        if (planTemplates.size() > 0) {
+            return planTemplates.get(0).getId();
+        }
+        return -1L;
     }
 }

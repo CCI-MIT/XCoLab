@@ -14,10 +14,12 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -26,6 +28,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+import org.xcolab.utils.IdListUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -56,6 +59,7 @@ public class ProposalsPreferencesController {
 
         //sort the phases by startdate
         Collections.sort(contestPhases, new Comparator<ContestPhase>() {
+            @Override
             public int compare(ContestPhase cp1, ContestPhase cp2) {
                 return sortModifier * cp1.getPhaseStartDate().compareTo(cp2.getPhaseStartDate());
             }
@@ -99,15 +103,15 @@ public class ProposalsPreferencesController {
         model.addAttribute("contestPhaseType", contestPhaseTypeMap);
         model.addAttribute("contestPhases", contestPhasesMap);
         model.addAttribute("proposals", proposalsMap);
-
+        model.addAttribute("contestTypes", ContestTypeLocalServiceUtil.getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS));
 
         return "preferences";
     }
 
 
     @RequestMapping(params = "action=judging")
-    public void releaseJudgingMails(ActionRequest request) throws Exception {
-        Integer[] phaseIds = new Integer[] { 1308611,1309131,1309135,1309139,1309143,1309147,1309151,1309155,1309159,1309163,1309167,1309171,1309175,1309179,1309183,1309187,1309191,1309201,1309707  };
+    public void releaseJudgingMails(ActionRequest request) throws PortalException, SystemException, com.liferay.util.mail.MailEngineException, javax.mail.internet.AddressException {
+        Integer[] phaseIds = { 1308611,1309131,1309135,1309139,1309143,1309147,1309151,1309155,1309159,1309163,1309167,1309171,1309175,1309179,1309183,1309187,1309191,1309201,1309707  };
         for (Integer phaseId : phaseIds) {
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
             for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(phaseId)) {
@@ -125,14 +129,11 @@ public class ProposalsPreferencesController {
         //care about moving proposals
         Long moveToContestPhaseId = preferences.getMoveToContestPhaseId();
         Long moveFromContestId = preferences.getMoveFromContestId();
-        String proposalIdsToBeMovedString = preferences.getProposalIdsToBeMoved();
+        List<Long> proposalIdsToBeMoved = IdListUtil.getIdsFromString(preferences.getProposalIdsToBeMoved());
         Long ribbonId = preferences.getRibbonId();
 
-        String[] proposalIdsToBeMoved = proposalIdsToBeMovedString.split(",");
-
-
         //moving parameters are set
-        String message = moveProposals(proposalIdsToBeMoved, moveFromContestId, moveToContestPhaseId, ribbonId, false);
+        String message = moveProposals(IdListUtil.PROPOSALS.fromIdList(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false);
         model.addAttribute("message", message);
     }
 
@@ -232,9 +233,9 @@ public class ProposalsPreferencesController {
                 final Long finalistRibbon = 1L;
                 final Long semiFinalistRibbon = 3L;
 
-                message += moveProposals(proposalListToStringArray(finalists), c.getContestPK(), winnersAwarded.getContestPhasePK(), finalistRibbon, true);
-                message += moveProposals(proposalListToStringArray(semiFinalists), c.getContestPK(), winnersAwarded.getContestPhasePK(), semiFinalistRibbon, false);
-                message += moveProposals(proposalListToStringArray(otherProposals), c.getContestPK(), winnersAwarded.getContestPhasePK(), -1L, false);
+                message += moveProposals(finalists, c.getContestPK(), winnersAwarded.getContestPhasePK(), finalistRibbon, true);
+                message += moveProposals(semiFinalists, c.getContestPK(), winnersAwarded.getContestPhasePK(), semiFinalistRibbon, false);
+                message += moveProposals(otherProposals, c.getContestPK(), winnersAwarded.getContestPhasePK(), -1L, false);
             } else {
                 message += "The proposals in this contests were not moved because the contest phases have not been found.<br/>\n";
             }
@@ -244,18 +245,9 @@ public class ProposalsPreferencesController {
         model.addAttribute("message", message);
     }
 
-    private static String[] proposalListToStringArray(List<Proposal> proposalList) {
-        String[] ids = new String[proposalList.size()];
-        int i = 0;
-        for (Proposal p : proposalList) {
-            ids[i++] = String.valueOf(p.getProposalId());
-        }
-        return ids;
-    }
-
-    private String moveProposals(String[] proposalIdsToBeMoved, Long moveFromContestId, Long moveToContestPhaseId, Long ribbonId, boolean forceRibbonCreation) throws PortalException {
+    private String moveProposals(List<Proposal> proposalsToBeMoved, Long moveFromContestId, Long moveToContestPhaseId, Long ribbonId, boolean forceRibbonCreation) throws PortalException {
         String message = "";
-        if (proposalIdsToBeMoved.length > 0 && moveToContestPhaseId > 0 && moveFromContestId > 0) {
+        if (!proposalsToBeMoved.isEmpty() && moveToContestPhaseId > 0 && moveFromContestId > 0) {
             try {
                 Contest moveFromContest = ContestLocalServiceUtil.fetchContest(moveFromContestId);
                 ContestPhase moveToContestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(moveToContestPhaseId);
@@ -267,12 +259,7 @@ public class ProposalsPreferencesController {
                 List<ContestPhase> contestPhases = getPhasesByContest(moveFromContest, -1);
 
                 //traverse proposals to be moved
-                for (String idStr: proposalIdsToBeMoved) {
-                    Long id = Long.parseLong(idStr);
-                    Proposal proposal = ProposalLocalServiceUtil.fetchProposal(id);
-
-                    assert proposal != null;
-
+                for (Proposal proposal : proposalsToBeMoved) {
                     //find out the last phase the proposal was in.
                     ContestPhase lastPhaseContainingProposal = null;
                     //traverse phases, later phases are first.
@@ -309,7 +296,9 @@ public class ProposalsPreferencesController {
                         if (oldP2p.getVersionTo() < 0) {
                             oldP2p.setVersionTo(currentProposalVersion.intValue());
                             Proposal2PhaseLocalServiceUtil.updateProposal2Phase(oldP2p);
-                        } else isBoundedVersion = true;
+                        } else {
+                            isBoundedVersion = true;
+                        }
 
                         Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), moveToContestPhase.getContestPhasePK());
                         p2p.setVersionFrom(currentProposalVersion.intValue());

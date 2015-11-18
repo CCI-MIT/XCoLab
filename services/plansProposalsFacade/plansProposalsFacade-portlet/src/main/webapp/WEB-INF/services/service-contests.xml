@@ -11,13 +11,12 @@
     
     <entity name="Contest" local-service="true" remote-service="true">
         <column name="ContestPK" type="long" primary="true" />
+        <column name="contestTypeId" type="long" />
         <column name="ContestName" type="String" />
         <column name="ContestShortName" type="String" />
         <column name="ContestDescription" type="String" />
         <column name="ContestModelDescription" type="String" />
         <column name="ContestPositionsDescription" type="String" />
-        <column name="defaultPlanDescription" type="String" />
-        <column name="PlanTypeId" type="long" />
         <column name="created" type="Date" />
         <column name="updated" type="Date" />
         <column name="authorId" type="long" />
@@ -67,50 +66,107 @@
             <order-column name="weight" />
             <order-column name="created" />
         </order>
-        
-        <finder name="Type" return-type="Collection">
-            <finder-column name="PlanTypeId" />
-        </finder>
 
-        <finder name="ContestTier" return-type="Collection">
+        <finder name="Tier" return-type="Collection">
             <finder-column name="contestTier" />
         </finder>
-        
-        <finder name="ContestActivecontestPrivate" return-type="Collection">
+        <finder name="TierType" return-type="Collection">
+            <finder-column name="contestTier" />
+            <finder-column name="contestTypeId" />
+        </finder>
+
+        <finder name="ActivePrivate" return-type="Collection">
             <finder-column name="contestActive" />
             <finder-column name="contestPrivate" />
         </finder>
-        
-	<finder name="ContestActive" return-type="Collection">
+        <finder name="ActivePrivateType" return-type="Collection">
             <finder-column name="contestActive" />
+            <finder-column name="contestPrivate" />
+            <finder-column name="contestTypeId" />
+        </finder>
+
+        <finder name="Active" return-type="Collection">
+            <finder-column name="contestActive" />
+        </finder>
+        <finder name="ActiveType" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="contestTypeId" />
         </finder>
         <finder name="ActiveFeatured" return-type="Collection">
             <finder-column name="contestActive" />
             <finder-column name="featured" />
         </finder>
-        <finder name="ActiveFeaturedcontestPrivate" return-type="Collection">
+        <finder name="ActiveFeaturedType" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="featured" />
+            <finder-column name="contestTypeId" />
+        </finder>
+        <finder name="ActiveFeaturedPrivate" return-type="Collection">
             <finder-column name="contestActive" />
             <finder-column name="featured" />
             <finder-column name="contestPrivate" />
+        </finder>
+        <finder name="ActiveFeaturedPrivateType" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="featured" />
+            <finder-column name="contestPrivate" />
+            <finder-column name="contestTypeId" />
         </finder>
         <finder name="ActiveFlag" return-type="Collection">
             <finder-column name="contestActive" />
             <finder-column name="flag" />
         </finder>
-        <finder name="ActiveFlagContest" return-type="Collection">
+        <finder name="ActiveFlagType" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="flag" />
+            <finder-column name="contestTypeId" />
+        </finder>
+        <finder name="ActiveFlagPrivate" return-type="Collection">
             <finder-column name="contestActive" />
             <finder-column name="flag" />
             <finder-column name="contestPrivate" />
+        </finder>
+        <finder name="ActiveFlagPrivateType" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="flag" />
+            <finder-column name="contestPrivate" />
+            <finder-column name="contestTypeId" />
         </finder>
         <finder name="ActiveFlagText" return-type="Collection">
             <finder-column name="contestActive" />
             <finder-column name="flagText" />
         </finder>
-        <finder name="ActiveFlagTextcontestPrivate" return-type="Collection">
+        <finder name="ActiveFlagTextType" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="flagText" />
+            <finder-column name="contestTypeId" />
+        </finder>
+        <finder name="ActiveFlagTextPrivate" return-type="Collection">
             <finder-column name="contestActive" />
             <finder-column name="flagText" />
             <finder-column name="contestPrivate" />
         </finder>
+        <finder name="ActiveFlagTextPrivateType" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="flagText" />
+            <finder-column name="contestPrivate" />
+            <finder-column name="contestTypeId" />
+        </finder>
+        <finder name="ContestType" return-type="Collection">
+            <finder-column name="contestTypeId" />
+        </finder>
+    </entity>
+
+    <entity name="ContestType" local-service="true">
+        <column name="id" type="long" primary="true" />
+        <column name="contestName" type="String" />
+        <column name="contestNamePlural" type="String" />
+        <column name="proposalName" type="String" />
+        <column name="proposalNamePlural" type="String" />
+        <column name="portletName" type="String" />
+        <column name="portletUrl" type="String"/>
+        <column name="menuItemName" type="String"/>
+        <column name="hasDiscussion" type="boolean" />
     </entity>
     
     <entity name="ContestDebate" local-service="true">

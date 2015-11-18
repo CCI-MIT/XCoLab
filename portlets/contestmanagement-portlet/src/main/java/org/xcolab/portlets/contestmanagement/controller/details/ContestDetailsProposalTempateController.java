@@ -16,8 +16,8 @@ import org.xcolab.portlets.contestmanagement.controller.common.ContestProposalTe
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestProposalTemplateWrapper;
-import org.xcolab.wrapper.ContestWrapper;
 import org.xcolab.wrapper.TabWrapper;
+import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -33,7 +33,6 @@ import java.util.List;
 public class ContestDetailsProposalTempateController extends ContestProposalTemplateTabController {
 
     private Contest contest;
-    private ContestWrapper contestWrapper;
     private final static Log _log = LogFactoryUtil.getLog(ContestDetailsProposalTempateController.class);
     static final private TabEnum tab = ContestDetailsTabs.PROPOSALTEMPLATE;
 
@@ -44,17 +43,12 @@ public class ContestDetailsProposalTempateController extends ContestProposalTemp
     }
 
     @ModelAttribute("contestWrapper")
-    public ContestWrapper populateContestWrapper(Model model, PortletRequest request){
+    public BaseContestWrapper populateContestWrapper(Model model, PortletRequest request){
         try {
-            Long contestId = getContestIdFromRequest(request);
-            if (contestId != null) {
-                contest = ContestLocalServiceUtil.getContest(contestId);
-                contestWrapper = new ContestWrapper(contest);
-                return contestWrapper;
-            }
-            throw new Exception("No contest id provided.Severe.");
-        } catch (Exception e){
-        }
+            long contestId = getContestIdFromRequest(request);
+            contest = ContestLocalServiceUtil.getContest(contestId);
+            return new BaseContestWrapper(contest);
+        } catch (PortalException | SystemException ignored) { }
         return null;
     }
     @ModelAttribute("currentTabWrapped")
@@ -88,7 +82,7 @@ public class ContestDetailsProposalTempateController extends ContestProposalTemp
 
     @RequestMapping(params = "action=updateContestProposalTemplate")
     public void updateProposalTemplateTabController(ActionRequest request, Model model, ActionResponse response,
-                                                    @ModelAttribute ContestProposalTemplateWrapper updatedContestProposalTemplateWrapper, BindingResult result) {
+                @ModelAttribute ContestProposalTemplateWrapper updatedContestProposalTemplateWrapper, BindingResult result) {
 
         if(!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);

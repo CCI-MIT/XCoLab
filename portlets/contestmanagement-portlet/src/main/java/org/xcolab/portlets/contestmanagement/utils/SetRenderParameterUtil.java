@@ -6,7 +6,6 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by Thomas on 4/27/2015.
@@ -14,7 +13,6 @@ import java.util.List;
 public class SetRenderParameterUtil {
 
     private static final String DEFAULT_SUCCESS_MESSAGE = "Changes saved!";
-    private static final String DEFAULT_EXCEPTION_MESSAGE = "Exception occured!";
 
     public static void setNoPermissionErrorRenderParameter(ActionResponse response){
         setErrorRenderParameter(response, "showNoPermission");
@@ -32,8 +30,8 @@ public class SetRenderParameterUtil {
 
     private static String getStackTraceInHtmlFormat(StackTraceElement[] stackTraceElements){
         String htmlStacktrace = "<pre>";
-        for(int i = 0; i < stackTraceElements.length; i++){
-            htmlStacktrace += stackTraceElements[i].toString() + "<br>";
+        for (StackTraceElement stackTraceElement : stackTraceElements) {
+            htmlStacktrace += stackTraceElement.toString() + "<br>";
         }
         htmlStacktrace += "</pre>";
         return htmlStacktrace;
@@ -62,7 +60,7 @@ public class SetRenderParameterUtil {
         response.setRenderParameter("action", errorActionParameter);
     }
 
-    public static void setSuccessRenderRedirectDetailsTab (ActionResponse response, Long contestPK, String tabName) throws Exception{
+    public static void setSuccessRenderRedirectDetailsTab (ActionResponse response, Long contestPK, String tabName) throws IOException {
         response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId/" + contestPK + "/tab/" + tabName);
     }
 
@@ -70,7 +68,7 @@ public class SetRenderParameterUtil {
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName);
     }
 
-    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName, Long elementId) throws Exception{
+    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName, Long elementId) throws IOException {
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName + "/elementId/" + elementId);
     }
 

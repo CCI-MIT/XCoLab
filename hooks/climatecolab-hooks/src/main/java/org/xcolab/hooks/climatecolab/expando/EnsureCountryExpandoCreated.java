@@ -1,10 +1,9 @@
-/**
- * 
- */
 package org.xcolab.hooks.climatecolab.expando;
 
 import com.ext.portlet.community.CommunityConstants;
 import com.liferay.portal.kernel.events.SimpleAction;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
@@ -18,50 +17,33 @@ import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
  * 
  */
 public class EnsureCountryExpandoCreated extends SimpleAction {
-    private static Log _log = LogFactoryUtil.getLog(EnsureCountryExpandoCreated.class);
-
-
-	/**
-	 * 
-
-	public EnsureCountryExpandoCreated() {
-
-	}
-
+    private static final Log _log = LogFactoryUtil.getLog(EnsureCountryExpandoCreated.class);
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
 	 * com.liferay.portal.kernel.events.SimpleAction#run(java.lang.String[])
 	 */
-	//@Override
+	@Override
 	public void run(String[] ids) {
-		
- 
-		ExpandoTable table = null;
+		ExpandoTable table;
 
 		try {
 			table = ExpandoTableLocalServiceUtil.addTable(User.class.getName(),
 					CommunityConstants.EXPANDO);
-		} catch (Exception dtne) {
+		} catch (SystemException | PortalException dtne) {
 			try {
 				table = ExpandoTableLocalServiceUtil.getTable(User.class.getName(),
 						CommunityConstants.EXPANDO);
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SystemException | PortalException e) {
+				_log.error("Failed to create or retrieve explando table", e);
+				return;
 			}
-			//_log.warn("Expando table probably already exists", dtne);
 		}
 		
 		try {
 			ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(),
 					CommunityConstants.COUNTRY, ExpandoColumnConstants.STRING);
-		}
-		catch (Exception dcne) {
-			//_log.warn("Expando column already exists",dcne);
-
-		}
-
+		} catch (SystemException | PortalException ignored) { }
 	}
-
 }

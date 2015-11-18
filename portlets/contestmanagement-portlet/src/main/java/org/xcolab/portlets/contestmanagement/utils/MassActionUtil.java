@@ -7,12 +7,12 @@ import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
  */
 public class MassActionUtil {
 
-    public static String getSelectedMassActionTitle(Long selectedMassAction) throws Exception {
+    public static String getSelectedMassActionTitle(Long selectedMassAction) {
         String selectedMassActionTitle = "";
-        Long selectedMassActionAbsolute = Math.abs(selectedMassAction.longValue());
+        Long selectedMassActionAbsolute = Math.abs(selectedMassAction);
         for (ContestMassActions contestMassAction : ContestMassActions.values()) {
             if (selectedMassActionAbsolute == contestMassAction.ordinal()) {
-                if (selectedMassAction.longValue() < 0) {
+                if (selectedMassAction < 0) {
                     selectedMassActionTitle = contestMassAction.getReverseActionDisplayName();
                 } else {
                     selectedMassActionTitle = contestMassAction.getActionDisplayName();

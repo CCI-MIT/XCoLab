@@ -7,15 +7,15 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.enums.MemberRole;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class MemberItem implements Serializable {
-    private MemberCategory category;
+    private MemberRole memberRole;
     private long activityCount;
     private Date joinDate;
     private Long userId;
@@ -30,68 +30,56 @@ public class MemberItem implements Serializable {
         joinDate = user.getCreateDate();
         points = PointsLocalServiceUtil.getUserMaterializedPoints(userId);
 
-
-        if (memberCategoryParam!=null && memberCategoryParam.compareTo("")!=0)
-        {
+        if (memberCategoryParam != null && memberCategoryParam.compareTo("") != 0) {
             switch (memberCategoryParam){
                 case "Member":
-                    category=MemberCategory.MEMBER;
+                    memberRole = MemberRole.MEMBER;
                     break;
                 case "Catalyst":
-                    category=MemberCategory.CATALYST;
+                    memberRole = MemberRole.CATALYST;
                     break;
                 case "Fellow":
-                    category=MemberCategory.FELLOW;
+                    memberRole = MemberRole.FELLOW;
                     break;
                 case "Impact Assessment Fellow":
-                    category=MemberCategory.IMPACT_ASSESSMENT_FELLOW;
+                    memberRole = MemberRole.IMPACT_ASSESSMENT_FELLOW;
                     break;
                 case "Advisor":
-                    category=MemberCategory.ADVISOR;
+                    memberRole = MemberRole.ADVISOR;
                     break;
                 case "Expert":
-                    category=MemberCategory.EXPERT;
+                    memberRole = MemberRole.EXPERT;
                     break;
                 case "Contest Manager":
-                    category=MemberCategory.CONTESTMANAGER;
+                    memberRole = MemberRole.CONTEST_MANAGER;
                     break;
                 case "Judges":
-                    category=MemberCategory.JUDGES;
+                    memberRole = MemberRole.JUDGE;
                     break;
                 case "Staff":
-                    category=MemberCategory.STAFF;
+                    memberRole = MemberRole.STAFF;
             }
-        }
-
-        else {
-
+        } else {
             List<Role> roles = UserLocalServiceUtil.getUser(userId).getRoles();
-            if (roles.size() > 0) {
+            if (!roles.isEmpty()) {
 
-                MemberCategory currentCat = MemberCategory.MEMBER;
-                category = MemberCategory.MEMBER;
-
+                memberRole = MemberRole.MEMBER;
 
                 for (Role role: roles) {
-                    String roleName = role.getName();
+                   long roleId = role.getRoleId();
 
-                    for (MemberCategory memberCategory : MemberCategory.values())
+                    MemberRole currentRole = MemberRole.fromRoleId(roleId);
 
-                        if (Arrays.asList(memberCategory.getRoleNames()).contains(roleName)) {
-                            currentCat = memberCategory;
-                            break;
-                        }
-
-                    if (currentCat.ordinal() > category.ordinal()) {
-                        category = currentCat;
+                    if (currentRole != null
+                            && currentRole.getMemberCategory().getSortOrder() > memberRole.getMemberCategory().getSortOrder()) {
+                        memberRole = currentRole;
                     }
                 }
 
-                if (category == MemberCategory.MODERATOR) category = MemberCategory.STAFF;
-
-
+                if (memberRole.getRoleId() == MemberRole.MODERATOR.getRoleId()) {
+                    memberRole = MemberRole.STAFF;
+                }
             }
-
         }
     }
 
@@ -111,8 +99,8 @@ public class MemberItem implements Serializable {
         return String.format("%,d", points);
     }
     
-    public MemberCategory getCategory() {
-        return category;    
+    public MemberRole getMemberRole() {
+        return memberRole;
     }
     
     public String getMemberSince() {
@@ -126,7 +114,7 @@ public class MemberItem implements Serializable {
             case ACTIVITY:
                 return activityCount;
             case MEMBER_CATEGORY:
-                return category;
+                return memberRole;
             case MEMBER_SINCE:
                 return joinDate;
             default:
@@ -141,6 +129,4 @@ public class MemberItem implements Serializable {
     public String getScreenName() {
     	return screenName;
     }
-    
-
 }

@@ -68,8 +68,8 @@ public class UserBean implements Serializable{
 	@Length(min = 0, max = 300)
 	private String country;
 
-	private Long userId;
-	private Long imageId;
+	private long userId;
+	private long imageId;
 	private boolean isFemale;
 	private boolean sendEmailOnMessage;
 	private boolean sendEmailOnActivity;
@@ -105,23 +105,17 @@ public class UserBean implements Serializable{
 	}
 
 	private String getPortraitString() {
-
-		try {
-			return  "/user_" + (this.isFemale ? "female" : "male") + "_portrait?img_id="
+		return  "/user_" + (this.isFemale ? "female" : "male") + "_portrait?img_id="
                     + this.imageId;
-		} catch (Exception e) {
-		}
-
-		return "";
 	}
 
 	public String getPortrait() { return getPortraitString(); }
 
-	public Long getImageId() {
+	public long getImageId() {
 		return imageId;
 	}
 
-	public void setImageId(Long imageId) {
+	public void setImageId(long imageId) {
 		this.imageId = imageId;
 	}
 
@@ -219,11 +213,11 @@ public class UserBean implements Serializable{
 
 	public void setSendDailyEmailOnActivity(boolean send) { sendDailyEmailOnActivity = send; }
 
-	public Long getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 

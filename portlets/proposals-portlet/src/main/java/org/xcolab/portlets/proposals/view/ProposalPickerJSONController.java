@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -37,8 +38,8 @@ import java.util.List;
 @RequestMapping("view")
 public class ProposalPickerJSONController {
 
-	private static int MAX_CHARS_FOR_NAMES = 75;
-	private static Log _log = LogFactoryUtil.getLog(ProposalPickerJSONController.class);
+	private static final int MAX_CHARS_FOR_NAMES = 75;
+	private static final Log _log = LogFactoryUtil.getLog(ProposalPickerJSONController.class);
 
 	@Autowired
 	private ProposalsContext proposalsContext;
@@ -79,15 +80,18 @@ public class ProposalPickerJSONController {
 		}
 		int totalCount;
 		if (proposals != null) {
-			if (filterText != null && filterText.length() > 0)
+			if (filterText != null && !filterText.isEmpty()) {
 				ProposalPickerFilter.TEXT_BASED.filter(proposals, filterText);
+			}
 			totalCount = proposals.size();
 
 			ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
-			if (end >= totalCount && totalCount > 0)
+			if (end >= totalCount && totalCount > 0) {
 				end = totalCount;
-			if (totalCount > (end - start))
+			}
+			if (totalCount > (end - start)) {
 				proposals = proposals.subList(start, end);
+			}
 
 		} else {
 			totalCount = 0;
@@ -115,14 +119,13 @@ public class ProposalPickerJSONController {
 		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getFilteredContests(
 				sectionId, request, proposalsContext);
 
-		if (filterText != null && filterText.length() > 0) {
+		if (filterText != null && !filterText.isEmpty()) {
 			ProposalPickerFilter.TEXT_BASED.filterContests(contests,
 					filterText);
 		}
 		int totalCount = contests.size();
 
-		// sortList(sortOrder,sortColumn,contests);
-		if (end >= contests.size() && contests.size() > 0) {
+		if (end >= contests.size() && !contests.isEmpty()) {
 			end = contests.size();
 		}
 		ProposalPickerSortingUtil.sortContestsList(sortOrder, sortColumn, contests);
@@ -178,6 +181,7 @@ public class ProposalPickerJSONController {
 					StringEscapeUtils.unescapeXml(wrappedProposal.getName()), MAX_CHARS_FOR_NAMES));
 			o.put("contestName", StringUtils.abbreviate(wrappedProposal
 					.getContest().getContestShortName(), MAX_CHARS_FOR_NAMES));
+			o.put("linkUrl", ProposalLocalServiceUtil.getProposalLinkUrl(wrappedProposal.getContest(), wrappedProposal.getWrapped()));
 			o.put("contestId", wrappedProposal.getContest().getContestPK());
 			if (StringUtils.isNotBlank(wrappedProposal.getTeam())) {
 				o.put("team", wrappedProposal.getTeam());

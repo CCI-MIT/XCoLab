@@ -26,10 +26,12 @@ public class BalloonStatsFilter implements Filter {
     private static final String CONTEST_LINK = "/web/guest/plans/-/plans/contestId/CONTEST_ID";
     private final static Log _log = LogFactoryUtil.getLog(BalloonStatsFilter.class);
 
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
 
@@ -44,13 +46,10 @@ public class BalloonStatsFilter implements Filter {
                 entry.setChoosenContest(entry.getChoosenContest() | 2);
             }
             BalloonStatsEntryLocalServiceUtil.store(entry);
-        } catch (SystemException e) {
+        } catch (SystemException | PortalException e) {
             _log.error(e);
             return;
 
-        } catch (PortalException e) {
-            _log.error(e);
-            return;
         }
 
         HttpServletResponse httpResp = (HttpServletResponse) response;
@@ -58,6 +57,7 @@ public class BalloonStatsFilter implements Filter {
 
     }
 
+    @Override
     public void destroy() {
 
     }

@@ -1,10 +1,13 @@
 package org.xcolab.hooks.climatecolab.utils;
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
@@ -70,8 +73,7 @@ public class FileUploadFilter implements Filter {
 						ImageLocalServiceUtil.updateImage(imageId, imgBArr);
 
 						// return JSON with image id
-						response.getWriter().append(
-								"{\"success\": \"true\", \"imageId\": " + img.getPrimaryKey() + "}");
+						response.getWriter().append(String.format("{\"success\": \"true\", \"imageId\": %d}", img.getPrimaryKey()));
 						response.getWriter().close();
 					}
 					else {
@@ -82,11 +84,10 @@ public class FileUploadFilter implements Filter {
 				}
 			}
 			else {
-                response.getWriter().append(
-                        "{\"error\": \"true\", \"message\":\"Unknown request\"}");
+                response.getWriter().append("{\"error\": \"true\", \"message\":\"Unknown request\"}");
                 response.getWriter().close();
 			}
-		} catch (Exception e) {
+		} catch (FileUploadException | SystemException | PortalException | IOException e) {
 			throw new ServletException(e);
 		} finally {
 			if (is != null) {
@@ -133,16 +134,19 @@ public class FileUploadFilter implements Filter {
 		return bos.toByteArray();
 	}
 
-    public void init(FilterConfig filterConfig) throws ServletException {
+    @Override
+	public void init(FilterConfig filterConfig) throws ServletException {
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+    @Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
         doPost((HttpServletRequest) request, (HttpServletResponse) response);
         
     }
 
-    public void destroy() {
+    @Override
+	public void destroy() {
         // TODO Auto-generated method stub
         
     }

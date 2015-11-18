@@ -1,7 +1,19 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestSchedule;
+import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.PlanTemplate;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
+import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
+import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -17,7 +29,12 @@ import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
 import org.xcolab.portlets.contestmanagement.entities.StartDateEndDate;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 
-import java.util.*;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Helper class used to automatically create sets of new contests. Uses JSON data to create these contests.
@@ -25,11 +42,11 @@ import java.util.*;
  * Created by Mente on 27/02/15.
  */
 public class ContestCreatorUtil {
-    private static Log _log = LogFactoryUtil.getLog(ContestCreatorUtil.class);
+    private static final Log _log = LogFactoryUtil.getLog(ContestCreatorUtil.class);
 
+    //TODO: remove hard coded schedules
     public static final String CONTEST_SCHEDULE_2015_SECTOR_LABEL = "2015 Schedule: sector";
     public static final String CONTEST_SCHEDULE_2015_REGIONAL_LABEL = "2015 Schedule: regional";
-    public static final String CONTEST_SCHEDULE_2015_GLOBAL_LABEL = "2015 Schedule: global";
     public final static Long DEFAULT_CONTEST_SCHEDULE_ID = 601L; // Our default schedule with proposal creation only
     public final static Long DEFAULT_CONTEST_TEMPLATE_ID = 102L; // Our default template
 
@@ -45,7 +62,7 @@ public class ContestCreatorUtil {
 
     private static final String FELLOW_ROLE_NAME = "Fellow";
 
-
+    //TODO: don't hardcode this
     private static final String BASIC_CONTESTS_2015_JSON = "[\n" +
             "{\"name\": \"Adaptation\", \"contestTier\" : 1, \"contestSchedule\": 1,\"focusArea\": 801, \"ontologyTerms\":[]},\n" +
             "{\"name\":\"Buildings\", \"contestTier\" : 1, \"contestSchedule\": 1,\"focusArea\": 303, \"ontologyTerms\":[]},\n" +
@@ -447,8 +464,6 @@ public class ContestCreatorUtil {
                 // ##################### Other Developing Countries Tier III done #####################
             "]";
 
-
-
     public static Map<String, String> create2015BasicContests(String portalBaseURL) {
         return createContestsWithJSON(BASIC_CONTESTS_2015_JSON, portalBaseURL);
     }
@@ -457,8 +472,7 @@ public class ContestCreatorUtil {
         return createContestsWithJSON(TIER_III_AND_II_CONTESTS_2015_JSON, portalBaseURL);
     }
 
-
-    public static Contest createNewContest(String contestShortName) throws Exception {
+    public static Contest createNewContest(String contestShortName) throws SystemException, PortalException {
         Contest contest = ContestLocalServiceUtil.createNewContest(10144L, contestShortName);
         contest.setContestPrivate(true);
         contest.setShow_in_tile_view(true);
@@ -476,14 +490,12 @@ public class ContestCreatorUtil {
     }
 
     private static String getContestLink(Contest contest) {
-        return "/web/guest/plans/-/plans/contestId/" + contest.getContestPK();
+        return ContestLocalServiceUtil.getContestLinkUrl(contest);
     }
 
     private static Map<String, String> createContestsWithJSON(String json, String portalBaseUrl) {
-
-        JSONArray contestDataArray = null;
         try {
-            contestDataArray = JSONFactoryUtil.createJSONArray(json);
+            JSONArray contestDataArray = JSONFactoryUtil.createJSONArray(json);
 
             Map<String, String> contestEditMap = new HashMap<>(contestDataArray.length());
             for (int i = 0; i < contestDataArray.length(); i++) {
@@ -499,12 +511,8 @@ public class ContestCreatorUtil {
                     try {
                         PlanTemplate contestPlanTemplate = createPlanTemplateWithJson(newContestContents.getJSONObject("planTemplate"), newContest);
                         newContest.setPlanTemplateId(contestPlanTemplate.getId());
-                    } catch (Exception e) {
-                        try {
-                            newContest.setPlanTemplateId(newContestContents.getLong("planTemplate"));
-                        } catch (Exception e2) {
-                            _log.error("Could not set the planTemplate for contest " + newContest.getContestPK(), e2);
-                        }
+                    } catch (SystemException | PortalException e) {
+                        newContest.setPlanTemplateId(newContestContents.getLong("planTemplate"));
                     }
 
                     newContest.persist();
@@ -525,7 +533,7 @@ public class ContestCreatorUtil {
                     }
 
 
-                } catch (Exception e) {
+                } catch (SystemException | PortalException | UnsupportedEncodingException e) {
                     _log.error("Could not create contest with name " + newContestContents.getString(CONTEST_NAME_KEY) + ": " + e);
                     contestEditMap.put(newContestContents.getString(CONTEST_NAME_KEY), "Could not be created");
                 }
@@ -539,7 +547,7 @@ public class ContestCreatorUtil {
         return null;
     }
 
-    private static Contest createSingleContestWithJSON(JSONObject newContestContents) throws Exception {
+    private static Contest createSingleContestWithJSON(JSONObject newContestContents) throws PortalException, SystemException, UnsupportedEncodingException {
 
         String contestTitle = newContestContents.getString(CONTEST_NAME_KEY);
         Contest newContest = createNewContest(contestTitle);
@@ -584,15 +592,15 @@ public class ContestCreatorUtil {
         return newContest;
     }
 
-    private static void createContestWikiPage(Contest contest) throws Exception{
+    private static void createContestWikiPage(Contest contest) throws SystemException, UnsupportedEncodingException, PortalException {
         ContestDescriptionBean.updateContestWiki(contest, "");
     }
 
-    private static void createContestPhases(Contest contest, Long contestScheduleTemplateId) throws Exception{
+    private static void createContestPhases(Contest contest, Long contestScheduleTemplateId) throws SystemException {
         ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleTemplateId);
     }
 
-    private static List<Contest> createSubContests(JSONArray subContestsJson) throws Exception {
+    private static List<Contest> createSubContests(JSONArray subContestsJson) throws UnsupportedEncodingException, PortalException, SystemException {
         List<Contest> subContestList = new ArrayList<>(subContestsJson.length());
         for (int j = 0; j < subContestsJson.length(); j++) {
             subContestList.add(createSingleContestWithJSON(subContestsJson.getJSONObject(j)));
@@ -605,7 +613,7 @@ public class ContestCreatorUtil {
         StringBuilder htmlListString = new StringBuilder("<ul>");
         // Create HTML list for all sub contests
         for (Contest subContest : subContests) {
-            htmlListString.append("<li><a href='" + getContestLink(subContest) + "'>" + subContest.getContestShortName() + "</a></li>");
+            htmlListString.append(String.format("<li><a href='%s'>%s</a></li>", getContestLink(subContest), subContest.getContestShortName()));
         }
         htmlListString.append("</ul>");
         return htmlListString.toString();
@@ -654,9 +662,6 @@ public class ContestCreatorUtil {
 
     /**
      * Tries to retrieve the PlanSectionDefinition for the passed parameters and creates a new PlanSectionDefinition if it does not exist yet
-     * @param sectionDefinitionJson
-     * @param forContest
-     * @return
      * @throws SystemException
      * @throws PortalException
      */
@@ -670,7 +675,7 @@ public class ContestCreatorUtil {
         } else {
             try {
                 focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
-            } catch (Exception e) {
+            } catch (SystemException | PortalException e) {
                 _log.error("Could not get Focus Area with ID " + focusAreaId + "! Creating new one...", e);
                 focusArea = createFocusAreaWithOntologyTermsArray(sectionDefinitionJson.getJSONArray("ontologyTerms"), forContest);
             }
@@ -711,18 +716,18 @@ public class ContestCreatorUtil {
         }
     }
 
-    public static void insertSeedDataToContestScheduleTableIfNotAvailable() throws Exception{
+    public static void insertSeedDataToContestScheduleTableIfNotAvailable() throws SystemException {
         if(!isContestSchedulesAvailable()){
             insertSeedDataToContestScheduleTable(CONTEST_SCHEDULE_2015_SECTOR_LABEL, createSeedDataForBasicLevelSchedule());
             insertSeedDataToContestScheduleTable(CONTEST_SCHEDULE_2015_REGIONAL_LABEL, createSeedDataForRegionalLevelSchedule());
         }
     }
 
-    private static boolean isContestSchedulesAvailable() throws Exception{
+    private static boolean isContestSchedulesAvailable() throws SystemException {
         return ContestScheduleLocalServiceUtil.getContestSchedulesCount() > 1;
     }
 
-    private static void insertSeedDataToContestScheduleTable(String scheduleName, List<ContestPhaseBean> contestPhaseBeanList) throws Exception{
+    private static void insertSeedDataToContestScheduleTable(String scheduleName, List<ContestPhaseBean> contestPhaseBeanList) throws SystemException {
 
         ContestSchedule contestSchedule = ContestScheduleLocalServiceUtil.
                 createContestSchedule(CounterLocalServiceUtil.increment(ContestSchedule.class.getName()));
@@ -781,8 +786,7 @@ public class ContestCreatorUtil {
         return  contestPhaseBeans;
     }
 
-
-    public static ContestSchedule createNewSchedule() throws Exception{
+    public static ContestSchedule createNewSchedule() throws SystemException {
         Long newContestScheduleId = CounterLocalServiceUtil.increment(ContestSchedule.class.getName());
         ContestSchedule newContestSchedule = ContestScheduleLocalServiceUtil.createContestSchedule(newContestScheduleId);
         newContestSchedule.setName("New contest schedule");
@@ -790,5 +794,4 @@ public class ContestCreatorUtil {
         ContestScheduleLocalServiceUtil.updateContestSchedule(newContestSchedule);
         return newContestSchedule;
     }
-
 }

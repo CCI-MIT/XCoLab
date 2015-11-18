@@ -588,7 +588,7 @@ public interface ProposalLocalService extends BaseLocalService,
     public java.util.List<com.ext.portlet.model.Proposal> getProposalsInContestPhase(
         long contestPhaseId, java.lang.String sortProperty,
         boolean sortAscending, int start, int end)
-        throws com.liferay.portal.kernel.exception.PortalException,
+        throws com.ext.portlet.NoSuchProposalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -1095,6 +1095,17 @@ public interface ProposalLocalService extends BaseLocalService,
     public java.lang.Long getDiscussionIdAndGenerateIfNull(
         com.ext.portlet.model.Proposal proposal)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the URL link address for the passed proposal in the latest contest
+    *
+    * @param proposalId The proposal id
+    * @return Proposal URL as String
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getProposalLinkUrl(java.lang.Long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the URL link address for the passed proposal and contest

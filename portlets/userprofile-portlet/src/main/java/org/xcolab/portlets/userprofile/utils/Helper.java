@@ -34,7 +34,7 @@ public class Helper {
         sb.append("?");
         
 
-        if (locationAndQueryString.length > 1 && locationAndQueryString[1].length() > 0) {
+        if (locationAndQueryString.length > 1 && !locationAndQueryString[1].isEmpty()) {
             sb.append(locationAndQueryString[1]);
             sb.append("&");
         }
@@ -60,7 +60,7 @@ public class Helper {
                 sb.append("&");
             }
             appendAnd = true;
-            sb.append(key + "=" + URLEncoder.encode(parameters.get(key), "UTF-8"));
+            sb.append(String.format("%s=%s", key, URLEncoder.encode(parameters.get(key), "UTF-8")));
         }
         
         if (locationAndHash.length > 1) {
@@ -73,7 +73,7 @@ public class Helper {
         return redirect;
     }
     
-    private final static Map<String, String> codeToCountryMap = new HashMap<String, String>();
+    private final static Map<String, String> codeToCountryMap = new HashMap<>();
     static {
             codeToCountryMap.put("AF", "Afghanistan");
             codeToCountryMap.put("AX", "Åland Islands");

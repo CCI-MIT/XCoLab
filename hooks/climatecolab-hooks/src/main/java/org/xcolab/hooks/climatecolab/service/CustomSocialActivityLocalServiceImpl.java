@@ -19,7 +19,7 @@ import java.util.Date;
  */
 public class CustomSocialActivityLocalServiceImpl extends SocialActivityLocalServiceWrapper {
 
-    private Log _log = LogFactoryUtil.getLog(CustomSocialActivityLocalServiceImpl.class);
+    private final Log _log = LogFactoryUtil.getLog(CustomSocialActivityLocalServiceImpl.class);
 
     private static final Object mutex = new Object();
 
@@ -27,6 +27,7 @@ public class CustomSocialActivityLocalServiceImpl extends SocialActivityLocalSer
         super(socialActivityLocalService);
     }
 
+    @Override
     public void addActivity(
             SocialActivity activity, SocialActivity mirrorActivity)
             throws PortalException, SystemException {
@@ -38,6 +39,7 @@ public class CustomSocialActivityLocalServiceImpl extends SocialActivityLocalSer
         }
     }
 
+    @Override
     public void addActivity(
             long userId, long groupId, Date createDate, String className,
             long classPK, int type, String extraData, long receiverUserId)

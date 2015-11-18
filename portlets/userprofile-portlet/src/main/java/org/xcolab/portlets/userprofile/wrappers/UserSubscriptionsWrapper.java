@@ -30,7 +30,7 @@ public class UserSubscriptionsWrapper implements Serializable {
     public List<ActivitySubscriptionWrapper> getSubscriptions(){
         if (subscriptions == null) {
             try {
-                subscriptions = new ArrayList<ActivitySubscriptionWrapper>();
+                subscriptions = new ArrayList<>();
 
                     for (ActivitySubscription subscription : ActivitySubscriptionLocalServiceUtil.findByUser(user.getUserId())) {
 
@@ -56,10 +56,7 @@ public class UserSubscriptionsWrapper implements Serializable {
     }
     
     public int getSubscriptionsCount() {
-        if(subscriptions == null){
-            getSubscriptions();
-        }
-        return subscriptions.size();
+        return getSubscriptions().size();
     }
 
     public SubscriptionType getTypeFilter() {
@@ -69,6 +66,4 @@ public class UserSubscriptionsWrapper implements Serializable {
     public String getTypeFilterName() {
         return typeFilter != null ? typeFilter.name() : null;
     }
-
-
 }

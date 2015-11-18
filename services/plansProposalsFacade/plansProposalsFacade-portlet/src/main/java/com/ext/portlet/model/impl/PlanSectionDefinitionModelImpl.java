@@ -58,11 +58,12 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
             { "characterLimit", Types.INTEGER },
             { "focusAreaId", Types.BIGINT },
             { "tier", Types.BIGINT },
+            { "allowedContestTypeIds", Types.VARCHAR },
             { "additionalIds", Types.VARCHAR },
             { "locked", Types.BOOLEAN },
             { "contestIntegrationRelevance", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionDefinition (id_ LONG not null primary key,type_ VARCHAR(75) null,adminTitle VARCHAR(1024) null,title VARCHAR(1024) null,defaultText TEXT null,helpText TEXT null,characterLimit INTEGER,focusAreaId LONG,tier LONG,additionalIds VARCHAR(75) null,locked BOOLEAN,contestIntegrationRelevance BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionDefinition (id_ LONG not null primary key,type_ VARCHAR(75) null,adminTitle VARCHAR(1024) null,title VARCHAR(1024) null,defaultText TEXT null,helpText TEXT null,characterLimit INTEGER,focusAreaId LONG,tier LONG,allowedContestTypeIds VARCHAR(75) null,additionalIds VARCHAR(75) null,locked BOOLEAN,contestIntegrationRelevance BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanSectionDefinition";
     public static final String ORDER_BY_JPQL = " ORDER BY planSectionDefinition.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanSectionDefinition.id_ ASC";
@@ -91,6 +92,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
     private int _characterLimit;
     private long _focusAreaId;
     private long _tier;
+    private String _allowedContestTypeIds;
     private String _additionalIds;
     private boolean _locked;
     private boolean _contestIntegrationRelevance;
@@ -122,6 +124,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         model.setCharacterLimit(soapModel.getCharacterLimit());
         model.setFocusAreaId(soapModel.getFocusAreaId());
         model.setTier(soapModel.getTier());
+        model.setAllowedContestTypeIds(soapModel.getAllowedContestTypeIds());
         model.setAdditionalIds(soapModel.getAdditionalIds());
         model.setLocked(soapModel.getLocked());
         model.setContestIntegrationRelevance(soapModel.getContestIntegrationRelevance());
@@ -193,6 +196,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         attributes.put("characterLimit", getCharacterLimit());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("tier", getTier());
+        attributes.put("allowedContestTypeIds", getAllowedContestTypeIds());
         attributes.put("additionalIds", getAdditionalIds());
         attributes.put("locked", getLocked());
         attributes.put("contestIntegrationRelevance",
@@ -255,6 +259,13 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
         if (tier != null) {
             setTier(tier);
+        }
+
+        String allowedContestTypeIds = (String) attributes.get(
+                "allowedContestTypeIds");
+
+        if (allowedContestTypeIds != null) {
+            setAllowedContestTypeIds(allowedContestTypeIds);
         }
 
         String additionalIds = (String) attributes.get("additionalIds");
@@ -398,6 +409,21 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
     @JSON
     @Override
+    public String getAllowedContestTypeIds() {
+        if (_allowedContestTypeIds == null) {
+            return StringPool.BLANK;
+        } else {
+            return _allowedContestTypeIds;
+        }
+    }
+
+    @Override
+    public void setAllowedContestTypeIds(String allowedContestTypeIds) {
+        _allowedContestTypeIds = allowedContestTypeIds;
+    }
+
+    @JSON
+    @Override
     public String getAdditionalIds() {
         if (_additionalIds == null) {
             return StringPool.BLANK;
@@ -480,6 +506,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         planSectionDefinitionImpl.setCharacterLimit(getCharacterLimit());
         planSectionDefinitionImpl.setFocusAreaId(getFocusAreaId());
         planSectionDefinitionImpl.setTier(getTier());
+        planSectionDefinitionImpl.setAllowedContestTypeIds(getAllowedContestTypeIds());
         planSectionDefinitionImpl.setAdditionalIds(getAdditionalIds());
         planSectionDefinitionImpl.setLocked(getLocked());
         planSectionDefinitionImpl.setContestIntegrationRelevance(getContestIntegrationRelevance());
@@ -584,6 +611,15 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
         planSectionDefinitionCacheModel.tier = getTier();
 
+        planSectionDefinitionCacheModel.allowedContestTypeIds = getAllowedContestTypeIds();
+
+        String allowedContestTypeIds = planSectionDefinitionCacheModel.allowedContestTypeIds;
+
+        if ((allowedContestTypeIds != null) &&
+                (allowedContestTypeIds.length() == 0)) {
+            planSectionDefinitionCacheModel.allowedContestTypeIds = null;
+        }
+
         planSectionDefinitionCacheModel.additionalIds = getAdditionalIds();
 
         String additionalIds = planSectionDefinitionCacheModel.additionalIds;
@@ -601,7 +637,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(27);
 
         sb.append("{id=");
         sb.append(getId());
@@ -621,6 +657,8 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         sb.append(getFocusAreaId());
         sb.append(", tier=");
         sb.append(getTier());
+        sb.append(", allowedContestTypeIds=");
+        sb.append(getAllowedContestTypeIds());
         sb.append(", additionalIds=");
         sb.append(getAdditionalIds());
         sb.append(", locked=");
@@ -634,7 +672,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(40);
+        StringBundler sb = new StringBundler(43);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanSectionDefinition");
@@ -675,6 +713,10 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         sb.append(
             "<column><column-name>tier</column-name><column-value><![CDATA[");
         sb.append(getTier());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>allowedContestTypeIds</column-name><column-value><![CDATA[");
+        sb.append(getAllowedContestTypeIds());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>additionalIds</column-name><column-value><![CDATA[");

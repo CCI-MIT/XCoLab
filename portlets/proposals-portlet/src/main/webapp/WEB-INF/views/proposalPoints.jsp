@@ -1,10 +1,7 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
     <jsp:directive.include file="./init_proposal_tab.jspx" />
@@ -21,10 +18,10 @@
         </h1>
         <div id="help-text">
             <p>
-                In 2014, the Climate CoLab launched its first contest seeking <a href="/web/guest/resources/-/wiki/Main/Integrated+proposals">integrated proposals</a> which allow members to combine proposals from other contests into a larger whole. Other Climate CoLab proposals used in these integrated proposals are called sub-proposals.
+                In 2014, the Climate CoLab launched its first ${contestType.contestName} seeking <a href="/web/guest/resources/-/wiki/Main/Integrated+proposals">integrated proposals</a> which allow members to combine proposals from other ${contestType.contestNamePlural} into a larger whole. Other Climate CoLab proposals used in these integrated proposals are called sub-proposals.
             </p>
             <p style="margin-bottom:0">
-                Good integrated proposals include ideas from the people who contributed to the sub-proposals, not just those who created the integrated proposal itself. To recognize all these contributions, a winning integrated proposal receives CoLab Points that are distributed among all these people. Each proposal will show how points are divided among the project team and other contributors, and each community member’s profile will show points he or she has received For more information, see <a href="/resources/-/wiki/Main/Climate+CoLab+Points">Climate CoLab Points</a>.
+                Good integrated ${contestType.proposalNamePlural} include ideas from the people who contributed to the sub-${contestType.proposalNamePlural}, not just those who created the integrated ${contestType.proposalName} itself. To recognize all these contributions, a winning integrated ${contestType.proposalName} receives CoLab Points that are distributed among all these people. Each ${contestType.proposalName} will show how points are divided among the project team and other contributors, and each community member’s profile will show points he or she has received For more information, see <a href="/resources/-/wiki/Main/Climate+CoLab+Points">Climate CoLab Points</a>.
             </p>
         </div>
         <portlet:actionURL var="savePointsAssignmentsURL">
@@ -44,7 +41,7 @@
                 </div>
             </c:if>
         </form:form>
-        <h3 class="colab">Proposals that include this proposal</h3>
+        <h3 class="colab">${contestType.proposalNamePlural} that include this ${contestType.proposalName}</h3>
         <table class="colab">
             <tbody>
             <c:forEach var="linkingProposal" items="${linkingProposals}">

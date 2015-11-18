@@ -105,17 +105,6 @@
     	</finder>
     </entity>
     
-    <entity name="Plan2Proposal" local-service="true">
-    	<column name="planId" type="long" primary="true" />
-    	<column name="proposalId" type="long" />
-    	
-    	<finder return-type="Collection" name="ProposalId">
-    		<finder-column name="proposalId" />
-    	</finder>
-    	
-    </entity>
-    
-    
     <entity name="ProposalSupporter" local-service="true">
     	<column name="proposalId" type="long" primary="true" />
     	<column name="userId" type="long" primary="true" />

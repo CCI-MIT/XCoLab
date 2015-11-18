@@ -2,12 +2,9 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:addthis="http://www.addthis.com/help/api-spec"
-          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+          version="2.0">
+
     <c:set var="childrenSize" value="${pointType.children.size()}" scope="request"/>
     <c:set var="parentPercentageOfTotalPoints"><c:out value="${percentageOfTotalPoints}"/></c:set>
     <c:set var="parentPointsToDistribute"><c:out value="${pointsToDistribute}"/></c:set>
@@ -83,10 +80,10 @@
                     <p class="info">
                         <c:choose>
                             <c:when test="${currentTabWrapped.canEdit}">
-                                Equally distributed among all proposals you have referenced.
+                                Equally distributed among all ${contestType.proposalNamePlural} you have referenced.
                             </c:when>
                             <c:otherwise>
-                                Equally distributed among all proposals referenced by this proposal.
+                                Equally distributed among all ${contestType.proposalNamePlural} referenced by this ${contestType.proposalName}.
                             </c:otherwise>
                         </c:choose>
                     </p>
@@ -115,10 +112,10 @@
                             <p style="margin-top: 15px">
                                 <c:choose>
                                     <c:when test="${currentTabWrapped.canEdit}">
-                                        <em>You did not reference any proposals.</em>
+                                        <em>You did not reference any ${contestType.proposalNamePlural}.</em>
                                     </c:when>
                                     <c:otherwise>
-                                        <em>No proposals have been referenced.</em>
+                                        <em>No ${contestType.proposalNamePlural} have been referenced.</em>
                                     </c:otherwise>
                                 </c:choose>
 
@@ -138,7 +135,7 @@
                                         Distributed among your team members by assigning a percentage to each person.
                                     </c:when>
                                     <c:otherwise>
-                                        Distributed among the team members of this proposal according to the percentages below.
+                                        Distributed among the team members of this ${contestType.proposalName} according to the percentages below.
                                     </c:otherwise>
                                 </c:choose>
                             </p>
@@ -157,7 +154,7 @@
                                     <c:otherwise>
                                         Can be distributed to any Climate CoLab member
                                         <c:if test="${pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER'}">
-                                            who is not in this proposal's team
+                                            who is not in this ${contestType.proposalName}'s team
                                         </c:if>
                                         - if this section is not completed, these points will not be allocated.
                                     </c:otherwise>

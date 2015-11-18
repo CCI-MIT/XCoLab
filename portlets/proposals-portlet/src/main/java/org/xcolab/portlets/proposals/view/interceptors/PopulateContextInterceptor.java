@@ -21,6 +21,7 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
     private static final String MODEL_ATTRIBUTE_CONTEST = "contest";
     private static final String MODEL_ATTRIBUTE_VIEW_CONTEST_PHASE_ID = "viewContestPhaseId";
     private static final String MODEL_ATTRIBUTE_PROPOSALS_PREFERENCES = "preferences";
+    private static final String MODEL_ATTRIBUTE_CONTEST_TYPE = "contestType";
     
     @Autowired
     private ProposalsContext proposalsContext;
@@ -54,7 +55,7 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSAL_DISPLAY_PERMISSIONS, displayPermissions);
             modelAndView.addObject(MODEL_ATTRIBUTE_VIEW_CONTEST_PHASE_ID, proposalsContext.getViewContestPhaseId(request));
             modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSALS_PREFERENCES, proposalsContext.getProposalsPreferences(request));
-            
+            modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST_TYPE, proposalsContext.getContestType(request));
         }
     }
 }

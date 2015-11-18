@@ -66,7 +66,10 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         try{
             //throw new Exception("Test");
             Long scheduleId = elementId != null ? elementId : getFirstScheduleId();
-            model.addAttribute("contestScheduleWrapper", new ContestScheduleWrapper(scheduleId));
+            model.addAttribute("scheduleId", scheduleId);
+            if (scheduleId >= 0) {
+                model.addAttribute("contestScheduleWrapper", new ContestScheduleWrapper(scheduleId));
+            }
             model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(scheduleId, ContestScheduleWrapper.getAllScheduleTemplateSelectionItems()));
             setPageAttributes(request, model, tab);
             return TAB_VIEW;
@@ -145,7 +148,11 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
     }
 
     private Long getFirstScheduleId() throws SystemException {
-        return ContestScheduleLocalServiceUtil.getContestSchedules(0,Integer.MAX_VALUE).get(0).getId();
+        final List<ContestSchedule> contestSchedules = ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE);
+        if (contestSchedules.size() > 0) {
+            return contestSchedules.get(0).getId();
+        }
+        return -1L;
     }
 
     private List<LabelValue> getContestPhaseTypesSelectionItems(){

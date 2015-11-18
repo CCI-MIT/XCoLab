@@ -2,6 +2,8 @@ package org.xcolab.hooks.climatecolab.landingpage;
 
 import com.ext.portlet.model.LandingPage;
 import com.ext.portlet.service.LandingPageLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -18,9 +20,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LandingpageFilter implements Filter {
-
-    private static final long serialVersionUID = 3534776054953153891L;
-    
     private static final Pattern landingPageUrlPattern = Pattern.compile("/landingpage/(\\d*)/.*"); 
     private static final Log _log =  LogFactoryUtil.getLog(LandingpageFilter.class);
     
@@ -52,16 +51,13 @@ public class LandingpageFilter implements Filter {
             else {
                 _log.error("Invalid landing page requested, should be in format /landingpage/LANDINGPAGE_ID/name");
             }
-        } catch (Exception e) {
+        } catch (IOException | SystemException | PortalException | NumberFormatException e) {
             _log.error("Can't process landing page request" , e);
         }
-        
     }
 
     @Override
     public void destroy() {
         
     }
-    
-
 }

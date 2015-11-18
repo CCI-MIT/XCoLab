@@ -48,15 +48,15 @@ public class MessageWrapper implements Serializable {
     private MessageWrapper newMessage;
     private MessageWrapper thread;
     private long categoryId;
-    private DiscussionBean discussionBean;
+    private final DiscussionBean discussionBean;
     private boolean editing;
     private String filteredDescription;
-    private boolean empty = false;
+    private boolean empty;
 
 
     private String shortDescription;
     private boolean goTo;
-    private boolean added = false;
+    private boolean added;
     private int messageNum;
     private boolean oldestFirst = true;
     
@@ -123,8 +123,8 @@ public class MessageWrapper implements Serializable {
     
     
     public List<MessageWrapper> getThreadMessages() throws SystemException {
-        if (messages == null || messages.size() == 0) {
-            messages = new ArrayList<MessageWrapper>();
+        if (messages == null || messages.isEmpty()) {
+            messages = new ArrayList<>();
             messages.add(this);
             for (DiscussionMessage message: DiscussionMessageLocalServiceUtil.getThreadMessages(wrapped)) {
                 messages.add(new MessageWrapper(message, category, discussionBean, 0));
@@ -163,8 +163,7 @@ public class MessageWrapper implements Serializable {
                     !ValueRequiredValidator.validateComponent(messageInput)) {
                 return;
             }
-            
-            
+
             category = discussionBean.getCategoryById(categoryId);
             wrapped = DiscussionCategoryLocalServiceUtil.addThread(category.getWrapped(), 
                     title, description, Helper.getLiferayUser());
@@ -234,7 +233,7 @@ public class MessageWrapper implements Serializable {
             Helper.sendInfoMessage("Comment \"" + title + "\" has been added.");
         }
         }
-        catch (Exception ex) {
+        catch (SystemException | PortalException ex) {
             ex.printStackTrace();
         }
     }
@@ -256,7 +255,7 @@ public class MessageWrapper implements Serializable {
             editing = false;
         }
         }
-        catch (Exception ex) {
+        catch (SystemException ex) {
             ex.printStackTrace();
         }
     }
@@ -277,21 +276,23 @@ public class MessageWrapper implements Serializable {
         List<Role> roles = getAuthor().getRoles();
 
         // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
-        MemberRole currentRole = MemberRole.MEMBER;
+        MemberRole currentRole;
         MemberRole role = MemberRole.MEMBER;
 
         for (Role r : roles) {
             final String roleString = r.getName();
 
-            currentRole = MemberRole.getMember(roleString);
-            if (currentRole != null && role != null) {
+            currentRole = MemberRole.fromRoleName(roleString);
+            if (currentRole != null) {
                 if (currentRole.ordinal() > role.ordinal()) {
                     role = currentRole;
                 }
             }
         }
 
-        if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
+        if (role == MemberRole.MODERATOR) {
+            role = MemberRole.STAFF;
+        }
         return role;
     }
     
@@ -335,10 +336,6 @@ public class MessageWrapper implements Serializable {
     public String getLastActivityDateStr() {
         return HumanTime.exactly(new Date().getTime() - (wrapped.getLastActivityDate() != null ? wrapped.getLastActivityDate() : wrapped.getCreateDate()).getTime());
     }
-    /*
-    public String getLastActivityDateAgo() {
-        //return Pretty
-    }*/
     
     public Date getLastActivityDate() {
         return wrapped.getLastActivityDate() != null ? wrapped.getLastActivityDate() : wrapped.getCreateDate();
@@ -369,16 +366,14 @@ public class MessageWrapper implements Serializable {
             if (discussionBean.getCommentsThread() == this) {
                 discussionBean.comentsThreadDeleted();
             }
-            
-            
-            //category.messageDeleted(this);
+
             Helper.sendInfoMessage("Message \"" + wrapped.getSubject() + "\" has been deleted.");
         }
     }
     
     public void messageDeleted(MessageWrapper messageWrapper) {
         messages.remove(messageWrapper);
-        int i=1;
+        int i = 1;
         for (MessageWrapper msg: messages) {
             msg.setMessageNum(i++);
         }

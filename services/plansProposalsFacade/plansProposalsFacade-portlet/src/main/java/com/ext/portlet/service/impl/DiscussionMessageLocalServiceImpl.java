@@ -1,25 +1,17 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.NoSuchDiscussionCategoryException;
 import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.NoSuchDiscussionMessageFlagException;
-import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.DiscussionMessageFlag;
-import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageFlagLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
-import com.ext.portlet.service.impl.DiscussionMessageLocalServiceImpl;
 import com.ext.portlet.service.base.DiscussionMessageLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -28,11 +20,16 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * The implementation of the discussion message local service.

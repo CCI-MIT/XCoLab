@@ -1,0 +1,40 @@
+@import "compass";
+
+//main colors:
+$primary-color: #305571;
+$secondary-color: #f39c42;
+$accent-color: #f7ca4b;
+$auxiliary-color: #97c4d5; // 4th color when needed (e.g. ontology)
+
+//lightness variations
+$primary-light: lighten($primary-color, 30); $__hex: #77a4c5;
+$secondary-light: lighten($secondary-color, 20); $__hex: #f9cfa4;
+
+$primary-dark: darken($primary-color, 10); $__hex: #20394b;
+$secondary-dark: darken($secondary-color, 13); $__hex: #e17a0e;
+
+$primary-darkest: #16313d;
+$secondary-darkest: darken($secondary-color, 22); $__hex: #b6620c;
+
+//grey variations of the primary color
+$primary-grey: desaturate($auxiliary-color, 10); $__hex: #a1c0cb;
+$primary-dark-grey: darken($primary-grey, 15); $__hex_color: #6f9eaf;
+$primary-light-grey: lighten($primary-grey, 17); $__hex: #dbe7eb;
+
+//greys
+$lightest-grey: #e7e7e7;
+$light-grey: #bababa;
+$medium-grey: #888888;
+$dark-grey: #575757;
+$darkest-grey: #404040;
+
+//alert and message colors:
+$alert-color: #b94a48;
+$alert-light: #ffeeee;
+$alert-message: #c09853; //TODO: check if this is used anywhere
+
+//outline view TODO: see if we can adapt this to use our colors
+$outline-level1: #e0dacb; // background slevel1
+$outline-level2: #d1cbbf; // background slevel2
+$outline-level3: #c1bcb2; // background slevel3
+$outline-level4: #aaa69f; // background slevel4-6

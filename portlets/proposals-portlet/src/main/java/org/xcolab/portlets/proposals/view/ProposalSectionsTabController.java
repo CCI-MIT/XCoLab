@@ -2,10 +2,12 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
@@ -26,12 +28,15 @@ import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.wrappers.BaseProposalWrapper;
+import org.xcolab.wrappers.ContestTypeProposalWrapper;
 
 import javax.portlet.PortletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -98,16 +103,16 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             updateProposalDetailsBean.setMoveFromContestPhaseId(moveFromContestPhaseId);
         	// find sections that can't be mapped without user interaction
 
-        	boolean hasNotMappedSections = false;
-        	Set<Long> newContestSections = new HashSet<>();
+            Set<Long> newContestSections = new HashSet<>();
         	
         	for (ProposalSectionWrapper section: proposalsContext.getProposalWrapped(request).getSections()) {
         		newContestSections.add(section.getSectionDefinitionId());
         	}
-        	
-        	
-        	for (ProposalSectionWrapper section: baseProposalWrapped.getSections()) {
-        		if (section.getContent() != null && section.getContent().trim().length() > 0) {
+
+
+            boolean hasNotMappedSections = false;
+            for (ProposalSectionWrapper section: baseProposalWrapped.getSections()) {
+        		if (section.getContent() != null && !section.getContent().trim().isEmpty()) {
         			// we have non empty section in base proposal, check if such
         			// section exists in target contest
         			if (! newContestSections.contains(section.getSectionDefinitionId())) {
@@ -146,13 +151,43 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("judgeProposalBean", judgeProposalBean);
 
         List<Proposal> linkedProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
-        List<ProposalWrapper> linkedProposalsWrappers = new ArrayList<>();
-        for (Proposal linkedProposal: linkedProposals){
-            linkedProposalsWrappers.add(new ProposalWrapper(linkedProposal));
+        // TODO: COLAB-770 replace by service call to ContestTypeLocalServiceUtil.groupProposalsByContestType
+        Map<ContestType, List<Proposal>> proposalsByContestType = groupProposalsByContestType(linkedProposals);
+        Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
+        for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
+            contestTypeProposalWrappersByContestTypeId.put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
+            final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
+            for (Proposal p : proposalsInContestType) {
+                contestTypeProposalWrappersByContestTypeId.get(contestType.getId()).getProposals().add(new BaseProposalWrapper(p));
+            }
         }
-        model.addAttribute("linkedProposalList", linkedProposalsWrappers);
+        model.addAttribute("linkedProposalContestTypeProposalWrappersByContestTypeId", contestTypeProposalWrappersByContestTypeId);
 
         return "proposalDetails";
+    }
+
+    // TODO: COLAB-770 replace by service call to ContestTypeLocalServiceUtil.groupProposalsByContestType
+    private Map<ContestType, List<Proposal>> groupProposalsByContestType(List<Proposal> proposals) throws SystemException, PortalException {
+        Map<Long, ContestType> contestIdToContestTypeMap = new HashMap<>();
+        Map<ContestType, List<Proposal>> proposalsByContestType = new HashMap<>();
+        final List<ContestType> contestTypes = ContestTypeLocalServiceUtil.getActiveContestTypes();
+        if (contestTypes.size()  == 1) {
+            proposalsByContestType.put(contestTypes.get(0), proposals);
+        } else {
+            for (ContestType contestType : contestTypes) {
+                final List<Contest> contests = ContestLocalServiceUtil.getContestsByContestType(contestType.getId());
+                proposalsByContestType.put(contestType, new ArrayList<Proposal>());
+                for (Contest contest : contests) {
+                    contestIdToContestTypeMap.put(contest.getContestPK(), contestType);
+                }
+            }
+            for (Proposal p : proposals) {
+                final long contestPK = ProposalLocalServiceUtil.getLatestProposalContest(p.getProposalId()).getContestPK();
+                ContestType contestType = contestIdToContestTypeMap.get(contestPK);
+                proposalsByContestType.get(contestType).add(p);
+            }
+        }
+        return proposalsByContestType;
     }
 
     private Date getVotingDeadline(Contest contest) throws SystemException, PortalException {

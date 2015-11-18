@@ -56,9 +56,6 @@
         <path>/META-INF/tags/collab/outline_ontologyTermWithChildren.tagx</path>
     </tag-file>
 
-
-
-
     <tag-file>
         <description>Team Box</description>
         <name>teamBox</name>
@@ -75,12 +72,6 @@
         <description>Proposal Link</description>
         <name>proposalLink</name>
         <path>/META-INF/tags/collab/proposalLink.tagx</path>
-    </tag-file>
-
-    <tag-file>
-        <description>Plan Link</description>
-        <name>planLink</name>
-        <path>/META-INF/tags/collab/planLink.tagx</path>
     </tag-file>
 
     <tag-file>

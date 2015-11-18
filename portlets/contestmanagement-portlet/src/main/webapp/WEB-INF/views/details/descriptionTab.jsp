@@ -1,8 +1,5 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
@@ -331,6 +328,23 @@
                         </tr>
                     </table>
 
+                </div>
+            </div>
+
+            <div class="addpropbox">
+                <label>
+                    <strong>Contest type</strong>
+                    <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+                </label>
+                <div class="addprophelp">Select the type of this contest. Types determine the name of the contest-entity and the proposal-entities and where they will appear. If you have a question about which type to select, please submit a comment below for the CoLab team.</div>
+                <div class="clearfix"><!-- --></div>
+                <div class="addpropInputContainer">
+                    <form:select path="contestType">
+                        <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
+                    </form:select>
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="alert alert-error" path="contestType" />
+                    </div>
                 </div>
             </div>
 

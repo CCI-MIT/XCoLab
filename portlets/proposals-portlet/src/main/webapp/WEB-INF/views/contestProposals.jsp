@@ -1,14 +1,14 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
-          xmlns:form="http://www.springframework.org/tags/form"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
     <jsp:directive.include file="./init_contest.jspx"/>
+
+    <jsp:useBean id="proposals" type="org.xcolab.portlets.proposals.wrappers.ProposalsSortFilterBean" scope="request" />
+    <jsp:useBean id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage" scope="request" />
 
     <div id="content">
         <jsp:directive.include file="./contestProposals/header.jspx"/>
@@ -23,7 +23,7 @@
         </div>
         <div class="headline subhead">
             <h2>
-                <span>${fn:length(proposals.proposals)}</span> proposals
+                <span>${fn:length(proposals.proposals)}</span> ${contestType.proposalNamePlural}
             </h2>
             <div class="right">
                 <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
@@ -34,7 +34,7 @@
                         </portlet:renderURL>
                         <a href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
                            onclick="if(!deferUntilLoginTargeted('${createProposalURL}')) return false;">
-                            <span>CREATE</span> proposal
+                            <span>CREATE</span> ${contestType.proposalName}
                         </a>
                     </div>
                 </c:if>
@@ -54,7 +54,7 @@
                         <portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
                         <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'NAME' ? not sortFilterPage.sortAscending : true }" />
                     </portlet:renderURL>
-                    <a href="${sortURL }">Proposal name</a>
+                    <a href="${sortURL }">${contestType.proposalName} name</a>
                     <div class="tooltip">
                         click to sort by name
                         <div class="tt-arrow"><!-- --></div>

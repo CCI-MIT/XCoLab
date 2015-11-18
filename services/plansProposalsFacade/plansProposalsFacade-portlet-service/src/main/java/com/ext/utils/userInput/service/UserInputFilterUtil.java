@@ -1,16 +1,9 @@
 package com.ext.utils.userInput.service;
 
 import com.ext.portlet.service.ClpSerializer;
-import com.ext.portlet.service.PlanItemLocalService;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalService;
-import com.ext.portlet.service.ProposalLocalServiceClp;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.UserInputFilter;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodCache;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.service.InvokableLocalService;
 

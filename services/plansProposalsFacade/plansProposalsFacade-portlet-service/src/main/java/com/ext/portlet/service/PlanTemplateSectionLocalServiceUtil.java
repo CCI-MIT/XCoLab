@@ -270,7 +270,8 @@ public class PlanTemplateSectionLocalServiceUtil {
     }
 
     public static java.util.List<com.ext.portlet.model.PlanTemplateSection> findByPlanSectionDefinitionId(
-        java.lang.Long planSectionDefinitionId) throws java.lang.Exception {
+        java.lang.Long planSectionDefinitionId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .findByPlanSectionDefinitionId(planSectionDefinitionId);
     }
