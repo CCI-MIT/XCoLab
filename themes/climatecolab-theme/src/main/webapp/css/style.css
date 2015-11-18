@@ -56,59 +56,119 @@ LAST MODIFIED:  11/12/2015
   display: block;
 }
 
-/* ------------------------------------------------------------------------------------------------------- */
+/* --[global/fonts]------------------------------------------------ */
 
 @import 'style/global/fonts';
 
-/* ------------------------------------------------------------------------------------------------------- */
+/* --[/END global/fonts]--[global/layout]-------------------------- */
 
 @import 'style/global/layout';
 
-/* ------------------------------------------------------------------------------------------------------- */
+/* --[/END global/layout]--[components/header]--------------------- */
 
 @import 'style/components/header';
 
-/* ------------------------------------------------------------------------------------------------------- */
+/* --[/END components/header]--[components/headline]--------------- */
 
 @import 'style/components/headline';
 
-/* ------------------------------------------------------------------------------------------------------- */
+/* --[/END components/headline]--[components/blueheaderbar]-------- */
 
 @import 'style/components/blueheaderbar';
 
-/* ------------------------------------------------------------------------------------------------- */
+/* --[/END components/blueheaderbar]--[pages/homepage]------------- */
 
 @import 'style/pages/homepage';
 
-/* ------------------------------------------------------------------------------------------------- */
+/* --[/END pages/homepage]--[pages/about]-------------------------- */
 
 @import 'style/pages/about';
 
-/* ------------------------------------------------------------------------------------------------- */
+/* --[/END pages/about]--[pages/contests]-------------------------- */
 
 @import 'style/pages/contests';
 
-/* --------------------------------------------------------------------------------------------------------------- */
+/* --[/END pages/contests]--[pages/proposals]---------------------- */
 
 @import 'style/pages/proposals';
 
-/* ------------------------------------------------------------------------------------------------------- */
+/* --[/END pages/proposals]--[components/buttons]------------------ */
 
 @import 'style/components/buttons';
 
+/* --[/END components/buttons]--[components/tooltips]-------------- */
+
 @import 'style/components/tooltips';
 
-/* ------------------------------------------------------------------------------------------------------- */
+/* --[/END components/tooltips]--[components/popups]--------------- */
 
 @import 'style/components/popups';
 
+/* --[/END components/popups]--[components/footer]----------------- */
+
 @import 'style/components/footer';
 
-/* --------------------------------------------------------------------------------------------------------------- */
-/* ---------------------------------------- included style_additions.css ----------------------------------------- */
-/* --------------------------------------------------------------------------------------------------------------- */
+/* --[/END components/footer]--[pages/modeling]-------------------- */
 
 @import 'style/pages/modeling';
+
+/* --[/END pages/modeling]--[components/comments]------------------ */
+
+@import 'style/components/comments';
+
+/* --[/END components/comments]--[components/wiki]----------------- */
+
+@import 'style/components/wiki';
+
+/* --[/END components/wiki]--[pages/community]--------------------- */
+
+@import 'style/pages/community';
+
+/* --[/END pages/community]--[pages/blog]-------------------------- */
+
+@import 'style/pages/blog';
+
+/* --[/END pages/blog]--[components/helpbox]----------------------- */
+
+@import 'style/components/helpbox';
+
+/* --[/END components/helpbox]--[pages/userprofile]---------------- */
+
+@import 'style/pages/userprofile';
+
+/* --[/END pages/userprofile]--[pages/search]---------------------- */
+
+@import 'style/pages/search';
+
+/* --[/END pages/search]--[components/messaging]------------------- */
+
+@import 'style/components/messaging';
+
+/* --[/END components/messaging]--[pages/logingregister]----------- */
+
+@import "style/pages/logingregister";
+
+/* --[/END pages/logingregister]--[components/forms]--------------- */
+
+@import 'style/components/forms';
+
+/* --[/END components/forms]--[components/alert]------------------- */
+
+@import 'style/components/alert';
+
+/* --[/END components/alert]--[components/badges]------------------ */
+
+@import 'style/components/badges';
+
+/* --[/END components/badges]--[contest_manager]------------------- */
+
+@import 'style/pages/contest_manager';
+
+/* --[/END contest_manager]--[components/liferay]------------------ */
+
+@import "style/components/liferay";
+
+/* --[/END components/liferay]------------------------------------- */
 
 //TODO: is this also for admin stuff?
 fieldset {
@@ -116,9 +176,6 @@ fieldset {
   padding: 0;
   margin: 0
 }
-
-@import 'style/components/comments';
-
 
 //TODO: where is this used? community?
 #bread {
@@ -131,18 +188,6 @@ fieldset {
 #bread img {
   margin: 0 5px;
 }
-
-@import 'style/components/wiki';
-
-@import 'style/pages/community';
-
-@import 'style/pages/blog';
-
-@import 'style/components/helpbox';
-
-@import 'style/pages/userprofile';
-
-@import 'style/pages/search';
 
 //TODO: where are these used?
 /** Contact addr **/
@@ -162,11 +207,6 @@ fieldset {
   width: 274px;
   margin: 50px 0 0 30px;
 }
-
-@import 'style/components/messaging';
-
-@import "style/pages/logingregister";
-
 
 //TODO: where are these used?
 #invalidFieldsList li {
@@ -189,10 +229,6 @@ body.colab {
 .info.subscribe img {
   vertical-align: bottom;
 }
-
-@import 'style/components/forms';
-
-@import 'style/components/alert';
 
 .mitproject {
   background: url(../images/logo_mit_bluegreen.gif) no-repeat;
@@ -221,8 +257,6 @@ body.colab {
   padding-bottom: 20px;
 }
 
-@import 'style/components/badges';
-
 //TODO: where are these used?
 .taglib-icon-help span.hide-accessible {
   font-size: 10pt;
@@ -245,11 +279,3 @@ body.colab {
   float: left;
   margin-right: 15px;
 }
-
-@import 'style/pages/contest_manager';
-
-/* --------------------------------------------------------------------------------------------------------------- */
-/* ---------------------------------------- included style_lr6.css ----------------------------------------- */
-/* --------------------------------------------------------------------------------------------------------------- */
-
-@import "style/components/liferay";

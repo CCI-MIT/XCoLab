@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 #parse ($init)
+#parse( "init_theme_variables.vm" )
 
 <html dir="#language ("lang.dir")" xmlns="http://www.w3.org/1999/xhtml"  class="$root_css_class" >
 
@@ -14,32 +15,32 @@
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
 	
 	<!--
-	<script type="text/javascript" src="$javascript_folder/jquery-ui-1.7.2.custom.js?tt=$themeTimestamp"></script>
+	<script type="text/javascript" src="$javascript_folder/jquery-ui-1.7.2.custom.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
 	 -->
 
-    <script type="text/javascript" src="$javascript_folder/adminOverlayHide.js?tt=$themeTimestamp"></script>
-    <script type="text/javascript" src="$javascript_folder/errorTracker.js?tt=$themeTimestamp"></script>
-    <script type="text/javascript" src="$javascript_folder/jquery.history.js?tt=$themeTimestamp"></script>
-    <script type="text/javascript" src="$javascript_folder/moment.min.js?tt=$themeTimestamp"></script>
-    <script type="text/javascript" src="$javascript_folder/dateTimeFormatter.js?tt=$themeTimestamp"></script>
-    <script type="text/javascript" src="$javascript_folder/jquery.dynatree.min.js?tt=$themeTimestamp"></script>
-    <script type="text/javascript" src="$javascript_folder/jquery.blockUI.js?tt=$themeTimestamp"></script>
-    <script type="text/javascript" src="$javascript_folder/jquery.cookie.js?tt=$themeTimestamp"></script>
-    <script type="text/javascript" src="$javascript_folder/jquery.jgrowl.min.js?tt=$themeTimestamp"></script>
-    <script type="text/javascript" src="$javascript_folder/jquery.ddslick.min.js?tt=$themeTimestamp"></script>
-    <script type="text/javascript" src="$javascript_folder/spin.min.js?tt=$themeTimestamp"></script>
+    <script type="text/javascript" src="$javascript_folder/adminOverlayHide.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/errorTracker.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.history.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/moment.min.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/dateTimeFormatter.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.dynatree.min.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.blockUI.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.cookie.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.jgrowl.min.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.ddslick.min.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
+    <script type="text/javascript" src="$javascript_folder/spin.min.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
 	$theme.include($top_head_include)
 	
-    <link type="text/css" rel="stylesheet" href="$css_folder/jquery/jquery.css?tt=$themeTimestamp" media="all"/>
-    <link type="text/css" rel="stylesheet" href="$css_folder/jquery.jgrowl.css?tt=$themeTimestamp" media="all"/>
+    <link type="text/css" rel="stylesheet" href="$css_folder/jquery/jquery.css?tt=$themeTimestamp&v=$customThemeVersion" media="all"/>
+    <link type="text/css" rel="stylesheet" href="$css_folder/jquery.jgrowl.css?tt=$themeTimestamp&v=$customThemeVersion" media="all"/>
 	
 	<meta property="og:image" content="http://climatecolab.org/climatecolab-theme/images/ClimateColabLogo_big.png" />
 	<link rel="image_src"  type="image/png"   href="http://climatecolab.org/climatecolab-theme/images/ClimateColabLogo_big.png" />
 	
-    <link rel="stylesheet" href="$css_folder/jquery.jqplot.min.css?tt=$themeTimestamp" type="text/css"/>
-    <link rel="stylesheet" href="$css_folder/style.css?tt=$themeTimestamp" type="text/css" />
-    <link rel="stylesheet" href="$css_folder/autoSuggest.css?tt=$themeTimestamp" type="text/css" />
-    <link rel="stylesheet" href="$css_folder/ui.dynatree.css?tt=$themeTimestamp" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/jquery.jqplot.min.css?tt=$themeTimestamp&v=$customThemeVersion" type="text/css"/>
+    <link rel="stylesheet" href="$css_folder/style.css?tt=$themeTimestamp&v=$customThemeVersion" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/autoSuggest.css?tt=$themeTimestamp&v=$customThemeVersion" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/ui.dynatree.css?tt=$themeTimestamp&v=$customThemeVersion" type="text/css" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     
     
@@ -64,7 +65,7 @@
     <!-- AddThis Button BEGIN -->
     <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
     <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=climatecolab"></script>
-    <script type="text/javascript" src="$javascript_folder/moth_init_script.js?tt=$themeTimestamp"></script>
+    <script type="text/javascript" src="$javascript_folder/moth_init_script.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
     <!-- AddThis Button END -->
     
     <!-- Pinterest META -->
@@ -330,9 +331,9 @@ $theme.include($top_messages_include)
 $theme.include($body_bottom_include)
 
 $theme.include($bottom_include)
-<script src="$javascript_folder/balloon.js?tt=$themeTimestamp"></script>
+<script src="$javascript_folder/balloon.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
 <script>var usertracking_userId = $user.userId;var usertracking_hash = $user.uuid.hashCode();</script>
-<script src="$javascript_folder/usertracking.js?tt=$themeTimestamp"></script>
+<script src="$javascript_folder/usertracking.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
 </body>
 
 </html>
