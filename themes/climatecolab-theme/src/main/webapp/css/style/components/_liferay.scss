@@ -1,0 +1,138 @@
+@import "compass";
+
+@import 'admin';
+
+.portlet-content, .portlet-minimized .portlet-content-container {
+    padding: 0;
+}
+
+//other liferay things
+
+.clearfix.lfr-pagination {
+  visibility: visible;
+}
+
+.lfr-pagination .pager {
+  padding-top: 0;
+  text-align: inherit;
+}
+
+.lfr-pagination .pager li {
+  background: none;
+  float: left;
+}
+
+.lfr-pagination .pager li a {
+  cursor: pointer;
+}
+
+.lfr-pagination .pager li.disabled a {
+  color: #ccc;
+  cursor: default;
+}
+
+.lfr-pagination .lfr-pagination-config {
+  display: none;
+}
+
+/* hide network connection lost message */
+.liferay-faces-bridge-body > iframe, .ice-status-indicator {
+  display: none;
+}
+
+/* liferay 6.2 fixes */
+.aui .portlet-content, .aui .portlet-minimized .portlet-content-container {
+  border: none;
+  padding: 0;
+}
+
+/* liferay 6.2 fixes */
+.aui .portlet-content, .aui .portlet-minimized .portlet-content-container {
+  border: none;
+  padding: 0;
+}
+
+.aui .portlet-content .lfr-icon-actions {
+  border: none !important;
+  @include box-shadow(none);
+}
+
+.aui .portlet-topper .portlet-title .taglib-text {
+  display: none;
+}
+
+.aui header.portlet-topper {
+  background: transparent;
+  padding-left: 5px;
+}
+
+header.portlet-topper {
+  display: none;
+}
+
+.aui .portlet-topper .dropdown-menu {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+}
+
+.aui .portlet-options .dropdown-toggle {
+  display: none;
+}
+
+.aui .portlet-topper-toolbar .dropdown-toggle .lfr-icon-menu-text {
+  display: none;
+}
+
+.aui .lfr-menu-list.dropdown-menu {
+  float: none;
+}
+
+.aui .lfr-icon-action a {
+  background: white;
+  border: 2px solid $medium-grey;
+  padding: 5px;
+  margin: 5px;
+  color: black;
+  border-radius: 6px;
+}
+
+.aui .lfr-icon-action a:hover {
+  background: $lightest-grey;
+}
+
+.aui .lfr-icon-menu ul.dropdown-menu li {
+  /* border: 2px solid $medium-grey; */
+  color: black;
+  padding: 2px;
+  margin: 5px;
+  float: left;
+}
+
+.aui .lfr-icon-menu ul.dropdown-menu li a {
+  color: black;
+  margin: 0 10px 0 10px;
+  border-radius: 6px;
+  padding: 2px;
+  font-weight: bold;
+  height: 15px;
+  border-bottom: none;
+  font-size: 10pt;
+}
+
+.lfr-icon-actions span.lfr-icon-action {
+  margin-bottom: 30px;
+  height: 5px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+div.portlet-column {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.control-group .lfr-tags-selector-content {
+  border: none;
+}

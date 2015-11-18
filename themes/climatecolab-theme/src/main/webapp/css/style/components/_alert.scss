@@ -1,0 +1,42 @@
+.alert {
+  padding: 4px 14px 4px 14px;
+  margin: 10px auto;
+  background-color: $lightest-grey;
+  border: 1px solid $light-grey;
+  @include border-radius(4px);
+  font-size: 12px;
+  display: inline-block;
+}
+
+.alert-danger, .alert-error {
+  color: $alert-color;
+  background-color: $alert-light;
+  border-color: $lightest-grey;
+}
+
+%message {
+  border: 1px dashed $dark-grey;
+  border-left: 0;
+  border-right: 0;
+  padding: 10px 10px;
+  margin: 0 0 15px 0;
+
+  > p {
+    margin: 0;
+  }
+}
+
+.error-message {
+  @extend %message;
+  background: $alert-light;
+}
+
+.info-message {
+  @extend %message;
+  background: $info-background;
+}
+
+.success-message {
+  @extend %message;
+  background: $success-background;
+}

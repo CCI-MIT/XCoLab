@@ -1,0 +1,107 @@
+/* Contest Badges */
+
+//TODO: relates to userprofile (and maybe proposals?)
+//TODO: the big ones might be unused
+
+.badge-container {
+  text-align: center;
+  width: 490px;
+  float: right;
+}
+
+.badge-1 {
+  background-image: url(/climatecolab-theme/images/contest-badge-big-1.png);
+}
+
+.badge-2 {
+  background-image: url(/climatecolab-theme/images/contest-badge-big-2.png);
+}
+
+.badge-3 {
+  background-image: url(/climatecolab-theme/images/contest-badge-big-3.png);
+}
+
+.badge-big {
+  width: 183px;
+  height: 161px;
+  background-size: 183px 161px;
+  position: relative;
+  float: left;
+  margin: 0 30px;
+}
+
+.badge-small {
+  width: 68px;
+  height: 60px;
+  background-size: 68px 60px;
+  position: relative;
+  float: left;
+  margin: 0 10px;
+}
+
+.badge-small-title {
+  font-family: "bree", "bree-1", Verdana, sans-serif;
+  font-size: 6px;
+  font-weight: bold;
+  position: absolute;
+  top: 15px;
+  left: 24px;
+  color: $darkest-grey;
+  width: 20px;
+}
+
+.badge-small-year {
+  font-family: "bree", "bree-1", Verdana, sans-serif;
+  color: white;
+  font-weight: bold;
+  font-size: 9px;
+  position: absolute;
+  left: 44px;
+  top: 36px;
+  @include rotate(323deg);
+}
+
+.badge-small-text {
+  font-family: "bree", "bree-1", Verdana, sans-serif;
+  color: white;
+  font-weight: bold;
+  font-size: 9px;
+  position: absolute;
+  left: 10px;
+  top: 36px;
+  @include rotate(396deg);
+}
+
+.badge-title a {
+  font-family: "bree", "bree-1", Verdana, sans-serif;
+  font-size: 19px;
+  font-weight: bold;
+  position: absolute;
+  top: 40px;
+  left: 52px;
+  color: $darkest-grey;
+  width: 80px;
+}
+
+.badge-year {
+  font-family: "bree", "bree-1", Verdana, sans-serif;
+  color: white;
+  font-weight: bold;
+  font-size: 11px;
+  position: absolute;
+  left: 124px;
+  top: 106px;
+  @include rotate(323deg);
+}
+
+.badge-text {
+  width: 49px;
+  font-family: "bree", "bree-1", Verdana, sans-serif;
+  color: white;
+  font-weight: bold;
+  font-size: 8px;
+  position: absolute;
+  left: 20px;
+  top: 101px;
+  @include rotate(396deg);
+}
