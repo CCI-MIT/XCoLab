@@ -1191,6 +1191,20 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.SpamReportModelImpl">
+		<attributes>
+			<id name="id_" />
+			<basic name="spamUserId" />
+			<basic name="reporterUserId" />
+			<basic name="discussionMessageId" />
+			<basic name="isAdminReport" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="reporterUserUuid" />
+			<transient name="spamUserUuid" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.StaffMemberModelImpl">
 		<attributes>
 			<id name="id">
@@ -1542,6 +1556,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalVoteImpl" name="ProposalVote">
 		<table name="xcolab_ProposalVote" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.SpamReportImpl" name="SpamReport">
+		<table name="xcolab_SpamReport" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.StaffMemberImpl" name="StaffMember">

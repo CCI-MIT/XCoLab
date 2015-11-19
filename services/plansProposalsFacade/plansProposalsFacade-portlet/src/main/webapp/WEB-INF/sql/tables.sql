@@ -988,6 +988,14 @@ create table xcolab_SocialActivity (
 	userId LONG
 );
 
+create table xcolab_SpamReport (
+	id_ LONG not null primary key,
+	spamUserId LONG,
+	reporterUserId LONG,
+	discussionMessageId LONG,
+	isAdminReport BOOLEAN
+);
+
 create table xcolab_StaffMember (
 	id_ LONG not null primary key,
 	userId LONG,

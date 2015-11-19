@@ -852,6 +852,13 @@
 		<field name="userId" type="long" />
 		<field name="createDate" type="Date" />
 	</model>
+	<model name="com.ext.portlet.model.SpamReport">
+		<field name="id_" type="long" />
+		<field name="spamUserId" type="long" />
+		<field name="reporterUserId" type="long" />
+		<field name="discussionMessageId" type="long" />
+		<field name="isAdminReport" type="boolean" />
+	</model>
 	<model name="com.ext.portlet.model.StaffMember">
 		<field name="id" type="long" />
 		<field name="userId" type="long" />

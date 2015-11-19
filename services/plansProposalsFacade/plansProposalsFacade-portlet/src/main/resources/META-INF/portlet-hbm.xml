@@ -76,6 +76,7 @@
 	<import class="com.ext.portlet.model.ProposalSupporter" />
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
+	<import class="com.ext.portlet.model.SpamReport" />
 	<import class="com.ext.portlet.model.StaffMember" />
 	<import class="com.ext.portlet.model.TrackedVisit" />
 	<import class="com.ext.portlet.model.TrackedVisitor2User" />
@@ -939,6 +940,16 @@
 		</composite-id>
 		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.SpamReportImpl" table="xcolab_SpamReport">
+		<cache usage="read-write" />
+		<id name="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="spamUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="reporterUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="discussionMessageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="isAdminReport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.StaffMemberImpl" table="xcolab_StaffMember">
 		<cache usage="read-write" />

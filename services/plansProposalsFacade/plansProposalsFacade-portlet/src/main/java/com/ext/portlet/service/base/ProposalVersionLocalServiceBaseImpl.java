@@ -78,6 +78,7 @@ import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPK;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
+import com.ext.portlet.service.persistence.SpamReportPersistence;
 import com.ext.portlet.service.persistence.StaffMemberPersistence;
 import com.ext.portlet.service.persistence.TrackedVisitPersistence;
 import com.ext.portlet.service.persistence.TrackedVisitor2UserPersistence;
@@ -567,6 +568,12 @@ public abstract class ProposalVersionLocalServiceBaseImpl
     protected com.ext.portlet.service.ProposalVoteService proposalVoteService;
     @BeanReference(type = ProposalVotePersistence.class)
     protected ProposalVotePersistence proposalVotePersistence;
+    @BeanReference(type = com.ext.portlet.service.SpamReportLocalService.class)
+    protected com.ext.portlet.service.SpamReportLocalService spamReportLocalService;
+    @BeanReference(type = com.ext.portlet.service.SpamReportService.class)
+    protected com.ext.portlet.service.SpamReportService spamReportService;
+    @BeanReference(type = SpamReportPersistence.class)
+    protected SpamReportPersistence spamReportPersistence;
     @BeanReference(type = com.ext.portlet.service.StaffMemberLocalService.class)
     protected com.ext.portlet.service.StaffMemberLocalService staffMemberLocalService;
     @BeanReference(type = com.ext.portlet.service.StaffMemberService.class)
@@ -5062,6 +5069,63 @@ public abstract class ProposalVersionLocalServiceBaseImpl
     public void setProposalVotePersistence(
         ProposalVotePersistence proposalVotePersistence) {
         this.proposalVotePersistence = proposalVotePersistence;
+    }
+
+    /**
+     * Returns the spam report local service.
+     *
+     * @return the spam report local service
+     */
+    public com.ext.portlet.service.SpamReportLocalService getSpamReportLocalService() {
+        return spamReportLocalService;
+    }
+
+    /**
+     * Sets the spam report local service.
+     *
+     * @param spamReportLocalService the spam report local service
+     */
+    public void setSpamReportLocalService(
+        com.ext.portlet.service.SpamReportLocalService spamReportLocalService) {
+        this.spamReportLocalService = spamReportLocalService;
+    }
+
+    /**
+     * Returns the spam report remote service.
+     *
+     * @return the spam report remote service
+     */
+    public com.ext.portlet.service.SpamReportService getSpamReportService() {
+        return spamReportService;
+    }
+
+    /**
+     * Sets the spam report remote service.
+     *
+     * @param spamReportService the spam report remote service
+     */
+    public void setSpamReportService(
+        com.ext.portlet.service.SpamReportService spamReportService) {
+        this.spamReportService = spamReportService;
+    }
+
+    /**
+     * Returns the spam report persistence.
+     *
+     * @return the spam report persistence
+     */
+    public SpamReportPersistence getSpamReportPersistence() {
+        return spamReportPersistence;
+    }
+
+    /**
+     * Sets the spam report persistence.
+     *
+     * @param spamReportPersistence the spam report persistence
+     */
+    public void setSpamReportPersistence(
+        SpamReportPersistence spamReportPersistence) {
+        this.spamReportPersistence = spamReportPersistence;
     }
 
     /**

@@ -122,4 +122,29 @@
             <finder-column name="flagType" />
         </finder>
     </entity>
+
+    <entity name="SpamReport" local-service="true">
+        <column name="id_" type="long" primary="true"/>
+        <column name="spamUserId" type="long"/>
+        <column name="reporterUserId" type="long"/>
+        <column name="discussionMessageId" type="long"/>
+        <column name="isAdminReport" type="boolean"/>
+
+        <finder name="SpamUserId" return-type="Collection">
+            <finder-column name="spamUserId"/>
+        </finder>
+
+        <finder name="DiscussionMessageId" return-type="Collection">
+            <finder-column name="discussionMessageId"/>
+        </finder>
+
+        <finder name="ReporterUserId" return-type="Collection">
+            <finder-column name="reporterUserId"/>
+        </finder>
+
+        <finder name="SpamUserIdDiscussionMessageId" return-type="Collection">
+            <finder-column name="spamUserId"/>
+            <finder-column name="discussionMessageId"/>
+        </finder>
+    </entity>
 </service-builder>

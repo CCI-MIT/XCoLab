@@ -241,6 +241,11 @@ create index IX_43559ACF on xcolab_ProposalVote (proposalId, contestPhaseId);
 create index IX_562EB409 on xcolab_ProposalVote (proposalId, contestPhaseId, userId);
 create index IX_497348F2 on xcolab_ProposalVote (userId);
 
+create index IX_A9DC76B1 on xcolab_SpamReport (discussionMessageId);
+create index IX_B9542B14 on xcolab_SpamReport (reporterUserId);
+create index IX_C4701AFC on xcolab_SpamReport (spamUserId);
+create index IX_81E78E6E on xcolab_SpamReport (spamUserId, discussionMessageId);
+
 create index IX_9C5CE364 on xcolab_StaffMember (userId);
 
 create index IX_21569857 on xcolab_TrackedVisit (uuid_);

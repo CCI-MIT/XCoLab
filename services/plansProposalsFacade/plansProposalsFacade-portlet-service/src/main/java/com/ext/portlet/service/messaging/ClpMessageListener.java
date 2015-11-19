@@ -149,6 +149,8 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteServiceUtil;
+import com.ext.portlet.service.SpamReportLocalServiceUtil;
+import com.ext.portlet.service.SpamReportServiceUtil;
 import com.ext.portlet.service.StaffMemberLocalServiceUtil;
 import com.ext.portlet.service.StaffMemberServiceUtil;
 import com.ext.portlet.service.TrackedVisitLocalServiceUtil;
@@ -396,6 +398,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalVoteLocalServiceUtil.clearService();
 
             ProposalVoteServiceUtil.clearService();
+            SpamReportLocalServiceUtil.clearService();
+
+            SpamReportServiceUtil.clearService();
             StaffMemberLocalServiceUtil.clearService();
 
             StaffMemberServiceUtil.clearService();
