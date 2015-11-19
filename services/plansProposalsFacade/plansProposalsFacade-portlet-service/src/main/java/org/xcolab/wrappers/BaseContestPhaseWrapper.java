@@ -191,4 +191,8 @@ public class BaseContestPhaseWrapper {
     public ContestPhase getWrapped() {
         return contestPhase;
     }
+
+    public String getContestPhaseUrl() throws SystemException {
+        return ContestPhaseLocalServiceUtil.getContestPhaseLinkUrl(contestPhase);
+    }
 }

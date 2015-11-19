@@ -6,6 +6,9 @@ import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang.WordUtils;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum MemberRole {
     /**
      * Important:
@@ -19,7 +22,7 @@ public enum MemberRole {
     ADVISOR(193260L, "Advisor"),
     EXPERT(44201L, "Experts"),
     JUDGE(1251483L, "Judges", "Judge"),
-    STAFF(31704L, "Staff", "Moderator", "Administrator"),
+    STAFF(31704L, new Long[]{10118L}, "Staff", "Moderator", "Administrator"),
     MODERATOR(31213L, "Staff"),
     CATALYST(1430078L, "Catalyst"),
     CONTEST_MANAGER(1950101L, "Contest Manager"),
@@ -27,11 +30,17 @@ public enum MemberRole {
 
     private final String[] roleNames;
     private final long roleId;
+    private final List<Long> otherRoleIds;
 
     MemberRole(Long roleId, String... roleNames) {
-        this.roleId = roleId;
+        this(roleId, new Long[0], roleNames);
+    }
+
+    MemberRole(Long roleId, Long[] otherRoleIds, String... roleNames) {
         this.roleNames = roleNames;
-    } 
+        this.roleId = roleId;
+        this.otherRoleIds = Arrays.asList(otherRoleIds);
+    }
 
     public String getPrintName() throws SystemException {
         return WordUtils.capitalizeFully((getMemberCategory().getDisplayName()));
@@ -42,11 +51,11 @@ public enum MemberRole {
     }
 
     public MemberCategory getMemberCategory() throws SystemException {
-        try {
-            return MemberCategoryLocalServiceUtil.fetchMemberCategory(roleId);
-        } catch (SystemException e) {
-            throw new SystemException("Could not get member category for MemberRole enum: roleIds might be out of sync", e);
+        final MemberCategory memberCategory = MemberCategoryLocalServiceUtil.fetchMemberCategory(roleId);
+        if (memberCategory == null) {
+            throw new SystemException(String.format("No member category with roleId %d exists", roleId));
         }
+        return memberCategory;
     }
 
     public String[] getRoleNames() {
@@ -57,22 +66,22 @@ public enum MemberRole {
         return roleId;
     }
 
-    public static MemberRole fromRoleId(long roleId) throws SystemException {
+    public static MemberRole fromRoleId(long roleId) throws NoSuchMemberRoleException {
         for (MemberRole memberRole : MemberRole.values()) {
-            if (roleId == memberRole.getRoleId()) {
+            if (roleId == memberRole.getRoleId() || memberRole.getOtherRoleIds().contains(roleId)) {
                 return memberRole;
             }
         }
-        throw new SystemException("Unknown role id given: " + roleId);
+        throw new NoSuchMemberRoleException("Unknown role id given: " + roleId);
     }
 
-    public static MemberRole fromRoleName(String roleName) throws SystemException {
+    public static MemberRole fromRoleName(String roleName) throws NoSuchMemberRoleException {
         for (MemberRole memberRole : MemberRole.values()) {
             if (isStringInList(roleName, memberRole.getRoleNames())) {
                 return memberRole;
             }
         }
-        throw new SystemException("Unknown role name given: " + roleName);
+        throw new NoSuchMemberRoleException("Unknown role name given: " + roleName);
     }
 
     private static boolean isStringInList(String name, String[] names) {
@@ -82,5 +91,15 @@ public enum MemberRole {
             }
         }
         return false;
+    }
+
+    public List<Long> getOtherRoleIds() {
+        return otherRoleIds;
+    }
+
+    public static class NoSuchMemberRoleException extends SystemException {
+        public NoSuchMemberRoleException(String message) {
+            super(message);
+        }
     }
 }

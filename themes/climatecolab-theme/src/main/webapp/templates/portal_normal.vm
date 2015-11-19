@@ -225,7 +225,7 @@
                      <br/>
                      <br/>
                      <div class="info-message">
-                         <p>If you provide your e-Mail address below we will let you know as soon as we've fixed to the problem</p>
+                         <p>If you provide your e-Mail address below we will let you know as soon as we've fixed the problem</p>
                      </div>
                      <input type="text" name="email" class="email" style="width:98%; min-height: 25px; padding-left: 2%; margin-top: -10px;" placeholder="Email address" />
                      <div class="clearfix"><!-- --></div>

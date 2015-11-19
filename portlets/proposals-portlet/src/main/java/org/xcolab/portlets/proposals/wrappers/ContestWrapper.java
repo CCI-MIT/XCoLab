@@ -14,14 +14,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
-import org.xcolab.wrappers.BaseContestTeamRoleWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,8 +34,7 @@ public class ContestWrapper extends BaseContestWrapper {
     private static final String EMAIL_TEMPLATE_URL = "/web/guest/generic-advancing-email-template";
 
     private Map<String, String> ontologyJoinedNames = new HashMap<>();
-    private List<ContestPhaseWrapper> visiblePhases;
-    private ContestPhaseWrapper activePhase;
+    private List<BaseContestPhaseWrapper> visiblePhases;
 
     public ContestWrapper(Contest contest) {
         super(contest);
@@ -249,12 +246,12 @@ public class ContestWrapper extends BaseContestWrapper {
         return lastVotingPhase != null ? lastVotingPhase.getContestPhasePK() : 0;
     }
 
-    public boolean isContestCompleted(ContestPhaseWrapper contestPhase) {
+    public boolean isContestCompleted(BaseContestPhaseWrapper contestPhase) {
         ContestPhaseType type;
         ContestPhase activePhase;
         try {
             activePhase = ContestLocalServiceUtil.getActivePhase(this.contest);
-            type = new ContestPhaseWrapper(activePhase).getContestPhaseTypeObject();
+            type = new BaseContestPhaseWrapper(activePhase).getContestPhaseTypeObject();
         } catch (IllegalArgumentException | NullPointerException | SystemException | PortalException e) {
             return false;
         }
@@ -263,11 +260,11 @@ public class ContestWrapper extends BaseContestWrapper {
                 ) && ("COMPLETED".equals(type.getStatus()));
     }
 
-    public List<ContestPhaseWrapper> getVisiblePhases() throws SystemException, PortalException {
+    public List<BaseContestPhaseWrapper> getVisiblePhases() throws SystemException, PortalException {
         if (visiblePhases == null) {
             visiblePhases = new ArrayList<>();
             for (ContestPhase phase : ContestLocalServiceUtil.getVisiblePhases(contest)) {
-                visiblePhases.add(new ContestPhaseWrapper(phase));
+                visiblePhases.add(new BaseContestPhaseWrapper(phase));
             }
         }
         return visiblePhases;

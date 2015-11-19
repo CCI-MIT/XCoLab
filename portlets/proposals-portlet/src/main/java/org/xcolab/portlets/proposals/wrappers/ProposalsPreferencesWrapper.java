@@ -42,16 +42,12 @@ public class ProposalsPreferencesWrapper {
 
     }
 
-    public ProposalsPreferencesWrapper(PortletRequest request) {
+    public ProposalsPreferencesWrapper(PortletRequest request) throws SystemException, PortalException {
         PortletPreferences preferences = request.getPreferences();
-        try {
-            termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
-        } catch(SystemException | PortalException e) {
-            //should never happen
-            throw new RuntimeException(e);
-        }
+        termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
         callToAction = preferences.getValue(CALL_TO_ACTION, CALL_TO_ACTION_DEFAULT);
-        contestTypeId = preferences.getValue(CONTEST_TYPE_ID, "1");
+        contestTypeId = preferences.getValue(CONTEST_TYPE_ID, "0");
+        contestType = ContestTypeLocalServiceUtil.fetchContestType(Long.parseLong(contestTypeId));
         proposalIdsToBeMoved = "";
         moveFromContestId = -1;
         moveToContestPhaseId = -1;
@@ -147,9 +143,6 @@ public class ProposalsPreferencesWrapper {
     }
 
     public ContestType getContestType() throws SystemException {
-        if (contestType == null) {
-            contestType = ContestTypeLocalServiceUtil.fetchContestType(Long.parseLong(contestTypeId));
-        }
         return contestType;
     }
 }

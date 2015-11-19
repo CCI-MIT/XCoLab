@@ -67,13 +67,14 @@ public class MemberItem implements Serializable {
 
                 for (Role role: roles) {
                    long roleId = role.getRoleId();
+                    try {
+                        MemberRole currentRole = MemberRole.fromRoleId(roleId);
 
-                    MemberRole currentRole = MemberRole.fromRoleId(roleId);
-
-                    if (currentRole != null
-                            && currentRole.getMemberCategory().getSortOrder() > memberRole.getMemberCategory().getSortOrder()) {
-                        memberRole = currentRole;
-                    }
+                        if (currentRole != null
+                                && currentRole.getMemberCategory().getSortOrder() > memberRole.getMemberCategory().getSortOrder()) {
+                            memberRole = currentRole;
+                        }
+                    } catch (MemberRole.NoSuchMemberRoleException ignored) { }
                 }
 
                 if (memberRole.getRoleId() == MemberRole.MODERATOR.getRoleId()) {

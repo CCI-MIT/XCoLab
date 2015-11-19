@@ -30,11 +30,11 @@ import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
 import javax.portlet.PortletRequest;
 
@@ -127,7 +127,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
     
     @Override
-    public ContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) throws PortalException, SystemException {
+    public BaseContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) throws PortalException, SystemException {
         return getAttribute(request, CONTEST_PHASE_WRAPPED_ATTRIBUTE);
     }
 
@@ -253,7 +253,7 @@ public class ProposalsContextImpl implements ProposalsContext {
         if (contest != null) {
             request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contest));
             if (contestPhase != null) {
-                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new ContestPhaseWrapper(contestPhase));
+                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new BaseContestPhaseWrapper(contestPhase));
 
                 if (proposal == null) {
                     contestType = ContestTypeLocalServiceUtil.fetchContestType(contest.getContestTypeId());
