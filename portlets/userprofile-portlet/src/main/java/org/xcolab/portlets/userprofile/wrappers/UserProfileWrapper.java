@@ -5,13 +5,11 @@ import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageConstants;
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Message;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -35,6 +33,7 @@ import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
+import org.xcolab.utils.ProposalGroupingUtil;
 import org.xcolab.utils.SendMessagePermissionChecker;
 import org.xcolab.wrappers.BaseProposalWrapper;
 import org.xcolab.wrappers.ContestTypeProposalWrapper;
@@ -152,8 +151,7 @@ public class UserProfileWrapper implements Serializable {
         }
 
         List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
-        // TODO: COLAB-770 replace by service call to ContestTypeLocalServiceUtil.groupProposalsByContestType
-        Map<ContestType, List<Proposal>> proposalsByContestType = groupProposalsByContestType(proposals);
+        Map<ContestType, List<Proposal>> proposalsByContestType = ProposalGroupingUtil.groupByContestType(proposals);
         for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
@@ -163,30 +161,6 @@ public class UserProfileWrapper implements Serializable {
                 } catch (NoSuchContestException ignored) { }
             }
         }
-    }
-
-    // TODO: COLAB-770 replace by service call to ContestTypeLocalServiceUtil.groupProposalsByContestType
-    private Map<ContestType, List<Proposal>> groupProposalsByContestType(List<Proposal> proposals) throws SystemException, PortalException {
-        Map<Long, ContestType> contestIdToContestTypeMap = new HashMap<>();
-        Map<ContestType, List<Proposal>> proposalsByContestType = new HashMap<>();
-        final List<ContestType> contestTypes = ContestTypeLocalServiceUtil.getActiveContestTypes();
-        if (contestTypes.size()  == 1) {
-            proposalsByContestType.put(contestTypes.get(0), proposals);
-        } else {
-            for (ContestType contestType : contestTypes) {
-                final List<Contest> contests = ContestLocalServiceUtil.getContestsByContestType(contestType.getId());
-                proposalsByContestType.put(contestType, new ArrayList<Proposal>());
-                for (Contest contest : contests) {
-                    contestIdToContestTypeMap.put(contest.getContestPK(), contestType);
-                }
-            }
-            for (Proposal p : proposals) {
-                final long contestPK = ProposalLocalServiceUtil.getLatestProposalContest(p.getProposalId()).getContestPK();
-                ContestType contestType = contestIdToContestTypeMap.get(contestPK);
-                proposalsByContestType.get(contestType).add(p);
-            }
-        }
-        return proposalsByContestType;
     }
 
     private boolean profileIsComplete() {

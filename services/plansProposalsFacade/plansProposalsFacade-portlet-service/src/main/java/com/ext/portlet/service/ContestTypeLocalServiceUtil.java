@@ -307,13 +307,6 @@ public class ContestTypeLocalServiceUtil {
                    .getContestNames(contestTypeIds, isSingular, conjunction);
     }
 
-    public static java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>> groupProposalsByContestType(
-        java.util.List<com.ext.portlet.model.Proposal> proposals)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().groupProposalsByContestType(proposals);
-    }
-
     public static void clearService() {
         _service = null;
     }

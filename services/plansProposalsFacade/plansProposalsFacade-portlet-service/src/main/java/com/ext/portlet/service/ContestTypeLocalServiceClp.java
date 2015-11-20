@@ -60,8 +60,6 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
     private String[] _methodParameterTypes25;
     private String _methodName26;
     private String[] _methodParameterTypes26;
-    private String _methodName27;
-    private String[] _methodParameterTypes27;
 
     public ContestTypeLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -194,10 +192,6 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
         _methodParameterTypes26 = new String[] {
                 "java.util.List", "boolean", "java.lang.String"
             };
-
-        _methodName27 = "groupProposalsByContestType";
-
-        _methodParameterTypes27 = new String[] { "java.util.List" };
     }
 
     @Override
@@ -930,38 +924,5 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
         }
 
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>> groupProposalsByContestType(
-        java.util.List<com.ext.portlet.model.Proposal> proposals)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName27,
-                    _methodParameterTypes27,
-                    new Object[] { ClpSerializer.translateInput(proposals) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>>) ClpSerializer.translateOutput(returnObj);
     }
 }

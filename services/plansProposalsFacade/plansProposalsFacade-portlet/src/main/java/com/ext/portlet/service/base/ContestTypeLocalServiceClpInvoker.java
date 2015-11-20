@@ -61,8 +61,6 @@ public class ContestTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes516;
     private String _methodName517;
     private String[] _methodParameterTypes517;
-    private String _methodName519;
-    private String[] _methodParameterTypes519;
 
     public ContestTypeLocalServiceClpInvoker() {
         _methodName0 = "addContestType";
@@ -192,10 +190,6 @@ public class ContestTypeLocalServiceClpInvoker {
         _methodParameterTypes517 = new String[] {
                 "java.util.List", "boolean", "java.lang.String"
             };
-
-        _methodName519 = "groupProposalsByContestType";
-
-        _methodParameterTypes519 = new String[] { "java.util.List" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -341,11 +335,6 @@ public class ContestTypeLocalServiceClpInvoker {
             return ContestTypeLocalServiceUtil.getContestNames((java.util.List<java.lang.Long>) arguments[0],
                 ((Boolean) arguments[1]).booleanValue(),
                 (java.lang.String) arguments[2]);
-        }
-
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
-            return ContestTypeLocalServiceUtil.groupProposalsByContestType((java.util.List<com.ext.portlet.model.Proposal>) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

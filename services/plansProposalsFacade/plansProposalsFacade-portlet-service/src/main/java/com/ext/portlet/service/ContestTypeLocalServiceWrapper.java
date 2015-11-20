@@ -327,14 +327,6 @@ public class ContestTypeLocalServiceWrapper implements ContestTypeLocalService,
             isSingular, conjunction);
     }
 
-    @Override
-    public java.util.Map<com.ext.portlet.model.ContestType, java.util.List<com.ext.portlet.model.Proposal>> groupProposalsByContestType(
-        java.util.List<com.ext.portlet.model.Proposal> proposals)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestTypeLocalService.groupProposalsByContestType(proposals);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

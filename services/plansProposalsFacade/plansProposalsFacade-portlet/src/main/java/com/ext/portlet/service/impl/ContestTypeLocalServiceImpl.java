@@ -2,7 +2,6 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.base.ContestTypeLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -10,10 +9,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The implementation of the contest type local service.
@@ -113,30 +110,5 @@ public class ContestTypeLocalServiceImpl extends ContestTypeLocalServiceBaseImpl
             proposalsString = "Proposals";
         }
         return proposalsString;
-    }
-
-    // TODO: COLAB-770 replace local methods in UserProfileWrapper and ProposalSectionsTabController
-    @Override
-    public Map<ContestType, List<Proposal>> groupProposalsByContestType(List<Proposal> proposals) throws SystemException, PortalException {
-        Map<Long, ContestType> contestIdToContestTypeMap = new HashMap<>();
-        Map<ContestType, List<Proposal>> proposalsByContestType = new HashMap<>();
-        final List<ContestType> contestTypes = getActiveContestTypes();
-        if (contestTypes.size()  == 1) {
-            proposalsByContestType.put(contestTypes.get(0), proposals);
-        } else {
-            for (ContestType contestType : contestTypes) {
-                final List<Contest> contests = contestLocalService.getContestsByContestType(contestType.getId());
-                proposalsByContestType.put(contestType, new ArrayList<Proposal>());
-                for (Contest contest : contests) {
-                    contestIdToContestTypeMap.put(contest.getContestPK(), contestType);
-                }
-            }
-            for (Proposal p : proposals) {
-                final long contestPK = proposalLocalService.getLatestProposalContest(p.getProposalId()).getContestPK();
-                ContestType contestType = contestIdToContestTypeMap.get(contestPK);
-                proposalsByContestType.get(contestType).add(p);
-            }
-        }
-        return proposalsByContestType;
     }
 }
