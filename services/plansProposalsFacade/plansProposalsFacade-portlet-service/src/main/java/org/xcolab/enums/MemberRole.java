@@ -1,6 +1,5 @@
 package org.xcolab.enums;
 
-import com.ext.portlet.NoSuchMemberCategoryException;
 import com.ext.portlet.model.MemberCategory;
 import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -25,7 +24,7 @@ public enum MemberRole {
     STAFF(31704L, new Long[]{10118L}, "Staff", "Moderator", "Administrator"),
     MODERATOR(31213L, "Staff"),
     CATALYST(1430078L, "Catalyst"),
-    CONTEST_MANAGER(1950101L, "Contest Manager"),
+    CONTEST_MANAGER(1958405L, "Contest Manager"),
     IMPACT_ASSESSMENT_FELLOW(1975251L, "Impact Assessment Fellow");
 
     private final String[] roleNames;

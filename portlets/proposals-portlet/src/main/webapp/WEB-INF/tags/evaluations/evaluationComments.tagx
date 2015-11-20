@@ -93,7 +93,7 @@
                                             <span>share</span>
                                         </a>
                                     </td>
-                                    <td class="the-comment ${message.expertReview ? 'expertReview' : ''}">
+                                    <td class="the-comment ${message.expertReview ? 'expertReview' : ''} ${discussionPermissions.canAdminSpamReports and message.spamReportCount > 0 ? 'spam' : ''}">
                                         <c:choose>
                                             <c:when test="${authorId == message.author.userId}">
                                                 <div class="thread-creator-overlay"><img src="/climatecolab-theme/images/Thread-creator-overlay.png"></img></div>
@@ -105,16 +105,38 @@
                                         <div id="message_${message.messageId}" class="content">
                                             ${message.body }
                                         </div>
-                                        <c:if test="${discussionPermissions.getCanAdminMessage(message) }">
-                                            <div class="commentsActions">
-
+										<div class="commentsActions">
+											<c:if test="${discussionPermissions.getCanReportMessage(message) }">
+												<portlet:actionURL var="reportSpamURL">
+													<portlet:param name="action" value="reportSpam" />
+													<portlet:param name="messageId" value="${message.messageId }" />
+													<portlet:param name="tab" value="${currentTab}" />
+													<portlet:param name="discussionId" value="${discussion.id}" />
+													<portlet:param name="proposalId" value="${proposal.proposalId}" />
+												</portlet:actionURL>
+												<a style="margin-left: 10px;" href="javascript:;" data-url="${reportSpamURL }" onclick="if (confirm('Are you sure you want to report this message as spam?')) window.location = $(this).attr('data-url');">Mark as spam</a>
+											</c:if>
+											<c:if test="${discussionPermissions.canAdminSpamReports }">
+												<a style="margin-left: 10px;" href="/web/guest/member/-/member/spamReport/${message.authorId}">View spam report</a>
+											</c:if>
+											<c:if test="${discussionPermissions.getCanRemoveSpamReport(message) }">
+												<portlet:actionURL var="removeSpamReportURL">
+													<portlet:param name="action" value="removeSpamReport" />
+													<portlet:param name="messageId" value="${message.messageId }" />
+													<portlet:param name="tab" value="${currentTab}" />
+													<portlet:param name="discussionId" value="${discussion.id}" />
+													<portlet:param name="proposalId" value="${proposal.proposalId}" />
+												</portlet:actionURL>
+												<a style="margin-left: 10px;" href="javascript:;" data-url="${removeSpamReportURL }" onclick="if (confirm('Are you sure you want to remove all spam reports for this message?')) window.location = $(this).attr('data-url');">Not spam</a>
+											</c:if>
+											<c:if test="${discussionPermissions.getCanAdminMessage(message) }">
                                                 <portlet:actionURL var="editCommentURL">
                                                     <portlet:param name="action" value="editComment" />
 													<portlet:param name="tab" value="${currentTab}" />
 													<portlet:param name="discussionId" value="${discussion.id}" />
 													<portlet:param name="proposalId" value="${proposal.proposalId}" />
                                                 </portlet:actionURL>
-                                                <a href="javascript:;" onclick="editComment(${message.messageId},'${editCommentURL}');">Edit</a>
+                                                <a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.messageId},'${editCommentURL}');">Edit</a>
 
 												<c:if test="${discussionPermissions.canAdminMessages}">
 													<portlet:actionURL var="toggleExpertReviewURL">
@@ -136,9 +158,8 @@
 													</portlet:actionURL>
 													<a style="margin-left: 10px;" href="javascript:;" data-url="${deleteMessageURL }" onclick="if (confirm('Are you sure you want to delete this message?')) window.location = $(this).attr('data-url');">Delete message</a>
 												</c:if>
-
-                                            </div>
-                                        </c:if>
+                                        	</c:if>
+										</div>
                                     </td>
                                 </tr>
                             </discussions:getRoleName>

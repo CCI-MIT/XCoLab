@@ -81,5 +81,6 @@
 	<bean class="org.xcolab.jsp.tags.discussion.actions.ToggleDiscussionMessageFlagActionController" />
 	<bean class="org.xcolab.jsp.tags.discussion.actions.DeleteDiscussionMessageFlagActionController" />
 	<bean class="org.xcolab.jsp.tags.discussion.actions.EditDiscussionMessageActionController" />
+	<bean class="org.xcolab.jsp.tags.discussion.actions.SpamReportDiscussionMessageActionController" />
 
 </beans>

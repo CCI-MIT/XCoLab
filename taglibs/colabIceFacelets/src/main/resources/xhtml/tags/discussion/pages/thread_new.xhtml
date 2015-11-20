@@ -94,7 +94,7 @@
             <div class="role-indicator">
                 <div style="width: 16px">
                     <img
-                            src="/climatecolab-theme/images/icon_mem-${message.authorRole.lowerCase}.png"
+                            src="/climatecolab-theme/images/${message.authorRole.imageUrl}.png"
                             width="16" height="16" />
                 </div>
                 ${message.authorRole.printName}
@@ -116,12 +116,14 @@
                         </a>
         </ice:column>
         
-        <ice:column styleClass="#{message.expertReview ? 'expertReview' : ''}">
+        <ice:column styleClass="#{message.expertReview ? 'expertReview' : ''} #{message.spamReportCount > 0 ? 'spam' : ''}">
             <ice:panelGroup rendered="#{not message.editing}">
                     <div class="content">
                         <ice:outputText value="#{message.filteredDescription}" escape="false" />
                     </div>
                     <div class="commentsActions">
+                        <ice:commandButton actionListener="#{message.markSpam}" value="Mark as Spam" rendered="${discussionBean.permissions.canReportSpam and message.spamReportCount == 0}"/>
+                        <ice:commandButton actionListener="#{message.removeSpamReport}" value="Not Spam" rendered="${discussionBean.permissions.getCanRemoveSpamReport(message) and message.spamReportCount > 0}"/>
                         <ice:commandButton actionListener="#{message.toggleEdit}" value="Edit" rendered='#{discussionBean.permissions.canAdminMessages}'/>
                         <ice:commandButton actionListener="#{message.delete}" value="Delete" rendered='#{discussionBean.permissions.canAdminMessages}'/>
                         <ice:commandButton actionListener="#{message.addFlag}" value="Mark as an expert review" rendered='#{discussionBean.permissions.canAdminMessages and not message.expertReview}' >

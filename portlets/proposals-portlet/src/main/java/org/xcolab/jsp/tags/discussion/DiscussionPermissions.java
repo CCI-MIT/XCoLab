@@ -6,6 +6,7 @@ import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.SpamReportLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -24,13 +25,13 @@ public class DiscussionPermissions {
 
     private static final String RESOURCE_NAME = DiscussionCategoryGroup.class.getName();
     
-    private User currentUser;
-    private PermissionChecker permissionChecker;
-    private String primKey;
-    private long groupId;
-    private String discussionTabName;
-    private Integer proposalId;
-    private Integer contestPhaseId;
+    private final User currentUser;
+    private final PermissionChecker permissionChecker;
+    private final String primKey;
+    private final long groupId;
+    private final String discussionTabName;
+    private final Integer proposalId;
+    private final Integer contestPhaseId;
 
     public DiscussionPermissions(PortletRequest request, DiscussionCategoryGroup discussion)
             throws SystemException, PortalException {
@@ -46,12 +47,9 @@ public class DiscussionPermissions {
     }
 
     private String getTabName(PortletRequest request){
-        String discussionTabName;
-        discussionTabName = request.getParameter("tab");
+        String discussionTabName = request.getParameter("tab");
         if(discussionTabName == null) {
-            try {
-                discussionTabName = request.getParameter("pageToDisplay").replace("proposalDetails_", "");
-            } catch (Exception ignored) { }
+            discussionTabName = request.getParameter("pageToDisplay").replace("proposalDetails_", "");
         }
         return discussionTabName;
     }
@@ -81,6 +79,26 @@ public class DiscussionPermissions {
             }
         } catch (NumberFormatException ignored) { }
         return phaseId;
+    }
+
+    public boolean getCanReportSpam() {
+        return getCanAdminMessages();
+    }
+
+    public boolean getCanAdminSpamReports() {
+        return getCanAdminMessages();
+    }
+
+    public boolean getCanReportMessage(DiscussionMessageWrapper message) throws SystemException {
+        return getCanReportSpam()
+                && message.getAuthorId() != currentUser.getUserId()
+                && !SpamReportLocalServiceUtil.hasReporterUserIdDiscussionMessageId(currentUser.getUserId(), message.getMessageId());
+    }
+
+    public boolean getCanRemoveSpamReport(DiscussionMessageWrapper message) throws SystemException {
+        return getCanAdminSpamReports()
+                && message.getAuthorId() != currentUser.getUserId()
+                && SpamReportLocalServiceUtil.hasReporterUserIdDiscussionMessageId(currentUser.getUserId(), message.getMessageId());
     }
 
     public boolean getCanSeeAddCommentButton(){
@@ -132,7 +150,7 @@ public class DiscussionPermissions {
             Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
             isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId) ||
                     isUserProposalAuthorOrTeamMember(user, proposal);
-        } catch (Exception ignored) { }
+        } catch (SystemException | PortalException ignored) { }
         return isUserAllowed;
     }
 

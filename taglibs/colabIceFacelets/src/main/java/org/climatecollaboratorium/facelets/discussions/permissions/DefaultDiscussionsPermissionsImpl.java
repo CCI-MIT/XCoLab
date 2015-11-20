@@ -2,7 +2,9 @@ package org.climatecollaboratorium.facelets.discussions.permissions;
 
 import java.io.Serializable;
 
+import com.ext.portlet.service.SpamReportLocalServiceUtil;
 import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
+import org.climatecollaboratorium.facelets.discussions.support.MessageWrapper;
 import org.climatecollaboratorium.utils.Helper;
 
 import com.ext.portlet.discussions.DiscussionActions;
@@ -20,11 +22,10 @@ public class DefaultDiscussionsPermissionsImpl implements DiscussionsPermissions
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final String RESOURCE_NAME = DiscussionCategoryGroup.class.getName();
-    private static final int RESOURCE_SCOPE = 1;
     private Long groupId;
-    private String primKey;
-    private static Log _log = LogFactoryUtil.getLog(DefaultDiscussionsPermissionsImpl.class);
-    private DiscussionBean discussionBean;
+    private final String primKey;
+    private static final Log _log = LogFactoryUtil.getLog(DefaultDiscussionsPermissionsImpl.class);
+    private final DiscussionBean discussionBean;
     
     public DefaultDiscussionsPermissionsImpl(DiscussionBean discussionBean) throws PortalException, SystemException {
         primKey = String.valueOf(discussionBean.getDiscussion().getId());
@@ -82,6 +83,7 @@ public class DefaultDiscussionsPermissionsImpl implements DiscussionsPermissions
         return Helper.isUserLoggedIn();
     }
 
+    @Override
     public boolean getIsLoggedIn() {
         return Helper.isUserLoggedIn();
     }
@@ -89,6 +91,32 @@ public class DefaultDiscussionsPermissionsImpl implements DiscussionsPermissions
     private PermissionChecker permCheck() {
         groupId = discussionBean.getOwningGroupId();
         return Helper.getPermissionChecker();
+    }
+
+    @Override
+    public boolean getCanReportSpam() {
+        return getCanAdminMessages();
+    }
+
+    @Override
+    public boolean getCanAdminSpamReports() {
+        return getCanAdminMessages();
+    }
+
+    @Override
+    public boolean getCanReportMessage(MessageWrapper message) throws SystemException {
+        final long userId = Long.valueOf(Helper.getLiferayUserId());
+        return getCanReportSpam()
+                && message.getAuthorId() != userId
+                && !SpamReportLocalServiceUtil.hasReporterUserIdDiscussionMessageId(userId, message.getId());
+    }
+
+    @Override
+    public boolean getCanRemoveSpamReport(MessageWrapper message) throws SystemException {
+        final long userId = Long.valueOf(Helper.getLiferayUserId());
+        return getCanAdminSpamReports()
+                && message.getAuthorId() != userId
+                && SpamReportLocalServiceUtil.hasReporterUserIdDiscussionMessageId(userId, message.getId());
     }
 
     @Override
