@@ -167,6 +167,9 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanFellowActions() {
+        if (contestPhase == null) {
+            return getCanAdminAll();
+        }
         long contestGroupId;
         try {
             contestGroupId = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getGroupId();
@@ -178,6 +181,9 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanJudgeActions() {
+        if (contestPhase == null) {
+            return getCanAdminAll();
+        }
         long contestGroupId;
         try {
             contestGroupId = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getGroupId();
