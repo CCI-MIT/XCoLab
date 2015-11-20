@@ -145,8 +145,6 @@
                                         <c:choose>
                                             <c:when test="${proposal.currentVersion > 0 }">
                                                 <collab:proposalLink proposal="${proposal}"
-                                                                     proposalId="${proposal.proposalId }"
-                                                                     contestId="${contest.contestPK }"
                                                                      linkId="discardChangesButton"
                                                                      text="DISCARD changes"/>
                                             </c:when>

@@ -46,7 +46,7 @@
                     </p>
                     <div class="blue-button"><a href="javascript:;" id="saveChangesButton">SAVE and PUBLISH changes</a></div>
                     <div class="gray-button">
-                    	<collab:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="DISCARD changes" tab="${currentTab }" />
+                    	<collab:proposalLink proposal="${proposal}" text="DISCARD changes" tab="${currentTab }" />
                     </div>
                 </div>
                 <div class="admin-right">
