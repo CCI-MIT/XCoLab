@@ -3,9 +3,9 @@ package org.xcolab.portlets.randomproposals;
 import java.util.List;
 
 
-public class ProposalsModel{
+public class ProposalsModel {
 	private RandomProposalsPreferences _preferences;
-	private String _baseImagePath;
+	private final String _baseImagePath;
 
 	private static List<ProposalWrapper> _proposals;
 	

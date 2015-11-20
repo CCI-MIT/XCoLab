@@ -1,5 +1,6 @@
 package org.xcolab.portlets.randomproposals;
 
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Proposal;
@@ -11,7 +12,7 @@ import org.xcolab.wrappers.BaseProposalWrapper;
 
 public class ProposalWrapper extends BaseProposalWrapper {
 
-	public ProposalWrapper(Proposal proposal) {
+	public ProposalWrapper(Proposal proposal) throws NoSuchContestException {
 		super(proposal);
 	}
 

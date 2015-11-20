@@ -1,5 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ProposalRating;
@@ -19,7 +20,7 @@ public class ProposalFellowWrapper extends ProposalWrapper {
     private User currentUser;
 
 
-    public ProposalFellowWrapper(ProposalWrapper proposal, User currentUser) {
+    public ProposalFellowWrapper(ProposalWrapper proposal, User currentUser) throws NoSuchContestException {
         super(proposal);
         this.currentUser = currentUser;
 

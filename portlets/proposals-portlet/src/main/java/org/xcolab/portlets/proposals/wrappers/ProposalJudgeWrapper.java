@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -23,7 +24,7 @@ import java.util.List;
 public class ProposalJudgeWrapper extends ProposalWrapper {
     private User currentUser;
 
-    public ProposalJudgeWrapper(ProposalWrapper proposal, User currentUser) {
+    public ProposalJudgeWrapper(ProposalWrapper proposal, User currentUser) throws NoSuchContestException {
         super(proposal);
         this.currentUser = currentUser;
 
@@ -38,7 +39,7 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         }
     }
 
-    public ProposalJudgeWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase, User currentUser) {
+    public ProposalJudgeWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase, User currentUser) throws NoSuchContestException {
         super(proposal, version, contest, contestPhase, proposal2Phase);
         this.currentUser = currentUser;
 

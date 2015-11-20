@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal;
@@ -167,7 +168,7 @@ public class VoteOnProposalActionController {
             }
         } catch (NoSuchProposalVoteException e) {
             model.addAttribute("error", "NoSuchProposalVote");
-        } catch (SystemException e) {
+        } catch (SystemException | NoSuchContestException e) {
             _log.error(String.format("Exception occurred while confirmingvote for proposal %d, user %d, with token %s",
                     proposalId, userId, confirmationToken), e);
         }

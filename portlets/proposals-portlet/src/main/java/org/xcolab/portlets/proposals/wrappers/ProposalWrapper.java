@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
@@ -55,26 +56,26 @@ public class ProposalWrapper extends BaseProposalWrapper {
     private List<ProposalSectionWrapper> sections;
     private List<MembershipRequestWrapper> membershipRequests;
 
-    public ProposalWrapper(Proposal proposal) {
+    public ProposalWrapper(Proposal proposal) throws NoSuchContestException {
         this(proposal, proposal.getCurrentVersion());
     }
 
-    public ProposalWrapper(Proposal proposal, int version) {
+    public ProposalWrapper(Proposal proposal, int version) throws NoSuchContestException {
         super(proposal, version, null, null, null);
     }
 
-    public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
+    public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) throws NoSuchContestException {
         super(proposal, version, contest, contestPhase, proposal2Phase);
     }
 
-    public ProposalWrapper(Proposal proposal, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
+    public ProposalWrapper(Proposal proposal, ContestPhase contestPhase, Proposal2Phase proposal2Phase) throws NoSuchContestException {
         super(proposal, proposal.getCurrentVersion(), null, contestPhase, proposal2Phase);
     }
-    public ProposalWrapper(Proposal proposal, ContestPhase contestPhase) throws SystemException, PortalException {
+    public ProposalWrapper(Proposal proposal, ContestPhase contestPhase) throws SystemException, NoSuchContestException {
         super(proposal, contestPhase);
     }
 
-    public ProposalWrapper(ProposalWrapper proposalWrapper) {
+    public ProposalWrapper(ProposalWrapper proposalWrapper) throws NoSuchContestException {
         super(proposalWrapper.getWrapped(),
                 proposalWrapper.getCurrentVersion(),
                 proposalWrapper.getContest(),
