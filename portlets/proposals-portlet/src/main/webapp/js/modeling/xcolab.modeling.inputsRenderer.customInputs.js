@@ -67,12 +67,12 @@ if (typeof(XCoLab.modeling) == 'undefined')
                 that.model = event.scenario;
                 if (modelChanged || scenarioChanged || !this.rendered) {
                     // if widget is in edit mode then there is no need to rerender
-                    this.rendered = true;
+                    that.rendered = true;
                     that.render(modelingWidget.container, event.scenario);
                 }
                 that.scenarioId = event.scenario.scenarioId;
             } else {
-                this.rendered = false;
+                that.rendered = false;
                 that.scenarioId = -1;
             }
 			that.modelId = event.scenario.modelId;

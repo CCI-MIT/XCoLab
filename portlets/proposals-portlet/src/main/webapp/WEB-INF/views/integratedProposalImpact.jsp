@@ -150,7 +150,7 @@
                                             </c:when>
                                             <c:otherwise>
                                                 <!--  proposal creation, return to contest proposals page on discard -->
-                                                <proposalsPortlet:contestLink contestId="${contest.contestPK }"
+                                                <proposalsPortlet:contestLink contest="${contest }"
                                                                               linkId="discardChangesButton"
                                                                               text="DISCARD changes"/>
                                             </c:otherwise>

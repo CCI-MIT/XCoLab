@@ -13,7 +13,7 @@
 					<img src="/image/contest?img_id=${contest.contestLogoId}" width="52" height="52" alt="Contest Image" />
 				</div>
 				<div class='proposal-title'>
-					<h1>Model <proposalsPortlet:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName} " /></h1>
+					<h1>Model <proposalsPortlet:contestLink contest="${contest}" text="${contest.contestShortName} " /></h1>
 				</div>
 			</div>
 		</div>
