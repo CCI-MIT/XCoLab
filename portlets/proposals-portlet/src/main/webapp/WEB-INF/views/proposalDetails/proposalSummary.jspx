@@ -117,11 +117,11 @@
         <div class="prop-settings">
             <c:choose>
                 <c:when test="${proposal.open }">
-                    <strong>Public ${contestType.proposalName}:</strong> Anyone will be able to edit this ${contestType.proposalName}. To change this, click Save below and open the ${contestType.proposalName}’s Admin tab. &#160;
+                    <strong>Public ${contestType.proposalName}:</strong> Anyone will be able to edit this ${contestType.proposalName}. The ${contestType.proposalName} owner can limit editing to team member using the ${contestType.proposalName}'s Admin tab. &#160;
                 </c:when>
                 <c:otherwise>
-                <strong>Team ${contestType.proposalName}:</strong> Only members that you invite as contributors will be able to edit this ${contestType.proposalName}.
-                    To open this ${contestType.proposalName} for anyone to edit, click Save below and open the ${contestType.proposalName}’s Admin tab. &#160;
+                <strong>Team ${contestType.proposalName}:</strong> Only members listed on the ${contestType.proposalName}'s Contributors tab will be able to edit this ${contestType.proposalName}.
+                    Members can request to join the ${contestType.proposalName} team on the Contributors tab. The ${contestType.proposalName} owner can open this ${contestType.proposalName} for anyone to edit using the Admin tab. &#160;
                 </c:otherwise>
             </c:choose>
 
