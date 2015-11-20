@@ -40,11 +40,11 @@ mvn clean compile package liferay:deploy -DskipTests=true clean
 cd ../../..
 
 cd themes/climatecolab-theme
-  mvn clean compile package install liferay:deploy clean
+  mvn clean compile liferay:build-css package install liferay:deploy clean
 cd ../..
 
 cd themes/fow-theme
-  mvn clean compile package liferay:deploy clean
+  mvn clean compile liferay:build-css package liferay:deploy clean
 cd ../..
 
 cd layouts/climatecolab-layout
