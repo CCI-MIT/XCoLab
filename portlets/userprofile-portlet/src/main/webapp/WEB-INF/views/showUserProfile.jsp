@@ -8,7 +8,9 @@
     <jsp:directive.include file="./init.jspx" />
 
     <jsp:useBean id="currentUserProfile" type="org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper" scope="request" />
-    <jsp:useBean id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean" scope="request" />
+    <c:if test="${not empty userBean}">
+		<jsp:useBean id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean" scope="request" />
+	</c:if>
 
 	<c:if test="${updateSuccess}">
 		<script type="text/javascript" >
@@ -21,11 +23,11 @@
 	</portlet:resourceURL>
 
 	<div id="bread" class="pro">
-		<a href="/web/guest/community">Community</a> <img
-			src="/climatecolab-theme/images/arrow.gif" width="8" height="8" /> <a
-			href="/web/guest/members">Members</a> <img
-			src="/climatecolab-theme/images/arrow.gif" width="8" height="8" /> <a
-			href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
+		<a href="/web/guest/community">Community</a>
+		<img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />
+		<a href="/web/guest/members">Members</a>
+		<img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />
+		<a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
 	</div>
 	<c:choose>
 		<c:when test="${currentUserProfile.active}">
@@ -51,7 +53,7 @@
 								<div class="memname">${currentUserProfile.realName}</div>
 								<div class="role-indicator" style="margin-top: 5px;">
 									<div style="width: 16px">
-										<img src="/climatecolab-theme/images/icon_mem-${currentUserProfile.role.imageUrl}.png" width="16" height="16" />
+										<img src="/climatecolab-theme/images/${currentUserProfile.role.imageUrl}.png" width="16" height="16" />
 									</div>
 									${currentUserProfile.role.printName}
 								</div>
@@ -164,6 +166,11 @@
 					<strong>${userBean.firstName}</strong> a Message </a>
 			</div>
 		</c:if>
+
+		<c:if test="${not empty spamReportsWrapper}">
+			<jsp:directive.include file="spamReports/userReport.jsp" />
+		</c:if>
+
 		<p>
 			${userBean.shortBio}
 		</p>
@@ -234,6 +241,10 @@
 					<a href="/web/guest/activities/-/feeds?userId=${currentUserProfile.userId}">SEE ALL</a>
 				</div>
 			</c:if>
+		</c:if>
+
+		<c:if test="true">
+
 		</c:if>
 
 	</div>

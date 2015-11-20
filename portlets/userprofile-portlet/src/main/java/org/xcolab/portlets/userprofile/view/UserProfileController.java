@@ -71,10 +71,10 @@ public class UserProfileController {
     public UserProfileController() {
     }
 
-    @RenderMapping
-    public String defaultShowUserProfileNotInitializedView(PortletRequest request) {
-        return "showProfileNotInitialized";
-    }
+//    @RenderMapping
+//    public String defaultShowUserProfileNotInitializedView(PortletRequest request) {
+//        return "showProfileNotInitialized";
+//    }
 
     @RequestMapping(params = "page=view")
     public String showUserProfileView(PortletRequest request, PortletResponse response, Model model,
@@ -342,7 +342,7 @@ public class UserProfileController {
         }
     }
 
-    private void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model){
+    void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model){
         model.addAttribute("currentUserProfile", currentUserProfile);
         model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
         model.addAttribute("userBean", currentUserProfile.getUserBean());
@@ -351,7 +351,7 @@ public class UserProfileController {
 
     private String showUserProfileOrNotInitialized(PortletRequest request, Model model, String userId) {
         try {
-            populateUserWrapper(new UserProfileWrapper(userId,request) ,model);
+            populateUserWrapper(new UserProfileWrapper(userId, request), model);
             return "showUserProfile";
         } catch (SystemException | PortalException e) {
             _log.warn("Could not create user profile for " + userId);

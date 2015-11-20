@@ -1,5 +1,6 @@
 package org.xcolab.wrappers;
 
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
@@ -25,7 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.helpers.ProposalContestPhaseAttributeHelper;
-import org.xcolab.utils.IdListUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -48,11 +48,11 @@ public class BaseProposalWrapper {
     protected final ProposalContestPhaseAttributeHelper proposalContestPhaseAttributeHelper;
     protected final ProposalAttributeHelper proposalAttributeHelper;
 
-    public BaseProposalWrapper(Proposal proposal) {
+    public BaseProposalWrapper(Proposal proposal) throws NoSuchContestException {
         this(proposal, proposal.getCurrentVersion(), null, null, null);
     }
 
-    public BaseProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
+    public BaseProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) throws NoSuchContestException {
         this.proposal = proposal;
         this.version = version;
         this.contest = contest == null ? fetchContest() : contest;
@@ -63,15 +63,15 @@ public class BaseProposalWrapper {
         proposalAttributeHelper = new ProposalAttributeHelper(proposal, version);
     }
 
-    public BaseProposalWrapper(Proposal proposal, ContestPhase contestPhase) throws SystemException, PortalException {
+    public BaseProposalWrapper(Proposal proposal, ContestPhase contestPhase) throws NoSuchContestException {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, null);
     }
 
-    private Contest fetchContest() {
+    private Contest fetchContest() throws NoSuchContestException {
         try {
             return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
         } catch (PortalException | SystemException e) {
-            return null;
+            throw new NoSuchContestException("Could not find a contest for proposal "+proposal.getProposalId(), e);
         }
     }
 

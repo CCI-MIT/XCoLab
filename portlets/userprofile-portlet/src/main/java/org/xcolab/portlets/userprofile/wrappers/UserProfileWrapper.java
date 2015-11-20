@@ -1,6 +1,7 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.ActivityUtil;
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageConstants;
 import com.ext.portlet.messaging.MessageUtil;
@@ -120,13 +121,14 @@ public class UserProfileWrapper implements Serializable {
 
         for (Role r: roles) {
             final String roleString = r.getName();
-
-            MemberRole currentRole = MemberRole.fromRoleName(roleString);
-            if (currentRole != null && role != null) {
-                if (currentRole.ordinal() > role.ordinal()) {
-                    role = currentRole;
+            try {
+                MemberRole currentRole = MemberRole.fromRoleName(roleString);
+                if (currentRole != null && role != null) {
+                    if (currentRole.getMemberCategory().getSortOrder() > role.getMemberCategory().getSortOrder()) {
+                        role = currentRole;
+                    }
                 }
-            }
+            } catch(MemberRole.NoSuchMemberRoleException ignored) { }
         }
 
         if (role == MemberRole.MODERATOR) {
@@ -156,7 +158,9 @@ public class UserProfileWrapper implements Serializable {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
             for (Proposal p : proposalsInContestType) {
-                contestTypeProposalWrappersByContestTypeId.get(contestType.getId()).getProposals().add(new BaseProposalWrapper(p));
+                try {
+                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId()).getProposals().add(new BaseProposalWrapper(p));
+                } catch (NoSuchContestException ignored) { }
             }
         }
     }
