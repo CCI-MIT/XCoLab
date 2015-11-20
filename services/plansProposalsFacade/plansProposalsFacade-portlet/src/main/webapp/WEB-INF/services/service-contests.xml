@@ -26,6 +26,7 @@
         <column name="proposalCreationTemplateString" type="String" />
         <column name="voteTemplateString" type="String" />
         <column name="proposalVoteTemplateString" type="String" />
+        <column name="proposalVoteConfirmationTemplateString" type="String" />
         <column name="voteQuestionTemplateString" type="String" />
 
         <column name="focusAreaId" type="long" />

@@ -136,6 +136,11 @@ public class Xcolab_UserFinderUtil {
         return getFinder().getUserHypotheticalPoints(userId);
     }
 
+    public static java.util.List<com.liferay.portal.model.User> findUsersByLoginIP(
+        int begin, int end, java.lang.String filter) {
+        return getFinder().findUsersByLoginIP(begin, end, filter);
+    }
+
     public static Xcolab_UserFinder getFinder() {
         if (_finder == null) {
             _finder = (Xcolab_UserFinder) PortletBeanLocatorUtil.locate(com.ext.portlet.service.ClpSerializer.getServletContextName(),

@@ -34,7 +34,6 @@ public class ProposalVoteNotification extends EmailNotification {
     private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_VOTE_DEFAULT";
 
     private static final String YEAR_FALLBACK = "2015";
-    //private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
 
     // Additional placeholder strings
     private static final String YEAR_PLACEHOLDER = "year";
@@ -44,11 +43,11 @@ public class ProposalVoteNotification extends EmailNotification {
 
     private static final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, HH:mm:ss a", Locale.US);
 
-    private User recipient;
-    private Proposal votedProposal;
-    private Contest contest;
+    protected final User recipient;
+    protected final Proposal votedProposal;
+    protected final Contest contest;
 
-    private ProposalVoteTemplate templateWrapper = null;
+    private ProposalVoteTemplate templateWrapper;
 
     public ProposalVoteNotification(Proposal votedProposal, Contest contest, User recipient, ServiceContext serviceContext) {
         super(serviceContext);
@@ -81,7 +80,7 @@ public class ProposalVoteNotification extends EmailNotification {
         final String proposalName = ProposalLocalServiceUtil.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
         String proposalVoteTemplateString = contest.getProposalVoteTemplateString();
-        if (proposalVoteTemplateString.length() == 0) {
+        if (proposalVoteTemplateString.isEmpty()) {
             proposalVoteTemplateString = DEFAULT_TEMPLATE_STRING;
         }
         final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(proposalVoteTemplateString);
@@ -122,7 +121,7 @@ public class ProposalVoteNotification extends EmailNotification {
         return String.format(LINK_FORMAT_STRING, baseUrl + "/web/guest/plans", linkText);
     }
 
-    private class ProposalVoteTemplate extends EmailNotificationTemplate {
+    protected class ProposalVoteTemplate extends EmailNotificationTemplate {
 
         public ProposalVoteTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
@@ -159,6 +158,5 @@ public class ProposalVoteNotification extends EmailNotification {
             }
             return null;
         }
-
     }
 }

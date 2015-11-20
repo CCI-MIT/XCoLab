@@ -287,6 +287,22 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setProposalVoteTemplateString(String proposalVoteTemplateString);
 
     /**
+     * Returns the proposal vote confirmation template string of this contest.
+     *
+     * @return the proposal vote confirmation template string of this contest
+     */
+    @AutoEscape
+    public String getProposalVoteConfirmationTemplateString();
+
+    /**
+     * Sets the proposal vote confirmation template string of this contest.
+     *
+     * @param proposalVoteConfirmationTemplateString the proposal vote confirmation template string of this contest
+     */
+    public void setProposalVoteConfirmationTemplateString(
+        String proposalVoteConfirmationTemplateString);
+
+    /**
      * Returns the vote question template string of this contest.
      *
      * @return the vote question template string of this contest

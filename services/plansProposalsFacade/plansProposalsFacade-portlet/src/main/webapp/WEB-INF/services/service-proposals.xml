@@ -125,6 +125,9 @@
     	<column name="contestPhaseId" type="long" primary="true" />
     	<column name="userId" type="long" primary="true" />
     	<column name="createDate" type="Date" />
+		<column name="isValid" type="boolean"/>
+		<column name="confirmationEmailSendDate" type="Date"/>
+		<column name="confirmationToken" type="String"/>
     	
     	<finder return-type="Collection" name="ProposalId">
     		<finder-column name="proposalId" />
@@ -134,7 +137,11 @@
     		<finder-column name="proposalId" />
     		<finder-column name="contestPhaseId" />
     	</finder>
-    	
+
+		<finder return-type="ProposalVote" name="ProposalIdUserId">
+			<finder-column name="proposalId"/>
+			<finder-column name="userId"/>
+		</finder>
     	
     	<finder return-type="Collection" name="UserId">
     		<finder-column name="userId" />

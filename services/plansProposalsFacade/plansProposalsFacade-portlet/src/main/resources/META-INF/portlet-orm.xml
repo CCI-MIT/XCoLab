@@ -159,6 +159,7 @@
 			<basic name="proposalCreationTemplateString" />
 			<basic name="voteTemplateString" />
 			<basic name="proposalVoteTemplateString" />
+			<basic name="proposalVoteConfirmationTemplateString" />
 			<basic name="voteQuestionTemplateString" />
 			<basic name="focusAreaId" />
 			<basic name="contestTier" />
@@ -1185,6 +1186,11 @@
 			<basic name="createDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="isValid" />
+			<basic name="confirmationEmailSendDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="confirmationToken" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

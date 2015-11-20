@@ -56,6 +56,8 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("voteTemplateString", getVoteTemplateString());
         attributes.put("proposalVoteTemplateString",
             getProposalVoteTemplateString());
+        attributes.put("proposalVoteConfirmationTemplateString",
+            getProposalVoteConfirmationTemplateString());
         attributes.put("voteQuestionTemplateString",
             getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
@@ -195,6 +197,13 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (proposalVoteTemplateString != null) {
             setProposalVoteTemplateString(proposalVoteTemplateString);
+        }
+
+        String proposalVoteConfirmationTemplateString = (String) attributes.get(
+                "proposalVoteConfirmationTemplateString");
+
+        if (proposalVoteConfirmationTemplateString != null) {
+            setProposalVoteConfirmationTemplateString(proposalVoteConfirmationTemplateString);
         }
 
         String voteQuestionTemplateString = (String) attributes.get(
@@ -746,6 +755,27 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     public void setProposalVoteTemplateString(
         java.lang.String proposalVoteTemplateString) {
         _contest.setProposalVoteTemplateString(proposalVoteTemplateString);
+    }
+
+    /**
+    * Returns the proposal vote confirmation template string of this contest.
+    *
+    * @return the proposal vote confirmation template string of this contest
+    */
+    @Override
+    public java.lang.String getProposalVoteConfirmationTemplateString() {
+        return _contest.getProposalVoteConfirmationTemplateString();
+    }
+
+    /**
+    * Sets the proposal vote confirmation template string of this contest.
+    *
+    * @param proposalVoteConfirmationTemplateString the proposal vote confirmation template string of this contest
+    */
+    @Override
+    public void setProposalVoteConfirmationTemplateString(
+        java.lang.String proposalVoteConfirmationTemplateString) {
+        _contest.setProposalVoteConfirmationTemplateString(proposalVoteConfirmationTemplateString);
     }
 
     /**

@@ -22,9 +22,9 @@ public class ContestVoteNotification extends EmailNotification {
 
     private static final String OTHER_CONTESTS_PLACEHOLDER = "other-contests-link";
 
-    private User recipient;
-    private Contest contest;
-    private Proposal votedProposal;
+    private final User recipient;
+    private final Contest contest;
+    private final Proposal votedProposal;
     private ContestVoteTemplate templateWrapper;
 
     public ContestVoteNotification(User recipient, Contest contest, Proposal votedProposal, ServiceContext serviceContext) {
@@ -58,7 +58,7 @@ public class ContestVoteNotification extends EmailNotification {
         final String proposalName = ProposalLocalServiceUtil.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
         String voteTemplateString = contest.getVoteTemplateString();
-        if (voteTemplateString.length() == 0) {
+        if (voteTemplateString.isEmpty()) {
             voteTemplateString = DEFAULT_TEMPLATE_STRING;
         }
         final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(voteTemplateString);

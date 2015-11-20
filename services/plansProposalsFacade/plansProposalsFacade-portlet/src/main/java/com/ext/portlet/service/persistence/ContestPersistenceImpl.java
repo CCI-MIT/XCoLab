@@ -11246,6 +11246,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setProposalCreationTemplateString(contest.getProposalCreationTemplateString());
         contestImpl.setVoteTemplateString(contest.getVoteTemplateString());
         contestImpl.setProposalVoteTemplateString(contest.getProposalVoteTemplateString());
+        contestImpl.setProposalVoteConfirmationTemplateString(contest.getProposalVoteConfirmationTemplateString());
         contestImpl.setVoteQuestionTemplateString(contest.getVoteQuestionTemplateString());
         contestImpl.setFocusAreaId(contest.getFocusAreaId());
         contestImpl.setContestTier(contest.getContestTier());

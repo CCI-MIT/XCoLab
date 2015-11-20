@@ -190,6 +190,7 @@
 		<property name="proposalCreationTemplateString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="voteTemplateString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="proposalVoteTemplateString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="proposalVoteConfirmationTemplateString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="voteQuestionTemplateString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="contestTier" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -939,6 +940,9 @@
 		</composite-id>
 		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="isValid" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="confirmationEmailSendDate" type="org.hibernate.type.TimestampType" />
+		<property name="confirmationToken" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.StaffMemberImpl" table="xcolab_StaffMember">
 		<cache usage="read-write" />

@@ -2,6 +2,7 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.service.base.Xcolab_UserLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Xcolab_UserFinderUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
@@ -124,5 +125,10 @@ public class Xcolab_UserLocalServiceImpl extends Xcolab_UserLocalServiceBaseImpl
         }
 
         return userActivityCountLongValues;
+    }
+
+    @Override
+    public List<User> findUsersByLoginIP(String loginIP) {
+        return Xcolab_UserFinderUtil.findUsersByLoginIP(QueryUtil.ALL_POS, QueryUtil.ALL_POS, loginIP);
     }
 }

@@ -31,7 +31,6 @@ public class ContestCreationNotification extends EmailNotification {
     private static final String TEMPLATE_NAME = "CONTEST_CREATION_DEFAULT";
 
     private static final String YEAR_FALLBACK = "2014";
-    private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
 
     // Placeholder strings
     private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
@@ -43,7 +42,7 @@ public class ContestCreationNotification extends EmailNotification {
     private static final String DEADLINE_PLACEHOLDER = "deadline";
 
 
-    private Contest createdContest;
+    private final Contest createdContest;
     private ContestCreationTemplate templateWrapper;
 
     public ContestCreationNotification(Contest contest, ServiceContext serviceContext) {

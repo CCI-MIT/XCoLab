@@ -119,6 +119,19 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
         "proposalVote.proposalId = ? AND ";
     private static final String _FINDER_COLUMN_PROPOSALIDCONTESTPHASEID_CONTESTPHASEID_2 =
         "proposalVote.id.contestPhaseId = ?";
+    public static final FinderPath FINDER_PATH_FETCH_BY_PROPOSALIDUSERID = new FinderPath(ProposalVoteModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalVoteModelImpl.FINDER_CACHE_ENABLED, ProposalVoteImpl.class,
+            FINDER_CLASS_NAME_ENTITY, "fetchByProposalIdUserId",
+            new String[] { Long.class.getName(), Long.class.getName() },
+            ProposalVoteModelImpl.PROPOSALID_COLUMN_BITMASK |
+            ProposalVoteModelImpl.USERID_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_PROPOSALIDUSERID = new FinderPath(ProposalVoteModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalVoteModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countByProposalIdUserId",
+            new String[] { Long.class.getName(), Long.class.getName() });
+    private static final String _FINDER_COLUMN_PROPOSALIDUSERID_PROPOSALID_2 = "proposalVote.proposalId = ? AND ";
+    private static final String _FINDER_COLUMN_PROPOSALIDUSERID_USERID_2 = "proposalVote.id.userId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_USERID = new FinderPath(ProposalVoteModelImpl.ENTITY_CACHE_ENABLED,
             ProposalVoteModelImpl.FINDER_CACHE_ENABLED, ProposalVoteImpl.class,
             FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUserId",
@@ -1134,6 +1147,226 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
     }
 
     /**
+     * Returns the proposal vote where proposalId = &#63; and userId = &#63; or throws a {@link com.ext.portlet.NoSuchProposalVoteException} if it could not be found.
+     *
+     * @param proposalId the proposal ID
+     * @param userId the user ID
+     * @return the matching proposal vote
+     * @throws com.ext.portlet.NoSuchProposalVoteException if a matching proposal vote could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalVote findByProposalIdUserId(long proposalId, long userId)
+        throws NoSuchProposalVoteException, SystemException {
+        ProposalVote proposalVote = fetchByProposalIdUserId(proposalId, userId);
+
+        if (proposalVote == null) {
+            StringBundler msg = new StringBundler(6);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("proposalId=");
+            msg.append(proposalId);
+
+            msg.append(", userId=");
+            msg.append(userId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchProposalVoteException(msg.toString());
+        }
+
+        return proposalVote;
+    }
+
+    /**
+     * Returns the proposal vote where proposalId = &#63; and userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param proposalId the proposal ID
+     * @param userId the user ID
+     * @return the matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalVote fetchByProposalIdUserId(long proposalId, long userId)
+        throws SystemException {
+        return fetchByProposalIdUserId(proposalId, userId, true);
+    }
+
+    /**
+     * Returns the proposal vote where proposalId = &#63; and userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param proposalId the proposal ID
+     * @param userId the user ID
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalVote fetchByProposalIdUserId(long proposalId, long userId,
+        boolean retrieveFromCache) throws SystemException {
+        Object[] finderArgs = new Object[] { proposalId, userId };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_PROPOSALIDUSERID,
+                    finderArgs, this);
+        }
+
+        if (result instanceof ProposalVote) {
+            ProposalVote proposalVote = (ProposalVote) result;
+
+            if ((proposalId != proposalVote.getProposalId()) ||
+                    (userId != proposalVote.getUserId())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(4);
+
+            query.append(_SQL_SELECT_PROPOSALVOTE_WHERE);
+
+            query.append(_FINDER_COLUMN_PROPOSALIDUSERID_PROPOSALID_2);
+
+            query.append(_FINDER_COLUMN_PROPOSALIDUSERID_USERID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(proposalId);
+
+                qPos.add(userId);
+
+                List<ProposalVote> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PROPOSALIDUSERID,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "ProposalVotePersistenceImpl.fetchByProposalIdUserId(long, long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    ProposalVote proposalVote = list.get(0);
+
+                    result = proposalVote;
+
+                    cacheResult(proposalVote);
+
+                    if ((proposalVote.getProposalId() != proposalId) ||
+                            (proposalVote.getUserId() != userId)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PROPOSALIDUSERID,
+                            finderArgs, proposalVote);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_PROPOSALIDUSERID,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (ProposalVote) result;
+        }
+    }
+
+    /**
+     * Removes the proposal vote where proposalId = &#63; and userId = &#63; from the database.
+     *
+     * @param proposalId the proposal ID
+     * @param userId the user ID
+     * @return the proposal vote that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalVote removeByProposalIdUserId(long proposalId, long userId)
+        throws NoSuchProposalVoteException, SystemException {
+        ProposalVote proposalVote = findByProposalIdUserId(proposalId, userId);
+
+        return remove(proposalVote);
+    }
+
+    /**
+     * Returns the number of proposal votes where proposalId = &#63; and userId = &#63;.
+     *
+     * @param proposalId the proposal ID
+     * @param userId the user ID
+     * @return the number of matching proposal votes
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByProposalIdUserId(long proposalId, long userId)
+        throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_PROPOSALIDUSERID;
+
+        Object[] finderArgs = new Object[] { proposalId, userId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_COUNT_PROPOSALVOTE_WHERE);
+
+            query.append(_FINDER_COLUMN_PROPOSALIDUSERID_PROPOSALID_2);
+
+            query.append(_FINDER_COLUMN_PROPOSALIDUSERID_USERID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(proposalId);
+
+                qPos.add(userId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the proposal votes where userId = &#63;.
      *
      * @param userId the user ID
@@ -1814,6 +2047,10 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
         EntityCacheUtil.putResult(ProposalVoteModelImpl.ENTITY_CACHE_ENABLED,
             ProposalVoteImpl.class, proposalVote.getPrimaryKey(), proposalVote);
 
+        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PROPOSALIDUSERID,
+            new Object[] { proposalVote.getProposalId(), proposalVote.getUserId() },
+            proposalVote);
+
         FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTPHASEIDUSERID,
             new Object[] {
                 proposalVote.getContestPhaseId(), proposalVote.getUserId()
@@ -1894,6 +2131,15 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
     protected void cacheUniqueFindersCache(ProposalVote proposalVote) {
         if (proposalVote.isNew()) {
             Object[] args = new Object[] {
+                    proposalVote.getProposalId(), proposalVote.getUserId()
+                };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PROPOSALIDUSERID,
+                args, Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PROPOSALIDUSERID,
+                args, proposalVote);
+
+            args = new Object[] {
                     proposalVote.getContestPhaseId(), proposalVote.getUserId()
                 };
 
@@ -1903,6 +2149,18 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
                 args, proposalVote);
         } else {
             ProposalVoteModelImpl proposalVoteModelImpl = (ProposalVoteModelImpl) proposalVote;
+
+            if ((proposalVoteModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_PROPOSALIDUSERID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        proposalVote.getProposalId(), proposalVote.getUserId()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PROPOSALIDUSERID,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PROPOSALIDUSERID,
+                    args, proposalVote);
+            }
 
             if ((proposalVoteModelImpl.getColumnBitmask() &
                     FINDER_PATH_FETCH_BY_CONTESTPHASEIDUSERID.getColumnBitmask()) != 0) {
@@ -1923,6 +2181,26 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
         ProposalVoteModelImpl proposalVoteModelImpl = (ProposalVoteModelImpl) proposalVote;
 
         Object[] args = new Object[] {
+                proposalVote.getProposalId(), proposalVote.getUserId()
+            };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALIDUSERID, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_PROPOSALIDUSERID, args);
+
+        if ((proposalVoteModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_PROPOSALIDUSERID.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    proposalVoteModelImpl.getOriginalProposalId(),
+                    proposalVoteModelImpl.getOriginalUserId()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALIDUSERID,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_PROPOSALIDUSERID,
+                args);
+        }
+
+        args = new Object[] {
                 proposalVote.getContestPhaseId(), proposalVote.getUserId()
             };
 
@@ -2161,6 +2439,9 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
         proposalVoteImpl.setContestPhaseId(proposalVote.getContestPhaseId());
         proposalVoteImpl.setUserId(proposalVote.getUserId());
         proposalVoteImpl.setCreateDate(proposalVote.getCreateDate());
+        proposalVoteImpl.setIsValid(proposalVote.isIsValid());
+        proposalVoteImpl.setConfirmationEmailSendDate(proposalVote.getConfirmationEmailSendDate());
+        proposalVoteImpl.setConfirmationToken(proposalVote.getConfirmationToken());
 
         return proposalVoteImpl;
     }

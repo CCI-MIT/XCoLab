@@ -33,6 +33,8 @@ public class Xcolab_UserLocalServiceClpInvoker {
     private String[] _methodParameterTypes494;
     private String _methodName495;
     private String[] _methodParameterTypes495;
+    private String _methodName496;
+    private String[] _methodParameterTypes496;
 
     public Xcolab_UserLocalServiceClpInvoker() {
         _methodName482 = "getBeanIdentifier";
@@ -100,6 +102,10 @@ public class Xcolab_UserLocalServiceClpInvoker {
         _methodName495 = "getUserActivityCount";
 
         _methodParameterTypes495 = new String[] { "java.lang.Long" };
+
+        _methodName496 = "findUsersByLoginIP";
+
+        _methodParameterTypes496 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -195,6 +201,11 @@ public class Xcolab_UserLocalServiceClpInvoker {
         if (_methodName495.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes495, parameterTypes)) {
             return Xcolab_UserLocalServiceUtil.getUserActivityCount((java.lang.Long) arguments[0]);
+        }
+
+        if (_methodName496.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes496, parameterTypes)) {
+            return Xcolab_UserLocalServiceUtil.findUsersByLoginIP((java.lang.String) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

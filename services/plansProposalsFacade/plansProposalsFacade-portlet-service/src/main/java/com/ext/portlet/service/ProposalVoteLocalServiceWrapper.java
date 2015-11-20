@@ -304,6 +304,15 @@ public class ProposalVoteLocalServiceWrapper implements ProposalVoteLocalService
         return _proposalVoteLocalService.hasUserVoted(contestPhaseId, userId);
     }
 
+    @Override
+    public com.ext.portlet.model.ProposalVote findByProposalIdUserId(
+        long proposalId, long userId)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalVoteLocalService.findByProposalIdUserId(proposalId,
+            userId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
