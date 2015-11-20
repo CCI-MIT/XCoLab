@@ -5,6 +5,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import org.parboiled.common.StringUtils;
 import org.xcolab.mail.EmailToAdminDispatcher;
@@ -54,10 +55,13 @@ public class ErrorReporting implements Filter {
         String userScreenName = "no user was logged in";
 
         try {
-            userScreenName = PortalUtil.getUser(request).getScreenName();
+            final User user = PortalUtil.getUser(request);
+            if (user != null) {
+                userScreenName = user.getScreenName();
 
-            if (email.isEmpty()) {
-                email = PortalUtil.getUser(request).getEmailAddress();
+                if (email.isEmpty()) {
+                    email = user.getEmailAddress();
+                }
             }
         } catch (PortalException | SystemException ignored) { /* no user logged in */}
 
