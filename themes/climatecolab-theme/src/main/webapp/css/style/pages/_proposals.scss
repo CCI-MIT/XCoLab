@@ -303,11 +303,6 @@
   margin-right: 6px;
 }
 
-.commbox {
-  background: url(../images/icon-proposal-comments.png) no-repeat 11px 5px $lightest-grey;
-  margin-right: 18px;
-}
-
 .voteboxsmall {
   background: url(../images/icon-proposal-vote-small.png) no-repeat 11px 5px $lightest-grey;
   margin-right: 6px;
@@ -545,42 +540,6 @@
 .contributors tr.bottom td {
   border-bottom: 1px solid #ccc;
   padding-bottom: 8px;
-}
-
-/* comments table */
-.comments {
-  font-size: 15px;
-}
-
-.comments td {
-  border-bottom: 3px solid white;
-}
-
-.comments tr.odd td {
-  background-color: $lightest-grey;
-}
-
-.commentor {
-  background-image: url(../images/pattern-6x6.png);
-  width: 212px;
-  padding: 16px 20px 26px 16px;
-  line-height: 19px;
-  color: black;
-}
-
-.commentor img {
-  margin-bottom: 14px;
-}
-
-.commentor a, .commentor span {
-  font-weight: 700;
-}
-
-.the-comment {
-  width: 693px;
-  padding: 26px 20px 15px 23px;
-  line-height: 22px;
-  color: $darkest-grey;
 }
 
 /* add proposal boxes */

@@ -3,6 +3,7 @@ package org.xcolab.hooks.climatecolab.users;
 import com.ext.portlet.Activity.ActivityUtil;
 import com.liferay.portal.NoSuchCountryException;
 import com.liferay.portal.NoSuchRegionException;
+import com.liferay.portal.NoSuchRoleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -152,9 +153,11 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 					continue;
 				}
 				for (String roleName : category.getRoleNames()) {
-					Role role = RoleLocalServiceUtil.getRole(
-							DEFAULT_COMPANY_ID, roleName);
-					roleIdToCategoryMap.put(role.getRoleId(), category);
+					try {
+						Role role = RoleLocalServiceUtil.getRole(
+								DEFAULT_COMPANY_ID, roleName);
+						roleIdToCategoryMap.put(role.getRoleId(), category);
+					} catch(NoSuchRoleException ignored) { }
 				}
 			} catch (PortalException | SystemException e) {
 				_log.error("Can't find role for user category " + category, e);

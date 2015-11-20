@@ -237,6 +237,9 @@
 	<bean id="com.ext.portlet.service.ProposalVoteLocalService" class="com.ext.portlet.service.impl.ProposalVoteLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalVoteService" class="com.ext.portlet.service.impl.ProposalVoteServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalVotePersistence" class="com.ext.portlet.service.persistence.ProposalVotePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.SpamReportLocalService" class="com.ext.portlet.service.impl.SpamReportLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.SpamReportService" class="com.ext.portlet.service.impl.SpamReportServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.SpamReportPersistence" class="com.ext.portlet.service.persistence.SpamReportPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.StaffMemberLocalService" class="com.ext.portlet.service.impl.StaffMemberLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.StaffMemberService" class="com.ext.portlet.service.impl.StaffMemberServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.StaffMemberPersistence" class="com.ext.portlet.service.persistence.StaffMemberPersistenceImpl" parent="basePersistence" />

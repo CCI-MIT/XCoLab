@@ -95,6 +95,8 @@ public class DiscussionMessageLocalServiceClp
     private String[] _methodParameterTypes42;
     private String _methodName43;
     private String[] _methodParameterTypes43;
+    private String _methodName44;
+    private String[] _methodParameterTypes44;
 
     public DiscussionMessageLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -326,6 +328,10 @@ public class DiscussionMessageLocalServiceClp
         _methodName43 = "hasFlag";
 
         _methodParameterTypes43 = new String[] { "long", "java.lang.String" };
+
+        _methodName44 = "getByAuthorId";
+
+        _methodParameterTypes44 = new String[] { "long" };
     }
 
     @Override
@@ -1603,5 +1609,32 @@ public class DiscussionMessageLocalServiceClp
         }
 
         return ((Boolean) returnObj).booleanValue();
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.DiscussionMessage> getByAuthorId(
+        long authorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName44,
+                    _methodParameterTypes44, new Object[] { authorId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.DiscussionMessage>) ClpSerializer.translateOutput(returnObj);
     }
 }

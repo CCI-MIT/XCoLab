@@ -184,3 +184,49 @@ ul#blogArchives li {
   width: 100%;
   max-width: 100% !important;
 }
+
+.commbox {
+  background: url(../images/icon-proposal-comments.png) no-repeat 11px 5px $lightest-grey;
+  margin-right: 18px;
+}
+
+/* comments table for proposals */
+.comments {
+  font-size: 15px;
+}
+
+.comments td {
+  border-bottom: 3px solid white;
+}
+
+.comments tr.odd td {
+  background-color: $lightest-grey;
+}
+
+.commentor.expertReview, .comments tr.odd td.commentor.expertReview,
+.the-comment.spam, .comments tr.odd td.the-comment.spam{
+  background-color: $alert-light;
+}
+
+.commentor {
+  background-image: url(../images/pattern-6x6.png);
+  width: 212px;
+  padding: 16px 20px 26px 16px;
+  line-height: 19px;
+  color: black;
+}
+
+.commentor img {
+  margin-bottom: 14px;
+}
+
+.commentor a, .commentor span {
+  font-weight: 700;
+}
+
+.the-comment {
+  width: 693px;
+  padding: 26px 20px 15px 23px;
+  line-height: 22px;
+  color: $darkest-grey;
+}

@@ -41,14 +41,14 @@ public class MemberCategoryLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName498;
-    private String[] _methodParameterTypes498;
-    private String _methodName499;
-    private String[] _methodParameterTypes499;
     private String _methodName504;
     private String[] _methodParameterTypes504;
     private String _methodName505;
     private String[] _methodParameterTypes505;
+    private String _methodName510;
+    private String[] _methodParameterTypes510;
+    private String _methodName511;
+    private String[] _methodParameterTypes511;
 
     public MemberCategoryLocalServiceClpInvoker() {
         _methodName0 = "addMemberCategory";
@@ -133,21 +133,21 @@ public class MemberCategoryLocalServiceClpInvoker {
                 "com.ext.portlet.model.MemberCategory"
             };
 
-        _methodName498 = "getBeanIdentifier";
+        _methodName504 = "getBeanIdentifier";
 
-        _methodParameterTypes498 = new String[] {  };
+        _methodParameterTypes504 = new String[] {  };
 
-        _methodName499 = "setBeanIdentifier";
+        _methodName505 = "setBeanIdentifier";
 
-        _methodParameterTypes499 = new String[] { "java.lang.String" };
+        _methodParameterTypes505 = new String[] { "java.lang.String" };
 
-        _methodName504 = "getByDisplayName";
+        _methodName510 = "getByDisplayName";
 
-        _methodParameterTypes504 = new String[] { "java.lang.String" };
+        _methodParameterTypes510 = new String[] { "java.lang.String" };
 
-        _methodName505 = "getVisibleMemberCategories";
+        _methodName511 = "getVisibleMemberCategories";
 
-        _methodParameterTypes505 = new String[] {  };
+        _methodParameterTypes511 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -239,25 +239,25 @@ public class MemberCategoryLocalServiceClpInvoker {
             return MemberCategoryLocalServiceUtil.updateMemberCategory((com.ext.portlet.model.MemberCategory) arguments[0]);
         }
 
-        if (_methodName498.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes498, parameterTypes)) {
+        if (_methodName504.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes504, parameterTypes)) {
             return MemberCategoryLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName499.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes499, parameterTypes)) {
+        if (_methodName505.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes505, parameterTypes)) {
             MemberCategoryLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName504.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes504, parameterTypes)) {
+        if (_methodName510.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes510, parameterTypes)) {
             return MemberCategoryLocalServiceUtil.getByDisplayName((java.lang.String) arguments[0]);
         }
 
-        if (_methodName505.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes505, parameterTypes)) {
+        if (_methodName511.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes511, parameterTypes)) {
             return MemberCategoryLocalServiceUtil.getVisibleMemberCategories();
         }
 

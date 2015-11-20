@@ -8,6 +8,8 @@ import com.liferay.util.mail.MailEngineException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Mente on 29/07/15.
@@ -16,33 +18,59 @@ public class EmailToAdminDispatcher {
 
     private static final Log _log = LogFactoryUtil.getLog(EmailToAdminDispatcher.class);
 
-    private static final String[] ADMIN_EMAIL_RECIPIENTS = {"pdeboer@mit.edu", "knauert@mit.edu", "mail@klemensmang.com", "jobachhu@mit.edu"};
+    public final static int VERBOSITY_ERROR = 1;
+    public final static int VERBOSITY_DEBUG = 2;
+
+    private static final Recipient[] ADMIN_EMAIL_RECIPIENTS = {
+            new Recipient("pdeboer@mit.edu", VERBOSITY_ERROR),
+            new Recipient("knauert@mit.edu", VERBOSITY_ERROR),
+            new Recipient("mail@klemensmang.com", VERBOSITY_ERROR),
+            new Recipient("jobachhu@mit.edu", VERBOSITY_DEBUG)
+    };
     private static final String FROM_EMAIL_ADDRESS = "no-reply@climatecolab.org";
     private static final String FROM_EMAIL_NAME = "MIT Climate CoLab";
 
     private final String subject;
     private final String body;
+    private final int messageVerbosity;
 
     public EmailToAdminDispatcher(String subject, String body) {
+        this(subject, body, VERBOSITY_ERROR);
+    }
+
+    public EmailToAdminDispatcher(String subject, String body, int verbosity) {
         this.subject = subject;
         this.body = body;
+        this.messageVerbosity = verbosity;
     }
 
     public void sendMessage() {
         try {
             InternetAddress fromAddress = new InternetAddress(FROM_EMAIL_ADDRESS, FROM_EMAIL_NAME);
-            MailEngine.send(fromAddress, getAllAdminRecipients(), subject, body, true);
+            MailEngine.send(fromAddress, getRecipientAddresses(), subject, body, true);
         } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {
             _log.error("Could not send error message", e);
         }
     }
 
-    private InternetAddress[] getAllAdminRecipients() throws AddressException {
-        InternetAddress[] addressTo = new InternetAddress[ADMIN_EMAIL_RECIPIENTS.length];
-        for (int i = 0; i < ADMIN_EMAIL_RECIPIENTS.length; i++) {
-            addressTo[i] = new InternetAddress(ADMIN_EMAIL_RECIPIENTS[i]);
+    private InternetAddress[] getRecipientAddresses() throws AddressException {
+        List<InternetAddress> addressTo = new ArrayList<>();
+        for (Recipient recipient : ADMIN_EMAIL_RECIPIENTS) {
+            if (recipient.verbosity >= messageVerbosity) {
+                addressTo.add(new InternetAddress(recipient.email));
+            }
         }
+        return addressTo.toArray(new InternetAddress[addressTo.size()]);
+    }
 
-        return addressTo;
+    private static class Recipient {
+        private final String email;
+        private final int verbosity;
+
+        Recipient(String email, int verbosity) {
+
+            this.email = email;
+            this.verbosity = verbosity;
+        }
     }
 }

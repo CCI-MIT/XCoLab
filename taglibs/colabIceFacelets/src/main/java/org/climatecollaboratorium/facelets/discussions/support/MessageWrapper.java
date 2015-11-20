@@ -11,7 +11,10 @@ import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
 
 import com.ext.portlet.Activity.DiscussionActivityKeys;
+import com.ext.portlet.model.SpamReport;
+import com.ext.portlet.service.SpamReportLocalServiceUtil;
 import com.liferay.portal.model.Role;
+import com.liferay.portal.util.PortalUtil;
 import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
 import org.climatecollaboratorium.utils.ContentFilterHelper;
 import org.climatecollaboratorium.utils.Helper;
@@ -34,6 +37,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.mail.EmailToAdminDispatcher;
 
 public class MessageWrapper implements Serializable {
     /**
@@ -276,24 +280,24 @@ public class MessageWrapper implements Serializable {
         List<Role> roles = getAuthor().getRoles();
 
         // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
-        MemberRole currentRole;
-        MemberRole role = MemberRole.MEMBER;
+        MemberRole memberRole = MemberRole.MEMBER;
 
-        for (Role r : roles) {
-            final String roleString = r.getName();
+        for (Role role: roles) {
+            long roleId = role.getRoleId();
+            try {
+                MemberRole currentRole = MemberRole.fromRoleId(roleId);
 
-            currentRole = MemberRole.fromRoleName(roleString);
-            if (currentRole != null) {
-                if (currentRole.ordinal() > role.ordinal()) {
-                    role = currentRole;
+                if (currentRole != null
+                        && currentRole.getMemberCategory().getSortOrder() > memberRole.getMemberCategory().getSortOrder()) {
+                    memberRole = currentRole;
                 }
-            }
+            } catch (MemberRole.NoSuchMemberRoleException ignored) { }
         }
 
-        if (role == MemberRole.MODERATOR) {
-            role = MemberRole.STAFF;
+        if (memberRole.getRoleId() == MemberRole.MODERATOR.getRoleId()) {
+            memberRole = MemberRole.STAFF;
         }
-        return role;
+        return memberRole;
     }
     
     public Date getCreateDate() {
@@ -352,7 +356,7 @@ public class MessageWrapper implements Serializable {
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
     }
-    
+
     public void delete(ActionEvent e) throws SystemException, PortalException {
         if (discussionBean.getPermissions().getCanAdminMessages()) {
             DiscussionMessageLocalServiceUtil.delete(wrapped);
@@ -369,6 +373,24 @@ public class MessageWrapper implements Serializable {
 
             Helper.sendInfoMessage("Message \"" + wrapped.getSubject() + "\" has been deleted.");
         }
+    }
+
+    public void markSpam(ActionEvent e) throws SystemException, PortalException {
+        SpamReportLocalServiceUtil.create(wrapped.getMessageId(), wrapped.getAuthorId(),
+                Helper.getThemeDisplay().getUserId(), discussionBean.getPermissions().getCanAdmin());
+        new EmailToAdminDispatcher("New spam report on Climate CoLab",
+                String.format("User %s reported a <a href=\"%s/web/guest/member/-/member/spamReport/%d\">new spam message</a>",
+                        Helper.getLiferayUser().getScreenName(), PortalUtil.getPortalURL(Helper.getThemeDisplay()), getAuthorId()),
+                EmailToAdminDispatcher.VERBOSITY_DEBUG).sendMessage();
+
+        Helper.sendInfoMessage("Message \"" + wrapped.getSubject() + "\" was reported as spam.");
+    }
+
+    public void removeSpamReport(ActionEvent e) throws SystemException, PortalException {
+        for (SpamReport spamReport : SpamReportLocalServiceUtil.getByDiscussionMessageId(getId())) {
+            SpamReportLocalServiceUtil.deleteSpamReport(spamReport);
+        }
+        Helper.sendInfoMessage("Spam mark removed for message \"" + wrapped.getSubject() + "\".");
     }
     
     public void messageDeleted(MessageWrapper messageWrapper) {
@@ -454,4 +476,9 @@ public class MessageWrapper implements Serializable {
         
         DiscussionMessageLocalServiceUtil.removeFlag(wrapped, flagType);
     }
+
+    public int getSpamReportCount() throws SystemException {
+        return SpamReportLocalServiceUtil.getByDiscussionMessageId(getId()).size();
+    }
+
 }

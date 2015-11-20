@@ -73,6 +73,7 @@ import com.ext.portlet.model.ProposalReferenceClp;
 import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
+import com.ext.portlet.model.SpamReportClp;
 import com.ext.portlet.model.StaffMemberClp;
 import com.ext.portlet.model.TrackedVisitClp;
 import com.ext.portlet.model.TrackedVisitor2UserClp;
@@ -463,6 +464,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ProposalVoteClp.class.getName())) {
             return translateInputProposalVote(oldModel);
+        }
+
+        if (oldModelClassName.equals(SpamReportClp.class.getName())) {
+            return translateInputSpamReport(oldModel);
         }
 
         if (oldModelClassName.equals(StaffMemberClp.class.getName())) {
@@ -1245,6 +1250,16 @@ public class ClpSerializer {
         ProposalVoteClp oldClpModel = (ProposalVoteClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getProposalVoteRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputSpamReport(BaseModel<?> oldModel) {
+        SpamReportClp oldClpModel = (SpamReportClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getSpamReportRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -3845,6 +3860,41 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.SpamReportImpl")) {
+            return translateOutputSpamReport(oldModel);
+        } else if (oldModelClassName.endsWith("Clp")) {
+            try {
+                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+                Method getClpSerializerClassMethod = oldModelClass.getMethod(
+                        "getClpSerializerClass");
+
+                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
+
+                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+                        BaseModel.class);
+
+                Class<?> oldModelModelClass = oldModel.getModelClass();
+
+                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+                        oldModelModelClass.getSimpleName() + "RemoteModel");
+
+                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
+                        oldRemoteModel);
+
+                return newModel;
+            } catch (Throwable t) {
+                if (_log.isInfoEnabled()) {
+                    _log.info("Unable to translate " + oldModelClassName, t);
+                }
+            }
+        }
+
+        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.StaffMemberImpl")) {
             return translateOutputStaffMember(oldModel);
         } else if (oldModelClassName.endsWith("Clp")) {
@@ -4478,6 +4528,10 @@ public class ClpSerializer {
 
         if (className.equals("com.ext.portlet.NoSuchProposalVoteException")) {
             return new com.ext.portlet.NoSuchProposalVoteException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchSpamReportException")) {
+            return new com.ext.portlet.NoSuchSpamReportException();
         }
 
         if (className.equals("com.ext.portlet.NoSuchStaffMemberException")) {
@@ -5256,6 +5310,16 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setProposalVoteRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputSpamReport(BaseModel<?> oldModel) {
+        SpamReportClp newModel = new SpamReportClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setSpamReportRemoteModel(oldModel);
 
         return newModel;
     }

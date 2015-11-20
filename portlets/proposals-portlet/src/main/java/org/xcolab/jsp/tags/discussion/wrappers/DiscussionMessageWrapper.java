@@ -1,19 +1,20 @@
 package org.xcolab.jsp.tags.discussion.wrappers;
 
-import java.util.Date;
-
 import com.ext.portlet.discussions.DiscussionMessageFlagType;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.DiscussionMessageFlag;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
+import com.ext.portlet.service.SpamReportLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.utils.HtmlUtil;
 
+import java.util.Date;
+
 public class DiscussionMessageWrapper {
-    private DiscussionMessage wrapped;
+    private final DiscussionMessage wrapped;
 
     public DiscussionMessageWrapper(DiscussionMessage msg) {
         this.wrapped = msg;
@@ -70,6 +71,10 @@ public class DiscussionMessageWrapper {
 
     public boolean isExpertReview() throws SystemException {
         return hasFlag(DiscussionMessageFlagType.EXPERT_REVIEW);
+    }
+
+    public int getSpamReportCount() throws SystemException {
+        return SpamReportLocalServiceUtil.getByDiscussionMessageId(getMessageId()).size();
     }
     
     public boolean hasFlag(DiscussionMessageFlagType flagType) throws SystemException {

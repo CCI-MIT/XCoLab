@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
@@ -55,26 +56,32 @@ public class DiscussionMessageLocalServiceImpl
 
     private final static Log _log = LogFactoryUtil.getLog(DiscussionMessageLocalServiceImpl.class);
        
+       @Override
        public List<DiscussionMessage> getThreadsByCategory(long categoryId) throws SystemException {
            return discussionMessagePersistence.findByCategoryIdThreadId(categoryId, 0);
        }
        
+       @Override
        public List<DiscussionMessage> getThreadMessages(long threadId) throws SystemException {
            return discussionMessagePersistence.findByThreadId(threadId);
        }
        
+       @Override
        public int getThreadMessagesCount(long threadId) throws SystemException {
            return discussionMessagePersistence.countByThreadId(threadId);
        }
        
+       @Override
        public DiscussionMessage getThreadByThreadId(long threadId) throws NoSuchDiscussionMessageException, SystemException {
            return discussionMessagePersistence.findBySingleThreadId(threadId);
        }
        
+       @Override
        public DiscussionMessage addThread(long categoryGroupId, long categoryId, String subject, String body, User author) throws SystemException  {
            return addMessage(categoryGroupId, categoryId, 0, subject, body, author);
        }
        
+       @Override
        public DiscussionMessage addMessage(long categoryGroupId, long categoryId, long threadId, String subject, String body, User author) throws SystemException {
            Long id = CounterLocalServiceUtil.increment(DiscussionMessage.class.getName());
            Long messageId = CounterLocalServiceUtil.increment(DiscussionMessage.class.getName() + ".discussion");
@@ -102,24 +109,26 @@ public class DiscussionMessageLocalServiceImpl
            return message;
        }
        
+       @Override
        public List<DiscussionMessage> search(String query, long categoryGroupId) throws SystemException {
            // preprocess query
            query = "%" + query.replaceAll("\\s", "%") + "%";
-           Set<DiscussionMessage> messages = new HashSet<DiscussionMessage>();
+           Set<DiscussionMessage> messages = new HashSet<>();
            messages.addAll(discussionMessagePersistence.findByBodyLike(query, categoryGroupId));
            messages.addAll(discussionMessagePersistence.findBySubjectLike(query, categoryGroupId));
            
-           return new ArrayList<DiscussionMessage>(messages);
+           return new ArrayList<>(messages);
        }
        
+       @Override
        public DiscussionMessage getMessageByMessageId(long messageId) throws NoSuchDiscussionMessageException, SystemException {
            return discussionMessagePersistence.findByMessageId(messageId);
        }
-       
-       private final static long defaultCompanyId = 10112L;
+
+       @Override
        public void reIndex() throws SystemException {
            // reindex concrete plan
-           for (DiscussionMessage message : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0, Integer.MAX_VALUE)) {
+//           for (DiscussionMessage message : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0, Integer.MAX_VALUE)) {
                /*try {
                    if (message.getDeleted() == null) {
                        //Indexer.updateEntry(defaultCompanyId, message);
@@ -130,9 +139,10 @@ public class DiscussionMessageLocalServiceImpl
                } catch (SearchException e) {
                    _log.error("An exception has been thrown when reindexing message with id: " + message.getMessageId(), e);
                }*/
-           }
+//           }
        }
 
+       @Override
        public void reIndex(long messageId) throws SystemException {
            // reindex concrete plan
            /*
@@ -152,6 +162,7 @@ public class DiscussionMessageLocalServiceImpl
        
        
        
+       @Override
        public List<DiscussionMessage> getThreadMessages(DiscussionMessage dMessage) throws SystemException {
            if (dMessage.getThreadId() <= 0) {
                // threadId is null so we have first message (that represents the thread) 
@@ -162,6 +173,7 @@ public class DiscussionMessageLocalServiceImpl
            
        }
        
+       @Override
        public int getThreadMessagesCount(DiscussionMessage dMessage) throws SystemException {
            if (dMessage.getThreadId() <= 0) {
                return DiscussionMessageLocalServiceUtil.getThreadMessagesCount(dMessage.getMessageId());
@@ -170,6 +182,7 @@ public class DiscussionMessageLocalServiceImpl
            
        }
        
+       @Override
        public void store(DiscussionMessage dMessage) throws SystemException {
            if (dMessage.isNew()) {
                DiscussionMessageLocalServiceUtil.addDiscussionMessage(dMessage);
@@ -182,11 +195,12 @@ public class DiscussionMessageLocalServiceImpl
 
            try {
                indexer.reindex(dMessage.getMessageId());
-           } catch (Exception e) {
+           } catch (SearchException e) {
                _log.error("Can't reindex message " + dMessage.getMessageId(), e);
            }
        }
        
+       @Override
        public DiscussionMessage addThreadMessage(DiscussionMessage dMessage, String subject, String body, User author) throws SystemException, NoSuchDiscussionCategoryException {
            long threadId = dMessage.getThreadId();
            if (threadId <= 0L) {
@@ -214,18 +228,21 @@ public class DiscussionMessageLocalServiceImpl
            return msg;
        }
        
+       @Override
        public User getAuthor(DiscussionMessage dMessage) throws PortalException, SystemException {
            return UserLocalServiceUtil.getUser(dMessage.getAuthorId());
        }
        
+       @Override
        public User getLastActivityAuthor(DiscussionMessage dMessage) throws PortalException, SystemException {
            Long lastActAuthorId = dMessage.getLastActivityAuthorId();
-           if (lastActAuthorId == null || lastActAuthorId <= 0) {
+           if (lastActAuthorId <= 0) {
                return getAuthor(dMessage);
            }
            return UserLocalServiceUtil.getUser(lastActAuthorId);
        }
        
+       @Override
        public void delete(DiscussionMessage dMessage) throws SystemException, PortalException {
            dMessage.setDeleted(new Date());
            store(dMessage);
@@ -260,6 +277,7 @@ public class DiscussionMessageLocalServiceImpl
            */
        }
        
+       @Override
        public void update(DiscussionMessage dMessage, String subject, String body) throws SystemException {
            dMessage.setSubject(subject);
            dMessage.setBody(body);
@@ -273,14 +291,17 @@ public class DiscussionMessageLocalServiceImpl
            */
        }
        
+       @Override
        public DiscussionCategory getCategory(DiscussionMessage dMessage) throws NoSuchDiscussionCategoryException, SystemException {
            return DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(dMessage.getCategoryId());
        }
        
+       @Override
        public DiscussionCategoryGroup getCategoryGroup(DiscussionMessage dMessage) throws PortalException, SystemException {
            return DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(dMessage.getCategoryGroupId());
        }
        
+       @Override
        public DiscussionMessage getThread(DiscussionMessage dMessage) throws NoSuchDiscussionMessageException, SystemException {
            if (dMessage.getThreadId() > 0) {
                // this is a comment of a thread
@@ -290,14 +311,17 @@ public class DiscussionMessageLocalServiceImpl
            return dMessage;
        }
        
+       @Override
        public List<DiscussionMessageFlag> getFlags(DiscussionMessage dMessage) throws SystemException {
            return DiscussionMessageFlagLocalServiceUtil.findMessageFlags(dMessage.getMessageId());
        }
        
+       @Override
        public void addFlag(DiscussionMessage dMessage, String flagType, String data, User user) throws SystemException  {
            DiscussionMessageFlagLocalServiceUtil.createFlag(dMessage.getMessageId(), flagType, data, user.getUserId());
        }
        
+       @Override
        public void removeFlag(DiscussionMessage dMessage, String flagType) throws SystemException {
            DiscussionMessageFlag flag = findFlag(dMessage, flagType);
            if (flag != null) {
@@ -305,6 +329,7 @@ public class DiscussionMessageLocalServiceImpl
            }
        }
        
+       @Override
        public boolean hasFlag(long messageId, String flag) throws SystemException {
            try {
                discussionMessageFlagPersistence.findByMessageIdFlagType(messageId, flag);
@@ -325,4 +350,8 @@ public class DiscussionMessageLocalServiceImpl
            }
            
        }
+
+    public List<DiscussionMessage> getByAuthorId(long authorId) throws SystemException {
+        return discussionMessagePersistence.findByAuthorId(authorId);
+    }
 }
