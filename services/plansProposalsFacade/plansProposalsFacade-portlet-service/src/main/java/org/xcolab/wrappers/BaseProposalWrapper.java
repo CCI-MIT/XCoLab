@@ -286,11 +286,11 @@ public class BaseProposalWrapper {
         return getCurrentVersion() == version;
     }
 
-    public Contest getWasMovedToContest() {
+    public BaseContestWrapper getWasMovedToContest() {
         try{
             Contest c = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
             if (c.getContestPK() != contest.getContestPK()) {
-                return c;
+                return new BaseContestWrapper(c);
             }
             return null;
         } catch (PortalException e) { return null; }
