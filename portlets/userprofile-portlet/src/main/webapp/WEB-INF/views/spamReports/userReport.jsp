@@ -26,7 +26,7 @@
                 <td>${spamComment.adminReportCount}</td>
                 <td>${spamComment.otherReportCount}</td>
                 <td><fmt:formatDate value="${spamComment.messageDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
-                <td><a style="margin-left: 10px;" href="${spamComment.deleteCommentUrl }">Delete comment</a></td>
+                <td><a style="margin-left: 10px;" href="${spamComment.deleteCommentUrl }" target="_blank">Delete comment</a></td>
 
             </tr>
         </c:forEach>

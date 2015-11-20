@@ -7,26 +7,21 @@ import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.SpamReportLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
-import org.xcolab.mail.EmailToAdminDispatcher;
+import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
+import org.xcolab.portlets.userprofile.utils.UserProfilePermissions;
 import org.xcolab.portlets.userprofile.wrappers.SpamReportsWrapper;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
-import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import javax.mail.internet.AddressException;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import java.io.IOException;
@@ -45,25 +40,32 @@ public class SpamReportController {
 
     @RequestMapping(params = "page=spamReport")
     public String showSpamReport(PortletRequest request, PortletResponse response, Model model,
-                                 @RequestParam(required = true) String userId) throws SystemException, PortalException {
+                                 @RequestParam(required = true) String userId) throws SystemException, PortalException, UserProfileAuthorizationException {
+        UserProfilePermissions permissions = new UserProfilePermissions(request);
+        permissions.checkCanAdminSpamReports();
+
         userProfileController.populateUserWrapper(new UserProfileWrapper(userId, request), model);
         model.addAttribute("spamReportsWrapper", new SpamReportsWrapper(Long.parseLong(userId)));
+
         return "showUserProfile";
     }
 
     @RequestMapping(params = "page=spamReports")
-    public String showSpamReports(PortletRequest request, PortletResponse response, Model model) {
+    public String showSpamReports(PortletRequest request, PortletResponse response, Model model) throws PortalException, UserProfileAuthorizationException {
+        UserProfilePermissions permissions = new UserProfilePermissions(request);
+        permissions.checkCanAdminSpamReports();
+
         return "spamReports/spamReportList";
     }
 
     @RequestMapping(params = "action=deleteComment")
-    public void deleteComment(
-            PortletRequest request, PortletResponse response,
+    public String deleteComment(
+            PortletRequest request, PortletResponse response, Model model,
             @RequestParam long messageId)
-            throws IOException, PortalException, SystemException {
+            throws UserProfileAuthorizationException, SystemException, PortalException {
 
-        //TODO: check permissions
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        UserProfilePermissions permissions = new UserProfilePermissions(request);
+        permissions.checkCanAdminSpamReports();
 
         DiscussionMessage message = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
         DiscussionMessageLocalServiceUtil.delete(message);
@@ -72,19 +74,21 @@ public class SpamReportController {
             SpamReportLocalServiceUtil.deleteSpamReport(spamReport);
         }
 
-//        response.sendRedirect("/web/guest/member/-/member/spamReport/"+message.getAuthorId());
-//        return "";
+        model.addAttribute("success", true);
+        model.addAttribute("messageType", "deletedComment");
+
+        return "spamReports/actionResults";
     }
 
     @RequestMapping(params = "action=deleteUser")
-    public void deleteUser(
-            PortletRequest request, PortletResponse response,
+    public String deleteUser(
+            PortletRequest request, PortletResponse response, Model model,
             @RequestParam long userId,
             @RequestParam(required = false, defaultValue = "false") boolean deleteMessages)
-            throws IOException, PortalException, SystemException {
+            throws UserProfileAuthorizationException, PortalException, SystemException, IOException {
 
-        //TODO: check permissions
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        UserProfilePermissions permissions = new UserProfilePermissions(request);
+        permissions.checkCanAdminSpamReports();
 
         List<Long> recipients = new ArrayList<>();
         recipients.add(userId);
@@ -93,7 +97,7 @@ public class SpamReportController {
                     "Link: <a href=\"http://climatecolab.org/resources/-/wiki/Main/Community+philosophy+and+policies\">" +
                     "http://climatecolab.org/resources/-/wiki/Main/Community+philosophy+and+policies</a>";
             MessageUtil.sendMessage("Message from Climate CoLab Administrator", content,
-                    themeDisplay.getUserId(), themeDisplay.getUserId(), recipients, request);
+                    permissions.getCurrentUser().getUserId(), permissions.getCurrentUser().getUserId(), recipients, request);
         } catch (MailEngineException | AddressException e) {
             throw new SystemException("Failed to send message to user", e);
         }
@@ -112,6 +116,9 @@ public class SpamReportController {
             }
         }
 
-//        response.sendRedirect("/web/guest/member/-/member/spamReport/"+userId);
+        model.addAttribute("success", true);
+        model.addAttribute("messageType", "deletedUser");
+
+        return "spamReports/actionResults";
     }
 }

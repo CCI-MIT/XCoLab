@@ -31,4 +31,12 @@
         </property>
     </bean>
 	<mvc:annotation-driven/>
+
+    <bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key=".UserProfileAuthorizationException">accessDenied</prop>
+            </props>
+        </property>
+    </bean>
 </beans>
