@@ -73,6 +73,9 @@ public class IdListUtil {
      * The list should only consists of numbers, commas, and (optionally) any amount of spaces.
      */
     public static List<Long> getIdsFromString(String commaSeparated) {
+        if (StringUtils.isEmpty(commaSeparated)) {
+            return new ArrayList<>();
+        }
         String[] stringIds = commaSeparated.trim().split("\\s*,\\s*");
         List<Long> longsIds = new ArrayList<>(stringIds.length);
         for (String stringId : stringIds) {
