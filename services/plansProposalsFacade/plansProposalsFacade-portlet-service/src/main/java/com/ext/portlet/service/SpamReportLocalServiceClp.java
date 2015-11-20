@@ -52,6 +52,14 @@ public class SpamReportLocalServiceClp implements SpamReportLocalService {
     private String[] _methodParameterTypes21;
     private String _methodName22;
     private String[] _methodParameterTypes22;
+    private String _methodName23;
+    private String[] _methodParameterTypes23;
+    private String _methodName24;
+    private String[] _methodParameterTypes24;
+    private String _methodName25;
+    private String[] _methodParameterTypes25;
+    private String _methodName26;
+    private String[] _methodParameterTypes26;
 
     public SpamReportLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -143,21 +151,37 @@ public class SpamReportLocalServiceClp implements SpamReportLocalService {
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
 
-        _methodName19 = "getBySpamUserId";
+        _methodName19 = "create";
 
-        _methodParameterTypes19 = new String[] { "long" };
+        _methodParameterTypes19 = new String[] {  };
 
-        _methodName20 = "getByDiscussionMessageId";
+        _methodName20 = "create";
 
-        _methodParameterTypes20 = new String[] { "long" };
+        _methodParameterTypes20 = new String[] { "long", "long", "long", "boolean" };
 
-        _methodName21 = "getByReporterUserId";
+        _methodName21 = "getBySpamUserId";
 
         _methodParameterTypes21 = new String[] { "long" };
 
-        _methodName22 = "getBySpamUserIdDiscussionMessageId";
+        _methodName22 = "getByDiscussionMessageId";
 
-        _methodParameterTypes22 = new String[] { "long", "long" };
+        _methodParameterTypes22 = new String[] { "long" };
+
+        _methodName23 = "getByReporterUserId";
+
+        _methodParameterTypes23 = new String[] { "long" };
+
+        _methodName24 = "hasReporterUserIdDiscussionMessageId";
+
+        _methodParameterTypes24 = new String[] { "long", "long" };
+
+        _methodName25 = "getByReporterUserIdDiscussionMessageId";
+
+        _methodParameterTypes25 = new String[] { "long", "long" };
+
+        _methodName26 = "getBySpamUserIdDiscussionMessageId";
+
+        _methodParameterTypes26 = new String[] { "long", "long" };
     }
 
     @Override
@@ -671,13 +695,13 @@ public class SpamReportLocalServiceClp implements SpamReportLocalService {
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.SpamReport> getBySpamUserId(
-        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+    public com.ext.portlet.model.SpamReport create()
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19, new Object[] { userId });
+                    _methodParameterTypes19, new Object[] {  });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -693,19 +717,27 @@ public class SpamReportLocalServiceClp implements SpamReportLocalService {
             }
         }
 
-        return (java.util.List<com.ext.portlet.model.SpamReport>) ClpSerializer.translateOutput(returnObj);
+        return (com.ext.portlet.model.SpamReport) ClpSerializer.translateOutput(returnObj);
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.SpamReport> getByDiscussionMessageId(
-        long discussionMessageId)
+    public com.ext.portlet.model.SpamReport create(long discussionMessageId,
+        long spamUserId, long reporterUserId, boolean isAdminReport)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName20,
                     _methodParameterTypes20,
-                    new Object[] { discussionMessageId });
+                    new Object[] {
+                        discussionMessageId,
+                        
+                    spamUserId,
+                        
+                    reporterUserId,
+                        
+                    isAdminReport
+                    });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -721,11 +753,11 @@ public class SpamReportLocalServiceClp implements SpamReportLocalService {
             }
         }
 
-        return (java.util.List<com.ext.portlet.model.SpamReport>) ClpSerializer.translateOutput(returnObj);
+        return (com.ext.portlet.model.SpamReport) ClpSerializer.translateOutput(returnObj);
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.SpamReport> getByReporterUserId(
+    public java.util.List<com.ext.portlet.model.SpamReport> getBySpamUserId(
         long userId) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -751,14 +783,129 @@ public class SpamReportLocalServiceClp implements SpamReportLocalService {
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.SpamReport> getBySpamUserIdDiscussionMessageId(
-        long userId, long discussionMessageId)
+    public java.util.List<com.ext.portlet.model.SpamReport> getByDiscussionMessageId(
+        long discussionMessageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName22,
                     _methodParameterTypes22,
+                    new Object[] { discussionMessageId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.SpamReport>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.SpamReport> getByReporterUserId(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23, new Object[] { userId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.SpamReport>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public boolean hasReporterUserIdDiscussionMessageId(long userId,
+        long discussionMessageId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24,
+                    new Object[] { userId, discussionMessageId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
+    }
+
+    @Override
+    public com.ext.portlet.model.SpamReport getByReporterUserIdDiscussionMessageId(
+        long userId, long discussionMessageId)
+        throws com.ext.portlet.NoSuchSpamReportException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25,
+                    new Object[] { userId, discussionMessageId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.ext.portlet.NoSuchSpamReportException) {
+                throw (com.ext.portlet.NoSuchSpamReportException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.SpamReport) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.SpamReport> getBySpamUserIdDiscussionMessageId(
+        long userId, long discussionMessageId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName26,
+                    _methodParameterTypes26,
                     new Object[] { userId, discussionMessageId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);

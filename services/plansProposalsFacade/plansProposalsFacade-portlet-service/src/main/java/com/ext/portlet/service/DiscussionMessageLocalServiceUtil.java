@@ -427,6 +427,12 @@ public class DiscussionMessageLocalServiceUtil {
         return getService().hasFlag(messageId, flag);
     }
 
+    public static java.util.List<com.ext.portlet.model.DiscussionMessage> getByAuthorId(
+        long authorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByAuthorId(authorId);
+    }
+
     public static void clearService() {
         _service = null;
     }

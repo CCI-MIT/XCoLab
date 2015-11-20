@@ -602,6 +602,90 @@ public class SpamReportUtil {
     }
 
     /**
+    * Returns the spam report where reporterUserId = &#63; and discussionMessageId = &#63; or throws a {@link com.ext.portlet.NoSuchSpamReportException} if it could not be found.
+    *
+    * @param reporterUserId the reporter user ID
+    * @param discussionMessageId the discussion message ID
+    * @return the matching spam report
+    * @throws com.ext.portlet.NoSuchSpamReportException if a matching spam report could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.SpamReport findByReporterUserIdDiscussionMessageId(
+        long reporterUserId, long discussionMessageId)
+        throws com.ext.portlet.NoSuchSpamReportException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByReporterUserIdDiscussionMessageId(reporterUserId,
+            discussionMessageId);
+    }
+
+    /**
+    * Returns the spam report where reporterUserId = &#63; and discussionMessageId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param reporterUserId the reporter user ID
+    * @param discussionMessageId the discussion message ID
+    * @return the matching spam report, or <code>null</code> if a matching spam report could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.SpamReport fetchByReporterUserIdDiscussionMessageId(
+        long reporterUserId, long discussionMessageId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByReporterUserIdDiscussionMessageId(reporterUserId,
+            discussionMessageId);
+    }
+
+    /**
+    * Returns the spam report where reporterUserId = &#63; and discussionMessageId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param reporterUserId the reporter user ID
+    * @param discussionMessageId the discussion message ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching spam report, or <code>null</code> if a matching spam report could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.SpamReport fetchByReporterUserIdDiscussionMessageId(
+        long reporterUserId, long discussionMessageId, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByReporterUserIdDiscussionMessageId(reporterUserId,
+            discussionMessageId, retrieveFromCache);
+    }
+
+    /**
+    * Removes the spam report where reporterUserId = &#63; and discussionMessageId = &#63; from the database.
+    *
+    * @param reporterUserId the reporter user ID
+    * @param discussionMessageId the discussion message ID
+    * @return the spam report that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.SpamReport removeByReporterUserIdDiscussionMessageId(
+        long reporterUserId, long discussionMessageId)
+        throws com.ext.portlet.NoSuchSpamReportException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .removeByReporterUserIdDiscussionMessageId(reporterUserId,
+            discussionMessageId);
+    }
+
+    /**
+    * Returns the number of spam reports where reporterUserId = &#63; and discussionMessageId = &#63;.
+    *
+    * @param reporterUserId the reporter user ID
+    * @param discussionMessageId the discussion message ID
+    * @return the number of matching spam reports
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByReporterUserIdDiscussionMessageId(
+        long reporterUserId, long discussionMessageId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByReporterUserIdDiscussionMessageId(reporterUserId,
+            discussionMessageId);
+    }
+
+    /**
     * Returns all the spam reports where spamUserId = &#63; and discussionMessageId = &#63;.
     *
     * @param spamUserId the spam user ID

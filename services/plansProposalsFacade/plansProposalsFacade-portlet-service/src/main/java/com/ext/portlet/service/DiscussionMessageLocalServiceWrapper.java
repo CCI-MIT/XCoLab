@@ -462,6 +462,13 @@ public class DiscussionMessageLocalServiceWrapper
         return _discussionMessageLocalService.hasFlag(messageId, flag);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.DiscussionMessage> getByAuthorId(
+        long authorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.getByAuthorId(authorId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

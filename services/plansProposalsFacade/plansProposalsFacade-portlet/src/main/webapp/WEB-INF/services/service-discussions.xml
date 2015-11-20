@@ -142,6 +142,11 @@
             <finder-column name="reporterUserId"/>
         </finder>
 
+        <finder name="ReporterUserIdDiscussionMessageId" return-type="SpamReport">
+            <finder-column name="reporterUserId"/>
+            <finder-column name="discussionMessageId"/>
+        </finder>
+
         <finder name="SpamUserIdDiscussionMessageId" return-type="Collection">
             <finder-column name="spamUserId"/>
             <finder-column name="discussionMessageId"/>

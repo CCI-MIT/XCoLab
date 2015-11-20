@@ -362,4 +362,9 @@ public interface DiscussionMessageLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean hasFlag(long messageId, java.lang.String flag)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.DiscussionMessage> getByAuthorId(
+        long authorId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

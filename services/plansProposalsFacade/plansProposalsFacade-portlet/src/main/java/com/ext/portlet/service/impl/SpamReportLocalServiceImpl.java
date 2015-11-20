@@ -1,5 +1,6 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.NoSuchSpamReportException;
 import com.ext.portlet.model.SpamReport;
 import com.ext.portlet.service.base.SpamReportLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -28,6 +29,23 @@ public class SpamReportLocalServiceImpl extends SpamReportLocalServiceBaseImpl {
      */
 
     @Override
+    public SpamReport create() throws SystemException {
+        final long spamId = counterLocalService.increment(SpamReport.class.getName());
+        return spamReportPersistence.create(spamId);
+    }
+
+    @Override
+    public SpamReport create(long discussionMessageId, long spamUserId, long reporterUserId, boolean isAdminReport) throws SystemException {
+        SpamReport spamReport = create();
+        spamReport.setDiscussionMessageId(discussionMessageId);
+        spamReport.setSpamUserId(spamUserId);
+        spamReport.setReporterUserId(reporterUserId);
+        spamReport.setIsAdminReport(isAdminReport);
+        spamReport.persist();
+        return spamReport;
+    }
+
+    @Override
     public List<SpamReport> getBySpamUserId(long userId) throws SystemException {
         return spamReportPersistence.findBySpamUserId(userId);
     }
@@ -40,6 +58,21 @@ public class SpamReportLocalServiceImpl extends SpamReportLocalServiceBaseImpl {
     @Override
     public List<SpamReport> getByReporterUserId(long userId) throws SystemException {
         return spamReportPersistence.findByReporterUserId(userId);
+    }
+
+    @Override
+    public boolean hasReporterUserIdDiscussionMessageId(long userId, long discussionMessageId) throws SystemException {
+        try {
+            spamReportPersistence.findByReporterUserIdDiscussionMessageId(userId, discussionMessageId);
+            return true;
+        } catch (NoSuchSpamReportException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public SpamReport getByReporterUserIdDiscussionMessageId(long userId, long discussionMessageId) throws SystemException, NoSuchSpamReportException {
+        return spamReportPersistence.findByReporterUserIdDiscussionMessageId(userId, discussionMessageId);
     }
 
     @Override

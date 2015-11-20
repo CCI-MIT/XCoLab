@@ -134,6 +134,24 @@ public class SpamReportPersistenceImpl extends BasePersistenceImpl<SpamReport>
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByReporterUserId",
             new String[] { Long.class.getName() });
     private static final String _FINDER_COLUMN_REPORTERUSERID_REPORTERUSERID_2 = "spamReport.reporterUserId = ?";
+    public static final FinderPath FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID =
+        new FinderPath(SpamReportModelImpl.ENTITY_CACHE_ENABLED,
+            SpamReportModelImpl.FINDER_CACHE_ENABLED, SpamReportImpl.class,
+            FINDER_CLASS_NAME_ENTITY,
+            "fetchByReporterUserIdDiscussionMessageId",
+            new String[] { Long.class.getName(), Long.class.getName() },
+            SpamReportModelImpl.REPORTERUSERID_COLUMN_BITMASK |
+            SpamReportModelImpl.DISCUSSIONMESSAGEID_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_REPORTERUSERIDDISCUSSIONMESSAGEID =
+        new FinderPath(SpamReportModelImpl.ENTITY_CACHE_ENABLED,
+            SpamReportModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countByReporterUserIdDiscussionMessageId",
+            new String[] { Long.class.getName(), Long.class.getName() });
+    private static final String _FINDER_COLUMN_REPORTERUSERIDDISCUSSIONMESSAGEID_REPORTERUSERID_2 =
+        "spamReport.reporterUserId = ? AND ";
+    private static final String _FINDER_COLUMN_REPORTERUSERIDDISCUSSIONMESSAGEID_DISCUSSIONMESSAGEID_2 =
+        "spamReport.discussionMessageId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_SPAMUSERIDDISCUSSIONMESSAGEID =
         new FinderPath(SpamReportModelImpl.ENTITY_CACHE_ENABLED,
             SpamReportModelImpl.FINDER_CACHE_ENABLED, SpamReportImpl.class,
@@ -1566,6 +1584,233 @@ public class SpamReportPersistenceImpl extends BasePersistenceImpl<SpamReport>
     }
 
     /**
+     * Returns the spam report where reporterUserId = &#63; and discussionMessageId = &#63; or throws a {@link com.ext.portlet.NoSuchSpamReportException} if it could not be found.
+     *
+     * @param reporterUserId the reporter user ID
+     * @param discussionMessageId the discussion message ID
+     * @return the matching spam report
+     * @throws com.ext.portlet.NoSuchSpamReportException if a matching spam report could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public SpamReport findByReporterUserIdDiscussionMessageId(
+        long reporterUserId, long discussionMessageId)
+        throws NoSuchSpamReportException, SystemException {
+        SpamReport spamReport = fetchByReporterUserIdDiscussionMessageId(reporterUserId,
+                discussionMessageId);
+
+        if (spamReport == null) {
+            StringBundler msg = new StringBundler(6);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("reporterUserId=");
+            msg.append(reporterUserId);
+
+            msg.append(", discussionMessageId=");
+            msg.append(discussionMessageId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchSpamReportException(msg.toString());
+        }
+
+        return spamReport;
+    }
+
+    /**
+     * Returns the spam report where reporterUserId = &#63; and discussionMessageId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param reporterUserId the reporter user ID
+     * @param discussionMessageId the discussion message ID
+     * @return the matching spam report, or <code>null</code> if a matching spam report could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public SpamReport fetchByReporterUserIdDiscussionMessageId(
+        long reporterUserId, long discussionMessageId)
+        throws SystemException {
+        return fetchByReporterUserIdDiscussionMessageId(reporterUserId,
+            discussionMessageId, true);
+    }
+
+    /**
+     * Returns the spam report where reporterUserId = &#63; and discussionMessageId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param reporterUserId the reporter user ID
+     * @param discussionMessageId the discussion message ID
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching spam report, or <code>null</code> if a matching spam report could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public SpamReport fetchByReporterUserIdDiscussionMessageId(
+        long reporterUserId, long discussionMessageId, boolean retrieveFromCache)
+        throws SystemException {
+        Object[] finderArgs = new Object[] { reporterUserId, discussionMessageId };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+                    finderArgs, this);
+        }
+
+        if (result instanceof SpamReport) {
+            SpamReport spamReport = (SpamReport) result;
+
+            if ((reporterUserId != spamReport.getReporterUserId()) ||
+                    (discussionMessageId != spamReport.getDiscussionMessageId())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(4);
+
+            query.append(_SQL_SELECT_SPAMREPORT_WHERE);
+
+            query.append(_FINDER_COLUMN_REPORTERUSERIDDISCUSSIONMESSAGEID_REPORTERUSERID_2);
+
+            query.append(_FINDER_COLUMN_REPORTERUSERIDDISCUSSIONMESSAGEID_DISCUSSIONMESSAGEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(reporterUserId);
+
+                qPos.add(discussionMessageId);
+
+                List<SpamReport> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "SpamReportPersistenceImpl.fetchByReporterUserIdDiscussionMessageId(long, long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    SpamReport spamReport = list.get(0);
+
+                    result = spamReport;
+
+                    cacheResult(spamReport);
+
+                    if ((spamReport.getReporterUserId() != reporterUserId) ||
+                            (spamReport.getDiscussionMessageId() != discussionMessageId)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+                            finderArgs, spamReport);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (SpamReport) result;
+        }
+    }
+
+    /**
+     * Removes the spam report where reporterUserId = &#63; and discussionMessageId = &#63; from the database.
+     *
+     * @param reporterUserId the reporter user ID
+     * @param discussionMessageId the discussion message ID
+     * @return the spam report that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public SpamReport removeByReporterUserIdDiscussionMessageId(
+        long reporterUserId, long discussionMessageId)
+        throws NoSuchSpamReportException, SystemException {
+        SpamReport spamReport = findByReporterUserIdDiscussionMessageId(reporterUserId,
+                discussionMessageId);
+
+        return remove(spamReport);
+    }
+
+    /**
+     * Returns the number of spam reports where reporterUserId = &#63; and discussionMessageId = &#63;.
+     *
+     * @param reporterUserId the reporter user ID
+     * @param discussionMessageId the discussion message ID
+     * @return the number of matching spam reports
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByReporterUserIdDiscussionMessageId(long reporterUserId,
+        long discussionMessageId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_REPORTERUSERIDDISCUSSIONMESSAGEID;
+
+        Object[] finderArgs = new Object[] { reporterUserId, discussionMessageId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_COUNT_SPAMREPORT_WHERE);
+
+            query.append(_FINDER_COLUMN_REPORTERUSERIDDISCUSSIONMESSAGEID_REPORTERUSERID_2);
+
+            query.append(_FINDER_COLUMN_REPORTERUSERIDDISCUSSIONMESSAGEID_DISCUSSIONMESSAGEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(reporterUserId);
+
+                qPos.add(discussionMessageId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the spam reports where spamUserId = &#63; and discussionMessageId = &#63;.
      *
      * @param spamUserId the spam user ID
@@ -2074,6 +2319,12 @@ public class SpamReportPersistenceImpl extends BasePersistenceImpl<SpamReport>
         EntityCacheUtil.putResult(SpamReportModelImpl.ENTITY_CACHE_ENABLED,
             SpamReportImpl.class, spamReport.getPrimaryKey(), spamReport);
 
+        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+            new Object[] {
+                spamReport.getReporterUserId(),
+                spamReport.getDiscussionMessageId()
+            }, spamReport);
+
         spamReport.resetOriginalValues();
     }
 
@@ -2129,6 +2380,8 @@ public class SpamReportPersistenceImpl extends BasePersistenceImpl<SpamReport>
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        clearUniqueFindersCache(spamReport);
     }
 
     @Override
@@ -2139,6 +2392,64 @@ public class SpamReportPersistenceImpl extends BasePersistenceImpl<SpamReport>
         for (SpamReport spamReport : spamReports) {
             EntityCacheUtil.removeResult(SpamReportModelImpl.ENTITY_CACHE_ENABLED,
                 SpamReportImpl.class, spamReport.getPrimaryKey());
+
+            clearUniqueFindersCache(spamReport);
+        }
+    }
+
+    protected void cacheUniqueFindersCache(SpamReport spamReport) {
+        if (spamReport.isNew()) {
+            Object[] args = new Object[] {
+                    spamReport.getReporterUserId(),
+                    spamReport.getDiscussionMessageId()
+                };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+                args, Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+                args, spamReport);
+        } else {
+            SpamReportModelImpl spamReportModelImpl = (SpamReportModelImpl) spamReport;
+
+            if ((spamReportModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        spamReport.getReporterUserId(),
+                        spamReport.getDiscussionMessageId()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+                    args, spamReport);
+            }
+        }
+    }
+
+    protected void clearUniqueFindersCache(SpamReport spamReport) {
+        SpamReportModelImpl spamReportModelImpl = (SpamReportModelImpl) spamReport;
+
+        Object[] args = new Object[] {
+                spamReport.getReporterUserId(),
+                spamReport.getDiscussionMessageId()
+            };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+            args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+            args);
+
+        if ((spamReportModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    spamReportModelImpl.getOriginalReporterUserId(),
+                    spamReportModelImpl.getOriginalDiscussionMessageId()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_REPORTERUSERIDDISCUSSIONMESSAGEID,
+                args);
         }
     }
 
@@ -2357,6 +2668,9 @@ public class SpamReportPersistenceImpl extends BasePersistenceImpl<SpamReport>
 
         EntityCacheUtil.putResult(SpamReportModelImpl.ENTITY_CACHE_ENABLED,
             SpamReportImpl.class, spamReport.getPrimaryKey(), spamReport);
+
+        clearUniqueFindersCache(spamReport);
+        cacheUniqueFindersCache(spamReport);
 
         return spamReport;
     }

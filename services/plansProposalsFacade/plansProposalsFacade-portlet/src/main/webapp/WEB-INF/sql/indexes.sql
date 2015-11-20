@@ -243,6 +243,7 @@ create index IX_497348F2 on xcolab_ProposalVote (userId);
 
 create index IX_A9DC76B1 on xcolab_SpamReport (discussionMessageId);
 create index IX_B9542B14 on xcolab_SpamReport (reporterUserId);
+create index IX_3BB6FD56 on xcolab_SpamReport (reporterUserId, discussionMessageId);
 create index IX_C4701AFC on xcolab_SpamReport (spamUserId);
 create index IX_81E78E6E on xcolab_SpamReport (spamUserId, discussionMessageId);
 

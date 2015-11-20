@@ -259,6 +259,20 @@ public class SpamReportLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static com.ext.portlet.model.SpamReport create()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().create();
+    }
+
+    public static com.ext.portlet.model.SpamReport create(
+        long discussionMessageId, long spamUserId, long reporterUserId,
+        boolean isAdminReport)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .create(discussionMessageId, spamUserId, reporterUserId,
+            isAdminReport);
+    }
+
     public static java.util.List<com.ext.portlet.model.SpamReport> getBySpamUserId(
         long userId) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getBySpamUserId(userId);
@@ -273,6 +287,23 @@ public class SpamReportLocalServiceUtil {
     public static java.util.List<com.ext.portlet.model.SpamReport> getByReporterUserId(
         long userId) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getByReporterUserId(userId);
+    }
+
+    public static boolean hasReporterUserIdDiscussionMessageId(long userId,
+        long discussionMessageId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .hasReporterUserIdDiscussionMessageId(userId,
+            discussionMessageId);
+    }
+
+    public static com.ext.portlet.model.SpamReport getByReporterUserIdDiscussionMessageId(
+        long userId, long discussionMessageId)
+        throws com.ext.portlet.NoSuchSpamReportException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getByReporterUserIdDiscussionMessageId(userId,
+            discussionMessageId);
     }
 
     public static java.util.List<com.ext.portlet.model.SpamReport> getBySpamUserIdDiscussionMessageId(

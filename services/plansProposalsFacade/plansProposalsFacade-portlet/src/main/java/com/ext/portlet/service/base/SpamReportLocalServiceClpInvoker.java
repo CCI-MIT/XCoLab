@@ -53,6 +53,14 @@ public class SpamReportLocalServiceClpInvoker {
     private String[] _methodParameterTypes512;
     private String _methodName513;
     private String[] _methodParameterTypes513;
+    private String _methodName514;
+    private String[] _methodParameterTypes514;
+    private String _methodName515;
+    private String[] _methodParameterTypes515;
+    private String _methodName516;
+    private String[] _methodParameterTypes516;
+    private String _methodName517;
+    private String[] _methodParameterTypes517;
 
     public SpamReportLocalServiceClpInvoker() {
         _methodName0 = "addSpamReport";
@@ -141,21 +149,39 @@ public class SpamReportLocalServiceClpInvoker {
 
         _methodParameterTypes505 = new String[] { "java.lang.String" };
 
-        _methodName510 = "getBySpamUserId";
+        _methodName510 = "create";
 
-        _methodParameterTypes510 = new String[] { "long" };
+        _methodParameterTypes510 = new String[] {  };
 
-        _methodName511 = "getByDiscussionMessageId";
+        _methodName511 = "create";
 
-        _methodParameterTypes511 = new String[] { "long" };
+        _methodParameterTypes511 = new String[] {
+                "long", "long", "long", "boolean"
+            };
 
-        _methodName512 = "getByReporterUserId";
+        _methodName512 = "getBySpamUserId";
 
         _methodParameterTypes512 = new String[] { "long" };
 
-        _methodName513 = "getBySpamUserIdDiscussionMessageId";
+        _methodName513 = "getByDiscussionMessageId";
 
-        _methodParameterTypes513 = new String[] { "long", "long" };
+        _methodParameterTypes513 = new String[] { "long" };
+
+        _methodName514 = "getByReporterUserId";
+
+        _methodParameterTypes514 = new String[] { "long" };
+
+        _methodName515 = "hasReporterUserIdDiscussionMessageId";
+
+        _methodParameterTypes515 = new String[] { "long", "long" };
+
+        _methodName516 = "getByReporterUserIdDiscussionMessageId";
+
+        _methodParameterTypes516 = new String[] { "long", "long" };
+
+        _methodName517 = "getBySpamUserIdDiscussionMessageId";
+
+        _methodParameterTypes517 = new String[] { "long", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -261,21 +287,46 @@ public class SpamReportLocalServiceClpInvoker {
 
         if (_methodName510.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes510, parameterTypes)) {
-            return SpamReportLocalServiceUtil.getBySpamUserId(((Long) arguments[0]).longValue());
+            return SpamReportLocalServiceUtil.create();
         }
 
         if (_methodName511.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes511, parameterTypes)) {
-            return SpamReportLocalServiceUtil.getByDiscussionMessageId(((Long) arguments[0]).longValue());
+            return SpamReportLocalServiceUtil.create(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                ((Long) arguments[2]).longValue(),
+                ((Boolean) arguments[3]).booleanValue());
         }
 
         if (_methodName512.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
-            return SpamReportLocalServiceUtil.getByReporterUserId(((Long) arguments[0]).longValue());
+            return SpamReportLocalServiceUtil.getBySpamUserId(((Long) arguments[0]).longValue());
         }
 
         if (_methodName513.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
+            return SpamReportLocalServiceUtil.getByDiscussionMessageId(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName514.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
+            return SpamReportLocalServiceUtil.getByReporterUserId(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName515.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
+            return SpamReportLocalServiceUtil.hasReporterUserIdDiscussionMessageId(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
+        }
+
+        if (_methodName516.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
+            return SpamReportLocalServiceUtil.getByReporterUserIdDiscussionMessageId(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
+        }
+
+        if (_methodName517.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes517, parameterTypes)) {
             return SpamReportLocalServiceUtil.getBySpamUserIdDiscussionMessageId(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }

@@ -95,6 +95,8 @@ public class DiscussionMessageLocalServiceClpInvoker {
     private String[] _methodParameterTypes533;
     private String _methodName534;
     private String[] _methodParameterTypes534;
+    private String _methodName536;
+    private String[] _methodParameterTypes536;
 
     public DiscussionMessageLocalServiceClpInvoker() {
         _methodName0 = "addDiscussionMessage";
@@ -323,6 +325,10 @@ public class DiscussionMessageLocalServiceClpInvoker {
         _methodName534 = "hasFlag";
 
         _methodParameterTypes534 = new String[] { "long", "java.lang.String" };
+
+        _methodName536 = "getByAuthorId";
+
+        _methodParameterTypes536 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -582,6 +588,11 @@ public class DiscussionMessageLocalServiceClpInvoker {
                 Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.hasFlag(((Long) arguments[0]).longValue(),
                 (java.lang.String) arguments[1]);
+        }
+
+        if (_methodName536.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes536, parameterTypes)) {
+            return DiscussionMessageLocalServiceUtil.getByAuthorId(((Long) arguments[0]).longValue());
         }
 
         throw new UnsupportedOperationException();

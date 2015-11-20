@@ -237,6 +237,13 @@ public interface SpamReportLocalService extends BaseLocalService,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
 
+    public com.ext.portlet.model.SpamReport create()
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.model.SpamReport create(long discussionMessageId,
+        long spamUserId, long reporterUserId, boolean isAdminReport)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.SpamReport> getBySpamUserId(
         long userId) throws com.liferay.portal.kernel.exception.SystemException;
@@ -249,6 +256,17 @@ public interface SpamReportLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.SpamReport> getByReporterUserId(
         long userId) throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean hasReporterUserIdDiscussionMessageId(long userId,
+        long discussionMessageId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.SpamReport getByReporterUserIdDiscussionMessageId(
+        long userId, long discussionMessageId)
+        throws com.ext.portlet.NoSuchSpamReportException,
+            com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.SpamReport> getBySpamUserIdDiscussionMessageId(
