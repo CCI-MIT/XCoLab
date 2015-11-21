@@ -524,3 +524,45 @@
 .contest-detail .heading {
   padding-right: 27px;
 }
+
+%contest-flag {
+  height: 30px;
+  line-height: 30px;
+  padding: 0 15px 0 15px;
+  text-align: center;
+  display: inline-block;
+
+  color: white;
+  box-shadow: 5px 5px 5px $medium-grey;
+
+  position: absolute;
+  top: 115px;
+  left: -20px;
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 3px;
+    bottom: 3px;
+    right: 3px;
+  }
+}
+
+.contest-flag-color {
+  @extend %contest-flag;
+  @include background(linear-gradient(top, lighten($secondary-color, 5%), darken($secondary-color, 5%)));
+  &:after {
+    border: 1px solid $secondary-light;
+    border-left: 0;
+  }
+}
+
+.contest-flag-grey {
+  @extend %contest-flag;
+  @include background(linear-gradient(top, lighten($medium-grey, 5%), darken($medium-grey, 5%)));
+  &:after {
+    border: 1px solid $lightest-grey;
+    border-left: 0;
+  }
+}
