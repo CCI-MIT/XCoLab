@@ -30,7 +30,7 @@ import java.util.Set;
  */
 public class ProposalImpactScenarioCombinationWrapper {
 
-    private static Map<String, Double> REGION_AVG_FACTOR;
+    private static final Map<String, Double> REGION_AVG_FACTOR;
     private final static Logger _log = Logger.getLogger(ProposalImpactScenarioCombinationWrapper.class);
 
     static {
@@ -65,7 +65,7 @@ public class ProposalImpactScenarioCombinationWrapper {
     ClientRepository romaClient;
 
 
-    public ProposalImpactScenarioCombinationWrapper(List<Proposal> proposals) throws Exception {
+    public ProposalImpactScenarioCombinationWrapper(List<Proposal> proposals) throws SystemException, PortalException, IOException {
         initRomaClient();
         presentRegion = new HashSet<>();
         scenarios = new HashSet<>();
@@ -135,15 +135,15 @@ public class ProposalImpactScenarioCombinationWrapper {
         return nameOfUsedSimulation.contains("emf");
     }
 
-    public Long getModelIdForScenarioId(Long scenarioId) throws Exception {
+    public Long getModelIdForScenarioId(Long scenarioId) throws IOException {
         return getScenarioForScenarioId(scenarioId).getSimulation().getId();
     }
 
-    public Simulation getModelForScenarioId(Long scenarioId) throws Exception {
+    public Simulation getModelForScenarioId(Long scenarioId) throws IOException {
         return getScenarioForScenarioId(scenarioId).getSimulation();
     }
 
-    public Boolean isScenarioUsingSameModelId(Long scenarioId) throws Exception{
+    public Boolean isScenarioUsingSameModelId(Long scenarioId) throws IOException {
         return getModelIdForScenarioId(scenarioId).equals(combinedSimulation.getId());
     }
 
@@ -162,7 +162,7 @@ public class ProposalImpactScenarioCombinationWrapper {
         }
     }
 
-    public Scenario getScenarioForScenarioId(Long scenarioId) throws Exception {
+    public Scenario getScenarioForScenarioId(Long scenarioId) throws IOException {
         return getRomaClient().getScenario(scenarioId);
     }
 
@@ -170,7 +170,7 @@ public class ProposalImpactScenarioCombinationWrapper {
         boolean isConsolidationOfScenariosPossible = false;
         if (isOneSubProposalPerRegionSelected()) {
             if (doAllScenariosUseSameModel()) {
-                if (scenarios.size() > 0) {
+                if (!scenarios.isEmpty()) {
                     if (isUsedModelEMF()) {
                         if (doAllEMFScenariosHaveSameModelRun()) {
                             isConsolidationOfScenariosPossible = true;
@@ -237,9 +237,10 @@ public class ProposalImpactScenarioCombinationWrapper {
             String scenarioRegionName = (String) currentScenarioInputParameters.get(regionInputId);
             double regionFactor = Validator.isNotNull(REGION_AVG_FACTOR.get(scenarioRegionName)) ? REGION_AVG_FACTOR.get(scenarioRegionName) : 1.0;
 
-            for (Long inputId : currentScenarioInputParameters.keySet()) {
+            for (Map.Entry<Long, Object> entry : currentScenarioInputParameters.entrySet()) {
+                final Long inputId = entry.getKey();
                 try {
-                    double weightedValue = regionFactor * Double.parseDouble((String) currentScenarioInputParameters.get(inputId));
+                    double weightedValue = regionFactor * Double.parseDouble((String) entry.getValue());
                     if (combinedInputParametersMap.containsKey(inputId)) {
                         double currentAggregatedValue = Double.parseDouble((String) combinedInputParametersMap.get(inputId));
                         double newAggregatedValue = weightedValue + currentAggregatedValue;
@@ -249,7 +250,7 @@ public class ProposalImpactScenarioCombinationWrapper {
                     }
                 } catch (NumberFormatException ignoreRegionString) {
                     if(!inputId.equals(regionInputId)){
-                        combinedInputParametersMap.put(inputId, (String) currentScenarioInputParameters.get(inputId));
+                        combinedInputParametersMap.put(inputId, entry.getValue());
                     }
                     // This seems to be not numerical input -> region
                 }
@@ -260,27 +261,29 @@ public class ProposalImpactScenarioCombinationWrapper {
     private static Map<Long, Object> mapVariableInputParameters(List<Variable> variableInputParameters) {
         Map<Long, Object> inputParameterMap = new HashMap<>();
 
-        for (int scenarioInputSetIndex = 0; scenarioInputSetIndex < variableInputParameters.size(); scenarioInputSetIndex++) {
-            List<Tuple> scenarioInputVariableTuples = variableInputParameters.get(scenarioInputSetIndex).getValue();
+        for (Variable variableInputParameter : variableInputParameters) {
+            List<Tuple> scenarioInputVariableTuples = variableInputParameter.getValue();
 
-            for (int scenarioInputVariableTuplesIndex = 0; scenarioInputVariableTuplesIndex < scenarioInputVariableTuples.size(); scenarioInputVariableTuplesIndex++) {
-                String[] valueStrings = scenarioInputVariableTuples.get(scenarioInputVariableTuplesIndex).getValues();
+            for (Tuple scenarioInputVariableTuple : scenarioInputVariableTuples) {
+                String[] valueStrings = scenarioInputVariableTuple.getValues();
 
-                for (int valueStringsIndex = 0; valueStringsIndex < valueStrings.length; valueStringsIndex++) {
-                    Long variableId = variableInputParameters.get(scenarioInputSetIndex).getMetaData().getId();
-                    inputParameterMap.put(variableId, valueStrings[valueStringsIndex]);
+                for (String valueString : valueStrings) {
+                    Long variableId = variableInputParameter.getMetaData().getId();
+                    inputParameterMap.put(variableId, valueString);
                 }
             }
         }
         return inputParameterMap;
     }
 
-    public boolean scenarioInputParameterAreDifferentThanAggregated(Long scenarioId) throws Exception {
+    public boolean scenarioInputParameterAreDifferentThanAggregated(Long scenarioId) throws IOException {
         Scenario scenario = getScenarioForScenarioId(scenarioId);
         Map<Long, Object> scenarioInputs = mapVariableInputParameters(scenario.getInputSet());
-        for (Long inputId : scenarioInputs.keySet()) {
+        for (Map.Entry<Long, Object> entry : scenarioInputs.entrySet()) {
             try {
-                if (!combinedInputParametersMap.get(inputId).equals(scenarioInputs.get(inputId))) {
+                final long inputId = entry.getKey();
+                final Object scenarioInput = entry.getValue();
+                if (!combinedInputParametersMap.get(inputId).equals(scenarioInput)) {
                     return false;
                 }
             } catch (Exception e) {
@@ -303,13 +306,17 @@ public class ProposalImpactScenarioCombinationWrapper {
     public Long getOutputScenarioId() {
         if (combinedScenario != null) {
             return combinedScenario.getId();
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
     public Long getOutputModelId() {
         if (combinedSimulation != null) {
             return combinedSimulation.getId();
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
 }

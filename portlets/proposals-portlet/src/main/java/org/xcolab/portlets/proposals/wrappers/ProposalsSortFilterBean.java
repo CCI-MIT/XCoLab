@@ -77,9 +77,10 @@ public class ProposalsSortFilterBean {
                         return ribbonDiff;
                     }
                 }
-                int ret = proposalComparator.compare(o1, o2);
-
-                return sortFilterPage.isSortAscending() ? ret : - ret;
+                if (sortFilterPage.isSortAscending()) {
+                    return proposalComparator.compare(o1, o2);
+                }
+                return proposalComparator.compare(o2, o1);
             }
         });
         

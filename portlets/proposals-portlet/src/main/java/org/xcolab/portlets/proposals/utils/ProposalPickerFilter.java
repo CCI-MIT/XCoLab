@@ -41,7 +41,7 @@ import static org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil.Secti
  */
 public class ProposalPickerFilter {
     private static final Log _log = LogFactoryUtil.getLog(ProposalPickerFilter.class);
-    public static final List<Long> ANY_TERM_IDS = Arrays.asList(1L, 2L, 3L, 1300601L);
+    private static final List<Long> ANY_TERM_IDS = Arrays.asList(1L, 2L, 3L, 1300601L);
 
     /**
      * Filters the passed list of proposals
@@ -71,9 +71,9 @@ public class ProposalPickerFilter {
         return new HashSet<>();
     }
 
-    public static ProposalPickerFilter ACCEPT_ALL = new ProposalPickerFilter();
+    public final static ProposalPickerFilter ACCEPT_ALL = new ProposalPickerFilter();
 
-    public static ProposalPickerFilter SECTION_DEF_FOCUS_AREA_FILTER = new ProposalPickerFilter() {
+    public final static ProposalPickerFilter SECTION_DEF_FOCUS_AREA_FILTER = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
@@ -191,7 +191,7 @@ public class ProposalPickerFilter {
         }
     };
 
-    public static ProposalPickerFilter TEXT_BASED = new ProposalPickerFilter() {
+    public final static ProposalPickerFilter TEXT_BASED = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
@@ -263,7 +263,7 @@ public class ProposalPickerFilter {
         }
     };
 
-    public static ProposalPickerFilter WINNERSONLY= new ProposalPickerFilter() {
+    public final static ProposalPickerFilter WINNERSONLY= new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
@@ -286,7 +286,7 @@ public class ProposalPickerFilter {
         }
     };
 
-    public static ProposalPickerFilter CONTEST_TIER = new ProposalPickerFilter() {
+    public final static ProposalPickerFilter CONTEST_TIER = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
@@ -359,7 +359,7 @@ public class ProposalPickerFilter {
         }
     };
 
-    public static ProposalPickerFilter CONTEST_TYPE_FILTER = new ProposalPickerFilter() {
+    public final static ProposalPickerFilter CONTEST_TYPE_FILTER = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();

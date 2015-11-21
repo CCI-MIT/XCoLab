@@ -97,9 +97,9 @@ public class ProposalImpactDataParser {
             // Ignore empty columns (tabs)
             if (Validator.isNotNull(headLineColumn)) {
                 // Try to match excelSeriesType from input
-                for (String excelSeriesKey : excelSeriesTypeToSeriesTypeMap.keySet()) {
-                    if (headLineColumn.contains(excelSeriesKey)) {
-                        String seriesType = excelSeriesTypeToSeriesTypeMap.get(excelSeriesKey);
+                for (Map.Entry<String, String> entry : excelSeriesTypeToSeriesTypeMap.entrySet()) {
+                    if (headLineColumn.contains(entry.getKey())) {
+                        String seriesType = entry.getValue();
                         seriesTypes.add(seriesType);
 
                         foundMatch = true;

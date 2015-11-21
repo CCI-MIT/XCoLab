@@ -48,7 +48,7 @@ public class ProposalImpactSeriesValues {
     }
 
     public void addImpactSeriesValues(ProposalImpactSeriesValues anotherSeriesValues) {
-        Set<Integer> mergedYearKeySet = new HashSet<Integer>(yearToValueMap.keySet());
+        Set<Integer> mergedYearKeySet = new HashSet<>(yearToValueMap.keySet());
         mergedYearKeySet.addAll(anotherSeriesValues.yearToValueMap.keySet());
 
         for (Integer yearKey : mergedYearKeySet) {
@@ -61,7 +61,7 @@ public class ProposalImpactSeriesValues {
     }
 
     public void addImpactSeriesValues(ProposalImpactSeriesValues anotherSeriesValues, Map<Integer, Double> yearToValueFactor) {
-        Set<Integer> mergedYearKeySet = new HashSet<Integer>(yearToValueMap.keySet());
+        Set<Integer> mergedYearKeySet = new HashSet<>(yearToValueMap.keySet());
         mergedYearKeySet.addAll(anotherSeriesValues.yearToValueMap.keySet());
 
         for (Integer yearKey : mergedYearKeySet) {
@@ -77,8 +77,8 @@ public class ProposalImpactSeriesValues {
     public JSONObject toJSONObect() {
         JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-        for (Integer year : yearToValueMap.keySet()) {
-            jsonObject.put(""+year, yearToValueMap.get(year));
+        for (Map.Entry<Integer, Double> entry : yearToValueMap.entrySet()) {
+            jsonObject.put(""+entry.getKey(),  entry.getValue());
         }
 
         return jsonObject;

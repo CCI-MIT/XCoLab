@@ -120,7 +120,6 @@ public class ProposalShareJSONController {
 
     @ResourceMapping("proposalShare-autocomplete")
     public void autocompleteRecipient(ResourceRequest request, ResourceResponse response) throws PortalException, IOException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         String queryString = request.getParameter("term");
 
         try {
@@ -186,7 +185,7 @@ public class ProposalShareJSONController {
 			proposalUrl += String.format("/web/guest/plans/-/plans/contestId/%d/phaseId/%d/planId/%d", proposalsContext.getContest(request).getContestPK(), phase.getContestPhasePK(), proposalsContext.getProposal(request).getProposalId());
 		}
 
-		body += String.format("\n\n<a href='%s'>Link to proposal</a>", proposalUrl);
+		body += String.format("%n%n<a href='%s'>Link to proposal</a>", proposalUrl);
 
 		// Send the message
         Long userId = themeDisplay.getUserId();
@@ -211,10 +210,9 @@ public class ProposalShareJSONController {
 
         // Send the message
         try {
-			Long mutex = MessageLimitManager.getMutex(userId);
 			User user = UserLocalServiceUtil.getUserById(userId);
-			synchronized (mutex) {
-				if (!MessageLimitManager.canSendMessages(recipientIds.size(), user)) {
+			synchronized (MessageLimitManager.getMutex(userId)) {
+				if (recipientIds != null && !MessageLimitManager.canSendMessages(recipientIds.size(), user)) {
 //					System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. " + userId);
 //
 //					// Only send the email once in 24h!

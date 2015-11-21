@@ -5,7 +5,6 @@ import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
-import com.liferay.portal.model.User;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -19,10 +18,17 @@ import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.*;
+import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalTab;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("view")
@@ -64,7 +70,9 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
         for (Iterator i = judgesRatingsUnWrapped.iterator(); i.hasNext(); ){
             ProposalRating judgesRatingUnWrapped = (ProposalRating) i.next();
-            if(judgesRatingUnWrapped.getOnlyForInternalUsage()) i.remove();
+            if(judgesRatingUnWrapped.getOnlyForInternalUsage()) {
+                i.remove();
+            }
         }
 
         List<ProposalRatingsWrapper> judgeRatings = wrapProposalRatings(judgesRatingsUnWrapped);
@@ -93,18 +101,18 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     private static List<ProposalRatingsWrapper> wrapProposalRatings(List<ProposalRating> ratings)
             throws SystemException, PortalException {
         List<ProposalRatingsWrapper> wrappers = new ArrayList<>();
-        Map<Long, List<ProposalRating>> map = new HashMap<>();
+        Map<Long, List<ProposalRating>> ratingsByUserId = new HashMap<>();
 
         for (ProposalRating r : ratings) {
-                if (map.get(r.getUserId()) == null) {
-                    map.put(r.getUserId(), new ArrayList<ProposalRating>());
+                if (ratingsByUserId.get(r.getUserId()) == null) {
+                    ratingsByUserId.put(r.getUserId(), new ArrayList<ProposalRating>());
                 }
-                map.get(r.getUserId()).add(r);
+                ratingsByUserId.get(r.getUserId()).add(r);
             }
 
-            for (Long userId : map.keySet()) {
-                List<ProposalRating> userRatings = map.get(userId);
-                ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, userRatings);
+            for (Map.Entry<Long, List<ProposalRating>> entry : ratingsByUserId.entrySet()) {
+                List<ProposalRating> userRatings = entry.getValue();
+                ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(entry.getKey(), userRatings);
                 wrappers.add(wrapper);
         }
         return wrappers;

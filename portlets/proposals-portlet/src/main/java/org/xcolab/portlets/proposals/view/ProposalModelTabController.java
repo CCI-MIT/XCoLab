@@ -31,8 +31,6 @@ public class ProposalModelTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, ProposalTab.ACTIONSIMPACTS);
         
         if (edit) {
-        	Contest c = proposalsContext.getContest(request);
-
         	Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
         	if (modelIdsWithNames.size() > 1) {
         		model.addAttribute("availableModels", modelIdsWithNames);

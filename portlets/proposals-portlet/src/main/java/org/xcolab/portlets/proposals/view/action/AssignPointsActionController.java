@@ -6,6 +6,7 @@ import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.PointTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
+import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -36,7 +37,7 @@ public class AssignPointsActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    private Map<Long, Double> pointTypePercentageModifiers = new HashMap<Long, Double>();
+    private final Map<Long, Double> pointTypePercentageModifiers = new HashMap<>();
 
     private void initializePercentageModifiers(PointTypeWrapper pointType) {
         this.pointTypePercentageModifiers.put(pointType.getId(), pointType.getPercentageOfTotal());
@@ -80,8 +81,8 @@ public class AssignPointsActionController {
                 Map<Long, Double> assignments = assignPointsBean.get(pointTypeId);
 
                 double sum = 0.0;
-                for (Long targetUserId : assignments.keySet()) {
-                    double percentage = assignments.get(targetUserId) != null ? assignments.get(targetUserId) : 0.0;
+                for (Map.Entry<Long, Double> entry : assignments.entrySet()) {
+                    double percentage = entry.getValue() != null ? entry.getValue() : 0.0;
                     //round and take absolute value
                     percentage = Math.round(Math.abs(percentage)*100)/100.0d;
                     //calculate relative percentage
@@ -92,7 +93,7 @@ public class AssignPointsActionController {
                     PointsDistributionConfigurationLocalServiceUtil.addDistributionConfiguration(
                             proposal.getProposalId(),
                             pointTypeId,
-                            targetUserId,
+                            entry.getKey(),
                             null,
                             percentage,
                             currentUser.getUserId()
@@ -100,11 +101,11 @@ public class AssignPointsActionController {
                 }
                 //round to two decimals
                 sum = Math.round(sum*100)/100.0d;
-                if (sum != 1.0) {
+                if (Math.abs(sum - 1.0) < 0.00001) {
                     throw new IllegalArgumentException("Error while adding PointsDistributionConfiguration: The sum of distributed percentages do not sum up to 1: " + sum);
                 }
             }
-        } catch (Exception e) {
+        } catch (SystemException | NoSuchUserException | IllegalArgumentException e) {
             //in case a (validation) error occurs, we simply delete all created configurations.
             //since we do client-side validations, this state will not be reached by regular uses of the UI.
             PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());

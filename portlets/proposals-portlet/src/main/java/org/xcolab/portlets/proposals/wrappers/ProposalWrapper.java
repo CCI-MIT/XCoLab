@@ -37,7 +37,7 @@ import org.xcolab.wrappers.BaseProposalWrapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -299,7 +299,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
             ProposalWrapper subProposalWrapper = new ProposalWrapper(subProposal);
             Long modelId = subProposalWrapper.getModelIdForStoredScenario();
             if(!subProposalPerModel.containsKey(modelId)){
-                subProposalPerModel.put(modelId, Arrays.asList(subProposalWrapper));
+                subProposalPerModel.put(modelId, Collections.singletonList(subProposalWrapper));
             } else {
                 subProposalPerModel.get(modelId).add(subProposalWrapper);
             }
@@ -349,8 +349,8 @@ public class ProposalWrapper extends BaseProposalWrapper {
         Map<Long,List<ProposalWrapper>> subProposalPerModel = getSubProposalPerModel();
 
         if(!subProposalPerModel.isEmpty()){
-            for(Long modelId : subProposalPerModel.keySet()){
-                List<ProposalWrapper> proposalWrappers = subProposalPerModel.get(modelId);
+            for(Map.Entry<Long, List<ProposalWrapper>> entry : subProposalPerModel.entrySet()){
+                List<ProposalWrapper> proposalWrappers = entry.getValue();
                 for(ProposalWrapper proposalWrapper : proposalWrappers){
                     subProposalScenarioIds.add(proposalWrapper.getScenarioId());
                 }

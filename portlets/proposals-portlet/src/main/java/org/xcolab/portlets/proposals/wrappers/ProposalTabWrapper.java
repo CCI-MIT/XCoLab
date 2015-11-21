@@ -39,7 +39,7 @@ public class ProposalTabWrapper {
     
     public String getDisplayName() {
         if (displayName == null) {
-            return tab.getDisplayName();
+            displayName = tab.getDisplayName();
         }
         return displayName;
     }

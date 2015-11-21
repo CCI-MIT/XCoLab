@@ -57,14 +57,18 @@ public class ContestsSortFilterBean {
                 else if (! o1.isFeatured() && o2.isFeatured()) {
                     return 1;
                 }
-                int ret = sortColumn.getColumnComparator().compare(o1, o2);
-
-                return sortFilterPage.isSortAscending() ? ret : - ret;
+                if (sortFilterPage.isSortAscending()) {
+                    return sortColumn.getColumnComparator().compare(o1, o2);
+                }
+                return sortColumn.getColumnComparator().compare(o2, o1);
             }
         });
         for (ContestWrapper contest: this.contests) {
-            if (contest.isFeatured()) contestsFeatured.add(contest);
-            else contestsNormal.add(contest);
+            if (contest.isFeatured()) {
+                contestsFeatured.add(contest);
+            } else {
+                contestsNormal.add(contest);
+            }
         }
     }
 

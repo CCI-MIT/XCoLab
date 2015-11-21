@@ -85,8 +85,7 @@ public class MessageUtil {
 
     public static boolean checkLimitAndSendMessage(String subject, String content, User fromUser, Collection<Long> recipientIds) throws AddressException, PortalException, MailEngineException, SystemException {
         Long fromId = fromUser.getUserId();
-        Long mutex = MessageLimitManager.getMutex(fromId);
-        synchronized (mutex) {
+        synchronized (MessageLimitManager.getMutex(fromId)) {
             // Send a validation problem mail to patrick if the daily limit is reached for a user
             if (!MessageLimitManager.canSendMessages(recipientIds.size(), fromUser)) {
                 System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. "+fromId);

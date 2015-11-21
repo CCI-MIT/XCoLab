@@ -301,9 +301,8 @@ public class JudgeProposalActionController {
 
                 if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()) {
                     commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
-                } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()) {
-                    commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
-                } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.NOT_ADVANCE_OTHER.getAttributeValue()) {
+                } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()
+                        || fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.NOT_ADVANCE_OTHER.getAttributeValue()) {
                     commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
                 }
             }
@@ -318,7 +317,7 @@ public class JudgeProposalActionController {
             this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId(), false);
             response.sendRedirect("/web/guest/plans/-/plans/contestId/" + contestId + "/phaseId/" + contestPhaseId + "/planId/" + proposalId + "/tab/SCREENING");
         } catch (Exception e) {
-            List<Long> recipientIds = new ArrayList<Long>();
+            List<Long> recipientIds = new ArrayList<>();
             recipientIds.add(1451771L); //Manuel
             recipientIds.add(1011659L); //Patrick
             StringWriter sw = new StringWriter();
@@ -340,11 +339,11 @@ public class JudgeProposalActionController {
 
         Map<Long, String> ratingsFromForm = ratingBean.getRatingValues();
         //now update the values and save or create a new rating of not existent yet
-        boolean commentAdded = false;
         if (ratingsFromForm != null) {
-            for (Long typeId : ratingsFromForm.keySet()) {
-                ProposalRating existingRating = typeToRatingMap.get(typeId);
-                long newRatingValueId = Long.parseLong(ratingsFromForm.get(typeId));
+            boolean commentAdded = false;
+            for (Map.Entry<Long, String> entry : ratingsFromForm.entrySet()) {
+                ProposalRating existingRating = typeToRatingMap.get(entry.getKey());
+                long newRatingValueId = Long.parseLong(entry.getValue());
 
                 if (existingRating != null) {
                     //rating exists. update and save

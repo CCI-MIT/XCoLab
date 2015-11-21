@@ -4,6 +4,7 @@ import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.Message;
 import com.ext.portlet.model.MessageRecipientStatus;
 import com.ext.portlet.service.MessageLocalServiceUtil;
+import org.joda.time.DateTime;
 import org.xcolab.enums.ColabConstants;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -36,14 +37,14 @@ public class MessageLimitManager {
 
     private static final String MESSAGE_ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
-    private static Map<Long, Long> mutexes = new HashMap<>();
+    private static final Map<Long, Object> mutexes = new HashMap<>();
 
 	private static final int MESSAGES_DAILY_LIMIT = 15;
 
 	/**
 	 * Keeps track of the last validation error mail that has been send to a specific user
 	 */
-	private static Map<User, Date> lastValidationDateMap = new HashMap<>();
+	private static final Map<User, Date> lastValidationDateMap = new HashMap<>();
 
     /**
      * Method responsible for checking if user is allowed to send given number
@@ -51,7 +52,6 @@ public class MessageLimitManager {
      * 
      * @param messagesToSend
      *            number of messages that user wants to send
-     * @return
      * @throws com.liferay.portal.kernel.exception.PortalException
      *             in case of LR error
      * @throws com.liferay.portal.kernel.exception.SystemException
@@ -59,17 +59,14 @@ public class MessageLimitManager {
      */
     public static boolean canSendMessages(int messagesToSend, User user) throws PortalException, SystemException {
         // synchronize on senderId
-        Long mutex = getMutex(user.getUserId());
-
-        synchronized (mutex) {
+        synchronized (getMutex(user.getUserId())) {
 
             // ensure that expando column has been created
             ExpandoColumn column = null;
             try {
                 column = ExpandoColumnLocalServiceUtil.getColumn(ColabConstants.COLAB_COMPANY_ID, User.class.getName(),
                         CommunityConstants.EXPANDO, MESSAGES_LIMIT_COLUMN);
-            } catch (SystemException e) {
-            }
+            } catch (SystemException ignored) { }
             if (column == null) {
 
                 ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(ColabConstants.COLAB_COMPANY_ID, User.class.getName(),
@@ -106,21 +103,15 @@ public class MessageLimitManager {
 
             long count = MessageLocalServiceUtil.dynamicQueryCount(messageRecipientsQuery);
 
-            if (messagesLimit < count + messagesToSend) {
-
-                // limit exceeded, throw exception
-                return false;
-            }
-
-            return true;
+            return messagesLimit >= count + messagesToSend;
         }
     }
 
-    public static synchronized Long getMutex(Long senderId) {
-        Long mutex = mutexes.get(senderId);
+    public static synchronized Object getMutex(long senderId) {
+        Object mutex = mutexes.get(senderId);
         if (mutex == null) {
-            mutex = senderId;
-            mutexes.put(mutex, mutex);
+            mutex = new Object();
+            mutexes.put(senderId, mutex);
         }
         return mutex;
     }
@@ -129,22 +120,14 @@ public class MessageLimitManager {
 		if (user == null) {
 			return false;
 		}
-		Date lastEmailSendDate = lastValidationDateMap.get(user);
+        final Date lastEmailSendDate = lastValidationDateMap.get(user);
 
-		Date now = new Date();
-		if (lastEmailSendDate != null) {
-			// Send mail if the last email send was over 24h ago
-			if ((now.getTime() - lastEmailSendDate.getTime()) > 24 * 3600 * 1000) {
-				lastValidationDateMap.put(user, now);
-				return true;
-			}
-			else {
-				return false;
-			}
-		} else {
-			lastValidationDateMap.put(user, now);
-			return true;
-		}
+        // Send mail if the last email send was over 24h ago
+        if (lastEmailSendDate == null || new DateTime(lastEmailSendDate).plusHours(24).isBeforeNow()) {
+            lastValidationDateMap.put(user, new Date());
+            return true;
+        } else {
+            return false;
+        }
 	}
-
 }

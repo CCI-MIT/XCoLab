@@ -73,8 +73,8 @@ public class ProposalRequestMembershipActionController {
     // Membership invite from group user
     private static final String PROPOSAL_URL = "/web/guest/plans/-/plans/contestId/%d/planId/%d";
     private static final String MSG_MEMBERSHIP_INVITE_SUBJECT = "%s invites you to join the proposal %s";
-    private static final String MSG_MEMBERSHIP_INVITE_CONTENT = "User %s invites you to contribute to the proposal %s with the following message: \n\n%s\n\n" +
-            "Click <a href='%s' target='_blank'>here</a> to <strong>accept</strong> the invitation.\n" +
+    private static final String MSG_MEMBERSHIP_INVITE_CONTENT = "User %s invites you to contribute to the proposal %s with the following message: %n%n%s%n%n" +
+            "Click <a href='%s' target='_blank'>here</a> to <strong>accept</strong> the invitation.%n" +
             "Click <a href='%s' target='_blank'>here</a> to <strong>decline</strong> the invitation. ";
 
 	private static final String MEMBERSHIP_INVITE_STRUTS_ACTION_URL = "/c/portal/proposal_invite_response";
