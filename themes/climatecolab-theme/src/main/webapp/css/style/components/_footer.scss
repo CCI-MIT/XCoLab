@@ -1,8 +1,13 @@
 /*  FOOTER  --------------------------------------------------------------------------- */
 
+#footer {
+  height: 190px;
+  background: url(../images/bg-noise.png) $lightest-grey;
+}
+
 #footmenu {
   height: 49px;
-  background: url(../images/bg-footer.jpg) repeat-x;
+  @include background(url(../images/bg-noise.png), linear-gradient(top, lighten($dark-grey, 10%), $dark-grey));
 }
 
 #footmenu li {
