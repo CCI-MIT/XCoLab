@@ -695,3 +695,65 @@
 .prop-tabs ul {
   margin-bottom: 0;
 }
+
+//ribbon
+.thread-creator-overlay {
+  background: url(/climatecolab-theme/images/Thread-creator-overlay.png) no-repeat;
+  float: left;
+  line-height: 0;
+  font-size: 0;
+  color: transparent;
+  position: absolute;
+  top: -7px;
+  right: -7px;
+}
+
+
+/* container */
+.thread-ribbon-container {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  overflow: hidden;
+  height: 120px;
+  padding-top: 15px;
+  line-height: normal;
+  font-size: 10px;
+
+  > div {
+    background: $primary-color;
+    padding: 3px;
+    width: 185px;
+    color: white;
+    position: relative;
+    right: -70px;
+    text-align: center;
+    transform: rotate(45deg);
+  }
+
+  //top corner
+  &:before {
+    content: '';
+    position: absolute;
+    left: 109px;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid $primary-dark;
+  }
+
+  //bottom corner
+  &:after {
+    content: ' ';
+    position: absolute;
+    right: 0;
+    bottom: 53px;
+    width: 0;
+    height: 0;
+    border-bottom: 5px solid transparent;
+    border-top: 5px solid transparent;
+    border-left: 5px solid $primary-dark;
+  }
+}

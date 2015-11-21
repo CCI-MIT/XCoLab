@@ -96,10 +96,10 @@
                                     <td class="the-comment ${message.expertReview ? 'expertReview' : ''} ${discussionPermissions.canAdminSpamReports and message.spamReportCount > 0 ? 'spam' : ''}">
                                         <c:choose>
                                             <c:when test="${authorId == message.author.userId}">
-                                                <div class="thread-creator-overlay"><img src="/climatecolab-theme/images/Thread-creator-overlay.png"></img></div>
+                                                <div class="thread-ribbon-container"><div>${contestType.proposalName} <br /> creator</div></div>
                                             </c:when>
                                             <c:when test="${isContributing}">
-                                                <div class="thread-creator-overlay"><img src="/climatecolab-theme/images/Thread-contributor-overlay.png"></img></div>
+												<div class="thread-ribbon-container"><div>${contestType.proposalName} <br /> contributor</div></div>
                                             </c:when>
                                         </c:choose>
                                         <div id="message_${message.messageId}" class="content">
