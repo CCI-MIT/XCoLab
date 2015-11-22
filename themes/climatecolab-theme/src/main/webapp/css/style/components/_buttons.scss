@@ -1,66 +1,58 @@
 /* BUTTONS ----------------------------------------------------------------------------- */
-.blue-button {
-  background: url(../images/button-blue-left.png) no-repeat left top;
-  padding-left: 10px;
-  height: 41px;
-  width: auto;
-  display: inline-block;
-  line-height: normal;
-}
 
-.blue-button a {
-  background: url(../images/button-blue-right.png) no-repeat right top;
-  padding: 10px 21px 0 8px;
-  height: 31px;
+%base-button {
+  padding: 8px;
+  margin-left: 5px;
+  display: inline-block;
   font-size: 16px;
   font-weight: 700;
-  color: white;
-  text-shadow: 1px 1px 0 $primary-darkest;
-  display: inline-block;
-  box-sizing: initial;
-}
-
-.blue-button:hover {
-  background: url(../images/button-blue-left-hover.png) no-repeat left top;
-}
-
-.blue-button:hover a, .blue-button a:hover {
-  background: url(../images/button-blue-right-hover.png) no-repeat right top;
-  color: inherit;
-}
-
-.blue-button.disabled {
-  opacity: 0.4;
-}
-
-.blue-button.disabled a {
-  pointer-events: none;
-}
-
-.gray-button {
-  background: url(../images/button-gray-left.png) no-repeat left top;
-  padding-left: 10px;
-  height: 41px;
-  width: auto;
-  display: inline-block;
   line-height: normal;
+  @include border-radius(5px);
+  @include transition(all 1s ease-in-out);
+
+  .disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
 }
 
-.gray-button a {
-  background: url(../images/button-gray-right.png) no-repeat right top;
-  padding: 10px 21px 0 8px;
-  height: 31px;
-  font-size: 16px;
-  font-weight: 700;
-  color: white;
-  text-shadow: 1px 1px 0 $primary-darkest;
-  display: inline-block;
-  box-sizing: initial;
+@mixin theme-button($button-color, $border-color: null, $image-url: null) {
+  @if $border-color == null {
+    $border-color: darken($button-color, 15%);
+  }
+  @extend %base-button;
+  background-color: $button-color;
+  @if $image-url == null {
+    @include background(simple-gradient($button-color));
+  } @else {
+    @include background($image-url no-repeat, simple-gradient($button-color));
+    @include background-size(contain);
+    padding-left: 40px;
+  }
+
+  color: contrasting-color($button-color, white, $darkest-grey);
+  text-shadow: 1px 1px 0 darken($button-color, 25%);
+  border: 1px solid $border-color;
+
+  &:hover {
+    background-color: darken($button-color, 10%);
+    @if $image-url == null {
+      @include background(simple-gradient(darken($button-color, 10%)));
+    } @else {
+      @include background($image-url no-repeat, simple-gradient(darken($button-color, 10%)));
+      @include background-size(contain);
+    }
+    color: contrasting-color(darken($button-color, 10%), white, $darkest-grey);
+  }
+
 }
 
-.gray-button:hover a, .gray-button a:hover {
-  color: inherit;
+//blue-button.a is for legacy support (e.g. ice faclet portlets)
+a.primary-button, .blue-button a {
+  @include theme-button($primary-color, $primary-dark);
 }
 
-/* .gray-button a:hover {color:black; text-shadow:1px 1px 0 #ccc;} */
-/* ------------------------------------------------------------------------------------------------------- */
+//gray-button.a is for legacy support (e.g. ice faclet portlets)
+a.grey-button, .gray-button a {
+  @include theme-button($medium-grey, $dark-grey);
+}

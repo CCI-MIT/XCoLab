@@ -141,7 +141,7 @@
 				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
 					<div id="copyProposalContests"><!--  --></div>
 					<center>
-						<div class="blue-button"><a href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a></div>
+						<a class="primary-button" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
 					</center>
 				</div>
 			</div>

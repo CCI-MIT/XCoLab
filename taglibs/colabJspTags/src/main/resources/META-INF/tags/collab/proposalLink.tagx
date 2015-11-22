@@ -9,15 +9,16 @@
 	<jsp:directive.attribute name="escape" type="java.lang.Boolean" required="false" rtexprvalue="true" description="escape text" />
 	<jsp:directive.attribute name="tab" type="java.lang.String" required="false" rtexprvalue="true" description="Tab to navigate to" />
 	<jsp:directive.attribute name="linkId" type="java.lang.String" required="false" rtexprvalue="true" description="HTML element id" />
+	<jsp:directive.attribute name="cssClass" type="java.lang.String" required="false" rtexprvalue="true" description="Css class" />
 	<c:choose>
 		<c:when test="${edit }">
-			<a href="${proposal.proposalURL}${not empty tab ? '/tab/' : '' }${tab }/edit" id="${linkId}"><c:out value="${empty text ? proposal.name : text}" escapeXml="${escape ? true : false }" /></a>
+			<a class="${cssClass}" href="${proposal.proposalURL}${not empty tab ? '/tab/' : '' }${tab }/edit" id="${linkId}"><c:out value="${empty text ? proposal.name : text}" escapeXml="${escape ? true : false }" /></a>
 		</c:when>
 		<c:when test="${empty phase  or phase.contestPhasePK le 0}">
-			<a href="${proposal.proposalURL}${not empty tab ? '/tab/' : '' }${tab }${empty hashString ? '' : '#'}${hashString}" id="${linkId}"><c:out value="${empty text ? proposal.name : text}" escapeXml="${escape ? true : false }" /></a>
+			<a class="${cssClass}" href="${proposal.proposalURL}${not empty tab ? '/tab/' : '' }${tab }${empty hashString ? '' : '#'}${hashString}" id="${linkId}"><c:out value="${empty text ? proposal.name : text}" escapeXml="${escape ? true : false }" /></a>
 		</c:when>
 		<c:otherwise>
-			<a href="${proposal.getProposalURL(phase.wrapped)}${not empty tab ? '/tab/' : '' }${tab }${empty hashString ? '' : '#'}${hashString}" id="${linkId}"><c:out value="${empty text ? proposal.name : text}" escapeXml="${escape ? true : false }" /></a>
+			<a class="${cssClass}" href="${proposal.getProposalURL(phase.wrapped)}${not empty tab ? '/tab/' : '' }${tab }${empty hashString ? '' : '#'}${hashString}" id="${linkId}"><c:out value="${empty text ? proposal.name : text}" escapeXml="${escape ? true : false }" /></a>
 		</c:otherwise>
 	</c:choose>
 </jsp:root>

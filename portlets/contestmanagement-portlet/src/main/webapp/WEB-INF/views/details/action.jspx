@@ -6,13 +6,11 @@
 	<portlet:resourceURL var="submitContest" id="submitContest"/>
 
 	<div class="actionItems">
-		<div class="blue-button"><a href="#" id="saveChangesButton">SAVE ${currentTabWrapped.elementType}</a></div>
-		<div class="blue-button">
-			<collab:contestLink contest="${contestWrapper}" text="PREVIEW contest"
+		<a class="primary-button" href="#" id="saveChangesButton">SAVE ${currentTabWrapped.elementType}</a>
+		<collab:contestLink contest="${contestWrapper}" text="PREVIEW contest" cssClass="primary-button"
 								linkId="previewContestButton" target="_blank"/>
-		</div>
-		<div class="blue-button"><a href="#" id="submitContestButton">SUBMIT contest</a></div>
-		<div class="gray-button"><a href="${currentTabWrapped.tabUrl}" id="saveChangesButton">DISCARD changes</a></div>
+		<a class="primary-button" href="#" id="submitContestButton">SUBMIT contest</a>
+		<a class="grey-button" href="${currentTabWrapped.tabUrl}" id="saveChangesButton">DISCARD changes</a>
 	</div>
 
 	<script type="text/javascript">

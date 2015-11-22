@@ -43,9 +43,7 @@
                 <input name="redirect" type="hidden" id="redirect" value="" />
                 <div class="clearfix"><!-- --></div>
                 <div class="btns">
-                    <div class="blue-button">
-                        <a href="javascript:;" class="login-submit" onclick="submitForm()" id="deferLoginPopupSubmit">Finish</a>
-                    </div>
+                    <a class="primary-button" href="javascript:;" class="login-submit" onclick="submitForm()" id="deferLoginPopupSubmit">Finish</a>
                 </div>
             </form>
         </div>

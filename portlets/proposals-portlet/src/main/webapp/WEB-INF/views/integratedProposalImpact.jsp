@@ -140,23 +140,21 @@
                                         <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
                                     </p>
 
-                                    <div class="blue-button"><a href="#" id="saveChangesButton">SAVE and PUBLISH
-                                        changes</a></div>
-                                    <div class="gray-button">
-                                        <c:choose>
-                                            <c:when test="${proposal.currentVersion > 0 }">
-                                                <collab:proposalLink proposal="${proposal}"
-                                                                     linkId="discardChangesButton"
-                                                                     text="DISCARD changes"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <!--  proposal creation, return to contest proposals page on discard -->
-                                                <proposalsPortlet:contestLink contest="${contest }"
-                                                                              linkId="discardChangesButton"
-                                                                              text="DISCARD changes"/>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
+                                    <a class="primary-button" href="#" id="saveChangesButton">SAVE and PUBLISH
+                                        changes</a>
+                                    <c:choose>
+                                        <c:when test="${proposal.currentVersion > 0 }">
+                                            <collab:proposalLink proposal="${proposal}" cssClass="grey-button"
+                                                                 linkId="discardChangesButton"
+                                                                 text="DISCARD changes"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <!--  proposal creation, return to contest proposals page on discard -->
+                                            <proposalsPortlet:contestLink contest="${contest }" cssClass="grey-button"
+                                                                          linkId="discardChangesButton"
+                                                                          text="DISCARD changes"/>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                                 <div class="admin-right">
                                     <p>&#160;</p>

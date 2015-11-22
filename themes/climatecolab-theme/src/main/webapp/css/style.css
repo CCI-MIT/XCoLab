@@ -8,7 +8,14 @@ CREATION DATE: 05/04/2012
 LAST MODIFIED:  11/12/2015
 ***************************************************************************************/
 @import "compass";
+
+//import variables and functions
 @import "style/global/color_scheme";
+@import "style/global/brightness";
+@import "style/global/helper";
+
+//import custom mixins
+@import 'style/components/buttons';
 
 @import 'style/global/reset';
 
@@ -93,11 +100,7 @@ LAST MODIFIED:  11/12/2015
 
 @import 'style/pages/proposals';
 
-/* --[/END pages/proposals]--[components/buttons]------------------ */
-
-@import 'style/components/buttons';
-
-/* --[/END components/buttons]--[components/tooltips]-------------- */
+/* --[/END pages/proposals]--[components/tooltips]-------------- */
 
 @import 'style/components/tooltips';
 

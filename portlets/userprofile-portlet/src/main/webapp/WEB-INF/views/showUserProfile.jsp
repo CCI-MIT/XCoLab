@@ -160,11 +160,9 @@
 			<div class="clearfix">&#160;</div>
 		</div>
 		<c:if test="${currentUserProfile.canSendMessage and not currentUserProfile.viewingOwnProfile }">
-			<div class="blue-button">
-				<a href="javascript:;"
-				   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
-					<strong>${userBean.firstName}</strong> a Message </a>
-			</div>
+			<a class="primary-button" href="javascript:;"
+			   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
+				<strong>${userBean.firstName}</strong> a Message </a>
 		</c:if>
 
 		<c:if test="${not empty spamReportsWrapper}">
@@ -237,9 +235,7 @@
 			</table>
 
 			<c:if test="${not empty currentUserProfile.activities}">
-				<div class="blue-button">
-					<a href="/web/guest/activities/-/feeds?userId=${currentUserProfile.userId}">SEE ALL</a>
-				</div>
+				<a class="primary-button" href="/web/guest/activities/-/feeds?userId=${currentUserProfile.userId}">SEE ALL</a>
 			</c:if>
 		</c:if>
 
@@ -392,14 +388,9 @@
 					</div>
 
 					<div class="btns">
-						<div class="blue-button">
-							<a href="javascript:;" onclick="submitSendMessageForm()">Send message</a>
-						</div>
-
-						<div class="gray-button">
-							<a href="javascript:;"
-							   onclick="clearSendMessageForm(); hideSendMessagForm(); return false;">Cancel</a>
-						</div>
+						<a class="primary-button" href="javascript:;" onclick="submitSendMessageForm()">Send message</a>
+						<a class="grey-button" href="javascript:;"
+						   onclick="clearSendMessageForm(); hideSendMessagForm(); return false;">Cancel</a>
 					</div>
 				</form:form>
 

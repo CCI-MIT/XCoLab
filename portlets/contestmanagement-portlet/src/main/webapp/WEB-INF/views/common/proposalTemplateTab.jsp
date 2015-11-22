@@ -203,10 +203,8 @@
 						</div>
 					</c:forEach>
 
-						<div class="addSection" id="addSection" name="addSection">
-							<div class="blue-button">
-								<a id="addSectionButton" href="#addSection">ADD section</a>
-						</div>
+					<div class="addSection" id="addSection" name="addSection">
+						<a class="primary-button" id="addSectionButton" href="#addSection">ADD section</a>
 					</div>
 				</form:form>
 			</div>
@@ -237,9 +235,7 @@
 							<td ><collab:contestLink contest="${contestWrapper}" /></td>
 							<td>Tier ${contestWrapper.contestTier}</td>
 							<td>
-								<div class="blue-button innerVerticalCenter" >
-									<a href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
-								</div>
+								<a class="primary-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
 							</td>
 						</tr>
 					</c:forEach>

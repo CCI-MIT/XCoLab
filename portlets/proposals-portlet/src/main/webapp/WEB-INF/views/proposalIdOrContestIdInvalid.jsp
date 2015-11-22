@@ -18,12 +18,8 @@
             <input style="width: 100%; line-height: 20px; padding: 3px;" name="userEmailAddress" type="text" id="email-field" placeholder="Email address"/>
             <p style="margin-top:15px">Thanks!</p>
             <div class="btns" style="text-align: center;">
-                <div id="submit-button" class="blue-button disabled" style="display: inline-block;">
-                    <a href="javascript:;" class="login-submit" onclick="jQuery(this).parents('form').submit();">Submit</a>
-                </div>
-                <div class="gray-button" style="display: inline-block;">
-                    <a href="/web/guest/plans" class="">Go back to contests</a>
-                </div>
+                <a id="submit-button" class="primary-button disabled login-submit" href="javascript:;" onclick="jQuery(this).parents('form').submit();">Submit</a>
+                <a class="grey-button" href="/web/guest/plans">Go back to contests</a>
             </div>
         </form>
     </div>

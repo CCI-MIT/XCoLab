@@ -27,7 +27,7 @@
     <div id="searchFormContainerInline">
         <form onsubmit="Collab.nav.navigateAddParams('search', {searchPhrase: jQuery('.searchInputInPortlet').val()}); return false;">
             <input value="#{searchBean.searchPhrase}" class="searchInputInPortlet"/>
-            <div class="blue-button"><a href="javascript:;"   onclick="Collab.nav.navigateAddParams('search', {searchPhrase: jQuery('.searchInputInPortlet').val()}); return false;">Search</a></div>
+            <a class="primary-button" href="javascript:;"   onclick="Collab.nav.navigateAddParams('search', {searchPhrase: jQuery('.searchInputInPortlet').val()}); return false;">Search</a>
         </form>
     </div>
     <div id="main" class="searchresults">

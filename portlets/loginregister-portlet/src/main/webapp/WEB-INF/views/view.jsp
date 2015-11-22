@@ -203,10 +203,8 @@
 				<tr>
 					<th></th>
 					<td colspan="3">
-						<div class="blue-button">
-							<a href="javascript:;" onclick="try {pageTracker._trackPageview('/user/registerSubmit')} catch(err) {};updateTextarea();jQuery('#registrationForm').submit();">CREATE
+						<a class="primary-button" href="javascript:;" onclick="try {pageTracker._trackPageview('/user/registerSubmit')} catch(err) {};updateTextarea();jQuery('#registrationForm').submit();">CREATE
 								account</a>
-						</div>
 					</td>
 				</tr>
 			</table>

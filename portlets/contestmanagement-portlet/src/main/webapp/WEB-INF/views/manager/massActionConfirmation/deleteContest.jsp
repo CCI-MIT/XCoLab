@@ -33,12 +33,8 @@
                    id="editForm" method="post">
             <div class="cmsDetailsBox">
                 <div class="outerVerticalCenter">
-                    <div class="blue-button innerVerticalCenter">
-                        <a href="#" id="submitButton">DELETE contest(s) and phases</a>
-                    </div>
-                    <div class="gray-button innerVerticalCenter">
-                        <a href="/web/guest/cms/-/contestmanagement/manager">DISCARD &amp; go back to overview</a>
-                    </div>
+                    <a class="primary-button innerVerticalCenter" href="#" id="submitButton">DELETE contest(s) and phases</a>
+                    <a class="grey-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/manager">DISCARD &amp; go back to overview</a>
                 </div>
             </div>
             <div class="cmsDetailsBox">
@@ -100,11 +96,7 @@
                 var contestsTableBody = document.getElementById('contestOverviewBody');
                 [].forEach.call(contestsTableBody.getElementsByClassName("checkbox"), function (element) {
                     var parentRow = getClosest(element, "tr");
-                    if (selectAllChecked) {
-                        element.checked = true;
-                    } else {
-                        element.checked = false;
-                    }
+                    element.checked = !!selectAllChecked;
                 });
             });
         }

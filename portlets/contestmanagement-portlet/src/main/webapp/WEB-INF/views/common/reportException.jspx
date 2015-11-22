@@ -36,13 +36,9 @@
             <p style="margin-top:15px">Thanks!</p>
 
             <div class="btns" style="text-align: center;">
-                <div id="submit-button" class="blue-button disabled" style="display: inline-block;">
-                    <a href="javascript:;" class="login-submit"
+                <a id="submit-button" class="primary-button disabled login-submit" href="javascript:;"
                        onclick="jQuery(this).parents('form').submit();">Submit</a>
-                </div>
-                <div class="gray-button" style="display: inline-block;">
-                    <a href="/web/guest/cms/-/contestmanagement/manager" class="">Go back to contest manager</a>
-                </div>
+                <a class="grey-button" href="/web/guest/cms/-/contestmanagement/manager">Go back to contest manager</a>
             </div>
         </form>
     </div>

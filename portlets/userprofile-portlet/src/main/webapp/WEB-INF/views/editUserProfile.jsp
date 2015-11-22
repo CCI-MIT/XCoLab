@@ -210,10 +210,8 @@
 					<div class="clearfix">&#160;</div>
 				</div>
 
-				<div class="blue-button">
-					<a href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Save</a>
-				</div>
-				<div class="blue-button"><a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">Cancel</a></div>
+				<a class="primary-button" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Save</a>
+				<a class="grey-button" href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">Cancel</a>
 			</div>
 		</div> <!-- /main -->
 

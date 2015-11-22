@@ -83,9 +83,7 @@
 							placeholder="Filter" maxcharacters="80" validatelength="true"
 							class="rteInitialized"
 							style="height: 22px; width: 175px; padding: 0 5px;" />
-						<div class="blue-button">
-							<a href="javascript:;">Search</a>
-						</div>
+						<a class="primary-button" href="javascript:;">Search</a>
 					</div>
 					
 					<div id="proposalPicker_viewArea">
@@ -244,8 +242,8 @@
 				</div>
 				<div id="warning"></div>
 				<div class="pickerButtons">
-                	<div class="blue-button btn"><a href="#" id="savePickedProposals">Choose <span class="contestTypeProposalNames">&#160;</span></a></div>
-                	<div class="gray-button btn"><a href="#" id="cancelPickedProposals">Cancel</a></div>
+                	<a class="primary-button" href="#" id="savePickedProposals">Choose <span class="contestTypeProposalNames">&#160;</span></a>
+                	<a class="grey-button" href="#" id="cancelPickedProposals">Cancel</a>
 					<div class="clearfix clear"><!--  --></div>
                 </div>
 			</div>

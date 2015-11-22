@@ -71,9 +71,7 @@
 				<tr>
 					<th></th>
 					<td colspan="3">
-						<div class="blue-button">
-							<a href="javascript:;" onclick="$('#contactFormForm').submit()">Send message</a>
-						</div>
+						<a class="primary-button" href="javascript:;" onclick="$('#contactFormForm').submit()">Send message</a>
 					</td>
 				</tr>
 			</table>

@@ -1,0 +1,3 @@
+@function simple-gradient($base-color) {
+  @return linear-gradient(top, lighten($base-color, 5%), darken($base-color, 5%));
+}

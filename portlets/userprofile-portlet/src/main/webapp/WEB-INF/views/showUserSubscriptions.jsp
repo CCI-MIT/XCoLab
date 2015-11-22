@@ -25,12 +25,8 @@
         <h1>Subscribed activities</h1>
         <c:if test="${currentUserProfile.viewingOwnProfile}">
           <div class="profile_action">
-            <div class="blue-button">
-              <a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/subscriptionsManage">MANAGE</a>
-            </div>
-              <div class="blue-button">
-                  <a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">BACK TO PROFILE</a>
-              </div>
+            <a class="primary-button" href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/subscriptionsManage">MANAGE</a>
+            <a class="grey-button" href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">BACK TO PROFILE</a>
           </div>
         </c:if>
         <table id="activitiesTable" class="fullscreen colab">

@@ -53,18 +53,10 @@
     <div class="cmsDetailsBox">
         <div style="margin-bottom: 40px;">
             <div class="floatRight outerVerticalCenter">
-                <div class="blue-button innerVerticalCenter">
-                    <a href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
-                </div>
-                <div class="blue-button innerVerticalCenter">
-                    <a href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
-                </div>
-                <div class="blue-button innerVerticalCenter">
-                    <a href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
-                </div>
-                <div class="blue-button innerVerticalCenter">
-                    <a href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
-                </div>
+                <a class="primary-button innerVerticalCenter" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
+                <a class="primary-button innerVerticalCenter" href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
+                <a class="primary-button innerVerticalCenter" href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
+                <a class="primary-button innerVerticalCenter" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
             </div>
         </div>
     </div>
@@ -112,9 +104,7 @@
                 <strong class="inputTitleLeft">Contest phases for this schedule:</strong>
 
                 <div class="outerVerticalCenter floatRight">
-                    <div class="blue-button innerVerticalCenter">
-                        <a href="#" onclick="addContestPhase(event)">Add contest phase</a>
-                    </div>
+                    <a class="primary-button innerVerticalCenter" href="#" onclick="addContestPhase(event)">Add contest phase</a>
                 </div>
                 <table class="contestOverview">
                     <col span="1" class="extraSmallColumn"/>
@@ -275,10 +265,8 @@
                             </c:otherwise>
                         </c:choose>
                         <td>
-                            <div class="blue-button innerVerticalCenter">
-                                <a href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}"
+                            <a class="primary-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}"
                                    target="_blank">EDIT</a>
-                            </div>
                         </td>
                     </tr>
                 </c:forEach>

@@ -223,8 +223,8 @@
                     ${preferences.termsOfService}
             </div>
             <div class="btns">
-                <div class="blue-button"><a href="javascript:;" id="tosAccepted" class="cp1-1">ACCEPT</a></div>
-                <div class="gray-button"><a href="javascript:;" class="cp1-2" id="closeAcceptTos">DO NOT Accept</a></div>
+                <a class="primary-button cp1-1" href="javascript:;" id="tosAccepted">ACCEPT</a>
+                <a class="grey-button cp1-2" href="javascript:;" id="closeAcceptTos">DO NOT Accept</a>
             </div>
         </div>
     </div>
@@ -236,7 +236,7 @@
             <h4>The following sections have too many characters:</h4>
             <ul id="invalidFieldsList"><!--  --></ul>
             <div class="btns">
-                <div class="blue-button"><a href="javascript:;" onclick="jQuery('#invalidFieldsPopupContainer').fadeOut('fast')" class="cp1-1">CLOSE</a></div>
+                <a class="primary-button cp1-1" href="javascript:;" onclick="jQuery('#invalidFieldsPopupContainer').fadeOut('fast')">CLOSE</a>
             </div>
         </div>
     </div>
@@ -258,20 +258,18 @@
                     <br />
                     <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
                 </p>
-                <div class="blue-button"><a href="#" id="saveChangesButton">SAVE and PUBLISH changes</a></div>
-                <div class="gray-button">
-                    <c:choose>
-                        <c:when test="${proposal.currentVersion > 0 }">
-                            <collab:proposalLink proposal="${proposal}"
-                                                 linkId="discardChangesButton" text="DISCARD changes" />
-                        </c:when>
-                        <c:otherwise>
-                            <!--  proposal creation, return to contest proposals page on discard -->
-                            <collab:contestLink contest="${contest}" linkId="discardChangesButton"
-                                                          text="DISCARD changes" />
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+                <a class="primary-button" href="#" id="saveChangesButton">SAVE and PUBLISH changes</a>
+                <c:choose>
+                    <c:when test="${proposal.currentVersion > 0 }">
+                        <collab:proposalLink proposal="${proposal}" cssClass="grey-button"
+                                             linkId="discardChangesButton" text="DISCARD changes" />
+                    </c:when>
+                    <c:otherwise>
+                        <!--  proposal creation, return to contest proposals page on discard -->
+                        <collab:contestLink contest="${contest}" cssClass="grey-button"
+                                            linkId="discardChangesButton" text="DISCARD changes" />
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="admin-right">
                 <p>&#160;</p>
@@ -360,16 +358,16 @@
         });
 
         function enableButtons() {
-            jQuery("#saveChangesButton,#discardChangesButton").parent().removeClass("button-disabled");
+            jQuery("#saveChangesButton,#discardChangesButton").removeClass("disabled");
         }
         
         function disableButtons(withTimeout) {
             var buttons = jQuery("#saveChangesButton,#discardChangesButton");
-            buttons.parent().addClass("button-disabled");
+            buttons.addClass("disabled");
 
             if (withTimeout) {
                 setTimeout(function () {
-                    buttons.parent().removeClass("button-disabled");
+                    buttons.removeClass("disabled");
                 }, 5000);
             }
         }
@@ -387,7 +385,7 @@
             <div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
                 <div id="copyProposalContests"><!--  --></div>
                 <center>
-                    <div class="blue-button"><a href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a></div>
+                    <a class="primary-button" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
                 </center>
             </div>
         </div>

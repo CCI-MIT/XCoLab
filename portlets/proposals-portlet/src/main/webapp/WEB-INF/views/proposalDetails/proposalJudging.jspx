@@ -53,9 +53,7 @@
         <form:textarea path="comment" cssClass="commentbox" style="width:100%;" placeholder="Write your review here..." />
 
         <div class="clearfix" style="width: 100%;">
-            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
-            </div>
+            <a class="primary-button" style="display:block; float:right; margin-top: 10px;" href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
         </div>
 
     </form:form>

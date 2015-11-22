@@ -43,41 +43,16 @@
   margin: 20px 0 10px 0;
 }
 
-a.learn, a.get {
-  padding: 8px;
-  margin-right: 15px;
-  display: inline-block;
-  font-size: 16px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: white;
-  @include border-radius(5px);
-}
-
 a.learn {
-  @include background(url(../images/homespot/light-bulb-white.png) no-repeat, linear-gradient(top, lighten($primary-color, 5%), darken($primary-color, 5%)));
-  @include background-size(contain);
-  padding-left: 40px;
-  text-shadow: 1px 1px 0 $primary-darkest;
-  border: 1px solid $primary-darkest;
-  &:hover {
-    @include background(url(../images/homespot/light-bulb-white.png) no-repeat,
-    linear-gradient(top, darken($primary-color, 5%), darken($primary-color, 15%)));
-    @include background-size(contain);
-  }
+  @include theme-button($primary-color, $primary-darkest, url(../images/homespot/light-bulb-white.png));
+  text-transform: uppercase;
+  margin-right: 15px;
 }
 
 a.get {
-  @include background(url(../images/homespot/people-white.png) no-repeat, linear-gradient(top, lighten($secondary-color, 5%), darken($secondary-color, 5%)));
-  @include background-size(contain);
-  padding-left: 40px;
-  text-shadow: 1px 1px 0 $secondary-darkest;
-  border: 1px solid $secondary-darkest;
-  &:hover {
-    @include background(url(../images/homespot/people-white.png) no-repeat,
-    linear-gradient(top, darken($secondary-color, 5%), darken($secondary-color, 15%)));
-    @include background-size(contain);
-  }
+  @include theme-button($secondary-color, $secondary-darkest, url(../images/homespot/people-white.png));
+  text-transform: uppercase;
+  margin-right: 15px;
 }
 
 .newsbox {

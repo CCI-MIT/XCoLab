@@ -31,7 +31,7 @@
         		<div class="comm-butt">
 					<c:if test="${discussionPermissions.canSeeAddCommentButton}">
 	        			<img src="/climatecolab-theme/images/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="add a comment" />
-	        			<div class="blue-button" id="addcomment_button2"><a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery("#thecomment")[0].scrollIntoView(); return false;'>Jump to comment form</a></div>
+	        			<a class="primary-button" href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery("#thecomment")[0].scrollIntoView(); return false;'>Jump to comment form</a>
 	        		</c:if>
             		<div class="comm-share">
                     	<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
@@ -197,20 +197,18 @@
 							<div class="clearfix"><!-- --></div>
 							<br />
 	           				<span class="errorMsg portlet-msg-error" style="display: none;">Value is required</span>
-    	       				<div class="blue-button">
     	       					<c:choose>
     	       						<c:when test="${discussionPermissions.canAddComment }">
-        	   							<a href="javascript:;" id="addCommentButton">
+										<a class="primary-button" href="javascript:;" id="addCommentButton">
            									Add Comment
 	           							</a>
 	           						</c:when>
 	           						<c:otherwise>
-        	   							<a href="javascript:;" data-is-deferred="true" id="addCommentButton">
+										<a class="primary-button" href="javascript:;" data-is-deferred="true" id="addCommentButton">
            									Add Comment
 	           							</a>
 	           						</c:otherwise>
 	           					</c:choose>
-	    	       			</div>
     	        		</form>
         			</div>
         		</div>

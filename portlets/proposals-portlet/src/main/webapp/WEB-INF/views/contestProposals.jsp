@@ -27,16 +27,14 @@
             </h2>
             <div class="right">
                 <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
-                    <div class="blue-button">
-                        <portlet:renderURL var="createProposalURL">
-                            <portlet:param name="contestId" value="${contest.contestPK }" />
-                            <portlet:param name="pageToDisplay" value="createProposal" />
-                        </portlet:renderURL>
-                        <a href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
-                           onclick="if(!deferUntilLoginTargeted('${createProposalURL}')) return false;">
-                            <span>CREATE</span> ${contestType.proposalName}
-                        </a>
-                    </div>
+                    <portlet:renderURL var="createProposalURL">
+                        <portlet:param name="contestId" value="${contest.contestPK }" />
+                        <portlet:param name="pageToDisplay" value="createProposal" />
+                    </portlet:renderURL>
+                    <a class="primary-button" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
+                       onclick="if(!deferUntilLoginTargeted('${createProposalURL}')) return false;">
+                        <span>CREATE</span> ${contestType.proposalName}
+                    </a>
                 </c:if>
             </div>
         </div>

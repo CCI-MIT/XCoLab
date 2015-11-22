@@ -33,9 +33,9 @@
         </c:forEach>
         <c:if test="${!proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
         <br class="clear"/>
-        <div class="blue-button"><a href="#advanceCommentAnchor"
+        <a class="primary-button" href="#advanceCommentAnchor"
                 onclick="copyCommentsToTextArea(this);"
-                >Copy comments to text area</a></div>
+                >Copy comments to text area</a>
         </c:if>
     </div>
 </jsp:root>

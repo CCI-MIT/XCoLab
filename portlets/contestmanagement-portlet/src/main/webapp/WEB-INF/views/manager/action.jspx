@@ -36,18 +36,10 @@
 	<div class="cmsDetailsBox">
 		<div style="margin-bottom: 40px;">
 			<div class="floatRight outerVerticalCenter">
-				<div class="blue-button innerVerticalCenter" >
-					<a href="#" onclick="submitSaveAsExistingForm()">SAVE ${currentTabWrapped.elementType}</a>
-				</div>
-				<div class="blue-button innerVerticalCenter" >
-					<a href="#" onclick="submitSaveAsNewForm()">SAVE as new ${currentTabWrapped.elementType}</a>
-				</div>
-				<div class="blue-button innerVerticalCenter" >
-					<a href="#" onclick="submitDeleteForm()">DELETE ${currentTabWrapped.elementType}</a>
-				</div>
-				<div class="blue-button innerVerticalCenter" >
-					<a href="#" onclick="submitCreateNewForm()">CREATE new ${currentTabWrapped.elementType}</a>
-				</div>
+				<a class="primary-button innerVerticalCenter" href="#" onclick="submitSaveAsExistingForm()">SAVE ${currentTabWrapped.elementType}</a>
+				<a class="primary-button innerVerticalCenter" href="#" onclick="submitSaveAsNewForm()">SAVE as new ${currentTabWrapped.elementType}</a>
+				<a class="primary-button innerVerticalCenter" href="#" onclick="submitDeleteForm()">DELETE ${currentTabWrapped.elementType}</a>
+				<a class="primary-button innerVerticalCenter" href="#" onclick="submitCreateNewForm()">CREATE new ${currentTabWrapped.elementType}</a>
 			</div>
 		</div>
 	</div>

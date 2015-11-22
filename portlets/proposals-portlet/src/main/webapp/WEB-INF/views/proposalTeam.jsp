@@ -41,9 +41,7 @@
                             <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" onfocus="this.value=''" value="Optional comment" style="display:none;"/>
                             <form:errors cssClass="alert alert-error" path="requestComment" />
                             <div id="requestButtons">
-                                <div class="blue-button" style="display:block;">
-                                    <a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>
-                                </div>
+                                <a href="javascript:;" class="primary-button requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>
                             </div>
                         </div>
                     </form:form>
@@ -72,9 +70,7 @@
                             <form:textarea id="invite-comment" cssClass="requestComment" path="inviteComment" placeholder="Optional comment" style="display:none;"/>
                             <!--<form:errors cssClass="alert alert-error" path="requestComment" />-->
                             <div id="requestButtons">
-                                <div class="blue-button" style="display:block;">
-                                    <a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>
-                                </div>
+                                <a href="javascript:;" class="primary-button requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>
                             </div>
                         </div>
                     </form:form>
@@ -123,11 +119,9 @@
                 </portlet:actionURL>
                 <div class="prop-butt">
                     <img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="support proposal" />
-                    <div class="blue-button">
-                        <a href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
+                        <a class="primary-button" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
                                 ${proposalsDisplayPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
                         </a>
-                    </div>
                 </div>
             </c:if>
         </div>

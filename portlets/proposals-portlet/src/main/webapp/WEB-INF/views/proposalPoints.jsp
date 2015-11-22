@@ -35,9 +35,7 @@
 
             <c:if test="${currentTabWrapped.canEdit}">
                 <div style="width: 229px; margin:0 auto;" class="clearfix">
-                    <div class="blue-button">
-                        <a style="cursor:pointer;width:200px;text-align:center" id="submitPointsForm">Save</a>
-                    </div>
+                        <a class="primary-button" style="cursor:pointer;width:200px;text-align:center" id="submitPointsForm">Save</a>
                 </div>
             </c:if>
         </form:form>

@@ -109,10 +109,8 @@
                     </div>
                     <c:choose>
                         <c:when test="${proposalsPermissions.canFellowActions}">
-                            <div class="blue-button" style="display:block; float:right;">
-                                <a href="javascript:;" class="requestMembershipSubmitButton"
+                            <a style="display:block; float:right;" href="javascript:;" class="primary-button requestMembershipSubmitButton"
                                    onclick="jQuery(this).parents('form').submit();">Save ${contestType.proposalName} decision</a>
-                            </div>
                         </c:when>
                         <c:otherwise>
                             <p class="submitStatus error">
@@ -145,10 +143,8 @@
                             <h4>Rating comment:</h4>
                             <i>Your comment will be visible to other Fellows and Judges only.</i>
                             <form:textarea id="fellowRatingComment" cssClass="commentbox" path="comment" style="width:100%;"/>
-                            <div class="blue-button" style="display:block; float:right;">
-                                <a href="javascript:;" class="requestMembershipSubmitButton"
+                                <a style="display:block; float:right;" href="javascript:;" class="primary-button requestMembershipSubmitButton"
                                 onclick="jQuery(this).parents('form').submit();">Save</a>
-                            </div>
                         </c:when>
                         <c:otherwise>
                             <p class="submitStatus error">
@@ -161,9 +157,7 @@
             </form:form>
             <c:if test="proposalsPermissions.canAdminAll">
                 <div class="addpropbox">
-                    <div class="blue-button" style="display:block; float:right;">
-                        <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
-                    </div>
+                        <a style="display:block; float:right;" class="primary-button requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
                 </div>
             </c:if>
         </div>

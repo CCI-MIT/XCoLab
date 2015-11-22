@@ -1,0 +1,26 @@
+// Brightness math based on:
+//   http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
+
+$red-magic-number: 0.241;
+$green-magic-number: 0.691;
+$blue-magic-number: 0.068;
+
+//calculates the brightness of a color on a scale from 0 to 255
+@function brightness($color) {
+  $red-component: red($color);
+  $green-component: green($color);
+  $blue-component: blue($color);
+
+  @return sqrt( ($red-magic-number * $red-component * $red-component)
+                + ($green-magic-number * $green-component * $green-component)
+                + ($blue-magic-number * $blue-component * $blue-component) );
+}
+
+@function contrasting-color($color, $light, $dark) {
+  $threshold: (brightness($light) + brightness($dark)) / 2;
+  @if brightness($color) < $threshold {
+    @return $light;
+  } @else {
+    @return $dark;
+  }
+}

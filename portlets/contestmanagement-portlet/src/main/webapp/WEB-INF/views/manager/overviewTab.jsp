@@ -28,9 +28,7 @@
 	<div class="cmsDetailsBox">
 		<div style="margin-bottom: 40px;">
 			<div class="floatRight outerVerticalCenter">
-				<div class="blue-button innerVerticalCenter" >
-					<a href="/web/guest/cms/-/contestmanagement/createContest" target="_blank">Create new Contest</a>
-				</div>
+				<a class="primary-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/createContest" target="_blank">Create new Contest</a>
 			</div>
 		</div>
 	</div>
@@ -56,9 +54,7 @@
 						<form:options items="${massActionsItems}" itemValue="value" itemLabel="lable"/>
 					</form:select>
 				</div>
-				<div class="blue-button innerVerticalCenter" >
-					<a href="#" id="submitButton">SUBMIT</a>
-				</div>
+				<a class="primary-button innerVerticalCenter" href="#" id="submitButton">SUBMIT</a>
 			</div>
 			<div id="massMessage" style="display: none;">
 				<h3 class="floatLeft">Subject</h3>
@@ -187,9 +183,7 @@
 								<td>${contestWrapper.proposalsCount} </td>
 								<td>${contestWrapper.commentsCount} </td>
 								<td>
-									<div class="blue-button innerVerticalCenter" >
-										<a href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
-									</div>
+									<a class="primary-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
 								</td>
 							</tr>
 					</c:forEach>

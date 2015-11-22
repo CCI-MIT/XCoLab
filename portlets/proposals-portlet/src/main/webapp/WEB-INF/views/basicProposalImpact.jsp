@@ -201,9 +201,8 @@
                                         <option value="0" selected="selected">Select sector</option>
                                     </select>
 
-                                    <div class="blue-button disabled">
-                                        <a id="continue-button" href="javascript:;">Add</a>
-                                    </div>
+                                    <a class="primary-button disabled" id="continue-button" href="javascript:;">Add</a>
+
                                     <span class="spinner-area"><!-- --> </span>
                                 </div>
                             </div>
@@ -212,12 +211,8 @@
 
                                 <h3 id="sector-title"><!-- --></h3>
 
-                                <div class="blue-button disabled" style="float:right; margin-right: 20px;">
-                                    <a id="delete-button" href="javascript:;">Delete</a>
-                                </div>
-                                <div style="float:right; margin-right: 5px;" class="blue-button">
-                                    <a id="save-button" href="javascript:;">Save</a>
-                                </div>
+                                <a style="float:right; margin-right: 20px;" class="primary-button disabled" id="delete-button" href="javascript:;">Delete</a>
+                                <a style="float:right; margin-right: 5px;" class="primary-button" id="save-button" href="javascript:;">Save</a>
                                 <div id="author-info" style="margin-top: 2px; display: none;">
                                     <strong>Last saved:</strong>&#160; <span id="author-name"><!-- --></span> on <span
                                         id="save-date"><!-- --></span>
@@ -248,12 +243,8 @@
                     <textarea style="width: 100%; height: 250px;">
                         <!-- -->
                     </textarea>
-                    <div class="gray-button" style="float:right;">
-                        <a id="cancel-button" href="javascript:;">Cancel</a>
-                    </div>
-                    <div class="blue-button disabled" style="float:right;">
-                        <a id="submit-button" href="javascript:;">OK</a>
-                    </div>
+                    <a class="grey-button" style="float:right;" id="cancel-button" href="javascript:;">Cancel</a>
+                    <a class="grey-button" style="float:right;" id="submit-button" href="javascript:;">OK</a>
                     <div class="spinner-area" style="float:right; width: 30px; height: 30px;"><!-- --></div>
                     <span class="hint-text red-text" style="float:right; margin-right:20px; margin-top: 12px;">Data seems invalid!</span>
                 </div>
@@ -403,11 +394,11 @@
             if (text.length > 0 &amp;&amp; text.match('\t') !== null) {
                 hintTextBox.removeClass('red-text');
                 hintTextBox.text(FORM_DATA_VALID);
-                $(this).parent().find('#submit-button').parent().removeClass('disabled');
+                $(this).parent().find('#submit-button').removeClass('disabled');
             } else {
                 form.find('span.hint-text').addClass('red-text');
                 hintTextBox.text(FORM_DATA_INVALID);
-                $(this).parent().find('#submit-button').parent().addClass('disabled');
+                $(this).parent().find('#submit-button').addClass('disabled');
             }
         }
 
@@ -439,14 +430,14 @@
                 userInputOccurred = false;
                 editedFocusArea = 0;
                 currentEditingRowIndex = ROW_INDEX_NONE_SELECTED;
-                $('#delete-button').parent().addClass('disabled');
+                $('#delete-button').addClass('disabled');
 
                 return;
             }
 
             $('tr#impact-new-series-row').removeClass('selected');
             currentEditingRowIndex = rowIndex;
-            $('#delete-button').parent().removeClass('disabled');
+            $('#delete-button').removeClass('disabled');
             // Set detail table header
             var sectorTerm = row.find('td.sector > span');
             var regionTerm = row.find('td.region > span');
@@ -469,7 +460,7 @@
             var adoptionValueElements = $impactElement.find('table tr#impact-edit-row-' + IMPACT_ADOPTION_RATE_PLACEHOLDER + ' input');
             var resultValues = $impactElement.find('table tr#impact-edit-row-RESULT td span');
 
-            $('a#save-button').parent().removeClass('disabled');
+            $('a#save-button').removeClass('disabled');
 
             for (var i = 0; i &lt; bauValues.size(); i++) {
                 var reductionValue = parseFloat($(reductionValueElements[i]).attr('value').replace(',', '.'));
@@ -492,7 +483,7 @@
         function integrityCheckSeriesValue(inputField, value) {
             if (isNaN(value)) {
                 inputField.addClass('error');
-                $('a#save-button').parent().addClass('disabled');
+                $('a#save-button').addClass('disabled');
                 return false;
             } else {
                 inputField.removeClass('error');
@@ -583,7 +574,7 @@
 
                     // Disable save button for unchanged new serieses
                     if (currentEditingRowIndex == ROW_INDEX_NONE_SELECTED) {
-                        $('a#save-button').parent().addClass('disabled');
+                        $('a#save-button').addClass('disabled');
                     }
 
                     // Register input event handler
@@ -607,7 +598,7 @@
                         }
 
                         userInputOccurred = true;
-                        $('a#save-button').parent().removeClass('disabled');
+                        $('a#save-button').removeClass('disabled');
                         recalculateEditSeriesValues();
                     });
 
@@ -625,7 +616,7 @@
             });
 
             regionDropdownElement.on('change', function () {
-                $('#impact').find('a#continue-button').parent().addClass('disabled');
+                $('#impact').find('a#continue-button').addClass('disabled');
 
                 var regionTermId = $(this).val();
                 if (regionTermId == 0) {
@@ -654,12 +645,12 @@
 
             sectorDropdownElement.on('change', function () {
                 var $impactElement = $('#impact');
-                $impactElement.find('a#continue-button').parent().addClass('disabled');
+                $impactElement.find('a#continue-button').addClass('disabled');
                 var sectorTermId = sectorDropdownElement.val();
                 var regionTermId = regionDropdownElement.val();
 
                 if (sectorTermId &gt; 0 &amp;&amp; regionTermId &gt; 0) {
-                    $impactElement.find('a#continue-button').parent().removeClass('disabled');
+                    $impactElement.find('a#continue-button').removeClass('disabled');
                     $impactElement.find('a#continue-button').focus();
                 }
             });
@@ -764,7 +755,7 @@
             $('div#impact-series-detail #header h3#sector-title').text($('div#new-series select#sector option:selected').text());
             // userInputOccurred = true;
 
-            $('#delete-button').parent().removeClass('disabled');
+            $('#delete-button').removeClass('disabled');
         }
 
         function setShowNewSeries(shouldShow) {
@@ -814,7 +805,7 @@
             if (on) {
                 $impactSeriesDetailElement.addClass('disabled');
                 $impactSeriesDetailElement.find('input').attr('disabled', 'disabled');
-                $impactSeriesDetailElement.find('a').parent().addClass('button-disabled');
+                $impactSeriesDetailElement.find('a').addClass('disabled');
                 $('#impact-summary').find('tr').addClass('disabled');
 
                 $impactSeriesDetailElement.find('div#header').spin('large');
@@ -822,7 +813,7 @@
             } else {
                 $impactSeriesDetailElement.removeClass('disabled');
                 $impactSeriesDetailElement.find('input').removeAttr('disabled');
-                $impactSeriesDetailElement.find('a').parent().removeClass('button-disabled');
+                $impactSeriesDetailElement.find('a').removeClass('disabled');
                 $('#impact-summary').find('tr').removeClass('disabled');
 
                 $impactSeriesDetailElement.find('div#header').spin(false);
@@ -940,8 +931,8 @@
             var uploadForm = $('div#impact-data-upload-form');
             if (on) {
                 uploadForm.children('.spinner-area').spin('small');
-                uploadForm.find('#submit-button').parent().addClass('disabled');
-                $('a#upload-impact-data-toggle').parent().addClass('disabled');
+                uploadForm.find('#submit-button').addClass('disabled');
+                $('a#upload-impact-data-toggle').addClass('disabled');
 
                 uploadForm.find('span.hint-text').text('Working.. This may take a while... Please do not reload this page until the spinner stops!')
             } else {

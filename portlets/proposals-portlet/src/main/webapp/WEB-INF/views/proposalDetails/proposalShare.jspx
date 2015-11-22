@@ -54,13 +54,8 @@
                 </tr>
             </table>
             <div>
-                <div class="blue-button">
-                    <a href="javascript:;" id="send-button" class="login-submit" onclick="send()">Send</a>
-                </div>
-
-                <div class="blue-button">
-                    <a href="javascript:;" class="login-submit" onclick="$('#messaging-overlay').hide()">Cancel</a>
-                </div>
+                <a class="primary-button login-submit" href="javascript:;" id="send-button" onclick="send()">Send</a>
+                <a class="primary-button login-submit" href="javascript:;" onclick="$('#messaging-overlay').hide()">Cancel</a>
             </div>
             <div id="send-error" class="recipient-error">
 

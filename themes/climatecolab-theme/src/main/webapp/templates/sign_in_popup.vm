@@ -33,9 +33,7 @@
                             <span><em><a href="/web/guest/loginregister?redirect=$escapeTool.url($themeDisplay.uRLCurrent)" class="forgot" >Haven't registered yet?</a></em></span><br />
                             <div class="clearfix"></div>
                         </div>
-                        <div class="blue-button">
-                            <a href="javascript:;" class="login-submit" onclick="jQuery(this).parents('form').submit();" id="deferLoginPopupSubmit">LOGIN</a>
-                        </div>
+                            <a class="primary-button" href="javascript:;" class="login-submit" onclick="jQuery(this).parents('form').submit();" id="deferLoginPopupSubmit">LOGIN</a>
                     </div>
                 </form>
             </div>            
@@ -64,9 +62,7 @@
                 <input name="screenName" type="text" class="username screenName" placeholder="username/email" onkeypress="return submitenter(this,event)" />
                     
                 <div class="btns">
-                    <div class="blue-button">
-                        <a href="javascript:;" onclick="jQuery(this).parents('form').submit(); " >Request new password</a>
-                    </div>
+                    <a class="primary-button" href="javascript:;" onclick="jQuery(this).parents('form').submit(); " >Request new password</a>
                 </div>
             </form>
         </div>
