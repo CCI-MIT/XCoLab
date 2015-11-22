@@ -7,7 +7,7 @@
 
 #footmenu {
   height: 49px;
-  @include background(url(../images/bg-noise.png), linear-gradient(top, lighten($dark-grey, 10%), $dark-grey));
+  @include background(url(../images/bg-noise.png), simple-gradient($dark-grey));
 }
 
 #footmenu li {
