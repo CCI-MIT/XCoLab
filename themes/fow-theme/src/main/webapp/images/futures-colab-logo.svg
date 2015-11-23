@@ -16,7 +16,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="futures-colab-logo.svg">
+   sodipodi:docname="futures-colab-logo.svg"
+   inkscape:export-filename="/projects/mit/colab/themes/fow-theme/src/main/webapp/images/futures-colab-logo.png"
+   inkscape:export-xdpi="450"
+   inkscape:export-ydpi="450">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -27,8 +30,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.91464844"
-     inkscape:cx="316.85911"
-     inkscape:cy="126.75767"
+     inkscape:cx="186.65734"
+     inkscape:cy="83.089755"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
