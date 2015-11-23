@@ -19,7 +19,7 @@ interface ProposalTabCanAccessAlgorithm {
 	boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request);
 
 
-	public final static ProposalTabCanAccessAlgorithm alwaysTrue = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm alwaysTrue = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -27,7 +27,7 @@ interface ProposalTabCanAccessAlgorithm {
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm alwaysFalse = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm alwaysFalse = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -35,7 +35,7 @@ interface ProposalTabCanAccessAlgorithm {
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm adminOnlyAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm adminOnlyAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -43,7 +43,7 @@ interface ProposalTabCanAccessAlgorithm {
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm advancingAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm advancingAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -71,7 +71,7 @@ interface ProposalTabCanAccessAlgorithm {
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm fellowReviewAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm fellowReviewAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -88,7 +88,7 @@ interface ProposalTabCanAccessAlgorithm {
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm screeningAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm screeningAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -110,7 +110,7 @@ interface ProposalTabCanAccessAlgorithm {
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm canEditAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm canEditAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -126,7 +126,7 @@ interface ProposalTabCanAccessAlgorithm {
 	};
 
 
-	public final static ProposalTabCanAccessAlgorithm pointsViewAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm pointsViewAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -149,7 +149,7 @@ interface ProposalTabCanAccessAlgorithm {
 	};
 
 
-	public final static ProposalTabCanAccessAlgorithm pointsEditAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm pointsEditAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -171,7 +171,7 @@ interface ProposalTabCanAccessAlgorithm {
 		private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
 	};
 
-	public final static ProposalTabCanAccessAlgorithm impactViewAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm impactViewAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -186,7 +186,7 @@ interface ProposalTabCanAccessAlgorithm {
 				if ((contest.getContestTier() != ContestTier.NONE.getTierType() && contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType() && !isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
 					return true;
 				}
-			} catch (Exception e) {
+			} catch (SystemException | PortalException  e) {
 				_log.error("can't check if user is allowed to view impact tab", e);
 			}
 			return false;
@@ -195,7 +195,7 @@ interface ProposalTabCanAccessAlgorithm {
 		private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
 	};
 
-	public final static ProposalTabCanAccessAlgorithm impactEditAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm impactEditAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {

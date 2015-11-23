@@ -374,7 +374,8 @@ public class OntologyTermLocalServiceWrapper implements OntologyTermLocalService
     @Override
     public java.lang.Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
         java.lang.Long focusAreaId, java.lang.Long ontologyTermId)
-        throws java.lang.Exception {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return _ontologyTermLocalService.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId,
             ontologyTermId);
     }

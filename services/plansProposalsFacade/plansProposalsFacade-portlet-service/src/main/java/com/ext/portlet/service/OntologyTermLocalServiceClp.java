@@ -1183,7 +1183,8 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
     @Override
     public java.lang.Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
         java.lang.Long focusAreaId, java.lang.Long ontologyTermId)
-        throws java.lang.Exception {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -1197,8 +1198,12 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof java.lang.Exception) {
-                throw (java.lang.Exception) t;
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
 
             if (t instanceof RuntimeException) {
