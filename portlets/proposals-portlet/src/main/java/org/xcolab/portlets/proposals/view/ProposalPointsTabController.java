@@ -10,6 +10,8 @@ import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,11 +32,11 @@ import java.util.List;
 @Controller
 @RequestMapping("view")
 public class ProposalPointsTabController extends BaseProposalTabController {
-    @Autowired
-    private ProposalsContext proposalsContext;
+
+    private static final Log _log = LogFactoryUtil.getLog(ProposalPointsTabController.class);
 
     @Autowired
-    private ProposalsContext context;
+    private ProposalsContext proposalsContext;
 
     private AssignPointsBean assignPointsBean;
     private List<User> members;
@@ -45,50 +47,46 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.POINTS);
-        try {
-            proposal = proposalsContext.getProposal(request);
-            Contest contest = proposalsContext.getContest(request);
+        proposal = proposalsContext.getProposal(request);
+        Contest contest = proposalsContext.getContest(request);
 
-            PointType contestParentPointType = PointTypeLocalServiceUtil.fetchPointType(contest.getDefaultParentPointType());
+        PointType contestParentPointType = PointTypeLocalServiceUtil.fetchPointType(contest.getDefaultParentPointType());
 
-            if (contestParentPointType == null) {
-                //there is no point scheme set for this contest, forward to description tab
-                return "";
-            }
-
-            PointTypeWrapper parentPointType = new PointTypeWrapper(contestParentPointType);
-
-            List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
-            List<ProposalWrapper> subProposalsWrapped = new ArrayList<>();
-            for (Proposal p: subProposals) {
-                subProposalsWrapped.add(new ProposalWrapper(p));
-            }
-
-            List<ProposalWrapper> linkingProposalsWrapped = new ArrayList<>();
-            final List<Proposal> linkingProposals = PointsLocalServiceUtil.getLinkingProposals(proposal.getProposalId());
-            for (Proposal p : linkingProposals) {
-                linkingProposalsWrapped.add(new ProposalWrapper(p));
-            }
-
-            members = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
-
-            //this bean will be filled with the user input
-            assignPointsBean = new AssignPointsBean();
-            this.initializeAssignPointsBean(parentPointType);
-            assignPointsBean.setupUsers(members);
-            model.addAttribute("assignPointsBean", assignPointsBean);
-            model.addAttribute("pointsToDistribute", contest.getPoints());
-            model.addAttribute("pointType", parentPointType);
-            model.addAttribute("recursionLevel", 0);
-            model.addAttribute("percentageOfTotalPoints", parentPointType.getPercentageOfParent());
-            model.addAttribute("subProposals", subProposalsWrapped);
-            model.addAttribute("members", members);
-            model.addAttribute("proposal", proposal);
-            model.addAttribute("contest", contest);
-            model.addAttribute("linkingProposals", linkingProposalsWrapped);
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
+        if (contestParentPointType == null) {
+            //there is no point scheme set for this contest, forward to description tab
+            return "";
         }
+
+        PointTypeWrapper parentPointType = new PointTypeWrapper(contestParentPointType);
+
+        List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
+        List<ProposalWrapper> subProposalsWrapped = new ArrayList<>();
+        for (Proposal p: subProposals) {
+            subProposalsWrapped.add(new ProposalWrapper(p));
+        }
+
+        List<ProposalWrapper> linkingProposalsWrapped = new ArrayList<>();
+        final List<Proposal> linkingProposals = PointsLocalServiceUtil.getLinkingProposals(proposal.getProposalId());
+        for (Proposal p : linkingProposals) {
+            linkingProposalsWrapped.add(new ProposalWrapper(p));
+        }
+
+        members = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
+
+        //this bean will be filled with the user input
+        assignPointsBean = new AssignPointsBean();
+        this.initializeAssignPointsBean(parentPointType);
+        assignPointsBean.setupUsers(members);
+        model.addAttribute("assignPointsBean", assignPointsBean);
+        model.addAttribute("pointsToDistribute", contest.getPoints());
+        model.addAttribute("pointType", parentPointType);
+        model.addAttribute("recursionLevel", 0);
+        model.addAttribute("percentageOfTotalPoints", parentPointType.getPercentageOfParent());
+        model.addAttribute("subProposals", subProposalsWrapped);
+        model.addAttribute("members", members);
+        model.addAttribute("proposal", proposal);
+        model.addAttribute("contest", contest);
+        model.addAttribute("linkingProposals", linkingProposalsWrapped);
         return "proposalPoints";
     }
 

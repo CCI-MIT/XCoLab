@@ -44,7 +44,7 @@ public class ProposalImpactScenarioCombinationWrapper {
         REGION_AVG_FACTOR = Collections.unmodifiableMap(avgFactor);
     }
 
-    public final static List<String> validationRegions = Arrays.asList("United States", "European Union", "China", "India", "Other developing countries", "Other developed countries");
+    private final static List<String> validationRegions = Arrays.asList("United States", "European Union", "China", "India", "Other developing countries", "Other developed countries");
     private final static Long ENROADS_MODEL_ID = 23L;
     private final static Long ENROADS_REGION_INPUT_ID = 814L;
 
@@ -89,7 +89,7 @@ public class ProposalImpactScenarioCombinationWrapper {
                     String modelName = proposalModelSimulation.getName();
                     simulationScenarioRegion.setSimulation(modelName);
                     simulationScenarioRegion.setScenario(String.valueOf(scenarioId));
-                } catch (Exception e) {
+                } catch (IOException e) {
                     _log.error(String.format("Can't access scenario for id: %d", scenarioId));
                 }
             }
@@ -101,7 +101,7 @@ public class ProposalImpactScenarioCombinationWrapper {
             }
         }
 
-        if (scenarios.size() > 0) {
+        if (!scenarios.isEmpty()) {
             Scenario scenario = (Scenario) scenarios.toArray()[0];
             if (isModelEnRoads(scenario.getSimulation())) {
                 combinedSimulation = getRomaClient().getSimulation(ENROADS_MODEL_ID);

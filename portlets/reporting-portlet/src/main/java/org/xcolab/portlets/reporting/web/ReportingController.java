@@ -21,7 +21,6 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
@@ -49,7 +48,11 @@ import javax.portlet.ResourceResponse;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RequestMapping("view")
 @Controller
@@ -430,26 +433,13 @@ public class ReportingController {
         });
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
         for (UserActivityReportBean uarb : userActivities.values()) {
-            User u = uarb.getUser();
+            User user = uarb.getUser();
             //get highest role of user
-            List<Role> roles = u.getRoles();
-            MemberRole currentRole;
-            MemberRole role = MemberRole.MEMBER;
-
-            for (Role r: roles) {
-                final String roleString = r.getName();
-
-                currentRole = MemberRole.fromRoleName(roleString);
-                if (currentRole != null) {
-                    if (currentRole.ordinal() > role.ordinal()) {
-                        role = currentRole;
-                    }
-                }
-            }
+            MemberRole role = MemberRole.getHighestRole(user.getRoles());
 
             csvWriter.writeNext(new String[]{
-                    String.valueOf(u.getUserId()), u.getScreenName(), u.getEmailAddress(),
-                    sdf.format(u.getCreateDate()), u.getFullName(), String.valueOf(uarb.getCommentsCount()),
+                    String.valueOf(user.getUserId()), user.getScreenName(), user.getEmailAddress(),
+                    sdf.format(user.getCreateDate()), user.getFullName(), String.valueOf(uarb.getCommentsCount()),
 
                     String.valueOf(uarb.getProposalsAuthoredCount()),
                     String.valueOf(uarb.getProposalsContributedToCount()),

@@ -1,9 +1,11 @@
 package org.xcolab.enums;
 
+import com.liferay.portal.kernel.exception.PortalException;
+
 /**
  * Created by kmang on 21/05/14.
  */
-public enum ContestPhaseType {
+public enum ContestPhaseTypeValue {
 
     PROPOSAL_CREATION(1, "Proposal creation"),
     FINALIST_SELECTION(11, "Finalist selection"),
@@ -17,11 +19,11 @@ public enum ContestPhaseType {
     WINNERS_ANNOUNCED_SOON(301, "Winners announced soon"),
     EARLY_BIRD_DEADLINE(401, "Early bird deadline");
 
-    private long typeId;
+    private final long typeId;
 
-    private String name;
+    private final String name;
 
-    ContestPhaseType(long typeId, String name) {
+    ContestPhaseTypeValue(long typeId, String name) {
         this.typeId = typeId;
         this.name = name;
     }
@@ -34,13 +36,18 @@ public enum ContestPhaseType {
         return typeId;
     }
 
-    public static ContestPhaseType getContestPhaseTypeByTypeId(long typeId) {
-        for (ContestPhaseType phaseType : ContestPhaseType.values()) {
+    public static ContestPhaseTypeValue fromTypeId(long typeId) throws NoSuchContestPhaseTypeValueException {
+        for (ContestPhaseTypeValue phaseType : ContestPhaseTypeValue.values()) {
             if (phaseType.getTypeId() == typeId) {
                 return phaseType;
             }
         }
+        throw new NoSuchContestPhaseTypeValueException("Unknown contestPhaseTypeId given: " + typeId);
+    }
 
-        return null;
+    public static class NoSuchContestPhaseTypeValueException extends PortalException {
+        public NoSuchContestPhaseTypeValueException(String message) {
+            super(message);
+        }
     }
 }

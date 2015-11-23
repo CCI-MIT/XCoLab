@@ -39,22 +39,20 @@ import java.util.TreeMap;
  */
 public class BaseContestWrapper {
 
-    protected final static Log _log = LogFactoryUtil.getLog(BaseContestWrapper.class);
+    private final static Log _log = LogFactoryUtil.getLog(BaseContestWrapper.class);
+    private final static Map<Long, FocusArea> faCache = new HashMap<>();
+    private final Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
+
     protected static final String WHERE = "where";
     protected static final String WHAT = "what";
     protected static final String WHO = "who";
     protected static final String HOW = "how";
 
-    protected final static Map<Long, FocusArea> faCache = new HashMap<>();
-    protected Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
     protected List<BaseContestPhaseWrapper> phases;
-
-    private ContestType contestType;
-
+    protected ContestType contestType;
     protected List<BaseContestTeamRoleWrapper> contestTeamMembersByRole;
-
     protected final Contest contest;
-    private BaseContestPhaseWrapper activePhase;
+    protected BaseContestPhaseWrapper activePhase;
 
     public BaseContestWrapper(Contest contest) {
         this.contest = contest;
@@ -384,8 +382,9 @@ public class BaseContestWrapper {
                 }
             }
 
-            for (String role : teamRoleUsersMap.keySet()) {
-                contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role, teamRoleUsersMap.get(role)));
+            for (Map.Entry<String, List<User>> entry : teamRoleUsersMap.entrySet()) {
+                final String role = entry.getKey();
+                contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role, entry.getValue()));
             }
         }
         return contestTeamMembersByRole;

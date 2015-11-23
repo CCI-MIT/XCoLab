@@ -265,18 +265,18 @@ public class AddUpdateProposalDetailsActionController {
             }
             if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_REFERENCE) {
                 // check if all parts are numeric
-                String cleanedReferences = "";
+                StringBuilder cleanedReferences = new StringBuilder();
                 if (StringUtils.isNotBlank(newSectionValue)){
                     String[]referencedProposals = newSectionValue.split(",");
                     for (String referencedProposal : referencedProposals) {
                         if (StringUtils.isNotBlank(referencedProposal) && StringUtils.isNumeric(referencedProposal)) {
-                            cleanedReferences += referencedProposal + ",";
+                            cleanedReferences.append(referencedProposal).append(",");
                         }
                     }
                     //if (cleanedReferences.substring(cleanedReferences.length()-2,cleanedReferences.length()-1).equalsIgnoreCase(",")) cleanedReferences = cleanedReferences.substring(0, cleanedReferences.length() - 2);
                 }
-                if (!section.getStringValue().equals(cleanedReferences)) {
-                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences);
+                if (!section.getStringValue().equals(cleanedReferences.toString())) {
+                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences.toString());
                     updateProposalReferences = true;
                 }
             }

@@ -61,26 +61,7 @@ public class MemberItem implements Serializable {
             }
         } else {
             List<Role> roles = UserLocalServiceUtil.getUser(userId).getRoles();
-            if (!roles.isEmpty()) {
-
-                memberRole = MemberRole.MEMBER;
-
-                for (Role role: roles) {
-                   long roleId = role.getRoleId();
-                    try {
-                        MemberRole currentRole = MemberRole.fromRoleId(roleId);
-
-                        if (currentRole != null
-                                && currentRole.getMemberCategory().getSortOrder() > memberRole.getMemberCategory().getSortOrder()) {
-                            memberRole = currentRole;
-                        }
-                    } catch (MemberRole.NoSuchMemberRoleException ignored) { }
-                }
-
-                if (memberRole.getRoleId() == MemberRole.MODERATOR.getRoleId()) {
-                    memberRole = MemberRole.STAFF;
-                }
-            }
+            memberRole = MemberRole.getHighestRole(roles);
         }
     }
 

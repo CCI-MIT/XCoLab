@@ -77,7 +77,7 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
-import org.xcolab.enums.ContestPhaseType;
+import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.utils.IdListUtil;
@@ -716,9 +716,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public void transferSupportsToVote(Contest contest, ServiceContext serviceContext) throws SystemException, PortalException {
         ContestPhase lastOrActivePhase = contestLocalService.getActiveOrLastPhase(contestLocalService.getContest(contest.getContestPK()));
         // Vote is only possible in Winner Selection phase
-        if (lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS.getTypeId() &&
-                lastOrActivePhase.getContestPhaseType() != ContestPhaseType.WINNERS_SELECTION.getTypeId() &&
-                lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS_NEW.getTypeId()) {
+        if (lastOrActivePhase.getContestPhaseType() != ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() &&
+                lastOrActivePhase.getContestPhaseType() != ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId() &&
+                lastOrActivePhase.getContestPhaseType() != ContestPhaseTypeValue.SELECTION_OF_WINNERS_NEW.getTypeId()) {
             return;
         }
         
@@ -842,7 +842,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             }
         }
 
-        ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalToProposalReviewsMap, new ArrayList<>(occurringJudges), new ArrayList<>(occurringRatingTypes));
+        ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalToProposalReviewsMap, new ArrayList<>(occurringRatingTypes));
 
         return csvExporter.getCsvString();
     }
@@ -1186,8 +1186,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
             // Is in completed phase and inactive? - or is flag set to false?
             boolean isCompleted = (ArrayUtil.isNotEmpty(contestNameParts) &&
-                    (latestPhase.getContestPhaseType() == ContestPhaseType.COMPLETED.getTypeId() ||
-                            latestPhase.getContestPhaseType() == ContestPhaseType.WINNERS_AWARDED.getTypeId()));
+                    (latestPhase.getContestPhaseType() == ContestPhaseTypeValue.COMPLETED.getTypeId() ||
+                            latestPhase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_AWARDED.getTypeId()));
             if (!checkForCompleted || isCompleted) {
                 String lastNamePart = contestNameParts[contestNameParts.length - 1];
                 Integer phaseEndYear = getYearFromDate(latestPhase.getPhaseStartDate());

@@ -59,44 +59,42 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) long contestPK) throws IOException,
 			SystemException, PortalException {
 
-		String user = request.getRemoteUser();
+		List<Pair<Proposal, Date>> proposals;
+		final long userId = Long.parseLong(request.getRemoteUser());
 
-		List<Pair<Proposal, Date>> proposals = null;
-
-		final long userId = Long.parseLong(user);
-		if (requestType.equalsIgnoreCase("subscriptionsAndSupporting")) {
-			proposals = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
-					userId, filterType, sectionId, request, proposalsContext);
-		} else if (requestType.equalsIgnoreCase("subscriptions")) {
-			proposals = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
-					userId, filterType, sectionId, request, proposalsContext);
-		} else if (requestType.equalsIgnoreCase("supporting")) {
-			proposals = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(
-					userId, filterType, sectionId, request, proposalsContext);
-		} else if (requestType.equalsIgnoreCase("all")
-				|| requestType.equalsIgnoreCase("contests")) {
-			proposals = ProposalPickerFilterUtil.getFilteredAllProposals(filterType,
-					sectionId, contestPK, request, proposalsContext);
+		switch (requestType.toUpperCase()) {
+			case "SUBSCRIPTIONSANDSUPPORTING":
+				proposals = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
+						userId, filterType, sectionId, request, proposalsContext);
+				break;
+			case "SUBSCRIPTIONS":
+				proposals = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
+						userId, filterType, sectionId, request, proposalsContext);
+				break;
+			case "SUPPORTING":
+				proposals = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(
+						userId, filterType, sectionId, request, proposalsContext);
+				break;
+			case "ALL":
+			case "CONTESTS":
+				proposals = ProposalPickerFilterUtil.getFilteredAllProposals(filterType,
+						sectionId, contestPK, request, proposalsContext);
+				break;
+			default:
+				_log.error("Proposal picker was loaded with unknown requestType " + requestType);
+				throw new PortalException("Unknown requestType " + requestType);
 		}
-		int totalCount;
-		if (proposals != null) {
-			if (filterText != null && !filterText.isEmpty()) {
-				ProposalPickerFilter.TEXT_BASED.filter(proposals, filterText);
-			}
-			totalCount = proposals.size();
+		if (filterText != null && !filterText.isEmpty()) {
+			ProposalPickerFilter.TEXT_BASED.filter(proposals, filterText);
+		}
+		final int totalCount = proposals.size();
 
-			ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
-			if (end >= totalCount && totalCount > 0) {
-				end = totalCount;
-			}
-			if (totalCount > (end - start)) {
-				proposals = proposals.subList(start, end);
-			}
-
-		} else {
-			totalCount = 0;
-			_log.error("Could not retrieve proposals: proposals variable should not be null for valid filterKeys." +
-					"(filterKey was "+filterType+")");
+		ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
+		if (end >= totalCount && totalCount > 0) {
+			end = totalCount;
+		}
+		if (totalCount > (end - start)) {
+			proposals = proposals.subList(start, end);
 		}
 		response.getPortletOutputStream().write(
 				getJSONObjectMapping(proposals, totalCount).getBytes());

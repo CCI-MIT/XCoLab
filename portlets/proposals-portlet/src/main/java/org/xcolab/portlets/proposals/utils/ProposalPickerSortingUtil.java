@@ -128,7 +128,7 @@ public class ProposalPickerSortingUtil {
     }
 
     public static void sortProposalsList(String sortOrder, String sortColumn,
-                                   List<Pair<Proposal, Date>> proposals) {
+                                   List<Pair<Proposal, Date>> proposals) throws PortalException {
         switch (sortColumn.toLowerCase()) {
             case "contest":
                 Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
@@ -242,6 +242,8 @@ public class ProposalPickerSortingUtil {
                     }
                 });
                 break;
+            default:
+                throw new PortalException("Unknown sort column");
         }
 
         if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {

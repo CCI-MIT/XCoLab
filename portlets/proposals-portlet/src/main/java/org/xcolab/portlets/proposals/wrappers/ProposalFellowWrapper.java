@@ -17,13 +17,9 @@ import java.util.List;
  * Created by Manuel Thurner
  */
 public class ProposalFellowWrapper extends ProposalWrapper {
-    private User currentUser;
-
 
     public ProposalFellowWrapper(ProposalWrapper proposal, User currentUser) throws NoSuchContestException {
         super(proposal);
-        this.currentUser = currentUser;
-
         try {
             //find out contestPhase
             Contest baseContest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
@@ -34,7 +30,7 @@ public class ProposalFellowWrapper extends ProposalWrapper {
                     proposal.getProposalId(),
                     contestPhase.getContestPhasePK());
             this.proposalRatings = new ProposalRatingsWrapper(currentUser, list);
-        } catch (Exception e) {
+        } catch (PortalException | SystemException e) {
             this.proposalRatings = null;
         }
     }

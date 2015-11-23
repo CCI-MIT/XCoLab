@@ -4,7 +4,6 @@ import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.enums.MemberRole;
@@ -45,25 +44,7 @@ public class GetRoleNameStartTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
         try {
             User user = UserLocalServiceUtil.getUser(userId);
-            List<Role> roles = user.getRoles();
-
-            // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
-            MemberRole currentRole = MemberRole.MEMBER;
-            MemberRole role = MemberRole.MEMBER;
-
-            for (Role r: roles) {
-                final String roleString = r.getName();
-
-                currentRole = MemberRole.fromRoleName(roleString);
-                if (currentRole != null && role != null) {
-                	if (currentRole.ordinal() > role.ordinal()) {
-                		role = currentRole;
-                	}
-                }
-            }
-
-            if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
-
+            MemberRole role = MemberRole.getHighestRole(user.getRoles());
 
             // Set the role string
             PortletRequest portletRequest = (PortletRequest) pageContext.getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
@@ -87,9 +68,7 @@ public class GetRoleNameStartTag extends BodyTagSupport {
 
             pageContext.setAttribute("isContributing", isContributing);
 
-        } catch (PortalException e) {
-            e.printStackTrace();
-        } catch (SystemException e) {
+        } catch (PortalException | SystemException e) {
             e.printStackTrace();
         }
         return EVAL_BODY_INCLUDE;

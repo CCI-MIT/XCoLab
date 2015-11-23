@@ -17,7 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.enums.ContestPhaseType;
+import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -168,9 +168,9 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
     private ContestPhase getActiveVotingPhase(List<ContestPhase> contestPhases) throws SystemException {
         for (ContestPhase phase : contestPhases) {
-            if (phase.getContestPhaseType() == ContestPhaseType.SELECTION_OF_WINNERS.getTypeId() ||
-                    phase.getContestPhaseType() == ContestPhaseType.SELECTION_OF_WINNERS_NEW.getTypeId() ||
-                    phase.getContestPhaseType() == ContestPhaseType.WINNERS_SELECTION.getTypeId()) {
+            if (phase.getContestPhaseType() == ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() ||
+                    phase.getContestPhaseType() == ContestPhaseTypeValue.SELECTION_OF_WINNERS_NEW.getTypeId() ||
+                    phase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId()) {
                 if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
                     return phase;
                 }

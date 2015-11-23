@@ -171,22 +171,6 @@ public class ProposalJudgingCommentHelper {
         return StringPool.BLANK;
     }
 
-
-
-    private boolean persistAttribute(String attributeName, long numericValue) {
-        ProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(attributeName);
-
-        attribute.setNumericValue(numericValue);
-
-        try {
-            ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attribute);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
     private boolean persistAttribute(String attributeName, String stringValue) {
         ProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(attributeName);
 

@@ -130,7 +130,6 @@ public class ProposalImpactJSONController {
 
         FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
         Contest contest = proposalsContext.getContest(request);
-        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
 
         JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
         try {

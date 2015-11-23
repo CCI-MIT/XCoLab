@@ -1,6 +1,5 @@
 package org.xcolab.utils.judging;
 
-import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
@@ -12,7 +11,11 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -26,16 +29,16 @@ public class ProposalReview {
     private Map<ProposalRatingType, Double> ratingAverages;
     private Map<User, String> reviews;
     private Set<User> reviewers;
-    private Map<User, Map<ProposalRatingType, Double> > userRatings;
+    private final Map<User, Map<ProposalRatingType, Double> > userRatings;
 
     public ProposalReview(Proposal proposal, ContestPhase contestPhase, String proposalUrl) {
         this.proposal = proposal;
         this.contestPhase = contestPhase;
         this.proposalUrl = proposalUrl;
-        this.reviews = new HashMap<User, String>();
-        this.reviewers = new HashSet<User>();
+        this.reviews = new HashMap<>();
+        this.reviewers = new HashSet<>();
         this.userRatings = new HashMap<>();
-        this.ratingAverages = new HashMap<ProposalRatingType, Double>();
+        this.ratingAverages = new HashMap<>();
     }
 
     public void addReview(User judge, String comment) {
@@ -62,15 +65,14 @@ public class ProposalReview {
     }
 
     public Double getRatingAverage() {
-
-        double avg = 0F;
         double sum = 0;
         int count =  ratingAverages.keySet().size();
 
-        for(ProposalRatingType key : ratingAverages.keySet()){
-            sum += ratingAverages.get(key);
+        for(Map.Entry<ProposalRatingType, Double> entry : ratingAverages.entrySet()){
+            sum += entry.getValue();
         }
 
+        double avg = 0F;
         if(count > 0) {
             avg = sum / count;
         }
@@ -79,12 +81,14 @@ public class ProposalReview {
     }
 
     public void addUserRating(User user, final ProposalRatingType ratingType, final double rating) {
+        Map<ProposalRatingType, Double> ratings;
         if(this.userRatings.get(user) == null){
-            this.userRatings.put(user,new HashMap(){{put(ratingType, rating);}});
+            ratings = new HashMap<>();
+            this.userRatings.put(user, ratings);
+        } else {
+            ratings = this.userRatings.get(user);
         }
-        else {
-            this.userRatings.get(user).put(ratingType, rating);
-        }
+        ratings.put(ratingType, rating);
     }
 
     public Map<ProposalRatingType, Double> getUserRatings(User user) {
@@ -103,14 +107,14 @@ public class ProposalReview {
     public Double getUserRatingAverage(User user){
 
         if(userRatings.get(user) != null) {
-            double avg = 0F;
             double sum = 0;
             int count =  userRatings.get(user).keySet().size();
 
             //take the average for each user
-            for (ProposalRatingType key : userRatings.get(user).keySet()) {
-                sum += userRatings.get(user).get(key);
+            for (Map.Entry<ProposalRatingType, Double> entry : userRatings.get(user).entrySet()) {
+                sum += entry.getValue();
             }
+            double avg = 0F;
             if (count > 0) {
                 avg = sum / count;
             }
@@ -170,11 +174,7 @@ public class ProposalReview {
                 authorName = UserLocalServiceUtil.getUser(proposal.getAuthorId()).getScreenName();
             }
             return authorName;
-        }
-        catch(SystemException se){
-        }
-        catch(PortalException pe){
-        }
+        } catch(SystemException | PortalException ignored){ }
         return "";
 
     }
@@ -186,11 +186,7 @@ public class ProposalReview {
                     return attr.getStringValue();
                 }
             }
-        }
-        catch(SystemException se){
-        }
-        catch(PortalException pe){
-        }
+        } catch(SystemException | PortalException ignored){ }
 
         return null;
     }

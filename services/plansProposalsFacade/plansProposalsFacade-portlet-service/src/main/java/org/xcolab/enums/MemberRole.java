@@ -2,7 +2,9 @@ package org.xcolab.enums;
 
 import com.ext.portlet.model.MemberCategory;
 import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.Role;
 import org.apache.commons.lang.WordUtils;
 
 import java.util.Arrays;
@@ -58,7 +60,7 @@ public enum MemberRole {
     }
 
     public String[] getRoleNames() {
-        return roleNames;
+        return roleNames.clone();
     }
 
     public long getRoleId() {
@@ -83,6 +85,28 @@ public enum MemberRole {
         throw new NoSuchMemberRoleException("Unknown role name given: " + roleName);
     }
 
+    public static MemberRole getHighestRole(List<Role> roles) throws NoSuchMemberRoleException, SystemException {
+        MemberRole role = MemberRole.MEMBER;
+
+        for (Role r: roles) {
+            final String roleString = r.getName();
+            try {
+                MemberRole currentRole = MemberRole.fromRoleName(roleString);
+                if (currentRole != null) {
+                    if (currentRole.getMemberCategory().getSortOrder() > role.getMemberCategory().getSortOrder()) {
+                        role = currentRole;
+                    }
+                }
+            } catch (NoSuchMemberRoleException ignored) { }
+        }
+
+        if (role == MemberRole.MODERATOR) {
+            role = MemberRole.STAFF;
+        }
+
+        return role;
+    }
+
     private static boolean isStringInList(String name, String[] names) {
         for (String n : names) {
             if (name.equalsIgnoreCase(n)) {
@@ -96,7 +120,7 @@ public enum MemberRole {
         return otherRoleIds;
     }
 
-    public static class NoSuchMemberRoleException extends SystemException {
+    public static class NoSuchMemberRoleException extends PortalException {
         public NoSuchMemberRoleException(String message) {
             super(message);
         }
