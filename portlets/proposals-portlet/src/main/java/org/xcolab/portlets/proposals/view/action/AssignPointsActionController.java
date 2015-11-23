@@ -101,7 +101,7 @@ public class AssignPointsActionController {
                 }
                 //round to two decimals
                 sum = Math.round(sum*100)/100.0d;
-                if (Math.abs(sum - 1.0) < 0.00001) {
+                if (Math.abs(sum - 1.0) > 0.00001) {
                     throw new IllegalArgumentException("Error while adding PointsDistributionConfiguration: The sum of distributed percentages do not sum up to 1: " + sum);
                 }
             }
