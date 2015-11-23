@@ -34,6 +34,11 @@ $alert-light: #f2dede;
 $info-background: $primary-light-grey;
 $success-background: $secondary-light;
 
+//standard text colors
+$text-light: white;
+$text-dark: $darkest-grey;
+$text-threshold: (brightness($text-light) + brightness($text-dark)) / 2;
+
 //outline view TODO: see if we can adapt this to use our colors
 $outline-level1: #e0dacb; // background slevel1
 $outline-level2: #d1cbbf; // background slevel2

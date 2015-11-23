@@ -1,9 +1,11 @@
 @import "compass";
 
-//import variables and functions
-@import "global/color_scheme";
+//import functions
 @import "global/brightness";
 @import "global/helper";
+
+//import variables
+@import "global/color_scheme";
 
 //import custom mixins
 @import 'components/buttons';

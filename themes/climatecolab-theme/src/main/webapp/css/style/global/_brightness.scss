@@ -16,11 +16,15 @@ $blue-magic-number: 0.068;
                 + ($blue-magic-number * $blue-component * $blue-component) );
 }
 
-@function contrasting-color($color, $light, $dark) {
-  $threshold: (brightness($light) + brightness($dark)) / 2;
-  @if brightness($color) < $threshold {
-    @return $light;
-  } @else {
+//chooses the optimal color for good contrast.
+//param threshold is an optional cut-off value between 0 and 255
+@function contrasting-color($color, $light, $dark, $threshold: null) {
+  @if $threshold == null {
+    $threshold: (brightness($light) + brightness($dark)) / 2;
+  }
+  @if brightness($color) > $threshold {
     @return $dark;
+  } @else {
+    @return $light;
   }
 }

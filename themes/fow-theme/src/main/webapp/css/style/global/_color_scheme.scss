@@ -3,9 +3,9 @@
 
 //main colors:
 $primary-color: #5da034;
-$secondary-color: #00acee;
-$accent-color: #f6911d;
-$auxiliary-color: #eb008a; // 4th color when needed (e.g. ontology)
+$secondary-color: #f6911d;
+$accent-color: #eb008a;
+$auxiliary-color: #00acee; // 4th color when needed (e.g. ontology)
 
 //lightness variations
 $primary-light: lighten($primary-color, 30); $__hex: #afdc93;
@@ -34,6 +34,11 @@ $alert-color: #eb008a;
 $alert-light: #f6dfec;
 $info-background: $secondary-light;
 $success-background: $primary-color;
+
+//standard text colors
+$text-light: white;
+$text-dark: $darkest-grey;
+$text-threshold: 175;
 
 //outline view TODO: see if we can adapt this to use our colors
 $outline-level1: #e0dacb; // background slevel1

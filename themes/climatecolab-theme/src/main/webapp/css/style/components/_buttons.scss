@@ -30,7 +30,7 @@
     padding-left: 40px;
   }
 
-  color: contrasting-color($button-color, white, $darkest-grey);
+  color: contrasting-color($button-color, white, $darkest-grey, $text-threshold);
   text-shadow: 1px 1px 0 darken($button-color, 25%);
   border: 1px solid $border-color;
 
@@ -42,7 +42,7 @@
       @include background($image-url no-repeat, simple-gradient(darken($button-color, 10%)));
       @include background-size(contain);
     }
-    color: contrasting-color(darken($button-color, 10%), white, $darkest-grey);
+    color: contrasting-color(darken($button-color, 10%), white, $darkest-grey, $text-threshold);
   }
 
 }
