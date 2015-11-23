@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
 import org.xcolab.portlets.userprofile.utils.UserProfilePermissions;
 import org.xcolab.portlets.userprofile.wrappers.SpamReportsWrapper;
@@ -38,7 +39,7 @@ public class SpamReportController {
     @Autowired
     private UserProfileController userProfileController;
 
-    @RequestMapping(params = "page=spamReport")
+    @RenderMapping(params = "page=spamReport")
     public String showSpamReport(PortletRequest request, PortletResponse response, Model model,
                                  @RequestParam(required = true) String userId) throws SystemException, PortalException, UserProfileAuthorizationException {
         UserProfilePermissions permissions = new UserProfilePermissions(request);
@@ -50,7 +51,7 @@ public class SpamReportController {
         return "showUserProfile";
     }
 
-    @RequestMapping(params = "page=spamReports")
+    @RenderMapping(params = "page=spamReports")
     public String showSpamReports(PortletRequest request, PortletResponse response, Model model) throws PortalException, UserProfileAuthorizationException {
         UserProfilePermissions permissions = new UserProfilePermissions(request);
         permissions.checkCanAdminSpamReports();
@@ -58,7 +59,7 @@ public class SpamReportController {
         return "spamReports/spamReportList";
     }
 
-    @RequestMapping(params = "action=deleteComment")
+    @RenderMapping(params = "action=deleteComment")
     public String deleteComment(
             PortletRequest request, PortletResponse response, Model model,
             @RequestParam long messageId)
@@ -80,7 +81,7 @@ public class SpamReportController {
         return "spamReports/actionResults";
     }
 
-    @RequestMapping(params = "action=deleteUser")
+    @RenderMapping(params = "action=deleteUser")
     public String deleteUser(
             PortletRequest request, PortletResponse response, Model model,
             @RequestParam long userId,

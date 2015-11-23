@@ -22,6 +22,7 @@ import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
@@ -52,6 +53,8 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
 
 @Controller
 @RequestMapping("view")
@@ -71,10 +74,17 @@ public class UserProfileController {
     public UserProfileController() {
     }
 
-//    @RenderMapping
-//    public String defaultShowUserProfileNotInitializedView(PortletRequest request) {
-//        return "showProfileNotInitialized";
-//    }
+    @RenderMapping
+    public String defaultShowUserProfileNotInitializedView(PortletRequest request) {
+        final String lifecycle = (String) PortalUtil.getHttpServletRequest(request).getAttribute(PortletRequest.LIFECYCLE_PHASE);
+        final StringBuilder prettyMapString = new StringBuilder().append("{");
+        for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
+            prettyMapString.append(String.format("%s = %s, ", entry.getKey(), Arrays.asList(entry.getValue()).toString()));
+        }
+        _log.error(String.format("No mapping found - using default render handler for request mode %s, lifecycle %s, parameters %s",
+                request.getPortletMode().toString(), lifecycle, prettyMapString.append("}")));
+        return "showProfileNotInitialized";
+    }
 
     @RequestMapping(params = "page=view")
     public String showUserProfileView(PortletRequest request, PortletResponse response, Model model,
