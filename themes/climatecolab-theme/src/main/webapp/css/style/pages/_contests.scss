@@ -533,7 +533,7 @@
   display: inline-block;
 
   color: white;
-  box-shadow: 5px 5px 5px $medium-grey;
+  box-shadow: 5px 5px 5px $dark-grey;
 
   position: absolute;
   top: 115px;
@@ -551,7 +551,7 @@
 
 .contest-flag-color {
   @extend %contest-flag;
-  @include background(linear-gradient(top, lighten($secondary-color, 5%), darken($secondary-color, 5%)));
+  @include background-gradient($secondary-color);
   &:after {
     border: 1px solid $secondary-light;
     border-left: 0;
@@ -560,9 +560,9 @@
 
 .contest-flag-grey {
   @extend %contest-flag;
-  @include background(linear-gradient(top, lighten($medium-grey, 5%), darken($medium-grey, 5%)));
+  @include background-gradient($medium-grey);
   &:after {
-    border: 1px solid $lightest-grey;
+    border: 1px solid $light-grey;
     border-left: 0;
   }
 }

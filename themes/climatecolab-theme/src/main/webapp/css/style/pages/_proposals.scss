@@ -728,7 +728,7 @@
     position: relative;
     right: -70px;
     text-align: center;
-    transform: rotate(45deg);
+    @include transform(rotate(45deg));
   }
 
   //top corner

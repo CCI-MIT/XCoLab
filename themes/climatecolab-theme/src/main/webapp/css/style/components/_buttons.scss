@@ -21,30 +21,16 @@
     $border-color: darken($button-color, 15%);
   }
   @extend %base-button;
-  background-color: $button-color;
-  @if $image-url == null {
-    @include background(simple-gradient($button-color));
-  } @else {
-    @include background($image-url no-repeat, simple-gradient($button-color));
-    @include background-size(contain);
-    padding-left: 40px;
-  }
 
+  @include background-gradient($button-color, $image-url, 40px);
   color: contrasting-color($button-color, white, $darkest-grey);
   text-shadow: 1px 1px 0 darken($button-color, 25%);
   border: 1px solid $border-color;
 
   &:hover {
-    background-color: darken($button-color, 10%);
-    @if $image-url == null {
-      @include background(simple-gradient(darken($button-color, 10%)));
-    } @else {
-      @include background($image-url no-repeat, simple-gradient(darken($button-color, 10%)));
-      @include background-size(contain);
-    }
+    @include background-gradient(darken($button-color, 10%), $image-url, 40px);
     color: contrasting-color(darken($button-color, 10%), white, $darkest-grey);
   }
-
 }
 
 //blue-button.a is for legacy support (e.g. ice faclet portlets)

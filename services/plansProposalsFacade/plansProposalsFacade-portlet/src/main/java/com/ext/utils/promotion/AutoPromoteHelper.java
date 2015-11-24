@@ -23,9 +23,11 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.util.mail.MailEngineException;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.mail.EmailToAdminDispatcher;
 
+import javax.mail.internet.AddressException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -45,8 +47,8 @@ public class AutoPromoteHelper {
     public static final long SEMIFINALIST_RIBBON_ID = 3L;
     public static final long FINALIST_RIBBON_ID = 1L;
 
-    private Date now;
-    private ServiceContext serviceContext;
+    private final Date now;
+    private final ServiceContext serviceContext;
 
     public AutoPromoteHelper(Date now, ServiceContext serviceContext) {
         this.now = now;
@@ -135,13 +137,13 @@ public class AutoPromoteHelper {
                     	}
                         //skip already promoted proposal
                         if (phasePromotionHelper.hasProposalAlreadyBeenPromoted(p)) {
-                            System.out.println("Proposal already promoted "+p.getProposalId());
+                            _log.trace("Proposal already promoted "+p.getProposalId());
                             continue;
                         }
 
                         // Decide about the promotion
                         if (phasePromotionHelper.didJudgeDecideToPromote(p)) {
-                            System.out.println("Promote proposal "+p.getProposalId());
+                            _log.info("Promote proposal "+p.getProposalId());
                             ContestPhaseLocalServiceUtil.promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
                         }
 
@@ -153,7 +155,7 @@ public class AutoPromoteHelper {
                             try {
                                 ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
                                 PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(p.getProposalId(), phase.getContestPhasePK());
-                            } catch (Throwable e) {
+                            } catch (SystemException | PortalException | AddressException | MailEngineException e) {
                                 _log.error("Could not send proposal promotion colab messaging notification", e);
                             }
                         }
@@ -216,9 +218,7 @@ public class AutoPromoteHelper {
                     }
 
                     Set<Proposal> allProposals = new HashSet<>();
-                    List<Proposal> finalists = null;
-                    List<Proposal> semifinalists = null;
-                    if (proposalCreationPhases.size() > 0) {
+                    if (!proposalCreationPhases.isEmpty()) {
                         for (ContestPhase creationPhase : proposalCreationPhases) {
                             final List<Proposal> proposalsInContestPhase = ProposalLocalServiceUtil.getProposalsInContestPhase(creationPhase.getContestPhasePK());
                             addAllVisibleProposalsToCollection(proposalsInContestPhase, allProposals, creationPhase);
@@ -227,6 +227,8 @@ public class AutoPromoteHelper {
                         _log.error(String.format("Can't distribute ribbons: No proposal creation phase found in contest %d", phase.getContestPK()));
                     }
 
+                    List<Proposal> finalists = null;
+                    List<Proposal> semifinalists = null;
                     if (finalistSelection != null) {
                         ContestPhase finalsPhase = ContestPhaseLocalServiceUtil.getNextContestPhase(finalistSelection);
                         finalists = ProposalLocalServiceUtil.getProposalsInContestPhase(finalsPhase.getContestPhasePK());
