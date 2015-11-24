@@ -24,14 +24,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.xcolab.enums.ModelRegions;
-import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.wrappers.BaseProposalWrapper;
 
@@ -202,32 +200,6 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return sections;
     }
 
-    public List<ProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {
-        if (members == null) {
-            members = new ArrayList<>();
-            boolean hasOwner = false;
-            for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
-                final ProposalTeamMemberWrapper teamMemberWrapper = new ProposalTeamMemberWrapper(proposal, user);
-                members.add(teamMemberWrapper);
-                if (teamMemberWrapper.getMemberType().equalsIgnoreCase("owner")) {
-                    hasOwner = true;
-                }
-            }
-            if (!hasOwner) {
-                //TODO: remove debug email
-                GroupLocalServiceUtil.addUserGroups(proposal.getAuthorId(), new long[]{proposal.getGroupId()});
-                final User owner = UserLocalServiceUtil.fetchUser(proposal.getAuthorId());
-                members.add(new ProposalTeamMemberWrapper(proposal, owner));
-                new EmailToAdminDispatcher(String.format("Owner %s not in proposal %d's group", owner.getScreenName(), proposal.getProposalId()),
-                        String.format("The owner %s (%d) of proposal %d is not in its group %d and was just re-added.",
-                                owner.getScreenName(), owner.getUserId(), proposal.getProposalId(), proposal.getGroupId())
-                ).sendMessage();
-            }
-        }
-
-        return members;
-    }
-
     protected boolean getFellowScreeningNecessary() {
         return contestPhase.getFellowScreeningActive();
     }
@@ -255,7 +227,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     }
 
     public String getModelRegion() throws PortalException, SystemException {
-        ProposalAttribute attr = proposalAttributeHelper.getLatestAttributeOrNull(ProposalAttributeKeys.REGION);
+        ProposalAttribute attr = proposalAttributeHelper.getAttributeOrNull(ProposalAttributeKeys.REGION);
         if (attr == null) {
             return "";
         }
@@ -279,7 +251,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     }
 
     public Long getScenarioId() throws PortalException, SystemException {
-        ProposalAttribute attr = proposalAttributeHelper.getLatestAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
+        ProposalAttribute attr = proposalAttributeHelper.getAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
 	    if (attr == null) {
             return 0L;
         }
@@ -287,7 +259,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     }
 
     public Boolean isConsolidatedScenario(Long scenarioId) throws PortalException, SystemException {
-        ProposalAttribute attr = proposalAttributeHelper.getLatestAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
+        ProposalAttribute attr = proposalAttributeHelper.getAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
         return attr != null && attr.getAdditionalId() == 1;
     }
 

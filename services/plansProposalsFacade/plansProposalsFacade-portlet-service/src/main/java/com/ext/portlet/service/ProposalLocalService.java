@@ -455,15 +455,13 @@ public interface ProposalLocalService extends BaseLocalService,
     *
     * @param proposalId id of a proposal
     * @return list of proposal attributes for current version of a proposal
-    * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     * @author janusz
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
         long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * <p>Returns all attributes for given version of a proposal.</p>
@@ -471,15 +469,13 @@ public interface ProposalLocalService extends BaseLocalService,
     * @param proposalId id of a proposal
     * @param version    version number of a proposal
     * @return list of proposal attributes for current version of a proposal
-    * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     * @author janusz
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
         long proposalId, int version)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * <p>Returns an attribute for current version of a proposal.</p>
@@ -488,14 +484,13 @@ public interface ProposalLocalService extends BaseLocalService,
     * @param attributeName name of an attribute
     * @param additionalId  additionalId of an attribute
     * @return proposal attribute
-    * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     * @author janusz
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ProposalAttribute getAttribute(
         long proposalId, java.lang.String attributeName, long additionalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
+        throws com.ext.portlet.NoSuchProposalAttributeException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**

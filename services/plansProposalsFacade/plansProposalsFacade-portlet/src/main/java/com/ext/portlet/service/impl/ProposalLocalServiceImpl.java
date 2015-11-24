@@ -466,14 +466,12 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *
      * @param proposalId id of a proposal
      * @return list of proposal attributes for current version of a proposal
-     * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      * @author janusz
      */
     @Override
-    public List<ProposalAttribute> getAttributes(long proposalId) throws SystemException, PortalException {
-        Proposal proposal = getProposal(proposalId);
-
+    public List<ProposalAttribute> getAttributes(long proposalId) throws SystemException {
+        Proposal proposal = fetchProposal(proposalId);
         return getAttributes(proposalId, proposal.getCurrentVersion());
     }
 
@@ -483,12 +481,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposalId id of a proposal
      * @param version    version number of a proposal
      * @return list of proposal attributes for current version of a proposal
-     * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      * @author janusz
      */
     @Override
-    public List<ProposalAttribute> getAttributes(long proposalId, int version) throws SystemException, PortalException {
+    public List<ProposalAttribute> getAttributes(long proposalId, int version) throws SystemException {
         return proposalAttributePersistence.findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId, version, version);
     }
 
@@ -499,13 +496,12 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param attributeName name of an attribute
      * @param additionalId  additionalId of an attribute
      * @return proposal attribute
-     * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      * @author janusz
      */
     @Override
-    public ProposalAttribute getAttribute(long proposalId, String attributeName, long additionalId) throws PortalException, SystemException {
-        Proposal proposal = getProposal(proposalId);
+    public ProposalAttribute getAttribute(long proposalId, String attributeName, long additionalId) throws SystemException, NoSuchProposalAttributeException {
+        Proposal proposal = fetchProposal(proposalId);
         return getAttribute(proposalId, proposal.getCurrentVersion(), attributeName, additionalId);
     }
 

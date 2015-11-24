@@ -174,7 +174,7 @@ public class ProposalReview {
                 authorName = UserLocalServiceUtil.getUser(proposal.getAuthorId()).getScreenName();
             }
             return authorName;
-        } catch(SystemException | PortalException ignored){ }
+        } catch(SystemException | PortalException ignored) { }
         return "";
 
     }
@@ -186,7 +186,7 @@ public class ProposalReview {
                     return attr.getStringValue();
                 }
             }
-        } catch(SystemException | PortalException ignored){ }
+        } catch(SystemException ignored) { }
 
         return null;
     }

@@ -1662,8 +1662,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     @Override
     public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
         long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -1671,10 +1670,6 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                     _methodParameterTypes31, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
@@ -1694,8 +1689,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     @Override
     public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
         long proposalId, int version)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -1704,10 +1698,6 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                     new Object[] { proposalId, version });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
@@ -1727,7 +1717,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     @Override
     public com.ext.portlet.model.ProposalAttribute getAttribute(
         long proposalId, java.lang.String attributeName, long additionalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
+        throws com.ext.portlet.NoSuchProposalAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -1744,8 +1734,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            if (t instanceof com.ext.portlet.NoSuchProposalAttributeException) {
+                throw (com.ext.portlet.NoSuchProposalAttributeException) t;
             }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {

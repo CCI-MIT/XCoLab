@@ -1,8 +1,11 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
@@ -11,8 +14,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.xcolab.wrapper.proposal.ProposalTeamMemberWrapper;
-import org.xcolab.wrapper.proposal.ProposalWrapper;
+import org.xcolab.wrappers.BaseProposalTeamMemberWrapper;
+import org.xcolab.wrappers.BaseProposalWrapper;
 
 import javax.portlet.*;
 import java.io.ByteArrayOutputStream;
@@ -28,15 +31,15 @@ import java.util.List;
 public class CsvExportUtil {
 
     private final static Log _log = LogFactoryUtil.getLog(CsvExportUtil.class);
-    private final String URL_DOMAIN = "http://www.climatecolab.org";
-    private List<String[]> records;
+    private final static String URL_DOMAIN = "http://www.climatecolab.org";
+    private final List<String[]> records;
 
 
     public CsvExportUtil() {
-        records = new ArrayList<String[]>();
+        records = new ArrayList<>();
     }
 
-    private String getCSVData() throws Exception {
+    private String getCSVData() throws IOException {
         StringWriter writer = new StringWriter();
         CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
         csvWriter.writeAll(records);
@@ -68,10 +71,10 @@ public class CsvExportUtil {
 
     }
 
-    private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal, ContestPhase contestPhase) throws Exception{
+    private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal, ContestPhase contestPhase) throws PortalException, SystemException {
         List<String[]> proposalExportData = new ArrayList<>();
         Proposal2Phase proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-        ProposalWrapper proposalWrapper = getProposalWithLatestVersionInContestPhase(proposal2Phase, proposal);
+        BaseProposalWrapper proposalWrapper = getProposalWithLatestVersionInContestPhase(proposal2Phase, proposal);
         Long contestId = contestPhase.getContestPK();
         Contest contest = ContestLocalServiceUtil.getContest(contestId);
         String contestTitle = normalizeApostrophes(contest.getContestShortName());
@@ -79,32 +82,32 @@ public class CsvExportUtil {
         String proposalLink = URL_DOMAIN + proposalWrapper.getProposalURL();
         String lastPhaseTitle = getContestPhaseTitle(contestPhase);
 
-        List<ProposalTeamMemberWrapper> proposalTeam = proposalWrapper.getMembers();
-        for(ProposalTeamMemberWrapper teamMemberWrapper : proposalTeam){
+        List<BaseProposalTeamMemberWrapper> proposalTeam = proposalWrapper.getMembers();
+        for(BaseProposalTeamMemberWrapper teamMemberWrapper : proposalTeam){
             String[] csvRow = generateProposalAndUserDetailsRow(contestTitle, proposalTitle, proposalLink, teamMemberWrapper, lastPhaseTitle);
             proposalExportData.add(csvRow);
         }
         return proposalExportData;
     }
 
-    private static ProposalWrapper getProposalWithLatestVersionInContestPhase(Proposal2Phase proposal2Phase, Proposal proposal){
+    private static BaseProposalWrapper getProposalWithLatestVersionInContestPhase(Proposal2Phase proposal2Phase, Proposal proposal) throws NoSuchContestException {
         if(proposal2Phase.getVersionTo() == -1 || proposal2Phase.getVersionFrom() == 0){
-            return new ProposalWrapper(proposal);
+            return new BaseProposalWrapper(proposal);
         }
-        return new ProposalWrapper(proposal, proposal2Phase.getVersionTo());
+        return new BaseProposalWrapper(proposal, proposal2Phase.getVersionTo());
     }
 
     private static String normalizeApostrophes(String stringToBeCleaned){
         return stringToBeCleaned.replace("`","'").replace("’","'");
     }
 
-    private static String getContestPhaseTitle(ContestPhase contestPhase) throws Exception{
+    private static String getContestPhaseTitle(ContestPhase contestPhase) throws PortalException, SystemException {
         Long contestPhaseTypeId = contestPhase.getContestPhaseType();
         ContestPhaseType contestPhaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseTypeId);
         return contestPhaseType.getName();
     }
 
-    private String getLastContestPhaseForProposal(Proposal proposal) throws Exception{
+    private String getLastContestPhaseForProposal(Proposal proposal) throws PortalException, SystemException {
         ProposalVersion proposalVersion =
                 ProposalVersionLocalServiceUtil.getByProposalIdVersion(proposal.getProposalId(), proposal.getCurrentVersion());
         Proposal2Phase proposal2Phase = Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion);
@@ -114,8 +117,8 @@ public class CsvExportUtil {
     }
 
     private String[] generateProposalAndUserDetailsRow(String contestTitle, String proposalTitle,
-                                                       String proposalLink, ProposalTeamMemberWrapper member,
-                                                       String lastPhaseTitle) throws Exception{
+                                                       String proposalLink, BaseProposalTeamMemberWrapper member,
+                                                       String lastPhaseTitle) throws PortalException, SystemException {
         User user = UserLocalServiceUtil.getUser(member.getUserId());
         String username = user.getScreenName();
         String firstName = user.getFullName();
