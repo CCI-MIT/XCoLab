@@ -79,7 +79,7 @@ public class ProposalsInSpecificContests {
 				pte.setUsedVersion(targetVersion);
 				pte.setProposalRibbon(getProposalRibbon(visibleProposal, completedPhase));
 
-				List<ProposalAttribute> attributes = ProposalLocalServiceUtil.getAttributes(visibleProposal.getProposalId(), targetVersion);
+				List<ProposalAttribute> attributes = ProposalAttributeLocalServiceUtil.getAttributes(visibleProposal.getProposalId(), targetVersion);
 				for (ProposalAttribute attribute : attributes) {
 					if (attribute.getName().equals("NAME")) {
 						pte.setProposalName(attribute.getStringValue());

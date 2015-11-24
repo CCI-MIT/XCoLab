@@ -9,6 +9,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -59,7 +60,7 @@ public class BadgeBean implements Serializable{
                     // Plan won a contest
                     String badgeText = ribbon.getHoverText();
                     long contestId = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestPK();
-                    String planTitle =  ProposalLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0).getStringValue();
+                    String planTitle =  ProposalAttributeLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0).getStringValue();
                     badges.add(new Badge(proposalRibbon, badgeText, p.getProposalId(), planTitle, contestId));
                 }
             } catch (SystemException | PortalException e) {

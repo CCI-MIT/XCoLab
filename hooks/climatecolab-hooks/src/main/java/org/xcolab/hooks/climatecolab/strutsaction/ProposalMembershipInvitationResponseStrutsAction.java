@@ -2,6 +2,7 @@ package org.xcolab.hooks.climatecolab.strutsaction;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -62,7 +63,7 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 			recipients.add(user.getUserId());
 		}
 
-		String proposalName = ProposalLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
+		String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
 		String proposalLink = String.format("<a href='%s'>%s</a>", String.format(PROPOSAL_URL, contestId, proposalId), proposalName);
 
 		if (membershipRequest != null) {

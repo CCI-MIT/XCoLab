@@ -3,6 +3,7 @@ package org.xcolab.portlets.proposals.view.action;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,7 @@ public class ToggleProposalOpenController {
                     throws PortalException, SystemException, ProposalsAuthorizationException {
         
         if (proposalsContext.getPermissions(request).getCanDelete()) {
-            ProposalLocalServiceUtil.setAttribute(proposalsContext.getUser(request).getUserId(),
+            ProposalAttributeLocalServiceUtil.setAttribute(proposalsContext.getUser(request).getUserId(),
                     proposalsContext.getProposal(request).getProposalId(), ProposalAttributeKeys.OPEN, planOpen ? 1 : 0);
         }
         else {

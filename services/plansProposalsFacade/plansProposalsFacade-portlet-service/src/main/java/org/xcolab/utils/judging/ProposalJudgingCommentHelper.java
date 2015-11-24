@@ -9,6 +9,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
@@ -29,8 +30,8 @@ public class ProposalJudgingCommentHelper {
 
     private final static Log _log = LogFactoryUtil.getLog(ProposalJudgingCommentHelper.class);
 
-    private Proposal proposal;
-    private ContestPhase contestPhase;
+    private final Proposal proposal;
+    private final ContestPhase contestPhase;
 
     public ProposalJudgingCommentHelper(Proposal proposal, ContestPhase contestPhase) {
         this.proposal = proposal;
@@ -107,7 +108,7 @@ public class ProposalJudgingCommentHelper {
      * @throws SystemException
      */
     public String getPromotionComment(boolean isWrapWithTemplate) throws NoSuchProposalContestPhaseAttributeException, SystemException, PortalException {
-        String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
         String contestName = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getContestShortName();
 
         //get fellow decision

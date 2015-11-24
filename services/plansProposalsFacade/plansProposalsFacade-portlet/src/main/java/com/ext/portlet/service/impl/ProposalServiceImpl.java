@@ -58,11 +58,14 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
      * @throws PortalException
      * @throws SystemException
      */
+    @Override
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getProposalVersionFirstIndex(long contestPhaseId, long proposalId) throws PortalException, SystemException {
         Proposal2Phase p2p = null;
-        if (contestPhaseId > 0) p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId,contestPhaseId);
+        if (contestPhaseId > 0) {
+            p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhaseId);
+        }
 
         int index = 0;
         Date oldDate = new Date();
@@ -92,6 +95,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
      * @throws PortalException
      * @throws SystemException
      */
+    @Override
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getProposalVersionIndex(long version, long proposalId) throws PortalException, SystemException {
@@ -123,6 +127,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
      * @throws PortalException
      * @throws SystemException
      */
+    @Override
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getProposalVersions(long contestId, long contestPhaseId, long proposalId, int start, int end) throws PortalException, SystemException {
@@ -153,7 +158,9 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
                     // Skip versions that do not belong to this contest
                     long cph = Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion).getContestPhaseId();
                     Contest c2 = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(cph));
-                    if (c2.getContestPK() != c.getContestPK()) continue;
+                    if (c2.getContestPK() != c.getContestPK()) {
+                        continue;
+                    }
                 }catch(SystemException se){
                     System.out.println(se);
                     continue;
@@ -182,7 +189,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
 
                 proposalVersionJsonObj.put("version", proposalVersion.getVersion());
                 proposalVersionJsonObj.put("date", proposalVersion.getCreateDate().getTime());
-                proposalVersionJsonObj.put("author", converUserToJson(proposalVersion.getAuthorId()));
+                proposalVersionJsonObj.put("author", convertUserToJson(proposalVersion.getAuthorId()));
                 proposalVersionJsonObj.put("updateType", proposalVersion.getUpdateType());
                 try{
                     proposalVersionJsonObj.put("contestPhase", getContestPhaseName(proposalVersion));
@@ -198,12 +205,14 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
         return result;
     }
 
+    @Override
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getProposalVersions(long proposalId, int start, int end) throws PortalException, SystemException {
         return  getProposalVersions(-1, -1, proposalId, start, end);
     }
 
+    @Override
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONArray getProposalContestSections(long proposalId, int version, long contestId) throws PortalException, SystemException {
@@ -217,7 +226,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
         if (planTemplate != null) {
             for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
             	try {
-            		ProposalAttribute attribute = proposalLocalService.getAttribute(proposalId, version, ProposalAttributeKeys.SECTION, psd.getId());
+            		ProposalAttribute attribute = proposalAttributeLocalService.getAttribute(proposalId, version, ProposalAttributeKeys.SECTION, psd.getId());
             		if (attribute != null && attribute.getStringValue().trim().length() > 0) {
             			JSONObject obj = JSONFactoryUtil.createJSONObject();
             			obj.put("title", psd.getTitle());
@@ -235,7 +244,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
     	return ret;
     }
     
-    private JSONObject converUserToJson(long userId) throws PortalException, SystemException {
+    private JSONObject convertUserToJson(long userId) throws PortalException, SystemException {
         User user = UserLocalServiceUtil.getUser(userId);
 
         JSONObject userJsonObj = JSONFactoryUtil.createJSONObject();

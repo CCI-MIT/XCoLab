@@ -15,6 +15,7 @@ import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -235,7 +236,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     }
 
     public void setModelRegion(String region, Long userId) throws PortalException, SystemException {
-        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.REGION, region);
+        ProposalAttributeLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.REGION, region);
     }
 
     public Long getModelId() throws PortalException, SystemException {
@@ -247,7 +248,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     }
 
     public void setScenarioId(Long scenarioId, Long isConsolidatedScenario, Long userId) throws PortalException, SystemException {
-        ProposalLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, isConsolidatedScenario, scenarioId);
+        ProposalAttributeLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, isConsolidatedScenario, scenarioId);
     }
 
     public Long getScenarioId() throws PortalException, SystemException {

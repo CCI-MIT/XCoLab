@@ -5,6 +5,7 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalRatingType;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -181,7 +182,8 @@ public class ProposalReview {
 
     private String getTeamOrNull(){
         try {
-            for (ProposalAttribute attr: ProposalLocalServiceUtil.getAttributes(proposal.getProposalId(), proposal.getCurrentVersion())) {
+            //TODO: optimize
+            for (ProposalAttribute attr: ProposalAttributeLocalServiceUtil.getAttributes(proposal.getProposalId(), proposal.getCurrentVersion())) {
                 if (attr.getName().equals(ProposalAttributeKeys.TEAM) && attr.getAdditionalId() == 0) {
                     return attr.getStringValue();
                 }

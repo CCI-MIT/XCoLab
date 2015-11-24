@@ -19,6 +19,7 @@ import com.liferay.util.mail.MailEngineException;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
+import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import javax.mail.internet.AddressException;
@@ -52,6 +53,8 @@ public abstract class EmailNotification {
 
     protected static final String LINK_FORMAT_STRING = "<a href='%s' target='_blank'>%s</a>";
 
+    protected ProposalAttributeHelper proposalAttributeHelper;
+
     protected ServiceContext serviceContext;
 
     protected Log _log;
@@ -68,12 +71,12 @@ public abstract class EmailNotification {
      * @param proposal  The proposal object (must not be null)
      * @return          Proposal URL as String
      */
-    protected  String getProposalLink(Contest contest, Proposal proposal) throws SystemException, PortalException {
-        final String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+    protected  String getProposalLink(Contest contest, Proposal proposal) throws SystemException {
+        final String proposalName = getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
         return getProposalLinkWithLinkText(contest, proposal, proposalName);
     }
 
-    protected String getProposalLinkWithLinkText(Contest contest, Proposal proposal, String linkText) throws SystemException, PortalException {
+    protected String getProposalLinkWithLinkText(Contest contest, Proposal proposal, String linkText) throws SystemException {
         final String proposalLinkUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
         return String.format(LINK_FORMAT_STRING, proposalLinkUrl, linkText);
     }
@@ -85,8 +88,8 @@ public abstract class EmailNotification {
      * @param proposal  The proposal object (must not be null)
      * @return          Proposal URL as String
      */
-    protected  String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) throws SystemException, PortalException {
-        final String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+    protected  String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) throws SystemException {
+        final String proposalName = getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
         final String proposalLinkUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + "/vote";
         return String.format(LINK_FORMAT_STRING, proposalLinkUrl, proposalName);
     }
@@ -118,6 +121,13 @@ public abstract class EmailNotification {
         return null;
     }
 
+    protected ProposalAttributeHelper getProposalAttributeHelper() {
+        if (proposalAttributeHelper == null) {
+            proposalAttributeHelper = new ProposalAttributeHelper(getProposal());
+        }
+        return proposalAttributeHelper;
+    }
+
     protected void sendMessage(String subject, String body, User recipient) {
         try {
             InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");
@@ -133,7 +143,6 @@ public abstract class EmailNotification {
      *
      * @param contest                       Contest in which the proposal is in
      * @param proposalToShare               The Proposal that should be shared
-     * @return
      * @throws SystemException
      * @throws PortalException
      */
@@ -145,11 +154,8 @@ public abstract class EmailNotification {
      * Returns the link url to the given contest
      *
      * @param contest                       Contest to be shared
-     * @return
-     * @throws SystemException
-     * @throws PortalException
      */
-    protected String getContestLinkUrl(Contest contest) throws SystemException, PortalException {
+    protected String getContestLinkUrl(Contest contest) {
         return serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(contest);
     }
 
@@ -157,11 +163,8 @@ public abstract class EmailNotification {
      * Returns a fully prepared Facebook share link for the given url
      *
      * @param urlToShare            The url to be shared
-     * @return
-     * @throws SystemException
-     * @throws PortalException
      */
-    protected String getFacebookShareLink(String urlToShare) throws SystemException, PortalException {
+    protected String getFacebookShareLink(String urlToShare) {
         String url = String.format(FACEBOOK_PROPOSAL_SHARE_LINK, urlToShare);
         return String.format(LINK_FORMAT_STRING, url, "Facebook");
     }
@@ -172,9 +175,7 @@ public abstract class EmailNotification {
      *
      * @param urlToShare    The url to be shared
      * @param shareMessage                  The message that should be included for sharing
-     * @return
      * @throws SystemException
-     * @throws PortalException
      */
     protected String getTwitterShareLink(String urlToShare, String shareMessage) throws SystemException {
         try {

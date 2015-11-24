@@ -35,7 +35,6 @@ import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
 import com.ext.portlet.service.persistence.ProposalVersionPK;
 import com.ext.portlet.service.persistence.ProposalVotePK;
-import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -73,8 +72,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
-import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
-import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
 import org.xcolab.proposals.events.ProposalMemberAddedEvent;
 import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
 import org.xcolab.proposals.events.ProposalRemovedVoteEvent;
@@ -82,7 +79,6 @@ import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
 import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
 import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
-import org.xcolab.utils.ProposalAttributeDetectUpdateAlgorithm;
 import org.xcolab.utils.UrlBuilder;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
@@ -270,321 +266,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposal.setVisible(visibility);
         ProposalLocalServiceUtil.updateProposal(proposal);
 
-        setAttribute(authorId, proposalId, ProposalAttributeKeys.VISIBLE, (visibility) ? 1L : 0L);
+        proposalAttributeLocalService.setAttribute(authorId, proposalId, ProposalAttributeKeys.VISIBLE, (visibility) ? 1L : 0L);
 
-    }
-
-    /**
-     * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
-     * <p>The algorithm for setting an attribute value is as follows:</p>
-     * <ol>
-     * <li>new proposal version is created</li>
-     * <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
-     * it is copied to the new version</li>
-     * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
-     * </ol>
-     *
-     * @param authorId      id of a change author
-     * @param proposalId    id of a proposal
-     * @param attributeName name of an attribute
-     * @param additionalId  additional id for an attribute
-     * @param stringValue   string value for an attribute
-     * @param numericValue  numeric value for an attribute
-     * @param realValue     double value for an attribute
-     * @return ProposalAttribute that represents newly set attribute
-     * @throws PortalException in case of an LR error
-     * @throws SystemException in case of an LR error
-     * @author janusz
-     */
-    @Override
-    @Transactional
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
-                                          String stringValue, long numericValue, double realValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, additionalId, stringValue, numericValue, realValue, new Date(), true);
-    }
-
-    /**
-     * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
-     * <p>The algorithm for setting an attribute value is as follows:</p>
-     * <ol>
-     * <li>new proposal version is created</li>
-     * <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
-     * it is copied to the new version</li>
-     * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new val`ue</li>
-     * </ol>
-     *
-     * @param authorId      id of a change author
-     * @param proposalId    id of a proposal
-     * @param attributeName name of an attribute
-     * @param additionalId  additional id for an attribute
-     * @param stringValue   string value for an attribute
-     * @param numericValue  numeric value for an attribute
-     * @param realValue     double value for an attribute
-     * @param updatedDate   date of update
-     * @return ProposalAttribute that represents newly set attribute
-     * @throws PortalException in case of an LR error
-     * @throws SystemException in case of an LR error
-     * @author patrickhiesel
-     */
-    @Override
-    @Transactional
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
-                                          String stringValue, long numericValue, double realValue, Date updatedDate, boolean publishActivity)
-            throws PortalException, SystemException {
-        Proposal proposal = getProposal(proposalId);
-        ProposalAttribute oldAttribute = null;
-
-        int currentVersion = proposal.getCurrentVersion();
-        int newVersion = currentVersion + 1;
-
-        // find attributes for current version of a proposal
-        List<ProposalAttribute> currentProposalAttributes = proposalAttributePersistence.findByProposalIdVersion(
-                proposalId, currentVersion);
-
-        // for each attribute, if it isn't the one that we are changing, simply
-        // update it to the most recent version
-        // if it is the one that we are changing then leave old one as it is and
-        // create new one for new proposal version
-        for (ProposalAttribute attribute : currentProposalAttributes) {
-            ProposalAttributeDetectUpdateAlgorithm updateAlgorithm = new ProposalAttributeDetectUpdateAlgorithm(attribute);
-            if (!updateAlgorithm.hasBeenUpdated(attributeName, additionalId, numericValue, realValue)) {
-                // clone the attribute and set its version to the new value
-                attribute.setVersion(newVersion);
-                proposalAttributeLocalService.updateProposalAttribute(attribute);
-            } else {
-                oldAttribute = attribute;
-            }
-        }
-
-        // set new value for provided attribute
-        ProposalAttribute attribute = setAttributeValue(proposalId, newVersion, attributeName, additionalId, stringValue, numericValue, realValue);
-
-        proposal.setCurrentVersion(newVersion);
-        proposal.setUpdatedDate(updatedDate);
-
-        // create newly created version descriptor
-        createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId, updatedDate);
-        updateProposal(proposal);
-
-        // Update the proposal name in the discussion category
-        if (attributeName.equals(ProposalAttributeKeys.NAME)) {
-            DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
-            ContestType contestType = contestTypeLocalService.getContestTypeFromProposalId(proposalId);
-            dcg.setDescription(String.format("%s %s", contestType.getProposalName(), stringValue));
-            discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(dcg);
-        }
-
-        if (publishActivity) {
-            eventBus.post(new ProposalAttributeUpdatedEvent(proposal, userLocalService.getUser(authorId),
-                    attributeName, oldAttribute, attribute));
-        }
-
-        return attribute;
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     *
-     * @throws PortalException
-     * @throws SystemException
-     */
-    @Override
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName,
-                                          String stringValue, long numericValue, double realValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, 0L, stringValue, numericValue, realValue);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     * @throws PortalException
-     * @throws SystemException
-     */
-    @Override
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId, String stringValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, additionalId, stringValue, 0, 0);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     * @throws PortalException
-     * @throws SystemException
-     */
-    @Override
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, String stringValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, 0, stringValue, 0, 0);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     * @throws PortalException
-     * @throws SystemException
-     */
-    @Override
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId, long numericValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, additionalId, null, numericValue, 0);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     * @throws PortalException
-     * @throws SystemException
-     */
-    @Override
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long numericValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, 0, null, numericValue, 0);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     * @throws PortalException
-     * @throws SystemException
-     */
-    @Override
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId, double realValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, additionalId, null, 0, realValue);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     * @throws PortalException
-     * @throws SystemException
-     */
-    @Override
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, double realValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, 0, null, 0, realValue);
-    }
-
-    /**
-     * <p>Returns all attributes for current version of a proposal.</p>
-     *
-     * @param proposalId id of a proposal
-     * @return list of proposal attributes for current version of a proposal
-     * @throws SystemException in case of an LR error
-     * @author janusz
-     */
-    @Override
-    public List<ProposalAttribute> getAttributes(long proposalId) throws SystemException {
-        Proposal proposal = fetchProposal(proposalId);
-        return getAttributes(proposalId, proposal.getCurrentVersion());
-    }
-
-    /**
-     * <p>Returns all attributes for given version of a proposal.</p>
-     *
-     * @param proposalId id of a proposal
-     * @param version    version number of a proposal
-     * @return list of proposal attributes for current version of a proposal
-     * @throws SystemException in case of an LR error
-     * @author janusz
-     */
-    @Override
-    public List<ProposalAttribute> getAttributes(long proposalId, int version) throws SystemException {
-        return proposalAttributePersistence.findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId, version, version);
-    }
-
-    /**
-     * <p>Returns an attribute for current version of a proposal.</p>
-     *
-     * @param proposalId    id of a proposal
-     * @param attributeName name of an attribute
-     * @param additionalId  additionalId of an attribute
-     * @return proposal attribute
-     * @throws SystemException in case of an LR error
-     * @author janusz
-     */
-    @Override
-    public ProposalAttribute getAttribute(long proposalId, String attributeName, long additionalId) throws SystemException, NoSuchProposalAttributeException {
-        Proposal proposal = fetchProposal(proposalId);
-        return getAttribute(proposalId, proposal.getCurrentVersion(), attributeName, additionalId);
-    }
-
-    /**
-     * <p>Returns an attribute for concrete version of a proposal.</p>
-     *
-     * @param proposalId    id of a proposal
-     * @param version       version of a proposal
-     * @param attributeName name of an attribute
-     * @param additionalId  additionalId of an attribute
-     * @return proposal attribute
-     * @throws SystemException in case of an LR error
-     * @author janusz
-     */
-    @Override
-    public ProposalAttribute getAttribute(long proposalId, int version, String attributeName, long additionalId)
-            throws NoSuchProposalAttributeException, SystemException {
-        List<ProposalAttribute> attribute = proposalAttributePersistence.
-                findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
-                        proposalId, version, version, attributeName, additionalId);
-
-        if (attribute.isEmpty()) {
-            throw new NoSuchProposalAttributeException("Can't find attribute [" +
-                    "proposalId: " + proposalId + ", " +
-                    "version: " + version + ", " +
-                    "attributeName: " + attributeName + ", " +
-                    "additionalId: " + additionalId + "]");
-        }
-
-        return attribute.get(0);
-    }
-
-    /**
-     * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
-     *
-     * @throws SystemException
-     * @throws PortalException
-     */
-    @Override
-    public void removeAttribute(long authorId, ProposalAttribute attributeToDelete, boolean publishActivity)
-            throws SystemException, PortalException {
-        Proposal proposal = getProposal(attributeToDelete.getProposalId());
-
-        int currentVersion = proposal.getCurrentVersion();
-        int newVersion = currentVersion + 1;
-
-        // find attributes for current version of a proposal
-        List<ProposalAttribute> currentProposalAttributes = proposalAttributePersistence.findByProposalIdVersion(
-                proposal.getProposalId(), currentVersion);
-
-        // for each attribute, if it isn't the one that we are deleting, simply
-        // update it to the most recent version
-        for (ProposalAttribute attribute : currentProposalAttributes) {
-            if (attribute.getId() != attributeToDelete.getId()) {
-                // clone the attribute and set its version to the new value
-                attribute.setVersion(newVersion);
-                proposalAttributeLocalService.updateProposalAttribute(attribute);
-            }
-        }
-
-        Date now = new Date();
-        proposal.setCurrentVersion(newVersion);
-        proposal.setUpdatedDate(now);
-
-        // create newly created version descriptor
-        createPlanVersionDescription(authorId, attributeToDelete.getProposalId(), newVersion, attributeToDelete.getName(), attributeToDelete.getAdditionalId(), now);
-        updateProposal(proposal);
-
-        if (publishActivity) {
-            eventBus.post(new ProposalAttributeRemovedEvent(proposal, userLocalService.getUser(authorId),
-                    attributeToDelete.getName(), attributeToDelete));
-        }
-    }
-
-    /**
-     * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
-     *
-     * @throws PortalException
-     * @throws SystemException
-     */
-    @Override
-    public void removeAttribute(long authorId, ProposalAttribute attributeToDelete) throws PortalException, SystemException {
-        removeAttribute(authorId, attributeToDelete, true);
     }
 
     /**
@@ -1046,7 +729,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Override
     public boolean isOpen(long proposalId) throws PortalException, SystemException {
         try {
-            ProposalAttribute attribute = getAttribute(proposalId, ProposalAttributeKeys.OPEN, 0);
+            ProposalAttribute attribute = proposalAttributeLocalService.getAttribute(proposalId, ProposalAttributeKeys.OPEN, 0);
             return attribute.getNumericValue() > 0;
 
         } catch (NoSuchProposalAttributeException e) {
@@ -1327,7 +1010,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase, PortletRequest request)
             throws PortalException, SystemException, AddressException, MailEngineException {
 
-        String subject = "Judging Results on your Proposal " + ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        String subject = "Judging Results on your Proposal " + proposalAttributeLocalService.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String messageBody = reviewContentHelper.getPromotionComment(true);
@@ -1384,41 +1067,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
 
         return recipientIds;
-    }
-
-    /**
-     * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>
-     *
-     * @param proposalId    id of a proposal
-     * @param version       proposal version
-     * @param attributeName name of an attribute
-     * @param additionalId  additional id for an attribute
-     * @param stringValue   string value for an attribute
-     * @param numericValue  numeric value for an attribute
-     * @param realValue     real value for an attribute
-     * @return newly created proposal attribute
-     * @throws SystemException in case of a LR error
-     * @author janusz
-     */
-    @Transactional
-    private ProposalAttribute setAttributeValue(long proposalId, int version, String attributeName, long additionalId,
-                                                String stringValue, long numericValue, double realValue) throws SystemException {
-        ProposalAttribute attribute = proposalAttributeLocalService.createProposalAttribute(
-                CounterLocalServiceUtil.increment(ProposalAttribute.class.getName()));
-
-        attribute.setName(attributeName);
-        attribute.setProposalId(proposalId);
-        attribute.setVersion(version);
-        attribute.setVersionWhenCreated(version);
-        attribute.setAdditionalId(additionalId);
-
-        attribute.setNumericValue(numericValue);
-        attribute.setStringValue(stringValue);
-        attribute.setRealValue(realValue);
-
-        proposalAttributeLocalService.addProposalAttribute(attribute);
-
-        return attribute;
     }
 
     /**
@@ -1490,32 +1138,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
 
         return group;
-    }
-
-    /**
-     * <p>Creates new plan version descriptor</p>
-     *
-     * @param authorId     id of a change author
-     * @param proposalId   id of a proposal
-     * @param version      proposal version
-     * @param updateType   name of updated attribute
-     * @param additionalId additional id of an updated attribute
-     * @param updatedDate  date when this version has been created
-     * @throws SystemException
-     */
-    @Transactional
-    private void createPlanVersionDescription(long authorId, long proposalId, int version, String updateType,
-                                              long additionalId, Date updatedDate) throws SystemException {
-
-        ProposalVersion proposalVersion = proposalVersionLocalService.createProposalVersion(new ProposalVersionPK(
-                proposalId, version));
-
-        proposalVersion.setAuthorId(authorId);
-        proposalVersion.setUpdateType(updateType);
-        proposalVersion.setUpdateAdditionalId(additionalId);
-        proposalVersion.setCreateDate(updatedDate);
-
-        proposalVersionLocalService.addProposalVersion(proposalVersion);
     }
 
     /**
@@ -1682,23 +1304,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     	return contestLocalService.getContest(this.getLatestProposalContestPhase(proposalId).getContestPK());
     }
 
-    @Override
-    public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) throws SystemException {
-        return proposalAttributeFinder.findByProposalIdVersionGreaterThanVersionWhenCreatedLessThanNameLikeImpact(proposal.getProposalId(),
-                proposal.getCurrentVersion(), proposal.getCurrentVersion());
-    }
-
-    @Override
-    public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal, FocusArea focusArea) throws SystemException {
-        List<ProposalAttribute> filteredProposalAttributes = new ArrayList<>();
-        for (ProposalAttribute attribute : getImpactProposalAttributes(proposal)) {
-            if (attribute.getAdditionalId() == focusArea.getId()) {
-                filteredProposalAttributes.add(attribute);
-            }
-        }
-        return filteredProposalAttributes;
-    }
-
     /**
      * Returns all focus areas, for which entered proposal impact data is available
      *
@@ -1708,7 +1313,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         Set<Long> focusAreaIdSet = new HashSet<>();
         List<FocusArea> impactSeriesFocusAreas = new ArrayList<>();
 
-        for (ProposalAttribute attribute : getImpactProposalAttributes(proposal)) {
+        for (ProposalAttribute attribute : proposalAttributeLocalService.getImpactProposalAttributes(proposal)) {
             if (!focusAreaIdSet.contains(attribute.getAdditionalId())) {
                 focusAreaIdSet.add(attribute.getAdditionalId());
                 impactSeriesFocusAreas.add(FocusAreaLocalServiceUtil.getFocusArea(attribute.getAdditionalId()));

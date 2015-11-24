@@ -27,11 +27,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class GlobalContestSimulator {
     protected static XCoLabTest testInstance;
-    private static long DAY_IN_MS = 1000 * 60 * 60 * 24;
+    private static final long DAY_IN_MS = 1000 * 60 * 60 * 24;
     protected static SimpleDateFormat dateFormat;
     protected static Random random;
 
-    protected int contestPhaseIdCount = 0;
+    protected int contestPhaseIdCount;
     protected Map<Integer, List<Proposal>> sideProposals;
     protected List<Proposal> globalProposals;
     protected List<Integer> globalProposalsInLastPhase;
@@ -233,7 +233,7 @@ public class GlobalContestSimulator {
             globalProposals.add(proposal);
 
             //create proposal name
-            testInstance.proposalLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Global Proposal "+i);
+            testInstance.proposalAttributeLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Global Proposal "+i);
 
             initializePhasesForProposal(proposal, i, startPhase, globalContestPhases, globalProposalsInLastPhase);
         }
@@ -282,7 +282,7 @@ public class GlobalContestSimulator {
                 sideProposals.get(i).add(proposal);
                 sideProposalsTeamMembers.get(i).put(j, setTeamMembers(proposal, author));
 
-                testInstance.proposalLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Side-Proposal "+i+"-"+j);
+                testInstance.proposalAttributeLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Side-Proposal "+i+"-"+j);
 
                 initializePhasesForProposal(proposal, j, startPhase, sideContestPhases.get(i), sideProposalsInLastPhase.get(i));
 
@@ -317,7 +317,7 @@ public class GlobalContestSimulator {
             }
 
             //1300907 is the sub proposal plan section definition
-            testInstance.proposalLocalService.setAttribute(globalProposals.get(i).getAuthorId(), globalProposals.get(i).getProposalId(), ProposalAttributeKeys.SECTION, 1300907L, sectionText);
+            testInstance.proposalAttributeLocalService.setAttribute(globalProposals.get(i).getAuthorId(), globalProposals.get(i).getProposalId(), ProposalAttributeKeys.SECTION, 1300907L, sectionText);
         }
     }
 

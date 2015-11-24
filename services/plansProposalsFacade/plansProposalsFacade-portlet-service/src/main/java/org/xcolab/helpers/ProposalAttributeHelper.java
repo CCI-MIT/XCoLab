@@ -2,7 +2,7 @@ package org.xcolab.helpers;
 
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.HashMap;
@@ -23,9 +23,13 @@ public class ProposalAttributeHelper {
         this.version = version;
     }
 
+    public ProposalAttributeHelper(Proposal proposal) {
+        this(proposal, proposal.getCurrentVersion());
+    }
+
     //initialization is expensive --> be lazy
     private void init() throws SystemException {
-        List<ProposalAttribute> attributes = ProposalLocalServiceUtil.getAttributes(proposal.getProposalId(), version);
+        List<ProposalAttribute> attributes = ProposalAttributeLocalServiceUtil.getAttributes(proposal.getProposalId(), version);
         if (attributesByNameAndAdditionalId == null) {
             attributesByNameAndAdditionalId = new HashMap<>();
             for (ProposalAttribute attribute : attributes) {
@@ -47,6 +51,7 @@ public class ProposalAttributeHelper {
         Map<MapKey, MapVal> innerMap = searchMap.get(searchKey);
         if (innerMap == null) {
             innerMap = new HashMap<>();
+            searchMap.put(searchKey, innerMap);
         }
         return innerMap;
     }
@@ -86,7 +91,11 @@ public class ProposalAttributeHelper {
         if (attributesByNameAndAdditionalId == null) {
             init();
         }
-        return attributesByNameAndAdditionalId.get(attributeName).get(additionalId);
+        final Map<Long, ProposalAttribute> attributesByAdditionalId = attributesByNameAndAdditionalId.get(attributeName);
+        if (attributesByAdditionalId == null) {
+            return null;
+        }
+        return attributesByAdditionalId.get(additionalId);
     }
 
     public ProposalAttribute getAttributeOrNull(String attributeName) throws SystemException {

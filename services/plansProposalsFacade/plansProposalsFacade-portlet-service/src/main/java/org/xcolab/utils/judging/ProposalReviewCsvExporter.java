@@ -1,9 +1,11 @@
 package org.xcolab.utils.judging;
 
+import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -39,7 +41,7 @@ public class ProposalReviewCsvExporter {
         this.ratingTypes = ratingTypes;
     }
 
-    public String getCsvString() throws SystemException, PortalException {
+    public String getCsvString() throws SystemException, NoSuchProposalAttributeException {
         if (proposalToProposalReviewsMap.isEmpty()) {
             return StringPool.BLANK;
         }
@@ -48,7 +50,7 @@ public class ProposalReviewCsvExporter {
         for (Map.Entry<Proposal, List<ProposalReview>> entry : proposalToProposalReviewsMap.entrySet()) {
             final Proposal proposal = entry.getKey();
             final List<ProposalReview> proposalReviews = entry.getValue();
-            String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(),
+            String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposal.getProposalId(),
                     ProposalAttributeKeys.NAME, 0).getStringValue();
 
             for (ProposalReview proposalReview : proposalReviews) {

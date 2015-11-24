@@ -37,7 +37,7 @@ public class ProposalVoteValidityConfirmation extends ProposalVoteNotification {
             return templateWrapper;
         }
 
-        final String proposalName = ProposalLocalServiceUtil.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        final String proposalName = getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         String proposalVoteConfirmationTemplateString = contest.getProposalVoteConfirmationTemplateString();
         if (proposalVoteConfirmationTemplateString.isEmpty()) {

@@ -9,6 +9,7 @@ import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -165,8 +166,8 @@ public class ProposalImpactJSONController {
         FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
         Proposal proposal = proposalsContext.getProposal(request);
 
-        for (ProposalAttribute proposalAttribute : ProposalLocalServiceUtil.getImpactProposalAttributes(proposal, focusArea)) {
-            ProposalLocalServiceUtil.removeAttribute(proposalsContext.getUser(request).getUserId(), proposalAttribute);
+        for (ProposalAttribute proposalAttribute : ProposalAttributeLocalServiceUtil.getImpactProposalAttributes(proposal, focusArea)) {
+            ProposalAttributeLocalServiceUtil.removeAttribute(proposalsContext.getUser(request).getUserId(), proposalAttribute);
         }
 
         responseJSON.put("success", true);

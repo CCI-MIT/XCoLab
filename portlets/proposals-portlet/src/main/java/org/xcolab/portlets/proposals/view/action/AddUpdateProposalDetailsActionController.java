@@ -12,6 +12,7 @@ import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
@@ -173,16 +174,16 @@ public class AddUpdateProposalDetailsActionController {
             
             if (updateProposalSectionsBean.getBaseProposalId() > 0) {
             	// we have a base proposal
-            	ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_ID, updateProposalSectionsBean.getBaseProposalId());
-            	ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, updateProposalSectionsBean.getBaseProposalContestId());
+            	ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_ID, updateProposalSectionsBean.getBaseProposalId());
+            	ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, updateProposalSectionsBean.getBaseProposalContestId());
             	
             	 
             	
-            	for (ProposalAttribute attribute: ProposalLocalServiceUtil.getAttributes(updateProposalSectionsBean.getBaseProposalId())) {
+            	for (ProposalAttribute attribute : ProposalAttributeLocalServiceUtil.getAttributes(updateProposalSectionsBean.getBaseProposalId())) {
             		if (attributesNotToBeCopiedFromBaseProposal.contains(attribute.getName())) {
             			continue;
             		}
-            		ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), attribute.getName(), attribute.getAdditionalId(), attribute.getStringValue(), attribute.getNumericValue(), attribute.getRealValue());
+            		ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), attribute.getName(), attribute.getAdditionalId(), attribute.getStringValue(), attribute.getNumericValue(), attribute.getRealValue());
             	}
             }
         }
@@ -191,35 +192,35 @@ public class AddUpdateProposalDetailsActionController {
         
         
         if (updateProposalSectionsBean.getName() != null && (proposal.getName() == null || !updateProposalSectionsBean.getName().equals(proposal.getName()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, HtmlUtil.cleanMost(updateProposalSectionsBean.getName()));
+            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, HtmlUtil.cleanMost(updateProposalSectionsBean.getName()));
         }
         else {
         	filledAll = false;
         }
         
         if (updateProposalSectionsBean.getPitch() != null && (proposal.getName() == null || !updateProposalSectionsBean.getPitch().equals(proposal.getPitch()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch()));
+            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch()));
         }
         else {
         	filledAll = false;
         }
 
         if (updateProposalSectionsBean.getDescription() != null && (proposal.getName() == null || !updateProposalSectionsBean.getDescription().equals(proposal.getDescription()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.DESCRIPTION, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription()));
+            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.DESCRIPTION, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription()));
         }
         else {
         	filledAll = false;
         }
 
         if (updateProposalSectionsBean.getTeam() != null && !updateProposalSectionsBean.getTeam().equals(proposal.getTeam())) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, HtmlUtil.cleanMost(updateProposalSectionsBean.getTeam()));
+            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, HtmlUtil.cleanMost(updateProposalSectionsBean.getTeam()));
         }
         else {
         	filledAll = false;
         }
 
         if (updateProposalSectionsBean.getImageId() > 0 && updateProposalSectionsBean.getImageId() != proposal.getImageId()) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.IMAGE_ID, updateProposalSectionsBean.getImageId()); 
+            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.IMAGE_ID, updateProposalSectionsBean.getImageId());
         }
         else {
         	filledAll = false;
@@ -230,7 +231,7 @@ public class AddUpdateProposalDetailsActionController {
             String newSectionValue = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
             if (section.getType() == PlanSectionTypeKeys.TEXT || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                 if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
-                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), HtmlUtil.cleanSome(newSectionValue));
+                    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), HtmlUtil.cleanSome(newSectionValue));
                     if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                         updateProposalReferences = true;
                     }
@@ -244,7 +245,7 @@ public class AddUpdateProposalDetailsActionController {
                 if (StringUtils.isNumeric(newSectionValue)) {
                     long newNumericVal = Long.parseLong(newSectionValue);
                     if (newNumericVal != section.getNumericValue()) {
-                        ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), 
+                        ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(),
                                 proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericVal);
                     }
                 }
@@ -256,11 +257,11 @@ public class AddUpdateProposalDetailsActionController {
                 if (StringUtils.isNumeric(newSectionValue) && StringUtils.isNotBlank(newSectionValue)) {
                     final long newNumericValue = Long.parseLong(newSectionValue);
                     if (section.getNumericValue() != newNumericValue) {
-                        ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericValue);
+                        ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericValue);
                         updateProposalReferences = true;
                     }
                 } else if (StringUtils.isBlank(newSectionValue)) {
-                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0L);
+                    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0L);
                 }
             }
             if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_REFERENCE) {
@@ -276,7 +277,7 @@ public class AddUpdateProposalDetailsActionController {
                     //if (cleanedReferences.substring(cleanedReferences.length()-2,cleanedReferences.length()-1).equalsIgnoreCase(",")) cleanedReferences = cleanedReferences.substring(0, cleanedReferences.length() - 2);
                 }
                 if (!section.getStringValue().equals(cleanedReferences.toString())) {
-                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences.toString());
+                    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences.toString());
                     updateProposalReferences = true;
                 }
             }

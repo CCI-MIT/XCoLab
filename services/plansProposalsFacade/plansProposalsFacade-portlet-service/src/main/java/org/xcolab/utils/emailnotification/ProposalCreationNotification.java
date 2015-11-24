@@ -75,7 +75,7 @@ public class ProposalCreationNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        final String proposalName = ProposalLocalServiceUtil.getAttribute(createdProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        final String proposalName = getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         String proposalCreationTemplateString = contest.getProposalCreationTemplateString();
         if (proposalCreationTemplateString.isEmpty()) {

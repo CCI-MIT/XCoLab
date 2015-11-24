@@ -1,38 +1,28 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.portlet.WindowState;
-import javax.portlet.WindowStateException;
-import javax.validation.Valid;
-
-import com.ext.portlet.service.ProposalLocalService;
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.messaging.MessageUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.MembershipRequestLocalService;
-import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.MembershipRequest;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,19 +34,14 @@ import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.MembershipRequest;
-import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
-import org.xcolab.portlets.proposals.wrappers.MembershipRequestWrapper;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -99,7 +84,7 @@ public class ProposalRequestMembershipActionController {
 
         long userId = proposalsContext.getUser(request).getUserId();
         long proposalId = proposalsContext.getProposal(request).getProposalId();
-        String proposalName = ProposalLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
+        String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
         ProposalLocalServiceUtil.addMembershipRequest(proposalId,userId,comment);
 
         for(User user : ProposalLocalServiceUtil.getMembers(proposalsContext.getProposal(request).getProposalId())){
@@ -145,7 +130,7 @@ public class ProposalRequestMembershipActionController {
 					long proposalId = proposalsContext.getProposal(request).getProposalId();
 					long contestId = proposalsContext.getContest(request).getContestPK();
 
-					String proposalName = ProposalLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
+					String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
 					String comment = requestMembershipInviteBean.getInviteComment();
 
 					// A comment has to be specified
@@ -185,7 +170,7 @@ public class ProposalRequestMembershipActionController {
     @ResourceMapping("inviteMembers-validateRecipient")
     public void validateRecipient(ResourceRequest request, ResourceResponse response)
             throws PortalException, SystemException {
-        String input = (String)request.getParameter("term");
+        String input = request.getParameter("term");
 
         List<User> recipients = getRecipientSuggestions(input, proposalsContext.getProposal(request).getProposalId());
         JSONArray responseJson = JSONFactoryUtil.createJSONArray();
@@ -206,18 +191,26 @@ public class ProposalRequestMembershipActionController {
                         @RequestParam("comment") String comment,
                         @RequestParam("requestId") long requestId)
             throws PortalException, SystemException {
-        if (PortalUtil.getUser(request) == null) return;
+        if (PortalUtil.getUser(request) == null) {
+            return;
+        }
 
         long userId = PortalUtil.getUser(request).getUserId();
         long proposalId = proposalsContext.getProposal(request).getProposalId();
 
         MembershipRequest membershipRequest = null;
         for (MembershipRequest mr : ProposalLocalServiceUtil.getMembershipRequests(proposalId)){
-            if (mr.getPrimaryKey() == requestId) membershipRequest = mr;
+            if (mr.getPrimaryKey() == requestId) {
+                membershipRequest = mr;
+            }
         }
 
-        if (membershipRequest == null) return;
-        if (comment == null || comment.equalsIgnoreCase("Optional response")) comment = "no comments";
+        if (membershipRequest == null) {
+            return;
+        }
+        if (comment == null || comment.equalsIgnoreCase("Optional response")) {
+            comment = "no comments";
+        }
         if (approve.equalsIgnoreCase("APPROVE")){
             ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
             sendMessage(proposalsContext.getUser(request).getUserId(),membershipRequest.getUserId(),MSG_MEMBERSHIP_RESPONSE_SUBJECT,MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
@@ -229,7 +222,7 @@ public class ProposalRequestMembershipActionController {
     }
 
     public void sendMessage(long sender, long recipient, String subject, String content) {
-        List<Long> recipients = new ArrayList<Long>();
+        List<Long> recipients = new ArrayList<>();
         recipients.add(recipient);
 
         try{
@@ -262,7 +255,7 @@ public class ProposalRequestMembershipActionController {
         query.setLimit(0, 5);
         List<User> result = UserLocalServiceUtil.dynamicQuery(query);
 
-		if (result.size() > 0) {
+		if (!result.isEmpty()) {
 			recipients.addAll(result);
 		}
 

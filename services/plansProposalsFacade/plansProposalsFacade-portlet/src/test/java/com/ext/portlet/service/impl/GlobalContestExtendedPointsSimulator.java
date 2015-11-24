@@ -503,7 +503,7 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
                     contestProposals.add(proposal);
                     proposalTeamMembers.setProposalTeamMembers(proposalIdx, setTeamMembers(proposal, author));
 
-                    testInstance.proposalLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Tier " + (tierIdx + 1) + " Contest " + (contestIdx + 1) + " Proposal " + (proposalIdx + 1));
+                    testInstance.proposalAttributeLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Tier " + (tierIdx + 1) + " Contest " + (contestIdx + 1) + " Proposal " + (proposalIdx + 1));
 
                     initializePhasesForProposal(proposal, proposalIdx, startPhase, contestPhases, contestProposalsInLastPhase);
 
@@ -540,7 +540,7 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
                     }
 
                     //1300907 is the sub proposal plan section definition
-                    testInstance.proposalLocalService.setAttribute(
+                    testInstance.proposalAttributeLocalService.setAttribute(
                             contestProposals.get(fromProposalIdx).getAuthorId(),
                             contestProposals.get(fromProposalIdx).getProposalId(),
                             ProposalAttributeKeys.SECTION,
