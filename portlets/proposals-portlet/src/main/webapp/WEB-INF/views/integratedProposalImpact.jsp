@@ -150,7 +150,7 @@
                                         </c:when>
                                         <c:otherwise>
                                             <!--  proposal creation, return to contest proposals page on discard -->
-                                            <proposalsPortlet:contestLink contest="${contest }" cssClass="grey-button"
+                                            <collab:contestLink contest="${contest }" cssClass="grey-button"
                                                                           linkId="discardChangesButton"
                                                                           text="DISCARD changes"/>
                                         </c:otherwise>
