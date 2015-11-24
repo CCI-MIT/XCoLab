@@ -4,6 +4,7 @@ import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -128,7 +129,7 @@ public class ProposalPickerSortingUtil {
     }
 
     public static void sortProposalsList(String sortOrder, String sortColumn,
-                                   List<Pair<Proposal, Date>> proposals) {
+                                   List<Pair<Proposal, Date>> proposals) throws PortalException {
         switch (sortColumn.toLowerCase()) {
             case "contest":
                 Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
@@ -158,14 +159,14 @@ public class ProposalPickerSortingUtil {
                     public int compare(Pair<Proposal, Date> o1,
                                        Pair<Proposal, Date> o2) {
                         try {
-                            return ProposalLocalServiceUtil
+                            return ProposalAttributeLocalServiceUtil
                                     .getAttribute(o1.getLeft().getProposalId(),
-                                            ProposalAttributeKeys.NAME, 0l)
+                                            ProposalAttributeKeys.NAME, 0L)
                                     .getStringValue()
                                     .compareTo(
-                                            ProposalLocalServiceUtil.getAttribute(
+                                            ProposalAttributeLocalServiceUtil.getAttribute(
                                                     o2.getLeft().getProposalId(),
-                                                    ProposalAttributeKeys.NAME, 0l)
+                                                    ProposalAttributeKeys.NAME, 0L)
                                                     .getStringValue());
                         } catch (Exception e) {
                             return 0;
@@ -179,19 +180,19 @@ public class ProposalPickerSortingUtil {
                     public int compare(Pair<Proposal, Date> o1,
                                        Pair<Proposal, Date> o2) {
                         try {
-                            ProposalAttribute t1 = ProposalLocalServiceUtil
+                            ProposalAttribute t1 = ProposalAttributeLocalServiceUtil
                                     .getAttribute(o1.getLeft().getProposalId(),
                                             ProposalAttributeKeys.TEAM, 0);
-                            ProposalAttribute t2 = ProposalLocalServiceUtil
+                            ProposalAttribute t2 = ProposalAttributeLocalServiceUtil
                                     .getAttribute(o2.getLeft().getProposalId(),
                                             ProposalAttributeKeys.TEAM, 0);
 
                             String author1 = t1 == null
-                                    || t1.getStringValue().trim().length() == 0 ? UserLocalServiceUtil
+                                    || t1.getStringValue().trim().isEmpty() ? UserLocalServiceUtil
                                     .getUser(o1.getLeft().getAuthorId())
                                     .getScreenName() : t1.getStringValue();
                             String author2 = t2 == null
-                                    || t2.getStringValue().trim().length() == 0 ? UserLocalServiceUtil
+                                    || t2.getStringValue().trim().isEmpty() ? UserLocalServiceUtil
                                     .getUser(o2.getLeft().getAuthorId())
                                     .getScreenName() : t2.getStringValue();
 
@@ -242,6 +243,8 @@ public class ProposalPickerSortingUtil {
                     }
                 });
                 break;
+            default:
+                throw new PortalException("Unknown sort column");
         }
 
         if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {

@@ -19,7 +19,7 @@ import java.util.Map;
  * Created by kmang on 03/05/15.
  */
 public abstract class MemberRoleChoiceAlgorithm {
-    private static Log _log = LogFactoryUtil.getLog(MemberRoleChoiceAlgorithm.class);
+    private static final Log _log = LogFactoryUtil.getLog(MemberRoleChoiceAlgorithm.class);
 
     public final static MemberRoleChoiceAlgorithm proposalImpactTabAlgorithm = new MemberRoleChoiceAlgorithm() {
 

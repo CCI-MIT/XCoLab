@@ -238,4 +238,237 @@ public interface ProposalAttributeLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ProposalAttribute getAttribute(
+        long proposalId, int version, java.lang.String attributeName,
+        long additionalId)
+        throws com.ext.portlet.NoSuchProposalAttributeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Returns an attribute for current version of a proposal.</p>
+    *
+    * @param proposalId    id of a proposal
+    * @param attributeName name of an attribute
+    * @param additionalId  additionalId of an attribute
+    * @return proposal attribute
+    * @throws SystemException in case of an LR error
+    * @author janusz
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ProposalAttribute getAttribute(
+        long proposalId, java.lang.String attributeName, long additionalId)
+        throws com.ext.portlet.NoSuchProposalAttributeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
+    * <p>The algorithm for setting an attribute value is as follows:</p>
+    * <ol>
+    * <li>new proposal version is created</li>
+    * <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
+    * it is copied to the new version</li>
+    * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
+    * </ol>
+    *
+    * @param authorId      id of a change author
+    * @param proposalId    id of a proposal
+    * @param attributeName name of an attribute
+    * @param additionalId  additional id for an attribute
+    * @param stringValue   string value for an attribute
+    * @param numericValue  numeric value for an attribute
+    * @param realValue     double value for an attribute
+    * @return ProposalAttribute that represents newly set attribute
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    * @author janusz
+    */
+    @com.liferay.portal.kernel.transaction.Transactional
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName, long additionalId,
+        java.lang.String stringValue, long numericValue, double realValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
+    * <p>The algorithm for setting an attribute value is as follows:</p>
+    * <ol>
+    * <li>new proposal version is created</li>
+    * <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
+    * it is copied to the new version</li>
+    * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new val`ue</li>
+    * </ol>
+    *
+    * @param authorId      id of a change author
+    * @param proposalId    id of a proposal
+    * @param attributeName name of an attribute
+    * @param additionalId  additional id for an attribute
+    * @param stringValue   string value for an attribute
+    * @param numericValue  numeric value for an attribute
+    * @param realValue     double value for an attribute
+    * @param updatedDate   date of update
+    * @return ProposalAttribute that represents newly set attribute
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    * @author patrickhiesel
+    */
+    @com.liferay.portal.kernel.transaction.Transactional
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName, long additionalId,
+        java.lang.String stringValue, long numericValue, double realValue,
+        java.util.Date updatedDate, boolean publishActivity)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName,
+        java.lang.String stringValue, long numericValue, double realValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName, long additionalId,
+        java.lang.String stringValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName,
+        java.lang.String stringValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName, long additionalId,
+        long numericValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName, long numericValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName, long additionalId,
+        double realValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName, double realValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Returns all attributes for current version of a proposal.</p>
+    *
+    * @param proposalId id of a proposal
+    * @return list of proposal attributes for current version of a proposal
+    * @throws SystemException in case of an LR error
+    * @author janusz
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Returns all attributes for given version of a proposal.</p>
+    *
+    * @param proposalId id of a proposal
+    * @param version    version number of a proposal
+    * @return list of proposal attributes for current version of a proposal
+    * @throws SystemException in case of an LR error
+    * @author janusz
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
+        long proposalId, int version)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
+    *
+    * @throws SystemException
+    * @throws PortalException
+    */
+    public void removeAttribute(long authorId,
+        com.ext.portlet.model.ProposalAttribute attributeToDelete,
+        boolean publishActivity)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
+    *
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public void removeAttribute(long authorId,
+        com.ext.portlet.model.ProposalAttribute attributeToDelete)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
+        com.ext.portlet.model.Proposal proposal)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getImpactProposalAttributes(
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

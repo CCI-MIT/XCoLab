@@ -8,7 +8,6 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -18,7 +17,7 @@ import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-import org.xcolab.enums.ContestPhaseType;
+import org.xcolab.enums.ContestPhaseTypeValue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -77,7 +76,7 @@ public class ProposalVoteNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        final String proposalName = ProposalLocalServiceUtil.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        final String proposalName = getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         String proposalVoteTemplateString = contest.getProposalVoteTemplateString();
         if (proposalVoteTemplateString.isEmpty()) {
@@ -106,7 +105,7 @@ public class ProposalVoteNotification extends EmailNotification {
 
     private ContestPhase getActiveCreationPhase(List<ContestPhase> contestPhases) throws SystemException {
         for (ContestPhase phase : contestPhases) {
-            if (phase.getContestPhaseType() == ContestPhaseType.PROPOSAL_CREATION.getTypeId() &&
+            if (phase.getContestPhaseType() == ContestPhaseTypeValue.PROPOSAL_CREATION.getTypeId() &&
                     ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
 
                 return phase;

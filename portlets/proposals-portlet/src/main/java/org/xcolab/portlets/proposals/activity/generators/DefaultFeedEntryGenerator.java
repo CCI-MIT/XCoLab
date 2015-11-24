@@ -10,7 +10,7 @@ import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 public class DefaultFeedEntryGenerator extends BaseProposalsFeedEntryGenerator {
     protected final String title;
     protected final String actionName;
-    protected final String defaultFeedEntryPattern = "%s %s %s";
+    protected static final String DEFAULT_FEED_ENTRY_PATTERN = "%s %s %s";
 
     public DefaultFeedEntryGenerator(String title, String actionName) {
         super();
@@ -23,7 +23,7 @@ public class DefaultFeedEntryGenerator extends BaseProposalsFeedEntryGenerator {
         final long proposalId = activity.getClassPK();
         ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposalId);
         String body = String.format(
-                defaultFeedEntryPattern, 
+                DEFAULT_FEED_ENTRY_PATTERN,
                 getUserLink(activity.getUserId()), 
                 actionName,
                 getProposalLink(getProposal(activity)));

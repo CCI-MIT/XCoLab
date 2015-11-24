@@ -19,6 +19,7 @@ import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -167,7 +168,7 @@ public class ProposalImpactSeries {
                 ProposalImpactSeriesValues seriesValues = this.seriesTypeToSeriesMap.get(seriesType);
                 for (ImpactIteration iteration : impactIterations) {
                     double filteredValue = ProposalImpactValueFilterAlgorithm.filterValueForImpactSeriesType(seriesValues.getValueForYear(iteration.getYear()), seriesType);
-                    ProposalLocalServiceUtil.setAttribute(author.getUserId(), proposal.getProposalId(), seriesType,
+                    ProposalAttributeLocalServiceUtil.setAttribute(author.getUserId(), proposal.getProposalId(), seriesType,
                             focusArea.getId(), "", iteration.getYear(), filteredValue);
                 }
 
@@ -245,7 +246,7 @@ public class ProposalImpactSeries {
 
         // TODO create query to filter by additionalId?
         List<ProposalAttribute> impactProposalAttributes =
-                ProposalLocalServiceUtil.getImpactProposalAttributes(proposal);
+                ProposalAttributeLocalServiceUtil.getImpactProposalAttributes(proposal);
 
         for (ImpactDefaultSeries defaultSeries : impactDefaultSerieses) {
 

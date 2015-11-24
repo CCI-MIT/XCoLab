@@ -8,7 +8,6 @@ import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import org.xcolab.enums.ColabConstants;
-import org.xcolab.enums.ContestPhaseType;
 
 /**
  * The implementation of the contest schedule local service.

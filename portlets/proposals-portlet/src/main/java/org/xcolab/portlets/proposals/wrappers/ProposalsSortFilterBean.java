@@ -2,8 +2,6 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ProposalsColumn;
@@ -14,7 +12,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ProposalsSortFilterBean {
-    private final static Log _log = LogFactoryUtil.getLog(ProposalsSortFilterBean.class);
 
     private final List<ProposalWrapper> proposals;
     private Comparator<ProposalWrapper> proposalComparator;
@@ -25,9 +22,13 @@ public class ProposalsSortFilterBean {
     public ProposalsSortFilterBean(List<ProposalWrapper> proposals, final SortFilterPage sortFilterPage) throws PortalException, SystemException {
         super();
         this.proposals = proposals;
+
+        if (sortFilterPage == null) {
+            throw new PortalException("sortFilterPage was null");
+        }
         
         // sort proposals
-        if (sortFilterPage != null && StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
+        if (StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
             switch (sortFilterPage.getSortColumn().toUpperCase()) {
                 case "NAME":
                     proposalComparator = ProposalsColumn.NAME.getComparator(); break;
@@ -49,6 +50,8 @@ public class ProposalsSortFilterBean {
                     proposalComparator = ProposalsColumn.SCREENINGSTATUS.getComparator(); break;
                 case "OVERALLSTATUS":
                     proposalComparator = ProposalsColumn.OVERALLSTATUS.getComparator(); break;
+                default:
+                    throw new PortalException("Unknown sort column");
             }
         }
         

@@ -18,13 +18,14 @@ public class SendMessagePermissionChecker {
      * This map holds all the roles that are not accessible from a given <i>MemberRole</i> object. Entries in this map
      * under a <i>MemberRole</i> key indicate that the value-list contains the roles a user cannot send a message to
      */
-    private Map<MemberRole, List<MemberRole>> blacklistedRolesMap;
-    private User originator;
+    private final Map<MemberRole, List<MemberRole>> blacklistedRolesMap;
+    private final User originator;
 
 	/**
 	 * IMPORTANT
 	 * This flag indicates whether the permission checker is active or not.
 	 * Set this flag to true when the feature should be enabled
+     * //TODO: when will we activate this feature? Do we still need this?
 	 */
 	private static final boolean ACTIVATED = false;
 
@@ -43,14 +44,13 @@ public class SendMessagePermissionChecker {
     /**
      * Returns whether the user is allowed to send a message to the passed user
      * @param user  The recipient user object
-     * @return
      * @throws SystemException
      */
-    public boolean canSendToUser(User user) throws SystemException {
+    public boolean canSendToUser(User user) throws SystemException, MemberRole.NoSuchMemberRoleException {
 		if (!ACTIVATED) {
 			return true;
 		}
-        MemberRole destinationRole = getHighestUserRole(user);
+        MemberRole destinationRole = MemberRole.getHighestRole(user.getRoles());
 
         for (Role role : originator.getRoles()) {
             MemberRole currentRole = MemberRole.fromRoleName(role.getName());
@@ -77,17 +77,20 @@ public class SendMessagePermissionChecker {
         // Count the number of blacklist entries for each of the users roles
         Map<MemberRole, Integer> blacklistCountMap = new EnumMap<>(MemberRole.class);
         for (Role role : originator.getRoles()) {
-            MemberRole currentRole = MemberRole.fromRoleName(role.getName());
-            List<MemberRole> blacklist = blacklistedRolesMap.get(currentRole);
-            if (blacklist != null) {
-                for (MemberRole mr : blacklist) {
-                    if (blacklistCountMap.get(mr) == null) {
-                        blacklistCountMap.put(mr, 1);
-                    } else {
-                        blacklistCountMap.put(mr, blacklistCountMap.get(mr) + 1);
+            try {
+                MemberRole currentRole = MemberRole.fromRoleName(role.getName());
+                List<MemberRole> blacklist = blacklistedRolesMap.get(currentRole);
+                if (blacklist != null) {
+                    for (MemberRole mr : blacklist) {
+                        if (blacklistCountMap.get(mr) == null) {
+                            blacklistCountMap.put(mr, 1);
+                        } else {
+                            blacklistCountMap.put(mr, blacklistCountMap.get(mr) + 1);
+                        }
                     }
                 }
-            }
+            } catch (MemberRole.NoSuchMemberRoleException ignored) { }
+
         }
 
         // Now determine the destination roles which are not accessible for every role a user has
@@ -99,27 +102,5 @@ public class SendMessagePermissionChecker {
         }
 
         return retList;
-    }
-
-    private MemberRole getHighestUserRole(User user) throws SystemException {
-        List<Role> roles = user.getRoles();
-        // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
-        MemberRole currentRole;
-        MemberRole role = MemberRole.MEMBER;
-
-        for (Role r: roles) {
-            final String roleString = r.getName();
-
-            currentRole = MemberRole.fromRoleName(roleString);
-            if (currentRole != null && role != null) {
-                if (currentRole.ordinal() > role.ordinal()) {
-                    role = currentRole;
-                }
-            }
-        }
-
-        if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
-
-        return role;
     }
 }

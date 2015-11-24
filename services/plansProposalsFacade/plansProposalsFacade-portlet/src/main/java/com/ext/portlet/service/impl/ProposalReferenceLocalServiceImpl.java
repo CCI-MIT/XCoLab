@@ -93,7 +93,7 @@ public class ProposalReferenceLocalServiceImpl
             return;
         }
         processedProposals.add(proposal.getProposalId());
-        for (ProposalAttribute attribute : proposalLocalService.getAttributes(proposal.getProposalId())) {
+        for (ProposalAttribute attribute : proposalAttributeLocalService.getAttributes(proposal.getProposalId())) {
             if (!attribute.getName().equals(ProposalAttributeKeys.SECTION)) {
                 continue;
             }

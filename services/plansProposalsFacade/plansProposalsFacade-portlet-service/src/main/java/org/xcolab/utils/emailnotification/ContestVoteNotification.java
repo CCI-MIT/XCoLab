@@ -55,7 +55,7 @@ public class ContestVoteNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        final String proposalName = ProposalLocalServiceUtil.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        final String proposalName = getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         String voteTemplateString = contest.getVoteTemplateString();
         if (voteTemplateString.isEmpty()) {

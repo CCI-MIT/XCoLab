@@ -15,6 +15,7 @@ import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
@@ -335,7 +336,7 @@ public class AdminTasksBean {
 					.getDiscussionCategoryGroup(proposal.getDiscussionId());
 			final Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
 			proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contest, proposal));
-            String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+            String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 			ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposal.getProposalId());
 			proposalDiscussion.setDescription(String.format("%s %s", contestType.getProposalName(), proposalName));
 			DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(proposalDiscussion);

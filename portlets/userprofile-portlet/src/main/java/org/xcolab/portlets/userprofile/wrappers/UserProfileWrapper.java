@@ -17,11 +17,7 @@ import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -80,8 +76,6 @@ public class UserProfileWrapper implements Serializable {
     private String messagingPortletId = "messagingportlet_WAR_messagingportlet";
     private final ThemeDisplay themeDisplay;
 
-    private final static Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
-
     public UserProfileWrapper(String userIdString, PortletRequest request) throws PortalException, SystemException {
         Long userId = Long.parseLong(userIdString);
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -114,25 +108,7 @@ public class UserProfileWrapper implements Serializable {
         attendsConference = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO, CommunityConstants.CONFERENCE2014, user.getUserId(), "").equals("1");
         badges = new BadgeBean(user.getUserId());
 
-        List<Role> roles = user.getRoles();
-        // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
-        role = MemberRole.MEMBER;
-
-        for (Role r: roles) {
-            final String roleString = r.getName();
-            try {
-                MemberRole currentRole = MemberRole.fromRoleName(roleString);
-                if (currentRole != null && role != null) {
-                    if (currentRole.getMemberCategory().getSortOrder() > role.getMemberCategory().getSortOrder()) {
-                        role = currentRole;
-                    }
-                }
-            } catch(MemberRole.NoSuchMemberRoleException ignored) { }
-        }
-
-        if (role == MemberRole.MODERATOR) {
-            role = MemberRole.STAFF;
-        }
+        role = MemberRole.getHighestRole(user.getRoles());
 
         userSubscriptions = new UserSubscriptionsWrapper(user);
         supportedProposals.clear();
@@ -161,18 +137,6 @@ public class UserProfileWrapper implements Serializable {
                 } catch (NoSuchContestException ignored) { }
             }
         }
-    }
-
-    private boolean profileIsComplete() {
-        //ignore mandatory fields, only care about optional ones
-        String[] blankCheck = {userBean.getShortBio(), userBean.getCountry()};
-        for (String s : blankCheck) {
-            if (s == null || s.equals(StringPool.BLANK)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public boolean isStaffMemberProfile(){
@@ -278,7 +242,7 @@ public class UserProfileWrapper implements Serializable {
         return themeDisplay;
     }
 
-    public boolean getCanSendMessage() throws SystemException {
+    public boolean getCanSendMessage() throws SystemException, MemberRole.NoSuchMemberRoleException {
         return messagePermissionChecker != null && messagePermissionChecker.canSendToUser(this.user);
     }
 

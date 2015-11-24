@@ -1,9 +1,11 @@
 package org.xcolab.utils.judging;
 
+import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -11,8 +13,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import org.apache.commons.lang.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.Normalizer;
@@ -33,31 +33,31 @@ public class ProposalReviewCsvExporter {
     * Cluster all proposal reviews (from multiple Contest phases) by proposal since we
     * have multiple reviews for each proposal (multiple judging phases)
     */
-    private Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap;
-    private List<User> reviewers;
-    private List<ProposalRatingType> ratingTypes;
+    private final Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap;
+    private final List<ProposalRatingType> ratingTypes;
 
-    public ProposalReviewCsvExporter(Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap, List<User> reviewers, List<ProposalRatingType> ratingTypes) {
+    public ProposalReviewCsvExporter(Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap, List<ProposalRatingType> ratingTypes) {
         this.proposalToProposalReviewsMap = proposalToProposalReviewsMap;
-        this.reviewers = reviewers;
         this.ratingTypes = ratingTypes;
     }
 
-    public String getCsvString() throws SystemException, PortalException {
-        if (proposalToProposalReviewsMap.size() == 0) {
+    public String getCsvString() throws SystemException, NoSuchProposalAttributeException {
+        if (proposalToProposalReviewsMap.isEmpty()) {
             return StringPool.BLANK;
         }
 
         StringBuilder tableBody = new StringBuilder();
-        for (Proposal proposal : proposalToProposalReviewsMap.keySet()) {
-            String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(),
+        for (Map.Entry<Proposal, List<ProposalReview>> entry : proposalToProposalReviewsMap.entrySet()) {
+            final Proposal proposal = entry.getKey();
+            final List<ProposalReview> proposalReviews = entry.getValue();
+            String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposal.getProposalId(),
                     ProposalAttributeKeys.NAME, 0).getStringValue();
 
-            for (ProposalReview proposalReview : proposalToProposalReviewsMap.get(proposal)) {
+            for (ProposalReview proposalReview : proposalReviews) {
                 for (User reviewer : proposalReview.getReviewers()) {
 
                     tableBody.append(getRowHeader(proposalName, proposalReview));
-                    tableBody.append("\"" + reviewer.getFirstName() + " " + reviewer.getLastName() + "\"");
+                    tableBody.append(String.format("\"%s %s\"", reviewer.getFirstName(), reviewer.getLastName()));
 
                     StringBuilder commentString = new StringBuilder();
 
@@ -66,7 +66,7 @@ public class ProposalReviewCsvExporter {
                     if (Validator.isNull(ratingAverage)) {
                         commentString.append(delimiter + "\"-\"" + TQF);
                     } else {
-                        commentString.append(delimiter + "\"" + df.format(ratingAverage) + TQF + "\"");
+                        commentString.append(String.format("%s\"%s%s\"", delimiter, df.format(ratingAverage), TQF));
                     }
 
                     for (ProposalRatingType ratingType : ratingTypes) {
@@ -79,7 +79,7 @@ public class ProposalReviewCsvExporter {
                                 commentString.append(delimiter + "\"\"");
                             }
                         } else {
-                            commentString.append(delimiter + "\"" + df.format(rating) + TQF + "\"");
+                            commentString.append(String.format("%s\"%s%s\"", delimiter, df.format(rating), TQF));
                         }
                     }
 
@@ -87,7 +87,7 @@ public class ProposalReviewCsvExporter {
                     if (Validator.isNull(review)) {
                         commentString.append(delimiter + "\"\"");
                     } else {
-                        commentString.append(delimiter + "\"" + escapeQuote(review) + TQF + "\"");
+                        commentString.append(String.format("%s\"%s%s\"", delimiter, escapeQuote(review), TQF));
                     }
 
                     tableBody.append(commentString).append("\n");
@@ -104,14 +104,14 @@ public class ProposalReviewCsvExporter {
 
     private String getAverageRatings(ProposalReview proposalReview){
         StringBuilder averageRating = new StringBuilder();
-        averageRating.append( "\"Average\"" + delimiter + "\"" + df.format(proposalReview.getRatingAverage()) + TQF + "\"");
+        averageRating.append(String.format("\"Average\"%s\"%s%s\"", delimiter, df.format(proposalReview.getRatingAverage()), TQF));
 
         for (ProposalRatingType ratingType : ratingTypes) {
             Double average = proposalReview.getRatingAverage(ratingType);
             if (Validator.isNull(average)) {
                 averageRating.append(delimiter + "\"\"");
             } else {
-                averageRating.append(delimiter + "\"" + df.format(average) + TQF + "\"");
+                averageRating.append(String.format("%s\"%s%s\"", delimiter, df.format(average), TQF));
             }
         }
 
@@ -125,17 +125,14 @@ public class ProposalReviewCsvExporter {
         } catch(SystemException s){
             // Ignore contest phase
         }
-        return  TQF + "\"" + escapeQuote(proposalName) + "\"" + delimiter +
-                "\"" + escapeQuote(proposalReview.getProposalTeamAuthor()) + "\"" + delimiter +
-                "\"" + proposalReview.getProposalUrl() + "\"" + delimiter +
-                "\"" + escapeQuote(contestPhaseName) + "\"" + delimiter;
+        return String.format("%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s", TQF, escapeQuote(proposalName), delimiter, escapeQuote(proposalReview.getProposalTeamAuthor()), delimiter, proposalReview.getProposalUrl(), delimiter, escapeQuote(contestPhaseName), delimiter);
     }
 
     private String getTableHeader() {
         StringBuilder ratingSubHeader = new StringBuilder(TQF);
         for (ProposalRatingType ratingType : ratingTypes) {
             String ratingTitle = ratingType.getLabel();
-            ratingSubHeader.append("\"" + ratingTitle + "\"" + delimiter);
+            ratingSubHeader.append(String.format("\"%s\"%s", ratingTitle, delimiter));
         }
 
         return  TQF + "\"Proposal title\"" + delimiter +

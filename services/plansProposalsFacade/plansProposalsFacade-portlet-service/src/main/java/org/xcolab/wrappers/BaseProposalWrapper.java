@@ -21,12 +21,15 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.helpers.ProposalContestPhaseAttributeHelper;
+import org.xcolab.mail.EmailToAdminDispatcher;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +51,8 @@ public class BaseProposalWrapper {
     protected final ProposalContestPhaseAttributeHelper proposalContestPhaseAttributeHelper;
     protected final ProposalAttributeHelper proposalAttributeHelper;
 
+    protected List<BaseProposalTeamMemberWrapper> members;
+
     public BaseProposalWrapper(Proposal proposal) throws NoSuchContestException {
         this(proposal, proposal.getCurrentVersion(), null, null, null);
     }
@@ -65,6 +70,9 @@ public class BaseProposalWrapper {
 
     public BaseProposalWrapper(Proposal proposal, ContestPhase contestPhase) throws NoSuchContestException {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, null);
+    }
+    public BaseProposalWrapper(Proposal proposal, int version) throws NoSuchContestException {
+        this(proposal, version, null, null, null);
     }
 
     private Contest fetchContest() throws NoSuchContestException {
@@ -342,6 +350,32 @@ public class BaseProposalWrapper {
 
     public ContestPhase getContestPhase() {
         return contestPhase;
+    }
+
+    public List<BaseProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {
+        if (members == null) {
+            members = new ArrayList<>();
+            boolean hasOwner = false;
+            for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
+                final BaseProposalTeamMemberWrapper teamMemberWrapper = new BaseProposalTeamMemberWrapper(proposal, user);
+                members.add(teamMemberWrapper);
+                if (teamMemberWrapper.getMemberType().equalsIgnoreCase("owner")) {
+                    hasOwner = true;
+                }
+            }
+            if (!hasOwner) {
+                //TODO: remove debug email
+                GroupLocalServiceUtil.addUserGroups(proposal.getAuthorId(), new long[]{proposal.getGroupId()});
+                final User owner = UserLocalServiceUtil.fetchUser(proposal.getAuthorId());
+                members.add(new BaseProposalTeamMemberWrapper(proposal, owner));
+                new EmailToAdminDispatcher(String.format("Owner %s not in proposal %d's group", owner.getScreenName(), proposal.getProposalId()),
+                        String.format("The owner %s (%d) of proposal %d is not in its group %d and was just re-added.",
+                                owner.getScreenName(), owner.getUserId(), proposal.getProposalId(), proposal.getGroupId())
+                ).sendMessage();
+            }
+        }
+
+        return members;
     }
 }
 

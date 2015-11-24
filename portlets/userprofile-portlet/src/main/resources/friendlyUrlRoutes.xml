@@ -2,9 +2,6 @@
         "http://www.liferay.com/dtd/liferay-friendly-url-routes_6_1_0.dtd">
 <routes>
     <route>
-        <pattern>/</pattern>
-    </route>
-    <route>
         <pattern>/userId/{userId}</pattern>
         <generated-parameter name="userId">{userId}</generated-parameter>
         <generated-parameter name="page">view</generated-parameter>

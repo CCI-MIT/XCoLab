@@ -10,8 +10,8 @@ import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -203,7 +203,8 @@ public class ProposalPickerFilter {
                 Proposal p = i.next().getLeft();
                 try{
                     // PROPOSAL NAME
-                    String proposalName = ProposalLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0L).getStringValue();
+                    //TODO: optimize
+                    String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0L).getStringValue();
                     if (StringUtils.containsIgnoreCase(proposalName, searchCriterion)){
                         continue;
                     }

@@ -84,7 +84,7 @@ public abstract class BaseDiscussionsActionController {
     public abstract boolean isUserAllowed(DiscussionPermissions permissions, long additionalId)
             throws SystemException, NoSuchDiscussionMessageException;
 
-    private class SimpleNameValuePair implements NameValuePair {
+    private static class SimpleNameValuePair implements NameValuePair {
         String name, value;
 
         private SimpleNameValuePair(String name, String value) {
@@ -92,10 +92,12 @@ public abstract class BaseDiscussionsActionController {
             this.value = value;
         }
 
+        @Override
         public String getName() {
             return name;
         }
 
+        @Override
         public String getValue() {
             return value;
         }

@@ -278,26 +278,7 @@ public class MessageWrapper implements Serializable {
 
     public MemberRole getAuthorRole() throws SystemException, PortalException {
         List<Role> roles = getAuthor().getRoles();
-
-        // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
-        MemberRole memberRole = MemberRole.MEMBER;
-
-        for (Role role: roles) {
-            long roleId = role.getRoleId();
-            try {
-                MemberRole currentRole = MemberRole.fromRoleId(roleId);
-
-                if (currentRole != null
-                        && currentRole.getMemberCategory().getSortOrder() > memberRole.getMemberCategory().getSortOrder()) {
-                    memberRole = currentRole;
-                }
-            } catch (MemberRole.NoSuchMemberRoleException ignored) { }
-        }
-
-        if (memberRole.getRoleId() == MemberRole.MODERATOR.getRoleId()) {
-            memberRole = MemberRole.STAFF;
-        }
-        return memberRole;
+        return MemberRole.getHighestRole(roles);
     }
     
     public Date getCreateDate() {

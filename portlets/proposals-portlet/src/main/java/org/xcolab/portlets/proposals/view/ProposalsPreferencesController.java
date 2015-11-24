@@ -22,10 +22,13 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.utils.IdListUtil;
@@ -48,11 +51,7 @@ import java.util.Map;
 @RequestMapping("edit")
 public class ProposalsPreferencesController {
 
-    public static final long WINNERS_AWARDED_PHASE_ID = org.xcolab.enums.ContestPhaseType.WINNERS_AWARDED.getTypeId();
-    public static final long WINNERS_SELECTION_PHASE_ID = org.xcolab.enums.ContestPhaseType.WINNERS_SELECTION.getTypeId();
-    public static final long SELECTION_OF_WINNERS_NEW_PHASE_ID = org.xcolab.enums.ContestPhaseType.SELECTION_OF_WINNERS_NEW.getTypeId();
-    public static final long PROPOSAL_CREATION_PHASE_ID = org.xcolab.enums.ContestPhaseType.PROPOSAL_CREATION.getTypeId();
-    public static final long FINALIST_SELECTION_NEW_PHASE_ID = org.xcolab.enums.ContestPhaseType.FINALIST_SELECTION_NEW.getTypeId();
+    private static final Log _log = LogFactoryUtil.getLog(ProposalsPreferencesController.class);
 
     private static List<ContestPhase> getPhasesByContest(Contest c, final int sortModifier) {
         List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(c);
@@ -141,15 +140,15 @@ public class ProposalsPreferencesController {
     public void checkForMissingTeamMembers(ActionRequest request, ActionResponse response, Model model)
             throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
         List<Contest> activeContests = ContestLocalServiceUtil.getContestsByActivePrivate(true, false);
-        String message = "";
+        StringBuilder message = new StringBuilder();
 
         for (Contest c : activeContests) {
             if (ContestLocalServiceUtil.getActiveOrLastPhase(c) == null || ContestLocalServiceUtil.getActiveOrLastPhase(c).getContestPhaseType() != 17L) {
-                message += "<br/>\nSkipped contest: "+c.getContestShortName()+"<br/><br/>\n";
+                message.append("<br/>\nSkipped contest: ").append(c.getContestShortName()).append("<br/><br/>\n");
                 continue;
             }
 
-            message += "<br/><br/>\nCONTEST: "+c.getContestShortName()+"<br/><br/>\n";
+            message.append("<br/><br/>\nCONTEST: ").append(c.getContestShortName()).append("<br/><br/>\n");
 
             for (Proposal p :ProposalLocalServiceUtil.getProposalsInContest(c.getContestPK())) {
                 //author id check
@@ -163,7 +162,7 @@ public class ProposalsPreferencesController {
                     }
                 }
                 if (!foundAuthor) {
-                    message += "<br/><br/>\nMISSING AUTHOR "+authorId+" FOR PROPOSAL: "+p.getProposalId()+"<br/><br/>\n";
+                    message.append("<br/><br/>\nMISSING AUTHOR ").append(authorId).append(" FOR PROPOSAL: ").append(p.getProposalId()).append("<br/><br/>\n");
                 }
 
                 //proposal version check
@@ -178,15 +177,15 @@ public class ProposalsPreferencesController {
                     if (!foundVersionAuthor) {
                         if (!warningIssued) {
                             warningIssued = true;
-                            message += "<br/><br/>\nversion author "+pv.getAuthorId()+" missing for proposal: "+p.getProposalId()+" Version: "+pv.getVersion()+"<br/>\n";
+                            message.append("<br/><br/>\nversion author ").append(pv.getAuthorId()).append(" missing for proposal: ").append(p.getProposalId()).append(" Version: ").append(pv.getVersion()).append("<br/>\n");
                         } else {
-                            message += "a:" + pv.getAuthorId() + ",v:" + pv.getVersion() + " - ";
+                            message.append("a:").append(pv.getAuthorId()).append(",v:").append(pv.getVersion()).append(" - ");
                         }
                     }
                 }
             }
 
-            model.addAttribute("message", message);
+            model.addAttribute("message", message.toString());
         }
     }
 
@@ -194,15 +193,15 @@ public class ProposalsPreferencesController {
     public void runRibbonDistribution(ActionRequest request, ActionResponse response, Model model)
             throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
         List<Contest> activeContests = ContestLocalServiceUtil.getContestsByActivePrivate(true, false);
-        String message = "";
+        StringBuilder message = new StringBuilder();
 
         for (Contest c : activeContests) {
             if (ContestLocalServiceUtil.getActiveOrLastPhase(c) == null || ContestLocalServiceUtil.getActiveOrLastPhase(c).getContestPhaseType() != 17L) {
-                message += "<br/>\nSkipped contest: "+c.getContestShortName()+"<br/><br/>\n";
+                message.append("<br/>\nSkipped contest: ").append(c.getContestShortName()).append("<br/><br/>\n");
                 continue;
             }
 
-            message += "<br/><br/>\nCONTEST: "+c.getContestShortName()+"<br/><br/>\n";
+            message.append("<br/><br/>\nCONTEST: ").append(c.getContestShortName()).append("<br/><br/>\n");
 
             //identify the winners selection phase (= contains all finalist) and the finalist selection (= contains all semi-finalist) phase
             List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(c);
@@ -212,15 +211,22 @@ public class ProposalsPreferencesController {
             ContestPhase proposalCreation = null;
 
             for (ContestPhase cp : contestPhases) {
-                if (cp.getContestPhaseType() == WINNERS_AWARDED_PHASE_ID) {
-                    winnersAwarded = cp;
-                } else if (cp.getContestPhaseType() == WINNERS_SELECTION_PHASE_ID
-                        || cp.getContestPhaseType() == SELECTION_OF_WINNERS_NEW_PHASE_ID) {
-                    winnersSelection = cp;
-                } else if (cp.getContestPhaseType() == FINALIST_SELECTION_NEW_PHASE_ID) {
-                    finalistSelection = cp;
-                } else if (cp.getContestPhaseType() == PROPOSAL_CREATION_PHASE_ID) {
-                    proposalCreation = cp;
+                switch (ContestPhaseTypeValue.fromTypeId(cp.getContestPhaseType())) {
+                    case WINNERS_AWARDED:
+                        winnersAwarded = cp;
+                        break;
+                    case WINNERS_SELECTION:
+                    case SELECTION_OF_WINNERS:
+                        winnersSelection = cp;
+                        break;
+                    case FINALIST_SELECTION_NEW:
+                        finalistSelection = cp;
+                        break;
+                    case PROPOSAL_CREATION:
+                        proposalCreation = cp;
+                        break;
+                    default:
+                        _log.warn("Unhandled ContestPhaseType given: " + cp.getContestPhaseType());
                 }
             }
 
@@ -233,20 +239,20 @@ public class ProposalsPreferencesController {
                 final Long finalistRibbon = 1L;
                 final Long semiFinalistRibbon = 3L;
 
-                message += moveProposals(finalists, c.getContestPK(), winnersAwarded.getContestPhasePK(), finalistRibbon, true);
-                message += moveProposals(semiFinalists, c.getContestPK(), winnersAwarded.getContestPhasePK(), semiFinalistRibbon, false);
-                message += moveProposals(otherProposals, c.getContestPK(), winnersAwarded.getContestPhasePK(), -1L, false);
+                message.append(moveProposals(finalists, c.getContestPK(), winnersAwarded.getContestPhasePK(), finalistRibbon, true));
+                message.append(moveProposals(semiFinalists, c.getContestPK(), winnersAwarded.getContestPhasePK(), semiFinalistRibbon, false));
+                message.append(moveProposals(otherProposals, c.getContestPK(), winnersAwarded.getContestPhasePK(), -1L, false));
             } else {
-                message += "The proposals in this contests were not moved because the contest phases have not been found.<br/>\n";
+                message.append("The proposals in this contests were not moved because the contest phases have not been found.<br/>\n");
             }
         }
 
         //moving parameters are set
-        model.addAttribute("message", message);
+        model.addAttribute("message", message.toString());
     }
 
     private String moveProposals(List<Proposal> proposalsToBeMoved, Long moveFromContestId, Long moveToContestPhaseId, Long ribbonId, boolean forceRibbonCreation) throws PortalException {
-        String message = "";
+        StringBuilder message = new StringBuilder();
         if (!proposalsToBeMoved.isEmpty() && moveToContestPhaseId > 0 && moveFromContestId > 0) {
             try {
                 Contest moveFromContest = ContestLocalServiceUtil.fetchContest(moveFromContestId);
@@ -280,7 +286,7 @@ public class ProposalsPreferencesController {
                             lastPhaseContainingProposal.getPhaseEndDate().after(moveToContestPhase.getPhaseStartDate());
                     if (proposalAlreadyInTargetPhase) {
                         //skip this
-                        message += "Proposal "+proposal.getProposalId()+" is already in the target phase or in a later phase.<br/>\n";
+                        message.append("Proposal ").append(proposal.getProposalId()).append(" is already in the target phase or in a later phase.<br/>\n");
                     } else {
                         //update the last phase association - set the end version to the current version minus one
                         Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposal.getProposalId());
@@ -305,7 +311,7 @@ public class ProposalsPreferencesController {
                         p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
                         Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
 
-                        message += "Proposal "+proposal.getProposalId()+" moved successfully (version: "+currentProposalVersion+").<br/>\n";
+                        message.append("Proposal ").append(proposal.getProposalId()).append(" moved successfully (version: ").append(currentProposalVersion).append(").<br/>\n");
                     }
 
                     if (!proposalAlreadyInTargetPhase || forceRibbonCreation) {
@@ -335,13 +341,13 @@ public class ProposalsPreferencesController {
                     }
                 }
 
-                message += "The operation completed successfully!<br/>\n";
+                message.append("The operation completed successfully!<br/>\n");
             } catch (SystemException e) {
-                e.printStackTrace();
-                message += "There was a problem moving the proposals.<br/>\n";
+                _log.warn("Exception thrown while moving proposals", e);
+                message.append("There was a problem moving the proposals.<br/>\n");
             }
         }
 
-        return message;
+        return message.toString();
     }
 }

@@ -13,7 +13,7 @@ import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-import org.xcolab.enums.ContestPhaseType;
+import org.xcolab.enums.ContestPhaseTypeValue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -74,7 +74,7 @@ public class ContestCreationNotification extends EmailNotification {
         List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(createdContest);
 
         for (ContestPhase phase : contestPhases) {
-            if (phase.getContestPhaseType() == ContestPhaseType.PROPOSAL_CREATION.getTypeId()) {
+            if (phase.getContestPhaseType() == ContestPhaseTypeValue.PROPOSAL_CREATION.getTypeId()) {
                 return phase.getPhaseEndDate();
             }
         }

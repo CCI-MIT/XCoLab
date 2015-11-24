@@ -210,10 +210,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
 
-            // All filled out impact series
-            List<ProposalAttribute> impactProposalAttributes =
-                    ProposalLocalServiceUtil.getImpactProposalAttributes(proposalsContext.getProposal(request));
-
             ProposalImpactSeriesList proposalImpactSeriesList =
                     new ProposalImpactSeriesList(contest, proposalWrapper.getWrapped());
             model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());

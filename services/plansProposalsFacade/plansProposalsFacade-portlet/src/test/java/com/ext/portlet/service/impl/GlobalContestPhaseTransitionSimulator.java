@@ -261,7 +261,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
             if (doWithProbability(0.8)) {
                 int fellowAction = randomInt(0, 5);
                 User judgingFellow = contestFellows.get(contestIndex).get(randomInt(0, contestFellows.get(contestIndex).size()));
-                testInstance.proposalLocalService.setAttribute(judgingFellow.getUserId(), p.getProposalId(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION, fellowAction);
+                testInstance.proposalAttributeLocalService.setAttribute(judgingFellow.getUserId(), p.getProposalId(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION, fellowAction);
 
                 System.out.println("contestIndex: "+contestIndex+" proposal: "+p.getProposalId()+" fellowAction: "+fellowAction);
 
