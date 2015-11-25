@@ -26,8 +26,13 @@ public class ContestPreferences {
     private final static String SELECTED_CONTESTS_PREFERENCE = "SELECTED_CONTESTS";
     private final static String TITLE_PREFERENCE = "CONTEST_TITLE";
     private final static String FEED_SIZE_PREFERENCE = "CONTEST_FEED_SIZE";
+    private final static String ALL_CONTESTS_TITLE = "ALL_CONTESTS_TITLE";
+    private final static String ALL_CONTESTS_URL = "ALL_CONTESTS_URL";
+
     private String title;
     private Integer feedSize;
+    private String allContestsUrl;
+    private String allContestsTitle;
     private Map<Long, String> contestMap;
 
     public String getTitle() {
@@ -52,11 +57,15 @@ public class ContestPreferences {
     	PortletPreferences prefs = request.getPreferences();
         selectedContests = IdListUtil.getIdsFromString(prefs.getValue(SELECTED_CONTESTS_PREFERENCE, ""));
         title = prefs.getValue(TITLE_PREFERENCE, "Featured contests");
+        allContestsTitle = prefs.getValue(ALL_CONTESTS_TITLE, "see all contests");
+        allContestsUrl = prefs.getValue(ALL_CONTESTS_URL, "/web/guest/plans");
         try {
             feedSize = Integer.parseInt(prefs.getValue(FEED_SIZE_PREFERENCE, "4"));
         } catch (NumberFormatException e) {
             feedSize = 4;
         }
+
+
         populateContestMap();
     }
 
@@ -109,6 +118,8 @@ public class ContestPreferences {
         prefs.setValue(SELECTED_CONTESTS_PREFERENCE, IdListUtil.getStringFromIds(selectedContests));
         prefs.setValue(TITLE_PREFERENCE, title);
         prefs.setValue(FEED_SIZE_PREFERENCE, feedSize+"");
+        prefs.setValue(ALL_CONTESTS_TITLE, allContestsTitle);
+        prefs.setValue(ALL_CONTESTS_URL, allContestsUrl);
 
         prefs.store();
 
@@ -129,5 +140,21 @@ public class ContestPreferences {
 
     public void setContestMap(Map<Long, String> contestMap) {
         this.contestMap = contestMap;
+    }
+
+    public String getAllContestsUrl() {
+        return allContestsUrl;
+    }
+
+    public void setAllContestsUrl(String allContestsUrl) {
+        this.allContestsUrl = allContestsUrl;
+    }
+
+    public String getAllContestsTitle() {
+        return allContestsTitle;
+    }
+
+    public void setAllContestsTitle(String allContestsTitle) {
+        this.allContestsTitle = allContestsTitle;
     }
 }

@@ -5,7 +5,7 @@
     <jsp:directive.include file="init.jspx"/>
 
     <div>
-        <h2> ${title} <span><a href="/web/guest/plans">see all contests</a></span></h2>
+        <h2> ${title} <span><a href="${allContestsUrl}">${allContestsTitle}</a></span></h2>
         <c:forEach var="contest" items="${contests }">
             <div class="contestbox">
                 <div class="img-wrap">

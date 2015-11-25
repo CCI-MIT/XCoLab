@@ -30,7 +30,25 @@
 			<td>			
 				<form:input path="feedSize" />
 			</td>
-		</tr>	
+		</tr>
+
+		<tr>
+			<td>
+				Enter all contests link title
+			</td>
+			<td>
+				<form:input path="allContestsTitle" />
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				Enter all contests link url
+			</td>
+			<td>
+				<form:input path="allContestsUrl" />
+			</td>
+		</tr>
 	
 		<tr>
 			<td>
