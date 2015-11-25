@@ -207,7 +207,7 @@
                         <th class="blue-bg" style="text-align: center" colspan="${fn:length(impactIterations)}">
                             Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
                             <a href="javascript:;" class="helpTrigger"><img
-                                    src="/climatecolab-theme/images/icon-addprop-question.png" width="15"
+                                    src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15"
                                     height="15"/></a><br/>
 
                             <div class="addprophelp" style="color:white;">
@@ -226,7 +226,7 @@
                     <tr>
                         <td class="blue-bg" style="text-align: left">Sector
                             <a href="javascript:;" class="helpTrigger"><img
-                                    src="/climatecolab-theme/images/icon-addprop-question.png" width="15"
+                                    src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15"
                                     height="15"/></a><br/>
 
                             <div class="addprophelp" style="color:white;">

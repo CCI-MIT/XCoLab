@@ -2,6 +2,8 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
     xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0">
 
+    <jsp:directive.include file="init.jspx"/>
+
     <div>
         <h2> ${title} <span><a href="/web/guest/plans">see all contests</a></span></h2>
         <c:forEach var="contest" items="${contests }">
@@ -12,7 +14,7 @@
                             <img src="/image/${contestsBean.themeDisplay.pathImage}${contest.logoPath}" width="151" height="151" alt="${contest.contestShortName}" />
                         </c:if>
                         <c:if test="${empty contest.logoPath}">
-                            <img src="/climatecolab-theme/images/blank.gif" width="151" height="151" alt="${contest.contestShortName}" style="border: 1px solid #bbb;"/>
+                            <img src="${themeDisplay.pathThemeImages}/blank.gif" width="151" height="151" alt="${contest.contestShortName}" style="border: 1px solid #bbb;"/>
                         </c:if>
                     </a>
                 </div>

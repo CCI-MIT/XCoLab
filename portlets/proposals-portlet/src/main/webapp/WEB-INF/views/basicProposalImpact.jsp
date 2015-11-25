@@ -53,7 +53,7 @@
         <tr id="impact-edit-row-{{series.name}}" class="impact-edit-row">
             <td width="45%">{{series.description}}
                 <a href="javascript:;" class="helpTrigger"><img
-                        src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                        src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
 
                 <div class="addprophelp"><!-- --></div>
                 <div class="clearfix"><!-- --></div>
@@ -124,7 +124,7 @@
                             <th class="blue-bg" style="width: 55%; text-align: center">
                                 Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
                                 <a href="javascript:;" class="helpTrigger"><img
-                                        src="/climatecolab-theme/images/icon-addprop-question.png" width="15"
+                                        src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15"
                                         height="15"/></a><br/>
 
                                 <div class="addprophelp" style="color:white;">

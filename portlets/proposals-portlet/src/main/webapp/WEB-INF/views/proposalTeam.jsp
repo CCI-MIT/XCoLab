@@ -25,7 +25,7 @@
             </h2>
             <c:if test="${proposalsDisplayPermissions.canSeeRequestMembershipButton}">
                 <div class="prop-butt-popover">
-                    <img src="/climatecolab-theme/images/icon-request-membership.png"
+                    <img src="${themeDisplay.pathThemeImages}/icon-request-membership.png"
                          width="24" height="22" alt="request membership" class="request-membership-icon"/>
 
 
@@ -49,7 +49,7 @@
             </c:if>
             <c:if test="${proposalsPermissions.isTeamMember}">
                 <div class="prop-butt-popover">
-                    <img src="/climatecolab-theme/images/icon-request-membership.png"
+                    <img src="${themeDisplay.pathThemeImages}/icon-request-membership.png"
                          width="24" height="22" alt="request membership" class="request-membership-icon"/>
 
 
@@ -118,7 +118,7 @@
                     <portlet:param name="action" value="supportProposalAction" />
                 </portlet:actionURL>
                 <div class="prop-butt">
-                    <img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="support proposal" />
+                    <img src="${themeDisplay.pathThemeImages}/icon-proposal-thumb.png" width="20" height="22" alt="support proposal" />
                         <a class="primary-button" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
                                 ${proposalsDisplayPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
                         </a>

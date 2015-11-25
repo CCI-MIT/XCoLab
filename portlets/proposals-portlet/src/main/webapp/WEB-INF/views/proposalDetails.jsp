@@ -151,7 +151,7 @@
         <div id="popup_justVoted" class="popup-wrap small" style="">
             <div class="popup">
                 <div class="closepopuplogin">
-                    <a href="javascript:;" onclick="jQuery('#popup_justVoted').hide()"><img src="http://climatecolab.org/climatecolab-theme/images/help_close.png" width="20" height="20" alt="X" /></a>
+                    <a href="javascript:;" onclick="jQuery('#popup_justVoted').hide()"><img src="${themeDisplay.pathThemeImages}/images/help_close.png" width="20" height="20" alt="X" /></a>
                 </div>
                 <h2 style="color: #66b035;">Thank you for voting!</h2>
                 <div>
