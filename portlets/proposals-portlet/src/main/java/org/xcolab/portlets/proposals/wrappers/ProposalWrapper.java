@@ -51,7 +51,6 @@ public class ProposalWrapper extends BaseProposalWrapper {
     protected ProposalRatingsWrapper proposalRatings;
     private RibbonWrapper ribbonWrapper;
     private ProposalWrapper baseProposal;
-    private List<ProposalTeamMemberWrapper> members;
     private List<ProposalSectionWrapper> sections;
     private List<MembershipRequestWrapper> membershipRequests;
 

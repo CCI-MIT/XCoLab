@@ -1,5 +1,8 @@
 @import "compass";
 
+//reset styles
+@import 'global/reset';
+
 //import functions
 @import "global/brightness";
 @import "global/helper";
@@ -9,8 +12,6 @@
 
 //import custom mixins
 @import 'components/buttons';
-
-@import 'global/reset';
 
 /* --[global/fonts]------------------------------------------------ */
 
