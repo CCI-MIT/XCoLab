@@ -49,7 +49,10 @@ public class DiscussionPermissions {
     private String getTabName(PortletRequest request){
         String discussionTabName = request.getParameter("tab");
         if(discussionTabName == null) {
-            discussionTabName = request.getParameter("pageToDisplay").replace("proposalDetails_", "");
+            final String pageToDisplay = request.getParameter("pageToDisplay");
+            if (pageToDisplay != null && pageToDisplay.startsWith("proposalDetails_")) {
+                discussionTabName = pageToDisplay.replace("proposalDetails_", "");
+            }
         }
         return discussionTabName;
     }
