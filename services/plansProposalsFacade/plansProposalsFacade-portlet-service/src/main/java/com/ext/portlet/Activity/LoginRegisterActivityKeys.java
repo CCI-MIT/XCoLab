@@ -8,14 +8,14 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 
 public enum LoginRegisterActivityKeys {
-    USER_REGISTERED(1, "New account created", "%s joined ClimateColab community");
-    private static Log _log = LogFactoryUtil.getLog(LoginRegisterActivityKeys.class);
+    USER_REGISTERED(1, "New account created", "%s joined CoLab community");
+    private static final Log _log = LogFactoryUtil.getLog(LoginRegisterActivityKeys.class);
 
     private final int type;
     private final String title;
     private final String body;
 
-    private LoginRegisterActivityKeys(int type, String title, String body) {
+    LoginRegisterActivityKeys(int type, String title, String body) {
         this.type = type;
         this.title = title;
         this.body = body;
@@ -23,8 +23,9 @@ public enum LoginRegisterActivityKeys {
 
     public static LoginRegisterActivityKeys getForType(int type) {
         for (LoginRegisterActivityKeys key : LoginRegisterActivityKeys.values()) {
-            if (key.type == type)
+            if (key.type == type) {
                 return key;
+            }
         }
         return null;
     }
@@ -42,14 +43,11 @@ public enum LoginRegisterActivityKeys {
     }
 
     private String getUserLink(User user) {
-        String result = "<user removed>";
         try {
             return CommunityUtil.generateUserURL(user.getUserId());
-        } catch (PortalException e) {
-            _log.info(e.getMessage());
-        } catch (SystemException e) {
+        } catch (PortalException | SystemException e) {
             _log.info(e.getMessage());
         }
-        return result;
+        return "<user removed>";
     }
 }
