@@ -133,26 +133,6 @@
             <finder-column name="contestPrivate" />
             <finder-column name="contestTypeId" />
         </finder>
-        <finder name="ActiveFlagText" return-type="Collection">
-            <finder-column name="contestActive" />
-            <finder-column name="flagText" />
-        </finder>
-        <finder name="ActiveFlagTextType" return-type="Collection">
-            <finder-column name="contestActive" />
-            <finder-column name="flagText" />
-            <finder-column name="contestTypeId" />
-        </finder>
-        <finder name="ActiveFlagTextPrivate" return-type="Collection">
-            <finder-column name="contestActive" />
-            <finder-column name="flagText" />
-            <finder-column name="contestPrivate" />
-        </finder>
-        <finder name="ActiveFlagTextPrivateType" return-type="Collection">
-            <finder-column name="contestActive" />
-            <finder-column name="flagText" />
-            <finder-column name="contestPrivate" />
-            <finder-column name="contestTypeId" />
-        </finder>
         <finder name="ContestType" return-type="Collection">
             <finder-column name="contestTypeId" />
         </finder>

@@ -14,22 +14,14 @@
 		<column name="classPK" type="long" />
 		<column name="type" type="int" />
 		<column name="automaticSubscriptionCounter" type="int" />
-        
-        
         <!--  TODO WRITE COMMENT -->
-        
-        
 		<column name="extraData" type="String" />
-        
-        
         <column name="receiverId" type="long" />
-		
 		<!-- Audit fields -->
-
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
-		
 
+        <!--TODO: find out if we actually need all these finders-->
 		<finder name="receiverId" return-type="Collection">
 			<finder-column name="receiverId" />
 		</finder>
@@ -66,12 +58,8 @@
             <finder-column name="type" />
             <finder-column name="extraData"  />
         </finder>
-
-		
 	</entity>
-	
-	
-	
+
 	<exceptions>
 
 		<exception>NoSuchActivitySubscription</exception>

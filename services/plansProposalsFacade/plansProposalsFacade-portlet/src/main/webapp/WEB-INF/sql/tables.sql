@@ -4,7 +4,7 @@ create table xcolab_ActivitySubscription (
 	classPK LONG,
 	type_ INTEGER,
 	automaticSubscriptionCounter INTEGER,
-	extraData TEXT null,
+	extraData VARCHAR(256) null,
 	receiverId LONG,
 	createDate DATE null,
 	modifiedDate DATE null

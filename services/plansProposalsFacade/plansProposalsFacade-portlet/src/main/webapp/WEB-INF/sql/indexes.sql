@@ -1,8 +1,8 @@
 create index IX_FD6093DD on xcolab_ActivitySubscription (classNameId, classPK);
 create index IX_61FA63BB on xcolab_ActivitySubscription (classNameId, classPK, receiverId);
--- extra data (TEXT/BLOB) without key length
--- create index IX_20164EB2 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData);
--- create index IX_C2ED8710 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData, receiverId);
+-- was too long (extra data)
+create index IX_20164EB2 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData);
+create index IX_C2ED8710 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData, receiverId);
 create index IX_1413A2B6 on xcolab_ActivitySubscription (classNameId, classPK, type_, receiverId);
 create index IX_33049EE6 on xcolab_ActivitySubscription (receiverId);
 
@@ -13,8 +13,6 @@ create index IX_CE6BAAA5 on xcolab_BalloonText (enabled);
 -- too long
 -- create index IX_AFDD82EB on xcolab_BalloonUserTracking (email);
 
--- doesn't exist!
--- create index IX_5192E6B6 on xcolab_Contest (PlanTypeId);
 create index IX_CEF1EFC6 on xcolab_Contest (contestActive);
 create index IX_9AB21749 on xcolab_Contest (contestActive, contestPrivate);
 create index IX_2DC0D430 on xcolab_Contest (contestActive, contestPrivate, contestTypeId);
@@ -23,22 +21,10 @@ create index IX_D29429DB on xcolab_Contest (contestActive, featured_);
 create index IX_348F875E on xcolab_Contest (contestActive, featured_, contestPrivate);
 create index IX_504C977B on xcolab_Contest (contestActive, featured_, contestPrivate, contestTypeId);
 create index IX_DC690B5E on xcolab_Contest (contestActive, featured_, contestTypeId);
--- private contest doesn't exist
--- create index IX_963C1320 on xcolab_Contest (contestActive, featured_, privateContest);
 create index IX_491DA3A6 on xcolab_Contest (contestActive, flag);
 create index IX_B9BA0B29 on xcolab_Contest (contestActive, flag, contestPrivate);
 create index IX_1516A450 on xcolab_Contest (contestActive, flag, contestPrivate, contestTypeId);
 create index IX_33496233 on xcolab_Contest (contestActive, flag, contestTypeId);
--- private contest doesn't exist
--- create index IX_1B6696EB on xcolab_Contest (contestActive, flag, privateContest);
-
--- too long
--- create index IX_C09FE3B3 on xcolab_Contest (contestActive, flagText);
--- create index IX_7D5C9136 on xcolab_Contest (contestActive, flagText, contestPrivate);
--- create index IX_27BFA2A3 on xcolab_Contest (contestActive, flagText, contestPrivate, contestTypeId);
--- create index IX_73676686 on xcolab_Contest (contestActive, flagText, contestTypeId);
--- create index IX_DF091CF8 on xcolab_Contest (contestActive, flagText, privateContest);
--- create index IX_FC5EA30B on xcolab_Contest (contestActive, privateContest);
 create index IX_168D6722 on xcolab_Contest (contestTier);
 create index IX_58A2B737 on xcolab_Contest (contestTier, contestTypeId);
 create index IX_95122F5 on xcolab_Contest (contestTypeId);
@@ -52,9 +38,6 @@ create index IX_DD06DA92 on xcolab_ContestDiscussion (ContestId, Tab);
 
 create index IX_ED61C03C on xcolab_ContestPhase (ContestPK);
 create index IX_2BA2B787 on xcolab_ContestPhase (ContestPK, PhaseStartDate, PhaseEndDate);
-
--- invisible doesn't exist
--- create index IX_19E93261 on xcolab_ContestPhase (ContestPK, invisible);
 
 create index IX_9F1D3B81 on xcolab_ContestPhase (ContestPK, phaseActiveOverride);
 create index IX_4F735B66 on xcolab_ContestPhase (ContestPK, phaseInactiveOverride);
