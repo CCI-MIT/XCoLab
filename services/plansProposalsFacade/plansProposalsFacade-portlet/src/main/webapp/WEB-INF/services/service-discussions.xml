@@ -83,18 +83,7 @@
         <finder name="SingleThreadId" return-type="DiscussionMessage" where="deleted is null">
             <finder-column name="messageId" />
         </finder>
-        
-        <finder name="SubjectLike" return-type="Collection" where="deleted is null">
-            <finder-column name="subject" comparator="LIKE" />
-            <finder-column name="categoryGroupId" />
-        </finder>
-        
-        <finder name="BodyLike" return-type="Collection" where="deleted is null">
-            <finder-column name="body" comparator="LIKE" />
-            <finder-column name="categoryGroupId" />
-        </finder>
-        
-        
+
         <finder name="MessageId" return-type="DiscussionMessage" where="deleted is null">
             <finder-column name="messageId" />
         </finder>
