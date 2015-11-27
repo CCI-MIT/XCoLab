@@ -274,13 +274,6 @@ public class ProposalAttributeLocalServiceUtil {
 
     /**
     * <p>Returns an attribute for current version of a proposal.</p>
-    *
-    * @param proposalId    id of a proposal
-    * @param attributeName name of an attribute
-    * @param additionalId  additionalId of an attribute
-    * @return proposal attribute
-    * @throws SystemException in case of an LR error
-    * @author janusz
     */
     public static com.ext.portlet.model.ProposalAttribute getAttribute(
         long proposalId, java.lang.String attributeName, long additionalId)
@@ -299,17 +292,7 @@ public class ProposalAttributeLocalServiceUtil {
     * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
     * </ol>
     *
-    * @param authorId      id of a change author
-    * @param proposalId    id of a proposal
-    * @param attributeName name of an attribute
-    * @param additionalId  additional id for an attribute
-    * @param stringValue   string value for an attribute
-    * @param numericValue  numeric value for an attribute
-    * @param realValue     double value for an attribute
     * @return ProposalAttribute that represents newly set attribute
-    * @throws PortalException in case of an LR error
-    * @throws SystemException in case of an LR error
-    * @author janusz
     */
     public static com.ext.portlet.model.ProposalAttribute setAttribute(
         long authorId, long proposalId, java.lang.String attributeName,
@@ -332,18 +315,7 @@ public class ProposalAttributeLocalServiceUtil {
     * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new val`ue</li>
     * </ol>
     *
-    * @param authorId      id of a change author
-    * @param proposalId    id of a proposal
-    * @param attributeName name of an attribute
-    * @param additionalId  additional id for an attribute
-    * @param stringValue   string value for an attribute
-    * @param numericValue  numeric value for an attribute
-    * @param realValue     double value for an attribute
-    * @param updatedDate   date of update
     * @return ProposalAttribute that represents newly set attribute
-    * @throws PortalException in case of an LR error
-    * @throws SystemException in case of an LR error
-    * @author patrickhiesel
     */
     public static com.ext.portlet.model.ProposalAttribute setAttribute(
         long authorId, long proposalId, java.lang.String attributeName,
@@ -360,9 +332,6 @@ public class ProposalAttributeLocalServiceUtil {
     /**
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
-    *
-    * @throws PortalException
-    * @throws SystemException
     */
     public static com.ext.portlet.model.ProposalAttribute setAttribute(
         long authorId, long proposalId, java.lang.String attributeName,
@@ -377,9 +346,6 @@ public class ProposalAttributeLocalServiceUtil {
     /**
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
-    *
-    * @throws PortalException
-    * @throws SystemException
     */
     public static com.ext.portlet.model.ProposalAttribute setAttribute(
         long authorId, long proposalId, java.lang.String attributeName,
@@ -394,9 +360,6 @@ public class ProposalAttributeLocalServiceUtil {
     /**
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
-    *
-    * @throws PortalException
-    * @throws SystemException
     */
     public static com.ext.portlet.model.ProposalAttribute setAttribute(
         long authorId, long proposalId, java.lang.String attributeName,
@@ -411,9 +374,6 @@ public class ProposalAttributeLocalServiceUtil {
     /**
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
-    *
-    * @throws PortalException
-    * @throws SystemException
     */
     public static com.ext.portlet.model.ProposalAttribute setAttribute(
         long authorId, long proposalId, java.lang.String attributeName,
@@ -428,9 +388,6 @@ public class ProposalAttributeLocalServiceUtil {
     /**
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
-    *
-    * @throws PortalException
-    * @throws SystemException
     */
     public static com.ext.portlet.model.ProposalAttribute setAttribute(
         long authorId, long proposalId, java.lang.String attributeName,
@@ -445,9 +402,6 @@ public class ProposalAttributeLocalServiceUtil {
     /**
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
-    *
-    * @throws PortalException
-    * @throws SystemException
     */
     public static com.ext.portlet.model.ProposalAttribute setAttribute(
         long authorId, long proposalId, java.lang.String attributeName,
@@ -462,9 +416,6 @@ public class ProposalAttributeLocalServiceUtil {
     /**
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
-    *
-    * @throws PortalException
-    * @throws SystemException
     */
     public static com.ext.portlet.model.ProposalAttribute setAttribute(
         long authorId, long proposalId, java.lang.String attributeName,
@@ -477,11 +428,6 @@ public class ProposalAttributeLocalServiceUtil {
 
     /**
     * <p>Returns all attributes for current version of a proposal.</p>
-    *
-    * @param proposalId id of a proposal
-    * @return list of proposal attributes for current version of a proposal
-    * @throws SystemException in case of an LR error
-    * @author janusz
     */
     public static java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
         long proposalId)
@@ -491,12 +437,6 @@ public class ProposalAttributeLocalServiceUtil {
 
     /**
     * <p>Returns all attributes for given version of a proposal.</p>
-    *
-    * @param proposalId id of a proposal
-    * @param version    version number of a proposal
-    * @return list of proposal attributes for current version of a proposal
-    * @throws SystemException in case of an LR error
-    * @author janusz
     */
     public static java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
         long proposalId, int version)
@@ -506,9 +446,6 @@ public class ProposalAttributeLocalServiceUtil {
 
     /**
     * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
-    *
-    * @throws SystemException
-    * @throws PortalException
     */
     public static void removeAttribute(long authorId,
         com.ext.portlet.model.ProposalAttribute attributeToDelete,
@@ -521,9 +458,6 @@ public class ProposalAttributeLocalServiceUtil {
 
     /**
     * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
-    *
-    * @throws PortalException
-    * @throws SystemException
     */
     public static void removeAttribute(long authorId,
         com.ext.portlet.model.ProposalAttribute attributeToDelete)

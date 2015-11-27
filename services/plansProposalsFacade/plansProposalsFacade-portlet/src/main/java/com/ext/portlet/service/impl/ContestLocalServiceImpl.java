@@ -249,12 +249,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return contestPersistence.findByActiveFlag(active, flag);
     }
 
-    @Override
-    public List<Contest> findByActiveFlagText(boolean active, String flagText) throws SystemException {
-        return contestPersistence.findByActiveFlagText(active, flagText);
-    }
-
-
     /**
      * Methods from ContestImpl *
      */

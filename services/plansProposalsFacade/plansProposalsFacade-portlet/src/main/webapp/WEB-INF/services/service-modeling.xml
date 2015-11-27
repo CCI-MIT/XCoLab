@@ -145,9 +145,8 @@
 
         <column name="modelChartIsVisible" type="boolean"/>
 
-
-
-        <finder name="ModelIdAndLabel" return-type="ModelOutputChartOrder">
+        <!--custom index with prefix length 50 on modelOutputLabel-->
+        <finder name="ModelIdAndLabel" return-type="ModelOutputChartOrder" db-index="false">
             <finder-column name="modelId"/>
             <finder-column name="modelOutputLabel"/>
         </finder>

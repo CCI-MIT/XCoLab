@@ -264,10 +264,6 @@ public interface ContestLocalService extends BaseLocalService,
         boolean active, int flag)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagText(
-        boolean active, java.lang.String flagText)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
     /**
     * Methods from ContestImpl *
     */
