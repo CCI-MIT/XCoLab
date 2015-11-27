@@ -25,12 +25,13 @@
 		<finder name="receiverId" return-type="Collection">
 			<finder-column name="receiverId" />
 		</finder>
-		
-        <finder name="ClassNameIdClassPK" return-type="Collection">
+
+        <!--uses index for ClassNameIdClassPKReceiverId-->
+        <finder name="ClassNameIdClassPK" return-type="Collection" db-index="false">
             <finder-column name="classNameId" />
             <finder-column name="classPK" />
         </finder>
-        
+
         <finder name="ClassNameIdClassPKReceiverId" return-type="Collection">
             <finder-column name="classNameId" />
             <finder-column name="classPK" />
@@ -43,16 +44,18 @@
             <finder-column name="type" />
             <finder-column name="receiverId" />
         </finder>
-        
-        <finder name="ClassNameIdClassPKTypeExtraDataReceiverId" return-type="Collection">
+
+        <!--custom index with prefix length of 50 on extraData-->
+        <finder name="ClassNameIdClassPKTypeExtraDataReceiverId" return-type="Collection" db-index="false">
             <finder-column name="classNameId" />
             <finder-column name="classPK" />
             <finder-column name="type" />
             <finder-column name="extraData"  />
             <finder-column name="receiverId" />
         </finder>
-        
-        <finder name="ClassNameIdClassPKTypeExtraData" return-type="Collection">
+
+        <!--using index above-->
+        <finder name="ClassNameIdClassPKTypeExtraData" return-type="Collection" db-index="false">
             <finder-column name="classNameId" />
             <finder-column name="classPK" />
             <finder-column name="type" />

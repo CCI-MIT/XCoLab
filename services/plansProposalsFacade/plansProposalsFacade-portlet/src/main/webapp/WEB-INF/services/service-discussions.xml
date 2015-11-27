@@ -91,6 +91,19 @@
         <finder name="AuthorId" return-type="Collection" where="deleted is null">
             <finder-column name="authorId" />
         </finder>
+
+        <!--index useless for LIKE - index on categoryGroupId and deleted will be used-->
+        <finder name="SubjectLike" return-type="Collection" where="deleted is null" db-index="false">
+            <finder-column name="subject" comparator="LIKE" />
+            <finder-column name="categoryGroupId" />
+        </finder>
+
+        <!--index useless for LIKE - index on categoryGroupId and deleted will be used-->
+        <finder name="BodyLike" return-type="Collection" where="deleted is null" db-index="false">
+            <finder-column name="body" comparator="LIKE" />
+            <finder-column name="categoryGroupId" />
+        </finder>
+
     </entity>
     
     <entity name="DiscussionMessageFlag" local-service="true">

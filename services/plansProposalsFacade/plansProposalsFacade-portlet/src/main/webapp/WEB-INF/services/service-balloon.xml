@@ -58,8 +58,9 @@
         <column name="balloonLinkUuid" type="String" />
         <column name="balloonLinkContext" type="String" />
         <column name="userAgent" type="String" />
-        
-    	<finder return-type="Collection" name="Email">
+
+		<!--custom index on email with prefix length 50-->
+    	<finder return-type="Collection" name="Email" db-index="false">
     		<finder-column name="email" />
     	</finder>
 	</entity>

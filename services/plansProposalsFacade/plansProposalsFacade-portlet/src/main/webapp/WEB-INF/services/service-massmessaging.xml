@@ -52,8 +52,9 @@
         <column name="typeId" type="long" primary="true" />
         <column name="name" type="String" />
         <column name="description" type="String" />
-        
-        <finder return-type="MessagingMessageConversionType" name="findByName">
+
+        <!--custom finder with prefix length 50 for name-->
+        <finder return-type="MessagingMessageConversionType" name="findByName" db-index="false">
             <finder-column name="name" />
         </finder>
         
@@ -108,8 +109,9 @@
        <order by="asc">
            <order-column name="email" />
        </order>
-       
-        <finder return-type="MessagingIgnoredRecipients" name="findByEmail">
+
+        <!--custom index with prefix length 50 on email-->
+        <finder return-type="MessagingIgnoredRecipients" name="findByEmail" db-index="false">
             <finder-column name="email" />
         </finder>
         
@@ -126,12 +128,14 @@
         <column name="id" type="long" primary="true" />
         <column name="name" type="String" />
         <column name="email" type="String" />
-       
-        <finder return-type="Collection" name="findByName">
+
+        <!--custom index with prefix length 50 for name-->
+        <finder return-type="Collection" name="findByName" db-index="false">
             <finder-column name="name" />
         </finder>
-        
-        <finder return-type="EmailList" name="findByNameEmail" >
+
+        <!--custom index with prefix length 50 for name and email-->
+        <finder return-type="EmailList" name="findByNameEmail" db-index="false">
             <finder-column name="name" />
             <finder-column name="email" />
         </finder>

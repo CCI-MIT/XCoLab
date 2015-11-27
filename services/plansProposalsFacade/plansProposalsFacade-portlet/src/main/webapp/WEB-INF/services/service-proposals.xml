@@ -65,8 +65,9 @@
     		<finder-column name="version" comparator="&gt;="/>
     		<finder-column name="versionWhenCreated" comparator="&lt;=" />
     	</finder>
-    	  	
-    	<finder return-type="ProposalAttribute" name="ProposalIdVersionNameAdditionalId" unique="true">
+
+		<!--TODO: this should be unique, but the database contains duplicates-->
+    	<finder return-type="ProposalAttribute" name="ProposalIdVersionNameAdditionalId">
     		<finder-column name="proposalId" />
     		<finder-column name="version" />
     		<finder-column name="name" />
