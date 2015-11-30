@@ -418,7 +418,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     @Override
     public int getNumberOfProposalsForJudge(User judge, ContestPhase phase) throws PortalException, SystemException{
         List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK());
-        int counter=0;
+        int counter = 0;
         for (Proposal p : proposals){
             String judges = "";
             try{
@@ -446,7 +446,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         } catch (SystemException e) {
             portletLink = "/web/guest/plans";
         }
-        String link = portletLink+"/-/plans/contestId/%d/contestPhase/%d";
+        String link = portletLink+"/-/plans/contestId/%d/phaseId/%d";
         return String.format(link, contestPhase.getContestPK(), contestPhase.getContestPhasePK());
     }
 }
