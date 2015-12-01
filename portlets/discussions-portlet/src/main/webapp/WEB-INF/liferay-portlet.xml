@@ -8,8 +8,7 @@
 		<indexer-class>org.xcolab.portlets.discussions.Indexer</indexer-class>
 		<social-activity-interpreter-class>org.xcolab.portlets.discussions.activity.DiscussionActivityFeedEntry</social-activity-interpreter-class>
 		<instanceable>false</instanceable>
-        <requires-namespaced-parameters>false</requires-namespaced-parameters> 
-		<header-portlet-javascript>/xmlhttp/js/navigation/navigationManager.js</header-portlet-javascript>
+        <requires-namespaced-parameters>false</requires-namespaced-parameters>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
