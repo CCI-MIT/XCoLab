@@ -30,48 +30,78 @@
                 </div>
             </div>
 
-            <div class="description">
-                This set of discussions is where Climate CoLab members can engage around any topics that interest them.
-            </div>
+            <c:if test="${not empty currentCategory}">
+                <div class="description">
+                        ${currentCategory.description}
+                </div>
+            </c:if>
+
 
             <table class="thread-list">
                 <thead class="blueheaderbar">
                 <tr>
                     <th>
-                        <portlet:renderURL var="sortURL">
-                            <portlet:param name="action" value="showCategory" />
+                        <portlet:actionURL var="sortURL">
+                            <portlet:param name="action" value="sortCategory" />
+                            <portlet:param name="categoryId" value="${currentCategory.id}" />
                             <portlet:param name="sortColumn" value="TITLE" />
-                        </portlet:renderURL>
+                            <portlet:param name="currentSortColumn" value="${sortColumn}" />
+                            <portlet:param name="currentSortAscending" value="${sortAscending}" />
+                        </portlet:actionURL>
                         <a href="${sortURL }">Title</a>
                         <div class="tooltip">
                             click to sort by title
                             <div class="tt-arrow"><!-- --></div>
                         </div>
-                        <collab:sortArrow sortAscending="true" sortColumn="TITLE" currentColumn="TITLE" />
+                        <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="TITLE" />
                     </th>
 
                     <th>
+                        <portlet:actionURL var="sortURL">
+                            <portlet:param name="action" value="sortCategory" />
+                            <portlet:param name="categoryId" value="${currentCategory.id}" />
+                            <portlet:param name="sortColumn" value="REPLIES" />
+                            <portlet:param name="currentSortColumn" value="${sortColumn}" />
+                            <portlet:param name="currentSortAscending" value="${sortAscending}" />
+                        </portlet:actionURL>
                         <a href="${sortURL }">Replies</a>
                         <div class="tooltip">
                             click to sort by replies
                             <div class="tt-arrow"><!-- --></div>
                         </div>
+                        <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="REPLIES" />
                     </th>
 
                     <th>
+                        <portlet:actionURL var="sortURL">
+                            <portlet:param name="action" value="sortCategory" />
+                            <portlet:param name="categoryId" value="${currentCategory.id}" />
+                            <portlet:param name="sortColumn" value="LAST_COMMENTER" />
+                            <portlet:param name="currentSortColumn" value="${sortColumn}" />
+                            <portlet:param name="currentSortAscending" value="${sortAscending}" />
+                        </portlet:actionURL>
                         <a href="${sortURL }">Last Commenter</a>
                         <div class="tooltip">
                             click to sort by last commenter
                             <div class="tt-arrow"><!-- --></div>
                         </div>
+                        <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="LAST_COMMENTER" />
                     </th>
 
                     <th>
+                        <portlet:actionURL var="sortURL">
+                            <portlet:param name="action" value="sortCategory" />
+                            <portlet:param name="categoryId" value="${currentCategory.id}" />
+                            <portlet:param name="sortColumn" value="DATE" />
+                            <portlet:param name="currentSortColumn" value="${sortColumn}" />
+                            <portlet:param name="currentSortAscending" value="${sortAscending}" />
+                        </portlet:actionURL>
                         <a href="${sortURL }">Date</a>
                         <div class="tooltip">
                             click to sort by date
                             <div class="tt-arrow"><!-- --></div>
                         </div>
+                        <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="DATE" />
                     </th>
                 </tr>
                 </thead>
@@ -79,7 +109,7 @@
                     <tr>
                         <td><a href="${thread.linkUrl}">${thread.title}</a></td>
                         <td>${thread.commentsCount}</td>
-                        <td><collab:userLinkSimple userId="${thread.author.userId}" text="${thread.author.screenName}"/></td>
+                        <td><collab:userLinkSimple userId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.screenName}"/></td>
                         <td>${thread.modifiedDate}</td>
                     </tr>
                 </c:forEach>

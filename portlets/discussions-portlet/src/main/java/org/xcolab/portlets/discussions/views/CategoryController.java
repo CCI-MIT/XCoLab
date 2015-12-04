@@ -1,10 +1,8 @@
 package org.xcolab.portlets.discussions.views;
 
 import com.ext.portlet.model.DiscussionCategory;
-import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -41,13 +39,28 @@ public class CategoryController {
 
     @RenderMapping
     public String showCategories(PortletRequest request, PortletResponse response, Model model) throws SystemException, PortalException {
+        return showCategories(request, response, model, ThreadSortColumn.DATE.name(), true);
+    }
+
+    @RenderMapping(params = "action=showCategories")
+    public String showCategories(PortletRequest request, PortletResponse response, Model model,
+                                 @RequestParam String sortColumn,
+                                 @RequestParam boolean sortAscending)
+            throws SystemException, PortalException {
+
+        ThreadSortColumn threadSortColumn;
+        try {
+            threadSortColumn = ThreadSortColumn.from(sortColumn);
+        } catch (ThreadSortColumn.NoSuchThreadSortColumnException e) {
+            threadSortColumn = ThreadSortColumn.DATE;
+        }
 
         DiscussionPreferences preferences = new DiscussionPreferences(request);
 
         DiscussionCategoryGroupWrapper categoryGroupWrapper = new DiscussionCategoryGroupWrapper(
                 DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(preferences.getCategoryGroupId()));
 
-        List<CategoryWrapper> categories = categoryGroupWrapper.getCategories();
+        List<CategoryWrapper> categories = categoryGroupWrapper.getCategories(threadSortColumn, sortAscending);
 
         List<List<ThreadWrapper>> threadsList = new ArrayList<>();
 
@@ -55,11 +68,13 @@ public class CategoryController {
             threadsList.add(new ArrayList<>(category.getThreads()));
         }
         List<ThreadWrapper> threads = mergeSortedLists(threadsList,
-                ThreadWrapper.getComparator(ThreadSortColumn.DATE, true));
+                ThreadWrapper.getComparator(threadSortColumn, sortAscending));
 
         model.addAttribute("categoryGroup", categoryGroupWrapper);
         model.addAttribute("categories", categories);
         model.addAttribute("threads", threads);
+        model.addAttribute("sortColumn", threadSortColumn);
+        model.addAttribute("sortAscending", sortAscending);
 
         return "category";
     }
@@ -118,23 +133,53 @@ public class CategoryController {
 
     @RenderMapping(params = "action=showCategory")
     public String showCategory(PortletRequest request, PortletResponse response, Model model,
-                               @RequestParam long categoryId)
+                               @RequestParam long categoryId, @RequestParam(required = false) String sortColumn,
+                               @RequestParam(required = false) boolean sortAscending)
             throws SystemException, PortalException {
+
+        ThreadSortColumn threadSortColumn;
+        try {
+            threadSortColumn = ThreadSortColumn.from(sortColumn);
+        } catch (ThreadSortColumn.NoSuchThreadSortColumnException e) {
+            threadSortColumn = ThreadSortColumn.DATE;
+        }
 
         DiscussionPreferences preferences = new DiscussionPreferences(request);
 
         DiscussionCategoryGroupWrapper categoryGroupWrapper = new DiscussionCategoryGroupWrapper(
                 DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(preferences.getCategoryGroupId()));
 
-        List<CategoryWrapper> categories = categoryGroupWrapper.getCategories();
-        CategoryWrapper currentCategory = new CategoryWrapper(DiscussionCategoryLocalServiceUtil.fetchDiscussionCategory(categoryId));
+        List<CategoryWrapper> categories = categoryGroupWrapper.getCategories(threadSortColumn, sortAscending);
+        CategoryWrapper currentCategory = new CategoryWrapper(DiscussionCategoryLocalServiceUtil.fetchDiscussionCategory(categoryId),
+                threadSortColumn, sortAscending);
 
         model.addAttribute("categoryGroup", categoryGroupWrapper);
         model.addAttribute("currentCategory", currentCategory);
         model.addAttribute("categories", categories);
         model.addAttribute("threads", currentCategory.getThreads());
+        model.addAttribute("sortColumn", threadSortColumn.name());
+        model.addAttribute("sortAscending", sortAscending);
 
         return "category";
+    }
+
+    @ActionMapping(params = "action=sortCategory")
+    public void sortCategory(ActionRequest request, ActionResponse response,
+                             @RequestParam(required = false) Long categoryId, @RequestParam String sortColumn,
+                             @RequestParam String currentSortColumn, @RequestParam boolean currentSortAscending)
+            throws SystemException, PortalException, IOException {
+
+        final String baseUrl;
+        if (categoryId != null && categoryId > 0) {
+            DiscussionCategory category = DiscussionCategoryLocalServiceUtil.fetchDiscussionCategory(categoryId);
+            baseUrl = new CategoryWrapper(category).getLinkUrl();
+        } else {
+            baseUrl = "/web/guest/discussion/-/discussion/categories";
+        }
+
+        String sortAscendingString = !sortColumn.equalsIgnoreCase(currentSortColumn) || !currentSortAscending ? "" : "/descending";
+
+        response.sendRedirect(baseUrl + "/sort/" + sortColumn + sortAscendingString);
     }
 
     @RenderMapping(params = "action=createCategory")
@@ -151,7 +196,7 @@ public class CategoryController {
     }
 
     @ActionMapping(params = "action=createCategory")
-    public void createCategoryAction(ActionRequest request, ActionResponse response, Model model,
+    public void createCategoryAction(ActionRequest request, ActionResponse response,
                                    @RequestParam String title, @RequestParam String description)
             throws SystemException, PortalException, IOException {
 

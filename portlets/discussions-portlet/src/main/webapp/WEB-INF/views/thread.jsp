@@ -7,6 +7,8 @@
         <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />&#160;
         <a href="/web/guest/discussion">Discussion</a>&#160;
         <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />&#160;
+        <a href="${thread.category.linkUrl}">${thread.category.title}</a>&#160;
+        <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />&#160;
         <a href="${thread.linkUrl}">${thread.title}</a>&#160;
     </div>
 

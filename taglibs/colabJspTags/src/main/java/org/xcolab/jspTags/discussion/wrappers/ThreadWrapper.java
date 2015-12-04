@@ -71,6 +71,14 @@ public class ThreadWrapper {
         return dcg;
     }
 
+    public CategoryWrapper getCategory() throws PortalException, SystemException {
+        return threadMessageWrapped.getCategory();
+    }
+
+    public long getAuthorId() {
+        return threadMessageWrapped.getAuthorId();
+    }
+
     public User getAuthor() throws SystemException {
         if (author == null) {
             author = UserLocalServiceUtil.fetchUser(threadMessageWrapped.getAuthorId());
@@ -86,8 +94,16 @@ public class ThreadWrapper {
         return "/web/guest/discussion/-/discussion/thread/"+getThreadId();
     }
 
+    public long getLastActivityAuthorId() {
+        long lastActivityAuthorId = threadMessageWrapped.getLastActivityAuthorId();
+        if (lastActivityAuthorId == 0L) {
+            lastActivityAuthorId = getAuthorId();
+        }
+        return lastActivityAuthorId;
+    }
+
     public User getLastActivityAuthor() throws SystemException {
-        return UserLocalServiceUtil.fetchUser(threadMessageWrapped.getLastActivityAuthorId());
+        return UserLocalServiceUtil.fetchUser(getLastActivityAuthorId());
     }
 
     public Date getLastActivityDate() {
@@ -114,9 +130,15 @@ public class ThreadWrapper {
                         break;
                     case LAST_COMMENTER:
                         try {
-                            ret = o1.getLastActivityAuthor().getScreenName().compareToIgnoreCase(o2.getLastActivityAuthor().getScreenName());
+                            final User lastActivityAuthor1 = o1.getLastActivityAuthor();
+                            final User lastActivityAuthor2 = o2.getLastActivityAuthor();
+                            if (lastActivityAuthor1 != null && lastActivityAuthor2 != null) {
+                                ret = lastActivityAuthor1.getScreenName().compareToIgnoreCase(lastActivityAuthor2.getScreenName());
+                            } else {
+                                ret = (int) (o1.getLastActivityAuthorId() - o2.getLastActivityAuthorId());
+                            }
                         } catch (SystemException e) {
-                            ret = 0;
+                            ret = (int) (o1.getLastActivityAuthorId() - o2.getLastActivityAuthorId());
                         }
                         break;
                     case DATE:

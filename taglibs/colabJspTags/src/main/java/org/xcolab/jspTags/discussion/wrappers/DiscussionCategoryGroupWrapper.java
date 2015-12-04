@@ -9,6 +9,7 @@ import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.jspTags.discussion.ThreadSortColumn;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,11 +61,15 @@ public class DiscussionCategoryGroupWrapper {
         return discussionCategoryGroup.getId();
     }
 
-    public List<CategoryWrapper> getCategories() throws SystemException, PortalException {
+    public List<CategoryWrapper> getCategories() throws PortalException, SystemException {
+        return getCategories(ThreadSortColumn.DATE, true);
+    }
+
+    public List<CategoryWrapper> getCategories(ThreadSortColumn sortColumn, boolean sortAscending) throws SystemException, PortalException {
         if (categories == null && discussionCategoryGroup != null) {
             categories = new ArrayList<>();
             for (DiscussionCategory category : DiscussionCategoryGroupLocalServiceUtil.getCategories(discussionCategoryGroup)) {
-                CategoryWrapper catWrapper = new CategoryWrapper(category);
+                CategoryWrapper catWrapper = new CategoryWrapper(category, sortColumn, sortAscending);
                 categories.add(catWrapper);
             }
         }
