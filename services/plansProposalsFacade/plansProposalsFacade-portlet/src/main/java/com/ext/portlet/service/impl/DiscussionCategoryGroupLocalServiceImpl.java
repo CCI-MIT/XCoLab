@@ -57,6 +57,7 @@ public class DiscussionCategoryGroupLocalServiceImpl
     protected GroupLocalService groupLocalService;
     
     
+    @Override
     public DiscussionCategoryGroup createDiscussionCategoryGroup(String description) throws SystemException {
         Long id = CounterLocalServiceUtil.increment(DiscussionCategoryGroup.class.getName());
         DiscussionCategoryGroup discussionCategoryGroup = createDiscussionCategoryGroup(id);
@@ -67,23 +68,28 @@ public class DiscussionCategoryGroupLocalServiceImpl
     }
     
 
+    @Override
     public DiscussionCategory getCategoryById(long categoryId) throws NoSuchDiscussionCategoryException, SystemException {
         return DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(categoryId);
         
     }
     
+    @Override
     public DiscussionMessage getThreadById(long threadId) throws NoSuchDiscussionMessageException, SystemException {
         return DiscussionMessageLocalServiceUtil.getThreadByThreadId(threadId);   
     }
     
+    @Override
     public List<DiscussionCategory> getCategories(DiscussionCategoryGroup dcg) throws SystemException {
         return DiscussionCategoryLocalServiceUtil.getCategoriesByCategoryGroupId(dcg.getId());
     }
     
+    @Override
     public DiscussionCategory addCategory(DiscussionCategoryGroup dcg, String name, String description, User creator) throws SystemException  {
         return DiscussionCategoryLocalServiceUtil.createDebateCategory(dcg.getId(), name, description, creator);
     }
     
+    @Override
     public void store(DiscussionCategoryGroup dcg) throws SystemException {
         if (dcg.isNew()) {
             DiscussionCategoryGroupLocalServiceUtil.addDiscussionCategoryGroup(dcg);
@@ -93,8 +99,9 @@ public class DiscussionCategoryGroupLocalServiceImpl
         }
     }
     
+    @Override
     public DiscussionMessage getCommentThread(DiscussionCategoryGroup dcg) throws SystemException, PortalException {
-        DiscussionMessage thread = null;
+        DiscussionMessage thread;
         if (dcg.getCommentsThread() <= 0L) {
             thread = null;
         }
@@ -111,8 +118,9 @@ public class DiscussionCategoryGroupLocalServiceImpl
         
     }
     
+    @Override
     public DiscussionMessage addComment(DiscussionCategoryGroup dcg, String title, String description, User author) throws SystemException, PortalException {
-        DiscussionMessage comment = null;
+        DiscussionMessage comment;
         if (getCommentThread(dcg) == null || getCommentThread(dcg).getDeleted() != null) {
             // create new thread
             comment = DiscussionMessageLocalServiceUtil.addThread(dcg.getId(), 0L, title, description, author);
@@ -124,13 +132,12 @@ public class DiscussionCategoryGroupLocalServiceImpl
             DiscussionMessage thread = getCommentThread(dcg);
             comment = DiscussionMessageLocalServiceUtil.addThreadMessage(thread, title, description, author);
         }
-        
        
         Group scopeGroup = groupLocalService.getGroup(
                 companyLocalService.getCompanyByWebId(PropsUtil.get(PropsKeys.COMPANY_DEFAULT_WEB_ID)).getCompanyId(),
                 DEFAULT_GROUP_NAME);
 
-        if (! dcg.isIsQuiet()) {
+        if (! dcg.getIsQuiet()) {
             SocialActivityLocalServiceUtil.addActivity(author.getUserId(), scopeGroup.getGroupId(),
                     DiscussionCategoryGroup.class.getName(), dcg.getId(), 
                     DiscussionActivityKeys.ADD_PROPOSAL_DISCUSSION_COMMENT.id(),
@@ -142,10 +149,12 @@ public class DiscussionCategoryGroupLocalServiceImpl
         return comment;
     }
     
+    @Override
     public int getCommentsCount(long discussionId) throws SystemException, PortalException {
         return getCommentsCount(getDiscussionCategoryGroup(discussionId));
     }
     
+    @Override
     public int getCommentsCount(DiscussionCategoryGroup dcg) throws SystemException, PortalException {
         if (getCommentThread(dcg) == null) {
             return 0;
@@ -157,6 +166,7 @@ public class DiscussionCategoryGroupLocalServiceImpl
         }
     }
     
+    @Override
     public void copyEverything(DiscussionCategoryGroup dcg, DiscussionCategoryGroup source) throws SystemException, PortalException {
         // copy categories
         for (DiscussionCategory category: getCategories(dcg)) {
@@ -213,6 +223,7 @@ public class DiscussionCategoryGroupLocalServiceImpl
         
     }
     
+    @Override
     public int getUserMessages(long userId) throws SystemException {
     	return discussionMessagePersistence.countByAuthorId(userId);
     }

@@ -1,20 +1,18 @@
-package org.xcolab.jsp.tags.discussion.actions;
-
-import java.io.IOException;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.jsp.tags.discussion.DiscussionPermissions;
-import org.xcolab.jsp.tags.discussion.exceptions.DiscussionsException;
+package org.xcolab.jspTags.discussion.actions;
 
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.jspTags.discussion.DiscussionPermission;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -33,7 +31,7 @@ public class DeleteDiscussionMessageFlagActionController extends BaseDiscussions
         }
 
         @Override
-        public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId) {
+        public boolean isUserAllowed(DiscussionPermission permissions, long additionalId) {
             return permissions.getCanAdminMessages();
         }
         

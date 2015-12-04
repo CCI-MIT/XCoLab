@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.1.0//EN"
+"http://www.liferay.com/dtd/liferay-friendly-url-routes_6_1_0.dtd">
+<routes>
+
+    <route>
+        <pattern>/thread/{threadId}</pattern>
+        <generated-parameter name="action">showThread</generated-parameter>
+        <generated-parameter name="threadId">{threadId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/threads/create</pattern>
+        <generated-parameter name="action">createThread</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/category/{categoryId}</pattern>
+        <generated-parameter name="action">showCategory</generated-parameter>
+        <generated-parameter name="categoryId">{categoryId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/categories/create</pattern>
+        <generated-parameter name="action">createCategory</generated-parameter>
+    </route>
+
+</routes>

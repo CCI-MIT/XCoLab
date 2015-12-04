@@ -3,6 +3,6 @@
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           version="2.0">
 
-    Discussions
+    Edit preferences
 
 </jsp:root>

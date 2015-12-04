@@ -3,31 +3,35 @@ function disableAddComment() {
     jQuery("#thecomment").find(".addCommentButton").attr('disabled', true);
 }
 function isAddCommentFormValid() {
-    var $commentElement = jQuery("#thecomment");
-    var isValid = (jQuery.trim($commentElement.find(".commentContent").val()) != '');
+    var $thecomment = jQuery("#thecomment");
+    var isValid = (jQuery.trim($thecomment.find(".commentContent").val()) != '');
+    if (!isValid) {
+        isValid = jQuery.trim(CKEDITOR.instances.messageContent.getData()) != '';
+    }
 
     if (isValid) {
-        $commentElement.find('.errorMsg').hide();
+        $thecomment.find('.errorMsg').hide();
     }
     else {
-        $commentElement.find('.errorMsg').show();
+        $thecomment.find('.errorMsg').show();
     }
     return isValid;
 }
 
 function editComment(messageId, url){
-    var comment = extractText('message_' + messageId);
-    var $messageElement = $('#message_' + messageId);
-    $messageElement.empty();
+    var comment = jQuery('#' + 'message_' + messageId).html(); //extractText('message_' + messageId);
+    var $message = $('#message_' + messageId);
+    $message.empty();
     var formContent = '<form method="post" action="' + url + '">';
-    formContent += '<textarea id="text_' + messageId + '" name="comment" style="width: 100%; height: 150px;"></textarea>';
+    formContent += '<textarea class="rte" id="text_' + messageId + '" name="comment" style="width: 100%; height: 150px;"></textarea>';
     formContent += '<input name="messageId" type="hidden" value="' + messageId + '"/>';
-    formContent += '<div class="blue-button" style="margin-left: 320px; margin-top: 10px;"><a onclick=" $(this).parents(\'form:first\').submit()" type="submit" href="javascript:;">Save</a></div>';
+    formContent += '<a class="primary-button" style="margin-left: 320px; margin-top: 10px;" onclick=" $(this).parents(\'form:first\').submit()" type="submit" href="javascript:;">Save</a>';
     formContent += '</form>';
-    $messageElement.append(formContent);
-    $messageElement.next().remove();
+    $message.append(formContent);
+    $message.next().remove();
 
-    $('#text_'+messageId).text(comment);
+    $('#text_'+messageId).html(comment);
+    initializeTextEditors();
 }
 
 function extractText(elementId) {
@@ -55,8 +59,8 @@ function extractText(elementId) {
  Update add this urls to messages
  **/
 jQuery(function() {
-    var $messageContentElement = $("#messageContent");
-    if ($messageContentElement.length > 0) {
+    var $messageContent = $("#messageContent");
+    if ($messageContent.length > 0) {
         var baseLocation = window.location.toString();
         if (baseLocation.indexOf("#") >= 0) {
             baseLocation = baseLocation.substring(0, baseLocation.indexOf("#"));
@@ -67,8 +71,8 @@ jQuery(function() {
         });
 
         //restore comment content from a previously set cookie.
-        if ($messageContentElement.val() == "" && $.cookie("proposal-comment-body")) {
-            $messageContentElement.val($.cookie("proposal-comment-body"));
+        if ($messageContent.val() == "" && $.cookie("proposal-comment-body")) {
+            $messageContent.val($.cookie("proposal-comment-body"));
         }
 
         //submit button functionality for adding new comments

@@ -1,4 +1,3 @@
-/* COMMENTS *****************/
 #commentbox {
   height: 178px;
   width: 788px;
@@ -11,16 +10,21 @@
   width: 790px
 }
 
-.comm_butt {
-  background: url(../images/comment_submit.gif);
-  border: none;
-  width: 119px;
-  height: 30px;
-  cursor: pointer;
+.comm-butt {
+  position: relative;
+  float: right;
+  width: 715px;
+  text-align: left;
+  margin-top: 8px;
 }
 
-.comm_butt.right {
+.comm-share {
   float: right;
+}
+
+.comm-butt img {
+  vertical-align: middle;
+  padding-right: 8px;
 }
 
 .addcomment {
@@ -190,7 +194,7 @@ ul#blogArchives li {
   margin-right: 18px;
 }
 
-/* comments table for proposals */
+// comments table for proposals
 .comments {
   font-size: 15px;
 }
@@ -229,4 +233,28 @@ ul#blogArchives li {
   padding: 26px 23px 15px 23px;
   line-height: 22px;
   color: $darkest-grey;
+}
+
+//Category
+table.thread-list {
+  td, th {
+    padding: 8px;
+  }
+
+  tr {
+    border-bottom: 1px solid $light-grey;
+  }
+}
+
+.threads-container {
+  @extend .clearfix;
+  .main-content {
+    float: left;
+    width: 680px;
+  }
+
+  .sidebar {
+    float: left;
+    margin-left: 50px;
+  }
 }

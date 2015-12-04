@@ -1,5 +1,14 @@
 //TODO: refactor this and move the portlet specific code to the respective portlets
 
+thead.blueheaderbar {
+  background: $primary-light-grey;
+  border-bottom: 1px solid $primary-grey;
+  color: $darkest-grey;
+  //TODO: there seems to be no compass mixin for position: sticky yet
+  position: -webkit-sticky;
+  position: sticky;
+}
+
 .blueheaderbar {
   height: 37px;
   background: $primary-light-grey;

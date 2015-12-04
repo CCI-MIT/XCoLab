@@ -3,7 +3,9 @@ package org.xcolab.jspTags.discussion.wrappers;
 import com.ext.portlet.discussions.DiscussionMessageFlagType;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.DiscussionMessageFlag;
+import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
+import com.ext.portlet.service.SpamReportLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -12,8 +14,8 @@ import org.xcolab.utils.HtmlUtil;
 
 import java.util.Date;
 
-public class DiscussionMessageWrapper {
-    private DiscussionMessage wrapped;
+public class DiscussionMessageWrapper implements Comparable<DiscussionMessageWrapper> {
+    private final DiscussionMessage wrapped;
 
     public DiscussionMessageWrapper(DiscussionMessage msg) {
         this.wrapped = msg;
@@ -41,7 +43,10 @@ public class DiscussionMessageWrapper {
 
     public long getCategoryGroupId() {
         return wrapped.getCategoryGroupId();
+    }
 
+    public CategoryWrapper getCategory() throws SystemException, PortalException {
+        return new CategoryWrapper(DiscussionCategoryLocalServiceUtil.fetchDiscussionCategory(getCategoryGroupId()));
     }
 
     public long getAuthorId() {
@@ -61,7 +66,11 @@ public class DiscussionMessageWrapper {
     }
 
     public Date getLastActivityDate() {
-        return wrapped.getLastActivityDate();
+        final Date lastActivityDate = wrapped.getLastActivityDate();
+        if (lastActivityDate == null) {
+            return wrapped.getCreateDate();
+        }
+        return lastActivityDate;
     }
 
     public long getLastActivityAuthorId() {
@@ -71,7 +80,12 @@ public class DiscussionMessageWrapper {
     public boolean isExpertReview() throws SystemException {
         return hasFlag(DiscussionMessageFlagType.EXPERT_REVIEW);
     }
-    
+
+    public int getSpamReportCount() throws SystemException {
+        return SpamReportLocalServiceUtil.getByDiscussionMessageId(getMessageId()).size();
+    }
+
+
     public boolean hasFlag(DiscussionMessageFlagType flagType) throws SystemException {
         return hasFlag(flagType.name());
     }
@@ -89,5 +103,13 @@ public class DiscussionMessageWrapper {
     
     public User getAuthor() throws PortalException, SystemException {
         return UserLocalServiceUtil.getUser(wrapped.getAuthorId());
+    }
+
+    @Override
+    public int compareTo(DiscussionMessageWrapper o) {
+        if (getThreadId() == 0 || o.getThreadId() == 0) {
+            return getCreateDate().compareTo(o.getCreateDate());
+        }
+        return getLastActivityDate().compareTo(o.getLastActivityDate());
     }
 }

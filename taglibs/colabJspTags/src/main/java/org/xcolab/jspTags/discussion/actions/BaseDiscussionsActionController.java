@@ -1,5 +1,6 @@
 package org.xcolab.jspTags.discussion.actions;
 
+import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -21,15 +22,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class DiscussionsBaseActionController {
+public abstract class BaseDiscussionsActionController {
 
-    public void checkPermissions(ActionRequest request, String accessDeniedMessage, long discussionId)
+    public void checkPermissions(ActionRequest request, String accessDeniedMessage, long discussionId, long additionalId)
             throws DiscussionsException, PortalException, SystemException {
 
         DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
         DiscussionPermission permissions = new DiscussionPermission(request, dcg);
 
-        if (!isUserAllowed(permissions)) {
+        if (!isUserAllowed(permissions, additionalId)) {
             throw new DiscussionsException(accessDeniedMessage);
         }
     }
@@ -77,9 +78,10 @@ public abstract class DiscussionsBaseActionController {
         response.sendRedirect(referer);
     }
 
-    public abstract boolean isUserAllowed(DiscussionPermission permissions);
+    public abstract boolean isUserAllowed(DiscussionPermission permissions, long additionalId)
+            throws SystemException, NoSuchDiscussionMessageException;
 
-    private class SimpleNameValuePair implements NameValuePair {
+    private static class SimpleNameValuePair implements NameValuePair {
         String name, value;
 
         private SimpleNameValuePair(String name, String value) {
@@ -87,10 +89,12 @@ public abstract class DiscussionsBaseActionController {
             this.value = value;
         }
 
+        @Override
         public String getName() {
             return name;
         }
 
+        @Override
         public String getValue() {
             return value;
         }

@@ -1,4 +1,4 @@
-package org.xcolab.jsp.tags.discussion.actions;
+package org.xcolab.jspTags.discussion.actions;
 
 import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.model.DiscussionMessage;
@@ -8,22 +8,15 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.jsp.tags.discussion.DiscussionPermissions;
-import org.xcolab.jsp.tags.discussion.exceptions.DiscussionsException;
-import org.xcolab.jsp.tags.discussion.wrappers.DiscussionMessageWrapper;
+import org.xcolab.jspTags.discussion.DiscussionPermission;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
+import org.xcolab.jspTags.discussion.wrappers.DiscussionMessageWrapper;
 import org.xcolab.utils.HtmlUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import java.io.IOException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: patrickhiesel
- * Date: 05/11/13
- * Time: 15:48
- * To change this template use File | Settings | File Templates.
- */
 @Controller
 @RequestMapping("view")
 public class EditDiscussionMessageActionController extends BaseDiscussionsActionController  {
@@ -44,7 +37,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
     }
 
     @Override
-    public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId)
+    public boolean isUserAllowed(DiscussionPermission permissions, long additionalId)
             throws SystemException, NoSuchDiscussionMessageException {
         final DiscussionMessage message = DiscussionMessageLocalServiceUtil.getMessageByMessageId(additionalId);
         final DiscussionMessageWrapper messageWrapper = new DiscussionMessageWrapper(message);

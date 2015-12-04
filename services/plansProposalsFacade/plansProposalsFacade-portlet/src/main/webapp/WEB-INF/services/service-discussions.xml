@@ -75,7 +75,7 @@
             <finder-column name="categoryId" />
             <finder-column name="threadId" />
         </finder>
-        
+
         <finder name="ThreadId" return-type="Collection" where="deleted is null">
             <finder-column name="threadId" />
         </finder>

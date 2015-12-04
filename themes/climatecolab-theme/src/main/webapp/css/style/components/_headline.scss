@@ -119,6 +119,7 @@
 
 .headline h2 span {
   font-size: 33px;
+  vertical-align: middle;
   font-weight: 700;
   color: $secondary-color;
 }
@@ -147,17 +148,6 @@
 }
 
 .prop-butt img {
-  vertical-align: middle;
-  padding-right: 10px;
-}
-
-.comm-butt {
-  float: right;
-  width: 715px;
-  text-align: left;
-}
-
-.comm-butt img {
   vertical-align: middle;
   padding-right: 10px;
 }
