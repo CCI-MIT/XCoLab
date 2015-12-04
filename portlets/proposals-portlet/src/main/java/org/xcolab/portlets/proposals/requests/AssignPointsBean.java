@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.requests;
 
 import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -21,12 +22,12 @@ import java.util.Set;
 public class AssignPointsBean {
     //pointTypeId => [UserId -> Percentage]
     //The percentages are from 0 to 100 here, in order to make it easier to display it to the user
-    private Map<Long, Map<Long, Double>> assignments;
+    private final Map<Long, Map<Long, Double>> assignmentsByUserIdByPointTypeId;
 
     private List<User> usersNotInTeam;
 
     public AssignPointsBean() {
-        this.assignments = new HashMap<>();
+        this.assignmentsByUserIdByPointTypeId = new HashMap<>();
     }
 
     public void setupUsers(List<User> teamMembers) throws SystemException {
@@ -63,7 +64,7 @@ public class AssignPointsBean {
             entityPercentages.put(distribution.getTargetUserId(), roundToTwoDigits(distribution.getPercentage() * percentMultiplicationFactor));
         }
 
-        this.assignments.put(pointType.getId(), entityPercentages);
+        this.assignmentsByUserIdByPointTypeId.put(pointType.getId(), entityPercentages);
     }
 
     private static double roundToTwoDigits(double d) {
@@ -74,27 +75,23 @@ public class AssignPointsBean {
         return Double.valueOf(newFormat.format(d));
     }
 
-    public Map<Long, Double> get(Long pointTypeId) {
-        return this.assignments.get(pointTypeId);
+    public Map<Long, Double> getAssignmentsByUserId(Long pointTypeId) throws PortalException {
+        final Map<Long, Double> assignmentsByUserId = this.assignmentsByUserIdByPointTypeId.get(pointTypeId);
+        if (assignmentsByUserId == null) {
+            throw new PortalException("No assignments found for pointTypeId "+pointTypeId);
+        }
+        return assignmentsByUserId;
     }
 
-    public Set<Long> getUserIds(Long pointTypeId) {
-        return this.assignments.get(pointTypeId).keySet();
+    public Set<Long> getUserIds(Long pointTypeId) throws PortalException {
+        return getAssignmentsByUserId(pointTypeId).keySet();
     }
 
-    public Map<Long, Map<Long, Double>> getAssignments() {
-        return assignments;
-    }
-
-    public void setAssignments(Map<Long, Map<Long, Double>> assignments) {
-        this.assignments = assignments;
+    public Map<Long, Map<Long, Double>> getAssignmentsByUserIdByPointTypeId() {
+        return assignmentsByUserIdByPointTypeId;
     }
 
     public List<User> getUsersNotInTeam() {
         return usersNotInTeam;
-    }
-
-    public void setUsersNotInTeam(List<User> usersNotInTeam) {
-        this.usersNotInTeam = usersNotInTeam;
     }
 }

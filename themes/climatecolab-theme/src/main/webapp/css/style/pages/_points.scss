@@ -21,13 +21,6 @@
     background-size: cover;
     height: 94px;
     padding-top: 30px;
-    text-align: center;
-    font-size: 2em;
-    color: white;
-    text-shadow: -1px -1px 0 black,
-    1px -1px 0 black,
-    -1px 1px 0 black,
-    1px 1px 0 black;
   }
 }
 
@@ -78,6 +71,7 @@ td.left.small .points-container, td.left.small .arrow-down {
   }
   p.info {
     margin-bottom: 0;
+    margin-right: 10px;
   }
 
   td.left {

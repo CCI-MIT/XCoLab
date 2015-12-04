@@ -2,10 +2,12 @@ package org.xcolab.portlets.proposals.view.action;
 
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.PointTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -62,10 +64,10 @@ public class AssignPointsActionController {
         }
 
 
-        Proposal proposal = proposalsContext.getProposal(request);
-        User currentUser = proposalsContext.getUser(request);
-        Contest contest = proposalsContext.getContest(request);
-        long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+        final User currentUser = proposalsContext.getUser(request);
+        final Proposal proposal = proposalsContext.getProposal(request);
+        final Contest contest = proposalsContext.getContest(request);
+        final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
 
         //first, delete the existing configuration
         PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());
@@ -77,8 +79,8 @@ public class AssignPointsActionController {
             this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType));
 
             //custom user assignments
-            for (Long pointTypeId : assignPointsBean.getAssignments().keySet()) {
-                Map<Long, Double> assignments = assignPointsBean.get(pointTypeId);
+            for (Long pointTypeId : assignPointsBean.getAssignmentsByUserIdByPointTypeId().keySet()) {
+                Map<Long, Double> assignments = assignPointsBean.getAssignmentsByUserId(pointTypeId);
 
                 double sum = 0.0;
                 for (Map.Entry<Long, Double> entry : assignments.entrySet()) {
@@ -111,6 +113,7 @@ public class AssignPointsActionController {
             PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());
             throw e;
         }
-        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contest.getContestPK()+"/phaseId/"+contestPhaseId+"/planId/"+proposal.getProposalId()+"/tab/POINTS");
+
+        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase)+"/tab/POINTS");
     }
 }
