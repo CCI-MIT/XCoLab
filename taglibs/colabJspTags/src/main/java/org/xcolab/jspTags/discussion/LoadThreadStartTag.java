@@ -5,6 +5,8 @@ import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.jspTags.discussion.wrappers.DiscussionCategoryGroupWrapper;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
@@ -18,6 +20,8 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * Created by johannes on 12/2/15.
  */
 public class LoadThreadStartTag extends BodyTagSupport {
+
+    private static final Log _log = LogFactoryUtil.getLog(LoadThreadStartTag.class);
 
     private ThreadWrapper thread;
     private long categoryGroupId;
@@ -36,10 +40,17 @@ public class LoadThreadStartTag extends BodyTagSupport {
             if (dcg == null) {
                 dcg = thread.getCategoryGroup();
             }
+            DiscussionPermissions discussionPermissions = (DiscussionPermissions) portletRequest.getAttribute(
+                    DiscussionPermissions.REQUEST_ATTRIBUTE_NAME);
+            if (discussionPermissions == null) {
+                discussionPermissions = new DiscussionPermissions(portletRequest, dcg);
+            } else {
+                _log.info("Found custom DiscussionPermissions of type " + discussionPermissions.getClass().getName());
+            }
             pageContext.setAttribute("thread", thread);
             pageContext.setAttribute("categoryGroup", new DiscussionCategoryGroupWrapper(dcg));
             pageContext.setAttribute("newMessage", new NewMessageWrapper());
-            pageContext.setAttribute("discussionPermissions", new DiscussionPermissions(portletRequest, dcg));
+            pageContext.setAttribute("discussionPermissions", discussionPermissions);
         } catch (PortalException | SystemException | JspException e) {
             e.printStackTrace();
         }

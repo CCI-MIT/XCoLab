@@ -46,7 +46,7 @@ public class DiscussionMessageWrapper implements Comparable<DiscussionMessageWra
     }
 
     public CategoryWrapper getCategory() throws SystemException, PortalException {
-        return new CategoryWrapper(DiscussionCategoryLocalServiceUtil.fetchDiscussionCategory(getCategoryGroupId()));
+        return new CategoryWrapper(DiscussionCategoryLocalServiceUtil.fetchDiscussionCategory(getCategoryId()));
     }
 
     public long getAuthorId() {

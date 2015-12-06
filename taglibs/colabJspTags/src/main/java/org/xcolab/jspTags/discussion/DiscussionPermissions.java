@@ -18,6 +18,8 @@ import javax.portlet.PortletRequest;
 
 public class DiscussionPermissions {
 
+    public static final String REQUEST_ATTRIBUTE_NAME = "DISCUSSION_PERMISSIONS";
+
     private static final String RESOURCE_NAME = DiscussionCategoryGroup.class.getName();
 
     protected final User currentUser;
