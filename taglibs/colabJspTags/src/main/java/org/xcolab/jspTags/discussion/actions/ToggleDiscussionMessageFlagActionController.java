@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -23,7 +23,7 @@ public class ToggleDiscussionMessageFlagActionController extends BaseDiscussions
         @RequestMapping(params = "action=toggleDiscussionMessageFlag")
         public void handleAction(ActionRequest request, ActionResponse response, 
                 @RequestParam long discussionId, @RequestParam long messageId, @RequestParam String flag) 
-                throws IOException, PortalException, SystemException, DiscussionsException {
+                throws IOException, PortalException, SystemException, DiscussionAuthorizationException {
             
             checkPermissions(request, "User isn't allowed to modify message flags", discussionId, 0L);
             
@@ -36,7 +36,7 @@ public class ToggleDiscussionMessageFlagActionController extends BaseDiscussions
                 DiscussionMessageLocalServiceUtil.addFlag(message, flag, null, themeDisplay.getUser());
             }
             
-            redirectToReferer(request, response);
+            redirectToReferrer(request, response);
         }
 
         @Override

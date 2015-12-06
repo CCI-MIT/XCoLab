@@ -15,7 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionException;
 import org.xcolab.jspTags.discussion.wrappers.DiscussionMessageWrapper;
 import org.xcolab.mail.EmailToAdminDispatcher;
 
@@ -33,7 +34,7 @@ public class SpamReportDiscussionMessageActionController extends BaseDiscussions
     @RequestMapping(params = "action=reportSpam")
     public void reportSpam(ActionRequest request, ActionResponse response,
                              @RequestParam long discussionId, @RequestParam long messageId )
-            throws IOException, PortalException, SystemException, DiscussionsException {
+            throws IOException, PortalException, SystemException, DiscussionAuthorizationException {
 
         checkPermissions(request, "User not allowed to report message as spam", discussionId, 0L);
 
@@ -48,13 +49,13 @@ public class SpamReportDiscussionMessageActionController extends BaseDiscussions
                         themeDisplay.getUser().getScreenName(), PortalUtil.getPortalURL(request), message.getAuthorId()),
                 EmailToAdminDispatcher.VERBOSITY_DEBUG).sendMessage();
 
-        redirectToReferer(request, response);
+        redirectToReferrer(request, response);
     }
 
     @RequestMapping(params = "action=removeSpamReport")
     public void removeSpamReport(ActionRequest request, ActionResponse response,
                              @RequestParam long discussionId, @RequestParam long messageId )
-            throws IOException, PortalException, SystemException, DiscussionsException {
+            throws IOException, PortalException, SystemException, DiscussionException {
 
         checkPermissions(request, "User not allowed to admin spam reports", discussionId, 1L);
 
@@ -64,7 +65,7 @@ public class SpamReportDiscussionMessageActionController extends BaseDiscussions
         DiscussionPermissions permissions = new DiscussionPermissions(request, dcg);
 
         if (!permissions.getCanRemoveSpamReport(new DiscussionMessageWrapper(message))) {
-            throw new DiscussionsException(String.format("User %d is not allowed to remove spam reports for message %d by user %d",
+            throw new DiscussionException(String.format("User %d is not allowed to remove spam reports for message %d by user %d",
                     themeDisplay.getUserId(), messageId, message.getAuthorId()));
         }
 
@@ -72,7 +73,7 @@ public class SpamReportDiscussionMessageActionController extends BaseDiscussions
             SpamReportLocalServiceUtil.deleteSpamReport(spamReport);
         }
 
-        redirectToReferer(request, response);
+        redirectToReferrer(request, response);
     }
 
     @Override

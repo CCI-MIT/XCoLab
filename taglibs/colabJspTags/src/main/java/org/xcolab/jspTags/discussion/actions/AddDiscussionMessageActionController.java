@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.utils.HtmlUtil;
 
@@ -35,7 +35,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
     @RequestMapping(params = "action=addDiscussionMessage")
     public void handleAction(ActionRequest request, ActionResponse response, NewMessageWrapper newMessage)
-            throws IOException, PortalException, SystemException, DiscussionsException {
+            throws IOException, PortalException, SystemException, DiscussionAuthorizationException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(newMessage.getDiscussionId());
@@ -77,7 +77,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             }
         }
 
-        redirectToReferer(request, response);
+        redirectToReferrer(request, response);
     }
 
     public void updateAnalyticsAndActivities(DiscussionCategoryGroup dcg, DiscussionMessage comment, long userId, ActionRequest request)

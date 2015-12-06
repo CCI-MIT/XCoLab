@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -22,12 +22,12 @@ public class DeleteDiscussionMessageFlagActionController extends BaseDiscussions
         public void handleAction(
                 ActionRequest request, ActionResponse response,
                 @RequestParam long discussionId, @RequestParam long messageId)
-                throws IOException, PortalException, SystemException, DiscussionsException {
+                throws IOException, PortalException, SystemException, DiscussionAuthorizationException {
             
             checkPermissions(request, "User isn't allowed to delete message", discussionId, 0L);
             DiscussionMessage message = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
             DiscussionMessageLocalServiceUtil.delete(message);
-            redirectToReferer(request, response);
+            redirectToReferrer(request, response);
         }
 
         @Override

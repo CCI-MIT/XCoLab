@@ -23,6 +23,15 @@
     <bean class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
     <mvc:annotation-driven/>
 
+    <bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key=".DiscussionAuthorizationException">accessDenied</prop>
+                <prop key=".NoSuchDiscussionMessageException">notFound</prop>
+            </props>
+        </property>
+    </bean>
+
     <bean class="org.xcolab.jspTags.discussion.actions.AddDiscussionMessageActionController" />
     <bean class="org.xcolab.jspTags.discussion.actions.ToggleDiscussionMessageFlagActionController" />
     <bean class="org.xcolab.jspTags.discussion.actions.DeleteDiscussionMessageFlagActionController" />

@@ -14,7 +14,7 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.ThreadSortColumn;
-import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.CategoryWrapper;
 import org.xcolab.jspTags.discussion.wrappers.DiscussionCategoryGroupWrapper;
 import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
@@ -78,7 +78,7 @@ public class CategoryController extends BaseDiscussionController {
     public String showCategory(PortletRequest request, PortletResponse response, Model model,
                                @RequestParam long categoryId, @RequestParam(required = false) String sortColumn,
                                @RequestParam(required = false) boolean sortAscending)
-            throws SystemException, PortalException {
+            throws SystemException, PortalException, DiscussionAuthorizationException {
 
         ThreadSortColumn threadSortColumn;
         try {
@@ -125,14 +125,11 @@ public class CategoryController extends BaseDiscussionController {
     @RenderMapping(params = "action=createCategory")
     public String createCategory(PortletRequest request, PortletResponse response, Model model,
                                @RequestParam long categoryId)
-            throws SystemException, PortalException, DiscussionsException {
+            throws SystemException, PortalException, DiscussionAuthorizationException {
 
         DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
-        DiscussionPermissions permission = new DiscussionPermissions(request, categoryGroupWrapper.getWrapped());
-
-        if (!permission.getCanCreateCategory()) {
-            throw new DiscussionsException("User does not have the necessary permissions to add a category");
-        }
+        checkCanEdit(request, "User does not have the necessary permissions to create a category",
+                categoryGroupWrapper.getWrapped(), 0L);
 
         return "category_add";
     }
@@ -140,19 +137,27 @@ public class CategoryController extends BaseDiscussionController {
     @ActionMapping(params = "action=createCategory")
     public void createCategoryAction(ActionRequest request, ActionResponse response,
                                    @RequestParam String title, @RequestParam String description)
-            throws SystemException, PortalException, IOException, DiscussionsException {
+            throws SystemException, PortalException, IOException, DiscussionAuthorizationException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
-        DiscussionPermissions permission = new DiscussionPermissions(request, categoryGroupWrapper.getWrapped());
 
-        if (!permission.getCanCreateCategory()) {
-            throw new DiscussionsException("User does not have the necessary permissions to add a category");
-        }
+        checkCanEdit(request, "User does not have the necessary permissions to create a category",
+                categoryGroupWrapper.getWrapped(), 0L);
 
 //        final DiscussionCategory category = DiscussionCategoryLocalServiceUtil.createDebateCategory() addThread(categoryGroupWrapper.getId(),
 //                categoryId, title, body, themeDisplay.getUser());
 //
 //        response.sendRedirect(new ThreadWrapper(thread).getLinkUrl());
+    }
+
+    @Override
+    public boolean getCanView(DiscussionPermissions permissions, long additionalId) {
+        return true; //not used
+    }
+
+    @Override
+    public boolean getCanEdit(DiscussionPermissions permissions, long additionalId) {
+        return permissions.getCanCreateCategory();
     }
 }

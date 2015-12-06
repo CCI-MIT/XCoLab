@@ -1,4 +1,4 @@
-package org.xcolab.portlets.proposals.view.action;
+package org.xcolab.portlets.proposals.discussion;
 
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.Activity.DiscussionActivityKeys;

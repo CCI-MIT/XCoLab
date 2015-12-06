@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.DiscussionMessageWrapper;
 import org.xcolab.utils.HtmlUtil;
 
@@ -26,14 +26,14 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
                 @RequestParam long discussionId,
                 @RequestParam("messageId") long messageId,
                 @RequestParam("comment") String comment)
-            throws IOException, PortalException, SystemException, DiscussionsException {
+            throws IOException, PortalException, SystemException, DiscussionAuthorizationException {
 
         checkPermissions(request, "User isn't allowed to edit message", discussionId, messageId);
         DiscussionMessage m = DiscussionMessageLocalServiceUtil.getMessageByMessageId(messageId);
         m.setBody(HtmlUtil.cleanSome(comment));
         DiscussionMessageLocalServiceUtil.updateDiscussionMessage(m);
 
-        redirectToReferer(request, response);
+        redirectToReferrer(request, response);
     }
 
     @Override
