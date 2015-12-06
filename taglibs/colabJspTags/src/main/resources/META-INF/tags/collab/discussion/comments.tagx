@@ -190,7 +190,7 @@
 					<form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
 						<input name="discussionId" class="title text hidden" maxlength="255" value="${categoryGroup.discussionId }"/>
                         <input name="title" class="title text hidden" maxlength="255" />
-                        <input name="threadId" class="title text hidden" maxlength="255" value="${thread.threadId }" />
+                        <input name="threadId" class="title text hidden" maxlength="255" value="${empty thread.threadId ? 0 : thread.threadId}" />
 						<textarea id="messageContent" name="description"  class="rte commentbox commentContent"><!-- --></textarea>
 						<div class="clearfix"><!-- --></div>
 						<br />

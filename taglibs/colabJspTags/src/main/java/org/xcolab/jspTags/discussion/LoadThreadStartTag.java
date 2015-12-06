@@ -39,7 +39,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
             pageContext.setAttribute("thread", thread);
             pageContext.setAttribute("categoryGroup", new DiscussionCategoryGroupWrapper(dcg));
             pageContext.setAttribute("newMessage", new NewMessageWrapper());
-            pageContext.setAttribute("discussionPermissions", new DiscussionPermission(portletRequest, dcg));
+            pageContext.setAttribute("discussionPermissions", new DiscussionPermissions(portletRequest, dcg));
         } catch (PortalException | SystemException | JspException e) {
             e.printStackTrace();
         }

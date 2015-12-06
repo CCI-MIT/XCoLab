@@ -1,7 +1,6 @@
 package org.xcolab.portlets.discussions.views;
 
 import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -13,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.xcolab.jspTags.discussion.DiscussionPermissions;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
 import org.xcolab.jspTags.discussion.wrappers.CategoryWrapper;
 import org.xcolab.jspTags.discussion.wrappers.DiscussionCategoryGroupWrapper;
 import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
-import org.xcolab.portlets.discussions.DiscussionPreferences;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -30,14 +30,28 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("view")
-public class ThreadController {
+public class ThreadController extends BaseDiscussionController {
 
     @RenderMapping(params = "action=showThread")
     public String showThread(PortletRequest request, PortletResponse response, Model model,
                              @RequestParam long threadId)
-            throws SystemException, PortalException {
+            throws SystemException, PortalException, DiscussionsException {
+
+        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+
+        DiscussionPermissions permission = new DiscussionPermissions(request, categoryGroupWrapper.getWrapped());
+
+        if (!permission.getCanAddComment()) {
+            throw new DiscussionsException("User does not have the necessary permissions to create a thread");
+        }
 
         DiscussionMessage thread = DiscussionMessageLocalServiceUtil.fetchDiscussionMessage(threadId);
+
+        if (thread.getCategoryGroupId() != categoryGroupWrapper.getId()) {
+            throw new DiscussionsException("Access Denied: User tried to access thread outside of portlet's" +
+                    "configured discussionCategoryGroupId "+ categoryGroupWrapper.getId());
+        }
+
         model.addAttribute("thread", new ThreadWrapper(thread));
 
         return "thread";
@@ -45,11 +59,15 @@ public class ThreadController {
 
     @RenderMapping(params = "action=createThread")
     public String createThread(PortletRequest request, PortletResponse response, Model model)
-            throws SystemException, PortalException {
+            throws SystemException, PortalException, DiscussionsException {
 
-        DiscussionPreferences preferences = new DiscussionPreferences(request);
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = new DiscussionCategoryGroupWrapper(
-                DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(preferences.getCategoryGroupId()));
+        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        DiscussionPermissions permission = new DiscussionPermissions(request, categoryGroupWrapper.getWrapped());
+
+        if (!permission.getCanAddComment()) {
+            throw new DiscussionsException("User does not have the necessary permissions to create a thread");
+        }
+
 
         List<CategoryWrapper> categories = categoryGroupWrapper.getCategories();
 
@@ -62,13 +80,16 @@ public class ThreadController {
     public void createThreadAction(ActionRequest request, ActionResponse response, Model model,
                                      @RequestParam long categoryId, @RequestParam String title,
                                      @RequestParam String body)
-            throws SystemException, PortalException, IOException {
+            throws SystemException, PortalException, IOException, DiscussionsException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        DiscussionPreferences preferences = new DiscussionPreferences(request);
+        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
 
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = new DiscussionCategoryGroupWrapper(
-                DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(preferences.getCategoryGroupId()));
+        DiscussionPermissions permission = new DiscussionPermissions(request, categoryGroupWrapper.getWrapped());
+
+        if (!permission.getCanAddComment()) {
+            throw new DiscussionsException("User does not have the necessary permissions to create a thread");
+        }
 
         final DiscussionMessage thread = DiscussionMessageLocalServiceUtil.addThread(categoryGroupWrapper.getId(),
                 categoryId, title, body, themeDisplay.getUser());

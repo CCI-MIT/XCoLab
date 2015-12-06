@@ -14,7 +14,7 @@ import com.liferay.portal.util.PortalUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.jspTags.discussion.DiscussionPermission;
+import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
 import org.xcolab.jspTags.discussion.wrappers.DiscussionMessageWrapper;
 import org.xcolab.mail.EmailToAdminDispatcher;
@@ -40,7 +40,7 @@ public class SpamReportDiscussionMessageActionController extends BaseDiscussions
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
         DiscussionMessage message = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
-        DiscussionPermission permissions = new DiscussionPermission(request, dcg);
+        DiscussionPermissions permissions = new DiscussionPermissions(request, dcg);
 
         SpamReportLocalServiceUtil.create(messageId, message.getAuthorId(), themeDisplay.getUserId(), permissions.getCanAdmin());
         new EmailToAdminDispatcher("New spam report on Climate CoLab",
@@ -61,7 +61,7 @@ public class SpamReportDiscussionMessageActionController extends BaseDiscussions
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
         DiscussionMessage message = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
-        DiscussionPermission permissions = new DiscussionPermission(request, dcg);
+        DiscussionPermissions permissions = new DiscussionPermissions(request, dcg);
 
         if (!permissions.getCanRemoveSpamReport(new DiscussionMessageWrapper(message))) {
             throw new DiscussionsException(String.format("User %d is not allowed to remove spam reports for message %d by user %d",
@@ -76,7 +76,7 @@ public class SpamReportDiscussionMessageActionController extends BaseDiscussions
     }
 
     @Override
-    public boolean isUserAllowed(DiscussionPermission permissions, long additionalId) {
+    public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId) {
         if (additionalId == 0L) {
             return permissions.getCanReportSpam();
         }

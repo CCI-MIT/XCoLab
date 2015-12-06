@@ -7,7 +7,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.jspTags.discussion.DiscussionPermission;
+import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
 
 import javax.portlet.ActionRequest;
@@ -31,7 +31,7 @@ public class DeleteDiscussionMessageFlagActionController extends BaseDiscussions
         }
 
         @Override
-        public boolean isUserAllowed(DiscussionPermission permissions, long additionalId) {
+        public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId) {
             return permissions.getCanAdminMessages();
         }
         

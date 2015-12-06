@@ -14,7 +14,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.analytics.AnalyticsUtil;
-import org.xcolab.jspTags.discussion.DiscussionPermission;
+import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.utils.HtmlUtil;
@@ -105,7 +105,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     }
 
     @Override
-    public boolean isUserAllowed(DiscussionPermission permissions, long additionalId) {
+    public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId) {
         return permissions.getCanAddComment();
     }
 }

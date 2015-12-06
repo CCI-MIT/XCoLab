@@ -75,4 +75,8 @@ public class DiscussionCategoryGroupWrapper {
         }
         return categories;
     }
+
+    public DiscussionCategoryGroup getWrapped() {
+        return discussionCategoryGroup;
+    }
 }

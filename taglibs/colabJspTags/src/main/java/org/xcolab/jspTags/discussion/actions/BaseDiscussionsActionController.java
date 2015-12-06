@@ -8,7 +8,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.xcolab.jspTags.discussion.DiscussionPermission;
+import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
 
 import javax.portlet.ActionRequest;
@@ -28,7 +28,7 @@ public abstract class BaseDiscussionsActionController {
             throws DiscussionsException, PortalException, SystemException {
 
         DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
-        DiscussionPermission permissions = new DiscussionPermission(request, dcg);
+        DiscussionPermissions permissions = new DiscussionPermissions(request, dcg);
 
         if (!isUserAllowed(permissions, additionalId)) {
             throw new DiscussionsException(accessDeniedMessage);
@@ -78,7 +78,7 @@ public abstract class BaseDiscussionsActionController {
         response.sendRedirect(referer);
     }
 
-    public abstract boolean isUserAllowed(DiscussionPermission permissions, long additionalId)
+    public abstract boolean isUserAllowed(DiscussionPermissions permissions, long additionalId)
             throws SystemException, NoSuchDiscussionMessageException;
 
     private static class SimpleNameValuePair implements NameValuePair {

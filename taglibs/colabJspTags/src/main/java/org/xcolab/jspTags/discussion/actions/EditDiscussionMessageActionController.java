@@ -8,7 +8,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.jspTags.discussion.DiscussionPermission;
+import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
 import org.xcolab.jspTags.discussion.wrappers.DiscussionMessageWrapper;
 import org.xcolab.utils.HtmlUtil;
@@ -37,7 +37,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
     }
 
     @Override
-    public boolean isUserAllowed(DiscussionPermission permissions, long additionalId)
+    public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId)
             throws SystemException, NoSuchDiscussionMessageException {
         final DiscussionMessage message = DiscussionMessageLocalServiceUtil.getMessageByMessageId(additionalId);
         final DiscussionMessageWrapper messageWrapper = new DiscussionMessageWrapper(message);

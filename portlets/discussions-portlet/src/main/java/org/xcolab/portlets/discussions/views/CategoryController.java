@@ -1,7 +1,6 @@
 package org.xcolab.portlets.discussions.views;
 
 import com.ext.portlet.model.DiscussionCategory;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -13,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.ThreadSortColumn;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionsException;
 import org.xcolab.jspTags.discussion.wrappers.CategoryWrapper;
 import org.xcolab.jspTags.discussion.wrappers.DiscussionCategoryGroupWrapper;
 import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
-import org.xcolab.portlets.discussions.DiscussionPreferences;
+import org.xcolab.utils.ListUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -25,17 +26,14 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.PriorityQueue;
 
 /**
  * Created by johannes on 12/1/15.
  */
 @Controller
 @RequestMapping("view")
-public class CategoryController {
+public class CategoryController extends BaseDiscussionController {
 
     @RenderMapping
     public String showCategories(PortletRequest request, PortletResponse response, Model model) throws SystemException, PortalException {
@@ -55,10 +53,7 @@ public class CategoryController {
             threadSortColumn = ThreadSortColumn.DATE;
         }
 
-        DiscussionPreferences preferences = new DiscussionPreferences(request);
-
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = new DiscussionCategoryGroupWrapper(
-                DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(preferences.getCategoryGroupId()));
+        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
 
         List<CategoryWrapper> categories = categoryGroupWrapper.getCategories(threadSortColumn, sortAscending);
 
@@ -67,7 +62,7 @@ public class CategoryController {
         for (CategoryWrapper category : categories) {
             threadsList.add(new ArrayList<>(category.getThreads()));
         }
-        List<ThreadWrapper> threads = mergeSortedLists(threadsList,
+        List<ThreadWrapper> threads = ListUtil.mergeSortedLists(threadsList,
                 ThreadWrapper.getComparator(threadSortColumn, sortAscending));
 
         model.addAttribute("categoryGroup", categoryGroupWrapper);
@@ -77,58 +72,6 @@ public class CategoryController {
         model.addAttribute("sortAscending", sortAscending);
 
         return "category";
-    }
-
-    private <T> List<T> mergeSortedLists(List<List<T>> inLists, Comparator<T> comparator) {
-        PriorityQueue<ListContainer<T>> minHeap = new PriorityQueue<>(inLists.size());
-        int size = 0;
-        for (List<T> inList : inLists) {
-            minHeap.add(new ListContainer<>(inList, comparator));
-            size += inList.size();
-        }
-        List<T> outList = new ArrayList<>(size);
-
-        while (!minHeap.isEmpty()) {
-            ListContainer<T> minContainer = minHeap.poll();
-            outList.add(minContainer.poll());
-            if (minContainer.hasNext()) {
-                minHeap.add(minContainer);
-            }
-        }
-
-        return outList;
-    }
-
-    private static class ListContainer<T> implements Comparable<ListContainer<T>> {
-
-        private final Comparator<T> comparator;
-        private final Iterator<T> iterator;
-        private T currentItem;
-
-        public ListContainer(List<T> list, Comparator<T> comparator) {
-            this.comparator = comparator;
-            this.iterator = list.iterator();
-            currentItem = iterator.next();
-        }
-
-        public T poll() {
-            final T ret = currentItem;
-            currentItem = iterator.next();
-            return ret;
-        }
-
-        public T peek() {
-            return currentItem;
-        }
-
-        public boolean hasNext() {
-            return iterator.hasNext();
-        }
-
-        @Override
-        public int compareTo(ListContainer<T> o) {
-            return comparator.compare(currentItem, o.peek());
-        }
     }
 
     @RenderMapping(params = "action=showCategory")
@@ -144,10 +87,7 @@ public class CategoryController {
             threadSortColumn = ThreadSortColumn.DATE;
         }
 
-        DiscussionPreferences preferences = new DiscussionPreferences(request);
-
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = new DiscussionCategoryGroupWrapper(
-                DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(preferences.getCategoryGroupId()));
+        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
 
         List<CategoryWrapper> categories = categoryGroupWrapper.getCategories(threadSortColumn, sortAscending);
         CategoryWrapper currentCategory = new CategoryWrapper(DiscussionCategoryLocalServiceUtil.fetchDiscussionCategory(categoryId),
@@ -185,12 +125,14 @@ public class CategoryController {
     @RenderMapping(params = "action=createCategory")
     public String createCategory(PortletRequest request, PortletResponse response, Model model,
                                @RequestParam long categoryId)
-            throws SystemException, PortalException {
+            throws SystemException, PortalException, DiscussionsException {
 
-        DiscussionPreferences preferences = new DiscussionPreferences(request);
+        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        DiscussionPermissions permission = new DiscussionPermissions(request, categoryGroupWrapper.getWrapped());
 
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = new DiscussionCategoryGroupWrapper(
-                DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(preferences.getCategoryGroupId()));
+        if (!permission.getCanCreateCategory()) {
+            throw new DiscussionsException("User does not have the necessary permissions to add a category");
+        }
 
         return "category_add";
     }
@@ -198,13 +140,15 @@ public class CategoryController {
     @ActionMapping(params = "action=createCategory")
     public void createCategoryAction(ActionRequest request, ActionResponse response,
                                    @RequestParam String title, @RequestParam String description)
-            throws SystemException, PortalException, IOException {
+            throws SystemException, PortalException, IOException, DiscussionsException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        DiscussionPreferences preferences = new DiscussionPreferences(request);
+        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        DiscussionPermissions permission = new DiscussionPermissions(request, categoryGroupWrapper.getWrapped());
 
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = new DiscussionCategoryGroupWrapper(
-                DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(preferences.getCategoryGroupId()));
+        if (!permission.getCanCreateCategory()) {
+            throw new DiscussionsException("User does not have the necessary permissions to add a category");
+        }
 
 //        final DiscussionCategory category = DiscussionCategoryLocalServiceUtil.createDebateCategory() addThread(categoryGroupWrapper.getId(),
 //                categoryId, title, body, themeDisplay.getUser());
