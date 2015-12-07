@@ -5,6 +5,16 @@
 
     <portlet:defineObjects />
 
+    <script type="text/javascript">
+        var hash = window.location.hash;
+        if (hash.slice(1, 11) == "discussion") {
+            //found old discussion url -> redirect to new url
+            var newUrl = hash.replace("#discussion%3DpageType%3ACATEGORY%2CcategoryId%3A", "category/");
+            var newUrl = newUrl.replace("#discussion%3DpageType%3ATHREAD%2CthreadId%3A", "thread/");
+            window.location = '/web/guest/discussion/-/discussion/' + newUrl;
+        }
+    </script>
+
     <div id="bread" class="pro">
         <a href="/web/guest/community">Community</a>&#160;
         <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />&#160;

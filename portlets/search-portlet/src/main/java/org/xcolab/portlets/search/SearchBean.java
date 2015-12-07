@@ -32,7 +32,7 @@ public class SearchBean extends DataSource implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private  static final int PAGE_SIZE = 200;
+    private  static final int PAGE_SIZE = 20;
     private final String searchLocation;
 
     private String searchPhrase = "";
