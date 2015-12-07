@@ -9,21 +9,13 @@
 	<portlet>
 		<portlet-name>search-portlet</portlet-name>
 		<display-name>search-portlet</display-name>
-		<portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.view</name>
-			<value>/xhtml/view.xhtml</value>
-		</init-param>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.edit</name>
-			<value>/xhtml/edit.xhtml</value>
-		</init-param>
+		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
 		<supports>
 			<mime-type>text/html</mime-type>
 		</supports>
 		<portlet-info>
-			<title>MIT search (ICE)</title>
-			<short-title>Search</short-title>
+			<title>search-portlet</title>
+			<short-title>search-portlet</short-title>
 			<keywords>Search</keywords>
 		</portlet-info>
 		<security-role-ref>

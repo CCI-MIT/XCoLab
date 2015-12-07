@@ -86,7 +86,7 @@ public class DiscussionCategoryGroupLocalServiceImpl
     
     @Override
     public DiscussionCategory addCategory(DiscussionCategoryGroup dcg, String name, String description, User creator) throws SystemException  {
-        return DiscussionCategoryLocalServiceUtil.createDebateCategory(dcg.getId(), name, description, creator);
+        return DiscussionCategoryLocalServiceUtil.createDiscussionCategory(dcg.getId(), name, description, creator);
     }
     
     @Override
@@ -170,7 +170,7 @@ public class DiscussionCategoryGroupLocalServiceImpl
     public void copyEverything(DiscussionCategoryGroup dcg, DiscussionCategoryGroup source) throws SystemException, PortalException {
         // copy categories
         for (DiscussionCategory category: getCategories(dcg)) {
-            DiscussionCategory newCategory = DiscussionCategoryLocalServiceUtil.createDebateCategory(
+            DiscussionCategory newCategory = DiscussionCategoryLocalServiceUtil.createDiscussionCategory(
                     dcg.getId(), 
                     category.getName(), 
                     category.getDescription(), 

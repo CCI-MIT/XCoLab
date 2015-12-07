@@ -1,5 +1,6 @@
 package org.xcolab.jspTags.discussion.wrappers;
 
+import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
@@ -26,6 +27,10 @@ public class ThreadWrapper {
     private final List<DiscussionMessageWrapper> comments = new ArrayList<>();
     private DiscussionCategoryGroup dcg;
     private User author;
+
+    public ThreadWrapper(long threadId) throws SystemException, PortalException {
+        this(DiscussionMessageLocalServiceUtil.getMessageByMessageId(threadId));
+    }
 
     public ThreadWrapper(DiscussionMessage threadMessage) throws SystemException, PortalException {
         threadMessageWrapped = new DiscussionMessageWrapper(threadMessage);

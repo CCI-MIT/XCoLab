@@ -1,23 +1,5 @@
 package org.xcolab.portlets.loginregister;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
-import org.xcolab.utils.GlobalMessagesUtil;
-
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.CookieNotSupportedException;
 import com.liferay.portal.NoSuchUserException;
@@ -36,12 +18,27 @@ import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value="view")
 public class ForgotPasswordController {
 
-    private long DEFAULT_COMPANY_ID = 10112L;
+    private static final long DEFAULT_COMPANY_ID = 10112L;
     
     @ActionMapping(params={"isForgotpass=true"})
     public void sendPassword(ActionRequest request, ActionResponse response) throws IOException {
@@ -69,7 +66,7 @@ public class ForgotPasswordController {
             PortletPreferences preferences = request.getPreferences();
             String userNameEmail = request.getParameter("screenName");
             
-            User user = null;
+            User user;
             if (userNameEmail.contains("@")) {
                 user = UserLocalServiceUtil.getUserByEmailAddress(DEFAULT_COMPANY_ID, userNameEmail);
             }
@@ -125,16 +122,15 @@ public class ForgotPasswordController {
         
         if (! SessionErrors.isEmpty(request)) {
             // url parameters
-            Map<String, String> parameters = new HashMap<String, String>();
+            Map<String, String> parameters = new HashMap<>();
             //boolean isSigningInPopup = ParamUtil.getBoolean(actionRequest, "isSigningInPopup");
 
             parameters.put("isPasswordReminder", "true");
 
             redirect = Helper.modifyRedirectUrl(redirect, request, parameters);
             
-        }
-        else {
-            GlobalMessagesUtil.addMessage("A password retrieval message has been sent, please check your email", request);
+        } else {
+            //TODO: this used to log "A password retrieval message has been sent, please check your email" somewhere
         }
         
         SessionErrors.clear(request);

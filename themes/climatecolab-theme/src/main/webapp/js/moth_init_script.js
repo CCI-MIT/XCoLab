@@ -37,11 +37,11 @@ function initSearchUpperBox() {
 	
 	
 	jQuery("#searchsubmit").click(function() {
-		var searchPhrase = escape(jQuery('#searchinput').val());
+		var searchPhrase = encodeURI(jQuery('#searchinput').val());
 		if (searchPhrase == 'Search') {
 			searchPhrase = '';
 		}
-		window.location = "/web/guest/search#search=searchPhrase:" + searchPhrase;
+		window.location = "/web/guest/search/-/search/for/" + searchPhrase;
 	});
 		
 }

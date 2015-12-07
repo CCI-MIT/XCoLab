@@ -6,13 +6,12 @@
     <groupId>org.xcolab.portlets</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-	<groupId>org.xcolab.portlets</groupId>
-	<artifactId>search-portlet</artifactId>
+    <artifactId>search-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>search-portlet Portlet</name>
 	<version>1.0-SNAPSHOT</version>
 	<properties>
-		<icefaces.version>3.3.0</icefaces.version>
+        <spring.version>4.0.0.RELEASE</spring.version>
 	</properties>
 	<build>
 		<plugins>
@@ -78,26 +77,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.icefaces</groupId>
-			<artifactId>icefaces</artifactId>
-			<version>${icefaces.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.icefaces</groupId>
-			<artifactId>icefaces-ace</artifactId>
-			<version>${icefaces.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.icefaces</groupId>
-			<artifactId>icefaces-compat</artifactId>
-			<version>${icefaces.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.liferay.faces</groupId>
-			<artifactId>liferay-faces-bridge-impl</artifactId>
-			<version>3.2.4-ga5</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -136,12 +115,36 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc-portlet</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.1.1.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.1.0.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
 		<dependency>
-  			<groupId>org.xcolab.taglibs</groupId>
-  			<artifactId>sharedColabIceFacelets</artifactId>
-  			<version>1.0-SNAPSHOT</version>
-  		</dependency>
+			<groupId>org.xcolab.taglibs</groupId>
+			<artifactId>colabJspTags</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
   		<dependency>
   			<groupId>org.apache.lucene</groupId>
   			<artifactId>lucene-core</artifactId>
@@ -163,8 +166,6 @@
 			<version>1.7.2</version>
 			<scope>compile</scope>
 		</dependency>
-            
-            
 
 	</dependencies>
 	<repositories>

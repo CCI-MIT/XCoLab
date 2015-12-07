@@ -29,7 +29,7 @@ public abstract class ProposalVoteBaseImpl extends ProposalVoteModelImpl
         if (this.isNew()) {
             ProposalVoteLocalServiceUtil.addProposalVote(this);
         } else {
-            ProposalVoteLocalServiceUtil.updateProposalVote(this)
+            ProposalVoteLocalServiceUtil.updateProposalVote(this);
         }
     }
 }
