@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
+import org.xcolab.utils.GlobalMessagesUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -130,7 +131,7 @@ public class ForgotPasswordController {
             redirect = Helper.modifyRedirectUrl(redirect, request, parameters);
             
         } else {
-            //TODO: this used to log "A password retrieval message has been sent, please check your email" somewhere
+            GlobalMessagesUtil.addMessage("A password retrieval message has been sent, please check your email", request);
         }
         
         SessionErrors.clear(request);
