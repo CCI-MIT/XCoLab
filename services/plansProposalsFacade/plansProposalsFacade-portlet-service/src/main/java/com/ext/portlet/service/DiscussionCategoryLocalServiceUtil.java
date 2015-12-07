@@ -275,13 +275,13 @@ public class DiscussionCategoryLocalServiceUtil {
         return getService().getDiscussionCategoryById(categoryId);
     }
 
-    public static com.ext.portlet.model.DiscussionCategory createDebateCategory(
+    public static com.ext.portlet.model.DiscussionCategory createDiscussionCategory(
         long categoryGroupId, java.lang.String name,
         java.lang.String description, com.liferay.portal.model.User author)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .createDebateCategory(categoryGroupId, name, description,
-            author);
+                   .createDiscussionCategory(categoryGroupId, name,
+            description, author);
     }
 
     public static java.util.List<com.ext.portlet.model.DiscussionMessage> getThreads(

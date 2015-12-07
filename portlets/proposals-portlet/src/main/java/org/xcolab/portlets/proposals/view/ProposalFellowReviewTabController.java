@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;

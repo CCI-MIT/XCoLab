@@ -13,7 +13,6 @@ import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageFlagLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.base.DiscussionMessageLocalServiceBaseImpl;
-import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;

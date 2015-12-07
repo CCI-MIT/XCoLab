@@ -145,10 +145,9 @@ public class CategoryController extends BaseDiscussionController {
         checkCanEdit(request, "User does not have the necessary permissions to create a category",
                 categoryGroupWrapper.getWrapped(), 0L);
 
-//        final DiscussionCategory category = DiscussionCategoryLocalServiceUtil.createDebateCategory() addThread(categoryGroupWrapper.getId(),
-//                categoryId, title, body, themeDisplay.getUser());
-//
-//        response.sendRedirect(new ThreadWrapper(thread).getLinkUrl());
+        final DiscussionCategory category = DiscussionCategoryLocalServiceUtil.createDiscussionCategory(categoryGroupWrapper.getId(), title, description, themeDisplay.getUser());
+
+        response.sendRedirect(new CategoryWrapper(category).getLinkUrl());
     }
 
     @Override

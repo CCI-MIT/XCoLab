@@ -31,8 +31,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
  * @see com.ext.portlet.service.base.DiscussionCategoryLocalServiceBaseImpl
  * @see com.ext.portlet.service.DiscussionCategoryLocalServiceUtil
  */
-public class DiscussionCategoryLocalServiceImpl
-    extends DiscussionCategoryLocalServiceBaseImpl {
+public class DiscussionCategoryLocalServiceImpl extends DiscussionCategoryLocalServiceBaseImpl {
     /*
      * NOTE FOR DEVELOPERS:
      *
@@ -40,15 +39,17 @@ public class DiscussionCategoryLocalServiceImpl
      */
 
 
+    @Override
     public List<DiscussionCategory> getCategoriesByCategoryGroupId(long categoryGroupId) throws SystemException {
         return discussionCategoryPersistence.findByCategoryGroupId(categoryGroupId);
     }
     
+    @Override
     public DiscussionCategory getDiscussionCategoryById(long categoryId) throws NoSuchDiscussionCategoryException, SystemException {
         return discussionCategoryPersistence.findByCategoryId(categoryId);
     }
     
-    public DiscussionCategory createDebateCategory(long categoryGroupId, String name, String description, User author)
+    public DiscussionCategory createDiscussionCategory(long categoryGroupId, String name, String description, User author)
     throws SystemException {
         Long id = CounterLocalServiceUtil.increment(DiscussionCategory.class.getName());
         Long categoryId = CounterLocalServiceUtil.increment(DiscussionCategory.class.getName() + ".category");
@@ -68,10 +69,12 @@ public class DiscussionCategoryLocalServiceImpl
     }
     
     
+    @Override
     public List<DiscussionMessage> getThreads(DiscussionCategory dCategory) throws SystemException {
         return DiscussionMessageLocalServiceUtil.getThreadsByCategory(dCategory.getCategoryId());
     }
     
+    @Override
     public DiscussionMessage addThread(DiscussionCategory dCategory, String subject, String body, User author) throws SystemException {
         DiscussionMessage thread = DiscussionMessageLocalServiceUtil.addThread(dCategory.getCategoryGroupId(), dCategory.getCategoryId(), subject, body, author);
         
@@ -83,6 +86,7 @@ public class DiscussionCategoryLocalServiceImpl
         return thread;
     }
     
+    @Override
     public void store(DiscussionCategory dCategory) throws SystemException {
         if (dCategory.isNew()) {
             DiscussionCategoryLocalServiceUtil.addDiscussionCategory(dCategory);
@@ -92,10 +96,12 @@ public class DiscussionCategoryLocalServiceImpl
         }
     }
     
+    @Override
     public User getAuthor(DiscussionCategory dCategory) throws PortalException, SystemException {
         return UserLocalServiceUtil.getUser(dCategory.getAuthorId());
     }
     
+    @Override
     public User getLastActivityAuthor(DiscussionCategory dCategory) throws PortalException, SystemException {
         Long lastActivityAuthor = dCategory.getLastActivityAuthorId();
         if (lastActivityAuthor != null) {
@@ -104,6 +110,7 @@ public class DiscussionCategoryLocalServiceImpl
         return getAuthor(dCategory);
     }
     
+    @Override
     public void delete(DiscussionCategory dCategory) throws SystemException {
         dCategory.setDeleted(new Date());
         store(dCategory);
@@ -121,12 +128,14 @@ public class DiscussionCategoryLocalServiceImpl
         }*/
     }
     
+    @Override
     public void update(DiscussionCategory dCategory, String name, String description) throws SystemException {
         dCategory.setName(name);
         dCategory.setDescription(description);
         store(dCategory);
     }
     
+    @Override
     public DiscussionCategoryGroup getCategoryGroup(DiscussionCategory dCategory) throws PortalException, SystemException {
         return DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(dCategory.getCategoryGroupId());
     }

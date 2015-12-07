@@ -345,12 +345,12 @@ public class DiscussionMessageLocalServiceUtil {
     }
 
     public static com.ext.portlet.model.DiscussionMessage addThreadMessage(
-        com.ext.portlet.model.DiscussionMessage dMessage,
+        com.ext.portlet.model.DiscussionMessage thread,
         java.lang.String subject, java.lang.String body,
         com.liferay.portal.model.User author)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().addThreadMessage(dMessage, subject, body, author);
+        return getService().addThreadMessage(thread, subject, body, author);
     }
 
     public static com.liferay.portal.model.User getAuthor(
