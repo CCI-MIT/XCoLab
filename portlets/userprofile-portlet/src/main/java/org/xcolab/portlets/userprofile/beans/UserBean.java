@@ -10,9 +10,9 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.xcolab.portlets.userprofile.utils.Helper;
 import org.xcolab.portlets.userprofile.validators.UniqueEmail;
 import org.xcolab.portlets.userprofile.validators.UniqueScreenName;
+import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.validation.CompareStrings;
 import org.xcolab.utils.validation.ValidBioLength;
 import org.xcolab.utils.validation.ValidScreenName;
@@ -67,6 +67,7 @@ public class UserBean implements Serializable{
 
 	@Length(min = 0, max = 300)
 	private String country;
+	private String countryCode;
 
 	private long userId;
 	private long imageId;
@@ -90,9 +91,10 @@ public class UserBean implements Serializable{
 		imageId = user.getPortraitId();
 		isFemale = user.getFemale();
 
-		country = Helper.getCodeForCounty(ExpandoValueLocalServiceUtil.getData(User.class.getName(),
+		country = ExpandoValueLocalServiceUtil.getData(User.class.getName(),
 				CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
-				user.getUserId(), StringPool.BLANK));
+				user.getUserId(), StringPool.BLANK);
+		countryCode = CountryUtil.getCodeForCounty(country);
 
 		shortBio = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID, User.class.getName(),
 				CommunityConstants.EXPANDO, CommunityConstants.BIO,
@@ -125,6 +127,7 @@ public class UserBean implements Serializable{
 
 	public void setCountry(String country) {
 		this.country = country;
+		this.countryCode = CountryUtil.getCodeForCounty(country);
 	}
 
 	public String getShortBio() {
@@ -227,6 +230,15 @@ public class UserBean implements Serializable{
 				+ ", retypeEmail=" + retypeEmail + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", password=" + password + ", retypePassword="
 				+ retypePassword + "]";
+	}
+
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+		this.country = CountryUtil.getCountryForCode(countryCode);
 	}
 
 

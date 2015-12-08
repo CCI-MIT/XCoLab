@@ -8,7 +8,7 @@
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-    <form:select cssClass="profile_input" path="country">
+    <form:select cssClass="profile_input" path="countryCode">
         <form:option value="" label="Select country"/>
         <form:option value="AF" label="Afghanistan"/>
         <form:option value="AX" label="Aland Islands"/>

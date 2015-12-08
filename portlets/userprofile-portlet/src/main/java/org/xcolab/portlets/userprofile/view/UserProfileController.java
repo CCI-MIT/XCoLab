@@ -42,8 +42,8 @@ import org.xcolab.commons.utils.PwdEncryptor;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
-import org.xcolab.portlets.userprofile.utils.Helper;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
+import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
 
 import javax.mail.internet.AddressException;
@@ -394,15 +394,15 @@ public class UserProfileController {
                 User.class.getName(), CommunityConstants.EXPANDO,
                 CommunityConstants.COUNTRY, currentUserProfile.getUser().getUserId(), StringPool.BLANK);
         if(!existingCountry.isEmpty()){
-            if (Helper.getCodeForCounty(existingCountry)!= null) {
-                existingCountry = Helper.getCodeForCounty(existingCountry);
+            if (CountryUtil.getCodeForCounty(existingCountry)!= null) {
+                existingCountry = CountryUtil.getCodeForCounty(existingCountry);
             }
         }
 
         if (updatedUserBean.getCountry() != null && !updatedUserBean.getCountry().equals(existingCountry)) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
-                    currentUserProfile.getUser().getUserId(), Helper.getCountryForCode(updatedUserBean.getCountry()));
+                    currentUserProfile.getUser().getUserId(), CountryUtil.getCountryForCode(updatedUserBean.getCountry()));
             changedDetails = true;
         }
 
