@@ -289,6 +289,7 @@ public class ContestProposalTemplateWrapper {
 
         if(createNew) {
             duplicateExistingPlanTemplate();
+            updateExistingSections = false;
         }
 
         addSectionsToProposalTemplate();
@@ -302,24 +303,16 @@ public class ContestProposalTemplateWrapper {
         }
     }
 
-    private void duplicateExistingPlanTemplate() throws SystemException {
+    private void duplicateExistingPlanTemplate() throws SystemException, PortalException {
         Long newPlanTemplateId = CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName());
         planTemplate.setId(newPlanTemplateId);
         PlanTemplate newPlanTemplate = PlanTemplateLocalServiceUtil.addPlanTemplate(planTemplate);
         planTemplateId = newPlanTemplate.getId();
-    }
 
-    private void duplicateExistingSectionsForPlanTemplate(PlanTemplate newPanTemplate) throws PortalException, SystemException {
-        List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil.getSections(planTemplate);
-        for(PlanSectionDefinition planSectionDefinition : planSectionDefinitions){
-            Long newPlanSectionDefinitionId = CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName());
-            planSectionDefinition.setId(newPlanSectionDefinitionId);
-            PlanSectionDefinition
-                    duplicatedPlanSectionDefinition = PlanSectionDefinitionLocalServiceUtil.addPlanSectionDefinition(planSectionDefinition);
-            PlanTemplateLocalServiceUtil.addSection(newPanTemplate, duplicatedPlanSectionDefinition);
+        for (SectionDefinitionBean section : sections) {
+            section.setId(null);
         }
     }
-
 
     public void updateNewProposalTemplateSections() throws SystemException, PortalException {
         removeDeletedSections();
