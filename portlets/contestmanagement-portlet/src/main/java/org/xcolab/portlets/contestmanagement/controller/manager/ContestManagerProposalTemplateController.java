@@ -24,6 +24,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -31,9 +32,9 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("view")
-public class ContestManagerProposalTempateController extends ContestProposalTemplateTabController {
+public class ContestManagerProposalTemplateController extends ContestProposalTemplateTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestManagerProposalTempateController.class);
+    private final static Log _log = LogFactoryUtil.getLog(ContestManagerProposalTemplateController.class);
     static final private TabEnum tab = ContestManagerTabs.PROPOSALTEMPLATES;
 
     @ModelAttribute("tabs")
@@ -69,7 +70,7 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
             model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId, ContestProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
             model.addAttribute("elementId", planTemplateId);
             return ContestProposalTemplateTabController.TAB_VIEW;
-        } catch (Exception e){
+        } catch (SystemException | PortalException e){
             _log.warn("Exception while rendering CMS proposal template tab", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
@@ -88,7 +89,7 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
         try {
             PlanTemplate newTemplate = ContestProposalTemplateWrapper.createNewTemplate();
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), newTemplate.getId());
-        } catch(Exception e){
+        } catch(SystemException | IOException e){
             _log.warn("Create proposal template failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -106,7 +107,7 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
         try {
             ContestProposalTemplateWrapper.deleteTemplate(elementId);
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), getFirstPlanTemplateId());
-        } catch(Exception e){
+        } catch(PortalException | SystemException | IOException e){
             _log.warn("Delete proposal template failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -129,25 +130,25 @@ public class ContestManagerProposalTempateController extends ContestProposalTemp
             return;
         }
 
-        try{
+        try {
             updatedContestProposalTemplateWrapper.setUpdateExistingTemplate(true);
             updatedContestProposalTemplateWrapper.persist();
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), updatedContestProposalTemplateWrapper.getPlanTemplateId());
-        } catch(Exception e){
+        } catch (SystemException | PortalException | IOException e) {
             _log.warn("Update proposal template failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
 
     @RequestMapping(params = {"action=updatePROPOSALTEMPLATES", "error=true", "manager=true"})
-    public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
+    public String reportError(PortletRequest request, Model model) {
         return TAB_VIEW;
     }
 
 
-    private Long getFirstPlanTemplateId()throws Exception{
+    private Long getFirstPlanTemplateId () throws SystemException {
         final List<PlanTemplate> planTemplates = PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE);
-        if (planTemplates.size() > 0) {
+        if (!planTemplates.isEmpty()) {
             return planTemplates.get(0).getId();
         }
         return -1L;
