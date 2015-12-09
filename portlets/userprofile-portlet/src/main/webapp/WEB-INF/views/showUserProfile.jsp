@@ -116,7 +116,7 @@
 						<td class="b" width="23%">Country</td>
 						<td width="23%">
 							<c:choose>
-							<c:when test="${not empty userBean.country}">${userBean.country}</c:when>
+							<c:when test="${not empty userBean.countryName}">${userBean.countryName}</c:when>
 							</c:choose>
 						</td>
 						<td class="b points_box left_border bottom_border" width="43%">

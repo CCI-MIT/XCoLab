@@ -24,7 +24,7 @@ import java.io.Serializable;
 @UniqueScreenName(screenNameProperty = "screenName", groups = {UserBean.ScreenNameChanged.class})
 @ValidScreenName(screenNameProperty = "screenName", groups = {UserBean.ScreenNameChanged.class})
 @ValidBioLength(bioProperty = "shortBio")
-public class UserBean implements Serializable{
+public class UserBean implements Serializable {
 
 
 	private static final long serialVersionUID = 1L;
@@ -65,8 +65,8 @@ public class UserBean implements Serializable{
 
 	private String shortBio;
 
+    @NotBlank(message = "please select your country from the list")
 	@Length(min = 0, max = 300)
-	private String country;
 	private String countryCode;
 
 	private long userId;
@@ -91,10 +91,9 @@ public class UserBean implements Serializable{
 		imageId = user.getPortraitId();
 		isFemale = user.getFemale();
 
-		country = ExpandoValueLocalServiceUtil.getData(User.class.getName(),
-				CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
-				user.getUserId(), StringPool.BLANK);
-		countryCode = CountryUtil.getCodeForCounty(country);
+		countryCode = CountryUtil.getCodeForCounty(ExpandoValueLocalServiceUtil.getData(User.class.getName(),
+                CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
+                user.getUserId(), StringPool.BLANK));
 
 		shortBio = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID, User.class.getName(),
 				CommunityConstants.EXPANDO, CommunityConstants.BIO,
@@ -121,13 +120,8 @@ public class UserBean implements Serializable{
 		this.imageId = imageId;
 	}
 
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-		this.countryCode = CountryUtil.getCodeForCounty(country);
+	public String getCountryName() {
+		return CountryUtil.getCountryForCode(countryCode);
 	}
 
 	public String getShortBio() {
@@ -238,7 +232,6 @@ public class UserBean implements Serializable{
 
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
-		this.country = CountryUtil.getCountryForCode(countryCode);
 	}
 
 

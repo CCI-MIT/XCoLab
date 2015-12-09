@@ -107,7 +107,9 @@
 						</tr>
 
 						<tr>
-							<th class="b m">Country</th>
+							<th class="b m">
+								Country
+								<img align="texttop" height="7" width="8" src="/climatecolab-theme/images/reg-star.png"/></th>
 							<td> <jsp:include page="./countrySelect.jspx"/></td>
 						</tr>
 

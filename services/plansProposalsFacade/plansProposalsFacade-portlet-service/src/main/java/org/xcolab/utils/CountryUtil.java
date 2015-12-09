@@ -265,7 +265,7 @@ public class CountryUtil {
     	if (codeToCountryMap.containsKey(code)) {
     		return codeToCountryMap.get(code);
     	}
-    	return code;
+    	return "";
     }
 
     public static String getCodeForCounty(String country) {

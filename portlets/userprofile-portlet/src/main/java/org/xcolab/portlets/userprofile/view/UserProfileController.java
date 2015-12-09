@@ -399,10 +399,10 @@ public class UserProfileController {
             }
         }
 
-        if (updatedUserBean.getCountry() != null && !updatedUserBean.getCountry().equals(existingCountry)) {
+        if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
-                    currentUserProfile.getUser().getUserId(), CountryUtil.getCountryForCode(updatedUserBean.getCountry()));
+                    currentUserProfile.getUser().getUserId(), CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
             changedDetails = true;
         }
 
