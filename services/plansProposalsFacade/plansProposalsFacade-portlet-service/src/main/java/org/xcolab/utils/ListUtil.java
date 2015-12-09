@@ -22,8 +22,10 @@ public class ListUtil {
         PriorityQueue<ListContainer<T>> minHeap = new PriorityQueue<>(inLists.size());
         int size = 0;
         for (List<T> inList : inLists) {
-            minHeap.add(new ListContainer<>(inList, comparator));
-            size += inList.size();
+            if (!inList.isEmpty()) {
+                minHeap.add(new ListContainer<>(inList, comparator));
+                size += inList.size();
+            }
         }
         List<T> outList = new ArrayList<>(size);
 
