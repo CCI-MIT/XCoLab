@@ -60,6 +60,85 @@
   }
 }
 
+table.contest-list-view {
+  th, td {
+    padding: 5px;
+  }
+
+  th {
+    height: 30px;
+    line-height: 30px;
+  }
+
+  td {
+    font-size: 14px;
+    line-height: 20px;
+    border-bottom: 1px solid $lightest-grey;
+
+    &.odd {
+      background-image: url(../images/pattern-tbl-6x6.png);
+    }
+  }
+
+  .featured td {
+    background-color: $lightest-grey;
+  }
+
+  a {
+    font-weight: 700;
+  }
+
+  %image-only {
+    background-position-y: 8px;
+    background-repeat: no-repeat;
+    a {
+      width: 30px;
+      height: 30px;
+      display: inline-block;
+    }
+  }
+
+  %image-text {
+    background-position-y: 8px;
+    background-repeat: no-repeat;
+    padding-left: 35px;
+  }
+
+  th.proposals {
+    @extend %image-only;
+    background-image: url(../images/icon-list-proposals.png);
+  }
+
+  th.votes {
+    @extend %image-only;
+  }
+
+  th.comments {
+    @extend %image-only;
+    background-image: url(../images/icon-list-comment.png);
+  }
+
+  th.ontology_what {
+    @extend %image-text;
+    background-image: url(../images/icon-list-what.png);
+  }
+
+  th.ontology_where {
+    @extend %image-text;
+    background-image: url(../images/icon-list-where.png);
+  }
+
+  th.ontology_who {
+    @extend %image-text;
+    background-image: url(../images/icon-list-who.png);
+  }
+
+  th.ontology_how {
+    @extend %image-text;
+    background-image: url(../images/contest-icon-how.png);
+  }
+}
+
 .list a {
   width: 100%;
 }
@@ -313,42 +392,6 @@
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-}
-
-/* the table with rows of contests  */
-.contestlist {
-  clear: both;
-  margin-top: -4px;
-}
-
-.contestlist td {
-  height: 57px;
-  padding: 11px 10px 0;
-  font-size: 14px;
-  line-height: 20px;
-  color: $darkest-grey;
-  border-bottom: 1px solid $lightest-grey;
-}
-
-.contestlist a {
-  font-weight: 700;
-}
-
-.contestlist tr.top td {
-  height: 61px;
-  padding-top: 15px;
-}
-
-.contestlist td.g {
-  background-image: url(../images/pattern-tbl-6x6.png);
-}
-
-.contestlist.featured td {
-  background-color: $lightest-grey;
-}
-
-.contestlist tr.feat-bot {
-  border-bottom: 1px solid $primary-grey;
 }
 
 /* the table with rows of users  */

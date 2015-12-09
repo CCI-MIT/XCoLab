@@ -462,7 +462,7 @@ function initTooltips() {
         return jQuery("<span />");
     }
 
-	const tooltipFields = jQuery(".tooltips div a, .fieldWithTooltip");
+	const tooltipFields = jQuery(".tooltips div a, .tooltips th a, .fieldWithTooltip");
 	tooltipFields.not('.tooltipInitialized').mouseover(function() {
         var self = jQuery(this);
         self.addClass('tooltipInitialized');
