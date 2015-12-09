@@ -12,84 +12,52 @@
 }
 
 /* grid-view / list-view button */
-.grid, .list, .outline {
+.headline .view {
   float: left;
   height: 34px;
+  line-height: 34px;
+  background: $lightest-grey;
+  border: solid 1px $medium-grey;
+  @include border-radius(6px);
+  margin-right: 16px;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-}
 
-.gridview .grid {
-  background: url(../images/view-switch.png) no-repeat;
-  width: 123px;
-}
+  > div {
+    float: left;
+    padding-left: 35px;
+    padding-right: 6px;
 
-.gridview .grid div {
-  background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px;
-  color: white;
-  height: 25px;
-  padding: 9px 0 0 37px;
-}
+    &.selected {
+      @include border-radius(5px);
+      color: white;
+    }
+  }
 
-.gridview .list {
-  background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
-  width: 82px;
-  padding: 9px 0 0 29px;
-}
+  .grid {
+    background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
 
-.gridview .outline {
-  background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
-  width: 104px;
-  padding: 9px 0 0 29px;
-}
+    &.selected {
+      background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px $primary-dark-grey;
+    }
+  }
 
-.listview .list {
-  background: url(../images/view-switch.png) no-repeat;
-  width: 123px;
-}
+  .outline {
+    background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
 
-.listview .list div {
-  background: url(../images/icon-list_view-on.png) no-repeat 9px 8px;
-  color: white;
-  height: 25px;
-  padding: 9px 0 0 34px;
-}
+    &.selected {
+      background: url(../images/icon-list_outline-on.png) no-repeat 9px 8px $primary-dark-grey;
+    }
+  }
 
-.listview .grid {
-  background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
-  width: 76px;
-  padding: 9px 0 0 34px;
-}
+  .list {
+    background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
 
-.listview .outline {
-  background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
-  width: 104px;
-  padding: 9px 0 0 29px;
-}
-
-.outlineview .outline {
-  background: url(../images/view-switch2.png) no-repeat;
-  width: 133px;
-}
-
-.outlineview .outline div {
-  background: url(../images/icon-list_outline-on.png) no-repeat 9px 8px;
-  color: white;
-  height: 25px;
-  padding: 9px 0 0 34px;
-}
-
-.outlineview .list {
-  background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
-  width: 82px;
-  padding: 9px 0 0 29px;
-}
-
-.outlineview .grid {
-  background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
-  width: 76px;
-  padding: 9px 0 0 34px;
+    &.selected {
+      background: url(../images/icon-list_view-on.png) no-repeat 9px 8px $primary-dark-grey;
+    }
+  }
 }
 
 .list a {
