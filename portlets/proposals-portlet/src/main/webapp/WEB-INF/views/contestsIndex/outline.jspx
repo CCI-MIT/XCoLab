@@ -67,23 +67,23 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
         <div class="section-contest-count-container"><div class="contest-count"><span class="count"><!--  --></span>
             <span class="active-title" style="display: none;"> active</span>
             <span class="inactive-title" style="display: none;"> prior</span>
-            <span class='plural'> contests</span>
-            <span class='singular'> contest</span>
+            <span class='plural'> ${contestType.contestNamePlural}</span>
+            <span class='singular'> ${contestType.contestName}</span>
         </div>
 
             <div class="other-contest-count" style="display: none;">
                 (<span class="active-title" style="display:none;">
                     <a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'><span class="count"><!-- --></span>
                         active
-                        <span class='plural'> contests</span>
-                        <span class='singular'> contest</span>
+                        <span class='plural'> ${contestType.contestNamePlural}</span>
+                        <span class='singular'> ${contestType.contestName}</span>
                     </a>
                 </span>
                 <span class="inactive-title" style="display:none;">
                     <a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' ><span class="count"><!-- --></span>
                         prior
-                        <span class='plural'> contests</span>
-                        <span class='singular'> contest</span>
+                        <span class='plural'> ${contestType.contestNamePlural}</span>
+                        <span class='singular'> ${contestType.contestName}</span>
                     </a>
                 </span>)
             </div>
@@ -103,8 +103,8 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 					
 							<span class='count'><!-- --></span>
 							completed 
-							<span class='plural'>contests</span>
-							<span class='singular'>contest</span>
+							<span class='plural'>${contestType.contestNamePlural}</span>
+							<span class='singular'>${contestType.contestName}</span>
 							will be displayed 
 						</span>
 					</c:when>
@@ -112,8 +112,8 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 						<span class="otherContestsCount">If you select
 							<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
 							<span class='count'><!-- --></span> current
-							<span class='plural'>contests</span>
-							<span class='singular'>contest</span>
+							<span class='plural'>${contestType.contestNamePlural}</span>
+							<span class='singular'>${contestType.contestName}</span>
 							will be displayed
 						</span>
 					</c:otherwise>
