@@ -14,6 +14,7 @@
         <thead>
         <tr>
             <th>Category Group</th>
+            <th>Thread</th>
             <th>Admin reports</th>
             <th>Other reports</th>
             <th>Date</th>
@@ -23,6 +24,7 @@
         <c:forEach var="spamComment" items="${spamReportsWrapper.spamComments}">
             <tr class="colabRow">
                 <td><a href="${spamComment.discussionCategoryGroup.url}" target="_blank">${spamComment.discussionCategoryGroup.description}</a></td>
+                <td><a href="${spamComment.thread.linkUrl}" target="_blank">${spamComment.thread.title}</a></td>
                 <td>${spamComment.adminReportCount}</td>
                 <td>${spamComment.otherReportCount}</td>
                 <td><fmt:formatDate value="${spamComment.messageDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>

@@ -12,84 +12,131 @@
 }
 
 /* grid-view / list-view button */
-.grid, .list, .outline {
+.headline .view {
   float: left;
   height: 34px;
+  line-height: 34px;
+  background: $lightest-grey;
+  border: solid 1px $medium-grey;
+  @include border-radius(6px);
+  margin-right: 16px;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
+
+  > div {
+    float: left;
+    padding-left: 35px;
+    padding-right: 6px;
+
+    &.selected {
+      @include border-radius(5px);
+      color: white;
+    }
+  }
+
+  .grid {
+    background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
+
+    &.selected {
+      background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px $primary-dark-grey;
+    }
+  }
+
+  .outline {
+    background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
+
+    &.selected {
+      background: url(../images/icon-list_outline-on.png) no-repeat 9px 8px $primary-dark-grey;
+    }
+  }
+
+  .list {
+    background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
+
+    &.selected {
+      background: url(../images/icon-list_view-on.png) no-repeat 9px 8px $primary-dark-grey;
+    }
+  }
 }
 
-.gridview .grid {
-  background: url(../images/view-switch.png) no-repeat;
-  width: 123px;
-}
+table.contest-list-view {
+  th, td {
+    padding: 5px;
+  }
 
-.gridview .grid div {
-  background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px;
-  color: white;
-  height: 25px;
-  padding: 9px 0 0 37px;
-}
+  th {
+    height: 30px;
+    line-height: 30px;
+  }
 
-.gridview .list {
-  background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
-  width: 82px;
-  padding: 9px 0 0 29px;
-}
+  td {
+    font-size: 14px;
+    line-height: 20px;
+    border-bottom: 1px solid $lightest-grey;
 
-.gridview .outline {
-  background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
-  width: 104px;
-  padding: 9px 0 0 29px;
-}
+    &.odd {
+      background-image: url(../images/pattern-tbl-6x6.png);
+    }
+  }
 
-.listview .list {
-  background: url(../images/view-switch.png) no-repeat;
-  width: 123px;
-}
+  .featured td {
+    background-color: $lightest-grey;
+  }
 
-.listview .list div {
-  background: url(../images/icon-list_view-on.png) no-repeat 9px 8px;
-  color: white;
-  height: 25px;
-  padding: 9px 0 0 34px;
-}
+  a {
+    font-weight: 700;
+  }
 
-.listview .grid {
-  background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
-  width: 76px;
-  padding: 9px 0 0 34px;
-}
+  %image-only {
+    background-position-y: 8px;
+    background-repeat: no-repeat;
+    a {
+      width: 30px;
+      height: 30px;
+      display: inline-block;
+    }
+  }
 
-.listview .outline {
-  background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
-  width: 104px;
-  padding: 9px 0 0 29px;
-}
+  %image-text {
+    background-position-y: 8px;
+    background-repeat: no-repeat;
+    padding-left: 35px;
+  }
 
-.outlineview .outline {
-  background: url(../images/view-switch2.png) no-repeat;
-  width: 133px;
-}
+  th.proposals {
+    @extend %image-only;
+    background-image: url(../images/icon-list-proposals.png);
+  }
 
-.outlineview .outline div {
-  background: url(../images/icon-list_outline-on.png) no-repeat 9px 8px;
-  color: white;
-  height: 25px;
-  padding: 9px 0 0 34px;
-}
+  th.votes {
+    @extend %image-only;
+  }
 
-.outlineview .list {
-  background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
-  width: 82px;
-  padding: 9px 0 0 29px;
-}
+  th.comments {
+    @extend %image-only;
+    background-image: url(../images/icon-list-comment.png);
+  }
 
-.outlineview .grid {
-  background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
-  width: 76px;
-  padding: 9px 0 0 34px;
+  th.ontology_what {
+    @extend %image-text;
+    background-image: url(../images/icon-list-what.png);
+  }
+
+  th.ontology_where {
+    @extend %image-text;
+    background-image: url(../images/icon-list-where.png);
+  }
+
+  th.ontology_who {
+    @extend %image-text;
+    background-image: url(../images/icon-list-who.png);
+  }
+
+  th.ontology_how {
+    @extend %image-text;
+    background-image: url(../images/contest-icon-how.png);
+  }
 }
 
 .list a {
@@ -345,42 +392,6 @@
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-}
-
-/* the table with rows of contests  */
-.contestlist {
-  clear: both;
-  margin-top: -4px;
-}
-
-.contestlist td {
-  height: 57px;
-  padding: 11px 10px 0;
-  font-size: 14px;
-  line-height: 20px;
-  color: $darkest-grey;
-  border-bottom: 1px solid $lightest-grey;
-}
-
-.contestlist a {
-  font-weight: 700;
-}
-
-.contestlist tr.top td {
-  height: 61px;
-  padding-top: 15px;
-}
-
-.contestlist td.g {
-  background-image: url(../images/pattern-tbl-6x6.png);
-}
-
-.contestlist.featured td {
-  background-color: $lightest-grey;
-}
-
-.contestlist tr.feat-bot {
-  border-bottom: 1px solid $primary-grey;
 }
 
 /* the table with rows of users  */

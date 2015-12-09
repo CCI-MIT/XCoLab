@@ -5,32 +5,32 @@
       http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" 
       version="2.1">
       
-  <description>Collab JSP tags</description>
-  <display-name>Collab JSP tags</display-name>
-  <tlib-version>1.0</tlib-version>
-  <short-name>collab</short-name>
-  <uri>http://climatecolab.org/tags/collab_1.0</uri>
+    <description>Collab JSP tags</description>
+    <display-name>Collab JSP tags</display-name>
+    <tlib-version>1.0</tlib-version>
+    <short-name>collab</short-name>
+    <uri>http://climatecolab.org/tags/collab_1.0</uri>
 
-   <tag>
-  	<name>formatTimeSpan</name>
-  	<tag-class>org.xcolab.tags.FormatTimeSpanTag</tag-class>
-	<body-content>empty</body-content>
-		
-	<attribute>
-		<name>value</name>
-		<required>true</required>
-		<rtexprvalue>true</rtexprvalue>
-		<type>java.lang.Long</type>			
-	</attribute>
-	
-	<attribute>
-		<name>returnUnit</name>
-		<required>false</required>
-		<rtexprvalue>true</rtexprvalue>
-		<type>java.lang.Boolean</type>			
-	</attribute>
+    <tag>
+        <name>formatTimeSpan</name>
+        <tag-class>org.xcolab.tags.FormatTimeSpanTag</tag-class>
+        <body-content>empty</body-content>
+
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+
+        <attribute>
+            <name>returnUnit</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Boolean</type>
+        </attribute>
   	
-  </tag>
+    </tag>
 
     <tag-file>
         <description>Contest link</description>
@@ -41,7 +41,7 @@
     <tag-file>
         <description>Discussion Comments</description>
         <name>discussionComments</name>
-        <path>/META-INF/tags/collab/discussionComments.tagx</path>
+        <path>/META-INF/tags/collab/discussion/comments.tagx</path>
     </tag-file>
 
     <tag-file>
@@ -97,5 +97,4 @@
         <name>userPortraitSelectOption</name>
         <path>/META-INF/tags/collab/userPortraitSelectOption.tagx</path>
     </tag-file>
-
 </taglib>  

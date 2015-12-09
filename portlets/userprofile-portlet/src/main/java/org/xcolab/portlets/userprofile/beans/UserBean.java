@@ -10,9 +10,9 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.xcolab.portlets.userprofile.utils.Helper;
 import org.xcolab.portlets.userprofile.validators.UniqueEmail;
 import org.xcolab.portlets.userprofile.validators.UniqueScreenName;
+import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.validation.CompareStrings;
 import org.xcolab.utils.validation.ValidBioLength;
 import org.xcolab.utils.validation.ValidScreenName;
@@ -24,7 +24,7 @@ import java.io.Serializable;
 @UniqueScreenName(screenNameProperty = "screenName", groups = {UserBean.ScreenNameChanged.class})
 @ValidScreenName(screenNameProperty = "screenName", groups = {UserBean.ScreenNameChanged.class})
 @ValidBioLength(bioProperty = "shortBio")
-public class UserBean implements Serializable{
+public class UserBean implements Serializable {
 
 
 	private static final long serialVersionUID = 1L;
@@ -65,8 +65,9 @@ public class UserBean implements Serializable{
 
 	private String shortBio;
 
+    @NotBlank(message = "please select your country from the list")
 	@Length(min = 0, max = 300)
-	private String country;
+	private String countryCode;
 
 	private long userId;
 	private long imageId;
@@ -90,9 +91,9 @@ public class UserBean implements Serializable{
 		imageId = user.getPortraitId();
 		isFemale = user.getFemale();
 
-		country = Helper.getCodeForCounty(ExpandoValueLocalServiceUtil.getData(User.class.getName(),
-				CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
-				user.getUserId(), StringPool.BLANK));
+		countryCode = CountryUtil.getCodeForCounty(ExpandoValueLocalServiceUtil.getData(User.class.getName(),
+                CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
+                user.getUserId(), StringPool.BLANK));
 
 		shortBio = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID, User.class.getName(),
 				CommunityConstants.EXPANDO, CommunityConstants.BIO,
@@ -119,12 +120,8 @@ public class UserBean implements Serializable{
 		this.imageId = imageId;
 	}
 
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
+	public String getCountryName() {
+		return CountryUtil.getCountryForCode(countryCode);
 	}
 
 	public String getShortBio() {
@@ -227,6 +224,14 @@ public class UserBean implements Serializable{
 				+ ", retypeEmail=" + retypeEmail + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", password=" + password + ", retypePassword="
 				+ retypePassword + "]";
+	}
+
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
 	}
 
 

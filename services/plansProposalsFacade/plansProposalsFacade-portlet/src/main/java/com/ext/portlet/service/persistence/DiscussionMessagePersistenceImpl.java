@@ -133,6 +133,39 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySingleThreadId",
             new String[] { Long.class.getName() });
     private static final String _FINDER_COLUMN_SINGLETHREADID_MESSAGEID_2 = "discussionMessage.messageId = ? AND discussionMessage.deleted is null";
+    public static final FinderPath FINDER_PATH_FETCH_BY_MESSAGEID = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED,
+            DiscussionMessageImpl.class, FINDER_CLASS_NAME_ENTITY,
+            "fetchByMessageId", new String[] { Long.class.getName() },
+            DiscussionMessageModelImpl.MESSAGEID_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_MESSAGEID = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMessageId",
+            new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_MESSAGEID_MESSAGEID_2 = "discussionMessage.messageId = ? AND discussionMessage.deleted is null";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_AUTHORID = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED,
+            DiscussionMessageImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAuthorId",
+            new String[] {
+                Long.class.getName(),
+                
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
+            });
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID =
+        new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED,
+            DiscussionMessageImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAuthorId",
+            new String[] { Long.class.getName() },
+            DiscussionMessageModelImpl.AUTHORID_COLUMN_BITMASK |
+            DiscussionMessageModelImpl.CREATEDATE_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_AUTHORID = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAuthorId",
+            new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_AUTHORID_AUTHORID_2 = "discussionMessage.authorId = ? AND discussionMessage.deleted is null";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_SUBJECTLIKE =
         new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
             DiscussionMessageModelImpl.FINDER_CACHE_ENABLED,
@@ -172,39 +205,6 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
     private static final String _FINDER_COLUMN_BODYLIKE_BODY_2 = "discussionMessage.body LIKE ? AND ";
     private static final String _FINDER_COLUMN_BODYLIKE_BODY_3 = "(discussionMessage.body IS NULL OR discussionMessage.body LIKE '') AND ";
     private static final String _FINDER_COLUMN_BODYLIKE_CATEGORYGROUPID_2 = "discussionMessage.categoryGroupId = ? AND discussionMessage.deleted is null";
-    public static final FinderPath FINDER_PATH_FETCH_BY_MESSAGEID = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED,
-            DiscussionMessageImpl.class, FINDER_CLASS_NAME_ENTITY,
-            "fetchByMessageId", new String[] { Long.class.getName() },
-            DiscussionMessageModelImpl.MESSAGEID_COLUMN_BITMASK);
-    public static final FinderPath FINDER_PATH_COUNT_BY_MESSAGEID = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMessageId",
-            new String[] { Long.class.getName() });
-    private static final String _FINDER_COLUMN_MESSAGEID_MESSAGEID_2 = "discussionMessage.messageId = ? AND discussionMessage.deleted is null";
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_AUTHORID = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED,
-            DiscussionMessageImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAuthorId",
-            new String[] {
-                Long.class.getName(),
-                
-            Integer.class.getName(), Integer.class.getName(),
-                OrderByComparator.class.getName()
-            });
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID =
-        new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED,
-            DiscussionMessageImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAuthorId",
-            new String[] { Long.class.getName() },
-            DiscussionMessageModelImpl.AUTHORID_COLUMN_BITMASK |
-            DiscussionMessageModelImpl.CREATEDATE_COLUMN_BITMASK);
-    public static final FinderPath FINDER_PATH_COUNT_BY_AUTHORID = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAuthorId",
-            new String[] { Long.class.getName() });
-    private static final String _FINDER_COLUMN_AUTHORID_AUTHORID_2 = "discussionMessage.authorId = ? AND discussionMessage.deleted is null";
     private static final String _SQL_SELECT_DISCUSSIONMESSAGE = "SELECT discussionMessage FROM DiscussionMessage discussionMessage";
     private static final String _SQL_SELECT_DISCUSSIONMESSAGE_WHERE = "SELECT discussionMessage FROM DiscussionMessage discussionMessage WHERE ";
     private static final String _SQL_COUNT_DISCUSSIONMESSAGE = "SELECT COUNT(discussionMessage) FROM DiscussionMessage discussionMessage";
@@ -1383,6 +1383,658 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
     }
 
     /**
+     * Returns the discussion message where messageId = &#63; or throws a {@link com.ext.portlet.NoSuchDiscussionMessageException} if it could not be found.
+     *
+     * @param messageId the message ID
+     * @return the matching discussion message
+     * @throws com.ext.portlet.NoSuchDiscussionMessageException if a matching discussion message could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage findByMessageId(long messageId)
+        throws NoSuchDiscussionMessageException, SystemException {
+        DiscussionMessage discussionMessage = fetchByMessageId(messageId);
+
+        if (discussionMessage == null) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("messageId=");
+            msg.append(messageId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchDiscussionMessageException(msg.toString());
+        }
+
+        return discussionMessage;
+    }
+
+    /**
+     * Returns the discussion message where messageId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param messageId the message ID
+     * @return the matching discussion message, or <code>null</code> if a matching discussion message could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage fetchByMessageId(long messageId)
+        throws SystemException {
+        return fetchByMessageId(messageId, true);
+    }
+
+    /**
+     * Returns the discussion message where messageId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param messageId the message ID
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching discussion message, or <code>null</code> if a matching discussion message could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage fetchByMessageId(long messageId,
+        boolean retrieveFromCache) throws SystemException {
+        Object[] finderArgs = new Object[] { messageId };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_MESSAGEID,
+                    finderArgs, this);
+        }
+
+        if (result instanceof DiscussionMessage) {
+            DiscussionMessage discussionMessage = (DiscussionMessage) result;
+
+            if ((messageId != discussionMessage.getMessageId())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_SELECT_DISCUSSIONMESSAGE_WHERE);
+
+            query.append(_FINDER_COLUMN_MESSAGEID_MESSAGEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(messageId);
+
+                List<DiscussionMessage> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEID,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "DiscussionMessagePersistenceImpl.fetchByMessageId(long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    DiscussionMessage discussionMessage = list.get(0);
+
+                    result = discussionMessage;
+
+                    cacheResult(discussionMessage);
+
+                    if ((discussionMessage.getMessageId() != messageId)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEID,
+                            finderArgs, discussionMessage);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGEID,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (DiscussionMessage) result;
+        }
+    }
+
+    /**
+     * Removes the discussion message where messageId = &#63; from the database.
+     *
+     * @param messageId the message ID
+     * @return the discussion message that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage removeByMessageId(long messageId)
+        throws NoSuchDiscussionMessageException, SystemException {
+        DiscussionMessage discussionMessage = findByMessageId(messageId);
+
+        return remove(discussionMessage);
+    }
+
+    /**
+     * Returns the number of discussion messages where messageId = &#63;.
+     *
+     * @param messageId the message ID
+     * @return the number of matching discussion messages
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByMessageId(long messageId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_MESSAGEID;
+
+        Object[] finderArgs = new Object[] { messageId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_DISCUSSIONMESSAGE_WHERE);
+
+            query.append(_FINDER_COLUMN_MESSAGEID_MESSAGEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(messageId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
+     * Returns all the discussion messages where authorId = &#63;.
+     *
+     * @param authorId the author ID
+     * @return the matching discussion messages
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<DiscussionMessage> findByAuthorId(long authorId)
+        throws SystemException {
+        return findByAuthorId(authorId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+            null);
+    }
+
+    /**
+     * Returns a range of all the discussion messages where authorId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.DiscussionMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param authorId the author ID
+     * @param start the lower bound of the range of discussion messages
+     * @param end the upper bound of the range of discussion messages (not inclusive)
+     * @return the range of matching discussion messages
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<DiscussionMessage> findByAuthorId(long authorId, int start,
+        int end) throws SystemException {
+        return findByAuthorId(authorId, start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the discussion messages where authorId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.DiscussionMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param authorId the author ID
+     * @param start the lower bound of the range of discussion messages
+     * @param end the upper bound of the range of discussion messages (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching discussion messages
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<DiscussionMessage> findByAuthorId(long authorId, int start,
+        int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID;
+            finderArgs = new Object[] { authorId };
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_AUTHORID;
+            finderArgs = new Object[] { authorId, start, end, orderByComparator };
+        }
+
+        List<DiscussionMessage> list = (List<DiscussionMessage>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if ((list != null) && !list.isEmpty()) {
+            for (DiscussionMessage discussionMessage : list) {
+                if ((authorId != discussionMessage.getAuthorId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
+        if (list == null) {
+            StringBundler query = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(3 +
+                        (orderByComparator.getOrderByFields().length * 3));
+            } else {
+                query = new StringBundler(3);
+            }
+
+            query.append(_SQL_SELECT_DISCUSSIONMESSAGE_WHERE);
+
+            query.append(_FINDER_COLUMN_AUTHORID_AUTHORID_2);
+
+            if (orderByComparator != null) {
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+            } else
+             if (pagination) {
+                query.append(DiscussionMessageModelImpl.ORDER_BY_JPQL);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(authorId);
+
+                if (!pagination) {
+                    list = (List<DiscussionMessage>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<DiscussionMessage>(list);
+                } else {
+                    list = (List<DiscussionMessage>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Returns the first discussion message in the ordered set where authorId = &#63;.
+     *
+     * @param authorId the author ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching discussion message
+     * @throws com.ext.portlet.NoSuchDiscussionMessageException if a matching discussion message could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage findByAuthorId_First(long authorId,
+        OrderByComparator orderByComparator)
+        throws NoSuchDiscussionMessageException, SystemException {
+        DiscussionMessage discussionMessage = fetchByAuthorId_First(authorId,
+                orderByComparator);
+
+        if (discussionMessage != null) {
+            return discussionMessage;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("authorId=");
+        msg.append(authorId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchDiscussionMessageException(msg.toString());
+    }
+
+    /**
+     * Returns the first discussion message in the ordered set where authorId = &#63;.
+     *
+     * @param authorId the author ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching discussion message, or <code>null</code> if a matching discussion message could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage fetchByAuthorId_First(long authorId,
+        OrderByComparator orderByComparator) throws SystemException {
+        List<DiscussionMessage> list = findByAuthorId(authorId, 0, 1,
+                orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the last discussion message in the ordered set where authorId = &#63;.
+     *
+     * @param authorId the author ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching discussion message
+     * @throws com.ext.portlet.NoSuchDiscussionMessageException if a matching discussion message could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage findByAuthorId_Last(long authorId,
+        OrderByComparator orderByComparator)
+        throws NoSuchDiscussionMessageException, SystemException {
+        DiscussionMessage discussionMessage = fetchByAuthorId_Last(authorId,
+                orderByComparator);
+
+        if (discussionMessage != null) {
+            return discussionMessage;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("authorId=");
+        msg.append(authorId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchDiscussionMessageException(msg.toString());
+    }
+
+    /**
+     * Returns the last discussion message in the ordered set where authorId = &#63;.
+     *
+     * @param authorId the author ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching discussion message, or <code>null</code> if a matching discussion message could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage fetchByAuthorId_Last(long authorId,
+        OrderByComparator orderByComparator) throws SystemException {
+        int count = countByAuthorId(authorId);
+
+        if (count == 0) {
+            return null;
+        }
+
+        List<DiscussionMessage> list = findByAuthorId(authorId, count - 1,
+                count, orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the discussion messages before and after the current discussion message in the ordered set where authorId = &#63;.
+     *
+     * @param pk the primary key of the current discussion message
+     * @param authorId the author ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the previous, current, and next discussion message
+     * @throws com.ext.portlet.NoSuchDiscussionMessageException if a discussion message with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage[] findByAuthorId_PrevAndNext(long pk,
+        long authorId, OrderByComparator orderByComparator)
+        throws NoSuchDiscussionMessageException, SystemException {
+        DiscussionMessage discussionMessage = findByPrimaryKey(pk);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            DiscussionMessage[] array = new DiscussionMessageImpl[3];
+
+            array[0] = getByAuthorId_PrevAndNext(session, discussionMessage,
+                    authorId, orderByComparator, true);
+
+            array[1] = discussionMessage;
+
+            array[2] = getByAuthorId_PrevAndNext(session, discussionMessage,
+                    authorId, orderByComparator, false);
+
+            return array;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    protected DiscussionMessage getByAuthorId_PrevAndNext(Session session,
+        DiscussionMessage discussionMessage, long authorId,
+        OrderByComparator orderByComparator, boolean previous) {
+        StringBundler query = null;
+
+        if (orderByComparator != null) {
+            query = new StringBundler(6 +
+                    (orderByComparator.getOrderByFields().length * 6));
+        } else {
+            query = new StringBundler(3);
+        }
+
+        query.append(_SQL_SELECT_DISCUSSIONMESSAGE_WHERE);
+
+        query.append(_FINDER_COLUMN_AUTHORID_AUTHORID_2);
+
+        if (orderByComparator != null) {
+            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+            if (orderByConditionFields.length > 0) {
+                query.append(WHERE_AND);
+            }
+
+            for (int i = 0; i < orderByConditionFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByConditionFields[i]);
+
+                if ((i + 1) < orderByConditionFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
+                    } else {
+                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN);
+                    } else {
+                        query.append(WHERE_LESSER_THAN);
+                    }
+                }
+            }
+
+            query.append(ORDER_BY_CLAUSE);
+
+            String[] orderByFields = orderByComparator.getOrderByFields();
+
+            for (int i = 0; i < orderByFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByFields[i]);
+
+                if ((i + 1) < orderByFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC_HAS_NEXT);
+                    } else {
+                        query.append(ORDER_BY_DESC_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC);
+                    } else {
+                        query.append(ORDER_BY_DESC);
+                    }
+                }
+            }
+        } else {
+            query.append(DiscussionMessageModelImpl.ORDER_BY_JPQL);
+        }
+
+        String sql = query.toString();
+
+        Query q = session.createQuery(sql);
+
+        q.setFirstResult(0);
+        q.setMaxResults(2);
+
+        QueryPos qPos = QueryPos.getInstance(q);
+
+        qPos.add(authorId);
+
+        if (orderByComparator != null) {
+            Object[] values = orderByComparator.getOrderByConditionValues(discussionMessage);
+
+            for (Object value : values) {
+                qPos.add(value);
+            }
+        }
+
+        List<DiscussionMessage> list = q.list();
+
+        if (list.size() == 2) {
+            return list.get(1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Removes all the discussion messages where authorId = &#63; from the database.
+     *
+     * @param authorId the author ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByAuthorId(long authorId) throws SystemException {
+        for (DiscussionMessage discussionMessage : findByAuthorId(authorId,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(discussionMessage);
+        }
+    }
+
+    /**
+     * Returns the number of discussion messages where authorId = &#63;.
+     *
+     * @param authorId the author ID
+     * @return the number of matching discussion messages
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByAuthorId(long authorId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_AUTHORID;
+
+        Object[] finderArgs = new Object[] { authorId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_DISCUSSIONMESSAGE_WHERE);
+
+            query.append(_FINDER_COLUMN_AUTHORID_AUTHORID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(authorId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the discussion messages where subject LIKE &#63; and categoryGroupId = &#63;.
      *
      * @param subject the subject
@@ -2409,658 +3061,6 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
                 }
 
                 qPos.add(categoryGroupId);
-
-                count = (Long) q.uniqueResult();
-
-                FinderCacheUtil.putResult(finderPath, finderArgs, count);
-            } catch (Exception e) {
-                FinderCacheUtil.removeResult(finderPath, finderArgs);
-
-                throw processException(e);
-            } finally {
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
-    }
-
-    /**
-     * Returns the discussion message where messageId = &#63; or throws a {@link com.ext.portlet.NoSuchDiscussionMessageException} if it could not be found.
-     *
-     * @param messageId the message ID
-     * @return the matching discussion message
-     * @throws com.ext.portlet.NoSuchDiscussionMessageException if a matching discussion message could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessage findByMessageId(long messageId)
-        throws NoSuchDiscussionMessageException, SystemException {
-        DiscussionMessage discussionMessage = fetchByMessageId(messageId);
-
-        if (discussionMessage == null) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("messageId=");
-            msg.append(messageId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            if (_log.isWarnEnabled()) {
-                _log.warn(msg.toString());
-            }
-
-            throw new NoSuchDiscussionMessageException(msg.toString());
-        }
-
-        return discussionMessage;
-    }
-
-    /**
-     * Returns the discussion message where messageId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-     *
-     * @param messageId the message ID
-     * @return the matching discussion message, or <code>null</code> if a matching discussion message could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessage fetchByMessageId(long messageId)
-        throws SystemException {
-        return fetchByMessageId(messageId, true);
-    }
-
-    /**
-     * Returns the discussion message where messageId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-     *
-     * @param messageId the message ID
-     * @param retrieveFromCache whether to use the finder cache
-     * @return the matching discussion message, or <code>null</code> if a matching discussion message could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessage fetchByMessageId(long messageId,
-        boolean retrieveFromCache) throws SystemException {
-        Object[] finderArgs = new Object[] { messageId };
-
-        Object result = null;
-
-        if (retrieveFromCache) {
-            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_MESSAGEID,
-                    finderArgs, this);
-        }
-
-        if (result instanceof DiscussionMessage) {
-            DiscussionMessage discussionMessage = (DiscussionMessage) result;
-
-            if ((messageId != discussionMessage.getMessageId())) {
-                result = null;
-            }
-        }
-
-        if (result == null) {
-            StringBundler query = new StringBundler(3);
-
-            query.append(_SQL_SELECT_DISCUSSIONMESSAGE_WHERE);
-
-            query.append(_FINDER_COLUMN_MESSAGEID_MESSAGEID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(messageId);
-
-                List<DiscussionMessage> list = q.list();
-
-                if (list.isEmpty()) {
-                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEID,
-                        finderArgs, list);
-                } else {
-                    if ((list.size() > 1) && _log.isWarnEnabled()) {
-                        _log.warn(
-                            "DiscussionMessagePersistenceImpl.fetchByMessageId(long, boolean) with parameters (" +
-                            StringUtil.merge(finderArgs) +
-                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-                    }
-
-                    DiscussionMessage discussionMessage = list.get(0);
-
-                    result = discussionMessage;
-
-                    cacheResult(discussionMessage);
-
-                    if ((discussionMessage.getMessageId() != messageId)) {
-                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEID,
-                            finderArgs, discussionMessage);
-                    }
-                }
-            } catch (Exception e) {
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGEID,
-                    finderArgs);
-
-                throw processException(e);
-            } finally {
-                closeSession(session);
-            }
-        }
-
-        if (result instanceof List<?>) {
-            return null;
-        } else {
-            return (DiscussionMessage) result;
-        }
-    }
-
-    /**
-     * Removes the discussion message where messageId = &#63; from the database.
-     *
-     * @param messageId the message ID
-     * @return the discussion message that was removed
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessage removeByMessageId(long messageId)
-        throws NoSuchDiscussionMessageException, SystemException {
-        DiscussionMessage discussionMessage = findByMessageId(messageId);
-
-        return remove(discussionMessage);
-    }
-
-    /**
-     * Returns the number of discussion messages where messageId = &#63;.
-     *
-     * @param messageId the message ID
-     * @return the number of matching discussion messages
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public int countByMessageId(long messageId) throws SystemException {
-        FinderPath finderPath = FINDER_PATH_COUNT_BY_MESSAGEID;
-
-        Object[] finderArgs = new Object[] { messageId };
-
-        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
-                this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_DISCUSSIONMESSAGE_WHERE);
-
-            query.append(_FINDER_COLUMN_MESSAGEID_MESSAGEID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(messageId);
-
-                count = (Long) q.uniqueResult();
-
-                FinderCacheUtil.putResult(finderPath, finderArgs, count);
-            } catch (Exception e) {
-                FinderCacheUtil.removeResult(finderPath, finderArgs);
-
-                throw processException(e);
-            } finally {
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
-    }
-
-    /**
-     * Returns all the discussion messages where authorId = &#63;.
-     *
-     * @param authorId the author ID
-     * @return the matching discussion messages
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public List<DiscussionMessage> findByAuthorId(long authorId)
-        throws SystemException {
-        return findByAuthorId(authorId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-            null);
-    }
-
-    /**
-     * Returns a range of all the discussion messages where authorId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.DiscussionMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-     * </p>
-     *
-     * @param authorId the author ID
-     * @param start the lower bound of the range of discussion messages
-     * @param end the upper bound of the range of discussion messages (not inclusive)
-     * @return the range of matching discussion messages
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public List<DiscussionMessage> findByAuthorId(long authorId, int start,
-        int end) throws SystemException {
-        return findByAuthorId(authorId, start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the discussion messages where authorId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.DiscussionMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-     * </p>
-     *
-     * @param authorId the author ID
-     * @param start the lower bound of the range of discussion messages
-     * @param end the upper bound of the range of discussion messages (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of matching discussion messages
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public List<DiscussionMessage> findByAuthorId(long authorId, int start,
-        int end, OrderByComparator orderByComparator) throws SystemException {
-        boolean pagination = true;
-        FinderPath finderPath = null;
-        Object[] finderArgs = null;
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            pagination = false;
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID;
-            finderArgs = new Object[] { authorId };
-        } else {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_AUTHORID;
-            finderArgs = new Object[] { authorId, start, end, orderByComparator };
-        }
-
-        List<DiscussionMessage> list = (List<DiscussionMessage>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if ((list != null) && !list.isEmpty()) {
-            for (DiscussionMessage discussionMessage : list) {
-                if ((authorId != discussionMessage.getAuthorId())) {
-                    list = null;
-
-                    break;
-                }
-            }
-        }
-
-        if (list == null) {
-            StringBundler query = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(3 +
-                        (orderByComparator.getOrderByFields().length * 3));
-            } else {
-                query = new StringBundler(3);
-            }
-
-            query.append(_SQL_SELECT_DISCUSSIONMESSAGE_WHERE);
-
-            query.append(_FINDER_COLUMN_AUTHORID_AUTHORID_2);
-
-            if (orderByComparator != null) {
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-            } else
-             if (pagination) {
-                query.append(DiscussionMessageModelImpl.ORDER_BY_JPQL);
-            }
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(authorId);
-
-                if (!pagination) {
-                    list = (List<DiscussionMessage>) QueryUtil.list(q,
-                            getDialect(), start, end, false);
-
-                    Collections.sort(list);
-
-                    list = new UnmodifiableList<DiscussionMessage>(list);
-                } else {
-                    list = (List<DiscussionMessage>) QueryUtil.list(q,
-                            getDialect(), start, end);
-                }
-
-                cacheResult(list);
-
-                FinderCacheUtil.putResult(finderPath, finderArgs, list);
-            } catch (Exception e) {
-                FinderCacheUtil.removeResult(finderPath, finderArgs);
-
-                throw processException(e);
-            } finally {
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
-     * Returns the first discussion message in the ordered set where authorId = &#63;.
-     *
-     * @param authorId the author ID
-     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-     * @return the first matching discussion message
-     * @throws com.ext.portlet.NoSuchDiscussionMessageException if a matching discussion message could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessage findByAuthorId_First(long authorId,
-        OrderByComparator orderByComparator)
-        throws NoSuchDiscussionMessageException, SystemException {
-        DiscussionMessage discussionMessage = fetchByAuthorId_First(authorId,
-                orderByComparator);
-
-        if (discussionMessage != null) {
-            return discussionMessage;
-        }
-
-        StringBundler msg = new StringBundler(4);
-
-        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-        msg.append("authorId=");
-        msg.append(authorId);
-
-        msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-        throw new NoSuchDiscussionMessageException(msg.toString());
-    }
-
-    /**
-     * Returns the first discussion message in the ordered set where authorId = &#63;.
-     *
-     * @param authorId the author ID
-     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-     * @return the first matching discussion message, or <code>null</code> if a matching discussion message could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessage fetchByAuthorId_First(long authorId,
-        OrderByComparator orderByComparator) throws SystemException {
-        List<DiscussionMessage> list = findByAuthorId(authorId, 0, 1,
-                orderByComparator);
-
-        if (!list.isEmpty()) {
-            return list.get(0);
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the last discussion message in the ordered set where authorId = &#63;.
-     *
-     * @param authorId the author ID
-     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-     * @return the last matching discussion message
-     * @throws com.ext.portlet.NoSuchDiscussionMessageException if a matching discussion message could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessage findByAuthorId_Last(long authorId,
-        OrderByComparator orderByComparator)
-        throws NoSuchDiscussionMessageException, SystemException {
-        DiscussionMessage discussionMessage = fetchByAuthorId_Last(authorId,
-                orderByComparator);
-
-        if (discussionMessage != null) {
-            return discussionMessage;
-        }
-
-        StringBundler msg = new StringBundler(4);
-
-        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-        msg.append("authorId=");
-        msg.append(authorId);
-
-        msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-        throw new NoSuchDiscussionMessageException(msg.toString());
-    }
-
-    /**
-     * Returns the last discussion message in the ordered set where authorId = &#63;.
-     *
-     * @param authorId the author ID
-     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-     * @return the last matching discussion message, or <code>null</code> if a matching discussion message could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessage fetchByAuthorId_Last(long authorId,
-        OrderByComparator orderByComparator) throws SystemException {
-        int count = countByAuthorId(authorId);
-
-        if (count == 0) {
-            return null;
-        }
-
-        List<DiscussionMessage> list = findByAuthorId(authorId, count - 1,
-                count, orderByComparator);
-
-        if (!list.isEmpty()) {
-            return list.get(0);
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the discussion messages before and after the current discussion message in the ordered set where authorId = &#63;.
-     *
-     * @param pk the primary key of the current discussion message
-     * @param authorId the author ID
-     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-     * @return the previous, current, and next discussion message
-     * @throws com.ext.portlet.NoSuchDiscussionMessageException if a discussion message with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessage[] findByAuthorId_PrevAndNext(long pk,
-        long authorId, OrderByComparator orderByComparator)
-        throws NoSuchDiscussionMessageException, SystemException {
-        DiscussionMessage discussionMessage = findByPrimaryKey(pk);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            DiscussionMessage[] array = new DiscussionMessageImpl[3];
-
-            array[0] = getByAuthorId_PrevAndNext(session, discussionMessage,
-                    authorId, orderByComparator, true);
-
-            array[1] = discussionMessage;
-
-            array[2] = getByAuthorId_PrevAndNext(session, discussionMessage,
-                    authorId, orderByComparator, false);
-
-            return array;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    protected DiscussionMessage getByAuthorId_PrevAndNext(Session session,
-        DiscussionMessage discussionMessage, long authorId,
-        OrderByComparator orderByComparator, boolean previous) {
-        StringBundler query = null;
-
-        if (orderByComparator != null) {
-            query = new StringBundler(6 +
-                    (orderByComparator.getOrderByFields().length * 6));
-        } else {
-            query = new StringBundler(3);
-        }
-
-        query.append(_SQL_SELECT_DISCUSSIONMESSAGE_WHERE);
-
-        query.append(_FINDER_COLUMN_AUTHORID_AUTHORID_2);
-
-        if (orderByComparator != null) {
-            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
-
-            if (orderByConditionFields.length > 0) {
-                query.append(WHERE_AND);
-            }
-
-            for (int i = 0; i < orderByConditionFields.length; i++) {
-                query.append(_ORDER_BY_ENTITY_ALIAS);
-                query.append(orderByConditionFields[i]);
-
-                if ((i + 1) < orderByConditionFields.length) {
-                    if (orderByComparator.isAscending() ^ previous) {
-                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
-                    } else {
-                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
-                    }
-                } else {
-                    if (orderByComparator.isAscending() ^ previous) {
-                        query.append(WHERE_GREATER_THAN);
-                    } else {
-                        query.append(WHERE_LESSER_THAN);
-                    }
-                }
-            }
-
-            query.append(ORDER_BY_CLAUSE);
-
-            String[] orderByFields = orderByComparator.getOrderByFields();
-
-            for (int i = 0; i < orderByFields.length; i++) {
-                query.append(_ORDER_BY_ENTITY_ALIAS);
-                query.append(orderByFields[i]);
-
-                if ((i + 1) < orderByFields.length) {
-                    if (orderByComparator.isAscending() ^ previous) {
-                        query.append(ORDER_BY_ASC_HAS_NEXT);
-                    } else {
-                        query.append(ORDER_BY_DESC_HAS_NEXT);
-                    }
-                } else {
-                    if (orderByComparator.isAscending() ^ previous) {
-                        query.append(ORDER_BY_ASC);
-                    } else {
-                        query.append(ORDER_BY_DESC);
-                    }
-                }
-            }
-        } else {
-            query.append(DiscussionMessageModelImpl.ORDER_BY_JPQL);
-        }
-
-        String sql = query.toString();
-
-        Query q = session.createQuery(sql);
-
-        q.setFirstResult(0);
-        q.setMaxResults(2);
-
-        QueryPos qPos = QueryPos.getInstance(q);
-
-        qPos.add(authorId);
-
-        if (orderByComparator != null) {
-            Object[] values = orderByComparator.getOrderByConditionValues(discussionMessage);
-
-            for (Object value : values) {
-                qPos.add(value);
-            }
-        }
-
-        List<DiscussionMessage> list = q.list();
-
-        if (list.size() == 2) {
-            return list.get(1);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Removes all the discussion messages where authorId = &#63; from the database.
-     *
-     * @param authorId the author ID
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public void removeByAuthorId(long authorId) throws SystemException {
-        for (DiscussionMessage discussionMessage : findByAuthorId(authorId,
-                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-            remove(discussionMessage);
-        }
-    }
-
-    /**
-     * Returns the number of discussion messages where authorId = &#63;.
-     *
-     * @param authorId the author ID
-     * @return the number of matching discussion messages
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public int countByAuthorId(long authorId) throws SystemException {
-        FinderPath finderPath = FINDER_PATH_COUNT_BY_AUTHORID;
-
-        Object[] finderArgs = new Object[] { authorId };
-
-        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
-                this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_DISCUSSIONMESSAGE_WHERE);
-
-            query.append(_FINDER_COLUMN_AUTHORID_AUTHORID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(authorId);
 
                 count = (Long) q.uniqueResult();
 

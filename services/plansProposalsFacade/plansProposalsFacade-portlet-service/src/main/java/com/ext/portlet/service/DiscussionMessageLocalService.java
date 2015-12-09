@@ -301,7 +301,7 @@ public interface DiscussionMessageLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.DiscussionMessage addThreadMessage(
-        com.ext.portlet.model.DiscussionMessage dMessage,
+        com.ext.portlet.model.DiscussionMessage thread,
         java.lang.String subject, java.lang.String body,
         com.liferay.portal.model.User author)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,

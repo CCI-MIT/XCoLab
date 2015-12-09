@@ -51,6 +51,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
+import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
 
 import javax.portlet.ActionRequest;
@@ -339,8 +340,8 @@ public class MainViewController {
             }
 
             if (newAccountBean.getCountry() != null
-                    && newAccountBean.getCountry().length() > 0) {
-                setExpandoValue(user, CommunityConstants.COUNTRY, Helper.getCountryForCode(newAccountBean.getCountry()));
+                    && !newAccountBean.getCountry().isEmpty()) {
+                setExpandoValue(user, CommunityConstants.COUNTRY, CountryUtil.getCountryForCode(newAccountBean.getCountry()));
             }
 
             if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {

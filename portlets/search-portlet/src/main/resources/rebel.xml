@@ -6,16 +6,4 @@
 		</dir>
 	</classpath>
 
-	<web>
-		<link target="/">
-			<dir name="${xcolab.root}/portlets/search-portlet/target/m2e-wtp/web-resources">
-				<exclude name="/"/>
-			</dir>
-		</link>
-		<link target="/">
-			<dir name="${xcolab.root}/portlets/search-portlet/src/main/webapp">
-			</dir>
-		</link>
-	</web>
-
 </application>

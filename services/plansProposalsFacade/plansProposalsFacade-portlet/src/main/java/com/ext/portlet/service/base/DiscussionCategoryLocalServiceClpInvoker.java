@@ -167,7 +167,7 @@ public class DiscussionCategoryLocalServiceClpInvoker {
 
         _methodParameterTypes511 = new String[] { "long" };
 
-        _methodName512 = "createDebateCategory";
+        _methodName512 = "createDiscussionCategory";
 
         _methodParameterTypes512 = new String[] {
                 "long", "java.lang.String", "java.lang.String",
@@ -338,7 +338,7 @@ public class DiscussionCategoryLocalServiceClpInvoker {
 
         if (_methodName512.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
-            return DiscussionCategoryLocalServiceUtil.createDebateCategory(((Long) arguments[0]).longValue(),
+            return DiscussionCategoryLocalServiceUtil.createDiscussionCategory(((Long) arguments[0]).longValue(),
                 (java.lang.String) arguments[1],
                 (java.lang.String) arguments[2],
                 (com.liferay.portal.model.User) arguments[3]);

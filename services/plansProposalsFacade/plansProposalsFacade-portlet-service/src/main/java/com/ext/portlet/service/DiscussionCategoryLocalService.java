@@ -251,7 +251,7 @@ public interface DiscussionCategoryLocalService extends BaseLocalService,
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
-    public com.ext.portlet.model.DiscussionCategory createDebateCategory(
+    public com.ext.portlet.model.DiscussionCategory createDiscussionCategory(
         long categoryGroupId, java.lang.String name,
         java.lang.String description, com.liferay.portal.model.User author)
         throws com.liferay.portal.kernel.exception.SystemException;

@@ -10,6 +10,7 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
@@ -28,6 +29,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.jspTags.discussion.DiscussionPermissions;
+import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
@@ -83,8 +86,10 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             if (showEvaluationRatings) {
                 Proposal proposal = proposalsContext.getProposal(request);
                 Contest contest = proposalsContext.getContest(request);
-                Long evaluationDiscussionId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposal);
-                model.addAttribute("evaluationDiscussionId", evaluationDiscussionId);
+                Long evaluationDiscussionCategoryGroupId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposal);
+                request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, new ProposalDiscussionPermissions(request,
+                        DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(evaluationDiscussionCategoryGroupId)));
+                model.addAttribute("evaluationDiscussionId", evaluationDiscussionCategoryGroupId);
                 model.addAttribute("averageRatingsPerPhase", getAverageRatingsForPastPhases(contest.getContestPK(), proposal));
                 model.addAttribute("activeContestPhaseOpenForEdit", isActiveContestPhaseOpenForEdit(contest));
                 model.addAttribute("showEvaluation", true);

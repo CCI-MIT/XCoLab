@@ -1,6 +1,6 @@
 package org.xcolab.commons.utils;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.util.portlet.PortletProps;

@@ -38,19 +38,18 @@ h1.spn {
   margin-bottom: 20px;
 }
 
-#searchFormContainerInline {
+.searchFormContainer {
   text-align: center;
   margin: 10px 0;
-
 }
 
-#searchFormContainerInline input {
+input.searchPhrase {
   width: 322px;
   height: 25px;
   padding: 2px 0 0 8px;
-  background: #F9F9F7;
-  border: 1px solid #BCB6B1;
-  color: $dark-grey;
+  background: $lightest-grey;
+  border: 1px solid $light-grey;
+  color: $darkest-grey;
   font-size: 13px;
   font-weight: 400;
   margin-top: 6px;

@@ -6,8 +6,7 @@
 		<artifactId>xcolab-taglibs</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.xcolab.taglibs</groupId>
-	<artifactId>colabJspTags</artifactId>
+    <artifactId>colabJspTags</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>colabJspTags</name>
@@ -30,11 +29,6 @@
 			<version>2.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>com.liferay.portal</groupId>
@@ -42,6 +36,7 @@
 			<version>${liferay.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>com.liferay.portal</groupId>
 			<artifactId>util-java</artifactId>
@@ -62,14 +57,6 @@
 			<version>3.1</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
-			<scope>provided</scope>
-		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -98,7 +85,7 @@
 			<version>4.0.1</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 	</dependencies>
 	<build>
 		<plugins>

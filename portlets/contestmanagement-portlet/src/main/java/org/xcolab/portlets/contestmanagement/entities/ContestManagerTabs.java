@@ -18,42 +18,50 @@ public enum ContestManagerTabs implements TabEnum{
 	private final TabPermissionAlgorithm tabPermissionAlgorithm;
 	private final TabActivityCountAlgorithm activitiesCountAlgorithm;
 
-	private ContestManagerTabs(String displayName, String elementType, TabPermissionAlgorithm tabPermissionAlgorithm,
-							   TabActivityCountAlgorithm activitiesCountAlgorithm) {
+	ContestManagerTabs(String displayName, String elementType, TabPermissionAlgorithm tabPermissionAlgorithm,
+					   TabActivityCountAlgorithm activitiesCountAlgorithm) {
 		this.displayName = displayName;
 		this.tabPermissionAlgorithm = tabPermissionAlgorithm;
 		this.activitiesCountAlgorithm = activitiesCountAlgorithm;
 		this.elementType = elementType;
 	}
 
+	@Override
 	public String getDisplayName() {
 		return displayName;
 	}
 
+	@Override
 	public String getElementType() {
 		return elementType;
 	}
 
+	@Override
 	public String getName() {
 		return this.name();
 	}
 
+	@Override
 	public boolean getIsDefault() {
 		return this.ordinal() == 0;
 	}
 
+	@Override
 	public boolean getCanView(TabPermissions permissions, TabContext context, PortletRequest request) {
 		return tabPermissionAlgorithm.canView(permissions, context, request);
 	}
 
+	@Override
 	public boolean getCanEdit(TabPermissions permissions, TabContext context, PortletRequest request) {
 		return tabPermissionAlgorithm.canEdit(permissions, context, request);
 	}
 
+	@Override
 	public boolean getCanAddComment(TabPermissions permissions, TabContext context, PortletRequest request){
 		return tabPermissionAlgorithm.getCanAddComment(permissions, context, request);
 	}
 
+	@Override
 	public int getActivityCount(TabContext context, PortletRequest request){
 		return activitiesCountAlgorithm.getActivityCount(context, request);
 	}

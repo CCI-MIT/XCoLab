@@ -29,8 +29,9 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.BaseSocialActivityInterpreter;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.climatecollaboratorium.facelets.discussions.activity.NavigationUrl;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.xcolab.jspTags.discussion.wrappers.CategoryWrapper;
+import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
 import org.xcolab.utils.IdListUtil;
 
 import java.util.List;
@@ -182,25 +183,18 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
     }
 
     public String getCategoryGroupLink(DiscussionCategoryGroup categoryGroup) {
-
-        NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
-        return String.format(HYPERLINK_FORMAT, StringEscapeUtils.escapeHtml(navUrl.toString()), categoryGroup.getDescription());
+        return String.format(HYPERLINK_FORMAT, StringEscapeUtils.escapeHtml4(categoryGroup.getUrl()), categoryGroup.getDescription());
     }
 
     public String getDiscussionCategoryLink(DiscussionCategory category) throws PortalException, SystemException {
-        DiscussionCategoryGroup categoryGroup = DiscussionCategoryLocalServiceUtil.getCategoryGroup(category);
-
-        NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
+        CategoryWrapper categoryWrapper = new CategoryWrapper(category);
 
         return String.format(
                 HYPERLINK_FORMAT,
-                StringEscapeUtils.escapeHtml(navUrl.getUrlWithParameters("discussion", "pageType", "CATEGORY", "categoryId",
-                        String.valueOf(category.getCategoryId())).toString()), category.getName());
+                StringEscapeUtils.escapeHtml4(categoryWrapper.getLinkUrl()), category.getName());
     }
 
     public String getDiscussionMessageLink(DiscussionMessage discussion) throws PortalException, SystemException {
-        DiscussionCategoryGroup categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(discussion);
-
         DiscussionMessage thread = discussion.getThreadId() > 0 ? DiscussionMessageLocalServiceUtil
                 .getThread(discussion) : discussion;
 
@@ -210,25 +204,25 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
         } else {
             linkText = thread.getSubject();
         }
-        NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
+        ThreadWrapper threadWrapper = new ThreadWrapper(thread);
         return String.format(
                 HYPERLINK_FORMAT,
-                StringEscapeUtils.escapeHtml(navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId",
-                        String.valueOf(thread.getMessageId())).toString()), linkText);
+                StringEscapeUtils.escapeHtml4(threadWrapper.getLinkUrl()), linkText);
     }
 
     public String getDiscussionComment(DiscussionMessage comment) throws PortalException, SystemException {
-        DiscussionCategoryGroup categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(comment);
-        NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
 
         String text = comment.getBody().trim();
         text = text.substring(0, Math.min(20, text.length())) + "...";
 
+        long threadId = comment.getThreadId();
+        if (threadId == 0) {
+            threadId = comment.getMessageId();
+        }
+        ThreadWrapper threadWrapper = new ThreadWrapper(threadId);
         return String.format(
                 HYPERLINK_FORMAT,
-                StringEscapeUtils.escapeHtml(navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId",
-                        String.valueOf(comment.getThreadId()), "messageId", String.valueOf(comment.getMessageId()))
-                        .toString()), text);
+                StringEscapeUtils.escapeHtml4(threadWrapper.getLinkUrl()), text);
     }
 
     @Override

@@ -49,6 +49,8 @@ public class ContestDescriptionBean implements Serializable {
     @NotNull(message = "A contest type must be selected.")
     private Long contestType;
 
+    private boolean hideRibbons;
+
     public ContestDescriptionBean() {
     }
 
@@ -63,6 +65,7 @@ public class ContestDescriptionBean implements Serializable {
             scheduleTemplateId = contest.getContestScheduleId();
             contestTier = contest.getContestTier();
             contestType = contest.getContestTypeId();
+            hideRibbons = contest.getHideRibbons();
             contestLogoId = contest.getContestLogoId();
             emailTemplateUrl = contest.getEmailTemplateUrl();
             sponsorLogoId = contest.getSponsorLogoId();
@@ -187,6 +190,7 @@ public class ContestDescriptionBean implements Serializable {
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setContestTier(contestTier);
         contest.setContestTypeId(contestType);
+        contest.setHideRibbons(hideRibbons);
         contest.persist();
         contestModelSettings.persist(contest);
     }
@@ -215,5 +219,13 @@ public class ContestDescriptionBean implements Serializable {
             contest.setContestScheduleId(contestScheduleId);
             contest.persist();
         }
+    }
+
+    public boolean isHideRibbons() {
+        return hideRibbons;
+    }
+
+    public void setHideRibbons(boolean hideRibbons) {
+        this.hideRibbons = hideRibbons;
     }
 }

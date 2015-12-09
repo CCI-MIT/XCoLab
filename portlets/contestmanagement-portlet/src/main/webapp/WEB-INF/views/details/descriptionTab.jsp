@@ -263,6 +263,30 @@
 
             <div class="addpropbox">
                 <label>
+                    <strong>Hide Ribbons</strong>
+                    <a href="javascript:;" class="helpTrigger"><img
+                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                </label>
+
+                <div class="addprophelp">
+                    When set to <em>hide</em>, the ribbons of a contest are not shown in the completed phase and the user is informed that the votes are being counted.
+                    The default should be <em>hide</em> and it should be set to <em>show</em> once the ribbons are distributed.
+                </div>
+                <div class="clearfix"><!-- --></div>
+                <div class="addpropInputContainer">
+                    <form:select path="hideRibbons">
+                        <form:option value="1" label="hide" />
+                        <form:option value="0" label="show" />
+                    </form:select>
+
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="alert alert-error" path="hideRibbons"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="addpropbox">
+                <label>
                     <strong>Contest model settings</strong>
                     <a href="javascript:;" class="helpTrigger"><img
                             src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>

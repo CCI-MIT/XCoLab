@@ -1231,7 +1231,7 @@ public class DiscussionMessageLocalServiceClp
 
     @Override
     public com.ext.portlet.model.DiscussionMessage addThreadMessage(
-        com.ext.portlet.model.DiscussionMessage dMessage,
+        com.ext.portlet.model.DiscussionMessage thread,
         java.lang.String subject, java.lang.String body,
         com.liferay.portal.model.User author)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
@@ -1242,7 +1242,7 @@ public class DiscussionMessageLocalServiceClp
             returnObj = _invokableLocalService.invokeMethod(_methodName32,
                     _methodParameterTypes32,
                     new Object[] {
-                        ClpSerializer.translateInput(dMessage),
+                        ClpSerializer.translateInput(thread),
                         
                     ClpSerializer.translateInput(subject),
                         

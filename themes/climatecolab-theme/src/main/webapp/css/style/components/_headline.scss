@@ -34,13 +34,6 @@
   margin-right: 30px;
 }
 
-.headline .view {
-  float: left;
-  height: 34px;
-  background: url(../images/view-bg.png) no-repeat 3px 3px;
-  margin-right: 16px;
-}
-
 .headline .show {
   float: left;
   display: inline;
@@ -119,6 +112,7 @@
 
 .headline h2 span {
   font-size: 33px;
+  vertical-align: middle;
   font-weight: 700;
   color: $secondary-color;
 }
@@ -147,17 +141,6 @@
 }
 
 .prop-butt img {
-  vertical-align: middle;
-  padding-right: 10px;
-}
-
-.comm-butt {
-  float: right;
-  width: 715px;
-  text-align: left;
-}
-
-.comm-butt img {
   vertical-align: middle;
   padding-right: 10px;
 }

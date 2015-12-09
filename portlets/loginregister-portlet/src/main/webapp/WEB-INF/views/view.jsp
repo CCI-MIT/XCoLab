@@ -156,7 +156,9 @@
 							<form:errors cssClass="alert alert-error" path="retypePassword" />
 						</div></td>
 
-					<th class="second">Country</th>
+					<th class="second">
+						Country
+						<img align="texttop" height="7" width="8" src="/climatecolab-theme/images/reg-star.png"/></th>
 					<td>
                         <jsp:include page="./countrySelect.jspx"/>
                     </td>

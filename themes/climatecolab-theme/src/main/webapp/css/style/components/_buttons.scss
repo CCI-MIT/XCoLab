@@ -34,11 +34,11 @@
 }
 
 //blue-button.a is for legacy support (e.g. ice faclet portlets)
-a.primary-button, .blue-button a {
+a.primary-button, .blue-button a, input.primary-button {
   @include theme-button($primary-color, $primary-dark);
 }
 
 //gray-button.a is for legacy support (e.g. ice faclet portlets)
-a.grey-button, .gray-button a {
+a.grey-button, .gray-button a, input.grey-button {
   @include theme-button($medium-grey, $dark-grey);
 }

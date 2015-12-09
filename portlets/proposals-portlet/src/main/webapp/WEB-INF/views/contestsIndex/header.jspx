@@ -29,9 +29,9 @@
 			<portlet:param name="showAllContests" value="${showAllContests }" />
 		</portlet:renderURL>
 			
-		<div class="view ${fn:toLowerCase(viewType)}view">
+		<div class="view">
 			<!-- To switch the button over to list view just change "gridview" to "listview" -->
-			<div class="grid">
+			<div class="grid ${viewType == 'GRID' ? 'selected' : ''}">
 				<div>
 					<c:choose>
 						<c:when test="${viewType == 'GRID' }">
@@ -43,7 +43,7 @@
 					</c:choose>
 				</div>
 			</div>
-			<div class="outline">
+			<div class="outline ${viewType == 'OUTLINE' ? 'selected' : ''}">
 				<div>
 					<c:choose>
 						<c:when test="${viewType == 'OUTLINE' }">
@@ -55,7 +55,7 @@
 					</c:choose>
 				</div>
 			</div>
-			<div class="list">
+			<div class="list ${viewType == 'LIST' ? 'selected' : ''}">
 				<div>
 					<c:choose>
 						<c:when test="${viewType == 'LIST' }">

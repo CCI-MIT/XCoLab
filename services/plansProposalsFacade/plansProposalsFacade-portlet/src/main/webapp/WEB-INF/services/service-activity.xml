@@ -14,31 +14,24 @@
 		<column name="classPK" type="long" />
 		<column name="type" type="int" />
 		<column name="automaticSubscriptionCounter" type="int" />
-        
-        
         <!--  TODO WRITE COMMENT -->
-        
-        
 		<column name="extraData" type="String" />
-        
-        
         <column name="receiverId" type="long" />
-		
 		<!-- Audit fields -->
-
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
-		
 
+        <!--TODO: find out if we actually need all these finders-->
 		<finder name="receiverId" return-type="Collection">
 			<finder-column name="receiverId" />
 		</finder>
-		
-        <finder name="ClassNameIdClassPK" return-type="Collection">
+
+        <!--uses index for ClassNameIdClassPKReceiverId-->
+        <finder name="ClassNameIdClassPK" return-type="Collection" db-index="false">
             <finder-column name="classNameId" />
             <finder-column name="classPK" />
         </finder>
-        
+
         <finder name="ClassNameIdClassPKReceiverId" return-type="Collection">
             <finder-column name="classNameId" />
             <finder-column name="classPK" />
@@ -51,27 +44,25 @@
             <finder-column name="type" />
             <finder-column name="receiverId" />
         </finder>
-        
-        <finder name="ClassNameIdClassPKTypeExtraDataReceiverId" return-type="Collection">
+
+        <!--custom index with prefix length of 50 on extraData-->
+        <finder name="ClassNameIdClassPKTypeExtraDataReceiverId" return-type="Collection" db-index="false">
             <finder-column name="classNameId" />
             <finder-column name="classPK" />
             <finder-column name="type" />
             <finder-column name="extraData"  />
             <finder-column name="receiverId" />
         </finder>
-        
-        <finder name="ClassNameIdClassPKTypeExtraData" return-type="Collection">
+
+        <!--using index above-->
+        <finder name="ClassNameIdClassPKTypeExtraData" return-type="Collection" db-index="false">
             <finder-column name="classNameId" />
             <finder-column name="classPK" />
             <finder-column name="type" />
             <finder-column name="extraData"  />
         </finder>
-
-		
 	</entity>
-	
-	
-	
+
 	<exceptions>
 
 		<exception>NoSuchActivitySubscription</exception>

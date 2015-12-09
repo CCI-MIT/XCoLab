@@ -8,7 +8,7 @@
 		<field name="type" type="int" />
 		<field name="automaticSubscriptionCounter" type="int" />
 		<field name="extraData" type="String">
-			<hint name="max-length">4096</hint>
+			<hint name="max-length">256</hint>
 		</field>
 		<field name="receiverId" type="long" />
 		<field name="createDate" type="Date" />

@@ -19,7 +19,8 @@
 		<order by="asc">
 			<order-column name="order"/>
 		</order>
-        <finder name="Name" return-type="OntologySpace" >
+        <!--custom finder with prefix length 50 on name-->
+        <finder name="Name" return-type="OntologySpace" db-index="false">
             <finder-column name="name" />
         </finder>
         
@@ -52,8 +53,9 @@
         <finder name="SpaceId" return-type="Collection">
             <finder-column name="ontologySpaceId" />
         </finder>
-        
-        <finder name="Name" return-type="Collection">
+
+        <!--custom finder with prefix length 50 on name-->
+        <finder name="Name" return-type="Collection" db-index="false">
             <finder-column name="name" />
         </finder>
         
@@ -98,8 +100,9 @@
         <order>
         	<order-column name="order" />
         </order>
-        
-        <finder name="Name" return-type="OntologyFocusArea">
+
+        <!--custom index with prefix length 50 for name-->
+        <finder name="Name" return-type="OntologyFocusArea" db-index="false">
             <finder-column name="name" />
         </finder>
         

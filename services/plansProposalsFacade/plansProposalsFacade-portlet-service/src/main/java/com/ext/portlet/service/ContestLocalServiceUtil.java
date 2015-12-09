@@ -297,12 +297,6 @@ public class ContestLocalServiceUtil {
         return getService().findByActiveFlag(active, flag);
     }
 
-    public static java.util.List<com.ext.portlet.model.Contest> findByActiveFlagText(
-        boolean active, java.lang.String flagText)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().findByActiveFlagText(active, flagText);
-    }
-
     /**
     * Methods from ContestImpl *
     */

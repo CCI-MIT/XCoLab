@@ -312,13 +312,6 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.findByActiveFlag(active, flag);
     }
 
-    @Override
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagText(
-        boolean active, java.lang.String flagText)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.findByActiveFlagText(active, flagText);
-    }
-
     /**
     * Methods from ContestImpl *
     */
