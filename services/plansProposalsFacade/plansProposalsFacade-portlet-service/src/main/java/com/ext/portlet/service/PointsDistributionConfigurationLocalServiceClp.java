@@ -51,6 +51,8 @@ public class PointsDistributionConfigurationLocalServiceClp
     private String[] _methodParameterTypes20;
     private String _methodName21;
     private String[] _methodParameterTypes21;
+    private String _methodName22;
+    private String[] _methodParameterTypes22;
 
     public PointsDistributionConfigurationLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -157,9 +159,13 @@ public class PointsDistributionConfigurationLocalServiceClp
 
         _methodParameterTypes20 = new String[] { "long" };
 
-        _methodName21 = "addDistributionConfiguration";
+        _methodName21 = "getByPlanSectionDefinitionId";
 
-        _methodParameterTypes21 = new String[] {
+        _methodParameterTypes21 = new String[] { "long" };
+
+        _methodName22 = "addDistributionConfiguration";
+
+        _methodParameterTypes22 = new String[] {
                 "long", "long", "java.lang.Long", "java.lang.Long", "double",
                 "long"
             };
@@ -743,16 +749,48 @@ public class PointsDistributionConfigurationLocalServiceClp
     }
 
     @Override
-    public com.ext.portlet.model.PointsDistributionConfiguration addDistributionConfiguration(
-        long proposalId, long pointTypeId, java.lang.Long targetUserId,
-        java.lang.Long targetSubProposalId, double percentage, long creator)
-        throws com.liferay.portal.NoSuchUserException,
+    public com.ext.portlet.model.PointsDistributionConfiguration getByPlanSectionDefinitionId(
+        long planSectionDefinitionId)
+        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName21,
                     _methodParameterTypes21,
+                    new Object[] { planSectionDefinitionId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.ext.portlet.NoSuchPointsDistributionConfigurationException) {
+                throw (com.ext.portlet.NoSuchPointsDistributionConfigurationException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.PointsDistributionConfiguration) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.ext.portlet.model.PointsDistributionConfiguration addDistributionConfiguration(
+        long proposalId, long pointTypeId, java.lang.Long targetUserId,
+        java.lang.Long targetSubProposalId, double percentage, long creator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22,
                     new Object[] {
                         proposalId,
                         
@@ -768,10 +806,6 @@ public class PointsDistributionConfigurationLocalServiceClp
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.NoSuchUserException) {
-                throw (com.liferay.portal.NoSuchUserException) t;
-            }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;

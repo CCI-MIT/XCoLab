@@ -277,11 +277,17 @@ public class PointsDistributionConfigurationLocalServiceUtil {
         getService().removeByProposalId(proposalId);
     }
 
+    public static com.ext.portlet.model.PointsDistributionConfiguration getByPlanSectionDefinitionId(
+        long planSectionDefinitionId)
+        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByPlanSectionDefinitionId(planSectionDefinitionId);
+    }
+
     public static com.ext.portlet.model.PointsDistributionConfiguration addDistributionConfiguration(
         long proposalId, long pointTypeId, java.lang.Long targetUserId,
         java.lang.Long targetSubProposalId, double percentage, long creator)
-        throws com.liferay.portal.NoSuchUserException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .addDistributionConfiguration(proposalId, pointTypeId,
             targetUserId, targetSubProposalId, percentage, creator);

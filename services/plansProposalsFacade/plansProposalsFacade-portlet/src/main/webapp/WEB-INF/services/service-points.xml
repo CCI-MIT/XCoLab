@@ -29,7 +29,7 @@
             <finder-column name="targetSubProposalId" />
         </finder>
 
-        <finder return-type="Collection" name="TargetPlanSectionDefinitionId">
+        <finder return-type="PointsDistributionConfiguration" name="TargetPlanSectionDefinitionId">
             <finder-column name="targetPlanSectionDefinitionId" />
         </finder>
         

@@ -13,5 +13,4 @@
             <h3>The requested page was not found!</h3>
         </c:otherwise>
     </c:choose>
-    </c:if>
 </jsp:root>

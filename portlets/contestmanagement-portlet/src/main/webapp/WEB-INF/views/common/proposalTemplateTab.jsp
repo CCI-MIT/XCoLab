@@ -116,6 +116,16 @@
 								</div>
 
 								<div>
+									<strong>Point Assignment:</strong><br/>
+                                    <strong>PointType override: </strong>
+                                    <form:select path="sections[${x.index}].pointType" data-form-name="pointType" cssClass="ontology-terms"
+                                                 cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                        <form:options items="${pointTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
+                                    </form:select>
+                                    <strong>Percentage: </strong><form:input path="sections[${x.index}].pointPercentage" data-form-name="pointPercentage"/>
+								</div>
+
+								<div>
 									<strong>Level:</strong><br/>
 									<form:select path="sections[${x.index}].level" data-form-name="level">
 										<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>

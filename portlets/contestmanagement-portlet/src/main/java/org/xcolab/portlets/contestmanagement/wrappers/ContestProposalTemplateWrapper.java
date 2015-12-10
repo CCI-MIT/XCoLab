@@ -1,13 +1,16 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
+import com.ext.portlet.NoSuchPointsDistributionConfigurationException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.PlanTemplateSection;
+import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
+import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -250,7 +253,7 @@ public class ContestProposalTemplateWrapper {
         }
     }
 
-    public void createSectionDefinitionsForNewSections() throws SystemException {
+    public void createSectionDefinitionsForNewSections() throws SystemException, NoSuchPointsDistributionConfigurationException {
         for(SectionDefinitionBean sectionBaseDefinition : sections ){
             if(sectionBaseDefinition.getSectionDefinitionId() == null){
                 createPlanSectionDefinitionFromSectionDefinitionBean(sectionBaseDefinition);
@@ -258,13 +261,22 @@ public class ContestProposalTemplateWrapper {
         }
     }
 
-    private void createPlanSectionDefinitionFromSectionDefinitionBean(SectionDefinitionBean sectionBaseDefinition) throws SystemException {
+    private void createPlanSectionDefinitionFromSectionDefinitionBean(SectionDefinitionBean sectionBaseDefinition) throws SystemException, NoSuchPointsDistributionConfigurationException {
         PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.
                 createPlanSectionDefinition(CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName()));
         setPlanSectionDefinitionFromSectionDefinitionBean(planSectionDefinition, sectionBaseDefinition);
 
         planSectionDefinition.persist();
         sectionBaseDefinition.setSectionDefinitionId(planSectionDefinition.getId());
+        if (sectionBaseDefinition.getPointType() > 0) {
+            PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(sectionBaseDefinition.getId());
+            if (pdc == null) {
+                pdc = PointsDistributionConfigurationLocalServiceUtil.createPointsDistributionConfiguration(CounterLocalServiceUtil.increment(PointsDistributionConfiguration.class.getName()));
+            }
+            pdc.setPointTypeId(sectionBaseDefinition.getPointType());
+            pdc.setPercentage(Double.valueOf(sectionBaseDefinition.getPointPercentage()));
+            pdc.persist();
+        }
     }
 
     private void setPlanSectionDefinitionFromSectionDefinitionBean

@@ -293,11 +293,18 @@ public class PointsDistributionConfigurationLocalServiceWrapper
     }
 
     @Override
+    public com.ext.portlet.model.PointsDistributionConfiguration getByPlanSectionDefinitionId(
+        long planSectionDefinitionId)
+        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _pointsDistributionConfigurationLocalService.getByPlanSectionDefinitionId(planSectionDefinitionId);
+    }
+
+    @Override
     public com.ext.portlet.model.PointsDistributionConfiguration addDistributionConfiguration(
         long proposalId, long pointTypeId, java.lang.Long targetUserId,
         java.lang.Long targetSubProposalId, double percentage, long creator)
-        throws com.liferay.portal.NoSuchUserException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _pointsDistributionConfigurationLocalService.addDistributionConfiguration(proposalId,
             pointTypeId, targetUserId, targetSubProposalId, percentage, creator);
     }

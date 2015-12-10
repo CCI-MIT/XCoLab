@@ -1,14 +1,14 @@
 package com.ext.portlet.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
+import com.ext.portlet.NoSuchPointsDistributionConfigurationException;
 import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.base.PointsDistributionConfigurationLocalServiceBaseImpl;
-import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * The implementation of the points distribution configuration local service.
@@ -42,9 +42,14 @@ public class PointsDistributionConfigurationLocalServiceImpl
     }
 
     @Override
+    public PointsDistributionConfiguration getByPlanSectionDefinitionId(long planSectionDefinitionId) throws SystemException, NoSuchPointsDistributionConfigurationException {
+        return pointsDistributionConfigurationPersistence.findByTargetPlanSectionDefinitionId(planSectionDefinitionId);
+    }
+
+    @Override
     public PointsDistributionConfiguration addDistributionConfiguration(long proposalId, long pointTypeId,
                                                                         Long targetUserId, Long targetSubProposalId, double percentage, long creator)
-            throws SystemException, NoSuchUserException {
+            throws SystemException {
 
         long id = counterLocalService.increment(PointsDistributionConfiguration.class.getName());
 

@@ -1,21 +1,25 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.NoSuchFocusAreaException;
+import com.ext.portlet.NoSuchPointsDistributionConfigurationException;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.PlanTemplateSection;
+import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
+import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
+import org.apache.commons.collections.CollectionUtils;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.OntologyTermToFocusAreaMapper;
@@ -41,6 +45,8 @@ public class SectionDefinitionBean implements Serializable{
     private Integer characterLimit = 200;
     private long focusAreaId;
     private Long level;
+    private Long pointType;
+    private String pointPercentage;
     private String content = "";
     private boolean locked;
     private boolean deletable = true;
@@ -98,6 +104,15 @@ public class SectionDefinitionBean implements Serializable{
         this.level = planSectionDefinition.getTier();
         this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
         this.allowedContestTypeIds = IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds());
+
+        try {
+            PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(sectionDefinitionId);
+            this.pointPercentage = Double.toString(pdc.getPercentage());
+            this.pointType = pdc.getPointTypeId();
+        } catch (NoSuchPointsDistributionConfigurationException e) {
+            this.pointPercentage = "0";
+            this.pointType = 0L;
+        }
 
         try {
             initOntologyTermIdsWithFocusAreaId();
@@ -314,7 +329,7 @@ public class SectionDefinitionBean implements Serializable{
                 focusAreaId = getFocusAreaViaOntologyTerms().getId();
             }
             return focusAreaId;
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             _log.warn("Could not get focus area id", e);
         }
 
@@ -322,8 +337,8 @@ public class SectionDefinitionBean implements Serializable{
     }
 
     private boolean ontologyTermsSet() {
-        return !(getWhatTermIds().isEmpty() || getWhereTermIds().isEmpty()
-                || getWhoTermIds().isEmpty() || getHowTermIds().isEmpty());
+        return !(CollectionUtils.isEmpty(getWhatTermIds()) || CollectionUtils.isEmpty(getWhereTermIds())
+                || CollectionUtils.isEmpty(getWhoTermIds()) || CollectionUtils.isEmpty(getHowTermIds()));
     }
 
     public String getAdditionalIds() {
@@ -340,6 +355,22 @@ public class SectionDefinitionBean implements Serializable{
 
     public void setAllowedContestTypeIds(List<Long> allowedContestTypeIds) {
         this.allowedContestTypeIds = allowedContestTypeIds;
+    }
+
+    public Long getPointType() {
+        return pointType;
+    }
+
+    public void setPointType(Long pointType) {
+        this.pointType = pointType;
+    }
+
+    public String getPointPercentage() {
+        return pointPercentage;
+    }
+
+    public void setPointPercentage(String percentage) {
+        this.pointPercentage = percentage;
     }
 
     static class MyComparator implements Comparator<SectionDefinitionBean>{

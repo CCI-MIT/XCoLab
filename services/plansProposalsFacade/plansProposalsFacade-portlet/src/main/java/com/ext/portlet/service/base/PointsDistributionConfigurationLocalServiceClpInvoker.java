@@ -51,6 +51,8 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
     private String[] _methodParameterTypes511;
     private String _methodName512;
     private String[] _methodParameterTypes512;
+    private String _methodName513;
+    private String[] _methodParameterTypes513;
 
     public PointsDistributionConfigurationLocalServiceClpInvoker() {
         _methodName0 = "addPointsDistributionConfiguration";
@@ -154,9 +156,13 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
 
         _methodParameterTypes511 = new String[] { "long" };
 
-        _methodName512 = "addDistributionConfiguration";
+        _methodName512 = "getByPlanSectionDefinitionId";
 
-        _methodParameterTypes512 = new String[] {
+        _methodParameterTypes512 = new String[] { "long" };
+
+        _methodName513 = "addDistributionConfiguration";
+
+        _methodParameterTypes513 = new String[] {
                 "long", "long", "java.lang.Long", "java.lang.Long", "double",
                 "long"
             };
@@ -278,6 +284,11 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
 
         if (_methodName512.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
+            return PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName513.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
             return PointsDistributionConfigurationLocalServiceUtil.addDistributionConfiguration(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.Long) arguments[2], (java.lang.Long) arguments[3],
