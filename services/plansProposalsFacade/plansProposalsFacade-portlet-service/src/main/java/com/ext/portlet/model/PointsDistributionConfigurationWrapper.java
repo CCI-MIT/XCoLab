@@ -45,6 +45,8 @@ public class PointsDistributionConfigurationWrapper
         attributes.put("pointTypeId", getPointTypeId());
         attributes.put("targetUserId", getTargetUserId());
         attributes.put("targetSubProposalId", getTargetSubProposalId());
+        attributes.put("targetPlanSectionDefinitionId",
+            getTargetPlanSectionDefinitionId());
         attributes.put("percentage", getPercentage());
         attributes.put("creator", getCreator());
         attributes.put("createDate", getCreateDate());
@@ -82,6 +84,13 @@ public class PointsDistributionConfigurationWrapper
 
         if (targetSubProposalId != null) {
             setTargetSubProposalId(targetSubProposalId);
+        }
+
+        Long targetPlanSectionDefinitionId = (Long) attributes.get(
+                "targetPlanSectionDefinitionId");
+
+        if (targetPlanSectionDefinitionId != null) {
+            setTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
         }
 
         Double percentage = (Double) attributes.get("percentage");
@@ -243,6 +252,27 @@ public class PointsDistributionConfigurationWrapper
     @Override
     public void setTargetSubProposalId(long targetSubProposalId) {
         _pointsDistributionConfiguration.setTargetSubProposalId(targetSubProposalId);
+    }
+
+    /**
+    * Returns the target plan section definition ID of this points distribution configuration.
+    *
+    * @return the target plan section definition ID of this points distribution configuration
+    */
+    @Override
+    public long getTargetPlanSectionDefinitionId() {
+        return _pointsDistributionConfiguration.getTargetPlanSectionDefinitionId();
+    }
+
+    /**
+    * Sets the target plan section definition ID of this points distribution configuration.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID of this points distribution configuration
+    */
+    @Override
+    public void setTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId) {
+        _pointsDistributionConfiguration.setTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
     }
 
     /**

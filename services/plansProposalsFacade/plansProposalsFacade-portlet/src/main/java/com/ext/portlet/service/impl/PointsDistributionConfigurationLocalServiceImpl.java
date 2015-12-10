@@ -31,18 +31,20 @@ public class PointsDistributionConfigurationLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil} to access the points distribution configuration local service.
      */
-	public List<PointsDistributionConfiguration> findByProposalPointType(Proposal proposal, PointType pointType) throws SystemException {
+	@Override
+    public List<PointsDistributionConfiguration> findByProposalPointType(Proposal proposal, PointType pointType) throws SystemException {
 		return pointsDistributionConfigurationPersistence.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId());
 	}
 
+    @Override
     public void removeByProposalId(long proposalId) throws SystemException {
         pointsDistributionConfigurationPersistence.removeByProposalId(proposalId);
     }
 
-    public PointsDistributionConfiguration addDistributionConfiguration(
-            long proposalId, long pointTypeId, Long targetUserId, Long targetSubProposalId, double percentage, long creator
-    ) throws SystemException, NoSuchUserException
-    {
+    @Override
+    public PointsDistributionConfiguration addDistributionConfiguration(long proposalId, long pointTypeId,
+                                                                        Long targetUserId, Long targetSubProposalId, double percentage, long creator)
+            throws SystemException, NoSuchUserException {
 
         long id = counterLocalService.increment(PointsDistributionConfiguration.class.getName());
 
@@ -60,7 +62,7 @@ public class PointsDistributionConfigurationLocalServiceImpl
         model.setCreator(creator);
         model.setCreateDate(new Date());
 
-        super.addPointsDistributionConfiguration(model);
+        addPointsDistributionConfiguration(model);
 
         return model;
     }

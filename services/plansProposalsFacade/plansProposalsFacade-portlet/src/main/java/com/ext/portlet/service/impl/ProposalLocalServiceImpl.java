@@ -1254,7 +1254,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                         continue;
                     }
                 }
-                proposals.add(p);
+                if (p.getProposalId() != proposalId) {
+                    proposals.add(p);
+                }
             }
         }
         return proposals;

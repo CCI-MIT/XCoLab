@@ -786,6 +786,7 @@
 		<property name="pointTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="targetUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="targetSubProposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="targetPlanSectionDefinitionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="percentage" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="creator" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />

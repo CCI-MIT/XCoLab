@@ -15,7 +15,8 @@
     	<column name="proposalId" type="long" />
     	<column name="pointTypeId" type="long" />
     	<column name="targetUserId" type="long" />
-    	<column name="targetSubProposalId" type="long" />
+        <column name="targetSubProposalId" type="long" />
+        <column name="targetPlanSectionDefinitionId" type="long" />
     	<column name="percentage" type="double" />
         <column name="creator" type="long" />
         <column name="createDate" type="Date" />
@@ -23,9 +24,13 @@
         <finder return-type="Collection" name="TargetUserId">
             <finder-column name="targetUserId" />
         </finder>
-        
+
         <finder return-type="Collection" name="TargetSubProposalId">
             <finder-column name="targetSubProposalId" />
+        </finder>
+
+        <finder return-type="Collection" name="TargetPlanSectionDefinitionId">
+            <finder-column name="targetPlanSectionDefinitionId" />
         </finder>
         
         <finder return-type="Collection" name="ProposalId">

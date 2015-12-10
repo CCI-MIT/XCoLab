@@ -123,6 +123,34 @@ public class PointsDistributionConfigurationPersistenceImpl
             "countByTargetSubProposalId", new String[] { Long.class.getName() });
     private static final String _FINDER_COLUMN_TARGETSUBPROPOSALID_TARGETSUBPROPOSALID_2 =
         "pointsDistributionConfiguration.targetSubProposalId = ?";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_TARGETPLANSECTIONDEFINITIONID =
+        new FinderPath(PointsDistributionConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+            PointsDistributionConfigurationModelImpl.FINDER_CACHE_ENABLED,
+            PointsDistributionConfigurationImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+            "findByTargetPlanSectionDefinitionId",
+            new String[] {
+                Long.class.getName(),
+                
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
+            });
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TARGETPLANSECTIONDEFINITIONID =
+        new FinderPath(PointsDistributionConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+            PointsDistributionConfigurationModelImpl.FINDER_CACHE_ENABLED,
+            PointsDistributionConfigurationImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "findByTargetPlanSectionDefinitionId",
+            new String[] { Long.class.getName() },
+            PointsDistributionConfigurationModelImpl.TARGETPLANSECTIONDEFINITIONID_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_TARGETPLANSECTIONDEFINITIONID =
+        new FinderPath(PointsDistributionConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+            PointsDistributionConfigurationModelImpl.FINDER_CACHE_ENABLED,
+            Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countByTargetPlanSectionDefinitionId",
+            new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_TARGETPLANSECTIONDEFINITIONID_TARGETPLANSECTIONDEFINITIONID_2 =
+        "pointsDistributionConfiguration.targetPlanSectionDefinitionId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PROPOSALID =
         new FinderPath(PointsDistributionConfigurationModelImpl.ENTITY_CACHE_ENABLED,
             PointsDistributionConfigurationModelImpl.FINDER_CACHE_ENABLED,
@@ -1126,6 +1154,474 @@ public class PointsDistributionConfigurationPersistenceImpl
                 QueryPos qPos = QueryPos.getInstance(q);
 
                 qPos.add(targetSubProposalId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
+     * Returns all the points distribution configurations where targetPlanSectionDefinitionId = &#63;.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @return the matching points distribution configurations
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PointsDistributionConfiguration> findByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId) throws SystemException {
+        return findByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId,
+            QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the points distribution configurations where targetPlanSectionDefinitionId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PointsDistributionConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @param start the lower bound of the range of points distribution configurations
+     * @param end the upper bound of the range of points distribution configurations (not inclusive)
+     * @return the range of matching points distribution configurations
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PointsDistributionConfiguration> findByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId, int start, int end)
+        throws SystemException {
+        return findByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId,
+            start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the points distribution configurations where targetPlanSectionDefinitionId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PointsDistributionConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @param start the lower bound of the range of points distribution configurations
+     * @param end the upper bound of the range of points distribution configurations (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching points distribution configurations
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PointsDistributionConfiguration> findByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId, int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TARGETPLANSECTIONDEFINITIONID;
+            finderArgs = new Object[] { targetPlanSectionDefinitionId };
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_TARGETPLANSECTIONDEFINITIONID;
+            finderArgs = new Object[] {
+                    targetPlanSectionDefinitionId,
+                    
+                    start, end, orderByComparator
+                };
+        }
+
+        List<PointsDistributionConfiguration> list = (List<PointsDistributionConfiguration>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if ((list != null) && !list.isEmpty()) {
+            for (PointsDistributionConfiguration pointsDistributionConfiguration : list) {
+                if ((targetPlanSectionDefinitionId != pointsDistributionConfiguration.getTargetPlanSectionDefinitionId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
+        if (list == null) {
+            StringBundler query = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(3 +
+                        (orderByComparator.getOrderByFields().length * 3));
+            } else {
+                query = new StringBundler(3);
+            }
+
+            query.append(_SQL_SELECT_POINTSDISTRIBUTIONCONFIGURATION_WHERE);
+
+            query.append(_FINDER_COLUMN_TARGETPLANSECTIONDEFINITIONID_TARGETPLANSECTIONDEFINITIONID_2);
+
+            if (orderByComparator != null) {
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+            } else
+             if (pagination) {
+                query.append(PointsDistributionConfigurationModelImpl.ORDER_BY_JPQL);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(targetPlanSectionDefinitionId);
+
+                if (!pagination) {
+                    list = (List<PointsDistributionConfiguration>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PointsDistributionConfiguration>(list);
+                } else {
+                    list = (List<PointsDistributionConfiguration>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Returns the first points distribution configuration in the ordered set where targetPlanSectionDefinitionId = &#63;.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching points distribution configuration
+     * @throws com.ext.portlet.NoSuchPointsDistributionConfigurationException if a matching points distribution configuration could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PointsDistributionConfiguration findByTargetPlanSectionDefinitionId_First(
+        long targetPlanSectionDefinitionId, OrderByComparator orderByComparator)
+        throws NoSuchPointsDistributionConfigurationException, SystemException {
+        PointsDistributionConfiguration pointsDistributionConfiguration = fetchByTargetPlanSectionDefinitionId_First(targetPlanSectionDefinitionId,
+                orderByComparator);
+
+        if (pointsDistributionConfiguration != null) {
+            return pointsDistributionConfiguration;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("targetPlanSectionDefinitionId=");
+        msg.append(targetPlanSectionDefinitionId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPointsDistributionConfigurationException(msg.toString());
+    }
+
+    /**
+     * Returns the first points distribution configuration in the ordered set where targetPlanSectionDefinitionId = &#63;.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching points distribution configuration, or <code>null</code> if a matching points distribution configuration could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PointsDistributionConfiguration fetchByTargetPlanSectionDefinitionId_First(
+        long targetPlanSectionDefinitionId, OrderByComparator orderByComparator)
+        throws SystemException {
+        List<PointsDistributionConfiguration> list = findByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId,
+                0, 1, orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the last points distribution configuration in the ordered set where targetPlanSectionDefinitionId = &#63;.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching points distribution configuration
+     * @throws com.ext.portlet.NoSuchPointsDistributionConfigurationException if a matching points distribution configuration could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PointsDistributionConfiguration findByTargetPlanSectionDefinitionId_Last(
+        long targetPlanSectionDefinitionId, OrderByComparator orderByComparator)
+        throws NoSuchPointsDistributionConfigurationException, SystemException {
+        PointsDistributionConfiguration pointsDistributionConfiguration = fetchByTargetPlanSectionDefinitionId_Last(targetPlanSectionDefinitionId,
+                orderByComparator);
+
+        if (pointsDistributionConfiguration != null) {
+            return pointsDistributionConfiguration;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("targetPlanSectionDefinitionId=");
+        msg.append(targetPlanSectionDefinitionId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPointsDistributionConfigurationException(msg.toString());
+    }
+
+    /**
+     * Returns the last points distribution configuration in the ordered set where targetPlanSectionDefinitionId = &#63;.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching points distribution configuration, or <code>null</code> if a matching points distribution configuration could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PointsDistributionConfiguration fetchByTargetPlanSectionDefinitionId_Last(
+        long targetPlanSectionDefinitionId, OrderByComparator orderByComparator)
+        throws SystemException {
+        int count = countByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+
+        if (count == 0) {
+            return null;
+        }
+
+        List<PointsDistributionConfiguration> list = findByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId,
+                count - 1, count, orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the points distribution configurations before and after the current points distribution configuration in the ordered set where targetPlanSectionDefinitionId = &#63;.
+     *
+     * @param id the primary key of the current points distribution configuration
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the previous, current, and next points distribution configuration
+     * @throws com.ext.portlet.NoSuchPointsDistributionConfigurationException if a points distribution configuration with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PointsDistributionConfiguration[] findByTargetPlanSectionDefinitionId_PrevAndNext(
+        long id, long targetPlanSectionDefinitionId,
+        OrderByComparator orderByComparator)
+        throws NoSuchPointsDistributionConfigurationException, SystemException {
+        PointsDistributionConfiguration pointsDistributionConfiguration = findByPrimaryKey(id);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            PointsDistributionConfiguration[] array = new PointsDistributionConfigurationImpl[3];
+
+            array[0] = getByTargetPlanSectionDefinitionId_PrevAndNext(session,
+                    pointsDistributionConfiguration,
+                    targetPlanSectionDefinitionId, orderByComparator, true);
+
+            array[1] = pointsDistributionConfiguration;
+
+            array[2] = getByTargetPlanSectionDefinitionId_PrevAndNext(session,
+                    pointsDistributionConfiguration,
+                    targetPlanSectionDefinitionId, orderByComparator, false);
+
+            return array;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    protected PointsDistributionConfiguration getByTargetPlanSectionDefinitionId_PrevAndNext(
+        Session session,
+        PointsDistributionConfiguration pointsDistributionConfiguration,
+        long targetPlanSectionDefinitionId,
+        OrderByComparator orderByComparator, boolean previous) {
+        StringBundler query = null;
+
+        if (orderByComparator != null) {
+            query = new StringBundler(6 +
+                    (orderByComparator.getOrderByFields().length * 6));
+        } else {
+            query = new StringBundler(3);
+        }
+
+        query.append(_SQL_SELECT_POINTSDISTRIBUTIONCONFIGURATION_WHERE);
+
+        query.append(_FINDER_COLUMN_TARGETPLANSECTIONDEFINITIONID_TARGETPLANSECTIONDEFINITIONID_2);
+
+        if (orderByComparator != null) {
+            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+            if (orderByConditionFields.length > 0) {
+                query.append(WHERE_AND);
+            }
+
+            for (int i = 0; i < orderByConditionFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByConditionFields[i]);
+
+                if ((i + 1) < orderByConditionFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
+                    } else {
+                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN);
+                    } else {
+                        query.append(WHERE_LESSER_THAN);
+                    }
+                }
+            }
+
+            query.append(ORDER_BY_CLAUSE);
+
+            String[] orderByFields = orderByComparator.getOrderByFields();
+
+            for (int i = 0; i < orderByFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByFields[i]);
+
+                if ((i + 1) < orderByFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC_HAS_NEXT);
+                    } else {
+                        query.append(ORDER_BY_DESC_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC);
+                    } else {
+                        query.append(ORDER_BY_DESC);
+                    }
+                }
+            }
+        } else {
+            query.append(PointsDistributionConfigurationModelImpl.ORDER_BY_JPQL);
+        }
+
+        String sql = query.toString();
+
+        Query q = session.createQuery(sql);
+
+        q.setFirstResult(0);
+        q.setMaxResults(2);
+
+        QueryPos qPos = QueryPos.getInstance(q);
+
+        qPos.add(targetPlanSectionDefinitionId);
+
+        if (orderByComparator != null) {
+            Object[] values = orderByComparator.getOrderByConditionValues(pointsDistributionConfiguration);
+
+            for (Object value : values) {
+                qPos.add(value);
+            }
+        }
+
+        List<PointsDistributionConfiguration> list = q.list();
+
+        if (list.size() == 2) {
+            return list.get(1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Removes all the points distribution configurations where targetPlanSectionDefinitionId = &#63; from the database.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId) throws SystemException {
+        for (PointsDistributionConfiguration pointsDistributionConfiguration : findByTargetPlanSectionDefinitionId(
+                targetPlanSectionDefinitionId, QueryUtil.ALL_POS,
+                QueryUtil.ALL_POS, null)) {
+            remove(pointsDistributionConfiguration);
+        }
+    }
+
+    /**
+     * Returns the number of points distribution configurations where targetPlanSectionDefinitionId = &#63;.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @return the number of matching points distribution configurations
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_TARGETPLANSECTIONDEFINITIONID;
+
+        Object[] finderArgs = new Object[] { targetPlanSectionDefinitionId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_POINTSDISTRIBUTIONCONFIGURATION_WHERE);
+
+            query.append(_FINDER_COLUMN_TARGETPLANSECTIONDEFINITIONID_TARGETPLANSECTIONDEFINITIONID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(targetPlanSectionDefinitionId);
 
                 count = (Long) q.uniqueResult();
 
@@ -2362,6 +2858,27 @@ public class PointsDistributionConfigurationPersistenceImpl
             }
 
             if ((pointsDistributionConfigurationModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TARGETPLANSECTIONDEFINITIONID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        pointsDistributionConfigurationModelImpl.getOriginalTargetPlanSectionDefinitionId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_TARGETPLANSECTIONDEFINITIONID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TARGETPLANSECTIONDEFINITIONID,
+                    args);
+
+                args = new Object[] {
+                        pointsDistributionConfigurationModelImpl.getTargetPlanSectionDefinitionId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_TARGETPLANSECTIONDEFINITIONID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TARGETPLANSECTIONDEFINITIONID,
+                    args);
+            }
+
+            if ((pointsDistributionConfigurationModelImpl.getColumnBitmask() &
                     FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID.getColumnBitmask()) != 0) {
                 Object[] args = new Object[] {
                         pointsDistributionConfigurationModelImpl.getOriginalProposalId()
@@ -2430,6 +2947,7 @@ public class PointsDistributionConfigurationPersistenceImpl
         pointsDistributionConfigurationImpl.setPointTypeId(pointsDistributionConfiguration.getPointTypeId());
         pointsDistributionConfigurationImpl.setTargetUserId(pointsDistributionConfiguration.getTargetUserId());
         pointsDistributionConfigurationImpl.setTargetSubProposalId(pointsDistributionConfiguration.getTargetSubProposalId());
+        pointsDistributionConfigurationImpl.setTargetPlanSectionDefinitionId(pointsDistributionConfiguration.getTargetPlanSectionDefinitionId());
         pointsDistributionConfigurationImpl.setPercentage(pointsDistributionConfiguration.getPercentage());
         pointsDistributionConfigurationImpl.setCreator(pointsDistributionConfiguration.getCreator());
         pointsDistributionConfigurationImpl.setCreateDate(pointsDistributionConfiguration.getCreateDate());

@@ -440,6 +440,183 @@ public class PointsDistributionConfigurationUtil {
     }
 
     /**
+    * Returns all the points distribution configurations where targetPlanSectionDefinitionId = &#63;.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @return the matching points distribution configurations
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+    }
+
+    /**
+    * Returns a range of all the points distribution configurations where targetPlanSectionDefinitionId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PointsDistributionConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @param start the lower bound of the range of points distribution configurations
+    * @param end the upper bound of the range of points distribution configurations (not inclusive)
+    * @return the range of matching points distribution configurations
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId,
+            start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the points distribution configurations where targetPlanSectionDefinitionId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PointsDistributionConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @param start the lower bound of the range of points distribution configurations
+    * @param end the upper bound of the range of points distribution configurations (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching points distribution configurations
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId,
+            start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first points distribution configuration in the ordered set where targetPlanSectionDefinitionId = &#63;.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching points distribution configuration
+    * @throws com.ext.portlet.NoSuchPointsDistributionConfigurationException if a matching points distribution configuration could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PointsDistributionConfiguration findByTargetPlanSectionDefinitionId_First(
+        long targetPlanSectionDefinitionId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByTargetPlanSectionDefinitionId_First(targetPlanSectionDefinitionId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the first points distribution configuration in the ordered set where targetPlanSectionDefinitionId = &#63;.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching points distribution configuration, or <code>null</code> if a matching points distribution configuration could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PointsDistributionConfiguration fetchByTargetPlanSectionDefinitionId_First(
+        long targetPlanSectionDefinitionId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByTargetPlanSectionDefinitionId_First(targetPlanSectionDefinitionId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the last points distribution configuration in the ordered set where targetPlanSectionDefinitionId = &#63;.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching points distribution configuration
+    * @throws com.ext.portlet.NoSuchPointsDistributionConfigurationException if a matching points distribution configuration could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PointsDistributionConfiguration findByTargetPlanSectionDefinitionId_Last(
+        long targetPlanSectionDefinitionId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByTargetPlanSectionDefinitionId_Last(targetPlanSectionDefinitionId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the last points distribution configuration in the ordered set where targetPlanSectionDefinitionId = &#63;.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching points distribution configuration, or <code>null</code> if a matching points distribution configuration could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PointsDistributionConfiguration fetchByTargetPlanSectionDefinitionId_Last(
+        long targetPlanSectionDefinitionId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByTargetPlanSectionDefinitionId_Last(targetPlanSectionDefinitionId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the points distribution configurations before and after the current points distribution configuration in the ordered set where targetPlanSectionDefinitionId = &#63;.
+    *
+    * @param id the primary key of the current points distribution configuration
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next points distribution configuration
+    * @throws com.ext.portlet.NoSuchPointsDistributionConfigurationException if a points distribution configuration with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PointsDistributionConfiguration[] findByTargetPlanSectionDefinitionId_PrevAndNext(
+        long id, long targetPlanSectionDefinitionId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByTargetPlanSectionDefinitionId_PrevAndNext(id,
+            targetPlanSectionDefinitionId, orderByComparator);
+    }
+
+    /**
+    * Removes all the points distribution configurations where targetPlanSectionDefinitionId = &#63; from the database.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence()
+            .removeByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+    }
+
+    /**
+    * Returns the number of points distribution configurations where targetPlanSectionDefinitionId = &#63;.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @return the number of matching points distribution configurations
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+    }
+
+    /**
     * Returns all the points distribution configurations where proposalId = &#63;.
     *
     * @param proposalId the proposal ID

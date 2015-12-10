@@ -131,6 +131,21 @@ public interface PointsDistributionConfigurationModel extends BaseModel<PointsDi
     public void setTargetSubProposalId(long targetSubProposalId);
 
     /**
+     * Returns the target plan section definition ID of this points distribution configuration.
+     *
+     * @return the target plan section definition ID of this points distribution configuration
+     */
+    public long getTargetPlanSectionDefinitionId();
+
+    /**
+     * Sets the target plan section definition ID of this points distribution configuration.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID of this points distribution configuration
+     */
+    public void setTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId);
+
+    /**
      * Returns the percentage of this points distribution configuration.
      *
      * @return the percentage of this points distribution configuration

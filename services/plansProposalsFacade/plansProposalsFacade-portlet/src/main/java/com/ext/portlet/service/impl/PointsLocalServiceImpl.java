@@ -48,7 +48,8 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	 *
 	 * @throws SystemException
 	 */
-	public int getUserMaterializedPoints(long userId) throws SystemException {
+	@Override
+    public int getUserMaterializedPoints(long userId) throws SystemException {
 		return Xcolab_UserFinderUtil.getUserMaterializedPoints(userId).intValue();
 	}
 	
@@ -57,7 +58,8 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	 *
 	 * @throws SystemException
 	 */
-	public long getUserHypotheticalPoints(long userId) throws SystemException {
+	@Override
+    public long getUserHypotheticalPoints(long userId) throws SystemException {
         return Xcolab_UserFinderUtil.getUserHypotheticalPoints(userId).intValue();
 	}
 	
@@ -68,7 +70,8 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	 * @throws SystemException 
 	 * @throws PortalException 
 	 */
-	public void distributePoints(long contestPK) throws PortalException, SystemException {
+	@Override
+    public void distributePoints(long contestPK) throws PortalException, SystemException {
 		Contest contest = contestLocalService.getContest(contestPK);
         PointType pointType = pointTypeLocalService.getPointType(contest.getDefaultParentPointType());
         List<Proposal> materializedProposals = new ArrayList<>();
@@ -89,6 +92,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         }
 	}
 
+    @Override
     public List<Points> previewMaterializedPoints(long contestPK) throws PortalException, SystemException {
         Contest contest = contestLocalService.getContest(contestPK);
         PointType pointType = pointTypeLocalService.getPointType(contest.getDefaultParentPointType());
@@ -126,14 +130,10 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         return materializedPoints;
     }
 
-	private List<Points> distributePointsToProposal(Proposal proposal,
-            Proposal originatingProposal,
-            Contest originatingContest,
-			long pointsSourceId,
-			PointType pointType, 
-			double materializedPoints,
-			double hypotheticalPoints,
-            boolean previewOnly) throws SystemException, PortalException {
+	private List<Points> distributePointsToProposal(Proposal proposal, Proposal originatingProposal,
+                                                    Contest originatingContest, long pointsSourceId, PointType pointType,
+                                                    double materializedPoints, double hypotheticalPoints, boolean previewOnly)
+            throws SystemException, PortalException {
         String logString = proposal.getProposalId() + ". originatingContest: " + originatingContest.getContestPK() +
                 " pointsSourceId: " + pointsSourceId + " pointType: " + pointType + " materializedPoints: " + materializedPoints +
                 " hypotheticalPoints: " + hypotheticalPoints;
@@ -214,6 +214,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         return materializedPointsList;
 	}
 
+    @Override
     public List<Proposal> getLinkingProposals(long proposalId) throws SystemException, PortalException {
         List<ProposalReference> proposalReferences = proposalReferenceLocalService.getBySubProposalId(proposalId);
         List<Proposal> linkingProposals = new ArrayList<>();
@@ -226,6 +227,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         return linkingProposals;
     }
 
+    @Override
     public List<Proposal> getLinkingProposalsForUser(long userId) throws SystemException, PortalException {
         final List<Proposal> userProposals = proposalLocalService.getUserProposals(userId);
         List<Proposal> linkingProposals = new ArrayList<>();
@@ -236,8 +238,9 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
     }
 
     private boolean proposalIsHidden(Proposal proposal, Contest contest) throws SystemException, PortalException {
-        if (!proposal.isVisible())
+        if (!proposal.isVisible()) {
             return true;
+        }
         try {
             final ContestPhase activePhase = contestPhaseLocalService.getActivePhaseForContest(contest);
             final ProposalContestPhaseAttribute visibleAttribute = proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(
