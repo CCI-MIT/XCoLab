@@ -275,6 +275,14 @@ public class ProposalReferenceLocalServiceUtil {
         return getService().getBySubProposalId(subProposalId);
     }
 
+    public static com.ext.portlet.model.ProposalReference getByProposalIdSubProposalId(
+        long proposalId, long subProposalId)
+        throws com.ext.portlet.NoSuchProposalReferenceException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getByProposalIdSubProposalId(proposalId, subProposalId);
+    }
+
     public static void populateTable()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {

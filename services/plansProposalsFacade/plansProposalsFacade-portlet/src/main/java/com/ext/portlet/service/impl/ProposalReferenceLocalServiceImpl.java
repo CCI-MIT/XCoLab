@@ -60,6 +60,10 @@ public class ProposalReferenceLocalServiceImpl
         return proposalReferencePersistence.findBySubProposalId(subProposalId);
     }
 
+    public ProposalReference getByProposalIdSubProposalId(long proposalId, long subProposalId) throws NoSuchProposalReferenceException, SystemException {
+        return proposalReferencePersistence.findByPrimaryKey(new ProposalReferencePK(proposalId, subProposalId));
+    }
+
     @Override
     public void populateTable() throws SystemException, PortalException {
 

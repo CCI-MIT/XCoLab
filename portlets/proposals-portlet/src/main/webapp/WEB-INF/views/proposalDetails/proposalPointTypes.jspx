@@ -123,6 +123,100 @@
                         </c:otherwise>
                     </c:choose>
                 </c:when>
+                <c:when test="${pointType.receiverLimitationStrategy eq 'REGIONAL_SUBPROPOSALS'}">
+                    <p class="info">
+                        <c:choose>
+                            <c:when test="${currentTabWrapped.canEdit}">
+                                Distributed among all regional ${contestType.proposalNamePlural} you have referenced.
+                            </c:when>
+                            <c:otherwise>
+                                Distributed among all regional ${contestType.proposalNamePlural} referenced by this ${contestType.proposalName}.
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
+                    <c:choose>
+                        <c:when test="${regionalPercentages.size() gt 0}">
+                            <ul class="subproposals">
+                                <c:forEach var="pointsProposalWrapper" items="${regionalPercentages}">
+                                    <li>
+                                        <span class="highlighted">
+                                            <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${pointsProposalWrapper.percentage}"/>%
+                                        </span>
+                                        <a href="${pointsProposalWrapper.proposal.proposalURL}" target="_blank">
+                                            <c:out value="${pointsProposalWrapper.proposal.name}"/>
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                            <p class="totalRow">
+                                <strong class="percentage smaller">
+                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100}"/>%
+                                </strong>
+                                <strong class="name">Total</strong>
+                            </p>
+                        </c:when>
+                        <c:otherwise>
+                            <p style="margin-top: 15px">
+                                <c:choose>
+                                    <c:when test="${currentTabWrapped.canEdit}">
+                                        <em>You did not reference any ${contestType.proposalNamePlural}.</em>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <em>No ${contestType.proposalNamePlural} have been referenced.</em>
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </p>
+                        </c:otherwise>
+                    </c:choose>
+                </c:when>
+                <c:when test="${pointType.receiverLimitationStrategy eq 'BASIC_SUBPROPOSALS'}">
+                    <p class="info">
+                        <c:choose>
+                            <c:when test="${currentTabWrapped.canEdit}">
+                                Distributed among all cross-regional ${contestType.proposalNamePlural} you have referenced.
+                            </c:when>
+                            <c:otherwise>
+                                Distributed among all cross-regional ${contestType.proposalNamePlural} referenced by this ${contestType.proposalName}.
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
+                    <c:choose>
+                        <c:when test="${basicPercentages.size() gt 0}">
+                            <ul class="subproposals">
+                                <c:forEach var="pointsProposalWrapper" items="${basicPercentages}">
+                                    <li>
+                                        <span class="highlighted">
+                                            <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${pointsProposalWrapper.percentage}"/>%
+                                        </span>
+                                        <a href="${pointsProposalWrapper.proposal.proposalURL}" target="_blank">
+                                            <c:out value="${pointsProposalWrapper.proposal.name}"/>
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                            <p class="totalRow">
+                                <strong class="percentage smaller">
+                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100}"/>%
+                                </strong>
+                                <strong class="name">Total</strong>
+                            </p>
+                        </c:when>
+                        <c:otherwise>
+                            <p style="margin-top: 15px">
+                                <c:choose>
+                                    <c:when test="${currentTabWrapped.canEdit}">
+                                        <em>You did not reference any ${contestType.proposalNamePlural}.</em>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <em>No ${contestType.proposalNamePlural} have been referenced.</em>
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </p>
+                        </c:otherwise>
+                    </c:choose>
+                </c:when>
                 <c:when test="${pointType.receiverLimitationStrategy eq 'SUBPROPOSALS' and pointType.distributionStrategy eq 'USER_DEFINED'}">
                     <!--TODO-->
                 </c:when>

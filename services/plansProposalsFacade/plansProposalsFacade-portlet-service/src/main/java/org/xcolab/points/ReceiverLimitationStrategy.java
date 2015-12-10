@@ -76,10 +76,10 @@ public enum ReceiverLimitationStrategy {
 					}
 				}
 				if (targets.isEmpty()) {
-                    PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getProposalId());
+                    return PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getProposalId());
 				}
 			} else if (distributionStrategy == DistributionStrategy.EQUAL_DIVISION) {
-                PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getProposalId());
+                return PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getProposalId());
 			}
 			return targets;
 		}
@@ -107,7 +107,7 @@ public enum ReceiverLimitationStrategy {
                 final Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(subProposal.getProposalId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.REGION_AGGREGATE) {
-                    subProposals.add(subProposal);
+                    subProposalIds.add(subProposal.getProposalId());
                 }
             }
             subProposalIds.remove(proposal.getProposalId());
@@ -126,7 +126,7 @@ public enum ReceiverLimitationStrategy {
                 final Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(subProposal.getProposalId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.BASIC || contestTier == ContestTier.NONE) {
-                    subProposals.add(subProposal);
+                    subProposalIds.add(subProposal.getProposalId());
                 }
             }
             subProposalIds.remove(proposal.getProposalId());

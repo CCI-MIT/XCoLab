@@ -54,6 +54,10 @@ public class ProposalWrapper extends BaseProposalWrapper {
     private List<ProposalSectionWrapper> sections;
     private List<MembershipRequestWrapper> membershipRequests;
 
+    public ProposalWrapper(long proposalId) throws SystemException, PortalException {
+        this(ProposalLocalServiceUtil.getProposal(proposalId));
+    }
+
     public ProposalWrapper(Proposal proposal) throws NoSuchContestException {
         this(proposal, proposal.getCurrentVersion());
     }

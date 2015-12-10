@@ -1,5 +1,6 @@
 package org.xcolab.points;
 
+import com.ext.portlet.NoSuchPointsDistributionConfigurationException;
 import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.model.Proposal;
@@ -48,14 +49,13 @@ public class PointsDistributionUtil {
     public static List<PointsTarget> distributeSectionDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds) throws PortalException, SystemException {
         List<PointsTarget> targets = new ArrayList<>();
         for (long subProposalId : subProposalIds) {
-            ProposalReference reference = ProposalReferenceLocalServiceUtil.getProposalReference(
-                    new ProposalReferencePK(proposal.getProposalId(), subProposalId));
+            ProposalReference reference = ProposalReferenceLocalServiceUtil.getByProposalIdSubProposalId(proposal.getProposalId(), subProposalId);
             final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeLocalServiceUtil.getProposalAttribute(reference.getSectionAttributeId());
             final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
-            final PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(planSectionDefinitionId);
-            if (pdc != null) {
+            try {
+                PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(planSectionDefinitionId);
                 targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
-            }
+            } catch (NoSuchPointsDistributionConfigurationException ignored) { }
         }
         return targets;
     }

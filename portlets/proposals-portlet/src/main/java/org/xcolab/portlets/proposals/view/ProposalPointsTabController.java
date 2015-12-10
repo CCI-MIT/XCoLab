@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.PointType;
+import com.ext.portlet.model.Points;
 import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.PointTypeLocalServiceUtil;
@@ -18,10 +19,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.points.DistributionStrategy;
+import org.xcolab.points.PointsTarget;
 import org.xcolab.points.ReceiverLimitationStrategy;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
+import org.xcolab.portlets.proposals.wrappers.PointsTargetProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
@@ -64,6 +67,26 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         for (Proposal p: subProposals) {
             subProposalsWrapped.add(new ProposalWrapper(p));
         }
+        //TODO: make this flexible
+        PointType pointType = PointTypeLocalServiceUtil.getPointType(9L);
+        DistributionStrategy distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
+        ReceiverLimitationStrategy receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
+
+        List<PointsTarget> targets = receiverLimitationStrategy.getTargets(proposal, pointType, distributionStrategy);
+        List<PointsTargetProposalWrapper> regionalPercentages = new ArrayList<>();
+        for (PointsTarget target : targets) {
+            regionalPercentages.add(new PointsTargetProposalWrapper(target, 93));
+        }
+
+        pointType = PointTypeLocalServiceUtil.getPointType(4L);
+        distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
+        receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
+
+        targets = receiverLimitationStrategy.getTargets(proposal, pointType, distributionStrategy);
+        List<PointsTargetProposalWrapper> basicPercentages = new ArrayList<>();
+        for (PointsTarget target : targets) {
+            basicPercentages.add(new PointsTargetProposalWrapper(target, 2));
+        }
 
         List<ProposalWrapper> linkingProposalsWrapped = new ArrayList<>();
         final List<Proposal> linkingProposals = PointsLocalServiceUtil.getLinkingProposals(proposal.getProposalId());
@@ -83,6 +106,8 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         model.addAttribute("recursionLevel", 0);
         model.addAttribute("percentageOfTotalPoints", parentPointType.getPercentageOfParent());
         model.addAttribute("subProposals", subProposalsWrapped);
+        model.addAttribute("regionalPercentages", regionalPercentages);
+        model.addAttribute("basicPercentages", basicPercentages);
         model.addAttribute("members", members);
         model.addAttribute("proposal", proposal);
         model.addAttribute("contest", contest);

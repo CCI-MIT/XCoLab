@@ -53,6 +53,8 @@ public class ProposalReferenceLocalServiceClpInvoker {
     private String[] _methodParameterTypes512;
     private String _methodName513;
     private String[] _methodParameterTypes513;
+    private String _methodName514;
+    private String[] _methodParameterTypes514;
 
     public ProposalReferenceLocalServiceClpInvoker() {
         _methodName0 = "addProposalReference";
@@ -161,13 +163,17 @@ public class ProposalReferenceLocalServiceClpInvoker {
 
         _methodParameterTypes511 = new String[] { "long" };
 
-        _methodName512 = "populateTable";
+        _methodName512 = "getByProposalIdSubProposalId";
 
-        _methodParameterTypes512 = new String[] {  };
+        _methodParameterTypes512 = new String[] { "long", "long" };
 
-        _methodName513 = "populateTableWithProposal";
+        _methodName513 = "populateTable";
 
-        _methodParameterTypes513 = new String[] { "com.ext.portlet.model.Proposal" };
+        _methodParameterTypes513 = new String[] {  };
+
+        _methodName514 = "populateTableWithProposal";
+
+        _methodParameterTypes514 = new String[] { "com.ext.portlet.model.Proposal" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -283,13 +289,19 @@ public class ProposalReferenceLocalServiceClpInvoker {
 
         if (_methodName512.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
+            return ProposalReferenceLocalServiceUtil.getByProposalIdSubProposalId(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
+        }
+
+        if (_methodName513.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
             ProposalReferenceLocalServiceUtil.populateTable();
 
             return null;
         }
 
-        if (_methodName513.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
+        if (_methodName514.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
             ProposalReferenceLocalServiceUtil.populateTableWithProposal((com.ext.portlet.model.Proposal) arguments[0]);
 
             return null;
