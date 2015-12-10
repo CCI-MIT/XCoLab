@@ -105,7 +105,7 @@ public class AssignPointsActionController {
                     throw new IllegalArgumentException("Error while adding PointsDistributionConfiguration: The sum of distributed percentages do not sum up to 1: " + sum);
                 }
             }
-        } catch (SystemException | NoSuchUserException | IllegalArgumentException e) {
+        } catch (SystemException | IllegalArgumentException e) {
             //in case a (validation) error occurs, we simply delete all created configurations.
             //since we do client-side validations, this state will not be reached by regular uses of the UI.
             PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());

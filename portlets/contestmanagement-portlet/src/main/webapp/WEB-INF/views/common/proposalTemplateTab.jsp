@@ -91,7 +91,7 @@
 							<form:hidden path="sections[${x.index}].templateSection" data-form-name="templateSection"/>
 							<form:hidden path="sections[${x.index}].sectionNew" data-form-name="sectionNew"/>
 							<form:hidden path="sections[${x.index}].weight" cssClass="weightInput" data-form-name="weight" />
-							<form:hidden path="sections[${x.index}].sectionDefinitionId" data-form-name="sectionDefinitionId" />
+							<form:hidden path="sections[${x.index}].id" data-form-name="id" />
 
 							<c:if test="${section.deletable}">
 								<div class="deleteIcon"><!-- --></div>
@@ -116,13 +116,14 @@
 								</div>
 
 								<div>
-									<strong>Point Assignment:</strong><br/>
-                                    <strong>PointType override: </strong>
-                                    <form:select path="sections[${x.index}].pointType" data-form-name="pointType" cssClass="ontology-terms"
-                                                 cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                    <strong>Point override - PointType: </strong><br/>
+                                    <form:select path="sections[${x.index}].pointType" data-form-name="pointType">
                                         <form:options items="${pointTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
                                     </form:select>
-                                    <strong>Percentage: </strong><form:input path="sections[${x.index}].pointPercentage" data-form-name="pointPercentage"/>
+                                    <br/>
+                                    <strong>Point override - Percentage: </strong><br/>
+                                    <form:input path="sections[${x.index}].pointPercentage" data-form-name="pointPercentage"/>
+                                    <div class="clearfix"><!-- --></div>
 								</div>
 
 								<div>

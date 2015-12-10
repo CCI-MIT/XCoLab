@@ -24,7 +24,7 @@ import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.points.DistributionStrategy;
-import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
+import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.entities.SectionTypes;
@@ -95,10 +95,10 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
         PlanSectionDefinition planSectionDefinition =
                 PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionDefinitionId);
-        SectionDefinitionBean sectionDefinitionBean = new SectionDefinitionBean(planSectionDefinition);
+        SectionDefinitionWrapper sectionDefinitionWrapper = new SectionDefinitionWrapper(planSectionDefinition);
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json");
-        response.getWriter().write(mapper.writeValueAsString(sectionDefinitionBean));
+        response.getWriter().write(mapper.writeValueAsString(sectionDefinitionWrapper));
     }
 
     private List<LabelValue> getContestLevelSelectionItems(){

@@ -5,6 +5,7 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.contestmanagement.utils.ContestResourcesHtmlParserUtil;
+import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -17,9 +18,9 @@ import java.util.*;
 public class ContestResourcesBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private List<SectionDefinitionBean> baseSections;
-    private List<SectionDefinitionBean> additionalSections;
-    private List<SectionDefinitionBean> sections;
+    private List<SectionDefinitionWrapper> baseSections;
+    private List<SectionDefinitionWrapper> additionalSections;
+    private List<SectionDefinitionWrapper> sections;
     private HashMap<String, String> overviewSectionValues;
     private ContestResourcesHtmlParserUtil contestResourcesHtmlParserUtil;
     private int numberOfSections;
@@ -66,8 +67,8 @@ public class ContestResourcesBean implements Serializable {
     public void splitSections(){
         int startOfAdditionalSections = START_INDEX_OF_BOTTOM_SECTIONS;
         int endOfAdditionalSections = numberOfSections - START_INDEX_OF_BOTTOM_SECTIONS;
-        List<SectionDefinitionBean> baseSectionsTop = sections.subList(0, START_INDEX_OF_BOTTOM_SECTIONS);
-        List<SectionDefinitionBean> baseSectionBottom = sections.subList(endOfAdditionalSections, sections.size());
+        List<SectionDefinitionWrapper> baseSectionsTop = sections.subList(0, START_INDEX_OF_BOTTOM_SECTIONS);
+        List<SectionDefinitionWrapper> baseSectionBottom = sections.subList(endOfAdditionalSections, sections.size());
         baseSections.addAll(baseSectionsTop);
         baseSections.addAll(baseSectionBottom);
         additionalSections = sections.subList(startOfAdditionalSections, endOfAdditionalSections);
@@ -81,7 +82,7 @@ public class ContestResourcesBean implements Serializable {
         String overviewSection = contestResourcesHtmlParserUtil.getOverviewSectionAsHtmlString(overviewSectionValues);
 
         sectionsAsHtmlString.append(overviewSection);
-        for(SectionDefinitionBean sectionBaseDefinition : sections ){
+        for(SectionDefinitionWrapper sectionBaseDefinition : sections ){
             if(!sectionBaseDefinition.getContent().isEmpty()) {
                 String sectionAsHtmlString = contestResourcesHtmlParserUtil.getSectionAsHtmlString(sectionBaseDefinition);
                 sectionsAsHtmlString.append(sectionAsHtmlString);
@@ -91,21 +92,21 @@ public class ContestResourcesBean implements Serializable {
     }
 
     private void incooperateNewSections(){
-        SectionDefinitionBean templateSectionDefinitionBean = new SectionDefinitionBean();
-        for(SectionDefinitionBean sectionBaseDefinition : sections ){
+        SectionDefinitionWrapper templateSectionDefinitionWrapper = new SectionDefinitionWrapper();
+        for(SectionDefinitionWrapper sectionBaseDefinition : sections ){
             if(sectionBaseDefinition.isTemplateSection()) {
-                templateSectionDefinitionBean = sectionBaseDefinition;
+                templateSectionDefinitionWrapper = sectionBaseDefinition;
                 break;
             }
         }
-        int indexOfDummySectionBaseDefinition = sections.indexOf(templateSectionDefinitionBean);
-        sections.remove(templateSectionDefinitionBean);
+        int indexOfDummySectionBaseDefinition = sections.indexOf(templateSectionDefinitionWrapper);
+        sections.remove(templateSectionDefinitionWrapper);
         Collections.rotate(sections.subList(indexOfDummySectionBaseDefinition-1, sections.size()), -1);
     }
 
     private void removeDeletedSections(){
-        List<SectionDefinitionBean> removedSectionDefinitions = new ArrayList<>();
-        for(SectionDefinitionBean sectionBaseDefinition : sections ){
+        List<SectionDefinitionWrapper> removedSectionDefinitions = new ArrayList<>();
+        for(SectionDefinitionWrapper sectionBaseDefinition : sections ){
             if(sectionBaseDefinition.getTitle().isEmpty()
                     && sectionBaseDefinition.getContent().isEmpty()
                     && !sectionBaseDefinition.isTemplateSection()){
@@ -113,7 +114,7 @@ public class ContestResourcesBean implements Serializable {
             }
         }
 
-        for(SectionDefinitionBean removedSectionDefinition : removedSectionDefinitions) {
+        for(SectionDefinitionWrapper removedSectionDefinition : removedSectionDefinitions) {
             sections.remove(removedSectionDefinition);
         }
     }
@@ -130,10 +131,10 @@ public class ContestResourcesBean implements Serializable {
         HashMap<String, String> baseSectionsContent = contestResourcesHtmlParserUtil.getBaseSections();
         int index = 0;
         for (String baseContestSectionTitle : baseSectionsContent.keySet()) {
-            SectionDefinitionBean sectionDefinitionBean =
-                    new SectionDefinitionBean(baseContestSectionTitle, 0,
+            SectionDefinitionWrapper sectionDefinitionWrapper =
+                    new SectionDefinitionWrapper(baseContestSectionTitle, 0,
                             BASE_SECTIONS_HELPTEXT[index], baseSectionsContent.get(baseContestSectionTitle), false);
-            baseSections.add(sectionDefinitionBean);
+            baseSections.add(sectionDefinitionWrapper);
             index++;
         }
     }
@@ -141,39 +142,39 @@ public class ContestResourcesBean implements Serializable {
     private void addBaseSectionsWithDefaultsToSectionsList() {
         HashMap<String, String> baseSectionsContent = contestResourcesHtmlParserUtil.getBaseSections();
         for (String baseContestSectionTitle : baseSectionsContent.keySet()) {
-            SectionDefinitionBean sectionDefinitionBean =
-                    new SectionDefinitionBean(baseContestSectionTitle, false);
-            sections.add(sectionDefinitionBean);
+            SectionDefinitionWrapper sectionDefinitionWrapper =
+                    new SectionDefinitionWrapper(baseContestSectionTitle, false);
+            sections.add(sectionDefinitionWrapper);
         }
     }
 
     private void fillAdditionalSectionsWithContent() {
         HashMap<String, String> additionalSectionsContent = contestResourcesHtmlParserUtil.getAdditionalSections();
         for (String additionalContestSectionTitle : additionalSectionsContent.keySet()) {
-            SectionDefinitionBean sectionDefinitionBean =
-                    new SectionDefinitionBean(additionalContestSectionTitle, 0,
+            SectionDefinitionWrapper sectionDefinitionWrapper =
+                    new SectionDefinitionWrapper(additionalContestSectionTitle, 0,
                             SECTION_TEXT_DEFAULT, additionalSectionsContent.get(additionalContestSectionTitle));
-            additionalSections.add(sectionDefinitionBean);
+            additionalSections.add(sectionDefinitionWrapper);
         }
     }
 
     private void addAdditionalSectionsWithDefaultsToSectionsList() {
         while (sections.size() < numberOfSections ) {
-            SectionDefinitionBean sectionDefinitionBean = new SectionDefinitionBean();
-            sections.add(sectionDefinitionBean);
+            SectionDefinitionWrapper sectionDefinitionWrapper = new SectionDefinitionWrapper();
+            sections.add(sectionDefinitionWrapper);
         }
     }
 
     private void addTemplateSectionWithDefaultsToSectionsList(){
-        SectionDefinitionBean sectionDefinitionBean = new SectionDefinitionBean();
-        sectionDefinitionBean.setTemplateSection(true);
-        sections.add(sectionDefinitionBean);
+        SectionDefinitionWrapper sectionDefinitionWrapper = new SectionDefinitionWrapper();
+        sectionDefinitionWrapper.setTemplateSection(true);
+        sections.add(sectionDefinitionWrapper);
     }
 
     private void composeSectionsList(){
         sections.clear();
-        List<SectionDefinitionBean> baseSectionsTop = baseSections.subList(0, START_INDEX_OF_BOTTOM_SECTIONS);
-        List<SectionDefinitionBean> baseSectionBottom = baseSections.subList(START_INDEX_OF_BOTTOM_SECTIONS, baseSections.size());
+        List<SectionDefinitionWrapper> baseSectionsTop = baseSections.subList(0, START_INDEX_OF_BOTTOM_SECTIONS);
+        List<SectionDefinitionWrapper> baseSectionBottom = baseSections.subList(START_INDEX_OF_BOTTOM_SECTIONS, baseSections.size());
         sections.addAll(baseSectionsTop);
         sections.addAll(additionalSections);
         sections.addAll(baseSectionBottom);
@@ -186,11 +187,11 @@ public class ContestResourcesBean implements Serializable {
         addAdditionalSectionsWithDefaultsToSectionsList();
     }
 
-    public List<SectionDefinitionBean> getSections() {
+    public List<SectionDefinitionWrapper> getSections() {
         return sections;
     }
 
-    public void setSections(List<SectionDefinitionBean> sections) {
+    public void setSections(List<SectionDefinitionWrapper> sections) {
         this.sections = sections;
     }
 
