@@ -6,6 +6,7 @@ import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,5 +117,16 @@ public class ProposalAttributeHelper {
             }
         }
         return newestAttributeSeen;
+    }
+
+    public Collection<ProposalAttribute> getAttributesByName(String attributeName) throws SystemException {
+        if (attributesByNameAndAdditionalId == null) {
+            init();
+        }
+        final Map<Long, ProposalAttribute> attributesByAdditionalId = attributesByNameAndAdditionalId.get(attributeName);
+        if (attributesByAdditionalId != null) {
+            return attributesByAdditionalId.values();
+        }
+        return Collections.emptyList();
     }
 }
