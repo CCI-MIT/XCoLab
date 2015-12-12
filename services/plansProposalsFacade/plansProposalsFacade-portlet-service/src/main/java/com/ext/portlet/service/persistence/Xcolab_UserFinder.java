@@ -63,8 +63,7 @@ public interface Xcolab_UserFinder {
         java.lang.String categoryName)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public java.util.List<java.math.BigInteger> getUserActivityCount(
-        java.lang.Long userId);
+    public long getUserActivityCount(long userId);
 
     public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsAsc(
         int begin, int end, java.lang.String filter)

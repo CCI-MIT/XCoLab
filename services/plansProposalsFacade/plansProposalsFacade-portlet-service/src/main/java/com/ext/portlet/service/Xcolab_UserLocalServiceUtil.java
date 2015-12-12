@@ -125,8 +125,7 @@ public class Xcolab_UserLocalServiceUtil {
             filter, memberCategoryFilter, ascendingOrder);
     }
 
-    public static java.util.List<java.lang.Long> getUserActivityCount(
-        java.lang.Long userId)
+    public static long getUserActivityCount(java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getUserActivityCount(userId);
     }

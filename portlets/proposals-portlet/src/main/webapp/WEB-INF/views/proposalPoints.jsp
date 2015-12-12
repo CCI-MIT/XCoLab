@@ -14,6 +14,9 @@
     <div id="content">
         <h1 class="pointsHeadline">
             Points Distribution
+            <c:if test="${proposalsPermissions.canAdminAll and not empty totalPoints}">
+                (${totalPoints} points received)
+            </c:if>
             <a id="expand-help-text">?</a>
         </h1>
         <div id="help-text">

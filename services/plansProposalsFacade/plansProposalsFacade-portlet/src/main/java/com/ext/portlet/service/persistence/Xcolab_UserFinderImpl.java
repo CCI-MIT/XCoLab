@@ -1,19 +1,12 @@
 package com.ext.portlet.service.persistence;
 
 import com.ext.utils.CustomSqlUtil;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.dao.orm.SQLQuery;
-import com.liferay.portal.kernel.dao.orm.Session;
-import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -97,30 +90,14 @@ public class Xcolab_UserFinderImpl extends BasePersistenceImpl<User>
     }
 
     @Override
-    public List<BigInteger> getUserActivityCount(Long userId) {
-        SessionFactory sessionFactory = (SessionFactory) PortalBeanLocatorUtil.locate("liferaySessionFactory");
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            String sql = CustomSQLUtil.get(
-                    GET_USER_ACTIVITY_COUNT);
-            SQLQuery q = session.createSQLQuery(sql);
-            q.setCacheable(false);
-            //q.addEntity("User_", PortalClassLoaderUtil.getClassLoader().loadClass("com.liferay.portal.model.impl.UserImpl"));
-            QueryPos qPos = QueryPos.getInstance(q);
-            qPos.add(userId.toString());
-            List<BigInteger> results = (List<BigInteger>) QueryUtil.list(q, getDialect(), 0, Integer.MAX_VALUE);
-            return results;
-        } catch (Exception e) {
-            try {
-                throw new SystemException(e);
-            } catch (SystemException se) {
-                se.printStackTrace();
+    public long getUserActivityCount(final long userId) {
+        return CustomSqlUtil.getLongFromQuery(Xcolab_UserFinder.class.getName() + GET_USER_ACTIVITY_COUNT, getDialect(),
+                new CustomSqlUtil.QueryInitializer(false) {
+            @Override
+            protected void fillFilters(QueryPos queryPos) {
+                queryPos.add(Long.toString(userId));
             }
-        } finally {
-            sessionFactory.closeSession(session);
-        }
-        return null;
+        });
     }
 
     @Override
@@ -203,17 +180,13 @@ public class Xcolab_UserFinderImpl extends BasePersistenceImpl<User>
     }
 
     private Long getPoints(final long userId, String queryName) throws SystemException {
-        try {
-            return CustomSqlUtil.getLongFromQuery(Xcolab_UserFinder.class.getName() + queryName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, getDialect(),
-                    new CustomSqlUtil.QueryInitializer(USER_ENTITY_NAME, PortalClassLoaderUtil.getClassLoader().loadClass(USER_IMPL_CLASS_NAME), false) {
-                        @Override
-                        public void fillFilters(QueryPos queryPos) {
-                            queryPos.add(Long.toString(userId));
-                        }
-                    });
-        } catch (ClassNotFoundException e) {
-            throw new SystemException(e);
-        }
+        return CustomSqlUtil.getLongFromQuery(Xcolab_UserFinder.class.getName() + queryName, getDialect(),
+                new CustomSqlUtil.QueryInitializer(false) {
+                    @Override
+                    public void fillFilters(QueryPos queryPos) {
+                        queryPos.add(Long.toString(userId));
+                    }
+                });
     }
 
     public static final String GET_USERS_SORTED_BY_SCREENNAME_ASC = ".getUsersSortedByScreenNameAsc";

@@ -109,8 +109,7 @@ public class Xcolab_UserFinderUtil {
             end, filter, categoryName);
     }
 
-    public static java.util.List<java.math.BigInteger> getUserActivityCount(
-        java.lang.Long userId) {
+    public static long getUserActivityCount(long userId) {
         return getFinder().getUserActivityCount(userId);
     }
 

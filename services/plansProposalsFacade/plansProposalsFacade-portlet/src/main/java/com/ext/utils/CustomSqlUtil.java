@@ -9,7 +9,6 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,23 +39,23 @@ public class CustomSqlUtil {
         return null;
     }
 
-    public static long getLongFromQuery(String queryIdentifier, int begin, int end, Dialect dialect, QueryInitializer queryInitializer) {
-        Number result = getNumberFromQuery(queryIdentifier, begin, end, dialect, queryInitializer);
+    public static long getLongFromQuery(String queryIdentifier, Dialect dialect, QueryInitializer queryInitializer) {
+        Number result = getNumberFromQuery(queryIdentifier, dialect, queryInitializer);
         if (result != null) {
             return result.longValue();
         }
         return 0L;
     }
 
-    public static int getIntFromQuery(String queryIdentifier, int begin, int end, Dialect dialect, QueryInitializer queryInitializer) {
-        Number result = getNumberFromQuery(queryIdentifier, begin, end, dialect, queryInitializer);
+    public static int getIntFromQuery(String queryIdentifier, Dialect dialect, QueryInitializer queryInitializer) {
+        Number result = getNumberFromQuery(queryIdentifier, dialect, queryInitializer);
         if (result != null) {
             return result.intValue();
         }
         return 0;
     }
 
-    public static Number getNumberFromQuery(String queryIdentifier, int begin, int end, Dialect dialect, QueryInitializer queryInitializer) {
+    public static Number getNumberFromQuery(String queryIdentifier, Dialect dialect, QueryInitializer queryInitializer) {
         SessionFactory sessionFactory = (SessionFactory) PortalBeanLocatorUtil.locate("liferaySessionFactory");
         Session session = null;
         try {
@@ -89,6 +88,10 @@ public class CustomSqlUtil {
             this.entityName = entityName;
             this.implClass = implClass;
             this.isCached = isCached;
+        }
+
+        public QueryInitializer(boolean isCached) {
+            this ("", null, isCached);
         }
 
         public SQLQuery getQuery(Session session, String sql) throws ClassNotFoundException {

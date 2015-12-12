@@ -130,13 +130,6 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
             // distribution targets haven't been defined - distribute points to the winner
             Proposal proposal = contestLocalService.getWinnerProposal(contest.getContestPK());
             if (proposal != null) {
-                Points points = createPoints(counterLocalService.increment(Points.class.getName()));
-                points.setOriginatingContestPK(contest.getContestPK());
-                points.setOriginatingProposalId(proposal.getProposalId());
-                points.setPointsSourceId(0);
-                points.setProposalId(proposal.getProposalId());
-                addPoints(points);
-
                 materializedProposals.add(proposal);
                 materializedPoints.addAll(distributePointsToProposal(proposal, proposal, contest, 0, pointType, contest.getPoints(), contest.getPoints(), previewOnly));
             }

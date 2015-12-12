@@ -46,7 +46,7 @@
                         <td class="${status.count > childrenSize/2 ? 'right' : 'left'} ${(smallColumnExists and largeColumnExists ? (pointType.children.size() == 0 ? 'small' : 'large') : '')}">
                             <div class="content">
                                 <p class="percentage">
-                                    <fmt:formatNumber type="percent" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}"/>
+                                    <fmt:formatNumber type="percent" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}" minFractionDigits="0" maxFractionDigits="2"/>
                                 </p>
                                 <!-- Recursion -->
                                 <c:set var="percentageOfTotalPoints" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}" scope="request"/>

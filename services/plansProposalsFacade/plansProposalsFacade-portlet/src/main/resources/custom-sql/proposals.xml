@@ -60,13 +60,13 @@
 
     <sql id='com.ext.portlet.service.persistence.ProposalFinder.getProposalMaterializedPoints'>
         <![CDATA[
-			SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = 0 and xcolab_Points.proposalId = ?
+			SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.proposalId = ?
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.ProposalFinder.getProposalHypotheticalPoints'>
         <![CDATA[
-			SELECT SUM(hypotheticalPoints) FROM xcolab_Points WHERE xcolab_Points.userId = 0 and xcolab_Points.proposalId = ?
+			SELECT SUM(hypotheticalPoints) FROM xcolab_Points WHERE xcolab_Points.proposalId = ?
 		]]>
     </sql>
 </custom-sql>

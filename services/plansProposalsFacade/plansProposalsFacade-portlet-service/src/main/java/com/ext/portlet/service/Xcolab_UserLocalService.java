@@ -100,8 +100,7 @@ public interface Xcolab_UserLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<java.lang.Long> getUserActivityCount(
-        java.lang.Long userId)
+    public long getUserActivityCount(java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public java.util.List<com.liferay.portal.model.User> findUsersByLoginIP(

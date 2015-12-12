@@ -278,7 +278,7 @@ public class UserProfileWrapper implements Serializable {
 
     public long getUserActivityCount() {
         try {
-            return Xcolab_UserLocalServiceUtil.getUserActivityCount(getUserId()).get(0);
+            return Xcolab_UserLocalServiceUtil.getUserActivityCount(getUserId());
         } catch (SystemException e) {
             return 0;
         }

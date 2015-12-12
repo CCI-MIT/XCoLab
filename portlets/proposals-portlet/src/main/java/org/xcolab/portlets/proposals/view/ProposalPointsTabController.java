@@ -2,7 +2,6 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.PointType;
-import com.ext.portlet.model.Points;
 import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.PointTypeLocalServiceUtil;
@@ -88,6 +87,8 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             basicPercentages.add(new PointsTargetProposalWrapper(target, 2));
         }
 
+
+
         List<ProposalWrapper> linkingProposalsWrapped = new ArrayList<>();
         final List<Proposal> linkingProposals = PointsLocalServiceUtil.getLinkingProposals(proposal.getProposalId());
         for (Proposal p : linkingProposals) {
@@ -109,6 +110,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         model.addAttribute("regionalPercentages", regionalPercentages);
         model.addAttribute("basicPercentages", basicPercentages);
         model.addAttribute("members", members);
+        model.addAttribute("totalPoints", PointsLocalServiceUtil.getProposalMaterializedPoints(proposal.getProposalId()));
         model.addAttribute("proposal", proposal);
         model.addAttribute("contest", contest);
         model.addAttribute("linkingProposals", linkingProposalsWrapped);

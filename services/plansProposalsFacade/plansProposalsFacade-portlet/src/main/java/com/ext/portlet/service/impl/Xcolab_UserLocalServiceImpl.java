@@ -6,8 +6,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -114,17 +112,10 @@ public class Xcolab_UserLocalServiceImpl extends Xcolab_UserLocalServiceBaseImpl
     }
 
     @Override
-    public List<Long> getUserActivityCount(Long userId)
+    public long getUserActivityCount(Long userId)
             throws SystemException {
 
-        List<BigInteger> userActivityCount = Xcolab_UserFinderUtil.getUserActivityCount(userId);
-        List<Long> userActivityCountLongValues = new ArrayList<>(userActivityCount.size());
-
-        for (BigInteger singleActivityCount : userActivityCount) {
-            userActivityCountLongValues.add(singleActivityCount.longValue());
-        }
-
-        return userActivityCountLongValues;
+        return  Xcolab_UserFinderUtil.getUserActivityCount(userId);
     }
 
     @Override

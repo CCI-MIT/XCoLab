@@ -3,7 +3,6 @@ package com.ext.portlet.service.persistence;
 import com.ext.portlet.model.Proposal;
 import com.ext.utils.CustomSqlUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 /**
@@ -17,8 +16,8 @@ public class ProposalFinderImpl extends BasePersistenceImpl<Proposal> implements
     @Override
     public int getProposalMaterializedPoints(final long proposalId) {
         final String queryIdentifier = ProposalFinder.class.getName() + GET_PROPOSAL_MATERIALIZED_POINTS;
-        return CustomSqlUtil.getIntFromQuery(queryIdentifier, QueryUtil.ALL_POS, QueryUtil.ALL_POS, getDialect(),
-                new CustomSqlUtil.QueryInitializer("", null, false) {
+        return CustomSqlUtil.getIntFromQuery(queryIdentifier, getDialect(),
+                new CustomSqlUtil.QueryInitializer(false) {
             @Override
             public void fillFilters(QueryPos queryPos) {
                 queryPos.add(Long.toString(proposalId));
@@ -29,8 +28,8 @@ public class ProposalFinderImpl extends BasePersistenceImpl<Proposal> implements
     @Override
     public int getProposalHypotheticalPoints(final long proposalId) {
         final String queryIdentifier = ProposalFinder.class.getName() + GET_PROPOSAL_HYPOTHETICAL_POINTS;
-        return CustomSqlUtil.getIntFromQuery(queryIdentifier, QueryUtil.ALL_POS, QueryUtil.ALL_POS, getDialect(),
-                new CustomSqlUtil.QueryInitializer("", null, false) {
+        return CustomSqlUtil.getIntFromQuery(queryIdentifier, getDialect(),
+                new CustomSqlUtil.QueryInitializer(false) {
             @Override
             public void fillFilters(QueryPos queryPos) {
                 queryPos.add(Long.toString(proposalId));

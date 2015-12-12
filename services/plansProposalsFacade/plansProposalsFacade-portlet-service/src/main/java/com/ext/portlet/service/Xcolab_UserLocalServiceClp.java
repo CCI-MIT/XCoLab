@@ -493,8 +493,7 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     }
 
     @Override
-    public java.util.List<java.lang.Long> getUserActivityCount(
-        java.lang.Long userId)
+    public long getUserActivityCount(java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -517,7 +516,7 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
             }
         }
 
-        return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
+        return ((Long) returnObj).longValue();
     }
 
     @Override
