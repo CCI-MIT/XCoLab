@@ -11,6 +11,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalReference;
 import com.ext.portlet.service.base.PointsLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.ProposalFinderUtil;
 import com.ext.portlet.service.persistence.Xcolab_UserFinderUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -43,25 +44,45 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	private final static Log _log = LogFactoryUtil.getLog(PointsLocalServiceImpl.class);
 
 
-	/**
-	 * Returns number of materialized points for given user.
-	 *
-	 * @throws SystemException
-	 */
-	@Override
+    /**
+     * Returns number of materialized points for given user.
+     *
+     * @throws SystemException
+     */
+    @Override
     public int getUserMaterializedPoints(long userId) throws SystemException {
-		return Xcolab_UserFinderUtil.getUserMaterializedPoints(userId).intValue();
-	}
-	
-	/**
-	 * Returns number of points for hypothetical user. 
-	 *
-	 * @throws SystemException
-	 */
-	@Override
+        return Xcolab_UserFinderUtil.getUserMaterializedPoints(userId).intValue();
+    }
+
+    /**
+     * Returns number of hypothetical points for given user.
+     *
+     * @throws SystemException
+     */
+    @Override
     public long getUserHypotheticalPoints(long userId) throws SystemException {
         return Xcolab_UserFinderUtil.getUserHypotheticalPoints(userId).intValue();
-	}
+    }
+
+    /**
+     * Returns number of materialized points for given proposal.
+     *
+     * @throws SystemException
+     */
+    @Override
+    public int getProposalMaterializedPoints(long proposalId) throws SystemException {
+        return ProposalFinderUtil.getProposalMaterializedPoints(proposalId);
+    }
+
+    /**
+     * Returns number of hypothetical points for given propsal.
+     *
+     * @throws SystemException
+     */
+    @Override
+    public int getProposalHypotheticalPoints(long proposalId) throws SystemException {
+        return ProposalFinderUtil.getProposalMaterializedPoints(proposalId);
+    }
 	
 	/**
 	 * Calculates the hypothetical points for all proposals for a given contest and
@@ -109,6 +130,13 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
             // distribution targets haven't been defined - distribute points to the winner
             Proposal proposal = contestLocalService.getWinnerProposal(contest.getContestPK());
             if (proposal != null) {
+                Points points = createPoints(counterLocalService.increment(Points.class.getName()));
+                points.setOriginatingContestPK(contest.getContestPK());
+                points.setOriginatingProposalId(proposal.getProposalId());
+                points.setPointsSourceId(0);
+                points.setProposalId(proposal.getProposalId());
+                addPoints(points);
+
                 materializedProposals.add(proposal);
                 materializedPoints.addAll(distributePointsToProposal(proposal, proposal, contest, 0, pointType, contest.getPoints(), contest.getPoints(), previewOnly));
             }

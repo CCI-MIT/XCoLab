@@ -270,13 +270,33 @@ public class PointsLocalServiceUtil {
     }
 
     /**
-    * Returns number of points for hypothetical user.
+    * Returns number of hypothetical points for given user.
     *
     * @throws SystemException
     */
     public static long getUserHypotheticalPoints(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getUserHypotheticalPoints(userId);
+    }
+
+    /**
+    * Returns number of materialized points for given proposal.
+    *
+    * @throws SystemException
+    */
+    public static int getProposalMaterializedPoints(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getProposalMaterializedPoints(proposalId);
+    }
+
+    /**
+    * Returns number of hypothetical points for given propsal.
+    *
+    * @throws SystemException
+    */
+    public static int getProposalHypotheticalPoints(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getProposalHypotheticalPoints(proposalId);
     }
 
     /**

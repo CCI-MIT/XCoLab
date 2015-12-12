@@ -419,7 +419,8 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
 
     @Override
     public java.util.List<com.liferay.portal.model.User> getUsersSortedByPoints(
-        int begin, int end, java.lang.String filter, boolean ascendingOrder) {
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -437,6 +438,10 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -451,7 +456,8 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     @Override
     public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategoryFilter, boolean ascendingOrder) {
+        java.lang.String memberCategoryFilter, boolean ascendingOrder)
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -470,6 +476,10 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
 
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
@@ -512,7 +522,8 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
 
     @Override
     public java.util.List<com.liferay.portal.model.User> findUsersByLoginIP(
-        java.lang.String loginIP) {
+        java.lang.String loginIP)
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -521,6 +532,10 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
                     new Object[] { ClpSerializer.translateInput(loginIP) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
 
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;

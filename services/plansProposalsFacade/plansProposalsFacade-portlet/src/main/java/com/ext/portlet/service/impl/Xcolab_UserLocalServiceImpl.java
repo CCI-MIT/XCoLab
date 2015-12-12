@@ -97,7 +97,7 @@ public class Xcolab_UserLocalServiceImpl extends Xcolab_UserLocalServiceBaseImpl
     }
 
     @Override
-    public List<User> getUsersSortedByPoints(int begin, int end, String filter, boolean ascendingOrder) {
+    public List<User> getUsersSortedByPoints(int begin, int end, String filter, boolean ascendingOrder) throws SystemException {
         if (ascendingOrder) {
             return Xcolab_UserFinderUtil.getUsersSortedByPointsAsc(begin, end, filter);
         }
@@ -106,7 +106,7 @@ public class Xcolab_UserLocalServiceImpl extends Xcolab_UserLocalServiceBaseImpl
 
     @Override
     public List<User> getUsersSortedByPointsFilteredByCategory(int begin, int end, String filter,
-                                                               String memberCategoryFilter, boolean ascendingOrder) {
+                                                               String memberCategoryFilter, boolean ascendingOrder) throws SystemException {
         if (ascendingOrder) {
             return Xcolab_UserFinderUtil.getUsersSortedByPointsAscFilteredByCategory(begin, end, filter, memberCategoryFilter);
         }
@@ -128,7 +128,7 @@ public class Xcolab_UserLocalServiceImpl extends Xcolab_UserLocalServiceBaseImpl
     }
 
     @Override
-    public List<User> findUsersByLoginIP(String loginIP) {
+    public List<User> findUsersByLoginIP(String loginIP) throws SystemException {
         return Xcolab_UserFinderUtil.findUsersByLoginIP(QueryUtil.ALL_POS, QueryUtil.ALL_POS, loginIP);
     }
 }
