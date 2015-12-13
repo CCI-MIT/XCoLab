@@ -90,13 +90,13 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
         ProposalContestPhaseAttribute judges = getOrCreateAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0);
 
 
-        String attributeValue = "";
+        StringBuilder attributeValue = new StringBuilder("");
         if (selectedJudges != null) {
             for (Long userId : selectedJudges) {
-                attributeValue += userId + ";";
+                attributeValue.append(userId).append(";");
             }
         }
-        judges.setStringValue(attributeValue.replaceAll(";$", ""));
+        judges.setStringValue(attributeValue.toString().replaceAll(";$", ""));
 
         try {
             updateProposalContestPhaseAttribute(judges);

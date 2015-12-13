@@ -48,7 +48,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalServiceUtil} to access the proposal remote service.
      */
 
-    private final long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
+    private final static long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
     /**
      * This method returns the index of the latest version of a proposal within a given contestPhaseId

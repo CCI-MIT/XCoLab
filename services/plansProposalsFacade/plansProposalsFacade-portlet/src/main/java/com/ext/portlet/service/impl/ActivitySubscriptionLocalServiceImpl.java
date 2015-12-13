@@ -373,8 +373,9 @@ public class ActivitySubscriptionLocalServiceImpl
 
         String subject = StringUtil.replace(DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification));
 		// Send the digest to each user which is included in the set of subscriptions
-		for (User recipient : userActivitiesDigestMap.keySet()) {
-            final List<SocialActivity> userDigestActivities = userActivitiesDigestMap.get(recipient);
+		for (Map.Entry<User, List<SocialActivity>> entry : userActivitiesDigestMap.entrySet()) {
+            final User recipient = entry.getKey();
+            final List<SocialActivity> userDigestActivities =  entry.getValue();
             String body = getDigestMessageBody(serviceContext, userDigestActivities);
             String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext));
 
@@ -401,7 +402,9 @@ public class ActivitySubscriptionLocalServiceImpl
         comparatorChain.addComparator(socialActivityCreateDateComparator);
 
         Collections.sort(userDigestActivities, comparatorChain);
-        String body = StringUtil.replace(DAILY_DIGEST_ENTRY_TEXT, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification)) + "<br/><br/>";
+        StringBuilder body = new StringBuilder();
+        body.append(StringUtil.replace(DAILY_DIGEST_ENTRY_TEXT, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification)));
+        body.append("<br/><br/>");
 
         for (SocialActivity socialActivity : userDigestActivities) {
             //prevent null pointer exceptions which might happen at this point
@@ -413,9 +416,9 @@ public class ActivitySubscriptionLocalServiceImpl
                 continue;
             }
 
-            body += "<div style='margin-left: 10px'>" + getMailBody(entry) + "</div><br/><br/>";
+            body.append("<div style='margin-left: 10px'>").append(getMailBody(entry)).append("</div><br/><br/>");
         }
-        return body;
+        return body.toString();
     }
 
     private Map<User, List<SocialActivity>> getUserToActivityDigestMap(List<SocialActivity> activities) throws SystemException, PortalException {
