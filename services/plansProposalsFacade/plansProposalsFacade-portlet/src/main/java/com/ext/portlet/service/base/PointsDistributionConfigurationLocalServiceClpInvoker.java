@@ -53,6 +53,8 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
     private String[] _methodParameterTypes514;
     private String _methodName515;
     private String[] _methodParameterTypes515;
+    private String _methodName516;
+    private String[] _methodParameterTypes516;
 
     public PointsDistributionConfigurationLocalServiceClpInvoker() {
         _methodName0 = "addPointsDistributionConfiguration";
@@ -145,12 +147,9 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
 
         _methodParameterTypes507 = new String[] { "java.lang.String" };
 
-        _methodName512 = "findByProposalPointType";
+        _methodName512 = "findByProposalIdPointTypeId";
 
-        _methodParameterTypes512 = new String[] {
-                "com.ext.portlet.model.Proposal",
-                "com.ext.portlet.model.PointType"
-            };
+        _methodParameterTypes512 = new String[] { "long", "long" };
 
         _methodName513 = "removeByProposalId";
 
@@ -166,6 +165,10 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
                 "long", "long", "java.lang.Long", "java.lang.Long", "double",
                 "long"
             };
+
+        _methodName516 = "verifyDistributionConfigurationsForProposalId";
+
+        _methodParameterTypes516 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -271,8 +274,8 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
 
         if (_methodName512.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
-            return PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType((com.ext.portlet.model.Proposal) arguments[0],
-                (com.ext.portlet.model.PointType) arguments[1]);
+            return PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
         }
 
         if (_methodName513.equals(name) &&
@@ -294,6 +297,13 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
                 (java.lang.Long) arguments[2], (java.lang.Long) arguments[3],
                 ((Double) arguments[4]).doubleValue(),
                 ((Long) arguments[5]).longValue());
+        }
+
+        if (_methodName516.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
+            PointsDistributionConfigurationLocalServiceUtil.verifyDistributionConfigurationsForProposalId(((Long) arguments[0]).longValue());
+
+            return null;
         }
 
         throw new UnsupportedOperationException();

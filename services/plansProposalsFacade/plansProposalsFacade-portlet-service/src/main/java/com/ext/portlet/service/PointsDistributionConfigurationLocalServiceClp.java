@@ -53,6 +53,8 @@ public class PointsDistributionConfigurationLocalServiceClp
     private String[] _methodParameterTypes21;
     private String _methodName22;
     private String[] _methodParameterTypes22;
+    private String _methodName23;
+    private String[] _methodParameterTypes23;
 
     public PointsDistributionConfigurationLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -148,12 +150,9 @@ public class PointsDistributionConfigurationLocalServiceClp
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
 
-        _methodName19 = "findByProposalPointType";
+        _methodName19 = "findByProposalIdPointTypeId";
 
-        _methodParameterTypes19 = new String[] {
-                "com.ext.portlet.model.Proposal",
-                "com.ext.portlet.model.PointType"
-            };
+        _methodParameterTypes19 = new String[] { "long", "long" };
 
         _methodName20 = "removeByProposalId";
 
@@ -169,6 +168,10 @@ public class PointsDistributionConfigurationLocalServiceClp
                 "long", "long", "java.lang.Long", "java.lang.Long", "double",
                 "long"
             };
+
+        _methodName23 = "verifyDistributionConfigurationsForProposalId";
+
+        _methodParameterTypes23 = new String[] { "long" };
     }
 
     @Override
@@ -694,20 +697,15 @@ public class PointsDistributionConfigurationLocalServiceClp
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByProposalPointType(
-        com.ext.portlet.model.Proposal proposal,
-        com.ext.portlet.model.PointType pointType)
+    public java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByProposalIdPointTypeId(
+        long proposalId, long pointTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName19,
                     _methodParameterTypes19,
-                    new Object[] {
-                        ClpSerializer.translateInput(proposal),
-                        
-                    ClpSerializer.translateInput(pointType)
-                    });
+                    new Object[] { proposalId, pointTypeId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -820,5 +818,32 @@ public class PointsDistributionConfigurationLocalServiceClp
         }
 
         return (com.ext.portlet.model.PointsDistributionConfiguration) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public void verifyDistributionConfigurationsForProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName23,
+                _methodParameterTypes23, new Object[] { proposalId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
     }
 }

@@ -6,7 +6,6 @@ import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.PointTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
-import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;

@@ -185,6 +185,8 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			}
 			return materializedPointsList;
 		}
+
+        pointsDistributionConfigurationLocalService.verifyDistributionConfigurationsForProposalId(proposal.getProposalId());
 		
 		List<PointsTarget> targets = receiverLimitationStrategy.getTargets(proposal, pointType, distributionStrategy);
 

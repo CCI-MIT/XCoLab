@@ -240,9 +240,8 @@ public interface PointsDistributionConfigurationLocalService
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
 
-    public java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByProposalPointType(
-        com.ext.portlet.model.Proposal proposal,
-        com.ext.portlet.model.PointType pointType)
+    public java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByProposalIdPointTypeId(
+        long proposalId, long pointTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public void removeByProposalId(long proposalId)
@@ -258,4 +257,8 @@ public interface PointsDistributionConfigurationLocalService
         long proposalId, long pointTypeId, java.lang.Long targetUserId,
         java.lang.Long targetSubProposalId, double percentage, long creator)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void verifyDistributionConfigurationsForProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

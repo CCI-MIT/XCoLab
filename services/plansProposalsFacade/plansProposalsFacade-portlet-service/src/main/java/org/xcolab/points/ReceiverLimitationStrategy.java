@@ -17,14 +17,14 @@ import java.util.List;
 import java.util.Set;
 
 public enum ReceiverLimitationStrategy {
-	ANY_USER(new ReceiverLimitationTargetsPickerAlgorithm() {
+	ANY_USER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
 
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) throws SystemException {
 			// check if there is any configuration, if there is create appropriate targets
 			List<PointsTarget> targets = new ArrayList<>();
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType(proposal, pointType)) {
+				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
 					if (pdc.getTargetUserId() > 0) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
@@ -38,7 +38,7 @@ public enum ReceiverLimitationStrategy {
 		
 	}), 
 	
-	ANY_NON_TEAM_MEMBER(new ReceiverLimitationTargetsPickerAlgorithm() {
+	ANY_NON_TEAM_MEMBER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
 
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal,
@@ -46,7 +46,7 @@ public enum ReceiverLimitationStrategy {
 			List<PointsTarget> targets = new ArrayList<>();
 			
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType(proposal, pointType)) {
+				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
 					if (pdc.getTargetUserId() > 0 && !ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), pdc.getTargetUserId())) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
@@ -59,7 +59,7 @@ public enum ReceiverLimitationStrategy {
 		}
 		
 	}),
-	ANY_TEAM_MEMBER(new ReceiverLimitationTargetsPickerAlgorithm() {
+	ANY_TEAM_MEMBER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
 
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal,
@@ -67,7 +67,7 @@ public enum ReceiverLimitationStrategy {
 			List<PointsTarget> targets = new ArrayList<>();
 
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType(proposal, pointType)) {
+				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
 					if (pdc.getTargetUserId() > 0 && ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), pdc.getTargetUserId())) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
@@ -85,7 +85,7 @@ public enum ReceiverLimitationStrategy {
 		}
 		
 	}),
-    SUBPROPOSALS(new ReceiverLimitationTargetsPickerAlgorithm() {
+    SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
 
         @Override
         public List<PointsTarget> getPointTargets(Proposal proposal,
@@ -96,7 +96,7 @@ public enum ReceiverLimitationStrategy {
         }
 
     }),
-    REGIONAL_SUBPROPOSALS(new ReceiverLimitationTargetsPickerAlgorithm() {
+    REGIONAL_SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
 
         @Override
         public List<PointsTarget> getPointTargets(Proposal proposal,
@@ -115,7 +115,7 @@ public enum ReceiverLimitationStrategy {
         }
 
     }),
-    BASIC_SUBPROPOSALS(new ReceiverLimitationTargetsPickerAlgorithm() {
+    BASIC_SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
 
         @Override
         public List<PointsTarget> getPointTargets(Proposal proposal,
@@ -134,7 +134,7 @@ public enum ReceiverLimitationStrategy {
         }
 
     }),
-	NONE(new ReceiverLimitationTargetsPickerAlgorithm() {
+	NONE(Type.OTHER, new ReceiverLimitationTargetsPickerAlgorithm() {
 
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal,
@@ -144,9 +144,11 @@ public enum ReceiverLimitationStrategy {
 		
 	});
 
-    private final ReceiverLimitationTargetsPickerAlgorithm targetsPickerAlgorithm;
+	private final Type type;
+	private final ReceiverLimitationTargetsPickerAlgorithm targetsPickerAlgorithm;
 	
-	ReceiverLimitationStrategy(ReceiverLimitationTargetsPickerAlgorithm algorithm) {
+	ReceiverLimitationStrategy(Type type, ReceiverLimitationTargetsPickerAlgorithm algorithm) {
+		this.type = type;
 		targetsPickerAlgorithm = algorithm;
 	}
 	
@@ -154,8 +156,16 @@ public enum ReceiverLimitationStrategy {
 		return targetsPickerAlgorithm.getPointTargets(proposal, pointType, distributionStrategy);
 		
 	}
-	
+
+	public Type getType() {
+		return type;
+	}
+
 	public interface ReceiverLimitationTargetsPickerAlgorithm {
 		List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException;
+	}
+
+	public enum Type {
+		USER, SUB_PROPOSAL, OTHER
 	}
 }

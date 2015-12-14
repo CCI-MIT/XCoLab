@@ -4,6 +4,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.utils.EntityGroupingUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -35,7 +36,7 @@ public class ProposalAttributeHelper {
         if (attributesByNameAndAdditionalId == null) {
             attributesByNameAndAdditionalId = new HashMap<>();
             for (ProposalAttribute attribute : attributes) {
-                Map<Long, ProposalAttribute> currentAttributes = getInnerMapOrCreate(
+                Map<Long, ProposalAttribute> currentAttributes = EntityGroupingUtil.getInnerMapOrCreate(
                         attribute.getName(), attributesByNameAndAdditionalId);
 
                 ProposalAttribute currentAttribute = currentAttributes.get(attribute.getAdditionalId());
@@ -46,16 +47,6 @@ public class ProposalAttributeHelper {
                 }
             }
         }
-    }
-
-    private <SearchKey, MapKey, MapVal> Map<MapKey, MapVal> getInnerMapOrCreate(
-                                                SearchKey searchKey, Map<SearchKey, Map<MapKey, MapVal>> searchMap) {
-        Map<MapKey, MapVal> innerMap = searchMap.get(searchKey);
-        if (innerMap == null) {
-            innerMap = new HashMap<>();
-            searchMap.put(searchKey, innerMap);
-        }
-        return innerMap;
     }
 
     public boolean hasAttribute(String name) throws SystemException {

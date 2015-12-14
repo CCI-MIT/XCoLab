@@ -16,10 +16,10 @@ import java.util.Map;
 
 /**
  * Created by johannes on 11/20/15.
- * This is a utility class to group proposals by certain other criteria.
+ * This is a utility class to group entities by certain other criteria.
  * It's in a separate class, because the liferay service layer does not support returning maps!
  */
-public class ProposalGroupingUtil {
+public class EntityGroupingUtil {
 
     public static Map<ContestType, List<Proposal>> groupByContestType(List<Proposal> proposals) throws SystemException, PortalException {
         Map<Long, ContestType> contestIdToContestTypeMap = new HashMap<>();
@@ -42,5 +42,25 @@ public class ProposalGroupingUtil {
             }
         }
         return proposalsByContestType;
+    }
+
+    public static <SearchKey, MapKey, MapVal> Map<MapKey, MapVal> getInnerMapOrCreate(
+            SearchKey searchKey, Map<SearchKey, Map<MapKey, MapVal>> searchMap) {
+        Map<MapKey, MapVal> innerMap = searchMap.get(searchKey);
+        if (innerMap == null) {
+            innerMap = new HashMap<>();
+            searchMap.put(searchKey, innerMap);
+        }
+        return innerMap;
+    }
+
+    public static <SearchKey, ListVal> List<ListVal> getInnerListOrCreate(
+            SearchKey searchKey, Map<SearchKey, List<ListVal>> searchMap) {
+        List<ListVal> innerList = searchMap.get(searchKey);
+        if (innerList == null) {
+            innerList = new ArrayList<>();
+            searchMap.put(searchKey, innerList);
+        }
+        return innerList;
     }
 }
