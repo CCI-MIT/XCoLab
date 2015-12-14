@@ -192,8 +192,11 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 
         List<Points> materializedPointsList = new ArrayList<>();
 		for (PointsTarget target: targets) {
+            double targetHypotheticalPoints = hypotheticalPoints * target.getPercentage();
+            double targetMaterializedPoints = materializedPoints * target.getPercentage();
+
             // Skip when we would distribute less than 1 point
-            if (hypotheticalPoints * target.getPercentage() < 1.0 && materializedPoints * target.getPercentage() < 1) {
+            if (targetHypotheticalPoints < 1.0 && targetMaterializedPoints < 1) {
                 continue;
             }
 
@@ -204,17 +207,18 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			points.setPointsSourceId(pointsSourceId);
 			points.setProposalId(proposal.getProposalId());
 
-            //round points up to the next integer
-            double roundedHypotheticalPoints = Math.ceil(hypotheticalPoints * target.getPercentage());
-            double roundedMaterializedPoints = Math.ceil(materializedPoints * target.getPercentage());
-			points.setHypotheticalPoints(roundedHypotheticalPoints);
-			points.setMaterializedPoints(roundedMaterializedPoints);
-
 			if (target.isUser()) {
 				_log.info("Adding points to a user: " + target.getUserId() + ", hypotheticalPoints: " + points.getHypotheticalPoints() + 
 						", materializedPoints: " + points.getMaterializedPoints());
 				points.setUserId(target.getUserId());
+
+                //round points up to the next integer
+                targetHypotheticalPoints = Math.ceil(targetHypotheticalPoints);
+                targetMaterializedPoints = Math.ceil(targetMaterializedPoints);
 			}
+
+            points.setHypotheticalPoints(targetHypotheticalPoints);
+            points.setMaterializedPoints(targetMaterializedPoints);
 
             if (!previewOnly) {
                 addPoints(points);
