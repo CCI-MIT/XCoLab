@@ -19,52 +19,57 @@
            onclick="window.location = '/web/guest/search/-/search/for/' + encodeURI($('#searchPhrase').val())">Search</a>
     </div>
 
-    <div id="main" class="searchresults">
+    <div class="clearfix">
+        <div id="main" class="searchresults">
 
-        <c:if test="${searchBean.data.rowCount == 0 and not empty searchBean.searchPhrase}">
-            <p>Nothing has been found.</p>
-        </c:if>
-        <div class="searchTable">
-            <c:forEach var="item" items="${searchBean.items}" varStatus="loopStatus">
-                <div class="result ${loopStatus.index % 2 == 0 ? 'blu' : ''}">
-                    <div class="result_title">
-                        <a href="${item.url}">${item.title}</a>
+            <c:if test="${searchBean.totalNumberOfResults == 0 and not empty searchBean.searchPhrase}">
+                <p>Nothing has been found.</p>
+            </c:if>
+            <div class="searchTable">
+                <c:forEach var="item" items="${searchBean.items}" varStatus="loopStatus">
+                    <div class="result ${loopStatus.index % 2 == 0 ? 'blu' : ''}">
+                        <div class="result_title">
+                            <a href="${item.url}">${item.title}</a>
+                        </div>
+                        <div class="result_locale">
+                            ${item.itemType.printName}
+                        </div>
+                        <div class="clear"><!-- --></div>
+                        <p>${item.content}</p>
                     </div>
-                    <div class="result_locale">
-                        ${item.itemType.printName}
-                    </div>
-                    <div class="clear"><!-- --></div>
-                    <p>${item.content}</p>
-                </div>
 
-            </c:forEach>
+                </c:forEach>
+            </div>
         </div>
-    </div>
 
-    <div class="right_col">
-        <div class="comm_list">
-            Show results for:
-            <ul>
-                <li class="${searchBean.selectedItemType == null ? 'c' : ''}">
-                    <portlet:renderURL var="fullSiteUrl">
-                        <portlet:param name="action" value="searchLocation" />
-                        <portlet:param name="searchPhrase" value="${searchBean.searchPhrase}" />
-                        <portlet:param name="searchLocation" value="FULL_SITE" />
-                    </portlet:renderURL>
-                    <a href="${fullSiteUrl}">Full Site</a>
-                </li>
-                <c:forEach var="itemType" items="${searchBean.itemTypes}">
-                    <li class="${searchBean.selectedItemType == itemType ? 'c' : ''}">
-                        <portlet:renderURL var="locationUrl">
+        <div class="right_col">
+            <div class="comm_list">
+                Show results for:
+                <ul>
+                    <li class="${searchBean.selectedItemType == null ? 'c' : ''}">
+                        <portlet:renderURL var="fullSiteUrl">
                             <portlet:param name="action" value="searchLocation" />
                             <portlet:param name="searchPhrase" value="${searchBean.searchPhrase}" />
-                            <portlet:param name="searchLocation" value="${itemType.name}" />
+                            <portlet:param name="searchLocation" value="FULL_SITE" />
                         </portlet:renderURL>
-                        <a href="${locationUrl}">${itemType.printName}</a>
+                        <a href="${fullSiteUrl}">Full Site</a>
                     </li>
-                </c:forEach>
-            </ul>
+                    <c:forEach var="itemType" items="${searchBean.itemTypes}">
+                        <li class="${searchBean.selectedItemType == itemType ? 'c' : ''}">
+                            <a href="${itemType.getPageLink(searchBean).linkUrl}">${itemType.printName}</a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
         </div>
     </div>
+
+    <c:if test="${searchBean.numberOfPages > 1}">
+        <div class="pagination">
+            <c:forEach var="pageLink" items="${searchBean.pageLinks}">
+                <a class="${pageLink.isCurrent(searchBean) ? 'c' : ''}" href="${pageLink.linkUrl}">${pageLink.linkText}</a>
+            </c:forEach>
+        </div>
+    </c:if>
 
 </jsp:root>

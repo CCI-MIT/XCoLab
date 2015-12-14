@@ -13,33 +13,34 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.apache.lucene.util.Version;
-import org.xcolab.portlets.search.utils.DataPage;
-import org.xcolab.portlets.search.utils.DataSource;
-import org.xcolab.portlets.search.utils.PagedListDataModel;
 import org.xcolab.utils.HtmlUtil;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchBean extends DataSource implements Serializable {
+public class SearchBean implements Serializable {
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-    private  static final int PAGE_SIZE = 20;
+    private final static int PAGE_SIZE = 10;
+    private final static int PAGER_RANGE = 5;
     private final String searchLocation;
+    private final int pageNumber;
 
     private String searchPhrase = "";
     private final SearchItemType selectedSearchItemType;
 
-    public SearchBean(String searchPhrase, String searchLocation) throws UnsupportedEncodingException {
-        super("");
+    private List<SearchResultItem> items;
+    private int totalNumberCustomers;
+
+    public SearchBean(String searchPhrase, String searchLocation, Integer pageNumber) throws IOException, ParseException, SearchException, org.apache.lucene.queryParser.ParseException, InvalidTokenOffsetsException {
+        this.pageNumber = pageNumber == null || pageNumber < 1 ? 1 : pageNumber;
         this.searchLocation = searchLocation == null? "" : searchLocation;
         if (StringUtils.isEmpty(searchPhrase)) {
             this.searchPhrase = "";
@@ -52,28 +53,19 @@ public class SearchBean extends DataSource implements Serializable {
         } else {
             selectedSearchItemType = SearchItemType.valueOf(searchLocation);
         }
-        onePageDataModel = null;
+        initializeItems();
     }
 
     public String getSearchPhrase() {
         return searchPhrase;
     }
 
-    /**
-     * Bound to DataTable value in the ui.
-     */
-    public PagedListDataModel getData() {
-        if (onePageDataModel == null) {
-            onePageDataModel = new LocalDataModel(pageSize);
-        }
-        return onePageDataModel;
-    }
-
-    public List<SearchResultItem> getItems() throws InvalidTokenOffsetsException, ParseException, org.apache.lucene.queryParser.ParseException, IOException, SearchException {
+    private void initializeItems() throws SearchException, org.apache.lucene.queryParser.ParseException, ParseException, InvalidTokenOffsetsException, IOException {
         StringBuilder querySb = new StringBuilder();
 
         if (StringUtils.isEmpty(searchPhrase)) {
-            return Collections.emptyList();
+            items = Collections.emptyList();
+            return;
         }
         searchPhrase = searchPhrase.trim();
         SearchItemType[] selectedSearchItemTypes;
@@ -94,7 +86,8 @@ public class SearchBean extends DataSource implements Serializable {
 
         String queryStr = querySb.toString().trim();
         if (queryStr.isEmpty()) {
-            return Collections.emptyList();
+            items = Collections.emptyList();
+            return;
         }
         Query query = new StringQueryImpl(queryStr);
 
@@ -103,123 +96,30 @@ public class SearchBean extends DataSource implements Serializable {
 
         //Query query = new StringQueryImpl(searchPhrase);
 
-        final int startRow = 0;
+        final int endRow = pageNumber * PAGE_SIZE;
+        final int startRow = endRow - PAGE_SIZE;
 
-        Hits hits = SearchEngineUtil.search(10112L, query, startRow, startRow + PAGE_SIZE);
-        // Retrieve the total number of customers from the database.  This
-        // number is required by the DataPage object so the paginator will know
-        // the relative location of the page data.
-        int totalNumberCustomers = hits.getLength();
+        Hits hits = SearchEngineUtil.search(10112L, query, startRow, endRow);
 
-        List<SearchResultItem> items = new ArrayList<>();
+        totalNumberCustomers = hits.getLength();
+
+        items = new ArrayList<>();
         int i = 0;
         for (Document doc : hits.getDocs()) {
             items.add(new SearchResultItem(doc, query, luceneQuery, (i++ % 2) == 0));
         }
-        return items;
     }
 
-    /**
-     * This is where the Customer data is retrieved from the database and
-     * returned as a list of CustomerBean objects for display in the UI.
-     *
-     * @throws SearchException
-     * @throws IOException
-     * @throws ParseException
-     * @throws org.apache.lucene.queryParser.ParseException
-     * @throws InvalidTokenOffsetsException
-     */
-    private DataPage getDataPage(int startRow, int pageSize) throws SearchException, ParseException, IOException, org.apache.lucene.queryParser.ParseException, InvalidTokenOffsetsException {
-        StringBuilder querySb = new StringBuilder();
-        boolean separator = false;
-        
-        searchPhrase = searchPhrase != null ? searchPhrase.trim() : null;
-        if (searchPhrase == null || searchPhrase.length() == 0) {
-            return new DataPage(0, 0, new ArrayList<SearchResultItem>());
-        }
-        SearchItemType[] selectedSearchItemTypes;
-        if (selectedSearchItemType == null) {
-            selectedSearchItemTypes = SearchItemType.values();
-        }
-        else {
-            selectedSearchItemTypes = new SearchItemType[] { selectedSearchItemType };
-        } 
-        
-        for (SearchItemType type: selectedSearchItemTypes) {
-            if (separator) {
-                querySb.append(" OR ");
-            }
-            querySb.append(type.getQuery(searchPhrase));
-            separator = true;
-        }
-
-        String queryStr = querySb.toString().trim();
-        if (queryStr.length() == 0) {
-            return new DataPage(0, 0, new ArrayList<SearchResultItem>());
-        }
-        Query query = new StringQueryImpl(queryStr);
-
-        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_34);
-        org.apache.lucene.search.Query luceneQuery = new QueryParser(Version.LUCENE_34, "content", analyzer).parse(queryStr);
-         
-        //Query query = new StringQueryImpl(searchPhrase);
-        
-        Hits hits = SearchEngineUtil.search(10112L, query, startRow, startRow + pageSize);
-        // Retrieve the total number of customers from the database.  This
-        // number is required by the DataPage object so the paginator will know
-        // the relative location of the page data.
-        int totalNumberCustomers = hits.getLength();
-
-        // Calculate indices to be displayed in the ui.
-        int endIndex = startRow + pageSize;
-        if (endIndex > totalNumberCustomers) {
-            endIndex = totalNumberCustomers;
-        }
-
-        List<SearchResultItem> items = new ArrayList<SearchResultItem>();
-        int i=0; 
-        for (Document doc: hits.getDocs()) {
-            items.add(new SearchResultItem(doc, query, luceneQuery, (i++ % 2) == 0));
-        }
-
-        return new DataPage(totalNumberCustomers,startRow,items);
+    public List<SearchResultItem> getItems() {
+        return items;
     }
 
     public String getSearchLocation() {
         return searchLocation;
     }
 
-    private class LocalDataModel extends PagedListDataModel implements Serializable {
-        /**
-         *
-         */
-        private static final long serialVersionUID = 1L;
-        private boolean resetPager = true;
-
-        public LocalDataModel(int pageSize) {
-            super(pageSize);
-        }
-
-        @Override
-        public DataPage fetchPage(int startRow, int pageSize) {
-            // call enclosing managed bean method to fetch the data
-            if (resetPager) {
-                startRow = 0;
-                resetPager = false;
-            }
-            try {
-                return getDataPage(startRow, pageSize);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return new DataPage(0, 0, new ArrayList<SearchResultItem>());
-        }
-    }
-
-    @Override
-    protected boolean isDefaultAscending(String sortColumn) {
-        // TODO Auto-generated method stub
-        return false;
+    public int getPageNumber() {
+        return pageNumber;
     }
 
     public SearchItemType[] getItemTypes() {
@@ -230,4 +130,31 @@ public class SearchBean extends DataSource implements Serializable {
         return selectedSearchItemType;
     }
 
+    public int getNumberOfPages() {
+        int numPages =  totalNumberCustomers / PAGE_SIZE;
+        if (totalNumberCustomers % PAGE_SIZE != 0) {
+            numPages++;
+        }
+        return numPages;
+    }
+
+    public List<PageLinkWrapper> getPageLinks() {
+        List<PageLinkWrapper> pageLinks = new ArrayList<>();
+        pageLinks.add(new PageLinkWrapper("<< First", 1, searchPhrase, searchLocation));
+        if (pageNumber > 1) {
+            pageLinks.add(new PageLinkWrapper("< Previous", pageNumber - 1, searchPhrase, searchLocation));
+        }
+        for (int i = Math.max(1, pageNumber - PAGER_RANGE), stop = Math.min(getNumberOfPages(), pageNumber + PAGER_RANGE); i <= stop; i++) {
+            pageLinks.add(new PageLinkWrapper("", i, searchPhrase, searchLocation));
+        }
+        if (pageNumber < getNumberOfPages()) {
+            pageLinks.add(new PageLinkWrapper("Next >", pageNumber + 1, searchPhrase, searchLocation));
+        }
+        pageLinks.add(new PageLinkWrapper("Last >>", getNumberOfPages(), searchPhrase, searchLocation));
+        return pageLinks;
+    }
+
+    public int getTotalNumberOfResults() {
+        return totalNumberCustomers;
+    }
 }

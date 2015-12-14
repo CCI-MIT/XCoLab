@@ -55,3 +55,17 @@ input.searchPhrase {
   margin-top: 6px;
   margin-left: 10px;
 }
+
+.pagination {
+  width: 100%;
+  margin: 10px auto;
+
+  a {
+    padding: 0 5px;
+
+    &.c {
+      cursor: default;
+      color: $darkest-grey;
+    }
+  }
+}

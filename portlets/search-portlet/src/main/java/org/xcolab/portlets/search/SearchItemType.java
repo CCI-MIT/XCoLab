@@ -1,6 +1,5 @@
 package org.xcolab.portlets.search;
 
-import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
@@ -44,7 +43,7 @@ public enum SearchItemType {
                      String idStr = doc.get(Field.ENTRY_CLASS_PK);
                      try {
                      	Long id = Long.parseLong(idStr);
-                     	Contest c = ContestLocalServiceUtil.getContest(id);
+                     	ContestLocalServiceUtil.getContest(id);
                      	return "/web/guest/plans/-/plans/contestId/" + id; 
                      } catch (SystemException | PortalException | NumberFormatException ignored) { }
                      
@@ -231,4 +230,7 @@ public enum SearchItemType {
         return name();
     }
 
+    public PageLinkWrapper getPageLink(SearchBean searchBean) {
+        return new PageLinkWrapper(getPrintName(), 1, searchBean.getSearchPhrase(), name());
+    }
 }
