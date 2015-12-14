@@ -547,12 +547,12 @@
 }
 
 .control_input {
-  background: url(../images/control-input.gif) no-repeat;
+  background: url(../images/bg-noise.png), $lightest-grey;
+  border: 1px solid $light-grey;
   width: 53px;
   height: 34px;
   padding-right: 6px;
   text-align: right;
-  border: none;
   font-size: 18px;
   color: black;
 }
@@ -605,7 +605,7 @@
 }
 
 .rounded_button.blugrid a {
-  background: url(../images/grid_blue-bg.gif);
+  background: $primary-color;
   color: white;
   border: 1px solid $primary-dark-grey;
 }
@@ -640,10 +640,10 @@
   height: 20px;
   overflow: hidden;
   margin-left: -6px;
-  background: url(../images/control-grab.gif) no-repeat;
-  @include border-radius(0);
+  background: $primary-color;
+  cursor: pointer;
+  @include border-radius(4px);
   border: 0;
-
 }
 
 .ui-widget-content a.ui-slider-handle-active, .ui-widget-content a.ui-slider-handle-active:hover {
@@ -654,7 +654,7 @@
   margin-left: -0.6px;
   top: -3px;
   overflow: hidden;
-  background: url(../images/textures_glass.gif) no-repeat;
+  background: $primary-color;
 }
 
 .ui-slider-range {

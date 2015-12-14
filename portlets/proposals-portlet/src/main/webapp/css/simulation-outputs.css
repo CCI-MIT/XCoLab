@@ -213,7 +213,8 @@ ul.ui-tabs-nav li.ui-state-active a {
 }
 
 .runSimulationButton_bdr {
-  background: url(/climatecolab-theme/images/runSimulation_btn-bg.png) no-repeat;
+  background: none;
+  border: 1px solid lightgrey;
   width: 132px;
   height: 35px;
   padding: 1px 3px 3px 1px;
