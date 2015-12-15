@@ -4,7 +4,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ImpactIteration;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -13,18 +12,26 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
+import edu.mit.cci.roma.client.comm.ModelNotFoundException;
+import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.enums.ContestTier;
-import org.xcolab.portlets.proposals.wrappers.ProposalImpactScenarioCombinationWrapper;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.*;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.portlets.proposals.wrappers.IntegratedProposalImpactSeries;
+import org.xcolab.portlets.proposals.wrappers.ProposalImpactScenarioCombinationWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
+import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
+import org.xcolab.portlets.proposals.wrappers.ProposalTab;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -47,17 +54,17 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    private Contest contest = null;
-    private ProposalWrapper proposalWrapper = null;
+    private Contest contest;
+    private ProposalWrapper proposalWrapper;
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_IMPACT"})
     public String showImpactTab(PortletRequest request, Model model, @RequestParam(required = false) boolean edit)
-            throws Exception {
+            throws PortalException, SystemException, IOException, ScenarioNotFoundException, ModelNotFoundException {
 
-        boolean userAllowedToEdit = false;
         contest = proposalsContext.getContest(request);
         proposalWrapper = proposalsContext.getProposalWrapped(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
+        boolean userAllowedToEdit = false;
         if (edit) {
             userAllowedToEdit = canEditImpactTab(request);
         }
@@ -80,26 +87,29 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         }
         model.addAttribute("showSubProposalListing", showSubProposalListing);
 
-        switch (ContestTier.getContestTierByTierType(contest.getContestTier())) {
-            case BASIC:
-                return showImpactTabBasic(request, model);
-            case REGION_SECTOR:
-                //return showImpactTabRegionSector(request, model);
-                return "proposalImpactError";
-            case REGION_AGGREGATE:
-                return showImpactTabRegionAggregate(request, model);
-            case GLOBAL:
-                if(userAllowedToEdit)
-                    return showImpactTabEditGlobal(request, model);
-                else
-                    return showImpactTabGlobal(request, model);
-            default:
-                _log.warn("Using default impact tab view since contest tier is not set for contest: " + contest.getContestPK());
-                return "proposalImpactError";
+        final ContestTier contestTier = ContestTier.getContestTierByTierType(contest.getContestTier());
+        if (contestTier != null) {
+            switch (contestTier) {
+                case BASIC:
+                    return showImpactTabBasic(request, model);
+                case REGION_SECTOR:
+                    //return showImpactTabRegionSector();
+                    return "proposalImpactError";
+                case REGION_AGGREGATE:
+                    return showImpactTabRegionAggregate();
+                case GLOBAL:
+                    if(userAllowedToEdit) {
+                        return showImpactTabEditGlobal(model);
+                    } else {
+                        return showImpactTabGlobal();
+                    }
+            }
         }
+        _log.warn("Using default impact tab view since contest tier is not set for contest: " + contest.getContestPK());
+        return "proposalImpactError";
     }
 
-    private Long getModelIdIfProposalHasScenarioIdOrContestDefaultModelId() throws Exception{
+    private Long getModelIdIfProposalHasScenarioIdOrContestDefaultModelId() throws PortalException, SystemException {
         Long modelId = proposalWrapper.getModelId();
         boolean scenarioIdValid =
                 Validator.isNotNull(proposalWrapper.getScenarioId()) && proposalWrapper.getScenarioId() > 0;
@@ -107,33 +117,31 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             try {
                 modelId = CollaboratoriumModelingService.repository()
                         .getScenario(proposalWrapper.getScenarioId()).getSimulation().getId();
-            } catch (Exception e){
+            } catch (SystemException | PortalException | IOException e){
                 _log.warn("Could not fetch simulation id for proposal scenario: ", e);
             }
         }
         return modelId;
     }
 
-    private boolean canEditImpactTab(PortletRequest request) throws Exception {
+    private boolean canEditImpactTab(PortletRequest request) throws PortalException, SystemException {
         return ProposalTab.IMPACT.getCanEdit(proposalsContext.getPermissions(request), proposalsContext, request);
     }
 
-    private String showImpactTabRegionSector(PortletRequest request, Model model, Boolean edit) throws Exception {
+    private String showImpactTabRegionSector() {
         return "integratedProposalImpact";
     }
 
-    private String showImpactTabRegionAggregate(PortletRequest request, Model model)
-            throws Exception {
+    private String showImpactTabRegionAggregate() {
         return "integratedProposalImpact";
     }
 
-    private String showImpactTabGlobal(PortletRequest request, Model model)
-            throws Exception {
+    private String showImpactTabGlobal() {
         return "integratedProposalImpact";
     }
 
-    private String showImpactTabEditGlobal(PortletRequest request, Model model)
-            throws Exception {
+    private String showImpactTabEditGlobal(Model model)
+            throws PortalException, SystemException, IOException, ScenarioNotFoundException, ModelNotFoundException {
 
         List<Proposal> subProposals =
                 ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposalWrapper.getProposalId());
@@ -191,8 +199,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private Map<String, String[]> getConsolidationOptions() {
-        Map<String, String[]> consolidateOptions = getConsolidateOptionsOnGlobalLevel();
-        return consolidateOptions;
+        return getConsolidateOptionsOnGlobalLevel();
     }
 
     private String showImpactTabBasic(PortletRequest request, Model model)
@@ -244,7 +251,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private List<OntologyTerm> sortByName(Collection<OntologyTerm> collection) {
-        List<OntologyTerm> list = new ArrayList<OntologyTerm>(collection);
+        List<OntologyTerm> list = new ArrayList<>(collection);
         Collections.sort(list, new Comparator<OntologyTerm>() {
 
             @Override
