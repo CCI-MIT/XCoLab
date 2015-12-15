@@ -53,6 +53,7 @@ public class MemberItem implements Serializable {
                 case "Contest Manager":
                     memberRole = MemberRole.CONTEST_MANAGER;
                     break;
+                case "Judge":
                 case "Judges":
                     memberRole = MemberRole.JUDGE;
                     break;
