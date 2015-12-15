@@ -7,18 +7,22 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.ProposalAttributeLocalService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
@@ -132,48 +136,48 @@ public class GlobalContestSimulator {
     public void cleanupPointsSimulator() throws SystemException, PortalException {
         //delete all contestPhases
         for (ContestPhase cp : globalContestPhases) {
-            testInstance.contestPhaseLocalService.deleteContestPhase(cp);
+            XCoLabTest.contestPhaseLocalService.deleteContestPhase(cp);
         }
         for (int j = 0; j < sideContests.size(); j++) {
             for (ContestPhase cp : sideContestPhases.get(j)) {
-                testInstance.contestPhaseLocalService.deleteContestPhase(cp);
+                XCoLabTest.contestPhaseLocalService.deleteContestPhase(cp);
             }
         }
         globalContestPhases = null;
 
         //delete links between proposals
-        List<ProposalAttribute> proposalAttributes = testInstance.proposalAttributeLocalService.getProposalAttributes(0, Integer.MAX_VALUE);
+        List<ProposalAttribute> proposalAttributes = XCoLabTest.proposalAttributeLocalService.getProposalAttributes(0, Integer.MAX_VALUE);
         for (ProposalAttribute pa: proposalAttributes) {
-            testInstance.proposalAttributeLocalService.deleteProposalAttribute(pa);
+            XCoLabTest.proposalAttributeLocalService.deleteProposalAttribute(pa);
         }
         globalProposalLinksToGlobalProposals = null;
         globalProposalLinksToSideProposals = null;
 
         //delete Proposal 2 phases
-        List<Proposal2Phase> p2ps = testInstance.proposal2PhaseLocalService.getProposal2Phases(0, Integer.MAX_VALUE);
+        List<Proposal2Phase> p2ps = XCoLabTest.proposal2PhaseLocalService.getProposal2Phases(0, Integer.MAX_VALUE);
         for (Proposal2Phase p2p: p2ps) {
-            testInstance.proposal2PhaseLocalService.deleteProposal2Phase(p2p);
+            XCoLabTest.proposal2PhaseLocalService.deleteProposal2Phase(p2p);
         }
 
         //Delete proposals
         for (int i = 0; i < globalProposals.size(); i++) {
             Proposal p = globalProposals.get(i);
-            testInstance.userLocalService.deleteGroupUsers(p.getGroupId(), globalProposalsTeamMembers.get(i));
-            testInstance.proposalLocalService.deleteProposal(p);
+            XCoLabTest.userLocalService.deleteGroupUsers(p.getGroupId(), globalProposalsTeamMembers.get(i));
+            XCoLabTest.proposalLocalService.deleteProposal(p);
         }
         for (int j = 0; j < sideContests.size(); j++) {
             for (int i = 0; i < amountOfProposalsPerSideContest; i++) {
                 Proposal p = sideProposals.get(j).get(i);
-                testInstance.userLocalService.deleteGroupUsers(p.getGroupId(), sideProposalsTeamMembers.get(j).get(i));
-                testInstance.proposalLocalService.deleteProposal(p);
+                XCoLabTest.userLocalService.deleteGroupUsers(p.getGroupId(), sideProposalsTeamMembers.get(j).get(i));
+                XCoLabTest.proposalLocalService.deleteProposal(p);
             }
         }
 
         //delete contests
-        testInstance.contestLocalService.deleteContest(globalContest);
+        XCoLabTest.contestLocalService.deleteContest(globalContest);
         globalContest = null;
-        for (int j = 0; j < sideContests.size(); j++) {
-            testInstance.contestLocalService.deleteContest(sideContests.get(j));
+        for (Contest sideContest : sideContests) {
+            XCoLabTest.contestLocalService.deleteContest(sideContest);
         }
         sideContests = null;
     }
@@ -194,17 +198,17 @@ public class GlobalContestSimulator {
 
     protected List<User> setTeamMembers(Proposal proposal, User author) throws SystemException, PortalException {
         //sometimes the admin user is still in the user group
-        testInstance.userLocalService.deleteGroupUser(proposal.getGroupId(), testInstance.adminId);
+        XCoLabTest.userLocalService.deleteGroupUser(proposal.getGroupId(), XCoLabTest.adminId);
 
         // Use a set in order to prevent multiple user entries of the same user in a group
-        Set<User> teamMembersSet = new HashSet<User>();
+        Set<User> teamMembersSet = new HashSet<>();
         teamMembersSet.add(author);
         for (int i = 1; doWithProbability(probabilityOfAdditionalTeamMember/i); i++) {
             teamMembersSet.add(users.get(randomInt(0, amountOfUsers)));
         }
         List<User> teamMembersList = new ArrayList<>();
         teamMembersList.addAll(teamMembersSet);
-        testInstance.userLocalService.addGroupUsers(proposal.getGroupId(), teamMembersList);
+        XCoLabTest.userLocalService.addGroupUsers(proposal.getGroupId(), teamMembersList);
 
         return teamMembersList;
     }
@@ -213,27 +217,27 @@ public class GlobalContestSimulator {
 
     protected void createGlobalContestAndProposals() throws SystemException, PortalException, ParseException {
         //create global contest
-        globalContest = testInstance.contestLocalService.createNewContest(testInstance.adminId, "Test-Global-Contest");
+        globalContest = XCoLabTest.contestLocalService.createNewContest(XCoLabTest.adminId, "Test-Global-Contest");
         globalContest.setPoints(pointsToBeDistributed);
         globalContest.setDefaultParentPointType(1);
-        testInstance.contestLocalService.updateContest(globalContest);
+        XCoLabTest.contestLocalService.updateContest(globalContest);
 
         globalContestPhases = createPhasesForContest(globalContest, null, startPhase);
 
         //create proposals, authored by a random user, advance them with a probability to the next phases
-        globalProposals = new ArrayList<Proposal>();
-        globalProposalsTeamMembers = new HashMap<Integer, List<User>>();
+        globalProposals = new ArrayList<>();
+        globalProposalsTeamMembers = new HashMap<>();
         globalProposalsInLastPhase = new ArrayList<>();
         for (int i = 0; i < amountOfGlobalProposals; i++) {
             User author = users.get(randomInt(0, amountOfUsers));
-            Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), globalContestPhases.get(0).getContestPhasePK());
+            Proposal proposal = XCoLabTest.proposalLocalService.create(author.getUserId(), globalContestPhases.get(0).getContestPhasePK());
 
             //create team members
             globalProposalsTeamMembers.put(i, setTeamMembers(proposal, author));
             globalProposals.add(proposal);
 
             //create proposal name
-            testInstance.proposalAttributeLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Global Proposal "+i);
+            XCoLabTest.proposalAttributeLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Global Proposal "+i);
 
             initializePhasesForProposal(proposal, i, startPhase, globalContestPhases, globalProposalsInLastPhase);
         }
@@ -244,7 +248,7 @@ public class GlobalContestSimulator {
                 //select this proposal as winner with a specific probability
                 //note that this does not always select a winner. this is fine though, since we want some test cases without winner.
                 if (doWithProbability(1/globalProposalsInLastPhase.size())) {
-                    testInstance.proposalContestPhaseAttributeLocalService.setProposalContestPhaseAttribute(globalProposals.get(i).getProposalId(), globalContestPhases.get(5).getContestPhasePK(),
+                    XCoLabTest.proposalContestPhaseAttributeLocalService.setProposalContestPhaseAttribute(globalProposals.get(i).getProposalId(), globalContestPhases.get(5).getContestPhasePK(),
                             ProposalContestPhaseAttributeKeys.RIBBON, 2L);
                     break;
                 }
@@ -255,16 +259,16 @@ public class GlobalContestSimulator {
 
     private void createSideContestsAndProposals() throws SystemException, PortalException, ParseException {
         //create side contests
-        sideProposals = new HashMap<Integer, List<Proposal>>();
-        sideContests = new ArrayList<Contest>();
+        sideProposals = new HashMap<>();
+        sideContests = new ArrayList<>();
         sideProposalsTeamMembers = new HashMap<>();
         sideContestPhases = new HashMap<>();
         sideProposalsInLastPhase = new HashMap<>();
         for (int i = 0; i < amountOfSideContests; i++) {
-            Contest sideContest = testInstance.contestLocalService.createNewContest(testInstance.adminId, "Test-Side-Contest-"+(i+1));
+            Contest sideContest = XCoLabTest.contestLocalService.createNewContest(XCoLabTest.adminId, "Test-Side-Contest-"+(i+1));
             sideContest.setPoints(0);
             sideContest.setDefaultParentPointType(6);
-            testInstance.contestLocalService.updateContest(sideContest);
+            XCoLabTest.contestLocalService.updateContest(sideContest);
 
             if (this.areSideContestsTimedLikeGlobalContest) {
                 sideContestPhases.put(i, this.createPhasesForContest(sideContest, globalContestPhases, startPhase));
@@ -278,11 +282,11 @@ public class GlobalContestSimulator {
 
             for (int j = 0; j < amountOfProposalsPerSideContest; j++) {
                 User author = users.get(randomInt(0, amountOfUsers));
-                Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), sideContestPhases.get(i).get(0).getContestPhasePK());
+                Proposal proposal = XCoLabTest.proposalLocalService.create(author.getUserId(), sideContestPhases.get(i).get(0).getContestPhasePK());
                 sideProposals.get(i).add(proposal);
                 sideProposalsTeamMembers.get(i).put(j, setTeamMembers(proposal, author));
 
-                testInstance.proposalAttributeLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Side-Proposal "+i+"-"+j);
+                XCoLabTest.proposalAttributeLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Side-Proposal "+i+"-"+j);
 
                 initializePhasesForProposal(proposal, j, startPhase, sideContestPhases.get(i), sideProposalsInLastPhase.get(i));
 
@@ -317,14 +321,14 @@ public class GlobalContestSimulator {
             }
 
             //1300907 is the sub proposal plan section definition
-            testInstance.proposalAttributeLocalService.setAttribute(globalProposals.get(i).getAuthorId(), globalProposals.get(i).getProposalId(), ProposalAttributeKeys.SECTION, 1300907L, sectionText);
+            XCoLabTest.proposalAttributeLocalService.setAttribute(globalProposals.get(i).getAuthorId(), globalProposals.get(i).getProposalId(), ProposalAttributeKeys.SECTION, 1300907L, sectionText);
         }
     }
 
 
 
     protected List<ContestPhase> createPhasesForContest(Contest contest, List<ContestPhase> baseOnExistingPhases, Integer startPhase) throws ParseException, SystemException {
-        List<ContestPhase> createdPhases = new ArrayList<ContestPhase>();
+        List<ContestPhase> createdPhases = new ArrayList<>();
         String sCp1StartDate;
         String[] sCp1To2Transition;
         String[] sCp2To3Transition;
@@ -333,7 +337,6 @@ public class GlobalContestSimulator {
         String[] sCp5To6Transition;
         if (baseOnExistingPhases == null) {
             //calculate phases
-            final int dayDeviation = 2;
             final int dayOffset;
             switch (startPhase) {
                 case 0:
@@ -360,6 +363,7 @@ public class GlobalContestSimulator {
                     break;
             }
 
+            final int dayDeviation = 2;
             sCp1StartDate = generateRandomIsoDatePair(30 + dayOffset, dayDeviation)[0];
             sCp1To2Transition = generateRandomIsoDatePair(24 + dayOffset, dayDeviation);
             sCp2To3Transition = generateRandomIsoDatePair(17 + dayOffset, dayDeviation);
@@ -458,7 +462,7 @@ public class GlobalContestSimulator {
 
 
     protected ContestPhase createContestPhase(Contest c, long type, boolean fellowScreeningActive, String autoPromote, String startDate, String endDate) throws SystemException, ParseException {
-        ContestPhase cp = testInstance.contestPhaseLocalService.createContestPhase(100000+contestPhaseIdCount++);
+        ContestPhase cp = XCoLabTest.contestPhaseLocalService.createContestPhase(100000+contestPhaseIdCount++);
         cp.setContestPK(c.getContestPK());
         cp.setContestPhaseType(type);
         cp.setFellowScreeningActive(fellowScreeningActive);
@@ -469,7 +473,7 @@ public class GlobalContestSimulator {
         if (endDate != null) {
             cp.setPhaseEndDate(dateFormat.parse(endDate));
         }
-        testInstance.contestPhaseLocalService.updateContestPhase(cp);
+        XCoLabTest.contestPhaseLocalService.updateContestPhase(cp);
 
         return cp;
     }
@@ -477,10 +481,10 @@ public class GlobalContestSimulator {
 
 
     protected static void copyProposalToPhase(Proposal p, ContestPhase cp) throws SystemException {
-        Proposal2Phase p2p = testInstance.proposal2PhaseLocalService.create(p.getProposalId(), cp.getContestPhasePK());
+        Proposal2Phase p2p = XCoLabTest.proposal2PhaseLocalService.create(p.getProposalId(), cp.getContestPhasePK());
         p2p.setVersionFrom(1);
         p2p.setVersionTo(1);
-        testInstance.proposal2PhaseLocalService.updateProposal2Phase(p2p);
+        XCoLabTest.proposal2PhaseLocalService.updateProposal2Phase(p2p);
     }
 
     //returns a random int between min and max (inclusive min, exclusive max)

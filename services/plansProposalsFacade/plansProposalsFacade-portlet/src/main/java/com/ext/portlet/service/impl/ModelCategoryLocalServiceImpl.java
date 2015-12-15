@@ -31,12 +31,14 @@ public class ModelCategoryLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ModelCategoryLocalServiceUtil} to access the model category local service.
      */
     
+    @Override
     public List<ModelGlobalPreference> getModelPreferences(ModelCategory category) throws SystemException {
         return ModelGlobalPreferenceLocalServiceUtil.findByCategory(category);
 
     }
     
-    public ModelCategory addCategory(String name,String description) throws SystemException {
+    @Override
+    public ModelCategory addCategory(String name, String description) throws SystemException {
         Long pk = CounterLocalServiceUtil.increment(ModelCategory.class.getName());
         ModelCategory cat = createModelCategory(pk);
         cat.setModelCategoryName(name);

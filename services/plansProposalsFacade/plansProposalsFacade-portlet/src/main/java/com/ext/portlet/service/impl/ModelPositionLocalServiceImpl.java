@@ -29,10 +29,12 @@ public class ModelPositionLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ModelPositionLocalServiceUtil} to access the model position local service.
      */
     
+    @Override
     public List<ModelPosition> getModelPositionsByModelId(Long modelId) throws SystemException {
         return modelPositionPersistence.findByModelId(modelId);
     }
     
+    @Override
     public void setModelPositions(Long modelId, List<Long> positionIds) throws SystemException {
         modelPositionPersistence.removeByModelId(modelId);
         

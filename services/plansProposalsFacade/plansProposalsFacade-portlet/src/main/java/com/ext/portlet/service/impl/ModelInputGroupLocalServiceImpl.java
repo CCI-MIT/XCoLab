@@ -38,16 +38,18 @@ public class ModelInputGroupLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ModelInputGroupLocalServiceUtil} to access the model input group local service.
      */
 
+    @Override
     public List<ModelInputGroup> getInputGroups(Simulation sim) {
         try {
             return modelInputGroupPersistence.findByModelId(sim.getId());
         } catch (SystemException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         return Collections.emptyList();
     }
 
+     @Override
      public List<ModelInputGroup> getChildGroups(ModelInputGroup group) {
          try {
              return modelInputGroupPersistence.findByparentModelId(group.getModelInputGroupPK());
@@ -60,26 +62,28 @@ public class ModelInputGroupLocalServiceImpl
      
      
 
+     @Override
      public List<ModelInputItem> getInputItems(ModelInputGroup group) {
          return ModelInputItemLocalServiceUtil.getItemForGroupId(group.getModelInputGroupPK());
         
      }
 
+     @Override
      public ModelInputGroup getParent(ModelInputGroup group) {
          try {
              return ModelInputGroupLocalServiceUtil.getModelInputGroup(group.getParentGroupPK());
-         } catch (PortalException e) {
-             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-         } catch (SystemException e) {
-             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+         } catch (PortalException | SystemException e) {
+             e.printStackTrace();
          }
          return null;
      }
 
+      @Override
       public Simulation getModel(ModelInputGroup group) throws SystemException, IOException {
          return CollaboratoriumModelingService.repository().getSimulation(group.getModelId());       
      }
 
+     @Override
      public MetaData getMetaData(ModelInputGroup group) throws SystemException, IOException {
          if (group.getNameAndDescriptionMetaDataId() > 0) {
              return CollaboratoriumModelingService.repository().getMetaData(group.getNameAndDescriptionMetaDataId());

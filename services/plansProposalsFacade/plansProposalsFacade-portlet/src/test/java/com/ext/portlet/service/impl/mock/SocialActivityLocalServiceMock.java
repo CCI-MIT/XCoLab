@@ -1,8 +1,5 @@
 package com.ext.portlet.service.impl.mock;
 
-import java.util.Date;
-import java.util.List;
-
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -11,6 +8,9 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalService;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>A mock class that realizes a counter contract.</p>
@@ -22,12 +22,8 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     /*
      * NOTE FOR DEVELOPERS:
      *
-     * Never modify or reference this interface directly. Always use {@link SocialActivityLocalServiceUtil} to access the social activity local service. Add custom service methods to {@link com.liferay.portlet.social.service.impl.SocialActivityLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+     * Never modify or reference this interface directly. Always use {@link SocialActivityLocalServiceUtil} to access the social activity local service. Add custom service methods to {@link impl.SocialActivityLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
      */
-    
-    public SocialActivityLocalServiceMock() {
-        
-    }
 
     /**
     * Adds the social activity to the database. Also notifies the appropriate model listeners.
@@ -36,9 +32,9 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the social activity that was added
     * @throws SystemException if a system exception occurred
     */
-    public com.liferay.portlet.social.model.SocialActivity addSocialActivity(
-        com.liferay.portlet.social.model.SocialActivity socialActivity)
-        throws com.liferay.portal.kernel.exception.SystemException {
+    @Override
+    public SocialActivity addSocialActivity(SocialActivity socialActivity)
+        throws SystemException {
         return null;
     }
 
@@ -48,7 +44,8 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @param activityId the primary key for the new social activity
     * @return the new social activity
     */
-    public com.liferay.portlet.social.model.SocialActivity createSocialActivity(
+    @Override
+    public SocialActivity createSocialActivity(
         long activityId) {
         return null;
     }
@@ -60,10 +57,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
-    public java.util.List dynamicQuery(
-        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public List dynamicQuery(DynamicQuery dynamicQuery)
+        throws SystemException {
         return null;
     }
 
@@ -71,7 +68,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full result set.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -80,10 +77,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
-    public java.util.List dynamicQuery(
-        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-        int end) throws com.liferay.portal.kernel.exception.SystemException {
+    public List dynamicQuery(
+        DynamicQuery dynamicQuery, int start,
+        int end) throws SystemException {
         return null;
     }
 
@@ -91,7 +89,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full result set.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -101,12 +99,13 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
-    public java.util.List dynamicQuery(
-        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
+    public List dynamicQuery(
+        DynamicQuery dynamicQuery, int start,
         int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -117,16 +116,18 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
-        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        DynamicQuery dynamicQuery)
+        throws SystemException {
         return 0;
     }
 
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.liferay.portlet.social.model.SocialActivity fetchSocialActivity(
+    public SocialActivity fetchSocialActivity(
         long activityId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -138,19 +139,21 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @throws PortalException if a social activity with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.liferay.portlet.social.model.SocialActivity getSocialActivity(
+    public SocialActivity getSocialActivity(
         long activityId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws PortalException,
+            SystemException {
         return null;
     }
 
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws PortalException,
+            SystemException {
         return null;
     }
 
@@ -158,7 +161,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * Returns a range of all the social activities.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full result set.
     * </p>
     *
     * @param start the lower bound of the range of social activities
@@ -166,10 +169,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of social activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getSocialActivities(
+    public List<SocialActivity> getSocialActivities(
         int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -179,9 +183,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of social activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getSocialActivitiesCount()
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -192,9 +197,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the social activity that was updated
     * @throws SystemException if a system exception occurred
     */
-    public com.liferay.portlet.social.model.SocialActivity updateSocialActivity(
-        com.liferay.portlet.social.model.SocialActivity socialActivity)
-        throws com.liferay.portal.kernel.exception.SystemException {
+    @Override
+    public SocialActivity updateSocialActivity(
+        SocialActivity socialActivity)
+        throws SystemException {
         return null;
     }
 
@@ -206,10 +212,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the social activity that was updated
     * @throws SystemException if a system exception occurred
     */
-    public com.liferay.portlet.social.model.SocialActivity updateSocialActivity(
-        com.liferay.portlet.social.model.SocialActivity socialActivity,
+    public SocialActivity updateSocialActivity(
+        SocialActivity socialActivity,
         boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -218,6 +224,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return null;
     }
@@ -227,6 +234,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
     }
 
@@ -269,11 +277,12 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @throws PortalException if the user or group could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public void addActivity(long userId, long groupId,
-        java.util.Date createDate, java.lang.String className, long classPK,
-        int type, java.lang.String extraData, long receiverUserId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+                            Date createDate, java.lang.String className, long classPK,
+                            int type, java.lang.String extraData, long receiverUserId)
+        throws PortalException,
+            SystemException {
     }
 
     /**
@@ -290,18 +299,20 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @throws PortalException if the user or group could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public void addActivity(long userId, long groupId,
-        java.lang.String className, long classPK, int type,
-        java.lang.String extraData, long receiverUserId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+                            java.lang.String className, long classPK, int type,
+                            java.lang.String extraData, long receiverUserId)
+        throws PortalException,
+            SystemException {
     }
 
+    @Override
     public void addActivity(
-        com.liferay.portlet.social.model.SocialActivity activity,
-        com.liferay.portlet.social.model.SocialActivity mirrorActivity)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        SocialActivity activity,
+        SocialActivity mirrorActivity)
+        throws PortalException,
+            SystemException {
     }
 
     /**
@@ -324,11 +335,12 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @throws PortalException if the user or group could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public void addUniqueActivity(long userId, long groupId,
-        java.util.Date createDate, java.lang.String className, long classPK,
-        int type, java.lang.String extraData, long receiverUserId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+                                  Date createDate, java.lang.String className, long classPK,
+                                  int type, java.lang.String extraData, long receiverUserId)
+        throws PortalException,
+            SystemException {
     }
 
     /**
@@ -350,11 +362,12 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @throws PortalException if the user or group could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public void addUniqueActivity(long userId, long groupId,
-        java.lang.String className, long classPK, int type,
-        java.lang.String extraData, long receiverUserId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+                                  java.lang.String className, long classPK, int type,
+                                  java.lang.String extraData, long receiverUserId)
+        throws PortalException,
+            SystemException {
     }
 
     /**
@@ -363,10 +376,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     *
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public void deleteActivities(
         com.liferay.portlet.asset.model.AssetEntry assetEntry)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws PortalException,
+            SystemException {
     }
 
     /**
@@ -377,8 +391,9 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @param classPK the primary key of the target asset
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public void deleteActivities(java.lang.String className, long classPK)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
     }
 
     /**
@@ -388,9 +403,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @throws PortalException if the activity could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public void deleteActivity(long activityId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws PortalException,
+            SystemException {
     }
 
     /**
@@ -399,9 +415,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @param activity the activity to be removed
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public void deleteActivity(
-        com.liferay.portlet.social.model.SocialActivity activity)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        SocialActivity activity)
+        throws SystemException {
     }
 
     /**
@@ -415,8 +432,9 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @param userId the primary key of the user
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public void deleteUserActivities(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
     }
 
     /**
@@ -429,7 +447,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -439,10 +457,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getActivities(
+    public List<SocialActivity> getActivities(
         long classNameId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -457,7 +476,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -469,10 +488,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getActivities(
+    public List<SocialActivity> getActivities(
         long mirrorActivityId, long classNameId, long classPK, int start,
-        int end) throws com.liferay.portal.kernel.exception.SystemException {
+        int end) throws SystemException {
         return null;
     }
 
@@ -487,7 +507,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -499,11 +519,12 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getActivities(
+    public List<SocialActivity> getActivities(
         long mirrorActivityId, java.lang.String className, long classPK,
         int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -517,7 +538,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -527,10 +548,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getActivities(
+    public List<SocialActivity> getActivities(
         java.lang.String className, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -542,9 +564,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getActivitiesCount(long classNameId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -559,10 +582,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getActivitiesCount(long mirrorActivityId, long classNameId,
         long classPK)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -577,10 +601,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getActivitiesCount(long mirrorActivityId,
         java.lang.String className, long classPK)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -591,9 +616,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getActivitiesCount(java.lang.String className)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -605,11 +631,12 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @throws PortalException if the activity could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.liferay.portlet.social.model.SocialActivity getActivity(
+    public SocialActivity getActivity(
         long activityId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws PortalException,
+            SystemException {
         return null;
     }
 
@@ -626,7 +653,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -636,10 +663,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getGroupActivities(
+    public List<SocialActivity> getGroupActivities(
         long groupId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -654,9 +682,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getGroupActivitiesCount(long groupId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -674,7 +703,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -684,10 +713,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getGroupUsersActivities(
+    public List<SocialActivity> getGroupUsersActivities(
         long groupId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -703,9 +733,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getGroupUsersActivitiesCount(long groupId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -717,11 +748,12 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @throws PortalException if the mirror activity could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.liferay.portlet.social.model.SocialActivity getMirrorActivity(
+    public SocialActivity getMirrorActivity(
         long mirrorActivityId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws PortalException,
+            SystemException {
         return null;
     }
 
@@ -735,7 +767,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -745,10 +777,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getOrganizationActivities(
+    public List<SocialActivity> getOrganizationActivities(
         long organizationId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -760,9 +793,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getOrganizationActivitiesCount(long organizationId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -776,7 +810,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -786,10 +820,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getOrganizationUsersActivities(
+    public List<SocialActivity> getOrganizationUsersActivities(
         long organizationId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -801,9 +836,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getOrganizationUsersActivitiesCount(long organizationId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -817,7 +853,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <>0</code> refers
     * to the first result in the set. Setting both <code>start</code> and
     * <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -827,10 +863,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getRelationActivities(
+    public List<SocialActivity> getRelationActivities(
         long userId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -845,7 +882,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -856,10 +893,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getRelationActivities(
+    public List<SocialActivity> getRelationActivities(
         long userId, int type, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -871,9 +909,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getRelationActivitiesCount(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -887,9 +926,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getRelationActivitiesCount(long userId, int type)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -902,7 +942,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -912,10 +952,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getUserActivities(
+    public List<SocialActivity> getUserActivities(
         long userId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -926,9 +967,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getUserActivitiesCount(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -942,7 +984,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -952,10 +994,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getUserGroupsActivities(
+    public List<SocialActivity> getUserGroupsActivities(
         long userId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -967,9 +1010,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getUserGroupsActivitiesCount(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -983,7 +1027,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -993,10 +1037,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getUserGroupsAndOrganizationsActivities(
+    public List<SocialActivity> getUserGroupsAndOrganizationsActivities(
         long userId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -1008,9 +1053,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getUserGroupsAndOrganizationsActivitiesCount(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
@@ -1024,7 +1070,7 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * primary keys, they are indexes in the result set. Thus, <code>0</code>
     * refers to the first result in the set. Setting both <code>start</code>
     * and <code>end</code> to {@link
-    * com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full
+    * com.liferay.portal.kernel.dao.orm.Queryutil#ALL_POS} will return the full
     * result set.
     * </p>
     *
@@ -1034,10 +1080,11 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the range of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.liferay.portlet.social.model.SocialActivity> getUserOrganizationsActivities(
+    public List<SocialActivity> getUserOrganizationsActivities(
         long userId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return null;
     }
 
@@ -1049,9 +1096,10 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     * @return the number of matching activities
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getUserOrganizationsActivitiesCount(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws SystemException {
         return 0;
     }
 
