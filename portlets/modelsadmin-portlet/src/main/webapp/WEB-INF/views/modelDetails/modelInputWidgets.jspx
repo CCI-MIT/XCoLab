@@ -7,7 +7,7 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-	<jsp:directive.include file="./header.jsp" />
+	<jsp:directive.include file="header.jspx" />
 
 	<h1>Input widgets</h1>
 

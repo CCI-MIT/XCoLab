@@ -166,7 +166,7 @@
 		</c:if>
 
 		<c:if test="${not empty spamReportsWrapper}">
-			<jsp:directive.include file="spamReports/userReport.jsp" />
+			<jsp:directive.include file="spamReports/userReport.jspx" />
 		</c:if>
 
 		<p>
