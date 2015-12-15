@@ -13,12 +13,14 @@
         <generated-parameter name="memberCategory">{memberCategory}</generated-parameter>
         <implicit-parameter name="sortColumn">ACTIVITY</implicit-parameter>
         <implicit-parameter name="sortAscending">true</implicit-parameter>
+        <implicit-parameter name="page">1</implicit-parameter>
     </route>
 
     <route>
         <pattern>/category/{memberCategory}/page/{page}</pattern>
         <generated-parameter name="memberCategory">{memberCategory}</generated-parameter>
         <generated-parameter name="page">{page}</generated-parameter>
+        <implicit-parameter name="page">1</implicit-parameter>
     </route>
 
     <route>
@@ -26,12 +28,14 @@
         <generated-parameter name="sortColumn">{sortColumn}</generated-parameter>
         <implicit-parameter name="memberCategory"/>
         <implicit-parameter name="sortAscending">true</implicit-parameter>
+        <implicit-parameter name="page">1</implicit-parameter>
     </route>
     <route>
         <pattern>/sort/{sortColumn}/descending</pattern>
         <generated-parameter name="sortColumn">{sortColumn}</generated-parameter>
         <implicit-parameter name="memberCategory"/>
         <implicit-parameter name="sortAscending">false</implicit-parameter>
+        <implicit-parameter name="page">1</implicit-parameter>
     </route>
 
     <route>
@@ -39,12 +43,14 @@
         <generated-parameter name="memberCategory">{memberCategory}</generated-parameter>
         <generated-parameter name="sortColumn">{sortColumn}</generated-parameter>
         <implicit-parameter name="sortAscending">true</implicit-parameter>
+        <implicit-parameter name="page">1</implicit-parameter>
     </route>
     <route>
         <pattern>/category/{memberCategory}/sort/{sortColumn}/descending</pattern>
         <generated-parameter name="memberCategory">{memberCategory}</generated-parameter>
         <generated-parameter name="sortColumn">{sortColumn}</generated-parameter>
         <implicit-parameter name="sortAscending">false</implicit-parameter>
+        <implicit-parameter name="page">1</implicit-parameter>
     </route>
 
     <route>
