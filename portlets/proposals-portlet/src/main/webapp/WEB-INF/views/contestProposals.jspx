@@ -5,6 +5,8 @@
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
+    <!--@elvariable id="contestCompleted" type="java.lang.Boolean"-->
+
     <jsp:directive.include file="./init_contest.jspx"/>
 
     <jsp:useBean id="proposals" type="org.xcolab.portlets.proposals.wrappers.ProposalsSortFilterBean" scope="request" />

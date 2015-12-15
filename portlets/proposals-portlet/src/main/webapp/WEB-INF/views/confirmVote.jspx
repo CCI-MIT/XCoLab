@@ -2,6 +2,9 @@
         xmlns:jsp="http://java.sun.com/JSP/Page"
         version="2.0">
 
+    <!--@elvariable id="success" type="java.lang.Boolean"-->
+    <!--@elvariable id="error" type="java.lang.String"-->
+
     <div id="content">
         <c:choose>
             <c:when test="${success}">

@@ -3,6 +3,8 @@
 	xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
 	version="2.0">
 
+	<!--@elvariable id="discussionId" type="java.lang.Long"-->
+
 	<jsp:directive.include file="./init_contest.jspx" />
 
 	<div class="proposal-head">

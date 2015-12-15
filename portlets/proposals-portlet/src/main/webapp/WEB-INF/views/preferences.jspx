@@ -4,6 +4,12 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
+    <!--@elvariable id="contests" type="java.util.List<com.ext.portlet.model.Contest>"-->
+    <!--@elvariable id="availableRibbons" type="java.util.List<com.ext.portlet.model.ContestPhaseRibbonType>"-->
+    <!--@elvariable id="message" type="java.lang.String"-->
+    <!--@elvariable id="contestTypes" type="java.util.List<com.ext.portlet.model.ContestType>"-->
+    <!--@elvariable id="proposal" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper"-->
+
 <div id="content">
     <div id="portlet-preferences">
         <h1>Proposals preferences</h1>

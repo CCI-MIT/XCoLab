@@ -4,6 +4,9 @@
         xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
         xmlns:discussions="http://climatecolab.org/tags/xcollab_discussions_1.0"
         version="2.0">
+
+    <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
+
     <jsp:directive.attribute name="proposalRatingsWrappers" type="java.util.Collection" required="true" rtexprvalue="true" description="ProposalRatings" />
     <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="true" rtexprvalue="true" description="Proposal ID" />
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />
@@ -12,6 +15,7 @@
     <div class="comments">
         <c:forEach var="wrapper" items="${proposalRatingsWrappers}" varStatus="status">
             <discussions:getRoleName userId="${wrapper.author.userId}" proposalId="${proposalId}">
+                <!--@elvariable id="role" type="org.xcolab.enums.MemberRole"-->
                 <div class="comment">
                     <div class="commentor">
                         <proposalsPortlet:userPortrait  screenName="${wrapper.author.screenName}" portraitId="${wrapper.author.portraitId}" width="59" height="59" />

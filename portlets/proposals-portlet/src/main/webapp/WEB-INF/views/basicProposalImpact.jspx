@@ -3,6 +3,10 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
+    <!--@elvariable id="impactIterations" type="java.util.List<ImpactIteration>"-->
+    <!--@elvariable id="impactSerieses" type="java.util.List<ImpactSeries>"-->
+    <!--@elvariable id="regionTerms" type="java.util.List<OntologyTerm>"-->
+
     <jsp:directive.include file="./init_proposal_tab.jspx"/>
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
@@ -146,6 +150,7 @@
                         <tr>
                             <th class="blue-bg" style="width: 22.5%;">Region</th>
                             <th class="blue-bg" style="width: 22.5%;">Sector</th>
+
                             <c:forEach var="impactIteration" items="${impactIterations}">
                                 <th class="blue-bg"
                                     style="text-align: center; width: ${55.0 / fn:length(impactIterations)}%">
@@ -155,6 +160,7 @@
                         </tr>
                         </thead>
                         <tbody id="summary-body">
+
                         <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
                             <tr class="impact-series-clickable" id="impact-row-${index.index}">
                                 <td class="region"><span
@@ -191,6 +197,7 @@
                                 <div>
                                     <select id="region">
                                         <option value="0" selected="selected">Select region</option>
+
                                         <c:forEach var="regionTermEntry" items="${regionTerms}">
                                             <option value="${regionTermEntry.id}">
                                                     ${regionTermEntry.name}

@@ -6,6 +6,9 @@
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0">
 
+    <!--@elvariable id="move" type="java.lang.Boolean"-->
+    <!--@elvariable id="hasNotMappedSections" type="java.lang.Boolean"-->
+
     <jsp:directive.include file="./init_proposal.jspx"/>
 
     <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>

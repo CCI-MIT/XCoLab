@@ -7,6 +7,22 @@
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
+    <!--@elvariable id="isGlobalContest" type="java.lang.Boolean"-->
+    <!--@elvariable id="isRegionalContest" type="java.lang.Boolean"-->
+    <!--@elvariable id="modelId" type="java.lang.Long"-->
+    <!--@elvariable id="scenarioId" type="java.lang.Long"-->
+    <!--@elvariable id="isProposalUsingCombinedScenario" type="java.lang.Boolean"-->
+    <!--@elvariable id="consolidatedModelId" type="java.lang.Long"-->
+    <!--@elvariable id="consolidatedScenarioId" type="java.lang.Long"-->
+    <!--@elvariable id="edit" type="java.lang.Boolean"-->
+    <!--@elvariable id="availableModels" type="java.util.Map<java.lang.Long, java.lang.String>"-->
+    <!--@elvariable id="isRegionalSectorContest" type="java.lang.Boolean"-->
+    <!--@elvariable id="showSubProposalListing" type="java.lang.Boolean"-->
+    <!--@elvariable id="consolidateOptions" type="java.util.Map<java.lang.String, java.lang.String[]>"-->
+    <!--@elvariable id="proposalToModelMap" type="java.util.Map<java.lang.String, org.xcolab.portlets.proposals.wrappers.ProposalSimulationScenarioRegionWrapper>"-->
+    <!--@elvariable id="impactIterations" type="java.util.List<com.ext.portlet.model.ImpactIteration>"-->
+    <!--@elvariable id="impactSerieses" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries>"-->
+
     <jsp:directive.include file="./init_proposal_tab.jspx"/>
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
@@ -66,6 +82,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+
                                     <c:forEach items="${proposalToModelMap}" var="proposalToModel">
                                         <tr>
                                             <td>${proposalToModel.value.region}</td>
@@ -239,6 +256,7 @@
                             <th class="blue-bg" style="text-align: center;">${impactIteration.year}</th>
                         </c:forEach>
                     </tr>
+                    <!-- TODO: where is impactSeries defined?-->
                     <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}"
                                varStatus="index">
                         <c:set var="seriesValues"
@@ -247,6 +265,7 @@
                             <td class="sector">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
                             <c:catch var="catchException">
                                 <c:forEach var="impactIteration" items="${impactIterations}">
+                                    <!--TODO: where is yearToValueMap defined?-->
                                     <fmt:formatNumber var="value"
                                                       value="${seriesValues.yearToValueMap[impactIteration.year]}"
                                                       maxFractionDigits="2"/>
@@ -350,9 +369,7 @@
             var map = {};
             [].forEach.call(modelTotalValues, function (totalYearValue) {
                 var year = totalYearValue.getAttribute("data-attr-year");
-                var value = parseFloat(totalYearValue.innerHTML).toFixed(2);
-                ;
-                map[year] = value;
+                map[year] = parseFloat(totalYearValue.innerHTML).toFixed(2);
             });
             return map;
         }

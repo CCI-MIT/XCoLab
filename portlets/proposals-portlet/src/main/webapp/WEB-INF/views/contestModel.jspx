@@ -3,6 +3,8 @@
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
 	version="2.0">
+	<!--@elvariable id="availableModels" type="java.util.Map<java.lang.Long, java.lang.String>"-->
+	<!--@elvariable id="modelId" type="java.lang.Long"-->
 
 	<jsp:directive.include file="./init_contest.jspx" />
 	
@@ -19,7 +21,7 @@
 		</div>
 		<!-- /inner -->
 	</div>
-	<!-- /proposal-head -->	
+	<!-- /proposal-head -->
 	<div id="content">
 	<c:if test="${not empty availableModels }">
 		<proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" />
