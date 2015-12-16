@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.ac.AccessControlled;
+import com.liferay.portal.security.auth.PrincipalException;
 
 /**
  * The implementation of the contest remote service.
@@ -42,10 +43,10 @@ public class ContestServiceImpl extends ContestServiceBaseImpl {
 
     /**
      * Returns a list of open contest for regular users and returns all contests for staff users
-     * @return
      * @throws PortalException
      * @throws SystemException
      */
+    @Override
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public List<Contest> getContestsOpenForProposals() throws PortalException, SystemException {
@@ -69,7 +70,7 @@ public class ContestServiceImpl extends ContestServiceBaseImpl {
                 if (statusStr != null) {
                     status = ContestStatus.valueOf(statusStr);
                 }
-                if (admin == true || (status != null && status.isCanCreate())) {
+                if (admin || (status != null && status.isCanCreate())) {
                     returnList.add(contest);
                 }
     		}
@@ -83,16 +84,15 @@ public class ContestServiceImpl extends ContestServiceBaseImpl {
     	return returnList;
     }
 
+    @Override
     @JSONWebService
      @AccessControlled(guestAccessEnabled=true)
-     public int getNumberOfUnreadMessages() throws PortalException, SystemException {
+     public int getNumberOfUnreadMessages() throws SystemException, PrincipalException {
         int unreadMessages = 0;
         if (getUserId() != 0) {
             try {
                 unreadMessages = MessageRecipientStatusLocalServiceUtil.countUnreadMessages(getUserId());
-            } catch (NoSuchMessageRecipientStatusException e) {
-                e.printStackTrace();
-            } catch (SystemException e) {
+            } catch (NoSuchMessageRecipientStatusException | SystemException e) {
                 e.printStackTrace();
             }
         }

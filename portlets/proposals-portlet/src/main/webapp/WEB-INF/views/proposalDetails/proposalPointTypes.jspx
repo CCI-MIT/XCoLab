@@ -5,8 +5,18 @@
           xmlns:form="http://www.springframework.org/tags/form"
           version="2.0">
 
+    <!--@elvariable id="pointType" type="org.xcolab.portlets.proposals.wrappers.PointTypeWrapper"-->
+    <!--@elvariable id="percentageOfTotalPoints" type="java.lang.Double"-->
+    <!--@elvariable id="assignPointsBean" type="org.xcolab.portlets.proposals.requests.AssignPointsBean"-->
+    <!--@elvariable id="pointsToDistribute" type="java.lang.Double"-->
+    <!--@elvariable id="recursionLevel" type="java.lang.Integer"-->
+    <!--@elvariable id="currentTabWrapped" type="org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper"-->
+    <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
+    <!--@elvariable id="subProposals" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalWrapper>"-->
+
     <c:set var="childrenSize" value="${pointType.children.size()}" scope="request"/>
-    <c:set var="parentPercentageOfTotalPoints"><c:out value="${percentageOfTotalPoints}"/></c:set>
+    <c:set var="parentPercentageOfTotalPoints">
+    <c:out value="${percentageOfTotalPoints}"/></c:set>
     <c:set var="parentPointsToDistribute"><c:out value="${pointsToDistribute}"/></c:set>
     <c:set var="parentRecursionLevel"><c:out value="${recursionLevel}"/></c:set>
     <!-- set column definitons -->
@@ -169,7 +179,7 @@
                                 </label>
 
                                 <div id="please_choose_from_list${pointType.id}" class="error" style="display: none;">Please choose a user from the list</div>
-                                <div id="unknownUsersContainer${pointType.id}" class="error" style="display: none;">Unknown user: <p></p></div>
+                                <div id="unknownUsersContainer${pointType.id}" class="error" style="display: none;">Unknown user: <p><!-- --></p></div>
                                 <script type="text/javascript">
                                     jQuery(document).ready(function() {
                                         initUserAutocomplete(${pointType.id}, ${currentTabWrapped.canEdit});
@@ -186,7 +196,7 @@
                             data-pointType="${pointType.id}"
                             id="userDistributionInputs${pointType.id}"
                                 >
-                            <li class="error"></li>
+                            <li class="error"><!-- --></li>
                             <li class="header">
                                 <strong class="percentage">%</strong>
                                 <strong class="name">Name</strong>

@@ -37,15 +37,18 @@ public class FocusAreaOntologyTermLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil} to access the focus area ontology term local service.
      */
 
+    @Override
     public List<FocusAreaOntologyTerm> findTermsByFocusArea(Long focusAreaId) throws SystemException {
         return focusAreaOntologyTermPersistence.findByFocusAreaId(focusAreaId);
     }
     
+    @Override
     public void addAreaTerm(Long focusAreaId, Long termId) throws PortalException, SystemException {
         FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
         FocusAreaLocalServiceUtil.addTerm(fa, termId);
     }
     
+    @Override
     public void removeAreaTerm(Long focusAreaId, Long termId) throws PortalException, SystemException {
         FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
         FocusAreaLocalServiceUtil.removeTerm(fa, termId);
@@ -53,6 +56,7 @@ public class FocusAreaOntologyTermLocalServiceImpl
     }
     
     
+    @Override
     public void store(FocusAreaOntologyTerm faot) throws SystemException {
         if (faot.isNew()) {
             FocusAreaOntologyTermLocalServiceUtil.addFocusAreaOntologyTerm(faot);
@@ -62,14 +66,17 @@ public class FocusAreaOntologyTermLocalServiceImpl
         }
     }
     
+    @Override
     public OntologyTerm getTerm(FocusAreaOntologyTerm faot) throws PortalException, SystemException {
         return OntologyTermLocalServiceUtil.getOntologyTerm(faot.getOntologyTermId());
     }
     
+    @Override
     public FocusArea getArea(FocusAreaOntologyTerm faot) throws PortalException, SystemException {
         return FocusAreaLocalServiceUtil.getFocusArea(faot.getFocusAreaId());
     }
 
+    @Override
     public List<Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(long focusAreaId, long ontologySpaceId)
             throws PortalException, SystemException {
         long ontologyTermId = getOntologyTermIdByFocusAreaAndSpaceId(focusAreaId, ontologySpaceId);

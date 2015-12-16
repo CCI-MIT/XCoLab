@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 public class PointDistributionTargetLocalServiceImpl
     extends PointDistributionTargetLocalServiceBaseImpl {
 	
+	@Override
 	public Collection<PointDistributionTarget> findByContestId(long contestId) throws SystemException {
 		return pointDistributionTargetPersistence.findByContestId(contestId);
 	}

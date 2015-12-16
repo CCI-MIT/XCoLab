@@ -1,10 +1,14 @@
-<jsp:root 
-	xmlns:c="http://java.sun.com/jsp/jstl/core" 
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"  
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	version="2.0">
+
+    <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
+    <!--@elvariable id="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper"-->
+    <!--@elvariable id="contestPhase" type="org.xcolab.wrappers.BaseContestPhaseWrapper"-->
+    <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
 
 <jsp:directive.attribute name="proposals" type="java.util.Collection" required="true" rtexprvalue="true" description="proposals" />
 <jsp:directive.attribute name="showShadebar" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If shadebar should be shown" />

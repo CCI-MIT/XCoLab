@@ -37,6 +37,7 @@ public class ModelGlobalPreferenceLocalServiceImpl
      */
 
 
+    @Override
     public boolean isVisible(Simulation s) throws SystemException {
         ModelGlobalPreference pref = null;
         try {
@@ -47,8 +48,9 @@ public class ModelGlobalPreferenceLocalServiceImpl
         return (pref !=null && pref.getVisible());
     }
     
+    @Override
     public ModelGlobalPreference getByModelId(long modelId) throws SystemException {
-        ModelGlobalPreference pref = null;
+        ModelGlobalPreference pref;
         try {
             pref = modelGlobalPreferencePersistence.findByModelId(modelId);
         } catch (NoSuchModelGlobalPreferenceException e) {
@@ -61,6 +63,7 @@ public class ModelGlobalPreferenceLocalServiceImpl
         return pref;
     }
 
+    @Override
     public void setVisible(Simulation s, boolean visible) throws SystemException {
          ModelGlobalPreference pref = null;
         try {
@@ -79,6 +82,7 @@ public class ModelGlobalPreferenceLocalServiceImpl
     }
     
 
+    @Override
     public int getWeight(Simulation s) throws SystemException {
         ModelGlobalPreference pref = null;
         try {
@@ -93,6 +97,7 @@ public class ModelGlobalPreferenceLocalServiceImpl
         return weight;
     }
     
+    @Override
     public void setWeight(Simulation s, int weight) throws SystemException {
         ModelGlobalPreference pref = null;
        try {
@@ -107,6 +112,7 @@ public class ModelGlobalPreferenceLocalServiceImpl
        updateModelGlobalPreference(pref);
    }
     
+    @Override
     public Long getExpertEvaluationPageId(Simulation s) throws SystemException {
         ModelGlobalPreference pref = null;
         try {
@@ -117,6 +123,7 @@ public class ModelGlobalPreferenceLocalServiceImpl
         return pref != null ? pref.getExpertEvaluationPageId() : null;
     }
     
+   @Override
    public void setExpertEvaluationPageId(Simulation s, Long pageId) throws SystemException {
        ModelGlobalPreference pref = null;
        try {
@@ -131,10 +138,12 @@ public class ModelGlobalPreferenceLocalServiceImpl
        updateModelGlobalPreference(pref);
    }
 
+    @Override
     public List<ModelGlobalPreference> findByCategory(ModelCategory category) throws SystemException {
         return modelGlobalPreferencePersistence.findByModelCategoryId(category.getModelCategoryPK());
     }
 
+    @Override
     public ModelCategory getCategory(Simulation sim) throws SystemException, PortalException {
         ModelGlobalPreference pref = null;
         try {
@@ -152,7 +161,7 @@ public class ModelGlobalPreferenceLocalServiceImpl
     
 
     private ModelGlobalPreference createNewForSim(Simulation sim) throws SystemException {
-        ModelGlobalPreference pref = null;
+        ModelGlobalPreference pref;
         Long pk = CounterLocalServiceUtil.increment(ModelGlobalPreference.class.getName());
            pref = createModelGlobalPreference(pk);
            pref.setModelId(sim.getId());
@@ -163,6 +172,7 @@ public class ModelGlobalPreferenceLocalServiceImpl
 
     }
 
+    @Override
     public void updateModelCategory(ModelCategory cat, Simulation sim) throws SystemException {
        ModelGlobalPreference pref = null;
        try {

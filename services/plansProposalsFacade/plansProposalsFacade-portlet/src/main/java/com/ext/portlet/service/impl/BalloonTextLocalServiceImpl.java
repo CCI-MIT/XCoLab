@@ -27,6 +27,7 @@ public class BalloonTextLocalServiceImpl extends BalloonTextLocalServiceBaseImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.BalloonTextLocalServiceUtil} to access the balloon text local service.
      */
 	
+	@Override
 	public List<BalloonText> getBalloonTextsEnabled(boolean enabled) throws SystemException {
 		return balloonTextPersistence.findByEnabled(enabled);
 	}

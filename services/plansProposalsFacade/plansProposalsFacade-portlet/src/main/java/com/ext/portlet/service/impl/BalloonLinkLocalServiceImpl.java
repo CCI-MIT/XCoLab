@@ -27,6 +27,7 @@ public class BalloonLinkLocalServiceImpl extends BalloonLinkLocalServiceBaseImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.BalloonLinkLocalServiceUtil} to access the balloon link local service.
      */
 	
+	@Override
 	public BalloonLink getBalloonLinkForUser(String uuid) throws SystemException {
 		List<BalloonLink> links = balloonLinkPersistence.findByBalloonUserUuid(uuid);
 		if (links == null || links.isEmpty()) {

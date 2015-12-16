@@ -34,6 +34,7 @@ public class MemberCategoryLocalServiceImpl
         return null;
     }
 
+    @Override
     public List<MemberCategory> getVisibleMemberCategories() throws NoSuchMemberCategoryException, SystemException {
         return memberCategoryPersistence.findByshowInList(true);
     }

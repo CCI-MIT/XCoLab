@@ -30,10 +30,12 @@ public class ImpactDefaultSeriesLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil} to access the impact default series local service.
      */
 
+    @Override
     public List<ImpactDefaultSeries> getAllImpactDefaultSeriesWithFocusArea(FocusArea focusArea) throws SystemException {
         return impactDefaultSeriesPersistence.findByFocusAreaId(focusArea.getId());
     }
 
+    @Override
     public ImpactDefaultSeries getImpactDefaultSeriesWithFocusAreaAndName(FocusArea focusArea, String name) throws SystemException, NoSuchImpactDefaultSeriesException {
         return impactDefaultSeriesPersistence.findByFocusAreaIdAndName(focusArea.getId(), name);
     }

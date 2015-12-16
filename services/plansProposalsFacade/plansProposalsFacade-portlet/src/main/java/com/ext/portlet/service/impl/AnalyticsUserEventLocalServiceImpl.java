@@ -29,6 +29,7 @@ public class AnalyticsUserEventLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.AnalyticsUserEventLocalServiceUtil} to access the analytics user event local service.
      */
 	
+	@Override
 	public boolean eventExists(long userId, String idString) {
 		try {
 			return (analyticsUserEventLocalService.fetchAnalyticsUserEvent(new AnalyticsUserEventPK(userId, idString)) != null);
@@ -37,6 +38,7 @@ public class AnalyticsUserEventLocalServiceImpl
 		}
 	}
 	
+	@Override
 	public AnalyticsUserEvent createEvent(long userId, String idString, String category, String action, String label, int value) throws SystemException {
 		AnalyticsUserEvent event = analyticsUserEventLocalService.createAnalyticsUserEvent(new AnalyticsUserEventPK(userId, idString));
 		

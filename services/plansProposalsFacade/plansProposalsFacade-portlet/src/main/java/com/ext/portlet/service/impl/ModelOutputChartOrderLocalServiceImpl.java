@@ -29,6 +29,7 @@ public class ModelOutputChartOrderLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ModelOutputChartOrderLocalServiceUtil} to access the model output chart order local service.
      */
 
+    @Override
     public ModelOutputChartOrder getChartOrder(Simulation sim, String label) throws SystemException, NoSuchModelOutputChartOrderException {
         return modelOutputChartOrderPersistence.findByModelIdAndLabel(sim.getId(),label);
     }

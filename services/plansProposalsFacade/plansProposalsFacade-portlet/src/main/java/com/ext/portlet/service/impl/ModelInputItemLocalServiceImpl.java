@@ -1,23 +1,21 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.NoSuchModelInputItemException;
+import com.ext.portlet.model.ModelInputItem;
+import com.ext.portlet.models.CollaboratoriumModelingService;
+import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
+import com.ext.portlet.service.base.ModelInputItemLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import edu.mit.cci.roma.client.MetaData;
+import edu.mit.cci.roma.client.Simulation;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.ext.portlet.models.CollaboratoriumModelingService;
-import com.ext.portlet.NoSuchModelInputItemException;
-import com.ext.portlet.model.ModelInputItem;
-import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
-import com.ext.portlet.service.impl.ModelInputItemLocalServiceImpl;
-import com.ext.portlet.service.base.ModelInputItemLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import edu.mit.cci.roma.client.MetaData;
-import edu.mit.cci.roma.client.Simulation;
 
 /**
  * The implementation of the model input item local service.
@@ -43,8 +41,9 @@ public class ModelInputItemLocalServiceImpl
     
 
 
-    private static Log _log = LogFactoryUtil.getLog(ModelInputItemLocalServiceImpl.class);
+    private static final Log _log = LogFactoryUtil.getLog(ModelInputItemLocalServiceImpl.class);
 
+    @Override
     public List<ModelInputItem> getItemsForModel(Simulation sim) {
         try {
             return modelInputItemPersistence.findByModelId(sim.getId());
@@ -55,6 +54,7 @@ public class ModelInputItemLocalServiceImpl
 
     }
 
+    @Override
     public ModelInputItem getItemForMetaData(Long modelId, MetaData md) {
         try {
             return modelInputItemPersistence.findByModelIdModelInputId(modelId, md.getId());
@@ -69,6 +69,7 @@ public class ModelInputItemLocalServiceImpl
 
    
 
+    @Override
     public List<ModelInputItem> getItemForGroupId(Long groupid) {
         try {
             return modelInputItemPersistence.findByModelGroupId(groupid);
@@ -81,21 +82,26 @@ public class ModelInputItemLocalServiceImpl
     
     
 
+    @Override
     public MetaData getMetaData(ModelInputItem item) throws SystemException, IOException {
         return CollaboratoriumModelingService.repository().getMetaData(item.getModelInputItemID());
     }
 
+    @Override
     public Simulation getModel(ModelInputItem item) throws SystemException, IOException {
         return CollaboratoriumModelingService.repository().getSimulation(item.getModelId());
     }
 
+    @Override
     public Map<String,String> getPropertyMap(ModelInputItem item) {
         return parseTypes(item.getProperties());
     }
     
      private static Map<String,String> parseTypes(String props) {
-        if (props == null) return Collections.emptyMap();
-        Map<String,String> result = new HashMap<String,String>();
+        if (props == null) {
+            return Collections.emptyMap();
+        }
+        Map<String,String> result = new HashMap<>();
         for (String type:props.split(";")) {
             String[] kv = type.split("=");
             if (kv.length>1) {
@@ -105,6 +111,7 @@ public class ModelInputItemLocalServiceImpl
         return result;
     }
      
+    @Override
     public void saveProperties(ModelInputItem item, Map<String, String> props) throws SystemException {
         StringBuilder sb = new StringBuilder();
         
@@ -120,6 +127,7 @@ public class ModelInputItemLocalServiceImpl
         
     }
     
+    @Override
     public void store(ModelInputItem item) throws SystemException {
         if (item.isNew()) {
             ModelInputItemLocalServiceUtil.addModelInputItem(item);

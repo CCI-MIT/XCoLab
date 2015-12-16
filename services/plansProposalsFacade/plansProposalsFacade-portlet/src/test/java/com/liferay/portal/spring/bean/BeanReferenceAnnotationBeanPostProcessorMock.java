@@ -1,9 +1,12 @@
 package com.liferay.portal.spring.bean;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.liferay.portal.cluster.ClusterableAdvice;
+import com.liferay.portal.kernel.bean.BeanLocatorException;
+import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.bean.IdentifiableBean;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanFactory;
@@ -12,13 +15,9 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.util.ReflectionUtils;
 
-import com.liferay.portal.cluster.ClusterableAdvice;
-import com.liferay.portal.kernel.bean.BeanLocatorException;
-import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.bean.IdentifiableBean;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BeanReferenceAnnotationBeanPostProcessorMock implements BeanFactoryAware, BeanPostProcessor {
 
@@ -26,11 +25,13 @@ public class BeanReferenceAnnotationBeanPostProcessorMock implements BeanFactory
         _beans.clear();
     }
 
+    @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 
         return bean;
     }
 
+    @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 
         if (bean instanceof IdentifiableBean) {
@@ -49,6 +50,7 @@ public class BeanReferenceAnnotationBeanPostProcessorMock implements BeanFactory
         return bean;
     }
 
+    @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         _beanFactory = beanFactory;
     }
@@ -73,8 +75,8 @@ public class BeanReferenceAnnotationBeanPostProcessorMock implements BeanFactory
         for (Field field : fields) {
             BeanReference beanReference = field.getAnnotation(BeanReference.class);
 
-            String referencedBeanName = null;
-            Class<?> referencedBeanType = null;
+            String referencedBeanName;
+            Class<?> referencedBeanType;
 
             if (beanReference != null) {
                 referencedBeanName = beanReference.name();
@@ -113,8 +115,8 @@ public class BeanReferenceAnnotationBeanPostProcessorMock implements BeanFactory
             try {
                 field.set(targetBean, referencedBean);
                 
-            } catch (Throwable t) {
-                throw new BeanCreationException(targetBeanName, "Could not inject BeanReference fields", t);
+            } catch (IllegalAccessException | IllegalArgumentException e) {
+                throw new BeanCreationException(targetBeanName, "Could not inject BeanReference fields", e);
             }
         }
         
@@ -126,9 +128,9 @@ public class BeanReferenceAnnotationBeanPostProcessorMock implements BeanFactory
 
     private static final String _ORG_SPRINGFRAMEWORK = "org.springframework";
 
-    private static Log _log = LogFactoryUtil.getLog(BeanReferenceAnnotationBeanPostProcessor.class);
+    private static final Log _log = LogFactoryUtil.getLog(BeanReferenceAnnotationBeanPostProcessor.class);
 
     private BeanFactory _beanFactory;
-    private Map<String, Object> _beans = new HashMap<String, Object>();
+    private final Map<String, Object> _beans = new HashMap<>();
 
 }

@@ -41,10 +41,12 @@ public class Proposal2PhaseLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.Proposal2PhaseLocalServiceUtil} to access the proposal2 phase local service.
      */
 
+    @Override
     public Proposal2Phase create(long proposalId, long contestPhaseId) {
         return createProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
     }
     
+    @Override
     public Proposal2Phase create(long proposalId, long contestPhaseId, int versionFrom, int versionTo) throws SystemException {
         Proposal2Phase p2p = createProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
         p2p.setVersionFrom(versionFrom);
@@ -58,14 +60,17 @@ public class Proposal2PhaseLocalServiceImpl
         return p2p;
     }
 
+    @Override
     public Proposal2Phase getByProposalIdContestPhaseId(long proposalId, long contestPhaseId) throws PortalException, SystemException {
         return getProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
     }
     
+    @Override
     public List<Proposal2Phase> getByProposalId(long proposalId) throws PortalException, SystemException {
     	return proposal2PhasePersistence.findByProposalId(proposalId);
     }
 
+    @Override
     public int getLatestProposalVersionInActiveContest(Long proposalId) throws SystemException {
         int newestVersion = 0;
 
@@ -90,15 +95,16 @@ public class Proposal2PhaseLocalServiceImpl
         }
     }
 
+    @Override
     public ContestPhase getLatestContestPhaseInContest(Long proposalId) throws SystemException, PortalException {
         int newestVersion = 0;
-        long newestVersionContestPhaseId = 0;
 
         List<Proposal2Phase> proposal2Phases = proposal2PhasePersistence.findByProposalId(proposalId);
         if (proposal2Phases.isEmpty()) {
             throw new SystemException("Proposal " + proposalId + " isn't associated with any contest");
         }
 
+        long newestVersionContestPhaseId = 0;
         for (Proposal2Phase p2p : proposal2Phases){
             long contestPhaseId = p2p.getContestPhaseId();
             if (p2p.getVersionTo() == -1 && isContestPhaseValidInContest(contestPhaseId)){
@@ -117,16 +123,19 @@ public class Proposal2PhaseLocalServiceImpl
 
     }
 
+    @Override
     public Contest getCurrentContestForProposal(long proposalId) throws SystemException, PortalException {
         ContestPhase contestPhase = getLatestContestPhaseInContest(proposalId);
         return contestLocalService.getContest(contestPhase.getContestPK());
     }
 
+    @Override
     public boolean isContestPhaseOfProposal2PhaseValidInContest(Proposal2Phase proposal2Phase) {
         long contestPhaseId = proposal2Phase.getContestPhaseId();
         return isContestPhaseValidInContest(contestPhaseId);
     }
 
+    @Override
     public boolean isContestPhaseValidInContest(long contestPhaseId){
         boolean isContestPhaseValidInContest = true;
         try {
@@ -138,25 +147,30 @@ public class Proposal2PhaseLocalServiceImpl
         return isContestPhaseValidInContest;
     }
 
+    @Override
     public Proposal2Phase getForVersion(Long proposalId, int proposalVersionId) throws SystemException, PortalException {
         ProposalVersion proposalVersion =
                 ProposalVersionLocalServiceUtil.getByProposalIdVersion(proposalId, proposalVersionId);
         return getForVersion(proposalVersion);
     }
 
+    @Override
     public Proposal2Phase getForVersion(ProposalVersion proposalVersion) throws SystemException, PortalException {
         List<Proposal2Phase> proposal2Phases = proposal2PhasePersistence.findByProposalId(proposalVersion.getProposalId());
         for (Proposal2Phase p2p : proposal2Phases){
             // closed phases
-            if (p2p.getVersionFrom() <= proposalVersion.getVersion() && p2p.getVersionTo() >= proposalVersion.getVersion())
+            if (p2p.getVersionFrom() <= proposalVersion.getVersion() && p2p.getVersionTo() >= proposalVersion.getVersion()) {
                 return p2p;
+            }
             // open phase
-            if (p2p.getVersionFrom() <= proposalVersion.getVersion() && p2p.getVersionTo() == -1)
+            if (p2p.getVersionFrom() <= proposalVersion.getVersion() && p2p.getVersionTo() == -1) {
                 return p2p;
+            }
         }
         throw new SystemException("Proposal " + proposalVersion.getProposalId() + " isn't associated with any contest phase");
     }
     
+    @Override
     public List<Long> getContestPhasesForProposal(long proposalId) throws SystemException, PortalException {
         List<Proposal2Phase> proposal2Phases = proposal2PhasePersistence.findByProposalId(proposalId);
         List<Long> ret = new LinkedList<>();
@@ -173,6 +187,7 @@ public class Proposal2PhaseLocalServiceImpl
         return ret;
     }
 
+    @Override
     public List<ContestPhase> getActiveContestPhasesForProposal(long proposalId) throws SystemException, PortalException {
         List<Long> allPhases = getContestPhasesForProposal(proposalId);
         List<ContestPhase> ret = new LinkedList<>();
@@ -189,6 +204,7 @@ public class Proposal2PhaseLocalServiceImpl
         return ret;
     }
 
+    @Override
     public List<Proposal2Phase> getByContestPhaseId(long contestPhaseId) throws SystemException {
         final DynamicQuery contestPhasesByContestPhaseId = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
         contestPhasesByContestPhaseId.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));

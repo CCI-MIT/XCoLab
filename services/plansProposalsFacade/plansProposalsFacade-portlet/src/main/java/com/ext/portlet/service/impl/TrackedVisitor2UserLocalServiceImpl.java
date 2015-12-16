@@ -33,18 +33,20 @@ public class TrackedVisitor2UserLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.TrackedVisitor2UserLocalServiceUtil} to access the tracked visitor2 user local service.
      */
 
+    @Override
     public String findUuidForUserId(long userId) throws SystemException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(TrackedVisitor2User.class)
                 .add(PropertyFactoryUtil.forName("userId").eq(userId))
                 .addOrder(OrderFactoryUtil.desc("createDate"));
         List<TrackedVisitor2User> result = dynamicQuery(query);
-        if (result.size() > 0) {
+        if (!result.isEmpty()) {
             return result.get(0).getUuid();
         } else {
             return null;
         }
     }
 
+    @Override
     public TrackedVisitor2User addIfNotExists(String uuid, long userId) throws SystemException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(TrackedVisitor2User.class)
                 .add(PropertyFactoryUtil.forName("uuid").eq(uuid))
@@ -60,7 +62,7 @@ public class TrackedVisitor2UserLocalServiceImpl
             trackedVisitor2User.setUserId(userId);
             //trackedVisitor2User.setCreateDate(new Date());
 
-            super.addTrackedVisitor2User(trackedVisitor2User);
+            addTrackedVisitor2User(trackedVisitor2User);
 
             return trackedVisitor2User;
         } else {

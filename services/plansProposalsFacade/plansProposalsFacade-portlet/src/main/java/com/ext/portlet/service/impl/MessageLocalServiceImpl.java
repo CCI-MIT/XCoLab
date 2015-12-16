@@ -30,20 +30,24 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.MessageLocalServiceUtil} to access the message local service.
      */
 
+    @Override
     public int countSentMessage(long userid) throws SystemException {
         return messagePersistence.countBySendingUser(userid);
     }
 
+    @Override
     public List<Message> findSentMessages(long userid, int pagerstart, int pagerend) throws SystemException {
         return messagePersistence.findBySendingUser(userid,pagerstart,pagerend);
 
     }
     
 
+    @Override
     public List<MessageRecipientStatus> getRecipients(Message msg) throws SystemException {
         return MessageRecipientStatusLocalServiceUtil.findByMessageId(msg.getMessageId(),0,Short.MAX_VALUE);
     }
 
+    @Override
     public boolean hasReciever(Message msg, long userid) throws SystemException {
         MessageRecipientStatus status = null;
         try {
@@ -54,20 +58,24 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
         return status!=null;
     }
 
+    @Override
     public boolean isOpened(Message msg, long userid) throws SystemException, NoSuchMessageRecipientStatusException {
         return MessageRecipientStatusLocalServiceUtil.findByMessageRecipient(userid, msg.getMessageId()).getOpened();
     }
 
+    @Override
     public void setOpened(Message msg, long userid) throws SystemException, NoSuchMessageRecipientStatusException {
         MessageRecipientStatus status = MessageRecipientStatusLocalServiceUtil.findByMessageRecipient(userid, msg.getMessageId());
         status.setOpened(true);
         MessageRecipientStatusLocalServiceUtil.updateMessageRecipientStatus(status);
     }
 
+    @Override
     public boolean isArchived(Message msg, long userid) throws SystemException, NoSuchMessageRecipientStatusException {
         return MessageRecipientStatusLocalServiceUtil.findByMessageRecipient(userid, msg.getMessageId()).getArchived();
     }
 
+    @Override
     public void setArchived(Message msg, long userid) throws SystemException, NoSuchMessageRecipientStatusException {
         MessageRecipientStatus status = MessageRecipientStatusLocalServiceUtil.findByMessageRecipient(userid, msg.getMessageId());
         status.setArchived(true);

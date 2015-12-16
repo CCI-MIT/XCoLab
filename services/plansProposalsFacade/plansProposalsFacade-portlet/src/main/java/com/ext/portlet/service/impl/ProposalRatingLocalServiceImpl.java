@@ -39,10 +39,12 @@ public class ProposalRatingLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalRatingLocalServiceUtil} to access the proposal rating local service.
      */
 
+    @Override
     public List<ProposalRating> getFellowRatingsForProposal(long proposalId, long contestPhaseId) throws SystemException {
         return getRatingsForProposal(proposalId, contestPhaseId, ProposalJudgeType.FELLOW.getId());
     }
 
+    @Override
     public List<ProposalRating> getJudgeRatingsForProposal(long proposalId, long contestPhaseId) throws SystemException {
         return getRatingsForProposal(proposalId, contestPhaseId, ProposalJudgeType.JUDGE.getId());
     }
@@ -51,13 +53,11 @@ public class ProposalRatingLocalServiceImpl
         return ProposalRatingFinderUtil.findByProposalIdJudgeTypeContestPhaseId(proposalId, judgeType, contestPhaseId, 0, Integer.MAX_VALUE);
     }
 
-    protected List<ProposalRating> getRatingsForContestPhase(long contestPhaseId) throws SystemException {
-        return ProposalRatingFinderUtil.findByContestPhaseId(contestPhaseId, 0, Integer.MAX_VALUE);
-    }
-
+    @Override
     public List<ProposalRating> getJudgeRatingsForProposalAndUser(long userId, long proposalId, long contestPhaseId) throws SystemException {
         return this.getRatingsForProposalAndUser(proposalId, ProposalJudgeType.JUDGE.getId(), userId, contestPhaseId);
     }
+    @Override
     public List<ProposalRating> getFellowRatingForProposalAndUser(long userId, long proposalId, long contestPhaseId) throws SystemException {
         return this.getRatingsForProposalAndUser(proposalId, ProposalJudgeType.FELLOW.getId(), userId, contestPhaseId);
     }
@@ -67,6 +67,7 @@ public class ProposalRatingLocalServiceImpl
     }
 
 
+    @Override
     public ProposalRating updateRating(
             long proposalRatingId, long ratingValueId, String comment, String otherDataString
     ) throws SystemException, NoSuchUserException {
@@ -76,17 +77,19 @@ public class ProposalRatingLocalServiceImpl
         proposalRating.setComment(comment);
         proposalRating.setOtherDataString(otherDataString);
 
-        super.updateProposalRating(proposalRating);
+        updateProposalRating(proposalRating);
 
         return proposalRating;
     }
 
+    @Override
     public ProposalRating addRating(
             long proposalId, long contestPhaseId, long userId, long ratingValueId, String comment, String otherDataString
     ) throws SystemException, NoSuchUserException {
         return addRating(proposalId, contestPhaseId, userId, ratingValueId, comment, otherDataString, false);
     }
 
+        @Override
         public ProposalRating addRating(
             long proposalId, long contestPhaseId, long userId, long ratingValueId, String comment, String otherDataString, boolean onlyForInternalUsage
     ) throws SystemException, NoSuchUserException {
@@ -106,12 +109,13 @@ public class ProposalRatingLocalServiceImpl
             }
 
             proposalRating.setOtherDataString(otherDataString);
-            super.addProposalRating(proposalRating);
+            addProposalRating(proposalRating);
             return proposalRating;
     }
 
+    @Override
     public ProposalRating updateRating(ProposalRating proposalRating) throws SystemException, NoSuchUserException {
-        super.updateProposalRating(proposalRating);
+        updateProposalRating(proposalRating);
         return proposalRating;
     }
 

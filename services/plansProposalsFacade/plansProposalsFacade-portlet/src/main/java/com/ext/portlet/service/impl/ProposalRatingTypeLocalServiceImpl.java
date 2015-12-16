@@ -31,9 +31,11 @@ public class ProposalRatingTypeLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil} to access the proposal rating type local service.
      */
+    @Override
     public List<ProposalRatingType> getRatingTypesForJudges() throws SystemException {
         return this.getRatingTypesForJudgeType(ProposalJudgeType.JUDGE.getId());
     }
+    @Override
     public List<ProposalRatingType> getRatingTypesForFellows() throws SystemException {
         return this.getRatingTypesForJudgeType(ProposalJudgeType.FELLOW.getId());
     }

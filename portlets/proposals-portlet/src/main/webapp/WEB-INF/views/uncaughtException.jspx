@@ -1,0 +1,21 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+
+    <!--@elvariable id="exception" type="java.lang.Exception"-->
+
+    <div id="content">
+        Internal error has occurred, please contact the administrator.
+        <div id="stackTrace" style="display:none;">
+        <c:if test="${not empty exception}">
+            <p><strong>Exception:</strong><br/><c:out value="${exception}"/></p>
+            <p><strong>Stacktrace:</strong><br/>
+                <pre>
+                    <c:forEach var="stackTraceElem" items="${exception.stackTrace}">
+                        <c:out value="${stackTraceElem}"/><br/>
+                    </c:forEach>
+                </pre>
+            </p>
+        </c:if>
+        </div>
+    </div>
+</jsp:root>

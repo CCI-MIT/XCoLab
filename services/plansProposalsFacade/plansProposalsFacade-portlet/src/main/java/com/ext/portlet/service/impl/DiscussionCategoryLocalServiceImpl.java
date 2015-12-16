@@ -49,6 +49,7 @@ public class DiscussionCategoryLocalServiceImpl extends DiscussionCategoryLocalS
         return discussionCategoryPersistence.findByCategoryId(categoryId);
     }
     
+    @Override
     public DiscussionCategory createDiscussionCategory(long categoryGroupId, String name, String description, User author)
     throws SystemException {
         Long id = CounterLocalServiceUtil.increment(DiscussionCategory.class.getName());
@@ -103,8 +104,8 @@ public class DiscussionCategoryLocalServiceImpl extends DiscussionCategoryLocalS
     
     @Override
     public User getLastActivityAuthor(DiscussionCategory dCategory) throws PortalException, SystemException {
-        Long lastActivityAuthor = dCategory.getLastActivityAuthorId();
-        if (lastActivityAuthor != null) {
+        long lastActivityAuthor = dCategory.getLastActivityAuthorId();
+        if (lastActivityAuthor > 0) {
             return UserLocalServiceUtil.getUser(dCategory.getLastActivityAuthorId());
         }
         return getAuthor(dCategory);

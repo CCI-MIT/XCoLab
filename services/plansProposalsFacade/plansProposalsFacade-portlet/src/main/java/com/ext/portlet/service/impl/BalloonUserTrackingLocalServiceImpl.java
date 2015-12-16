@@ -28,6 +28,7 @@ public class BalloonUserTrackingLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil} to access the balloon user tracking local service.
      */
 	
+	@Override
 	public List<BalloonUserTracking> findByEmail(String email) throws SystemException {
 		return balloonUserTrackingPersistence.findByEmail(email);
 	}
