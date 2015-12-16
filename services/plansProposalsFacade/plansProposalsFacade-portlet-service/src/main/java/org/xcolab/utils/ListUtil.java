@@ -9,7 +9,10 @@ import java.util.PriorityQueue;
 /**
  * Created by johannes on 12/5/15.
  */
-public class ListUtil {
+public final class ListUtil {
+
+    private ListUtil() { }
+
     /**
      * Merges k sorted lists with a total of n entries of type T into a single list preserving order in O(n log k).
      *

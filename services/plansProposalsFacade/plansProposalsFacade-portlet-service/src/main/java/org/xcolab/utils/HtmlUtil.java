@@ -17,7 +17,9 @@ import java.util.regex.Pattern;
  *
  * Created by johannes on 8/10/15.
  */
-public class HtmlUtil {
+public final class HtmlUtil {
+
+    private HtmlUtil() { }
 
     /**
      * Removes all html form the input string

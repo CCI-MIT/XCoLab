@@ -8,9 +8,11 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GlobalMessagesUtil {
+public final class GlobalMessagesUtil {
 
     public static final String GLOBAL_MESSAGES_SESSION_KEY = "xcolab_global_messages";
+
+    private GlobalMessagesUtil() { }
 
     public static void addMessage(String message, PortletRequest request) {
         addMessage(message, PortalUtil.getHttpServletRequest(request));

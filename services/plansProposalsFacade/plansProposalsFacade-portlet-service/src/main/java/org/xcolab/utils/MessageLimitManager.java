@@ -32,19 +32,15 @@ import java.util.Map;
  * 
  * @author janusz
  */
-public class MessageLimitManager {
+public final class MessageLimitManager {
     private static final String MESSAGES_LIMIT_COLUMN = "messages_limit";
-
     private static final String MESSAGE_ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
     private static final Map<Long, Object> mutexes = new HashMap<>();
-
 	private static final int MESSAGES_DAILY_LIMIT = 15;
-
-	/**
-	 * Keeps track of the last validation error mail that has been send to a specific user
-	 */
 	private static final Map<User, Date> lastValidationDateMap = new HashMap<>();
+
+    private MessageLimitManager() { }
 
     /**
      * Method responsible for checking if user is allowed to send given number

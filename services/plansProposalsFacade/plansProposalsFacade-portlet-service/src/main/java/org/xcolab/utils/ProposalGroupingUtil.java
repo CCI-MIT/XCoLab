@@ -19,7 +19,9 @@ import java.util.Map;
  * This is a utility class to group proposals by certain other criteria.
  * It's in a separate class, because the liferay service layer does not support returning maps!
  */
-public class ProposalGroupingUtil {
+public final class ProposalGroupingUtil {
+
+    private ProposalGroupingUtil() { }
 
     public static Map<ContestType, List<Proposal>> groupByContestType(List<Proposal> proposals) throws SystemException, PortalException {
         Map<Long, ContestType> contestIdToContestTypeMap = new HashMap<>();

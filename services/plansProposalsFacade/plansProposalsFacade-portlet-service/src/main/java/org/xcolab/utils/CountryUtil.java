@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by johannes on 12/8/15.
  */
-public class CountryUtil {
+public final class CountryUtil {
     public final static Map<String, String> codeToCountryMap = new HashMap<>();
 
     static {
@@ -260,6 +260,8 @@ public class CountryUtil {
         codeToCountryMap.put("ZM", "Zambia");
         codeToCountryMap.put("ZW", "Zimbabwe");
     }
+
+    private CountryUtil() { }
 
     public static String getCountryForCode(String code) {
     	if (codeToCountryMap.containsKey(code)) {

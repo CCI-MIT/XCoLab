@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class OntologyTermToFocusAreaMapper {
 
-    private List<OntologyTerm> toBeMatchedTerms;
+    private final List<OntologyTerm> toBeMatchedTerms;
 
     public OntologyTermToFocusAreaMapper(List<OntologyTerm> terms) {
         this.toBeMatchedTerms = terms;
@@ -26,7 +26,6 @@ public class OntologyTermToFocusAreaMapper {
      * Returns a focus area that exactly matches all OntologyTerms. That is, only returns a focus area that matches only the
      * terms passed. This is in contrast to org.xcolab.utils.getFocusAreaMatchingTermsPartially
      *
-     * @return
      * @throws SystemException
      * @throws PortalException
      */
@@ -38,7 +37,6 @@ public class OntologyTermToFocusAreaMapper {
      * Returns a focus area that exactly matches all OntologyTerms within the passed focusAreas. That is, only returns a focus area that matches only the
      * terms passed. This is in contrast to org.xcolab.utils.getFocusAreaMatchingTermsPartially
      *
-     * @return
      * @throws SystemException
      * @throws PortalException
      */
@@ -49,7 +47,6 @@ public class OntologyTermToFocusAreaMapper {
     /**
      * Returns a focus area that matches at least all passed OntologyTerms.
      *
-     * @return
      * @throws SystemException
      * @throws PortalException
      */
@@ -61,7 +58,6 @@ public class OntologyTermToFocusAreaMapper {
      * Returns a focus area that partially matches all OntologyTerms within the passed focusAreas. That is, only returns a focus area that matches only the
      * terms passed. This is in contrast to org.xcolab.utils.getFocusAreaMatchingTermsPartially
      *
-     * @return
      * @throws SystemException
      * @throws PortalException
      */
@@ -77,12 +73,7 @@ public class OntologyTermToFocusAreaMapper {
             boolean focusAreaMatchesTerms = true;
             for (OntologyTerm toBeMatchedTerm : toBeMatchedTerms) {
                 OntologyTerm focusAreaOntologyTerm = getTermWithSpaceId(focusArea, toBeMatchedTerm.getOntologySpaceId());
-                try {
-                    if (focusAreaOntologyTerm.getId() != toBeMatchedTerm.getId()) {
-                        focusAreaMatchesTerms = false;
-                        break;
-                    }
-                } catch (Exception e) {
+                if (focusAreaOntologyTerm.getId() != toBeMatchedTerm.getId()) {
                     focusAreaMatchesTerms = false;
                     break;
                 }
