@@ -7,7 +7,7 @@
 
 	<!--@elvariable id="planTemplateId" type="java.lang.Long"-->
     <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper"-->
-    <!--@elvariable id="contestProposalTemplateWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ContestProposalTemplateWrapper"-->
+	<!--@elvariable id="contestProposalTemplateWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ProposalTemplateWrapper"-->
 
     <!--@elvariable id="contestTypeSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
     <!--@elvariable id="sectionTypeSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
@@ -21,28 +21,18 @@
 
     <jsp:directive.include file="../init.jspx" />
 
-	<c:choose>
-		<c:when test="${param.manager}">
-			<jsp:directive.include file="../manager/header.jspx"/>
-		</c:when>
-		<c:otherwise>
-			<jsp:directive.include file="../details/header.jspx"/>
-		</c:otherwise>
-	</c:choose>
+	<jsp:directive.include file="header.jspx"/>
 
 	<portlet:resourceURL var="getSectionDefinition" id="getSectionDefinition" />
 
 	<portlet:actionURL var="changeElementURL">
 		<portlet:param name="tab" value="${param.tab}" />
-		<portlet:param name="manager" value="${param.manager}" />
 		<portlet:param name="elementId" value="${planTemplateId}" />
 	</portlet:actionURL>
 
 	<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 
-	<c:if test="${param.manager}">
-		<jsp:directive.include file="../manager/action.jspx"/>
-	</c:if>
+	<jsp:directive.include file="action.jspx"/>
 
 	<div class="cmsDetailsBox">
 
@@ -236,39 +226,37 @@
 		</c:if>
 	</div>
 	<c:if test="${planTemplateId >= 0}">
-		<c:if test="${param.manager}">
-			<div class="cmsDetailsBox">
-				<h3>Contests using this template:</h3>
-				<div class="addpropbox" style="margin-top: 20px;">
-				<table class="contestOverview">
-					<col span="1" class="extraSmallColumn"/>
-					<col span="1" class="wideColumn" style="text-align: left;"/>
-					<col span="1" class="smallColumn"/>
-					<col span="1" class="smallColumn"/>
-					<thead>
+		<div class="cmsDetailsBox">
+			<h3>Contests using this template:</h3>
+			<div class="addpropbox" style="margin-top: 20px;">
+			<table class="contestOverview">
+				<col span="1" class="extraSmallColumn"/>
+				<col span="1" class="wideColumn" style="text-align: left;"/>
+				<col span="1" class="smallColumn"/>
+				<col span="1" class="smallColumn"/>
+				<thead>
+				<tr>
+					<th>#</th>
+					<th>Title</th>
+					<th>Tier</th>
+					<th><!-- --></th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach items="${contestProposalTemplateWrapper.contestsUsingTemplate}" var="contestWrapper" varStatus="x">
 					<tr>
-						<th>#</th>
-						<th>Title</th>
-						<th>Tier</th>
-						<th><!-- --></th>
+						<td data-form-name="index">${x.index + 1}</td>
+						<td ><collab:contestLink contest="${contestWrapper}" /></td>
+						<td>Tier ${contestWrapper.contestTier}</td>
+						<td>
+							<a class="primary-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+						</td>
 					</tr>
-					</thead>
-					<tbody>
-					<c:forEach items="${contestProposalTemplateWrapper.contestsUsingSelectedTemplate}" var="contestWrapper" varStatus="x">
-						<tr>
-							<td data-form-name="index">${x.index + 1}</td>
-							<td ><collab:contestLink contest="${contestWrapper}" /></td>
-							<td>Tier ${contestWrapper.contestTier}</td>
-							<td>
-								<a class="primary-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
-							</td>
-						</tr>
-					</c:forEach>
-					</tbody>
-				</table>
-				</div>
+				</c:forEach>
+				</tbody>
+			</table>
 			</div>
-		</c:if>
+		</div>
 	</c:if>
 
 	<script type="text/javascript">

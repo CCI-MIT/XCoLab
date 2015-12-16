@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
@@ -24,28 +25,21 @@ import java.util.Set;
 /**
  * Created by Thomas on 2/18/2015.
  */
-public class ContestProposalTemplateWrapper {
+public class ProposalTemplateWrapper {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestProposalTemplateWrapper.class);
+    private final static Log _log = LogFactoryUtil.getLog(ProposalTemplateWrapper.class);
     private List<SectionDefinitionWrapper> sections;
     private Integer numberOfSections;
     private PlanTemplate planTemplate;
     private String templateName;
     private Long planTemplateId;
-    private Contest contest;
     private Boolean updateExistingSections = false;
     private Boolean createNew = false;
 
-    public ContestProposalTemplateWrapper(){
-    }
+    public ProposalTemplateWrapper(){ }
 
-    public ContestProposalTemplateWrapper(Long planTemplateId) throws PortalException, SystemException {
+    public ProposalTemplateWrapper(Long planTemplateId) throws PortalException, SystemException {
         this.planTemplate = PlanTemplateLocalServiceUtil.getPlanTemplate(planTemplateId);
-        populateExistingProposalTemplateSections();
-    }
-
-    public ContestProposalTemplateWrapper(Contest contest) throws PortalException, SystemException {
-        init(contest);
         populateExistingProposalTemplateSections();
     }
 
@@ -67,11 +61,6 @@ public class ContestProposalTemplateWrapper {
         } catch (SystemException | PortalException e){
             _log.warn("Failed to set plan template id: " + planTemplateId);
         }
-    }
-
-    public void init(Contest contest) throws PortalException, SystemException {
-        this.contest = contest;
-        this.planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
     }
 
     public void initPlanTemplate(Long planTemplateId) throws PortalException, SystemException {
@@ -151,85 +140,6 @@ public class ContestProposalTemplateWrapper {
         this.templateName = templateName;
     }
 
-    public static PlanTemplate createNewTemplate() throws SystemException {
-        Long newPlanTemplateId = CounterLocalServiceUtil.increment(PlanTemplate.class.getName());
-        PlanTemplate newPlanTemplate = PlanTemplateLocalServiceUtil.createPlanTemplate(newPlanTemplateId);
-        newPlanTemplate.setName("New template");
-        newPlanTemplate.persist();
-        return newPlanTemplate;
-    }
-
-    private void deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate() throws PortalException, SystemException {
-        deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate(planTemplate);
-    }
-
-    private static void deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate(PlanTemplate planTemplate)
-            throws SystemException, PortalException {
-        List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil.getSections(planTemplate);
-        for(PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if(!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(), planTemplate.getId())) {
-                PlanSectionDefinitionLocalServiceUtil.deletePlanSectionDefinition(planSectionDefinition);
-            }
-        }
-    }
-
-    private static boolean isPlanSectionDefinitionUsedInOtherTemplate(Long planSectionDefinitionId, Long planTemplateId) throws SystemException {
-        List<PlanTemplateSection> planTemplateSections = PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId(planSectionDefinitionId);
-        return !(planTemplateSections.size() == 1 && planTemplateSections.get(0).getPlanTemplateId() == planTemplateId) && !planTemplateSections.isEmpty();
-    }
-
-    private static void deletePlanTemplateSectionsOfProposalTemplate(Long planTemplateId) throws SystemException {
-        List<PlanTemplateSection> planTemplateSections =  PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(planTemplateId);
-        for(PlanTemplateSection planTemplateSection : planTemplateSections){
-            PlanTemplateSectionLocalServiceUtil.remove(planTemplateSection);
-        }
-    }
-
-    public static void deleteTemplate(Long templateId) throws PortalException, SystemException {
-        PlanTemplate planTemplate = PlanTemplateLocalServiceUtil.getPlanTemplate(templateId);
-        deletePlanTemplateSectionsOfProposalTemplate(templateId);
-        deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate(planTemplate);
-        PlanTemplateLocalServiceUtil.deletePlanTemplate(templateId);
-    }
-
-    private void removeTemplateSection(){
-        SectionDefinitionWrapper templateSectionDefinitionWrapper = new SectionDefinitionWrapper();
-        for(SectionDefinitionWrapper sectionBaseDefinition : sections ){
-            if(sectionBaseDefinition.isTemplateSection()) {
-                templateSectionDefinitionWrapper = sectionBaseDefinition;
-                break;
-            }
-        }
-        sections.remove(templateSectionDefinitionWrapper);
-    }
-
-    public void removeDeletedSections() throws PortalException, SystemException {
-        Set<Long> remainingPlanSectionDefinitionIds = new HashSet<>();
-        List<SectionDefinitionWrapper> removedSectionDefinitions = new ArrayList<>();
-        for(SectionDefinitionWrapper sectionBaseDefinition : sections ){
-            if((sectionBaseDefinition.getTitle() == null || sectionBaseDefinition.getTitle().isEmpty())
-                    && !sectionBaseDefinition.isTemplateSection()){
-                removedSectionDefinitions.add(sectionBaseDefinition);
-            } else{
-                remainingPlanSectionDefinitionIds.add(sectionBaseDefinition.getId());
-            }
-        }
-
-        List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil.getSections(planTemplate);
-        for(PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if(!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())){
-                if (!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(), planTemplate.getId())) {
-                    PlanSectionDefinitionLocalServiceUtil.deletePlanSectionDefinition(planSectionDefinition);
-                }
-                PlanTemplateLocalServiceUtil.removeSection(planTemplate, planSectionDefinition);
-            }
-        }
-
-        for(SectionDefinitionWrapper removedSectionDefinition : removedSectionDefinitions) {
-             sections.remove(removedSectionDefinition);
-        }
-    }
-
     public void persist() throws SystemException, PortalException {
         removeDeletedSections();
         removeTemplateSection();
@@ -247,11 +157,42 @@ public class ContestProposalTemplateWrapper {
         updatePlanTemplateTitle();
     }
 
-    private void updatePlanTemplateTitle() throws SystemException {
-        if(planTemplate != null && templateName != null){
-            planTemplate.setName(templateName);
-            planTemplate.persist();
+    public void removeDeletedSections() throws PortalException, SystemException {
+        Set<Long> remainingPlanSectionDefinitionIds = new HashSet<>();
+        List<SectionDefinitionWrapper> removedSectionDefinitions = new ArrayList<>();
+        for(SectionDefinitionWrapper sectionBaseDefinition : sections ){
+            if((sectionBaseDefinition.getTitle() == null || sectionBaseDefinition.getTitle().isEmpty())
+                    && !sectionBaseDefinition.isTemplateSection()){
+                removedSectionDefinitions.add(sectionBaseDefinition);
+            } else{
+                remainingPlanSectionDefinitionIds.add(sectionBaseDefinition.getId());
+            }
         }
+
+        List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil.getSections(planTemplate);
+        for(PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
+            if(!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())){
+                if (!ProposalTemplateLifecycleUtil.isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(), planTemplate.getId())) {
+                    PlanSectionDefinitionLocalServiceUtil.deletePlanSectionDefinition(planSectionDefinition);
+                }
+                PlanTemplateLocalServiceUtil.removeSection(planTemplate, planSectionDefinition);
+            }
+        }
+
+        for(SectionDefinitionWrapper removedSectionDefinition : removedSectionDefinitions) {
+             sections.remove(removedSectionDefinition);
+        }
+    }
+
+    private void removeTemplateSection() {
+        SectionDefinitionWrapper templateSectionDefinitionWrapper = new SectionDefinitionWrapper();
+        for (SectionDefinitionWrapper sectionBaseDefinition : sections) {
+            if (sectionBaseDefinition.isTemplateSection()) {
+                templateSectionDefinitionWrapper = sectionBaseDefinition;
+                break;
+            }
+        }
+        sections.remove(templateSectionDefinitionWrapper);
     }
 
     private void duplicateExistingPlanTemplate() throws SystemException, PortalException {
@@ -265,66 +206,16 @@ public class ContestProposalTemplateWrapper {
         }
     }
 
-    public void updateNewProposalTemplateSections() throws SystemException, PortalException {
-        removeDeletedSections();
-        removeTemplateSection();
-
-        if(planTemplate != null) {
-            Long baseTemplateId = planTemplate.getBaseTemplateId();
-
-            if (baseTemplateId == 0) {
-                String contestTitle = contest != null ? contest.getContestShortName() : "";
-                String baseProposalTemplateTitle = planTemplate.getName();
-                String newProposalTemplateTitle;
-
-                if (templateName.equals(baseProposalTemplateTitle)) {
-                    newProposalTemplateTitle = "Base template - " + baseProposalTemplateTitle + "- adapted for contest: " + contestTitle;
-
-                } else {
-                    newProposalTemplateTitle = templateName;
-                }
-
-                createProposalTemplate(newProposalTemplateTitle, planTemplate.getId());
-                updatePlanTemplateIdOfContest();
-            }
-
-            if (!planTemplate.getName().equals(templateName)) {
-                planTemplate.setName(templateName);
-                planTemplate.persist();
-                PlanTemplateLocalServiceUtil.updatePlanTemplate(planTemplate);
-            }
-        } else {
-            // TODO remove duplicates
-            String newProposalTemplateTitle = "Template for: " + contest.getContestShortName();
-            if(!templateName.isEmpty()){
-                newProposalTemplateTitle = templateName;
-            }
-            createProposalTemplate(newProposalTemplateTitle, 0L);
-            updatePlanTemplateIdOfContest();
-        }
-
-        // TODO write sectionId update
-        deletePlanSectionDefinitionsOfProposalTemplateIfNotUsedInAnotherTemplate();
-        addSectionsToProposalTemplate();
-    }
-
-    private void updatePlanTemplateIdOfContest() throws SystemException {
-        if(contest != null) {
-            Long newPlanTemplateId = planTemplate.getId();
-            contest.setPlanTemplateId(newPlanTemplateId);
-            contest.persist();
-        }
-    }
-    private void createProposalTemplate(String title, Long baseTemplateId) throws SystemException {
-        planTemplate = PlanTemplateLocalServiceUtil.createPlanTemplate(CounterLocalServiceUtil.increment(PlanTemplate.class.getName()));
-        planTemplate.setName(title);
-        planTemplate.setBaseTemplateId(baseTemplateId);
-        planTemplate.persist();
-    }
-
     private void addSectionsToProposalTemplate() throws PortalException, SystemException {
-        for(SectionDefinitionWrapper sectionDefinitionWrapper : sections) {
+        for (SectionDefinitionWrapper sectionDefinitionWrapper : sections) {
             createOrUpdateIfExistsPlanTemplateSection(sectionDefinitionWrapper);
+        }
+    }
+
+    private void updatePlanTemplateTitle() throws SystemException {
+        if(planTemplate != null && templateName != null){
+            planTemplate.setName(templateName);
+            planTemplate.persist();
         }
     }
 
@@ -338,7 +229,7 @@ public class ContestProposalTemplateWrapper {
         List<PlanTemplateSection> planTemplateSectionsWithSectionDefinition =
                 PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId(sectionDefinitionWrapper.getId());
 
-        for(PlanTemplateSection planTemplateSection : planTemplateSectionsWithSectionDefinition){
+        for (PlanTemplateSection planTemplateSection : planTemplateSectionsWithSectionDefinition) {
             if(planTemplateSection.getPlanTemplateId() == planTemplateId){
                 planTemplateSection.setWeight(weight);
                 planTemplateSection.persist();
@@ -348,12 +239,9 @@ public class ContestProposalTemplateWrapper {
             }
         }
 
-        if(!wasUpdated) {
-            PlanTemplateSection planTemplateSection =
-                    PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(planTemplateId, sectionDefinitionId, weight);
-            planTemplateSection.persist(); // TODO check whether necessary
+        if (!wasUpdated) {
+            PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(planTemplateId, sectionDefinitionId, weight);
         }
-
     }
 
     public static List<LabelValue> getAllPlanTemplateSelectionItems(){
@@ -366,7 +254,7 @@ public class ContestProposalTemplateWrapper {
         return selectItems;
     }
 
-    public List<BaseContestWrapper> getContestsUsingSelectedTemplate(){
+    public List<BaseContestWrapper> getContestsUsingTemplate() {
         List<BaseContestWrapper> contestsUsingSelectedTemplate = new ArrayList<>();
         List<Contest> contestsUsingSelectedTemplateList = new ArrayList<>();
 
@@ -375,7 +263,7 @@ public class ContestProposalTemplateWrapper {
             contestsUsingSelectedTemplateList = ContestLocalServiceUtil.getContestsByPlanTemplateId(planTemplateId);
         } catch (SystemException ignored){ }
 
-        for(Contest contest : contestsUsingSelectedTemplateList) {
+        for (Contest contest : contestsUsingSelectedTemplateList) {
             contestsUsingSelectedTemplate.add(new BaseContestWrapper(contest));
         }
 

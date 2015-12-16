@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.controller.common.ContestProposalTemplateTabController;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
+import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
-import org.xcolab.portlets.contestmanagement.wrappers.ContestProposalTemplateWrapper;
+import org.xcolab.portlets.contestmanagement.wrappers.ProposalTemplateWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
@@ -64,10 +65,10 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
             Long planTemplateId = elementId != null ? elementId : getFirstPlanTemplateId();
             model.addAttribute("planTemplateId", planTemplateId);
             if (planTemplateId >= 0) {
-                ContestProposalTemplateWrapper contestProposalTemplateWrapper = new ContestProposalTemplateWrapper(planTemplateId);
-                model.addAttribute("contestProposalTemplateWrapper", contestProposalTemplateWrapper);
+                ProposalTemplateWrapper proposalTemplateWrapper = new ProposalTemplateWrapper(planTemplateId);
+                model.addAttribute("contestProposalTemplateWrapper", proposalTemplateWrapper);
             }
-            model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId, ContestProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
+            model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId, ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
             model.addAttribute("elementId", planTemplateId);
             return ContestProposalTemplateTabController.TAB_VIEW;
         } catch (SystemException | PortalException e){
@@ -87,7 +88,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
         }
 
         try {
-            PlanTemplate newTemplate = ContestProposalTemplateWrapper.createNewTemplate();
+            PlanTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), newTemplate.getId());
         } catch(SystemException | IOException e){
             _log.warn("Create proposal template failed with: ", e);
@@ -105,7 +106,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
             return;
         }
         try {
-            ContestProposalTemplateWrapper.deleteTemplate(elementId);
+            ProposalTemplateLifecycleUtil.delete(elementId);
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), getFirstPlanTemplateId());
         } catch(PortalException | SystemException | IOException e){
             _log.warn("Delete proposal template failed with: ", e);
@@ -113,9 +114,9 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
         }
     }
 
-    @RequestMapping(params = {"action=updatePROPOSALTEMPLATES", "manager=true"})
+    @RequestMapping(params = {"action=updatePROPOSALTEMPLATES"})
     public void updateProposalTemplatesTabController(ActionRequest request, Model model, ActionResponse response,
-                                                    @ModelAttribute ContestProposalTemplateWrapper updatedContestProposalTemplateWrapper, BindingResult result) {
+                                                     @ModelAttribute ProposalTemplateWrapper updatedProposalTemplateWrapper, BindingResult result) {
 
         if(!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
@@ -124,23 +125,23 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
         if (result.hasErrors()) {
             model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(
-                    updatedContestProposalTemplateWrapper.getPlanTemplateId(),
-                    ContestProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
+                    updatedProposalTemplateWrapper.getPlanTemplateId(),
+                    ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
             SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestProposalTemplate");
             return;
         }
 
         try {
-            updatedContestProposalTemplateWrapper.setUpdateExistingTemplate(true);
-            updatedContestProposalTemplateWrapper.persist();
-            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), updatedContestProposalTemplateWrapper.getPlanTemplateId());
+            updatedProposalTemplateWrapper.setUpdateExistingTemplate(true);
+            updatedProposalTemplateWrapper.persist();
+            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), updatedProposalTemplateWrapper.getPlanTemplateId());
         } catch (SystemException | PortalException | IOException e) {
             _log.warn("Update proposal template failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
 
-    @RequestMapping(params = {"action=updatePROPOSALTEMPLATES", "error=true", "manager=true"})
+    @RequestMapping(params = {"action=updatePROPOSALTEMPLATES", "error=true"})
     public String reportError(PortletRequest request, Model model) {
         return TAB_VIEW;
     }

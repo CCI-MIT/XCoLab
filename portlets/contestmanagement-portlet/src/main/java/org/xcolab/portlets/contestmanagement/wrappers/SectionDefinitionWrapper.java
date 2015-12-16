@@ -516,6 +516,4 @@ public class SectionDefinitionWrapper implements Serializable {
                 .append(other.getPointType(), this.getPointType())
                 .append(other.getPointPercentage(), this.getPointPercentage()).isEquals();
     }
-
-
 }
