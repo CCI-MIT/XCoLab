@@ -15,7 +15,8 @@
         		<portlet:param name="sortColumn" value="USER_NAME" />
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'USER_NAME' ? not sortFilterPage.sortAscending : true }" />
                 <portlet:param name="filter" value="${sortFilterPage.filter}" />
-                <portlet:param name="memberCategory" value="${memberCategory}" />
+				<portlet:param name="memberCategory" value="${memberCategory}" />
+				<portlet:param name="page" value="1" />
         	</portlet:renderURL>
            	<a class="fieldWithTooltip" href="${sortURL }">User</a>
            	<div class="tooltip">
@@ -29,6 +30,7 @@
 				<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : true }" />
 				<portlet:param name="filter" value="${sortFilterPage.filter}" />
 				<portlet:param name="memberCategory" value="${memberCategory}" />
+				<portlet:param name="page" value="1" />
 			</portlet:renderURL>
 			<span class="fieldWithTooltip tooltipAbove">
 				<img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" />
@@ -47,6 +49,7 @@
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'ACTIVITY' ? not sortFilterPage.sortAscending : true }" />
                 <portlet:param name="filter" value="${sortFilterPage.filter}" />
                 <portlet:param name="memberCategory" value="${memberCategory}" />
+				<portlet:param name="page" value="1" />
 			</portlet:renderURL>
         	<a class="fieldWithTooltip" href="${sortURLActivity }"> Activity</a>
             <div class="tooltip">Click to sort by activity</div>
@@ -58,6 +61,7 @@
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'CATEGORY' ? not sortFilterPage.sortAscending : true }" />
                 <portlet:param name="filter" value="${sortFilterPage.filter}" />
                 <portlet:param name="memberCategory" value="${memberCategory}" />
+				<portlet:param name="page" value="1" />
 			</portlet:renderURL>
         	<a class="fieldWithTooltip" href="${sortURLCategory }"> Category</a>
             <div class="tooltip">Click to sort by category</div>
@@ -70,6 +74,7 @@
         		<portlet:param name="sortAscending" value="${sortAscending}" />
                 <portlet:param name="filter" value="${sortFilterPage.filter}" />
                 <portlet:param name="memberCategory" value="${memberCategory}" />
+				<portlet:param name="page" value="1" />
 			</portlet:renderURL>
         	<a class="fieldWithTooltip" href="${sortURLSeniority }"> Member since</a>
             <div class="tooltip">Click to sort by seniority</div>
@@ -121,6 +126,7 @@
 							<portlet:param name="memberCategory" value="${category.displayName}" />
 							<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
 							<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+							<portlet:param name="page" value="1" />
 						</portlet:renderURL>
 
 						<a href="${memberCategoryURL }">${category.categoryName}</a>
