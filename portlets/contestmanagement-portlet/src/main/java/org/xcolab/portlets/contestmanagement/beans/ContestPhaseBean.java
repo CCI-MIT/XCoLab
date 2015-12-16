@@ -15,6 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.xcolab.enums.ContestPhasePromoteType;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,9 +25,7 @@ import java.util.List;
 /**
  * Created by Thomas on 2/20/2015.
  */
-public class ContestPhaseBean {
-
-
+public class ContestPhaseBean implements Serializable {
     public static final Long CREATE_PHASE_CONTEST_PK = -1L;
 
     private Long contestSchedulePK;

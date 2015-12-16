@@ -55,6 +55,7 @@ public class ContestDescriptionBean implements Serializable {
 
     private boolean hideRibbons;
 
+    @SuppressWarnings("unused")
     public ContestDescriptionBean() { }
 
     public ContestDescriptionBean(Contest contest) {

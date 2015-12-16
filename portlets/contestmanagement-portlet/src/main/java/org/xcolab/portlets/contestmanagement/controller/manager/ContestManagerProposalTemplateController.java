@@ -40,7 +40,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
     @ModelAttribute("tabs")
     @Override
     public List<TabWrapper> populateTabs(Model model, PortletRequest request) throws PortalException, SystemException {
-        return getAllVisibleTabsWrapped(model, request, ContestManagerTabs.values());
+        return getAllVisibleTabsWrapped(request, ContestManagerTabs.values());
     }
 
     @ModelAttribute("currentTabWrapped")

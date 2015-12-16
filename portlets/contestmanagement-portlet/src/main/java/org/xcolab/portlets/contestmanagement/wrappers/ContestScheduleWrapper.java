@@ -52,7 +52,7 @@ public class ContestScheduleWrapper {
             initContestSchedule(scheduleId);
             initContestPhases(scheduleId);
             initContestsUsingSelectedSchedule(scheduleId);
-        } catch (Exception e) {
+        } catch (SystemException e) {
             _log.info("Could not create ContestScheduleWrapper for scheduleId: " + scheduleId, e);
         }
     }

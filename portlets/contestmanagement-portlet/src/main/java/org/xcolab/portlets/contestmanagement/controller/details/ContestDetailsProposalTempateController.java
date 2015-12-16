@@ -23,6 +23,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public class ContestDetailsProposalTempateController extends ContestProposalTemp
     @ModelAttribute("tabs")
     @Override
     public List<TabWrapper> populateTabs(Model model, PortletRequest request) throws PortalException, SystemException {
-        return getAllVisibleTabsWrapped(model, request, ContestDetailsTabs.values());
+        return getAllVisibleTabsWrapped(request, ContestDetailsTabs.values());
     }
 
     @ModelAttribute("contestWrapper")
@@ -59,7 +60,6 @@ public class ContestDetailsProposalTempateController extends ContestProposalTemp
         return tabWrapper;
     }
 
-
     @RequestMapping(params = "tab=PROPOSALTEMPLATE")
     public String showProposalTemplateTabController(PortletRequest request, PortletResponse response, Model model)
             throws PortalException, SystemException {
@@ -72,13 +72,12 @@ public class ContestDetailsProposalTempateController extends ContestProposalTemp
             ContestProposalTemplateWrapper contestProposalTemplateWrapper = new ContestProposalTemplateWrapper(contest);
             model.addAttribute("contestProposalTemplateWrapper", contestProposalTemplateWrapper);
             return ContestProposalTemplateTabController.TAB_VIEW;
-        } catch (Exception e){
+        } catch (PortalException | SystemException e){
             _log.warn("Could not create proposal template wrapper: ", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
         return NOT_FOUND_TAB_VIEW;
     }
-
 
     @RequestMapping(params = "action=updateContestProposalTemplate")
     public void updateProposalTemplateTabController(ActionRequest request, Model model, ActionResponse response,
@@ -98,7 +97,7 @@ public class ContestDetailsProposalTempateController extends ContestProposalTemp
             updatedContestProposalTemplateWrapper.init(contest);
             updatedContestProposalTemplateWrapper.updateNewProposalTemplateSections();
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, contest.getContestPK(), tab.getName());
-        } catch(Exception e){
+        } catch (SystemException | PortalException | IOException e){
             _log.warn("Update proposal template failed with: ", e);
             _log.warn(e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
