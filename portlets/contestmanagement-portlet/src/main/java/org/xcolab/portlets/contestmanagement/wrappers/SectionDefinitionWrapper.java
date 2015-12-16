@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.OntologyTermToFocusAreaMapper;
@@ -473,21 +475,20 @@ public class SectionDefinitionWrapper implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = (contestIntegrationRelevance ? 1 : 0);
-        hash = hash * 13 + (int) level;
-        hash = hash * 5 + (int) pointType;
-        hash = hash * 3 + hashCode(id);
-        hash = hash * 7 + characterLimit;
-        return hash + hashCode(title) + hashCode(type) + hashCode(defaultText) + hashCode(helpText)
-                + hashCode(allowedContestTypeIds) + hashCode(pointPercentage) + hashCode(additionalIds);
-    }
-
-    private int hashCode(Object o) {
-        if (o == null) {
-            return 0;
-        }
-        return o.hashCode();
-    }
+        return new HashCodeBuilder()
+                .append(contestIntegrationRelevance)
+                .append(level)
+                .append(pointType)
+                .append(id)
+                .append(characterLimit)
+                .append(title)
+                .append(type)
+                .append(defaultText)
+                .append(helpText)
+                .append(allowedContestTypeIds)
+                .append(pointPercentage)
+                .append(additionalIds).toHashCode();
+}
 
     @Override
     public boolean equals(Object o) {
@@ -501,27 +502,18 @@ public class SectionDefinitionWrapper implements Serializable {
 
         SectionDefinitionWrapper other = (SectionDefinitionWrapper) o;
 
-        return !(!(areEqual(other.getId(), this.getId()) &&
-                areEqual(other.getAllowedContestTypeIds(), this.getAllowedContestTypeIds())) &&
-                areEqualIgnoreCase(other.getTitle(), this.getTitle()) &&
-                areEqualIgnoreCase(other.getType(), this.getType()) &&
-                areEqualIgnoreCase(other.getDefaultText(), this.getDefaultText()) &&
-                areEqualIgnoreCase(other.getHelpText(), this.getHelpText()) &&
-                areEqualIgnoreCase(other.getAdditionalIds(), this.getAdditionalIds()) &&
-                other.getCharacterLimit() == this.getCharacterLimit() &&
-                other.isContestIntegrationRelevance() == this.isContestIntegrationRelevance() &&
-                other.getFocusAreaId() == this.getFocusAreaId() &&
-                other.getLevel() == this.getLevel())
-                && areEqual(other.getPointType(), this.getPointType())
-                && areEqualIgnoreCase(other.getPointPercentage(), this.getPointPercentage());
-    }
-
-    private boolean areEqual(Object o1, Object o2) {
-        return o1 == null ? o2 == null : o1.equals(o2);
-    }
-
-
-    private boolean areEqualIgnoreCase(String s1, String s2) {
-        return s1 == null ? s2 == null : s1.equalsIgnoreCase(s2);
+        return new EqualsBuilder()
+                .append(other.getAllowedContestTypeIds(), this.getAllowedContestTypeIds())
+                .append(other.getTitle(), this.getTitle())
+                .append(other.getType(), this.getType())
+                .append(other.getDefaultText(), this.getDefaultText())
+                .append(other.getHelpText(), this.getHelpText())
+                .append(other.getAdditionalIds(), this.getAdditionalIds())
+                .append(other.getCharacterLimit(), this.getCharacterLimit())
+                .append(other.isContestIntegrationRelevance(), this.isContestIntegrationRelevance())
+                .append(other.getFocusAreaId(), this.getFocusAreaId())
+                .append(other.getLevel(), this.getLevel())
+                .append(other.getPointType(), this.getPointType())
+                .append(other.getPointPercentage(), this.getPointPercentage()).isEquals();
     }
 }

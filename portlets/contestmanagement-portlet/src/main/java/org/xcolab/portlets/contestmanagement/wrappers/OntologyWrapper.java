@@ -2,6 +2,7 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.wrapper.OntologySpaceWrapper;
 import org.xcolab.wrapper.OntologyTermWrapper;
 
@@ -12,11 +13,10 @@ import java.util.*;
  */
 public class OntologyWrapper {
 
-    private Map<Long, OntologySpaceWrapper> ontologySpaces;
-    private Map<Long, OntologyTermWrapper> ontologyTerms;
+    private final Map<Long, OntologySpaceWrapper> ontologySpaces;
+    private final Map<Long, OntologyTermWrapper> ontologyTerms;
 
-    public OntologyWrapper() throws Exception{
-
+    public OntologyWrapper() throws SystemException {
         ontologySpaces = new HashMap<>();
         ontologyTerms = new TreeMap<>();
         initOntologySpacesAndTerms();
@@ -42,7 +42,7 @@ public class OntologyWrapper {
         return sortedSpaces;
     }
 
-    public List<Long> getOntologyTermIdsForFocusAreaOfContest(Contest contest) throws Exception{
+    public List<Long> getOntologyTermIdsForFocusAreaOfContest(Contest contest) throws SystemException {
         List<Long> ontologyTermIds = new ArrayList<>();
         Long focusAreaId = contest.getFocusAreaId();
         for(FocusAreaOntologyTerm focusAreaOntologyTerm : FocusAreaOntologyTermLocalServiceUtil.findTermsByFocusArea(focusAreaId)){
@@ -52,7 +52,7 @@ public class OntologyWrapper {
         return ontologyTermIds;
     }
 
-    private void initOntologySpacesAndTerms() throws Exception{
+    private void initOntologySpacesAndTerms() throws SystemException {
         List<OntologySpace> ontologySpacesRaw = OntologySpaceLocalServiceUtil.getOntologySpaces(0, Integer.MAX_VALUE);
         List<OntologyTerm> ontologyTermsRaw = OntologyTermLocalServiceUtil.getOntologyTerms(0, Integer.MAX_VALUE);
 

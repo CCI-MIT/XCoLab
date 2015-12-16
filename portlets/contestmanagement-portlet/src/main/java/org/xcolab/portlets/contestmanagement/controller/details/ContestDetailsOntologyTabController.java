@@ -73,7 +73,7 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
             model.addAttribute("contestOntologyTerms", ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(getContest()));
             setPageAttributes(request, model, tab);
             return TAB_VIEW;
-        } catch (Exception e){
+        } catch (SystemException | PortalException e){
             _log.warn("Could not show ontology tab: ", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }

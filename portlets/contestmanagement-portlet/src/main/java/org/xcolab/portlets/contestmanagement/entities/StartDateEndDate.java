@@ -1,32 +1,32 @@
 package org.xcolab.portlets.contestmanagement.entities;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 /**
  * Created by Thomas on 2/9/2015.
  */
 public class StartDateEndDate {
-    private Date startDate;
-    private Date endDate;
+    private DateTime startDate;
+    private DateTime endDate;
 
-    public StartDateEndDate(Date startDate, Date endDate) {
+    public StartDateEndDate(DateTime startDate, DateTime endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public Date getEndDate() {
+    public DateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(DateTime endDate) {
         this.endDate = endDate;
     }
 
-    public Date getStartDate() {
+    public DateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(DateTime startDate) {
         this.startDate = startDate;
     }
 }

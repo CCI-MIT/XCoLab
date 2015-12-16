@@ -5,7 +5,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalService;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -19,7 +18,6 @@ import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.MassActionRequiresConfirmationException;
 
 import javax.mail.internet.InternetAddress;
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
 import java.util.*;
@@ -39,20 +37,20 @@ public class ContestMassActionMethods {
 
         String exportFileName = "reportOfPeopleInCurrentPhase";
         ResourceResponse response = (ResourceResponse) ResourceResponseObject;
-        CsvExportUtil csvExportUtil = new CsvExportUtil();
-        csvExportUtil.addRowToExportData(CSV_EXPORT_HEADER);
+        CsvExportHelper csvExportHelper = new CsvExportHelper();
+        csvExportHelper.addRowToExportData(CSV_EXPORT_HEADER);
 
         for (Long contestId : contestList) {
             try {
                 List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
                 ContestPhase activeContestPhase = ContestLocalServiceUtil.getActivePhase(ContestLocalServiceUtil.getContest(contestId));
-                csvExportUtil.addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
+                csvExportHelper.addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
             } catch (Exception e) {
                 _log.warn("Failed to export data for csv: ", e);
             }
         }
 
-        csvExportUtil.initiateDownload(exportFileName, request, response);
+        csvExportHelper.initiateDownload(exportFileName, request, response);
 
     }
 

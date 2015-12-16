@@ -15,6 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.xcolab.enums.ContestPhasePromoteType;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,9 +25,7 @@ import java.util.List;
 /**
  * Created by Thomas on 2/20/2015.
  */
-public class ContestPhaseBean {
-
-
+public class ContestPhaseBean implements Serializable {
     public static final Long CREATE_PHASE_CONTEST_PK = -1L;
 
     private Long contestSchedulePK;
@@ -52,12 +51,11 @@ public class ContestPhaseBean {
     private Boolean fellowScreeningActive = false;
 
     private ContestPhaseType contestPhaseTypeObj;
-    private boolean contestPhaseDeleted = false;
+    private boolean contestPhaseDeleted;
     private boolean contestPhaseHasProposalAssociations;
 
-    public ContestPhaseBean(){
-
-    }
+    @SuppressWarnings("unused")
+    public ContestPhaseBean(){ }
 
     public ContestPhaseBean(ContestPhase contestPhase){
         this.contestPhasePK = contestPhase.getContestPhasePK();
@@ -76,7 +74,7 @@ public class ContestPhaseBean {
         this.nextStatus = contestPhase.getNextStatus();
         try {
             this.contestPhaseTypeObj = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseType);
-        } catch (Exception ignored){ }
+        } catch (SystemException | PortalException ignored){ }
         try {
             this.contestPhaseHasProposalAssociations = false;
             List<Contest> contestsUsingThisContestPhase =  ContestLocalServiceUtil.getContestsByContestScheduleId(this.contestScheduleId);
@@ -92,7 +90,7 @@ public class ContestPhaseBean {
                     }
                 }
             }
-        } catch (Exception ignored){ }
+        } catch (SystemException ignored){ }
     }
 
     public ContestPhaseBean( Long contestPhaseType, Date phaseStartDate, Date phaseEndDate, String contestPhaseAutopromote,  Boolean fellowScreeningActive) {

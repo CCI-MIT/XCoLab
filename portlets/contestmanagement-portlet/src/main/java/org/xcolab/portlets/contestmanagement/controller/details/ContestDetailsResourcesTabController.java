@@ -24,6 +24,8 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * Created by Thomas on 2/13/2015.
@@ -92,7 +94,7 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
         try{
             wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch(Exception e){
+        } catch (SystemException | ParseException | PortalException | IOException e) {
             _log.warn("Update contest resources failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }

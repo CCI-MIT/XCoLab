@@ -45,7 +45,7 @@ import java.util.Stack;
 public abstract class ContestProposalTemplateTabController extends BaseTabController {
 
     private final static Log _log = LogFactoryUtil.getLog(ContestProposalTemplateTabController.class);
-    static final public String TAB_VIEW = "common/proposalTemplateTab";
+    static final public String TAB_VIEW = "manager/proposalTemplateTab";
     static final public String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
     static final public String NOT_FOUND_TAB_VIEW = "common/notFound";
 
@@ -250,17 +250,9 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
             }
             nameStr.append("-|-");
         }
-        nameStr.append("- " + currentTerm.getName());
+        nameStr.append("- ").append(currentTerm.getName());
         return nameStr.toString();
     }
-
-//    private String cropStringToMaxCharacters(String inputString, int maxChars) {
-//        if (inputString.length() <= maxChars) {
-//            return inputString;
-//        }
-//
-//        return inputString.substring(0, maxChars) + "...";
-//    }
 
     @Override
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)

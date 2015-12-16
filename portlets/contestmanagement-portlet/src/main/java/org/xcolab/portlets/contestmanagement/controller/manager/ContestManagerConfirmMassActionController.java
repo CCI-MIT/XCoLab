@@ -1,5 +1,7 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.stereotype.Controller;
@@ -21,11 +23,10 @@ import java.util.List;
 @RequestMapping("view")
 public class ContestManagerConfirmMassActionController {
     private final static Log _log = LogFactoryUtil.getLog(ContestManagerConfirmMassActionController.class);
-    static final private String TAB_VIEW = "manager/overview";
     static final private String CONFIRM_VIEW_PATH = "manager/massActionConfirmation/";
 
     @RequestMapping(params = {"action=showMassActionConfirmation"})
-    public String showConfirmation(PortletRequest request, Model model) throws Exception {
+    public String showConfirmation(PortletRequest request, Model model) throws PortalException, SystemException {
         Integer massActionId = Math.abs(Integer.parseInt(request.getParameter("massActionId")));
         ContestMassActions contestMassAction = ContestMassActions.values()[massActionId];
         String confirmView = contestMassAction.getMethod().getName();
@@ -49,7 +50,7 @@ public class ContestManagerConfirmMassActionController {
         }
     }
 
-    private static List<Integer> getContestIdsFromParameter(String param) throws Exception {
+    private static List<Integer> getContestIdsFromParameter(String param) {
         List<Integer> contestIds = new ArrayList<>();
         String cleanedIds = param.replaceAll("\\[", "").replaceAll("\\]", "");
         String[] stringIds = cleanedIds.split(",");

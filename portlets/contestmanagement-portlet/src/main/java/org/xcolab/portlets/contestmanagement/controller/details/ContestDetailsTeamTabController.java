@@ -22,6 +22,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
             ContestTeamWrapper contestTeamWrapper = new ContestTeamWrapper(contestTeamBeam);
             contestTeamWrapper.updateContestTeamMembers();
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch(Exception e){
+        } catch (SystemException | IOException | PortalException e){
             _log.warn("Update contest team failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }

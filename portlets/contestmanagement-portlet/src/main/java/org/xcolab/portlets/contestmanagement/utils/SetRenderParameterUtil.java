@@ -10,9 +10,11 @@ import java.io.IOException;
 /**
  * Created by Thomas on 4/27/2015.
  */
-public class SetRenderParameterUtil {
+public final class SetRenderParameterUtil {
 
     private static final String DEFAULT_SUCCESS_MESSAGE = "Changes saved!";
+
+    private SetRenderParameterUtil() { }
 
     public static void setNoPermissionErrorRenderParameter(ActionResponse response){
         setErrorRenderParameter(response, "showNoPermission");

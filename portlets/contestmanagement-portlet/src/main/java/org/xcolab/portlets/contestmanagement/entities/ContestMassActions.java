@@ -54,9 +54,9 @@ public enum ContestMassActions{
     private void setMethodFromClassName(String methodName, Class className){
         try {
             if(className == BaseContestWrapper.class){
-                this.method = className.getMethod(methodName, boolean.class);
+                this.method = BaseContestWrapper.class.getMethod(methodName, boolean.class);
             } else if(className == ContestMassActionMethods.class) {
-                this.method = className.getMethod(methodName, List.class, Object.class, PortletRequest.class);
+                this.method = ContestMassActionMethods.class.getMethod(methodName, List.class, Object.class, PortletRequest.class);
             }
         } catch (NoSuchMethodException e){
             _log.warn("Could not find mass action method with name: " + methodName);

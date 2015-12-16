@@ -31,7 +31,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     @ModelAttribute("tabs")
     @Override
     public List<TabWrapper> populateTabs(Model model, PortletRequest request) throws PortalException, SystemException {
-        return getAllVisibleTabsWrapped(model, request, ContestDetailsTabs.values());
+        return getAllVisibleTabsWrapped(request, ContestDetailsTabs.values());
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -79,12 +79,11 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     public Contest getContest(PortletRequest request) {
         if(contest != null){
             return contest;
-        } else {
-            try {
-                initContest(request);
-            } catch (SystemException | PortalException e){
-                _log.warn("Could not get contest: ", e);
-            }
+        }
+        try {
+            initContest(request);
+        } catch (SystemException | PortalException e){
+            _log.warn("Could not get contest: ", e);
         }
         return contest;
     }

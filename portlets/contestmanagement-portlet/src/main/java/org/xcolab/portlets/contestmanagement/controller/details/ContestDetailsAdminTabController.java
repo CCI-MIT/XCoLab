@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
+import com.liferay.util.mail.MailEngineException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +22,10 @@ import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.wrapper.TabWrapper;
 
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.*;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -67,7 +70,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
         try {
             updateContestAdminBean.persist();
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch(Exception e){
+        } catch(SystemException | IOException e){
             _log.warn("Update contest admin failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -75,12 +78,9 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
 
     @ResourceMapping(value="submitContest")
     public @ResponseBody
-    void handleSubmitContest(
-            ResourceRequest request,
-            @RequestParam("contestId") Long contestId,
-            @RequestParam("tab") String tab,
-            ResourceResponse response
-    ) throws Exception{
+    void handleSubmitContest(ResourceRequest request, ResourceResponse response,
+                             @RequestParam("contestId") Long contestId, @RequestParam("tab") String tab)
+            throws IOException {
 
         boolean success = true;
         try {
@@ -91,7 +91,6 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
             contestUrl += "<br/>";
 
             User user = UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser()));
-            String subject  = "Contest draft was submitted from the new contest creation tool!";
             String body = "The following contest: <br />" +
                     contestUrl +
                     "was submitted by the user: " + user.getFullName() + "<br/>";
@@ -106,8 +105,9 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
                 addressTo[i] = new InternetAddress(recipients[i]);
             }
 
+            String subject = "Contest draft was submitted from the new contest creation tool!";
             MailEngine.send(fromEmail, addressTo, subject, body, true);
-        } catch (Exception e) {
+        } catch (SystemException | PortalException | AddressException | MailEngineException e) {
             success = false;
         }
         ObjectMapper mapper = new ObjectMapper();
