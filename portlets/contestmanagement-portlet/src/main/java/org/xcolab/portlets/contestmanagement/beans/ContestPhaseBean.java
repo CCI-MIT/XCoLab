@@ -52,12 +52,11 @@ public class ContestPhaseBean {
     private Boolean fellowScreeningActive = false;
 
     private ContestPhaseType contestPhaseTypeObj;
-    private boolean contestPhaseDeleted = false;
+    private boolean contestPhaseDeleted;
     private boolean contestPhaseHasProposalAssociations;
 
-    public ContestPhaseBean(){
-
-    }
+    @SuppressWarnings("unused")
+    public ContestPhaseBean(){ }
 
     public ContestPhaseBean(ContestPhase contestPhase){
         this.contestPhasePK = contestPhase.getContestPhasePK();
@@ -76,7 +75,7 @@ public class ContestPhaseBean {
         this.nextStatus = contestPhase.getNextStatus();
         try {
             this.contestPhaseTypeObj = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseType);
-        } catch (Exception ignored){ }
+        } catch (SystemException | PortalException ignored){ }
         try {
             this.contestPhaseHasProposalAssociations = false;
             List<Contest> contestsUsingThisContestPhase =  ContestLocalServiceUtil.getContestsByContestScheduleId(this.contestScheduleId);
@@ -92,7 +91,7 @@ public class ContestPhaseBean {
                     }
                 }
             }
-        } catch (Exception ignored){ }
+        } catch (SystemException ignored){ }
     }
 
     public ContestPhaseBean( Long contestPhaseType, Date phaseStartDate, Date phaseEndDate, String contestPhaseAutopromote,  Boolean fellowScreeningActive) {

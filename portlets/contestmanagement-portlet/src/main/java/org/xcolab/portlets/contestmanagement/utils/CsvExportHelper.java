@@ -28,14 +28,14 @@ import java.util.List;
 /**
  * Created by Thomas on 3/25/2015.
  */
-public class CsvExportUtil {
+public class CsvExportHelper {
 
-    private final static Log _log = LogFactoryUtil.getLog(CsvExportUtil.class);
+    private final static Log _log = LogFactoryUtil.getLog(CsvExportHelper.class);
     private final static String URL_DOMAIN = "http://www.climatecolab.org";
     private final List<String[]> records;
 
 
-    public CsvExportUtil() {
+    public CsvExportHelper() {
         records = new ArrayList<>();
     }
 
