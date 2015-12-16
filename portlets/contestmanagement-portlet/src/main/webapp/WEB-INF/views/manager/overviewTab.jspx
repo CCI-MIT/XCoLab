@@ -5,7 +5,9 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <jsp:useBean id="contestOverviewWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper" scope="request" />
+    <!--@elvariable id="massActionsItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+
+	<jsp:useBean id="contestOverviewWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper" scope="request" />
 
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
@@ -51,6 +53,7 @@
 			<div class="outerVerticalCenter">
 				<div class="innerVerticalCenter">
 					<form:select path="selectedMassAction" id="selectedMassAction">
+
 						<form:options items="${massActionsItems}" itemValue="value" itemLabel="lable"/>
 					</form:select>
 				</div>
@@ -148,7 +151,7 @@
 						<th class="rotate">Fellows</th>
 						<th class="rotate">Proposals</th>
 						<th class="rotate">Comments</th>
-						<th class="rotate"></th>
+						<th class="rotate"><!-- --></th>
 					</tr>
 				</thead>
 				<tbody id="contestOverviewBody">
@@ -258,11 +261,7 @@
 				[].forEach.call(contestsTableBody.getElementsByClassName("checkbox"), function (element) {
 					var parentRow = getClosest(element, "tr");
 					if( parentRow.getAttribute("data-filter-visible")  === 'true'){
-						if (selectAllChecked) {
-							element.checked = true;
-						} else {
-							element.checked = false;
-						}
+						element.checked = !!selectAllChecked;
 					}
 				});
 			});
@@ -332,7 +331,7 @@
 		}
 
 		function dragLeave(event){
-			var targetRow = getClosest(event.target, "tr")
+			var targetRow = getClosest(event.target, "tr");
 			targetRow.classList.remove("allowDrop");
 		}
 
@@ -342,7 +341,7 @@
 		}
 
 		function dragEnter(event) {
-			var targetRow = getClosest(event.target, "tr")
+			var targetRow = getClosest(event.target, "tr");
 			targetRow.classList.add("allowDrop");
 		}
 
@@ -358,9 +357,9 @@
 
 			var srcElementId = event.dataTransfer.getData("srcElementId");
 			var srcElement = document.getElementById(srcElementId);
-			var targetRow = getClosest(event.target, "tr")
+			var targetRow = getClosest(event.target, "tr");
 			var targetParentElement = targetRow.parentNode;
-			targetParentElement.insertBefore(srcElement, targetRow)
+			targetParentElement.insertBefore(srcElement, targetRow);
 
 			reCalculateWeights();
 			event.stopPropagation(); // Stops some browsers from redirecting.

@@ -5,7 +5,21 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-	<jsp:directive.include file="../init.jspx" />
+	<!--@elvariable id="planTemplateId" type="java.lang.Long"-->
+    <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper"-->
+    <!--@elvariable id="contestProposalTemplateWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ContestProposalTemplateWrapper"-->
+
+    <!--@elvariable id="contestTypeSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="sectionTypeSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="levelSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+
+    <!--@elvariable id="whatTerms" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="whereTerms" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="whoTerms" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="howTerms" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+
+    <jsp:directive.include file="../init.jspx" />
 
 	<c:choose>
 		<c:when test="${param.manager}">
@@ -225,7 +239,7 @@
 						<th>#</th>
 						<th>Title</th>
 						<th>Tier</th>
-						<th></th>
+						<th><!-- --></th>
 					</tr>
 					</thead>
 					<tbody>
@@ -293,11 +307,12 @@
 			var eventHandler = function() {
 				var sectionTypeId = $(this).val();
 				$(this).parents('.addpropbox').find('.ontology-select-container').toggle(sectionTypeId !== "");
-			}
+			};
 
-			jQuery('select.type-select').off('change');
-			jQuery('select.type-select').on('change', eventHandler);
-			eventHandler.call(jQuery('select.type-select')[0]);
+            var $typeSelectElement = jQuery('select.type-select');
+            $typeSelectElement.off('change');
+			$typeSelectElement.on('change', eventHandler);
+			eventHandler.call($typeSelectElement[0]);
 		}
 
 		function bindOntologyDropdownChange() {

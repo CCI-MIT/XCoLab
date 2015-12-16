@@ -1,6 +1,7 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
+	<!--@elvariable id="elementId" type="java.lang.Long"-->
 
 	<portlet:actionURL var="createNewElementFormURL">
 		<portlet:param name="tab" value="${param.tab}" />

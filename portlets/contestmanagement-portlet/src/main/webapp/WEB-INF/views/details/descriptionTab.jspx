@@ -3,6 +3,15 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
+    <!--@elvariable id="contestWrapper" type="org.xcolab.wrappers.BaseContestWrapper"-->
+    <!--@elvariable id="scheduleTemplateSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="proposalTemplateSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="contestLevelSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="modelIdsSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="contestTypeSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="modelRegionsSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
@@ -230,6 +239,7 @@
                 <div class="addpropInputContainer">
                     <form:select path="scheduleTemplateId">
                         <form:option value="0" label="None"/>
+
                         <form:options items="${scheduleTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
 

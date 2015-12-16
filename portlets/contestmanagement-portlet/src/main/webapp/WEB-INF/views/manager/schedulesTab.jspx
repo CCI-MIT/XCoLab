@@ -5,6 +5,13 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
+    <!--@elvariable id="scheduleId" type="java.lang.Long"-->
+    <!--@elvariable id="contestScheduleWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper"-->
+    <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper"-->
+    <!--@elvariable id="contestPhaseTypesSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
@@ -119,7 +126,7 @@
                             <th>End Date</th>
                             <th>Autopromote</th>
                             <th>Fellow <br/>Screening</th>
-                            <th></th>
+                            <th><!-- --></th>
                         </tr>
                         </thead>
                         <tbody id="contestOverviewBody" class="contestPhases">
@@ -228,7 +235,7 @@
                     <th>Current phase</th>
                     <th>Current phase <br/>Autopromote state</th>
                     <th>Current phase <br/>Fellow screening</th>
-                    <th></th>
+                    <th><!-- --></th>
                 </tr>
                 </thead>
                 <tbody>

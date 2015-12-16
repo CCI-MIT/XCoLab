@@ -2,6 +2,10 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
+	<!--@elvariable id="contestWrapper" type="org.xcolab.wrappers.BaseContestWrapper"-->
+    <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.wrapper.OntologySpaceWrapper>"-->
+
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
 

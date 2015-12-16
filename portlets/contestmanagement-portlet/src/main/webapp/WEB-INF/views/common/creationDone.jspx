@@ -2,6 +2,9 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	version="2.0">
 
+	<!--@elvariable id="success" type="java.lang.Boolean"-->
+    <!--@elvariable id="contestEditLinks" type="java.util.Map<java.lang.String, java.lang.String>"-->
+
 	<jsp:directive.include file="../init.jspx" />
 
 	<c:choose>

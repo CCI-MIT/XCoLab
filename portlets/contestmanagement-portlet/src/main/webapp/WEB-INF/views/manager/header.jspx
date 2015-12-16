@@ -3,6 +3,11 @@
 	xmlns:cms="urn:jsptagdir:/WEB-INF/tags"
 	version="2.0">
 
+	<!--@elvariable id="tabs" type="java.util.List<org.xcolab.wrapper.TabWrapper>"-->
+	<!--@elvariable id="currentTabWrapped" type="org.xcolab.wrapper.TabWrapper"-->
+	<!--@elvariable id="contestWrapper" type="org.xcolab.wrappers.BaseContestWrapper"-->
+
+
 	<div class="proposal-head">
 		<div class="inner">
 			<div class="headline">
@@ -35,6 +40,7 @@
 
 	<c:remove var="actionSuccessMessage" scope="session" />
 
+    <!--@elvariable id="promptLoginWindow" type="java.lang.String"-->
     <c:if test="${promptLoginWindow == 'true' }">
         <script>
             $( document ).ready(function() {
