@@ -251,6 +251,12 @@ public interface ProposalReferenceLocalService extends BaseLocalService,
         long subProposalId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ProposalReference getByProposalIdSubProposalId(
+        long proposalId, long subProposalId)
+        throws com.ext.portlet.NoSuchProposalReferenceException,
+            com.liferay.portal.kernel.exception.SystemException;
+
     public void populateTable()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;

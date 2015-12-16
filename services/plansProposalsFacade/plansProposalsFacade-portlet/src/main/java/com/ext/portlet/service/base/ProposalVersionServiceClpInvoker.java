@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class ProposalVersionServiceClpInvoker {
-    private String _methodName488;
-    private String[] _methodParameterTypes488;
-    private String _methodName489;
-    private String[] _methodParameterTypes489;
+    private String _methodName490;
+    private String[] _methodParameterTypes490;
+    private String _methodName491;
+    private String[] _methodParameterTypes491;
 
     public ProposalVersionServiceClpInvoker() {
-        _methodName488 = "getBeanIdentifier";
+        _methodName490 = "getBeanIdentifier";
 
-        _methodParameterTypes488 = new String[] {  };
+        _methodParameterTypes490 = new String[] {  };
 
-        _methodName489 = "setBeanIdentifier";
+        _methodName491 = "setBeanIdentifier";
 
-        _methodParameterTypes489 = new String[] { "java.lang.String" };
+        _methodParameterTypes491 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName488.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
+        if (_methodName490.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
             return ProposalVersionServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName489.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
+        if (_methodName491.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
             ProposalVersionServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

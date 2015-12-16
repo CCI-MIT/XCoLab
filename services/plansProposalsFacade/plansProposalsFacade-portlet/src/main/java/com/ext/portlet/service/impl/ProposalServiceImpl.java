@@ -52,7 +52,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
 
     private final static Log _log = LogFactoryUtil.getLog(ProposalServiceImpl.class);
 
-    private final long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
+    private final static long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
     /**
      * This method returns the index of the latest version of a proposal within a given contestPhaseId
@@ -226,7 +226,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
             for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
             	try {
             		ProposalAttribute attribute = proposalAttributeLocalService.getAttribute(proposalId, version, ProposalAttributeKeys.SECTION, psd.getId());
-            		if (attribute != null && attribute.getStringValue().trim().length() > 0) {
+            		if (attribute != null && !attribute.getStringValue().trim().isEmpty()) {
             			JSONObject obj = JSONFactoryUtil.createJSONObject();
             			obj.put("title", psd.getTitle());
             			obj.put("sectionId", psd.getId());

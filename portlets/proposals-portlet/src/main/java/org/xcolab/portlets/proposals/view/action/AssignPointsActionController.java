@@ -6,7 +6,6 @@ import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.PointTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
-import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -105,7 +104,7 @@ public class AssignPointsActionController {
                     throw new IllegalArgumentException("Error while adding PointsDistributionConfiguration: The sum of distributed percentages do not sum up to 1: " + sum);
                 }
             }
-        } catch (SystemException | NoSuchUserException | IllegalArgumentException e) {
+        } catch (SystemException | IllegalArgumentException e) {
             //in case a (validation) error occurs, we simply delete all created configurations.
             //since we do client-side validations, this state will not be reached by regular uses of the UI.
             PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());

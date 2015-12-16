@@ -969,6 +969,7 @@
 			<basic name="pointTypeId" />
 			<basic name="targetUserId" />
 			<basic name="targetSubProposalId" />
+			<basic name="targetPlanSectionDefinitionId" />
 			<basic name="percentage" />
 			<basic name="creator" />
 			<basic name="createDate">

@@ -199,6 +199,7 @@
 	<bean id="com.ext.portlet.service.ProposalLocalService" class="com.ext.portlet.service.impl.ProposalLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalService" class="com.ext.portlet.service.impl.ProposalServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalPersistence" class="com.ext.portlet.service.persistence.ProposalPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.persistence.ProposalFinder" class="com.ext.portlet.service.persistence.ProposalFinderImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.Proposal2PhaseLocalService" class="com.ext.portlet.service.impl.Proposal2PhaseLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.Proposal2PhaseService" class="com.ext.portlet.service.impl.Proposal2PhaseServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.Proposal2PhasePersistence" class="com.ext.portlet.service.persistence.Proposal2PhasePersistenceImpl" parent="basePersistence" />

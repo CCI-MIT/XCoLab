@@ -9,45 +9,45 @@ import java.util.Arrays;
  * @generated
  */
 public class EmailListServiceClpInvoker {
-    private String _methodName488;
-    private String[] _methodParameterTypes488;
-    private String _methodName489;
-    private String[] _methodParameterTypes489;
-    private String _methodName494;
-    private String[] _methodParameterTypes494;
+    private String _methodName490;
+    private String[] _methodParameterTypes490;
+    private String _methodName491;
+    private String[] _methodParameterTypes491;
+    private String _methodName496;
+    private String[] _methodParameterTypes496;
 
     public EmailListServiceClpInvoker() {
-        _methodName488 = "getBeanIdentifier";
+        _methodName490 = "getBeanIdentifier";
 
-        _methodParameterTypes488 = new String[] {  };
+        _methodParameterTypes490 = new String[] {  };
 
-        _methodName489 = "setBeanIdentifier";
+        _methodName491 = "setBeanIdentifier";
 
-        _methodParameterTypes489 = new String[] { "java.lang.String" };
+        _methodParameterTypes491 = new String[] { "java.lang.String" };
 
-        _methodName494 = "helloWorld";
+        _methodName496 = "helloWorld";
 
-        _methodParameterTypes494 = new String[] {
+        _methodParameterTypes496 = new String[] {
                 "java.lang.String", "java.lang.String"
             };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName488.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
+        if (_methodName490.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
             return EmailListServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName489.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
+        if (_methodName491.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
             EmailListServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName494.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
+        if (_methodName496.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes496, parameterTypes)) {
             return EmailListServiceUtil.helloWorld((java.lang.String) arguments[0],
                 (java.lang.String) arguments[1]);
         }

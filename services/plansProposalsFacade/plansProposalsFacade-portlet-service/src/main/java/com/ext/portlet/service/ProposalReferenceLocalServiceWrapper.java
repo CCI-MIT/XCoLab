@@ -292,6 +292,15 @@ public class ProposalReferenceLocalServiceWrapper
     }
 
     @Override
+    public com.ext.portlet.model.ProposalReference getByProposalIdSubProposalId(
+        long proposalId, long subProposalId)
+        throws com.ext.portlet.NoSuchProposalReferenceException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalReferenceLocalService.getByProposalIdSubProposalId(proposalId,
+            subProposalId);
+    }
+
+    @Override
     public void populateTable()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {

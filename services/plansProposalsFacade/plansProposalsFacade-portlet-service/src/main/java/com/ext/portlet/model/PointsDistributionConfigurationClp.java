@@ -28,6 +28,7 @@ public class PointsDistributionConfigurationClp extends BaseModelImpl<PointsDist
     private long _targetUserId;
     private String _targetUserUuid;
     private long _targetSubProposalId;
+    private long _targetPlanSectionDefinitionId;
     private double _percentage;
     private long _creator;
     private Date _createDate;
@@ -76,6 +77,8 @@ public class PointsDistributionConfigurationClp extends BaseModelImpl<PointsDist
         attributes.put("pointTypeId", getPointTypeId());
         attributes.put("targetUserId", getTargetUserId());
         attributes.put("targetSubProposalId", getTargetSubProposalId());
+        attributes.put("targetPlanSectionDefinitionId",
+            getTargetPlanSectionDefinitionId());
         attributes.put("percentage", getPercentage());
         attributes.put("creator", getCreator());
         attributes.put("createDate", getCreateDate());
@@ -113,6 +116,13 @@ public class PointsDistributionConfigurationClp extends BaseModelImpl<PointsDist
 
         if (targetSubProposalId != null) {
             setTargetSubProposalId(targetSubProposalId);
+        }
+
+        Long targetPlanSectionDefinitionId = (Long) attributes.get(
+                "targetPlanSectionDefinitionId");
+
+        if (targetPlanSectionDefinitionId != null) {
+            setTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
         }
 
         Double percentage = (Double) attributes.get("percentage");
@@ -254,6 +264,31 @@ public class PointsDistributionConfigurationClp extends BaseModelImpl<PointsDist
 
                 method.invoke(_pointsDistributionConfigurationRemoteModel,
                     targetSubProposalId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public long getTargetPlanSectionDefinitionId() {
+        return _targetPlanSectionDefinitionId;
+    }
+
+    @Override
+    public void setTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId) {
+        _targetPlanSectionDefinitionId = targetPlanSectionDefinitionId;
+
+        if (_pointsDistributionConfigurationRemoteModel != null) {
+            try {
+                Class<?> clazz = _pointsDistributionConfigurationRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setTargetPlanSectionDefinitionId",
+                        long.class);
+
+                method.invoke(_pointsDistributionConfigurationRemoteModel,
+                    targetPlanSectionDefinitionId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -403,6 +438,7 @@ public class PointsDistributionConfigurationClp extends BaseModelImpl<PointsDist
         clone.setPointTypeId(getPointTypeId());
         clone.setTargetUserId(getTargetUserId());
         clone.setTargetSubProposalId(getTargetSubProposalId());
+        clone.setTargetPlanSectionDefinitionId(getTargetPlanSectionDefinitionId());
         clone.setPercentage(getPercentage());
         clone.setCreator(getCreator());
         clone.setCreateDate(getCreateDate());
@@ -456,7 +492,7 @@ public class PointsDistributionConfigurationClp extends BaseModelImpl<PointsDist
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(getId());
@@ -468,6 +504,8 @@ public class PointsDistributionConfigurationClp extends BaseModelImpl<PointsDist
         sb.append(getTargetUserId());
         sb.append(", targetSubProposalId=");
         sb.append(getTargetSubProposalId());
+        sb.append(", targetPlanSectionDefinitionId=");
+        sb.append(getTargetPlanSectionDefinitionId());
         sb.append(", percentage=");
         sb.append(getPercentage());
         sb.append(", creator=");
@@ -481,7 +519,7 @@ public class PointsDistributionConfigurationClp extends BaseModelImpl<PointsDist
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PointsDistributionConfiguration");
@@ -506,6 +544,10 @@ public class PointsDistributionConfigurationClp extends BaseModelImpl<PointsDist
         sb.append(
             "<column><column-name>targetSubProposalId</column-name><column-value><![CDATA[");
         sb.append(getTargetSubProposalId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>targetPlanSectionDefinitionId</column-name><column-value><![CDATA[");
+        sb.append(getTargetPlanSectionDefinitionId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>percentage</column-name><column-value><![CDATA[");

@@ -90,18 +90,20 @@ public interface Xcolab_UserLocalService extends BaseLocalService,
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.liferay.portal.model.User> getUsersSortedByPoints(
-        int begin, int end, java.lang.String filter, boolean ascendingOrder);
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategoryFilter, boolean ascendingOrder);
+        java.lang.String memberCategoryFilter, boolean ascendingOrder)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<java.lang.Long> getUserActivityCount(
-        java.lang.Long userId)
+    public long getUserActivityCount(java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public java.util.List<com.liferay.portal.model.User> findUsersByLoginIP(
-        java.lang.String loginIP);
+        java.lang.String loginIP)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

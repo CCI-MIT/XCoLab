@@ -41,14 +41,10 @@ public class OntologyTermLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName504;
-    private String[] _methodParameterTypes504;
-    private String _methodName505;
-    private String[] _methodParameterTypes505;
-    private String _methodName510;
-    private String[] _methodParameterTypes510;
-    private String _methodName511;
-    private String[] _methodParameterTypes511;
+    private String _methodName506;
+    private String[] _methodParameterTypes506;
+    private String _methodName507;
+    private String[] _methodParameterTypes507;
     private String _methodName512;
     private String[] _methodParameterTypes512;
     private String _methodName513;
@@ -75,6 +71,10 @@ public class OntologyTermLocalServiceClpInvoker {
     private String[] _methodParameterTypes523;
     private String _methodName524;
     private String[] _methodParameterTypes524;
+    private String _methodName525;
+    private String[] _methodParameterTypes525;
+    private String _methodName526;
+    private String[] _methodParameterTypes526;
 
     public OntologyTermLocalServiceClpInvoker() {
         _methodName0 = "addOntologyTerm";
@@ -159,97 +159,97 @@ public class OntologyTermLocalServiceClpInvoker {
                 "com.ext.portlet.model.OntologyTerm"
             };
 
-        _methodName504 = "getBeanIdentifier";
+        _methodName506 = "getBeanIdentifier";
 
-        _methodParameterTypes504 = new String[] {  };
+        _methodParameterTypes506 = new String[] {  };
 
-        _methodName505 = "setBeanIdentifier";
+        _methodName507 = "setBeanIdentifier";
 
-        _methodParameterTypes505 = new String[] { "java.lang.String" };
+        _methodParameterTypes507 = new String[] { "java.lang.String" };
 
-        _methodName510 = "findByParentId";
+        _methodName512 = "findByParentId";
 
-        _methodParameterTypes510 = new String[] { "java.lang.Long" };
+        _methodParameterTypes512 = new String[] { "java.lang.Long" };
 
-        _methodName511 = "findByParentIdSpaceId";
+        _methodName513 = "findByParentIdSpaceId";
 
-        _methodParameterTypes511 = new String[] {
+        _methodParameterTypes513 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName512 = "findByOntologyTermName";
+        _methodName514 = "findByOntologyTermName";
 
-        _methodParameterTypes512 = new String[] { "java.lang.String" };
+        _methodParameterTypes514 = new String[] { "java.lang.String" };
 
-        _methodName513 = "createTerm";
+        _methodName515 = "createTerm";
 
-        _methodParameterTypes513 = new String[] {
+        _methodParameterTypes515 = new String[] {
                 "java.lang.Long", "java.lang.String", "java.lang.Long",
                 "java.lang.String"
             };
 
-        _methodName514 = "countChildTerms";
+        _methodName516 = "countChildTerms";
 
-        _methodParameterTypes514 = new String[] { "java.lang.Long" };
+        _methodParameterTypes516 = new String[] { "java.lang.Long" };
 
-        _methodName515 = "clearClassTags";
+        _methodName517 = "clearClassTags";
 
-        _methodParameterTypes515 = new String[] {
+        _methodParameterTypes517 = new String[] {
                 "java.lang.Class", "java.lang.Long"
             };
 
-        _methodName516 = "store";
-
-        _methodParameterTypes516 = new String[] {
-                "com.ext.portlet.model.OntologyTerm"
-            };
-
-        _methodName517 = "getParent";
-
-        _methodParameterTypes517 = new String[] {
-                "com.ext.portlet.model.OntologyTerm"
-            };
-
-        _methodName518 = "getChildTermsCount";
+        _methodName518 = "store";
 
         _methodParameterTypes518 = new String[] {
                 "com.ext.portlet.model.OntologyTerm"
             };
 
-        _methodName519 = "getChildTerms";
+        _methodName519 = "getParent";
 
         _methodParameterTypes519 = new String[] {
                 "com.ext.portlet.model.OntologyTerm"
             };
 
-        _methodName520 = "getAllDescendantTerms";
+        _methodName520 = "getChildTermsCount";
 
         _methodParameterTypes520 = new String[] {
                 "com.ext.portlet.model.OntologyTerm"
             };
 
-        _methodName521 = "getSpace";
+        _methodName521 = "getChildTerms";
 
         _methodParameterTypes521 = new String[] {
                 "com.ext.portlet.model.OntologyTerm"
             };
 
-        _methodName522 = "tagClass";
+        _methodName522 = "getAllDescendantTerms";
 
         _methodParameterTypes522 = new String[] {
+                "com.ext.portlet.model.OntologyTerm"
+            };
+
+        _methodName523 = "getSpace";
+
+        _methodParameterTypes523 = new String[] {
+                "com.ext.portlet.model.OntologyTerm"
+            };
+
+        _methodName524 = "tagClass";
+
+        _methodParameterTypes524 = new String[] {
                 "com.ext.portlet.model.OntologyTerm", "java.lang.Class",
                 "java.lang.Long"
             };
 
-        _methodName523 = "findTagedIdsForClass";
+        _methodName525 = "findTagedIdsForClass";
 
-        _methodParameterTypes523 = new String[] {
+        _methodParameterTypes525 = new String[] {
                 "com.ext.portlet.model.OntologyTerm", "java.lang.Class"
             };
 
-        _methodName524 = "isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId";
+        _methodName526 = "isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId";
 
-        _methodParameterTypes524 = new String[] {
+        _methodParameterTypes526 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
     }
@@ -343,102 +343,102 @@ public class OntologyTermLocalServiceClpInvoker {
             return OntologyTermLocalServiceUtil.updateOntologyTerm((com.ext.portlet.model.OntologyTerm) arguments[0]);
         }
 
-        if (_methodName504.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes504, parameterTypes)) {
+        if (_methodName506.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes506, parameterTypes)) {
             return OntologyTermLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName505.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes505, parameterTypes)) {
+        if (_methodName507.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes507, parameterTypes)) {
             OntologyTermLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName510.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes510, parameterTypes)) {
-            return OntologyTermLocalServiceUtil.findByParentId((java.lang.Long) arguments[0]);
-        }
-
-        if (_methodName511.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes511, parameterTypes)) {
-            return OntologyTermLocalServiceUtil.findByParentIdSpaceId((java.lang.Long) arguments[0],
-                (java.lang.Long) arguments[1]);
-        }
-
         if (_methodName512.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
-            return OntologyTermLocalServiceUtil.findByOntologyTermName((java.lang.String) arguments[0]);
+            return OntologyTermLocalServiceUtil.findByParentId((java.lang.Long) arguments[0]);
         }
 
         if (_methodName513.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
+            return OntologyTermLocalServiceUtil.findByParentIdSpaceId((java.lang.Long) arguments[0],
+                (java.lang.Long) arguments[1]);
+        }
+
+        if (_methodName514.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
+            return OntologyTermLocalServiceUtil.findByOntologyTermName((java.lang.String) arguments[0]);
+        }
+
+        if (_methodName515.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
             return OntologyTermLocalServiceUtil.createTerm((java.lang.Long) arguments[0],
                 (java.lang.String) arguments[1], (java.lang.Long) arguments[2],
                 (java.lang.String) arguments[3]);
         }
 
-        if (_methodName514.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
+        if (_methodName516.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
             return OntologyTermLocalServiceUtil.countChildTerms((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName515.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
+        if (_methodName517.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes517, parameterTypes)) {
             OntologyTermLocalServiceUtil.clearClassTags((java.lang.Class) arguments[0],
                 (java.lang.Long) arguments[1]);
 
             return null;
         }
 
-        if (_methodName516.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             OntologyTermLocalServiceUtil.store((com.ext.portlet.model.OntologyTerm) arguments[0]);
 
             return null;
         }
 
-        if (_methodName517.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes517, parameterTypes)) {
-            return OntologyTermLocalServiceUtil.getParent((com.ext.portlet.model.OntologyTerm) arguments[0]);
-        }
-
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
-            return OntologyTermLocalServiceUtil.getChildTermsCount((com.ext.portlet.model.OntologyTerm) arguments[0]);
-        }
-
         if (_methodName519.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
-            return OntologyTermLocalServiceUtil.getChildTerms((com.ext.portlet.model.OntologyTerm) arguments[0]);
+            return OntologyTermLocalServiceUtil.getParent((com.ext.portlet.model.OntologyTerm) arguments[0]);
         }
 
         if (_methodName520.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
-            return OntologyTermLocalServiceUtil.getAllDescendantTerms((com.ext.portlet.model.OntologyTerm) arguments[0]);
+            return OntologyTermLocalServiceUtil.getChildTermsCount((com.ext.portlet.model.OntologyTerm) arguments[0]);
         }
 
         if (_methodName521.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
-            return OntologyTermLocalServiceUtil.getSpace((com.ext.portlet.model.OntologyTerm) arguments[0]);
+            return OntologyTermLocalServiceUtil.getChildTerms((com.ext.portlet.model.OntologyTerm) arguments[0]);
         }
 
         if (_methodName522.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes522, parameterTypes)) {
+            return OntologyTermLocalServiceUtil.getAllDescendantTerms((com.ext.portlet.model.OntologyTerm) arguments[0]);
+        }
+
+        if (_methodName523.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes523, parameterTypes)) {
+            return OntologyTermLocalServiceUtil.getSpace((com.ext.portlet.model.OntologyTerm) arguments[0]);
+        }
+
+        if (_methodName524.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
             OntologyTermLocalServiceUtil.tagClass((com.ext.portlet.model.OntologyTerm) arguments[0],
                 (java.lang.Class) arguments[1], (java.lang.Long) arguments[2]);
 
             return null;
         }
 
-        if (_methodName523.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes523, parameterTypes)) {
+        if (_methodName525.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
             return OntologyTermLocalServiceUtil.findTagedIdsForClass((com.ext.portlet.model.OntologyTerm) arguments[0],
                 (java.lang.Class) arguments[1]);
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName526.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
             return OntologyTermLocalServiceUtil.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
         }

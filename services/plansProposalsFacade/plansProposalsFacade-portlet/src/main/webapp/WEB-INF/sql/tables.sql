@@ -607,6 +607,7 @@ create table xcolab_PointsDistributionConfiguration (
 	pointTypeId LONG,
 	targetUserId LONG,
 	targetSubProposalId LONG,
+	targetPlanSectionDefinitionId LONG,
 	percentage DOUBLE,
 	creator LONG,
 	createDate DATE null

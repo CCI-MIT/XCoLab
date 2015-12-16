@@ -1,21 +1,26 @@
-package org.xcolab.portlets.contestmanagement.beans;
+package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.NoSuchFocusAreaException;
+import com.ext.portlet.NoSuchPointsDistributionConfigurationException;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.PlanTemplateSection;
+import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
+import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
+import org.apache.commons.collections.CollectionUtils;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.OntologyTermToFocusAreaMapper;
@@ -28,19 +33,20 @@ import java.util.List;
 /**
  * Created by Thomas on 2/13/2015.
  */
-public class SectionDefinitionBean implements Serializable{
-    private final static Log _log = LogFactoryUtil.getLog(SectionDefinitionBean.class);
+public class SectionDefinitionWrapper implements Serializable {
+    private final static Log _log = LogFactoryUtil.getLog(SectionDefinitionWrapper.class);
 
     private Long id;
-    private Long sectionDefinitionId;
     private String type = "";
     private String additionalIds = "";
     private String title = "";
     private String defaultText = "";
     private String helpText = "";
-    private Integer characterLimit = 200;
+    private int characterLimit = 200;
     private long focusAreaId;
-    private Long level;
+    private long level;
+    private long pointType;
+    private String pointPercentage;
     private String content = "";
     private boolean locked;
     private boolean deletable = true;
@@ -56,14 +62,15 @@ public class SectionDefinitionBean implements Serializable{
     private List<Long> whoTermIds = new ArrayList<>();
     private List<Long> howTermIds = new ArrayList<>();
 
-    public SectionDefinitionBean() {
+    public SectionDefinitionWrapper() {
+
     }
 
-    public SectionDefinitionBean(PlanSectionDefinition planSectionDefinition) throws PortalException, SystemException {
+    public SectionDefinitionWrapper(PlanSectionDefinition planSectionDefinition) throws PortalException, SystemException {
         initPlanSectionDefinition(planSectionDefinition);
     }
 
-    public SectionDefinitionBean(PlanSectionDefinition planSectionDefinition, Long planTemplateId) throws SystemException, PortalException {
+    public SectionDefinitionWrapper(PlanSectionDefinition planSectionDefinition, Long planTemplateId) throws SystemException, PortalException {
         initPlanSectionDefinition(planSectionDefinition);
 
         List<PlanTemplateSection> planTemplateSections =
@@ -78,7 +85,6 @@ public class SectionDefinitionBean implements Serializable{
         }
 
         initPlanSectionDefinition(planSectionDefinition);
-
     }
 
     private void initPlanTemplateSection(PlanTemplateSection planTemplateSection){
@@ -86,7 +92,7 @@ public class SectionDefinitionBean implements Serializable{
     }
 
     private void initPlanSectionDefinition(PlanSectionDefinition planSectionDefinition) throws SystemException, PortalException {
-        this.sectionDefinitionId = planSectionDefinition.getId();
+        this.id = planSectionDefinition.getId();
         this.type = planSectionDefinition.getType();
         this.title = planSectionDefinition.getTitle();
         this.defaultText = planSectionDefinition.getDefaultText();
@@ -98,6 +104,15 @@ public class SectionDefinitionBean implements Serializable{
         this.level = planSectionDefinition.getTier();
         this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
         this.allowedContestTypeIds = IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds());
+
+        try {
+            PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(id);
+            this.pointPercentage = Double.toString(pdc.getPercentage());
+            this.pointType = pdc.getPointTypeId();
+        } catch (NoSuchPointsDistributionConfigurationException e) {
+            this.pointPercentage = "0";
+            this.pointType = 0L;
+        }
 
         try {
             initOntologyTermIdsWithFocusAreaId();
@@ -128,23 +143,23 @@ public class SectionDefinitionBean implements Serializable{
         }
     }
 
-    public SectionDefinitionBean(String title) {
+    public SectionDefinitionWrapper(String title) {
         this.title = title;
     }
 
-    public SectionDefinitionBean(String title, boolean deletable) {
+    public SectionDefinitionWrapper(String title, boolean deletable) {
         this.title = title;
         this.deletable = deletable;
     }
 
-    public SectionDefinitionBean(String title, Integer characterLimit, String helpText, String content) {
+    public SectionDefinitionWrapper(String title, Integer characterLimit, String helpText, String content) {
         this.title = title;
         this.characterLimit = characterLimit;
         this.helpText = helpText;
         this.content = content;
     }
 
-    public SectionDefinitionBean(String title, Integer characterLimit, String helpText, String content, boolean deletable) {
+    public SectionDefinitionWrapper(String title, Integer characterLimit, String helpText, String content, boolean deletable) {
         this.title = title;
         this.characterLimit = characterLimit;
         this.helpText = helpText;
@@ -160,11 +175,11 @@ public class SectionDefinitionBean implements Serializable{
         this.title = title;
     }
 
-    public Integer getCharacterLimit() {
+    public int getCharacterLimit() {
         return characterLimit;
     }
 
-    public void setCharacterLimit(Integer characterLimit) {
+    public void setCharacterLimit(int characterLimit) {
         this.characterLimit = characterLimit;
     }
 
@@ -208,14 +223,6 @@ public class SectionDefinitionBean implements Serializable{
         this.deletable = deletable;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getType() {
         return type;
     }
@@ -240,14 +247,6 @@ public class SectionDefinitionBean implements Serializable{
         this.locked = locked;
     }
 
-    public Long getSectionDefinitionId() {
-        return sectionDefinitionId;
-    }
-
-    public void setSectionDefinitionId(Long sectionDefinitionId) {
-        this.sectionDefinitionId = sectionDefinitionId;
-    }
-
     public int getWeight() {
         return weight;
     }
@@ -256,11 +255,11 @@ public class SectionDefinitionBean implements Serializable{
         this.weight = weight;
     }
 
-    public Long getLevel() {
+    public long getLevel() {
         return level;
     }
 
-    public void setLevel(Long level) {
+    public void setLevel(long level) {
         this.level = level;
     }
 
@@ -314,7 +313,7 @@ public class SectionDefinitionBean implements Serializable{
                 focusAreaId = getFocusAreaViaOntologyTerms().getId();
             }
             return focusAreaId;
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             _log.warn("Could not get focus area id", e);
         }
 
@@ -322,8 +321,8 @@ public class SectionDefinitionBean implements Serializable{
     }
 
     private boolean ontologyTermsSet() {
-        return !(getWhatTermIds().isEmpty() || getWhereTermIds().isEmpty()
-                || getWhoTermIds().isEmpty() || getHowTermIds().isEmpty());
+        return !(CollectionUtils.isEmpty(getWhatTermIds()) || CollectionUtils.isEmpty(getWhereTermIds())
+                || CollectionUtils.isEmpty(getWhoTermIds()) || CollectionUtils.isEmpty(getHowTermIds()));
     }
 
     public String getAdditionalIds() {
@@ -342,10 +341,34 @@ public class SectionDefinitionBean implements Serializable{
         this.allowedContestTypeIds = allowedContestTypeIds;
     }
 
-    static class MyComparator implements Comparator<SectionDefinitionBean>{
+    public Long getPointType() {
+        return pointType;
+    }
+
+    public void setPointType(Long pointType) {
+        this.pointType = pointType;
+    }
+
+    public String getPointPercentage() {
+        return pointPercentage;
+    }
+
+    public void setPointPercentage(String percentage) {
+        this.pointPercentage = percentage;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    static class MyComparator implements Comparator<SectionDefinitionWrapper>{
 
         @Override
-        public int compare(SectionDefinitionBean o1, SectionDefinitionBean o2) {
+        public int compare(SectionDefinitionWrapper o1, SectionDefinitionWrapper o2) {
             return o1.getWeight() - o2.getWeight();
         }
     }
@@ -396,5 +419,109 @@ public class SectionDefinitionBean implements Serializable{
         }
 
         return selectedOntologyTerms;
+    }
+
+    public void persist(boolean createNew) throws SystemException, PortalException {
+        PlanSectionDefinition psd;
+        PointsDistributionConfiguration pdc = null;
+        if (id == null || createNew) {
+            psd = PlanSectionDefinitionLocalServiceUtil.
+                    createPlanSectionDefinition(CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName()));
+            id = psd.getId();
+        } else {
+            psd = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(id);
+
+            try {
+                pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(id);
+                if (pointType == 0L) {
+                    PointsDistributionConfigurationLocalServiceUtil.deletePointsDistributionConfiguration(pdc);
+                } else {
+                    pdc.setPercentage(Double.valueOf(pointPercentage));
+                    pdc.setPointTypeId(pointType);
+                    pdc.setTargetPlanSectionDefinitionId(id);
+                    pdc.persist();
+                }
+            } catch (NoSuchPointsDistributionConfigurationException ignored) { }
+        }
+        if (pdc == null) {
+            if (pointType > 0L) {
+                pdc = PointsDistributionConfigurationLocalServiceUtil.createPointsDistributionConfiguration(
+                        CounterLocalServiceUtil.increment(PointsDistributionConfiguration.class.getName()));
+                pdc.setPercentage(Double.valueOf(pointPercentage));
+                pdc.setPointTypeId(pointType);
+                pdc.setTargetPlanSectionDefinitionId(id);
+                pdc.persist();
+            }
+        }
+        psd.setType(this.getType());
+        psd.setTitle(this.getTitle());
+        psd.setDefaultText(this.getDefaultText());
+        psd.setCharacterLimit(this.getCharacterLimit());
+        psd.setHelpText(this.getHelpText());
+        psd.setTier(this.getLevel());
+        psd.setFocusAreaId(this.getFocusAreaId());
+        psd.setAdditionalIds(this.getAdditionalIds());
+        psd.setAllowedContestTypeIds(IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
+        psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
+        psd.persist();
+    }
+
+    public boolean hasUpdates() throws SystemException, PortalException {
+        PlanSectionDefinition psd = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(id);
+        return !this.equals(new SectionDefinitionWrapper(psd));
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = (contestIntegrationRelevance ? 1 : 0);
+        hash = hash * 13 + (int) level;
+        hash = hash * 5 + (int) pointType;
+        hash = hash * 3 + hashCode(id);
+        hash = hash * 7 + characterLimit;
+        return hash + hashCode(title) + hashCode(type) + hashCode(defaultText) + hashCode(helpText)
+                + hashCode(allowedContestTypeIds) + hashCode(pointPercentage) + hashCode(additionalIds);
+    }
+
+    private int hashCode(Object o) {
+        if (o == null) {
+            return 0;
+        }
+        return o.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof SectionDefinitionWrapper) || o.hashCode() != this.hashCode()) {
+            return false;
+        }
+
+        SectionDefinitionWrapper other = (SectionDefinitionWrapper) o;
+
+        return !(!(areEqual(other.getId(), this.getId()) &&
+                areEqual(other.getAllowedContestTypeIds(), this.getAllowedContestTypeIds())) &&
+                areEqualIgnoreCase(other.getTitle(), this.getTitle()) &&
+                areEqualIgnoreCase(other.getType(), this.getType()) &&
+                areEqualIgnoreCase(other.getDefaultText(), this.getDefaultText()) &&
+                areEqualIgnoreCase(other.getHelpText(), this.getHelpText()) &&
+                areEqualIgnoreCase(other.getAdditionalIds(), this.getAdditionalIds()) &&
+                other.getCharacterLimit() == this.getCharacterLimit() &&
+                other.isContestIntegrationRelevance() == this.isContestIntegrationRelevance() &&
+                other.getFocusAreaId() == this.getFocusAreaId() &&
+                other.getLevel() == this.getLevel())
+                && areEqual(other.getPointType(), this.getPointType())
+                && areEqualIgnoreCase(other.getPointPercentage(), this.getPointPercentage());
+    }
+
+    private boolean areEqual(Object o1, Object o2) {
+        return o1 == null ? o2 == null : o1.equals(o2);
+    }
+
+
+    private boolean areEqualIgnoreCase(String s1, String s2) {
+        return s1 == null ? s2 == null : s1.equalsIgnoreCase(s2);
     }
 }

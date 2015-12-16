@@ -3,9 +3,12 @@ package org.xcolab.portlets.contestmanagement.controller.common;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.PointType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.service.PointTypeLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -20,7 +23,8 @@ import org.xcolab.controller.BaseTabController;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.interfaces.TabEnum;
-import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
+import org.xcolab.points.DistributionStrategy;
+import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.entities.SectionTypes;
@@ -62,6 +66,11 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return getContestTypeSelectionItems();
     }
 
+    @ModelAttribute("pointTypeSelectionItems")
+    public List<LabelValue> populatePointTypeSelectionItems() throws PortalException, SystemException {
+        return getPointTypeSelectionItems();
+    }
+
     @ModelAttribute("whatTerms")
     public List<LabelValue> populateWhatTerms() throws PortalException, SystemException {
         return getWhatTerms();
@@ -86,10 +95,10 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
         PlanSectionDefinition planSectionDefinition =
                 PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionDefinitionId);
-        SectionDefinitionBean sectionDefinitionBean = new SectionDefinitionBean(planSectionDefinition);
+        SectionDefinitionWrapper sectionDefinitionWrapper = new SectionDefinitionWrapper(planSectionDefinition);
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json");
-        response.getWriter().write(mapper.writeValueAsString(sectionDefinitionBean));
+        response.getWriter().write(mapper.writeValueAsString(sectionDefinitionWrapper));
     }
 
     private List<LabelValue> getContestLevelSelectionItems(){
@@ -104,6 +113,19 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         List<LabelValue> selectItems = new ArrayList<>();
         for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
             selectItems.add(new LabelValue(contestType.getId(), ContestTypeLocalServiceUtil.getLabelName(contestType)));
+        }
+        return selectItems;
+    }
+
+    private List<LabelValue> getPointTypeSelectionItems() throws SystemException {
+        List<LabelValue> selectItems = new ArrayList<>();
+        selectItems.add(new LabelValue(0L, "Default"));
+        for (PointType pointType : PointTypeLocalServiceUtil.getPointTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            if (pointType.getDistributionStrategy().equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
+                selectItems.add(new LabelValue(pointType.getId(),
+                        String.format("%d - %s : %s", pointType.getId(),
+                                pointType.getDistributionStrategy(), pointType.getReceiverLimitationStrategy())));
+            }
         }
         return selectItems;
     }

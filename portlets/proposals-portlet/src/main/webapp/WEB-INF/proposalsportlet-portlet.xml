@@ -62,7 +62,7 @@
 		</property>
 	</bean>
 
-	<bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver" p:defaultErrorView="uncaughtException">
+	<bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
 				<prop key=".ProposalsAuthorizationException">accessDenied</prop>

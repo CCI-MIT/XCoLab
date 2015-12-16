@@ -68,6 +68,7 @@ import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
+import com.ext.portlet.service.persistence.ProposalFinder;
 import com.ext.portlet.service.persistence.ProposalPersistence;
 import com.ext.portlet.service.persistence.ProposalRatingFinder;
 import com.ext.portlet.service.persistence.ProposalRatingPersistence;
@@ -477,6 +478,8 @@ public abstract class SpamReportServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.ProposalService proposalService;
     @BeanReference(type = ProposalPersistence.class)
     protected ProposalPersistence proposalPersistence;
+    @BeanReference(type = ProposalFinder.class)
+    protected ProposalFinder proposalFinder;
     @BeanReference(type = com.ext.portlet.service.Proposal2PhaseLocalService.class)
     protected com.ext.portlet.service.Proposal2PhaseLocalService proposal2PhaseLocalService;
     @BeanReference(type = com.ext.portlet.service.Proposal2PhaseService.class)
@@ -4111,6 +4114,24 @@ public abstract class SpamReportServiceBaseImpl extends BaseServiceImpl
      */
     public void setProposalPersistence(ProposalPersistence proposalPersistence) {
         this.proposalPersistence = proposalPersistence;
+    }
+
+    /**
+     * Returns the proposal finder.
+     *
+     * @return the proposal finder
+     */
+    public ProposalFinder getProposalFinder() {
+        return proposalFinder;
+    }
+
+    /**
+     * Sets the proposal finder.
+     *
+     * @param proposalFinder the proposal finder
+     */
+    public void setProposalFinder(ProposalFinder proposalFinder) {
+        this.proposalFinder = proposalFinder;
     }
 
     /**

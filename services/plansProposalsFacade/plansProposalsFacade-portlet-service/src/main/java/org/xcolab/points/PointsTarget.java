@@ -38,5 +38,19 @@ public class PointsTarget {
 	public boolean isUser() {
 		return userId > 0;
 	}
+
+    public static PointsTarget forUser(long userId, double percentage) {
+        PointsTarget target = new PointsTarget();
+        target.userId = userId;
+        target.percentage = percentage;
+        return target;
+    }
+
+    public static PointsTarget forProposal(long proposalId, double percentage) {
+        PointsTarget target = new PointsTarget();
+        target.proposalId = proposalId;
+        target.percentage = percentage;
+        return target;
+    }
 	
 }

@@ -110,27 +110,29 @@ public class Xcolab_UserLocalServiceUtil {
     }
 
     public static java.util.List<com.liferay.portal.model.User> getUsersSortedByPoints(
-        int begin, int end, java.lang.String filter, boolean ascendingOrder) {
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .getUsersSortedByPoints(begin, end, filter, ascendingOrder);
     }
 
     public static java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategoryFilter, boolean ascendingOrder) {
+        java.lang.String memberCategoryFilter, boolean ascendingOrder)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .getUsersSortedByPointsFilteredByCategory(begin, end,
             filter, memberCategoryFilter, ascendingOrder);
     }
 
-    public static java.util.List<java.lang.Long> getUserActivityCount(
-        java.lang.Long userId)
+    public static long getUserActivityCount(java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getUserActivityCount(userId);
     }
 
     public static java.util.List<com.liferay.portal.model.User> findUsersByLoginIP(
-        java.lang.String loginIP) {
+        java.lang.String loginIP)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService().findUsersByLoginIP(loginIP);
     }
 

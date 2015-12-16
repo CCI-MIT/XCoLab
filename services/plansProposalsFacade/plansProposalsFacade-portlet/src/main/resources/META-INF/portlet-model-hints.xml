@@ -729,6 +729,7 @@
 		<field name="pointTypeId" type="long" />
 		<field name="targetUserId" type="long" />
 		<field name="targetSubProposalId" type="long" />
+		<field name="targetPlanSectionDefinitionId" type="long" />
 		<field name="percentage" type="double" />
 		<field name="creator" type="long" />
 		<field name="createDate" type="Date" />

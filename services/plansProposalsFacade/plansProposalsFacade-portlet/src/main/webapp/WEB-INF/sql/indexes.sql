@@ -137,6 +137,7 @@ create index IX_AF313899 on xcolab_Points (userId);
 
 create index IX_7113A2E0 on xcolab_PointsDistributionConfiguration (proposalId);
 create index IX_1FDF3BB5 on xcolab_PointsDistributionConfiguration (proposalId, pointTypeId);
+create index IX_27247AAA on xcolab_PointsDistributionConfiguration (targetPlanSectionDefinitionId);
 create index IX_7D0AD60D on xcolab_PointsDistributionConfiguration (targetSubProposalId);
 create index IX_D44477AA on xcolab_PointsDistributionConfiguration (targetUserId);
 
