@@ -707,13 +707,6 @@ create table xcolab_ProposalReference (
 	primary key (proposalId, subProposalId)
 );
 
-create table xcolab_ProposalReferences (
-	proposalId LONG not null,
-	subProposalId LONG not null,
-	sectionAttributeId LONG,
-	primary key (proposalId, subProposalId)
-);
-
 create table xcolab_ProposalSupporter (
 	proposalId LONG not null,
 	userId LONG not null,
