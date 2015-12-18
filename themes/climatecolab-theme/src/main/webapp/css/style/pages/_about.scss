@@ -61,7 +61,7 @@
   border-bottom: none;
 }
 
-.about-left li ul li a:hover, .about-left li ul li.c a {
+.about-left li ul li a:hover, .about-left li ul li.c > a {
   background: $lightest-grey;
 }
 
@@ -367,7 +367,7 @@
   font-weight: 700;
 }
 
-.about-left ul li a:hover, .about-left ul li.c a {
+.about-left ul li a:hover, .about-left ul li.c > a {
   background: #F2F1E9;
 }
 
