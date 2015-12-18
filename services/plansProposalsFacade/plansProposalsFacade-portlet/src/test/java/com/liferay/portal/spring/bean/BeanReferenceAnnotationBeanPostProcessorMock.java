@@ -21,13 +21,19 @@ import java.util.Map;
 
 public class BeanReferenceAnnotationBeanPostProcessorMock implements BeanFactoryAware, BeanPostProcessor {
 
+    private static final Log _log = LogFactoryUtil.getLog(BeanReferenceAnnotationBeanPostProcessorMock.class);
+    private static final String _JAVA_LANG_OBJECT = "java.lang.Object";
+    private static final String _ORG_SPRINGFRAMEWORK = "org.springframework";
+
+    private BeanFactory _beanFactory;
+    private final Map<String, Object> _beans = new HashMap<>();
+
     public void destroy() {
         _beans.clear();
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-
         return bean;
     }
 
@@ -56,8 +62,6 @@ public class BeanReferenceAnnotationBeanPostProcessorMock implements BeanFactory
     }
 
     private void _autoInject(Object targetBean, String targetBeanName, Class<?> beanClass) {
-        
-        
 
         if ((beanClass == null) || beanClass.isInterface()) {
             return;
@@ -123,14 +127,4 @@ public class BeanReferenceAnnotationBeanPostProcessorMock implements BeanFactory
         _autoInject(targetBean, targetBeanName, beanClass.getSuperclass());
         
     }
-
-    private static final String _JAVA_LANG_OBJECT = "java.lang.Object";
-
-    private static final String _ORG_SPRINGFRAMEWORK = "org.springframework";
-
-    private static final Log _log = LogFactoryUtil.getLog(BeanReferenceAnnotationBeanPostProcessor.class);
-
-    private BeanFactory _beanFactory;
-    private final Map<String, Object> _beans = new HashMap<>();
-
 }

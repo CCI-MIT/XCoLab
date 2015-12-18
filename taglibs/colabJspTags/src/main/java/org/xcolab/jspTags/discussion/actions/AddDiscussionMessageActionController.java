@@ -80,22 +80,16 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         redirectToReferrer(request, response);
     }
 
+    @SuppressWarnings("OverlyBroadThrowsClause")
     public void updateAnalyticsAndActivities(DiscussionCategoryGroup dcg, DiscussionMessage comment, long userId, ActionRequest request)
             throws SystemException, PortalException {
         // Update activity counter for user
         Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
         indexer.reindex(userId);
 
-        int supportedCount = DiscussionCategoryGroupLocalServiceUtil.getUserMessages(userId);
-        if (supportedCount > 0) {
-            int analyticsValue;
-            if (supportedCount == 1) {
-                analyticsValue = 1;
-            } else if ( supportedCount < 5) {
-                analyticsValue = 2;
-            } else {
-                analyticsValue = 3;
-            }
+        int commentCount = DiscussionCategoryGroupLocalServiceUtil.getUserMessages(userId);
+        if (commentCount > 0) {
+            int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(commentCount);
             AnalyticsUtil.publishEvent(request, userId, COMMENT_ANALYTICS_KEY + analyticsValue,
                     COMMENT_ANALYTICS_CATEGORY,
                     COMMENT_ANALYTICS_ACTION ,

@@ -41,19 +41,10 @@ public class SupportProposalActionController {
             }
             else {
                 ProposalLocalServiceUtil.addSupporter(proposalId, userId);
-                int analyticsValue = 0;
                 int supportedCount = ProposalLocalServiceUtil.getUserSupportedProposalsCount(userId);
                 if (supportedCount > 0) {
-                	if (supportedCount == 1) {
-                		analyticsValue = 1;
-                	}
-                	else if ( supportedCount < 5) {
-                		analyticsValue = 2;
-                	}
-                	else {
-                		analyticsValue = 3;
-                	}
-            	AnalyticsUtil.publishEvent(request, userId, SUPPORT_ANALYTICS_KEY + analyticsValue,
+                    int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(supportedCount);
+                    AnalyticsUtil.publishEvent(request, userId, SUPPORT_ANALYTICS_KEY + analyticsValue,
             			SUPPORT_ANALYTICS_CATEGORY,
             			SUPPORT_ANALYTICS_ACTION,
             			SUPPORT_ANALYTICS_LABEL,
