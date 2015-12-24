@@ -62,12 +62,8 @@ public class SpamReportLocalServiceImpl extends SpamReportLocalServiceBaseImpl {
 
     @Override
     public boolean hasReporterUserIdDiscussionMessageId(long userId, long discussionMessageId) throws SystemException {
-        try {
-            spamReportPersistence.findByReporterUserIdDiscussionMessageId(userId, discussionMessageId);
-            return true;
-        } catch (NoSuchSpamReportException e) {
-            return false;
-        }
+        SpamReport spamReport = spamReportPersistence.fetchByReporterUserIdDiscussionMessageId(userId, discussionMessageId);
+        return spamReport != null;
     }
 
     @Override

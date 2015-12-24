@@ -6,6 +6,8 @@ import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -27,6 +29,8 @@ import java.io.IOException;
 @Controller
 @RequestMapping("view")
 public class AddDiscussionMessageActionController extends BaseDiscussionsActionController {
+
+    private final static Log _log = LogFactoryUtil.getLog(AddDiscussionMessageActionController.class);
     
     private final static String COMMENT_ANALYTICS_KEY = "COMMENT_CONTEST_ENTRIES";
     private final static String COMMENT_ANALYTICS_CATEGORY = "User";
@@ -37,44 +41,51 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     public void handleAction(ActionRequest request, ActionResponse response, NewMessageWrapper newMessage)
             throws IOException, PortalException, SystemException, DiscussionAuthorizationException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(newMessage.getDiscussionId());
+        try {
+            long threadId = Long.parseLong(newMessage.getThreadId());
+            long discussionCategoryGroupId = Long.parseLong(newMessage.getDiscussionId());
 
-        checkPermissions(request, "User isn't allowed to add comment", newMessage.getDiscussionId(), 0L);
-        long userId = themeDisplay.getUser().getUserId();
-        long threadId = newMessage.getThreadId();
-        if (threadId == 0) {
-            threadId = dcg.getCommentsThread();
-        }
+            ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+            DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(discussionCategoryGroupId);
 
-        final String title = HtmlUtil.cleanAll(newMessage.getTitle());
-        final String body = HtmlUtil.cleanSome(newMessage.getDescription());
+            checkPermissions(request, "User isn't allowed to add comment", discussionCategoryGroupId, 0L);
+            long userId = themeDisplay.getUser().getUserId();
+            if (threadId == 0) {
+                threadId = dcg.getCommentsThread();
+            }
 
-        final DiscussionMessage comment;
-        if (threadId == 0) {
-            //create new thread
-            comment = DiscussionMessageLocalServiceUtil.addThread(dcg.getId(), 0L, title, body, themeDisplay.getUser());
-            dcg.setCommentsThread(comment.getMessageId());
-            dcg.persist();
+            final String title = HtmlUtil.cleanAll(newMessage.getTitle());
+            final String body = HtmlUtil.cleanSome(newMessage.getDescription());
 
-        } else {
-            final DiscussionMessage thread = DiscussionMessageLocalServiceUtil.getThreadByThreadId(threadId);
-            comment = DiscussionMessageLocalServiceUtil.addThreadMessage(thread, title, body, themeDisplay.getUser());
-        }
+            final DiscussionMessage comment;
+            if (threadId == 0) {
+                //create new thread
+                comment = DiscussionMessageLocalServiceUtil.addThread(dcg.getId(), 0L, title, body, themeDisplay.getUser());
+                dcg.setCommentsThread(comment.getMessageId());
+                dcg.persist();
 
-        updateAnalyticsAndActivities(dcg, comment, userId, request);
+            } else {
+                final DiscussionMessage thread = DiscussionMessageLocalServiceUtil.getThreadByThreadId(threadId);
+                comment = DiscussionMessageLocalServiceUtil.addThreadMessage(thread, title, body, themeDisplay.getUser());
+            }
 
-        //delete the cached comment cookie, if it exists
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("proposal-comment-body")) {
-                    cookie.setValue(null);
-                    cookie.setMaxAge(0);
-                    cookie.setPath("/");
-                    response.addProperty(cookie);
+            updateAnalyticsAndActivities(dcg, comment, userId, request);
+
+            //delete the cached comment cookie, if it exists
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("proposal-comment-body")) {
+                        cookie.setValue(null);
+                        cookie.setMaxAge(0);
+                        cookie.setPath("/");
+                        response.addProperty(cookie);
+                    }
                 }
             }
+        } catch (NumberFormatException e) {
+            _log.warn(String.format("Could not convert discussionId %s and threadId %s to longs (userId = %d)",
+                    newMessage.getDiscussionId(), newMessage.getThreadId()));
         }
 
         redirectToReferrer(request, response);
