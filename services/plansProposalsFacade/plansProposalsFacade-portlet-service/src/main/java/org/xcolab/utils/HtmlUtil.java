@@ -74,14 +74,14 @@ public final class HtmlUtil {
         return "<a rel='nofollow' href='" + url + "'>" + desc + "</a>";
     }
 
-    public static String filterLineBreaks(String content) {
+    public static String addHtmlLineBreaks(String content) {
         return content.replaceAll("\n", " <br />\n");
     }
 
     public static String filterAndFormatContent(String content) {
         String tmp = content;
         if (! content.contains("<br")) {
-            tmp = filterLineBreaks(tmp);
+            tmp = addHtmlLineBreaks(tmp);
         }
         tmp = linkifyUrls(tmp);
         tmp = tmp.replaceAll("\"", "'");
