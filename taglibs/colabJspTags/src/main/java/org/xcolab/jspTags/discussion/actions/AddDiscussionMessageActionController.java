@@ -41,11 +41,12 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     public void handleAction(ActionRequest request, ActionResponse response, NewMessageWrapper newMessage)
             throws IOException, PortalException, SystemException, DiscussionAuthorizationException {
 
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
         try {
             long threadId = Long.parseLong(newMessage.getThreadId());
             long discussionCategoryGroupId = Long.parseLong(newMessage.getDiscussionId());
 
-            ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
             DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(discussionCategoryGroupId);
 
             checkPermissions(request, "User isn't allowed to add comment", discussionCategoryGroupId, 0L);
@@ -85,7 +86,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             }
         } catch (NumberFormatException e) {
             _log.warn(String.format("Could not convert discussionId %s and threadId %s to longs (userId = %d)",
-                    newMessage.getDiscussionId(), newMessage.getThreadId()));
+                    newMessage.getDiscussionId(), newMessage.getThreadId(), themeDisplay.getUserId()));
         }
 
         redirectToReferrer(request, response);
