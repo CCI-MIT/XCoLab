@@ -1,4 +1,4 @@
-package org.xcolab.portlets.userprofile.utils;
+package org.xcolab.mail;
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
@@ -7,14 +7,15 @@ import com.liferay.portal.kernel.json.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.xcolab.portlets.userprofile.entity.AccountDetailsEmmaAPI;
-
-import javax.portlet.PortletRequest;
 import java.io.IOException;
 
 /**
@@ -22,121 +23,86 @@ import java.io.IOException;
  */
 public class ConnectorEmmaAPI {
 
-    final private String charset = java.nio.charset.StandardCharsets.UTF_8.name();
-    final private String contentType = "application/json";
-    private String myEmmaApiBaseUrl;
+    private final String charset = java.nio.charset.StandardCharsets.UTF_8.name();
+    private final String contentType = "application/json";
+    private final String myEmmaApiBaseUrl;
 
-    private AccountDetailsEmmaAPI accountDetailsEmmaAPI;
+    private final AccountDetailsEmmaAPI accountDetailsEmmaAPI;
 
-    public ConnectorEmmaAPI(PortletRequest request){
-        accountDetailsEmmaAPI = new AccountDetailsEmmaAPI(request.getPreferences());
+    public ConnectorEmmaAPI() {
+        accountDetailsEmmaAPI = new AccountDetailsEmmaAPI();
         myEmmaApiBaseUrl = "https://api.e2ma.net/" + accountDetailsEmmaAPI.getAccountId();
     }
 
-    public boolean unSubscribeMemberWithEmail(String email) throws IOException{
+    public boolean unSubscribeMemberWithEmail(String email) throws IOException {
 
         JSONObject memberDetails = getMemberJSONfromEmail(email);
-        if(memberDetails.has("member_id")){
-            return unSubscribeMemberWithMemberId(memberDetails.getString("member_id"));
-        }
-
-        return true;
+        return !memberDetails.has("member_id") || unSubscribeMemberWithMemberId(memberDetails.getString("member_id"));
     }
 
-    private boolean unSubscribeMemberWithMemberId(String memberId) throws IOException{
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        boolean unsubscribeSuccessfull = false;
+    private boolean unSubscribeMemberWithMemberId(String memberId) throws IOException {
+        boolean unsubscribeSuccessful = false;
 
-        try{
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(myEmmaApiBaseUrl + "/members/" + memberId,
                     contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
 
-            CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest);
-
-            try {
-                if(newsletterSubscribeResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {
+                if (newsletterSubscribeResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     HttpEntity entity = newsletterSubscribeResponse.getEntity();
-                    unsubscribeSuccessfull =  Boolean.parseBoolean(EntityUtils.toString(entity));
+                    unsubscribeSuccessful = Boolean.parseBoolean(EntityUtils.toString(entity));
                     EntityUtils.consume(entity);
                 }
-            } finally {
-                newsletterSubscribeResponse.close();
             }
-
-        } finally {
-            httpclient.close();
         }
-
-        return unsubscribeSuccessfull;
-
+        return unsubscribeSuccessful;
     }
 
-    public JSONObject subscribeMemberWithEmail(String email) throws IOException, JSONException{
+    public JSONObject subscribeMemberWithEmail(String email) throws IOException, JSONException {
 
         JSONObject jsonSubscribeInformation = JSONFactoryUtil.createJSONObject();
         JSONObject memberDetails = JSONFactoryUtil.createJSONObject();
-        CloseableHttpClient httpclient = HttpClients.createDefault();
 
         JSONArray groupIds = JSONFactoryUtil.createJSONArray();
         groupIds.put(accountDetailsEmmaAPI.getGroupId());
         jsonSubscribeInformation.put("email", email);
         jsonSubscribeInformation.put("group_ids", groupIds);
 
-        try{
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             HttpUriRequest newsletterSubscribeRequest = createPostWithAuthorizationForJSONObject(myEmmaApiBaseUrl + "/members/add",
                     contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization(), jsonSubscribeInformation);
 
-             CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest);
-
-            try {
-                if(newsletterSubscribeResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {
+                if (newsletterSubscribeResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     HttpEntity entity = newsletterSubscribeResponse.getEntity();
-                    memberDetails =  JSONFactoryUtil.createJSONObject(EntityUtils.toString(entity));
+                    memberDetails = JSONFactoryUtil.createJSONObject(EntityUtils.toString(entity));
                     EntityUtils.consume(entity);
                 }
-            } finally {
-                newsletterSubscribeResponse.close();
             }
-
-        } finally {
-            httpclient.close();
         }
-
         return memberDetails;
-
     }
 
     public JSONObject getMemberJSONfromEmail(String email) throws IOException {
         JSONObject memberDetails = JSONFactoryUtil.createJSONObject();
-        CloseableHttpClient httpclient = HttpClients.createDefault();
 
-        try{
-            HttpGet getMemberDetails=createGetWithAuthorization( myEmmaApiBaseUrl + "/members/email/" + email,
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+            HttpGet getMemberDetails = createGetWithAuthorization(myEmmaApiBaseUrl + "/members/email/" + email,
                     contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
 
-            CloseableHttpResponse getMemberDetailsResponse = httpclient.execute(getMemberDetails);
-
-            try {
-                if(getMemberDetailsResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            try (CloseableHttpResponse getMemberDetailsResponse = httpclient.execute(getMemberDetails)) {
+                if (getMemberDetailsResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     HttpEntity entity = getMemberDetailsResponse.getEntity();
-                    memberDetails =  JSONFactoryUtil.createJSONObject(EntityUtils.toString(entity));
+                    memberDetails = JSONFactoryUtil.createJSONObject(EntityUtils.toString(entity));
                     EntityUtils.consume(entity);
                 }
-            } catch (JSONException e){
-
-            } finally {
-                getMemberDetailsResponse.close();
-            }
-
-        } finally {
-            httpclient.close();
+            } catch (JSONException ignored) { }
         }
-
         return memberDetails;
     }
 
     private static HttpGet createGetWithAuthorization(
-            String url, String contentType, String charset, String encodedAuthorization){
+            String url, String contentType, String charset, String encodedAuthorization) {
 
         HttpGet get = new HttpGet(url);
         get.setHeader(HttpHeaders.CONTENT_TYPE, contentType);

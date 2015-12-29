@@ -1,7 +1,6 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
 import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.service.LoginLogLocalService;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
@@ -34,10 +33,12 @@ import org.xcolab.portlets.loginregister.ImageUploadUtils;
 import org.xcolab.portlets.loginregister.MainViewController;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableException;
 
-import javax.portlet.*;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;

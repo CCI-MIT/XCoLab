@@ -1,4 +1,4 @@
-package org.xcolab.commons.utils;
+package org.xcolab.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -6,7 +6,10 @@ import com.liferay.portal.util.PropsUtil;
 import com.liferay.util.portlet.PortletProps;
 
 
-public class PropertiesUtils {
+public final class PropertiesUtils {
+
+    private PropertiesUtils() { }
+
     public static String get(String key) {
         String val = PortletProps.get(key);
         if (StringUtils.isBlank(val)) {

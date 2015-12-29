@@ -38,7 +38,6 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -67,8 +66,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Date;
 
-//import javax.validation.Validator;
-
 @Controller
 @RequestMapping("view")
 public class MainViewController {
@@ -85,9 +82,6 @@ public class MainViewController {
 
 	@Autowired
 	private Validator validator;
-
-	@Autowired
-	private MessageSource messageSource;
 	
 	private final static Log _log = LogFactoryUtil.getLog(MainViewController.class);
 
@@ -100,9 +94,8 @@ public class MainViewController {
 	 * Main view displayed for contact form
 	 *
 	 */
-		@RequestMapping
-		public String register(PortletRequest request, PortletResponse response,
-				Model model) {
+    @RequestMapping
+    public String register(PortletRequest request, PortletResponse response, Model model) {
 		
 		ThemeDisplay themeDisplay = (ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY);
@@ -117,7 +110,7 @@ public class MainViewController {
 
 		String redirect = ParamUtil.getString(request, "redirect");
 
-		if (redirect == null || redirect.trim().length() == 0) {
+		if (redirect == null || redirect.trim().isEmpty()) {
 			redirect = httpRequest.getParameter("redirect");
 			if (redirect == null) {
 				redirect = PortalUtil.getHttpServletRequest(request).getHeader(
@@ -126,27 +119,26 @@ public class MainViewController {
 		}
 		if (themeDisplay.isSignedIn()) {
 			return "signedIn_logout";
-		} else {
-
-            if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
-                model.addAttribute("redirect", com.liferay.portal.kernel.util.HtmlUtil.escape(redirect));
-            }
-
-            // append SSO attributes
-            CreateUserBean userBean = new CreateUserBean();
-            getSSOUserInfo(request.getPortletSession(),userBean);
-            model.addAttribute("createUserBean", userBean);
-
-			// Get country location
-			if (com.liferay.portal.kernel.util.Validator.isNull(userBean.getCountry())) {
-				try {
-					userBean.setCountry(getCountryCodeFromRemoteAddress(PortalUtil.getHttpServletRequest(request).getRemoteAddr()));
-				} catch (UserLocationNotResolveableException e) {
-					_log.warn(e);
-				}
-			}
 		}
-		return "view";
+
+        if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
+            model.addAttribute("redirect", com.liferay.portal.kernel.util.HtmlUtil.escape(redirect));
+        }
+
+        // append SSO attributes
+        CreateUserBean userBean = new CreateUserBean();
+        getSSOUserInfo(request.getPortletSession(),userBean);
+        model.addAttribute("createUserBean", userBean);
+
+        // Get country location
+        if (com.liferay.portal.kernel.util.Validator.isNull(userBean.getCountry())) {
+            try {
+                userBean.setCountry(getCountryCodeFromRemoteAddress(PortalUtil.getHttpServletRequest(request).getRemoteAddr()));
+            } catch (UserLocationNotResolveableException e) {
+                _log.warn(e);
+            }
+        }
+        return "view";
 	}
 
     public static void getSSOUserInfo(PortletSession portletSession, CreateUserBean createUserBean){
@@ -235,7 +227,6 @@ public class MainViewController {
 			} else {
 				try {
 					completeRegistration(request, response, newAccountBean, redirect, false);
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -267,7 +258,7 @@ public class MainViewController {
                 UserLocalServiceUtil.getUserByScreenName(((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getCompanyId(), screenName);
                 json.getJSONObject("screenName").put("success", false);
             } catch (NoSuchUserException e) {
-                if (screenName.matches("[a-zA-Z0-9]+$") && screenName.length() > 0) {
+                if (screenName.matches("[a-zA-Z0-9]+$") && !screenName.isEmpty()) {
                     loggedInUser.setScreenName(screenName);
                     json.getJSONObject("screenName").put("success", true);
                 } else {
@@ -276,9 +267,8 @@ public class MainViewController {
             }
         }
 
-
         json.getJSONObject("bio").put("success", true);
-        if ((bio != null && bio.length() > 0 && bio.length() <= 2000)) {
+        if ((bio != null && !bio.isEmpty() && bio.length() <= 2000)) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID,
                     User.class.getName(),
                     CommunityConstants.EXPANDO,
@@ -335,7 +325,7 @@ public class MainViewController {
                     new long[]{}, new long[]{}, true, serviceContext);
 
             if (newAccountBean.getShortBio() != null
-                    && newAccountBean.getShortBio().length() > 0) {
+                    && !newAccountBean.getShortBio().isEmpty()) {
                 setExpandoValue(user, CommunityConstants.BIO, HtmlUtil.cleanSome(newAccountBean.getShortBio()));
             }
 
@@ -369,7 +359,7 @@ public class MainViewController {
                     user.setFacebookId(fbId);
                     UserLocalServiceUtil.updateUser(user);
                     portletSession.removeAttribute(SSOKeys.FACEBOOK_USER_ID, PortletSession.APPLICATION_SCOPE);
-                } catch (Exception e) {
+                } catch (SystemException | NumberFormatException e) {
                     e.printStackTrace();
                 }
             }
@@ -378,13 +368,13 @@ public class MainViewController {
                     user.setOpenId(openId);
                     UserLocalServiceUtil.updateUser(user);
                     portletSession.removeAttribute(SSOKeys.SSO_OPENID_ID, PortletSession.APPLICATION_SCOPE);
-                } catch (Exception e) {
+                } catch (SystemException e) {
                     e.printStackTrace();
                 }
             }
 
             if (newAccountBean.getImageId() != null
-                    && newAccountBean.getImageId().length() > 0) {
+                    && !newAccountBean.getImageId().isEmpty()) {
                 Image img = ImageLocalServiceUtil.getImage(Long
                         .parseLong(newAccountBean.getImageId()));
                 // we need to set permission checker for liferay
@@ -470,6 +460,4 @@ public class MainViewController {
 		}
 		throw new UserLocationNotResolveableException(String.format("Could not retrieve country from IP address %s", ipAddr));
 	}
-	
-	
 }
