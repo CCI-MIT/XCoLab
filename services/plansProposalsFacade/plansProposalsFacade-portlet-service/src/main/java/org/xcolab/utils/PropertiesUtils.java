@@ -1,10 +1,8 @@
 package org.xcolab.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.util.portlet.PortletProps;
-
+import org.apache.commons.lang3.StringUtils;
 
 public final class PropertiesUtils {
 

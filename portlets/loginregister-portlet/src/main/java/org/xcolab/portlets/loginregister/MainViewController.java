@@ -48,6 +48,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.mail.ConnectorEmmaAPI;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 import org.xcolab.utils.CountryUtil;
@@ -323,6 +324,8 @@ public class MainViewController {
                     HtmlUtil.cleanAll(newAccountBean.getLastName()), 0, 0, true, 1, 1,
                     1970, "", new long[]{}, new long[]{},
                     new long[]{}, new long[]{}, true, serviceContext);
+
+            new ConnectorEmmaAPI().subscribeMemberWithEmail(newAccountBean.getEmail());
 
             if (newAccountBean.getShortBio() != null
                     && !newAccountBean.getShortBio().isEmpty()) {
