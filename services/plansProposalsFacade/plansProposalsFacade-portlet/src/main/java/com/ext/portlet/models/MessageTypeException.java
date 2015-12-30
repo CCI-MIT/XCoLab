@@ -5,7 +5,7 @@
  */
 package com.ext.portlet.models;
 
-import com.liferay.portal.PortalException;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Exception representing error in message type.
