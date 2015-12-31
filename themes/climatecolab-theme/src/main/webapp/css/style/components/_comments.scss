@@ -71,6 +71,11 @@ input.comm_butt[type="submit"]:focus {
 .the-comment {
   padding-bottom: 55px;
   position: relative;
+
+  //editor inserts p elements for every line break -> fix spacing
+  p {
+    margin: 0;
+  }
 }
 
 .addpropbox.evaluation .commentor {

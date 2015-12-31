@@ -159,3 +159,8 @@ table.login-box-table th {
   padding: 0 3px 10px 0;
   vertical-align: middle;
 }
+
+.required-field:after {
+  content: '*';
+  color: $primary-color;
+}

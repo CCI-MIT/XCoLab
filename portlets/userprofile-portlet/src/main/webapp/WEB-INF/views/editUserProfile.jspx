@@ -45,8 +45,7 @@
 
 	<h1>Edit Member Profile</h1>
 	<div class="is-required">
-		<img src="/climatecolab-theme/images/reg-star.png" width="8"
-			 height="7" align="texttop" /> is a required field.
+		<span class="required-field"><!-- --></span> is a required field.
 	</div>
 
 
@@ -73,8 +72,8 @@
 				<div class="comm_member-info">
 					<table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
 						<tr>
-							<th class="b m nowrap" width="170">First Name
-								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
+							<th class="b m nowrap required-field" width="170">
+								First Name
 							</th>
 							<td>
 								<form:input id="firstName" path="firstName" cssClass="profile_input"/>
@@ -84,8 +83,8 @@
 							</td>
 						</tr>
 						<tr>
-							<th class="b nowrap">Last Name
-								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
+							<th class="b nowrap required-field">
+								Last Name
 							</th>
 							<td>
 								<form:input id="lastName" path="lastName" cssClass="profile_input"/>
@@ -95,8 +94,8 @@
 							</td>
 						</tr>
 						<tr>
-							<th class="b m nowrap" width="170">Screen Name
-								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
+							<th class="b m nowrap required-field" width="170">
+								Screen Name
 							</th>
 							<td>
 								<form:input id="screenNameMessage" cssClass="profile_input" path="screenName"></form:input>
@@ -107,9 +106,9 @@
 						</tr>
 
 						<tr>
-							<th class="b m">
+							<th class="b m required-field">
 								Country
-								<img align="texttop" height="7" width="8" src="/climatecolab-theme/images/reg-star.png"/></th>
+							</th>
 							<td> <jsp:include page="./countrySelect.jspx"/></td>
 						</tr>
 
@@ -139,8 +138,8 @@
 							</td>
 						</tr>
 						<tr id="EmailRow">
-							<th class="b m" >New email
-								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
+							<th class="b m" >
+								New email
 							</th>
 							<td>
 								<form:input  id="email" cssClass="profile_input" path="email"></form:input>
@@ -151,8 +150,8 @@
 						</tr>
 
 						<tr id="retypeEmailRow" style="${emailError ? '' : 'display: none;'}">
-							<th class="b m">New email retype
-								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
+							<th class="b m required-field">
+								New email retype
 							</th>
 							<td>
 								<form:input  id="retypeEmail" cssClass="profile_input" path="retypeEmail"></form:input>
@@ -163,8 +162,8 @@
 						</tr>
 
 						<tr>
-							<th class="b m nowrap">Current password
-								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
+							<th class="b m nowrap">
+								Current password
 							</th>
 							<td>
 								<form:password cssClass="profile_input" path="currentPassword" />
@@ -174,8 +173,8 @@
 							</td>
 						</tr>
 						<tr>
-							<th class="b m nowrap">New password
-								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
+							<th class="b m nowrap">
+								New password
 							</th>
 							<td>
 								<form:password cssClass="profile_input" path="password"/>
@@ -185,8 +184,8 @@
 							</td>
 						</tr>
 						<tr id="retypePasswordRow" style="${passwordError ? '' : 'display: none;'}">
-							<th class="b m nowrap">New password retype
-								<img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" />
+							<th class="b m nowrap required-field">
+								New password retype
 							</th>
 							<td>
 								<form:password cssClass="profile_input" path="retypePassword" />

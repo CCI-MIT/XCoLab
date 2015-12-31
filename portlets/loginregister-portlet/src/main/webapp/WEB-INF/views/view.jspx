@@ -43,8 +43,7 @@
 
 
         <div class="is-required">
-            <img src="/climatecolab-theme/images/reg-star.png" width="8"
-                 height="7" align="texttop" /> is a required field.
+            <span class="required-field"><!-- --></span> is a required field.
         </div>
 
 		<c:if test="${ error != null and isRegistering }">
@@ -64,9 +63,7 @@
 			<form:errors cssClass="alert alert-error" />
 			<table class="reg">
 				<tr>
-					<th nowrap="nowrap">Screen name <img
-						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
-						align="texttop" /></th>
+					<th nowrap="nowrap" class="required-field">Screen name </th>
 					<td><form:input cssClass="popupreg_input" path="screenName" /><br />
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="screenName" />
@@ -95,9 +92,7 @@
 
 				</tr>
 				<tr>
-					<th nowrap="nowrap">Email <img
-						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
-						align="texttop" /></th>
+					<th nowrap="nowrap" class="required-field">Email </th>
 					<td><form:input cssClass="popupreg_input" path="email" />
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="email" />
@@ -105,9 +100,7 @@
                     </td>
 				</tr>
                 <tr>
-                    <th nowrap="nowrap">Retype email <img
-                            src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
-                            align="texttop" /></th>
+                    <th nowrap="nowrap" class="required-field">Retype email </th>
                     <td><form:input cssClass="popupreg_input" path="retypeEmail" />
                         <div class="reg_errors"><!--  -->
                             <form:errors cssClass="alert alert-error" path="retypeEmail" />
@@ -116,9 +109,7 @@
                 </tr>
 
 				<tr>
-					<th nowrap="nowrap">First name <img
-						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
-						align="texttop" /></th>
+					<th nowrap="nowrap" class="required-field">First name </th>
 					<td><form:input cssClass="popupreg_input" path="firstName" />
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="firstName" />
@@ -126,9 +117,7 @@
 				</tr>
 
 				<tr>
-					<th nowrap="nowrap">Last name <img
-						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
-						align="texttop" /></th>
+					<th nowrap="nowrap" class="required-field">Last name </th>
 					<td><form:input cssClass="popupreg_input" path="lastName" />
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="lastName" />
@@ -136,9 +125,7 @@
 				</tr>
 
 				<tr>
-					<th nowrap="nowrap">Password <img
-						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
-						align="texttop" /></th>
+					<th nowrap="nowrap" class="required-field">Password </th>
 					<td><form:password cssClass="popupreg_input" path="password" />
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="password" />
@@ -147,18 +134,16 @@
 
 
 				<tr>
-					<th nowrap="nowrap">Retype password <img
-						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
-						align="texttop" /></th>
+					<th nowrap="nowrap" class="required-field">Retype password </th>
 					<td><form:password cssClass="popupreg_input"
 							path="retypePassword" />
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="retypePassword" />
 						</div></td>
 
-					<th class="second">
+					<th class="second required-field">
 						Country
-						<img align="texttop" height="7" width="8" src="/climatecolab-theme/images/reg-star.png"/></th>
+					</th>
 					<td>
                         <jsp:include page="./countrySelect.jspx"/>
                     </td>
@@ -180,9 +165,7 @@
 
                 <c:if test="${ createUserBean.captchaNeeded }">
 				<tr>
-					<th nowrap="nowrap">Retype the numbers <img
-						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
-						align="texttop" /></th>
+					<th nowrap="nowrap" class="required-field">Retype the numbers </th>
 					<td colspan="3">
 						<portlet:resourceURL var="getCaptchaImage" id="ajaxHandler"/>
 						<img src="${getCaptchaImage }" style="margin-bottom: 10px;"/><br />

@@ -39,7 +39,7 @@
     background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
 
     &.selected {
-      background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px $primary-dark-grey;
+      background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px $primary-color;
     }
   }
 
@@ -47,7 +47,7 @@
     background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
 
     &.selected {
-      background: url(../images/icon-list_outline-on.png) no-repeat 9px 8px $primary-dark-grey;
+      background: url(../images/icon-list_outline-on.png) no-repeat 9px 8px $primary-color;
     }
   }
 
@@ -55,7 +55,7 @@
     background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
 
     &.selected {
-      background: url(../images/icon-list_view-on.png) no-repeat 9px 8px $primary-dark-grey;
+      background: url(../images/icon-list_view-on.png) no-repeat 9px 8px $primary-color;
     }
   }
 }
@@ -284,7 +284,7 @@ table.contest-list-view {
 }
 
 .contest-detail .heading {
-  background: url(../images/pattern-6x6-lite.png) $lightest-grey;
+  background: url(../images/pattern-6x6-lite.png) darken($lightest-grey, 7);
   min-height: 24px;
   padding: 7px 0 5px 20px;
   font-size: 22px;
