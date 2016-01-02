@@ -5,8 +5,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import java.util.List;
-
 /**
  * @author pdeboer
  *         First created on 28/01/14 at 19:40

@@ -3,7 +3,6 @@ package org.xcolab.portlets.userprofile.beans;
 import com.liferay.portal.kernel.json.JSONObject;
 import org.xcolab.mail.ConnectorEmmaAPI;
 
-import javax.portlet.PortletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 

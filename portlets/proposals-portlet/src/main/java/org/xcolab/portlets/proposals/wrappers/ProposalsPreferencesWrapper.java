@@ -4,16 +4,15 @@ import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
-
-import java.io.IOException;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
+import java.io.IOException;
 
 public class ProposalsPreferencesWrapper {
 

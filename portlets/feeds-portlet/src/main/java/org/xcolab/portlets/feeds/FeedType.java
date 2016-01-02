@@ -1,15 +1,14 @@
 package org.xcolab.portlets.feeds;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.ui.Model;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.feeds.dataProviders.ActivitiesFeedDataProvider;
 import org.xcolab.portlets.feeds.dataProviders.RecentlyActiveUsersFeedDataProvider;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 public enum FeedType {
 	ACTIVITIES("Activities", new ActivitiesFeedDataProvider()), 

@@ -1,8 +1,6 @@
 package org.xcolab.portlets.contests;
 
 
-import java.io.Serializable;
-
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -11,6 +9,8 @@ import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.wrappers.BaseContestWrapper;
+
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.

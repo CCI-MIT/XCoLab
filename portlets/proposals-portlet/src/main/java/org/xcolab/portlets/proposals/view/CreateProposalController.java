@@ -1,9 +1,14 @@
 
 package org.xcolab.portlets.proposals.view;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,14 +22,8 @@ import org.xcolab.portlets.proposals.view.action.AddUpdateProposalDetailsActionC
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 @Controller
 @RequestMapping("view")

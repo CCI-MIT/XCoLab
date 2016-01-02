@@ -1,10 +1,10 @@
 package org.xcolab.portlets.contestmanagement.entities;
 
+import org.xcolab.interfaces.TabActivityCountAlgorithm;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabEnum;
-import org.xcolab.interfaces.TabPermissions;
 import org.xcolab.interfaces.TabPermissionAlgorithm;
-import org.xcolab.interfaces.TabActivityCountAlgorithm;
+import org.xcolab.interfaces.TabPermissions;
 
 import javax.portlet.PortletRequest;
 /**

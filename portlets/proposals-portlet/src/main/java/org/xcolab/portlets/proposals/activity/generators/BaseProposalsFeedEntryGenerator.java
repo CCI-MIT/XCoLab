@@ -1,19 +1,18 @@
 package org.xcolab.portlets.proposals.activity.generators;
 
 import com.ext.portlet.community.CommunityConstants;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.portlets.proposals.activity.ProposalActivityFeedEntryGenerator;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
+import org.xcolab.portlets.proposals.activity.ProposalActivityFeedEntryGenerator;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 public abstract class BaseProposalsFeedEntryGenerator implements ProposalActivityFeedEntryGenerator {
     private final Log _log = LogFactoryUtil.getLog(BaseProposalsFeedEntryGenerator.class);

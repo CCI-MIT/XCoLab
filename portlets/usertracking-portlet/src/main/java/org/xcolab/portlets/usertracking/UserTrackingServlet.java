@@ -1,27 +1,22 @@
 package org.xcolab.portlets.usertracking;
 
-import java.io.IOException;
+import com.ext.portlet.service.TrackedVisitLocalServiceUtil;
+import com.ext.portlet.service.TrackedVisitor2UserLocalServiceUtil;
+import com.ext.utils.iptranslation.Location;
+import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.ext.portlet.model.TrackedVisitor2User;
-import com.ext.portlet.service.TrackedVisitLocalServiceUtil;
-import com.ext.portlet.service.TrackedVisitor2UserLocalServiceUtil;
-import com.ext.utils.iptranslation.Location;
-import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.UUID;

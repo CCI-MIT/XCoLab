@@ -1,9 +1,9 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import com.ext.portlet.model.FocusArea;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.ext.portlet.model.FocusArea;
 
 public class FocusAreaWrapper {
 	private FocusArea wrapped;

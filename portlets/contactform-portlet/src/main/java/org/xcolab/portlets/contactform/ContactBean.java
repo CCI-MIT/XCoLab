@@ -1,9 +1,9 @@
 package org.xcolab.portlets.contactform;
 
-import java.io.Serializable;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+
+import java.io.Serializable;
 
 public class ContactBean  implements Serializable {
     private static final long serialVersionUID = -6456025417093073280L;

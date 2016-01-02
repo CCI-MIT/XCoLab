@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.Points;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.points.PointsTarget;

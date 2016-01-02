@@ -1,11 +1,8 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.Proposal;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

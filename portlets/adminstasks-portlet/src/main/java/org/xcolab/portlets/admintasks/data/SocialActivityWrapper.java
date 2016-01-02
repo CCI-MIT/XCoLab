@@ -1,11 +1,5 @@
 package org.xcolab.portlets.admintasks.data;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -14,6 +8,11 @@ import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.ocpsoft.pretty.time.PrettyTime;
 import org.xcolab.portlets.admintasks.Helper;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SocialActivityWrapper implements Serializable {
     /**

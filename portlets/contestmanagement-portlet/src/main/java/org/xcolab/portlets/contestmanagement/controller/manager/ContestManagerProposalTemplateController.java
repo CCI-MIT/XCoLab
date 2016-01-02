@@ -17,8 +17,8 @@ import org.xcolab.portlets.contestmanagement.controller.common.ContestProposalTe
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
-import org.xcolab.portlets.contestmanagement.wrappers.ProposalTemplateWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
+import org.xcolab.portlets.contestmanagement.wrappers.ProposalTemplateWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.portlet.ActionRequest;

@@ -1,13 +1,13 @@
 package org.xcolab.portlets.proposals.view.interceptors;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper;
+
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 public class ValidateTabPermissionsInterceptor extends HandlerInterceptorAdapter {
     

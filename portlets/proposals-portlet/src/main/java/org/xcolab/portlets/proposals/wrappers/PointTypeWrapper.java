@@ -1,12 +1,13 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.*;
+import com.ext.portlet.model.PointType;
 import com.ext.portlet.service.PointTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.ReceiverLimitationStrategy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PointTypeWrapper {
     PointType pointType;

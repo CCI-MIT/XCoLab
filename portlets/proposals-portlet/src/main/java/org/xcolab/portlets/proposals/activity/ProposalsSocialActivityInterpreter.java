@@ -1,17 +1,10 @@
 package org.xcolab.portlets.proposals.activity;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.xcolab.portlets.proposals.activity.generators.DefaultFeedEntryGenerator;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-
-import com.ext.portlet.Activity.ProposalActivityKeys;
 import com.ext.portlet.Activity.ICollabActivityInterpreter;
+import com.ext.portlet.Activity.ProposalActivityKeys;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -21,6 +14,12 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.BaseSocialActivityInterpreter;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.xcolab.portlets.proposals.activity.generators.DefaultFeedEntryGenerator;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProposalsSocialActivityInterpreter extends BaseSocialActivityInterpreter 
 implements ICollabActivityInterpreter {
