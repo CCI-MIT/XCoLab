@@ -1,10 +1,10 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
 import com.ext.portlet.model.BalloonLink;
 import com.ext.portlet.service.base.BalloonLinkLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the balloon link local service.

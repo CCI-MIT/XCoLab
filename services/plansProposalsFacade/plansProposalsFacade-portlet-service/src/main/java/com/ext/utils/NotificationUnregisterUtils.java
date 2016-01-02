@@ -1,15 +1,14 @@
 package com.ext.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-
+import com.ext.portlet.model.ActivitySubscription;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import com.ext.portlet.model.ActivitySubscription;
-import com.liferay.portal.model.User;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class NotificationUnregisterUtils {
 

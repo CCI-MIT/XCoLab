@@ -1,13 +1,12 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
 import com.ext.portlet.NoSuchProposalVersionException;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.base.ProposalVersionLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ProposalVersionPK;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the proposal version local service.

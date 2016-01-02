@@ -1,8 +1,8 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.proposals.ProposalJudgeType;
 import com.ext.portlet.service.base.ProposalRatingTypeLocalServiceBaseImpl;
-import com.ext.portlet.model.ProposalRatingType;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;

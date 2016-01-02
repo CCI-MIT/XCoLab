@@ -1,11 +1,11 @@
 package com.ext.portlet.service.impl;
 
-import java.util.Date;
-
 import com.ext.portlet.model.LandingPage;
 import com.ext.portlet.service.base.LandingPageLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.Date;
 
 /**
  * The implementation of the landing page local service.

@@ -1,16 +1,15 @@
 package org.xcolab.analytics;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import com.ext.portlet.model.AnalyticsUserEvent;
 import com.ext.portlet.service.AnalyticsUserEventLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
+
+import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class AnalyticsUtil {
 	

@@ -1,9 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.ext.portlet.NoSuchOntologyTermException;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
@@ -17,6 +13,10 @@ import com.ext.portlet.service.persistence.FocusAreaOntologyTermPK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * The implementation of the focus area local service.

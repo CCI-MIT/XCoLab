@@ -292,7 +292,7 @@ public class ProposalVersionLocalServiceUtil {
 
     public static com.ext.portlet.model.ProposalVersion getByProposalIdVersion(
         long proposalId, int version)
-        throws com.liferay.portal.kernel.exception.PortalException,
+        throws com.ext.portlet.NoSuchProposalVersionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getByProposalIdVersion(proposalId, version);
     }

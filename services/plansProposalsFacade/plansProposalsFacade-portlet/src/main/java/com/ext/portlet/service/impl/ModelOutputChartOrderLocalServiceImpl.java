@@ -4,7 +4,6 @@ import com.ext.portlet.NoSuchModelOutputChartOrderException;
 import com.ext.portlet.model.ModelOutputChartOrder;
 import com.ext.portlet.service.base.ModelOutputChartOrderLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
-
 import edu.mit.cci.roma.client.Simulation;
 
 /**

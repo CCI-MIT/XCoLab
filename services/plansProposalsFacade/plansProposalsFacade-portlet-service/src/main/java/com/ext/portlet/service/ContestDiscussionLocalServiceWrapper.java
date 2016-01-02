@@ -280,7 +280,7 @@ public class ContestDiscussionLocalServiceWrapper
     @Override
     public java.lang.Long getDiscussionIdByContestIdAndTabName(
         java.lang.Long contestId, java.lang.String tabName)
-        throws com.liferay.portal.kernel.exception.PortalException,
+        throws com.ext.portlet.NoSuchContestDiscussionException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestDiscussionLocalService.getDiscussionIdByContestIdAndTabName(contestId,
             tabName);

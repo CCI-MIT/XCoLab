@@ -1,11 +1,11 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
 import com.ext.portlet.NoSuchEmailListException;
 import com.ext.portlet.model.EmailList;
 import com.ext.portlet.service.base.EmailListLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the email list local service.

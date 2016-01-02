@@ -1,9 +1,8 @@
 package com.ext;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.util.portlet.PortletProps;
+import org.apache.commons.lang.StringUtils;
 
 public class PropertiesUtils {
     public static String get(String key) {

@@ -1,11 +1,9 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
+import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.NoSuchDiscussionCategoryException;
 import com.ext.portlet.NoSuchDiscussionMessageException;
-import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
@@ -24,6 +22,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.CompanyLocalService;
 import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+
+import java.util.List;
 
 /**
  * The implementation of the discussion category group local service.

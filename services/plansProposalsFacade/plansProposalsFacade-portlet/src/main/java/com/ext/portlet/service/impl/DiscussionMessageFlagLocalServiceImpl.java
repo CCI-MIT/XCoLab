@@ -1,12 +1,12 @@
 package com.ext.portlet.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
 import com.ext.portlet.model.DiscussionMessageFlag;
 import com.ext.portlet.service.base.DiscussionMessageFlagLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * The implementation of the discussion message flag local service.

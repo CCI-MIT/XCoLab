@@ -2,12 +2,11 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.model.TrackedVisitor2User;
 import com.ext.portlet.service.base.TrackedVisitor2UserLocalServiceBaseImpl;
-import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
-
+import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.List;
 

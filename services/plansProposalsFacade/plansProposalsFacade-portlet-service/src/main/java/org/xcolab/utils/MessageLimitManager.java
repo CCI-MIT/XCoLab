@@ -4,8 +4,6 @@ import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.Message;
 import com.ext.portlet.model.MessageRecipientStatus;
 import com.ext.portlet.service.MessageLocalServiceUtil;
-import org.joda.time.DateTime;
-import org.xcolab.enums.ColabConstants;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -20,6 +18,8 @@ import com.liferay.portlet.expando.model.ExpandoTable;
 import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+import org.joda.time.DateTime;
+import org.xcolab.enums.ColabConstants;
 
 import java.util.Calendar;
 import java.util.Date;

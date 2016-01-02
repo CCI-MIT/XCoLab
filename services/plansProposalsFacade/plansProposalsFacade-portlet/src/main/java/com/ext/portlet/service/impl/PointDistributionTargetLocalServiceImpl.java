@@ -1,10 +1,10 @@
 package com.ext.portlet.service.impl;
 
-import java.util.Collection;
-
 import com.ext.portlet.model.PointDistributionTarget;
 import com.ext.portlet.service.base.PointDistributionTargetLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.Collection;
 
 /**
  * The implementation of the point distribution target local service.

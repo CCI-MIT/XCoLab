@@ -1,9 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -15,10 +11,13 @@ import com.ext.portlet.service.base.Proposal2PhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 /**
  * The implementation of the proposal2 phase local service.
  *

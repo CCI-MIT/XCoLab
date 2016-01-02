@@ -3,7 +3,6 @@ package com.ext.portlet.service.impl;
 import com.ext.portlet.NoSuchContestDiscussionException;
 import com.ext.portlet.model.ContestDiscussion;
 import com.ext.portlet.service.base.ContestDiscussionLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 /**

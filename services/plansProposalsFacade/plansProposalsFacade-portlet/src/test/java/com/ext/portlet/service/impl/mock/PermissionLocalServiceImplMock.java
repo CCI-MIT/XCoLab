@@ -1,11 +1,5 @@
 package com.ext.portlet.service.impl.mock;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -16,6 +10,12 @@ import com.liferay.portal.model.Resource;
 import com.liferay.portal.model.ResourceAction;
 import com.liferay.portal.model.ResourcePermission;
 import com.liferay.portal.service.ResourcePermissionLocalService;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class PermissionLocalServiceImplMock implements ResourcePermissionLocalService {
 

@@ -1,19 +1,12 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.proposals.ProposalJudgeType;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
-import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalRatingLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ProposalRatingFinderUtil;
 import com.liferay.portal.NoSuchUserException;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 
 import java.util.List;
 

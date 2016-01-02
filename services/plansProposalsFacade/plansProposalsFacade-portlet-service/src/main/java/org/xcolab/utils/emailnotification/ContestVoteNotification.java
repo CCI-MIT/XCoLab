@@ -5,7 +5,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;

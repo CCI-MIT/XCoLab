@@ -1,21 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.mail.internet.InternetAddress;
-
 import com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceUtil;
 import com.ext.portlet.Activity.SubscriptionType;
 import com.ext.portlet.messaging.MessageUtil;
@@ -54,6 +38,21 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.collections.comparators.ComparatorChain;
+
+import javax.mail.internet.InternetAddress;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The implementation of the activity subscription local service.

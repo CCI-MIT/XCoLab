@@ -98,10 +98,6 @@ public class ProposalServiceSoap {
 
     /**
     * @param contestPhaseId ID of contest phase or -1 for general query
-    * @param proposalId
-    * @param start
-    * @param end
-    * @return
     * @throws PortalException
     * @throws SystemException
     */

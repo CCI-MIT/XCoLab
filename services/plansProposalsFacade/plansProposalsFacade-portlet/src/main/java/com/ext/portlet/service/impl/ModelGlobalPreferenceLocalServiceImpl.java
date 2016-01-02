@@ -1,7 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
 import com.ext.portlet.NoSuchModelCategoryException;
 import com.ext.portlet.NoSuchModelGlobalPreferenceException;
 import com.ext.portlet.model.ModelCategory;
@@ -11,8 +9,9 @@ import com.ext.portlet.service.base.ModelGlobalPreferenceLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-
 import edu.mit.cci.roma.client.Simulation;
+
+import java.util.List;
 
 /**
  * The implementation of the model global preference local service.

@@ -49,18 +49,18 @@ public class ProposalRatingLocalServiceClpInvoker {
     private String[] _methodParameterTypes512;
     private String _methodName513;
     private String[] _methodParameterTypes513;
+    private String _methodName515;
+    private String[] _methodParameterTypes515;
     private String _methodName516;
     private String[] _methodParameterTypes516;
-    private String _methodName517;
-    private String[] _methodParameterTypes517;
+    private String _methodName518;
+    private String[] _methodParameterTypes518;
     private String _methodName519;
     private String[] _methodParameterTypes519;
     private String _methodName520;
     private String[] _methodParameterTypes520;
     private String _methodName521;
     private String[] _methodParameterTypes521;
-    private String _methodName522;
-    private String[] _methodParameterTypes522;
 
     public ProposalRatingLocalServiceClpInvoker() {
         _methodName0 = "addProposalRating";
@@ -161,37 +161,37 @@ public class ProposalRatingLocalServiceClpInvoker {
 
         _methodParameterTypes513 = new String[] { "long", "long" };
 
-        _methodName516 = "getJudgeRatingsForProposalAndUser";
+        _methodName515 = "getJudgeRatingsForProposalAndUser";
+
+        _methodParameterTypes515 = new String[] { "long", "long", "long" };
+
+        _methodName516 = "getFellowRatingForProposalAndUser";
 
         _methodParameterTypes516 = new String[] { "long", "long", "long" };
 
-        _methodName517 = "getFellowRatingForProposalAndUser";
+        _methodName518 = "updateRating";
 
-        _methodParameterTypes517 = new String[] { "long", "long", "long" };
+        _methodParameterTypes518 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String"
+            };
 
-        _methodName519 = "updateRating";
+        _methodName519 = "addRating";
 
         _methodParameterTypes519 = new String[] {
-                "long", "long", "java.lang.String", "java.lang.String"
+                "long", "long", "long", "long", "java.lang.String",
+                "java.lang.String"
             };
 
         _methodName520 = "addRating";
 
         _methodParameterTypes520 = new String[] {
                 "long", "long", "long", "long", "java.lang.String",
-                "java.lang.String"
-            };
-
-        _methodName521 = "addRating";
-
-        _methodParameterTypes521 = new String[] {
-                "long", "long", "long", "long", "java.lang.String",
                 "java.lang.String", "boolean"
             };
 
-        _methodName522 = "updateRating";
+        _methodName521 = "updateRating";
 
-        _methodParameterTypes522 = new String[] {
+        _methodParameterTypes521 = new String[] {
                 "com.ext.portlet.model.ProposalRating"
             };
     }
@@ -309,29 +309,29 @@ public class ProposalRatingLocalServiceClpInvoker {
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName516.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
+        if (_methodName515.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
             return ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue());
         }
 
-        if (_methodName517.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes517, parameterTypes)) {
+        if (_methodName516.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
             return ProposalRatingLocalServiceUtil.getFellowRatingForProposalAndUser(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue());
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             return ProposalRatingLocalServiceUtil.updateRating(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
         }
 
-        if (_methodName520.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
+        if (_methodName519.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
             return ProposalRatingLocalServiceUtil.addRating(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
@@ -339,8 +339,8 @@ public class ProposalRatingLocalServiceClpInvoker {
                 (java.lang.String) arguments[4], (java.lang.String) arguments[5]);
         }
 
-        if (_methodName521.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
+        if (_methodName520.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
             return ProposalRatingLocalServiceUtil.addRating(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
@@ -350,8 +350,8 @@ public class ProposalRatingLocalServiceClpInvoker {
                 ((Boolean) arguments[6]).booleanValue());
         }
 
-        if (_methodName522.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes522, parameterTypes)) {
+        if (_methodName521.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
             return ProposalRatingLocalServiceUtil.updateRating((com.ext.portlet.model.ProposalRating) arguments[0]);
         }
 

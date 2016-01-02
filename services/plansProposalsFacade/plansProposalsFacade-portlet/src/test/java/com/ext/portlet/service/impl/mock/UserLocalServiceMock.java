@@ -1,8 +1,5 @@
 package com.ext.portlet.service.impl.mock;
 
-import java.util.List;
-import java.util.Locale;
-
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -13,6 +10,9 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalService;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * <p>A mock class that realizes a counter contract.</p>

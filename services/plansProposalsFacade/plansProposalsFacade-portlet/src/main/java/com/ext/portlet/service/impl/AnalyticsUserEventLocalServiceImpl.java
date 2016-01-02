@@ -1,11 +1,11 @@
 package com.ext.portlet.service.impl;
 
-import java.util.Date;
-
 import com.ext.portlet.model.AnalyticsUserEvent;
 import com.ext.portlet.service.base.AnalyticsUserEventLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPK;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.Date;
 
 /**
  * The implementation of the analytics user event local service.
