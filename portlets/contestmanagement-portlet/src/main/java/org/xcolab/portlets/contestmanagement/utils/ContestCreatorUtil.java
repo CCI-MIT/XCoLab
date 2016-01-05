@@ -24,7 +24,8 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
 import org.xcolab.portlets.contestmanagement.entities.StartDateEndDate;
@@ -43,6 +44,8 @@ import java.util.Map;
  */
 public final class ContestCreatorUtil {
     private static final Log _log = LogFactoryUtil.getLog(ContestCreatorUtil.class);
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss a");
 
     //TODO: remove hard coded schedules
     public static final String CONTEST_SCHEDULE_2015_SECTOR_LABEL = "2015 Schedule: sector";
@@ -757,23 +760,23 @@ public final class ContestCreatorUtil {
         }
     }
 
-    private static List<ContestPhaseBean> createSeedDataForBasicLevelSchedule(){
+    private static List<ContestPhaseBean> createSeedDataForBasicLevelSchedule() {
         List<StartDateEndDate> phaseStartEndDatesBasicLevelSchedule  = new ArrayList<>();
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new DateTime("3/6/15 12:00:00 AM"), new DateTime("5/16/15 11:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new DateTime("5/18/15 12:00:00 AM"), new DateTime("5/29/15 11:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new DateTime("6/1/15 12:00:00 AM"), new DateTime("6/13/15 11:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new DateTime("6/15/15 12:00:00 AM"), new DateTime("6/26/15 11:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new DateTime("7/1/15 12:00:00 AM"), new DateTime("7/31/15 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(DATE_TIME_FORMATTER.parseDateTime("3/6/2015 12:00:00 AM"), DATE_TIME_FORMATTER.parseDateTime("5/16/2015 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(DATE_TIME_FORMATTER.parseDateTime("5/18/2015 12:00:00 AM"), DATE_TIME_FORMATTER.parseDateTime("5/29/2015 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(DATE_TIME_FORMATTER.parseDateTime("6/1/2015 12:00:00 AM"), DATE_TIME_FORMATTER.parseDateTime("6/13/2015 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(DATE_TIME_FORMATTER.parseDateTime("6/15/2015 12:00:00 AM"), DATE_TIME_FORMATTER.parseDateTime("6/26/2015 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(DATE_TIME_FORMATTER.parseDateTime("7/1/2015 12:00:00 AM"), DATE_TIME_FORMATTER.parseDateTime("7/31/2015 11:59:59 PM")));
         return createPhasesFromStartEndDates(phaseStartEndDatesBasicLevelSchedule);
     }
 
-    private static List<ContestPhaseBean> createSeedDataForRegionalLevelSchedule(){
+    private static List<ContestPhaseBean> createSeedDataForRegionalLevelSchedule() {
         List<StartDateEndDate> phaseStartEndDatesBasicLevelSchedule  = new ArrayList<>();
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new DateTime("3/6/15 12:00:00 AM"), new DateTime("6/6/15 11:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new DateTime("6/6/15 12:00:00 AM"), new DateTime("2/7/15 11:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new DateTime("7/3/15 12:00:00 AM"), new DateTime("7/15/15 11:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new DateTime("7/16/15 12:00:00 AM"), new DateTime("8/6/15 11:59:59 PM")));
-        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(new DateTime("8/3/15 12:00:00 AM"), new DateTime("9/1/15 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(DATE_TIME_FORMATTER.parseDateTime("3/6/2015 12:00:00 AM"), DATE_TIME_FORMATTER.parseDateTime("6/6/2015 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(DATE_TIME_FORMATTER.parseDateTime("6/6/2015 12:00:00 AM"), DATE_TIME_FORMATTER.parseDateTime("2/7/2015 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(DATE_TIME_FORMATTER.parseDateTime("7/3/2015 12:00:00 AM"), DATE_TIME_FORMATTER.parseDateTime("7/15/2015 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(DATE_TIME_FORMATTER.parseDateTime("7/16/2015 12:00:00 AM"), DATE_TIME_FORMATTER.parseDateTime("8/6/2015 11:59:59 PM")));
+        phaseStartEndDatesBasicLevelSchedule.add(new StartDateEndDate(DATE_TIME_FORMATTER.parseDateTime("8/3/2015 12:00:00 AM"), DATE_TIME_FORMATTER.parseDateTime("9/1/2015 11:59:59 PM")));
         return createPhasesFromStartEndDates(phaseStartEndDatesBasicLevelSchedule);
     }
 

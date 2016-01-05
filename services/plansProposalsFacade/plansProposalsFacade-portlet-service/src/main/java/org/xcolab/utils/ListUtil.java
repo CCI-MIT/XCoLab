@@ -1,6 +1,7 @@
 package org.xcolab.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +23,9 @@ public final class ListUtil {
      * @return a sorted list combining the values of all input lists
      */
     public static <T> List<T> mergeSortedLists(List<List<T>> inLists, Comparator<T> comparator) {
+        if (inLists.size() < 2) {
+            return inLists.isEmpty() ? Collections.<T>emptyList() : inLists.get(0);
+        }
         PriorityQueue<ListContainer<T>> minHeap = new PriorityQueue<>(inLists.size());
         int size = 0;
         for (List<T> inList : inLists) {
