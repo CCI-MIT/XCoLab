@@ -118,9 +118,9 @@
                     <portlet:param name="action" value="supportProposalAction" />
                 </portlet:actionURL>
                 <div class="prop-butt">
-                    <img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="support proposal" />
+                    <img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="support ${contestType.proposalName}" />
                         <a class="primary-button" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-                                ${proposalsDisplayPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
+                                ${proposalsDisplayPermissions.canSeeSupportButton ? 'Support ' + contestType.proposalName : 'Retract support' }
                         </a>
                 </div>
             </c:if>
