@@ -1,6 +1,7 @@
 package org.xcolab.mail;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.xcolab.utils.PropertiesUtils;
 
 /**
@@ -61,6 +62,13 @@ public class AccountDetailsEmmaAPI {
 
     public String getEncodedAuthorization() {
         return encodedAuthorization;
+    }
+
+    public boolean isEnabled() {
+        return StringUtils.isNotBlank(accountId)
+                && StringUtils.isNotBlank(groupId)
+                && StringUtils.isNotBlank(publicApiKey)
+                && StringUtils.isNotBlank(privateApiKey);
     }
 
 }
