@@ -120,7 +120,14 @@
                 <div class="prop-butt">
                     <img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="support ${contestType.proposalName}" />
                         <a class="primary-button" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-                                ${proposalsDisplayPermissions.canSeeSupportButton ? 'Support ' + contestType.proposalName : 'Retract support' }
+                                <c:choose>
+                                    <c:when test="${proposalsDisplayPermissions.canSeeSupportButton}">
+                                        Support ${contestType.proposalName}
+                                    </c:when>
+                                    <c:otherwise>
+                                        Retract support
+                                    </c:otherwise>
+                                </c:choose>
                         </a>
                 </div>
             </c:if>
