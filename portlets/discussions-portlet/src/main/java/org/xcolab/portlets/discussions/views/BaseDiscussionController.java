@@ -39,7 +39,7 @@ public abstract class BaseDiscussionController {
                                     long additionalId, boolean checkEditPermissions) throws DiscussionAuthorizationException, SystemException, PortalException {
         DiscussionPermissions permissions = new DiscussionPermissions(request, dcg);
 
-        if (!getCanView(permissions, additionalId)) {
+        if (additionalId > 0 && !getCanView(permissions, additionalId)) {
             throw new DiscussionAuthorizationException(accessDeniedMessage);
         }
         if (checkEditPermissions && !getCanEdit(permissions, additionalId)) {
