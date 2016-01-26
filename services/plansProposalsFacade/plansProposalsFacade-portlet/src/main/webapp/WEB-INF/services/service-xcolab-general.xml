@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
+
+<service-builder package-path="com.ext.portlet.xcolab">
+    <entity name="ConfigurationAttribute" local-service="true">
+        <column name="name" type="String" primary="true" />
+        <column name="additionalId" type="long" primary="true" />
+        <column name="numericValue" type="long" />
+        <column name="stringValue" type="String" />
+        <column name="realValue" type="double" />
+    </entity>
+
+</service-builder>
