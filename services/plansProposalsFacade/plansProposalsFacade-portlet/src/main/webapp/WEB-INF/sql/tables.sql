@@ -77,6 +77,15 @@ create table xcolab_BalloonUserTracking (
 	userAgent VARCHAR(500) null
 );
 
+create table xcolab_ConfigurationAttribute (
+	name VARCHAR(75) not null,
+	additionalId LONG not null,
+	numericValue LONG,
+	stringValue VARCHAR(75) null,
+	realValue DOUBLE,
+	primary key (name, additionalId)
+);
+
 create table xcolab_Contest (
 	ContestPK LONG not null primary key,
 	contestTypeId LONG,

@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class ProposalVoteServiceClpInvoker {
-    private String _methodName490;
-    private String[] _methodParameterTypes490;
-    private String _methodName491;
-    private String[] _methodParameterTypes491;
+    private String _methodName496;
+    private String[] _methodParameterTypes496;
+    private String _methodName497;
+    private String[] _methodParameterTypes497;
 
     public ProposalVoteServiceClpInvoker() {
-        _methodName490 = "getBeanIdentifier";
+        _methodName496 = "getBeanIdentifier";
 
-        _methodParameterTypes490 = new String[] {  };
+        _methodParameterTypes496 = new String[] {  };
 
-        _methodName491 = "setBeanIdentifier";
+        _methodName497 = "setBeanIdentifier";
 
-        _methodParameterTypes491 = new String[] { "java.lang.String" };
+        _methodParameterTypes497 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName490.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
+        if (_methodName496.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes496, parameterTypes)) {
             return ProposalVoteServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName491.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
+        if (_methodName497.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes497, parameterTypes)) {
             ProposalVoteServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

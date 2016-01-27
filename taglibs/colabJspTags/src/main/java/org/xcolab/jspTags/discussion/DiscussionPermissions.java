@@ -75,7 +75,7 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanAdminMessage(DiscussionMessageWrapper message) {
-        return message.getAuthorId() == currentUser.getUserId() || getCanAdmin();
+        return getCanAdmin(); // || message.getAuthorId() == currentUser.getUserId()
     }
 
     public boolean getCanCreateCategory() {

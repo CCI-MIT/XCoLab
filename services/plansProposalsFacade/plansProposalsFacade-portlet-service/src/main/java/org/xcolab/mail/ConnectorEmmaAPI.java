@@ -44,15 +44,17 @@ public class ConnectorEmmaAPI {
     private boolean unSubscribeMemberWithMemberId(String memberId) throws IOException {
         boolean unsubscribeSuccessful = false;
 
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-            HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(myEmmaApiBaseUrl + "/members/" + memberId,
-                    contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
+        if (accountDetailsEmmaAPI.isEnabled()) {
+            try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+                HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(myEmmaApiBaseUrl + "/members/" + memberId,
+                        contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
 
-            try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {
-                if (newsletterSubscribeResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    HttpEntity entity = newsletterSubscribeResponse.getEntity();
-                    unsubscribeSuccessful = Boolean.parseBoolean(EntityUtils.toString(entity));
-                    EntityUtils.consume(entity);
+                try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {
+                    if (newsletterSubscribeResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                        HttpEntity entity = newsletterSubscribeResponse.getEntity();
+                        unsubscribeSuccessful = Boolean.parseBoolean(EntityUtils.toString(entity));
+                        EntityUtils.consume(entity);
+                    }
                 }
             }
         }
@@ -64,20 +66,22 @@ public class ConnectorEmmaAPI {
         JSONObject jsonSubscribeInformation = JSONFactoryUtil.createJSONObject();
         JSONObject memberDetails = JSONFactoryUtil.createJSONObject();
 
-        JSONArray groupIds = JSONFactoryUtil.createJSONArray();
-        groupIds.put(accountDetailsEmmaAPI.getGroupId());
-        jsonSubscribeInformation.put("email", email);
-        jsonSubscribeInformation.put("group_ids", groupIds);
+        if (accountDetailsEmmaAPI.isEnabled()) {
+            JSONArray groupIds = JSONFactoryUtil.createJSONArray();
+            groupIds.put(accountDetailsEmmaAPI.getGroupId());
+            jsonSubscribeInformation.put("email", email);
+            jsonSubscribeInformation.put("group_ids", groupIds);
 
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-            HttpUriRequest newsletterSubscribeRequest = createPostWithAuthorizationForJSONObject(myEmmaApiBaseUrl + "/members/add",
-                    contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization(), jsonSubscribeInformation);
+            try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+                HttpUriRequest newsletterSubscribeRequest = createPostWithAuthorizationForJSONObject(myEmmaApiBaseUrl + "/members/add",
+                        contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization(), jsonSubscribeInformation);
 
-            try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {
-                if (newsletterSubscribeResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    HttpEntity entity = newsletterSubscribeResponse.getEntity();
-                    memberDetails = JSONFactoryUtil.createJSONObject(EntityUtils.toString(entity));
-                    EntityUtils.consume(entity);
+                try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {
+                    if (newsletterSubscribeResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                        HttpEntity entity = newsletterSubscribeResponse.getEntity();
+                        memberDetails = JSONFactoryUtil.createJSONObject(EntityUtils.toString(entity));
+                        EntityUtils.consume(entity);
+                    }
                 }
             }
         }
@@ -86,18 +90,20 @@ public class ConnectorEmmaAPI {
 
     public JSONObject getMemberJSONfromEmail(String email) throws IOException {
         JSONObject memberDetails = JSONFactoryUtil.createJSONObject();
+        if (accountDetailsEmmaAPI.isEnabled()) {
+            try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+                HttpGet getMemberDetails = createGetWithAuthorization(myEmmaApiBaseUrl + "/members/email/" + email,
+                        contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
 
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-            HttpGet getMemberDetails = createGetWithAuthorization(myEmmaApiBaseUrl + "/members/email/" + email,
-                    contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
-
-            try (CloseableHttpResponse getMemberDetailsResponse = httpclient.execute(getMemberDetails)) {
-                if (getMemberDetailsResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    HttpEntity entity = getMemberDetailsResponse.getEntity();
-                    memberDetails = JSONFactoryUtil.createJSONObject(EntityUtils.toString(entity));
-                    EntityUtils.consume(entity);
+                try (CloseableHttpResponse getMemberDetailsResponse = httpclient.execute(getMemberDetails)) {
+                    if (getMemberDetailsResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                        HttpEntity entity = getMemberDetailsResponse.getEntity();
+                        memberDetails = JSONFactoryUtil.createJSONObject(EntityUtils.toString(entity));
+                        EntityUtils.consume(entity);
+                    }
+                } catch (JSONException ignored) {
                 }
-            } catch (JSONException ignored) { }
+            }
         }
         return memberDetails;
     }
