@@ -84,6 +84,7 @@ import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import javax.mail.internet.AddressException;
 import javax.portlet.PortletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -1008,7 +1009,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase, PortletRequest request)
-            throws PortalException, SystemException, AddressException, MailEngineException {
+            throws PortalException, SystemException, AddressException, MailEngineException, UnsupportedEncodingException {
 
         String subject = "Judging Results on your Proposal " + proposalAttributeLocalService.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 

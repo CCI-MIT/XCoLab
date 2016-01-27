@@ -2359,6 +2359,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
             com.liferay.util.mail.MailEngineException,
+            java.io.UnsupportedEncodingException,
             javax.mail.internet.AddressException {
         try {
             _invokableLocalService.invokeMethod(_methodName62,
@@ -2383,6 +2384,10 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
             if (t instanceof com.liferay.util.mail.MailEngineException) {
                 throw (com.liferay.util.mail.MailEngineException) t;
+            }
+
+            if (t instanceof java.io.UnsupportedEncodingException) {
+                throw (java.io.UnsupportedEncodingException) t;
             }
 
             if (t instanceof javax.mail.internet.AddressException) {

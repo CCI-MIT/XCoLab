@@ -19,6 +19,7 @@ import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 		try{
 			MessageUtil.sendMessage(subject, content, sender,
 					sender, recipients, null);
-		} catch (AddressException | SystemException | PortalException | MailEngineException e) {
+		} catch (AddressException | SystemException | PortalException | MailEngineException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 	}

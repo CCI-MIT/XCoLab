@@ -44,8 +44,8 @@ public class MessageConstants {
     public static final String MESSAGE = "Message";
 
 
-    public static final String EMAIL_MESSAGE_SUBJECT = "[Climate CoLab] Message from $USER";
-    public static final String EMAIL_MESSAGE_TEMPLATE = "The Climate CoLab user <b>$USER</b> has sent you " +
+    public static final String EMAIL_MESSAGE_SUBJECT = "[<colab-name/>] Message from $USER";
+    public static final String EMAIL_MESSAGE_TEMPLATE = "The <colab-name/> user <b>$USER</b> has sent you " +
             "the following message:\n<br /><br />" +
             "<b>Subject: $SUBJECT</b>\n" +
             "<br /><br />$MESSAGE<br /><br /> \n" +

@@ -1,9 +1,11 @@
 package org.xcolab.mail;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+import org.xcolab.utils.TemplateReplacementUtil;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -27,8 +29,6 @@ public class EmailToAdminDispatcher {
             new Recipient("mail@klemensmang.com", VERBOSITY_ERROR),
             new Recipient("jobachhu@mit.edu", VERBOSITY_DEBUG)
     };
-    private static final String FROM_EMAIL_ADDRESS = "no-reply@climatecolab.org";
-    private static final String FROM_EMAIL_NAME = "MIT Climate CoLab";
 
     private final String subject;
     private final String body;
@@ -46,9 +46,9 @@ public class EmailToAdminDispatcher {
 
     public void sendMessage() {
         try {
-            InternetAddress fromAddress = new InternetAddress(FROM_EMAIL_ADDRESS, FROM_EMAIL_NAME);
+            InternetAddress fromAddress = TemplateReplacementUtil.getAdminFromEmailAddress();
             MailEngine.send(fromAddress, getRecipientAddresses(), subject, body, true);
-        } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {
+        } catch (MailEngineException | AddressException | UnsupportedEncodingException | SystemException e) {
             _log.error("Could not send error message", e);
         }
     }

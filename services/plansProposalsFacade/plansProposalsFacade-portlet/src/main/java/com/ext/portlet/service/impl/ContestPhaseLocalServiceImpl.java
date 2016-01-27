@@ -47,6 +47,7 @@ import org.xcolab.utils.Clock;
 import org.xcolab.utils.ClockImpl;
 
 import javax.mail.internet.AddressException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -408,7 +409,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
         try {
             proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
-        } catch (MailEngineException | AddressException e) {
+        } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {
             _log.error("Could not send proposal promotion colab messaging notification", e);
         }
 

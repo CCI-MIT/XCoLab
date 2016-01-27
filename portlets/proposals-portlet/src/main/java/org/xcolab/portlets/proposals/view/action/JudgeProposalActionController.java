@@ -55,6 +55,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +69,7 @@ public class JudgeProposalActionController {
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = {"action=sendComment"})
-    public void sendComment(ActionRequest request, Model model, ActionResponse response) throws SystemException, PortalException, AddressException, MailEngineException {
+    public void sendComment(ActionRequest request, Model model, ActionResponse response) throws SystemException, PortalException, AddressException, MailEngineException, UnsupportedEncodingException {
         // Security handling
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         if (!permissions.getCanAdminAll()) {

@@ -45,6 +45,7 @@ import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
+import org.xcolab.utils.TemplateReplacementUtil;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -53,6 +54,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -468,7 +470,7 @@ public class UserProfileController {
         return existing;
     }
 
-    private void sendUpdatedEmail(User user) throws MailEngineException, AddressException {
+    private void sendUpdatedEmail(User user) throws MailEngineException, AddressException, UnsupportedEncodingException, SystemException {
         String messageSubject = "Your email address on the Climate CoLab has been updated";
         String messageBody = "Dear " + user.getFirstName() + ",\n" +
                 "\n" +
@@ -481,7 +483,7 @@ public class UserProfileController {
                 "\n" +
                 "Thank you for engaging on the Climate CoLab!\n";
 
-        InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
+        InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
         InternetAddress[] addressTo = {new InternetAddress(user.getEmailAddress())};
 
         InternetAddress[] replyTo = {addressFrom};

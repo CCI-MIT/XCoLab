@@ -20,6 +20,7 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
+import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.wrapper.TabWrapper;
 
 import javax.mail.internet.AddressException;
@@ -96,11 +97,11 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
             contestUrl += "<br/>";
 
             User user = UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser()));
-            String body = "The following contest: <br />" +
+            String body = "The following <contest/>: <br />" +
                     contestUrl +
                     "was submitted by the user: " + user.getFullName() + "<br/>";
 
-            InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");
+            InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
 
             String emailRecipients = "pdeboer@mit.edu,lfi@mit.edu";
             String[] recipients = emailRecipients.split(",");
@@ -110,7 +111,12 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
                 addressTo[i] = new InternetAddress(recipients[i]);
             }
 
-            String subject = "Contest draft was submitted from the new contest creation tool!";
+            String subject = "<contest/> draft was submitted from the <contest/> management tool!";
+
+            //TODO Phase 2: use configured CMS contest type?
+            subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, null);
+            body = TemplateReplacementUtil.replaceContestTypeStrings(body, null);
+
             MailEngine.send(fromEmail, addressTo, subject, body, true);
         } catch (SystemException | PortalException | AddressException | MailEngineException e) {
             success = false;
