@@ -101,7 +101,7 @@ public class ProposalImpactJSONController {
             ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), selectedFocusArea);
 
             response.getPortletOutputStream().write(impactSeries.toJSONObject().toString().getBytes());
-        } catch (Exception e) {
+        } catch (PortalException | SystemException | IOException e) {
             _log.error("Could not load impact series for contestId " + proposalsContext.getContest(request).getContestPK(), e);
             JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
             responseJSON.put("success", false);
