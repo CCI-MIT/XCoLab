@@ -1,5 +1,6 @@
 package org.xcolab.portlets.users;
 
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.users.utils.MemberItem;
 
@@ -168,6 +170,7 @@ public class MembersController {
         model.addAttribute("memberCategories", MemberCategoryLocalServiceUtil
                 .getVisibleMemberCategories());
 
+        model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME, 0L));
         return "users";
     }
 }
