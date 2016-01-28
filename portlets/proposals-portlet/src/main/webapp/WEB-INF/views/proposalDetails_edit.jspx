@@ -164,7 +164,7 @@
             </label>
             <div class="addprophelp">Insert a tweet-length (140 character) message that conveys the key idea behind your ${contestType.proposalName}.</div>
             <div class="addpropInputContainer">
-                <form:textarea path="pitch" id="proposalPitchInput" cssClass="proposalPitchInput" />
+                <form:textarea path="pitch" id="proposalPitchInput" htmlEscape="false" cssClass="proposalPitchInput" />
                 <form:errors path="pitch" />
                 <div class="clearfix"><!-- --></div>
                 <div class="inputLimitContainer">
