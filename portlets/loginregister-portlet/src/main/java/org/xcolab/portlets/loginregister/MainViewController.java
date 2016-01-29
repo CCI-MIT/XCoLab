@@ -63,6 +63,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Date;
@@ -119,7 +120,12 @@ public class MainViewController {
 			}
 		}
 		if (themeDisplay.isSignedIn()) {
-			return "signedIn_logout";
+            HttpServletResponse httpServletResponse = PortalUtil.getHttpServletResponse(response);
+            try {
+                httpServletResponse.sendRedirect("/");
+                return "";
+            } catch (IOException e) {
+            }
 		}
 
         if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
