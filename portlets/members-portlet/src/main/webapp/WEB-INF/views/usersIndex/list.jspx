@@ -35,7 +35,8 @@
 			<span class="fieldWithTooltip tooltipAbove">
 				<img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" />
 				<div class="tooltip">
-					Points listed here are for winning proposals. You can see Points from entered proposals by visiting each individual member’s profile
+					CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains.
+					<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
 					<div class="tt-arrow"><!--  --></div>
 				</div>
 			</span>
