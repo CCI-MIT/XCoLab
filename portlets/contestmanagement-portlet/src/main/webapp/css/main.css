@@ -223,6 +223,7 @@ li.ui-menu-item {
   border-bottom: 1px solid #ccc;
   background: #fff url("/climatecolab-theme/images/contest-icon-cplus-blue.png") 225px;
   background-size: 20px;
+  background-repeat: no-repeat;
 }
 
 li.ui-menu-item .ui-state-focus {
