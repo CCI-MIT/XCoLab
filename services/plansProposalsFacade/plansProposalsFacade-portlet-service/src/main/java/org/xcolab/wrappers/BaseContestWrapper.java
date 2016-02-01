@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import static java.util.Collections.*;
+
 /**
  * Created by johannes on 10/27/15.
  *
@@ -386,6 +388,11 @@ public class BaseContestWrapper {
                 final String role = entry.getKey();
                 contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role, entry.getValue()));
             }
+
+            if (contestTeamMembersByRole.size() == 3) {
+                Collections.swap(contestTeamMembersByRole, 1, 2);
+            }
+
         }
         return contestTeamMembersByRole;
     }
