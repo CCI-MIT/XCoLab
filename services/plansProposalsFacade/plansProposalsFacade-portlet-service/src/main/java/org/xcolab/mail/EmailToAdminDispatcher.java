@@ -25,7 +25,9 @@ public class EmailToAdminDispatcher {
             new Recipient("pdeboer@mit.edu", VERBOSITY_ERROR),
             new Recipient("knauert@mit.edu", VERBOSITY_ERROR),
             new Recipient("mail@klemensmang.com", VERBOSITY_ERROR),
-            new Recipient("jobachhu@mit.edu", VERBOSITY_DEBUG)
+            new Recipient("jobachhu@mit.edu", VERBOSITY_DEBUG),
+            new Recipient("rabanser@mit.edu", VERBOSITY_ERROR),
+            new Recipient("carlosbp@mit.edu", VERBOSITY_ERROR)
     };
     private static final String FROM_EMAIL_ADDRESS = "no-reply@climatecolab.org";
     private static final String FROM_EMAIL_NAME = "MIT Climate CoLab";
