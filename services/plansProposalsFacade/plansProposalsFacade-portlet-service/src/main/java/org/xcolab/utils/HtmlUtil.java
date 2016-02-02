@@ -68,7 +68,7 @@ public final class HtmlUtil {
     }
 
     public static String createLink(String url, String desc) {
-        if (! url.contains("http://")) {
+        if (! url.contains("http://") && ! url.contains("https://")) {
             url = "http://" + url;
         }
         return "<a rel='nofollow' href='" + url + "'>" + desc + "</a>";
@@ -98,7 +98,7 @@ public final class HtmlUtil {
             linksBeginEnd.add(new Integer[] {existingLinksMatcher.start(), existingLinksMatcher.end()});
         }
 
-        Pattern pattern = Pattern.compile("(http://|www\\.)([{\\w-]*\\.)+\\w{1,4}([^\\s]*)");
+        Pattern pattern = Pattern.compile("(http://|https://|www\\.)([{\\w-]*\\.)+\\w{1,4}([^\\s]*)");
         Matcher matcher = pattern.matcher(content);
         StringBuilder strBuilder = new StringBuilder();
 
