@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
  */
 public class ContestDescriptionBean implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final String NO_SPECIAL_CHAR_REGEX = "^[a-zA-Z:,;'’0-9äöüÄÖÜ?! ]*$";
+    private static final String NO_SPECIAL_CHAR_REGEX = "^[a-zA-Z:.,;'’0-9äöüÄÖÜ?! ]*$";
 
     private Long ContestPK;
     private Long contestLogoId;
