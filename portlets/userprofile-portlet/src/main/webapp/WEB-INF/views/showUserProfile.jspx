@@ -49,7 +49,7 @@
 				<table border="0" cellpadding="0" cellspacing="0" class="colab members topInfo">
 					<tbody>
 						<tr>
-							<td>
+							<td style="min-width: 106px">
 								<div class="memname">${currentUserProfile.realName}</div>
 								<div class="role-indicator" style="margin-top: 5px;">
 									<div style="width: 16px">
