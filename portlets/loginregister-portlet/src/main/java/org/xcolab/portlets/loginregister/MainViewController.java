@@ -124,7 +124,7 @@ public class MainViewController {
             try {
                 httpServletResponse.sendRedirect("/");
                 return "";
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             }
 		}
 
