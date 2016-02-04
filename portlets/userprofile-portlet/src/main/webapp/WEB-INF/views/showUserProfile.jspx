@@ -190,7 +190,7 @@
 				</table>
 			</c:forEach>
 
-			<h2 style="margin-top: 20px;">Proposal links</h2>
+			<h2 style="margin-top: 20px;">Proposal Links</h2>
 			<c:if test="${empty currentUserProfile.linkingProposals}">
 					There are no proposals linking to this user's ${currentUserProfile.proposalsString} yet.
 			</c:if>
