@@ -60,6 +60,10 @@ fieldset {
   margin: 0 5px;
 }
 
+#bread div :nth-last-child(-n+2) {
+  display: none;
+}
+
 //TODO: where are these used?
 /** Contact addr **/
 .contact-addr {
