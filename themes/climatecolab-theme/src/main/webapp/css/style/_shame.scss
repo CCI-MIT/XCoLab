@@ -54,14 +54,11 @@ fieldset {
   font-size: 14px;
   padding: 5px;
   border: 0;
+  display: none;
 }
 
 #bread img {
   margin: 0 5px;
-}
-
-#bread div :nth-last-child(-n+2) {
-  display: none;
 }
 
 //TODO: where are these used?
