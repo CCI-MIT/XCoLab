@@ -177,9 +177,9 @@
 						<c:when test="${not empty currentTab and currentTab eq 'EVALUATION'}">
 							<i>Your comment will be visible to the public.</i>
 						</c:when>
-						<c:otherwise>
+						<c:when test="${!discussionPermissions.canAddComment}">
 							<i>You must be logged into your account to post a comment.</i>
-						</c:otherwise>
+						</c:when>
 					</c:choose>
 				</div>
 				<div id="thecomment">

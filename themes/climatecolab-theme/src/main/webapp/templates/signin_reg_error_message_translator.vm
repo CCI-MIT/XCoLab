@@ -24,6 +24,8 @@
     #set ($error = 'Requested email address is reserved')
 #elseif ( $request.getParameter('signinRegError') == 'UserPasswordException')
     #set ($error = "Provided password is incorrect")
+#elseif ( $request.getParameter('signinRegError') == 'CookieNotSupportedException')
+    #set ($error = "Please check your browser configuration, cookies must be enabled!")
 #elseif ($request.getParameter('signinRegError'))
     #set ($error = "An error occurred")
 #end

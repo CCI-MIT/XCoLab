@@ -227,7 +227,7 @@
         <form:option value="SE" label="Sweden"/>
         <form:option value="CH" label="Switzerland"/>
         <form:option value="SY" label="Syrian Arab Republic"/>
-        <form:option value="TW" label="Taiwan, Province of China"/>
+        <form:option value="TW" label="Taiwan"/>
         <form:option value="TJ" label="Tajikistan"/>
         <form:option value="TZ" label="Tanzania, United Republic of"/>
         <form:option value="TH" label="Thailand"/>

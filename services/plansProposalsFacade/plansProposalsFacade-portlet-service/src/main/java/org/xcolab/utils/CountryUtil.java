@@ -227,7 +227,7 @@ public final class CountryUtil {
         codeToCountryMap.put("SE", "Sweden");
         codeToCountryMap.put("CH", "Switzerland");
         codeToCountryMap.put("SY", "Syrian Arab Republic");
-        codeToCountryMap.put("TW", "Taiwan, Province of China");
+        codeToCountryMap.put("TW", "Taiwan");
         codeToCountryMap.put("TJ", "Tajikistan");
         codeToCountryMap.put("TZ", "Tanzania, United Republic of");
         codeToCountryMap.put("TH", "Thailand");
