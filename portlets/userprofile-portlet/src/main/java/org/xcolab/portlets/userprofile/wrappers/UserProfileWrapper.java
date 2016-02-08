@@ -60,6 +60,7 @@ public class UserProfileWrapper implements Serializable {
     private int subscriptionsPageSize = 20;
     private int subscriptionsPaginationPageId;
     private String proposalsString;
+    private String proposalString;
 
     private SendMessagePermissionChecker messagePermissionChecker;
     private List<MessageBean> messages;
@@ -331,5 +332,13 @@ public class UserProfileWrapper implements Serializable {
                         new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), false, "or");
         }
         return proposalsString;
+    }
+
+    public String getProposalString() {
+        if (proposalString == null) {
+            proposalString = ContestTypeLocalServiceUtil.getProposalNames(
+                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), true, "or");
+        }
+        return proposalString;
     }
 }
