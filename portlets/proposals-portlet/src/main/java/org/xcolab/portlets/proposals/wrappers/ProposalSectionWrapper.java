@@ -19,6 +19,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.xcolab.enums.Plurality;
 import org.xcolab.portlets.proposals.utils.LinkUtils;
 import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.IdListUtil;
@@ -251,19 +252,19 @@ public class ProposalSectionWrapper {
     }
 
     public String getProposalNames() {
-        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), true, "or");
+        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), Plurality.PLURAL.name(), "or");
     }
 
     public String getProposalNamesPlural() {
-        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), false, "and");
+        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), Plurality.SINGULAR.name(), "and");
     }
 
     public String getContestNames() {
-        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), true, "or");
+        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), Plurality.PLURAL.name(), "or");
     }
 
     public String getContestNamesPlural() {
-        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), false, "or");
+        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), Plurality.SINGULAR.name(), "or");
     }
 
     private ProposalAttribute getSectionAttribute() throws SystemException, PortalException {

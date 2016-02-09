@@ -182,13 +182,13 @@ public class ContestTypeLocalServiceClpInvoker {
         _methodName518 = "getProposalNames";
 
         _methodParameterTypes518 = new String[] {
-                "java.util.List", "boolean", "java.lang.String"
+                "java.util.List", "java.lang.String", "java.lang.String"
             };
 
         _methodName519 = "getContestNames";
 
         _methodParameterTypes519 = new String[] {
-                "java.util.List", "boolean", "java.lang.String"
+                "java.util.List", "java.lang.String", "java.lang.String"
             };
     }
 
@@ -326,15 +326,13 @@ public class ContestTypeLocalServiceClpInvoker {
         if (_methodName518.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             return ContestTypeLocalServiceUtil.getProposalNames((java.util.List<java.lang.Long>) arguments[0],
-                ((Boolean) arguments[1]).booleanValue(),
-                (java.lang.String) arguments[2]);
+                (java.lang.String) arguments[1], (java.lang.String) arguments[2]);
         }
 
         if (_methodName519.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
             return ContestTypeLocalServiceUtil.getContestNames((java.util.List<java.lang.Long>) arguments[0],
-                ((Boolean) arguments[1]).booleanValue(),
-                (java.lang.String) arguments[2]);
+                (java.lang.String) arguments[1], (java.lang.String) arguments[2]);
         }
 
         throw new UnsupportedOperationException();

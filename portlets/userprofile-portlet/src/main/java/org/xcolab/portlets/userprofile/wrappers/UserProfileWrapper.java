@@ -25,6 +25,7 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.enums.Plurality;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
@@ -329,7 +330,7 @@ public class UserProfileWrapper implements Serializable {
     public String getProposalsString() {
         if (proposalsString == null) {
                 proposalsString = ContestTypeLocalServiceUtil.getProposalNames(
-                        new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), false, "or");
+                        new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.SINGULAR.name(), "or");
         }
         return proposalsString;
     }
@@ -337,7 +338,7 @@ public class UserProfileWrapper implements Serializable {
     public String getProposalString() {
         if (proposalString == null) {
             proposalString = ContestTypeLocalServiceUtil.getProposalNames(
-                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), true, "or");
+                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.SINGULAR.name(), "or");
         }
         return proposalString;
     }
