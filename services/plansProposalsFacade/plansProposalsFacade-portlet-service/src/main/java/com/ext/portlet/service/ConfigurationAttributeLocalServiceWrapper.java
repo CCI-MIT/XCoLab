@@ -280,76 +280,70 @@ public class ConfigurationAttributeLocalServiceWrapper
 
     @Override
     public com.ext.portlet.model.ConfigurationAttribute getByAttributeName(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey)
+        java.lang.String attributeKeyName)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _configurationAttributeLocalService.getByAttributeName(attributeKey);
+        return _configurationAttributeLocalService.getByAttributeName(attributeKeyName);
     }
 
     @Override
     public com.ext.portlet.model.ConfigurationAttribute getByAttributeNameAdditionalId(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId)
+        java.lang.String attributeKeyName, long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _configurationAttributeLocalService.getByAttributeNameAdditionalId(attributeKey,
+        return _configurationAttributeLocalService.getByAttributeNameAdditionalId(attributeKeyName,
             additionalId);
     }
 
     @Override
     public java.lang.String getAttributeStringValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId, java.lang.String defaultValue)
+        java.lang.String attributeKeyName, long additionalId,
+        java.lang.String defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _configurationAttributeLocalService.getAttributeStringValue(attributeKey,
+        return _configurationAttributeLocalService.getAttributeStringValue(attributeKeyName,
             additionalId, defaultValue);
     }
 
     @Override
-    public long getAttributeLongValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+    public long getAttributeLongValue(java.lang.String attributeKeyName,
         long additionalId, long defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _configurationAttributeLocalService.getAttributeLongValue(attributeKey,
+        return _configurationAttributeLocalService.getAttributeLongValue(attributeKeyName,
             additionalId, defaultValue);
     }
 
     @Override
-    public double getAttributeDoubleValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+    public double getAttributeDoubleValue(java.lang.String attributeKeyName,
         long additionalId, double defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _configurationAttributeLocalService.getAttributeDoubleValue(attributeKey,
+        return _configurationAttributeLocalService.getAttributeDoubleValue(attributeKeyName,
             additionalId, defaultValue);
     }
 
     @Override
     public java.lang.String getAttributeStringValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId)
+        java.lang.String attributeKeyName, long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _configurationAttributeLocalService.getAttributeStringValue(attributeKey,
+        return _configurationAttributeLocalService.getAttributeStringValue(attributeKeyName,
             additionalId);
     }
 
     @Override
-    public long getAttributeLongValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+    public long getAttributeLongValue(java.lang.String attributeKeyName,
         long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _configurationAttributeLocalService.getAttributeLongValue(attributeKey,
+        return _configurationAttributeLocalService.getAttributeLongValue(attributeKeyName,
             additionalId);
     }
 
     @Override
-    public double getAttributeDoubleValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+    public double getAttributeDoubleValue(java.lang.String attributeKeyName,
         long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _configurationAttributeLocalService.getAttributeDoubleValue(attributeKey,
+        return _configurationAttributeLocalService.getAttributeDoubleValue(attributeKeyName,
             additionalId);
     }
 

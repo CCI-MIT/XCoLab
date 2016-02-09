@@ -163,52 +163,41 @@ public class ConfigurationAttributeLocalServiceClpInvoker {
 
         _methodName518 = "getByAttributeName";
 
-        _methodParameterTypes518 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey"
-            };
+        _methodParameterTypes518 = new String[] { "java.lang.String" };
 
         _methodName519 = "getByAttributeNameAdditionalId";
 
-        _methodParameterTypes519 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long"
-            };
+        _methodParameterTypes519 = new String[] { "java.lang.String", "long" };
 
         _methodName520 = "getAttributeStringValue";
 
         _methodParameterTypes520 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long",
-                "java.lang.String"
+                "java.lang.String", "long", "java.lang.String"
             };
 
         _methodName521 = "getAttributeLongValue";
 
         _methodParameterTypes521 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long", "long"
+                "java.lang.String", "long", "long"
             };
 
         _methodName522 = "getAttributeDoubleValue";
 
         _methodParameterTypes522 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long", "double"
+                "java.lang.String", "long", "double"
             };
 
         _methodName523 = "getAttributeStringValue";
 
-        _methodParameterTypes523 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long"
-            };
+        _methodParameterTypes523 = new String[] { "java.lang.String", "long" };
 
         _methodName524 = "getAttributeLongValue";
 
-        _methodParameterTypes524 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long"
-            };
+        _methodParameterTypes524 = new String[] { "java.lang.String", "long" };
 
         _methodName525 = "getAttributeDoubleValue";
 
-        _methodParameterTypes525 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long"
-            };
+        _methodParameterTypes525 = new String[] { "java.lang.String", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -314,51 +303,51 @@ public class ConfigurationAttributeLocalServiceClpInvoker {
 
         if (_methodName518.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getByAttributeName((org.xcolab.enums.ConfigurationAttributeKey) arguments[0]);
+            return ConfigurationAttributeLocalServiceUtil.getByAttributeName((java.lang.String) arguments[0]);
         }
 
         if (_methodName519.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getByAttributeNameAdditionalId((org.xcolab.enums.ConfigurationAttributeKey) arguments[0],
+            return ConfigurationAttributeLocalServiceUtil.getByAttributeNameAdditionalId((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
 
         if (_methodName520.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeStringValue((org.xcolab.enums.ConfigurationAttributeKey) arguments[0],
+            return ConfigurationAttributeLocalServiceUtil.getAttributeStringValue((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2]);
         }
 
         if (_methodName521.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeLongValue((org.xcolab.enums.ConfigurationAttributeKey) arguments[0],
+            return ConfigurationAttributeLocalServiceUtil.getAttributeLongValue((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue());
         }
 
         if (_methodName522.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes522, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeDoubleValue((org.xcolab.enums.ConfigurationAttributeKey) arguments[0],
+            return ConfigurationAttributeLocalServiceUtil.getAttributeDoubleValue((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue(),
                 ((Double) arguments[2]).doubleValue());
         }
 
         if (_methodName523.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes523, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeStringValue((org.xcolab.enums.ConfigurationAttributeKey) arguments[0],
+            return ConfigurationAttributeLocalServiceUtil.getAttributeStringValue((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
 
         if (_methodName524.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeLongValue((org.xcolab.enums.ConfigurationAttributeKey) arguments[0],
+            return ConfigurationAttributeLocalServiceUtil.getAttributeLongValue((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
 
         if (_methodName525.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeDoubleValue((org.xcolab.enums.ConfigurationAttributeKey) arguments[0],
+            return ConfigurationAttributeLocalServiceUtil.getAttributeDoubleValue((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
 

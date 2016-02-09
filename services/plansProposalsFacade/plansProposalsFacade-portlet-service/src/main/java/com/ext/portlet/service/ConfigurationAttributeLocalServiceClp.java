@@ -166,52 +166,41 @@ public class ConfigurationAttributeLocalServiceClp
 
         _methodName19 = "getByAttributeName";
 
-        _methodParameterTypes19 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey"
-            };
+        _methodParameterTypes19 = new String[] { "java.lang.String" };
 
         _methodName20 = "getByAttributeNameAdditionalId";
 
-        _methodParameterTypes20 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long"
-            };
+        _methodParameterTypes20 = new String[] { "java.lang.String", "long" };
 
         _methodName21 = "getAttributeStringValue";
 
         _methodParameterTypes21 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long",
-                "java.lang.String"
+                "java.lang.String", "long", "java.lang.String"
             };
 
         _methodName22 = "getAttributeLongValue";
 
         _methodParameterTypes22 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long", "long"
+                "java.lang.String", "long", "long"
             };
 
         _methodName23 = "getAttributeDoubleValue";
 
         _methodParameterTypes23 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long", "double"
+                "java.lang.String", "long", "double"
             };
 
         _methodName24 = "getAttributeStringValue";
 
-        _methodParameterTypes24 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long"
-            };
+        _methodParameterTypes24 = new String[] { "java.lang.String", "long" };
 
         _methodName25 = "getAttributeLongValue";
 
-        _methodParameterTypes25 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long"
-            };
+        _methodParameterTypes25 = new String[] { "java.lang.String", "long" };
 
         _methodName26 = "getAttributeDoubleValue";
 
-        _methodParameterTypes26 = new String[] {
-                "org.xcolab.enums.ConfigurationAttributeKey", "long"
-            };
+        _methodParameterTypes26 = new String[] { "java.lang.String", "long" };
     }
 
     @Override
@@ -748,7 +737,7 @@ public class ConfigurationAttributeLocalServiceClp
 
     @Override
     public com.ext.portlet.model.ConfigurationAttribute getByAttributeName(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey)
+        java.lang.String attributeKeyName)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -756,7 +745,8 @@ public class ConfigurationAttributeLocalServiceClp
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName19,
                     _methodParameterTypes19,
-                    new Object[] { ClpSerializer.translateInput(attributeKey) });
+                    new Object[] { ClpSerializer.translateInput(
+                            attributeKeyName) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -781,8 +771,7 @@ public class ConfigurationAttributeLocalServiceClp
 
     @Override
     public com.ext.portlet.model.ConfigurationAttribute getByAttributeNameAdditionalId(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId)
+        java.lang.String attributeKeyName, long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -791,7 +780,7 @@ public class ConfigurationAttributeLocalServiceClp
             returnObj = _invokableLocalService.invokeMethod(_methodName20,
                     _methodParameterTypes20,
                     new Object[] {
-                        ClpSerializer.translateInput(attributeKey),
+                        ClpSerializer.translateInput(attributeKeyName),
                         
                     additionalId
                     });
@@ -819,8 +808,8 @@ public class ConfigurationAttributeLocalServiceClp
 
     @Override
     public java.lang.String getAttributeStringValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId, java.lang.String defaultValue)
+        java.lang.String attributeKeyName, long additionalId,
+        java.lang.String defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -828,7 +817,7 @@ public class ConfigurationAttributeLocalServiceClp
             returnObj = _invokableLocalService.invokeMethod(_methodName21,
                     _methodParameterTypes21,
                     new Object[] {
-                        ClpSerializer.translateInput(attributeKey),
+                        ClpSerializer.translateInput(attributeKeyName),
                         
                     additionalId,
                         
@@ -853,8 +842,7 @@ public class ConfigurationAttributeLocalServiceClp
     }
 
     @Override
-    public long getAttributeLongValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+    public long getAttributeLongValue(java.lang.String attributeKeyName,
         long additionalId, long defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -863,7 +851,7 @@ public class ConfigurationAttributeLocalServiceClp
             returnObj = _invokableLocalService.invokeMethod(_methodName22,
                     _methodParameterTypes22,
                     new Object[] {
-                        ClpSerializer.translateInput(attributeKey),
+                        ClpSerializer.translateInput(attributeKeyName),
                         
                     additionalId,
                         
@@ -888,8 +876,7 @@ public class ConfigurationAttributeLocalServiceClp
     }
 
     @Override
-    public double getAttributeDoubleValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+    public double getAttributeDoubleValue(java.lang.String attributeKeyName,
         long additionalId, double defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -898,7 +885,7 @@ public class ConfigurationAttributeLocalServiceClp
             returnObj = _invokableLocalService.invokeMethod(_methodName23,
                     _methodParameterTypes23,
                     new Object[] {
-                        ClpSerializer.translateInput(attributeKey),
+                        ClpSerializer.translateInput(attributeKeyName),
                         
                     additionalId,
                         
@@ -924,8 +911,7 @@ public class ConfigurationAttributeLocalServiceClp
 
     @Override
     public java.lang.String getAttributeStringValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId)
+        java.lang.String attributeKeyName, long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -934,7 +920,7 @@ public class ConfigurationAttributeLocalServiceClp
             returnObj = _invokableLocalService.invokeMethod(_methodName24,
                     _methodParameterTypes24,
                     new Object[] {
-                        ClpSerializer.translateInput(attributeKey),
+                        ClpSerializer.translateInput(attributeKeyName),
                         
                     additionalId
                     });
@@ -961,8 +947,7 @@ public class ConfigurationAttributeLocalServiceClp
     }
 
     @Override
-    public long getAttributeLongValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+    public long getAttributeLongValue(java.lang.String attributeKeyName,
         long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -972,7 +957,7 @@ public class ConfigurationAttributeLocalServiceClp
             returnObj = _invokableLocalService.invokeMethod(_methodName25,
                     _methodParameterTypes25,
                     new Object[] {
-                        ClpSerializer.translateInput(attributeKey),
+                        ClpSerializer.translateInput(attributeKeyName),
                         
                     additionalId
                     });
@@ -999,8 +984,7 @@ public class ConfigurationAttributeLocalServiceClp
     }
 
     @Override
-    public double getAttributeDoubleValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+    public double getAttributeDoubleValue(java.lang.String attributeKeyName,
         long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -1010,7 +994,7 @@ public class ConfigurationAttributeLocalServiceClp
             returnObj = _invokableLocalService.invokeMethod(_methodName26,
                     _methodParameterTypes26,
                     new Object[] {
-                        ClpSerializer.translateInput(attributeKey),
+                        ClpSerializer.translateInput(attributeKeyName),
                         
                     additionalId
                     });

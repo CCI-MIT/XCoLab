@@ -243,52 +243,46 @@ public interface ConfigurationAttributeLocalService extends BaseLocalService,
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ConfigurationAttribute getByAttributeName(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey)
+        java.lang.String attributeKeyName)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ConfigurationAttribute getByAttributeNameAdditionalId(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId)
+        java.lang.String attributeKeyName, long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.String getAttributeStringValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId, java.lang.String defaultValue)
+        java.lang.String attributeKeyName, long additionalId,
+        java.lang.String defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public long getAttributeLongValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+    public long getAttributeLongValue(java.lang.String attributeKeyName,
         long additionalId, long defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public double getAttributeDoubleValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+    public double getAttributeDoubleValue(java.lang.String attributeKeyName,
         long additionalId, double defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.String getAttributeStringValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+        java.lang.String attributeKeyName, long additionalId)
+        throws com.ext.portlet.NoSuchConfigurationAttributeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public long getAttributeLongValue(java.lang.String attributeKeyName,
         long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public long getAttributeLongValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId)
-        throws com.ext.portlet.NoSuchConfigurationAttributeException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public double getAttributeDoubleValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
+    public double getAttributeDoubleValue(java.lang.String attributeKeyName,
         long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException;
