@@ -1,7 +1,7 @@
 jQuery(function() {
     jQuery(".helpTrigger").click(function() {
         var trigger = jQuery(this);
-        trigger.parent().parent().find(".addprofilehelp").slideToggle("fast");
+        trigger.parent().parent().find(".profilehelp").slideToggle("fast");
     });
 
     // tooltips
