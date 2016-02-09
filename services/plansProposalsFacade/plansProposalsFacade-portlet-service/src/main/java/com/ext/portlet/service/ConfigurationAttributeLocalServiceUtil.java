@@ -266,70 +266,68 @@ public class ConfigurationAttributeLocalServiceUtil {
     }
 
     public static com.ext.portlet.model.ConfigurationAttribute getByAttributeName(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey)
+        java.lang.String attributeKeyName)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().getByAttributeName(attributeKey);
+        return getService().getByAttributeName(attributeKeyName);
     }
 
     public static com.ext.portlet.model.ConfigurationAttribute getByAttributeNameAdditionalId(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId)
+        java.lang.String attributeKeyName, long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getByAttributeNameAdditionalId(attributeKey, additionalId);
+                   .getByAttributeNameAdditionalId(attributeKeyName,
+            additionalId);
     }
 
     public static java.lang.String getAttributeStringValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId, java.lang.String defaultValue)
+        java.lang.String attributeKeyName, long additionalId,
+        java.lang.String defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getAttributeStringValue(attributeKey, additionalId,
+                   .getAttributeStringValue(attributeKeyName, additionalId,
             defaultValue);
     }
 
     public static long getAttributeLongValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId, long defaultValue)
+        java.lang.String attributeKeyName, long additionalId, long defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getAttributeLongValue(attributeKey, additionalId,
+                   .getAttributeLongValue(attributeKeyName, additionalId,
             defaultValue);
     }
 
     public static double getAttributeDoubleValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId, double defaultValue)
+        java.lang.String attributeKeyName, long additionalId,
+        double defaultValue)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getAttributeDoubleValue(attributeKey, additionalId,
+                   .getAttributeDoubleValue(attributeKeyName, additionalId,
             defaultValue);
     }
 
     public static java.lang.String getAttributeStringValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId)
+        java.lang.String attributeKeyName, long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().getAttributeStringValue(attributeKey, additionalId);
+        return getService()
+                   .getAttributeStringValue(attributeKeyName, additionalId);
     }
 
     public static long getAttributeLongValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId)
+        java.lang.String attributeKeyName, long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().getAttributeLongValue(attributeKey, additionalId);
+        return getService().getAttributeLongValue(attributeKeyName, additionalId);
     }
 
     public static double getAttributeDoubleValue(
-        org.xcolab.enums.ConfigurationAttributeKey attributeKey,
-        long additionalId)
+        java.lang.String attributeKeyName, long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().getAttributeDoubleValue(attributeKey, additionalId);
+        return getService()
+                   .getAttributeDoubleValue(attributeKeyName, additionalId);
     }
 
     public static void clearService() {

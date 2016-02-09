@@ -31,64 +31,69 @@ public class ConfigurationAttributeLocalServiceImpl
      */
 
     @Override
-    public ConfigurationAttribute getByAttributeName(ConfigurationAttributeKey attributeKey) throws SystemException, NoSuchConfigurationAttributeException {
-        return configurationAttributePersistence.findByPrimaryKey(new ConfigurationAttributePK(attributeKey.name(), 0L));
+    public ConfigurationAttribute getByAttributeName(String attributeKeyName) throws SystemException, NoSuchConfigurationAttributeException {
+        return configurationAttributePersistence.findByPrimaryKey(new ConfigurationAttributePK(attributeKeyName, 0L));
     }
 
     @Override
-    public ConfigurationAttribute getByAttributeNameAdditionalId(ConfigurationAttributeKey attributeKey, long additionalId) throws SystemException, NoSuchConfigurationAttributeException {
-        return configurationAttributePersistence.findByPrimaryKey(new ConfigurationAttributePK(attributeKey.name(), additionalId));
+    public ConfigurationAttribute getByAttributeNameAdditionalId(String attributeKeyName, long additionalId) throws SystemException, NoSuchConfigurationAttributeException {
+        return configurationAttributePersistence.findByPrimaryKey(new ConfigurationAttributePK(attributeKeyName, additionalId));
     }
 
     @Override
-    public String getAttributeStringValue(ConfigurationAttributeKey attributeKey, long additionalId, String defaultValue) throws SystemException {
+    public String getAttributeStringValue(String attributeKeyName, long additionalId, String defaultValue) throws SystemException {
         try {
-            return getAttributeStringValue(attributeKey, additionalId);
+            return getAttributeStringValue(attributeKeyName, additionalId);
         } catch (NoSuchConfigurationAttributeException e) {
             return defaultValue;
         }
     }
 
     @Override
-    public long getAttributeLongValue(ConfigurationAttributeKey attributeKey, long additionalId, long defaultValue) throws SystemException {
+    public long getAttributeLongValue(String attributeKeyName, long additionalId, long defaultValue) throws SystemException {
         try {
-            return getAttributeLongValue(attributeKey, additionalId);
+            return getAttributeLongValue(attributeKeyName, additionalId);
         } catch (NoSuchConfigurationAttributeException e) {
             return defaultValue;
         }
     }
 
     @Override
-    public double getAttributeDoubleValue(ConfigurationAttributeKey attributeKey, long additionalId, double defaultValue) throws SystemException {
+    public double getAttributeDoubleValue(String attributeKeyName, long additionalId, double defaultValue) throws SystemException {
         try {
-            return getAttributeDoubleValue(attributeKey, additionalId);
+            return getAttributeDoubleValue(attributeKeyName, additionalId);
         } catch (NoSuchConfigurationAttributeException e) {
             return defaultValue;
         }
     }
 
-
-    public String getAttributeStringValue(ConfigurationAttributeKey attributeKey, long additionalId) throws SystemException, NoSuchConfigurationAttributeException {
+    @Override
+    public String getAttributeStringValue(String attributeKeyName, long additionalId) throws SystemException, NoSuchConfigurationAttributeException {
+        ConfigurationAttributeKey attributeKey = ConfigurationAttributeKey.valueOf(attributeKeyName);
         if (attributeKey.getType() != AttributeType.STRING) {
             throw new UnsupportedOperationException("Cannot retrieve String value from non-string attribute; attribute type = " + attributeKey.getType().name());
         }
-        return getByAttributeNameAdditionalId(attributeKey, additionalId).getStringValue();
+        return getByAttributeNameAdditionalId(attributeKeyName, additionalId).getStringValue();
     }
 
 
-    public long getAttributeLongValue(ConfigurationAttributeKey attributeKey, long additionalId) throws SystemException, NoSuchConfigurationAttributeException {
+    @Override
+    public long getAttributeLongValue(String attributeKeyName, long additionalId) throws SystemException, NoSuchConfigurationAttributeException {
+        ConfigurationAttributeKey attributeKey = ConfigurationAttributeKey.valueOf(attributeKeyName);
         if (attributeKey.getType() != AttributeType.NUMERIC) {
             throw new UnsupportedOperationException("Cannot retrieve long value from non-long attribute; attribute type = " + attributeKey.getType().name());
         }
-        return getByAttributeNameAdditionalId(attributeKey, additionalId).getNumericValue();
+        return getByAttributeNameAdditionalId(attributeKeyName, additionalId).getNumericValue();
     }
 
 
-    public double getAttributeDoubleValue(ConfigurationAttributeKey attributeKey, long additionalId) throws SystemException, NoSuchConfigurationAttributeException {
+    @Override
+    public double getAttributeDoubleValue(String attributeKeyName, long additionalId) throws SystemException, NoSuchConfigurationAttributeException {
+        ConfigurationAttributeKey attributeKey = ConfigurationAttributeKey.valueOf(attributeKeyName);
         if (attributeKey.getType() != AttributeType.REAL) {
             throw new UnsupportedOperationException("Cannot retrieve double value from non-double attribute; attribute type = " + attributeKey.getType().name());
         }
-        return getByAttributeNameAdditionalId(attributeKey, additionalId).getRealValue();
+        return getByAttributeNameAdditionalId(attributeKeyName, additionalId).getRealValue();
     }
 
 }
