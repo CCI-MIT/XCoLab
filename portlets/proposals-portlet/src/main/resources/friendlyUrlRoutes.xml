@@ -99,7 +99,14 @@
         <generated-parameter name="baseProposalVersion">{baseProposalVersion}</generated-parameter>
         <generated-parameter name="baseContestId">{baseContestId}</generated-parameter>
     </route>
-    
+    <!-- revert proposal from prev. version-->
+    <route>
+        <pattern>/contestId/{contestId}/planId/{planId}/version/{version}/revert</pattern>
+        <generated-parameter name="pageToDisplay">proposalRevert</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+        <generated-parameter name="version">{version}</generated-parameter>
+    </route>
     
     <route>
         <pattern>/contestId/{contestId}/planId/{planId}/version/{version}</pattern>
@@ -116,7 +123,9 @@
         <generated-parameter name="planId">{planId}</generated-parameter>
         <generated-parameter name="edit">true</generated-parameter>
     </route>
-    
+
+
+
     <route>
         <pattern>/contestId/{contestId}/planId/{planId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndHide</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>

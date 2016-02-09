@@ -63,12 +63,18 @@
                             </div>
                         </c:if>
 
+
                         <div class="edit-prop-butts" style="line-height: normal;">
                             <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">Show
                                 history</a>
                             <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
                         </div>
 
+                        <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
+                            <div class="edit-prop-butts" style="line-height: normal;">
+                                <a href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}/version/${proposal.selectedVersion.version}/revert">Revert</a>
+                            </div>
+                        </c:if>
 
                         <c:if test="${proposal.wasMovedToContest != null}">
                             <div>This ${contestType.proposalName} was moved to: <collab:contestLink contest="${proposal.wasMovedToContest}" /></div>
