@@ -359,13 +359,6 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
-    public java.util.List<java.lang.Long> getDebatesIds(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.getDebatesIds(contest);
-    }
-
-    @Override
     public void store(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         _contestLocalService.store(contest);

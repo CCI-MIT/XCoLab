@@ -337,12 +337,6 @@ public class ContestLocalServiceUtil {
         return getService().isActive(contest);
     }
 
-    public static java.util.List<java.lang.Long> getDebatesIds(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getDebatesIds(contest);
-    }
-
     public static void store(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         getService().store(contest);
