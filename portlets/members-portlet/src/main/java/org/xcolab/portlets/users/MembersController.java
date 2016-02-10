@@ -80,6 +80,7 @@ public class MembersController {
                     break;
 
                 case "ACTIVITY":
+                    sortFilterPage.setSortAscending(false);
                     dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCount(firstUser, endUser,
                             filter, sortFilterPage.isSortAscending());
                     break;
