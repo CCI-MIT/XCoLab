@@ -267,11 +267,11 @@ public interface ContestTypeLocalService extends BaseLocalService,
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.String getProposalNames(
-        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
-        java.lang.String conjunction);
+        java.util.List<java.lang.Long> contestTypeIds,
+        java.lang.String plurality, java.lang.String conjunction);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.String getContestNames(
-        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
-        java.lang.String conjunction);
+        java.util.List<java.lang.Long> contestTypeIds,
+        java.lang.String plurality, java.lang.String conjunction);
 }

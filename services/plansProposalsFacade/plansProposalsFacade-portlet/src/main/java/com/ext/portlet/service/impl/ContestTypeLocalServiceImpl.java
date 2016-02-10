@@ -7,6 +7,7 @@ import com.ext.portlet.service.base.ContestTypeLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.enums.Plurality;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -73,16 +74,16 @@ public class ContestTypeLocalServiceImpl extends ContestTypeLocalServiceBaseImpl
     }
 
     @Override
-    public String getProposalNames(List<Long> contestTypeIds, boolean isSingular, String conjunction) {
-        return getJoinedNameString(contestTypeIds, true, isSingular, conjunction);
+    public String getProposalNames(List<Long> contestTypeIds, String plurality, String conjunction) {
+        return getJoinedNameString(contestTypeIds, true, plurality, conjunction);
     }
 
     @Override
-    public String getContestNames(List<Long> contestTypeIds, boolean isSingular, String conjunction) {
-        return getJoinedNameString(contestTypeIds, false, isSingular, conjunction);
+    public String getContestNames(List<Long> contestTypeIds, String plurality, String conjunction) {
+        return getJoinedNameString(contestTypeIds, false, plurality, conjunction);
     }
 
-    private String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal, boolean isSingular, String conjuction) {
+    private String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal, String plurality, String conjuction) {
         String proposalsString;
         try {
             StringBuilder stringBuilder = new StringBuilder();
@@ -98,11 +99,18 @@ public class ContestTypeLocalServiceImpl extends ContestTypeLocalServiceBaseImpl
                     }
                 }
                 if (isProposal) {
-                    stringBuilder.append(isSingular ? contestType.getProposalName() : contestType.getProposalNamePlural());
+                    if (plurality.equals(Plurality.SINGULAR.name())) {
+                        stringBuilder.append(contestType.getProposalName());
+                    } else {
+                        stringBuilder.append(contestType.getProposalNamePlural());
+                    }
                 } else {
-                    stringBuilder.append(isSingular ? contestType.getContestName() : contestType.getContestNamePlural());
+                    if (plurality.equals(Plurality.SINGULAR.name())) {
+                        stringBuilder.append(contestType.getContestName());
+                    } else {
+                        stringBuilder.append(contestType.getContestNamePlural());
+                    }
                 }
-
                 currentWord++;
             }
             proposalsString = stringBuilder.toString();

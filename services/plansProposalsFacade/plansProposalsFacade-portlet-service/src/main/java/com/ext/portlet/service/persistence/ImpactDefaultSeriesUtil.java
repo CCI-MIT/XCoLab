@@ -229,7 +229,8 @@ public class ImpactDefaultSeriesUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ImpactDefaultSeries[] findBySeriesId_PrevAndNext(
-        ImpactDefaultSeriesPK impactDefaultSeriesPK, long seriesId,
+        com.ext.portlet.service.persistence.ImpactDefaultSeriesPK impactDefaultSeriesPK,
+        long seriesId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactDefaultSeriesException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -408,8 +409,8 @@ public class ImpactDefaultSeriesUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ImpactDefaultSeries[] findBySeriesIdAndEditable_PrevAndNext(
-        ImpactDefaultSeriesPK impactDefaultSeriesPK, long seriesId,
-        boolean editable,
+        com.ext.portlet.service.persistence.ImpactDefaultSeriesPK impactDefaultSeriesPK,
+        long seriesId, boolean editable,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactDefaultSeriesException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -577,7 +578,8 @@ public class ImpactDefaultSeriesUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ImpactDefaultSeries[] findByFocusAreaId_PrevAndNext(
-        ImpactDefaultSeriesPK impactDefaultSeriesPK, long focusAreaId,
+        com.ext.portlet.service.persistence.ImpactDefaultSeriesPK impactDefaultSeriesPK,
+        long focusAreaId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactDefaultSeriesException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -712,7 +714,7 @@ public class ImpactDefaultSeriesUtil {
     * @return the new impact default series
     */
     public static com.ext.portlet.model.ImpactDefaultSeries create(
-        ImpactDefaultSeriesPK impactDefaultSeriesPK) {
+        com.ext.portlet.service.persistence.ImpactDefaultSeriesPK impactDefaultSeriesPK) {
         return getPersistence().create(impactDefaultSeriesPK);
     }
 
@@ -725,7 +727,7 @@ public class ImpactDefaultSeriesUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ImpactDefaultSeries remove(
-        ImpactDefaultSeriesPK impactDefaultSeriesPK)
+        com.ext.portlet.service.persistence.ImpactDefaultSeriesPK impactDefaultSeriesPK)
         throws com.ext.portlet.NoSuchImpactDefaultSeriesException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(impactDefaultSeriesPK);
@@ -746,7 +748,7 @@ public class ImpactDefaultSeriesUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ImpactDefaultSeries findByPrimaryKey(
-        ImpactDefaultSeriesPK impactDefaultSeriesPK)
+        com.ext.portlet.service.persistence.ImpactDefaultSeriesPK impactDefaultSeriesPK)
         throws com.ext.portlet.NoSuchImpactDefaultSeriesException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(impactDefaultSeriesPK);
@@ -760,7 +762,7 @@ public class ImpactDefaultSeriesUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ImpactDefaultSeries fetchByPrimaryKey(
-        ImpactDefaultSeriesPK impactDefaultSeriesPK)
+        com.ext.portlet.service.persistence.ImpactDefaultSeriesPK impactDefaultSeriesPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(impactDefaultSeriesPK);
     }

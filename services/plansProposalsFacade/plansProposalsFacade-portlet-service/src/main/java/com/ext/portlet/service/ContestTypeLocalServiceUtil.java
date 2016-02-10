@@ -294,17 +294,17 @@ public class ContestTypeLocalServiceUtil {
     }
 
     public static java.lang.String getProposalNames(
-        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
-        java.lang.String conjunction) {
+        java.util.List<java.lang.Long> contestTypeIds,
+        java.lang.String plurality, java.lang.String conjunction) {
         return getService()
-                   .getProposalNames(contestTypeIds, isSingular, conjunction);
+                   .getProposalNames(contestTypeIds, plurality, conjunction);
     }
 
     public static java.lang.String getContestNames(
-        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
-        java.lang.String conjunction) {
+        java.util.List<java.lang.Long> contestTypeIds,
+        java.lang.String plurality, java.lang.String conjunction) {
         return getService()
-                   .getContestNames(contestTypeIds, isSingular, conjunction);
+                   .getContestNames(contestTypeIds, plurality, conjunction);
     }
 
     public static void clearService() {
