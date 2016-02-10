@@ -330,7 +330,7 @@ public class UserProfileWrapper implements Serializable {
     public String getProposalsString() {
         if (proposalsString == null) {
                 proposalsString = ContestTypeLocalServiceUtil.getProposalNames(
-                        new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.SINGULAR.name(), "or");
+                        new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.PLURAL.name(), "or");
         }
         return proposalsString;
     }

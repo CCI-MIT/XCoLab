@@ -252,19 +252,19 @@ public class ProposalSectionWrapper {
     }
 
     public String getProposalNames() {
-        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), Plurality.PLURAL.name(), "or");
+        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), Plurality.SINGULAR.name(), "or");
     }
 
     public String getProposalNamesPlural() {
-        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), Plurality.SINGULAR.name(), "and");
+        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), Plurality.PLURAL.name(), "and");
     }
 
     public String getContestNames() {
-        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), Plurality.PLURAL.name(), "or");
+        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), Plurality.SINGULAR.name(), "or");
     }
 
     public String getContestNamesPlural() {
-        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), Plurality.SINGULAR.name(), "or");
+        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), Plurality.PLURAL.name(), "or");
     }
 
     private ProposalAttribute getSectionAttribute() throws SystemException, PortalException {
