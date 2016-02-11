@@ -7,8 +7,7 @@
 
 	<div class="actionItems">
 		<a class="primary-button" href="#" id="saveChangesButton">SAVE ${currentTabWrapped.elementType}</a>
-		<collab:contestLink contest="${contestWrapper}" text="PREVIEW contest" cssClass="primary-button"
-								linkId="previewContestButton" target="_blank"/>
+		<collab:contestLink contest="${contestWrapper}" text="VIEW contest" cssClass="primary-button" linkId="previewContestButton" target="_blank"/>
 		<a class="primary-button" href="#" id="submitContestButton">SUBMIT contest</a>
 		<a class="grey-button" href="${currentTabWrapped.tabUrl}" id="saveChangesButton">DISCARD changes</a>
 	</div>
@@ -18,9 +17,6 @@
 	(function() {
 		jQuery('document').ready(function(){
 			jQuery("#saveChangesButton").click(function () {
-				jQuery("#editForm").submit();
-			});
-			jQuery("#previewContestButton").click(function () {
 				jQuery("#editForm").submit();
 			});
 
