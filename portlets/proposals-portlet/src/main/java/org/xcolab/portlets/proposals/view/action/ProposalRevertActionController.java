@@ -1,4 +1,4 @@
-package org.xcolab.portlets.proposals.view;
+package org.xcolab.portlets.proposals.view.action;
 
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.PlanSectionTypeKeys;
@@ -49,11 +49,11 @@ public class ProposalRevertActionController {
 
 
 
-    @RequestMapping(params = "pageToDisplay=proposalRevert")
+    @RequestMapping(params = "action=proposalRevert")
     public void showProposalRevert(ActionRequest request, Model model,
-                               ActionResponse response,  BindingResult result)
+                                    ActionResponse response)
 
-            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+    throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
 
         //The current version of the proposal is automatically loaded in the proposalContext
 
@@ -148,7 +148,8 @@ public class ProposalRevertActionController {
                 }
             }
 
-            //
+            //this code was on the proposal add/update controller, if the user could edit and save , he might just want to revert
+            // and leave it like that , so this code must be executed as well.
             final Proposal2Phase p2p = proposalsContext.getProposal2Phase(request);
             if (p2p != null && p2p.getVersionTo() != -1) {
                 // we are in a completed phase - need to adjust the end version
@@ -156,7 +157,7 @@ public class ProposalRevertActionController {
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
                 Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
             }
-            //this will always be called since there is no check beetween differences in old and new version.
+            // extra check to reset dependencies from the old versions
             if (updateProposalReferences) {
                 ProposalReferenceLocalServiceUtil.populateTableWithProposal(oldProposalVersionToBeBecomeCurrent.getWrapped());
             }
