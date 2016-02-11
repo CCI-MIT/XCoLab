@@ -151,9 +151,8 @@ thead.blueheaderbar {
 /* users/members page */
 .blueheaderbar .user {
   float: left;
-  width: 308px;
+  width: 330px;
   height: 37px;
-  padding-left: 9px;
 }
 
 .blueheaderbar .user a {
@@ -165,8 +164,9 @@ thead.blueheaderbar {
 
 .blueheaderbar .points {
   float: left;
-  width: 95px;
+  width: 88px;
   height: 37px;
+  padding-left: 11px;
 }
 
 .blueheaderbar .points a {
@@ -179,7 +179,7 @@ thead.blueheaderbar {
 
 .blueheaderbar .activity {
   float: left;
-  width: 62px;
+  width: 80px;
   height: 37px;
 }
 
@@ -193,7 +193,7 @@ thead.blueheaderbar {
 
 .blueheaderbar .category {
   float: left;
-  width: 113px;
+  width: 108px;
   height: 37px;
 }
 
@@ -201,7 +201,7 @@ thead.blueheaderbar {
   font-weight: bold;
   height: 27px;
   padding-top: 10px;
-  margin-left: 18px;
+  margin-left: 15px;
   display: inline-block;
 }
 
