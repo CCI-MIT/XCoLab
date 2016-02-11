@@ -48,13 +48,18 @@ fieldset {
   margin: 0
 }
 
-//TODO: where is this used? community?
+//used in userprofile, discussions, and wiki
 #bread {
   margin: -10px 0 20px 0;
   font-size: 14px;
   padding: 5px;
   border: 0;
-  display: none;
+}
+
+//ugly hack to hide breadcrumb on liferay wiki pages
+//(and only the breadcrumb and only on wiki pages)
+#bread > div:first-child {
+  display: none !important;
 }
 
 #bread img {
