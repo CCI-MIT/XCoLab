@@ -9,8 +9,6 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalRating;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -22,19 +20,15 @@ import java.util.List;
  * Created by patrickhiesel on 19/12/13.
  */
 public class ProposalJudgeWrapper extends ProposalWrapper {
-    private User currentUser;
+    private final User currentUser;
 
     public ProposalJudgeWrapper(ProposalWrapper proposal, User currentUser) throws NoSuchContestException {
         super(proposal);
         this.currentUser = currentUser;
 
         try {
-            //find out contestPhase
-            Contest baseContest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
-            ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(baseContest);
-
             this.setProposalRatings(proposal.getProposalId(), contestPhase);
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             this.proposalRatings = null;
         }
     }
@@ -45,7 +39,7 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
 
         try {
             this.setProposalRatings(proposal.getProposalId(), contestPhase);
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             this.proposalRatings = null;
         }
     }
@@ -64,7 +58,9 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
      * @throws PortalException
      */
     public JudgingSystemActions.JudgeReviewStatus getJudgeReviewStatus() throws SystemException, PortalException {
-        if (currentUser == null || !isJudgingContestPhase()) return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
+        if (currentUser == null || !isJudgingContestPhase()) {
+            return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
+        }
 
         // If the phase does not require initial fellow screening all judges should do the review
         if (!getFellowScreeningNecessary() && isUserAmongJudges(currentUser)) {

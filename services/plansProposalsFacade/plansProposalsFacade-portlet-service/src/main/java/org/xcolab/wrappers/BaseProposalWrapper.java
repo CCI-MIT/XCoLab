@@ -60,8 +60,8 @@ public class BaseProposalWrapper {
     public BaseProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) throws NoSuchContestException {
         this.proposal = proposal;
         this.version = version;
-        this.contest = contest == null ? fetchContest() : contest;
         this.contestPhase = contestPhase == null ? fetchContestPhase() : contestPhase;
+        this.contest = contest == null ? fetchContest() : contest;
         this.proposal2Phase = proposal2Phase == null ? fetchProposal2Phase() : proposal2Phase;
 
         proposalContestPhaseAttributeHelper = new ProposalContestPhaseAttributeHelper(proposal, contestPhase);
@@ -77,6 +77,9 @@ public class BaseProposalWrapper {
 
     private Contest fetchContest() throws NoSuchContestException {
         try {
+            if (contestPhase != null) {
+                return ContestLocalServiceUtil.fetchContest(contestPhase.getContestPK());
+            }
             return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
         } catch (PortalException | SystemException e) {
             throw new NoSuchContestException("Could not find a contest for proposal "+proposal.getProposalId(), e);
@@ -85,6 +88,9 @@ public class BaseProposalWrapper {
 
     private ContestPhase fetchContestPhase() {
         try {
+            if (proposal2Phase != null) {
+                return ContestPhaseLocalServiceUtil.fetchContestPhase(proposal2Phase.getContestPhaseId());
+            }
             return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
         } catch (SystemException | PortalException e) {
             _log.warn(String.format("Could not fetch active contest phase for contest %d", contest.getContestPK()));
@@ -93,7 +99,7 @@ public class BaseProposalWrapper {
     }
 
     private Proposal2Phase fetchProposal2Phase() {
-        if (proposal.getProposalId() == 0 || contestPhase.getContestPhasePK() == 0) {
+        if (proposal.getProposalId() == 0 || contestPhase == null || contestPhase.getContestPhasePK() == 0) {
             return null;
         }
         try {
