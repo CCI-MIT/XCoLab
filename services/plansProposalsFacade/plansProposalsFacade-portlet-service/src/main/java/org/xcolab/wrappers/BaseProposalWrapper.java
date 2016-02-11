@@ -91,10 +91,13 @@ public class BaseProposalWrapper {
             if (proposal2Phase != null) {
                 return ContestPhaseLocalServiceUtil.fetchContestPhase(proposal2Phase.getContestPhaseId());
             }
-            return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+            if (contest != null) {
+                return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+            }
         } catch (SystemException | PortalException e) {
-            _log.warn(String.format("Could not fetch active contest phase for contest %d", contest.getContestPK()));
+            _log.error(String.format("Could not fetch active contest phase for contest %d", contest.getContestPK()), e);
         }
+        _log.error(String.format("Could not get contest phase for proposal %d", proposal.getProposalId()));
         return null;
     }
 
