@@ -19,9 +19,6 @@
 			jQuery("#saveChangesButton").click(function () {
 				jQuery("#editForm").submit();
 			});
-			jQuery("#previewContestButton").click(function () {
-				window.location.href = "${contestWrapper.contestUrl}"
-			});
 
 			jQuery("#submitContestButton").click(function () {
 
