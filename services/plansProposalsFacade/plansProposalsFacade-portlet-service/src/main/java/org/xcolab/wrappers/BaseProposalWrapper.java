@@ -60,8 +60,8 @@ public class BaseProposalWrapper {
     public BaseProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) throws NoSuchContestException {
         this.proposal = proposal;
         this.version = version;
-        this.contestPhase = contestPhase == null ? fetchContestPhase() : contestPhase;
         this.contest = contest == null ? fetchContest() : contest;
+        this.contestPhase = contestPhase == null ? fetchContestPhase() : contestPhase;
         this.proposal2Phase = proposal2Phase == null ? fetchProposal2Phase() : proposal2Phase;
 
         proposalContestPhaseAttributeHelper = new ProposalContestPhaseAttributeHelper(proposal, contestPhase);
