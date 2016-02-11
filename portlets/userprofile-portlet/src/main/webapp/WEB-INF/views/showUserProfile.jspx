@@ -99,7 +99,7 @@
 						<td width="23%">
 							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
 						</td>
-						<td class="b points_box left_border top_border" width="43%">
+						<td class="b points_box left_border top_border" width="45%">
 							CoLab Points (actual)
 							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
 							<br />
