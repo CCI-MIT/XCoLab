@@ -80,7 +80,7 @@
                                     <portlet:param name="version" value="${proposal.selectedVersion.version}" />
                                     <portlet:param name="action" value="proposalRevert" />
                                 </portlet:actionURL>
-                                <a href="${proposalRevertURL}">Revertaz</a>
+                                <a href="${proposalRevertURL}">Revert</a>
 
 
 
