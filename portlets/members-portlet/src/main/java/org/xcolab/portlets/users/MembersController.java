@@ -139,9 +139,9 @@ public class MembersController {
                             endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
                     break;
                 default:
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountFilteredByCategory(firstUser,
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPointsFilteredByCategory(firstUser,
                             endUser, filter, memberCategoryFilter, false);
-                    sortFilterPage.setSortColumn("ACTIVITY");
+                    sortFilterPage.setSortColumn("POINTS");
                     sortFilterPage.setSortAscending(false);
             }
 
