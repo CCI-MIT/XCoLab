@@ -1,15 +1,8 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
-import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
