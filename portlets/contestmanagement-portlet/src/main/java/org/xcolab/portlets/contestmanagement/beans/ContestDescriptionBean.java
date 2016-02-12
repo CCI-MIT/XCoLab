@@ -28,8 +28,6 @@ public class ContestDescriptionBean implements Serializable {
     private Long ContestPK;
     private Long contestLogoId;
     private Long sponsorLogoId;
-    private String emailTemplateUrl;
-    private ContestModelSettingsBean contestModelSettings;
 
     @Length(min = 5, max = 150, message = "The contest question must be at least 5 characters and not more than 150 characters.")
     private String contestName;
@@ -47,14 +45,6 @@ public class ContestDescriptionBean implements Serializable {
     @NotNull(message = "A schedule template must be selected.")
     private Long scheduleTemplateId;
 
-    @NotNull(message = "A contest tier must be selected.")
-    private Long contestTier;
-
-    @NotNull(message = "A contest type must be selected.")
-    private Long contestType;
-
-    private boolean hideRibbons;
-
     @SuppressWarnings("unused")
     public ContestDescriptionBean() { }
 
@@ -67,13 +57,8 @@ public class ContestDescriptionBean implements Serializable {
             contestDescription = contest.getContestDescription();
             planTemplateId = contest.getPlanTemplateId();
             scheduleTemplateId = contest.getContestScheduleId();
-            contestTier = contest.getContestTier();
-            contestType = contest.getContestTypeId();
-            hideRibbons = contest.getHideRibbons();
             contestLogoId = contest.getContestLogoId();
-            emailTemplateUrl = contest.getEmailTemplateUrl();
             sponsorLogoId = contest.getSponsorLogoId();
-            contestModelSettings = new ContestModelSettingsBean(contest);
         }
     }
 
@@ -129,18 +114,6 @@ public class ContestDescriptionBean implements Serializable {
         this.contestShortName = contestShortName;
     }
 
-    public String getEmailTemplateUrl() {
-        if (emailTemplateUrl != null) {
-            return emailTemplateUrl;
-        } else {
-            return "";
-        }
-    }
-
-    public void setEmailTemplateUrl(String emailTemplateUrl) {
-        this.emailTemplateUrl = emailTemplateUrl;
-    }
-
     public String getContestDescription() {
         return contestDescription;
     }
@@ -165,43 +138,14 @@ public class ContestDescriptionBean implements Serializable {
         this.scheduleTemplateId = scheduleTemplateId;
     }
 
-    public Long getContestTier() {
-        return contestTier;
-    }
-
-    public void setContestTier(Long contestTier) {
-        this.contestTier = contestTier;
-    }
-
-    public Long getContestType() {
-        return contestType;
-    }
-
-    public void setContestType(Long contestType) {
-        this.contestType = contestType;
-    }
-
-    public ContestModelSettingsBean getContestModelSettings() {
-        return contestModelSettings;
-    }
-
-    public void setContestModelSettings(ContestModelSettingsBean contestModelSettings) {
-        this.contestModelSettings = contestModelSettings;
-    }
-
     private void updateContestDescription(Contest contest) throws SystemException, PortalException {
         contest.setContestName(contestName);
-        contest.setEmailTemplateUrl(emailTemplateUrl);
         contest.setContestShortName(contestShortName);
         contest.setContestDescription(contestDescription);
         contest.setPlanTemplateId(planTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
-        contest.setContestTier(contestTier);
-        contest.setContestTypeId(contestType);
-        contest.setHideRibbons(hideRibbons);
         contest.persist();
-        contestModelSettings.persist(contest);
     }
 
     public static void updateContestWiki(Contest contest, String oldContestTitle) throws SystemException, PortalException, UnsupportedEncodingException {
@@ -230,11 +174,4 @@ public class ContestDescriptionBean implements Serializable {
         }
     }
 
-    public boolean isHideRibbons() {
-        return hideRibbons;
-    }
-
-    public void setHideRibbons(boolean hideRibbons) {
-        this.hideRibbons = hideRibbons;
-    }
 }
