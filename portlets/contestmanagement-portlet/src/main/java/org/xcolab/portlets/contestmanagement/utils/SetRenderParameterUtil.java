@@ -27,7 +27,18 @@ public final class SetRenderParameterUtil {
     public static void setExceptionRenderParameter(ActionResponse response, Exception exception){
         setErrorRenderParameter(response, "showException");
         response.setRenderParameter("exceptionMessage", exception.getMessage());
-        response.setRenderParameter("exceptionStacktrace", getStackTraceInHtmlFormat(exception.getStackTrace()));
+        response.setRenderParameter("exceptionStacktrace", getFullStackTraceInHtmlFormat(exception));
+    }
+
+    private static String getFullStackTraceInHtmlFormat(Throwable rootThrowable) {
+        StringBuilder fullStackTraceString = new StringBuilder();
+        for (Throwable throwable = rootThrowable; throwable != null; throwable = throwable.getCause()) {
+            if (throwable != rootThrowable) {
+                fullStackTraceString.append("<br/>Caused by ").append(throwable.getMessage()).append(": ");
+            }
+            fullStackTraceString.append(getStackTraceInHtmlFormat(throwable.getStackTrace()));
+        }
+        return fullStackTraceString.toString();
     }
 
     private static String getStackTraceInHtmlFormat(StackTraceElement[] stackTraceElements){
@@ -41,7 +52,7 @@ public final class SetRenderParameterUtil {
 
     public static void addActionExceptionMessageToSession(PortletRequest request, Exception exception){
         addMessageToSession(request, "exceptionMessage", exception.getMessage());
-        addMessageToSession(request, "exceptionStacktrace", getStackTraceInHtmlFormat(exception.getStackTrace()));
+        addMessageToSession(request, "exceptionStacktrace", getFullStackTraceInHtmlFormat(exception));
     }
 
     public static void addActionSuccessMessageToSession(PortletRequest request, String successMessage){
@@ -79,5 +90,4 @@ public final class SetRenderParameterUtil {
         response.setRenderParameter("massActionId", contestOverviewWrapper.getSelectedMassAction().toString());
         response.setRenderParameter("contestIds", contestOverviewWrapper.getSelectedContestIds().toString());
     }
-
 }
