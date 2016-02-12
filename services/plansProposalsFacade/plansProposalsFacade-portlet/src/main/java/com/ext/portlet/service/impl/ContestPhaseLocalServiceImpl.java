@@ -227,9 +227,8 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                             return 1;
                         }
                     });
-        } catch (NoSuchContestPhaseException e) {
-            // ignore
-        }
+        } catch (NoSuchContestPhaseException ignored) { }
+
         List<ContestPhase> phases = contestPhasePersistence.findByContestIdStartEnd(contest.getContestPK(), now, now);
         // Either there is no contest phase or there is a phase which enddate is open
         if (phases.isEmpty()) {

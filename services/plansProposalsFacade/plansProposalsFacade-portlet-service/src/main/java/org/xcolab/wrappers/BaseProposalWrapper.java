@@ -60,7 +60,7 @@ public class BaseProposalWrapper {
     public BaseProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) throws NoSuchContestException {
         this.proposal = proposal;
         this.version = version;
-        this.contest = contest == null ? fetchContest() : contest;
+        this.contest = contest == null ? fetchContest(contestPhase) : contest;
         this.contestPhase = contestPhase == null ? fetchContestPhase() : contestPhase;
         this.proposal2Phase = proposal2Phase == null ? fetchProposal2Phase() : proposal2Phase;
 
@@ -75,7 +75,7 @@ public class BaseProposalWrapper {
         this(proposal, version, null, null, null);
     }
 
-    private Contest fetchContest() throws NoSuchContestException {
+    private Contest fetchContest(ContestPhase contestPhase) throws NoSuchContestException {
         try {
             if (contestPhase != null) {
                 return ContestLocalServiceUtil.fetchContest(contestPhase.getContestPK());
