@@ -76,16 +76,6 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return getContestLevelSelectionItems();
     }
 
-    @ModelAttribute("contestTypeSelectionItems")
-    public List<LabelValue> populateContestTypeSelectionItems(){
-        return getContestTypeSelectionItems();
-    }
-
-    @ModelAttribute("scheduleTemplateSelectionItems")
-    public List<LabelValue> populateScheduleSelectionItems(PortletRequest request){
-        return getContestScheduleSelectionItems(request);
-    }
-
     @ModelAttribute("modelIdsSelectionItems")
     public List<LabelValue> populateModelIdsSelectionItems(){
         return ContestModelSettingsBean.getAllModelIds();
@@ -195,21 +185,6 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             _log.warn("Could not get contest type selection items: " + e);
         }
         return selectItems;
-    }
-
-    private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request){
-        List<LabelValue> scheduleTemplateSelectionItems = new ArrayList<>();
-        try {
-            Contest contest = getContest(request);
-            BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
-            Long existingContestScheduleId = contest.getContestScheduleId();
-            Boolean contestHasProposals = contestWrapper.getProposalsCount() > 0;
-            scheduleTemplateSelectionItems =
-                    ContestScheduleWrapper.getScheduleTemplateSelectionItems(existingContestScheduleId, contestHasProposals);
-        } catch (SystemException | PortalException e){
-            _log.warn("Could not get contest schedule selection items: " + e);
-        }
-        return scheduleTemplateSelectionItems;
     }
 
 }
