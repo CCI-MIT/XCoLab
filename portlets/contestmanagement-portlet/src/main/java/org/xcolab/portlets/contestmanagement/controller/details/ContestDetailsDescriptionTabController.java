@@ -76,6 +76,11 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return getContestLevelSelectionItems();
     }
 
+    @ModelAttribute("contestTypeSelectionItems")
+    public List<LabelValue> populateContestTypeSelectionItems(){
+        return getContestTypeSelectionItems();
+    }
+
     @ModelAttribute("modelIdsSelectionItems")
     public List<LabelValue> populateModelIdsSelectionItems(){
         return ContestModelSettingsBean.getAllModelIds();
