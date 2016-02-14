@@ -25,6 +25,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public long contestTypeId;
     public String ContestName;
     public String ContestShortName;
+    public String ContestUrlName;
+    public long ContestYear;
     public String ContestDescription;
     public String ContestModelDescription;
     public String ContestPositionsDescription;
@@ -72,7 +74,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(101);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -82,6 +84,10 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(ContestName);
         sb.append(", ContestShortName=");
         sb.append(ContestShortName);
+        sb.append(", ContestUrlName=");
+        sb.append(ContestUrlName);
+        sb.append(", ContestYear=");
+        sb.append(ContestYear);
         sb.append(", ContestDescription=");
         sb.append(ContestDescription);
         sb.append(", ContestModelDescription=");
@@ -193,6 +199,14 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         } else {
             contestImpl.setContestShortName(ContestShortName);
         }
+
+        if (ContestUrlName == null) {
+            contestImpl.setContestUrlName(StringPool.BLANK);
+        } else {
+            contestImpl.setContestUrlName(ContestUrlName);
+        }
+
+        contestImpl.setContestYear(ContestYear);
 
         if (ContestDescription == null) {
             contestImpl.setContestDescription(StringPool.BLANK);
@@ -357,6 +371,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestTypeId = objectInput.readLong();
         ContestName = objectInput.readUTF();
         ContestShortName = objectInput.readUTF();
+        ContestUrlName = objectInput.readUTF();
+        ContestYear = objectInput.readLong();
         ContestDescription = objectInput.readUTF();
         ContestModelDescription = objectInput.readUTF();
         ContestPositionsDescription = objectInput.readUTF();
@@ -420,6 +436,14 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         } else {
             objectOutput.writeUTF(ContestShortName);
         }
+
+        if (ContestUrlName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(ContestUrlName);
+        }
+
+        objectOutput.writeLong(ContestYear);
 
         if (ContestDescription == null) {
             objectOutput.writeUTF(StringPool.BLANK);

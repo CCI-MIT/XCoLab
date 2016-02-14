@@ -25,6 +25,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private long _contestTypeId;
     private String _ContestName;
     private String _ContestShortName;
+    private String _ContestUrlName;
+    private long _ContestYear;
     private String _ContestDescription;
     private String _ContestModelDescription;
     private String _ContestPositionsDescription;
@@ -113,6 +115,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("contestTypeId", getContestTypeId());
         attributes.put("ContestName", getContestName());
         attributes.put("ContestShortName", getContestShortName());
+        attributes.put("ContestUrlName", getContestUrlName());
+        attributes.put("ContestYear", getContestYear());
         attributes.put("ContestDescription", getContestDescription());
         attributes.put("ContestModelDescription", getContestModelDescription());
         attributes.put("ContestPositionsDescription",
@@ -191,6 +195,18 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (ContestShortName != null) {
             setContestShortName(ContestShortName);
+        }
+
+        String ContestUrlName = (String) attributes.get("ContestUrlName");
+
+        if (ContestUrlName != null) {
+            setContestUrlName(ContestUrlName);
+        }
+
+        Long ContestYear = (Long) attributes.get("ContestYear");
+
+        if (ContestYear != null) {
+            setContestYear(ContestYear);
         }
 
         String ContestDescription = (String) attributes.get(
@@ -558,6 +574,51 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                         String.class);
 
                 method.invoke(_contestRemoteModel, ContestShortName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getContestUrlName() {
+        return _ContestUrlName;
+    }
+
+    @Override
+    public void setContestUrlName(String ContestUrlName) {
+        _ContestUrlName = ContestUrlName;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestUrlName",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, ContestUrlName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public long getContestYear() {
+        return _ContestYear;
+    }
+
+    @Override
+    public void setContestYear(long ContestYear) {
+        _ContestYear = ContestYear;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestYear", long.class);
+
+                method.invoke(_contestRemoteModel, ContestYear);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -1676,6 +1737,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setContestTypeId(getContestTypeId());
         clone.setContestName(getContestName());
         clone.setContestShortName(getContestShortName());
+        clone.setContestUrlName(getContestUrlName());
+        clone.setContestYear(getContestYear());
         clone.setContestDescription(getContestDescription());
         clone.setContestModelDescription(getContestModelDescription());
         clone.setContestPositionsDescription(getContestPositionsDescription());
@@ -1781,7 +1844,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(101);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1791,6 +1854,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getContestName());
         sb.append(", ContestShortName=");
         sb.append(getContestShortName());
+        sb.append(", ContestUrlName=");
+        sb.append(getContestUrlName());
+        sb.append(", ContestYear=");
+        sb.append(getContestYear());
         sb.append(", ContestDescription=");
         sb.append(getContestDescription());
         sb.append(", ContestModelDescription=");
@@ -1886,7 +1953,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(148);
+        StringBundler sb = new StringBundler(154);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1907,6 +1974,14 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>ContestShortName</column-name><column-value><![CDATA[");
         sb.append(getContestShortName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>ContestUrlName</column-name><column-value><![CDATA[");
+        sb.append(getContestUrlName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>ContestYear</column-name><column-value><![CDATA[");
+        sb.append(getContestYear());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>ContestDescription</column-name><column-value><![CDATA[");

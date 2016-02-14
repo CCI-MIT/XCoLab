@@ -143,6 +143,8 @@
 			<basic name="contestTypeId" />
 			<basic name="ContestName" />
 			<basic name="ContestShortName" />
+			<basic name="ContestUrlName" />
+			<basic name="ContestYear" />
 			<basic name="ContestDescription" />
 			<basic name="ContestModelDescription" />
 			<basic name="ContestPositionsDescription" />

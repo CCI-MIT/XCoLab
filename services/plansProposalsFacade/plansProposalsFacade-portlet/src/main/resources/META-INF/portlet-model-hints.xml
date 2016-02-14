@@ -118,6 +118,8 @@
 		<field name="ContestShortName" type="String">
 			<hint name="max-length">512</hint>
 		</field>
+		<field name="ContestUrlName" type="String" />
+		<field name="ContestYear" type="long" />
 		<field name="ContestDescription" type="String">
 			<hint name="max-length">10000</hint>
 		</field>

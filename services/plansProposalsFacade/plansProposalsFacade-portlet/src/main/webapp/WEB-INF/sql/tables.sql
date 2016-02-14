@@ -82,6 +82,8 @@ create table xcolab_Contest (
 	contestTypeId LONG,
 	ContestName VARCHAR(1024) null,
 	ContestShortName VARCHAR(512) null,
+	ContestUrlName VARCHAR(75) null,
+	ContestYear LONG,
 	ContestDescription TEXT null,
 	ContestModelDescription TEXT null,
 	ContestPositionsDescription TEXT null,

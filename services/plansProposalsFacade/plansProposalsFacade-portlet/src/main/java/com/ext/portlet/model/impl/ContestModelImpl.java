@@ -55,6 +55,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "contestTypeId", Types.BIGINT },
             { "ContestName", Types.VARCHAR },
             { "ContestShortName", Types.VARCHAR },
+            { "ContestUrlName", Types.VARCHAR },
+            { "ContestYear", Types.BIGINT },
             { "ContestDescription", Types.VARCHAR },
             { "ContestModelDescription", Types.VARCHAR },
             { "ContestPositionsDescription", Types.VARCHAR },
@@ -100,7 +102,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "show_in_outline_view", Types.BOOLEAN },
             { "hideRibbons", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,contestTypeId LONG,ContestName VARCHAR(1024) null,ContestShortName VARCHAR(512) null,ContestDescription TEXT null,ContestModelDescription TEXT null,ContestPositionsDescription TEXT null,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,proposalCreationTemplateString VARCHAR(75) null,voteTemplateString VARCHAR(75) null,proposalVoteTemplateString VARCHAR(75) null,proposalVoteConfirmationTemplateString VARCHAR(75) null,voteQuestionTemplateString VARCHAR(75) null,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(500) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(256) null,flagTooltip VARCHAR(512) null,groupId LONG,discussionGroupId LONG,fellowDiscussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,defaultModelSettings VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(500) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN,hideRibbons BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,contestTypeId LONG,ContestName VARCHAR(1024) null,ContestShortName VARCHAR(512) null,ContestUrlName VARCHAR(75) null,ContestYear LONG,ContestDescription TEXT null,ContestModelDescription TEXT null,ContestPositionsDescription TEXT null,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,proposalCreationTemplateString VARCHAR(75) null,voteTemplateString VARCHAR(75) null,proposalVoteTemplateString VARCHAR(75) null,proposalVoteConfirmationTemplateString VARCHAR(75) null,voteQuestionTemplateString VARCHAR(75) null,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(500) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(256) null,flagTooltip VARCHAR(512) null,groupId LONG,discussionGroupId LONG,fellowDiscussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,defaultModelSettings VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(500) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN,hideRibbons BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Contest";
     public static final String ORDER_BY_JPQL = " ORDER BY contest.weight ASC, contest.created ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Contest.weight ASC, xcolab_Contest.created ASC";
@@ -136,6 +138,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private boolean _setOriginalContestTypeId;
     private String _ContestName;
     private String _ContestShortName;
+    private String _ContestUrlName;
+    private long _ContestYear;
     private String _ContestDescription;
     private String _ContestModelDescription;
     private String _ContestPositionsDescription;
@@ -213,6 +217,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setContestTypeId(soapModel.getContestTypeId());
         model.setContestName(soapModel.getContestName());
         model.setContestShortName(soapModel.getContestShortName());
+        model.setContestUrlName(soapModel.getContestUrlName());
+        model.setContestYear(soapModel.getContestYear());
         model.setContestDescription(soapModel.getContestDescription());
         model.setContestModelDescription(soapModel.getContestModelDescription());
         model.setContestPositionsDescription(soapModel.getContestPositionsDescription());
@@ -319,6 +325,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("contestTypeId", getContestTypeId());
         attributes.put("ContestName", getContestName());
         attributes.put("ContestShortName", getContestShortName());
+        attributes.put("ContestUrlName", getContestUrlName());
+        attributes.put("ContestYear", getContestYear());
         attributes.put("ContestDescription", getContestDescription());
         attributes.put("ContestModelDescription", getContestModelDescription());
         attributes.put("ContestPositionsDescription",
@@ -397,6 +405,18 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         if (ContestShortName != null) {
             setContestShortName(ContestShortName);
+        }
+
+        String ContestUrlName = (String) attributes.get("ContestUrlName");
+
+        if (ContestUrlName != null) {
+            setContestUrlName(ContestUrlName);
+        }
+
+        Long ContestYear = (Long) attributes.get("ContestYear");
+
+        if (ContestYear != null) {
+            setContestYear(ContestYear);
         }
 
         String ContestDescription = (String) attributes.get(
@@ -743,6 +763,32 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     @Override
     public void setContestShortName(String ContestShortName) {
         _ContestShortName = ContestShortName;
+    }
+
+    @JSON
+    @Override
+    public String getContestUrlName() {
+        if (_ContestUrlName == null) {
+            return StringPool.BLANK;
+        } else {
+            return _ContestUrlName;
+        }
+    }
+
+    @Override
+    public void setContestUrlName(String ContestUrlName) {
+        _ContestUrlName = ContestUrlName;
+    }
+
+    @JSON
+    @Override
+    public long getContestYear() {
+        return _ContestYear;
+    }
+
+    @Override
+    public void setContestYear(long ContestYear) {
+        _ContestYear = ContestYear;
     }
 
     @JSON
@@ -1448,6 +1494,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setContestTypeId(getContestTypeId());
         contestImpl.setContestName(getContestName());
         contestImpl.setContestShortName(getContestShortName());
+        contestImpl.setContestUrlName(getContestUrlName());
+        contestImpl.setContestYear(getContestYear());
         contestImpl.setContestDescription(getContestDescription());
         contestImpl.setContestModelDescription(getContestModelDescription());
         contestImpl.setContestPositionsDescription(getContestPositionsDescription());
@@ -1603,6 +1651,16 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         if ((ContestShortName != null) && (ContestShortName.length() == 0)) {
             contestCacheModel.ContestShortName = null;
         }
+
+        contestCacheModel.ContestUrlName = getContestUrlName();
+
+        String ContestUrlName = contestCacheModel.ContestUrlName;
+
+        if ((ContestUrlName != null) && (ContestUrlName.length() == 0)) {
+            contestCacheModel.ContestUrlName = null;
+        }
+
+        contestCacheModel.ContestYear = getContestYear();
 
         contestCacheModel.ContestDescription = getContestDescription();
 
@@ -1826,7 +1884,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(101);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1836,6 +1894,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getContestName());
         sb.append(", ContestShortName=");
         sb.append(getContestShortName());
+        sb.append(", ContestUrlName=");
+        sb.append(getContestUrlName());
+        sb.append(", ContestYear=");
+        sb.append(getContestYear());
         sb.append(", ContestDescription=");
         sb.append(getContestDescription());
         sb.append(", ContestModelDescription=");
@@ -1931,7 +1993,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(148);
+        StringBundler sb = new StringBundler(154);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1952,6 +2014,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>ContestShortName</column-name><column-value><![CDATA[");
         sb.append(getContestShortName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>ContestUrlName</column-name><column-value><![CDATA[");
+        sb.append(getContestUrlName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>ContestYear</column-name><column-value><![CDATA[");
+        sb.append(getContestYear());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>ContestDescription</column-name><column-value><![CDATA[");

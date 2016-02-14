@@ -8715,6 +8715,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setContestTypeId(contest.getContestTypeId());
         contestImpl.setContestName(contest.getContestName());
         contestImpl.setContestShortName(contest.getContestShortName());
+        contestImpl.setContestUrlName(contest.getContestUrlName());
+        contestImpl.setContestYear(contest.getContestYear());
         contestImpl.setContestDescription(contest.getContestDescription());
         contestImpl.setContestModelDescription(contest.getContestModelDescription());
         contestImpl.setContestPositionsDescription(contest.getContestPositionsDescription());

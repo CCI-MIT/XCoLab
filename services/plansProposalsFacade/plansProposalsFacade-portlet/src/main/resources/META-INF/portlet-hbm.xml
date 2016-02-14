@@ -179,6 +179,8 @@
 		<property name="contestTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ContestName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ContestShortName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="ContestUrlName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="ContestYear" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ContestDescription" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ContestModelDescription" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ContestPositionsDescription" type="com.liferay.portal.dao.orm.hibernate.StringType" />

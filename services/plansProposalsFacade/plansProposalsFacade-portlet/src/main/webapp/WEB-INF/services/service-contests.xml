@@ -14,6 +14,8 @@
         <column name="contestTypeId" type="long" />
         <column name="ContestName" type="String" />
         <column name="ContestShortName" type="String" />
+        <column name="ContestUrlName" type="String" />
+        <column name="ContestYear" type="long" />
         <column name="ContestDescription" type="String" />
         <column name="ContestModelDescription" type="String" />
         <column name="ContestPositionsDescription" type="String" />
