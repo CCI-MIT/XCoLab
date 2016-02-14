@@ -137,8 +137,7 @@ public interface ImpactIterationPersistence extends BasePersistence<ImpactIterat
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactIteration[] findByIterationId_PrevAndNext(
-        com.ext.portlet.service.persistence.ImpactIterationPK impactIterationPK,
-        long iterationId,
+        ImpactIterationPK impactIterationPK, long iterationId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactIterationException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -185,7 +184,7 @@ public interface ImpactIterationPersistence extends BasePersistence<ImpactIterat
     * @return the new impact iteration
     */
     public com.ext.portlet.model.ImpactIteration create(
-        com.ext.portlet.service.persistence.ImpactIterationPK impactIterationPK);
+        ImpactIterationPK impactIterationPK);
 
     /**
     * Removes the impact iteration with the primary key from the database. Also notifies the appropriate model listeners.
@@ -196,7 +195,7 @@ public interface ImpactIterationPersistence extends BasePersistence<ImpactIterat
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactIteration remove(
-        com.ext.portlet.service.persistence.ImpactIterationPK impactIterationPK)
+        ImpactIterationPK impactIterationPK)
         throws com.ext.portlet.NoSuchImpactIterationException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -213,7 +212,7 @@ public interface ImpactIterationPersistence extends BasePersistence<ImpactIterat
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactIteration findByPrimaryKey(
-        com.ext.portlet.service.persistence.ImpactIterationPK impactIterationPK)
+        ImpactIterationPK impactIterationPK)
         throws com.ext.portlet.NoSuchImpactIterationException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -225,7 +224,7 @@ public interface ImpactIterationPersistence extends BasePersistence<ImpactIterat
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactIteration fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.ImpactIterationPK impactIterationPK)
+        ImpactIterationPK impactIterationPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

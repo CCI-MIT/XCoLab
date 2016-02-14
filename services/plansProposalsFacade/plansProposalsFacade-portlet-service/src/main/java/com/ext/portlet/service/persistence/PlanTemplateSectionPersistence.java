@@ -137,8 +137,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanTemplateSection[] findByPlanTemplateId_PrevAndNext(
-        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK,
-        long planTemplateId,
+        PlanTemplateSectionPK planTemplateSectionPK, long planTemplateId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanTemplateSectionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -276,8 +275,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanTemplateSection[] findByPlanSectionId_PrevAndNext(
-        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK,
-        long planSectionId,
+        PlanTemplateSectionPK planTemplateSectionPK, long planSectionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanTemplateSectionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -324,7 +322,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @return the new plan template section
     */
     public com.ext.portlet.model.PlanTemplateSection create(
-        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK);
+        PlanTemplateSectionPK planTemplateSectionPK);
 
     /**
     * Removes the plan template section with the primary key from the database. Also notifies the appropriate model listeners.
@@ -335,7 +333,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanTemplateSection remove(
-        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK)
+        PlanTemplateSectionPK planTemplateSectionPK)
         throws com.ext.portlet.NoSuchPlanTemplateSectionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -352,7 +350,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanTemplateSection findByPrimaryKey(
-        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK)
+        PlanTemplateSectionPK planTemplateSectionPK)
         throws com.ext.portlet.NoSuchPlanTemplateSectionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -364,7 +362,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanTemplateSection fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK)
+        PlanTemplateSectionPK planTemplateSectionPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
