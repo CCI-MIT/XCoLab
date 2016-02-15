@@ -2,7 +2,6 @@ package org.xcolab.portlets.contestmanagement.controller.details;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.ContestWrapper;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -19,7 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.interfaces.TabEnum;
@@ -29,9 +32,7 @@ import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
-import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.wrapper.TabWrapper;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -69,11 +70,6 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
     @ModelAttribute("contestTypeSelectionItems")
     public List<LabelValue> populateContestTypeSelectionItems(){
         return getContestTypeSelectionItems();
-    }
-
-    @ModelAttribute("scheduleTemplateSelectionItems")
-    public List<LabelValue> populateScheduleSelectionItems(PortletRequest request){
-        return getContestScheduleSelectionItems(request);
     }
 
     @ModelAttribute("modelIdsSelectionItems")
@@ -211,21 +207,6 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
             _log.warn("Could not get contest type selection items: " + e);
         }
         return selectItems;
-    }
-
-    private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request){
-        List<LabelValue> scheduleTemplateSelectionItems = new ArrayList<>();
-        try {
-            Contest contest = getContest(request);
-            BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
-            Long existingContestScheduleId = contest.getContestScheduleId();
-            Boolean contestHasProposals = contestWrapper.getProposalsCount() > 0;
-            scheduleTemplateSelectionItems =
-                    ContestScheduleWrapper.getScheduleTemplateSelectionItems(existingContestScheduleId, contestHasProposals);
-        } catch (SystemException | PortalException e){
-            _log.warn("Could not get contest schedule selection items: " + e);
-        }
-        return scheduleTemplateSelectionItems;
     }
 
 }
