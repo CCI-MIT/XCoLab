@@ -438,14 +438,15 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      */
     @Override
     public String getContestPhaseLinkUrl(ContestPhase contestPhase) {
-        String portletLink;
         try {
+            String link = "/";
             Contest contest = contestLocalService.fetchContest(contestPhase.getContestPK());
-            portletLink = contestTypeLocalService.getContestType(contest).getPortletUrl();
+            link += contestTypeLocalService.getContestType(contest).getFriendlyUrlStringContests();
+            link += "/%d/%s/phase/%d";
+            return String.format(link, contest.getContestYear(), contest.getContestUrlName(), contestPhase.getContestPhasePK());
         } catch (SystemException e) {
-            portletLink = "/web/guest/plans";
+            _log.error("Could not create link Url for contestPhase " + contestPhase.getContestPhasePK());
+            return "/contests/";
         }
-        String link = portletLink+"/-/plans/contestId/%d/phaseId/%d";
-        return String.format(link, contestPhase.getContestPK(), contestPhase.getContestPhasePK());
     }
 }

@@ -30,4 +30,20 @@
         <from>^/web/guest/home/journal/rss/14/news$</from>
         <to type="permanent-redirect">/web/guest/home/-/journal/rss/14/news</to>
     </rule>
+
+    <rule>
+        <from>^/contests/(.*)$</from>
+        <to>/web/guest/plans/-/plans/contests/$1</to>
+    </rule>
+
+    <rule>
+        <from>^/events/(.*)$</from>
+        <to>/web/guest/events/-/plans/contests/$1</to>
+    </rule>
+
+    <rule>
+        <from>^/trends/(.*)$</from>
+        <to>/web/guest/trends/-/plans/contests/$1</to>
+    </rule>
+
 </urlrewrite>

@@ -79,7 +79,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -227,12 +226,12 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     @Override
     public Contest getByContestUrlName(String contestUrlName) throws SystemException, NoSuchContestException {
-        return null;
+        return contestPersistence.findByContestUrlName(contestUrlName);
     }
 
     @Override
     public List<Contest> findByContestYear(long contestYear) throws SystemException {
-        return Collections.emptyList();
+        return contestPersistence.findByContestYear(contestYear);
     }
     
     @Override
@@ -935,14 +934,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      */
     @Override
     public String getContestLinkUrl(Contest contest) {
-        String portletLink;
+        String link = "/";
         try {
-            portletLink = contestTypeLocalService.getContestType(contest).getPortletUrl();
+            link += contestTypeLocalService.getContestType(contest).getFriendlyUrlStringContests();
         } catch (SystemException e) {
-            portletLink = "/web/guest/plans";
+            link += "contests";
         }
-        String link = portletLink+"/-/plans/contestId/%d";
-        return String.format(link, contest.getContestPK());
+        link += "/%d/%s";
+        return String.format(link, contest.getContestYear(), contest.getContestUrlName());
     }
 
     private Map<User, List<Proposal>> getContestSupportingUser(Contest contest) throws SystemException, PortalException {

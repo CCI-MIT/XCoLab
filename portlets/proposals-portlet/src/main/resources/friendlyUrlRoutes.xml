@@ -46,159 +46,6 @@
         <generated-parameter name="showAllContests">true</generated-parameter>
         <generated-parameter name="filter">{filterString}</generated-parameter>
     </route>
-    
-    <!-- contest discussion -->
-    <route>
-        <pattern>/contestId/{contestId}/page/discussion</pattern>
-        <generated-parameter name="pageToDisplay">contestDiscussion</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-    </route>
-    
-    <!-- contest model -->
-    <route>
-        <pattern>/contestId/{contestId}/page/model</pattern>
-        <generated-parameter name="pageToDisplay">contestModel</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-    </route>
-    
-    <!-- contest proposals in concrete phase -->
-    <route>
-        <pattern>/contestId/{contestId}/phaseId/{phaseId}</pattern>
-        <generated-parameter name="pageToDisplay">contestProposals</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="phaseId">{phaseId}</generated-parameter>
-    </route>
-    <!-- contest proposals -->
-    <route>
-        <pattern>/contestId/{contestId}</pattern>
-        <generated-parameter name="pageToDisplay">contestProposals</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-    </route>
-    
-    <!-- proposal details -->
-    <route>
-        <pattern>/contestId/{contestId}/planId/{planId}</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-    </route>
-    
-	<!-- create proposal -->
-    <route>
-        <pattern>/contestId/{contestId}/createProposal</pattern>
-        <generated-parameter name="pageToDisplay">createProposal</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-    </route>
-    
-	<!-- create proposal -->
-    <route>
-        <pattern>/contestId/{contestId}/createProposal/basedOn/{baseProposalId}/{baseProposalVersion}/{baseContestId}</pattern>
-        <generated-parameter name="pageToDisplay">createProposal</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="baseProposalId">{baseProposalId}</generated-parameter>
-        <generated-parameter name="baseProposalVersion">{baseProposalVersion}</generated-parameter>
-        <generated-parameter name="baseContestId">{baseContestId}</generated-parameter>
-    </route>
-    
-    
-    <route>
-        <pattern>/contestId/{contestId}/planId/{planId}/version/{version}</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-        <generated-parameter name="version">{version}</generated-parameter>
-    </route>
-    
-    <route>
-        <pattern>/contestId/{contestId}/planId/{planId}/edit</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-        <generated-parameter name="edit">true</generated-parameter>
-    </route>
-    
-    <route>
-        <pattern>/contestId/{contestId}/planId/{planId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndHide</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-        <generated-parameter name="move">true</generated-parameter>
-        <generated-parameter name="moveFromContestPhaseId">{moveFromContestPhaseId}</generated-parameter>
-        <generated-parameter name="hideOnMove">true</generated-parameter>
-    </route>
-
-    <route>
-        <pattern>/contestId/{contestId}/planId/{planId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndKeep</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-        <generated-parameter name="move">true</generated-parameter>
-        <generated-parameter name="moveFromContestPhaseId">{moveFromContestPhaseId}</generated-parameter>
-        <generated-parameter name="hideOnMove">false</generated-parameter>
-    </route>
-
-    <route>
-        <pattern>/contestId/{contestId}/planId/{planId}/vote</pattern>
-        <generated-parameter name="action_forwardToPage">proposalDetails</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-        <generated-parameter name="action">voteOnProposalAction</generated-parameter>
-        <generated-parameter name="p_p_lifecycle">1</generated-parameter>
-    </route>
-    
-    <route>
-        <pattern>/contestId/{contestId}/planId/{planId}/tab/{tab}</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
-        <generated-parameter name="tab">{tab}</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-    </route>
-    
-	<route>
-        <pattern>/contestId/{contestId}/planId/{planId}/version/{version}/tab/{tab}</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
-        <generated-parameter name="tab">{tab}</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="version">{version}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-    </route>
-    
-    <route>
-        <pattern>/contestId/{contestId}/planId/{planId}/tab/{tab}/edit</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
-        <generated-parameter name="tab">{tab}</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-        <generated-parameter name="edit">true</generated-parameter>
-    </route>
-    
-    <route>
-        <pattern>/contestId/{contestId}/phaseId/{phaseId}/planId/{planId}</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-        <generated-parameter name="phaseId">{phaseId}</generated-parameter>
-    </route>
-    
-    
-    <route>
-        <pattern>/contestId/{contestId}/phaseId/{phaseId}/planId/{planId}/tab/{tab}</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
-        <generated-parameter name="tab">{tab}</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-        <generated-parameter name="phaseId">{phaseId}</generated-parameter>
-    </route>
-
-    <route>
-        <pattern>/contestId/{contestId}/phaseId/{phaseId}/planId/{planId}/tab/{tab}/edit</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
-        <generated-parameter name="tab">{tab}</generated-parameter>
-        <generated-parameter name="contestId">{contestId}</generated-parameter>
-        <generated-parameter name="planId">{planId}</generated-parameter>
-        <generated-parameter name="phaseId">{phaseId}</generated-parameter>
-        <generated-parameter name="edit">true</generated-parameter>
-    </route>
 
     <route>
         <pattern>/sendProposalActivityNotifications</pattern>
@@ -212,6 +59,238 @@
         <generated-parameter name="proposalId">{proposalId}</generated-parameter>
         <generated-parameter name="userId">{userId}</generated-parameter>
         <generated-parameter name="confirmationToken">{confirmationToken}</generated-parameter>
+    </route>
+    
+    <!-- new contest and proposal urls -->
+    <!-- basic urls -->
+
+    <route>
+        <pattern>/contests/{contestYear}</pattern>
+        <generated-parameter name="pageToDisplay">contestIndex</generated-parameter>
+        <generated-parameter name="contestYear">{contestYear}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}</pattern>
+        <generated-parameter name="pageToDisplay">contestProposals</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/discussion</pattern>
+        <generated-parameter name="pageToDisplay">contestDiscussion</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestYear}/{contestUrlName}/model</pattern>
+        <generated-parameter name="pageToDisplay">contestModel</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/phase/{phaseId}</pattern>
+        <generated-parameter name="pageToDisplay">contestProposals</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="phaseId">{phaseId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/proposal/{proposalId}</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="phaseId">{phaseId}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+    </route>
+
+    <!-- special urls -->
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/createProposal</pattern>
+        <generated-parameter name="pageToDisplay">createProposal</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/createProposal/basedOn/{baseProposalId}/{baseProposalVersion}/{baseContestId}</pattern>
+        <generated-parameter name="pageToDisplay">createProposal</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="baseProposalId">{baseProposalId}</generated-parameter>
+        <generated-parameter name="baseProposalVersion">{baseProposalVersion}</generated-parameter>
+        <generated-parameter name="baseContestId">{baseContestId}</generated-parameter>
+    </route>
+
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/version/{version}</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="version">{version}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/edit</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="edit">true</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndHide</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="move">true</generated-parameter>
+        <generated-parameter name="moveFromContestPhaseId">{moveFromContestPhaseId}</generated-parameter>
+        <generated-parameter name="hideOnMove">true</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndKeep</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="move">true</generated-parameter>
+        <generated-parameter name="moveFromContestPhaseId">{moveFromContestPhaseId}</generated-parameter>
+        <generated-parameter name="hideOnMove">false</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/vote</pattern>
+        <generated-parameter name="action_forwardToPage">proposalDetails</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="action">voteOnProposalAction</generated-parameter>
+        <generated-parameter name="p_p_lifecycle">1</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/tab/{tab}</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
+        <generated-parameter name="tab">{tab}</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/version/{version}/tab/{tab}</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
+        <generated-parameter name="tab">{tab}</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="version">{version}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/tab/{tab}/edit</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
+        <generated-parameter name="tab">{tab}</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="edit">true</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/proposal/{proposalId}/tab/{tab}</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
+        <generated-parameter name="tab">{tab}</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="phaseId">{phaseId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/proposal/{proposalId}/tab/{tab}/edit</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
+        <generated-parameter name="tab">{tab}</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="phaseId">{phaseId}</generated-parameter>
+        <generated-parameter name="edit">true</generated-parameter>
+    </route>
+
+
+    <!-- Deprecated contest and proposal urls -->
+    <!-- TODO: remove in future versions -->
+
+    <route>
+        <pattern>/contestId/{contestId}/phaseId/{phaseId}</pattern>
+        <generated-parameter name="pageToDisplay">redirectOldContestProposalsUrl</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="phaseId">{phaseId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}</pattern>
+        <generated-parameter name="pageToDisplay">redirectOldContestProposalsUrl</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}/planId/{planId}</pattern>
+        <generated-parameter name="pageToDisplay">redirectOldProposalUrl</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}/planId/{planId}/version/{version}</pattern>
+        <generated-parameter name="pageToDisplay">redirectOldProposalUrl</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}/planId/{planId}/edit</pattern>
+        <generated-parameter name="pageToDisplay">redirectOldProposalUrl</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}/planId/{planId}/vote</pattern>
+        <generated-parameter name="pageToDisplay">redirectOldProposalUrl</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}/planId/{planId}/tab/{tab}</pattern>
+        <generated-parameter name="pageToDisplay">redirectOldProposalUrl</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}/planId/{planId}/version/{version}/tab/{tab}</pattern>
+        <generated-parameter name="pageToDisplay">redirectOldProposalUrl</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}/phaseId/{phaseId}/planId/{planId}</pattern>
+        <generated-parameter name="pageToDisplay">redirectOldProposalUrl</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="phaseId">{phaseId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}/phaseId/{phaseId}/planId/{planId}/tab/{tab}</pattern>
+        <generated-parameter name="pageToDisplay">redirectOldProposalUrl</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+        <generated-parameter name="phaseId">{phaseId}</generated-parameter>
     </route>
     
 </routes>

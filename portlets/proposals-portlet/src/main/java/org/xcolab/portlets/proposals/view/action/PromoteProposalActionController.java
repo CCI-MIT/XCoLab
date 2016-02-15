@@ -33,7 +33,7 @@ public class PromoteProposalActionController {
 
         ProposalsPermissions proposalsPermissions = proposalsContext.getPermissions(request);
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-        if(proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)){
+        if (proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)) {
             Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(planId);
             ContestPhase currentProposalContestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
             ContestPhase activePhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(latestProposalContest);
@@ -42,9 +42,11 @@ public class PromoteProposalActionController {
                     activePhaseForContest.getContestPhasePK(),
                     currentProposalContestPhase.getContestPhasePK());
 
-            response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+activePhaseForContest.getContestPhasePK()+"/planId/"+planId);
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
+                    proposalsContext.getProposal(request), contestPhase) + "/planId/"+planId);
         } else {
-            response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhaseId+"/planId/"+planId+"/tab/ADMIN");
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
+                    proposalsContext.getProposal(request), contestPhase) + "/tab/ADMIN");
         }
     }
 }

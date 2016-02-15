@@ -1148,15 +1148,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public String getProposalLinkUrl(Long proposalId) throws SystemException, PortalException {
-        Contest contest = proposalLocalService.getLatestProposalContest(proposalId);
-        String portletLink;
-        try {
-            portletLink = contestTypeLocalService.getContestType(contest).getPortletUrl();
-        } catch (SystemException e) {
-            portletLink = "/web/guest/plans";
-        }
-        String link = portletLink + "/-/plans/contestId/%d/planId/%d";
-        return String.format(link, contest.getContestPK(), proposalId);
+        return getProposalLinkUrl(contestLocalService.getContest(proposalId), proposalId, 0L);
     }
 
     /**
@@ -1168,14 +1160,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public String getProposalLinkUrl(Contest contest, Proposal proposal) {
-        String portletLink;
-        try {
-            portletLink = contestTypeLocalService.getContestType(contest).getPortletUrl();
-        } catch (SystemException e) {
-            portletLink = "/web/guest/plans";
-        }
-        String link = portletLink + "/-/plans/contestId/%d/planId/%d";
-        return String.format(link, contest.getContestPK(), proposal.getProposalId());
+        return getProposalLinkUrl(contest, proposal.getProposalId(), 0L);
     }
 
     /**
@@ -1188,14 +1173,29 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public String getProposalLinkUrl(Contest contest, Proposal proposal, ContestPhase contestPhase) {
-        String portletLink;
+        return getProposalLinkUrl(contest, proposal.getProposalId(), contestPhase.getContestPhasePK());
+    }
+
+    public String getProposalLinkUrl(Contest contest, long proposalId, long contestPhaseId) {
+        String link = "/";
+        String friendlyUrlStringProposal;
         try {
-            portletLink = contestTypeLocalService.getContestType(contest).getPortletUrl();
+            final ContestType contestType = contestTypeLocalService.getContestType(contest);
+            link += contestType.getFriendlyUrlStringContests();
+            friendlyUrlStringProposal = contestType.getFriendlyUrlStringProposal();
         } catch (SystemException e) {
-            portletLink = "/web/guest/plans";
+            link += "contests";
+            friendlyUrlStringProposal = "proposal";
         }
-        String link = portletLink + "/-/plans/contestId/%d/phaseId/%d/planId/%d";
-        return String.format(link, contest.getContestPK(), contestPhase.getContestPhasePK(), proposal.getProposalId());
+
+        if (contestPhaseId > 0) {
+            link += "/%d/%s/phase/%d/" + friendlyUrlStringProposal + "/%d";
+            return String.format(link, contest.getContestYear(), contest.getContestUrlName(),
+                    contestPhaseId, proposalId);
+        }
+
+        link += "/%d/%s/c/" + friendlyUrlStringProposal + "/%d";
+        return String.format(link, contest.getContestYear(), contest.getContestUrlName(), proposalId);
     }
 
     /**

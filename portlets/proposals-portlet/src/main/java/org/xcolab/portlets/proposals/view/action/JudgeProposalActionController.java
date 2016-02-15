@@ -315,7 +315,8 @@ public class JudgeProposalActionController {
                     contestPhaseId);
 
             this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId(), false);
-            response.sendRedirect("/web/guest/plans/-/plans/contestId/" + contestId + "/phaseId/" + contestPhaseId + "/planId/" + proposalId + "/tab/SCREENING");
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
+                    proposalsContext.getProposal(request), proposalsContext.getContestPhase(request)) + "/tab/SCREENING");
         } catch (Exception e) {
             List<Long> recipientIds = new ArrayList<>();
             recipientIds.add(1451771L); //Manuel
