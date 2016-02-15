@@ -67,11 +67,6 @@ public class ContestDescriptionBean implements Serializable {
         updateContestDescription(contest);
         updateContestSchedule(contest, scheduleTemplateId);
         updateContestWiki(contest, oldContestTitle);
-
-        DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
-        ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest.getContestTypeId());
-        dcg.setDescription(String.format("%s %s", contestType.getContestName(), contestShortName));
-        dcg.persist();
     }
 
     public Long getContestPK() {

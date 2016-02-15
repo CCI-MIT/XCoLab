@@ -39,6 +39,11 @@ public class ContestAdminBean implements Serializable {
 
     public void persist(Contest contest) throws SystemException, UnsupportedEncodingException, PortalException {
         updateContestDescription(contest);
+
+        DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
+        ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest.getContestTypeId());
+        dcg.setDescription(String.format("%s %s", contestType.getContestName(), contest.getContestShortName()));
+        dcg.persist();
     }
 
     public String getEmailTemplateUrl() {
