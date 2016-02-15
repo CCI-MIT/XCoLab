@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,7 @@ public class ContestManagementBaseController {
         User currentUser = themeDisplay.getUser();
 
         if(!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
-            Contest contest = ContestCreatorUtil.createNewContest("created contest");
+            Contest contest = ContestCreatorUtil.createNewContest("created contest " + DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
             String newContestLink = "/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/DESCRIPTION";
             model.addAttribute("newContestLink", newContestLink);
             return "common/newContestCreated";

@@ -172,6 +172,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private String[] _methodParameterTypes81;
     private String _methodName82;
     private String[] _methodParameterTypes82;
+    private String _methodName83;
+    private String[] _methodParameterTypes83;
 
     public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -530,6 +532,10 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _methodParameterTypes82 = new String[] {
                 "com.ext.portlet.model.Contest", "boolean"
             };
+
+        _methodName83 = "generateContestUrlName";
+
+        _methodParameterTypes83 = new String[] { "com.ext.portlet.model.Contest" };
     }
 
     @Override
@@ -3014,5 +3020,28 @@ public class ContestLocalServiceClp implements ContestLocalService {
                     " is not a valid exception");
             }
         }
+    }
+
+    @Override
+    public java.lang.String generateContestUrlName(
+        com.ext.portlet.model.Contest contest) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName83,
+                    _methodParameterTypes83,
+                    new Object[] { ClpSerializer.translateInput(contest) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 }

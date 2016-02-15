@@ -778,6 +778,11 @@ public class ContestLocalServiceUtil {
         getService().addContestYearSuffixToContest(contest, checkForCompleted);
     }
 
+    public static java.lang.String generateContestUrlName(
+        com.ext.portlet.model.Contest contest) {
+        return getService().generateContestUrlName(contest);
+    }
+
     public static void clearService() {
         _service = null;
     }

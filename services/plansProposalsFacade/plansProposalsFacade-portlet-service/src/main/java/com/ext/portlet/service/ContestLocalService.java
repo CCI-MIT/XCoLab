@@ -665,4 +665,7 @@ public interface ContestLocalService extends BaseLocalService,
     */
     public void addContestYearSuffixToContest(
         com.ext.portlet.model.Contest contest, boolean checkForCompleted);
+
+    public java.lang.String generateContestUrlName(
+        com.ext.portlet.model.Contest contest);
 }

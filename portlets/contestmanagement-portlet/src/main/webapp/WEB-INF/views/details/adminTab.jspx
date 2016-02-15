@@ -37,6 +37,62 @@
 
 				<div class="addpropbox">
 					<label>
+						<strong>Contest URL name</strong>
+						<a class="helpTrigger" href="javascript:;"><img
+								src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+					</label>
+
+					<div class="addprophelp">
+                        A short name for the contest to be used in friendly URLs.
+                        URLs will be of the format /contests/{contestYear}/{contestURLName},
+                        where {contestYear} and {contestURL} name are defined here.<br />
+                        <em><strong>Warning:</strong> Never change this value after the contest launch,
+                        as it will break all previous contest and proposal links!</em>
+                    </div>
+					<div class="clearfix"><!--  --></div>
+					<div class="addpropInputContainer">
+						<form:input path="contestUrlName" id="contestUrlName"/>
+
+						<div class="reg_errors"><!--  -->
+							<form:errors cssClass="alert alert-error" path="contestUrlName"/>
+						</div>
+						<div class="clearfix"><!-- --></div>
+						<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
+								class="limit_charactersMax">40</span> characters
+						</div>
+					</div>
+				</div>
+
+				<div class="addpropbox">
+					<label>
+						<strong>Contest Year</strong>
+						<a class="helpTrigger" href="javascript:;"><img
+								src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+					</label>
+
+					<div class="addprophelp">
+                        The contest year will be used to generate the contest URL and should reflect the year of the current contest period.
+                        URLs will be of the format /contests/{contestYear}/{contestURLName},
+                        where {contestYear} and {contestURL} name are defined here.<br />
+                        <em><strong>Warning:</strong> Never change this value after the contest launch,
+                        as it will break all previous contest and proposal links!</em>
+                    </div>
+					<div class="clearfix"><!--  --></div>
+					<div class="addpropInputContainer">
+						<form:input path="contestYear" id="contestYear" />
+
+						<div class="reg_errors"><!--  -->
+							<form:errors cssClass="alert alert-error" path="contestYear"/>
+						</div>
+						<div class="clearfix"><!-- --></div>
+						<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
+								class="limit_charactersMax">4</span> characters
+						</div>
+					</div>
+				</div>
+
+				<div class="addpropbox">
+					<label>
 						<strong>Email Template URL</strong>
 						<a class="helpTrigger" href="javascript:;"><img
 								src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>

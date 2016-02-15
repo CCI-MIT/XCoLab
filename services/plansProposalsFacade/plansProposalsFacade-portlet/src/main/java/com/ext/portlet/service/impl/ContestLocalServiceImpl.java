@@ -134,10 +134,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public Contest createNewContest(Long userId, String name) throws SystemException, PortalException {
         Contest c = contestLocalService.createContest(CounterLocalServiceUtil.increment(Contest.class.getName()));
 
-
         c.setAuthorId(userId);
         c.setContestName(name);
         c.setContestShortName(name);
+        c.setContestUrlName(generateContestUrlName(c));
 
         setGroupAndDiscussionForContest(c);
 
@@ -1196,5 +1196,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Eastern"));
         calendar.setTime(date);
         return calendar.get(Calendar.YEAR);
+    }
+
+    @Override
+    public String generateContestUrlName(Contest contest) {
+        String contestUrlName = contest.getContestShortName().toLowerCase();
+        return contestUrlName.replaceAll(" ", "-").replaceAll("[^a-z0-9-]", "");
     }
 }

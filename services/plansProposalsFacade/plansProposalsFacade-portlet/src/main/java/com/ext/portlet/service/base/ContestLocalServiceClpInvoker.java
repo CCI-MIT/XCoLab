@@ -173,6 +173,8 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes580;
     private String _methodName581;
     private String[] _methodParameterTypes581;
+    private String _methodName583;
+    private String[] _methodParameterTypes583;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -529,6 +531,10 @@ public class ContestLocalServiceClpInvoker {
         _methodParameterTypes581 = new String[] {
                 "com.ext.portlet.model.Contest", "boolean"
             };
+
+        _methodName583 = "generateContestUrlName";
+
+        _methodParameterTypes583 = new String[] { "com.ext.portlet.model.Contest" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -981,6 +987,11 @@ public class ContestLocalServiceClpInvoker {
                 ((Boolean) arguments[1]).booleanValue());
 
             return null;
+        }
+
+        if (_methodName583.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes583, parameterTypes)) {
+            return ContestLocalServiceUtil.generateContestUrlName((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         throw new UnsupportedOperationException();
