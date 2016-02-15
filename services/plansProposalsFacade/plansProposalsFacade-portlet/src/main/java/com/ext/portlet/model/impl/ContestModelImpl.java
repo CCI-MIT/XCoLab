@@ -118,14 +118,16 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.Contest"),
             true);
-    public static long CONTESTACTIVE_COLUMN_BITMASK = 1L;
-    public static long CONTESTPRIVATE_COLUMN_BITMASK = 2L;
-    public static long CONTESTTIER_COLUMN_BITMASK = 4L;
-    public static long CONTESTTYPEID_COLUMN_BITMASK = 8L;
-    public static long FEATURED_COLUMN_BITMASK = 16L;
-    public static long FLAG_COLUMN_BITMASK = 32L;
-    public static long WEIGHT_COLUMN_BITMASK = 64L;
-    public static long CREATED_COLUMN_BITMASK = 128L;
+    public static long CONTESTURLNAME_COLUMN_BITMASK = 1L;
+    public static long CONTESTYEAR_COLUMN_BITMASK = 2L;
+    public static long CONTESTACTIVE_COLUMN_BITMASK = 4L;
+    public static long CONTESTPRIVATE_COLUMN_BITMASK = 8L;
+    public static long CONTESTTIER_COLUMN_BITMASK = 16L;
+    public static long CONTESTTYPEID_COLUMN_BITMASK = 32L;
+    public static long FEATURED_COLUMN_BITMASK = 64L;
+    public static long FLAG_COLUMN_BITMASK = 128L;
+    public static long WEIGHT_COLUMN_BITMASK = 256L;
+    public static long CREATED_COLUMN_BITMASK = 512L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Contest"));
     private static ClassLoader _classLoader = Contest.class.getClassLoader();
@@ -139,7 +141,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private String _ContestName;
     private String _ContestShortName;
     private String _ContestUrlName;
+    private String _originalContestUrlName;
     private long _ContestYear;
+    private long _originalContestYear;
+    private boolean _setOriginalContestYear;
     private String _ContestDescription;
     private String _ContestModelDescription;
     private String _ContestPositionsDescription;
@@ -777,7 +782,17 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public void setContestUrlName(String ContestUrlName) {
+        _columnBitmask |= CONTESTURLNAME_COLUMN_BITMASK;
+
+        if (_originalContestUrlName == null) {
+            _originalContestUrlName = _ContestUrlName;
+        }
+
         _ContestUrlName = ContestUrlName;
+    }
+
+    public String getOriginalContestUrlName() {
+        return GetterUtil.getString(_originalContestUrlName);
     }
 
     @JSON
@@ -788,7 +803,19 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public void setContestYear(long ContestYear) {
+        _columnBitmask |= CONTESTYEAR_COLUMN_BITMASK;
+
+        if (!_setOriginalContestYear) {
+            _setOriginalContestYear = true;
+
+            _originalContestYear = _ContestYear;
+        }
+
         _ContestYear = ContestYear;
+    }
+
+    public long getOriginalContestYear() {
+        return _originalContestYear;
     }
 
     @JSON
@@ -1604,6 +1631,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestModelImpl._originalContestTypeId = contestModelImpl._contestTypeId;
 
         contestModelImpl._setOriginalContestTypeId = false;
+
+        contestModelImpl._originalContestUrlName = contestModelImpl._ContestUrlName;
+
+        contestModelImpl._originalContestYear = contestModelImpl._ContestYear;
+
+        contestModelImpl._setOriginalContestYear = false;
 
         contestModelImpl._originalContestActive = contestModelImpl._contestActive;
 

@@ -70,6 +70,14 @@
             <order-column name="created" />
         </order>
 
+        <finder name="ContestYear" return-type="Collection">
+            <finder-column name="ContestYear"/>
+        </finder>
+
+        <finder name="ContestUrlName" return-type="Contest">
+            <finder-column name="ContestUrlName"/>
+        </finder>
+
         <finder name="Tier" return-type="Collection">
             <finder-column name="contestTier" />
         </finder>

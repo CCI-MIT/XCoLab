@@ -79,6 +79,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -222,6 +223,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         c.setGroupId(group.getGroupId());
         c.setDiscussionGroupId(categoryGroup.getPrimaryKey());
         store(c);
+    }
+
+    @Override
+    public Contest getByContestUrlName(String contestUrlName) throws SystemException, NoSuchContestException {
+        return null;
+    }
+
+    @Override
+    public List<Contest> findByContestYear(long contestYear) throws SystemException {
+        return Collections.emptyList();
     }
     
     @Override
