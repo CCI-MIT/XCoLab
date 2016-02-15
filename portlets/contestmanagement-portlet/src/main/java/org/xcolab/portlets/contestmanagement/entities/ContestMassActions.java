@@ -27,7 +27,8 @@ public enum ContestMassActions{
     SHOW_IN_TILE_VIEW("Show in tile view", "Hide in tile viw", BaseContestWrapper.class, "setShow_in_tile_view"),
     SHOW_IN_LIST_VIEW("Show in list view", "Hide in list view", BaseContestWrapper.class, "setShow_in_list_view"),
     SHOW_IN_OUTLINE_VIEW("Show in outline view", "Hide in outline view", BaseContestWrapper.class, "setShow_in_outline_view"),
-    HIDE_RIBBONS("Hide contest ribbons", "Show contest ribbons", BaseContestWrapper.class, "setHideRibbons");
+    HIDE_RIBBONS("Hide contest ribbons", "Show contest ribbons", BaseContestWrapper.class, "setHideRibbons"),
+    GENERATE_CONTEST_URL_FIELDS("Generate missing contest url fields", ContestMassActionMethods.class, "generateContestUrlNameAndYear");
 
     private final Log _log = LogFactoryUtil.getLog(ContestMassActions.class);
     private final String actionDisplayName;
