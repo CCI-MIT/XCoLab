@@ -148,6 +148,8 @@
         <column name="proposalNamePlural" type="String" />
         <column name="portletName" type="String" />
         <column name="portletUrl" type="String"/>
+        <column name="friendlyUrlStringContests" type="String" />
+        <column name="friendlyUrlStringProposal" type="String" />
         <column name="menuItemName" type="String"/>
         <column name="hasDiscussion" type="boolean" />
     </entity>

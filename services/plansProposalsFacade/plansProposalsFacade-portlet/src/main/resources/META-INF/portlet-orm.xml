@@ -354,6 +354,8 @@
 			<basic name="proposalNamePlural" />
 			<basic name="portletName" />
 			<basic name="portletUrl" />
+			<basic name="friendlyUrlStringContests" />
+			<basic name="friendlyUrlStringProposal" />
 			<basic name="menuItemName" />
 			<basic name="hasDiscussion" />
 			<transient name="modelAttributes" />

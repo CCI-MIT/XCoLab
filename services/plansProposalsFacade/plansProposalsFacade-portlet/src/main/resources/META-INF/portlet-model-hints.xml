@@ -290,6 +290,8 @@
 		<field name="proposalNamePlural" type="String" />
 		<field name="portletName" type="String" />
 		<field name="portletUrl" type="String" />
+		<field name="friendlyUrlStringContests" type="String" />
+		<field name="friendlyUrlStringProposal" type="String" />
 		<field name="menuItemName" type="String" />
 		<field name="hasDiscussion" type="boolean" />
 	</model>

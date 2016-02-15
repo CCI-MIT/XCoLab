@@ -226,6 +226,8 @@ create table xcolab_ContestType (
 	proposalNamePlural VARCHAR(75) null,
 	portletName VARCHAR(75) null,
 	portletUrl VARCHAR(75) null,
+	friendlyUrlStringContests VARCHAR(75) null,
+	friendlyUrlStringProposal VARCHAR(75) null,
 	menuItemName VARCHAR(75) null,
 	hasDiscussion BOOLEAN
 );

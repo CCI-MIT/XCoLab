@@ -337,6 +337,8 @@
 		<property name="proposalNamePlural" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="portletName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="portletUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="friendlyUrlStringContests" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="friendlyUrlStringProposal" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="menuItemName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="hasDiscussion" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
