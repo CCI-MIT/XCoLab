@@ -25,7 +25,7 @@ public abstract class BaseProposalsFeedEntryGenerator implements ProposalActivit
 
     public String getProposalLink(Proposal proposal) throws PortalException, SystemException {
         ProposalWrapper wrapper = new ProposalWrapper(proposal);
-        return String.format(hyperlink,wrapper.getProposalURL(), wrapper.getName());
+        return String.format(hyperlink,wrapper.getProposalUrl(), wrapper.getName());
     }
 
     public String getUserLink(long userId) throws PortalException, SystemException {

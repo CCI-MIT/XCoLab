@@ -99,7 +99,7 @@
 			</div>
   			<div class="divider"><!--  --></div> 
   		<div class="show">
-  			<a href="/web/guest/plans/-/plans/contestId/1300102">Suggest a new contest</a>
+  			<a href="/contests/2014/contest-suggestions">Suggest a new contest</a>
   		</div> 
  			<div class="filter" style="position: relative;">
  				<portlet:renderURL var="filterURL" />

@@ -167,7 +167,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         DiscussionCategoryGroup categoryGroup = DiscussionCategoryGroupLocalServiceUtil
                 .createDiscussionCategoryGroup(c.getContestName() + " discussion");
 
-        categoryGroup.setUrl("/web/guest/plans/-/plans/contestId/" + c.getContestPK() + "/page/discussion");
+        categoryGroup.setUrl(getContestLinkUrl(c) + "/discussion");
 
         DiscussionCategoryGroupLocalServiceUtil.store(categoryGroup);
 
@@ -924,6 +924,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
 
         return teamRoleToUsersMap;
+    }
+
+    public String getContestLinkUrl(long contestId) {
+        try {
+            return getContestLinkUrl(getContest(contestId));
+        } catch (PortalException | SystemException e) {
+            return "/contests";
+        }
     }
 
     /**

@@ -644,6 +644,10 @@ public class ContestLocalServiceUtil {
         return getService().getContestManagersForContest(contest);
     }
 
+    public static java.lang.String getContestLinkUrl(long contestId) {
+        return getService().getContestLinkUrl(contestId);
+    }
+
     /**
     * Returns the URL link address for the passed contest
     *

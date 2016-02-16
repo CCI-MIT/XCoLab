@@ -31,7 +31,7 @@
             		<portlet:actionURL var="deleteProposalURL">
                     	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
 	                    <portlet:param name="contestId" value="${contest.contestPK }" />
-    	                <portlet:param name="planId" value="${proposal.proposalId }" />
+    	                <portlet:param name="proposalId" value="${proposal.proposalId }" />
         	            <portlet:param name="action" value="toggleProposalOpen" />
             		</portlet:actionURL >
 
@@ -57,7 +57,7 @@
             		<portlet:actionURL var="assignRibbonURL">
                     	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
 	                    <portlet:param name="contestId" value="${contest.contestPK }" />
-    	                <portlet:param name="planId" value="${proposal.proposalId }" />
+    	                <portlet:param name="proposalId" value="${proposal.proposalId }" />
         	            <portlet:param name="action" value="assignRibbon" />
             		</portlet:actionURL >
             		<form action="${assignRibbonURL }" method="post">
@@ -90,7 +90,7 @@
             		<portlet:actionURL var="deleteProposalURL">
                     	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
 	                    <portlet:param name="contestId" value="${contest.contestPK }" />
-    	                <portlet:param name="planId" value="${proposal.proposalId }" />
+    	                <portlet:param name="proposalId" value="${proposal.proposalId }" />
         	            <portlet:param name="action" value="deleteProposal" />
         	            <portlet:param name="delete" value="true" />
             		</portlet:actionURL >
@@ -111,7 +111,7 @@
 			<portlet:actionURL var="promoteProposalURL">
 				<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
 				<portlet:param name="contestId" value="${contest.contestPK }" />
-				<portlet:param name="planId" value="${proposal.proposalId }" />
+				<portlet:param name="proposalId" value="${proposal.proposalId }" />
 				<portlet:param name="contestPhaseId" value="${proposal.contestPhase.contestPhasePK}" />
 				<portlet:param name="action" value="promoteProposal" />
 			</portlet:actionURL >
@@ -164,7 +164,7 @@
                 <portlet:actionURL var="replyToMembershipRequest">
                     <portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
                     <portlet:param name="contestId" value="${contest.contestPK }" />
-                    <portlet:param name="planId" value="${proposal.proposalId }" />
+                    <portlet:param name="proposalId" value="${proposal.proposalId }" />
                     <portlet:param name="action" value="replyToMembershipRequest" />
                 </portlet:actionURL>
                 <c:set var="count" value="1" scope="page" />

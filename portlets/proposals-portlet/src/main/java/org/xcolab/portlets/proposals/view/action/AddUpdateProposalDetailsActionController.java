@@ -320,7 +320,7 @@ public class AddUpdateProposalDetailsActionController {
         proposalsContext.invalidateContext(request);
         
         request.setAttribute("ACTION_REDIRECTING", true);
-        response.sendRedirect(proposal.getProposalURL());
+        response.sendRedirect(proposal.getProposalUrl());
     }
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})

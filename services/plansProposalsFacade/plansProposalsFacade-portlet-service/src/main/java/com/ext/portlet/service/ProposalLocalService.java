@@ -895,6 +895,11 @@ public interface ProposalLocalService extends BaseLocalService,
         com.ext.portlet.model.Proposal proposal,
         com.ext.portlet.model.ContestPhase contestPhase);
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getProposalLinkUrl(
+        com.ext.portlet.model.Contest contest, long proposalId,
+        long contestPhaseId);
+
     /**
     * Returns list of proposals referenced by given proposal that are relevant for the ingtegration contests
     *

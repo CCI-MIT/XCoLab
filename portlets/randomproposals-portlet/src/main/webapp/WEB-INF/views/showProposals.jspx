@@ -10,7 +10,7 @@
         <c:forEach items="${proposalsModel.proposals}" var="proposal">
         	<div class="contestbox">
                 <div class="img-wrap">
-                    <a href="${proposal.proposalURL}">
+                    <a href="${proposal.proposalUrl}">
                         <c:if test="${proposal.image > 0}">
                             <img src="${proposalsModel.baseImagePath}${proposal.image}" width="151" height="151" alt="${proposal.name}" />
                        	</c:if>

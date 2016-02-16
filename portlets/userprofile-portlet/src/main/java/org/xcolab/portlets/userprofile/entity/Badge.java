@@ -2,8 +2,9 @@ package org.xcolab.portlets.userprofile.entity;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -23,22 +24,22 @@ public class Badge implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final int badgeType; // 1,2,3
-    private final long planId; // ID of connected Plan
     private final String badgeTitle;    // "Winner", "Finalist", "Semi-Finalist"
     private final String badgeText; // "Popular Choice", "Judges Choice", etc
+    private final Contest contest;
     private int year = 2013;
     private boolean hideRibbon;
 
-    private final long contestId;
+    private final Proposal proposal;
     private final String planTitle;
 
 
-    public Badge(int ribbonType, String ribbonText, long planId, String planTitle, long contestId){
+    public Badge(int ribbonType, String ribbonText, Proposal proposal, String planTitle, Contest contest){
         this.badgeType = ribbonType;
-        this.contestId = contestId;
         this.planTitle = planTitle;
-        this.planId = planId;
+        this.proposal = proposal;
         this.badgeText = ribbonText;
+        this.contest = contest;
 
         if (ribbonText.equalsIgnoreCase("Finalist") || ribbonText.equalsIgnoreCase("Judges' Special Commendation")){
             this.badgeTitle = "Finalist";
@@ -50,7 +51,6 @@ public class Badge implements Serializable {
 
         // Associate the year and get hideRibbon property from contest
         try {
-            Contest contest = ContestLocalServiceUtil.getContest(contestId);
             hideRibbon = contest.getHideRibbons();
 
             ContestPhase lastPhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
@@ -85,21 +85,12 @@ public class Badge implements Serializable {
         return fullYear.substring(2, fullYear.length());
     }
 
-    public long getContestId(){
-        return contestId;
-    }
-
     public String getContestName() {
-        try {
-            return ContestLocalServiceUtil.getContest(contestId).getContestShortName();
-        } catch (PortalException | SystemException e) {
-            e.printStackTrace();
-        }
-        return "";
+        return contest.getContestShortName();
     }
 
-    public long getPlanId(){
-        return planId;
+    public String getProposalLinkUrl() {
+        return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
     }
 
     public String getPlanTitle(){

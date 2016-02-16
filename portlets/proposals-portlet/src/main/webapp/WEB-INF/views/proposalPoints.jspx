@@ -32,7 +32,7 @@
         <portlet:actionURL var="savePointsAssignmentsURL">
             <portlet:param name="action_forwardToPage" value="proposalPoints"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
-            <portlet:param name="planId" value="${proposal.proposalId}"/>
+            <portlet:param name="proposalId" value="${proposal.proposalId}"/>
             <portlet:param name="action" value="savePointAssignments"/>
         </portlet:actionURL>
         <form:form id="assignPointsForm" action="${savePointsAssignmentsURL}" method="post" commandName="assignPointsBean">
@@ -50,7 +50,7 @@
             <c:forEach var="linkingProposal" items="${linkingProposals}">
                 <tr class="colabRow">
                     <td>
-                        <a href="${linkingProposal.proposalURL}">${linkingProposal.name}</a>
+                        <a href="${linkingProposal.proposalUrl}">${linkingProposal.name}</a>
                     </td>
                     <td style="text-align: right;">
                         <fmt:formatDate value="${linkingProposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" />

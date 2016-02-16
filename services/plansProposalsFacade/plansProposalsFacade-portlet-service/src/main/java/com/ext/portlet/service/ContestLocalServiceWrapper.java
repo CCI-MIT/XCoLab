@@ -693,6 +693,11 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getContestManagersForContest(contest);
     }
 
+    @Override
+    public java.lang.String getContestLinkUrl(long contestId) {
+        return _contestLocalService.getContestLinkUrl(contestId);
+    }
+
     /**
     * Returns the URL link address for the passed contest
     *

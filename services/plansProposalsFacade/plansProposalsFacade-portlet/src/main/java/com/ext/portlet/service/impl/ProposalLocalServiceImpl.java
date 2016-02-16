@@ -1176,6 +1176,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return getProposalLinkUrl(contest, proposal.getProposalId(), contestPhase.getContestPhasePK());
     }
 
+    @Override
     public String getProposalLinkUrl(Contest contest, long proposalId, long contestPhaseId) {
         String link = "/";
         String friendlyUrlStringProposal;
@@ -1189,6 +1190,13 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
 
         if (contestPhaseId > 0) {
+            try {
+                long activePhaseId = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest).getContestPhasePK();
+                if (activePhaseId == contestPhaseId) {
+                    link += "/%d/%s/c/" + friendlyUrlStringProposal + "/%d";
+                    return String.format(link, contest.getContestYear(), contest.getContestUrlName(), proposalId);
+                }
+            } catch (PortalException | SystemException ignored) { }
             link += "/%d/%s/phase/%d/" + friendlyUrlStringProposal + "/%d";
             return String.format(link, contest.getContestYear(), contest.getContestUrlName(),
                     contestPhaseId, proposalId);

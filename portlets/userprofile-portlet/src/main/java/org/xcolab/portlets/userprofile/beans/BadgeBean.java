@@ -3,6 +3,7 @@ package org.xcolab.portlets.userprofile.beans;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.Proposal;
@@ -59,9 +60,9 @@ public class BadgeBean implements Serializable{
                 if (proposalRibbon > 0) {
                     // Plan won a contest
                     String badgeText = ribbon.getHoverText();
-                    long contestId = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestPK();
-                    String planTitle =  ProposalAttributeLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0).getStringValue();
-                    badges.add(new Badge(proposalRibbon, badgeText, p.getProposalId(), planTitle, contestId));
+                    Contest contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId());
+                    String proposalTitle =  ProposalAttributeLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0).getStringValue();
+                    badges.add(new Badge(proposalRibbon, badgeText, p, proposalTitle, contest));
                 }
             } catch (SystemException | PortalException e) {
                 _log.warn("Could nod add badge to user profile view for userId: " + userID + " and proposalId: " + p.getProposalId(), e);
