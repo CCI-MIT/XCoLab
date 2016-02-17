@@ -15,7 +15,7 @@
 				    <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
 					    <div class="votebox-top clearfix">
 						    <div class="vote">
-							    <img src="/climatecolab-theme/images/icon-proposal-vote.png" width="22" height="18" alt="Vote" />
+							    <img src="${themeDisplay.pathThemeImages}/icon-proposal-vote.png" width="22" height="18" alt="Vote" />
                                 <span>${proposal.votesCount}</span> votes
                                 <c:if test="${proposalsPermissions.votingEnabled}">
                                     <portlet:actionURL var="voteOnProposalURL">
@@ -34,13 +34,13 @@
                             </div>
                             <div class="question">
                                 <a href="/web/guest/resources/-/wiki/Main/contest+rules#Voting" target="_blank">
-                                    <img src="/climatecolab-theme/images/icon-proposal-question.png" width="23" height="23" alt="Question?" />
+                                    <img src="${themeDisplay.pathThemeImages}/icon-proposal-question.png" width="23" height="23" alt="Question?" />
                                 </a>
                             </div>
                         </div>
                     </c:if>
                     <div class="votebox-bottom">
-                        <img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
+                        <img src="${themeDisplay.pathThemeImages}/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
                         <span>${proposal.supportersCount}</span> supporters
                         <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
 							<portlet:actionURL var="supportProposalActionURL">
@@ -77,10 +77,10 @@
 					<a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
 						<c:choose>
 							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
-								<img src="/climatecolab-theme/images/icon_star.png" /> Subscribe
+								<img src="${themeDisplay.pathThemeImages}/icon_star.png" /> Subscribe
 							</c:when>
 							<c:otherwise>
-								<img src="/climatecolab-theme/images/unsubscribe.png" /> Unsubscribe
+								<img src="${themeDisplay.pathThemeImages}/unsubscribe.png" /> Unsubscribe
 							</c:otherwise>
 						</c:choose>
 					</a>
@@ -88,7 +88,7 @@
 			</c:if>
             <div class="clearfix">&#160;</div>
             <div class="message-share-button">
-                <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }"><img src="/climatecolab-theme/images/icon_new-message.gif" width="31" height="29" /> Share via CoLab messaging</a>
+                <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }"><img src="${themeDisplay.pathThemeImages}/icon_new-message.gif" width="31" height="29" /> Share via CoLab messaging</a>
             </div>
             <script type="text/javascript">
                 if (typeof(addthis) != 'undefined') {

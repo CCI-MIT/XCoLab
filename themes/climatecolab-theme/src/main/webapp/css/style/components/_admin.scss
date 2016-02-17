@@ -1,10 +1,5 @@
-/**
-Admin interface fixes
-*/
-
 div#p_p_id_145_ {
-  height: 44px;
-  @include background(linear-gradient($primary-color, $primary-dark));
+  height: 40px;
 }
 
 #p_p_id_145_ ul {
@@ -17,6 +12,8 @@ div#p_p_id_145_ {
 
 #p_p_id_145_ div.navbar-inner {
   width: 100%;
+  @include background-gradient($primary-color);
+  color: contrasting-color($primary-color);
 }
 
 #p_p_id_145_ div.container > div {
@@ -98,7 +95,6 @@ div#p_p_id_145_ {
   color: black;
 }
 
-/* ADMIN OVERLAYS ------------------------------------------------------------------------------------- */
 .admin-overlay-wrap {
   background: url(../images/adminoverlay-top.png) repeat-x;
   width: 100%;
@@ -172,8 +168,6 @@ div#p_p_id_145_ {
 .savechanges .btns {
   text-align: center;
 }
-
-/*  ADMIN  --------------------------------------------------- */
 
 .admin_left {
   float: left;

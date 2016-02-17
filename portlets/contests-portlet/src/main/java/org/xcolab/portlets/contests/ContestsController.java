@@ -51,6 +51,8 @@ public class ContestsController {
         
         model.addAttribute("contests", contestWrappers);
         model.addAttribute("title", contestPreferences.getTitle());
+        model.addAttribute("allContestsUrl", contestPreferences.getAllContestsUrl());
+        model.addAttribute("allContestsTitle", contestPreferences.getAllContestsTitle());
     	return "showContests";
     }
 }
