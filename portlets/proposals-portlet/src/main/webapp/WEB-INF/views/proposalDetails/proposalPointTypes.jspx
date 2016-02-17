@@ -301,14 +301,14 @@
                                         <c:choose>
                                             <c:when test="${currentTabWrapped.canEdit}">
                                                 <form:input data-changed-by-user="true"
-                                                        path="assignments[${pointType.id}][${userId}]"
+                                                        path="assignmentsByUserIdByPointTypeId[${pointType.id}][${userId}]"
                                                         class="popupreg_input"
-                                                        value="${assignPointsBean.assignments[pointType.id][userId]}"
+                                                        value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][userId]}"
                                                     />
                                             </c:when>
                                             <c:otherwise>
-                                                <span class="input" data-value="${assignPointsBean.assignments[pointType.id][userId]}">
-                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${assignPointsBean.assignments[pointType.id][userId]}"/>%
+                                                <span class="input" data-value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][userId]}">
+                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][userId]}"/>%
                                                 </span>
                                             </c:otherwise>
                                         </c:choose>

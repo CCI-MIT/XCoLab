@@ -12,27 +12,20 @@
   }
 
   .fill {
-    background-color: #30a3fb;
+    background-color: $primary-color;
     transition: background-color 2s ease;
   }
 
   .globe {
-    background: url(../img/globus.png) no-repeat;
+    background: url(../images/points/globus.png) no-repeat;
     background-size: cover;
     height: 94px;
     padding-top: 30px;
-    text-align: center;
-    font-size: 2em;
-    color: white;
-    text-shadow: -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
   }
 }
 
 p.arrow-down {
-  background: url(../img/arrow-down.png) no-repeat;
+  background: url(../images/points/arrow-down.png) no-repeat;
   background-size: cover;
   width: 35px;
   height: 52px;
@@ -78,11 +71,11 @@ td.left.small .points-container, td.left.small .arrow-down {
   }
   p.info {
     margin-bottom: 0;
+    margin-right: 10px;
   }
 
   td.left {
-    background-image: url(../img/arrow-left.png);
-    background-position: 69.5% 0;
+    background: url(../images/points/arrow-left.png) 69.5% 0;
   }
   td.left.large {
     background-position: 62.5% 0;
@@ -91,14 +84,13 @@ td.left.small .points-container, td.left.small .arrow-down {
     background-position: 37.5% 0;
   }
   td.right.small {
-    background-position: 0% 0%;
+    background-position: 0 0;
   }
   td.left.small {
-    background-position: 100% 0%;
+    background-position: 100% 0;
   }
   td.right {
-    background-image: url(../img/arrow-right.png);
-    background-position: 30.5% 0;
+    background: url(../images/points/arrow-right.png) 30.5% 0;
   }
   td.left, td.right {
     background-repeat: no-repeat;
@@ -155,7 +147,7 @@ td.left.small .points-container, td.left.small .arrow-down {
   }
 
   .highlighted {
-    color: #66b035;
+    color: $secondary-color;
     font-weight: 700;
     text-align: center;
   }
@@ -184,16 +176,16 @@ td.left.small .points-container, td.left.small .arrow-down {
   }
   .deleteListItem {
     float: right;
-    margin: 8px 18px 0px 10px;
+    margin: 8px 18px 0 10px;
     padding: 2px 6px;
-    background: #30a3fb;
+    background: $primary-color;
     border-radius: 3px;
     color: white;
     cursor: pointer;
   }
   .error {
     font-weight: bold;
-    color: #c00;
+    color: $alert-color;
   }
 
   .header .percentage {
@@ -218,14 +210,14 @@ td.left.small .points-container, td.left.small .arrow-down {
 #help-text {
   margin: 1.5em 0;
   padding: 15px;
-  background: url(/climatecolab-theme/images/bg-noise.jpg) #ecece5;
+  background: url(../images/bg-noise.png) $primary-light-grey;
   border-radius: 10px;
 }
 
 #expand-help-text {
   display: inline-block;
   text-indent: -1000px;
-  background-image: url(../img/icon-question-mark.png);
+  background-image: url(../images/points/icon-question-mark.png);
   background-size: cover;
   width: 29px;
   height: 29px;
