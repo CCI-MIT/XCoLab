@@ -246,7 +246,32 @@
 			<finder-column name="subProposalId" />
 		</finder>
 	</entity>
+	<entity name="ProposalUnversionedAttribute" local-service="true">
+		<column name="id" type="long" primary="true" />
+		<column name="proposalId" type="long" />
+		<column name="createAuthorId" type="long" />
+		<column name="lastAuthorId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="lastUpdateDate" type="Date" />
+		<column name="name" type="String" />
+		<column name="addtionalId" type="int" />
+		<column name="numericValue" type="long" />
 
+		<column name="stringValue" type="String" />
+		<column name="realValue" type="double" />
+
+
+
+		<finder return-type="Collection" name="ProposalId_ProposalUnversionedAttribute">
+			<finder-column name="proposalId" />
+		</finder>
+
+		<finder return-type="ProposalUnversionedAttribute" name="ProposalId_ProposalUnversionedAttributeName">
+			<finder-column name="proposalId" />
+			<finder-column name="name" />
+		</finder>
+
+	</entity>
 	<!-- Proposal impact -->
 
 

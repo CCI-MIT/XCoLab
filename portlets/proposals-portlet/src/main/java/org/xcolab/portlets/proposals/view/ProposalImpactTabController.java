@@ -1,12 +1,11 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ImpactIteration;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.*;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalUnversionedAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -20,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.enums.ContestTier;
+import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -65,8 +65,29 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         proposalWrapper = proposalsContext.getProposalWrapped(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
         boolean userAllowedToEdit = false;
+        boolean userCanCommentAsAuthor = false;
+        boolean userCanCommentAsAIF = false;
+
         if (edit) {
             userAllowedToEdit = canEditImpactTab(request);
+            userCanCommentAsAuthor = canCommentAsAuthor(request);
+            model.addAttribute("canCommentAsAuthor", userCanCommentAsAuthor);
+            userCanCommentAsAIF = canCommentAsAIF(request);
+            model.addAttribute("canCommentAsAIF", userCanCommentAsAIF);
+        }
+
+
+
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
+                getAttributes(proposalWrapper.getProposalId());
+        if(unversionedAttributes!=null && !unversionedAttributes.isEmpty())
+        for(ProposalUnversionedAttribute pua : unversionedAttributes) {
+            if(pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString())) {
+                model.addAttribute("authorComment", pua);
+            }
+            if(pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString())) {
+                model.addAttribute("iafComment", pua);
+            }
         }
 
         model.addAttribute("edit", userAllowedToEdit);
@@ -124,6 +145,12 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return modelId;
     }
 
+    private boolean canCommentAsAuthor(PortletRequest request) throws PortalException, SystemException {
+        return proposalsContext.getPermissions(request).getCanAdminProposal();
+    }
+    private boolean canCommentAsAIF(PortletRequest request) throws PortalException, SystemException {
+        return proposalsContext.getPermissions(request).getCanIAFActions()||proposalsContext.getPermissions(request).getCanAdminAll();
+    }
     private boolean canEditImpactTab(PortletRequest request) throws PortalException, SystemException {
         return ProposalTab.IMPACT.getCanEdit(proposalsContext.getPermissions(request), proposalsContext, request);
     }

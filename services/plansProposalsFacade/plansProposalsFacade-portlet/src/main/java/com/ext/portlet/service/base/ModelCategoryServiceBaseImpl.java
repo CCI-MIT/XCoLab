@@ -76,6 +76,7 @@ import com.ext.portlet.service.persistence.ProposalRatingTypePersistence;
 import com.ext.portlet.service.persistence.ProposalRatingValuePersistence;
 import com.ext.portlet.service.persistence.ProposalReferencePersistence;
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
+import com.ext.portlet.service.persistence.ProposalUnversionedAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
 import com.ext.portlet.service.persistence.SpamReportPersistence;
@@ -544,6 +545,12 @@ public abstract class ModelCategoryServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.ProposalSupporterService proposalSupporterService;
     @BeanReference(type = ProposalSupporterPersistence.class)
     protected ProposalSupporterPersistence proposalSupporterPersistence;
+    @BeanReference(type = com.ext.portlet.service.ProposalUnversionedAttributeLocalService.class)
+    protected com.ext.portlet.service.ProposalUnversionedAttributeLocalService proposalUnversionedAttributeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalUnversionedAttributeService.class)
+    protected com.ext.portlet.service.ProposalUnversionedAttributeService proposalUnversionedAttributeService;
+    @BeanReference(type = ProposalUnversionedAttributePersistence.class)
+    protected ProposalUnversionedAttributePersistence proposalUnversionedAttributePersistence;
     @BeanReference(type = com.ext.portlet.service.ProposalVersionLocalService.class)
     protected com.ext.portlet.service.ProposalVersionLocalService proposalVersionLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalVersionService.class)
@@ -4740,6 +4747,63 @@ public abstract class ModelCategoryServiceBaseImpl extends BaseServiceImpl
     public void setProposalSupporterPersistence(
         ProposalSupporterPersistence proposalSupporterPersistence) {
         this.proposalSupporterPersistence = proposalSupporterPersistence;
+    }
+
+    /**
+     * Returns the proposal unversioned attribute local service.
+     *
+     * @return the proposal unversioned attribute local service
+     */
+    public com.ext.portlet.service.ProposalUnversionedAttributeLocalService getProposalUnversionedAttributeLocalService() {
+        return proposalUnversionedAttributeLocalService;
+    }
+
+    /**
+     * Sets the proposal unversioned attribute local service.
+     *
+     * @param proposalUnversionedAttributeLocalService the proposal unversioned attribute local service
+     */
+    public void setProposalUnversionedAttributeLocalService(
+        com.ext.portlet.service.ProposalUnversionedAttributeLocalService proposalUnversionedAttributeLocalService) {
+        this.proposalUnversionedAttributeLocalService = proposalUnversionedAttributeLocalService;
+    }
+
+    /**
+     * Returns the proposal unversioned attribute remote service.
+     *
+     * @return the proposal unversioned attribute remote service
+     */
+    public com.ext.portlet.service.ProposalUnversionedAttributeService getProposalUnversionedAttributeService() {
+        return proposalUnversionedAttributeService;
+    }
+
+    /**
+     * Sets the proposal unversioned attribute remote service.
+     *
+     * @param proposalUnversionedAttributeService the proposal unversioned attribute remote service
+     */
+    public void setProposalUnversionedAttributeService(
+        com.ext.portlet.service.ProposalUnversionedAttributeService proposalUnversionedAttributeService) {
+        this.proposalUnversionedAttributeService = proposalUnversionedAttributeService;
+    }
+
+    /**
+     * Returns the proposal unversioned attribute persistence.
+     *
+     * @return the proposal unversioned attribute persistence
+     */
+    public ProposalUnversionedAttributePersistence getProposalUnversionedAttributePersistence() {
+        return proposalUnversionedAttributePersistence;
+    }
+
+    /**
+     * Sets the proposal unversioned attribute persistence.
+     *
+     * @param proposalUnversionedAttributePersistence the proposal unversioned attribute persistence
+     */
+    public void setProposalUnversionedAttributePersistence(
+        ProposalUnversionedAttributePersistence proposalUnversionedAttributePersistence) {
+        this.proposalUnversionedAttributePersistence = proposalUnversionedAttributePersistence;
     }
 
     /**

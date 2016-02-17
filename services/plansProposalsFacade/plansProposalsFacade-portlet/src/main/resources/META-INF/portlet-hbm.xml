@@ -74,6 +74,7 @@
 	<import class="com.ext.portlet.model.ProposalRatingValue" />
 	<import class="com.ext.portlet.model.ProposalReference" />
 	<import class="com.ext.portlet.model.ProposalSupporter" />
+	<import class="com.ext.portlet.model.ProposalUnversionedAttribute" />
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
 	<import class="com.ext.portlet.model.SpamReport" />
@@ -922,6 +923,22 @@
 			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalUnversionedAttributeImpl" table="xcolab_ProposalUnversionedAttribute">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="lastAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="lastUpdateDate" type="org.hibernate.type.TimestampType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="addtionalId" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="numericValue" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="stringValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="realValue" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalVersionImpl" table="xcolab_ProposalVersion">
 		<cache usage="read-write" />

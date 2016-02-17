@@ -41,14 +41,14 @@ public class ProposalRatingTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName506;
-    private String[] _methodParameterTypes506;
-    private String _methodName507;
-    private String[] _methodParameterTypes507;
     private String _methodName512;
     private String[] _methodParameterTypes512;
     private String _methodName513;
     private String[] _methodParameterTypes513;
+    private String _methodName518;
+    private String[] _methodParameterTypes518;
+    private String _methodName519;
+    private String[] _methodParameterTypes519;
 
     public ProposalRatingTypeLocalServiceClpInvoker() {
         _methodName0 = "addProposalRatingType";
@@ -133,21 +133,21 @@ public class ProposalRatingTypeLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalRatingType"
             };
 
-        _methodName506 = "getBeanIdentifier";
-
-        _methodParameterTypes506 = new String[] {  };
-
-        _methodName507 = "setBeanIdentifier";
-
-        _methodParameterTypes507 = new String[] { "java.lang.String" };
-
-        _methodName512 = "getRatingTypesForJudges";
+        _methodName512 = "getBeanIdentifier";
 
         _methodParameterTypes512 = new String[] {  };
 
-        _methodName513 = "getRatingTypesForFellows";
+        _methodName513 = "setBeanIdentifier";
 
-        _methodParameterTypes513 = new String[] {  };
+        _methodParameterTypes513 = new String[] { "java.lang.String" };
+
+        _methodName518 = "getRatingTypesForJudges";
+
+        _methodParameterTypes518 = new String[] {  };
+
+        _methodName519 = "getRatingTypesForFellows";
+
+        _methodParameterTypes519 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -239,25 +239,25 @@ public class ProposalRatingTypeLocalServiceClpInvoker {
             return ProposalRatingTypeLocalServiceUtil.updateProposalRatingType((com.ext.portlet.model.ProposalRatingType) arguments[0]);
         }
 
-        if (_methodName506.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes506, parameterTypes)) {
+        if (_methodName512.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
             return ProposalRatingTypeLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName507.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes507, parameterTypes)) {
+        if (_methodName513.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
             ProposalRatingTypeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName512.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             return ProposalRatingTypeLocalServiceUtil.getRatingTypesForJudges();
         }
 
-        if (_methodName513.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
+        if (_methodName519.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
             return ProposalRatingTypeLocalServiceUtil.getRatingTypesForFellows();
         }
 

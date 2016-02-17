@@ -136,6 +136,8 @@
                         <input type="text" id="proposalScenarioId" name="scenarioId" class="hidden"/>
                         <input type="text" id="scenarioModelId" name="modelId" class="hidden"/>
                         <input type="text" id="isConsolidatedScenario" name="isConsolidatedScenario" class="hidden"/>
+                        <input type="text" id="impactAuthorComment" name="impactAuthorComment" class="hidden"/>
+                        <input type="text" id="impactIAFComment" name="impactIAFComment" class="hidden"/>
                         <input type="text" id="proposalModelRegion" name="region" class="hidden"
                                value="${proposal.modelRegion}"/>
                     </form>
@@ -203,6 +205,8 @@
             </c:choose>
 
         </c:if>
+
+
 
         <!-- TODO show fallback Graph -->
         <div id="impact-chart"> &#160;</div>
@@ -337,11 +341,58 @@
             </div>
         </c:if>
     </div>
+    <div class="impactComments">
+        <c:if test="${edit}">
+                <div>
+                    <c:if test="${canCommentAsAuthor}">
+                        <div class="addpropbox q1">
+                            <label>
+                                <strong>Author's comments </strong>
+                            </label>
+                            <div class="addprophelp">Give your comments for your proposal's estimation of impact.</div>
+                            <div class="addpropInputContainer">
+                                <textarea id="impactAuthorComment_text_area"><c:if test="${not empty authorComment}">${authorComment.stringValue}</c:if></textarea>
+                                <div class="clearfix"><!--  --></div>
+                            </div>
+                        </div>
+                    </c:if>
+                    <c:if test="${canCommentAsAIF}">
+                        <div class="addpropbox q1">
+                            <label>
+                                <strong>Impact assement fellow's comments </strong>
+                            </label>
+                            <div class="addprophelp">Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.</div>
+                            <div class="addpropInputContainer">
+                                <textarea  id="impactIAFComment_text_area"><c:if test="${not empty iafComment}">${iafComment.stringValue}</c:if></textarea>
+                                <div class="clearfix"><!--  --></div>
+
+                            </div>
+                        </div>
+                    </c:if>
+                </div>
+
+        </c:if>
+        <c:if test="${ not edit}">
+            <c:if test="${not empty authorComment}">
+                <h3>Author's comments</h3>
+                <p>${authorComment.stringValue}</p>
+            </c:if>
+            <c:if test="${not empty iafComment}">
+                <h3>Impact assement fellow's comments</h3>
+                <p>${iafComment.stringValue}</p>
+            </c:if>
+        </c:if>
+    </div>
     <c:if test="${edit}">
         <script type="text/javascript">
             jQuery("#saveChangesButton").click(function () {
                 jQuery("#proposalScenarioId").val(jQuery("#modelingScenarioId").val());
                 jQuery("#scenarioModelId").val(jQuery("#modelingModelId").val());
+                if(jQuery("#impactAuthorComment_text_area"))
+                    jQuery("#impactAuthorComment").val(jQuery("#impactAuthorComment_text_area").val());
+                if(jQuery("#impactIAFComment_text_area"))
+                    jQuery("#impactIAFComment").val(jQuery("#impactIAFComment_text_area").val());
+
                 disableDirtyCheck();
                 jQuery("#updateProposalScenarioForm").submit();
             });

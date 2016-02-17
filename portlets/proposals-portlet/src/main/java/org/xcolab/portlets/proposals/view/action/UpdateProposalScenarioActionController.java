@@ -1,5 +1,9 @@
 package org.xcolab.portlets.proposals.view.action;
 
+import com.ext.portlet.model.ProposalUnversionedAttribute;
+import com.ext.portlet.service.ProposalUnversionedAttributeLocalService;
+import com.ext.portlet.service.ProposalUnversionedAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
@@ -8,15 +12,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
+import org.xcolab.portlets.proposals.utils.ProposalUnversionedAttributeUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.utils.HtmlUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
 
 @Controller
@@ -32,6 +41,8 @@ public class UpdateProposalScenarioActionController {
                      @RequestParam(required = true) long scenarioId,
                      @RequestParam(required = true) long modelId,
                      @RequestParam(required = false) String region,
+                     @RequestParam(required = false) String impactAuthorComment,
+                     @RequestParam(required = false) String impactIAFComment,
                      @RequestParam(required = false) Boolean isConsolidatedScenario)
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
 
@@ -47,9 +58,29 @@ public class UpdateProposalScenarioActionController {
         if(!Validator.isBlank(region)){
             proposal.setModelRegion(region, proposalsContext.getUser(request).getUserId());
         }
+
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
+                getAttributes(proposal.getProposalId());
+
+        if(!Validator.isBlank(impactAuthorComment)||!Validator.isBlank(impactIAFComment)) {
+              if(!Validator.isBlank(impactAuthorComment)) {
+
+                  ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
+                          HtmlUtil.cleanAll(impactAuthorComment),
+                          ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
+                          proposal, unversionedAttributes);
+                }
+                if(!Validator.isBlank(impactIAFComment)) {
+                    ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
+                            ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
+                            proposal, unversionedAttributes);
+                }
+        }
         proposalsContext.invalidateContext(request);
 
     }
+
+
 
     private boolean canEditImpactTab(PortletRequest request) throws PortalException, SystemException{
         return ProposalTab.IMPACT.getCanEdit(proposalsContext.getPermissions(request), proposalsContext, request);

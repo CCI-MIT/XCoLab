@@ -730,3 +730,19 @@ span.stars span {
 .modelsSelectBox input[type=radio] {
   margin-right: 5px;
 }
+.impactComments {
+  padding-top: 30px;
+}
+.impactComments textarea {
+  float: right;
+  border: 1px solid #888888;
+  font-size: 16px;
+  width: 540px;
+  padding: 5px;
+  height: 100px;
+}
+.impactComments h3 {
+  font-size: 22px;
+  margin-bottom: 13px;
+  color: #404040;
+}

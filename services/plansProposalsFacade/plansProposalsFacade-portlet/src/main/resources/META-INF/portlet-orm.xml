@@ -1162,6 +1162,30 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalUnversionedAttributeModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="proposalId" />
+			<basic name="createAuthorId" />
+			<basic name="lastAuthorId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="lastUpdateDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="name" />
+			<basic name="addtionalId" />
+			<basic name="numericValue" />
+			<basic name="stringValue" />
+			<basic name="realValue" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ProposalVersionModelImpl">
 		<id-class class="com.ext.portlet.service.persistence.ProposalVersionPK" />
 		<attributes>
@@ -1555,6 +1579,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalSupporterImpl" name="ProposalSupporter">
 		<table name="xcolab_ProposalSupporter" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalUnversionedAttributeImpl" name="ProposalUnversionedAttribute">
+		<table name="xcolab_ProposalUnversionedAttribute" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalVersionImpl" name="ProposalVersion">

@@ -16,7 +16,8 @@
 		<proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" modelId="${proposal.modelId}" />
 	</c:if>
 		<modeling:simulationEdit scenarioId="${proposal.scenarioId }" modelId="${proposal.modelId }" />
-	
+
+
 	<portlet:actionURL var="updateProposalScenarioURL">
 		<portlet:param name="action_forwardToPage" value="proposalDetails_ACTIONSIMPACTS" />
 		<portlet:param name="contestId" value="${contest.contestPK }" />

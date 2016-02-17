@@ -145,6 +145,8 @@ import com.ext.portlet.service.ProposalReferenceServiceUtil;
 import com.ext.portlet.service.ProposalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterServiceUtil;
+import com.ext.portlet.service.ProposalUnversionedAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
@@ -392,6 +394,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalSupporterLocalServiceUtil.clearService();
 
             ProposalSupporterServiceUtil.clearService();
+            ProposalUnversionedAttributeLocalServiceUtil.clearService();
+
+            ProposalUnversionedAttributeServiceUtil.clearService();
             ProposalVersionLocalServiceUtil.clearService();
 
             ProposalVersionServiceUtil.clearService();
