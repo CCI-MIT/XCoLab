@@ -1,14 +1,16 @@
 package com.ext.portlet.Activity;
 
 import com.ext.portlet.community.CommunityUtil;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
+import org.xcolab.enums.ConfigurationAttributeKey;
 
 public enum LoginRegisterActivityKeys {
-    USER_REGISTERED(1, "New account created", "%s joined CoLab community");
+    USER_REGISTERED(1, "New account created", "%s joined the %s community");
     private static final Log _log = LogFactoryUtil.getLog(LoginRegisterActivityKeys.class);
 
     private final int type;
@@ -38,8 +40,10 @@ public enum LoginRegisterActivityKeys {
         return String.format(title, getUserLink(user));
     }
 
-    public String getBody(User user) {
-        return String.format(body, getUserLink(user));
+    public String getBody(User user) throws SystemException {
+        String colabName = ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
+                ConfigurationAttributeKey.COLAB_NAME.name(), 0L, "");
+        return String.format(body, getUserLink(user), colabName);
     }
 
     private String getUserLink(User user) {
