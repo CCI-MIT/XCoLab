@@ -71,7 +71,7 @@
                             <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
                         </div>
 
-                        <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
+                        <c:if test="${not proposal.isLatestVersion}">
                             <div class="edit-prop-butts" style="line-height: normal;">
 
                                 <portlet:actionURL var="proposalRevertURL">

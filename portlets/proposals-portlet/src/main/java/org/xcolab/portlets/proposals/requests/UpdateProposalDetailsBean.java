@@ -45,7 +45,7 @@ public class UpdateProposalDetailsBean {
         for (ProposalSectionWrapper section : baseProposal.getSections()) {
             sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
         }
-            pitch = baseProposal.getPitch();
+        pitch = baseProposal.getPitch();
         name = baseProposal.getName();
         team = baseProposal.getTeam();
         imageId = baseProposal.getImageId();
