@@ -2,15 +2,12 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.ImpactIteration;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -241,8 +238,6 @@ public class ProposalImpactJSONController {
 
         return array;
     }
-
-
 
     private Map<OntologyTerm, List<OntologyTerm>> getOntologyMap(ResourceRequest request) throws SystemException, PortalException {
         Contest contest = proposalsContext.getContest(request);

@@ -24,10 +24,12 @@ import java.util.List;
 public class ImpactDefaultSeriesDataLocalServiceImpl
     extends ImpactDefaultSeriesDataLocalServiceBaseImpl {
 
+    @Override
     public List<ImpactDefaultSeriesData> getDefaultSeriesDataBySeriesId(long seriesId) throws SystemException {
         return impactDefaultSeriesDataPersistence.findBySeriesId(seriesId);
     }
 
+    @Override
     public ImpactDefaultSeriesData getDefaultSeriesDataBySeriesIdAndYear(long seriesId, int year) throws SystemException, NoSuchImpactDefaultSeriesDataException {
         return impactDefaultSeriesDataPersistence.findBySeriesIdAndYear(seriesId, year);
     }

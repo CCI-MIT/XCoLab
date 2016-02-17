@@ -246,12 +246,30 @@ public interface PointsLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns number of points for hypothetical user.
+    * Returns number of hypothetical points for given user.
     *
     * @throws SystemException
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public long getUserHypotheticalPoints(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns number of materialized points for given proposal.
+    *
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getProposalMaterializedPoints(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns number of hypothetical points for given propsal.
+    *
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getProposalHypotheticalPoints(long proposalId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

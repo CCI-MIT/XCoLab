@@ -20,13 +20,15 @@ import java.util.List;
  *
  * Utility class for common conversions of ids lists to strings or models.
  */
-public class IdListUtil {
+public final class IdListUtil {
     private final static Log _log = LogFactoryUtil.getLog(IdListUtil.class);
+
+    private IdListUtil() { }
 
     /**
      * Utility class to convert between lists of Contests, their ids, and comma separated id strings
      */
-    public static final IdListObjectConverter<Contest> CONTESTS = new IdListObjectConverter<Contest>() {
+    public final static IdListObjectConverter<Contest> CONTESTS = new IdListObjectConverter<Contest>() {
         @Override
         public Contest getObject(long id) throws SystemException {
             return ContestLocalServiceUtil.fetchContest(id);

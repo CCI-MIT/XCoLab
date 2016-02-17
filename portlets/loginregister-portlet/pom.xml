@@ -7,7 +7,6 @@
 		<groupId>org.xcolab.portlets</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.xcolab.portlets</groupId>
 	<artifactId>loginregister-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>loginregister-portlet Portlet</name>
@@ -114,8 +113,6 @@
 			<version>1.3</version>
 		</dependency>
 
-
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -131,7 +128,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
-			<!--<scope>provided</scope>-->
 		</dependency>
 
 		<dependency>
@@ -146,36 +142,11 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>org.xcolab.taglibs</groupId>
-			<artifactId>sharedColabIceFacelets</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.icefaces</groupId>
-					<artifactId>icefaces</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.icefaces</groupId>
-					<artifactId>icefaces-ace</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.icefaces</groupId>
-					<artifactId>icefaces-compat</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.liferay.faces</groupId>
-					<artifactId>liferay-faces-bridge-impl</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
         <dependency>
             <groupId>org.xcolab.taglibs</groupId>
             <artifactId>colabJspTags</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -197,13 +168,18 @@
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client</artifactId>
-            <version>1.13.1-beta</version>
+            <version>1.21.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson</artifactId>
-            <version>1.13.1-beta</version>
+            <version>1.21.0</version>
         </dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.1</version>
+		</dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>

@@ -1,5 +1,7 @@
 package com.ext.portlet.model.impl;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * The extended model implementation for the ProposalRating service. Represents a row in the &quot;xcolab_ProposalRating&quot; database table, with each column mapped to a property of this class.
  *
@@ -18,8 +20,9 @@ public class ProposalRatingImpl extends ProposalRatingBaseImpl {
     public ProposalRatingImpl() {
     }
 
+    @Override
     public boolean isRatingComplete() {
-        return (this.getRatingValueId() > 0 && (!this.isCommentEnabled() || (this.getComment() != null && this.getComment() != "")));
+        return (this.getRatingValueId() > 0 && (!this.isCommentEnabled() || (this.getComment() != null && !StringUtils.isEmpty(this.getComment()))));
     }
 
 }

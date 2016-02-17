@@ -37,11 +37,11 @@ function initSearchUpperBox() {
 	
 	
 	jQuery("#searchsubmit").click(function() {
-		var searchPhrase = escape(jQuery('#searchinput').val());
+		var searchPhrase = encodeURI(jQuery('#searchinput').val());
 		if (searchPhrase == 'Search') {
 			searchPhrase = '';
 		}
-		window.location = "/web/guest/search#search=searchPhrase:" + searchPhrase;
+		window.location = "/web/guest/search/-/search/for/" + searchPhrase;
 	});
 		
 }
@@ -462,7 +462,7 @@ function initTooltips() {
         return jQuery("<span />");
     }
 
-	const tooltipFields = jQuery(".tooltips div a, .fieldWithTooltip");
+	const tooltipFields = jQuery(".tooltips div a, .tooltips th a, .fieldWithTooltip");
 	tooltipFields.not('.tooltipInitialized').mouseover(function() {
         var self = jQuery(this);
         self.addClass('tooltipInitialized');

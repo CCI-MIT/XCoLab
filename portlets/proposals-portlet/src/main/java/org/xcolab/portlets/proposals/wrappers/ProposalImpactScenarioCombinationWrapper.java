@@ -5,11 +5,10 @@ import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
-
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
-import edu.mit.cci.roma.client.Variable;
 import edu.mit.cci.roma.client.Tuple;
+import edu.mit.cci.roma.client.Variable;
 import edu.mit.cci.roma.client.comm.ClientRepository;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;

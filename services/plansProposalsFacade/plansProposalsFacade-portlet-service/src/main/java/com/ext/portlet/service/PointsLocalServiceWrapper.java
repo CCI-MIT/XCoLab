@@ -279,7 +279,7 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
     }
 
     /**
-    * Returns number of points for hypothetical user.
+    * Returns number of hypothetical points for given user.
     *
     * @throws SystemException
     */
@@ -287,6 +287,28 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
     public long getUserHypotheticalPoints(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _pointsLocalService.getUserHypotheticalPoints(userId);
+    }
+
+    /**
+    * Returns number of materialized points for given proposal.
+    *
+    * @throws SystemException
+    */
+    @Override
+    public int getProposalMaterializedPoints(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _pointsLocalService.getProposalMaterializedPoints(proposalId);
+    }
+
+    /**
+    * Returns number of hypothetical points for given propsal.
+    *
+    * @throws SystemException
+    */
+    @Override
+    public int getProposalHypotheticalPoints(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _pointsLocalService.getProposalHypotheticalPoints(proposalId);
     }
 
     /**

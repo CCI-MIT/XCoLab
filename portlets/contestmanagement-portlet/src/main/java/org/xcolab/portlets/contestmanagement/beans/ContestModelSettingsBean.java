@@ -32,8 +32,7 @@ public class ContestModelSettingsBean implements Serializable {
     private String defaultModelSettings;
     private String modelRegion;
 
-    public ContestModelSettingsBean() {
-    }
+    public ContestModelSettingsBean() { }
 
     public ContestModelSettingsBean(Contest contest){
         this.defaultModelId = contest.getDefaultModelId();

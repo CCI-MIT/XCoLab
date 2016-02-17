@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class DataPage {
 
-    private int datasetSize;
-    private int startRow;
-    private List data;
+    private final int datasetSize;
+    private final int startRow;
+    private final List data;
 
     /**
      * Create an object representing a sublist of a dataset.

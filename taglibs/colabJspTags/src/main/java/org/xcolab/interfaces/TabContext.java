@@ -7,8 +7,9 @@ import com.liferay.portal.model.User;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.PortletRequest;
+import java.io.Serializable;
 
-public interface TabContext {
+public interface TabContext extends Serializable {
 
     Contest getContest(PortletRequest request) throws PortalException, SystemException;
 

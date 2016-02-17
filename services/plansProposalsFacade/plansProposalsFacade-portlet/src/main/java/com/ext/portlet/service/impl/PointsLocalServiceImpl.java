@@ -11,6 +11,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalReference;
 import com.ext.portlet.service.base.PointsLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.ProposalFinderUtil;
 import com.ext.portlet.service.persistence.Xcolab_UserFinderUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -42,24 +43,45 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	
 	private final static Log _log = LogFactoryUtil.getLog(PointsLocalServiceImpl.class);
 
+    /**
+     * Returns number of materialized points for given user.
+     *
+     * @throws SystemException
+     */
+    @Override
+    public int getUserMaterializedPoints(long userId) throws SystemException {
+        return Xcolab_UserFinderUtil.getUserMaterializedPoints(userId).intValue();
+    }
 
-	/**
-	 * Returns number of materialized points for given user.
-	 *
-	 * @throws SystemException
-	 */
-	public int getUserMaterializedPoints(long userId) throws SystemException {
-		return Xcolab_UserFinderUtil.getUserMaterializedPoints(userId).intValue();
-	}
-	
-	/**
-	 * Returns number of points for hypothetical user. 
-	 *
-	 * @throws SystemException
-	 */
-	public long getUserHypotheticalPoints(long userId) throws SystemException {
+    /**
+     * Returns number of hypothetical points for given user.
+     *
+     * @throws SystemException
+     */
+    @Override
+    public long getUserHypotheticalPoints(long userId) throws SystemException {
         return Xcolab_UserFinderUtil.getUserHypotheticalPoints(userId).intValue();
-	}
+    }
+
+    /**
+     * Returns number of materialized points for given proposal.
+     *
+     * @throws SystemException
+     */
+    @Override
+    public int getProposalMaterializedPoints(long proposalId) throws SystemException {
+        return ProposalFinderUtil.getProposalMaterializedPoints(proposalId);
+    }
+
+    /**
+     * Returns number of hypothetical points for given propsal.
+     *
+     * @throws SystemException
+     */
+    @Override
+    public int getProposalHypotheticalPoints(long proposalId) throws SystemException {
+        return ProposalFinderUtil.getProposalMaterializedPoints(proposalId);
+    }
 	
 	/**
 	 * Calculates the hypothetical points for all proposals for a given contest and
@@ -68,7 +90,8 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	 * @throws SystemException 
 	 * @throws PortalException 
 	 */
-	public void distributePoints(long contestPK) throws PortalException, SystemException {
+	@Override
+    public void distributePoints(long contestPK) throws PortalException, SystemException {
 		Contest contest = contestLocalService.getContest(contestPK);
         PointType pointType = pointTypeLocalService.getPointType(contest.getDefaultParentPointType());
         List<Proposal> materializedProposals = new ArrayList<>();
@@ -89,6 +112,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         }
 	}
 
+    @Override
     public List<Points> previewMaterializedPoints(long contestPK) throws PortalException, SystemException {
         Contest contest = contestLocalService.getContest(contestPK);
         PointType pointType = pointTypeLocalService.getPointType(contest.getDefaultParentPointType());
@@ -126,14 +150,10 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         return materializedPoints;
     }
 
-	private List<Points> distributePointsToProposal(Proposal proposal,
-            Proposal originatingProposal,
-            Contest originatingContest,
-			long pointsSourceId,
-			PointType pointType, 
-			double materializedPoints,
-			double hypotheticalPoints,
-            boolean previewOnly) throws SystemException, PortalException {
+	private List<Points> distributePointsToProposal(Proposal proposal, Proposal originatingProposal,
+                                                    Contest originatingContest, long pointsSourceId, PointType pointType,
+                                                    double materializedPoints, double hypotheticalPoints, boolean previewOnly)
+            throws SystemException, PortalException {
         String logString = proposal.getProposalId() + ". originatingContest: " + originatingContest.getContestPK() +
                 " pointsSourceId: " + pointsSourceId + " pointType: " + pointType + " materializedPoints: " + materializedPoints +
                 " hypotheticalPoints: " + hypotheticalPoints;
@@ -164,13 +184,18 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			}
 			return materializedPointsList;
 		}
+
+        pointsDistributionConfigurationLocalService.verifyDistributionConfigurationsForProposalId(proposal.getProposalId());
 		
 		List<PointsTarget> targets = receiverLimitationStrategy.getTargets(proposal, pointType, distributionStrategy);
 
         List<Points> materializedPointsList = new ArrayList<>();
 		for (PointsTarget target: targets) {
+            double targetHypotheticalPoints = hypotheticalPoints * target.getPercentage();
+            double targetMaterializedPoints = materializedPoints * target.getPercentage();
+
             // Skip when we would distribute less than 1 point
-            if (hypotheticalPoints * target.getPercentage() < 1.0 && materializedPoints * target.getPercentage() < 1) {
+            if (targetHypotheticalPoints < 1.0 && targetMaterializedPoints < 1) {
                 continue;
             }
 
@@ -181,17 +206,18 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			points.setPointsSourceId(pointsSourceId);
 			points.setProposalId(proposal.getProposalId());
 
-            //round points up to the next integer
-            double roundedHypotheticalPoints = Math.ceil(hypotheticalPoints * target.getPercentage());
-            double roundedMaterializedPoints = Math.ceil(materializedPoints * target.getPercentage());
-			points.setHypotheticalPoints(roundedHypotheticalPoints);
-			points.setMaterializedPoints(roundedMaterializedPoints);
-
 			if (target.isUser()) {
 				_log.info("Adding points to a user: " + target.getUserId() + ", hypotheticalPoints: " + points.getHypotheticalPoints() + 
 						", materializedPoints: " + points.getMaterializedPoints());
 				points.setUserId(target.getUserId());
+
+                //round points up to the next integer
+                targetHypotheticalPoints = Math.ceil(targetHypotheticalPoints);
+                targetMaterializedPoints = Math.ceil(targetMaterializedPoints);
 			}
+
+            points.setHypotheticalPoints(targetHypotheticalPoints);
+            points.setMaterializedPoints(targetMaterializedPoints);
 
             if (!previewOnly) {
                 addPoints(points);
@@ -214,6 +240,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         return materializedPointsList;
 	}
 
+    @Override
     public List<Proposal> getLinkingProposals(long proposalId) throws SystemException, PortalException {
         List<ProposalReference> proposalReferences = proposalReferenceLocalService.getBySubProposalId(proposalId);
         List<Proposal> linkingProposals = new ArrayList<>();
@@ -226,6 +253,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         return linkingProposals;
     }
 
+    @Override
     public List<Proposal> getLinkingProposalsForUser(long userId) throws SystemException, PortalException {
         final List<Proposal> userProposals = proposalLocalService.getUserProposals(userId);
         List<Proposal> linkingProposals = new ArrayList<>();
@@ -236,8 +264,9 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
     }
 
     private boolean proposalIsHidden(Proposal proposal, Contest contest) throws SystemException, PortalException {
-        if (!proposal.isVisible())
+        if (!proposal.isVisible()) {
             return true;
+        }
         try {
             final ContestPhase activePhase = contestPhaseLocalService.getActivePhaseForContest(contest);
             final ProposalContestPhaseAttribute visibleAttribute = proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(

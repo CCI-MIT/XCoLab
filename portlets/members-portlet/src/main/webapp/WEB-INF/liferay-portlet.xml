@@ -4,7 +4,10 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>members-portlet</portlet-name>
-		<instanceable>true</instanceable>
+		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
+		<friendly-url-mapping>members</friendly-url-mapping>
+		<friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>
+		<instanceable>false</instanceable>
         <requires-namespaced-parameters>false</requires-namespaced-parameters> 
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-css>/css/users.css</header-portlet-css>

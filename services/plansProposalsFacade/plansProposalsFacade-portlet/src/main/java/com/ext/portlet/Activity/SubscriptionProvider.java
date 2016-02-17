@@ -6,7 +6,7 @@
 
 package com.ext.portlet.Activity;
 
-import com.liferay.portal.SystemException;
+import com.liferay.portal.kernel.exception.SystemException;
 
 public interface SubscriptionProvider {
 	public void createSubscription(String portlet, long userid, long entityid, int type) throws SystemException;

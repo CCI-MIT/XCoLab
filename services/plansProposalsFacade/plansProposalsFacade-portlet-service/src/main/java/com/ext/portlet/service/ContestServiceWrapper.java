@@ -47,7 +47,6 @@ public class ContestServiceWrapper implements ContestService,
     /**
     * Returns a list of open contest for regular users and returns all contests for staff users
     *
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -60,8 +59,8 @@ public class ContestServiceWrapper implements ContestService,
 
     @Override
     public int getNumberOfUnreadMessages()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.portal.security.auth.PrincipalException {
         return _contestService.getNumberOfUnreadMessages();
     }
 

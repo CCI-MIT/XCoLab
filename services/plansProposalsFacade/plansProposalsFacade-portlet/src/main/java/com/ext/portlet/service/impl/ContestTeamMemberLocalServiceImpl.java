@@ -1,10 +1,7 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestTeamMember;
-import com.ext.portlet.model.impl.ContestTeamMemberImpl;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.base.ContestTeamMemberLocalServiceBaseImpl;
@@ -13,6 +10,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+
+import java.util.List;
 
 /**
  * The implementation of the contest team member local service.
@@ -35,9 +34,8 @@ public class ContestTeamMemberLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestTeamMemberLocalServiceUtil} to access the contest team member local service.
      */
-    
 
-    
+    @Override
     public ContestTeamMember addContestTeamMember(Long userId, Long contestPk, String role) throws SystemException {
         ContestTeamMember member = ContestTeamMemberLocalServiceUtil.createContestTeamMember(CounterLocalServiceUtil.increment(ContestTeamMember.class.getName()));
         member.setUserId(userId);
@@ -48,11 +46,13 @@ public class ContestTeamMemberLocalServiceImpl
         return member;
     }
     
+    @Override
     public List<ContestTeamMember> findForContest(Long contestPk) throws SystemException {
         return contestTeamMemberPersistence.findByContestId(contestPk);
     }
     
 
+    @Override
     public void store(ContestTeamMember contestTeamMember) throws SystemException {
         if (contestTeamMember.isNew()) {
             if (contestTeamMember.getId() <= 0) {
@@ -65,14 +65,17 @@ public class ContestTeamMemberLocalServiceImpl
         }
     }
     
+    @Override
     public void delete(ContestTeamMember contestTeamMember) throws SystemException {
         ContestTeamMemberLocalServiceUtil.deleteContestTeamMember(contestTeamMember);
     }
     
+    @Override
     public User getUser(ContestTeamMember contestTeamMember) throws PortalException, SystemException {
         return UserLocalServiceUtil.getUser(contestTeamMember.getUserId());
     }
     
+    @Override
     public Contest getContest(ContestTeamMember contestTeamMember) throws PortalException, SystemException {
         return ContestLocalServiceUtil.getContest(contestTeamMember.getContestId());
     }

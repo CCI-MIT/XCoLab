@@ -1,9 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.model.ProposalRatingValue;
-import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 

@@ -223,10 +223,12 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         rolesActionsMap.put(guest, guestActions);
         rolesActionsMap.put(moderator, moderatorActions);
 
-        for (Role role : rolesActionsMap.keySet()) {
+        for (Map.Entry<Role, String[]> entry : rolesActionsMap.entrySet()) {
+            final Role role = entry.getKey();
+            final String[] actionIds = entry.getValue();
             ResourcePermissionLocalServiceUtil.setResourcePermissions(companyId,
                     DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
-                    String.valueOf(group.getGroupId()), role.getRoleId(), rolesActionsMap.get(role));
+                    String.valueOf(group.getGroupId()), role.getRoleId(), actionIds);
         }
 
         c.setGroupId(group.getGroupId());
@@ -248,12 +250,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public List<Contest> findByActiveFlag(boolean active, int flag) throws SystemException {
         return contestPersistence.findByActiveFlag(active, flag);
     }
-
-    @Override
-    public List<Contest> findByActiveFlagText(boolean active, String flagText) throws SystemException {
-        return contestPersistence.findByActiveFlagText(active, flagText);
-    }
-
 
     /**
      * Methods from ContestImpl *

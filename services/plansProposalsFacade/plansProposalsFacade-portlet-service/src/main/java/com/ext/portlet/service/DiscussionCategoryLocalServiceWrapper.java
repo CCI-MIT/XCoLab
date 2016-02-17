@@ -293,11 +293,11 @@ public class DiscussionCategoryLocalServiceWrapper
     }
 
     @Override
-    public com.ext.portlet.model.DiscussionCategory createDebateCategory(
+    public com.ext.portlet.model.DiscussionCategory createDiscussionCategory(
         long categoryGroupId, java.lang.String name,
         java.lang.String description, com.liferay.portal.model.User author)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategoryLocalService.createDebateCategory(categoryGroupId,
+        return _discussionCategoryLocalService.createDiscussionCategory(categoryGroupId,
             name, description, author);
     }
 

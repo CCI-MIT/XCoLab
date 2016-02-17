@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.utils;
 
-import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalImpactAttributeKeys;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;

@@ -1,11 +1,5 @@
 package com.ext.portlet.service.impl.mock;
 
-import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -20,6 +14,12 @@ import com.liferay.portal.model.Team;
 import com.liferay.portal.model.impl.RoleImpl;
 import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
+
+import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class RoleLocalServiceImplMock implements RoleLocalService {
 

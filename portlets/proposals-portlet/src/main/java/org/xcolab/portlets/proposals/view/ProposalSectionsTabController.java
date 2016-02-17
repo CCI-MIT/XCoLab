@@ -26,7 +26,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.utils.ProposalGroupingUtil;
+import org.xcolab.utils.EntityGroupingUtil;
 import org.xcolab.wrappers.BaseProposalWrapper;
 import org.xcolab.wrappers.ContestTypeProposalWrapper;
 
@@ -140,7 +140,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("judgeProposalBean", judgeProposalBean);
 
         List<Proposal> linkedProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
-        Map<ContestType, List<Proposal>> proposalsByContestType = ProposalGroupingUtil.groupByContestType(linkedProposals);
+        Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
         for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId(), new ContestTypeProposalWrapper(contestType));

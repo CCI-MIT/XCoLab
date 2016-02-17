@@ -5,8 +5,18 @@
           xmlns:form="http://www.springframework.org/tags/form"
           version="2.0">
 
+    <!--@elvariable id="pointType" type="org.xcolab.portlets.proposals.wrappers.PointTypeWrapper"-->
+    <!--@elvariable id="percentageOfTotalPoints" type="java.lang.Double"-->
+    <!--@elvariable id="assignPointsBean" type="org.xcolab.portlets.proposals.requests.AssignPointsBean"-->
+    <!--@elvariable id="pointsToDistribute" type="java.lang.Double"-->
+    <!--@elvariable id="recursionLevel" type="java.lang.Integer"-->
+    <!--@elvariable id="currentTabWrapped" type="org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper"-->
+    <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
+    <!--@elvariable id="subProposals" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalWrapper>"-->
+
     <c:set var="childrenSize" value="${pointType.children.size()}" scope="request"/>
-    <c:set var="parentPercentageOfTotalPoints"><c:out value="${percentageOfTotalPoints}"/></c:set>
+    <c:set var="parentPercentageOfTotalPoints">
+    <c:out value="${percentageOfTotalPoints}"/></c:set>
     <c:set var="parentPointsToDistribute"><c:out value="${pointsToDistribute}"/></c:set>
     <c:set var="parentRecursionLevel"><c:out value="${recursionLevel}"/></c:set>
     <!-- set column definitons -->
@@ -46,7 +56,7 @@
                         <td class="${status.count > childrenSize/2 ? 'right' : 'left'} ${(smallColumnExists and largeColumnExists ? (pointType.children.size() == 0 ? 'small' : 'large') : '')}">
                             <div class="content">
                                 <p class="percentage">
-                                    <fmt:formatNumber type="percent" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}"/>
+                                    <fmt:formatNumber type="percent" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}" minFractionDigits="0" maxFractionDigits="2"/>
                                 </p>
                                 <!-- Recursion -->
                                 <c:set var="percentageOfTotalPoints" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}" scope="request"/>
@@ -123,6 +133,100 @@
                         </c:otherwise>
                     </c:choose>
                 </c:when>
+                <c:when test="${pointType.receiverLimitationStrategy eq 'REGIONAL_SUBPROPOSALS'}">
+                    <p class="info">
+                        <c:choose>
+                            <c:when test="${currentTabWrapped.canEdit}">
+                                Distributed among all regional ${contestType.proposalNamePlural} you have referenced.
+                            </c:when>
+                            <c:otherwise>
+                                Distributed among all regional ${contestType.proposalNamePlural} referenced by this ${contestType.proposalName}.
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
+                    <c:choose>
+                        <c:when test="${regionalPercentages.size() gt 0}">
+                            <ul class="subproposals">
+                                <c:forEach var="pointsProposalWrapper" items="${regionalPercentages}">
+                                    <li>
+                                        <span class="highlighted">
+                                            <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${pointsProposalWrapper.percentage}"/>%
+                                        </span>
+                                        <a href="${pointsProposalWrapper.proposal.proposalURL}" target="_blank">
+                                            <c:out value="${pointsProposalWrapper.proposal.name}"/>
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                            <p class="totalRow">
+                                <strong class="percentage smaller">
+                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100}"/>%
+                                </strong>
+                                <strong class="name">Total</strong>
+                            </p>
+                        </c:when>
+                        <c:otherwise>
+                            <p style="margin-top: 15px">
+                                <c:choose>
+                                    <c:when test="${currentTabWrapped.canEdit}">
+                                        <em>You did not reference any ${contestType.proposalNamePlural}.</em>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <em>No ${contestType.proposalNamePlural} have been referenced.</em>
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </p>
+                        </c:otherwise>
+                    </c:choose>
+                </c:when>
+                <c:when test="${pointType.receiverLimitationStrategy eq 'BASIC_SUBPROPOSALS'}">
+                    <p class="info">
+                        <c:choose>
+                            <c:when test="${currentTabWrapped.canEdit}">
+                                Distributed among all cross-regional ${contestType.proposalNamePlural} you have referenced.
+                            </c:when>
+                            <c:otherwise>
+                                Distributed among all cross-regional ${contestType.proposalNamePlural} referenced by this ${contestType.proposalName}.
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
+                    <c:choose>
+                        <c:when test="${basicPercentages.size() gt 0}">
+                            <ul class="subproposals">
+                                <c:forEach var="pointsProposalWrapper" items="${basicPercentages}">
+                                    <li>
+                                        <span class="highlighted">
+                                            <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${pointsProposalWrapper.percentage}"/>%
+                                        </span>
+                                        <a href="${pointsProposalWrapper.proposal.proposalURL}" target="_blank">
+                                            <c:out value="${pointsProposalWrapper.proposal.name}"/>
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                            <p class="totalRow">
+                                <strong class="percentage smaller">
+                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100}"/>%
+                                </strong>
+                                <strong class="name">Total</strong>
+                            </p>
+                        </c:when>
+                        <c:otherwise>
+                            <p style="margin-top: 15px">
+                                <c:choose>
+                                    <c:when test="${currentTabWrapped.canEdit}">
+                                        <em>You did not reference any ${contestType.proposalNamePlural}.</em>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <em>No ${contestType.proposalNamePlural} have been referenced.</em>
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </p>
+                        </c:otherwise>
+                    </c:choose>
+                </c:when>
                 <c:when test="${pointType.receiverLimitationStrategy eq 'SUBPROPOSALS' and pointType.distributionStrategy eq 'USER_DEFINED'}">
                     <!--TODO-->
                 </c:when>
@@ -169,7 +273,7 @@
                                 </label>
 
                                 <div id="please_choose_from_list${pointType.id}" class="error" style="display: none;">Please choose a user from the list</div>
-                                <div id="unknownUsersContainer${pointType.id}" class="error" style="display: none;">Unknown user: <p></p></div>
+                                <div id="unknownUsersContainer${pointType.id}" class="error" style="display: none;">Unknown user: <p><!-- --></p></div>
                                 <script type="text/javascript">
                                     jQuery(document).ready(function() {
                                         initUserAutocomplete(${pointType.id}, ${currentTabWrapped.canEdit});
@@ -186,7 +290,7 @@
                             data-pointType="${pointType.id}"
                             id="userDistributionInputs${pointType.id}"
                                 >
-                            <li class="error"></li>
+                            <li class="error"><!-- --></li>
                             <li class="header">
                                 <strong class="percentage">%</strong>
                                 <strong class="name">Name</strong>

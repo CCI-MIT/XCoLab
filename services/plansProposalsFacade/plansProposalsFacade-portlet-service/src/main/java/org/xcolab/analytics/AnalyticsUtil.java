@@ -1,33 +1,27 @@
 package org.xcolab.analytics;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import com.ext.portlet.model.AnalyticsUserEvent;
 import com.ext.portlet.service.AnalyticsUserEventLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
 
-public class AnalyticsUtil {
+import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class AnalyticsUtil {
 	
 	private final static String ANALYTICS_EVENTS_SESSION_KEY = "xcolab_analytics_events";
-	
+
+	private AnalyticsUtil() { }
+
 	/** 
 	 * Method publishes an event if it hasn't been already published for given user. Publishing an event is 
 	 * done by storing it in request session, it will be fetched from there in the theme later (to report it with  
 	 * google analytics).
-	 * 
-	 * @param request
-	 * @param userId
-	 * @param idString
-	 * @param category
-	 * @param action
-	 * @param label
-	 * @param value
+	 *
 	 * @throws SystemException 
 	 */
 	public static void publishEvent(PortletRequest portletRequest, long userId, String idString, String category, 
@@ -40,7 +34,8 @@ public class AnalyticsUtil {
 		HttpServletRequest request = PortalUtil.getHttpServletRequest(portletRequest);
 		
         HttpSession session = request.getSession(true);
-		
+
+        //noinspection unchecked
         List<AnalyticsUserEvent> events = (List<AnalyticsUserEvent>) session.getAttribute(ANALYTICS_EVENTS_SESSION_KEY);
         
         if (events == null) {
@@ -51,4 +46,14 @@ public class AnalyticsUtil {
         events.add(AnalyticsUserEventLocalServiceUtil.createEvent(userId, idString, category, action, label, value));
 	}
 
+
+    public static int getAnalyticsValueForCount(int count) {
+        if (count < 1) {
+            return 0;
+        }
+        if (count < 5) {
+            return count == 1 ? 1 : 2;
+        }
+        return 3;
+    }
 }

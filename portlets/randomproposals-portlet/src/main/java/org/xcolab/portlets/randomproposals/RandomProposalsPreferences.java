@@ -1,27 +1,23 @@
 package org.xcolab.portlets.randomproposals;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.ReadOnlyException;
-import javax.portlet.ValidatorException;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
+import javax.portlet.ReadOnlyException;
+import javax.portlet.ValidatorException;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RandomProposalsPreferences {
     private final static String SELECTED_PHASES_PREFERENCE = "SELECTED_PHASES";

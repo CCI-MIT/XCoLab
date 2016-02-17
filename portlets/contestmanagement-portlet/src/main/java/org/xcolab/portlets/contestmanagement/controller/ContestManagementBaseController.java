@@ -1,6 +1,8 @@
 package org.xcolab.portlets.contestmanagement.controller;
 
 import com.ext.portlet.model.Contest;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
@@ -22,24 +24,19 @@ import java.util.Map;
 public class ContestManagementBaseController {
 
     @RequestMapping(params = "createContest=true")
-    public String createContestController(PortletRequest request, Model model, PortletResponse response) {
-        String view = "common/notFound";
-        try {
-            ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-            PermissionChecker portletPermissionChecker = themeDisplay.getPermissionChecker();
-            User currentUser = themeDisplay.getUser();
+    public String createContestController(PortletRequest request, Model model, PortletResponse response)
+            throws PortalException, SystemException {
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        PermissionChecker portletPermissionChecker = themeDisplay.getPermissionChecker();
+        User currentUser = themeDisplay.getUser();
 
-            if(!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
-                Contest contest = ContestCreatorUtil.createNewContest("created contest");
-                String newContestLink = "/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/DESCRIPTION";
-                model.addAttribute("newContestLink", newContestLink);
-                view = "common/newContestCreated";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
+            Contest contest = ContestCreatorUtil.createNewContest("created contest");
+            String newContestLink = "/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/DESCRIPTION";
+            model.addAttribute("newContestLink", newContestLink);
+            return "common/newContestCreated";
         }
-
-        return view;
+        throw new PortalException("User not authorized to create contest");
     }
 
     @RequestMapping(params = "create2015Tier1Contests=true")

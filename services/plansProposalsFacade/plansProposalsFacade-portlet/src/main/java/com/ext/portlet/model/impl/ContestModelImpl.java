@@ -122,9 +122,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     public static long CONTESTTYPEID_COLUMN_BITMASK = 8L;
     public static long FEATURED_COLUMN_BITMASK = 16L;
     public static long FLAG_COLUMN_BITMASK = 32L;
-    public static long FLAGTEXT_COLUMN_BITMASK = 64L;
-    public static long WEIGHT_COLUMN_BITMASK = 128L;
-    public static long CREATED_COLUMN_BITMASK = 256L;
+    public static long WEIGHT_COLUMN_BITMASK = 64L;
+    public static long CREATED_COLUMN_BITMASK = 128L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Contest"));
     private static ClassLoader _classLoader = Contest.class.getClassLoader();
@@ -169,7 +168,6 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private int _originalFlag;
     private boolean _setOriginalFlag;
     private String _flagText;
-    private String _originalFlagText;
     private String _flagTooltip;
     private long _groupId;
     private long _discussionGroupId;
@@ -1120,17 +1118,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public void setFlagText(String flagText) {
-        _columnBitmask |= FLAGTEXT_COLUMN_BITMASK;
-
-        if (_originalFlagText == null) {
-            _originalFlagText = _flagText;
-        }
-
         _flagText = flagText;
-    }
-
-    public String getOriginalFlagText() {
-        return GetterUtil.getString(_originalFlagText);
     }
 
     @JSON
@@ -1584,8 +1572,6 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestModelImpl._originalFlag = contestModelImpl._flag;
 
         contestModelImpl._setOriginalFlag = false;
-
-        contestModelImpl._originalFlagText = contestModelImpl._flagText;
 
         contestModelImpl._originalContestPrivate = contestModelImpl._contestPrivate;
 

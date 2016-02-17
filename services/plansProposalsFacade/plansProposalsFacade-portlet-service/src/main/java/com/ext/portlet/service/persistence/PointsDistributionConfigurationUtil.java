@@ -440,6 +440,81 @@ public class PointsDistributionConfigurationUtil {
     }
 
     /**
+    * Returns the points distribution configuration where targetPlanSectionDefinitionId = &#63; or throws a {@link com.ext.portlet.NoSuchPointsDistributionConfigurationException} if it could not be found.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @return the matching points distribution configuration
+    * @throws com.ext.portlet.NoSuchPointsDistributionConfigurationException if a matching points distribution configuration could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PointsDistributionConfiguration findByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId)
+        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+    }
+
+    /**
+    * Returns the points distribution configuration where targetPlanSectionDefinitionId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @return the matching points distribution configuration, or <code>null</code> if a matching points distribution configuration could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PointsDistributionConfiguration fetchByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+    }
+
+    /**
+    * Returns the points distribution configuration where targetPlanSectionDefinitionId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching points distribution configuration, or <code>null</code> if a matching points distribution configuration could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PointsDistributionConfiguration fetchByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId,
+            retrieveFromCache);
+    }
+
+    /**
+    * Removes the points distribution configuration where targetPlanSectionDefinitionId = &#63; from the database.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @return the points distribution configuration that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PointsDistributionConfiguration removeByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId)
+        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .removeByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+    }
+
+    /**
+    * Returns the number of points distribution configurations where targetPlanSectionDefinitionId = &#63;.
+    *
+    * @param targetPlanSectionDefinitionId the target plan section definition ID
+    * @return the number of matching points distribution configurations
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+    }
+
+    /**
     * Returns all the points distribution configurations where proposalId = &#63;.
     *
     * @param proposalId the proposal ID

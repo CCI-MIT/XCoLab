@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
-import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
+import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -88,8 +88,8 @@ public class ContestResourcesHtmlParserUtil {
         return parsedSectionContent;
     }
 
-    public static String getSectionAsHtmlString(SectionDefinitionBean sectionDefinitionBean) {
-        return getSectionAsHtmlString(sectionDefinitionBean.getTitle(), sectionDefinitionBean.getContent());
+    public static String getSectionAsHtmlString(SectionDefinitionWrapper sectionDefinitionWrapper) {
+        return getSectionAsHtmlString(sectionDefinitionWrapper.getTitle(), sectionDefinitionWrapper.getContent());
     }
 
     public static String getSectionAsHtmlString(String title, String content){

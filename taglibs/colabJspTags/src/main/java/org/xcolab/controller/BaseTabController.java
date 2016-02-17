@@ -33,7 +33,7 @@ public abstract class BaseTabController extends BaseController {
 
     public abstract void setPageAttributes(PortletRequest request, Model model, TabEnum tab) throws PortalException, SystemException;
 
-    public List<TabWrapper> getAllVisibleTabsWrapped(Model model, PortletRequest request, TabEnum[] Tabs) throws PortalException, SystemException{
+    public List<TabWrapper> getAllVisibleTabsWrapped(PortletRequest request, TabEnum[] Tabs) throws PortalException, SystemException{
 
         List<TabWrapper> availableTabs = new ArrayList<>();
         for (TabEnum tab: Tabs) {

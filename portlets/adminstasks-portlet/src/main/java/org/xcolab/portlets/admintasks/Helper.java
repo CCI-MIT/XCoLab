@@ -7,9 +7,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Helper {

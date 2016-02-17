@@ -137,6 +137,19 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ConfigurationAttributeModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ConfigurationAttributePK" />
+		<attributes>
+			<id name="name" />
+			<id name="additionalId" />
+			<basic name="numericValue" />
+			<basic name="stringValue" />
+			<basic name="realValue" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestModelImpl">
 		<attributes>
 			<id name="ContestPK" />
@@ -969,6 +982,7 @@
 			<basic name="pointTypeId" />
 			<basic name="targetUserId" />
 			<basic name="targetSubProposalId" />
+			<basic name="targetPlanSectionDefinitionId" />
 			<basic name="percentage" />
 			<basic name="creator" />
 			<basic name="createDate">
@@ -1294,6 +1308,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.BalloonUserTrackingImpl" name="BalloonUserTracking">
 		<table name="xcolab_BalloonUserTracking" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ConfigurationAttributeImpl" name="ConfigurationAttribute">
+		<table name="xcolab_ConfigurationAttribute" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestImpl" name="Contest">

@@ -5,7 +5,9 @@ import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 /**
  * Created by Thomas on 10/23/2015.
  */
-public class MassActionUtil {
+public final class MassActionUtil {
+
+    private MassActionUtil() { }
 
     public static String getSelectedMassActionTitle(Long selectedMassAction) {
         String selectedMassActionTitle = "";

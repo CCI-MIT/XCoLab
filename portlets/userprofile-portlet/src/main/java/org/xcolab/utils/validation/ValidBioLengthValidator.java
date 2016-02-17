@@ -1,6 +1,7 @@
 package org.xcolab.utils.validation;
 
 import org.jsoup.Jsoup;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 

@@ -6,8 +6,7 @@
 
 package com.ext.portlet.Activity;
 
-import com.liferay.portal.SystemException;
-
+import com.liferay.portal.kernel.exception.SystemException;
 
 public interface SubscriberFactory {
 	

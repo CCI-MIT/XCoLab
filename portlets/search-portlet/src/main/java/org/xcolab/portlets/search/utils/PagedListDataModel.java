@@ -1,7 +1,5 @@
 package org.xcolab.portlets.search.utils;
 
-import javax.faces.model.DataModel;
-
 /**
  * A special type of JSF DataModel to allow a datatable and datapaginator
  * to page through a large set of data without having to hold the entire
@@ -17,7 +15,7 @@ import javax.faces.model.DataModel;
  * method that the managed bean uses) to provide the data wrapped in
  * a DataPage object that provides info on the full size of the dataset.
  */
-public abstract class PagedListDataModel extends DataModel {
+public abstract class PagedListDataModel {
 
     int pageSize;
     int rowIndex;
@@ -35,7 +33,7 @@ public abstract class PagedListDataModel extends DataModel {
         this.rowIndex = -1;
         this.page = null;
     }
-    @Override
+
     public int getRowIndex() {
         return rowIndex;
     }
@@ -45,7 +43,6 @@ public abstract class PagedListDataModel extends DataModel {
      * the UIData component will repeatedly call this method followed
      * by getRowData to obtain the objects to render in the table.
      */
-    @Override
     public void setRowIndex(int index) {
         rowIndex = index;
     }
@@ -54,7 +51,6 @@ public abstract class PagedListDataModel extends DataModel {
      * Return the total number of rows of data available (not just the
      * number of rows in the current page!).
      */
-    @Override
     public int getRowCount() {
         return getPage().getDatasetSize();
     }
@@ -87,7 +83,6 @@ public abstract class PagedListDataModel extends DataModel {
      * index or the data is marked as dirty, then fetchPage is called
      * to retrieve the appropriate page.
      */
-    @Override
     public Object getRowData(){
         if (rowIndex < 0) {
             throw new IllegalArgumentException(
@@ -129,7 +124,6 @@ public abstract class PagedListDataModel extends DataModel {
         return page.getData().get(rowIndex - startRow);
     }
 
-    @Override
     public Object getWrappedData() {
         return page.getData();
     }
@@ -141,7 +135,6 @@ public abstract class PagedListDataModel extends DataModel {
      * DataPage; if so then when getRowData is called the
      * required DataPage will be fetched by calling fetchData.
      */
-    @Override
     public boolean isRowAvailable() {
         DataPage page = getPage();
         if (page == null)
@@ -174,9 +167,7 @@ public abstract class PagedListDataModel extends DataModel {
     public void setDirtyData() {
         dirtyData = true;
     }
-    
 
-    @Override
     public void setWrappedData(Object o) {
         throw new UnsupportedOperationException("setWrappedData");
     }

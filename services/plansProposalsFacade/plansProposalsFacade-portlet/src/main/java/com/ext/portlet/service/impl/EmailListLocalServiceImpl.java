@@ -1,11 +1,11 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
 import com.ext.portlet.NoSuchEmailListException;
 import com.ext.portlet.model.EmailList;
 import com.ext.portlet.service.base.EmailListLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the email list local service.
@@ -28,10 +28,12 @@ public class EmailListLocalServiceImpl extends EmailListLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.EmailListLocalServiceUtil} to access the email list local service.
      */
     
+    @Override
     public EmailList findByListNameEmailAddress(String listName, String emailAddress) throws NoSuchEmailListException, SystemException {
         return emailListPersistence.findByfindByNameEmail(listName, emailAddress);
     }
     
+    @Override
     public List<EmailList> findByListName(String listName) throws NoSuchEmailListException, SystemException {
         return emailListPersistence.findByfindByName(listName);
     }

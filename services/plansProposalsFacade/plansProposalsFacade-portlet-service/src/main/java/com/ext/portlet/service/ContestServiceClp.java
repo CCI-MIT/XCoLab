@@ -116,8 +116,8 @@ public class ContestServiceClp implements ContestService {
 
     @Override
     public int getNumberOfUnreadMessages()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.portal.security.auth.PrincipalException {
         Object returnObj = null;
 
         try {
@@ -126,12 +126,12 @@ public class ContestServiceClp implements ContestService {
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof com.liferay.portal.security.auth.PrincipalException) {
+                throw (com.liferay.portal.security.auth.PrincipalException) t;
             }
 
             if (t instanceof RuntimeException) {

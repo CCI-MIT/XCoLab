@@ -2,6 +2,10 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestType;
+import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
@@ -49,8 +53,10 @@ public class ContestDescriptionBean implements Serializable {
     @NotNull(message = "A contest type must be selected.")
     private Long contestType;
 
-    public ContestDescriptionBean() {
-    }
+    private boolean hideRibbons;
+
+    @SuppressWarnings("unused")
+    public ContestDescriptionBean() { }
 
     public ContestDescriptionBean(Contest contest) {
 
@@ -63,6 +69,7 @@ public class ContestDescriptionBean implements Serializable {
             scheduleTemplateId = contest.getContestScheduleId();
             contestTier = contest.getContestTier();
             contestType = contest.getContestTypeId();
+            hideRibbons = contest.getHideRibbons();
             contestLogoId = contest.getContestLogoId();
             emailTemplateUrl = contest.getEmailTemplateUrl();
             sponsorLogoId = contest.getSponsorLogoId();
@@ -75,6 +82,11 @@ public class ContestDescriptionBean implements Serializable {
         updateContestDescription(contest);
         updateContestSchedule(contest, scheduleTemplateId);
         updateContestWiki(contest, oldContestTitle);
+
+        DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
+        ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest.getContestTypeId());
+        dcg.setDescription(String.format("%s %s", contestType.getContestName(), contestShortName));
+        dcg.persist();
     }
 
     public Long getContestPK() {
@@ -177,7 +189,7 @@ public class ContestDescriptionBean implements Serializable {
         this.contestModelSettings = contestModelSettings;
     }
 
-    private void updateContestDescription(Contest contest) throws SystemException {
+    private void updateContestDescription(Contest contest) throws SystemException, PortalException {
         contest.setContestName(contestName);
         contest.setEmailTemplateUrl(emailTemplateUrl);
         contest.setContestShortName(contestShortName);
@@ -187,6 +199,7 @@ public class ContestDescriptionBean implements Serializable {
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setContestTier(contestTier);
         contest.setContestTypeId(contestType);
+        contest.setHideRibbons(hideRibbons);
         contest.persist();
         contestModelSettings.persist(contest);
     }
@@ -215,5 +228,13 @@ public class ContestDescriptionBean implements Serializable {
             contest.setContestScheduleId(contestScheduleId);
             contest.persist();
         }
+    }
+
+    public boolean isHideRibbons() {
+        return hideRibbons;
+    }
+
+    public void setHideRibbons(boolean hideRibbons) {
+        this.hideRibbons = hideRibbons;
     }
 }

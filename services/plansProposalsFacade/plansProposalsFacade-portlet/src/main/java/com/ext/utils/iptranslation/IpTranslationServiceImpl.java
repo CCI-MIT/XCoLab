@@ -1,23 +1,23 @@
 package com.ext.utils.iptranslation;
 
+import au.com.bytecode.opencsv.CSVParser;
+import au.com.bytecode.opencsv.CSVReader;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.service.InvokableLocalService;
+import com.liferay.util.portlet.PortletProps;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-
-import au.com.bytecode.opencsv.CSVParser;
-import au.com.bytecode.opencsv.CSVReader;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.InvokableLocalService;
-import com.liferay.util.portlet.PortletProps;
 
 public class IpTranslationServiceImpl implements IpTranslationService, InvokableLocalService {
 	
@@ -26,9 +26,9 @@ public class IpTranslationServiceImpl implements IpTranslationService, Invokable
 	private final static String GEO_LITE_CITY_LOCATION_PROPERTY = "geolite.location";
 	
 	private Map<Integer, Location> locations = new HashMap<>();
-	private ArrayList<IpBlock> blocks = new ArrayList<IpBlock>();
+	private ArrayList<IpBlock> blocks = new ArrayList<>();
 	
-	public IpTranslationServiceImpl() throws Exception {
+	public IpTranslationServiceImpl() throws IOException, NumberFormatException {
 		reloadLocationAndBlockData();
 	}
 
@@ -75,7 +75,7 @@ public class IpTranslationServiceImpl implements IpTranslationService, Invokable
 	}
 
 	@Override
-	public void reloadLocationAndBlockData() throws Exception {
+	public void reloadLocationAndBlockData() throws IOException, NumberFormatException {
 		_log.info("Reloading ip to location translation data");
 		
 		String blocksFilePath = PortletProps.get(GEO_LITE_CITY_BLOCKS_PROPERTY);
@@ -102,7 +102,7 @@ public class IpTranslationServiceImpl implements IpTranslationService, Invokable
 		
 
 		BufferedReader bufferedBlocksReader = new BufferedReader(new FileReader(ipBlocksFile));
-		CSVReader csvBlocksReader = new CSVReader(bufferedBlocksReader, 
+		CSVReader csvBlocksReader = new CSVReader(bufferedBlocksReader,
 				CSVParser.DEFAULT_SEPARATOR, CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.DEFAULT_ESCAPE_CHARACTER, 2);
 		
 		String[] line = null;
@@ -113,10 +113,10 @@ public class IpTranslationServiceImpl implements IpTranslationService, Invokable
 		csvBlocksReader.close();
 
 		BufferedReader bufferedLocationsReader = new BufferedReader(new FileReader(locationsFile));
-		CSVReader csvLocationsReader = new CSVReader(bufferedLocationsReader, 
+		CSVReader csvLocationsReader = new CSVReader(bufferedLocationsReader,
 				CSVParser.DEFAULT_SEPARATOR, CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.DEFAULT_ESCAPE_CHARACTER, 2);
 		
-		Map<Integer, Location> locations = new HashMap<Integer, Location>(510000);
+		Map<Integer, Location> locations = new HashMap<>(510000);
 		while ((line = csvLocationsReader.readNext()) != null) {
 			int locId = Integer.parseInt(line[0]);
 			locations.put(locId, new Location(locId, line[1], line[2], line[3], line[4], 
@@ -169,16 +169,16 @@ public class IpTranslationServiceImpl implements IpTranslationService, Invokable
 	}
 
 	@Override
-	public Object invokeMethod(String name, String[] parameterTypes,
-			Object[] arguments) throws Throwable {
+	public Object invokeMethod(String name, String[] parameterTypes, Object[] arguments)
+			throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
 		Class[] parameterTypesClass = new Class[parameterTypes.length];
 		for (int i=0; i < parameterTypes.length; i++) {
 			parameterTypesClass[i] = getClass().getClassLoader().loadClass(parameterTypes[i]);
 		}
 		
 		Method m = this.getClass().getMethod(name, parameterTypesClass);
-		Object ret = m.invoke(this, arguments);
-		return ret;
+		return m.invoke(this, arguments);
 	}
 
 }

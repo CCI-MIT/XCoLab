@@ -1,10 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.portlet.PortletRequest;
-
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,8 +11,9 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import javax.portlet.PortletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class BaseProposalTabController extends BaseProposalsController {

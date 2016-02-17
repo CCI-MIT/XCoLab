@@ -6,9 +6,11 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-public class UrlBuilder {
+public final class UrlBuilder {
 	private static final String CONTEST_TAB_URL_PATTERN = "/web/guest/cms/-/cms/contestId/%d/tab/%s";
-	
+
+	private UrlBuilder() { }
+
 	public static String getProposalCommentsUrl(Contest contest, Proposal proposal) throws SystemException, PortalException {
 		return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + "/tab/COMMENTS";
 	}

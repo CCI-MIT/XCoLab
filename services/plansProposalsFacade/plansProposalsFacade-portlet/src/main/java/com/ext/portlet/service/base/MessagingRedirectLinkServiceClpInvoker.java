@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class MessagingRedirectLinkServiceClpInvoker {
-    private String _methodName488;
-    private String[] _methodParameterTypes488;
-    private String _methodName489;
-    private String[] _methodParameterTypes489;
+    private String _methodName496;
+    private String[] _methodParameterTypes496;
+    private String _methodName497;
+    private String[] _methodParameterTypes497;
 
     public MessagingRedirectLinkServiceClpInvoker() {
-        _methodName488 = "getBeanIdentifier";
+        _methodName496 = "getBeanIdentifier";
 
-        _methodParameterTypes488 = new String[] {  };
+        _methodParameterTypes496 = new String[] {  };
 
-        _methodName489 = "setBeanIdentifier";
+        _methodName497 = "setBeanIdentifier";
 
-        _methodParameterTypes489 = new String[] { "java.lang.String" };
+        _methodParameterTypes497 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName488.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
+        if (_methodName496.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes496, parameterTypes)) {
             return MessagingRedirectLinkServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName489.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
+        if (_methodName497.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes497, parameterTypes)) {
             MessagingRedirectLinkServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

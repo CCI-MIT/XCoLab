@@ -11,17 +11,24 @@
   <short-name>xcollabdiscussions</short-name>
   <uri>http://climatecolab.org/tags/xcollab_discussions_2.0</uri>
 
-   <tag>
-  	<name>loadDiscussion</name>
-  	<tag-class>org.xcolab.jspTags.discussion.LoadDiscussionStartTag</tag-class>
-	<body-content>JSP</body-content>
-		<attribute>
-			<name>discussionId</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-			<type>java.lang.Long</type>			
-		</attribute>
-	</tag>
+    <tag>
+        <name>loadThread</name>
+        <tag-class>org.xcolab.jspTags.discussion.LoadThreadStartTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>categoryGroupId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <name>thread</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>com.ext.portlet.model.DiscussionMessage</type>
+        </attribute>
+    </tag>
+
     <tag>
         <name>getRoleName</name>
         <tag-class>org.xcolab.jspTags.discussion.GetRoleNameStartTag</tag-class>
@@ -34,7 +41,7 @@
         </attribute>
         <attribute>
             <name>proposalId</name>
-            <required>true</required>
+            <required>false</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.Long</type>
         </attribute>

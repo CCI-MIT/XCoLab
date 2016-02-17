@@ -7,7 +7,11 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.TimeZone;
 
 /**
  * @author pdeboer

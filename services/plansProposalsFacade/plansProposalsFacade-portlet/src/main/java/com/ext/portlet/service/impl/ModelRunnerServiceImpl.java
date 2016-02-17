@@ -1,10 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import com.ext.portlet.model.ModelGlobalPreference;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
@@ -24,13 +19,17 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.ac.AccessControlled;
-
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Variable;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.jsoup.Jsoup;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * The implementation of the model runner remote service.
@@ -55,7 +54,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
 
     //private ClientRepository repository;
 
-    private Log _log = LogFactoryUtil.getLog(ModelRunnerServiceImpl.class);
+    private final Log _log = LogFactoryUtil.getLog(ModelRunnerServiceImpl.class);
 
     /*
      * NOTE FOR DEVELOPERS:
@@ -67,6 +66,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     public ModelRunnerServiceImpl() throws SystemException {
     }
 
+    @Override
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getScenario(long scenarioId) {
@@ -74,19 +74,13 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
             Scenario scenario = CollaboratoriumModelingService.repository().getScenario(scenarioId);
             return convertScenario(scenario);
 
-        } catch (SystemException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalUIConfigurationException e) {
-            // TODO Auto-generated catch block
+        } catch (SystemException | IOException | IllegalUIConfigurationException e) {
             e.printStackTrace();
         }
         return JSONFactoryUtil.createJSONObject();
     }
 
+    @Override
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getModel(long modelId) throws SystemException, IllegalUIConfigurationException, IOException {
@@ -96,6 +90,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
         return convertModel(simulation);
     }
 
+    @Override
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject runModel(long modelId, String inputs) throws IOException, ScenarioNotFoundException,
@@ -119,6 +114,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
         return convertScenario(scenario); 
     }
     
+    @Override
     public void refreshModels() throws SystemException, IOException {
     	CollaboratoriumModelingService.repository().getManager().clearCache();
     	CollaboratoriumModelingService.repository().getManager().refreshSimulations();

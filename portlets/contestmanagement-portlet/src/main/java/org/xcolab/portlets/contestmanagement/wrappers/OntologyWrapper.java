@@ -1,22 +1,34 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.FocusAreaOntologyTerm;
+import com.ext.portlet.model.OntologySpace;
+import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
+import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
+import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.wrapper.OntologySpaceWrapper;
 import org.xcolab.wrapper.OntologyTermWrapper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Thomas on 2/16/2015.
  */
 public class OntologyWrapper {
 
-    private Map<Long, OntologySpaceWrapper> ontologySpaces;
-    private Map<Long, OntologyTermWrapper> ontologyTerms;
+    private final Map<Long, OntologySpaceWrapper> ontologySpaces;
+    private final Map<Long, OntologyTermWrapper> ontologyTerms;
 
-    public OntologyWrapper() throws Exception{
-
+    public OntologyWrapper() throws SystemException {
         ontologySpaces = new HashMap<>();
         ontologyTerms = new TreeMap<>();
         initOntologySpacesAndTerms();
@@ -42,7 +54,7 @@ public class OntologyWrapper {
         return sortedSpaces;
     }
 
-    public List<Long> getOntologyTermIdsForFocusAreaOfContest(Contest contest) throws Exception{
+    public List<Long> getOntologyTermIdsForFocusAreaOfContest(Contest contest) throws SystemException {
         List<Long> ontologyTermIds = new ArrayList<>();
         Long focusAreaId = contest.getFocusAreaId();
         for(FocusAreaOntologyTerm focusAreaOntologyTerm : FocusAreaOntologyTermLocalServiceUtil.findTermsByFocusArea(focusAreaId)){
@@ -52,7 +64,7 @@ public class OntologyWrapper {
         return ontologyTermIds;
     }
 
-    private void initOntologySpacesAndTerms() throws Exception{
+    private void initOntologySpacesAndTerms() throws SystemException {
         List<OntologySpace> ontologySpacesRaw = OntologySpaceLocalServiceUtil.getOntologySpaces(0, Integer.MAX_VALUE);
         List<OntologyTerm> ontologyTermsRaw = OntologyTermLocalServiceUtil.getOntologyTerms(0, Integer.MAX_VALUE);
 

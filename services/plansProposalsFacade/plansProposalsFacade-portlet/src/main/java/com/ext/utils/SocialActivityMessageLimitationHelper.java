@@ -3,7 +3,12 @@ package com.ext.utils;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author pdeboer

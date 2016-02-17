@@ -6,7 +6,6 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;

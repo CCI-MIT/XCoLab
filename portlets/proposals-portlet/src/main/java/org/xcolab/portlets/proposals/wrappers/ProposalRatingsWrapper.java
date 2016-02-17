@@ -1,9 +1,8 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.*;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -12,15 +11,18 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by Manuel Thurner
  */
 public class ProposalRatingsWrapper {
     private final static Log _log = LogFactoryUtil.getLog(ProposalRatingsWrapper.class);
-    private List<ProposalRatingWrapper> proposalRatings;
-    private User author;
+    private final List<ProposalRatingWrapper> proposalRatings;
+    private final User author;
     private String comment;
     private ContestPhase contestPhase;
 
@@ -47,6 +49,7 @@ public class ProposalRatingsWrapper {
 
         //sort the list
         Collections.sort(wrapped, new Comparator<ProposalRatingWrapper>() {
+            @Override
             public int compare(ProposalRatingWrapper r1, ProposalRatingWrapper r2) {
                 return r1.getRatingTypeId().compareTo(r2.getRatingTypeId());
             }
@@ -96,23 +99,21 @@ public class ProposalRatingsWrapper {
             if(this.contestPhase != null) {
                 contestPhaseTitle = ContestPhaseLocalServiceUtil.getName(this.contestPhase);
             } else {
-                for (ProposalRatingWrapper r : proposalRatings) {
-                    Long contestPhaseId = r.unwrap().getContestPhaseId();
+                if (!proposalRatings.isEmpty()) {
+                    long contestPhaseId = proposalRatings.get(0).unwrap().getContestPhaseId();
                     ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
                     contestPhaseTitle = ContestPhaseLocalServiceUtil.getName(contestPhase);
-                    break;
                 }
             }
-        } catch (Exception e){
+        } catch (PortalException | SystemException e){
             _log.warn("Could not get phase title for rating wrapper", e);
         }
 
-        String contestSelectionPhaseTitleAdjusted = contestPhaseTitle.replace("selection", "Evaluation");
-        return contestSelectionPhaseTitleAdjusted;
+        return contestPhaseTitle.replace("selection", "Evaluation");
     }
 
     public boolean isReviewComplete() {
-        if (this.proposalRatings.size() > 0) {
+        if (!this.proposalRatings.isEmpty()) {
             boolean result = true;
             for (ProposalRatingWrapper r : proposalRatings) {
                 if (!r.unwrap().isRatingComplete()) {

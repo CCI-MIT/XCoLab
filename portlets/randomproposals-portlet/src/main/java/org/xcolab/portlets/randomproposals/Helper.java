@@ -1,9 +1,9 @@
 package org.xcolab.portlets.randomproposals;
 
-import javax.portlet.PortletRequest;
-
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
+
+import javax.portlet.PortletRequest;
 public class Helper {
 
     public static ThemeDisplay getThemeDisplay(PortletRequest request) {

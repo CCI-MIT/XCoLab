@@ -41,18 +41,18 @@ public class PlanSectionDefinitionLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName504;
-    private String[] _methodParameterTypes504;
-    private String _methodName505;
-    private String[] _methodParameterTypes505;
-    private String _methodName510;
-    private String[] _methodParameterTypes510;
-    private String _methodName511;
-    private String[] _methodParameterTypes511;
     private String _methodName512;
     private String[] _methodParameterTypes512;
     private String _methodName513;
     private String[] _methodParameterTypes513;
+    private String _methodName518;
+    private String[] _methodParameterTypes518;
+    private String _methodName519;
+    private String[] _methodParameterTypes519;
+    private String _methodName520;
+    private String[] _methodParameterTypes520;
+    private String _methodName521;
+    private String[] _methodParameterTypes521;
 
     public PlanSectionDefinitionLocalServiceClpInvoker() {
         _methodName0 = "addPlanSectionDefinition";
@@ -137,35 +137,35 @@ public class PlanSectionDefinitionLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanSectionDefinition"
             };
 
-        _methodName504 = "getBeanIdentifier";
+        _methodName512 = "getBeanIdentifier";
 
-        _methodParameterTypes504 = new String[] {  };
+        _methodParameterTypes512 = new String[] {  };
 
-        _methodName505 = "setBeanIdentifier";
+        _methodName513 = "setBeanIdentifier";
 
-        _methodParameterTypes505 = new String[] { "java.lang.String" };
+        _methodParameterTypes513 = new String[] { "java.lang.String" };
 
-        _methodName510 = "store";
+        _methodName518 = "store";
 
-        _methodParameterTypes510 = new String[] {
+        _methodParameterTypes518 = new String[] {
                 "com.ext.portlet.model.PlanSectionDefinition"
             };
 
-        _methodName511 = "getFocusArea";
+        _methodName519 = "getFocusArea";
 
-        _methodParameterTypes511 = new String[] {
+        _methodParameterTypes519 = new String[] {
                 "com.ext.portlet.model.PlanSectionDefinition"
             };
 
-        _methodName512 = "getPlanSectionDefinition";
+        _methodName520 = "getPlanSectionDefinition";
 
-        _methodParameterTypes512 = new String[] {
+        _methodParameterTypes520 = new String[] {
                 "com.ext.portlet.model.FocusArea", "java.lang.String", "long"
             };
 
-        _methodName513 = "getAdditionalIds";
+        _methodName521 = "getAdditionalIds";
 
-        _methodParameterTypes513 = new String[] {
+        _methodParameterTypes521 = new String[] {
                 "com.ext.portlet.model.PlanSectionDefinition"
             };
     }
@@ -259,39 +259,39 @@ public class PlanSectionDefinitionLocalServiceClpInvoker {
             return PlanSectionDefinitionLocalServiceUtil.updatePlanSectionDefinition((com.ext.portlet.model.PlanSectionDefinition) arguments[0]);
         }
 
-        if (_methodName504.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes504, parameterTypes)) {
+        if (_methodName512.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
             return PlanSectionDefinitionLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName505.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes505, parameterTypes)) {
+        if (_methodName513.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
             PlanSectionDefinitionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName510.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes510, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             PlanSectionDefinitionLocalServiceUtil.store((com.ext.portlet.model.PlanSectionDefinition) arguments[0]);
 
             return null;
         }
 
-        if (_methodName511.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes511, parameterTypes)) {
+        if (_methodName519.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
             return PlanSectionDefinitionLocalServiceUtil.getFocusArea((com.ext.portlet.model.PlanSectionDefinition) arguments[0]);
         }
 
-        if (_methodName512.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
+        if (_methodName520.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
             return PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition((com.ext.portlet.model.FocusArea) arguments[0],
                 (java.lang.String) arguments[1],
                 ((Long) arguments[2]).longValue());
         }
 
-        if (_methodName513.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
+        if (_methodName521.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
             return PlanSectionDefinitionLocalServiceUtil.getAdditionalIds((com.ext.portlet.model.PlanSectionDefinition) arguments[0]);
         }
 

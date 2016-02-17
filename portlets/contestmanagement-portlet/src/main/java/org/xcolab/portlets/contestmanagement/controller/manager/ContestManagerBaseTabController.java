@@ -19,12 +19,11 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
 
     static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
     static final String NOT_FOUND_TAB_VIEW = "common/notFound";
-    static final String EXCEPTION_VIEW = "common/showException";
 
     @ModelAttribute("tabs")
     @Override
     public List<TabWrapper> populateTabs(Model model, PortletRequest request) throws PortalException, SystemException {
-        return getAllVisibleTabsWrapped(model, request, ContestManagerTabs.values());
+        return getAllVisibleTabsWrapped(request, ContestManagerTabs.values());
     }
 
     @ModelAttribute("currentTabWrapped")

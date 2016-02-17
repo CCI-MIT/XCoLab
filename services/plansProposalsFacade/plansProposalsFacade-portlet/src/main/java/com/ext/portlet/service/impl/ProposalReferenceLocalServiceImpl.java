@@ -11,15 +11,15 @@ import com.ext.portlet.model.ProposalReference;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalReferenceLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ProposalReferencePK;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.lang3.StringUtils;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.helpers.ProposalAttributeHelper;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,13 +61,16 @@ public class ProposalReferenceLocalServiceImpl
     }
 
     @Override
+    public ProposalReference getByProposalIdSubProposalId(long proposalId, long subProposalId) throws NoSuchProposalReferenceException, SystemException {
+        return proposalReferencePersistence.findByPrimaryKey(new ProposalReferencePK(proposalId, subProposalId));
+    }
+
+    @Override
     public void populateTable() throws SystemException, PortalException {
 
         Set<Long> processedProposals = new HashSet<>();
 
-        List<Contest> contests = new ArrayList<>();
-        contests.addAll(ContestLocalServiceUtil.getContestsMatchingTier(ContestTier.GLOBAL.getTierType()));
-        contests.addAll(ContestLocalServiceUtil.getContestsMatchingTier(ContestTier.REGION_AGGREGATE.getTierType()));
+        List<Contest> contests = ContestLocalServiceUtil.getContests(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
         _log.debug(String.format("Populating table using %d contests", contests.size()));
 
@@ -92,11 +95,12 @@ public class ProposalReferenceLocalServiceImpl
         if (processedProposals.contains(proposal.getProposalId())) {
             return;
         }
+        final List<ProposalReference> existingReferences = getByProposalId(proposal.getProposalId());
+        for (ProposalReference existingReference : existingReferences) {
+            deleteProposalReference(existingReference);
+        }
         processedProposals.add(proposal.getProposalId());
-        for (ProposalAttribute attribute : proposalAttributeLocalService.getAttributes(proposal.getProposalId())) {
-            if (!attribute.getName().equals(ProposalAttributeKeys.SECTION)) {
-                continue;
-            }
+        for (ProposalAttribute attribute : new ProposalAttributeHelper(proposal).getAttributesByName(ProposalAttributeKeys.SECTION)) {
             PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
 
             if (StringUtils.isBlank(psd.getType())) {
@@ -138,25 +142,22 @@ public class ProposalReferenceLocalServiceImpl
                     break;
                 }
             }
-            if (!subProposalIds.isEmpty()) {
-                for (long subProposalId : subProposalIds) {
-                    addProposalReference(proposal.getProposalId(), subProposalId, attribute.getId());
-                    populateTableWithProposal(proposalLocalService.fetchProposal(subProposalId), processedProposals);
-                }
+            for (long subProposalId : subProposalIds) {
+                addProposalReference(proposal.getProposalId(), subProposalId, attribute.getId());
+                populateTableWithProposal(proposalLocalService.fetchProposal(subProposalId), processedProposals);
             }
         }
     }
 
     private void addProposalReference(long proposalId, long subProposalId, long sectionAttributeId) throws SystemException {
         ProposalReferencePK proposalReferencePK = new ProposalReferencePK(proposalId, subProposalId);
-        try {
-            proposalReferencePersistence.findByPrimaryKey(proposalReferencePK);
-            _log.debug(String.format("Found ProposalReference with primary key %d, %d", proposalId, subProposalId));
-            return;
-        } catch (NoSuchProposalReferenceException ignored) { }
-        ProposalReference proposalReference = proposalReferencePersistence.create(proposalReferencePK);
-        proposalReference.setSectionAttributeId(sectionAttributeId);
-        proposalReference.persist();
-        _log.debug(String.format("Added ProposalReference for %d, %d, %d", proposalId, subProposalId, sectionAttributeId));
+        if (proposalReferencePersistence.fetchByPrimaryKey(proposalReferencePK) == null) {
+            ProposalReference proposalReference = proposalReferencePersistence.create(proposalReferencePK);
+            proposalReference.setSectionAttributeId(sectionAttributeId);
+            proposalReference.persist();
+            _log.debug(String.format("Added ProposalReference for %d, %d, %d", proposalId, subProposalId, sectionAttributeId));
+        } else {
+            _log.debug(String.format("ProposalReference with primary key {%d, %d} already exists", proposalId, subProposalId));
+        }
     }
 }

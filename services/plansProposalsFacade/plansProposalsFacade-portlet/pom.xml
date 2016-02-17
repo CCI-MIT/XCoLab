@@ -9,7 +9,6 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.xcolab.services</groupId>
 	<artifactId>plansProposalsFacade-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>plansProposalsFacade Portlet</name>

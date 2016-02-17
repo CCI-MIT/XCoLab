@@ -31,6 +31,7 @@ public class StaffMemberLocalServiceImpl extends StaffMemberLocalServiceBaseImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.StaffMemberLocalServiceUtil} to access the staff member local service.
      */
 
+    @Override
     public List<StaffMember> getStaffMembersByCategoryId(long categoryId) throws SystemException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(StaffMember.class)
                 .add(PropertyFactoryUtil.forName("categoryId").eq(categoryId));

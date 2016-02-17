@@ -53,7 +53,6 @@ public class ContestServiceSoap {
     /**
     * Returns a list of open contest for regular users and returns all contests for staff users
     *
-    * @return
     * @throws PortalException
     * @throws SystemException
     */

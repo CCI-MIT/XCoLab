@@ -4,7 +4,10 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.utils.EntityGroupingUtil;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +36,7 @@ public class ProposalAttributeHelper {
         if (attributesByNameAndAdditionalId == null) {
             attributesByNameAndAdditionalId = new HashMap<>();
             for (ProposalAttribute attribute : attributes) {
-                Map<Long, ProposalAttribute> currentAttributes = getInnerMapOrCreate(
+                Map<Long, ProposalAttribute> currentAttributes = EntityGroupingUtil.getInnerMapOrCreate(
                         attribute.getName(), attributesByNameAndAdditionalId);
 
                 ProposalAttribute currentAttribute = currentAttributes.get(attribute.getAdditionalId());
@@ -44,16 +47,6 @@ public class ProposalAttributeHelper {
                 }
             }
         }
-    }
-
-    private <SearchKey, MapKey, MapVal> Map<MapKey, MapVal> getInnerMapOrCreate(
-                                                SearchKey searchKey, Map<SearchKey, Map<MapKey, MapVal>> searchMap) {
-        Map<MapKey, MapVal> innerMap = searchMap.get(searchKey);
-        if (innerMap == null) {
-            innerMap = new HashMap<>();
-            searchMap.put(searchKey, innerMap);
-        }
-        return innerMap;
     }
 
     public boolean hasAttribute(String name) throws SystemException {
@@ -99,6 +92,32 @@ public class ProposalAttributeHelper {
     }
 
     public ProposalAttribute getAttributeOrNull(String attributeName) throws SystemException {
-        return getAttributeOrNull(attributeName, 0L);
+        if (attributesByNameAndAdditionalId == null) {
+            init();
+        }
+        final Map<Long, ProposalAttribute> attributesByAdditionalId = attributesByNameAndAdditionalId.get(attributeName);
+        if (attributesByAdditionalId == null) {
+            return null;
+        }
+        final Collection<ProposalAttribute> values = attributesByAdditionalId.values();
+        int highestVersionSeen = 0;
+        ProposalAttribute newestAttributeSeen = null;
+        for (ProposalAttribute attribute : values) {
+            if (attribute.getVersion() > highestVersionSeen) {
+                newestAttributeSeen = attribute;
+            }
+        }
+        return newestAttributeSeen;
+    }
+
+    public Collection<ProposalAttribute> getAttributesByName(String attributeName) throws SystemException {
+        if (attributesByNameAndAdditionalId == null) {
+            init();
+        }
+        final Map<Long, ProposalAttribute> attributesByAdditionalId = attributesByNameAndAdditionalId.get(attributeName);
+        if (attributesByAdditionalId != null) {
+            return attributesByAdditionalId.values();
+        }
+        return Collections.emptyList();
     }
 }

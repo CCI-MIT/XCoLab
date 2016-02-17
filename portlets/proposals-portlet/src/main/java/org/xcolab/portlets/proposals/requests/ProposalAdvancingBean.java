@@ -1,15 +1,11 @@
 package org.xcolab.portlets.proposals.requests;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 /**
  * Created by kmang on 25/05/14.

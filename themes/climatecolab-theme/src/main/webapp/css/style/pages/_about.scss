@@ -61,7 +61,7 @@
   border-bottom: none;
 }
 
-.about-left li ul li a:hover, .about-left li ul li.c a {
+.about-left li ul li a:hover, .about-left li ul li.c > a {
   background: $lightest-grey;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .how {
-  background: url(../images/about-how-top.jpg) no-repeat right;
+  background: url(../images/about/how-top.jpg) no-repeat right;
   width: 420px;
   padding: 13px 290px 0 0;
 }
@@ -105,7 +105,7 @@
 }
 
 .breaking {
-  background: url(../images/about-how-break-1_small.jpg) no-repeat;
+  background: url(../images/about/how-break-1_small.jpg) no-repeat;
   margin-top: 19px;
   width: 460px;
   padding: 0 0 0 260px;
@@ -367,10 +367,6 @@
   font-weight: 700;
 }
 
-.about-left ul li a:hover, .about-left ul li.c a {
+.about-left ul li a:hover, .about-left ul li.c > a {
   background: #F2F1E9;
-}
-
-#content ul li, #content ol ul li {
-  list-style: none;
 }

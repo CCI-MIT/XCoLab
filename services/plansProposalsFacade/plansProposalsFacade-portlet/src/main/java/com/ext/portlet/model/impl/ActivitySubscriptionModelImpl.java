@@ -62,7 +62,7 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
             { "createDate", Types.TIMESTAMP },
             { "modifiedDate", Types.TIMESTAMP }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ActivitySubscription (pk LONG not null primary key,classNameId LONG,classPK LONG,type_ INTEGER,automaticSubscriptionCounter INTEGER,extraData TEXT null,receiverId LONG,createDate DATE null,modifiedDate DATE null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ActivitySubscription (pk LONG not null primary key,classNameId LONG,classPK LONG,type_ INTEGER,automaticSubscriptionCounter INTEGER,extraData VARCHAR(256) null,receiverId LONG,createDate DATE null,modifiedDate DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ActivitySubscription";
     public static final String ORDER_BY_JPQL = " ORDER BY activitySubscription.pk ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ActivitySubscription.pk ASC";

@@ -1,10 +1,6 @@
 package org.xcolab.portlets.admintasks;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import au.com.bytecode.opencsv.CSVReader;
-
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -16,6 +12,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class FixForRemovedProposalsTeamMembers {
 	

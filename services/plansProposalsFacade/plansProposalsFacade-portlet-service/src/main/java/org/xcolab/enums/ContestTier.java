@@ -14,13 +14,13 @@ public enum ContestTier {
         return tierType;
     }
 
-    private long tierType;
+    private final long tierType;
 
     public String getTierName() {
         return tierName;
     }
 
-    private String tierName;
+    private final String tierName;
 
     ContestTier (long tierType, String tierName) {
         this.tierType = tierType;

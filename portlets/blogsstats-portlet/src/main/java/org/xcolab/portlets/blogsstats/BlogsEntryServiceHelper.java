@@ -1,12 +1,5 @@
 package org.xcolab.portlets.blogsstats;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
@@ -15,6 +8,13 @@ import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class BlogsEntryServiceHelper implements Serializable {
     

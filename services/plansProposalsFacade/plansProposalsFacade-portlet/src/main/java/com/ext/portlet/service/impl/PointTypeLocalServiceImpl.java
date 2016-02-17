@@ -31,6 +31,7 @@ public class PointTypeLocalServiceImpl extends PointTypeLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.PointTypeLocalServiceUtil} to access the point type local service.
      */
 
+    @Override
     public List<PointType> getChildrenOfPointType(long parentPointTypeId) throws SystemException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(PointType.class)
                 .add(PropertyFactoryUtil.forName("parentPointTypeId").eq(parentPointTypeId));

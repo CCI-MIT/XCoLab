@@ -3,6 +3,9 @@
         xmlns:jsp="http://java.sun.com/JSP/Page"
         xmlns:collab="http://climatecolab.org/tags/collab_1.0"
         version="2.0" >
+
+    <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
+
 	<jsp:directive.attribute name="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper" required="true" rtexprvalue="true" description="Contest" />
     <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
 	<div class="contestbox" style="${ (index % 2 == 0) ? 'margin-right: 25px;' : ''}">
@@ -19,7 +22,8 @@
             <div class="count">
                 <div class="prop"><strong>${contest.proposalsCount}</strong>
                     <c:choose>
-                        <c:when test="${contest.proposalsCount == 1}"> ${contestType.proposalName}</c:when>
+                        <c:when test="${contest.proposalsCount == 1}">
+                         ${contestType.proposalName}</c:when>
                         <c:otherwise> ${contestType.proposalNamePlural}</c:otherwise>
                     </c:choose>
                 </div>

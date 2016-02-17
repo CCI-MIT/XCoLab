@@ -19,10 +19,9 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Query;
 
 public class SearchResultItem {
-    private SearchItemType itemType = null;
-    private Map<String, Field> fields;
-    private Document doc;
-    private String content = null;
+    private SearchItemType itemType;
+    private final Map<String, Field> fields;
+    private String content;
     private String title;
     private String url;
     private boolean odd;
@@ -51,9 +50,7 @@ public class SearchResultItem {
     
     public SearchResultItem(Document doc, Query query, org.apache.lucene.search.Query luceneQuery, boolean odd) 
             throws ParseException, IOException, com.liferay.portal.kernel.search.ParseException, InvalidTokenOffsetsException {
-        this.doc = doc;
         fields = doc.getFields();
-        
         for (SearchItemType type: SearchItemType.values()) {
             if (type.isOfGivenType(doc)) {
                 itemType = type;
@@ -64,18 +61,18 @@ public class SearchResultItem {
         QueryScorer scorer = new QueryScorer(luceneQuery);
         Formatter formatter = new SimpleHTMLFormatter();
         
-        Highlighter higlighter = new Highlighter(formatter, scorer);
-        higlighter.getBestFragment(new StandardAnalyzer(Version.LUCENE_34), "firstName", doc.get("firstName"));
+        Highlighter highlighter = new Highlighter(formatter, scorer);
+        highlighter.getBestFragment(new StandardAnalyzer(Version.LUCENE_34), "firstName", doc.get("firstName"));
         if (itemType != null) {
-            content = itemType.getContent(doc, higlighter);
+            content = itemType.getContent(doc, highlighter);
             url = itemType.getUrl(doc);
-            title = itemType.getTitle(doc, higlighter);
+            title = itemType.getTitle(doc, highlighter);
         }
         this.odd = odd;
     }
     
     public List<Pair> getValues() {
-        List<Pair> pairs = new ArrayList<Pair>();
+        List<Pair> pairs = new ArrayList<>();
         for (String fieldName: fields.keySet()) {
             pairs.add(new Pair(fieldName, fields.get(fieldName).getValue()));
         }
@@ -90,7 +87,6 @@ public class SearchResultItem {
     public SearchItemType getItemType() {
         return itemType;
     }
-    
 
     public String getTitle() {
         return title;

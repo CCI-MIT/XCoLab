@@ -20,7 +20,6 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;

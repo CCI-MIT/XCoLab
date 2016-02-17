@@ -89,7 +89,7 @@ public abstract class EmailNotification {
      * @return          Proposal URL as String
      */
     protected  String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) throws SystemException {
-        final String proposalName = getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
+        final String proposalName = new ProposalAttributeHelper(proposal).getAttributeValueString(ProposalAttributeKeys.NAME, "");
         final String proposalLinkUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + "/vote";
         return String.format(LINK_FORMAT_STRING, proposalLinkUrl, proposalName);
     }

@@ -2,6 +2,8 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	version="2.0">
+
+	<!--@elvariable id="isRegionalContest" type="java.lang.Boolean"-->
 	
 	<jsp:directive.attribute name="availableModels" type="java.util.Map" required="true" rtexprvalue="true" description="Models to be shown" />
 	<jsp:directive.attribute name="contestPK" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest PK" />
@@ -15,7 +17,7 @@
 							style="width: 55px"/>
 					</div>
 				</c:if>
-                <h3 style="margin-top: 0px;">Which modeling engine would you like to use?</h3>
+                <h3 style="margin-top: 0;">Which modeling engine would you like to use?</h3>
                 <div class="selectbox1 modelsSelectBox">
                 	<fieldset id="modelSet">
                 	<c:forEach var="model" items="${availableModels }">

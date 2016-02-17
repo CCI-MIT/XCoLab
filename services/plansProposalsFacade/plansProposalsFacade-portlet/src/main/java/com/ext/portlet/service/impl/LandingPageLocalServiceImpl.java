@@ -1,11 +1,11 @@
 package com.ext.portlet.service.impl;
 
-import java.util.Date;
-
 import com.ext.portlet.model.LandingPage;
 import com.ext.portlet.service.base.LandingPageLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.Date;
 
 /**
  * The implementation of the landing page local service.
@@ -27,6 +27,7 @@ public class LandingPageLocalServiceImpl extends LandingPageLocalServiceBaseImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.LandingPageLocalServiceUtil} to access the landing page local service.
      */
+    @Override
     public LandingPage createNewLandingPage(String baseUrl, String targetUrl) throws SystemException {
         Long id = CounterLocalServiceUtil.increment(LandingPage.class.getName());
         
@@ -39,6 +40,7 @@ public class LandingPageLocalServiceImpl extends LandingPageLocalServiceBaseImpl
         
     }
     
+    @Override
     public void store(LandingPage landingPage) throws SystemException {
         if (landingPage.isNew()) {
             addLandingPage(landingPage);

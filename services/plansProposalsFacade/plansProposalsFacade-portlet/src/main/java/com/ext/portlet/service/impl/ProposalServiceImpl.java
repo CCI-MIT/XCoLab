@@ -1,7 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import java.util.Date;
-
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
@@ -13,7 +11,12 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalVersion;
-import com.ext.portlet.service.*;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -22,9 +25,13 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.ac.AccessControlled;
 import com.liferay.portal.service.UserLocalServiceUtil;
+
+import java.util.Date;
 
 /**
  * The implementation of the proposal remote service.
@@ -48,7 +55,9 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalServiceUtil} to access the proposal remote service.
      */
 
-    private final long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
+    private final static Log _log = LogFactoryUtil.getLog(ProposalServiceImpl.class);
+
+    private final static long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
     /**
      * This method returns the index of the latest version of a proposal within a given contestPhaseId
@@ -120,10 +129,6 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
     /**
      *
      * @param contestPhaseId ID of contest phase or -1 for general query
-     * @param proposalId
-     * @param start
-     * @param end
-     * @return
      * @throws PortalException
      * @throws SystemException
      */
@@ -153,17 +158,16 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
         int counter = 0;
         int numberOfVersions = 0;
         for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
-            if (c!=null){
+            if (c != null){
                 try{
                     // Skip versions that do not belong to this contest
-                    long cph = Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion).getContestPhaseId();
-                    Contest c2 = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(cph));
+                    long cphId = Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion).getContestPhaseId();
+                    Contest c2 = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(cphId));
                     if (c2.getContestPK() != c.getContestPK()) {
                         continue;
                     }
-                }catch(SystemException se){
-                    System.out.println(se);
-                    continue;
+                } catch (SystemException e){
+                    _log.error("Could not get p2p", e);
                 }
             }
 
@@ -227,7 +231,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
             for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
             	try {
             		ProposalAttribute attribute = proposalAttributeLocalService.getAttribute(proposalId, version, ProposalAttributeKeys.SECTION, psd.getId());
-            		if (attribute != null && attribute.getStringValue().trim().length() > 0) {
+            		if (attribute != null && !attribute.getStringValue().trim().isEmpty()) {
             			JSONObject obj = JSONFactoryUtil.createJSONObject();
             			obj.put("title", psd.getTitle());
             			obj.put("sectionId", psd.getId());

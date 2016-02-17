@@ -69,12 +69,7 @@
 		</finder>
 
         <reference package-path="com.liferay.portal" entity="User" />
-
-
 	</entity>
-
-
-
 
 	<entity name="MessagingUserPreferences" local-service="true" >
 		<column name="messagingPreferencesId" type="long" primary="true"/>
@@ -84,11 +79,9 @@
         <column name="emailOnActivity" type="boolean"/>
         <column name="emailActivityDailyDigest" type="boolean"/>
 
-
-
-    <finder name="messagingPreferences" return-type="MessagingUserPrefs">
-        <finder-column name="userId" />
-    </finder>
+		<finder name="messagingPreferences" return-type="MessagingUserPrefs">
+			<finder-column name="userId" />
+		</finder>
 
 	</entity>
 	<exceptions>

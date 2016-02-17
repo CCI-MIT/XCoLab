@@ -15,10 +15,11 @@ import org.xcolab.interfaces.TabPermissions;
 import org.xcolab.utils.UrlBuilder;
 
 import javax.portlet.PortletRequest;
+import java.io.Serializable;
 
-public class TabWrapper {
+public class TabWrapper implements Serializable {
     private TabEnum tab;
-    private TabContext context;
+    private final TabContext context;
 
     private final PortletRequest request;
     private final TabPermissions permissions;

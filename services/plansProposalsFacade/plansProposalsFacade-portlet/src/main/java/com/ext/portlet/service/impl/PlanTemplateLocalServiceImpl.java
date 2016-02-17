@@ -1,9 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.PlanTemplateSection;
@@ -13,12 +9,11 @@ import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
 import com.ext.portlet.service.base.PlanTemplateLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.PlanTemplateSectionPK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The implementation of the plan template local service.
@@ -43,6 +38,7 @@ public class PlanTemplateLocalServiceImpl
      */
 
 
+    @Override
     public void store(PlanTemplate template) throws SystemException {
         if (template.isNew()) {
             if (template.getId() <= 0L) {
@@ -57,8 +53,9 @@ public class PlanTemplateLocalServiceImpl
         }
     }
     
+    @Override
     public List<PlanSectionDefinition> getSections(PlanTemplate template) throws SystemException, PortalException {
-        List<PlanSectionDefinition> ret = new ArrayList<PlanSectionDefinition>();
+        List<PlanSectionDefinition> ret = new ArrayList<>();
         for (PlanTemplateSection pts: PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(template.getId())) {
             ret.add(PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(pts.getPlanSectionId()));
         }
@@ -66,6 +63,7 @@ public class PlanTemplateLocalServiceImpl
         return ret;
     }
     
+    @Override
     public void addSection(PlanTemplate template, PlanSectionDefinition section) throws SystemException, PortalException {
         
         int maxWeight = 0;
@@ -76,10 +74,12 @@ public class PlanTemplateLocalServiceImpl
         PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(template.getId(), section.getId(), maxWeight+1);
     }
     
+    @Override
     public void removeSection(PlanTemplate template, PlanSectionDefinition section) throws SystemException, PortalException {
         PlanTemplateSectionLocalServiceUtil.removePlanTemplateSection(template.getId(), section.getId());
     }
     
+    @Override
     public void updateSectionWeight(PlanTemplate template, PlanSectionDefinition section, int weight) throws SystemException, PortalException {
         PlanTemplateSection pts = PlanTemplateSectionLocalServiceUtil.getPlanTemplateSection(
                 new PlanTemplateSectionPK(template.getId(), section.getId()));

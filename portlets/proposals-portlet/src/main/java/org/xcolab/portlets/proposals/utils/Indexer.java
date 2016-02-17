@@ -1,22 +1,8 @@
 package org.xcolab.portlets.proposals.utils;
 
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-
-import javax.portlet.PortletURL;
-
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,6 +21,16 @@ import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.security.permission.PermissionChecker;
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+
+import javax.portlet.PortletURL;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Indexes a proposal

@@ -4,6 +4,7 @@ import com.ext.portlet.model.ContestTeamMember;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.bean.BeanLocatorException;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -23,8 +24,8 @@ import java.util.List;
  */
 public class ContestTeamWrapper {
 
-    private ContestTeamBean contestTeamBean;
-    private Long contestId;
+    private final ContestTeamBean contestTeamBean;
+    private final Long contestId;
     private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
     public ContestTeamWrapper(ContestTeamBean contestTeamBean){
@@ -33,7 +34,7 @@ public class ContestTeamWrapper {
     }
 
     public void updateContestTeamMembers()
-            throws Exception {
+            throws SystemException, PortalException {
         removeAllContestTeamMembersForContest();
         assignMemberToContest(MemberRole.JUDGE, contestTeamBean.getUserIdsJudges());
         assignMemberToContest(MemberRole.ADVISOR, contestTeamBean.getUserIdsAdvisors());
@@ -42,7 +43,7 @@ public class ContestTeamWrapper {
     }
 
     private void assignMemberToContest(MemberRole memberRole, List<Long> userIds)
-            throws Exception{
+            throws SystemException, PortalException {
         assignMemberWithRoleToContest(memberRole, userIds);
         assignMemberRoleToUser(memberRole, userIds);
         subscribeUserToContest(userIds);
@@ -61,7 +62,9 @@ public class ContestTeamWrapper {
     private void assignMemberWithRoleToContest(MemberRole memberRole, List<Long> userIds)
             throws SystemException, PortalException {
         String memberRoleName = memberRole.getPrintName();
-        if (memberRole == MemberRole.JUDGE) memberRoleName = "Judge"; // TODO change in config file
+        if (memberRole == MemberRole.JUDGE) {
+            memberRoleName = "Judge"; // TODO change in config file
+        }
         for (Long userId : userIds) {
             Long contestMemberId = CounterLocalServiceUtil.increment(ContestTeamMember.class.getName());
             if(contestMemberId < 400){ // TODO check how the value is currently generated
@@ -95,8 +98,8 @@ public class ContestTeamWrapper {
 
             DynamicQuery queryContestTeamMembershipsByRoleAndUserId =
                     DynamicQueryFactoryUtil.forClass(ContestTeamMember.class, portletClassLoader)
-                            .add(PropertyFactoryUtil.forName("userId").eq(new Long(userId)))
-                            .add(PropertyFactoryUtil.forName("role").eq(new String(memberRoleName)))
+                            .add(PropertyFactoryUtil.forName("userId").eq(userId))
+                            .add(PropertyFactoryUtil.forName("role").eq(memberRoleName))
                             .setProjection(ProjectionFactoryUtil.count("role"));
 
             List queryResult = ContestTeamMemberLocalServiceUtil.dynamicQuery(queryContestTeamMembershipsByRoleAndUserId);
@@ -107,12 +110,12 @@ public class ContestTeamWrapper {
                 Long roleId = memberRole.getRoleId();
                 RoleLocalServiceUtil.deleteUserRole(userId, roleId);
             }
-        } catch (Exception e){
+        } catch (BeanLocatorException | SystemException | MemberRole.NoSuchMemberRoleException e){
             e.printStackTrace();
         }
     }
 
-    private void subscribeUserToContest(List<Long> userIds) throws Exception{
+    private void subscribeUserToContest(List<Long> userIds) throws PortalException, SystemException {
         for (Long userId : userIds) {
             ContestLocalServiceUtil.subscribe(contestId, userId);
         }

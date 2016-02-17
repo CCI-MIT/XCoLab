@@ -56,11 +56,12 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
             { "pointTypeId", Types.BIGINT },
             { "targetUserId", Types.BIGINT },
             { "targetSubProposalId", Types.BIGINT },
+            { "targetPlanSectionDefinitionId", Types.BIGINT },
             { "percentage", Types.DOUBLE },
             { "creator", Types.BIGINT },
             { "createDate", Types.TIMESTAMP }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PointsDistributionConfiguration (id_ LONG not null primary key,proposalId LONG,pointTypeId LONG,targetUserId LONG,targetSubProposalId LONG,percentage DOUBLE,creator LONG,createDate DATE null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PointsDistributionConfiguration (id_ LONG not null primary key,proposalId LONG,pointTypeId LONG,targetUserId LONG,targetSubProposalId LONG,targetPlanSectionDefinitionId LONG,percentage DOUBLE,creator LONG,createDate DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PointsDistributionConfiguration";
     public static final String ORDER_BY_JPQL = " ORDER BY pointsDistributionConfiguration.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_PointsDistributionConfiguration.id_ ASC";
@@ -78,9 +79,10 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
             true);
     public static long POINTTYPEID_COLUMN_BITMASK = 1L;
     public static long PROPOSALID_COLUMN_BITMASK = 2L;
-    public static long TARGETSUBPROPOSALID_COLUMN_BITMASK = 4L;
-    public static long TARGETUSERID_COLUMN_BITMASK = 8L;
-    public static long ID_COLUMN_BITMASK = 16L;
+    public static long TARGETPLANSECTIONDEFINITIONID_COLUMN_BITMASK = 4L;
+    public static long TARGETSUBPROPOSALID_COLUMN_BITMASK = 8L;
+    public static long TARGETUSERID_COLUMN_BITMASK = 16L;
+    public static long ID_COLUMN_BITMASK = 32L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PointsDistributionConfiguration"));
     private static ClassLoader _classLoader = PointsDistributionConfiguration.class.getClassLoader();
@@ -101,6 +103,9 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
     private long _targetSubProposalId;
     private long _originalTargetSubProposalId;
     private boolean _setOriginalTargetSubProposalId;
+    private long _targetPlanSectionDefinitionId;
+    private long _originalTargetPlanSectionDefinitionId;
+    private boolean _setOriginalTargetPlanSectionDefinitionId;
     private double _percentage;
     private long _creator;
     private Date _createDate;
@@ -129,6 +134,7 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
         model.setPointTypeId(soapModel.getPointTypeId());
         model.setTargetUserId(soapModel.getTargetUserId());
         model.setTargetSubProposalId(soapModel.getTargetSubProposalId());
+        model.setTargetPlanSectionDefinitionId(soapModel.getTargetPlanSectionDefinitionId());
         model.setPercentage(soapModel.getPercentage());
         model.setCreator(soapModel.getCreator());
         model.setCreateDate(soapModel.getCreateDate());
@@ -196,6 +202,8 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
         attributes.put("pointTypeId", getPointTypeId());
         attributes.put("targetUserId", getTargetUserId());
         attributes.put("targetSubProposalId", getTargetSubProposalId());
+        attributes.put("targetPlanSectionDefinitionId",
+            getTargetPlanSectionDefinitionId());
         attributes.put("percentage", getPercentage());
         attributes.put("creator", getCreator());
         attributes.put("createDate", getCreateDate());
@@ -233,6 +241,13 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
 
         if (targetSubProposalId != null) {
             setTargetSubProposalId(targetSubProposalId);
+        }
+
+        Long targetPlanSectionDefinitionId = (Long) attributes.get(
+                "targetPlanSectionDefinitionId");
+
+        if (targetPlanSectionDefinitionId != null) {
+            setTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
         }
 
         Double percentage = (Double) attributes.get("percentage");
@@ -370,6 +385,30 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
 
     @JSON
     @Override
+    public long getTargetPlanSectionDefinitionId() {
+        return _targetPlanSectionDefinitionId;
+    }
+
+    @Override
+    public void setTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId) {
+        _columnBitmask |= TARGETPLANSECTIONDEFINITIONID_COLUMN_BITMASK;
+
+        if (!_setOriginalTargetPlanSectionDefinitionId) {
+            _setOriginalTargetPlanSectionDefinitionId = true;
+
+            _originalTargetPlanSectionDefinitionId = _targetPlanSectionDefinitionId;
+        }
+
+        _targetPlanSectionDefinitionId = targetPlanSectionDefinitionId;
+    }
+
+    public long getOriginalTargetPlanSectionDefinitionId() {
+        return _originalTargetPlanSectionDefinitionId;
+    }
+
+    @JSON
+    @Override
     public double getPercentage() {
         return _percentage;
     }
@@ -437,6 +476,7 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
         pointsDistributionConfigurationImpl.setPointTypeId(getPointTypeId());
         pointsDistributionConfigurationImpl.setTargetUserId(getTargetUserId());
         pointsDistributionConfigurationImpl.setTargetSubProposalId(getTargetSubProposalId());
+        pointsDistributionConfigurationImpl.setTargetPlanSectionDefinitionId(getTargetPlanSectionDefinitionId());
         pointsDistributionConfigurationImpl.setPercentage(getPercentage());
         pointsDistributionConfigurationImpl.setCreator(getCreator());
         pointsDistributionConfigurationImpl.setCreateDate(getCreateDate());
@@ -507,6 +547,10 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
 
         pointsDistributionConfigurationModelImpl._setOriginalTargetSubProposalId = false;
 
+        pointsDistributionConfigurationModelImpl._originalTargetPlanSectionDefinitionId = pointsDistributionConfigurationModelImpl._targetPlanSectionDefinitionId;
+
+        pointsDistributionConfigurationModelImpl._setOriginalTargetPlanSectionDefinitionId = false;
+
         pointsDistributionConfigurationModelImpl._columnBitmask = 0;
     }
 
@@ -525,6 +569,8 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
 
         pointsDistributionConfigurationCacheModel.targetSubProposalId = getTargetSubProposalId();
 
+        pointsDistributionConfigurationCacheModel.targetPlanSectionDefinitionId = getTargetPlanSectionDefinitionId();
+
         pointsDistributionConfigurationCacheModel.percentage = getPercentage();
 
         pointsDistributionConfigurationCacheModel.creator = getCreator();
@@ -542,7 +588,7 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(getId());
@@ -554,6 +600,8 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
         sb.append(getTargetUserId());
         sb.append(", targetSubProposalId=");
         sb.append(getTargetSubProposalId());
+        sb.append(", targetPlanSectionDefinitionId=");
+        sb.append(getTargetPlanSectionDefinitionId());
         sb.append(", percentage=");
         sb.append(getPercentage());
         sb.append(", creator=");
@@ -567,7 +615,7 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PointsDistributionConfiguration");
@@ -592,6 +640,10 @@ public class PointsDistributionConfigurationModelImpl extends BaseModelImpl<Poin
         sb.append(
             "<column><column-name>targetSubProposalId</column-name><column-value><![CDATA[");
         sb.append(getTargetSubProposalId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>targetPlanSectionDefinitionId</column-name><column-value><![CDATA[");
+        sb.append(getTargetPlanSectionDefinitionId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>percentage</column-name><column-value><![CDATA[");

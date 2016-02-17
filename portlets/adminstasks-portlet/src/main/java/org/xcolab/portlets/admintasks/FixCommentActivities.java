@@ -1,26 +1,17 @@
 package org.xcolab.portlets.admintasks;
 
-import javax.faces.context.FacesContext;
-import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-
 import com.ext.portlet.NoSuchDiscussionMessageException;
-import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.social.model.SocialActivity;
-import com.liferay.portlet.social.model.SocialActivityFeedEntry;
-import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.xcolab.utils.IdListUtil;
 
+import javax.faces.context.FacesContext;
+import javax.portlet.PortletRequest;
 import java.util.List;
 
 public class FixCommentActivities {

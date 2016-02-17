@@ -1,14 +1,13 @@
 package org.xcolab.portlets.proposals.utils;
 
-import java.util.Comparator;
-
-import jodd.util.StringUtil;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import jodd.util.StringUtil;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+
+import java.util.Comparator;
 
 
 public enum ContestsColumn {

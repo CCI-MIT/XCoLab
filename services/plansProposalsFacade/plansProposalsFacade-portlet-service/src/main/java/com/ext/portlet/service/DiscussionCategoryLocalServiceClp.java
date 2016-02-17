@@ -170,7 +170,7 @@ public class DiscussionCategoryLocalServiceClp
 
         _methodParameterTypes20 = new String[] { "long" };
 
-        _methodName21 = "createDebateCategory";
+        _methodName21 = "createDiscussionCategory";
 
         _methodParameterTypes21 = new String[] {
                 "long", "java.lang.String", "java.lang.String",
@@ -807,7 +807,7 @@ public class DiscussionCategoryLocalServiceClp
     }
 
     @Override
-    public com.ext.portlet.model.DiscussionCategory createDebateCategory(
+    public com.ext.portlet.model.DiscussionCategory createDiscussionCategory(
         long categoryGroupId, java.lang.String name,
         java.lang.String description, com.liferay.portal.model.User author)
         throws com.liferay.portal.kernel.exception.SystemException {

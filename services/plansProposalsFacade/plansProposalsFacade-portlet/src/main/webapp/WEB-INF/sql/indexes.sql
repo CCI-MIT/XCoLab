@@ -1,8 +1,5 @@
-create index IX_FD6093DD on xcolab_ActivitySubscription (classNameId, classPK);
 create index IX_61FA63BB on xcolab_ActivitySubscription (classNameId, classPK, receiverId);
--- extra data (TEXT/BLOB) without key length
--- create index IX_20164EB2 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData);
--- create index IX_C2ED8710 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData, receiverId);
+create index IX_C2ED8710 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData(50), receiverId);
 create index IX_1413A2B6 on xcolab_ActivitySubscription (classNameId, classPK, type_, receiverId);
 create index IX_33049EE6 on xcolab_ActivitySubscription (receiverId);
 
@@ -10,11 +7,8 @@ create index IX_1AD9FFEC on xcolab_BalloonLink (balloonUserUuid);
 
 create index IX_CE6BAAA5 on xcolab_BalloonText (enabled);
 
--- too long
--- create index IX_AFDD82EB on xcolab_BalloonUserTracking (email);
+create index IX_AFDD82EB on xcolab_BalloonUserTracking (email(50));
 
--- doesn't exist!
--- create index IX_5192E6B6 on xcolab_Contest (PlanTypeId);
 create index IX_CEF1EFC6 on xcolab_Contest (contestActive);
 create index IX_9AB21749 on xcolab_Contest (contestActive, contestPrivate);
 create index IX_2DC0D430 on xcolab_Contest (contestActive, contestPrivate, contestTypeId);
@@ -23,22 +17,10 @@ create index IX_D29429DB on xcolab_Contest (contestActive, featured_);
 create index IX_348F875E on xcolab_Contest (contestActive, featured_, contestPrivate);
 create index IX_504C977B on xcolab_Contest (contestActive, featured_, contestPrivate, contestTypeId);
 create index IX_DC690B5E on xcolab_Contest (contestActive, featured_, contestTypeId);
--- private contest doesn't exist
--- create index IX_963C1320 on xcolab_Contest (contestActive, featured_, privateContest);
 create index IX_491DA3A6 on xcolab_Contest (contestActive, flag);
 create index IX_B9BA0B29 on xcolab_Contest (contestActive, flag, contestPrivate);
 create index IX_1516A450 on xcolab_Contest (contestActive, flag, contestPrivate, contestTypeId);
 create index IX_33496233 on xcolab_Contest (contestActive, flag, contestTypeId);
--- private contest doesn't exist
--- create index IX_1B6696EB on xcolab_Contest (contestActive, flag, privateContest);
-
--- too long
--- create index IX_C09FE3B3 on xcolab_Contest (contestActive, flagText);
--- create index IX_7D5C9136 on xcolab_Contest (contestActive, flagText, contestPrivate);
--- create index IX_27BFA2A3 on xcolab_Contest (contestActive, flagText, contestPrivate, contestTypeId);
--- create index IX_73676686 on xcolab_Contest (contestActive, flagText, contestTypeId);
--- create index IX_DF091CF8 on xcolab_Contest (contestActive, flagText, privateContest);
--- create index IX_FC5EA30B on xcolab_Contest (contestActive, privateContest);
 create index IX_168D6722 on xcolab_Contest (contestTier);
 create index IX_58A2B737 on xcolab_Contest (contestTier, contestTypeId);
 create index IX_95122F5 on xcolab_Contest (contestTypeId);
@@ -47,15 +29,8 @@ create index IX_379DF74A on xcolab_ContestDebate (ContestPK);
 
 create index IX_DD06DA92 on xcolab_ContestDiscussion (ContestId, Tab);
 
--- dupliate key name??
--- create index IX_4DF8F0B9 on xcolab_ContestDiscussions (ContestId, Tab);
-
 create index IX_ED61C03C on xcolab_ContestPhase (ContestPK);
 create index IX_2BA2B787 on xcolab_ContestPhase (ContestPK, PhaseStartDate, PhaseEndDate);
-
--- invisible doesn't exist
--- create index IX_19E93261 on xcolab_ContestPhase (ContestPK, invisible);
-
 create index IX_9F1D3B81 on xcolab_ContestPhase (ContestPK, phaseActiveOverride);
 create index IX_4F735B66 on xcolab_ContestPhase (ContestPK, phaseInactiveOverride);
 create index IX_1BB9EC37 on xcolab_ContestPhase (contestPhaseAutopromote);
@@ -69,27 +44,18 @@ create index IX_8526458A on xcolab_DiscussionCategory (categoryGroupId);
 create index IX_306B69EF on xcolab_DiscussionCategory (categoryId);
 
 create index IX_EB07D049 on xcolab_DiscussionMessage (authorId);
-
--- body (blob/text) too long
--- create index IX_23E0BE87 on xcolab_DiscussionMessage (body, categoryGroupId);
-
+create index IX_XCOLAB_DM_CATEGORY_GROUP_ID on xcolab_DiscussionMessage (categoryGroupId);
+create index IX_XCOLAB_DM_CATEGORY_GROUP_ID_DELETED on xcolab_DiscussionMessage (categoryGroupId, deleted);
 create index IX_39430975 on xcolab_DiscussionMessage (categoryId, threadId);
 create index IX_189EA1C3 on xcolab_DiscussionMessage (messageId);
-
--- subjectd probably too long
--- create index IX_1A115E3F on xcolab_DiscussionMessage (subject, categoryGroupId);
-
 create index IX_FDE36548 on xcolab_DiscussionMessage (threadId);
 
 create index IX_63652E37 on xcolab_DiscussionMessageFlag (messageId);
 create unique index IX_BEA683B1 on xcolab_DiscussionMessageFlag (messageId, flagType);
 
--- name too long
--- create index IX_4849B8A9 on xcolab_EmailList (name);
--- create index IX_55E95283 on xcolab_EmailList (name, email);
+create index IX_55E95283 on xcolab_EmailList (name(50), email(50));
 
--- name too long
--- create index IX_B61888D4 on xcolab_FocusArea (name);
+create index IX_B61888D4 on xcolab_FocusArea (name(50));
 
 create index IX_CE67B1A0 on xcolab_FocusAreaOntologyTerm (focusAreaId);
 
@@ -115,15 +81,12 @@ create index IX_76FF2A4C on xcolab_MessageRecipientStatus (messageId, userId);
 create index IX_74DCC2DA on xcolab_MessageRecipientStatus (userId);
 create index IX_88CD5CB0 on xcolab_MessageRecipientStatus (userId, archived);
 
--- email too long
--- create index IX_2073B48 on xcolab_MessagingIgnoredRecipients (email);
-
+create index IX_2073B48 on xcolab_MessagingIgnoredRecipients (email(50));
 create index IX_19B87BE on xcolab_MessagingIgnoredRecipients (userId);
 
 create index IX_F1E7F5C on xcolab_MessagingMessageConversion (messageId, conversionTypeId);
 
--- name too long
--- create index IX_15CF71AE on xcolab_MessagingMessageConversionType (name);
+create index IX_15CF71AE on xcolab_MessagingMessageConversionType (name(50));
 
 create index IX_F504493F on xcolab_MessagingUserPreferences (userId);
 
@@ -141,19 +104,15 @@ create index IX_13790D44 on xcolab_ModelInputItem (modelId);
 create index IX_EF979667 on xcolab_ModelInputItem (modelId, modelInputItemID);
 create index IX_CCEFE733 on xcolab_ModelInputItem (modelInputItemID);
 
--- label too long
--- create index IX_6D3808C8 on xcolab_ModelOutputChartOrder (modelId, modelOutputLabel);
+create index IX_6D3808C8 on xcolab_ModelOutputChartOrder (modelId, modelOutputLabel(50));
 
 create index IX_A17AABB on xcolab_ModelOutputItem (modelOutputItemId);
 
 create index IX_E7C0C412 on xcolab_ModelPosition (modelId);
 
--- name too long
--- create index IX_18FC4546 on xcolab_OntologySpace (name);
+create index IX_18FC4546 on xcolab_OntologySpace (name(50));
 
--- name too long
--- create index IX_50DE58D6 on xcolab_OntologyTerm (name);
-
+create index IX_50DE58D6 on xcolab_OntologyTerm (name(50));
 create index IX_3E2347AB on xcolab_OntologyTerm (ontologySpaceId);
 create index IX_FEB70AB0 on xcolab_OntologyTerm (parentId);
 create index IX_A6AC072 on xcolab_OntologyTerm (parentId, ontologySpaceId);
@@ -178,6 +137,7 @@ create index IX_AF313899 on xcolab_Points (userId);
 
 create index IX_7113A2E0 on xcolab_PointsDistributionConfiguration (proposalId);
 create index IX_1FDF3BB5 on xcolab_PointsDistributionConfiguration (proposalId, pointTypeId);
+create index IX_27247AAA on xcolab_PointsDistributionConfiguration (targetPlanSectionDefinitionId);
 create index IX_7D0AD60D on xcolab_PointsDistributionConfiguration (targetSubProposalId);
 create index IX_D44477AA on xcolab_PointsDistributionConfiguration (targetUserId);
 
@@ -187,9 +147,7 @@ create index IX_DBA8038D on xcolab_Proposal2Phase (contestPhaseId);
 create index IX_D273A4B8 on xcolab_Proposal2Phase (proposalId);
 
 create index IX_8FF24CAD on xcolab_ProposalAttribute (proposalId, version);
-
--- duplicate entry 307-295-SECTION-601
--- create unique index IX_F4926C2 on xcolab_ProposalAttribute (proposalId, version, name, additionalId);
+create index IX_F4926C2 on xcolab_ProposalAttribute (proposalId, version, name, additionalId);
 create index IX_4941177 on xcolab_ProposalAttribute (proposalId, version, versionWhenCreated);
 create index IX_F612A28C on xcolab_ProposalAttribute (proposalId, version, versionWhenCreated, name, additionalId);
 

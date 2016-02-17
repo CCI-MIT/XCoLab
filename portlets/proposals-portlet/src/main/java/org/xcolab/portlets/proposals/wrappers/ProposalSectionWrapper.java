@@ -132,11 +132,11 @@ public class ProposalSectionWrapper {
                 // If a match is found create a new <a> tag
                 if (matcher.find()) {
                     final String link = word.substring(matcher.start(), matcher.end());
-                    ProposalWrapper wr = LinkUtils.getProposalLinks(link);
+                    ProposalWrapper linkedProposalWrapper = LinkUtils.getProposalFromLinkUrl(link);
 
                     String elementName;
-                    if (wr != null) {
-                        elementName = wr.getName();
+                    if (linkedProposalWrapper != null) {
+                        elementName = linkedProposalWrapper.getName();
                     } else {
                         elementName = link;
                     }

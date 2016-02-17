@@ -1,14 +1,13 @@
 package org.xcolab.portlets.proposals.requests;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UpdateProposalDetailsBean {
     private Map<Long, String> sectionsContent = new HashMap<Long, String>();

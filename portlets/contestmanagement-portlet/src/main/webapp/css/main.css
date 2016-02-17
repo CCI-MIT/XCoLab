@@ -206,7 +206,7 @@
 .cmsDetailsBox .addpropbox.teamBox .teamMemberAdd input {
   width: 260px;
   height: 40px;
-  background: #FFF url("/climatecolab-theme/images/contest-icon-cplus-orange.png") 225px;
+  background: #FFF url("/climatecolab-theme/images/contest-icon-cplus-orange.png") 225px no-repeat;
   background-size: 20px;
 }
 

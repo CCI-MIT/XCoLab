@@ -4,8 +4,6 @@ import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.Message;
 import com.ext.portlet.model.MessageRecipientStatus;
 import com.ext.portlet.service.MessageLocalServiceUtil;
-import org.joda.time.DateTime;
-import org.xcolab.enums.ColabConstants;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -20,6 +18,8 @@ import com.liferay.portlet.expando.model.ExpandoTable;
 import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+import org.joda.time.DateTime;
+import org.xcolab.enums.ColabConstants;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,19 +32,15 @@ import java.util.Map;
  * 
  * @author janusz
  */
-public class MessageLimitManager {
+public final class MessageLimitManager {
     private static final String MESSAGES_LIMIT_COLUMN = "messages_limit";
-
     private static final String MESSAGE_ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
     private static final Map<Long, Object> mutexes = new HashMap<>();
-
 	private static final int MESSAGES_DAILY_LIMIT = 15;
-
-	/**
-	 * Keeps track of the last validation error mail that has been send to a specific user
-	 */
 	private static final Map<User, Date> lastValidationDateMap = new HashMap<>();
+
+    private MessageLimitManager() { }
 
     /**
      * Method responsible for checking if user is allowed to send given number

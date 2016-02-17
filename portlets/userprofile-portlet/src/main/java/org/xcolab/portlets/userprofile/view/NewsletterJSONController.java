@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.xcolab.portlets.userprofile.utils.ConnectorEmmaAPI;
+import org.xcolab.mail.ConnectorEmmaAPI;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
 
 import javax.portlet.PortletRequest;
@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("view")
-public class NewsletterJSONController extends JSONHelper{
+public class NewsletterJSONController extends JSONHelper {
 
     private final static String MEMBER_ACCOUNT_ACTIVE_STATUS = "a";
     private ConnectorEmmaAPI connectorEmmaAPI;
@@ -34,7 +34,7 @@ public class NewsletterJSONController extends JSONHelper{
             ResourceResponse response,
             @RequestParam("email") String email) {
 
-        initializeConnectorIfNull(request);
+        initializeConnectorIfNull();
         try {
             JSONObject memberDetails = connectorEmmaAPI.subscribeMemberWithEmail(email);
             boolean memberHasActiveSubscription = hasNewMemberActiveSubscription(memberDetails);
@@ -52,7 +52,7 @@ public class NewsletterJSONController extends JSONHelper{
             ResourceResponse response,
             @RequestParam("email") String email) {
 
-        initializeConnectorIfNull(request);
+        initializeConnectorIfNull();
         try {
             boolean isMemberUnsubscribed = connectorEmmaAPI.unSubscribeMemberWithEmail(email);
             this.writeSuccessResultResponseJSON(isMemberUnsubscribed, response);
@@ -68,16 +68,16 @@ public class NewsletterJSONController extends JSONHelper{
             ResourceResponse response,
             @RequestParam("email") String email) throws IOException {
 
-        initializeConnectorIfNull(request);
+        initializeConnectorIfNull();
         JSONObject memberDetails = connectorEmmaAPI.getMemberJSONfromEmail(email);
         boolean memberHasActiveSubscription = hasMemberActiveSubscription(memberDetails);
         this.writeSuccessResultResponseJSON(memberHasActiveSubscription, response);
     }
 
 
-    private void initializeConnectorIfNull(PortletRequest request){
+    private void initializeConnectorIfNull(){
         if(connectorEmmaAPI == null) {
-            connectorEmmaAPI = new ConnectorEmmaAPI(request);
+            connectorEmmaAPI = new ConnectorEmmaAPI();
         }
     }
 

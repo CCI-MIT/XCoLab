@@ -1,20 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import java.lang.reflect.InvocationTargetException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.mail.internet.InternetAddress;
-
 import com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceUtil;
 import com.ext.portlet.Activity.SubscriptionType;
 import com.ext.portlet.messaging.MessageUtil;
@@ -54,6 +39,21 @@ import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.collections.comparators.ComparatorChain;
 
+import javax.mail.internet.InternetAddress;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The implementation of the activity subscription local service.
  * <p/>
@@ -80,22 +80,21 @@ public class ActivitySubscriptionLocalServiceImpl
     private final static String PROPERTY_CREATE_DATE = "createDate";
 
     private final static Log _log = LogFactoryUtil.getLog(ActivitySubscriptionLocalServiceImpl.class);
-    private final static long DEFAULT_COMPANY_ID = 10112L;
 
 	// 1 am
 	private final static int DAILY_DIGEST_TRIGGER_HOUR = 1;
 	private Date lastDailyEmailNotification = getLastDailyEmailNotificationDate();
 
-    private final String MESSAGE_FOOTER_TEMPLATE = "<br /><br />\n<hr /><br />\n"
+    private final static String MESSAGE_FOOTER_TEMPLATE = "<br /><br />\n<hr /><br />\n"
             + "To configure your notification preferences, visit your <a href=\"USER_PROFILE_LINK\">profile</a> page";
 
-    private final String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
+    private final static String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
 
-    private final String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/web/guest/member/-/member/userId/USER_ID";
+    private final static String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/web/guest/member/-/member/userId/USER_ID";
 
-    private final String USER_ID_PLACEHOLDER = "USER_ID";
+    private final static String USER_ID_PLACEHOLDER = "USER_ID";
 
-    private final String DOMAIN_PLACEHOLDER = "DOMAIN_PLACEHOLDER";
+    private final static String DOMAIN_PLACEHOLDER = "DOMAIN_PLACEHOLDER";
 
     private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE = "Climate CoLab Activities – Daily Digest DATE";
 
@@ -119,7 +118,6 @@ public class ActivitySubscriptionLocalServiceImpl
 
     /**
      * This method is used to construct the last daily digest notification date after a restart of the application server
-     * @return
      */
     private Date getLastDailyEmailNotificationDate() {
         Calendar cal = Calendar.getInstance();
@@ -131,15 +129,18 @@ public class ActivitySubscriptionLocalServiceImpl
         return cal.getTime();
     }
 
+    @Override
     public List<ActivitySubscription> getActivitySubscriptions(Class clasz, Long classPK, Integer type, String extraData)
             throws PortalException, SystemException {
         return ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraData(PortalUtil.getClassNameId(clasz), classPK, type, extraData);
     }
 
+    @Override
     public List<ActivitySubscription> findByUser(Long userId) throws SystemException {
         return ActivitySubscriptionUtil.findByreceiverId(userId);
     }
 
+    @Override
     public boolean isSubscribed(Long userId, Long classNameId, Long classPK, Integer type, String extraData)
             throws PortalException, SystemException {
         List<ActivitySubscription> ret = ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK,
@@ -147,15 +148,18 @@ public class ActivitySubscriptionLocalServiceImpl
         return ret != null && !ret.isEmpty();
     }
 
+    @Override
     public boolean isSubscribed(Long userId, Class clasz, Long classPK, Integer type, String extraData)
             throws PortalException, SystemException {
         return isSubscribed(userId, PortalUtil.getClassNameId(clasz), classPK, type, extraData);
     }
 
+    @Override
     public void deleteSubscription(Long userId, Long classNameId, Long classPK, Integer type, String extraData) throws SystemException {
         deleteSubscription(userId, classNameId, classPK, type, extraData, false);
     }
 
+    @Override
     @Transactional
     public void deleteSubscription(Long userId, Long classNameId, Long classPK, Integer type, String extraData, boolean automatic) throws SystemException {
         List<ActivitySubscription> subscriptions =
@@ -180,20 +184,24 @@ public class ActivitySubscriptionLocalServiceImpl
     }
 
 
+    @Override
     public void deleteSubscription(Long userId, Class clasz, Long classPK, Integer type, String extraData, boolean automatic) throws SystemException {
         deleteSubscription(userId, PortalUtil.getClassNameId(clasz), classPK, type, extraData, automatic);
     }
 
 
+    @Override
     public void deleteSubscription(Long userId, Class clasz, Long classPK, Integer type, String extraData) throws SystemException {
         deleteSubscription(userId, clasz, classPK, type, extraData, false);
     }
 
+    @Override
     public void addSubscription(Long classNameId, Long classPK, Integer type, String extraData, Long userId)
             throws PortalException, SystemException {
         addSubscription(classNameId, classPK, type, extraData, userId, false);
     }
 
+    @Override
     @Transactional
     public void addSubscription(Long classNameId, Long classPK, Integer type, String extraData, Long userId, boolean automatic)
             throws PortalException, SystemException {
@@ -228,11 +236,13 @@ public class ActivitySubscriptionLocalServiceImpl
         store(subscription);
     }
 
+    @Override
     public void addSubscription(Class clasz, Long classPK, Integer type, String extraData, Long userId)
             throws PortalException, SystemException {
         addSubscription(clasz, classPK, type, extraData, userId, false);
     }
 
+    @Override
     public void addSubscription(Class clasz, Long classPK, Integer type, String extraData, Long userId, boolean automatic)
             throws PortalException, SystemException {
         Long classNameId = ClassNameLocalServiceUtil.getClassNameId(clasz);
@@ -240,13 +250,13 @@ public class ActivitySubscriptionLocalServiceImpl
     }
 
 
+    @Override
     public List<SocialActivity> getActivities(Long userId, int start, int count) throws SystemException {
-        List<ActivitySubscription> subscriptions = null;
         // for now no activity selection is made, TODO
-        subscriptions = ActivitySubscriptionUtil.findByreceiverId(userId);
+        List<ActivitySubscription> subscriptions = ActivitySubscriptionUtil.findByreceiverId(userId);
 
-        if (subscriptions.size() == 0) {
-            return new ArrayList<SocialActivity>();
+        if (subscriptions.isEmpty()) {
+            return new ArrayList<>();
         }
 
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(SocialActivity.class);
@@ -262,7 +272,7 @@ public class ActivitySubscriptionLocalServiceImpl
                 RestrictionsFactoryUtil.and(criterion, RestrictionsFactoryUtil.eq("type", sub.getType()));
             }
 
-            if (sub.getExtraData() != null && sub.getExtraData().length() > 0) {
+            if (sub.getExtraData() != null && !sub.getExtraData().isEmpty()) {
                 criterion = RestrictionsFactoryUtil.and(criterion,
                         RestrictionsFactoryUtil.ilike("extraData", sub.getExtraData() + "%"));
             }
@@ -275,7 +285,7 @@ public class ActivitySubscriptionLocalServiceImpl
         }
         query.add(crit).addOrder(OrderFactoryUtil.desc("createDate"));
 
-        List<SocialActivity> activities = new ArrayList<SocialActivity>();
+        List<SocialActivity> activities = new ArrayList<>();
         List<Object> queryResults = SocialActivityLocalServiceUtil.dynamicQuery(query, start, start + count - 1);
 
         for (Object activity : queryResults) {
@@ -287,6 +297,7 @@ public class ActivitySubscriptionLocalServiceImpl
     }
 
 
+    @Override
     public void store(ActivitySubscription activitySubscription) throws SystemException {
         if (activitySubscription.isNew()) {
             ActivitySubscriptionLocalServiceUtil.addActivitySubscription(activitySubscription);
@@ -296,20 +307,24 @@ public class ActivitySubscriptionLocalServiceImpl
     }
 
 
+    @Override
     public String getName(ActivitySubscription activitySubscription) {
         return ActivitySubscriptionNameGeneratorServiceUtil.getName(activitySubscription);
     }
 
+    @Override
     public SubscriptionType getSubscriptionType(ActivitySubscription activitySubscription) {
         return SubscriptionType.getSubscriptionType(activitySubscription);
     }
 
 
+    @Override
     public void delete(ActivitySubscription activitySubscription) throws SystemException {
         ActivitySubscriptionLocalServiceUtil.deleteActivitySubscription(activitySubscription);
     }
 
 
+    @Override
     public void sendEmailNotifications(ServiceContext serviceContext) throws SystemException, PortalException {
         synchronized (lastEmailNotification) {
             List<SocialActivity> res = getActivitiesAfter(lastEmailNotification);
@@ -334,8 +349,8 @@ public class ActivitySubscriptionLocalServiceImpl
 					List<SocialActivity> res = getActivitiesAfter(lastDailyEmailNotification);
 					sendDailyDigestNotifications(res, serviceContext);
 				}
-				catch (Throwable t) {
-					_log.error(String.format("Can't send daily email notofication"), t);
+				catch (SystemException | PortalException t) {
+					_log.error("Can't send daily email notofication", t);
 				}
 
 				lastDailyEmailNotification = now;
@@ -343,10 +358,12 @@ public class ActivitySubscriptionLocalServiceImpl
 		}
     }
 
+    @Override
     public List<User> getSubscribedUsers(Class clasz, long classPK) throws PortalException, SystemException {
         return getSubscribedUsers(ClassNameLocalServiceUtil.getClassNameId(clasz), classPK);
     }
 
+    @Override
     public List<User> getSubscribedUsers(long classNameId, long classPK) throws PortalException, SystemException {
         List<User> users = new ArrayList<>();
         for (ActivitySubscription subscription : activitySubscriptionPersistence.findByClassNameIdClassPK(classNameId, classPK)) {
@@ -373,8 +390,9 @@ public class ActivitySubscriptionLocalServiceImpl
 
         String subject = StringUtil.replace(DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification));
 		// Send the digest to each user which is included in the set of subscriptions
-		for (User recipient : userActivitiesDigestMap.keySet()) {
-            final List<SocialActivity> userDigestActivities = userActivitiesDigestMap.get(recipient);
+		for (Map.Entry<User, List<SocialActivity>> entry : userActivitiesDigestMap.entrySet()) {
+            final User recipient = entry.getKey();
+            final List<SocialActivity> userDigestActivities =  entry.getValue();
             String body = getDigestMessageBody(serviceContext, userDigestActivities);
             String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext));
 
@@ -401,7 +419,9 @@ public class ActivitySubscriptionLocalServiceImpl
         comparatorChain.addComparator(socialActivityCreateDateComparator);
 
         Collections.sort(userDigestActivities, comparatorChain);
-        String body = StringUtil.replace(DAILY_DIGEST_ENTRY_TEXT, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification)) + "<br/><br/>";
+        StringBuilder body = new StringBuilder();
+        body.append(StringUtil.replace(DAILY_DIGEST_ENTRY_TEXT, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification)));
+        body.append("<br/><br/>");
 
         for (SocialActivity socialActivity : userDigestActivities) {
             //prevent null pointer exceptions which might happen at this point
@@ -413,9 +433,9 @@ public class ActivitySubscriptionLocalServiceImpl
                 continue;
             }
 
-            body += "<div style='margin-left: 10px'>" + getMailBody(entry) + "</div><br/><br/>";
+            body.append("<div style='margin-left: 10px'>").append(getMailBody(entry)).append("</div><br/><br/>");
         }
-        return body;
+        return body.toString();
     }
 
     private Map<User, List<SocialActivity>> getUserToActivityDigestMap(List<SocialActivity> activities) throws SystemException, PortalException {
@@ -457,7 +477,7 @@ public class ActivitySubscriptionLocalServiceImpl
 		String subject = getMailSubject(entry);
 		String messageTemplate = getMailBody(entry);
 
-		Set<User> recipients = new HashSet<User>();
+		Set<User> recipients = new HashSet<>();
 		Map<Long, ActivitySubscription> subscriptionsPerUser = new HashMap<>();
 
 		for (Object subscriptionObj : getActivitySubscribers(activity)) {
@@ -516,28 +536,18 @@ public class ActivitySubscriptionLocalServiceImpl
 			// add link to unsubscribe
 			message += "<br /><br />" + unregisterFooter;
 			MailEngine.send(fromEmail, toEmail, subject, message, true);
-		} catch (MailEngineException e) {
-			_log.error("Can't send email message");
+		} catch (MailEngineException | UnsupportedEncodingException e) {
+			_log.error("Can't send email notifications to users");
 			_log.debug("Can't send email message", e);
 		}
-		catch (Throwable e) {
-			_log.error("Can't send email motifications to users");
-			_log.debug("Can't send email message", e);
-		}
-	}
+    }
 
     private String getMailBody(SocialActivityFeedEntry entry) {
         try {
             return (String) entry.getClass().getMethod("getMailBody").invoke(entry);
         } catch (NoSuchMethodException e) {
             // ignore
-        } catch (IllegalArgumentException e) {
-            _log.error(e);
-        } catch (SecurityException e) {
-            _log.error(e);
-        } catch (IllegalAccessException e) {
-            _log.error(e);
-        } catch (InvocationTargetException e) {
+        } catch (IllegalArgumentException | SecurityException | InvocationTargetException | IllegalAccessException e) {
             _log.error(e);
         }
         if (entry.getBody() != null) {
@@ -552,13 +562,7 @@ public class ActivitySubscriptionLocalServiceImpl
             return (String) entry.getClass().getMethod("getMailSubject").invoke(entry);
         } catch (NoSuchMethodException e) {
             // ignore
-        } catch (IllegalArgumentException e) {
-            _log.error(e);
-        } catch (SecurityException e) {
-            _log.error(e);
-        } catch (IllegalAccessException e) {
-            _log.error(e);
-        } catch (InvocationTargetException e) {
+        } catch (IllegalArgumentException | SecurityException | InvocationTargetException | IllegalAccessException e) {
             _log.error(e);
         }
         if (entry.getTitle() != null) {
@@ -580,8 +584,7 @@ public class ActivitySubscriptionLocalServiceImpl
     }
 
     private String getUnsubscribeDailyDigestFooter(String unsubscribeUrl) {
-        String footer =  StringUtil.replace(UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT, UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
-        return  footer;
+        return StringUtil.replace(UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT, UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
     }
 
     private String dateToDateString(Date date) {

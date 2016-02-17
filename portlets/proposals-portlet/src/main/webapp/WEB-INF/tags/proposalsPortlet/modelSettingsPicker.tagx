@@ -2,6 +2,10 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           version="2.0">
 
+    <!--@elvariable id="isGlobalContest" type="java.lang.Boolean"-->
+    <!--@elvariable id="consolidationPossible" type="java.lang.Boolean"-->
+    <!--@elvariable id="isProposalUsingCombinedScenario" type="java.lang.Boolean"-->
+
     <jsp:directive.attribute name="consolidateOptions" type="java.util.Map" required="true" rtexprvalue="true"
                              description="Models to be shown"/>
     <jsp:directive.attribute name="contestPK" type="java.lang.Long" required="true" rtexprvalue="true"
@@ -24,7 +28,7 @@
                 </div>
             </c:if>
 
-            <h3 style="margin-top: 0px;">How would you like to calculate your global plan's impact on climate change?</h3>
+            <h3 style="margin-top: 0;">How would you like to calculate your global plan's impact on climate change?</h3>
 
             <div class='modelSettingsSelectBox'>
                 <fieldset id="modelSettingsSet">

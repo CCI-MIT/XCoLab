@@ -62,14 +62,7 @@ body {
   display: block;
 }
 
-/* reduce padding below edit proposal button block */
+// reduce padding below edit proposal button block
 #content.ep {
   padding-top: 16px;
-}
-
-/*#content ul {list-style:none; margin:0 0 20px 0;}*/
-ul li {
-  list-style: none;
-  background: url(../images/bullet.jpg) no-repeat left 10px;;
-  padding: 0 0 0 9px;
 }

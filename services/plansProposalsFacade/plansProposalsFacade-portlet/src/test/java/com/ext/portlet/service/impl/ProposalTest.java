@@ -1,17 +1,6 @@
 package com.ext.portlet.service.impl;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import org.junit.Test;
-import org.xcolab.services.EventBusService;
-
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalVersion;
@@ -22,6 +11,16 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.junit.Test;
+import org.xcolab.services.EventBusService;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class ProposalTest extends XCoLabTest {
 	private Random rand = new Random();

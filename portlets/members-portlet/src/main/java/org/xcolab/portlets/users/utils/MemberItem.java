@@ -25,7 +25,7 @@ public class MemberItem implements Serializable {
     public MemberItem(User user, String memberCategoryParam) throws PortalException, SystemException {
 
         userId = user.getUserId();
-        activityCount = Xcolab_UserLocalServiceUtil.getUserActivityCount(userId).get(0);
+        activityCount = Xcolab_UserLocalServiceUtil.getUserActivityCount(userId);
         screenName = user.getScreenName();
         joinDate = user.getCreateDate();
         points = PointsLocalServiceUtil.getUserMaterializedPoints(userId);
@@ -53,6 +53,7 @@ public class MemberItem implements Serializable {
                 case "Contest Manager":
                     memberRole = MemberRole.CONTEST_MANAGER;
                     break;
+                case "Judge":
                 case "Judges":
                     memberRole = MemberRole.JUDGE;
                     break;

@@ -29,7 +29,7 @@ import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
-import org.xcolab.utils.ProposalGroupingUtil;
+import org.xcolab.utils.EntityGroupingUtil;
 import org.xcolab.utils.SendMessagePermissionChecker;
 import org.xcolab.wrappers.BaseProposalWrapper;
 import org.xcolab.wrappers.ContestTypeProposalWrapper;
@@ -127,7 +127,7 @@ public class UserProfileWrapper implements Serializable {
         }
 
         List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
-        Map<ContestType, List<Proposal>> proposalsByContestType = ProposalGroupingUtil.groupByContestType(proposals);
+        Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil.groupByContestType(proposals);
         for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
@@ -278,7 +278,7 @@ public class UserProfileWrapper implements Serializable {
 
     public long getUserActivityCount() {
         try {
-            return Xcolab_UserLocalServiceUtil.getUserActivityCount(getUserId()).get(0);
+            return Xcolab_UserLocalServiceUtil.getUserActivityCount(getUserId());
         } catch (SystemException e) {
             return 0;
         }

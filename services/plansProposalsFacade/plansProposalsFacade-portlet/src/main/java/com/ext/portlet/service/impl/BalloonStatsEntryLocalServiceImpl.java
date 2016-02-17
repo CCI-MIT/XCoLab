@@ -27,6 +27,7 @@ public class BalloonStatsEntryLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.BalloonStatsEntryLocalServiceUtil} to access the balloon stats entry local service.
      */
     
+    @Override
     public BalloonStatsEntry store(BalloonStatsEntry entry) throws SystemException {
         if (entry.isNew() || entry.getId() <= 0) {
             if (entry.getId() <= 0) {

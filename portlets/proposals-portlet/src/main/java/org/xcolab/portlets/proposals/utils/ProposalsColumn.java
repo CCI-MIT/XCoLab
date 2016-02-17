@@ -1,8 +1,8 @@
 package org.xcolab.portlets.proposals.utils;
 
-import java.util.Comparator;
-
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+
+import java.util.Comparator;
 
 public enum ProposalsColumn {
     NAME(new Comparator<ProposalWrapper>() {

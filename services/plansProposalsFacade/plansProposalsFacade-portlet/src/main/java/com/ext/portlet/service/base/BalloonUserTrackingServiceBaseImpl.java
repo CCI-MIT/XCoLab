@@ -8,6 +8,7 @@ import com.ext.portlet.service.persistence.BalloonLinkPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.BalloonTextPersistence;
 import com.ext.portlet.service.persistence.BalloonUserTrackingPersistence;
+import com.ext.portlet.service.persistence.ConfigurationAttributePersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestDiscussionPersistence;
 import com.ext.portlet.service.persistence.ContestEmailTemplatePersistence;
@@ -68,6 +69,7 @@ import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
+import com.ext.portlet.service.persistence.ProposalFinder;
 import com.ext.portlet.service.persistence.ProposalPersistence;
 import com.ext.portlet.service.persistence.ProposalRatingFinder;
 import com.ext.portlet.service.persistence.ProposalRatingPersistence;
@@ -143,6 +145,12 @@ public abstract class BalloonUserTrackingServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.BalloonUserTrackingService balloonUserTrackingService;
     @BeanReference(type = BalloonUserTrackingPersistence.class)
     protected BalloonUserTrackingPersistence balloonUserTrackingPersistence;
+    @BeanReference(type = com.ext.portlet.service.ConfigurationAttributeLocalService.class)
+    protected com.ext.portlet.service.ConfigurationAttributeLocalService configurationAttributeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ConfigurationAttributeService.class)
+    protected com.ext.portlet.service.ConfigurationAttributeService configurationAttributeService;
+    @BeanReference(type = ConfigurationAttributePersistence.class)
+    protected ConfigurationAttributePersistence configurationAttributePersistence;
     @BeanReference(type = com.ext.portlet.service.ContestLocalService.class)
     protected com.ext.portlet.service.ContestLocalService contestLocalService;
     @BeanReference(type = com.ext.portlet.service.ContestService.class)
@@ -477,6 +485,8 @@ public abstract class BalloonUserTrackingServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.ProposalService proposalService;
     @BeanReference(type = ProposalPersistence.class)
     protected ProposalPersistence proposalPersistence;
+    @BeanReference(type = ProposalFinder.class)
+    protected ProposalFinder proposalFinder;
     @BeanReference(type = com.ext.portlet.service.Proposal2PhaseLocalService.class)
     protected com.ext.portlet.service.Proposal2PhaseLocalService proposal2PhaseLocalService;
     @BeanReference(type = com.ext.portlet.service.Proposal2PhaseService.class)
@@ -943,6 +953,63 @@ public abstract class BalloonUserTrackingServiceBaseImpl extends BaseServiceImpl
     public void setBalloonUserTrackingPersistence(
         BalloonUserTrackingPersistence balloonUserTrackingPersistence) {
         this.balloonUserTrackingPersistence = balloonUserTrackingPersistence;
+    }
+
+    /**
+     * Returns the configuration attribute local service.
+     *
+     * @return the configuration attribute local service
+     */
+    public com.ext.portlet.service.ConfigurationAttributeLocalService getConfigurationAttributeLocalService() {
+        return configurationAttributeLocalService;
+    }
+
+    /**
+     * Sets the configuration attribute local service.
+     *
+     * @param configurationAttributeLocalService the configuration attribute local service
+     */
+    public void setConfigurationAttributeLocalService(
+        com.ext.portlet.service.ConfigurationAttributeLocalService configurationAttributeLocalService) {
+        this.configurationAttributeLocalService = configurationAttributeLocalService;
+    }
+
+    /**
+     * Returns the configuration attribute remote service.
+     *
+     * @return the configuration attribute remote service
+     */
+    public com.ext.portlet.service.ConfigurationAttributeService getConfigurationAttributeService() {
+        return configurationAttributeService;
+    }
+
+    /**
+     * Sets the configuration attribute remote service.
+     *
+     * @param configurationAttributeService the configuration attribute remote service
+     */
+    public void setConfigurationAttributeService(
+        com.ext.portlet.service.ConfigurationAttributeService configurationAttributeService) {
+        this.configurationAttributeService = configurationAttributeService;
+    }
+
+    /**
+     * Returns the configuration attribute persistence.
+     *
+     * @return the configuration attribute persistence
+     */
+    public ConfigurationAttributePersistence getConfigurationAttributePersistence() {
+        return configurationAttributePersistence;
+    }
+
+    /**
+     * Sets the configuration attribute persistence.
+     *
+     * @param configurationAttributePersistence the configuration attribute persistence
+     */
+    public void setConfigurationAttributePersistence(
+        ConfigurationAttributePersistence configurationAttributePersistence) {
+        this.configurationAttributePersistence = configurationAttributePersistence;
     }
 
     /**
@@ -4111,6 +4178,24 @@ public abstract class BalloonUserTrackingServiceBaseImpl extends BaseServiceImpl
      */
     public void setProposalPersistence(ProposalPersistence proposalPersistence) {
         this.proposalPersistence = proposalPersistence;
+    }
+
+    /**
+     * Returns the proposal finder.
+     *
+     * @return the proposal finder
+     */
+    public ProposalFinder getProposalFinder() {
+        return proposalFinder;
+    }
+
+    /**
+     * Sets the proposal finder.
+     *
+     * @param proposalFinder the proposal finder
+     */
+    public void setProposalFinder(ProposalFinder proposalFinder) {
+        this.proposalFinder = proposalFinder;
     }
 
     /**

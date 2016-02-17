@@ -5,7 +5,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.userprofile.beans.UserProfilePreferencesBean;
 
-import javax.portlet.*;
+import javax.portlet.ActionRequest;
+import javax.portlet.ReadOnlyException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.ValidatorException;
 import java.io.IOException;
 
 @Controller

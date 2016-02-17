@@ -3,8 +3,8 @@ package org.xcolab.jspTags.discussion.wrappers;
 public class NewMessageWrapper {
     private String title;
     private String description;
-    private long discussionId;
-    private long threadId;
+    private String discussionId;
+    private String threadId;
     
     public String getTitle() {
         return title;
@@ -18,16 +18,16 @@ public class NewMessageWrapper {
     public void setDescription(String description) {
         this.description = description;
     }
-    public long getDiscussionId() {
+    public String getDiscussionId() {
         return discussionId;
     }
-    public void setDiscussionId(long discussionId) {
+    public void setDiscussionId(String discussionId) {
         this.discussionId = discussionId;
     }
-    public long getThreadId() {
+    public String getThreadId() {
         return threadId;
     }
-    public void setThreadId(long threadId) {
+    public void setThreadId(String threadId) {
         this.threadId = threadId;
     }
 

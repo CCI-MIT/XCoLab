@@ -1,7 +1,5 @@
 package com.ext.portlet.service;
 
-import com.ext.portlet.service.*;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -90,10 +88,6 @@ public interface ProposalService extends BaseService, InvokableService {
 
     /**
     * @param contestPhaseId ID of contest phase or -1 for general query
-    * @param proposalId
-    * @param start
-    * @param end
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
