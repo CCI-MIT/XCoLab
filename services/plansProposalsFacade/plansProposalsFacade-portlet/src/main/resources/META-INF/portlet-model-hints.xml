@@ -109,6 +109,13 @@
 			<hint name="max-length">500</hint>
 		</field>
 	</model>
+	<model name="com.ext.portlet.model.ConfigurationAttribute">
+		<field name="name" type="String" />
+		<field name="additionalId" type="long" />
+		<field name="numericValue" type="long" />
+		<field name="stringValue" type="String" />
+		<field name="realValue" type="double" />
+	</model>
 	<model name="com.ext.portlet.model.Contest">
 		<field name="ContestPK" type="long" />
 		<field name="contestTypeId" type="long" />

@@ -137,8 +137,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactDefaultSeriesData[] findBySeriesId_PrevAndNext(
-        com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK,
-        long seriesId,
+        ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK, long seriesId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -248,7 +247,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @return the new impact default series data
     */
     public com.ext.portlet.model.ImpactDefaultSeriesData create(
-        com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK);
+        ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK);
 
     /**
     * Removes the impact default series data with the primary key from the database. Also notifies the appropriate model listeners.
@@ -259,7 +258,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactDefaultSeriesData remove(
-        com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK)
+        ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK)
         throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -276,7 +275,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactDefaultSeriesData findByPrimaryKey(
-        com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK)
+        ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK)
         throws com.ext.portlet.NoSuchImpactDefaultSeriesDataException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -288,7 +287,7 @@ public interface ImpactDefaultSeriesDataPersistence extends BasePersistence<Impa
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactDefaultSeriesData fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK)
+        ImpactDefaultSeriesDataPK impactDefaultSeriesDataPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

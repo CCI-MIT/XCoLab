@@ -231,8 +231,7 @@ public class Proposal2PhaseUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.Proposal2Phase[] findByProposalId_PrevAndNext(
-        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK,
-        long proposalId,
+        Proposal2PhasePK proposal2PhasePK, long proposalId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposal2PhaseException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -399,8 +398,7 @@ public class Proposal2PhaseUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.Proposal2Phase[] findByContestPhaseId_PrevAndNext(
-        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK,
-        long contestPhaseId,
+        Proposal2PhasePK proposal2PhasePK, long contestPhaseId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposal2PhaseException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -459,7 +457,7 @@ public class Proposal2PhaseUtil {
     * @return the new proposal2 phase
     */
     public static com.ext.portlet.model.Proposal2Phase create(
-        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK) {
+        Proposal2PhasePK proposal2PhasePK) {
         return getPersistence().create(proposal2PhasePK);
     }
 
@@ -472,7 +470,7 @@ public class Proposal2PhaseUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.Proposal2Phase remove(
-        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK)
+        Proposal2PhasePK proposal2PhasePK)
         throws com.ext.portlet.NoSuchProposal2PhaseException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(proposal2PhasePK);
@@ -493,7 +491,7 @@ public class Proposal2PhaseUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.Proposal2Phase findByPrimaryKey(
-        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK)
+        Proposal2PhasePK proposal2PhasePK)
         throws com.ext.portlet.NoSuchProposal2PhaseException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(proposal2PhasePK);
@@ -507,7 +505,7 @@ public class Proposal2PhaseUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.Proposal2Phase fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK)
+        Proposal2PhasePK proposal2PhasePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(proposal2PhasePK);
     }

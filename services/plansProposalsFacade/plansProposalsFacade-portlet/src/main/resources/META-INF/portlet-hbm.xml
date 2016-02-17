@@ -8,6 +8,7 @@
 	<import class="com.ext.portlet.model.BalloonStatsEntry" />
 	<import class="com.ext.portlet.model.BalloonText" />
 	<import class="com.ext.portlet.model.BalloonUserTracking" />
+	<import class="com.ext.portlet.model.ConfigurationAttribute" />
 	<import class="com.ext.portlet.model.Contest" />
 	<import class="com.ext.portlet.model.ContestDebate" />
 	<import class="com.ext.portlet.model.ContestDiscussion" />
@@ -170,6 +171,16 @@
 		<property name="balloonLinkUuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="balloonLinkContext" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="userAgent" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ConfigurationAttributeImpl" table="xcolab_ConfigurationAttribute">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ConfigurationAttributePK">
+			<key-property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+			<key-property name="additionalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
+		<property name="numericValue" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="stringValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="realValue" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestImpl" table="xcolab_Contest">
 		<cache usage="read-write" />

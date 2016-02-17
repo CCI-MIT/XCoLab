@@ -13,6 +13,8 @@ import com.ext.portlet.service.BalloonTextServiceUtil;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.portlet.service.BalloonUserTrackingServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
+import com.ext.portlet.service.ConfigurationAttributeServiceUtil;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestDebateServiceUtil;
 import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
@@ -194,6 +196,9 @@ public class ClpMessageListener extends BaseMessageListener {
             BalloonUserTrackingLocalServiceUtil.clearService();
 
             BalloonUserTrackingServiceUtil.clearService();
+            ConfigurationAttributeLocalServiceUtil.clearService();
+
+            ConfigurationAttributeServiceUtil.clearService();
             ContestLocalServiceUtil.clearService();
 
             ContestServiceUtil.clearService();
