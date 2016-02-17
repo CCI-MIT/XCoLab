@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.utils;
 
 import com.ext.portlet.model.ProposalUnversionedAttribute;
 import com.ext.portlet.service.ProposalUnversionedAttributeLocalServiceUtil;
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -23,7 +24,7 @@ public class ProposalUnversionedAttributeUtil {
         ProposalUnversionedAttribute pua = null;
         pua = getCurrentProposalUnversionedAttribute(attributeName.toString(),unversionedAttributes);
         if(pua == null) {
-            pua = ProposalUnversionedAttributeLocalServiceUtil.createProposalUnversionedAttribute(0l);
+            pua = ProposalUnversionedAttributeLocalServiceUtil.createProposalUnversionedAttribute(CounterLocalServiceUtil.increment(ProposalUnversionedAttribute.class.getName()));
             pua.setCreateAuthorId(authorId);
             pua.setCreateDate(new Date());
             pua.setLastUpdateDate(new Date());
