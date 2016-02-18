@@ -32,18 +32,18 @@
     </rule>
 
     <rule>
-        <from>^/contests/(.*)$</from>
-        <to>/web/guest/plans/-/plans/contests/$1</to>
+        <from>^/contests(.*)$</from>
+        <to>/web/guest/plans/-/plans/contests$1</to>
     </rule>
 
     <rule>
-        <from>^/events/(.*)$</from>
-        <to>/web/guest/events/-/plans/contests/$1</to>
+        <from>^/events(.*)$</from>
+        <to>/web/guest/events/-/plans/contests$1</to>
     </rule>
 
     <rule>
-        <from>^/trends/(.*)$</from>
-        <to>/web/guest/trends/-/plans/contests/$1</to>
+        <from>^/trends(.*)$</from>
+        <to>/web/guest/trends/-/plans/contests$1</to>
     </rule>
 
 </urlrewrite>

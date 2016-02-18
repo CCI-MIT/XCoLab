@@ -65,6 +65,11 @@
     <!-- basic urls -->
 
     <route>
+        <pattern>/contests</pattern>
+        <generated-parameter name="pageToDisplay">contestIndex</generated-parameter>
+    </route>
+
+    <route>
         <pattern>/contests/{contestYear}</pattern>
         <generated-parameter name="pageToDisplay">contestIndex</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
