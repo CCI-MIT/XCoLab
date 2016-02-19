@@ -59,7 +59,7 @@ public class ProposalRevertActionController {
 
     throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
 
-        if (proposalsContext.getProposal(request) != null && ! proposalsContext.getPermissions(request).getCanEdit()) {
+        if (proposalsContext.getProposal(request) != null && !proposalsContext.getPermissions(request).getCanEdit()) {
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: " +
                     proposalsContext.getUser(request).getUserId() + ", proposal: " + proposalsContext.getProposal(request).getProposalId());
         }
