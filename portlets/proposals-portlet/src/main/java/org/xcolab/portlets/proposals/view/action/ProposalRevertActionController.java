@@ -47,7 +47,7 @@ import java.util.List;
 @RequestMapping("view")
 public class ProposalRevertActionController {
 
-
+    
     @Autowired
     private ProposalsContext proposalsContext;
 
@@ -78,7 +78,7 @@ public class ProposalRevertActionController {
             proposalsContext.invalidateContext(request);
 
             request.setAttribute("ACTION_REDIRECTING", true);
-            response.sendRedirect("/web/guest/plans/-/plans/contestId/" + proposalsContext.getContest(request).getContestPK() + "/planId/" + oldProposalVersionToBeBecomeCurrent.getProposalId());
+            response.sendRedirect(oldProposalVersionToBeBecomeCurrent.getProposalURL());
         }
     }
 
