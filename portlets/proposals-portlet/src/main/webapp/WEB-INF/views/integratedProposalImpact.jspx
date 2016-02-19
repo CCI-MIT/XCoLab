@@ -136,8 +136,6 @@
                         <input type="text" id="proposalScenarioId" name="scenarioId" class="hidden"/>
                         <input type="text" id="scenarioModelId" name="modelId" class="hidden"/>
                         <input type="text" id="isConsolidatedScenario" name="isConsolidatedScenario" class="hidden"/>
-                        <input type="text" id="impactAuthorComment" name="impactAuthorComment" class="hidden"/>
-                        <input type="text" id="impactIAFComment" name="impactIAFComment" class="hidden"/>
                         <input type="text" id="proposalModelRegion" name="region" class="hidden"
                                value="${proposal.modelRegion}"/>
                     </form>
@@ -388,10 +386,22 @@
             jQuery("#saveChangesButton").click(function () {
                 jQuery("#proposalScenarioId").val(jQuery("#modelingScenarioId").val());
                 jQuery("#scenarioModelId").val(jQuery("#modelingModelId").val());
-                if(jQuery("#impactAuthorComment_text_area"))
+                if(jQuery("#impactAuthorComment_text_area")) {
+                    jQuery('<input></input>').attr({
+                        type: 'hidden',
+                        id: 'impactAuthorComment',
+                        name: 'impactAuthorComment'
+                    }).appendTo('#updateProposalScenarioForm');
                     jQuery("#impactAuthorComment").val(jQuery("#impactAuthorComment_text_area").val());
-                if(jQuery("#impactIAFComment_text_area"))
+                }
+                if(jQuery("#impactIAFComment_text_area")) {
+                    jQuery('<input></input>').attr({
+                        type: 'hidden',
+                        id: 'impactIAFComment',
+                        name: 'impactIAFComment'
+                    }).appendTo('#updateProposalScenarioForm');
                     jQuery("#impactIAFComment").val(jQuery("#impactIAFComment_text_area").val());
+                }
 
                 disableDirtyCheck();
                 jQuery("#updateProposalScenarioForm").submit();

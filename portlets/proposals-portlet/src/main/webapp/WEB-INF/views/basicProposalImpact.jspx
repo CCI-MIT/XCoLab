@@ -1038,16 +1038,18 @@
             var postJson = {};
 
             setCommentsSpinnerMode(true);
-            var impactAuthorCommentValue = "";
+            var impactAuthorComment = "";
             var impactIAFComment = "";
-
-            if(jQuery("#impactAuthorComment_text_area"))
-                impactAuthorCommentValue = jQuery("#impactAuthorComment_text_area").val();
-
-            if(jQuery("#impactIAFComment_text_area"))
+            var parameters={};
+            if(jQuery("#impactAuthorComment_text_area")) {
+                impactAuthorComment = jQuery("#impactAuthorComment_text_area").val();
+                parameters.impactAuthorComment = impactAuthorComment;
+            }
+            if(jQuery("#impactIAFComment_text_area")) {
                 impactIAFComment = jQuery("#impactIAFComment_text_area").val();
-
-            $.post(url, {"impactAuthorComment": impactAuthorCommentValue,"impactIAFComment": impactIAFComment}, function (response) {
+                parameters.impactIAFComment = impactIAFComment;
+            }
+            $.post(url ,parameters , function (response) {
                 responseData = JSON.parse(response);
                 if (responseData.success === false) {
                     alert("Could not process request. Please contact the Administrator");

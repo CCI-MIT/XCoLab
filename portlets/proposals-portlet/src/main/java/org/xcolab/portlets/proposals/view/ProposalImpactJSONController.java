@@ -235,15 +235,15 @@ public class ProposalImpactJSONController {
         List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
                 getAttributes(proposal.getProposalId());
 
-        if(!Validator.isBlank(impactAuthorComment)||!Validator.isBlank(impactIAFComment)) {
-            if(!Validator.isBlank(impactAuthorComment)) {
+        if(impactAuthorComment!=null||impactIAFComment!=null) {
+            if(impactAuthorComment!=null) {
 
                 ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
                         HtmlUtil.cleanAll(impactAuthorComment),
                         ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
                         proposal, unversionedAttributes);
             }
-            if(!Validator.isBlank(impactIAFComment)) {
+            if(impactIAFComment!=null) {
                 ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
                         ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
                         proposal, unversionedAttributes);

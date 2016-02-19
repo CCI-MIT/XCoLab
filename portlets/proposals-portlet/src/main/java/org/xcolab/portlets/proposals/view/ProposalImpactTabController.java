@@ -83,10 +83,12 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if(unversionedAttributes!=null && !unversionedAttributes.isEmpty())
         for(ProposalUnversionedAttribute pua : unversionedAttributes) {
             if(pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString())) {
+                if(!Validator.isBlank(pua.getStringValue()))
                 model.addAttribute("authorComment", pua);
             }
             if(pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString())) {
-                model.addAttribute("iafComment", pua);
+                if(!Validator.isBlank(pua.getStringValue()))
+                    model.addAttribute("iafComment", pua);
             }
         }
 
