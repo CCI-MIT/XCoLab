@@ -3,6 +3,7 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:portlet="http://java.sun.com/portlet_2_0"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           version="2.0">
 
@@ -63,12 +64,28 @@
                             </div>
                         </c:if>
 
+
                         <div class="edit-prop-butts" style="line-height: normal;">
                             <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">Show
                                 history</a>
                             <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
                         </div>
 
+                        <c:if test="${not proposal.isLatestVersion}">
+                            <div class="edit-prop-butts" style="line-height: normal;">
+
+                                <portlet:actionURL var="proposalRevertURL">
+                                    <portlet:param name="contestId" value="${contest.contestPK }" />
+                                    <portlet:param name="planId" value="${proposal.proposalId}" />
+                                    <portlet:param name="version" value="${proposal.selectedVersion.version}" />
+                                    <portlet:param name="action" value="proposalRevert" />
+                                </portlet:actionURL>
+                                <a href="${proposalRevertURL}">Revert</a>
+
+
+
+                            </div>
+                        </c:if>
 
                         <c:if test="${proposal.wasMovedToContest != null}">
                             <div>This ${contestType.proposalName} was moved to: <collab:contestLink contest="${proposal.wasMovedToContest}" /></div>

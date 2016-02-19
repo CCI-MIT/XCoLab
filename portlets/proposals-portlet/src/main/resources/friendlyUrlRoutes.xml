@@ -99,8 +99,7 @@
         <generated-parameter name="baseProposalVersion">{baseProposalVersion}</generated-parameter>
         <generated-parameter name="baseContestId">{baseContestId}</generated-parameter>
     </route>
-    
-    
+
     <route>
         <pattern>/contestId/{contestId}/planId/{planId}/version/{version}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
@@ -116,7 +115,9 @@
         <generated-parameter name="planId">{planId}</generated-parameter>
         <generated-parameter name="edit">true</generated-parameter>
     </route>
-    
+
+
+
     <route>
         <pattern>/contestId/{contestId}/planId/{planId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndHide</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
