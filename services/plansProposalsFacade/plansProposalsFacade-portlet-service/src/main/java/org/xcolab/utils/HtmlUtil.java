@@ -69,6 +69,17 @@ public final class HtmlUtil {
         return doc.body().html();
     }
 
+    /**
+     * This method unescapes all of entities that are stored in the database, that are in xhml format
+     * but those are not all html4 entities, the quote, is scaped as &apos; instead of &quote; so this cles it up
+     * @param body the text to be cleaned
+     * @return unescaped text for emails
+     */
+    public static String decodeHTMLEntitiesForEmail(String body){
+        return org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4(body).replace("&apos;","'");
+
+    }
+
     public static String createLink(String url, String desc) {
         if (! url.contains("http://") && ! url.contains("https://")) {
             url = "http://" + url;
