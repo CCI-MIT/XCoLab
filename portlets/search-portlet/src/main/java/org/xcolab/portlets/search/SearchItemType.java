@@ -3,7 +3,7 @@ package org.xcolab.portlets.search;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -28,12 +28,12 @@ public enum SearchItemType {
                 public String getUrl(Document doc) {
                     String idStr = doc.get(Field.ENTRY_CLASS_PK);
                     try {
-                    	Long id = Long.parseLong(idStr);
-                    	return "/web/guest/plans/-/plans/contestId/" + Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(id).getContestPK() + "/planId/" + id;
+                    	Long proposalId = Long.parseLong(idStr);
+                    	return ProposalLocalServiceUtil.getProposalLinkUrl(proposalId);
                     }
                     catch (SystemException | PortalException | NumberFormatException ignored) { }
                     
-                    return "/web/guest/plans";
+                    return "/contests";
                 }
      }),
      CONTEST("Contests", new String[] {"entryClassName", "com.ext.portlet.model.Contest" }, new String[] { "content", "title" },
@@ -42,12 +42,11 @@ public enum SearchItemType {
                  public String getUrl(Document doc) {
                      String idStr = doc.get(Field.ENTRY_CLASS_PK);
                      try {
-                     	Long id = Long.parseLong(idStr);
-                     	ContestLocalServiceUtil.getContest(id);
-                     	return "/web/guest/plans/-/plans/contestId/" + id; 
+                     	Long contestId = Long.parseLong(idStr);
+                     	return ContestLocalServiceUtil.getContestLinkUrl(ContestLocalServiceUtil.getContest(contestId));
                      } catch (SystemException | PortalException | NumberFormatException ignored) { }
-                     
-                     return "/web/guest/plans";
+
+                     return "/contests";
                  }
             }),            
 

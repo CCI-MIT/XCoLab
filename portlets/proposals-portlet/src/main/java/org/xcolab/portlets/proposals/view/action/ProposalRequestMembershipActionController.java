@@ -50,13 +50,12 @@ public class ProposalRequestMembershipActionController {
     // Membership request from non-group user
     private static final String MSG_MEMBERSHIP_REQUEST_SUBJECT = "%s wants to join your proposal %s";
     private static final String MSG_MEMBERSHIP_REQUEST_CONTENT = "User %s has requested to join your proposal %s. Click <a href='%s'>here</a> to respond to it.";
-    private static final String PROPOSAL_URL_ADMIN = "%s/web/guest/plans/-/plans/contestId/%d/planId/%d/tab/ADMIN";
+    private static final String PROPOSAL_URL_ADMIN_TAB = "/tab/ADMIN";
     private static final String MSG_MEMBERSHIP_RESPONSE_SUBJECT = "Response to your membership request";
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED = "Your request has been accepted <br />Comments: ";
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED = "Your request has been rejected <br />Comments: ";
 
     // Membership invite from group user
-    private static final String PROPOSAL_URL = "/web/guest/plans/-/plans/contestId/%d/planId/%d";
     private static final String MSG_MEMBERSHIP_INVITE_SUBJECT = "%s invites you to join the proposal %s";
     private static final String MSG_MEMBERSHIP_INVITE_CONTENT = "User %s invites you to contribute to the proposal %s with the following message: %n%n%s%n%n" +
             "Click <a href='%s' target='_blank'>here</a> to <strong>accept</strong> the invitation.%n" +
@@ -92,10 +91,7 @@ public class ProposalRequestMembershipActionController {
                 String subject = String.format(MSG_MEMBERSHIP_REQUEST_SUBJECT,
                         proposalsContext.getUser(request).getFullName(),
                         proposalName);
-                String proposalUrl = String.format(PROPOSAL_URL_ADMIN,
-                        themeDisplay.getPortalURL(),
-						proposalsContext.getContest(request).getContestPK(),
-                        proposalId);
+                String proposalUrl = themeDisplay.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(proposalId) + PROPOSAL_URL_ADMIN_TAB;
                 String content = String.format(MSG_MEMBERSHIP_REQUEST_CONTENT,
                         proposalsContext.getUser(request).getFullName(),
                         proposalName, proposalUrl);
@@ -146,7 +142,7 @@ public class ProposalRequestMembershipActionController {
 					String acceptURL = HttpUtil.addParameter(baseUrl, "do", "accept");
 					String declineURL = HttpUtil.addParameter(baseUrl, "do", "decline");
 
-					String proposalLink = String.format("<a href='%s'>%s</a>", String.format(PROPOSAL_URL, proposalsContext.getContest(request).getContestPK(), proposalId), proposalName);
+					String proposalLink = String.format("<a href='%s'>%s</a>", ProposalLocalServiceUtil.getProposalLinkUrl(proposalId), proposalName);
 					String subject = String.format(MSG_MEMBERSHIP_INVITE_SUBJECT,
 							proposalsContext.getUser(request).getFullName(), proposalName);
 					String content = String.format(MSG_MEMBERSHIP_INVITE_CONTENT,

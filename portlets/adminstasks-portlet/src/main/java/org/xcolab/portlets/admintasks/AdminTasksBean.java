@@ -440,6 +440,10 @@ public class AdminTasksBean {
 		ProposalReferenceLocalServiceUtil.populateTable();
 	}
 
+	public void generateContestLinks() throws SystemException, PortalException {
+		ContestLinkMigrationUtil.generateContestUrls();
+	}
+
     // ----- Reindex Tasks -----
     public void removeUsers() throws SearchException, SystemException {
         pushAjaxUpdate("Removing Users from index");

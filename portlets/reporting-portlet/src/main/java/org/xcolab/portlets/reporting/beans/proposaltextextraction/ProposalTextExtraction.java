@@ -62,7 +62,7 @@ public class ProposalTextExtraction {
             for (Proposal visibleProposal : visibleProposals) {
                 ProposalTextEntity pte = new ProposalTextEntity();
                 pte.setId(visibleProposal.getProposalId());
-                pte.setUrl("http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK() + "/planId/" + visibleProposal.getProposalId());
+                pte.setUrl("http://climatecolab.org" + ProposalLocalServiceUtil.getProposalLinkUrl(visibleProposal.getProposalId()));
 
                 List<ProposalAttribute> attributes = ProposalAttributeLocalServiceUtil.getAttributes(visibleProposal.getProposalId(), visibleProposal.getCurrentVersion());
                 for (ProposalAttribute attribute : attributes) {

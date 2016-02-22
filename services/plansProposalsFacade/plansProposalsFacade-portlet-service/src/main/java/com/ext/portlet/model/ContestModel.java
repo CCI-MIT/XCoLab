@@ -104,6 +104,35 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setContestShortName(String ContestShortName);
 
     /**
+     * Returns the contest url name of this contest.
+     *
+     * @return the contest url name of this contest
+     */
+    @AutoEscape
+    public String getContestUrlName();
+
+    /**
+     * Sets the contest url name of this contest.
+     *
+     * @param ContestUrlName the contest url name of this contest
+     */
+    public void setContestUrlName(String ContestUrlName);
+
+    /**
+     * Returns the contest year of this contest.
+     *
+     * @return the contest year of this contest
+     */
+    public long getContestYear();
+
+    /**
+     * Sets the contest year of this contest.
+     *
+     * @param ContestYear the contest year of this contest
+     */
+    public void setContestYear(long ContestYear);
+
+    /**
      * Returns the contest description of this contest.
      *
      * @return the contest description of this contest

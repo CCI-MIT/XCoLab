@@ -34,12 +34,14 @@ public class CreateProposalController extends BaseProposalsController {
 
     @RequestMapping(params = "pageToDisplay=createProposal")
     public String showContestProposals(RenderRequest request, RenderResponse response, 
-            @RequestParam Long contestId, @RequestParam(required=false) Long baseProposalId, 
+            @RequestParam String contestUrlName, @RequestParam(required=false) Long baseProposalId,
             @RequestParam(required=false, defaultValue = "-1") int baseProposalVersion, 
             @RequestParam(required=false) Long baseContestId, Model model) 
             throws PortalException, SystemException, ProposalsAuthorizationException {
 
-        if(!proposalsContext.getPermissions(request).getCanCreate()) throw new ProposalsAuthorizationException("creation not allowed");
+        if(!proposalsContext.getPermissions(request).getCanCreate()) {
+            throw new ProposalsAuthorizationException("creation not allowed");
+        }
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         long userId = themeDisplay.getUserId();

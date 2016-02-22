@@ -56,10 +56,12 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
             { "proposalNamePlural", Types.VARCHAR },
             { "portletName", Types.VARCHAR },
             { "portletUrl", Types.VARCHAR },
+            { "friendlyUrlStringContests", Types.VARCHAR },
+            { "friendlyUrlStringProposal", Types.VARCHAR },
             { "menuItemName", Types.VARCHAR },
             { "hasDiscussion", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestType (id_ LONG not null primary key,contestName VARCHAR(75) null,contestNamePlural VARCHAR(75) null,proposalName VARCHAR(75) null,proposalNamePlural VARCHAR(75) null,portletName VARCHAR(75) null,portletUrl VARCHAR(75) null,menuItemName VARCHAR(75) null,hasDiscussion BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestType (id_ LONG not null primary key,contestName VARCHAR(75) null,contestNamePlural VARCHAR(75) null,proposalName VARCHAR(75) null,proposalNamePlural VARCHAR(75) null,portletName VARCHAR(75) null,portletUrl VARCHAR(75) null,friendlyUrlStringContests VARCHAR(75) null,friendlyUrlStringProposal VARCHAR(75) null,menuItemName VARCHAR(75) null,hasDiscussion BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestType";
     public static final String ORDER_BY_JPQL = " ORDER BY contestType.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestType.id_ ASC";
@@ -86,6 +88,8 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
     private String _proposalNamePlural;
     private String _portletName;
     private String _portletUrl;
+    private String _friendlyUrlStringContests;
+    private String _friendlyUrlStringProposal;
     private String _menuItemName;
     private boolean _hasDiscussion;
     private ContestType _escapedModel;
@@ -113,6 +117,8 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         model.setProposalNamePlural(soapModel.getProposalNamePlural());
         model.setPortletName(soapModel.getPortletName());
         model.setPortletUrl(soapModel.getPortletUrl());
+        model.setFriendlyUrlStringContests(soapModel.getFriendlyUrlStringContests());
+        model.setFriendlyUrlStringProposal(soapModel.getFriendlyUrlStringProposal());
         model.setMenuItemName(soapModel.getMenuItemName());
         model.setHasDiscussion(soapModel.getHasDiscussion());
 
@@ -180,6 +186,10 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         attributes.put("proposalNamePlural", getProposalNamePlural());
         attributes.put("portletName", getPortletName());
         attributes.put("portletUrl", getPortletUrl());
+        attributes.put("friendlyUrlStringContests",
+            getFriendlyUrlStringContests());
+        attributes.put("friendlyUrlStringProposal",
+            getFriendlyUrlStringProposal());
         attributes.put("menuItemName", getMenuItemName());
         attributes.put("hasDiscussion", getHasDiscussion());
 
@@ -229,6 +239,20 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
         if (portletUrl != null) {
             setPortletUrl(portletUrl);
+        }
+
+        String friendlyUrlStringContests = (String) attributes.get(
+                "friendlyUrlStringContests");
+
+        if (friendlyUrlStringContests != null) {
+            setFriendlyUrlStringContests(friendlyUrlStringContests);
+        }
+
+        String friendlyUrlStringProposal = (String) attributes.get(
+                "friendlyUrlStringProposal");
+
+        if (friendlyUrlStringProposal != null) {
+            setFriendlyUrlStringProposal(friendlyUrlStringProposal);
         }
 
         String menuItemName = (String) attributes.get("menuItemName");
@@ -347,6 +371,36 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
     @JSON
     @Override
+    public String getFriendlyUrlStringContests() {
+        if (_friendlyUrlStringContests == null) {
+            return StringPool.BLANK;
+        } else {
+            return _friendlyUrlStringContests;
+        }
+    }
+
+    @Override
+    public void setFriendlyUrlStringContests(String friendlyUrlStringContests) {
+        _friendlyUrlStringContests = friendlyUrlStringContests;
+    }
+
+    @JSON
+    @Override
+    public String getFriendlyUrlStringProposal() {
+        if (_friendlyUrlStringProposal == null) {
+            return StringPool.BLANK;
+        } else {
+            return _friendlyUrlStringProposal;
+        }
+    }
+
+    @Override
+    public void setFriendlyUrlStringProposal(String friendlyUrlStringProposal) {
+        _friendlyUrlStringProposal = friendlyUrlStringProposal;
+    }
+
+    @JSON
+    @Override
     public String getMenuItemName() {
         if (_menuItemName == null) {
             return StringPool.BLANK;
@@ -410,6 +464,8 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         contestTypeImpl.setProposalNamePlural(getProposalNamePlural());
         contestTypeImpl.setPortletName(getPortletName());
         contestTypeImpl.setPortletUrl(getPortletUrl());
+        contestTypeImpl.setFriendlyUrlStringContests(getFriendlyUrlStringContests());
+        contestTypeImpl.setFriendlyUrlStringProposal(getFriendlyUrlStringProposal());
         contestTypeImpl.setMenuItemName(getMenuItemName());
         contestTypeImpl.setHasDiscussion(getHasDiscussion());
 
@@ -515,6 +571,24 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
             contestTypeCacheModel.portletUrl = null;
         }
 
+        contestTypeCacheModel.friendlyUrlStringContests = getFriendlyUrlStringContests();
+
+        String friendlyUrlStringContests = contestTypeCacheModel.friendlyUrlStringContests;
+
+        if ((friendlyUrlStringContests != null) &&
+                (friendlyUrlStringContests.length() == 0)) {
+            contestTypeCacheModel.friendlyUrlStringContests = null;
+        }
+
+        contestTypeCacheModel.friendlyUrlStringProposal = getFriendlyUrlStringProposal();
+
+        String friendlyUrlStringProposal = contestTypeCacheModel.friendlyUrlStringProposal;
+
+        if ((friendlyUrlStringProposal != null) &&
+                (friendlyUrlStringProposal.length() == 0)) {
+            contestTypeCacheModel.friendlyUrlStringProposal = null;
+        }
+
         contestTypeCacheModel.menuItemName = getMenuItemName();
 
         String menuItemName = contestTypeCacheModel.menuItemName;
@@ -530,7 +604,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(23);
 
         sb.append("{id=");
         sb.append(getId());
@@ -546,6 +620,10 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         sb.append(getPortletName());
         sb.append(", portletUrl=");
         sb.append(getPortletUrl());
+        sb.append(", friendlyUrlStringContests=");
+        sb.append(getFriendlyUrlStringContests());
+        sb.append(", friendlyUrlStringProposal=");
+        sb.append(getFriendlyUrlStringProposal());
         sb.append(", menuItemName=");
         sb.append(getMenuItemName());
         sb.append(", hasDiscussion=");
@@ -557,7 +635,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(31);
+        StringBundler sb = new StringBundler(37);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestType");
@@ -590,6 +668,14 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         sb.append(
             "<column><column-name>portletUrl</column-name><column-value><![CDATA[");
         sb.append(getPortletUrl());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>friendlyUrlStringContests</column-name><column-value><![CDATA[");
+        sb.append(getFriendlyUrlStringContests());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>friendlyUrlStringProposal</column-name><column-value><![CDATA[");
+        sb.append(getFriendlyUrlStringProposal());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>menuItemName</column-name><column-value><![CDATA[");

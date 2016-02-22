@@ -49,8 +49,8 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
     @RequestMapping(params = "pageToDisplay=proposalDetails")
     public String showProposalDetails(
-            @RequestParam(value="planId") Long proposalId, 
-            @RequestParam Long contestId, 
+            @RequestParam Long proposalId,
+            @RequestParam String contestUrlName,
             @RequestParam(required = false) Long phaseId, 
             @RequestParam(defaultValue="false") boolean edit,
             @RequestParam(defaultValue="false") boolean move,
@@ -179,5 +179,4 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
         throw new SystemException("Active voting phase was not found");
     }
-
 }

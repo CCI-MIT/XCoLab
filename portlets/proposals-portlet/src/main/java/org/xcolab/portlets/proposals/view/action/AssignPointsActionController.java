@@ -113,6 +113,6 @@ public class AssignPointsActionController {
             throw e;
         }
 
-        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase)+"/tab/POINTS");
+        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/POINTS");
     }
 }

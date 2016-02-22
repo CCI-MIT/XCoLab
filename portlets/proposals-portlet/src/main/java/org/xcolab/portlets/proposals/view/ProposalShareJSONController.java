@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
@@ -149,9 +150,9 @@ public class ProposalShareJSONController {
 		ContestPhase phase = proposalsContext.getContestPhase(request);
 		String proposalUrl = themeDisplay.getPortalURL();
 		if (phase == null || phase.getContestPhasePK() <= 0) {
-			proposalUrl += String.format("/web/guest/plans/-/plans/contestId/%d/planId/%d", proposalsContext.getContest(request).getContestPK(), proposalsContext.getProposal(request).getProposalId());
+			proposalUrl += ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request), proposalsContext.getProposal(request));
 		} else {
-			proposalUrl += String.format("/web/guest/plans/-/plans/contestId/%d/phaseId/%d/planId/%d", proposalsContext.getContest(request).getContestPK(), phase.getContestPhasePK(), proposalsContext.getProposal(request).getProposalId());
+			proposalUrl += ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request), proposalsContext.getProposal(request), phase);
 		}
 
 		body += String.format("%n%n<a href='%s'>Link to proposal</a>", proposalUrl);

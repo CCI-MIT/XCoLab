@@ -20,6 +20,7 @@ import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.utils.HtmlUtil;
+import org.xcolab.utils.LinkUtils;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -56,7 +57,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             }
 
             final String title = HtmlUtil.cleanAll(newMessage.getTitle());
-            final String body = HtmlUtil.cleanSome(newMessage.getDescription());
+            final String body = HtmlUtil.cleanSome(newMessage.getDescription(), LinkUtils.getBaseUri(request));
 
             final DiscussionMessage comment;
             if (threadId == 0) {

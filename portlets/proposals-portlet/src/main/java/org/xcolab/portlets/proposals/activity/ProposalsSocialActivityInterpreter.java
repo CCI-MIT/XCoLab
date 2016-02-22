@@ -69,7 +69,7 @@ implements ICollabActivityInterpreter {
             Proposal rawProposal = ProposalLocalServiceUtil.getProposal(classPK);
             ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(rawProposal.getProposalId());
             ProposalWrapper proposal = new ProposalWrapper(rawProposal);
-            return contestType.getProposalName()+": " + String.format(hyperlink, StringEscapeUtils.escapeHtml(proposal.getProposalURL()), proposal.getName());
+            return contestType.getProposalName()+": " + String.format(hyperlink, StringEscapeUtils.escapeHtml(proposal.getProposalUrl()), proposal.getName());
             
         } catch (SystemException | PortalException e) {
             _log.error("Can't find proposal for id: " + classPK, e);

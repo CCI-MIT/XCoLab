@@ -44,6 +44,10 @@ public class ContestTypeWrapper implements ContestType,
         attributes.put("proposalNamePlural", getProposalNamePlural());
         attributes.put("portletName", getPortletName());
         attributes.put("portletUrl", getPortletUrl());
+        attributes.put("friendlyUrlStringContests",
+            getFriendlyUrlStringContests());
+        attributes.put("friendlyUrlStringProposal",
+            getFriendlyUrlStringProposal());
         attributes.put("menuItemName", getMenuItemName());
         attributes.put("hasDiscussion", getHasDiscussion());
 
@@ -93,6 +97,20 @@ public class ContestTypeWrapper implements ContestType,
 
         if (portletUrl != null) {
             setPortletUrl(portletUrl);
+        }
+
+        String friendlyUrlStringContests = (String) attributes.get(
+                "friendlyUrlStringContests");
+
+        if (friendlyUrlStringContests != null) {
+            setFriendlyUrlStringContests(friendlyUrlStringContests);
+        }
+
+        String friendlyUrlStringProposal = (String) attributes.get(
+                "friendlyUrlStringProposal");
+
+        if (friendlyUrlStringProposal != null) {
+            setFriendlyUrlStringProposal(friendlyUrlStringProposal);
         }
 
         String menuItemName = (String) attributes.get("menuItemName");
@@ -266,6 +284,48 @@ public class ContestTypeWrapper implements ContestType,
     @Override
     public void setPortletUrl(java.lang.String portletUrl) {
         _contestType.setPortletUrl(portletUrl);
+    }
+
+    /**
+    * Returns the friendly url string contests of this contest type.
+    *
+    * @return the friendly url string contests of this contest type
+    */
+    @Override
+    public java.lang.String getFriendlyUrlStringContests() {
+        return _contestType.getFriendlyUrlStringContests();
+    }
+
+    /**
+    * Sets the friendly url string contests of this contest type.
+    *
+    * @param friendlyUrlStringContests the friendly url string contests of this contest type
+    */
+    @Override
+    public void setFriendlyUrlStringContests(
+        java.lang.String friendlyUrlStringContests) {
+        _contestType.setFriendlyUrlStringContests(friendlyUrlStringContests);
+    }
+
+    /**
+    * Returns the friendly url string proposal of this contest type.
+    *
+    * @return the friendly url string proposal of this contest type
+    */
+    @Override
+    public java.lang.String getFriendlyUrlStringProposal() {
+        return _contestType.getFriendlyUrlStringProposal();
+    }
+
+    /**
+    * Sets the friendly url string proposal of this contest type.
+    *
+    * @param friendlyUrlStringProposal the friendly url string proposal of this contest type
+    */
+    @Override
+    public void setFriendlyUrlStringProposal(
+        java.lang.String friendlyUrlStringProposal) {
+        _contestType.setFriendlyUrlStringProposal(friendlyUrlStringProposal);
     }
 
     /**

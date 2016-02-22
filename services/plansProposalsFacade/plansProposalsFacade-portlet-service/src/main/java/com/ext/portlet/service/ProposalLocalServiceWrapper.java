@@ -1050,6 +1050,14 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
             contestPhase);
     }
 
+    @Override
+    public java.lang.String getProposalLinkUrl(
+        com.ext.portlet.model.Contest contest, long proposalId,
+        long contestPhaseId) {
+        return _proposalLocalService.getProposalLinkUrl(contest, proposalId,
+            contestPhaseId);
+    }
+
     /**
     * Returns list of proposals referenced by given proposal that are relevant for the ingtegration contests
     *

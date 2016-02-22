@@ -4,6 +4,7 @@ import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
@@ -20,7 +21,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.xcolab.enums.Plurality;
-import org.xcolab.portlets.proposals.utils.LinkUtils;
+import org.xcolab.utils.LinkUtils;
 import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.IdListUtil;
 
@@ -133,11 +134,11 @@ public class ProposalSectionWrapper {
                 // If a match is found create a new <a> tag
                 if (matcher.find()) {
                     final String link = word.substring(matcher.start(), matcher.end());
-                    ProposalWrapper linkedProposalWrapper = LinkUtils.getProposalFromLinkUrl(link);
+                    final Proposal linkedProposal = LinkUtils.getProposalFromLinkUrl(link);
 
                     String elementName;
-                    if (linkedProposalWrapper != null) {
-                        elementName = linkedProposalWrapper.getName();
+                    if (linkedProposal != null) {
+                        elementName = new ProposalWrapper(linkedProposal).getName();
                     } else {
                         elementName = link;
                     }

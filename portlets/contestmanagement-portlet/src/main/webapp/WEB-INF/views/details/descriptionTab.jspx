@@ -59,6 +59,14 @@
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">60</span> characters
                     </div>
+                    <c:if test="${not contestWrapper.contestActive}">
+                        <div>
+                            <form:checkbox path="shouldUpdateContestUrlName"
+                                           id="shouldUpdateContestUrlName">
+                            </form:checkbox>
+                            update contest URLs (<strong>Warning:</strong> Contest URL will change if checked)<br/>
+                        </div>
+                    </c:if>
                 </div>
             </div>
 

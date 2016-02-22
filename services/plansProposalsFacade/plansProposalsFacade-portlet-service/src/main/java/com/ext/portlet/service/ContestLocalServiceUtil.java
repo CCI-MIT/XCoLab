@@ -279,6 +279,19 @@ public class ContestLocalServiceUtil {
         getService().updateContestGroupsAndDiscussions();
     }
 
+    public static com.ext.portlet.model.Contest getByContestUrlName(
+        java.lang.String contestUrlName)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByContestUrlName(contestUrlName);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> findByContestYear(
+        long contestYear)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().findByContestYear(contestYear);
+    }
+
     public static java.util.List<com.ext.portlet.model.Contest> findByActive(
         boolean active)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -631,6 +644,10 @@ public class ContestLocalServiceUtil {
         return getService().getContestManagersForContest(contest);
     }
 
+    public static java.lang.String getContestLinkUrl(long contestId) {
+        return getService().getContestLinkUrl(contestId);
+    }
+
     /**
     * Returns the URL link address for the passed contest
     *
@@ -776,6 +793,11 @@ public class ContestLocalServiceUtil {
     public static void addContestYearSuffixToContest(
         com.ext.portlet.model.Contest contest, boolean checkForCompleted) {
         getService().addContestYearSuffixToContest(contest, checkForCompleted);
+    }
+
+    public static java.lang.String generateContestUrlName(
+        com.ext.portlet.model.Contest contest) {
+        return getService().generateContestUrlName(contest);
     }
 
     public static void clearService() {

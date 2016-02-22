@@ -19,12 +19,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.helpers.ProposalAttributeHelper;
+import org.xcolab.utils.LinkUtils;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The implementation of the proposal reference local service.
@@ -114,7 +113,6 @@ public class ProposalReferenceLocalServiceImpl
                     final long subProposalId = attribute.getNumericValue();
                     if (subProposalId != 0) {
                         subProposalIds.add(subProposalId);
-                        _log.debug(String.format("Found PROPOSAL_REFERENCE for %d", subProposalId));
                     }
                     break;
                 }
@@ -126,19 +124,11 @@ public class ProposalReferenceLocalServiceImpl
                     for (String referencedProposal : referencedProposals) {
                         final long subProposalId = Long.parseLong(referencedProposal);
                         subProposalIds.add(subProposalId);
-                        _log.debug(String.format("Found PROPOSAL_LIST_REFERENCE for %d", subProposalId));
                     }
                     break;
                 }
                 case PROPOSAL_LIST_TEXT_REFERENCE: {
-                    Pattern proposalLinkPattern = Pattern.compile(
-                            "(href=|https?://).*?/-/plans/contestId/(\\d*)/(?:phaseId/\\d*/)?planId/(\\d*)");
-                    Matcher m = proposalLinkPattern.matcher(attribute.getStringValue());
-                    while (m.find()) {
-                        final long subProposalId = Long.parseLong(m.group(3));
-                        subProposalIds.add(subProposalId);
-                        _log.debug(String.format("Found PROPOSAL_LIST_TEXT_REFERENCE for %d", subProposalId));
-                    }
+                    subProposalIds.addAll(LinkUtils.getProposalIdsFromLinksInText(attribute.getStringValue()));
                     break;
                 }
             }

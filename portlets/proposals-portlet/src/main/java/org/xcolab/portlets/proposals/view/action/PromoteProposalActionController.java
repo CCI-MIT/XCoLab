@@ -29,22 +29,24 @@ public class PromoteProposalActionController {
     public void handleAction(ActionRequest request, Model model, ActionResponse response,
                              @RequestParam Long contestId,
                              @RequestParam Long contestPhaseId,
-                             @RequestParam Long planId ) throws PortalException, SystemException, IOException {
+                             @RequestParam Long proposalId ) throws PortalException, SystemException, IOException {
 
         ProposalsPermissions proposalsPermissions = proposalsContext.getPermissions(request);
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-        if(proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)){
-            Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(planId);
+        if (proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)) {
+            Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(proposalId);
             ContestPhase currentProposalContestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
             ContestPhase activePhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(latestProposalContest);
 
-            ContestPhaseLocalServiceUtil.promoteProposal(planId,
+            ContestPhaseLocalServiceUtil.promoteProposal(proposalId,
                     activePhaseForContest.getContestPhasePK(),
                     currentProposalContestPhase.getContestPhasePK());
 
-            response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+activePhaseForContest.getContestPhasePK()+"/planId/"+planId);
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
+                    proposalsContext.getProposal(request), contestPhase));
         } else {
-            response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhaseId+"/planId/"+planId+"/tab/ADMIN");
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
+                    proposalsContext.getProposal(request), contestPhase) + "/tab/ADMIN");
         }
     }
 }

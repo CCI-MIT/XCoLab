@@ -156,6 +156,8 @@
 			<basic name="contestTypeId" />
 			<basic name="ContestName" />
 			<basic name="ContestShortName" />
+			<basic name="ContestUrlName" />
+			<basic name="ContestYear" />
 			<basic name="ContestDescription" />
 			<basic name="ContestModelDescription" />
 			<basic name="ContestPositionsDescription" />
@@ -365,6 +367,8 @@
 			<basic name="proposalNamePlural" />
 			<basic name="portletName" />
 			<basic name="portletUrl" />
+			<basic name="friendlyUrlStringContests" />
+			<basic name="friendlyUrlStringProposal" />
 			<basic name="menuItemName" />
 			<basic name="hasDiscussion" />
 			<transient name="modelAttributes" />

@@ -31,8 +31,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import static java.util.Collections.*;
-
 /**
  * Created by johannes on 10/27/15.
  *
@@ -290,6 +288,22 @@ public class BaseContestWrapper {
 
     public long getContestTypeId() {
         return contest.getContestTypeId();
+    }
+
+    public long getContestYear() {
+        return contest.getContestYear();
+    }
+
+    public void setContestYear(long contestYear) {
+        contest.setContestYear(contestYear);
+    }
+
+    public String getContestUrlName() {
+        return contest.getContestUrlName();
+    }
+
+    public void setContestUrlName(String contestUrlName) {
+        contest.setContestUrlName(contestUrlName);
     }
 
     public void setHideRibbons(boolean hideRibbons) throws SystemException {

@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,8 @@ public class AssignRibbonToProposalActionController {
                         ProposalContestPhaseAttributeKeys.RIBBON);   
             }
             //refresh page, otherwise the new ribbon assignment is not up to date. also prevents internal errors on refresh
-            response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhaseId+"/planId/"+proposalId+"/tab/ADMIN");
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
+                    proposalsContext.getProposal(request), proposalsContext.getContestPhase(request))+"/tab/ADMIN");
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to assign ribbon");

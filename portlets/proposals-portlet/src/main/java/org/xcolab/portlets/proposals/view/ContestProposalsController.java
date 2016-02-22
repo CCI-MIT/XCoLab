@@ -4,6 +4,8 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
@@ -23,8 +26,11 @@ import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsSortFilterBean;
 
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +77,40 @@ public class ContestProposalsController extends BaseProposalsController {
         setSeoTexts(request, contest.getContestShortName(), null, contest.getContestDescription());
 
         return "contestProposals";
+    }
+
+    @RequestMapping(params = "pageToDisplay=redirectOldContestProposalsUrl")
+    public String redirectOldContestProposalsUrl(PortletRequest request, PortletResponse response, Model model,
+                                       @RequestParam Long contestId, @RequestParam(required = false) Long phaseId) throws SystemException, PortalException, IOException {
+        if (phaseId != null && phaseId > 0) {
+            model.addAttribute("redirectUrl",
+                    ContestPhaseLocalServiceUtil.getContestPhaseLinkUrl(proposalsContext.getContestPhase(request)));
+        } else {
+            model.addAttribute("redirectUrl",
+                    ContestLocalServiceUtil.getContestLinkUrl(proposalsContext.getContest(request)));
+        }
+        return "redirect";
+    }
+
+    @RequestMapping(params = "pageToDisplay=redirectOldProposalUrl")
+    public String redirectOldProposalUrl(
+            @RequestParam(value="planId") Long proposalId,
+            @RequestParam Long contestId,
+            @RequestParam(required = false) Long phaseId,
+            Model model, PortletRequest request, PortletResponse response)
+            throws PortalException, SystemException, IOException {
+
+        Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
+        Contest contest = ContestLocalServiceUtil.getContest(contestId);
+        if (phaseId != null && phaseId > 0) {
+            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
+            model.addAttribute("redirectUrl",
+                    ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase));
+        } else {
+            model.addAttribute("redirectUrl",
+                    ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal));
+        }
+        return "redirect";
     }
 
 }

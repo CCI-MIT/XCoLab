@@ -103,7 +103,7 @@ public class VoteOnProposalActionController {
             }
         }
         // Redirect to prevent page-refreshing from influencing the vote
-        final String arguments = hasVoted ? "?voted=true" : "";
+        final String arguments = hasVoted ? "/voted" : "";
         response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + arguments);
     }
 

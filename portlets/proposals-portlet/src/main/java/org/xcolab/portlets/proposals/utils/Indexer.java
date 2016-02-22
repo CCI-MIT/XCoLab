@@ -213,8 +213,8 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         } else {
             try {
                 Method m = obj.getClass().getMethod("getProposalId");
-                Long planId = (Long) m.invoke(obj);
-                p = ProposalLocalServiceUtil.getProposal(planId);
+                Long proposalId = (Long) m.invoke(obj);
+                p = ProposalLocalServiceUtil.getProposal(proposalId);
             } catch (Throwable e) {
                 _log.error("Can't reindex plan " + obj, e);
             }
