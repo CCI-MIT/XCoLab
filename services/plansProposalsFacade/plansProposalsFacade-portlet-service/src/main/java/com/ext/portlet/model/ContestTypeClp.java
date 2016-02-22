@@ -27,6 +27,8 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
     private String _proposalNamePlural;
     private String _portletName;
     private String _portletUrl;
+    private String _friendlyUrlStringContests;
+    private String _friendlyUrlStringProposal;
     private String _menuItemName;
     private boolean _hasDiscussion;
     private BaseModel<?> _contestTypeRemoteModel;
@@ -76,6 +78,10 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         attributes.put("proposalNamePlural", getProposalNamePlural());
         attributes.put("portletName", getPortletName());
         attributes.put("portletUrl", getPortletUrl());
+        attributes.put("friendlyUrlStringContests",
+            getFriendlyUrlStringContests());
+        attributes.put("friendlyUrlStringProposal",
+            getFriendlyUrlStringProposal());
         attributes.put("menuItemName", getMenuItemName());
         attributes.put("hasDiscussion", getHasDiscussion());
 
@@ -125,6 +131,20 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
         if (portletUrl != null) {
             setPortletUrl(portletUrl);
+        }
+
+        String friendlyUrlStringContests = (String) attributes.get(
+                "friendlyUrlStringContests");
+
+        if (friendlyUrlStringContests != null) {
+            setFriendlyUrlStringContests(friendlyUrlStringContests);
+        }
+
+        String friendlyUrlStringProposal = (String) attributes.get(
+                "friendlyUrlStringProposal");
+
+        if (friendlyUrlStringProposal != null) {
+            setFriendlyUrlStringProposal(friendlyUrlStringProposal);
         }
 
         String menuItemName = (String) attributes.get("menuItemName");
@@ -297,6 +317,52 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
     }
 
     @Override
+    public String getFriendlyUrlStringContests() {
+        return _friendlyUrlStringContests;
+    }
+
+    @Override
+    public void setFriendlyUrlStringContests(String friendlyUrlStringContests) {
+        _friendlyUrlStringContests = friendlyUrlStringContests;
+
+        if (_contestTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setFriendlyUrlStringContests",
+                        String.class);
+
+                method.invoke(_contestTypeRemoteModel, friendlyUrlStringContests);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getFriendlyUrlStringProposal() {
+        return _friendlyUrlStringProposal;
+    }
+
+    @Override
+    public void setFriendlyUrlStringProposal(String friendlyUrlStringProposal) {
+        _friendlyUrlStringProposal = friendlyUrlStringProposal;
+
+        if (_contestTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setFriendlyUrlStringProposal",
+                        String.class);
+
+                method.invoke(_contestTypeRemoteModel, friendlyUrlStringProposal);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public String getMenuItemName() {
         return _menuItemName;
     }
@@ -420,6 +486,8 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         clone.setProposalNamePlural(getProposalNamePlural());
         clone.setPortletName(getPortletName());
         clone.setPortletUrl(getPortletUrl());
+        clone.setFriendlyUrlStringContests(getFriendlyUrlStringContests());
+        clone.setFriendlyUrlStringProposal(getFriendlyUrlStringProposal());
         clone.setMenuItemName(getMenuItemName());
         clone.setHasDiscussion(getHasDiscussion());
 
@@ -471,7 +539,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(23);
 
         sb.append("{id=");
         sb.append(getId());
@@ -487,6 +555,10 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         sb.append(getPortletName());
         sb.append(", portletUrl=");
         sb.append(getPortletUrl());
+        sb.append(", friendlyUrlStringContests=");
+        sb.append(getFriendlyUrlStringContests());
+        sb.append(", friendlyUrlStringProposal=");
+        sb.append(getFriendlyUrlStringProposal());
         sb.append(", menuItemName=");
         sb.append(getMenuItemName());
         sb.append(", hasDiscussion=");
@@ -498,7 +570,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(31);
+        StringBundler sb = new StringBundler(37);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestType");
@@ -531,6 +603,14 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         sb.append(
             "<column><column-name>portletUrl</column-name><column-value><![CDATA[");
         sb.append(getPortletUrl());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>friendlyUrlStringContests</column-name><column-value><![CDATA[");
+        sb.append(getFriendlyUrlStringContests());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>friendlyUrlStringProposal</column-name><column-value><![CDATA[");
+        sb.append(getFriendlyUrlStringProposal());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>menuItemName</column-name><column-value><![CDATA[");

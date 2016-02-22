@@ -148,6 +148,36 @@ public interface ContestTypeModel extends BaseModel<ContestType> {
     public void setPortletUrl(String portletUrl);
 
     /**
+     * Returns the friendly url string contests of this contest type.
+     *
+     * @return the friendly url string contests of this contest type
+     */
+    @AutoEscape
+    public String getFriendlyUrlStringContests();
+
+    /**
+     * Sets the friendly url string contests of this contest type.
+     *
+     * @param friendlyUrlStringContests the friendly url string contests of this contest type
+     */
+    public void setFriendlyUrlStringContests(String friendlyUrlStringContests);
+
+    /**
+     * Returns the friendly url string proposal of this contest type.
+     *
+     * @return the friendly url string proposal of this contest type
+     */
+    @AutoEscape
+    public String getFriendlyUrlStringProposal();
+
+    /**
+     * Sets the friendly url string proposal of this contest type.
+     *
+     * @param friendlyUrlStringProposal the friendly url string proposal of this contest type
+     */
+    public void setFriendlyUrlStringProposal(String friendlyUrlStringProposal);
+
+    /**
      * Returns the menu item name of this contest type.
      *
      * @return the menu item name of this contest type

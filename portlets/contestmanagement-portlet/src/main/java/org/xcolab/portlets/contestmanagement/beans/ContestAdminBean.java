@@ -1,6 +1,10 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestType;
+import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -19,6 +23,12 @@ public class ContestAdminBean implements Serializable {
 
     private boolean hideRibbons;
 
+    @NotNull(message = "A contest URL name must be specified")
+    private String contestUrlName;
+
+    @NotNull(message = "A contest year must be specified")
+    private Long contestYear;
+
     @NotNull(message = "A contest tier must be selected.")
     private Long contestTier;
 
@@ -29,6 +39,8 @@ public class ContestAdminBean implements Serializable {
 
     public ContestAdminBean(Contest contest) {
         if (contest != null) {
+            contestUrlName = contest.getContestUrlName();
+            contestYear = contest.getContestYear();
             contestTier = contest.getContestTier();
             contestType = contest.getContestTypeId();
             hideRibbons = contest.getHideRibbons();
@@ -39,6 +51,11 @@ public class ContestAdminBean implements Serializable {
 
     public void persist(Contest contest) throws SystemException, UnsupportedEncodingException, PortalException {
         updateContestDescription(contest);
+
+        DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
+        ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest.getContestTypeId());
+        dcg.setDescription(String.format("%s %s", contestType.getContestName(), contest.getContestShortName()));
+        dcg.persist();
     }
 
     public String getEmailTemplateUrl() {
@@ -47,6 +64,22 @@ public class ContestAdminBean implements Serializable {
         } else {
             return "";
         }
+    }
+
+    public String getContestUrlName() {
+        return contestUrlName;
+    }
+
+    public void setContestUrlName(String contestUrlName) {
+        this.contestUrlName = contestUrlName;
+    }
+
+    public Long getContestYear() {
+        return contestYear;
+    }
+
+    public void setContestYear(Long contestYear) {
+        this.contestYear = contestYear;
     }
 
     public void setEmailTemplateUrl(String emailTemplateUrl) {
@@ -84,6 +117,8 @@ public class ContestAdminBean implements Serializable {
     }
 
     private void updateContestDescription(Contest contest) throws SystemException, PortalException {
+        contest.setContestUrlName(contestUrlName);
+        contest.setContestYear(contestYear);
         contest.setEmailTemplateUrl(emailTemplateUrl);
         contest.setContestTier(contestTier);
         contest.setContestTypeId(contestType);

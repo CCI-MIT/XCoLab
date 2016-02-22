@@ -231,8 +231,7 @@ public class ProposalVersionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalVersion[] findByProposalId_PrevAndNext(
-        com.ext.portlet.service.persistence.ProposalVersionPK proposalVersionPK,
-        long proposalId,
+        ProposalVersionPK proposalVersionPK, long proposalId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalVersionException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -291,7 +290,7 @@ public class ProposalVersionUtil {
     * @return the new proposal version
     */
     public static com.ext.portlet.model.ProposalVersion create(
-        com.ext.portlet.service.persistence.ProposalVersionPK proposalVersionPK) {
+        ProposalVersionPK proposalVersionPK) {
         return getPersistence().create(proposalVersionPK);
     }
 
@@ -304,7 +303,7 @@ public class ProposalVersionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalVersion remove(
-        com.ext.portlet.service.persistence.ProposalVersionPK proposalVersionPK)
+        ProposalVersionPK proposalVersionPK)
         throws com.ext.portlet.NoSuchProposalVersionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(proposalVersionPK);
@@ -325,7 +324,7 @@ public class ProposalVersionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalVersion findByPrimaryKey(
-        com.ext.portlet.service.persistence.ProposalVersionPK proposalVersionPK)
+        ProposalVersionPK proposalVersionPK)
         throws com.ext.portlet.NoSuchProposalVersionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(proposalVersionPK);
@@ -339,7 +338,7 @@ public class ProposalVersionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalVersion fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.ProposalVersionPK proposalVersionPK)
+        ProposalVersionPK proposalVersionPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(proposalVersionPK);
     }

@@ -134,10 +134,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public Contest createNewContest(Long userId, String name) throws SystemException, PortalException {
         Contest c = contestLocalService.createContest(CounterLocalServiceUtil.increment(Contest.class.getName()));
 
-
         c.setAuthorId(userId);
         c.setContestName(name);
         c.setContestShortName(name);
+        c.setContestUrlName(generateContestUrlName(c));
 
         setGroupAndDiscussionForContest(c);
 
@@ -167,7 +167,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         DiscussionCategoryGroup categoryGroup = DiscussionCategoryGroupLocalServiceUtil
                 .createDiscussionCategoryGroup(c.getContestName() + " discussion");
 
-        categoryGroup.setUrl("/web/guest/plans/-/plans/contestId/" + c.getContestPK() + "/page/discussion");
+        categoryGroup.setUrl(getContestLinkUrl(c) + "/discussion");
 
         DiscussionCategoryGroupLocalServiceUtil.store(categoryGroup);
 
@@ -222,6 +222,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         c.setGroupId(group.getGroupId());
         c.setDiscussionGroupId(categoryGroup.getPrimaryKey());
         store(c);
+    }
+
+    @Override
+    public Contest getByContestUrlName(String contestUrlName) throws SystemException, NoSuchContestException {
+        return contestPersistence.findByContestUrlName(contestUrlName);
+    }
+
+    @Override
+    public List<Contest> findByContestYear(long contestYear) throws SystemException {
+        return contestPersistence.findByContestYear(contestYear);
     }
     
     @Override
@@ -916,6 +926,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return teamRoleToUsersMap;
     }
 
+    public String getContestLinkUrl(long contestId) {
+        try {
+            return getContestLinkUrl(getContest(contestId));
+        } catch (PortalException | SystemException e) {
+            return "/contests";
+        }
+    }
+
     /**
      * Returns the URL link address for the passed contest
      *
@@ -924,14 +942,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      */
     @Override
     public String getContestLinkUrl(Contest contest) {
-        String portletLink;
+        String link = "/";
         try {
-            portletLink = contestTypeLocalService.getContestType(contest).getPortletUrl();
+            link += contestTypeLocalService.getContestType(contest).getFriendlyUrlStringContests();
         } catch (SystemException e) {
-            portletLink = "/web/guest/plans";
+            link += "contests";
         }
-        String link = portletLink+"/-/plans/contestId/%d";
-        return String.format(link, contest.getContestPK());
+        link += "/%d/%s";
+        return String.format(link, contest.getContestYear(), contest.getContestUrlName());
     }
 
     private Map<User, List<Proposal>> getContestSupportingUser(Contest contest) throws SystemException, PortalException {
@@ -1196,5 +1214,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Eastern"));
         calendar.setTime(date);
         return calendar.get(Calendar.YEAR);
+    }
+
+    @Override
+    public String generateContestUrlName(Contest contest) {
+        String contestUrlName = contest.getContestShortName().toLowerCase();
+        return contestUrlName.replaceAll(" ", "-").replaceAll("[^a-z0-9-]", "");
     }
 }

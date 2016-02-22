@@ -27,7 +27,7 @@ public final class HtmlUtil {
      * @return input string without any html tags
      */
     public static String cleanAll(String text) {
-        return clean(text, Whitelist.none());
+        return clean(text, Whitelist.none(), "");
     }
 
     /**
@@ -36,31 +36,33 @@ public final class HtmlUtil {
      * @return input string without dangerous and structural html tags
      */
     public static String cleanMost(String text) {
-        return clean(text, Whitelist.simpleText());
+        return clean(text, Whitelist.simpleText(), "");
     }
 
     /**
      * Removes unsafe html from the input string
      * @param text unsafe input
+     * @param baseUri used to evaluate relative links
      * @return input string without dangerous html tags
      */
-    public static String cleanSome(String text) {
+    public static String cleanSome(String text, String baseUri) {
         final Whitelist whitelist = Whitelist.basicWithImages();
         whitelist.addAttributes("img", "style");
         whitelist.addAttributes("a", "name");
         whitelist.addAttributes("a", "class");
         whitelist.preserveRelativeLinks(true);
-        return clean(text, whitelist);
+        return clean(text, whitelist, baseUri);
     }
 
     /**
      * Removes html from the input string, allowing only tags as indicated by the whitelist.
      * @param text the unsafe input text
      * @param whitelist a list of allowed tags
+     * @param baseUri used to evaluate relative links
      * @return input text without html tags other than those on the whitelist
      */
-    public static String clean(String text, Whitelist whitelist) {
-        Document doc = Jsoup.parse(text);
+    public static String clean(String text, Whitelist whitelist, String baseUri) {
+        Document doc = Jsoup.parse(text, baseUri);
         doc = new Cleaner(whitelist).clean(doc);
         // Adjust escape mode, http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities
         doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);

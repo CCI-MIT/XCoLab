@@ -27,12 +27,14 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
     public String proposalNamePlural;
     public String portletName;
     public String portletUrl;
+    public String friendlyUrlStringContests;
+    public String friendlyUrlStringProposal;
     public String menuItemName;
     public boolean hasDiscussion;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(23);
 
         sb.append("{id=");
         sb.append(id);
@@ -48,6 +50,10 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         sb.append(portletName);
         sb.append(", portletUrl=");
         sb.append(portletUrl);
+        sb.append(", friendlyUrlStringContests=");
+        sb.append(friendlyUrlStringContests);
+        sb.append(", friendlyUrlStringProposal=");
+        sb.append(friendlyUrlStringProposal);
         sb.append(", menuItemName=");
         sb.append(menuItemName);
         sb.append(", hasDiscussion=");
@@ -99,6 +105,18 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
             contestTypeImpl.setPortletUrl(portletUrl);
         }
 
+        if (friendlyUrlStringContests == null) {
+            contestTypeImpl.setFriendlyUrlStringContests(StringPool.BLANK);
+        } else {
+            contestTypeImpl.setFriendlyUrlStringContests(friendlyUrlStringContests);
+        }
+
+        if (friendlyUrlStringProposal == null) {
+            contestTypeImpl.setFriendlyUrlStringProposal(StringPool.BLANK);
+        } else {
+            contestTypeImpl.setFriendlyUrlStringProposal(friendlyUrlStringProposal);
+        }
+
         if (menuItemName == null) {
             contestTypeImpl.setMenuItemName(StringPool.BLANK);
         } else {
@@ -121,6 +139,8 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         proposalNamePlural = objectInput.readUTF();
         portletName = objectInput.readUTF();
         portletUrl = objectInput.readUTF();
+        friendlyUrlStringContests = objectInput.readUTF();
+        friendlyUrlStringProposal = objectInput.readUTF();
         menuItemName = objectInput.readUTF();
         hasDiscussion = objectInput.readBoolean();
     }
@@ -164,6 +184,18 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(portletUrl);
+        }
+
+        if (friendlyUrlStringContests == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(friendlyUrlStringContests);
+        }
+
+        if (friendlyUrlStringProposal == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(friendlyUrlStringProposal);
         }
 
         if (menuItemName == null) {

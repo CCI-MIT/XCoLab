@@ -31,10 +31,8 @@ import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
-import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.utils.emailnotification.ContestCreationNotification;
 import org.xcolab.wrapper.TabWrapper;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

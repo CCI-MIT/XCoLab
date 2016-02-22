@@ -2,10 +2,7 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
@@ -45,6 +42,8 @@ public class ContestDescriptionBean implements Serializable {
     @NotNull(message = "A schedule template must be selected.")
     private Long scheduleTemplateId;
 
+    private Boolean shouldUpdateContestUrlName;
+
     @SuppressWarnings("unused")
     public ContestDescriptionBean() { }
 
@@ -59,6 +58,8 @@ public class ContestDescriptionBean implements Serializable {
             scheduleTemplateId = contest.getContestScheduleId();
             contestLogoId = contest.getContestLogoId();
             sponsorLogoId = contest.getSponsorLogoId();
+
+            shouldUpdateContestUrlName = !contest.isContestActive();
         }
     }
 
@@ -68,10 +69,10 @@ public class ContestDescriptionBean implements Serializable {
         updateContestSchedule(contest, scheduleTemplateId);
         updateContestWiki(contest, oldContestTitle);
 
-        DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
-        ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest.getContestTypeId());
-        dcg.setDescription(String.format("%s %s", contestType.getContestName(), contestShortName));
-        dcg.persist();
+        if(shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestTitle)) {
+            contest.setContestUrlName(ContestLocalServiceUtil.generateContestUrlName(contest));
+            contest.persist();
+        }
     }
 
     public Long getContestPK() {
@@ -136,6 +137,14 @@ public class ContestDescriptionBean implements Serializable {
 
     public void setScheduleTemplateId(Long scheduleTemplateId) {
         this.scheduleTemplateId = scheduleTemplateId;
+    }
+
+    public Boolean getShouldUpdateContestUrlName() {
+        return shouldUpdateContestUrlName;
+    }
+
+    public void setShouldUpdateContestUrlName(Boolean shouldUpdateContestUrlName) {
+        this.shouldUpdateContestUrlName = shouldUpdateContestUrlName;
     }
 
     private void updateContestDescription(Contest contest) throws SystemException, PortalException {

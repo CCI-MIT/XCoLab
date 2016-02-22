@@ -41,6 +41,8 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("contestTypeId", getContestTypeId());
         attributes.put("ContestName", getContestName());
         attributes.put("ContestShortName", getContestShortName());
+        attributes.put("ContestUrlName", getContestUrlName());
+        attributes.put("ContestYear", getContestYear());
         attributes.put("ContestDescription", getContestDescription());
         attributes.put("ContestModelDescription", getContestModelDescription());
         attributes.put("ContestPositionsDescription",
@@ -119,6 +121,18 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (ContestShortName != null) {
             setContestShortName(ContestShortName);
+        }
+
+        String ContestUrlName = (String) attributes.get("ContestUrlName");
+
+        if (ContestUrlName != null) {
+            setContestUrlName(ContestUrlName);
+        }
+
+        Long ContestYear = (Long) attributes.get("ContestYear");
+
+        if (ContestYear != null) {
+            setContestYear(ContestYear);
         }
 
         String ContestDescription = (String) attributes.get(
@@ -501,6 +515,46 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setContestShortName(java.lang.String ContestShortName) {
         _contest.setContestShortName(ContestShortName);
+    }
+
+    /**
+    * Returns the contest url name of this contest.
+    *
+    * @return the contest url name of this contest
+    */
+    @Override
+    public java.lang.String getContestUrlName() {
+        return _contest.getContestUrlName();
+    }
+
+    /**
+    * Sets the contest url name of this contest.
+    *
+    * @param ContestUrlName the contest url name of this contest
+    */
+    @Override
+    public void setContestUrlName(java.lang.String ContestUrlName) {
+        _contest.setContestUrlName(ContestUrlName);
+    }
+
+    /**
+    * Returns the contest year of this contest.
+    *
+    * @return the contest year of this contest
+    */
+    @Override
+    public long getContestYear() {
+        return _contest.getContestYear();
+    }
+
+    /**
+    * Sets the contest year of this contest.
+    *
+    * @param ContestYear the contest year of this contest
+    */
+    @Override
+    public void setContestYear(long ContestYear) {
+        _contest.setContestYear(ContestYear);
     }
 
     /**

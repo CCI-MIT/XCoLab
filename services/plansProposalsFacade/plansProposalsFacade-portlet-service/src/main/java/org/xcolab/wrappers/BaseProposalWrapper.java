@@ -275,11 +275,11 @@ public class BaseProposalWrapper {
         return proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0L, 0);
     }
 
-    public String getProposalURL() {
+    public String getProposalUrl() {
         return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
     }
 
-    public String getProposalURL(ContestPhase inPhase) {
+    public String getProposalUrl(ContestPhase inPhase) {
         return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, inPhase);
     }
 

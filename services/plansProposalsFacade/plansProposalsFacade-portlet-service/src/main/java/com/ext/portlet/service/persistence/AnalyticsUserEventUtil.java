@@ -126,7 +126,7 @@ public class AnalyticsUserEventUtil {
     * @return the new analytics user event
     */
     public static com.ext.portlet.model.AnalyticsUserEvent create(
-        com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK) {
+        AnalyticsUserEventPK analyticsUserEventPK) {
         return getPersistence().create(analyticsUserEventPK);
     }
 
@@ -139,7 +139,7 @@ public class AnalyticsUserEventUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.AnalyticsUserEvent remove(
-        com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK)
+        AnalyticsUserEventPK analyticsUserEventPK)
         throws com.ext.portlet.NoSuchAnalyticsUserEventException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(analyticsUserEventPK);
@@ -160,7 +160,7 @@ public class AnalyticsUserEventUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.AnalyticsUserEvent findByPrimaryKey(
-        com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK)
+        AnalyticsUserEventPK analyticsUserEventPK)
         throws com.ext.portlet.NoSuchAnalyticsUserEventException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(analyticsUserEventPK);
@@ -174,7 +174,7 @@ public class AnalyticsUserEventUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.AnalyticsUserEvent fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK)
+        AnalyticsUserEventPK analyticsUserEventPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(analyticsUserEventPK);
     }

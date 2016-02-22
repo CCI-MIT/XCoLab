@@ -59,8 +59,7 @@
                     <div style="display:inline-block; width: 616px;">
                         <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
                             <div class="edit-prop-butts" style="line-height: normal;">
-                                <a href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}">Go
-                                    to current</a>
+                                <collab:proposalLink proposal="${proposal}" text="Go to current" />
                             </div>
                         </c:if>
 

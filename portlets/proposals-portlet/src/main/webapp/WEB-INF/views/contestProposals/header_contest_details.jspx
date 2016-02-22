@@ -3,6 +3,7 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           version="2.0">
 
     <div class="contest-detail">
@@ -52,9 +53,9 @@
                                         <ul>
                                             <c:forEach items="${contest.subContests}" var="subContest">
                                                 <li>
-                                        <span>
-                                        <a href="/web/guest/plans/-/plans/contestId/${subContest.contestPK}">${subContest.contestShortName}</a>
-                                        </span>
+                                                    <span>
+                                                        <collab:contestLink contest="${subContest}" />
+                                                    </span>
                                                 </li>
                                             </c:forEach>
                                         </ul>
@@ -70,7 +71,7 @@
                                 <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
                                     <div class="subcontests">
                                         <span class="title">Parent contest: </span>
-                                        <a href="/web/guest/plans/-/plans/contestId/${contest.parentContest.contestPK}">${contest.parentContest.contestShortName}</a>
+                                        <collab:contestLink contest="${contest.parentContest}" />
                                     </div>
                                 </td>
                             </tr>
@@ -231,7 +232,7 @@
                             <c:if test="${contestType.hasDiscussion}">
                                 <div class="button-wrapper">
                                     <a class="detailbutton"
-                                       href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion</a>
+                                       href="${contest.contestUrl}/discussion">Discussion</a>
                                     <c:if test="${contest.commentsCount > 0}">
                                         <div class="discussion-button-badge">${contest.commentsCount}</div>
                                     </c:if>
