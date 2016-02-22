@@ -16,8 +16,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
@@ -167,19 +165,6 @@ public class ContestMassActionMethods {
             Contest contest = ContestLocalServiceUtil.getContest(contestId);
             ContestModelSettingsBean contestModelSettingsBean = (ContestModelSettingsBean) modelSettings;
             contestModelSettingsBean.persist(contest);
-        }
-    }
-
-    public static void generateContestUrlNameAndYear(List<Long> contestList, Object unused, PortletRequest request) throws SystemException, PortalException {
-        for (Long contestId : contestList) {
-            Contest contest = ContestLocalServiceUtil.getContest(contestId);
-            if (StringUtils.isBlank(contest.getContestUrlName())) {
-                contest.setContestUrlName(ContestLocalServiceUtil.generateContestUrlName(contest));
-            }
-            if (contest.getContestYear() == 0) {
-                contest.setContestYear(new DateTime(contest.getCreated()).getYear());
-            }
-            contest.persist();
         }
     }
 
