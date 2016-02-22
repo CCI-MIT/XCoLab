@@ -78,7 +78,7 @@ public class ProposalRevertActionController {
             proposalsContext.invalidateContext(request);
 
             request.setAttribute("ACTION_REDIRECTING", true);
-            response.sendRedirect(oldProposalVersionToBeBecomeCurrent.getProposalURL());
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(oldProposalVersionToBeBecomeCurrent.getProposalId()));
         }
     }
 
