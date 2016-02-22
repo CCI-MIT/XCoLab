@@ -9,6 +9,7 @@ import com.ext.portlet.model.Points;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.impl.helper.points.ContestTierDataStructure;
 import com.ext.portlet.service.impl.helper.points.DistributionConfiguration;
 import com.liferay.portal.NoSuchUserException;
@@ -535,7 +536,7 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
                         for (int toProposalIdx = 0; toProposalIdx < nextContestTierDataStructure.getAmountOfProposals(); toProposalIdx++) {
                             final Proposal toProposal = nextContestTierDataStructure.getProposals(toContestIdx).get(toProposalIdx);
                             if (doWithProbability(probabilityToLinkToOtherProposal)) {
-                                sectionText += "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/" + toContest.getContestPK() + "/planId/" + toProposal.getProposalId() + "\n\n";
+                                sectionText += "http://127.0.0.1:8080" + ProposalLocalServiceUtil.getProposalLinkUrl(toContest, toProposal) + "\n\n";
                                 contestTierDataStructure.getProposalLinks(contestIdx).addProposalLink(fromProposalIdx, tierIdx - 1, toContestIdx, toProposalIdx, toProposal.getProposalId());
                             }
                         }

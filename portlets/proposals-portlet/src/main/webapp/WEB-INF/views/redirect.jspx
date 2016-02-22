@@ -7,8 +7,6 @@
     </div>
 
     <script type="text/javascript">
-        setTimeout(function() {
             window.location.href = "${redirectUrl}";
-        }, 2000);
     </script>
 </jsp:root>

@@ -118,6 +118,14 @@
     <!-- special urls -->
 
     <route>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/voted</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <implicit-parameter name="voted">true</implicit-parameter>
+    </route>
+
+    <route>
         <pattern>/contests/{contestYear}/{contestUrlName}/createProposal</pattern>
         <generated-parameter name="pageToDisplay">createProposal</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>

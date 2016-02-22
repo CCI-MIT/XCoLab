@@ -1148,7 +1148,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public String getProposalLinkUrl(Long proposalId) throws SystemException, PortalException {
-        return getProposalLinkUrl(contestLocalService.getContest(proposalId), proposalId, 0L);
+        return getProposalLinkUrl(proposal2PhaseLocalService.getCurrentContestForProposal(proposalId), proposalId, 0L);
     }
 
     /**

@@ -7,6 +7,7 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -306,7 +307,7 @@ public class GlobalContestSimulator {
 
             for (int j = 0; j < amountOfGlobalProposals; j++) {
                 if (doWithProbability(probabilityToLinkToOtherProposal)) {
-                    sectionText += "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/" + globalContest.getContestPK() + "/planId/" + globalProposals.get(j).getProposalId() + "\n\n";
+                    sectionText += "http://127.0.0.1:8080" + ProposalLocalServiceUtil.getProposalLinkUrl(globalContest, globalProposals.get(j)) + "\n\n";
                     globalProposalLinksToGlobalProposals.get(i).add(j);
                 }
             }
@@ -314,7 +315,7 @@ public class GlobalContestSimulator {
                 globalProposalLinksToSideProposals.get(i).put(j, new ArrayList<Integer>());
                 for (int k = 0; k < amountOfProposalsPerSideContest; k++) {
                     if (doWithProbability(probabilityToLinkToOtherProposal)) {
-                        sectionText += "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/" + sideContests.get(j).getContestPK() + "/planId/" + sideProposals.get(j).get(k).getProposalId() + "\n\n";
+                        sectionText += "http://127.0.0.1:8080" + ProposalLocalServiceUtil.getProposalLinkUrl(sideContests.get(j), sideProposals.get(j).get(k)) + "\n\n";
                         globalProposalLinksToSideProposals.get(i).get(j).add(k);
                     }
                 }

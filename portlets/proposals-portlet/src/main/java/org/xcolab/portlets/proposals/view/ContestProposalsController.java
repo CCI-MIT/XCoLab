@@ -102,7 +102,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
         Contest contest = ContestLocalServiceUtil.getContest(contestId);
-        if (phaseId > 0) {
+        if (phaseId != null && phaseId > 0) {
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
             model.addAttribute("redirectUrl",
                     ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase));

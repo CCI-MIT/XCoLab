@@ -32,7 +32,7 @@ public class ContestManagementBaseController {
         User currentUser = themeDisplay.getUser();
 
         if(!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
-            Contest contest = ContestCreatorUtil.createNewContest("created contest " + DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+            Contest contest = ContestCreatorUtil.createNewContest("created contest " + DateTime.now().toString("yyyy.MM.dd HH.mm.ss"));
             String newContestLink = "/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/DESCRIPTION";
             model.addAttribute("newContestLink", newContestLink);
             return "common/newContestCreated";
