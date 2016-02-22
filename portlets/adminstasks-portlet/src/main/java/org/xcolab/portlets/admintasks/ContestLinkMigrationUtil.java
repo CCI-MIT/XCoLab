@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 /**
@@ -21,7 +22,11 @@ public final class ContestLinkMigrationUtil {
 
     public static void generateContestUrls() throws SystemException {
         for (Contest contest : ContestLocalServiceUtil.getContests(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-            contest.setContestUrlName(ContestLocalServiceUtil.generateContestUrlName(contest));
+            String contestUrlName = ContestLocalServiceUtil.generateContestUrlName(contest);
+            if (StringUtils.isNumeric(StringUtils.substringAfterLast(contestUrlName, "-"))) {
+                contestUrlName = StringUtils.substringBeforeLast(contestUrlName, "-");
+            }
+            contest.setContestUrlName(contestUrlName);
             DateTime earliestDate = contest.getCreated() != null ? new DateTime(contest.getCreated()) : null;
             for (ContestPhase contestPhase : ContestPhaseLocalServiceUtil.getPhasesForContest(contest)) {
                 final DateTime phaseStartDate = new DateTime(contestPhase.getPhaseStartDate());
