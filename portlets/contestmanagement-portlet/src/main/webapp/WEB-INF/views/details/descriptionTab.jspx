@@ -59,6 +59,14 @@
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">60</span> characters
                     </div>
+                    <c:if test="${not contestWrapper.contestActive}">
+                        <div>
+                            <form:checkbox path="shouldUpdateContestUrlName"
+                                           id="shouldUpdateContestUrlName">
+                            </form:checkbox>
+                            update contest URLs (<strong>Warning:</strong> Contest URL will change if checked)<br/>
+                        </div>
+                    </c:if>
                 </div>
             </div>
 
@@ -181,28 +189,6 @@
 
             <div class="addpropbox">
                 <label>
-                    <strong>Email Template URL</strong>
-                    <a class="helpTrigger" href="javascript:;"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
-                </label>
-
-                <div class="addprophelp">The corresponding wiki template URL</div>
-                <div class="clearfix"><!--  --></div>
-                <div class="addpropInputContainer">
-                    <form:input path="emailTemplateUrl" id="emailTemplateUrl"/>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="emailTemplateUrl"/>
-                    </div>
-                    <div class="clearfix"><!-- --></div>
-                    <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
-                            class="limit_charactersMax">50</span> characters
-                    </div>
-                </div>
-            </div>
-
-            <div class="addpropbox">
-                <label>
                     <strong>Proposal template</strong>
                     <a href="javascript:;" class="helpTrigger"><img
                             src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
@@ -245,139 +231,6 @@
 
                     <div class="reg_errors">
                         <form:errors cssClass="alert alert-error" path="scheduleTemplateId"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="addpropbox">
-                <label>
-                    <strong>Contest level</strong>
-                    <a href="javascript:;" class="helpTrigger"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
-                </label>
-
-                <div class="addprophelp">Select the level associated with your contest. If you have questions on which
-                    level to select, please submit a comment below for the Climate CoLab team.
-                </div>
-                <div class="clearfix"><!-- --></div>
-                <div class="addpropInputContainer">
-                    <form:select path="contestTier">
-                        <form:options items="${contestLevelSelectionItems}" itemValue="value" itemLabel="lable"/>
-                    </form:select>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="contestTier"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="addpropbox">
-                <label>
-                    <strong>Hide Ribbons</strong>
-                    <a href="javascript:;" class="helpTrigger"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
-                </label>
-
-                <div class="addprophelp">
-                    When set to <em>hide</em>, the ribbons of a contest are not shown in the completed phase and the user is informed that the votes are being counted.
-                    The default should be <em>hide</em> and it should be set to <em>show</em> once the ribbons are distributed.
-                </div>
-                <div class="clearfix"><!-- --></div>
-                <div class="addpropInputContainer">
-                    <form:select path="hideRibbons">
-                        <form:option value="1" label="hide" />
-                        <form:option value="0" label="show" />
-                    </form:select>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="hideRibbons"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="addpropbox">
-                <label>
-                    <strong>Contest model settings</strong>
-                    <a href="javascript:;" class="helpTrigger"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
-                </label>
-
-                <div class="addprophelp">Set the modeling settings for your contest. If you have questions on how to set
-                    the model settings, please submit a comment below for the Climate CoLab team.
-                </div>
-                <div class="clearfix"><!-- --></div>
-
-                <div id="contestModelSettings">
-                    <table>
-                        <tr>
-                            <td>
-                                <span class="floatLeft">Default model (please reload page if selection is empty)</span>
-                            </td>
-                            <td>
-                                <form:select path="contestModelSettings.defaultModelId">
-                                    <form:option value="" label="None"/>
-                                    <form:options items="${modelIdsSelectionItems}" itemValue="value"
-                                                  itemLabel="lable"/>
-                                </form:select>
-
-                                <div class="reg_errors"><!--  -->
-                                    <form:errors cssClass="alert alert-error"
-                                                 path="contestModelSettings.defaultModelId"/>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="floatLeft">Other models <br/>
-                                    - Please reload page if selection is empty.<br/>
-                                - Multiple selections possible.</span>
-                            </td>
-                            <td>
-                                <form:select path="contestModelSettings.otherModelIds" multiple="true" class="multi">
-                                    <form:options items="${modelIdsSelectionItems}" itemValue="value"
-                                                  itemLabel="lable"/>
-                                </form:select>
-                                <div class="reg_errors"><!--  -->
-                                    <form:errors cssClass="alert alert-error"
-                                                 path="contestModelSettings.otherModelIds"/>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr id="modelRegion">
-                            <td>
-                                <span class="floatLeft">Model region (considered for regional models only)</span>
-                            </td>
-                            <td>
-                                <form:select path="contestModelSettings.modelRegion">
-                                    <form:option value="" label="None"/>
-                                    <form:options items="${modelRegionsSelectionItems}" itemValue="value"
-                                                  itemLabel="lable"/>
-                                </form:select>
-
-                                <div class="reg_errors"><!--  -->
-                                    <form:errors cssClass="alert alert-error"
-                                                 path="contestModelSettings.defaultModelSettings"/>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-
-                </div>
-            </div>
-
-            <div class="addpropbox">
-                <label>
-                    <strong>Contest type</strong>
-                    <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
-                </label>
-                <div class="addprophelp">Select the type of this contest. Types determine the name of the contest-entity and the proposal-entities and where they will appear. If you have a question about which type to select, please submit a comment below for the CoLab team.</div>
-                <div class="clearfix"><!-- --></div>
-                <div class="addpropInputContainer">
-                    <form:select path="contestType">
-                        <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
-                    </form:select>
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="contestType" />
                     </div>
                 </div>
             </div>

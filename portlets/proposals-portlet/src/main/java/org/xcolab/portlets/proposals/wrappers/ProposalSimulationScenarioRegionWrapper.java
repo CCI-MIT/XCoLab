@@ -68,7 +68,7 @@ public class ProposalSimulationScenarioRegionWrapper {
 
     public String getProposalUrl() {
         if(proposalWrapper != null) {
-            return proposalWrapper.getProposalURL();
+            return proposalWrapper.getProposalUrl();
         } else {
             return "";
         }

@@ -252,6 +252,16 @@ public interface ContestLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.Contest getByContestUrlName(
+        java.lang.String contestUrlName)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public java.util.List<com.ext.portlet.model.Contest> findByContestYear(
+        long contestYear)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
     public java.util.List<com.ext.portlet.model.Contest> findByActive(
         boolean active)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -297,11 +307,6 @@ public interface ContestLocalService extends BaseLocalService,
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean isActive(com.ext.portlet.model.Contest contest);
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<java.lang.Long> getDebatesIds(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException;
 
     public void store(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -550,6 +555,9 @@ public interface ContestLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getContestLinkUrl(long contestId);
+
     /**
     * Returns the URL link address for the passed contest
     *
@@ -670,4 +678,7 @@ public interface ContestLocalService extends BaseLocalService,
     */
     public void addContestYearSuffixToContest(
         com.ext.portlet.model.Contest contest, boolean checkForCompleted);
+
+    public java.lang.String generateContestUrlName(
+        com.ext.portlet.model.Contest contest);
 }

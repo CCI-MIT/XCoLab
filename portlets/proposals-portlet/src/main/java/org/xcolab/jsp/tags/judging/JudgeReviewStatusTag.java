@@ -61,9 +61,7 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
                 throw new JspException("Can't find portlet request");
             }
             pageContext.setAttribute("judgeReviewStatus", judgeWrapper.getJudgeReviewStatus());
-        } catch (PortalException e) {
-            e.printStackTrace();
-        } catch (SystemException e) {
+        } catch (PortalException | SystemException e) {
             e.printStackTrace();
         }
         return EVAL_BODY_INCLUDE; 

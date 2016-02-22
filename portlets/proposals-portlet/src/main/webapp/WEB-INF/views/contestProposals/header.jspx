@@ -25,6 +25,7 @@
 			<c:if test="${proposalsDisplayPermissions.canSeeSubscribeContestButton || proposalsDisplayPermissions.canSeeUnsubscribeContestButton}">
 				<portlet:actionURL var="subscribeContestURL">
 					<portlet:param name="contestId" value="${contest.contestPK }" />
+					<portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
 					<portlet:param name="action" value="subscribeContest" />
 					<portlet:param name="action_forwardToPage" value="contestProposals" />
 				</portlet:actionURL>

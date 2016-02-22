@@ -49,7 +49,7 @@
 				<table border="0" cellpadding="0" cellspacing="0" class="colab members topInfo">
 					<tbody>
 						<tr>
-							<td>
+							<td style="min-width: 106px">
 								<div class="memname">${currentUserProfile.realName}</div>
 								<div class="role-indicator" style="margin-top: 5px;">
 									<div style="width: 16px">
@@ -62,7 +62,7 @@
 								<div class="badge-container">
 									<c:forEach var="badge" items="${currentUserProfile.badges}">
 										<c:if test="${not badge.hideRibbon}">
-										<a href="/web/guest/plans/-/plans/contestId/${badge.contestId}/planId/${badge.planId}">
+										<a href="${badge.proposalLinkUrl}">
 											<div class="badge-small badge-${badge.badgeType} fieldWithTooltip tooltipAbove">
 												<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
 														${badge.badgeTitle}
@@ -99,11 +99,11 @@
 						<td width="23%">
 							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
 						</td>
-						<td class="b points_box left_border top_border" width="43%">
+						<td class="b points_box left_border top_border" width="45%">
 							CoLab Points (actual)
 							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
 							<br />
-							<div style="display: none;" class="addprophelp">
+							<div style="display: none;" class="profilehelp">
 								CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains.
 								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
 							</div>
@@ -123,7 +123,7 @@
 							CoLab Points (max. potential)
 							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
 							<br />
-							<div style="display: none;" class="addprophelp">
+							<div style="display: none;" class="profilehelp">
 								The maximum number of CoLab Points this member could receive. This is a measure of how many times the member’s proposals have been included in other proposals and how important it is in those proposals.
 								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
 							</div>
@@ -190,7 +190,7 @@
 				</table>
 			</c:forEach>
 
-			<h2 style="margin-top: 20px;">Links to this user's ${currentUserProfile.proposalsString}</h2>
+			<h2 style="margin-top: 20px;">${currentUserProfile.proposalString} Links</h2>
 			<c:if test="${empty currentUserProfile.linkingProposals}">
 					There are no proposals linking to this user's ${currentUserProfile.proposalsString} yet.
 			</c:if>

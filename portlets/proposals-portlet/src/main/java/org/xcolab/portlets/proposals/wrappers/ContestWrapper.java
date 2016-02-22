@@ -229,11 +229,11 @@ public class ContestWrapper extends BaseContestWrapper {
         return subContests;
     }
 
-    public Contest getParentContest() throws SystemException, PortalException {
+    public ContestWrapper getParentContest() throws SystemException, PortalException {
         List<Long> focusAreaOntologyTermIds =
                 FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(contest.getFocusAreaId(), ONTOLOGY_SPACE_ID_WHERE);
         List<Contest> contests = ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
-        return contests.get(0);
+        return new ContestWrapper(contests.get(0));
     }
 
     public Long getVotingPhasePK() throws PortalException, SystemException {

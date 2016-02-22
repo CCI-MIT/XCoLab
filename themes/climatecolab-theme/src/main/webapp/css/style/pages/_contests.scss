@@ -32,6 +32,11 @@
     &.selected {
       @include border-radius(5px);
       color: white;
+
+      border: solid 1px #4746ad;
+      box-shadow: 0px 0px 4px #3e3e3e;
+      margin-top: -1px;
+      margin-left: -1px;
     }
   }
 

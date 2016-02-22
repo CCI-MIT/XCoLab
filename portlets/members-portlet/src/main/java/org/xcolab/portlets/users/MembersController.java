@@ -96,9 +96,9 @@ public class MembersController {
                             filter, sortFilterPage.isSortAscending());
                     break;
                 default:
-                    sortFilterPage.setSortColumn("ACTIVITY");
+                    sortFilterPage.setSortColumn("POINTS");
                     sortFilterPage.setSortAscending(false);
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCount(firstUser, endUser,
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPoints(firstUser, endUser,
                             filter, sortFilterPage.isSortAscending());
 
             }
@@ -141,9 +141,9 @@ public class MembersController {
                             endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
                     break;
                 default:
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountFilteredByCategory(firstUser,
+                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPointsFilteredByCategory(firstUser,
                             endUser, filter, memberCategoryFilter, false);
-                    sortFilterPage.setSortColumn("ACTIVITY");
+                    sortFilterPage.setSortColumn("POINTS");
                     sortFilterPage.setSortAscending(false);
             }
 

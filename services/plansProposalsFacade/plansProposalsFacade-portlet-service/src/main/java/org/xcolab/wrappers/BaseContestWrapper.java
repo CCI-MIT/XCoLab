@@ -290,6 +290,22 @@ public class BaseContestWrapper {
         return contest.getContestTypeId();
     }
 
+    public long getContestYear() {
+        return contest.getContestYear();
+    }
+
+    public void setContestYear(long contestYear) {
+        contest.setContestYear(contestYear);
+    }
+
+    public String getContestUrlName() {
+        return contest.getContestUrlName();
+    }
+
+    public void setContestUrlName(String contestUrlName) {
+        contest.setContestUrlName(contestUrlName);
+    }
+
     public void setHideRibbons(boolean hideRibbons) throws SystemException {
         contest.setHideRibbons(hideRibbons);
     }
@@ -386,6 +402,11 @@ public class BaseContestWrapper {
                 final String role = entry.getKey();
                 contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role, entry.getValue()));
             }
+
+            if (contestTeamMembersByRole.size() == 3) {
+                Collections.swap(contestTeamMembersByRole, 1, 2);
+            }
+
         }
         return contestTeamMembersByRole;
     }

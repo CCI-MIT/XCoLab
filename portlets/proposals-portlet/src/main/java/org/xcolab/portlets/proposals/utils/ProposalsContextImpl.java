@@ -24,6 +24,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.mail.EmailToAdminDispatcher;
@@ -37,6 +38,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
 import javax.portlet.PortletRequest;
+import java.util.List;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
@@ -56,9 +58,12 @@ public class ProposalsContextImpl implements ProposalsContext {
     private static final String CONTEST_PHASE_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestPhaseWrapped";
     private static final String CONTEST_TYPE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestType";
     private static final String PROPOSAL_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposalWrapped";
-    
-    public static final String PROPOSAL_ID_PARAM = "planId";
+
+    public static final String PROPOSAL_ID_PARAM = "proposalId";
+    public static final String PLAN_ID_PARAM = "planId";
     public static final String CONTEST_ID_PARAM = "contestId";
+    public static final String CONTEST_URL_NAME_PARAM = "contestUrlName";
+    public static final String CONTEST_YEAR_PARAM = "contestYear";
     public static final String CONTEST_PHASE_ID_PARAM = "phaseId";
     public static final String VERSION_PARAM = "version";
 
@@ -160,10 +165,17 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     private void init(PortletRequest request) throws PortalException, SystemException {
-        final long proposalId = ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
+        final String contestUrlName = ParamUtil.getString(request, CONTEST_URL_NAME_PARAM);
+        final long contestYear = ParamUtil.getLong(request, CONTEST_YEAR_PARAM);
         final long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
+        final long planId = ParamUtil.getLong(request, PLAN_ID_PARAM);
+        long proposalId = ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
         final long phaseId = ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
         final int version = ParamUtil.getInteger(request, VERSION_PARAM);
+
+        if (proposalId == 0) {
+            proposalId = planId;
+        }
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         String currentUrl = themeDisplay.getPortalURL() + themeDisplay.getURLCurrent();
@@ -171,21 +183,33 @@ public class ProposalsContextImpl implements ProposalsContext {
 
         try {
             currentUser = PortalUtil.getUser(request);
-        } catch (SystemException | PortalException e) {
-            // No user is logged in
-        }
+        } catch (SystemException | PortalException ignored) { }
 
         Contest contest = null;
-        ContestPhase contestPhase = null;
-        Proposal proposal = null;
-        Proposal2Phase proposal2Phase = null;
         if (contestId > 0) {
             try {
                 contest = ContestLocalServiceUtil.getContest(contestId);
             } catch (NoSuchContestException e) {
                 handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
             }
+        } else if (StringUtils.isNotBlank(contestUrlName) && contestYear > 0) {
+            List<Contest> contestsInYear = ContestLocalServiceUtil.findByContestYear(contestYear);
+            for (Contest contestInYear : contestsInYear) {
+                if (contestInYear.getContestUrlName().equals(contestUrlName)) {
+                    contest = contestInYear;
+                    break;
+                }
+            }
+            if (contest == null) {
+                handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
+            }
+        }
 
+        ContestPhase contestPhase = null;
+        Proposal proposal = null;
+        Proposal2Phase proposal2Phase = null;
+
+        if (contest != null) {
             if (phaseId > 0) {
                 try {
                     contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
@@ -214,7 +238,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                             for (Long contestPhaseId: Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposalId)) {
 
                                 ContestPhase cp = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-                                boolean isContestPhaseAssociatedWithRequestedContest = contest != null && cp.getContestPK() == contest.getContestPK();
+                                boolean isContestPhaseAssociatedWithRequestedContest = cp.getContestPK() == contest.getContestPK();
                                 if (isContestPhaseAssociatedWithRequestedContest) {
                                     if (mostRecentPhaseInRequestedContest == null || mostRecentPhaseInRequestedContest.compareTo(cp) < 0) {
                                         mostRecentPhaseInRequestedContest = cp;

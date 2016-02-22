@@ -59,8 +59,10 @@ public class CategoryController extends BaseDiscussionController {
 
         List<List<ThreadWrapper>> threadsList = new ArrayList<>();
 
-        for (CategoryWrapper category : categories) {
-            threadsList.add(new ArrayList<>(category.getThreads()));
+        if (categories != null) {
+            for (CategoryWrapper category : categories) {
+                threadsList.add(new ArrayList<>(category.getThreads()));
+            }
         }
         List<ThreadWrapper> threads = ListUtil.mergeSortedLists(threadsList,
                 ThreadWrapper.getComparator(threadSortColumn, sortAscending));

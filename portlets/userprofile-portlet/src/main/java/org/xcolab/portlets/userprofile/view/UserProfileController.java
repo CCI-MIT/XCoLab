@@ -391,7 +391,7 @@ public class UserProfileController {
         if (!existingBio.equals(updatedUserBean.getShortBio())) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.BIO,
-                    currentUserProfile.getUser().getUserId(), HtmlUtil.cleanSome(updatedUserBean.getShortBio()));
+                    currentUserProfile.getUser().getUserId(), HtmlUtil.cleanSome(updatedUserBean.getShortBio(), ""));
             changedDetails = true;
         }
 

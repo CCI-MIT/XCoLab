@@ -105,7 +105,7 @@
                                         <span class="highlighted">
                                             <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100/subProposals.size()}"/>%
                                         </span>
-                                        <a href="${proposal.proposalURL}" target="_blank">
+                                        <a href="${proposal.proposalUrl}" target="_blank">
                                             <c:out value="${proposal.name}"/>
                                         </a>
                                     </li>
@@ -152,7 +152,7 @@
                                         <span class="highlighted">
                                             <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${pointsProposalWrapper.percentage}"/>%
                                         </span>
-                                        <a href="${pointsProposalWrapper.proposal.proposalURL}" target="_blank">
+                                        <a href="${pointsProposalWrapper.proposal.proposalUrl}" target="_blank">
                                             <c:out value="${pointsProposalWrapper.proposal.name}"/>
                                         </a>
                                     </li>
@@ -199,7 +199,7 @@
                                         <span class="highlighted">
                                             <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${pointsProposalWrapper.percentage}"/>%
                                         </span>
-                                        <a href="${pointsProposalWrapper.proposal.proposalURL}" target="_blank">
+                                        <a href="${pointsProposalWrapper.proposal.proposalUrl}" target="_blank">
                                             <c:out value="${pointsProposalWrapper.proposal.name}"/>
                                         </a>
                                     </li>
@@ -301,14 +301,14 @@
                                         <c:choose>
                                             <c:when test="${currentTabWrapped.canEdit}">
                                                 <form:input data-changed-by-user="true"
-                                                        path="assignments[${pointType.id}][${userId}]"
+                                                        path="assignmentsByUserIdByPointTypeId[${pointType.id}][${userId}]"
                                                         class="popupreg_input"
-                                                        value="${assignPointsBean.assignments[pointType.id][userId]}"
+                                                        value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][userId]}"
                                                     />
                                             </c:when>
                                             <c:otherwise>
-                                                <span class="input" data-value="${assignPointsBean.assignments[pointType.id][userId]}">
-                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${assignPointsBean.assignments[pointType.id][userId]}"/>%
+                                                <span class="input" data-value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][userId]}">
+                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][userId]}"/>%
                                                 </span>
                                             </c:otherwise>
                                         </c:choose>

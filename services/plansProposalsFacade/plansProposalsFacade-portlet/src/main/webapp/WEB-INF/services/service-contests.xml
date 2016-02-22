@@ -14,6 +14,8 @@
         <column name="contestTypeId" type="long" />
         <column name="ContestName" type="String" />
         <column name="ContestShortName" type="String" />
+        <column name="ContestUrlName" type="String" />
+        <column name="ContestYear" type="long" />
         <column name="ContestDescription" type="String" />
         <column name="ContestModelDescription" type="String" />
         <column name="ContestPositionsDescription" type="String" />
@@ -67,6 +69,14 @@
             <order-column name="weight" />
             <order-column name="created" />
         </order>
+
+        <finder name="ContestYear" return-type="Collection">
+            <finder-column name="ContestYear"/>
+        </finder>
+
+        <finder name="ContestUrlName" return-type="Contest">
+            <finder-column name="ContestUrlName"/>
+        </finder>
 
         <finder name="Tier" return-type="Collection">
             <finder-column name="contestTier" />
@@ -146,6 +156,8 @@
         <column name="proposalNamePlural" type="String" />
         <column name="portletName" type="String" />
         <column name="portletUrl" type="String"/>
+        <column name="friendlyUrlStringContests" type="String" />
+        <column name="friendlyUrlStringProposal" type="String" />
         <column name="menuItemName" type="String"/>
         <column name="hasDiscussion" type="boolean" />
     </entity>

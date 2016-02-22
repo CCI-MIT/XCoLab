@@ -12,6 +12,7 @@ import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.DiscussionMessageWrapper;
 import org.xcolab.utils.HtmlUtil;
+import org.xcolab.utils.LinkUtils;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -30,7 +31,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
 
         checkPermissions(request, "User isn't allowed to edit message", discussionId, messageId);
         DiscussionMessage m = DiscussionMessageLocalServiceUtil.getMessageByMessageId(messageId);
-        m.setBody(HtmlUtil.cleanSome(comment));
+        m.setBody(HtmlUtil.cleanSome(comment, LinkUtils.getBaseUri(request)));
         DiscussionMessageLocalServiceUtil.updateDiscussionMessage(m);
 
         redirectToReferrer(request, response);

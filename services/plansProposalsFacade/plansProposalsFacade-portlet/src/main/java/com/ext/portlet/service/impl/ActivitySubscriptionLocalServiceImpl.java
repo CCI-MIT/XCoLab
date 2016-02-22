@@ -39,6 +39,7 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.collections.comparators.ComparatorChain;
+import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import javax.mail.internet.InternetAddress;
@@ -534,6 +535,8 @@ public class ActivitySubscriptionLocalServiceImpl
 			body  = body.replaceAll("\"/web/guest", "\"" +portalBaseUrl + "/web/guest")
 					.replaceAll("\'/web/guest", "\'" + portalBaseUrl + "/web/guest").replaceAll("\n", "\n<br />");
 			String message = body.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient, portalBaseUrl));
+
+            message = HtmlUtil.decodeHTMLEntitiesForEmail(message);
 
 			// add link to unsubscribe
 			message += "<br /><br />" + unregisterFooter;

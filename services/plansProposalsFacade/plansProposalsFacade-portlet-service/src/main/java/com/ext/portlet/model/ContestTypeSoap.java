@@ -20,6 +20,8 @@ public class ContestTypeSoap implements Serializable {
     private String _proposalNamePlural;
     private String _portletName;
     private String _portletUrl;
+    private String _friendlyUrlStringContests;
+    private String _friendlyUrlStringProposal;
     private String _menuItemName;
     private boolean _hasDiscussion;
 
@@ -36,6 +38,8 @@ public class ContestTypeSoap implements Serializable {
         soapModel.setProposalNamePlural(model.getProposalNamePlural());
         soapModel.setPortletName(model.getPortletName());
         soapModel.setPortletUrl(model.getPortletUrl());
+        soapModel.setFriendlyUrlStringContests(model.getFriendlyUrlStringContests());
+        soapModel.setFriendlyUrlStringProposal(model.getFriendlyUrlStringProposal());
         soapModel.setMenuItemName(model.getMenuItemName());
         soapModel.setHasDiscussion(model.getHasDiscussion());
 
@@ -140,6 +144,22 @@ public class ContestTypeSoap implements Serializable {
 
     public void setPortletUrl(String portletUrl) {
         _portletUrl = portletUrl;
+    }
+
+    public String getFriendlyUrlStringContests() {
+        return _friendlyUrlStringContests;
+    }
+
+    public void setFriendlyUrlStringContests(String friendlyUrlStringContests) {
+        _friendlyUrlStringContests = friendlyUrlStringContests;
+    }
+
+    public String getFriendlyUrlStringProposal() {
+        return _friendlyUrlStringProposal;
+    }
+
+    public void setFriendlyUrlStringProposal(String friendlyUrlStringProposal) {
+        _friendlyUrlStringProposal = friendlyUrlStringProposal;
     }
 
     public String getMenuItemName() {

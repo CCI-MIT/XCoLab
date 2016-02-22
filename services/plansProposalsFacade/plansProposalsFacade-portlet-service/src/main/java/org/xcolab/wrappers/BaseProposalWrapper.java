@@ -60,7 +60,7 @@ public class BaseProposalWrapper {
     public BaseProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) throws NoSuchContestException {
         this.proposal = proposal;
         this.version = version;
-        this.contest = contest == null ? fetchContest() : contest;
+        this.contest = contest == null ? fetchContest(contestPhase) : contest;
         this.contestPhase = contestPhase == null ? fetchContestPhase() : contestPhase;
         this.proposal2Phase = proposal2Phase == null ? fetchProposal2Phase() : proposal2Phase;
 
@@ -75,8 +75,11 @@ public class BaseProposalWrapper {
         this(proposal, version, null, null, null);
     }
 
-    private Contest fetchContest() throws NoSuchContestException {
+    private Contest fetchContest(ContestPhase contestPhase) throws NoSuchContestException {
         try {
+            if (contestPhase != null) {
+                return ContestLocalServiceUtil.fetchContest(contestPhase.getContestPK());
+            }
             return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
         } catch (PortalException | SystemException e) {
             throw new NoSuchContestException("Could not find a contest for proposal "+proposal.getProposalId(), e);
@@ -85,15 +88,21 @@ public class BaseProposalWrapper {
 
     private ContestPhase fetchContestPhase() {
         try {
-            return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+            if (proposal2Phase != null) {
+                return ContestPhaseLocalServiceUtil.fetchContestPhase(proposal2Phase.getContestPhaseId());
+            }
+            if (contest != null) {
+                return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+            }
         } catch (SystemException | PortalException e) {
-            _log.warn(String.format("Could not fetch active contest phase for contest %d", contest.getContestPK()));
+            _log.error(String.format("Could not fetch active contest phase for contest %d", contest.getContestPK()), e);
         }
+        _log.error(String.format("Could not get contest phase for proposal %d", proposal.getProposalId()));
         return null;
     }
 
     private Proposal2Phase fetchProposal2Phase() {
-        if (proposal.getProposalId() == 0 || contestPhase.getContestPhasePK() == 0) {
+        if (proposal.getProposalId() == 0 || contestPhase == null || contestPhase.getContestPhasePK() == 0) {
             return null;
         }
         try {
@@ -266,11 +275,11 @@ public class BaseProposalWrapper {
         return proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0L, 0);
     }
 
-    public String getProposalURL() {
+    public String getProposalUrl() {
         return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
     }
 
-    public String getProposalURL(ContestPhase inPhase) {
+    public String getProposalUrl(ContestPhase inPhase) {
         return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, inPhase);
     }
 

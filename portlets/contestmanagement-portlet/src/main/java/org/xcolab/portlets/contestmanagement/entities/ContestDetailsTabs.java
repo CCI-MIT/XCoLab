@@ -11,11 +11,11 @@ import javax.portlet.PortletRequest;
  * Created by Thomas on 2/9/2015.
  */
 public enum ContestDetailsTabs implements TabEnum {
-	ADMIN("Admin", "", TabPermissionAlgorithm.alwaysFalseViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	DESCRIPTION("Homepage", "description", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	RESOURCES("Resources Page", "resources", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	TEAM("Team", "team",TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	ONTOLOGY("Ontology", "ontology", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
+	ADMIN("Admin", "admin", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	PROPOSALTEMPLATE("Proposal Template", "template", TabPermissionAlgorithm.alwaysFalseViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
 	ADVANCED("Advanced", "advanced" ,TabPermissionAlgorithm.alwaysFalseViewAndEdit, TabActivityCountAlgorithm.alwaysZero);
 

@@ -53,6 +53,7 @@ import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableExc
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
+import org.xcolab.utils.LinkUtils;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -63,6 +64,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Date;
@@ -119,7 +121,12 @@ public class MainViewController {
 			}
 		}
 		if (themeDisplay.isSignedIn()) {
-			return "signedIn_logout";
+            HttpServletResponse httpServletResponse = PortalUtil.getHttpServletResponse(response);
+            try {
+                httpServletResponse.sendRedirect("/");
+                return "";
+            } catch (IOException ignored) {
+            }
 		}
 
         if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
@@ -274,7 +281,7 @@ public class MainViewController {
                     User.class.getName(),
                     CommunityConstants.EXPANDO,
                     CommunityConstants.BIO, loggedInUser.getUserId(),
-                    HtmlUtil.cleanSome(bio));
+                    HtmlUtil.cleanSome(bio, LinkUtils.getBaseUri(request)));
         } else {
             if (bio != null && bio.length() > 2000) {
                 json.getJSONObject("bio").put("success", false);
@@ -329,7 +336,7 @@ public class MainViewController {
 
             if (newAccountBean.getShortBio() != null
                     && !newAccountBean.getShortBio().isEmpty()) {
-                setExpandoValue(user, CommunityConstants.BIO, HtmlUtil.cleanSome(newAccountBean.getShortBio()));
+                setExpandoValue(user, CommunityConstants.BIO, HtmlUtil.cleanSome(newAccountBean.getShortBio(), LinkUtils.getBaseUri(request)));
             }
 
             if (newAccountBean.getCountry() != null

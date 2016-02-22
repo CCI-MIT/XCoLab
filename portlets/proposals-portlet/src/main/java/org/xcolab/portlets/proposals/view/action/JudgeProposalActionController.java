@@ -5,6 +5,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
@@ -93,7 +94,7 @@ public class JudgeProposalActionController {
         }
 
         Proposal proposal = proposalsContext.getProposal(request);
-        long contestId = proposalsContext.getContest(request).getContestPK();
+        final Contest contest = proposalsContext.getContest(request);
         long proposalId = proposal.getProposalId();
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(proposalAdvancingBean.getContestPhaseId());
         User currentUser = proposalsContext.getUser(request);
@@ -162,8 +163,7 @@ public class JudgeProposalActionController {
         if (permissions.getCanAdminAll() && !isUndecided && request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
             ContestPhaseLocalServiceUtil.forcePromotionOfProposalInPhase(proposal, contestPhase);
         }
-
-        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhase.getContestPhasePK()+"/planId/"+proposalId+"/tab/ADVANCING");
+        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/ADVANCING");
     }
 
     @ResourceMapping("getJudgingCsv")
@@ -316,7 +316,8 @@ public class JudgeProposalActionController {
                     contestPhaseId);
 
             this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId(), false);
-            response.sendRedirect("/web/guest/plans/-/plans/contestId/" + contestId + "/phaseId/" + contestPhaseId + "/planId/" + proposalId + "/tab/SCREENING");
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
+                    proposalsContext.getProposal(request), proposalsContext.getContestPhase(request)) + "/tab/SCREENING");
         } catch (Exception e) {
             List<Long> recipientIds = new ArrayList<>();
             recipientIds.add(1451771L); //Manuel

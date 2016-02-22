@@ -50,3 +50,10 @@
   filter: alpha(opacity=0); /* For IE8 and earlier */
   cursor: pointer;
 }
+
+.profilehelp {
+  background: url(../images/icon-addprop-arrow.png) no-repeat 0 3px;
+  float: right;
+  padding: 0 0 5px 11px;
+  color: $dark-grey;
+}

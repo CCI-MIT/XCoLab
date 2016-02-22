@@ -2,10 +2,7 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
@@ -23,13 +20,11 @@ import java.io.UnsupportedEncodingException;
  */
 public class ContestDescriptionBean implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final String NO_SPECIAL_CHAR_REGEX = "^[a-zA-Z:,;'’0-9äöüÄÖÜ?! ]*$";
+    private static final String NO_SPECIAL_CHAR_REGEX = "^[a-zA-Z:.,;'’0-9äöüÄÖÜ?! ]*$";
 
     private Long ContestPK;
     private Long contestLogoId;
     private Long sponsorLogoId;
-    private String emailTemplateUrl;
-    private ContestModelSettingsBean contestModelSettings;
 
     @Length(min = 5, max = 150, message = "The contest question must be at least 5 characters and not more than 150 characters.")
     private String contestName;
@@ -47,13 +42,7 @@ public class ContestDescriptionBean implements Serializable {
     @NotNull(message = "A schedule template must be selected.")
     private Long scheduleTemplateId;
 
-    @NotNull(message = "A contest tier must be selected.")
-    private Long contestTier;
-
-    @NotNull(message = "A contest type must be selected.")
-    private Long contestType;
-
-    private boolean hideRibbons;
+    private Boolean shouldUpdateContestUrlName;
 
     @SuppressWarnings("unused")
     public ContestDescriptionBean() { }
@@ -67,13 +56,10 @@ public class ContestDescriptionBean implements Serializable {
             contestDescription = contest.getContestDescription();
             planTemplateId = contest.getPlanTemplateId();
             scheduleTemplateId = contest.getContestScheduleId();
-            contestTier = contest.getContestTier();
-            contestType = contest.getContestTypeId();
-            hideRibbons = contest.getHideRibbons();
             contestLogoId = contest.getContestLogoId();
-            emailTemplateUrl = contest.getEmailTemplateUrl();
             sponsorLogoId = contest.getSponsorLogoId();
-            contestModelSettings = new ContestModelSettingsBean(contest);
+
+            shouldUpdateContestUrlName = !contest.isContestActive();
         }
     }
 
@@ -83,10 +69,10 @@ public class ContestDescriptionBean implements Serializable {
         updateContestSchedule(contest, scheduleTemplateId);
         updateContestWiki(contest, oldContestTitle);
 
-        DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
-        ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest.getContestTypeId());
-        dcg.setDescription(String.format("%s %s", contestType.getContestName(), contestShortName));
-        dcg.persist();
+        if(shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestTitle)) {
+            contest.setContestUrlName(ContestLocalServiceUtil.generateContestUrlName(contest));
+            contest.persist();
+        }
     }
 
     public Long getContestPK() {
@@ -129,18 +115,6 @@ public class ContestDescriptionBean implements Serializable {
         this.contestShortName = contestShortName;
     }
 
-    public String getEmailTemplateUrl() {
-        if (emailTemplateUrl != null) {
-            return emailTemplateUrl;
-        } else {
-            return "";
-        }
-    }
-
-    public void setEmailTemplateUrl(String emailTemplateUrl) {
-        this.emailTemplateUrl = emailTemplateUrl;
-    }
-
     public String getContestDescription() {
         return contestDescription;
     }
@@ -165,43 +139,22 @@ public class ContestDescriptionBean implements Serializable {
         this.scheduleTemplateId = scheduleTemplateId;
     }
 
-    public Long getContestTier() {
-        return contestTier;
+    public Boolean getShouldUpdateContestUrlName() {
+        return shouldUpdateContestUrlName;
     }
 
-    public void setContestTier(Long contestTier) {
-        this.contestTier = contestTier;
-    }
-
-    public Long getContestType() {
-        return contestType;
-    }
-
-    public void setContestType(Long contestType) {
-        this.contestType = contestType;
-    }
-
-    public ContestModelSettingsBean getContestModelSettings() {
-        return contestModelSettings;
-    }
-
-    public void setContestModelSettings(ContestModelSettingsBean contestModelSettings) {
-        this.contestModelSettings = contestModelSettings;
+    public void setShouldUpdateContestUrlName(Boolean shouldUpdateContestUrlName) {
+        this.shouldUpdateContestUrlName = shouldUpdateContestUrlName;
     }
 
     private void updateContestDescription(Contest contest) throws SystemException, PortalException {
         contest.setContestName(contestName);
-        contest.setEmailTemplateUrl(emailTemplateUrl);
         contest.setContestShortName(contestShortName);
         contest.setContestDescription(contestDescription);
         contest.setPlanTemplateId(planTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
-        contest.setContestTier(contestTier);
-        contest.setContestTypeId(contestType);
-        contest.setHideRibbons(hideRibbons);
         contest.persist();
-        contestModelSettings.persist(contest);
     }
 
     public static void updateContestWiki(Contest contest, String oldContestTitle) throws SystemException, PortalException, UnsupportedEncodingException {
@@ -230,11 +183,4 @@ public class ContestDescriptionBean implements Serializable {
         }
     }
 
-    public boolean isHideRibbons() {
-        return hideRibbons;
-    }
-
-    public void setHideRibbons(boolean hideRibbons) {
-        this.hideRibbons = hideRibbons;
-    }
 }

@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
@@ -479,6 +480,7 @@ public final class ContestCreatorUtil {
 
     public static Contest createNewContest(String contestShortName) throws SystemException, PortalException {
         Contest contest = ContestLocalServiceUtil.createNewContest(10144L, contestShortName);
+        contest.setContestYear(DateTime.now().getYear());
         contest.setContestPrivate(true);
         contest.setShow_in_tile_view(true);
         contest.setShow_in_list_view(true);

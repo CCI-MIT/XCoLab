@@ -24,14 +24,16 @@
         <portlet:actionURL var="saveScreeningURL">
             <portlet:param name="action_forwardToPage" value="proposalDetails_SCREENING"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
-            <portlet:param name="planId" value="${proposal.proposalId }"/>
+            <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
+            <portlet:param name="proposalId" value="${proposal.proposalId }"/>
             <portlet:param name="action" value="saveScreening"/>
         </portlet:actionURL>
 
         <portlet:actionURL var="sendEmailURL">
             <portlet:param name="action_forwardToPage" value="proposalDetails_SCREENING"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
-            <portlet:param name="planId" value="${proposal.proposalId }"/>
+            <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
+            <portlet:param name="proposalId" value="${proposal.proposalId }"/>
             <portlet:param name="action" value="sendComment"/>
         </portlet:actionURL>
 
@@ -60,10 +62,10 @@
                                                                        proposalId="${proposal.proposalId}">
                                                 <c:choose>
                                                     <c:when test="${judgeReviewStatus.statusValue eq 1}">
-                                                        <img src="/climatecolab-theme/images/icon_question-x.png" class="review-status-icon"/>
+                                                        <img src="${themeDisplay.pathThemeImages}/icon_question-x.png" class="review-status-icon"/>
                                                     </c:when>
                                                     <c:when test="${judgeReviewStatus.statusValue eq 2}">
-                                                        <img src="/climatecolab-theme/images/icon_question-chk.png" class="review-status-icon"/>
+                                                        <img src="${themeDisplay.pathThemeImages}/images/icon_question-chk.png" class="review-status-icon"/>
                                                     </c:when>
                                                 </c:choose>
                                             </judging:judgeReviewStatus>

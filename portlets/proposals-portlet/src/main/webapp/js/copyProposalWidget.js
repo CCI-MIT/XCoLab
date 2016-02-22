@@ -9,22 +9,19 @@ function proposalCopy_loadContests(move, hideOnMove) {
     		html.push(obj.contestName);
     		html.push("</td>");
     		html.push("<td>");
-    		html.push('<div class="blue-button"><a href="/web/guest/plans/-/plans/contestId/');
-    		html.push(obj.contestPK);
+    		html.push('<div class="blue-button"><a href="/contests/'+ obj.contestYear +'/' + obj.contestUrlName + '/');
 
     		if (move && hideOnMove) {
-    			html.push('/planId/');
+    			html.push('/c/proposal/');
     			html.push(currentProposal.proposalId);
                 html.push('/moveFromContestPhaseId/' + currentProposal.contestPhaseId);
     			html.push("/moveAndHide");
-    		}
-            else if (move && !hideOnMove) {
-                html.push('/planId/');
+    		} else if (move && !hideOnMove) {
+                html.push('/c/proposal/');
                 html.push(currentProposal.proposalId);
                 html.push('/moveFromContestPhaseId/' + currentProposal.contestPhaseId);
                 html.push("/moveAndKeep");
-            }
-    		else {
+            } else {
     			html.push('/createProposal/basedOn/');
     			html.push(currentProposal.proposalId);
     			html.push('/');

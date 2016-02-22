@@ -993,6 +993,13 @@ public class ProposalLocalServiceUtil {
         return getService().getProposalLinkUrl(contest, proposal, contestPhase);
     }
 
+    public static java.lang.String getProposalLinkUrl(
+        com.ext.portlet.model.Contest contest, long proposalId,
+        long contestPhaseId) {
+        return getService()
+                   .getProposalLinkUrl(contest, proposalId, contestPhaseId);
+    }
+
     /**
     * Returns list of proposals referenced by given proposal that are relevant for the ingtegration contests
     *

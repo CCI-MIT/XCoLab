@@ -6,6 +6,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.NoSuchImpactDefaultSeriesDataException;
 import com.ext.portlet.NoSuchImpactDefaultSeriesException;
+import com.ext.portlet.NoSuchProposalVersionException;
 import com.ext.portlet.ProposalImpactAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
@@ -238,7 +239,7 @@ public class ProposalImpactSeries {
         return jsonObject;
     }
 
-    private void loadEditableData() throws SystemException, PortalException {
+    private void loadEditableData() throws SystemException, NoSuchProposalVersionException {
         // Get default serieses
         List<ImpactDefaultSeries> impactDefaultSerieses =
                 ImpactDefaultSeriesLocalServiceUtil.getAllImpactDefaultSeriesWithFocusArea(focusArea);
@@ -317,10 +318,11 @@ public class ProposalImpactSeries {
 
     public User getSeriesAuthor() {
         try {
-            return UserLocalServiceUtil.getUser(lastModifiedVersion.getAuthorId());
-        } catch (SystemException | PortalException e) {
-            return null;
-        }
+            if (lastModifiedVersion != null) {
+                return UserLocalServiceUtil.getUser(lastModifiedVersion.getAuthorId());
+            }
+        } catch (SystemException | PortalException ignored) { }
+        return null;
     }
 
     public Date getUpdatedDate() {

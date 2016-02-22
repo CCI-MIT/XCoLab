@@ -28,11 +28,6 @@ import java.util.List;
  */
 public class ProposalMembershipInvitationResponseStrutsAction extends BaseStrutsAction {
 
-	/**
-	 * The friendly URL mapping for the proposal detail page
-	 */
-	private static final String PROPOSAL_URL = "/web/guest/plans/-/plans/contestId/%d/planId/%d";
-
 	private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT = "Response to your membership invite";
 
 	/**
@@ -52,7 +47,6 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 
 		long membershipId = GetterUtil.get(request.getParameter("requestId"), 0L);
 		long proposalId = GetterUtil.get(request.getParameter("proposalId"), 0L);
-		long contestId = GetterUtil.get(request.getParameter("contestId"), 0L);
 		String action = request.getParameter("do");
 
 		MembershipRequest membershipRequest = MembershipRequestLocalServiceUtil.getMembershipRequest(membershipId);
@@ -65,7 +59,7 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 		}
 
 		String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
-		String proposalLink = String.format("<a href='%s'>%s</a>", String.format(PROPOSAL_URL, contestId, proposalId), proposalName);
+		String proposalLink = String.format("<a href='%s'>%s</a>", ProposalLocalServiceUtil.getProposalLinkUrl(proposalId), proposalName);
 
 		if (membershipRequest != null) {
 			User invitee = UserLocalServiceUtil.getUserById(membershipRequest.getUserId());
@@ -78,7 +72,7 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 			}
 		}
 
-		response.sendRedirect(String.format(PROPOSAL_URL, contestId, proposalId));
+		response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalId));
 		return StringPool.BLANK;
 	}
 

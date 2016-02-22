@@ -211,5 +211,4 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         }
         return scheduleTemplateSelectionItems;
     }
-
 }

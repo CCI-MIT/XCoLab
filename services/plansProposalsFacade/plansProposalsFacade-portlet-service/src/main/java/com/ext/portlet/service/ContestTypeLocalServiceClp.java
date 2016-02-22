@@ -184,13 +184,13 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
         _methodName25 = "getProposalNames";
 
         _methodParameterTypes25 = new String[] {
-                "java.util.List", "boolean", "java.lang.String"
+                "java.util.List", "java.lang.String", "java.lang.String"
             };
 
         _methodName26 = "getContestNames";
 
         _methodParameterTypes26 = new String[] {
-                "java.util.List", "boolean", "java.lang.String"
+                "java.util.List", "java.lang.String", "java.lang.String"
             };
     }
 
@@ -868,8 +868,8 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
 
     @Override
     public java.lang.String getProposalNames(
-        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
-        java.lang.String conjunction) {
+        java.util.List<java.lang.Long> contestTypeIds,
+        java.lang.String plurality, java.lang.String conjunction) {
         Object returnObj = null;
 
         try {
@@ -878,7 +878,7 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
                     new Object[] {
                         ClpSerializer.translateInput(contestTypeIds),
                         
-                    isSingular,
+                    ClpSerializer.translateInput(plurality),
                         
                     ClpSerializer.translateInput(conjunction)
                     });
@@ -898,8 +898,8 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
 
     @Override
     public java.lang.String getContestNames(
-        java.util.List<java.lang.Long> contestTypeIds, boolean isSingular,
-        java.lang.String conjunction) {
+        java.util.List<java.lang.Long> contestTypeIds,
+        java.lang.String plurality, java.lang.String conjunction) {
         Object returnObj = null;
 
         try {
@@ -908,7 +908,7 @@ public class ContestTypeLocalServiceClp implements ContestTypeLocalService {
                     new Object[] {
                         ClpSerializer.translateInput(contestTypeIds),
                         
-                    isSingular,
+                    ClpSerializer.translateInput(plurality),
                         
                     ClpSerializer.translateInput(conjunction)
                     });

@@ -1,0 +1,12 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+
+    <div id="content">
+        The URL you tried to access is not valid anymore, you are being redirected to the new url.
+        Please update your bookmarks: <br />
+        <a href="${redirectUrl}">${redirectUrl}</a>
+    </div>
+
+    <script type="text/javascript">
+            window.location.href = "${redirectUrl}";
+    </script>
+</jsp:root>

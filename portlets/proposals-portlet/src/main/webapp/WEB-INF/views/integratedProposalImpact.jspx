@@ -127,7 +127,8 @@
                     <portlet:actionURL var="updateProposalScenarioURL">
                         <portlet:param name="action_forwardToPage" value="proposalDetails_IMPACT"/>
                         <portlet:param name="contestId" value="${contest.contestPK }"/>
-                        <portlet:param name="planId" value="${proposal.proposalId }"/>
+                        <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
+                        <portlet:param name="proposalId" value="${proposal.proposalId }"/>
                         <portlet:param name="action" value="updateProposalScenario"/>
                     </portlet:actionURL>
 
@@ -224,7 +225,7 @@
                         <th class="blue-bg" style="text-align: center" colspan="${fn:length(impactIterations)}">
                             Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
                             <a href="javascript:;" class="helpTrigger"><img
-                                    src="/climatecolab-theme/images/icon-addprop-question.png" width="15"
+                                    src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15"
                                     height="15"/></a><br/>
 
                             <div class="addprophelp" style="color:white;">
@@ -243,7 +244,7 @@
                     <tr>
                         <td class="blue-bg" style="text-align: left">Sector
                             <a href="javascript:;" class="helpTrigger"><img
-                                    src="/climatecolab-theme/images/icon-addprop-question.png" width="15"
+                                    src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15"
                                     height="15"/></a><br/>
 
                             <div class="addprophelp" style="color:white;">

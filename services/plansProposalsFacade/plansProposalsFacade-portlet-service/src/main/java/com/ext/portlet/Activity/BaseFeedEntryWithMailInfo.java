@@ -3,8 +3,8 @@ package com.ext.portlet.Activity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 
 public class BaseFeedEntryWithMailInfo extends SocialActivityFeedEntry implements FeedEntryWithMailInfo {
-    private String mailSubject;
-    private String mailBody;
+    private final String mailSubject;
+    private final String mailBody;
 
     public BaseFeedEntryWithMailInfo(String link, String title, String body, String mailSubject, String mailBody) {
         super(link, title, body);
