@@ -35,6 +35,7 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.utils.HtmlUtil;
+import org.xcolab.utils.LinkUtils;
 import org.xcolab.utils.emailnotification.ProposalCreationNotification;
 
 import javax.portlet.ActionRequest;
@@ -199,14 +200,14 @@ public class AddUpdateProposalDetailsActionController {
         }
         
         if (updateProposalSectionsBean.getPitch() != null && (proposal.getName() == null || !updateProposalSectionsBean.getPitch().equals(proposal.getPitch()))) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch()));
+            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch(), LinkUtils.getBaseUri(request)));
         }
         else {
         	filledAll = false;
         }
 
         if (updateProposalSectionsBean.getDescription() != null && (proposal.getName() == null || !updateProposalSectionsBean.getDescription().equals(proposal.getDescription()))) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.DESCRIPTION, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription()));
+            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.DESCRIPTION, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription(), LinkUtils.getBaseUri(request)));
         }
         else {
         	filledAll = false;
@@ -231,7 +232,7 @@ public class AddUpdateProposalDetailsActionController {
             String newSectionValue = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
             if (section.getType() == PlanSectionTypeKeys.TEXT || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                 if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
-                    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), HtmlUtil.cleanSome(newSectionValue));
+                    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), HtmlUtil.cleanSome(newSectionValue, LinkUtils.getBaseUri(request)));
                     if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                         updateProposalReferences = true;
                     }
