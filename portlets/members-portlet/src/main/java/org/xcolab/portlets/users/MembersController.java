@@ -170,7 +170,8 @@ public class MembersController {
         model.addAttribute("memberCategories", MemberCategoryLocalServiceUtil
                 .getVisibleMemberCategories());
 
-        model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME, 0L));
+        model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
+        model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
         return "users";
     }
 }

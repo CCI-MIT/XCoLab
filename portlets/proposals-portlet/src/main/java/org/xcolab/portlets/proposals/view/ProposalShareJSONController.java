@@ -1,7 +1,11 @@
 package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.messaging.MessageUtil;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestType;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -9,7 +13,6 @@ import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -45,11 +48,6 @@ public class ProposalShareJSONController {
 
     private static final String SUCCESS_JSON_KEY = "success";
     private static final String MESSAGE_JSON_KEY = "message";
-
-    private JSONObject parseJSONString(ResourceRequest request) throws JSONException {
-        String jsonString = (String)request.getAttribute("params");
-        return JSONFactoryUtil.createJSONObject(jsonString);
-    }
 
     private List<Long> parseRecipientNames(long companyId, List<String> recipients) throws RecipientParseException {
         List<Long> recipientIds = new ArrayList<>();
@@ -148,14 +146,17 @@ public class ProposalShareJSONController {
 
 		// Add link to proposal
 		ContestPhase phase = proposalsContext.getContestPhase(request);
-		String proposalUrl = themeDisplay.getPortalURL();
-		if (phase == null || phase.getContestPhasePK() <= 0) {
-			proposalUrl += ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request), proposalsContext.getProposal(request));
-		} else {
-			proposalUrl += ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request), proposalsContext.getProposal(request), phase);
-		}
+        final Contest contest = proposalsContext.getContest(request);
+        final Proposal proposal = proposalsContext.getProposal(request);
+        String proposalUrl = themeDisplay.getPortalURL();
 
-		body += String.format("%n%n<a href='%s'>Link to proposal</a>", proposalUrl);
+        if (phase == null || phase.getContestPhasePK() <= 0) {
+			proposalUrl += ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
+		} else {
+			proposalUrl += ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, phase);
+		}
+        ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
+		body += String.format("%n%n<a href='%s'>Link to %s</a>", proposalUrl, contestType.getProposalName());
 
 		// Send the message
         Long userId = themeDisplay.getUserId();
@@ -193,7 +194,8 @@ public class ProposalShareJSONController {
 //								userId, recipientIds, null);
 //					}
 
-					sendResponseJSON(false, "Messages limit has been exceeded, if you want to send more messages, please contact the administrators.", response);
+					sendResponseJSON(false, "Messages limit has been exceeded, if you want to send more messages, " +
+                            "please contact the administrators.", response);
 					return;
 				}
 			}
@@ -204,7 +206,7 @@ public class ProposalShareJSONController {
 			return;
         }
 
-        sendResponseJSON(true, "You successfully shared the proposal", response);
+        sendResponseJSON(true, String.format("You successfully shared the %s", contestType.getProposalName()), response);
     }
 
     private static class RecipientParseException extends Exception {

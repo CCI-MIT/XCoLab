@@ -926,6 +926,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return teamRoleToUsersMap;
     }
 
+    @Override
     public String getContestLinkUrl(long contestId) {
         try {
             return getContestLinkUrl(getContest(contestId));

@@ -1,5 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
+import com.ext.portlet.model.ContestType;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
@@ -8,8 +10,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
 import java.util.ArrayList;
@@ -46,13 +50,17 @@ public class BaseProposalTabController extends BaseProposalsController {
        
         model.addAttribute("currentTab", tab);
         model.addAttribute("currentTabWrapped", new ProposalTabWrapper(tab, request, proposalsContext));
-        
-        String pageTitle = proposalsContext.getContestWrapped(request).getContestShortName();
-        String pageSubTitle = proposalsContext.getProposalWrapped(request).getName();
-        String pageDescription = proposalsContext.getProposalWrapped(request).getPitch();
+
+        final ContestWrapper contestWrapped = proposalsContext.getContestWrapped(request);
+        final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
+
+        String pageTitle = contestWrapped.getContestShortName();
+        String pageSubTitle = proposalWrapped.getName();
+        String pageDescription = proposalWrapped.getPitch();
         
         if (pageSubTitle == null || StringUtils.isBlank(pageSubTitle)) {
-            pageSubTitle = "Proposal for " + proposalsContext.getContestWrapped(request).getContestShortName();
+            final ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposalWrapped.getProposalId());
+            pageSubTitle = contestType.getProposalName() + " for " + contestWrapped.getContestShortName();
         }
 
         if (tab != ProposalTab.DESCRIPTION) {
