@@ -1,5 +1,6 @@
 package org.xcolab.portlets.userprofile.view;
 
+import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.MessagingUserPreferences;
@@ -42,6 +43,7 @@ import org.xcolab.commons.utils.PwdEncryptor;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
+import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
@@ -73,8 +75,7 @@ public class UserProfileController {
         binder.setValidator(validator);
     }
 
-    public UserProfileController() {
-    }
+    public UserProfileController() { }
 
     @RenderMapping
     public String defaultShowUserProfileNotInitializedView(PortletRequest request) {
@@ -218,143 +219,143 @@ public class UserProfileController {
 
     @RequestMapping(params = "action=update")
     public void updateUserProfile(ActionRequest request, Model model, ActionResponse response,
-                                  @ModelAttribute UserBean updatedUserBean, BindingResult result) throws IOException {
+                                  @ModelAttribute UserBean updatedUserBean, BindingResult result)
+            throws IOException, UserProfileAuthorizationException, SystemException, PortalException {
         Long loggedInUserId = Long.parseLong(request.getRemoteUser());
         if (!loggedInUserId.equals(updatedUserBean.getUserId())) {
-            response.sendRedirect("/web/guest/member/-/member/userId/" + updatedUserBean.getUserId());
+            throw new UserProfileAuthorizationException(String.format(
+                    "User %d does not have the permissions to update the profile of user %d",
+                    loggedInUserId, updatedUserBean.getUserId()));
         }
-        try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
-            model.addAttribute("currentUserProfile", currentUserProfile);
-            model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
-            model.addAttribute("messageBean", new MessageBean());
-            model.addAttribute("userBean", updatedUserBean);
+        UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
+        model.addAttribute("currentUserProfile", currentUserProfile);
+        model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
+        model.addAttribute("messageBean", new MessageBean());
+        model.addAttribute("userBean", updatedUserBean);
 
-            boolean validationError = false;
-            boolean changedUserPart = false;
-            if (updatedUserBean.getPassword() != null && !updatedUserBean.getPassword().trim().isEmpty()) {
-                if (isPasswordMatchingExistingPassword(currentUserProfile, updatedUserBean.getCurrentPassword().trim())) {
-                    validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
+        boolean changedUserPart = false;
+        boolean validationError = false;
+        if (updatedUserBean.getPassword() != null && !updatedUserBean.getPassword().trim().isEmpty()) {
+            if (isPasswordMatchingExistingPassword(currentUserProfile, updatedUserBean.getCurrentPassword().trim())) {
+                validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
-                    if (!result.hasErrors()) {
-                        currentUserProfile.getUser().setPassword(PwdEncryptor.encrypt(updatedUserBean.getPassword().trim()));
-                        changedUserPart = true;
-                    } else {
-                        validationError = true;
-                        response.setRenderParameter("passwordError", "true");
-                        _log.warn("CompareStrings password failed for userId: " + currentUserProfile.getUser().getUserId());
-                    }
+                if (!result.hasErrors()) {
+                    currentUserProfile.getUser().setPassword(PwdEncryptor.encrypt(updatedUserBean.getPassword().trim()));
+                    changedUserPart = true;
                 } else {
-                    result.addError(new ObjectError("currentPassword", "Password change failed: Current password is incorrect."));
                     validationError = true;
                     response.setRenderParameter("passwordError", "true");
-                    _log.warn("Current password wrong for userId: " + currentUserProfile.getUser().getUserId());
-                }
-            }
-
-            if (updatedUserBean.getScreenName() != null
-                    && !updatedUserBean.getScreenName().equals(currentUserProfile.getUserBean().getScreenName())) {
-
-                validator.validate(updatedUserBean, result, UserBean.ScreenNameChanged.class);
-
-                if (!result.hasErrors()) {
-                    currentUserProfile.getUser().setScreenName(updatedUserBean.getScreenName());
-                    changedUserPart = true;
-                } else {
-                    validationError = true;
-                    _log.warn("ScreenName change failed for userId: " + currentUserProfile.getUser().getUserId());
-                }
-            }
-            boolean eMailChanged = false;
-            if (updatedUserBean.getEmail() != null && !updatedUserBean.getEmail().trim().isEmpty() &&
-                    !updatedUserBean.getEmail().equals(currentUserProfile.getUserBean().getEmailStored())) {
-                validator.validate(updatedUserBean, result, UserBean.EmailChanged.class);
-
-                if (!result.hasErrors()) {
-                    currentUserProfile.getUser().setEmailAddress(updatedUserBean.getEmail());
-                    changedUserPart = true;
-                    eMailChanged = true;
-                } else {
-                    validationError = true;
-                    response.setRenderParameter("emailError", "true");
-                    _log.warn("Email change failed for userId: " + currentUserProfile.getUser().getUserId());
-                }
-            }
-
-            if (updatedUserBean.getFirstName() != null
-                    && !updatedUserBean.getFirstName().equals(currentUserProfile.getUserBean().getFirstName())) {
-                validator.validate(updatedUserBean, result);
-                if (!result.hasErrors()) {
-                    currentUserProfile.getUser().setFirstName(HtmlUtil.cleanAll(updatedUserBean.getFirstName()));
-                    changedUserPart = true;
-                } else {
-                    validationError = true;
-                    _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getUserId());
-                }
-            }
-            if (updatedUserBean.getLastName() != null
-                    && !updatedUserBean.getLastName().equals(currentUserProfile.getUserBean().getLastName())) {
-                validator.validate(updatedUserBean, result);
-                if (!result.hasErrors()) {
-                    currentUserProfile.getUser().setLastName(HtmlUtil.cleanAll(updatedUserBean.getLastName()));
-                    changedUserPart = true;
-                } else {
-                    validationError = true;
-                    _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getUserId());
-                }
-            }
-
-            try {
-                changedUserPart = changedUserPart | updateUserProfile(currentUserProfile, updatedUserBean);
-            } catch (Exception e) {
-                _log.warn("Updating Expando settings or portrait image failed for userId: " + currentUserProfile.getUser().getUserId());
-                _log.warn(e);
-                if (e instanceof UserPortraitSizeException) {
-                    model.addAttribute("imageSizeError", true);
-
-                }
-                validationError = true;
-            }
-
-            if (validationError) {
-                response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
-                response.setRenderParameter("updateError", "true");
-                updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
-            } else if (changedUserPart) {
-
-                response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
-                response.setRenderParameter("updateSuccess", "true");
-
-                updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
-
-                try {
-                    UserLocalServiceUtil.updateUser(currentUserProfile.getUser());
-                } catch (SystemException e) {
-                    response.removePublicRenderParameter("updateSuccess");
-                    response.setRenderParameter("updateError", "true");
-                    _log.warn("Updating user failed for userId: " + currentUserProfile.getUser().getUserId());
-                    _log.warn(e);
-                }
-
-                if (eMailChanged) {
-                    updatedUserBean.setEmailStored(updatedUserBean.getEmail());
-                    try {
-                        sendUpdatedEmail(currentUserProfile.getUser());
-                    } catch (MailEngineException | AddressException e) {
-                        _log.warn("Sending eMail confirmation after email change failed for userId: " + currentUserProfile.getUser().getUserId());
-                        _log.warn(e);
-                    }
+                    _log.warn("CompareStrings password failed for userId: " + currentUserProfile.getUser().getUserId());
                 }
             } else {
-                response.sendRedirect("/web/guest/member/-/member/userId/" + currentUserProfile.getUserId().toString());
+                result.addError(new ObjectError("currentPassword", "Password change failed: Current password is incorrect."));
+                validationError = true;
+                response.setRenderParameter("passwordError", "true");
+                _log.warn("Current password wrong for userId: " + currentUserProfile.getUser().getUserId());
+            }
+        }
+
+        if (updatedUserBean.getScreenName() != null
+                && !updatedUserBean.getScreenName().equals(currentUserProfile.getUserBean().getScreenName())) {
+
+            validator.validate(updatedUserBean, result, UserBean.ScreenNameChanged.class);
+
+            if (!result.hasErrors()) {
+                currentUserProfile.getUser().setScreenName(updatedUserBean.getScreenName());
+                changedUserPart = true;
+            } else {
+                validationError = true;
+                _log.warn("ScreenName change failed for userId: " + currentUserProfile.getUser().getUserId());
+            }
+        }
+        boolean eMailChanged = false;
+        if (updatedUserBean.getEmail() != null && !updatedUserBean.getEmail().trim().isEmpty() &&
+                !updatedUserBean.getEmail().equals(currentUserProfile.getUserBean().getEmailStored())) {
+            validator.validate(updatedUserBean, result, UserBean.EmailChanged.class);
+
+            if (!result.hasErrors()) {
+                currentUserProfile.getUser().setEmailAddress(updatedUserBean.getEmail());
+                changedUserPart = true;
+                eMailChanged = true;
+            } else {
+                validationError = true;
+                response.setRenderParameter("emailError", "true");
+                _log.warn("Email change failed for userId: " + currentUserProfile.getUser().getUserId());
+            }
+        }
+
+        if (updatedUserBean.getFirstName() != null
+                && !updatedUserBean.getFirstName().equals(currentUserProfile.getUserBean().getFirstName())) {
+            validator.validate(updatedUserBean, result);
+            if (!result.hasErrors()) {
+                currentUserProfile.getUser().setFirstName(HtmlUtil.cleanAll(updatedUserBean.getFirstName()));
+                changedUserPart = true;
+            } else {
+                validationError = true;
+                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getUserId());
+            }
+        }
+        if (updatedUserBean.getLastName() != null
+                && !updatedUserBean.getLastName().equals(currentUserProfile.getUserBean().getLastName())) {
+            validator.validate(updatedUserBean, result);
+            if (!result.hasErrors()) {
+                currentUserProfile.getUser().setLastName(HtmlUtil.cleanAll(updatedUserBean.getLastName()));
+                changedUserPart = true;
+            } else {
+                validationError = true;
+                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getUserId());
+            }
+        }
+
+        try {
+            changedUserPart = changedUserPart | updateUserProfile(currentUserProfile, updatedUserBean);
+        } catch (Exception e) {
+            _log.warn("Updating Expando settings or portrait image failed for userId: " + currentUserProfile.getUser().getUserId());
+            _log.warn(e);
+            if (e instanceof UserPortraitSizeException) {
+                model.addAttribute("imageSizeError", true);
+
+            }
+            validationError = true;
+        }
+
+        if (validationError) {
+            response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
+            response.setRenderParameter("updateError", "true");
+            updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
+        } else if (changedUserPart) {
+
+            response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
+            response.setRenderParameter("updateSuccess", "true");
+
+            updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
+
+            try {
+                UserLocalServiceUtil.updateUser(currentUserProfile.getUser());
+            } catch (SystemException e) {
+                response.removePublicRenderParameter("updateSuccess");
+                response.setRenderParameter("updateError", "true");
+                _log.warn("Updating user failed for userId: " + currentUserProfile.getUser().getUserId());
+                _log.warn(e);
+                return;
             }
 
-            SessionErrors.clear(request);
-            SessionMessages.clear(request);
-        } catch (SystemException | PortalException e) {
-            _log.warn("Could not update user profile for " + loggedInUserId, e);
-            response.sendRedirect("/web/guest/member/-/member/userId/" + loggedInUserId);
+            if (eMailChanged) {
+                updatedUserBean.setEmailStored(updatedUserBean.getEmail());
+                try {
+                    sendUpdatedEmail(currentUserProfile.getUser());
+                } catch (MailEngineException | AddressException | NoSuchConfigurationAttributeException e) {
+                    _log.warn("Sending eMail confirmation after email change failed for userId: " + currentUserProfile.getUser().getUserId());
+                    _log.warn(e);
+                }
+            }
+        } else {
+            response.sendRedirect("/web/guest/member/-/member/userId/" + currentUserProfile.getUserId().toString());
+            return;
         }
+
+        SessionErrors.clear(request);
+        SessionMessages.clear(request);
     }
 
     void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {
@@ -465,23 +466,23 @@ public class UserProfileController {
             final String existingPasswordWithoutSHA1 = currentUserProfile.getUser().getPassword().substring(7);
             existing = PwdEncryptor.encrypt(password).equals(existingPassword) ||
                     PwdEncryptor.encrypt(password).equals(existingPasswordWithoutSHA1);
-        } catch (PwdEncryptorException ignored) {
-        }
+        } catch (PwdEncryptorException ignored) { }
         return existing;
     }
 
-    private void sendUpdatedEmail(User user) throws MailEngineException, AddressException, UnsupportedEncodingException, SystemException {
-        String messageSubject = "Your email address on the Climate CoLab has been updated";
-        String messageBody = "Dear " + user.getFirstName() + ",\n" +
+    private void sendUpdatedEmail(User user) throws MailEngineException, AddressException, UnsupportedEncodingException,
+            SystemException, NoSuchConfigurationAttributeException {
+        String messageSubject = TemplateReplacementUtil.replacePlatformConstants("Your email address on the <colab-name/> has been updated");
+        String messageBody = TemplateReplacementUtil.replacePlatformConstants("Dear " + user.getFirstName() + ",\n" +
                 "\n" +
-                "This is an automated message to confirm that you recently updated your email address on the Climate CoLab website.\n" +
+                "This is an automated message to confirm that you recently updated your email address on the <colab-name/> website.\n" +
                 "\n" +
                 "Your username:  " + user.getScreenName() + "\n" +
                 "Your updated email address: " + user.getEmailAddress() + "\n" +
                 "\n" +
-                "You can login with your username at www.climatecolab.org.  If you have any questions or need additional help, simply reply to this message.\n" +
+                "You can login with your username at <colab-url/>.  If you have any questions or need additional help, simply reply to this message.\n" +
                 "\n" +
-                "Thank you for engaging on the Climate CoLab!\n";
+                "Thank you for engaging on the <colab-name/>!\n");
 
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
         InternetAddress[] addressTo = {new InternetAddress(user.getEmailAddress())};
