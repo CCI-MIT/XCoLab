@@ -76,7 +76,7 @@
         <p>
             Please complete your ${contestType.proposalName} based on the template below.
             If you have input on the template, please send it in a <a href="/web/guest/feedback" target="_blank">feedback message</a>.
-            To save your ${contestType.proposalName}, you must agree to the <a href="/web/guest/resources/-/wiki/Main/Contest+Rules" target="_blank">Contest rules</a>
+            To save your ${contestType.proposalName}, you must agree to the <a href="/web/guest/resources/-/wiki/Main/Contest+Rules" target="_blank">${contestType.contestName} rules</a>
             and <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
             <br/>Please note that you may be automatically logged out of your account after
             30 minutes. Please save all ${contestType.proposalName} content offline before clicking
@@ -219,7 +219,7 @@
 <div id="acceptTosPopup" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
     <div class="popup-wrap p1" id="acceptTosPopup">
         <div class="popup">
-            <h4>By saving your ${contestType.proposalName} you are entering the Climate CoLab ${contestType.contestName} and agree to the&#160;
+            <h4>By saving your ${contestType.proposalName} you are entering the ${colabName} ${contestType.contestName} and agree to the&#160;
                 <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of Use</a>
                 &#160;and ${contestType.contestName} Rules.</h4>
 

@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.MessagingUserPreferences;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.liferay.portal.PwdEncryptorException;
 import com.liferay.portal.UserPortraitSizeException;
@@ -40,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.xcolab.commons.utils.PwdEncryptor;
+import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
@@ -47,6 +49,7 @@ import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
+import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import javax.mail.internet.AddressException;
@@ -98,7 +101,8 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=edit")
     public String showUserProfileEdit(PortletRequest request, PortletResponse response, Model model,
-                                      @RequestParam(required = true) String userId) {
+                                      @RequestParam(required = true) String userId)
+            throws SystemException {
 
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
@@ -106,12 +110,14 @@ public class UserProfileController {
             if (currentUserProfile.isViewingOwnProfile()) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getEmailStored()));
+                ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
-        } catch (SystemException | PortalException e) {
+        } catch (PortalException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
+        ModelAttributeUtil.populateModelWithPlatformConstants(model);
         return "showUserProfile";
     }
 
@@ -133,7 +139,8 @@ public class UserProfileController {
     @RequestMapping(params = "page=subscriptionsManage")
     public String showUserSubscriptionsManage(PortletRequest request, PortletResponse response, Model model,
                                               @RequestParam(required = true) String userId,
-                                              @RequestParam(required = false) String typeFilter) {
+                                              @RequestParam(required = false) String typeFilter)
+            throws SystemException {
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
             populateUserWrapper(currentUserProfile, model);
@@ -144,10 +151,11 @@ public class UserProfileController {
             if (currentUserProfile.isViewingOwnProfile()) {
                 return "showUserSubscriptionsManage";
             }
-        } catch (SystemException | PortalException e) {
+        } catch (PortalException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
+        ModelAttributeUtil.populateModelWithPlatformConstants(model);
         return "showUserProfile";
     }
 
@@ -180,7 +188,8 @@ public class UserProfileController {
     public String updateProfileError(PortletRequest request, Model model,
                                      @RequestParam(required = false) boolean emailError,
                                      @RequestParam(required = false) boolean passwordError,
-                                     @RequestParam(required = true) String userId) {
+                                     @RequestParam(required = true) String userId)
+            throws SystemException {
         model.addAttribute("updateError", true);
         if (emailError) {
             model.addAttribute("emailError", true);
@@ -193,9 +202,12 @@ public class UserProfileController {
             if (currentUserProfile.isViewingOwnProfile()) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getEmailStored()));
+                ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
-        } catch (SystemException | PortalException e) {
+            model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
+            model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
+        } catch (PortalException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -205,12 +217,13 @@ public class UserProfileController {
 
     @RequestMapping(params = "updateSuccess=true")
     public String updateProfileSuccess(PortletRequest request, Model model,
-                                       @RequestParam(required = true) String userId) {
+                                       @RequestParam(required = true) String userId) throws SystemException {
 
         model.addAttribute("updateSuccess", true);
         try {
             populateUserWrapper(new UserProfileWrapper(request.getRemoteUser(), request), model);
-        } catch (SystemException | PortalException e) {
+            ModelAttributeUtil.populateModelWithPlatformConstants(model);
+        } catch (PortalException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -365,11 +378,12 @@ public class UserProfileController {
         model.addAttribute("messageBean", new MessageBean());
     }
 
-    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, String userId) {
+    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, String userId) throws SystemException {
         try {
             populateUserWrapper(new UserProfileWrapper(userId, request), model);
+            ModelAttributeUtil.populateModelWithPlatformConstants(model);
             return "showUserProfile";
-        } catch (SystemException | PortalException e) {
+        } catch (PortalException e) {
             _log.warn("Could not create user profile for " + userId);
         }
         return "showProfileNotInitialized";

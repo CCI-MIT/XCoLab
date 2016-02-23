@@ -53,7 +53,7 @@
         
         <c:if test="${proposalsPermissions.canAssignRibbon }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-            	<strong>${contestType.proposalName} ribbon in contest phase</strong>
+            	<strong>${contestType.proposalName} ribbon in ${contestType.contestName} phase</strong>
             	<div><!--  -->
             		<portlet:actionURL var="assignRibbonURL">
                     	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
@@ -122,7 +122,7 @@
 
 			<form action="${promoteProposalURL }" method="post">
 				<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-					<strong>Promote ${contestType.proposalName} to latest contest phase</strong>
+					<strong>Promote ${contestType.proposalName} to latest ${contestType.contestName} phase</strong>
 					<div>
 						<a class="primary-button" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
 							<span>Promote</span> ${contestType.proposalName}
@@ -229,7 +229,7 @@
             		</a>
         		</div>
 			
-				<h4>Please choose ${contestType.contestName} to which you'd like to copy this proposal</h4>
+				<h4>Please choose ${contestType.contestName} to which you'd like to copy this ${contestType.proposalName}</h4>
 				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
 					<div id="copyProposalContests"><!--  --></div>
 					<center>

@@ -9,6 +9,7 @@ import com.liferay.portal.UserIdException;
 import com.liferay.portal.UserLockoutException;
 import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
@@ -24,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.xcolab.utils.GlobalMessagesUtil;
+import org.xcolab.utils.ModelAttributeUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -142,12 +144,13 @@ public class ForgotPasswordController {
 
 	@RequestMapping(params="isError=true")
 	public String register(PortletRequest request, PortletResponse response,
-						   Model model) {
+						   Model model) throws SystemException {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		model.addAttribute("message", "Your password reset ticket has expired. Please try to reset your password again.");
 		model.addAttribute("redirect_url", themeDisplay.getPortalURL());
 
+        ModelAttributeUtil.populateModelWithPlatformConstants(model);
 		return "password_reset_error";
 	}
 

@@ -21,7 +21,7 @@
 						<portlet:param name="showActiveContests" value="${showActiveContests }" />
 						<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'CONTEST_NAME' ? not sortFilterPage.sortAscending : true }" />
 					</portlet:renderURL>
-					<a href="${sortURL }">Contest</a>
+					<a href="${sortURL }">${contestType.contestName}</a>
 					<div class="tooltip">
 						click to sort by ${contestType.contestName} title <div class="tt-arrow"><!--  --></div>
 					</div>

@@ -248,7 +248,7 @@
                             <p class="info">
                                 <c:choose>
                                     <c:when test="${currentTabWrapped.canEdit}">
-                                        Can be distributed to any Climate CoLab member
+                                        Can be distributed to any ${colabName} member
                                         <c:if test="${pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER'}">
                                             who is not in your team
                                         </c:if>
@@ -256,7 +256,7 @@
                                         If you do not complete this section, these points will not be allocated.
                                     </c:when>
                                     <c:otherwise>
-                                        Can be distributed to any Climate CoLab member
+                                        Can be distributed to any ${colabName} member
                                         <c:if test="${pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER'}">
                                             who is not in this ${contestType.proposalName}'s team
                                         </c:if>
