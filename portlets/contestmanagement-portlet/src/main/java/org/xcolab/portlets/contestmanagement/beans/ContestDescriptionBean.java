@@ -42,7 +42,7 @@ public class ContestDescriptionBean implements Serializable {
     @NotNull(message = "A schedule template must be selected.")
     private Long scheduleTemplateId;
 
-    private Boolean shouldUpdateContestUrlName;
+    private boolean shouldUpdateContestUrlName;
 
     @SuppressWarnings("unused")
     public ContestDescriptionBean() { }
