@@ -355,13 +355,6 @@ public class MainViewController {
                 }
             }
 
-            // City
-            String city = (String) portletSession.getAttribute(SSOKeys.SSO_CITY, PortletSession.APPLICATION_SCOPE);
-            if (com.liferay.portal.kernel.util.Validator.isNotNull(city)) {
-                setExpandoValue(user, CommunityConstants.CITY, city);
-                portletSession.removeAttribute(SSOKeys.SSO_CITY);
-            }
-
             // SSO
             if (StringUtils.isNotBlank(fbIdString)) {
                 try {
@@ -445,18 +438,6 @@ public class MainViewController {
 				valueName,
 				user.getUserId(),
 				data);
-	}
-
-	private String getCountryFromRemoteAddress(String ipAddr) throws UserLocationNotResolveableException {
-		try {
-			Location location = IpTranslationServiceUtil.getLocationForIp(ipAddr);
-			if (com.liferay.portal.kernel.util.Validator.isNotNull(location)) {
-				return location.getCountryNameInEnglish();
-			}
-		} catch(Exception e) {
-			throw new UserLocationNotResolveableException(String.format("Could not retrieve country from IP address %s", ipAddr), e);
-		}
-		throw new UserLocationNotResolveableException(String.format("Could not retrieve country from IP address %s", ipAddr));
 	}
 	
 	private String getCountryCodeFromRemoteAddress(String ipAddr) throws UserLocationNotResolveableException {
