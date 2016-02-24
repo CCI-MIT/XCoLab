@@ -1,34 +1,32 @@
 package org.xcolab.portlets.messaging;
 
+import com.ext.portlet.messaging.MessageUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.util.mail.MailEngineException;
+import org.xcolab.enums.MemberRole;
+import org.xcolab.utils.SendMessagePermissionChecker;
+
+import javax.faces.event.ActionEvent;
+import javax.mail.internet.AddressException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-
-import javax.faces.event.ActionEvent;
-import javax.mail.internet.AddressException;
-
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.service.RoleLocalServiceUtil;
-import org.xcolab.enums.MemberRole;
-
-import com.ext.portlet.messaging.MessageUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.util.mail.MailEngineException;
-import org.xcolab.utils.SendMessagePermissionChecker;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 public class SendMessageBean implements Serializable {
     /**
@@ -92,8 +90,8 @@ public class SendMessageBean implements Serializable {
         return users;
     }
     
-    public void send(ActionEvent e) throws AddressException, SystemException, PortalException, MailEngineException {
-        if (messageHoneypot != null && messageHoneypot.length() > 0) {
+    public void send(ActionEvent e) throws AddressException, SystemException, PortalException, MailEngineException, UnsupportedEncodingException {
+        if (messageHoneypot != null && !messageHoneypot.isEmpty()) {
             _log.info("Message was not sent because honeypot was filled - text: " +content + " honeypot: " + messageHoneypot);
             //trick bot into thinking message was sent
             messagingBean.messageSent();
@@ -113,8 +111,6 @@ public class SendMessageBean implements Serializable {
         boolean success = MessageUtil.checkLimitAndSendMessage(subject, content, Helper.getLiferayUser(), recipientIds);
         if (success) {
             messagingBean.messageSent();
-        } else {
-
         }
     }
     

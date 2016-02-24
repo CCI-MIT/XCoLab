@@ -91,7 +91,7 @@
 			</c:if>
             <div class="clearfix">&#160;</div>
             <div class="message-share-button">
-                <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }"><img src="${themeDisplay.pathThemeImages}/icon_new-message.gif" width="31" height="29" /> Share via CoLab messaging</a>
+                <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }"><img src="${themeDisplay.pathThemeImages}/icon_new-message.gif" width="31" height="29" /> Share via ${colabShortName} messaging</a>
             </div>
             <script type="text/javascript">
                 if (typeof(addthis) != 'undefined') {
@@ -182,8 +182,8 @@
         </c:if>
 		<c:if test="${not empty proposal.baseProposal }">
         	<div class="prop-avatar" style="font-size: 13px">
-        		<strong>Base proposal: </strong>
-            	This proposal was created as a copy of 
+        		<strong>Base ${contestType.proposalName}: </strong>
+            	This ${contestType.proposalName} was created as a copy of
             	<collab:proposalLink proposal="${proposal.baseProposal }" />
 			</div>
         </c:if>

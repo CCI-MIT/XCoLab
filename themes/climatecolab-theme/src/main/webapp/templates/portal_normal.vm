@@ -115,7 +115,7 @@
 
 <div id="header">
  <div class="inner">
-  <div id="logo"><a href="/"><img src="$images_folder/logo-climate-colab.png" alt="Climate Colab" height="42" /></a></div>
+  <div id="logo"><a href="/"><img src="$images_folder/logo-climate-colab.png" alt="$_colab_name" height="42" /></a></div>
   <ul id="menu">
    <li class="#if ($pageName== 'about' || $parentPageName == 'about') c #end"><a href="/web/guest/about">About</a></li>
    #foreach( $contest_page in $_contest_pages)

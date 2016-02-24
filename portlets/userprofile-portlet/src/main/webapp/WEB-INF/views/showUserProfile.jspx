@@ -7,6 +7,9 @@
 
     <jsp:directive.include file="./init.jspx" />
 
+	<!--@elvariable id="colabName" type="java.lang.String"-->
+	<!--@elvariable id="colabShortName" type="java.lang.String"-->
+
     <jsp:useBean id="currentUserProfile" type="org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper" scope="request" />
     <c:if test="${not empty userBean}">
 		<jsp:useBean id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean" scope="request" />
@@ -100,11 +103,11 @@
 							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
 						</td>
 						<td class="b points_box left_border top_border" width="45%">
-							CoLab Points (actual)
+							${colabShortName} Points (actual)
 							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
 							<br />
 							<div style="display: none;" class="profilehelp">
-								CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains.
+								${colabShortName} Points are awarded to all the members who contributed to a winning integrated ${currentUserProfile.proposalString}, as well as those who contributed to any sub-${currentUserProfile.proposalsString} it contains.
 								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
 							</div>
 							<div class="clearfix"></div>
@@ -120,11 +123,11 @@
 							</c:choose>
 						</td>
 						<td class="b points_box left_border bottom_border" width="43%">
-							CoLab Points (max. potential)
+							${colabShortName} Points (max. potential)
 							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
 							<br />
 							<div style="display: none;" class="profilehelp">
-								The maximum number of CoLab Points this member could receive. This is a measure of how many times the member’s proposals have been included in other proposals and how important it is in those proposals.
+								The maximum number of ${colabShortName} Points this member could receive. This is a measure of how many times the member’s ${currentUserProfile.proposalsString} have been included in other ${currentUserProfile.proposalsString} and how important it is in those ${currentUserProfile.proposalsString}.
 								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
 							</div>
 							<div class="clearfix"></div>
@@ -222,7 +225,7 @@
 
 			<h2 style="margin-top: 20px;">Activities</h2>
 			<c:if test="${empty currentUserProfile.activities}">
-					${userBean.firstName} does not have any Climate CoLab activities yet.
+					${userBean.firstName} does not have any ${colabName} activities yet.
 			</c:if>
 
 			<table class="colab">

@@ -840,6 +840,7 @@ public interface ProposalLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
             com.liferay.util.mail.MailEngineException,
+            java.io.UnsupportedEncodingException,
             javax.mail.internet.AddressException;
 
     /**

@@ -29,7 +29,7 @@ public class StaffMembersPreferences implements Serializable {
     private static final Map<Integer, String> categories;
     static
     {
-        categories = new HashMap<Integer, String>();
+        categories = new HashMap<>();
         categories.put(1, "Modeling Steering Committee: External Members");
         categories.put(2, "Modeling Steering Committee: Climate CoLab Staff");
         categories.put(3, "Expert Advisory Board");
@@ -58,9 +58,7 @@ public class StaffMembersPreferences implements Serializable {
     private boolean displayUrl;
     private int categoryId;
 
-    public StaffMembersPreferences() {
-    	
-    }
+    public StaffMembersPreferences() { }
 
     public StaffMembersPreferences(PortletRequest request) {
         PortletPreferences prefs = request.getPreferences();
@@ -76,22 +74,19 @@ public class StaffMembersPreferences implements Serializable {
         categoryId = defaultCategoryId;
         try {
             categoryId = Integer.parseInt(prefs.getValue(CATEGORY_ID, String.valueOf(defaultCategoryId)));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // ignore
         }
 
         try {
             portletTitle = prefs.getValue(PORTLET_TITLE, defaultPortletTitle);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // ignore
         }
 
         displayPhoto = Boolean.parseBoolean(prefs.getValue(DISPLAY_PHOTO,String.valueOf(defaultDisplayPhoto)));
         displayUrl = Boolean.parseBoolean(prefs.getValue(DISPLAY_URL, String.valueOf(defaultDisplayUrl)));
     }
-
     
     public String store(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {
 
@@ -146,6 +141,4 @@ public class StaffMembersPreferences implements Serializable {
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
-
-
 }

@@ -1,6 +1,5 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
-import com.ext.utils.authentication.AuthenticationService;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -9,26 +8,24 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.pwd.PasswordEncryptorUtil;
+import com.liferay.portal.security.auth.Authenticator;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
-import com.liferay.portal.util.PropsUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import com.liferay.portal.kernel.util.Validator;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.portlet.*;
-import javax.validation.Valid;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.liferay.portal.security.auth.Authenticator;
 
 
 @Controller
@@ -42,7 +39,7 @@ public class SingleSignOnController {
                              @RequestParam String login, @RequestParam String password) throws PortalException,
                                 SystemException, IOException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        User u = null;
+        User u;
         try{
             u = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(),login);
         } catch (NoSuchUserException nsu){
@@ -56,7 +53,7 @@ public class SingleSignOnController {
         PortletSession portletSession = request.getPortletSession();
 
         try {
-            Map<String, Object> resultsMap = new HashMap<String, Object>();
+            Map<String, Object> resultsMap = new HashMap<>();
             // Use local authentication API to check credentials
             int success = UserLocalServiceUtil.authenticateByScreenName(themeDisplay.getCompanyId(), login, password, null, request.getParameterMap(), resultsMap);
             if (success == Authenticator.SUCCESS) {
@@ -81,10 +78,11 @@ public class SingleSignOnController {
                     UserLocalServiceUtil.updateUser(u);
                     response.sendRedirect(themeDisplay.getURLHome());
                     return;
-                } else if (Validator.isNotNull(openId)){
+                }
+                if (Validator.isNotNull(openId)){
                     u.setOpenId(openId);
                     UserLocalServiceUtil.updateUser(u);
-                    portletSession.setAttribute("OPEN_ID_LOGIN",new Long(u.getUserId()), PortletSession.APPLICATION_SCOPE);
+                    portletSession.setAttribute("OPEN_ID_LOGIN", u.getUserId(), PortletSession.APPLICATION_SCOPE);
                     response.sendRedirect(themeDisplay.getURLHome());
                     return;
                 }
