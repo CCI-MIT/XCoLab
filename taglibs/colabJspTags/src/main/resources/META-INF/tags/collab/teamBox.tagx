@@ -14,8 +14,7 @@
 
   <div class="addpropbox  teamBox">
     <div class="teamMemberHeader">
-      <h2>${title}</h2>
-      <img id="${unsavedStar}" src="/climatecolab-theme/images/reg-star.png" width="10" height="9" align="texttop" style="display: none;" />
+      <h2>${title}<span id="${unsavedStar}" class="changedStarHidden">*</span></h2>
     </div>
     <div class="teamMemberAdd">
       <input id="${inputBox}" type="text" class="profile_input teamMembers" />
@@ -64,7 +63,7 @@
         jQuery("#"+memberList).val(members);
         jQuery("#"+userListId +" #" +userId).remove();
         jQuery.growlUI('',userName + ' was removed from ' + membersTitle);
-        jQuery("#"+unsavedStarTitle).show();
+        jQuery("#"+unsavedStarTitle).toggleClass('changedStarHidden changedStar');
         updateMemberList();
       }
 
@@ -90,17 +89,15 @@
         newLiElement.appendChild(spanPortrait);
         newLiElement.appendChild(spanName);
 
-        var unsavedStarImage = document.createElement("img");
-        unsavedStarImage.height = "7";
-        unsavedStarImage.width = "7";
-        unsavedStarImage.align= "texttop";
-        var imageSrcStar ="/climatecolab-theme/images/reg-star.png";
-        unsavedStarImage.setAttribute("src", imageSrcStar);
+        var unsavedStar = document.createElement("span");
+        unsavedStar.innerHTML = "*";
+        unsavedStar.className += "changedStar";
 
-        newLiElement.appendChild(unsavedStarImage);
+        newLiElement.appendChild(unsavedStar);
 
         document.getElementById(userListId).appendChild(newLiElement);
-        document.getElementById(unsavedStarTitle).style.display="";
+
+        jQuery("#"+unsavedStarTitle).toggleClass('changedStarHidden changedStar');
 
         // Make the element fully transparent.
         newLiElement.style.opacity = 0;
