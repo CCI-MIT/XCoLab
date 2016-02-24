@@ -213,19 +213,16 @@ public class ProposalImpactJSONController {
     }
 
     @ResourceMapping("proposalImpactSaveBasicProposalComment")
-    public void proposalImpactSaveBasicProposalComment(
-            ResourceRequest request,
-            ResourceResponse response,
-            @RequestParam(required = false) String impactAuthorComment,
-            @RequestParam(required = false) String impactIAFComment
-            ) throws IOException,
-            SystemException, PortalException {
+    public void proposalImpactSaveBasicProposalComment(ResourceRequest request, ResourceResponse response,
+                @RequestParam(required = false) String impactAuthorComment,
+                @RequestParam(required = false) String impactIAFComment)
+            throws IOException, SystemException, PortalException {
 
 
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
-        if (!permissions.getCanEdit() && !permissions.getCanFellowActions() && !permissions.getCanIAFActions()) {
+        if ( ! permissions.getCanEdit() && ! permissions.getCanFellowActions() && ! permissions.getCanIAFActions()) {
             responseJSON.put("success", false);
             response.getPortletOutputStream().write(responseJSON.toString().getBytes());
             return;
@@ -235,15 +232,15 @@ public class ProposalImpactJSONController {
         List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
                 getAttributes(proposal.getProposalId());
 
-        if(impactAuthorComment!=null||impactIAFComment!=null) {
-            if(impactAuthorComment!=null) {
+        if (impactAuthorComment != null|| impactIAFComment != null) {
+            if(impactAuthorComment != null) {
 
                 ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
                         HtmlUtil.cleanAll(impactAuthorComment),
                         ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
                         proposal, unversionedAttributes);
             }
-            if(impactIAFComment!=null) {
+            if (impactIAFComment != null) {
                 ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
                         ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
                         proposal, unversionedAttributes);

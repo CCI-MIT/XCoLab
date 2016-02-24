@@ -270,7 +270,7 @@
                     <c:if test="${canCommentAsAuthor}">
                         <div class="addpropbox q1">
                             <label>
-                                <strong>Author's comments </strong>
+                                <strong>Comments from Author </strong>
                             </label>
                             <div class="addprophelp">Give your comments for your proposal's estimation of impact.</div>
                             <div class="addpropInputContainer">
@@ -282,7 +282,7 @@
                     <c:if test="${canCommentAsAIF}">
                         <div class="addpropbox q1">
                             <label>
-                                <strong>Impact assement fellow's comments </strong>
+                                <strong>Comments from Impact Assessment Fellow </strong>
                             </label>
                             <div class="addprophelp">Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.</div>
                             <div class="addpropInputContainer">
@@ -296,7 +296,11 @@
 
                 <div>
                     <div class="edit-prop-butts">
-                        <a id="impact-edit-save-commnent-button" href="javascript:;">Save</a>
+                        <a id="impact-edit-save-commnent-button" href="javascript:;">Save and close</a>
+                    </div>
+
+                    <div class="edit-prop-butts">
+                        <a id="impact-edit-discard-commnent-button" href="javascript:;">Discard and close</a>
                     </div>
                     <span class="spinner-area">&#160;</span>
 
@@ -304,11 +308,11 @@
             </c:if>
             <c:if test="${ not edit}">
                 <c:if test="${not empty authorComment}">
-                    <h3>Author's comments</h3>
+                    <h3>Comments from Author</h3>
                     <p>${authorComment.stringValue}</p>
                 </c:if>
                 <c:if test="${not empty iafComment}">
-                    <h3>Impact assement fellow's comments</h3>
+                    <h3>Comments from Impact Assessment Fellow</h3>
                     <p>${iafComment.stringValue}</p>
                 </c:if>
             </c:if>
@@ -420,6 +424,7 @@
 
 
             $('a#impact-edit-save-commnent-button').click(saveComment);
+            $('a#impact-edit-discard-commnent-button').click(discardComment);
 
             // Change value in new series sector dropdown
             registerDropdownEventListener($('div#new-series select#region'), $('div#new-series select#sector'));
@@ -1029,6 +1034,12 @@
         var impactSeriesNewTableRowTemplate = Handlebars.compile($('#impactSeriesNewTableRowTemplate').html());
         var impactSeriesAuthorTemplate = Handlebars.compile($('#impactSeriesAuthorTemplate').html());
 
+        function discardComment(){
+            leaveEditMode();
+        }
+        function leaveEditMode(){
+            window.location = jQuery(".prop-tabs .c a").prop("href");//gets the current link for the impact tab
+        }
         function saveComment(sender) {
 
 
@@ -1055,8 +1066,10 @@
                     alert("Could not process request. Please contact the Administrator");
                 } else {
                  //
-                    console.log("Saved successfully");
+
+                   // console.log("Saved successfully");
                 }
+                leaveEditMode();
                 setCommentsSpinnerMode(false);
             });
         }

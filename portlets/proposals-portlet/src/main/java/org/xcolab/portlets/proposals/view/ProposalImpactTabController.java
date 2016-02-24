@@ -1,10 +1,14 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.*;
+
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ImpactIteration;
+import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.ProposalUnversionedAttribute;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalUnversionedAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -23,6 +27,7 @@ import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+
 import org.xcolab.portlets.proposals.wrappers.IntegratedProposalImpactSeries;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactScenarioCombinationWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
@@ -40,6 +45,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 
 /**
  * Created by kmang on 12/03/15.
@@ -80,14 +86,14 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
                 getAttributes(proposalWrapper.getProposalId());
-        if(unversionedAttributes!=null && !unversionedAttributes.isEmpty())
+        if ( unversionedAttributes != null && ! unversionedAttributes.isEmpty())
         for(ProposalUnversionedAttribute pua : unversionedAttributes) {
             if(pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString())) {
-                if(!Validator.isBlank(pua.getStringValue()))
+                if (!Validator.isBlank(pua.getStringValue()))
                 model.addAttribute("authorComment", pua);
             }
             if(pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString())) {
-                if(!Validator.isBlank(pua.getStringValue()))
+                if ( ! Validator.isBlank(pua.getStringValue()))
                     model.addAttribute("iafComment", pua);
             }
         }
@@ -98,7 +104,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         model.addAttribute("isGlobalContest", isGlobalContest(contest));
 
         boolean tabUsesModeling = (isRegionalContest(contest) || isGlobalContest(contest));
-        if(tabUsesModeling){
+        if (tabUsesModeling){
             model.addAttribute("availableModels", ContestLocalServiceUtil.getModelIdsAndNames(contest.getContestPK()));
             model.addAttribute("modelId", getModelIdIfProposalHasScenarioIdOrContestDefaultModelId());
             model.addAttribute("scenarioId", proposalWrapper.getScenarioId());
@@ -278,6 +284,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         }
         return proposalImpactSerieses;
     }
+
 
     private List<OntologyTerm> sortByName(Collection<OntologyTerm> collection) {
         List<OntologyTerm> list = new ArrayList<>(collection);

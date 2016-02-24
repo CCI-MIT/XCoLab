@@ -23,7 +23,7 @@ public class ProposalUnversionedAttributeUtil {
             throws PortalException, SystemException {
         ProposalUnversionedAttribute pua = null;
         pua = getCurrentProposalUnversionedAttribute(attributeName.toString(),unversionedAttributes);
-        if(pua == null) {
+        if (pua == null) {
             pua = ProposalUnversionedAttributeLocalServiceUtil.createProposalUnversionedAttribute(CounterLocalServiceUtil.increment(ProposalUnversionedAttribute.class.getName()));
             pua.setCreateAuthorId(authorId);
             pua.setCreateDate(new Date());
@@ -32,7 +32,7 @@ public class ProposalUnversionedAttributeUtil {
             pua.setStringValue(attributeValue);
             pua.setProposalId(proposal.getProposalId());
             ProposalUnversionedAttributeLocalServiceUtil.addProposalUnversionedAttribute(pua);
-        }else{
+        } else {
             pua.setCreateAuthorId(authorId);
             pua.setLastUpdateDate(new Date());
             pua.setStringValue(attributeValue);
@@ -42,9 +42,9 @@ public class ProposalUnversionedAttributeUtil {
 
     private static ProposalUnversionedAttribute getCurrentProposalUnversionedAttribute(String attributeName,
                                                                                        List<ProposalUnversionedAttribute> currentAttributes){
-        if(currentAttributes!= null &&! currentAttributes.isEmpty()){
+        if ( currentAttributes != null &&! currentAttributes.isEmpty() ){
             for(ProposalUnversionedAttribute currentAttribute : currentAttributes){
-                if(currentAttribute.getName().equals(attributeName))
+                if (currentAttribute.getName().equals(attributeName))
                     return currentAttribute;
             }
 
