@@ -71,6 +71,7 @@ public class AutoPromoteHelper {
                 try {
                 	_log.info("promoting phase " + phase.getContestPhasePK());
                 	Contest contest = ContestLocalServiceUtil.getContest(phase.getContestPK());
+                    _log.info("promoting contest " + contest.getContestPK());
                     ContestPhase nextPhase = ContestPhaseLocalServiceUtil.getNextContestPhase(phase);
                     for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
                         //skip already promoted proposal
@@ -123,6 +124,7 @@ public class AutoPromoteHelper {
                 // Only do the promotion if all proposals have been successfully reviewed
                 if (phasePromotionHelper.allProposalsReviewed()) {
                 	Contest contest = ContestLocalServiceUtil.getContest(phase.getContestPK());
+                    _log.info("promoting contest " + contest.getContestPK() + " (judging) ");
                     ContestPhase nextPhase = ContestPhaseLocalServiceUtil.getNextContestPhase(phase);
                     for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
                     	try {
