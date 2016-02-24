@@ -47,50 +47,64 @@ if [[ "$_mysql" ]]; then
 fi
 
 #Install and deploy
-cd $XCOLAB_SRC
 mvn install -N
-cd $XCOLAB_SRC
+cd taglibs
 mvn install -N
-cd $XCOLAB_SRC/taglibs
+cd ..
+cd themes
 mvn install -N
-cd $XCOLAB_SRC/themes
+cd ..
+cd services
 mvn install -N
-cd $XCOLAB_SRC/services
+cd ..
+cd portlets
 mvn install -N
-cd $XCOLAB_SRC/portlets
+cd ..
+cd hooks
 mvn install -N
-cd $XCOLAB_SRC/hooks
+cd ..
+cd layouts
 mvn install -N
-cd $XCOLAB_SRC/layouts
-mvn install -N
+cd ..
 
-cd $XCOLAB_SRC/services/plansProposalsFacade
+cd services/plansProposalsFacade
 mvn install -N
+cd ../..
 
-cd $XCOLAB_SRC/services/plansProposalsFacade/plansProposalsFacade-portlet-service
-mvn clean compile package install
+cd services/plansProposalsFacade/plansProposalsFacade-portlet-service
+mvn clean compile package install clean
+cd ../../..
 
-cd $XCOLAB_SRC/taglibs/collabIceFacelets
-mvn clean compile package install
+cd taglibs/colabIceFacelets
+mvn clean compile package install clean
+cd ../..
 
-cd $XCOLAB_SRC/services/plansProposalsFacade/plansProposalsFacade-portlet
-mvn clean compile package liferay:deploy
+cd taglibs/colabJspTags
+mvn clean compile package install clean
+cd ../..
 
-cd $XCOLAB_SRC/themes/climatecolab-theme
-mvn clean compile package liferay:deploy
+cd services/plansProposalsFacade/plansProposalsFacade-portlet
+mvn clean compile package liferay:deploy -DskipTests=true clean
+cd ../../..
 
-cd $XCOLAB_SRC/layouts/climatecolab-layout
-mvn clean compile package liferay:deploy
+cd themes/climatecolab-theme
+  mvn clean compile liferay:build-css package liferay:deploy clean
+cd ../..
 
-cd $XCOLAB_SRC/hooks/climatecolab-hooks
-mvn clean compile package liferay:deploy
+cd layouts/climatecolab-layout
+  mvn clean compile package liferay:deploy clean
+cd ../..
 
-cd $XCOLAB_SRC/portlets
+cd hooks/climatecolab-hooks
+  mvn clean compile package liferay:deploy clean
+cd ../..
+
+cd portlets
 for D in *; do
     if [ -d "${D}" ]; then
         cd $D
 		pwd
-		mvn clean compile package liferay:deploy
+		mvn clean compile package liferay:deploy clean
 		cd ..
     fi
 done
