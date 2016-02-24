@@ -119,18 +119,24 @@ public class FileUploadFilter implements Filter {
 			cropY = (h - w) / 2;
 		}
 
-		BufferedImage cropedImage = img.getSubimage(cropX, cropY, cropSize, cropSize);
-		BufferedImage dimg = new BufferedImage(IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage croppedImage = img.getSubimage(cropX, cropY, cropSize,
+				cropSize);
+
+		int imgType = BufferedImage.TYPE_3BYTE_BGR;
+		if (img.getType() != BufferedImage.TYPE_CUSTOM) {
+			imgType = img.getType();
+		}
+
+		BufferedImage dimg = new BufferedImage(IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS, imgType);
 		Graphics2D g = dimg.createGraphics();
-		g.setComposite(AlphaComposite.Clear);
-		g.fillRect(0,0, IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g.setComposite(AlphaComposite.Src);
-		g.drawImage(cropedImage, 0, 0, IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS, 0, 0, cropSize, cropSize, null);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.drawImage(croppedImage, 0, 0, IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS, 0, 0, cropSize, cropSize,
+				null);
 		g.dispose();
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ImageIO.write(dimg, "png", bos);
+		ImageIO.write(dimg, "jpg", bos);
 		return bos.toByteArray();
 	}
 
