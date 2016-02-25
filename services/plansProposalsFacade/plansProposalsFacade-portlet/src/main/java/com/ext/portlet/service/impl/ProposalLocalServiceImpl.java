@@ -23,7 +23,6 @@ import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
@@ -238,7 +237,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposal.setFellowDiscussionId(fellowsDiscussion.getId());
 
         // create group
-        Group group = createGroupAndSetUpPermissions(authorId, proposalId);
+        Group group = createGroupAndSetUpPermissions(authorId, proposalId, contest);
         proposal.setGroupId(group.getGroupId());
 
 
@@ -1077,19 +1076,20 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *
      * @param authorId   id of a proposal author
      * @param proposalId id of a proposal
+     * @param contest
      * @return newly created group
      * @throws PortalException in case on LR error
      * @throws SystemException in case on LR error
      * @author janusz
      */
     @Transactional
-    private Group createGroupAndSetUpPermissions(long authorId, long proposalId) throws PortalException,
+    private Group createGroupAndSetUpPermissions(long authorId, long proposalId, Contest contest) throws PortalException,
             SystemException {
 
         // create new gropu
         ServiceContext groupServiceContext = new ServiceContext();
         groupServiceContext.setUserId(authorId);
-        final ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposalId);
+        final ContestType contestType = contestTypeLocalService.getContestType(contest);
 
         String groupName = contestType.getProposalName() + "_" + proposalId + "_" + new Date().getTime();
 
