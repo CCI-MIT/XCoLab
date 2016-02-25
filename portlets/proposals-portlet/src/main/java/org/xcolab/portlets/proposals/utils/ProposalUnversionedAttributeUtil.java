@@ -42,7 +42,7 @@ public class ProposalUnversionedAttributeUtil {
 
     private static ProposalUnversionedAttribute getCurrentProposalUnversionedAttribute(String attributeName,
                                                                                        List<ProposalUnversionedAttribute> currentAttributes){
-        if ( currentAttributes != null &&! currentAttributes.isEmpty() ){
+        if ( currentAttributes != null && !currentAttributes.isEmpty() ){
             for(ProposalUnversionedAttribute currentAttribute : currentAttributes){
                 if (currentAttribute.getName().equals(attributeName))
                     return currentAttribute;

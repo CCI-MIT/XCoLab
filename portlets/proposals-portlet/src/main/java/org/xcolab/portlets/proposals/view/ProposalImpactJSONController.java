@@ -222,7 +222,7 @@ public class ProposalImpactJSONController {
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
-        if ( ! permissions.getCanEdit() && ! permissions.getCanFellowActions() && ! permissions.getCanIAFActions()) {
+        if ( !permissions.getCanEdit() && !permissions.getCanFellowActions() && !permissions.getCanIAFActions()) {
             responseJSON.put("success", false);
             response.getPortletOutputStream().write(responseJSON.toString().getBytes());
             return;
@@ -232,7 +232,7 @@ public class ProposalImpactJSONController {
         List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
                 getAttributes(proposal.getProposalId());
 
-        if (impactAuthorComment != null|| impactIAFComment != null) {
+        if (impactAuthorComment != null || impactIAFComment != null) {
             if(impactAuthorComment != null) {
 
                 ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
