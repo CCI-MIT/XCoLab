@@ -73,13 +73,9 @@ public class ImageUploadUtils {
             imgType = img.getType();
         }
 
-        BufferedImage dimg = new BufferedImage(IMAGE_RESIZE_WIDTH, IMAGE_RESIZE_HEIGHT, imgType);
-        Graphics2D g = dimg.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g.drawImage(croppedImage, 0, 0, IMAGE_RESIZE_WIDTH, IMAGE_RESIZE_HEIGHT, 0, 0, cropSize, cropSize,
+        BufferedImage dimg = new BufferedImage(IMAGE_RESIZE_WIDTH, IMAGE_RESIZE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+        dimg.createGraphics().drawImage(croppedImage, 0, 0, IMAGE_RESIZE_WIDTH, IMAGE_RESIZE_HEIGHT, 0, 0, cropSize, cropSize,
                 null);
-        g.dispose();
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ImageIO.write(dimg, "jpg", bos);

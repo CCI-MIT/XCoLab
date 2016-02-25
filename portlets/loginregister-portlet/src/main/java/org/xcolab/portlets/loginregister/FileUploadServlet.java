@@ -105,13 +105,9 @@ public class FileUploadServlet extends HttpServlet {
 			imgType = img.getType();
 		}
 
-		BufferedImage dimg = new BufferedImage(newW, newH, imgType);
-		Graphics2D g = dimg.createGraphics();
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g.drawImage(cropedImage, 0, 0, newW, newH, 0, 0, cropSize, cropSize,
+		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_RGB);
+		dimg.createGraphics().drawImage(cropedImage, 0, 0, newW, newH, 0, 0, cropSize, cropSize,
 				null);
-		g.dispose();
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ImageIO.write(dimg, "jpg", bos);
