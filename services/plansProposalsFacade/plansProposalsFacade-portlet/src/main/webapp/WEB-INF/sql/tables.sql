@@ -718,6 +718,20 @@ create table xcolab_ProposalSupporter (
 	primary key (proposalId, userId)
 );
 
+create table xcolab_ProposalUnversionedAttribute (
+	id_ LONG not null primary key,
+	proposalId LONG,
+	createAuthorId LONG,
+	lastAuthorId LONG,
+	createDate DATE null,
+	lastUpdateDate DATE null,
+	name VARCHAR(75) null,
+	addtionalId INTEGER,
+	numericValue LONG,
+	stringValue VARCHAR(75) null,
+	realValue DOUBLE
+);
+
 create table xcolab_ProposalVersion (
 	proposalId LONG not null,
 	version INTEGER not null,

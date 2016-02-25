@@ -23,6 +23,8 @@
         <portlet:param name="regionTermId" value="@@REPLACE-REGION_TERM_ID@@"/>
     </portlet:resourceURL>
 
+
+
     <portlet:resourceURL var="saveDataSeriesURL" id="proposalImpactSaveDataSeries">
         <portlet:param name="focusAreaId" value="@@REPLACE-FOCUS_AREA_ID@@"/>
     </portlet:resourceURL>
@@ -34,6 +36,8 @@
     <portlet:resourceURL var="updateAllSeriesURL" id="proposalImpactUpdateAllSeries">
     </portlet:resourceURL>
 
+    <portlet:resourceURL var="saveCommentURL" id="proposalImpactSaveBasicProposalComment">
+    </portlet:resourceURL>
     <script>
         // Placeholder strings
         var SECTOR_TERM_ID_PLACEHOLDER = "SECTOR_TERM_ID";
@@ -50,6 +54,7 @@
         var saveDataSeriesURL = '${saveDataSeriesURL}';
         var deleteDataSeriesURL = '${deleteDataSeriesURL}';
         var updateAllSeriesURL = '${updateAllSeriesURL}'
+        var saveCommentURL = '${saveCommentURL}';
     </script>
 
     <!-- HTML templates -->
@@ -257,6 +262,63 @@
                 </div>
             </c:if>
         </div>
+
+        <div class="impactComments">
+            <c:if test="${edit}">
+                <div id="edit-comments">
+                    <span class="spinner-area"><!-- --> </span>
+                    <c:if test="${canCommentAsAuthor}">
+                        <div class="addpropbox q1">
+                            <label>
+                                <strong>Comments from Author </strong>
+                            </label>
+                            <div class="addprophelp">Give your comments for your proposal's estimation of impact.</div>
+                            <div class="addpropInputContainer">
+                                <textarea id="impactAuthorComment_text_area"><c:if test="${not empty authorComment}">${authorComment.stringValue}</c:if></textarea>
+                                <div class="clearfix"><!--  --></div>
+                            </div>
+                        </div>
+                    </c:if>
+                    <c:if test="${canCommentAsAIF}">
+                        <div class="addpropbox q1">
+                            <label>
+                                <strong>Comments from Impact Assessment Fellow </strong>
+                            </label>
+                            <div class="addprophelp">Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.</div>
+                            <div class="addpropInputContainer">
+                                <textarea  id="impactIAFComment_text_area"><c:if test="${not empty iafComment}">${iafComment.stringValue}</c:if></textarea>
+                                <div class="clearfix"><!--  --></div>
+
+                            </div>
+                        </div>
+                    </c:if>
+                </div>
+
+                <div>
+                    <div class="edit-prop-butts">
+                        <a id="impact-edit-save-commnent-button" href="javascript:;">Save and close</a>
+                    </div>
+
+                    <div class="edit-prop-butts">
+                        <a id="impact-edit-discard-commnent-button" href="javascript:;">Discard and close</a>
+                    </div>
+                    <span class="spinner-area">&#160;</span>
+
+                </div>
+            </c:if>
+            <c:if test="${ not edit}">
+                <c:if test="${not empty authorComment}">
+                    <h3>Comments from Author</h3>
+                    <p>${authorComment.stringValue}</p>
+                </c:if>
+                <c:if test="${not empty iafComment}">
+                    <h3>Comments from Impact Assessment Fellow</h3>
+                    <p>${iafComment.stringValue}</p>
+                </c:if>
+            </c:if>
+        </div>
+
+
     </div>
 
     <c:choose>
@@ -358,6 +420,11 @@
 
             $('a#continue-button').click(continueButtonClicked);
             $('a#save-button').click(saveDataSeries);
+
+
+
+            $('a#impact-edit-save-commnent-button').click(saveComment);
+            $('a#impact-edit-discard-commnent-button').click(discardComment);
 
             // Change value in new series sector dropdown
             registerDropdownEventListener($('div#new-series select#region'), $('div#new-series select#sector'));
@@ -828,6 +895,7 @@
             }
         }
 
+
         function insertNewSeries(resultValues) {
 
             var regionTermName = $('div#impact-series-detail h3#region-title').text();
@@ -965,5 +1033,60 @@
         var impactSeriesSaveButtonTemplate = Handlebars.compile($("#impactSeriesSaveButtonTemplate").html());
         var impactSeriesNewTableRowTemplate = Handlebars.compile($('#impactSeriesNewTableRowTemplate').html());
         var impactSeriesAuthorTemplate = Handlebars.compile($('#impactSeriesAuthorTemplate').html());
+
+        function discardComment(){
+            leaveEditMode();
+        }
+        function leaveEditMode(){
+            window.location = jQuery(".prop-tabs .c a").prop("href");//gets the current link for the impact tab
+        }
+        function saveComment(sender) {
+
+
+            var url = saveCommentURL;
+
+
+            var postJson = {};
+
+            setCommentsSpinnerMode(true);
+            var impactAuthorComment = "";
+            var impactIAFComment = "";
+            var parameters={};
+            if(jQuery("#impactAuthorComment_text_area")) {
+                impactAuthorComment = jQuery("#impactAuthorComment_text_area").val();
+                parameters.impactAuthorComment = impactAuthorComment;
+            }
+            if(jQuery("#impactIAFComment_text_area")) {
+                impactIAFComment = jQuery("#impactIAFComment_text_area").val();
+                parameters.impactIAFComment = impactIAFComment;
+            }
+            $.post(url ,parameters , function (response) {
+                responseData = JSON.parse(response);
+                if (responseData.success === false) {
+                    alert("Could not process request. Please contact the Administrator");
+                } else {
+                 //
+
+                   // console.log("Saved successfully");
+                }
+                leaveEditMode();
+                setCommentsSpinnerMode(false);
+            });
+        }
+
+        function setCommentsSpinnerMode(on) {
+            var $impactSeriesDetailElement = $('#edit-comments');
+            if (on) {
+                $impactSeriesDetailElement.addClass('disabled');
+
+                $impactSeriesDetailElement.find('.spinner-area').spin('large');
+
+            } else {
+                $impactSeriesDetailElement.removeClass('disabled');
+
+                $impactSeriesDetailElement.find('.spinner-area').spin(false);
+            }
+        }
+
     </script>
 </jsp:root>

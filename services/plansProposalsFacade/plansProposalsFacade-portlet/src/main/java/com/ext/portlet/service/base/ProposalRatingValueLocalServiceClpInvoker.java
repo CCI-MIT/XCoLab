@@ -41,12 +41,12 @@ public class ProposalRatingValueLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName506;
-    private String[] _methodParameterTypes506;
-    private String _methodName507;
-    private String[] _methodParameterTypes507;
     private String _methodName512;
     private String[] _methodParameterTypes512;
+    private String _methodName513;
+    private String[] _methodParameterTypes513;
+    private String _methodName518;
+    private String[] _methodParameterTypes518;
 
     public ProposalRatingValueLocalServiceClpInvoker() {
         _methodName0 = "addProposalRatingValue";
@@ -131,17 +131,17 @@ public class ProposalRatingValueLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalRatingValue"
             };
 
-        _methodName506 = "getBeanIdentifier";
+        _methodName512 = "getBeanIdentifier";
 
-        _methodParameterTypes506 = new String[] {  };
+        _methodParameterTypes512 = new String[] {  };
 
-        _methodName507 = "setBeanIdentifier";
+        _methodName513 = "setBeanIdentifier";
 
-        _methodParameterTypes507 = new String[] { "java.lang.String" };
+        _methodParameterTypes513 = new String[] { "java.lang.String" };
 
-        _methodName512 = "getRatingValuesForRatingTypeId";
+        _methodName518 = "getRatingValuesForRatingTypeId";
 
-        _methodParameterTypes512 = new String[] { "long" };
+        _methodParameterTypes518 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -233,20 +233,20 @@ public class ProposalRatingValueLocalServiceClpInvoker {
             return ProposalRatingValueLocalServiceUtil.updateProposalRatingValue((com.ext.portlet.model.ProposalRatingValue) arguments[0]);
         }
 
-        if (_methodName506.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes506, parameterTypes)) {
+        if (_methodName512.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
             return ProposalRatingValueLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName507.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes507, parameterTypes)) {
+        if (_methodName513.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
             ProposalRatingValueLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName512.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             return ProposalRatingValueLocalServiceUtil.getRatingValuesForRatingTypeId(((Long) arguments[0]).longValue());
         }
 
