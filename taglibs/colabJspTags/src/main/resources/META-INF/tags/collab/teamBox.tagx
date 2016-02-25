@@ -14,7 +14,7 @@
 
   <div class="addpropbox  teamBox">
     <div class="teamMemberHeader">
-      <h2>${title}<span id="${unsavedStar}" class="changedStarHidden">*</span></h2>
+      <h2>${title}<span id="${unsavedStar}" class="changedStar">*</span></h2>
     </div>
     <div class="teamMemberAdd">
       <input id="${inputBox}" type="text" class="profile_input teamMembers" />
@@ -63,7 +63,7 @@
         jQuery("#"+memberList).val(members);
         jQuery("#"+userListId +" #" +userId).remove();
         jQuery.growlUI('',userName + ' was removed from ' + membersTitle);
-        jQuery("#"+unsavedStarTitle).toggleClass('changedStarHidden changedStar');
+        jQuery("#"+unsavedStarTitle).toggle();
         updateMemberList();
       }
 
@@ -97,7 +97,7 @@
 
         document.getElementById(userListId).appendChild(newLiElement);
 
-        jQuery("#"+unsavedStarTitle).toggleClass('changedStarHidden changedStar');
+        jQuery("#"+unsavedStarTitle).toggle();
 
         // Make the element fully transparent.
         newLiElement.style.opacity = 0;
