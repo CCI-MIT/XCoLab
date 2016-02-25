@@ -1,5 +1,7 @@
 package org.xcolab.portlets.loginregister;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 
 import javax.portlet.ActionRequest;
@@ -9,6 +11,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class Helper {
+
+    private static final Log _log = LogFactoryUtil.getLog(Helper.class);
     
     public static String removeParamFromRequestStr(String requestStr, String param) {
         return requestStr == null ? null : requestStr.replaceAll("&?" + param + "=[^&#]*", "");
@@ -44,6 +48,7 @@ public class Helper {
             sb.append("signinRegError=");
             String exception = iter.next();
             sb.append(exception.substring(exception.lastIndexOf(".") + 1));
+            _log.error("User encountered exception during login: " + exception);
             
             appendAnd = true;
         }
