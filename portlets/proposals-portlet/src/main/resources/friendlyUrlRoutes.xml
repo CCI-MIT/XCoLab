@@ -90,7 +90,7 @@
     </route>
 
     <route>
-        <pattern>/contestId/{contestYear}/{contestUrlName}/model</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/model</pattern>
         <generated-parameter name="pageToDisplay">contestModel</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>

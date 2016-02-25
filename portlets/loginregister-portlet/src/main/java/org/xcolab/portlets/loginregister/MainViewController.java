@@ -54,6 +54,7 @@ import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
+import org.xcolab.utils.ModelAttributeUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -98,7 +99,7 @@ public class MainViewController {
 	 *
 	 */
     @RequestMapping
-    public String register(PortletRequest request, PortletResponse response, Model model) {
+    public String register(PortletRequest request, PortletResponse response, Model model) throws SystemException {
 		
 		ThemeDisplay themeDisplay = (ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY);
@@ -146,6 +147,7 @@ public class MainViewController {
                 _log.warn(e);
             }
         }
+        ModelAttributeUtil.populateModelWithPlatformConstants(model);
         return "view";
 	}
 
@@ -191,7 +193,7 @@ public class MainViewController {
 	@RequestMapping(params = "error=true")
 	public String registerError(PortletRequest request, Model model,
 			@Valid CreateUserBean newAccountBean, BindingResult result,
-			@RequestParam(required = false) String redirect) {
+			@RequestParam(required = false) String redirect) throws SystemException {
 		if (request.getParameter("recaptchaError") != null) {
 			result.addError(new ObjectError("createUserBean",
 					"Invalid words in captcha field"));
@@ -200,7 +202,7 @@ public class MainViewController {
         if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
             model.addAttribute("redirect", com.liferay.portal.kernel.util.HtmlUtil.escape(redirect));
         }
-
+        ModelAttributeUtil.populateModelWithPlatformConstants(model);
 		return "view";
 	}
     
@@ -306,7 +308,8 @@ public class MainViewController {
      * @param redirect          Redirect URL for this request (may be null)
      * @throws Exception
      */
-    public static void completeRegistration(ActionRequest request, ActionResponse response, CreateUserBean newAccountBean, String redirect, boolean postRegistration) throws Exception {
+    public static void completeRegistration(ActionRequest request, ActionResponse response, CreateUserBean newAccountBean,
+                                            String redirect, boolean postRegistration) throws Exception {
         HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
         PortletSession portletSession = request.getPortletSession();
         String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
@@ -353,13 +356,6 @@ public class MainViewController {
                 } catch (NoSuchBalloonUserTrackingException e) {
                     _log.error("Can't find balloon user tracking for uuid: " + balloonCookie.getUuid());
                 }
-            }
-
-            // City
-            String city = (String) portletSession.getAttribute(SSOKeys.SSO_CITY, PortletSession.APPLICATION_SCOPE);
-            if (com.liferay.portal.kernel.util.Validator.isNotNull(city)) {
-                setExpandoValue(user, CommunityConstants.CITY, city);
-                portletSession.removeAttribute(SSOKeys.SSO_CITY);
             }
 
             // SSO
@@ -445,18 +441,6 @@ public class MainViewController {
 				valueName,
 				user.getUserId(),
 				data);
-	}
-
-	private String getCountryFromRemoteAddress(String ipAddr) throws UserLocationNotResolveableException {
-		try {
-			Location location = IpTranslationServiceUtil.getLocationForIp(ipAddr);
-			if (com.liferay.portal.kernel.util.Validator.isNotNull(location)) {
-				return location.getCountryNameInEnglish();
-			}
-		} catch(Exception e) {
-			throw new UserLocationNotResolveableException(String.format("Could not retrieve country from IP address %s", ipAddr), e);
-		}
-		throw new UserLocationNotResolveableException(String.format("Could not retrieve country from IP address %s", ipAddr));
 	}
 	
 	private String getCountryCodeFromRemoteAddress(String ipAddr) throws UserLocationNotResolveableException {

@@ -2,6 +2,7 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceUtil;
 import com.ext.portlet.Activity.SubscriptionType;
+import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.model.Proposal;
@@ -39,6 +40,7 @@ import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.collections.comparators.ComparatorChain;
 import org.xcolab.utils.HtmlUtil;
+import org.xcolab.utils.TemplateReplacementUtil;
 
 import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
@@ -97,11 +99,11 @@ public class ActivitySubscriptionLocalServiceImpl
 
     private final static String DOMAIN_PLACEHOLDER = "DOMAIN_PLACEHOLDER";
 
-    private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE = "Climate CoLab Activities – Daily Digest DATE";
+    private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE = "<colab-name/> Activities – Daily Digest DATE";
 
     private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER = "DATE";
 
-    private static final String DAILY_DIGEST_ENTRY_TEXT = "Climate CoLab Digest for DATE";
+    private static final String DAILY_DIGEST_ENTRY_TEXT = "<colab-name/> Digest for DATE";
 
     private static final String FAQ_DIGEST_URL_PATH = "/faqs#digest";
 
@@ -109,11 +111,11 @@ public class ActivitySubscriptionLocalServiceImpl
 
     private static final String UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER = "UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER";
 
-    private static final String UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to a contest, proposal or discussion post on the Climate CoLab.  " +
+    private static final String UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to a <contest/>, <proposal/> or discussion post on the <colab-name/>.  " +
             "To receive all notifications in a daily digest, please click <a href='FAQ_DIGEST_LINK_PLACEHOLDER'>here</a> for instructions.  " +
-            "To stop receiving notifications from this contest, proposal or discussion post, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
+            "To stop receiving notifications from this <contest/>, <proposal/> or discussion post, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
-    private static final String UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to receiving a daily digest of activities on the Climate CoLab.  " +
+    private static final String UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to receiving a daily digest of activities on the <colab-name/>.  " +
             "To stop receiving these notifications, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
 
@@ -522,9 +524,9 @@ public class ActivitySubscriptionLocalServiceImpl
         return ActivitySubscriptionLocalServiceUtil.dynamicQuery(query);
     }
 
-	private void sendEmailMessage(User recipient, String subject, String body, String unregisterFooter, String portalBaseUrl) {
+	private void sendEmailMessage(User recipient, String subject, String body, String unregisterFooter, String portalBaseUrl) throws SystemException, NoSuchConfigurationAttributeException {
 		try {
-			InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "The Climate CoLab Team");
+			InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
 			InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
 
 			body +=  MESSAGE_FOOTER_TEMPLATE;
@@ -579,9 +581,11 @@ public class ActivitySubscriptionLocalServiceImpl
         return USER_PROFILE_LINK_TEMPLATE.replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getUserId())).replaceAll(DOMAIN_PLACEHOLDER, portalBaseUrl);
     }
 
-    private String getUnsubscribeIndividualSubscriptionFooter(String portalBaseUrl, String unsubscribeUrl) {
+    private String getUnsubscribeIndividualSubscriptionFooter(String portalBaseUrl, String unsubscribeUrl) throws PortalException, SystemException {
         String faqUrl = portalBaseUrl + FAQ_DIGEST_URL_PATH;
-        String footer =  StringUtil.replace(UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT, FAQ_DIGEST_LINK_PLACEHOLDER, faqUrl);
+        String footer =  TemplateReplacementUtil.replaceContestTypeStrings(
+                StringUtil.replace(UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT, FAQ_DIGEST_LINK_PLACEHOLDER, faqUrl), null);
+        //TODO: select contest type above? -> uses generic word!
         footer = StringUtil.replace(footer, UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
         return  footer;
     }

@@ -79,11 +79,13 @@ import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
 import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
 import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
+import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.utils.UrlBuilder;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import javax.mail.internet.AddressException;
 import javax.portlet.PortletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -120,7 +122,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * Default description of group working on a plan.
      */
-    public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on plan %s";
+    public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on <proposal/> %s";
 
     @BeanReference(type = EventBusService.class)
     private EventBusService eventBus;
@@ -235,7 +237,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposal.setFellowDiscussionId(fellowsDiscussion.getId());
 
         // create group
-        Group group = createGroupAndSetUpPermissions(authorId, proposalId);
+        Group group = createGroupAndSetUpPermissions(authorId, proposalId, contest);
         proposal.setGroupId(group.getGroupId());
 
 
@@ -1008,7 +1010,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase, PortletRequest request)
-            throws PortalException, SystemException, AddressException, MailEngineException {
+            throws PortalException, SystemException, AddressException, MailEngineException, UnsupportedEncodingException {
 
         String subject = "Judging Results on your Proposal " + proposalAttributeLocalService.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
@@ -1074,22 +1076,26 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *
      * @param authorId   id of a proposal author
      * @param proposalId id of a proposal
+     * @param contest
      * @return newly created group
      * @throws PortalException in case on LR error
      * @throws SystemException in case on LR error
      * @author janusz
      */
     @Transactional
-    private Group createGroupAndSetUpPermissions(long authorId, long proposalId) throws PortalException,
+    private Group createGroupAndSetUpPermissions(long authorId, long proposalId, Contest contest) throws PortalException,
             SystemException {
 
         // create new gropu
         ServiceContext groupServiceContext = new ServiceContext();
         groupServiceContext.setUserId(authorId);
-        String groupName = "Proposal_" + proposalId + "_" + new Date().getTime();
+        final ContestType contestType = contestTypeLocalService.getContestType(contest);
 
+        String groupName = contestType.getProposalName() + "_" + proposalId + "_" + new Date().getTime();
+
+        final String groupDescription = TemplateReplacementUtil.replaceContestTypeStrings(DEFAULT_GROUP_DESCRIPTION, contestType);
         Group group = groupService.addGroup(StringUtils.substring(groupName, 0, 80),
-                String.format(DEFAULT_GROUP_DESCRIPTION, StringUtils.substring(groupName, 0, 80)),
+                String.format(groupDescription, StringUtils.substring(groupName, 0, 80)),
                 GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
 
         // set up permissions

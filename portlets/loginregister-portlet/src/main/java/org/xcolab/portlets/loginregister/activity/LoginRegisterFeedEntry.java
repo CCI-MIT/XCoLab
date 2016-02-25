@@ -22,21 +22,19 @@ import com.liferay.portlet.social.model.SocialActivityFeedEntry;
  */
 public class LoginRegisterFeedEntry extends BaseSocialActivityInterpreter implements ICollabActivityInterpreter {
 
-    private static Log _log = LogFactoryUtil.getLog(LoginRegisterFeedEntry.class);
+    private static final Log _log = LogFactoryUtil.getLog(LoginRegisterFeedEntry.class);
 
     private static final String[] _CLASS_NAMES = { User.class.getName() };
 
+    @Override
     public String[] getClassNames() {
         return _CLASS_NAMES;
     }
 
     @Override
     public String getName(Long classNameId, Long classPK, Integer type, String extraData) {
-        StringBuilder name = new StringBuilder();
-
-        User user;
         try {
-            user = UserLocalServiceUtil.getUser(classPK);
+            User user = UserLocalServiceUtil.getUser(classPK);
             LoginRegisterActivityKeys key = LoginRegisterActivityKeys.getForType(type);
             
             if (key != null) {
@@ -51,23 +49,18 @@ public class LoginRegisterFeedEntry extends BaseSocialActivityInterpreter implem
     }
 
     @Override
-    protected SocialActivityFeedEntry doInterpret(SocialActivity activity, ThemeDisplay themeDisplay) throws Exception {
+    protected SocialActivityFeedEntry doInterpret(SocialActivity activity, ThemeDisplay themeDisplay) throws PortalException, SystemException {
 
         LoginRegisterActivityKeys key = LoginRegisterActivityKeys.getForType(activity.getType());
         
         if (key != null) {
             User user = UserLocalServiceUtil.getUser(activity.getClassPK());
-            String body = "";
             String mailSubject = key.getTitle(user);
-            
-            String mailBody = "";
-            String title = mailSubject;
 
 
-            body = key.getBody(user);
-            mailBody = body;
+            String body = key.getBody(user);
 
-            return new BaseFeedEntryWithMailInfo("", title, body, mailSubject, mailBody);
+            return new BaseFeedEntryWithMailInfo("", mailSubject, body, mailSubject, body);
         }
 
         return null;

@@ -2,8 +2,11 @@
 package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -49,8 +52,11 @@ public class CreateProposalController extends BaseProposalsController {
         Proposal proposal = ProposalLocalServiceUtil.createProposal(0);
         proposal.setVisible(true);
         proposal.setAuthorId(themeDisplay.getUserId());
-        
-        ProposalWrapper proposalWrapped = new ProposalWrapper(proposal, 0, proposalsContext.getContest(request), proposalsContext.getContestPhase(request), null);
+
+        final Contest contest = proposalsContext.getContest(request);
+        final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+
+        ProposalWrapper proposalWrapped = new ProposalWrapper(proposal, 0, contest, contestPhase, null);
         if (baseProposalId != null && baseProposalId > 0) {
         	Contest baseContest = ContestLocalServiceUtil.getContest(baseContestId);
         	ProposalWrapper baseProposalWrapper = new ProposalWrapper(ProposalLocalServiceUtil.getProposal(baseProposalId), 
@@ -68,7 +74,9 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("proposal", proposalWrapped);
 
         model.addAttribute("isEditingProposal", true);
-        setSeoTexts(request, "Create proposal in " + proposalsContext.getContest(request).getContestShortName(), null, null);
+        ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
+        final String seoText = "Create " + contestType.getProposalName() + " in " + contest.getContestShortName();
+        setSeoTexts(request, seoText, null, null);
         
 
         AnalyticsUtil.publishEvent(request, userId, AddUpdateProposalDetailsActionController.PROPOSAL_ANALYTICS_KEY + 1, 

@@ -40,6 +40,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ValidatorException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -109,7 +110,7 @@ public class ProposalsPreferencesController {
 
 
     @RequestMapping(params = "action=judging")
-    public void releaseJudgingMails(ActionRequest request) throws PortalException, SystemException, com.liferay.util.mail.MailEngineException, javax.mail.internet.AddressException {
+    public void releaseJudgingMails(ActionRequest request) throws PortalException, SystemException, com.liferay.util.mail.MailEngineException, javax.mail.internet.AddressException, UnsupportedEncodingException {
         Integer[] phaseIds = { 1308611,1309131,1309135,1309139,1309143,1309147,1309151,1309155,1309159,1309163,1309167,1309171,1309175,1309179,1309183,1309187,1309191,1309201,1309707  };
         for (Integer phaseId : phaseIds) {
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);

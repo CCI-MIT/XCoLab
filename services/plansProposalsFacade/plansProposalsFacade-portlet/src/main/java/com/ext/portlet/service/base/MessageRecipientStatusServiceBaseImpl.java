@@ -8,6 +8,7 @@ import com.ext.portlet.service.persistence.BalloonLinkPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.BalloonTextPersistence;
 import com.ext.portlet.service.persistence.BalloonUserTrackingPersistence;
+import com.ext.portlet.service.persistence.ConfigurationAttributePersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestDiscussionPersistence;
 import com.ext.portlet.service.persistence.ContestEmailTemplatePersistence;
@@ -146,6 +147,12 @@ public abstract class MessageRecipientStatusServiceBaseImpl
     protected com.ext.portlet.service.BalloonUserTrackingService balloonUserTrackingService;
     @BeanReference(type = BalloonUserTrackingPersistence.class)
     protected BalloonUserTrackingPersistence balloonUserTrackingPersistence;
+    @BeanReference(type = com.ext.portlet.service.ConfigurationAttributeLocalService.class)
+    protected com.ext.portlet.service.ConfigurationAttributeLocalService configurationAttributeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ConfigurationAttributeService.class)
+    protected com.ext.portlet.service.ConfigurationAttributeService configurationAttributeService;
+    @BeanReference(type = ConfigurationAttributePersistence.class)
+    protected ConfigurationAttributePersistence configurationAttributePersistence;
     @BeanReference(type = com.ext.portlet.service.ContestLocalService.class)
     protected com.ext.portlet.service.ContestLocalService contestLocalService;
     @BeanReference(type = com.ext.portlet.service.ContestService.class)
@@ -954,6 +961,63 @@ public abstract class MessageRecipientStatusServiceBaseImpl
     public void setBalloonUserTrackingPersistence(
         BalloonUserTrackingPersistence balloonUserTrackingPersistence) {
         this.balloonUserTrackingPersistence = balloonUserTrackingPersistence;
+    }
+
+    /**
+     * Returns the configuration attribute local service.
+     *
+     * @return the configuration attribute local service
+     */
+    public com.ext.portlet.service.ConfigurationAttributeLocalService getConfigurationAttributeLocalService() {
+        return configurationAttributeLocalService;
+    }
+
+    /**
+     * Sets the configuration attribute local service.
+     *
+     * @param configurationAttributeLocalService the configuration attribute local service
+     */
+    public void setConfigurationAttributeLocalService(
+        com.ext.portlet.service.ConfigurationAttributeLocalService configurationAttributeLocalService) {
+        this.configurationAttributeLocalService = configurationAttributeLocalService;
+    }
+
+    /**
+     * Returns the configuration attribute remote service.
+     *
+     * @return the configuration attribute remote service
+     */
+    public com.ext.portlet.service.ConfigurationAttributeService getConfigurationAttributeService() {
+        return configurationAttributeService;
+    }
+
+    /**
+     * Sets the configuration attribute remote service.
+     *
+     * @param configurationAttributeService the configuration attribute remote service
+     */
+    public void setConfigurationAttributeService(
+        com.ext.portlet.service.ConfigurationAttributeService configurationAttributeService) {
+        this.configurationAttributeService = configurationAttributeService;
+    }
+
+    /**
+     * Returns the configuration attribute persistence.
+     *
+     * @return the configuration attribute persistence
+     */
+    public ConfigurationAttributePersistence getConfigurationAttributePersistence() {
+        return configurationAttributePersistence;
+    }
+
+    /**
+     * Sets the configuration attribute persistence.
+     *
+     * @param configurationAttributePersistence the configuration attribute persistence
+     */
+    public void setConfigurationAttributePersistence(
+        ConfigurationAttributePersistence configurationAttributePersistence) {
+        this.configurationAttributePersistence = configurationAttributePersistence;
     }
 
     /**

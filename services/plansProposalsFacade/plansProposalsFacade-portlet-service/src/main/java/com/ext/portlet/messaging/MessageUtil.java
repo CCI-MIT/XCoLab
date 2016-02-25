@@ -24,10 +24,12 @@ import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.xcolab.utils.MessageLimitManager;
+import org.xcolab.utils.TemplateReplacementUtil;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.PortletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -82,7 +84,7 @@ public final class MessageUtil {
         return result;
     }
 
-    public static boolean checkLimitAndSendMessage(String subject, String content, User fromUser, Collection<Long> recipientIds) throws AddressException, PortalException, MailEngineException, SystemException {
+    public static boolean checkLimitAndSendMessage(String subject, String content, User fromUser, Collection<Long> recipientIds) throws AddressException, PortalException, MailEngineException, SystemException, UnsupportedEncodingException {
         Long fromId = fromUser.getUserId();
         synchronized (MessageLimitManager.getMutex(fromId)) {
             // Send a validation problem mail to patrick if the daily limit is reached for a user
@@ -103,7 +105,7 @@ public final class MessageUtil {
         }
     }
 
-    public static void sendMessage(String subject, String content, Long fromId, Long replyToId, Collection<Long> recipientIds, PortletRequest request) throws SystemException, PortalException, MailEngineException, AddressException {
+    public static void sendMessage(String subject, String content, Long fromId, Long replyToId, Collection<Long> recipientIds, PortletRequest request) throws SystemException, PortalException, MailEngineException, AddressException, UnsupportedEncodingException {
         long nextId = CounterLocalServiceUtil.increment(Message.class.getName());
         Message m = MessageLocalServiceUtil.createMessage(nextId);
         m.setSubject(StringEscapeUtils.unescapeXml(subject));
@@ -138,18 +140,20 @@ public final class MessageUtil {
         //tbd
     }
 
-    public static void copyRecipient(Long userId, Message m, PortletRequest request) throws SystemException, PortalException, AddressException, MailEngineException {
+    public static void copyRecipient(Long userId, Message m, PortletRequest request) throws SystemException, PortalException, AddressException, MailEngineException, UnsupportedEncodingException {
         User from = UserLocalServiceUtil.getUser(m.getFromId());
         User to = UserLocalServiceUtil.getUser(userId);
         String subject = m.getSubject();
         if (subject.length() < 3) {
             subject = MessageConstants.EMAIL_MESSAGE_SUBJECT.replace(MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName());
+            subject = TemplateReplacementUtil.replacePlatformConstants(subject);
         }
-        String message = MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName())
+        String message = TemplateReplacementUtil.replacePlatformConstants(
+                MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName())
                 .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL,createMessageURL(m, request)).replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT,m.getSubject())
-                .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,m.getContent().replaceAll("\n" ,"<br />"));
+                .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,m.getContent().replaceAll("\n" ,"<br />")));
 
-        InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org");
+        InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
         InternetAddress toEmail = new InternetAddress(to.getEmailAddress());
         MailEngine.send(fromEmail, toEmail, subject, message, true);
 

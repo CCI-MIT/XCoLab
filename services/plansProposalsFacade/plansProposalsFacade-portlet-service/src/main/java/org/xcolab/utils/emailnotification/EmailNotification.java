@@ -20,6 +20,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.xcolab.helpers.ProposalAttributeHelper;
+import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import javax.mail.internet.AddressException;
@@ -128,9 +129,9 @@ public abstract class EmailNotification {
         return proposalAttributeHelper;
     }
 
-    protected void sendMessage(String subject, String body, User recipient) {
+    protected void sendMessage(String subject, String body, User recipient) throws SystemException {
         try {
-            InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");
+            InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
             MailEngine.send(fromEmail, toEmail, subject, body, true);
         } catch (MailEngineException | UnsupportedEncodingException e) {
@@ -228,7 +229,7 @@ public abstract class EmailNotification {
             String content = template.getHeader() + template.getFooter();
             content = content.replace("\n", " ").replace("\r", " ");
             MessageUtil.sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients, null);
-        } catch (MailEngineException | AddressException e) {
+        } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {
             throw new SystemException(e);
         }
     }

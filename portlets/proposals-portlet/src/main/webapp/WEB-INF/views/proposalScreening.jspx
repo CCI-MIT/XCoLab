@@ -62,10 +62,10 @@
                                                                        proposalId="${proposal.proposalId}">
                                                 <c:choose>
                                                     <c:when test="${judgeReviewStatus.statusValue eq 1}">
-                                                        <img src="/climatecolab-theme/images/icon_question-x.png" class="review-status-icon"/>
+                                                        <img src="${themeDisplay.pathThemeImages}/icon_question-x.png" class="review-status-icon"/>
                                                     </c:when>
                                                     <c:when test="${judgeReviewStatus.statusValue eq 2}">
-                                                        <img src="/climatecolab-theme/images/icon_question-chk.png" class="review-status-icon"/>
+                                                        <img src="${themeDisplay.pathThemeImages}/images/icon_question-chk.png" class="review-status-icon"/>
                                                     </c:when>
                                                 </c:choose>
                                             </judging:judgeReviewStatus>

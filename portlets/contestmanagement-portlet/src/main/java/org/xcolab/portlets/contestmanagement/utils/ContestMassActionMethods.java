@@ -26,6 +26,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -63,7 +64,7 @@ public class ContestMassActionMethods {
 
     }
 
-    public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject, PortletRequest request) throws PortalException, SystemException, MailEngineException, AddressException {
+    public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject, PortletRequest request) throws PortalException, SystemException, MailEngineException, AddressException, UnsupportedEncodingException {
 
         MassMessageBean massMessageBean = (MassMessageBean) massMessageWrapperObject;
         Set<Long> recipientIds = new HashSet<>();

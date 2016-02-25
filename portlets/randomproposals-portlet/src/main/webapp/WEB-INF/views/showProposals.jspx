@@ -2,6 +2,8 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
     xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	version="2.0">
+
+    <jsp:directive.include file="init.jspx"/>
 	
 	<div>
         <h2> ${proposalsModel.preferences.title}<span>
@@ -15,7 +17,7 @@
                             <img src="${proposalsModel.baseImagePath}${proposal.image}" width="151" height="151" alt="${proposal.name}" />
                        	</c:if>
                         <c:if test="${empty proposal.image or proposal.image le 0}">
-                            <img src="/climatecolab-theme/images/proposal_default.png" width="151" height="151" alt="${proposal.name}" style="border: 1px solid #bbb;"/>
+                            <img src="${themeDisplay.pathThemeImages}/proposal_default.png" width="151" height="151" alt="${proposal.name}" style="border: 1px solid #bbb;"/>
                         </c:if>
                     </a>
                 </div>

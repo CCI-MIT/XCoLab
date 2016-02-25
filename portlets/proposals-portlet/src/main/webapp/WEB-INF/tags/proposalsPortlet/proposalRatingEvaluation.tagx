@@ -11,7 +11,7 @@
     <div class="the-comment">
         <div class="content">
             <c:if test="${showPhase}">
-                <strong>Contest phase: </strong>
+                <strong>${contestType.contestName} phase: </strong>
                 ${wrapper.contestPhase}
             </c:if>
             <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">

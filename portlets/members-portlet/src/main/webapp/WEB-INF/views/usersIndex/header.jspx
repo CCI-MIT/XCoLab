@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		<div class="helptext">
-			Anyone in the world can become a Member of the Climate CoLab
+			Anyone in the world can become a Member of the ${colabName}
 			community by&#160;<a href="/web/guest/loginregister">registering</a>
 			on the site. Send a message to a member by clicking on the screen
 			name below to open their profile and then selecting "Send message."
@@ -36,30 +36,29 @@
 	</div>
 
 	<c:if test="${memberCategory == 'Staff'}">
-		<p>The Climate CoLab <a href="http://climatecolab.org/web/guest/project-staff1/-/wiki/Main/Project%20staff">Staff
+		<p>The ${colabName} <a href="http://climatecolab.org/web/guest/project-staff1/-/wiki/Main/Project%20staff">Staff
         </a> includes researchers affiliated with the
             <a href="http://www.climatecolab.org/web/guest/resources/-/wiki/Main/Project%20staff" target="_blank">MIT
                 Center for Collective Intelligence</a>. Members of the staff work together to develop a long-term vision
-            for the CoLab and oversee its day-to-day operations.</p>
+            for the ${colabName} and oversee its day-to-day operations.</p>
 	</c:if>
 
 	<!-- HELP DIVS -->
 	<c:if test="${memberCategory == 'Expert'}">
 		<p>
-			A group of world renowned experts, who serve on the Climate CoLab’s
-			&#160; <a href="/web/guest/resources/-/wiki/Main/Expert+Council">Expert
-			Council</a> and &#160; <a
-				href="/web/guest/resources/-/wiki/Main/Expert%20advisory%20board">Expert
-			Advisory Board</a> are a key part of the community.
+			A group of world renowned experts, who serve on the ${colabName}’s
+			<a href="/web/guest/resources/-/wiki/Main/Expert+Council">Expert Council</a> and
+			<a href="/web/guest/resources/-/wiki/Main/Expert%20advisory%20board">Expert Advisory Board</a>
+			are a key part of the community.
 		</p>
 	</c:if>
 
 	<!-- HELP DIVS -->
 	<c:if test="${memberCategory == 'Fellow'}">
 		<p>
-			Climate CoLab <a
+			${colabName} <a
 				href="/web/guest/resources/-/wiki/Main/Climate%20Colab%20Fellows">Fellows</a>
-			are graduate students and professionals who coordinate CoLab
+			are graduate students and professionals who coordinate ${colabShortName}
 			contest activity by undertaking outreach, commenting on proposals,
 			and managing the judging process.
 		</p>
@@ -68,10 +67,9 @@
     <!-- HELP DIVS -->
     <c:if test="${memberCategory == 'Catalyst'}">
         <p>
-            Climate CoLab <a
+            ${colabName} <a
                 href="http://climatecolab.org/resources/-/wiki/Main/Climate+CoLab+Catalysts">Catalysts</a>
-            are knowledgable professionals who have committed to providing feedback to proposals submitted in Climate
-            CoLab contests. They have applied to and been selected by the Climate CoLab as members with expertise and
+            are knowledgeable professionals who have committed to providing feedback to proposals submitted in ${colabShortName} contests. They have applied to and been selected by the ${colabName} as members with expertise and
             qualifications that would be valuable contributions to proposal authors.
         </p>
     </c:if>
@@ -79,7 +77,7 @@
     <!-- HELP DIVS -->
     <c:if test="${memberCategory == 'Judges'}">
         <p>
-            Climate CoLab <a
+            ${colabName} <a
                 href="http://climatecolab.org/web/guest/judges/-/wiki/Main/Climate+CoLab+Judges">Judges</a>
             are subject matter experts who have a high level of experience in the field, and provide feedback on and
             select the contest's most promising proposals.
@@ -89,7 +87,7 @@
     <!-- HELP DIVS -->
     <c:if test="${memberCategory == 'Impact Assessment Fellow'}">
         <p>
-            Climate CoLab <a
+            ${colabName} <a
                 href="http://climatecolab.org/impact_fellows">Impact Assessment Fellows</a>
             help proposal authors estimate the greenhouse gas emission reductions that their proposals can achieve.
         </p>
@@ -98,9 +96,9 @@
 	<!-- HELP DIVS -->
 	<c:if test="${memberCategory == 'Advisor'}">
 		<p>
-			Climate CoLab <a
+			${colabName} <a
 				href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Advisors">Advisors</a>
-			are experts who provide overall guidance to CoLab contests by
+			are experts who provide overall guidance to ${colabShortName} contests by
 			defining topics, recruiting Judges, and communicating results to
 			key stakeholders.
 		</p>

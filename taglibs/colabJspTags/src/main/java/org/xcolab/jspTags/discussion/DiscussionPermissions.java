@@ -71,18 +71,18 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanAdminMessages() {
-        return getCanAdmin();
+        return getCanAdminAll();
     }
 
     public boolean getCanAdminMessage(DiscussionMessageWrapper message) {
-        return getCanAdmin(); // || message.getAuthorId() == currentUser.getUserId()
+        return getCanAdminAll(); // || message.getAuthorId() == currentUser.getUserId()
     }
 
     public boolean getCanCreateCategory() {
-        return getCanAdmin();
+        return getCanAdminAll();
     }
 
-    public boolean getCanAdmin() {
+    public boolean getCanAdminAll() {
         return permissionChecker.hasPermission(groupId, RESOURCE_NAME, discussionCategoryGroup.getId(), DiscussionActions.ADMIN.name())
                 || permissionChecker.isGroupAdmin(groupId)
                 || permissionChecker.isCompanyAdmin();

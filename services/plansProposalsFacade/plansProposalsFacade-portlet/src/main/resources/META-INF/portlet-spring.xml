@@ -32,6 +32,9 @@
 	<bean id="com.ext.portlet.service.BalloonUserTrackingLocalService" class="com.ext.portlet.service.impl.BalloonUserTrackingLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.BalloonUserTrackingService" class="com.ext.portlet.service.impl.BalloonUserTrackingServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.BalloonUserTrackingPersistence" class="com.ext.portlet.service.persistence.BalloonUserTrackingPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ConfigurationAttributeLocalService" class="com.ext.portlet.service.impl.ConfigurationAttributeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ConfigurationAttributeService" class="com.ext.portlet.service.impl.ConfigurationAttributeServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ConfigurationAttributePersistence" class="com.ext.portlet.service.persistence.ConfigurationAttributePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ContestLocalService" class="com.ext.portlet.service.impl.ContestLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestService" class="com.ext.portlet.service.impl.ContestServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestPersistence" class="com.ext.portlet.service.persistence.ContestPersistenceImpl" parent="basePersistence" />
