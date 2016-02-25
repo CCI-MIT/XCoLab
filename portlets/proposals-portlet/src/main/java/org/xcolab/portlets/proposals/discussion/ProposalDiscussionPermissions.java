@@ -95,10 +95,10 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
                 Proposal proposal = ProposalLocalServiceUtil.fetchProposal(proposalId);
                 ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
-                return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdmin();
+                return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdminAll();
             } catch (PortalException | SystemException ignored) { }
         }
-        return message.getAuthorId() == currentUser.getUserId() || getCanAdmin();
+        return message.getAuthorId() == currentUser.getUserId() || getCanAdminAll();
     }
 
     private boolean isUserAllowedToAddCommentsToProposalEvaluationInContestPhase
@@ -107,8 +107,9 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         boolean isUserAllowed = false;
         try {
             Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
-            isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId) ||
-                    isUserProposalAuthorOrTeamMember(user, proposal);
+            isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId)
+                    || isUserProposalAuthorOrTeamMember(user, proposal)
+                    || getCanAdminAll();
         } catch (SystemException | PortalException ignored) { }
         return isUserAllowed;
     }
