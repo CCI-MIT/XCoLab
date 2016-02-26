@@ -71,13 +71,17 @@ public final class HtmlUtil {
 
     /**
      * This method unescapes all of entities that are stored in the database, that are in xhml format
-     * but those are not all html4 entities, the quote, is scaped as &apos; instead of &quote; so this cles it up
+     * but those are not all html4 entities, the quote, is escaped as &apos; instead of &quote; so this clears it up
      * @param body the text to be cleaned
      * @return unescaped text for emails
      */
     public static String decodeHTMLEntitiesForEmail(String body){
         return org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4(body).replace("&apos;","'");
 
+    }
+
+    public static String makeRelativeLinksAbsolute(String html, String baseUrl) {
+        return html.replaceAll("(href=[\"\'])/", "$1" +  baseUrl + "/");
     }
 
     public static String createLink(String url, String desc) {

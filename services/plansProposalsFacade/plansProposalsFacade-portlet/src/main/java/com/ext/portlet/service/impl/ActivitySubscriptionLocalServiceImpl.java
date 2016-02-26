@@ -346,18 +346,17 @@ public class ActivitySubscriptionLocalServiceImpl
 			Date now = new Date();
 
 			// Send the daily digest at the predefined hour only
-			if (now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000 &&
-					Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == DAILY_DIGEST_TRIGGER_HOUR) {
+//			if (now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000 &&
+//					Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == DAILY_DIGEST_TRIGGER_HOUR) {
 				try {
 					List<SocialActivity> res = getActivitiesAfter(lastDailyEmailNotification);
 					sendDailyDigestNotifications(res, serviceContext);
-				}
-				catch (SystemException | PortalException t) {
-					_log.error("Can't send daily email notofication", t);
+				} catch (SystemException | PortalException t) {
+					_log.error("Can't send daily email notification", t);
 				}
 
 				lastDailyEmailNotification = now;
-			}
+//			}
 		}
     }
 
@@ -531,16 +530,18 @@ public class ActivitySubscriptionLocalServiceImpl
 
 			body +=  MESSAGE_FOOTER_TEMPLATE;
 
-            // Add the proper domain to all links
-			body  = body.replaceAll("\"/web/guest", "\"" +portalBaseUrl + "/web/guest")
-					.replaceAll("\'/web/guest", "\'" + portalBaseUrl + "/web/guest").replaceAll("\n", "\n<br />");
+			body  = HtmlUtil.makeRelativeLinksAbsolute(body, portalBaseUrl);
+            body = body.replaceAll("\n", "\n<br />");
 			String message = body.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient, portalBaseUrl));
 
             message = HtmlUtil.decodeHTMLEntitiesForEmail(message);
 
 			// add link to unsubscribe
 			message += "<br /><br />" + unregisterFooter;
-			MailEngine.send(fromEmail, toEmail, subject, message, true);
+
+			MailEngine.send(fromEmail, toEmail,
+                    TemplateReplacementUtil.replacePlatformConstants(subject),
+                    TemplateReplacementUtil.replacePlatformConstants(message), true);
 		} catch (MailEngineException | UnsupportedEncodingException e) {
 			_log.error("Can't send email notifications to users");
 			_log.debug("Can't send email message", e);
