@@ -373,7 +373,7 @@ span.ontology-term-label {
   font-style: italic;
 }
 
-.changedStar {
-  display: none;
+.boxChanged:after {
+  content: '*';
   color: #30a3fb;
 }
