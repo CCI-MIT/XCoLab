@@ -13,11 +13,13 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
@@ -26,8 +28,8 @@ import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsSortFilterBean;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import java.io.IOException;
@@ -79,37 +81,49 @@ public class ContestProposalsController extends BaseProposalsController {
         return "contestProposals";
     }
 
-    @RequestMapping(params = "pageToDisplay=redirectOldContestProposalsUrl")
-    public String redirectOldContestProposalsUrl(PortletRequest request, PortletResponse response, Model model,
+    @ActionMapping(params = "action=redirectOldContestProposalsUrl")
+    public String redirectOldContestProposalsUrl(ActionRequest request, ActionResponse response, Model model,
                                        @RequestParam Long contestId, @RequestParam(required = false) Long phaseId) throws SystemException, PortalException, IOException {
+
+        String redirectUrl;
         if (phaseId != null && phaseId > 0) {
-            model.addAttribute("redirectUrl",
-                    ContestPhaseLocalServiceUtil.getContestPhaseLinkUrl(proposalsContext.getContestPhase(request)));
+            redirectUrl = ContestPhaseLocalServiceUtil.getContestPhaseLinkUrl(proposalsContext.getContestPhase(request));
         } else {
-            model.addAttribute("redirectUrl",
-                    ContestLocalServiceUtil.getContestLinkUrl(proposalsContext.getContest(request)));
+            redirectUrl = ContestLocalServiceUtil.getContestLinkUrl(proposalsContext.getContest(request));
         }
+        response.sendRedirect(redirectUrl);
+        model.addAttribute("redirectUrl", redirectUrl);
         return "redirect";
     }
 
-    @RequestMapping(params = "pageToDisplay=redirectOldProposalUrl")
+    @ActionMapping(params = "action=redirectOldProposalUrl")
     public String redirectOldProposalUrl(
             @RequestParam(value="planId") Long proposalId,
             @RequestParam Long contestId,
             @RequestParam(required = false) Long phaseId,
-            Model model, PortletRequest request, PortletResponse response)
+            @RequestParam(required = false) Long version,
+            @RequestParam(required = false) String tab,
+            Model model, ActionRequest request, ActionResponse response)
             throws PortalException, SystemException, IOException {
 
         Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
         Contest contest = ContestLocalServiceUtil.getContest(contestId);
+
+        String redirectUrl;
         if (phaseId != null && phaseId > 0) {
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
-            model.addAttribute("redirectUrl",
-                    ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase));
+            redirectUrl = ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase);
         } else {
-            model.addAttribute("redirectUrl",
-                    ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal));
+            redirectUrl = ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
         }
+        if (version != null && version > 0) {
+            redirectUrl += "/version/" + version;
+        }
+        if (StringUtils.isNotBlank(tab)) {
+            redirectUrl += "/tab/" + tab;
+        }
+        response.sendRedirect(redirectUrl);
+        model.addAttribute("redirectUrl", redirectUrl);
         return "redirect";
     }
 
