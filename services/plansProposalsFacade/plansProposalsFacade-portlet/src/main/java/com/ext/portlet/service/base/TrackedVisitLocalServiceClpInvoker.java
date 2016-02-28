@@ -41,12 +41,12 @@ public class TrackedVisitLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName512;
-    private String[] _methodParameterTypes512;
-    private String _methodName513;
-    private String[] _methodParameterTypes513;
     private String _methodName518;
     private String[] _methodParameterTypes518;
+    private String _methodName519;
+    private String[] _methodParameterTypes519;
+    private String _methodName524;
+    private String[] _methodParameterTypes524;
 
     public TrackedVisitLocalServiceClpInvoker() {
         _methodName0 = "addTrackedVisit";
@@ -131,17 +131,17 @@ public class TrackedVisitLocalServiceClpInvoker {
                 "com.ext.portlet.model.TrackedVisit"
             };
 
-        _methodName512 = "getBeanIdentifier";
+        _methodName518 = "getBeanIdentifier";
 
-        _methodParameterTypes512 = new String[] {  };
+        _methodParameterTypes518 = new String[] {  };
 
-        _methodName513 = "setBeanIdentifier";
+        _methodName519 = "setBeanIdentifier";
 
-        _methodParameterTypes513 = new String[] { "java.lang.String" };
+        _methodParameterTypes519 = new String[] { "java.lang.String" };
 
-        _methodName518 = "addTrackedVisit";
+        _methodName524 = "addTrackedVisit";
 
-        _methodParameterTypes518 = new String[] {
+        _methodParameterTypes524 = new String[] {
                 "java.lang.String", "java.lang.String", "java.lang.String",
                 "java.lang.String", "java.lang.String", "java.lang.String",
                 "java.lang.String", "java.lang.String"
@@ -237,20 +237,20 @@ public class TrackedVisitLocalServiceClpInvoker {
             return TrackedVisitLocalServiceUtil.updateTrackedVisit((com.ext.portlet.model.TrackedVisit) arguments[0]);
         }
 
-        if (_methodName512.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             return TrackedVisitLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName513.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
+        if (_methodName519.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
             TrackedVisitLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName524.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
             return TrackedVisitLocalServiceUtil.addTrackedVisit((java.lang.String) arguments[0],
                 (java.lang.String) arguments[1],
                 (java.lang.String) arguments[2],
