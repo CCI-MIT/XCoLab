@@ -105,7 +105,7 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/proposal/{proposalId}</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
@@ -114,7 +114,7 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
@@ -124,7 +124,7 @@
     <!-- special urls -->
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/voted</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/voted</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
@@ -150,7 +150,7 @@
     </route>
     
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/version/{version}</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/version/{version}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
@@ -159,7 +159,7 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/edit</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/edit</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
@@ -168,7 +168,7 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndHide</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndHide</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
@@ -179,7 +179,7 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndKeep</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndKeep</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
@@ -190,7 +190,7 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/vote</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/vote</pattern>
         <generated-parameter name="action_forwardToPage">proposalDetails</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
@@ -200,7 +200,7 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/tab/{tab}</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/{tab}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
         <generated-parameter name="tab">{tab}</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
@@ -209,7 +209,7 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/version/{version}/tab/{tab}</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/version/{version}/tab/{tab}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
         <generated-parameter name="tab">{tab}</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
@@ -219,7 +219,7 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/proposal/{proposalId}/tab/{tab}/edit</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/{tab}/edit</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
         <generated-parameter name="tab">{tab}</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
@@ -229,7 +229,7 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/proposal/{proposalId}/tab/{tab}</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/{tab}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
         <generated-parameter name="tab">{tab}</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
@@ -239,7 +239,7 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/proposal/{proposalId}/tab/{tab}/edit</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/{tab}/edit</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails_{tab}</generated-parameter>
         <generated-parameter name="tab">{tab}</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
