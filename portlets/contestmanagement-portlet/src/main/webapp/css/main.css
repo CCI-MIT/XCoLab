@@ -201,6 +201,7 @@
   margin-bottom: 5px;
   background-size: 20px;
   background: #FFF url("/climatecolab-theme/images/icon_question-x.png") no-repeat 215px;
+  list-style: none;
 }
 
 .cmsDetailsBox .addpropbox.teamBox .teamMemberAdd input {
@@ -370,4 +371,9 @@ li.ui-menu-item .ui-state-focus {
 span.ontology-term-label {
   margin-left: 15px;
   font-style: italic;
+}
+
+.boxChanged:after {
+  content: '*';
+  color: #30a3fb;
 }
