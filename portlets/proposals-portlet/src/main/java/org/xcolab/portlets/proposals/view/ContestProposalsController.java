@@ -82,7 +82,7 @@ public class ContestProposalsController extends BaseProposalsController {
     }
 
     @ActionMapping(params = "action=redirectOldContestProposalsUrl")
-    public String redirectOldContestProposalsUrl(ActionRequest request, ActionResponse response, Model model,
+    public void redirectOldContestProposalsUrl(ActionRequest request, ActionResponse response, Model model,
                                        @RequestParam Long contestId, @RequestParam(required = false) Long phaseId) throws SystemException, PortalException, IOException {
 
         String redirectUrl;
@@ -92,12 +92,10 @@ public class ContestProposalsController extends BaseProposalsController {
             redirectUrl = ContestLocalServiceUtil.getContestLinkUrl(proposalsContext.getContest(request));
         }
         response.sendRedirect(redirectUrl);
-        model.addAttribute("redirectUrl", redirectUrl);
-        return "redirect";
     }
 
     @ActionMapping(params = "action=redirectOldProposalUrl")
-    public String redirectOldProposalUrl(
+    public void redirectOldProposalUrl(
             @RequestParam(value="planId") Long proposalId,
             @RequestParam Long contestId,
             @RequestParam(required = false) Long phaseId,
@@ -123,8 +121,6 @@ public class ContestProposalsController extends BaseProposalsController {
             redirectUrl += "/tab/" + tab;
         }
         response.sendRedirect(redirectUrl);
-        model.addAttribute("redirectUrl", redirectUrl);
-        return "redirect";
     }
 
 }
