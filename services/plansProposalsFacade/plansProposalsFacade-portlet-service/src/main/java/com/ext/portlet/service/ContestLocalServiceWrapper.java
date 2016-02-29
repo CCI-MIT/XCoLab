@@ -292,10 +292,9 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
-    public com.ext.portlet.model.Contest getByContestUrlName(
+    public java.util.List<com.ext.portlet.model.Contest> getByContestUrlName(
         java.lang.String contestUrlName)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getByContestUrlName(contestUrlName);
     }
 
@@ -304,6 +303,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         long contestYear)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.findByContestYear(contestYear);
+    }
+
+    @Override
+    public com.ext.portlet.model.Contest getByContestUrlNameContestYear(
+        java.lang.String contestUrlName, long year)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getByContestUrlNameContestYear(contestUrlName,
+            year);
     }
 
     @Override

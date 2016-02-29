@@ -38,7 +38,6 @@ import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
 import javax.portlet.PortletRequest;
-import java.util.List;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
@@ -193,14 +192,9 @@ public class ProposalsContextImpl implements ProposalsContext {
                 handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
             }
         } else if (StringUtils.isNotBlank(contestUrlName) && contestYear > 0) {
-            List<Contest> contestsInYear = ContestLocalServiceUtil.findByContestYear(contestYear);
-            for (Contest contestInYear : contestsInYear) {
-                if (contestInYear.getContestUrlName().equals(contestUrlName)) {
-                    contest = contestInYear;
-                    break;
-                }
-            }
-            if (contest == null) {
+            try {
+                contest = ContestLocalServiceUtil.getByContestUrlNameContestYear(contestUrlName, contestYear);
+            } catch (NoSuchContestException e) {
                 handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
             }
         }

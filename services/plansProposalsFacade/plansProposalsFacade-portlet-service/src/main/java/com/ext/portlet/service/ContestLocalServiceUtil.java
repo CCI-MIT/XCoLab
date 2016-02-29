@@ -279,10 +279,9 @@ public class ContestLocalServiceUtil {
         getService().updateContestGroupsAndDiscussions();
     }
 
-    public static com.ext.portlet.model.Contest getByContestUrlName(
+    public static java.util.List<com.ext.portlet.model.Contest> getByContestUrlName(
         java.lang.String contestUrlName)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getByContestUrlName(contestUrlName);
     }
 
@@ -290,6 +289,13 @@ public class ContestLocalServiceUtil {
         long contestYear)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().findByContestYear(contestYear);
+    }
+
+    public static com.ext.portlet.model.Contest getByContestUrlNameContestYear(
+        java.lang.String contestUrlName, long year)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByContestUrlNameContestYear(contestUrlName, year);
     }
 
     public static java.util.List<com.ext.portlet.model.Contest> findByActive(

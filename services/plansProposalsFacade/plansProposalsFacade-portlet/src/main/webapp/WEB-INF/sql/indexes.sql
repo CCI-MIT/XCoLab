@@ -9,7 +9,7 @@ create index IX_CE6BAAA5 on xcolab_BalloonText (enabled);
 
 create index IX_AFDD82EB on xcolab_BalloonUserTracking (email(50));
 
-create index IX_B2327C1E on xcolab_Contest (ContestUrlName);
+create index IX_3CD643E3 on xcolab_Contest (ContestUrlName(50), ContestYear);
 create index IX_4E7AA29D on xcolab_Contest (ContestYear);
 create index IX_CEF1EFC6 on xcolab_Contest (contestActive);
 create index IX_9AB21749 on xcolab_Contest (contestActive, contestPrivate);

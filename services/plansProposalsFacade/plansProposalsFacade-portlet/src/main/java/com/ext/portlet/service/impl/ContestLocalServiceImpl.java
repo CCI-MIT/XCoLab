@@ -225,13 +225,18 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     @Override
-    public Contest getByContestUrlName(String contestUrlName) throws SystemException, NoSuchContestException {
+    public List<Contest> getByContestUrlName(String contestUrlName) throws SystemException {
         return contestPersistence.findByContestUrlName(contestUrlName);
     }
 
     @Override
     public List<Contest> findByContestYear(long contestYear) throws SystemException {
         return contestPersistence.findByContestYear(contestYear);
+    }
+
+    public Contest getByContestUrlNameContestYear(String contestUrlName, long year)
+            throws SystemException, NoSuchContestException {
+        return contestPersistence.findByContestUrlNameContestYear(contestUrlName, year);
     }
     
     @Override

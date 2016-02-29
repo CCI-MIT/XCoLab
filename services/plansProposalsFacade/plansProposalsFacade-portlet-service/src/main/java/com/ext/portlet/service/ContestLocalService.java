@@ -253,14 +253,19 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.Contest getByContestUrlName(
+    public java.util.List<com.ext.portlet.model.Contest> getByContestUrlName(
         java.lang.String contestUrlName)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException;
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     public java.util.List<com.ext.portlet.model.Contest> findByContestYear(
         long contestYear)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.Contest getByContestUrlNameContestYear(
+        java.lang.String contestUrlName, long year)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
 
     public java.util.List<com.ext.portlet.model.Contest> findByActive(
         boolean active)

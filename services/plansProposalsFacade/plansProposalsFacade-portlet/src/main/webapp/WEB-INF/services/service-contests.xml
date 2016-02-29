@@ -74,8 +74,14 @@
             <finder-column name="ContestYear"/>
         </finder>
 
-        <finder name="ContestUrlName" return-type="Contest">
+        <finder name="ContestUrlName" return-type="Collection" db-index="false">
             <finder-column name="ContestUrlName"/>
+        </finder>
+
+        <!-- custom index with length 50 on ContestUrlName-->
+        <finder name="ContestUrlNameContestYear" return-type="Contest" db-index="false">
+            <finder-column name="ContestUrlName"/>
+            <finder-column name="ContestYear"/>
         </finder>
 
         <finder name="Tier" return-type="Collection">
