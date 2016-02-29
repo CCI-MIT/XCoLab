@@ -19,9 +19,7 @@ import org.xcolab.enums.MemberRole;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-/**
- * Created by carlosbpf on 2/29/16.
- */
+
 public final class WikiUtil {
     private WikiUtil(){};
 
@@ -32,11 +30,13 @@ public final class WikiUtil {
         return stringToHaveSpecialCharacterRemoved.replace(":", "").replace(",","").replace(";","");
     }
 
-    public static void updateWikiPageTitleIfExists(String oldTitleRaw, String newTitleRaw) throws PortalException, SystemException {
+    public static void updateWikiPageTitleIfExists(String oldTitleRaw, String newTitleRaw)
+            throws PortalException, SystemException {
         String oldTitle = removeSpecialChars(oldTitleRaw);
         String newTitle = removeSpecialChars(newTitleRaw);
         if(isWikiPageCreatedForContest(removeSpecialChars(oldTitle))){
-            WikiPageResource wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WIKI_NODE_ID, oldTitle);
+            WikiPageResource wikiPageResource = WikiPageResourceLocalServiceUtil.
+                    getPageResource(WIKI_NODE_ID, oldTitle);
             try {
                 WikiPage wikiPage = WikiPageLocalServiceUtil.getPage(wikiPageResource.getResourcePrimKey());
                 updateWikiPageResourceTitle(wikiPageResource, newTitle);
@@ -49,14 +49,16 @@ public final class WikiUtil {
 
 
 
-    private static void updateWikiPageTitle(WikiPage wikiPage, WikiPageResource wikiPageResource, String newTitle) throws SystemException {
+    private static void updateWikiPageTitle(WikiPage wikiPage, WikiPageResource wikiPageResource, String newTitle)
+            throws SystemException {
         wikiPage.setTitle(newTitle);
         wikiPage.setResourcePrimKey(wikiPageResource.getResourcePrimKey());
         wikiPage.persist();
         WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
     }
 
-    private static void updateWikiPageResourceTitle(WikiPageResource wikiPageResource, String newTitle) throws SystemException, PortalException {
+    private static void updateWikiPageResourceTitle(WikiPageResource wikiPageResource, String newTitle)
+            throws SystemException, PortalException {
         wikiPageResource.setTitle(newTitle);
         addWikiPageResourceViewPermissionsForRoleIfNoneExist(wikiPageResource.getResourcePrimKey(), MemberRole.GUEST);
         addWikiPageResourceViewPermissionsForRoleIfNoneExist(wikiPageResource.getResourcePrimKey(), MemberRole.MEMBER);
@@ -79,13 +81,16 @@ public final class WikiUtil {
         if (!ResourcePermissionLocalServiceUtil.hasResourcePermission(ColabConstants.COLAB_COMPANY_ID, WikiPage.class.getName(),
                 ResourceConstants.SCOPE_INDIVIDUAL, Long.toString(wikiPageResourcePK), role.getRoleId(), ActionKeys.VIEW)) {
             ResourcePermissionLocalServiceUtil.setResourcePermissions(ColabConstants.COLAB_COMPANY_ID, WikiPage.class.getName(),
-                    ResourceConstants.SCOPE_INDIVIDUAL, Long.toString(wikiPageResourcePK), role.getRoleId(), new String[]{ActionKeys.VIEW});
+                    ResourceConstants.SCOPE_INDIVIDUAL, Long.toString(wikiPageResourcePK), role.getRoleId(),
+                    new String[]{ActionKeys.VIEW});
         }
     }
 
-    public static void updateContestResourceUrl(Contest contest, String wikiPageTitle) throws SystemException, UnsupportedEncodingException {
+    public static void updateContestResourceUrl(Contest contest, String wikiPageTitle)
+            throws SystemException, UnsupportedEncodingException {
         String wikiPageTitleWithoutColon = WikiUtil.removeSpecialChars(wikiPageTitle);
-        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPageTitleWithoutColon,"UTF-8");
+        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" +
+                URLEncoder.encode(wikiPageTitleWithoutColon,"UTF-8");
         contest.setResourcesUrl(escapedWikiPageUrlLink);
         contest.persist();
         ContestLocalServiceUtil.updateContest(contest);

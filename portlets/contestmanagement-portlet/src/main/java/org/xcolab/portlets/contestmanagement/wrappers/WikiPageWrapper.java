@@ -1,7 +1,6 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
@@ -16,7 +15,6 @@ import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.utils.WikiUtil;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 /**
  * Created by Thomas on 2/15/2015.
@@ -118,7 +116,7 @@ public class WikiPageWrapper {
     }
 
     private void updateContestResourceUrl() throws SystemException, UnsupportedEncodingException {
-        updateContestResourceUrl(contest, wikiPage.getTitle());
+        WikiUtil.updateContestResourceUrl(contest, wikiPage.getTitle());
     }
 
 
