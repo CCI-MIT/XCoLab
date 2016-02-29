@@ -69,6 +69,7 @@ import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.utils.IdListUtil;
+import org.xcolab.utils.WikiUtil;
 import org.xcolab.utils.emailnotification.ContestVoteNotification;
 import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
 import org.xcolab.utils.judging.ProposalRatingWrapper;
@@ -76,6 +77,7 @@ import org.xcolab.utils.judging.ProposalReview;
 import org.xcolab.utils.judging.ProposalReviewCsvExporter;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -1207,9 +1209,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                     // No year suffix detected - add new one
                     newContestShortName = contest.getContestShortName() + " " + phaseEndYear;
                 }
-
+                String oldContestName = contest.getContestShortName();
                 contest.setContestShortName(newContestShortName);
                 contest.persist();
+                WikiUtil.updateWikiPageTitleIfExists(oldContestName, newContestShortName);
+                try {
+                    WikiUtil.updateContestResourceUrl(contest, newContestShortName);
+                } catch (UnsupportedEncodingException ignored) {
+                }
             }
         } catch (SystemException | PortalException e) {
             _log.error("Could not get latest contest phase of contest '" + contest.getContestPK() + "' to add year suffix or persist contest", e);
