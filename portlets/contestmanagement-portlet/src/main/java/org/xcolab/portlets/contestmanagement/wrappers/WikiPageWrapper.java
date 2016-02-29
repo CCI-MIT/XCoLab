@@ -37,7 +37,7 @@ public class WikiPageWrapper {
 
     public WikiPageWrapper(Contest contest, Long loggedInUserId) throws SystemException, UnsupportedEncodingException, PortalException {
         this.contest = contest;
-        String contestTitle = contest.getContestShortName();
+        String contestTitle = contest.getContestUrlName()+ "-" + contest.getContestYear();
         this.contestTitle = removeSpecialChars(contestTitle);
         this.loggedInUserId = loggedInUserId;
         initWikiPageResourceAndCreateIfNoneExistsForThisContest();
