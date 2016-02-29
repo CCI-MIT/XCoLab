@@ -21,10 +21,11 @@ import java.net.URLEncoder;
 
 
 public final class WikiUtil {
-    private WikiUtil() {}
-
+    
     public final static Long WIKI_NODE_ID = 18855L;
     public final static Long WIKI_GROUP_ID = 10136L;
+
+    private WikiUtil() {}
 
     public static String removeSpecialChars(String stringToHaveSpecialCharacterRemoved){
         return stringToHaveSpecialCharacterRemoved.replace(":", "").replace(",","").replace(";","");
