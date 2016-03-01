@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.enums.ContestPhaseTypeValue;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -93,12 +94,11 @@ public class ContestPhaseBean implements Serializable {
         } catch (SystemException ignored){ }
     }
 
-    public ContestPhaseBean( Long contestPhaseType, Date phaseStartDate, Date phaseEndDate, String contestPhaseAutopromote,  Boolean fellowScreeningActive) {
+    public ContestPhaseBean(ContestPhaseTypeValue contestPhaseType, Date phaseStartDate, Date phaseEndDate, String contestPhaseAutopromote, Boolean fellowScreeningActive) throws SystemException {
         this.phaseStartDate = phaseStartDate;
         this.phaseEndDate = phaseEndDate;
         this.fellowScreeningActive = fellowScreeningActive;
-        this.contestPhaseAutopromote = contestPhaseAutopromote;
-        this.contestPhaseType = contestPhaseType;
+        this.contestPhaseType = contestPhaseType.getTypeId();
     }
 
     public ContestPhaseBean(Long contestPhaseType, Date phaseStartDate) {
@@ -245,15 +245,15 @@ public class ContestPhaseBean implements Serializable {
     }
 
     public void persist() throws SystemException, PortalException {
-
-        if(contestPhasePK.equals(CREATE_PHASE_CONTEST_PK)){
+        if (contestPhasePK.equals(CREATE_PHASE_CONTEST_PK)){
             createNewContestPhase();
         }
 
-        if(contestPhaseDeleted){
-            deleteContestPhase();
+        if (contestPhaseDeleted){
+            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
+            ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
         } else {
-            persistContestPhase();
+            getContestPhase().persist();
         }
     }
     
@@ -279,6 +279,7 @@ public class ContestPhaseBean implements Serializable {
         this.contestPhaseTypeOld = contestPhaseTypeOld;
     }
 
+    //TODO: improve naming?
     public ContestPhase getContestPhase() throws SystemException, PortalException {
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
         contestPhase.setContestPK(contestPK);
@@ -301,16 +302,5 @@ public class ContestPhaseBean implements Serializable {
         contestPhase.setPhaseInactiveOverride(phaseInactiveOverride);
         contestPhase.setNextStatus(nextStatus);
         return contestPhase;
-    }
-
-    private void  persistContestPhase() throws SystemException, PortalException {
-        ContestPhase contestPhase = getContestPhase();
-        contestPhase.persist();
-        ContestPhaseLocalServiceUtil.updateContestPhase(contestPhase);
-    }
-
-    private void deleteContestPhase() throws SystemException, PortalException {
-        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePK);
-        ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
     }
 }
