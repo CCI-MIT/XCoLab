@@ -18,7 +18,7 @@ import java.util.TimeZone;
  *         First created on 14/11/13 at 15:07
  */
 public class DataBean {
-    private List<SocialActivityWrapper> activities = new LinkedList<SocialActivityWrapper>(); //getActivities();
+    private List<SocialActivityWrapper> activities = new LinkedList<>(); //getActivities();
     //TODO enable if list of activities is asked. make better by using http://icefaces-showcase.icesoft.org/showcase.jsf;jsessionid=D91E1EEDF6C7564BD02C8A822271C0F9?grp=compatMenu&exp=outputResource
 
     public void interpretActivities() throws PortalException, SystemException {
@@ -27,7 +27,7 @@ public class DataBean {
 
     public List<SocialActivityWrapper> fetchActivities() throws SystemException, PortalException {
         if (activities == null) {
-            activities = new ArrayList<SocialActivityWrapper>();
+            activities = new ArrayList<>();
             int lastDaysBetween = -1;
             Date now = new Date();
             int i = 0;
@@ -48,7 +48,9 @@ public class DataBean {
 
     public List<SocialActivityWrapper> getActivities() {
         try {
-            if(activities == null) activities = fetchActivities();
+            if (activities == null) {
+                activities = fetchActivities();
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -10,8 +10,6 @@ import javax.faces.context.FacesContext;
 import java.util.Map;
 
 public class Helper {
-    private final static String REQUEST_PARAM_NAME = "com.liferay.portal.kernel.servlet.PortletServletRequest";
-    private static final String COLLAB_URL_PARAMETER_PREFIX = "_collab_param";
 
     public static void sendMessage(Severity severity, String message) {
         FacesContext.getCurrentInstance().addMessage("msg", new FacesMessage(severity, message, message));
@@ -30,8 +28,7 @@ public class Helper {
         FacesContext fc = FacesContext.getCurrentInstance();
         if (fc != null) {
             ExternalContext ec = fc.getExternalContext();
-            Map map = ec.getRequestMap();
-            return map;
+            return ec.getRequestMap();
         }
 
         return null;

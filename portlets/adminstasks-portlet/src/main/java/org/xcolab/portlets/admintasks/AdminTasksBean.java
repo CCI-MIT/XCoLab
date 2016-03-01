@@ -1,7 +1,6 @@
 package org.xcolab.portlets.admintasks;
 
 import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.Activity.LoginRegisterActivityKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.model.Contest;
@@ -11,13 +10,11 @@ import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.icesoft.faces.async.render.SessionRenderer;
@@ -25,6 +22,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -43,7 +41,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.SocialActivity;
@@ -59,9 +56,6 @@ import org.xcolab.utils.UrlBuilder;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -71,31 +65,23 @@ import java.util.Map;
 import java.util.Set;
 
 public class AdminTasksBean {
-	private Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
+	private static final Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
+
+	private final static String REQUEST_PARAM_NAME = "com.liferay.portal.kernel.servlet.PortletServletRequest";
+	private final static long defaultCompanyId = 10112L;
 
 	private final DataBean dataBean = new DataBean();
+
 	private final List<String> messages;
 
 	public List<String> getMessages() {
 		return messages;
 	}
 
-
     public AdminTasksBean(){
         SessionRenderer.addCurrentSession("pushMessages");
         messages = new ArrayList<>();
     }
-
-	private final static String REQUEST_PARAM_NAME = "com.liferay.portal.kernel.servlet.PortletServletRequest";
-
-	public static HttpServletRequest getRequest() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		return (HttpServletRequest) ((HttpServletRequestWrapper) context
-				.getExternalContext().getRequestMap().get(REQUEST_PARAM_NAME))
-				.getRequest();
-	}
-
-	private final static long defaultCompanyId = 10112L;
 
 	public String fixWikiPermissions() throws SystemException, PortalException {
 
@@ -159,14 +145,7 @@ public class AdminTasksBean {
 		return null;
 	}
 
-    public String autopromoteProposals() throws PortalException,
-            SystemException {
-        ContestPhaseLocalServiceUtil.autoPromoteProposals();
-        return null;
-    }
-
-	public void addMissingCommentsSocialActivities() throws SystemException,
-			PortalException {
+	public void addMissingCommentsSocialActivities() throws SystemException, PortalException {
 
 		/*
 		 * ClassLoader portletClassLoader = (ClassLoader)
@@ -263,8 +242,7 @@ public class AdminTasksBean {
 		}
 	}
 
-	public void fixSocialActivitiesErrors() throws SystemException,
-			PortalException {
+	public void fixSocialActivitiesErrors() throws SystemException, PortalException {
 		PrincipalThreadLocal.setName(10144L);
 		FacesContext fc = FacesContext.getCurrentInstance();
 		ExternalContext ec = fc.getExternalContext();
@@ -330,8 +308,7 @@ public class AdminTasksBean {
 	}
 
 	public String fixProposalDiscussionUrlsAndDescriptions() throws SystemException, PortalException {
-		for (Proposal proposal : ProposalLocalServiceUtil.getProposals(0,
-				Integer.MAX_VALUE)) {
+		for (Proposal proposal : ProposalLocalServiceUtil.getProposals(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
 			DiscussionCategoryGroup proposalDiscussion = DiscussionCategoryGroupLocalServiceUtil
 					.getDiscussionCategoryGroup(proposal.getDiscussionId());
 			final Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
@@ -375,7 +352,6 @@ public class AdminTasksBean {
 		return null;
 		
 	}
-	
 
 	public String populateLocationDataIntoBalloon() throws Exception {
 		for (BalloonUserTracking but: BalloonUserTrackingLocalServiceUtil.getBalloonUserTrackings(0, Integer.MAX_VALUE)) {
@@ -403,45 +379,6 @@ public class AdminTasksBean {
 		//IpTranslationServiceUtil.reloadLocationAndBlockData();
 		return null;
 		
-	}
-
-    public void triggerSupportsToVote() throws SystemException, PortalException {
-        PortletRequest request = (PortletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        ServiceContext serviceContext = new ServiceContext();
-        serviceContext.setPortalURL(String.format("%s://%s%s", request.getScheme(), request.getServerName(),
-                request.getServerPort() != 80 ? ":" + request.getServerPort() : ""));
-
-        for (Contest activeContest : ContestLocalServiceUtil.getContestsByActivePrivate(true, false)) {
-            ContestLocalServiceUtil.transferSupportsToVote(activeContest, serviceContext);
-        }
-    }
-
-    public void addJoinedActivityToRequiredUsers() throws SystemException, PortalException {
-        _log.fatal("Starting to add events");
-        FacesContext context = FacesContext.getCurrentInstance();
-        PortletRequest portletRequest = (PortletRequest)context.getExternalContext().getRequest();
-        ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
-        for (User u : UserLocalServiceUtil.getUsers(0,Integer.MAX_VALUE)){
-            if (SocialActivityLocalServiceUtil.getUserActivitiesCount(u.getUserId()) == 0){
-                // Add "joined the colab" activity when user was created
-                SocialActivityLocalServiceUtil.addActivity(u.getUserId(), themeDisplay.getScopeGroupId(),u.getCreateDate(), User.class.getName(),
-                        u.getUserId(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
-                _log.debug("Added activity for user " + u.getUserId());
-            }
-        }
-        _log.fatal("Finished adding events");
-    }
-
-	public void addContestYearSuffix() throws SystemException, PortalException {
-		ContestLocalServiceUtil.addContestYearSuffixToCompletedContests();
-	}
-
-	public void populateProposalReferencesTable() throws SystemException, PortalException {
-		ProposalReferenceLocalServiceUtil.populateTable();
-	}
-
-	public void generateContestLinks() throws SystemException, PortalException {
-		ContestLinkMigrationUtil.generateContestUrls();
 	}
 
     // ----- Reindex Tasks -----
@@ -533,12 +470,6 @@ public class AdminTasksBean {
     private void pushAjaxUpdate(String message){
         messages.add(message);
         SessionRenderer.render("pushMessages");
-    }
-
-    public void testLogs() {
-        _log.error("Test error log");
-        _log.info("Test info log");
-        _log.debug("Test debug log");
     }
 
 	public DataBean getDataBean() {

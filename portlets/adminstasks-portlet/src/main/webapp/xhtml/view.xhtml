@@ -29,16 +29,6 @@
                         <li><ice:commandButton action="#{adminTask.fixWikiPermissions}" value="Fix wiki permissions"/></li>
                         <li><ice:commandButton action="#{adminTask.addMissingCommentsSocialActivities}" value="add missing comment activities" /></li>
                         <li><ice:commandButton action="#{adminTask.dataBean.interpretActivities}" value="Interpret activities" /></li>
-                        <li><ice:commandButton action="#{adminTask.addJoinedActivityToRequiredUsers}" value="Add joined Activity where missing" /></li>
-                    </ul>
-                </ice:panelTab>
-                <ice:panelTab label="Contest/proposal related">
-                    <ul>
-                        <li><ice:commandButton action="#{adminTask.autopromoteProposals}" value="Run autopromote task on past contest phases" /></li>
-                        <li><ice:commandButton action="#{adminTask.triggerSupportsToVote}" value="Send Emails to cast supports2votes (active contests)" /></li>
-                        <li><ice:commandButton action="#{adminTask.addContestYearSuffix}" value="Add contest year suffix to completed, inactive contests" /></li>
-                        <li><ice:commandButton action="#{adminTask.populateProposalReferencesTable}" value="Populate ProposalReference table" /></li>
-                        <li><ice:commandButton action="#{adminTask.generateContestLinks}" value="Generate contest links" /></li>
                     </ul>
                 </ice:panelTab>
                 <ice:panelTab label="Contest launches">
@@ -78,18 +68,13 @@
                 	</ul>
 
                 </ice:panelTab>
-                <ice:panelTab label="Fix for removed proposals team members">
-                	<ul>
-                		<li><ice:commandButton action="#{fixForRemovedProposalsTeamMembers.processRemovedMembers}" value="Get removed proposals team members info" /></li>
-                	</ul>
-                </ice:panelTab>
                 <ice:panelTab label="Fix comment activities urls">
                 	<ul>
                 		<li><ice:commandButton action="#{fixCommentActivities.fixCommentActivities}" value="Fix comment activities" /></li>
                 	</ul>
                 </ice:panelTab>
                 <ice:panelTab label="Indexer">
-                    <span>If you trigger an indexer, wait till it is finished, don't use indexers simultanously.</span>
+                    <span>If you trigger an indexer, wait till it is finished, don't use indexers simultaneously.</span>
                     <ul>
                         <li><ice:commandButton action="#{adminTask.removeUsers}" value="Remove Users" /></li>
                         <li><ice:commandButton action="#{adminTask.reindexUsers}" value="Reindex Users" /></li>
@@ -101,7 +86,6 @@
                         <li><ice:commandButton action="#{adminTask.reindexDiscussions}" value="Reindex Discussions" /></li>
                         <li><ice:commandButton action="#{adminTask.removeActivities}" value="Remove Activities" /></li>
                         <li><ice:commandButton action="#{adminTask.reindexActivities}" value="Reindex Activities" /></li>
-                        <li><ice:commandButton action="#{adminTask.testLogs}" value="Test Logs" /></li>
                     </ul>
                 </ice:panelTab>
                 <ice:panelTab label="Batch register users">
