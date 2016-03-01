@@ -59,17 +59,15 @@ public class ProposalImpactDataParser {
         excelSeriesTypeToSeriesTypeMap.put(EXCEL_SERIES_TYPE_RESULT_KEY, ""); // we don't need this one
     }
 
-    private String tabSeparatedString;
-    private Proposal proposal;
-    private Contest contest;
+    private final String tabSeparatedString;
+    private final Proposal proposal;
+    private final Contest contest;
 
 
     /**
      * Creates a new ProposalImpactDataParser object with the input String (tab-separated string copy-pasted from Excel)
      * and the Contest of the proposal in question.
      *
-     * @param tabSeparatedString
-     * @param contest
      */
     public ProposalImpactDataParser(String tabSeparatedString, Proposal proposal, Contest contest) {
         this.tabSeparatedString = tabSeparatedString;
@@ -94,10 +92,10 @@ public class ProposalImpactDataParser {
         String headLine = inputLines[0];
         List<String> seriesTypes = new ArrayList<>();
         for (String headLineColumn : getTabbedStrings(headLine)) {
-            boolean foundMatch = false;
             // Ignore empty columns (tabs)
             if (Validator.isNotNull(headLineColumn)) {
                 // Try to match excelSeriesType from input
+                boolean foundMatch = false;
                 for (Map.Entry<String, String> entry : excelSeriesTypeToSeriesTypeMap.entrySet()) {
                     if (headLineColumn.contains(entry.getKey())) {
                         String seriesType = entry.getValue();
@@ -169,7 +167,7 @@ public class ProposalImpactDataParser {
                     }
 
                     sectorTerm = getOntologyTermByName(dataStrings[1]);
-                } catch (Exception e) {
+                } catch (SystemException | ProposalImpactDataParserException e) {
                     _log.error(e.getMessage() + " on line " + inputLineNumber);
                     throw new ProposalImpactDataParserException(e);
                 }
@@ -253,7 +251,7 @@ public class ProposalImpactDataParser {
         }
 
         List<OntologyTerm> ontologyTerms = OntologyTermLocalServiceUtil.findByOntologyTermName(name);
-        if (Validator.isNull(ontologyTerms) || ontologyTerms.size() == 0) {
+        if (Validator.isNull(ontologyTerms) || ontologyTerms.isEmpty()) {
             throw new ProposalImpactDataParserException("Could not match ontology term with name '" + name + "'");
         }
 
