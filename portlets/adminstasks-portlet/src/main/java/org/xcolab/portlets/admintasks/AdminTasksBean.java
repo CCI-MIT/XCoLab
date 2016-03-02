@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -56,12 +57,14 @@ import edu.emory.mathcs.backport.java.util.Collections;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.admintasks.data.DataBean;
 import org.xcolab.utils.UrlBuilder;
+import org.xcolab.utils.WikiUtil;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -375,7 +378,18 @@ public class AdminTasksBean {
 		return null;
 		
 	}
-	
+
+    public void migrateWikiPageTitles() throws SystemException, PortalException {
+        for (Contest contest : ContestLocalServiceUtil.getContests(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+
+            final String newTitle = contest.getContestUrlName() + "-"
+                    + contest.getContestYear();
+            WikiUtil.updateWikiPageTitleIfExists(contest.getContestShortName(), newTitle);
+            try {
+                WikiUtil.updateContestResourceUrl(contest, newTitle);
+            } catch (UnsupportedEncodingException ignored) { }
+        }
+    }
 
 	public String populateLocationDataIntoBalloon() throws Exception {
 		for (BalloonUserTracking but: BalloonUserTrackingLocalServiceUtil.getBalloonUserTrackings(0, Integer.MAX_VALUE)) {
