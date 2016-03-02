@@ -232,10 +232,8 @@
 /*  the Table-like rows of proposals */
 .propbox {
   clear: both;
-  height: 78px;
-  padding: 0 0 0 14px;
+  padding: 0 0 8px 14px;
   border-bottom: 1px solid $lightest-grey;
-  overflow: hidden;
 }
 
 .propbox.featured {
@@ -253,7 +251,6 @@
 }
 
 .propbox .row2 {
-  height: 30px;
   font-size: 13px;
   color: $darkest-grey;
   clear: both;
