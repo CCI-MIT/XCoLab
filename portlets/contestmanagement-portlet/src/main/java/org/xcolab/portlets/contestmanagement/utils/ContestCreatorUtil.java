@@ -20,7 +20,7 @@ import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 
 /**
  * Helper class used to automatically create sets of new contests. Uses JSON data to create these contests.
- *
+ * <p/>
  * Created by Mente on 27/02/15.
  */
 public final class ContestCreatorUtil {
@@ -43,12 +43,13 @@ public final class ContestCreatorUtil {
         contest.setPlanTemplateId(DEFAULT_CONTEST_TEMPLATE_ID);
         contest.setContestScheduleId(DEFAULT_CONTEST_SCHEDULE_ID);
         contest.persist();
-        ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, DEFAULT_CONTEST_SCHEDULE_ID);
+        ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest,
+                DEFAULT_CONTEST_SCHEDULE_ID);
         return contest;
     }
 
     public static void insertSeedDataToContestScheduleTableIfNotAvailable() throws SystemException {
-        if (ContestScheduleLocalServiceUtil.getContestSchedulesCount() == 0){
+        if (ContestScheduleLocalServiceUtil.getContestSchedulesCount() == 0) {
             ContestSchedule contestSchedule = ContestScheduleLocalServiceUtil.
                     createContestSchedule(CounterLocalServiceUtil.increment(ContestSchedule.class.getName()));
             contestSchedule.setName(SEED_CONTEST_SCHEDULE_NAME);
@@ -72,7 +73,7 @@ public final class ContestCreatorUtil {
         contestPhase.setContestPhaseType(contestPhaseBean.getContestPhaseType());
         contestPhase.setPhaseStartDate(contestPhaseBean.getPhaseStartDate());
 
-        if(contestPhaseBean.getPhaseEndDate() != null) {
+        if (contestPhaseBean.getPhaseEndDate() != null) {
             contestPhase.setPhaseEndDate(contestPhaseBean.getPhaseEndDate());
         }
 
@@ -83,7 +84,8 @@ public final class ContestCreatorUtil {
 
     public static ContestSchedule createNewSchedule() throws SystemException {
         Long newContestScheduleId = CounterLocalServiceUtil.increment(ContestSchedule.class.getName());
-        ContestSchedule newContestSchedule = ContestScheduleLocalServiceUtil.createContestSchedule(newContestScheduleId);
+        ContestSchedule newContestSchedule =
+                ContestScheduleLocalServiceUtil.createContestSchedule(newContestScheduleId);
         newContestSchedule.setName("New contest schedule");
         newContestSchedule.persist();
         ContestScheduleLocalServiceUtil.updateContestSchedule(newContestSchedule);

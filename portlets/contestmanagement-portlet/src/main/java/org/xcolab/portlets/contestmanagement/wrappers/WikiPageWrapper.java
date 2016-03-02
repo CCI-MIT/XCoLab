@@ -27,30 +27,28 @@ public class WikiPageWrapper {
     private final Contest contest;
     private final Long loggedInUserId;
 
-
-
-    public WikiPageWrapper(Contest contest, Long loggedInUserId) throws SystemException, UnsupportedEncodingException, PortalException {
+    public WikiPageWrapper(Contest contest, Long loggedInUserId)
+            throws SystemException, UnsupportedEncodingException, PortalException {
         this.contest = contest;
-        String contestTitle = contest.getContestUrlName()+ "-" + contest.getContestYear();
+        String contestTitle = contest.getContestUrlName() + "-" + contest.getContestYear();
         this.contestTitle = WikiUtil.removeSpecialChars(contestTitle);
         this.loggedInUserId = loggedInUserId;
         initWikiPageResourceAndCreateIfNoneExistsForThisContest();
         initWikiPageAndCreateIfNoneExistsForThisContest();
     }
 
-
-
-    public ContestResourcesBean getContestResourcesBean() throws Exception{
+    public ContestResourcesBean getContestResourcesBean() throws Exception {
         ContestResourcesBean contestResourcesBean = new ContestResourcesBean();
         String resourcesContent = wikiPage.getContent();
         contestResourcesBean.fillSectionsWithContent(resourcesContent);
         return contestResourcesBean;
     }
 
-    public void updateWikiPage(ContestResourcesBean updatedContestResourcesBean) throws UnsupportedEncodingException, java.text.ParseException, PortalException, SystemException {
+    public void updateWikiPage(ContestResourcesBean updatedContestResourcesBean)
+            throws UnsupportedEncodingException, java.text.ParseException, PortalException, SystemException {
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
-        if(!wikiPage.getContent().equals(updatedResourcesContent)) {
+        if (!wikiPage.getContent().equals(updatedResourcesContent)) {
             Double currentVersion = wikiPage.getVersion() * 10;
             double newVersion = (double) (currentVersion.intValue() + 1) / (double) 10;
             removeHeadFlagFromCurrentWikiPage();
@@ -58,12 +56,10 @@ public class WikiPageWrapper {
         }
     }
 
-
-
     private void initWikiPageResourceAndCreateIfNoneExistsForThisContest() throws SystemException, PortalException {
         try {
             wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WikiUtil.WIKI_NODE_ID, contestTitle);
-        } catch(NoSuchPageResourceException e){
+        } catch (NoSuchPageResourceException e) {
             createWikiPageResource();
         }
     }
@@ -72,18 +68,20 @@ public class WikiPageWrapper {
         wikiPageResource = WikiPageResourceLocalServiceUtil.addPageResource(WikiUtil.WIKI_NODE_ID, contestTitle);
     }
 
-    private void initWikiPageAndCreateIfNoneExistsForThisContest() throws SystemException, UnsupportedEncodingException, PortalException {
+    private void initWikiPageAndCreateIfNoneExistsForThisContest()
+            throws SystemException, UnsupportedEncodingException, PortalException {
         try {
             wikiPage = WikiPageLocalServiceUtil.getPage(wikiPageResource.getResourcePrimKey());
-        } catch(NoSuchPageException e){
+        } catch (NoSuchPageException e) {
             //createWikiPage();
             addWikiPage((double) 1, "");
         }
     }
 
-    private void addWikiPage(double version, String content) throws SystemException, UnsupportedEncodingException, PortalException {
+    private void addWikiPage(double version, String content)
+            throws SystemException, UnsupportedEncodingException, PortalException {
         ServiceContext serviceContext = new ServiceContext();
-        if(wikiPageResource == null) {
+        if (wikiPageResource == null) {
             initWikiPageResourceAndCreateIfNoneExistsForThisContest();
         }
 
@@ -92,18 +90,8 @@ public class WikiPageWrapper {
         final boolean minorEdit = false;
         final boolean head = true;
 
-        wikiPage = WikiPageLocalServiceUtil.addPage(
-                loggedInUserId,
-                WikiUtil.WIKI_NODE_ID,
-                contestTitle,
-                version,
-                content,
-                summary,
-                minorEdit,
-                "html",
-                head,
-                "", "",
-                serviceContext);
+        wikiPage = WikiPageLocalServiceUtil.addPage(loggedInUserId, WikiUtil.WIKI_NODE_ID, contestTitle,
+                version, content, summary, minorEdit, "html", head, "", "", serviceContext);
         wikiPage.setGroupId(WikiUtil.WIKI_GROUP_ID);
         wikiPage.setResourcePrimKey(resourcePrimaryKey);
         wikiPage.persist();
@@ -119,14 +107,10 @@ public class WikiPageWrapper {
         WikiUtil.updateContestResourceUrl(contest, wikiPage.getTitle());
     }
 
-
-
     private void removeHeadFlagFromCurrentWikiPage() throws SystemException {
         wikiPage.setHead(false);
         wikiPage.persist();
         WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
     }
-
-
 
 }

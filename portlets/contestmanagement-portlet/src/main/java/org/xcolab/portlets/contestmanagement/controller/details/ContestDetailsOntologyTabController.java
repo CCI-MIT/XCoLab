@@ -44,15 +44,16 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException{
+    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
     }
+
     @ModelAttribute("anyOntologyTermIds")
     public List<Long> populateAnyOntologyTermIds() {
         List<Long> anyOntologyTermIds = new ArrayList<>();
-        for(OntologySpaceEnum ontologySpaceEnum : OntologySpaceEnum.values()){
+        for (OntologySpaceEnum ontologySpaceEnum : OntologySpaceEnum.values()) {
             anyOntologyTermIds.add(ontologySpaceEnum.getAnyOntologyTermId());
         }
         return anyOntologyTermIds;
@@ -62,7 +63,7 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
     public String showOntologyTabController(PortletRequest request, PortletResponse response, Model model)
             throws PortalException, SystemException {
 
-        if(!tabWrapper.getCanView()) {
+        if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
 
@@ -70,10 +71,11 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
             OntologyWrapper ontologyWrapper = new OntologyWrapper();
             model.addAttribute("ontologyTerms", ontologyWrapper.getOntologyTerms());
             model.addAttribute("ontologySpaces", ontologyWrapper.getSortedOntologySpaces());
-            model.addAttribute("contestOntologyTerms", ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(getContest()));
+            model.addAttribute("contestOntologyTerms",
+                    ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(getContest()));
             setPageAttributes(request, model, tab);
             return TAB_VIEW;
-        } catch (SystemException | PortalException e){
+        } catch (SystemException | PortalException e) {
             _log.warn("Could not show ontology tab: ", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
@@ -83,18 +85,20 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
     @RequestMapping(params = "action=updateContestOntology")
     public void updateOntologyTabController(ActionRequest request, Model model, ActionResponse response) {
 
-        if(!tabWrapper.getCanEdit()) {
+        if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
 
-        try{
-            List<Long> selectedOntologyTerms = IdListUtil.getIdsFromString(request.getParameter("selectedOntologyTerms"));
+        try {
+            List<Long> selectedOntologyTerms =
+                    IdListUtil.getIdsFromString(request.getParameter("selectedOntologyTerms"));
 
             Contest contest = getContest();
             Long focusAreaId = contest.getFocusAreaId();
-            if(focusAreaId <= 0) {
-                FocusArea focusArea = FocusAreaLocalServiceUtil.createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
+            if (focusAreaId <= 0) {
+                FocusArea focusArea = FocusAreaLocalServiceUtil
+                        .createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
                 focusArea.persist();
                 FocusAreaLocalServiceUtil.updateFocusArea(focusArea);
                 focusAreaId = focusArea.getId();
@@ -102,16 +106,17 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
                 contest.persist();
             }
 
-            for(FocusAreaOntologyTerm focusAreaOntologyTerm : FocusAreaOntologyTermLocalServiceUtil.findTermsByFocusArea(focusAreaId)){
+            for (FocusAreaOntologyTerm focusAreaOntologyTerm : FocusAreaOntologyTermLocalServiceUtil
+                    .findTermsByFocusArea(focusAreaId)) {
                 FocusAreaOntologyTermLocalServiceUtil.deleteFocusAreaOntologyTerm(focusAreaOntologyTerm);
             }
 
-            for (Long ontologyTerm : selectedOntologyTerms){
+            for (Long ontologyTerm : selectedOntologyTerms) {
                 FocusAreaOntologyTermLocalServiceUtil.addAreaTerm(focusAreaId, ontologyTerm);
             }
 
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch(SystemException | PortalException | IOException e){
+        } catch (SystemException | PortalException | IOException e) {
             _log.warn("Update contest overview failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }

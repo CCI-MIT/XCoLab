@@ -37,8 +37,9 @@ public final class ProposalTemplateLifecycleUtil {
     }
 
     private static void deletePlanTemplateSections(Long planTemplateId) throws SystemException {
-        List<PlanTemplateSection> planTemplateSections =  PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(planTemplateId);
-        for(PlanTemplateSection planTemplateSection : planTemplateSections){
+        List<PlanTemplateSection> planTemplateSections =
+                PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(planTemplateId);
+        for (PlanTemplateSection planTemplateSection : planTemplateSections) {
             PlanTemplateSectionLocalServiceUtil.remove(planTemplateSection);
         }
     }
@@ -47,15 +48,18 @@ public final class ProposalTemplateLifecycleUtil {
             throws SystemException, PortalException {
 
         List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil.getSections(planTemplate);
-        for(PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if(!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(), planTemplate.getId())) {
+        for (PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
+            if (!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(), planTemplate.getId())) {
                 PlanSectionDefinitionLocalServiceUtil.deletePlanSectionDefinition(planSectionDefinition);
             }
         }
     }
 
-    public static boolean isPlanSectionDefinitionUsedInOtherTemplate(Long planSectionDefinitionId, Long planTemplateId) throws SystemException {
-        List<PlanTemplateSection> planTemplateSections = PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId(planSectionDefinitionId);
-        return !(planTemplateSections.size() == 1 && planTemplateSections.get(0).getPlanTemplateId() == planTemplateId) && !planTemplateSections.isEmpty();
+    public static boolean isPlanSectionDefinitionUsedInOtherTemplate(Long planSectionDefinitionId, Long planTemplateId)
+            throws SystemException {
+        List<PlanTemplateSection> planTemplateSections =
+                PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId(planSectionDefinitionId);
+        return !(planTemplateSections.size() == 1 && planTemplateSections.get(0).getPlanTemplateId() == planTemplateId)
+                && !planTemplateSections.isEmpty();
     }
 }

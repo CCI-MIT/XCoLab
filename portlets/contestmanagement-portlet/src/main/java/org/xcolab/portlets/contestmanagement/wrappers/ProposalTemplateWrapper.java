@@ -36,7 +36,7 @@ public class ProposalTemplateWrapper {
     private Boolean updateExistingSections = false;
     private Boolean createNew = false;
 
-    public ProposalTemplateWrapper(){ }
+    public ProposalTemplateWrapper() { }
 
     public ProposalTemplateWrapper(Long planTemplateId) throws PortalException, SystemException {
         this.planTemplate = PlanTemplateLocalServiceUtil.getPlanTemplate(planTemplateId);
@@ -47,8 +47,8 @@ public class ProposalTemplateWrapper {
         this.planTemplate = planTemplate;
     }
 
-    public Long getPlanTemplateId(){
-        if(planTemplate != null) {
+    public Long getPlanTemplateId() {
+        if (planTemplate != null) {
             return planTemplate.getId();
         }
         return planTemplateId;
@@ -58,7 +58,7 @@ public class ProposalTemplateWrapper {
         this.planTemplateId = planTemplateId;
         try {
             initPlanTemplate(planTemplateId);
-        } catch (SystemException | PortalException e){
+        } catch (SystemException | PortalException e) {
             _log.warn("Failed to set plan template id: " + planTemplateId);
         }
     }
@@ -71,7 +71,7 @@ public class ProposalTemplateWrapper {
         sections = new ArrayList<>();
         if (planTemplate != null) {
             for (PlanSectionDefinition planSectionDefinition : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
-                if(!planSectionDefinition.isLocked()) {
+                if (!planSectionDefinition.isLocked()) {
                     sections.add(new SectionDefinitionWrapper(planSectionDefinition, planTemplate.getId()));
                 }
             }
@@ -79,7 +79,7 @@ public class ProposalTemplateWrapper {
         addDummySection();
     }
 
-    private void addDummySection(){
+    private void addDummySection() {
         SectionDefinitionWrapper sectionDefinitionWrapper = new SectionDefinitionWrapper();
         sectionDefinitionWrapper.setTemplateSection(true);
         sectionDefinitionWrapper.setTitle("");
@@ -119,7 +119,7 @@ public class ProposalTemplateWrapper {
     }
 
     public int getNumberOfSections() {
-        if(sections != null) {
+        if (sections != null) {
             return sections.size();
         }
         return numberOfSections;
@@ -130,7 +130,7 @@ public class ProposalTemplateWrapper {
     }
 
     public String getTemplateName() {
-        if(planTemplate != null && planTemplate.getName() != null) {
+        if (planTemplate != null && planTemplate.getName() != null) {
             this.templateName = planTemplate.getName();
         }
         return templateName;
@@ -160,27 +160,29 @@ public class ProposalTemplateWrapper {
     public void removeDeletedSections() throws PortalException, SystemException {
         Set<Long> remainingPlanSectionDefinitionIds = new HashSet<>();
         List<SectionDefinitionWrapper> removedSectionDefinitions = new ArrayList<>();
-        for(SectionDefinitionWrapper sectionBaseDefinition : sections ){
-            if((sectionBaseDefinition.getTitle() == null || sectionBaseDefinition.getTitle().isEmpty())
-                    && !sectionBaseDefinition.isTemplateSection()){
+        for (SectionDefinitionWrapper sectionBaseDefinition : sections) {
+            if ((sectionBaseDefinition.getTitle() == null || sectionBaseDefinition.getTitle().isEmpty())
+                    && !sectionBaseDefinition.isTemplateSection()) {
                 removedSectionDefinitions.add(sectionBaseDefinition);
-            } else{
+            } else {
                 remainingPlanSectionDefinitionIds.add(sectionBaseDefinition.getId());
             }
         }
 
         List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil.getSections(planTemplate);
-        for(PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if(!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())){
-                if (!ProposalTemplateLifecycleUtil.isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(), planTemplate.getId())) {
+        for (PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
+            if (!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())) {
+                if (!ProposalTemplateLifecycleUtil
+                        .isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(),
+                                planTemplate.getId())) {
                     PlanSectionDefinitionLocalServiceUtil.deletePlanSectionDefinition(planSectionDefinition);
                 }
                 PlanTemplateLocalServiceUtil.removeSection(planTemplate, planSectionDefinition);
             }
         }
 
-        for(SectionDefinitionWrapper removedSectionDefinition : removedSectionDefinitions) {
-             sections.remove(removedSectionDefinition);
+        for (SectionDefinitionWrapper removedSectionDefinition : removedSectionDefinitions) {
+            sections.remove(removedSectionDefinition);
         }
     }
 
@@ -213,13 +215,14 @@ public class ProposalTemplateWrapper {
     }
 
     private void updatePlanTemplateTitle() throws SystemException {
-        if(planTemplate != null && templateName != null){
+        if (planTemplate != null && templateName != null) {
             planTemplate.setName(templateName);
             planTemplate.persist();
         }
     }
 
-    private void createOrUpdateIfExistsPlanTemplateSection(SectionDefinitionWrapper sectionDefinitionWrapper) throws SystemException {
+    private void createOrUpdateIfExistsPlanTemplateSection(SectionDefinitionWrapper sectionDefinitionWrapper)
+            throws SystemException {
 
         boolean wasUpdated = false;
         Long planTemplateId = planTemplate.getId();
@@ -230,7 +233,7 @@ public class ProposalTemplateWrapper {
                 PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId(sectionDefinitionWrapper.getId());
 
         for (PlanTemplateSection planTemplateSection : planTemplateSectionsWithSectionDefinition) {
-            if(planTemplateSection.getPlanTemplateId() == planTemplateId){
+            if (planTemplateSection.getPlanTemplateId() == planTemplateId) {
                 planTemplateSection.setWeight(weight);
                 planTemplateSection.persist();
                 PlanTemplateSectionLocalServiceUtil.updatePlanTemplateSection(planTemplateSection);
@@ -244,13 +247,14 @@ public class ProposalTemplateWrapper {
         }
     }
 
-    public static List<LabelValue> getAllPlanTemplateSelectionItems(){
+    public static List<LabelValue> getAllPlanTemplateSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         try {
             for (PlanTemplate planTemplateItem : PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE)) {
                 selectItems.add(new LabelValue(planTemplateItem.getId(), planTemplateItem.getName()));
             }
-        } catch (SystemException ignored){ }
+        } catch (SystemException ignored) {
+        }
         return selectItems;
     }
 
@@ -261,7 +265,8 @@ public class ProposalTemplateWrapper {
         try {
             Long planTemplateId = planTemplate.getId();
             contestsUsingSelectedTemplateList = ContestLocalServiceUtil.getContestsByPlanTemplateId(planTemplateId);
-        } catch (SystemException ignored){ }
+        } catch (SystemException ignored) {
+        }
 
         for (Contest contest : contestsUsingSelectedTemplateList) {
             contestsUsingSelectedTemplate.add(new BaseContestWrapper(contest));

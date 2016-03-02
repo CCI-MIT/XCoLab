@@ -52,12 +52,12 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     protected TabWrapper tabWrapper;
 
     @ModelAttribute("levelSelectionItems")
-    public List<LabelValue> populateLevelSelectionItems(){
+    public List<LabelValue> populateLevelSelectionItems() {
         return getContestLevelSelectionItems();
     }
 
     @ModelAttribute("sectionTypeSelectionItems")
-    public List<LabelStringValue> populateSectionTypesSelectionItems(){
+    public List<LabelStringValue> populateSectionTypesSelectionItems() {
         return getSectionTypesSelectionItems();
     }
 
@@ -75,21 +75,25 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     public List<LabelValue> populateWhatTerms() throws PortalException, SystemException {
         return getWhatTerms();
     }
+
     @ModelAttribute("whereTerms")
     public List<LabelValue> populateWhereTerms() throws PortalException, SystemException {
         return getWhereTerms();
     }
+
     @ModelAttribute("whoTerms")
     public List<LabelValue> populateWhoTerms() throws PortalException, SystemException {
         return getWhoTerms();
     }
+
     @ModelAttribute("howTerms")
     public List<LabelValue> populateHowTerms() throws PortalException, SystemException {
         return getHowTerms();
     }
 
-    @ResourceMapping(value="getSectionDefinition")
-    public @ResponseBody
+    @ResourceMapping(value = "getSectionDefinition")
+    public
+    @ResponseBody
     void getSectionDefinition(@RequestParam("sectionDefinitionId") Long sectionDefinitionId, ResourceResponse response)
             throws PortalException, SystemException, java.io.IOException {
 
@@ -101,7 +105,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         response.getWriter().write(mapper.writeValueAsString(sectionDefinitionWrapper));
     }
 
-    private List<LabelValue> getContestLevelSelectionItems(){
+    private List<LabelValue> getContestLevelSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         for (ContestTier contestLevel : ContestTier.values()) {
             selectItems.add(new LabelValue(contestLevel.getTierType(), contestLevel.getTierName()));
@@ -130,7 +134,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return selectItems;
     }
 
-    private List<LabelStringValue> getSectionTypesSelectionItems(){
+    private List<LabelStringValue> getSectionTypesSelectionItems() {
         List<LabelStringValue> selectItems = new ArrayList<>();
         for (SectionTypes sectionTypes : SectionTypes.values()) {
             selectItems.add(new LabelStringValue(sectionTypes.getSectionType(), sectionTypes.getDisplayName()));
@@ -154,16 +158,18 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return getTermsFromOntologySpace(OntologySpaceEnum.HOW);
     }
 
-    private List<LabelValue> getTermsFromOntologySpace(OntologySpaceEnum ontologySpace) throws SystemException, PortalException {
+    private List<LabelValue> getTermsFromOntologySpace(OntologySpaceEnum ontologySpace)
+            throws SystemException, PortalException {
         List<Stack<OntologyTerm>> allParentsPaths = getAllOntologyTermParentPathStacks(ontologySpace);
         sortOntologyTermParentPathsAlphabetically(allParentsPaths);
 
         return buildOntologyTermParentPathSelectItemList(allParentsPaths);
     }
 
-    private List<Stack<OntologyTerm>> getAllOntologyTermParentPathStacks(OntologySpaceEnum ontologySpace) throws SystemException, PortalException {
+    private List<Stack<OntologyTerm>> getAllOntologyTermParentPathStacks(OntologySpaceEnum ontologySpace)
+            throws SystemException, PortalException {
         List<Stack<OntologyTerm>> allParentsPaths = new ArrayList<>();
-        for (OntologyTerm term: OntologyTermLocalServiceUtil.getOntologyTerms(0, Integer.MAX_VALUE)) {
+        for (OntologyTerm term : OntologyTermLocalServiceUtil.getOntologyTerms(0, Integer.MAX_VALUE)) {
             // Just consider terms in the passed ontologySpace
             if (term.getOntologySpaceId() != ontologySpace.getSpaceId()) {
                 continue;
@@ -209,7 +215,8 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return stack1FirstItemName.compareTo(stack2FirstItemName);
     }
 
-    private List<LabelValue> buildOntologyTermParentPathSelectItemList(List<Stack<OntologyTerm>> allParentsPaths) throws PortalException, SystemException {
+    private List<LabelValue> buildOntologyTermParentPathSelectItemList(List<Stack<OntologyTerm>> allParentsPaths)
+            throws PortalException, SystemException {
         List<LabelValue> termSelectItems = new ArrayList<>();
 
         for (Stack<OntologyTerm> ontologyTermParentsPath : allParentsPaths) {
@@ -233,7 +240,8 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return parentsPath;
     }
 
-    private String buildOntologyTermPathString(Stack<OntologyTerm> parentsPath) throws SystemException, PortalException {
+    private String buildOntologyTermPathString(Stack<OntologyTerm> parentsPath)
+            throws SystemException, PortalException {
         if (parentsPath.size() == 1) {
             return parentsPath.pop().getName();
         }
@@ -242,7 +250,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         OntologyTerm currentTerm = parentsPath.pop();
         StringBuilder nameStr = new StringBuilder();
         boolean firstItem = true;
-        while (! parentsPath.isEmpty()) {
+        while (!parentsPath.isEmpty()) {
             currentTerm = parentsPath.pop();
             if (firstItem) {
                 nameStr.append("-");

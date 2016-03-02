@@ -31,12 +31,13 @@ public class ExceptionController {
     private static final String EMAIL_SUBJECT_FORMAT_STRING = "User encountered exception in CMS";
     private static final String EMAIL_ADDRESS_PLACEHOLDER = "(email address not specified)";
     private static final String USER_SCREEN_NAME_PLACEHOLDER = "(name not specified)";
-    private static final String MESSAGE_BODY_FORMAT_STRING = "<p>Contest manager exception: %s for user <strong>%s</strong></p>" +
-            "<br/>" +
-            "<p>The user provided the following steps to reproduce the problem: <br/>%s</p>" +
-            "<p><strong>Please notify the user once we have a fix for the bug:</strong><br/>%s </br>" +
-            "<strong>Stacktrace:</strong>" +
-            "%s</p>";
+    private static final String MESSAGE_BODY_FORMAT_STRING =
+            "<p>Contest manager exception: %s for user <strong>%s</strong></p>" +
+                    "<br/>" +
+                    "<p>The user provided the following steps to reproduce the problem: <br/>%s</p>" +
+                    "<p><strong>Please notify the user once we have a fix for the bug:</strong><br/>%s </br>" +
+                    "<strong>Stacktrace:</strong>" +
+                    "%s</p>";
 
     @RequestMapping(params = {"action=showException", "error=true"})
     public String showException(PortletRequest request, Model model) throws PortalException, SystemException {
@@ -49,7 +50,7 @@ public class ExceptionController {
 
     @RequestMapping(params = {"action=reportException"})
     public void reportException(ActionRequest request, Model model,
-                     ActionResponse response) throws IOException, SystemException, PortalException {
+            ActionResponse response) throws IOException, SystemException, PortalException {
 
         User user = PortalUtil.getUser(request);
         String stepsToReproduce = request.getParameter("stepsToReproduce");
@@ -57,7 +58,8 @@ public class ExceptionController {
         String exceptionStacktrace = request.getParameter("exceptionStacktrace");
         String userEmailAddress = user.getEmailAddress();
         SimpleExceptionErrorReportWrapper invalidUrlErrorWrapper =
-                new SimpleExceptionErrorReportWrapper(stepsToReproduce, userEmailAddress, exceptionMessage, exceptionStacktrace);
+                new SimpleExceptionErrorReportWrapper(stepsToReproduce, userEmailAddress, exceptionMessage,
+                        exceptionStacktrace);
 
         if (invalidUrlErrorWrapper.isExceptionMessageAvailable()) {
             new EmailToAdminDispatcher(EMAIL_SUBJECT_FORMAT_STRING,
@@ -88,6 +90,5 @@ public class ExceptionController {
                 emailAddress,
                 simpleExceptionErrorReportWrapper);
     }
-
 
 }

@@ -50,25 +50,26 @@ public class ContestsContextImpl implements TabContext {
     public User getUser(PortletRequest request) throws PortalException, SystemException {
         return getAttribute(request, USER_ATTRIBUTE, User.class);
     }
-    
+
     @Override
     public void invalidateContext(PortletRequest request) {
         request.removeAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
     }
-    
-    private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clasz) throws PortalException, SystemException {
-        Object contextInitialized =  request.getAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
+
+    private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clasz)
+            throws PortalException, SystemException {
+        Object contextInitialized = request.getAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
         if (contextInitialized == null) {
             init(request);
         }
         return (T) request.getAttribute(attributeName);
     }
-    
+
     private void init(PortletRequest request) throws PortalException, SystemException {
 
         try {
             final Boolean mangerView = ParamUtil.getBoolean(request, CONTEST_MANAGEMENT_PARAM);
-            if(mangerView){
+            if (mangerView) {
                 request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestManagementPermissions(request));
             } else {
                 final Long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
@@ -85,10 +86,10 @@ public class ContestsContextImpl implements TabContext {
             request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
             request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, false);
         }
     }
-    
+
     private final static Log _log = LogFactoryUtil.getLog(ContestsContextImpl.class);
 }

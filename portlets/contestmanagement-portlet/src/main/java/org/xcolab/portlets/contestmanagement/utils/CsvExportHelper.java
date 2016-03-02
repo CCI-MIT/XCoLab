@@ -7,12 +7,9 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -54,11 +51,11 @@ public class CsvExportHelper {
         CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER);
         csvWriter.writeAll(records);
         csvWriter.close();
-        String separatorIndicationForExcel =  "sep=" + CSVWriter.DEFAULT_SEPARATOR + CSVWriter.DEFAULT_LINE_END;
+        String separatorIndicationForExcel = "sep=" + CSVWriter.DEFAULT_SEPARATOR + CSVWriter.DEFAULT_LINE_END;
         return separatorIndicationForExcel + writer.toString();
     }
 
-    public void addRowToExportData(List<String> rowData){
+    public void addRowToExportData(List<String> rowData) {
         String[] rowDataArr = new String[rowData.size()];
         rowDataArr = rowData.toArray(rowDataArr);
         addRowToExportData(rowDataArr);
@@ -68,22 +65,26 @@ public class CsvExportHelper {
         records.add(rowData);
     }
 
-    public void addProposalAndAuthorDetailsToExportData(List<Proposal> proposals, ContestPhase contestPhase) throws Exception{
+    public void addProposalAndAuthorDetailsToExportData(List<Proposal> proposals, ContestPhase contestPhase)
+            throws Exception {
 
         for (Proposal proposal : proposals) {
             try {
-            List<String[]> proposalAndAuthorDetailsRows = generateProposalAndAuthorDetailsRows(proposal, contestPhase);
-            records.addAll(proposalAndAuthorDetailsRows);
-            } catch (Exception e){
+                List<String[]> proposalAndAuthorDetailsRows =
+                        generateProposalAndAuthorDetailsRows(proposal, contestPhase);
+                records.addAll(proposalAndAuthorDetailsRows);
+            } catch (SystemException | PortalException e) {
                 _log.warn("Failed to export data for csv: ", e);
             }
         }
 
     }
 
-    private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal, ContestPhase contestPhase) throws PortalException, SystemException {
+    private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal, ContestPhase contestPhase)
+            throws PortalException, SystemException {
         List<String[]> proposalExportData = new ArrayList<>();
-        Proposal2Phase proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+        Proposal2Phase proposal2Phase = Proposal2PhaseLocalServiceUtil
+                .getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
         BaseProposalWrapper proposalWrapper = getProposalWithLatestVersionInContestPhase(proposal2Phase, proposal);
         Long contestId = contestPhase.getContestPK();
         Contest contest = ContestLocalServiceUtil.getContest(contestId);
@@ -93,22 +94,25 @@ public class CsvExportHelper {
         String lastPhaseTitle = getContestPhaseTitle(contestPhase);
 
         List<BaseProposalTeamMemberWrapper> proposalTeam = proposalWrapper.getMembers();
-        for(BaseProposalTeamMemberWrapper teamMemberWrapper : proposalTeam){
-            String[] csvRow = generateProposalAndUserDetailsRow(contestTitle, proposalTitle, proposalLink, teamMemberWrapper, lastPhaseTitle);
+        for (BaseProposalTeamMemberWrapper teamMemberWrapper : proposalTeam) {
+            String[] csvRow =
+                    generateProposalAndUserDetailsRow(contestTitle, proposalTitle, proposalLink, teamMemberWrapper,
+                            lastPhaseTitle);
             proposalExportData.add(csvRow);
         }
         return proposalExportData;
     }
 
-    private static BaseProposalWrapper getProposalWithLatestVersionInContestPhase(Proposal2Phase proposal2Phase, Proposal proposal) throws NoSuchContestException {
-        if(proposal2Phase.getVersionTo() == -1 || proposal2Phase.getVersionFrom() == 0){
+    private static BaseProposalWrapper getProposalWithLatestVersionInContestPhase(Proposal2Phase proposal2Phase,
+            Proposal proposal) throws NoSuchContestException {
+        if (proposal2Phase.getVersionTo() == -1 || proposal2Phase.getVersionFrom() == 0) {
             return new BaseProposalWrapper(proposal);
         }
         return new BaseProposalWrapper(proposal, proposal2Phase.getVersionTo());
     }
 
-    private static String normalizeApostrophes(String stringToBeCleaned){
-        return stringToBeCleaned.replace("`","'").replace("’","'");
+    private static String normalizeApostrophes(String stringToBeCleaned) {
+        return stringToBeCleaned.replace("`", "'").replace("’", "'");
     }
 
     private static String getContestPhaseTitle(ContestPhase contestPhase) throws PortalException, SystemException {
@@ -117,18 +121,9 @@ public class CsvExportHelper {
         return contestPhaseType.getName();
     }
 
-    private String getLastContestPhaseForProposal(Proposal proposal) throws PortalException, SystemException {
-        ProposalVersion proposalVersion =
-                ProposalVersionLocalServiceUtil.getByProposalIdVersion(proposal.getProposalId(), proposal.getCurrentVersion());
-        Proposal2Phase proposal2Phase = Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion);
-        Long contestPhaseId = proposal2Phase.getContestPhaseId();
-        ContestPhase contestPhase =  ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-        return getContestPhaseTitle(contestPhase);
-    }
-
     private String[] generateProposalAndUserDetailsRow(String contestTitle, String proposalTitle,
-                                                       String proposalLink, BaseProposalTeamMemberWrapper member,
-                                                       String lastPhaseTitle) throws PortalException, SystemException {
+            String proposalLink, BaseProposalTeamMemberWrapper member,
+            String lastPhaseTitle) throws PortalException, SystemException {
         User user = UserLocalServiceUtil.getUser(member.getUserId());
         String username = user.getScreenName();
         String firstName = user.getFullName();
@@ -137,20 +132,21 @@ public class CsvExportHelper {
         String role = member.getMemberType();
 
         return new String[]{contestTitle
-                                ,proposalTitle
-                                ,proposalLink
-                                ,username
-                                ,firstName
-                                ,lastName
-                                ,emailAddress
-                                ,role
-                                ,lastPhaseTitle};
+                , proposalTitle
+                , proposalLink
+                , username
+                , firstName
+                , lastName
+                , emailAddress
+                , role
+                , lastPhaseTitle};
 
     }
 
-    public void initiateDownload(String downloadFileName, PortletRequest request, ResourceResponse response) throws Exception{
+    public void initiateDownload(String downloadFileName, PortletRequest request, ResourceResponse response)
+            throws Exception {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
