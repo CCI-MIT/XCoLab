@@ -203,8 +203,7 @@ public class ProposalImpactJSONController {
             _log.info(e);
             responseJSON.put("success", false);
             responseJSON.put("message", e.getMessage());
-        }
-        catch(Exception e) {
+        } catch(Exception e) {
             _log.error(e);
             responseJSON.put("success", false);
         }
