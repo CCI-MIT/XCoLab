@@ -9,11 +9,6 @@
 		<managed-bean-class>org.xcolab.portlets.admintasks.AdminTasksBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>fixCommentActivities</managed-bean-name>
-		<managed-bean-class>org.xcolab.portlets.admintasks.FixCommentActivities</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
     <managed-bean>
         <managed-bean-name>batchRegisterUsers</managed-bean-name>
         <managed-bean-class>org.xcolab.portlets.admintasks.BatchRegisterUsers</managed-bean-class>
