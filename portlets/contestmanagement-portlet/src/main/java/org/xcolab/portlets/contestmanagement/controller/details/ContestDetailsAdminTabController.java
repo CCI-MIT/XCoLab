@@ -64,21 +64,22 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
     }
 
     @ModelAttribute("contestLevelSelectionItems")
-    public List<LabelValue> populateContestLevelSelectionItems(){
+    public List<LabelValue> populateContestLevelSelectionItems() {
         return getContestLevelSelectionItems();
     }
 
     @ModelAttribute("contestTypeSelectionItems")
-    public List<LabelValue> populateContestTypeSelectionItems(){
+    public List<LabelValue> populateContestTypeSelectionItems() {
         return getContestTypeSelectionItems();
     }
 
     @ModelAttribute("modelIdsSelectionItems")
-    public List<LabelValue> populateModelIdsSelectionItems(){
+    public List<LabelValue> populateModelIdsSelectionItems() {
         return ContestModelSettingsBean.getAllModelIds();
     }
+
     @ModelAttribute("modelRegionsSelectionItems")
-    public List<LabelStringValue> populateModelRegionsSelectionItems(){
+    public List<LabelStringValue> populateModelRegionsSelectionItems() {
         return ContestModelSettingsBean.getAllModelRegions();
     }
 
@@ -92,10 +93,10 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
 
     @RequestMapping(params = "tab=ADMIN")
     public String showAdminTabController(PortletRequest request, PortletResponse response, Model model,
-                                        @RequestParam(required = false) Long contestId)
+            @RequestParam(required = false) Long contestId)
             throws PortalException, SystemException {
 
-        if(!tabWrapper.getCanView()) {
+        if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
 
@@ -106,10 +107,10 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
 
     @RequestMapping(params = "action=updateContestAdmin")
     public void updateAdminTabController(ActionRequest request, Model model,
-                                        @ModelAttribute ContestAdminBean updateContestAdminBean,
-                                        ActionResponse response) {
+            @ModelAttribute ContestAdminBean updateContestAdminBean,
+            ActionResponse response) {
 
-        if(!tabWrapper.getCanEdit()) {
+        if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
@@ -118,22 +119,23 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
             Contest c = getContest();
             updateContestAdminBean.persist(c);
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch(SystemException | PortalException | IOException e){
+        } catch (SystemException | PortalException | IOException e) {
             _log.warn("Update contest admin failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
 
-    @ResourceMapping(value="submitContest")
-    public @ResponseBody
+    @ResourceMapping(value = "submitContest")
+    public
+    @ResponseBody
     void handleSubmitContest(ResourceRequest request, ResourceResponse response,
-                             @RequestParam("contestId") Long contestId, @RequestParam("tab") String tab)
+            @RequestParam("contestId") Long contestId, @RequestParam("tab") String tab)
             throws IOException {
 
         boolean success = true;
         try {
             String contestUrl = "http://www.climatecolab.org/web/guest/cms/-/contestmanagement/contestId/" + contestId;
-            if(!tab.isEmpty()){
+            if (!tab.isEmpty()) {
                 contestUrl += "/tab/" + tab;
             }
             contestUrl += "<br/>";
@@ -169,7 +171,6 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
     }
 
 
-
     @RequestMapping(params = {"action=updateContestAdmin", "error=true"})
     public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
         return TAB_VIEW;
@@ -193,7 +194,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
         return NOT_FOUND_TAB_VIEW;
     }
 
-    private List<LabelValue> getContestLevelSelectionItems(){
+    private List<LabelValue> getContestLevelSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         for (ContestTier contestLevel : ContestTier.values()) {
             selectItems.add(new LabelValue(contestLevel.getTierType(), contestLevel.getTierName()));
@@ -201,15 +202,16 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
         return selectItems;
     }
 
-    private List<LabelValue> getContestTypeSelectionItems(){
+    private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         try {
-            for (ContestType contestType : ContestTypeLocalServiceUtil.getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            for (ContestType contestType : ContestTypeLocalServiceUtil
+                    .getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
                 selectItems.add(new LabelValue(contestType.getId(),
                         String.format("%d - %s with %s", contestType.getId(),
                                 contestType.getContestName(), contestType.getProposalNamePlural())));
             }
-        } catch (SystemException e){
+        } catch (SystemException e) {
             _log.warn("Could not get contest type selection items: " + e);
         }
         return selectItems;

@@ -46,7 +46,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException{
+    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
@@ -54,10 +54,10 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
     @RequestMapping(params = "tab=PROPOSALTEMPLATES")
     public String showProposalTemplatesTabController(PortletRequest request, PortletResponse response, Model model,
-                                                    @RequestParam(value = "elementId", required = false) Long elementId)
+            @RequestParam(value = "elementId", required = false) Long elementId)
             throws PortalException, SystemException {
 
-        if(!tabWrapper.getCanView() || request.getRemoteUser() == null) {
+        if (!tabWrapper.getCanView() || request.getRemoteUser() == null) {
             return NO_PERMISSION_TAB_VIEW;
         }
 
@@ -68,10 +68,11 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
                 ProposalTemplateWrapper proposalTemplateWrapper = new ProposalTemplateWrapper(planTemplateId);
                 model.addAttribute("contestProposalTemplateWrapper", proposalTemplateWrapper);
             }
-            model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId, ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
+            model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId,
+                    ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
             model.addAttribute("elementId", planTemplateId);
             return ContestProposalTemplateTabController.TAB_VIEW;
-        } catch (SystemException | PortalException e){
+        } catch (SystemException | PortalException e) {
             _log.warn("Exception while rendering CMS proposal template tab", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
@@ -82,7 +83,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
     @RequestMapping(params = "action=createPROPOSALTEMPLATES")
     public void createNewProposalTemplateTabController(ActionRequest request, Model model, ActionResponse response) {
 
-        if(!tabWrapper.getCanEdit()) {
+        if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
@@ -90,7 +91,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
         try {
             PlanTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), newTemplate.getId());
-        } catch(SystemException | IOException e){
+        } catch (SystemException | IOException e) {
             _log.warn("Create proposal template failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -98,17 +99,18 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
     @RequestMapping(params = "action=deletePROPOSALTEMPLATES")
     public void deleteProposalTemplateTabController(ActionRequest request, Model model,
-                                            @RequestParam(value = "elementId", required = true) Long elementId,
-                                            ActionResponse response) {
+            @RequestParam(value = "elementId", required = true) Long elementId,
+            ActionResponse response) {
 
-        if(!tabWrapper.getCanEdit()) {
+        if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
         try {
             ProposalTemplateLifecycleUtil.delete(elementId);
-            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), getFirstPlanTemplateId());
-        } catch(PortalException | SystemException | IOException e){
+            SetRenderParameterUtil
+                    .setSuccessRenderRedirectManagerTab(response, tab.getName(), getFirstPlanTemplateId());
+        } catch (PortalException | SystemException | IOException e) {
             _log.warn("Delete proposal template failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -116,9 +118,9 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
     @RequestMapping(params = {"action=updatePROPOSALTEMPLATES"})
     public void updateProposalTemplatesTabController(ActionRequest request, Model model, ActionResponse response,
-                                                     @ModelAttribute ProposalTemplateWrapper updatedProposalTemplateWrapper, BindingResult result) {
+            @ModelAttribute ProposalTemplateWrapper updatedProposalTemplateWrapper, BindingResult result) {
 
-        if(!tabWrapper.getCanEdit()) {
+        if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
@@ -134,7 +136,8 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
         try {
             updatedProposalTemplateWrapper.setUpdateExistingTemplate(true);
             updatedProposalTemplateWrapper.persist();
-            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), updatedProposalTemplateWrapper.getPlanTemplateId());
+            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(),
+                    updatedProposalTemplateWrapper.getPlanTemplateId());
         } catch (SystemException | PortalException | IOException e) {
             _log.warn("Update proposal template failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
@@ -147,7 +150,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
     }
 
 
-    private Long getFirstPlanTemplateId () throws SystemException {
+    private Long getFirstPlanTemplateId() throws SystemException {
         final List<PlanTemplate> planTemplates = PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE);
         if (!planTemplates.isEmpty()) {
             return planTemplates.get(0).getId();

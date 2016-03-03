@@ -13,9 +13,11 @@ import org.xcolab.interfaces.TabPermissions;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.PortletRequest;
+
 /**
  * Created by Thomas on 2/9/2015.
  */
+//TODO: what's the difference to ContestManagementPermissions?
 public class ContestPermissions implements TabPermissions {
     private final PermissionChecker permissionChecker;
     private final String portletId;
@@ -38,7 +40,7 @@ public class ContestPermissions implements TabPermissions {
     }
 
     @Override
-    public boolean getCanRole(MemberRole role){
+    public boolean getCanRole(MemberRole role) {
         if (isUserNotLoggedIn) {
             return false;
         }
@@ -69,31 +71,24 @@ public class ContestPermissions implements TabPermissions {
         }
         try {
             return RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.STAFF.getRoleId());
-        } catch (SystemException ignored) { }
+        } catch (SystemException ignored) {
+        }
         return false;
     }
 
-    public boolean getCanEdit(){
-        if (isUserNotLoggedIn) {
-            return false;
-        }
-        // guests aren't allowed to edit
-        return !user.isDefaultUser();
+    public boolean getCanEdit() {
+        return !isUserNotLoggedIn && !user.isDefaultUser();
     }
-    
+
     @Override
     public boolean getCanDelete() {
         return !isUserNotLoggedIn && !user.isDefaultUser();
     }
-    
+
     @Override
     public boolean getCanCreate() {
         // TODO check who needs this
-        if (isUserNotLoggedIn) {
-            return false;
-        }
-        // guests aren't allowed to edit
-        return !user.isDefaultUser();
+        return !isUserNotLoggedIn && !user.isDefaultUser();
     }
 
     public boolean getCanAdminAll() {

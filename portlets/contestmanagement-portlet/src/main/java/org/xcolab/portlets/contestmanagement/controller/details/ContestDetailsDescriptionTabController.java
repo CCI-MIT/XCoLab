@@ -67,37 +67,38 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     }
 
     @ModelAttribute("proposalTemplateSelectionItems")
-    public List<LabelValue> populateProposalTemplateSelectionItems(){
+    public List<LabelValue> populateProposalTemplateSelectionItems() {
         return getProposalTemplateSelectionItems();
     }
 
     @ModelAttribute("contestLevelSelectionItems")
-    public List<LabelValue> populateContestLevelSelectionItems(){
+    public List<LabelValue> populateContestLevelSelectionItems() {
         return getContestLevelSelectionItems();
     }
 
     @ModelAttribute("contestTypeSelectionItems")
-    public List<LabelValue> populateContestTypeSelectionItems(){
+    public List<LabelValue> populateContestTypeSelectionItems() {
         return getContestTypeSelectionItems();
     }
 
     @ModelAttribute("scheduleTemplateSelectionItems")
-    public List<LabelValue> populateScheduleSelectionItems(PortletRequest request){
+    public List<LabelValue> populateScheduleSelectionItems(PortletRequest request) {
         return getContestScheduleSelectionItems(request);
     }
 
     @ModelAttribute("modelIdsSelectionItems")
-    public List<LabelValue> populateModelIdsSelectionItems(){
+    public List<LabelValue> populateModelIdsSelectionItems() {
         return ContestModelSettingsBean.getAllModelIds();
     }
+
     @ModelAttribute("modelRegionsSelectionItems")
-    public List<LabelStringValue> populateModelRegionsSelectionItems(){
+    public List<LabelStringValue> populateModelRegionsSelectionItems() {
         return ContestModelSettingsBean.getAllModelRegions();
     }
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException{
+    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
@@ -107,7 +108,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     public String showDescriptionTabController(PortletRequest request, PortletResponse response, Model model)
             throws PortalException, SystemException {
 
-        if(!tabWrapper.getCanView()) {
+        if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
         setPageAttributes(request, model, tab);
@@ -118,12 +119,12 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
 
     @RequestMapping(params = "action=updateContestDetails")
     public void updateDescriptionTabController(ActionRequest request, Model model, ActionResponse response,
-                                             @Valid ContestDescriptionBean updatedContestDescriptionBean,
-                                             BindingResult result) {
+            @Valid ContestDescriptionBean updatedContestDescriptionBean,
+            BindingResult result) {
 
         boolean createNew = getCreateNewContestParameterFromRequest(request);
 
-        if(!tabWrapper.getCanEdit()) {
+        if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
@@ -133,7 +134,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             return;
         }
 
-        try{
+        try {
             // TODO check Input
             updatedContestDescriptionBean.persist(getContest());
             if (createNew) {
@@ -142,7 +143,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
                 sendEmailNotificationToAuthor(themeDisplay, contest);
             }
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch(SystemException | PortalException | IOException e){
+        } catch (SystemException | PortalException | IOException e) {
             _log.warn("Update contest description failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -154,28 +155,31 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return TAB_VIEW;
     }
 
-    private void sendEmailNotificationToAuthor(ThemeDisplay themeDisplay, Contest contest) throws PortalException, SystemException{
+    private void sendEmailNotificationToAuthor(ThemeDisplay themeDisplay, Contest contest)
+            throws PortalException, SystemException {
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
         new ContestCreationNotification(contest, serviceContext).sendMessage();
     }
 
-    private List<LabelValue> getProposalTemplateSelectionItems(){
+    private List<LabelValue> getProposalTemplateSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
-        List<Long> excludedList = Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L, 1300201L, 1300302L, 1300401L, 1300601L, 1300602L);
+        List<Long> excludedList =
+                Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L, 1300201L, 1300302L,
+                        1300401L, 1300601L, 1300602L);
         try {
             for (PlanTemplate proposalTemplate : PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE)) {
-                if(!excludedList.contains(proposalTemplate.getId())) {
+                if (!excludedList.contains(proposalTemplate.getId())) {
                     selectItems.add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
                 }
             }
-        } catch (SystemException e){
+        } catch (SystemException e) {
             _log.warn("Could not get contest proposal template selection items: " + e);
         }
         return selectItems;
     }
 
-    private List<LabelValue> getContestLevelSelectionItems(){
+    private List<LabelValue> getContestLevelSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         for (ContestTier contestLevel : ContestTier.values()) {
             selectItems.add(new LabelValue(contestLevel.getTierType(), contestLevel.getTierName()));
@@ -183,21 +187,22 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return selectItems;
     }
 
-    private List<LabelValue> getContestTypeSelectionItems(){
+    private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         try {
-            for (ContestType contestType : ContestTypeLocalServiceUtil.getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            for (ContestType contestType : ContestTypeLocalServiceUtil
+                    .getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
                 selectItems.add(new LabelValue(contestType.getId(),
                         String.format("%d - %s with %s", contestType.getId(),
                                 contestType.getContestName(), contestType.getProposalNamePlural())));
             }
-        } catch (SystemException e){
+        } catch (SystemException e) {
             _log.warn("Could not get contest type selection items: " + e);
         }
         return selectItems;
     }
 
-    private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request){
+    private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request) {
         List<LabelValue> scheduleTemplateSelectionItems = new ArrayList<>();
         try {
             Contest contest = getContest(request);
@@ -205,8 +210,9 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             Long existingContestScheduleId = contest.getContestScheduleId();
             Boolean contestHasProposals = contestWrapper.getProposalsCount() > 0;
             scheduleTemplateSelectionItems =
-                    ContestScheduleWrapper.getScheduleTemplateSelectionItems(existingContestScheduleId, contestHasProposals);
-        } catch (SystemException | PortalException e){
+                    ContestScheduleWrapper
+                            .getScheduleTemplateSelectionItems(existingContestScheduleId, contestHasProposals);
+        } catch (SystemException | PortalException e) {
             _log.warn("Could not get contest schedule selection items: " + e);
         }
         return scheduleTemplateSelectionItems;

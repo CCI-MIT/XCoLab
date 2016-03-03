@@ -57,7 +57,8 @@ public class OntologyWrapper {
     public List<Long> getOntologyTermIdsForFocusAreaOfContest(Contest contest) throws SystemException {
         List<Long> ontologyTermIds = new ArrayList<>();
         Long focusAreaId = contest.getFocusAreaId();
-        for(FocusAreaOntologyTerm focusAreaOntologyTerm : FocusAreaOntologyTermLocalServiceUtil.findTermsByFocusArea(focusAreaId)){
+        for (FocusAreaOntologyTerm focusAreaOntologyTerm : FocusAreaOntologyTermLocalServiceUtil
+                .findTermsByFocusArea(focusAreaId)) {
             Long ontologyTermId = focusAreaOntologyTerm.getOntologyTermId();
             ontologyTermIds.add(ontologyTermId);
         }
@@ -85,6 +86,5 @@ public class OntologyWrapper {
         }
 
     }
-
 
 }

@@ -14,10 +14,10 @@ import java.util.List;
 public class ContestFlagTextToolTipBean implements Serializable {
 
     private final static List<LabelValue> FLAG_OPTIONS = Arrays.asList(
-                    new LabelValue(-1L, "Hide flag"),
-                    new LabelValue(0L, "Phase default"),
-                    new LabelValue(1L, "Green theme"),
-                    new LabelValue(2L, "Grey theme"));
+            new LabelValue(-1L, "Hide flag"),
+            new LabelValue(0L, "Phase default"),
+            new LabelValue(1L, "Green theme"),
+            new LabelValue(2L, "Grey theme"));
 
     private int flagNumber;
     private String flagText;
@@ -46,7 +46,7 @@ public class ContestFlagTextToolTipBean implements Serializable {
         this.flagText = contest.getFlagText();
     }
 
-    public void persist(Contest contest) throws SystemException{
+    public void persist(Contest contest) throws SystemException {
         contest.setFlag(flagNumber);
         contest.setFlagText(flagText);
         contest.setFlagTooltip(flagTooltip);

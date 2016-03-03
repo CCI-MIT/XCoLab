@@ -20,58 +20,9 @@
 
                 <ice:panelTab label="Migration">
                     <ice:commandButton action="#{adminTask.fixSocialActivitiesErrors}" value="Fix activities that can't be interpreted" />
-                    <ice:commandButton action="#{adminTask.findWikiPageActivities}" value="Fix wiki activities" />
                     <ice:commandButton action="#{adminTask.fixProposalDiscussionUrlsAndDescriptions}" value="Fix proposal discussion urls and descriptions" />
                 </ice:panelTab>
 
-                <ice:panelTab label="Commons">
-                    <ul>
-                        <li><ice:commandButton action="#{adminTask.fixWikiPermissions}" value="Fix wiki permissions"/></li>
-                        <li><ice:commandButton action="#{adminTask.addMissingCommentsSocialActivities}" value="add missing comment activities" /></li>
-                        <li><ice:commandButton action="#{adminTask.dataBean.interpretActivities}" value="Interpret activities" /></li>
-                        <li><ice:commandButton action="#{adminTask.addJoinedActivityToRequiredUsers}" value="Add joined Activity where missing" /></li>
-                    </ul>
-                </ice:panelTab>
-                <ice:panelTab label="Contest/proposal related">
-                    <ul>
-                        <li><ice:commandButton action="#{adminTask.autopromoteProposals}" value="Run autopromote task on past contest phases" /></li>
-                        <li><ice:commandButton action="#{adminTask.triggerSupportsToVote}" value="Send Emails to cast supports2votes (active contests)" /></li>
-                        <li><ice:commandButton action="#{adminTask.addContestYearSuffix}" value="Add contest year suffix to completed, inactive contests" /></li>
-                        <li><ice:commandButton action="#{adminTask.populateProposalReferencesTable}" value="Populate ProposalReference table" /></li>
-                        <li><ice:commandButton action="#{adminTask.generateContestLinks}" value="Generate contest links" /></li>
-                        <li><ice:commandButton action="#{adminTask.migrateWikiPageTitles}" value="Migrate Wiki page titles" /></li>
-
-                    </ul>
-                </ice:panelTab>
-                <ice:panelTab label="Contest launches">
-                    <ul>
-                        <li><ice:outputLink value="/web/guest/cms/-/contestmanagement/create2015Tier1Contests">
-                            <ice:outputText value="Launch 2015 basic contests"/>
-                        </ice:outputLink></li>
-                        <li><ice:outputLink value="/web/guest/cms/-/contestmanagement/create2015Tier2And3Contests">
-                            <ice:outputText value="Launch 2015 Tier II and III contests"/>
-                        </ice:outputLink></li>
-                    </ul>
-                </ice:panelTab>
-                <ice:panelTab label="all activities">
-                    <ice:dataExporter for="activityData"
-                                      type="csv"
-                                      label="Download as CSV"
-                                      style="font-weight: bold;"
-                                      popupBlockerLabel="Popup Blocker detected - click here to resume download..."/>
-
-                    <ice:dataTable id="activityData" value="#{adminTask.dataBean.activities}" var="a" rows="99999999" width="100%">
-                        <ice:column>
-                            <ice:outputText value="#{a.body}" />
-                        </ice:column>
-                        <ice:column>
-                            <ice:outputText value="#{a.date}" />
-                        </ice:column>
-                        <ice:column>
-                            <ice:outputText value="#{a.userId}" />
-                        </ice:column>
-                    </ice:dataTable>
-                </ice:panelTab>
                 <ice:panelTab label="Geo Location">
                 	<ul>
                         <li><ice:commandButton action="#{adminTask.translateIp}" value="Translate sample ip (check console)"/></li>
@@ -80,18 +31,8 @@
                 	</ul>
 
                 </ice:panelTab>
-                <ice:panelTab label="Fix for removed proposals team members">
-                	<ul>
-                		<li><ice:commandButton action="#{fixForRemovedProposalsTeamMembers.processRemovedMembers}" value="Get removed proposals team members info" /></li>
-                	</ul>
-                </ice:panelTab>
-                <ice:panelTab label="Fix comment activities urls">
-                	<ul>
-                		<li><ice:commandButton action="#{fixCommentActivities.fixCommentActivities}" value="Fix comment activities" /></li>
-                	</ul>
-                </ice:panelTab>
                 <ice:panelTab label="Indexer">
-                    <span>If you trigger an indexer, wait till it is finished, don't use indexers simultanously.</span>
+                    <span>If you trigger an indexer, wait till it is finished, don't use indexers simultaneously.</span>
                     <ul>
                         <li><ice:commandButton action="#{adminTask.removeUsers}" value="Remove Users" /></li>
                         <li><ice:commandButton action="#{adminTask.reindexUsers}" value="Reindex Users" /></li>
@@ -103,7 +44,6 @@
                         <li><ice:commandButton action="#{adminTask.reindexDiscussions}" value="Reindex Discussions" /></li>
                         <li><ice:commandButton action="#{adminTask.removeActivities}" value="Remove Activities" /></li>
                         <li><ice:commandButton action="#{adminTask.reindexActivities}" value="Reindex Activities" /></li>
-                        <li><ice:commandButton action="#{adminTask.testLogs}" value="Test Logs" /></li>
                     </ul>
                 </ice:panelTab>
                 <ice:panelTab label="Batch register users">

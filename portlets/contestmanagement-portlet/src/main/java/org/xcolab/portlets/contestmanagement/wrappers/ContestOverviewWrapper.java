@@ -56,7 +56,8 @@ public class ContestOverviewWrapper {
     private void populateSubscribedToContestList(Long userId) throws SystemException, PortalException {
 
         for (BaseContestWrapper contestWrapper : contestWrappers) {
-            Boolean isUserSubscribedToContest = ContestLocalServiceUtil.isSubscribed(contestWrapper.getContestPK(), userId);
+            Boolean isUserSubscribedToContest =
+                    ContestLocalServiceUtil.isSubscribed(contestWrapper.getContestPK(), userId);
             subscribedToContest.add(isUserSubscribedToContest);
         }
     }
@@ -146,9 +147,10 @@ public class ContestOverviewWrapper {
     }
 
     public void executeMassAction(PortletRequest request, Object response)
-            throws PortalException, SystemException, IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+            throws PortalException, SystemException, IllegalArgumentException, InvocationTargetException,
+            IllegalAccessException {
         boolean isOrderMassAction = selectedMassAction == ContestMassActions.ORDER.ordinal();
-        if(isOrderMassAction){
+        if (isOrderMassAction) {
             persistOrder();
             return;
         }
@@ -184,23 +186,28 @@ public class ContestOverviewWrapper {
         }
     }
 
-    private void invokeMassActionReportMethod(Method massActionMethod, PortletRequest request, Object response) throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+    private void invokeMassActionReportMethod(Method massActionMethod, PortletRequest request, Object response)
+            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, response, request);
     }
 
-    private void invokeMassActionMessageMethod(Method massActionMethod, PortletRequest request) throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+    private void invokeMassActionMessageMethod(Method massActionMethod, PortletRequest request)
+            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, massMessageBean, request);
     }
 
-    private void invokeSetFlagTextToolTipMethod(Method massActionMethod, PortletRequest request) throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+    private void invokeSetFlagTextToolTipMethod(Method massActionMethod, PortletRequest request)
+            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, contestFlagTextToolTipBean, request);
     }
 
-    void invokeSetModelSettingsMethod(Method massActionMethod, PortletRequest request) throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+    void invokeSetModelSettingsMethod(Method massActionMethod, PortletRequest request)
+            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, contestModelSettingsBean, request);
     }
 
-    private void invokeContestWrapperMethod(Method massActionMethod, PortletRequest request) throws SystemException, IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+    private void invokeContestWrapperMethod(Method massActionMethod, PortletRequest request)
+            throws SystemException, IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         Boolean executeSetAction = (selectedMassAction > 0);
         for (BaseContestWrapper contestWrapper : contestWrappers) {
             int index = contestWrappers.indexOf(contestWrapper);

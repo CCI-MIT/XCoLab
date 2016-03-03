@@ -34,7 +34,7 @@ public class ContestModelSettingsBean implements Serializable {
 
     public ContestModelSettingsBean() { }
 
-    public ContestModelSettingsBean(Contest contest){
+    public ContestModelSettingsBean(Contest contest) {
         this.defaultModelId = contest.getDefaultModelId();
         this.otherModels = contest.getOtherModels();
         this.defaultModelSettings = contest.getDefaultModelSettings();
@@ -43,7 +43,7 @@ public class ContestModelSettingsBean implements Serializable {
         initOtherModelsAndRegion();
     }
 
-    private void initOtherModelsAndRegion(){
+    private void initOtherModelsAndRegion() {
         if (Validator.isNotNull(this.otherModels)) {
             for (String otherModelId : this.otherModels.split(",")) {
                 otherModelIds.add(Long.parseLong(otherModelId.trim()));
@@ -59,7 +59,7 @@ public class ContestModelSettingsBean implements Serializable {
             if (Validator.isNotNull(defaultModelSettings)) {
                 region = defaultModelSettings.has("region") ? defaultModelSettings.getString("region") : "";
             }
-        } catch (JSONException ignored){
+        } catch (JSONException ignored) {
         }
         return region;
     }
@@ -70,7 +70,7 @@ public class ContestModelSettingsBean implements Serializable {
 
     public void setModelRegion(String modelRegion) {
         this.modelRegion = modelRegion;
-        if(Validator.isBlank(modelRegion)) {
+        if (Validator.isBlank(modelRegion)) {
             this.defaultModelSettings = "";
         } else {
             JSONObject defaultModelSettings = JSONFactoryUtil.createJSONObject();
@@ -90,6 +90,7 @@ public class ContestModelSettingsBean implements Serializable {
     public String getOtherModels() {
         return otherModels;
     }
+
     public List<Long>
     getOtherModelIds() {
         return otherModelIds;
@@ -97,8 +98,7 @@ public class ContestModelSettingsBean implements Serializable {
 
     public void setOtherModels(String otherModelIds) {
         if (otherModelIds != null) {
-            String removeEverythingButNumbersAndCommas = otherModelIds.replaceAll("[^0-9,]", "").replaceAll(",,", ",");
-            this.otherModels = removeEverythingButNumbersAndCommas;
+            this.otherModels = otherModelIds.replaceAll("[^0-9,]", "").replaceAll(",,", ",");
         }
     }
 
@@ -117,8 +117,7 @@ public class ContestModelSettingsBean implements Serializable {
 
     public void setDefaultModelSettings(String defaultModelSettings) {
         if (defaultModelSettings != null) {
-            String defaultModelSettingsWithDoubleQuotationMarks = defaultModelSettings.replaceAll("'", "\"");
-            this.defaultModelSettings = defaultModelSettingsWithDoubleQuotationMarks;
+            this.defaultModelSettings = defaultModelSettings.replaceAll("'", "\"");
         }
     }
 
@@ -152,7 +151,8 @@ public class ContestModelSettingsBean implements Serializable {
                 }
             });
             for (Simulation simulation : simulationsSorted) {
-                allModelIds.add(new LabelValue(simulation.getId(), "(Id: " + simulation.getId() + ") " + simulation.getName()));
+                allModelIds.add(new LabelValue(simulation.getId(),
+                        "(Id: " + simulation.getId() + ") " + simulation.getName()));
             }
         } catch (SystemException e) {
             _log.warn("Couldn't fetch contest model Ids.", e);

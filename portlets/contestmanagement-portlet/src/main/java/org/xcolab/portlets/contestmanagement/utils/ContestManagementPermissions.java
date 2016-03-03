@@ -21,7 +21,7 @@ public class ContestManagementPermissions implements TabPermissions {
     private final String primKey;
     private final User user;
     private final long scopeGroupId;
-    private boolean isUserNotLoggedIn;
+    private final boolean isUserNotLoggedIn;
 
     public ContestManagementPermissions(PortletRequest request) throws PortalException, SystemException {
 
@@ -34,66 +34,55 @@ public class ContestManagementPermissions implements TabPermissions {
         isUserNotLoggedIn = user.isDefaultUser();
     }
 
-    public boolean getCanRole(MemberRole role){
-        if(isUserNotLoggedIn) return false;
+    @Override
+    public boolean getCanRole(MemberRole role) {
+        if (isUserNotLoggedIn) {
+            return false;
+        }
         try {
             return RoleLocalServiceUtil.hasUserRole(user.getUserId(), role.getRoleId());
-        } catch (Exception e) {
-        }
+        } catch (SystemException ignored) { }
         return false;
     }
 
-    public boolean getIsOwner(){
+    @Override
+    public boolean getIsOwner() {
         // TODO check who needs this
         return false;
     }
 
+    @Override
     public boolean getCanAdmin() {
-        if(isUserNotLoggedIn) return false;
-        return permissionChecker.isOmniadmin();
+        return !isUserNotLoggedIn && permissionChecker.isOmniadmin();
     }
 
+    @Override
     public boolean getCanStaff() {
-        if(isUserNotLoggedIn) return false;
+        if (isUserNotLoggedIn) {
+            return false;
+        }
         try {
             return RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.STAFF.getRoleId());
-        } catch (Exception e) {
-        }
+        } catch (SystemException ignored) { }
         return false;
     }
 
-    public boolean getCanEdit(){
+    public boolean getCanEdit() {
         // TODO check who needs this
-        if(isUserNotLoggedIn) return false;
-        // guests aren't allowed to edit
-        if (user.isDefaultUser()) 
-            return false;
-        
-        if (getCanAdminAll()) 
-            return true;
+        return !isUserNotLoggedIn && !user.isDefaultUser();
 
-        return true;
     }
-    
-    public boolean getCanDelete(){
-        if(isUserNotLoggedIn) return false;
-        if (user.isDefaultUser()) 
-            return false;
-        
-        if (getCanAdminAll()) 
-            return true;
 
-        return true;
+    @Override
+    public boolean getCanDelete() {
+        return !isUserNotLoggedIn && !user.isDefaultUser();
+
     }
-    
+
+    @Override
     public boolean getCanCreate() {
         // TODO check who needs this
-        if(isUserNotLoggedIn) return false;
-        // guests aren't allowed to edit
-        if (user.isDefaultUser())
-            return false;
-
-        return true;
+        return !isUserNotLoggedIn && !user.isDefaultUser();
     }
 
     public boolean getCanAdminAll() {

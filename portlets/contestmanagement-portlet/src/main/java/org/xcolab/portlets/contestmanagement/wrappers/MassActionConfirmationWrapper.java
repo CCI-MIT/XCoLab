@@ -30,7 +30,8 @@ public class MassActionConfirmationWrapper {
         this.contestIds = new ArrayList<>();
     }
 
-    public MassActionConfirmationWrapper(List<Integer> contestIds, Integer massActionId) throws PortalException, SystemException {
+    public MassActionConfirmationWrapper(List<Integer> contestIds, Integer massActionId)
+            throws PortalException, SystemException {
         this.selectedContest = new ArrayList<>();
         this.contestWrappers = new ArrayList<>();
         this.massActionId = massActionId;
@@ -99,7 +100,8 @@ public class MassActionConfirmationWrapper {
         List<Long> contestToBeDeleted = new ArrayList<>();
         for (Integer contestId : contestIds) {
             int index = contestIds.indexOf(contestId);
-            if (index < selectedContest.size() && Validator.isNotNull(selectedContest.get(index)) && selectedContest.get(index)) {
+            if (index < selectedContest.size() && Validator.isNotNull(selectedContest.get(index)) && selectedContest
+                    .get(index)) {
                 contestToBeDeleted.add(contestId.longValue());
             }
         }
@@ -110,6 +112,5 @@ public class MassActionConfirmationWrapper {
             throw new Exception("No action defined for mass action id: " + massActionId);
         }
     }
-
 
 }

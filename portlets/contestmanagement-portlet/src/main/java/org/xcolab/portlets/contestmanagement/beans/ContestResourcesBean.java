@@ -25,35 +25,45 @@ import java.util.TimeZone;
 public class ContestResourcesBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private List<SectionDefinitionWrapper> baseSections;
+    private final List<SectionDefinitionWrapper> baseSections;
     private List<SectionDefinitionWrapper> additionalSections;
     private List<SectionDefinitionWrapper> sections;
     private HashMap<String, String> overviewSectionValues;
-    private ContestResourcesHtmlParserUtil contestResourcesHtmlParserUtil;
+    private final ContestResourcesHtmlParserUtil contestResourcesHtmlParserUtil;
     private int numberOfSections;
 
-    private final static String[] BASE_SECTION_TITLES = {"Background", "Key Issues", "Judging Criteria", "Prizes", "Resources for Proposal Authors"};
+    private final static String[] BASE_SECTION_TITLES =
+            {"Background", "Key Issues", "Judging Criteria", "Prizes", "Resources for Proposal Authors"};
     private final static List<String> IGNORE_SECTION_TITLES = Arrays.asList("Overview", "\u00a0");
     private final static int START_INDEX_OF_BOTTOM_SECTIONS = 4;
 
     private final static String SECTION_TEXT_DEFAULT = "";
 
-    private final static String SECTION_HELPTEXT_BACKGROUND = "This section expands on the homepage description and includes:<br />\n" +
-            "- An overview of the sector/topic and why it is important for addressing climate change;<br />\n" +
-            "- Relevant facts and figures (please note that it is important this section is rooted in scientific facts and is consistent with the findings of the scientific community, such as those found in the <a href=\"http://www.ipcc.ch/report/ar5/\">IPCC Fifth Assessment Report</a>.);<br />\n" +
-            "- Why are ideas being sought and what could be possible if these challenges were overcome;<br />\n" +
-            "- A brief statement of the contest’s focus (which will be expanded upon in the Judging Criteria section, below).<br />";
+    private final static String SECTION_HELPTEXT_BACKGROUND =
+            "This section expands on the homepage description and includes:<br />\n" +
+                    "- An overview of the sector/topic and why it is important for addressing climate change;<br />\n" +
+                    "- Relevant facts and figures (please note that it is important this section is rooted in scientific facts and is consistent with the findings of the scientific community, such as those found in the <a href=\"http://www.ipcc.ch/report/ar5/\">IPCC Fifth Assessment Report</a>.);<br />\n"
+                    +
+                    "- Why are ideas being sought and what could be possible if these challenges were overcome;<br />\n"
+                    +
+                    "- A brief statement of the contest’s focus (which will be expanded upon in the Judging Criteria section, below).<br />";
 
 
-    private final static String SECTION_HELPTEXT_KEY_ISSUES = "This section provides readers with a sense of where the leaders in this field are looking – what are the current challenges or opportunities that people in this sector are talking about and working to solve? What recent developments have impacted the sector? For example, this section could reference the impact of the U.S.-China climate agreement on the sector, the automotive industry’s focus on self-driving cars, or the dramatic increase of investment in energy storage.";
+    private final static String SECTION_HELPTEXT_KEY_ISSUES =
+            "This section provides readers with a sense of where the leaders in this field are looking – what are the current challenges or opportunities that people in this sector are talking about and working to solve? What recent developments have impacted the sector? For example, this section could reference the impact of the U.S.-China climate agreement on the sector, the automotive industry’s focus on self-driving cars, or the dramatic increase of investment in energy storage.";
 
-    private final static String SECTION_HELPTEXT_PRIZES = "All contest winners will be recognized by the Climate CoLab and eligible for its Grand Prize.  If your contest team is offering any additional prizes, please state them here.";
+    private final static String SECTION_HELPTEXT_PRIZES =
+            "All contest winners will be recognized by the Climate CoLab and eligible for its Grand Prize.  If your contest team is offering any additional prizes, please state them here.";
 
-    private final static String SECTION_HELPTEXT_JUDGING_CRITERIA = "<p>This section clarifies what kinds of proposals the contest is seeking and is usually written in bullet points.</p>\n" +
-            "<p><strong>For Climate CoLab contests:</strong> The judging criteria are typically standard across all Climate CoLab contests, though your contest team is welcome to add text below the section, “The Judges will favor proposals that also effectively…</p>\n" +
-            "<p><strong>For partner contests:</strong> Here is where you can define: what kinds of solutions are being sought? (community projects, business models, web interfaces/apps, policy solutions, new technologies, etc.); what is the scope of use? (local, national, international, etc.); what stage of development? (all ideas welcome, fully implementable and scalable proposals only, etc.)</p>";
+    private final static String SECTION_HELPTEXT_JUDGING_CRITERIA =
+            "<p>This section clarifies what kinds of proposals the contest is seeking and is usually written in bullet points.</p>\n"
+                    +
+                    "<p><strong>For Climate CoLab contests:</strong> The judging criteria are typically standard across all Climate CoLab contests, though your contest team is welcome to add text below the section, “The Judges will favor proposals that also effectively…</p>\n"
+                    +
+                    "<p><strong>For partner contests:</strong> Here is where you can define: what kinds of solutions are being sought? (community projects, business models, web interfaces/apps, policy solutions, new technologies, etc.); what is the scope of use? (local, national, international, etc.); what stage of development? (all ideas welcome, fully implementable and scalable proposals only, etc.)</p>";
 
-    private final static String SECTION_HELPTEXT_REFERENCES = "Free, web-accessible references to help guide authors in preparing their proposals.";
+    private final static String SECTION_HELPTEXT_REFERENCES =
+            "Free, web-accessible references to help guide authors in preparing their proposals.";
 
     private final static String[] BASE_SECTIONS_HELPTEXT = {
             SECTION_HELPTEXT_BACKGROUND,
@@ -71,7 +81,7 @@ public class ContestResourcesBean implements Serializable {
         contestResourcesHtmlParserUtil.setIgnoreSectionTitles(IGNORE_SECTION_TITLES);
     }
 
-    public void splitSections(){
+    public void splitSections() {
         int startOfAdditionalSections = START_INDEX_OF_BOTTOM_SECTIONS;
         int endOfAdditionalSections = numberOfSections - START_INDEX_OF_BOTTOM_SECTIONS;
         List<SectionDefinitionWrapper> baseSectionsTop = sections.subList(0, START_INDEX_OF_BOTTOM_SECTIONS);
@@ -81,47 +91,48 @@ public class ContestResourcesBean implements Serializable {
         additionalSections = sections.subList(startOfAdditionalSections, endOfAdditionalSections);
     }
 
-    public String getSectionsAsHtml(){
+    public String getSectionsAsHtml() {
         removeDeletedSections();
         incooperateNewSections();
 
         StringBuilder sectionsAsHtmlString = new StringBuilder();
-        String overviewSection = contestResourcesHtmlParserUtil.getOverviewSectionAsHtmlString(overviewSectionValues);
+        String overviewSection = ContestResourcesHtmlParserUtil.getOverviewSectionAsHtmlString(overviewSectionValues);
 
         sectionsAsHtmlString.append(overviewSection);
-        for(SectionDefinitionWrapper sectionBaseDefinition : sections ){
-            if(!sectionBaseDefinition.getContent().isEmpty()) {
-                String sectionAsHtmlString = contestResourcesHtmlParserUtil.getSectionAsHtmlString(sectionBaseDefinition);
+        for (SectionDefinitionWrapper sectionBaseDefinition : sections) {
+            if (!sectionBaseDefinition.getContent().isEmpty()) {
+                String sectionAsHtmlString =
+                        ContestResourcesHtmlParserUtil.getSectionAsHtmlString(sectionBaseDefinition);
                 sectionsAsHtmlString.append(sectionAsHtmlString);
             }
         }
         return sectionsAsHtmlString.toString();
     }
 
-    private void incooperateNewSections(){
+    private void incooperateNewSections() {
         SectionDefinitionWrapper templateSectionDefinitionWrapper = new SectionDefinitionWrapper();
-        for(SectionDefinitionWrapper sectionBaseDefinition : sections ){
-            if(sectionBaseDefinition.isTemplateSection()) {
+        for (SectionDefinitionWrapper sectionBaseDefinition : sections) {
+            if (sectionBaseDefinition.isTemplateSection()) {
                 templateSectionDefinitionWrapper = sectionBaseDefinition;
                 break;
             }
         }
         int indexOfDummySectionBaseDefinition = sections.indexOf(templateSectionDefinitionWrapper);
         sections.remove(templateSectionDefinitionWrapper);
-        Collections.rotate(sections.subList(indexOfDummySectionBaseDefinition-1, sections.size()), -1);
+        Collections.rotate(sections.subList(indexOfDummySectionBaseDefinition - 1, sections.size()), -1);
     }
 
-    private void removeDeletedSections(){
+    private void removeDeletedSections() {
         List<SectionDefinitionWrapper> removedSectionDefinitions = new ArrayList<>();
-        for(SectionDefinitionWrapper sectionBaseDefinition : sections ){
-            if(sectionBaseDefinition.getTitle().isEmpty()
+        for (SectionDefinitionWrapper sectionBaseDefinition : sections) {
+            if (sectionBaseDefinition.getTitle().isEmpty()
                     && sectionBaseDefinition.getContent().isEmpty()
-                    && !sectionBaseDefinition.isTemplateSection()){
+                    && !sectionBaseDefinition.isTemplateSection()) {
                 removedSectionDefinitions.add(sectionBaseDefinition);
             }
         }
 
-        for(SectionDefinitionWrapper removedSectionDefinition : removedSectionDefinitions) {
+        for (SectionDefinitionWrapper removedSectionDefinition : removedSectionDefinitions) {
             sections.remove(removedSectionDefinition);
         }
     }
@@ -166,22 +177,23 @@ public class ContestResourcesBean implements Serializable {
     }
 
     private void addAdditionalSectionsWithDefaultsToSectionsList() {
-        while (sections.size() < numberOfSections ) {
+        while (sections.size() < numberOfSections) {
             SectionDefinitionWrapper sectionDefinitionWrapper = new SectionDefinitionWrapper();
             sections.add(sectionDefinitionWrapper);
         }
     }
 
-    private void addTemplateSectionWithDefaultsToSectionsList(){
+    private void addTemplateSectionWithDefaultsToSectionsList() {
         SectionDefinitionWrapper sectionDefinitionWrapper = new SectionDefinitionWrapper();
         sectionDefinitionWrapper.setTemplateSection(true);
         sections.add(sectionDefinitionWrapper);
     }
 
-    private void composeSectionsList(){
+    private void composeSectionsList() {
         sections.clear();
         List<SectionDefinitionWrapper> baseSectionsTop = baseSections.subList(0, START_INDEX_OF_BOTTOM_SECTIONS);
-        List<SectionDefinitionWrapper> baseSectionBottom = baseSections.subList(START_INDEX_OF_BOTTOM_SECTIONS, baseSections.size());
+        List<SectionDefinitionWrapper> baseSectionBottom =
+                baseSections.subList(START_INDEX_OF_BOTTOM_SECTIONS, baseSections.size());
         sections.addAll(baseSectionsTop);
         sections.addAll(additionalSections);
         sections.addAll(baseSectionBottom);
@@ -189,7 +201,7 @@ public class ContestResourcesBean implements Serializable {
         addTemplateSectionWithDefaultsToSectionsList();
     }
 
-    private void createEmptySectionsList(){
+    private void createEmptySectionsList() {
         addBaseSectionsWithDefaultsToSectionsList();
         addAdditionalSectionsWithDefaultsToSectionsList();
     }
@@ -211,16 +223,16 @@ public class ContestResourcesBean implements Serializable {
         createEmptySectionsList();
     }
 
-    public void fillOverviewSectionContent(Contest contest) throws SystemException, ParseException{
+    public void fillOverviewSectionContent(Contest contest) throws SystemException, ParseException {
         List<ContestPhase> contestPhaseList = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
         String proposalSubmissionEndDate = "";
-        for(ContestPhase contestPhase: contestPhaseList){
+        for (ContestPhase contestPhase : contestPhaseList) {
             Long contestPhaseType = contestPhase.getContestPhaseType();
-            if(contestPhaseType == 1L){
+            if (contestPhaseType == 1L) {
                 SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMM dd, yyyy 'at' HH:mm:ss a zzzz");
                 formatter.setTimeZone(TimeZone.getTimeZone("EST"));
                 boolean phaseHasNoEnd = (contestPhase.getPhaseEndDate() == null);
-                if(phaseHasNoEnd){
+                if (phaseHasNoEnd) {
                     proposalSubmissionEndDate = "This contest has no deadline.";
                 } else {
                     proposalSubmissionEndDate = formatter.format(contestPhase.getPhaseEndDate());
@@ -231,8 +243,11 @@ public class ContestResourcesBean implements Serializable {
         overviewSectionValues = new LinkedHashMap<>();
         overviewSectionValues.put("Question:", contest.getContestName());
         final String contestLinkUrl = ContestLocalServiceUtil.getContestLinkUrl(contest);
-        overviewSectionValues.put("Submit proposals:", "<a href=\"http://climatecolab.org" + contestLinkUrl + "\" target=\"_blank\">http://climatecolab.org" + contestLinkUrl + "</a>");
-        overviewSectionValues.put("Rules:", "All entrants must agree to the <a href=\"http://climatecolab.org/web/guest/resources/-/wiki/Main/Contest+rules\" target=\"_blank\">2015 Contest Rules.</a> and <a href=\"http://climatecolab.org/web/guest/resources/-/wiki/Main/Terms+of+use\" target=\"_blank\">Terms of Use.</a>");
+        overviewSectionValues.put("Submit proposals:",
+                "<a href=\"http://climatecolab.org" + contestLinkUrl + "\" target=\"_blank\">http://climatecolab.org"
+                        + contestLinkUrl + "</a>");
+        overviewSectionValues.put("Rules:",
+                "All entrants must agree to the <a href=\"http://climatecolab.org/web/guest/resources/-/wiki/Main/Contest+rules\" target=\"_blank\">2015 Contest Rules.</a> and <a href=\"http://climatecolab.org/web/guest/resources/-/wiki/Main/Terms+of+use\" target=\"_blank\">Terms of Use.</a>");
         overviewSectionValues.put("Deadline:", proposalSubmissionEndDate);
         overviewSectionValues.put("Judging Criteria & Prizes:", "See below.");
     }

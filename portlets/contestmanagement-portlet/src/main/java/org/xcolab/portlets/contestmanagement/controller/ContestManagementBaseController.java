@@ -15,7 +15,6 @@ import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import java.util.Map;
 
 /**
  * Created by Thomas on 2/19/2015.
@@ -31,50 +30,14 @@ public class ContestManagementBaseController {
         PermissionChecker portletPermissionChecker = themeDisplay.getPermissionChecker();
         User currentUser = themeDisplay.getUser();
 
-        if(!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
-            Contest contest = ContestCreatorUtil.createNewContest("created contest " + DateTime.now().toString("yyyy.MM.dd HH.mm.ss"));
-            String newContestLink = "/web/guest/cms/-/contestmanagement/contestId/" + contest.getContestPK() + "/tab/DESCRIPTION";
+        if (!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
+            Contest contest = ContestCreatorUtil.createNewContest("created contest "
+                    + DateTime.now().toString("yyyy.MM.dd HH.mm.ss"));
+            String newContestLink = "/web/guest/cms/-/contestmanagement/contestId/"
+                    + contest.getContestPK() + "/tab/DESCRIPTION";
             model.addAttribute("newContestLink", newContestLink);
             return "common/newContestCreated";
         }
         throw new PortalException("User not authorized to create contest");
-    }
-
-    @RequestMapping(params = "create2015Tier1Contests=true")
-    public String create2015Tier1ContestsController(PortletRequest request, Model model, PortletResponse response) {
-        String view = "common/notFound";
-
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        PermissionChecker portletPermissionChecker = themeDisplay.getPermissionChecker();
-        User currentUser = themeDisplay.getUser();
-
-        if(!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
-
-            Map<String, String> contestEditMap = ContestCreatorUtil.create2015BasicContests(themeDisplay.getPortalURL());
-            model.addAttribute("contestEditLinks", contestEditMap);
-            model.addAttribute("success", (contestEditMap != null));
-            view = "common/creationDone";
-        }
-
-        return view;
-    }
-
-    @RequestMapping(params = "create2015Tier2And3Contests=true")
-    public String create2015Tier2And3ContestsController(PortletRequest request, Model model, PortletResponse response) {
-        String view = "common/notFound";
-
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        PermissionChecker portletPermissionChecker = themeDisplay.getPermissionChecker();
-        User currentUser = themeDisplay.getUser();
-
-        if(!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
-
-            Map<String, String> contestEditMap = ContestCreatorUtil.create2015Tier2And3Contests(themeDisplay.getPortalURL());
-            model.addAttribute("contestEditLinks", contestEditMap);
-            model.addAttribute("success", (contestEditMap != null));
-            view = "common/creationDone";
-        }
-
-        return view;
     }
 }

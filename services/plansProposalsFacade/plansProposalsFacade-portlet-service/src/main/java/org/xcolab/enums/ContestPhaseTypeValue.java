@@ -1,6 +1,9 @@
 package org.xcolab.enums;
 
+import com.ext.portlet.model.ContestPhaseType;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * Created by kmang on 21/05/14.
@@ -34,6 +37,14 @@ public enum ContestPhaseTypeValue {
 
     public long getTypeId() {
         return typeId;
+    }
+
+    public ContestPhaseType getContestPhaseType() throws SystemException {
+        try {
+            return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(typeId);
+        } catch (PortalException e) {
+            throw new SystemException("ContestPhaseTypeValue enum contains invalid id: " + typeId);
+        }
     }
 
     public static ContestPhaseTypeValue fromTypeId(long typeId) throws NoSuchContestPhaseTypeValueException {
