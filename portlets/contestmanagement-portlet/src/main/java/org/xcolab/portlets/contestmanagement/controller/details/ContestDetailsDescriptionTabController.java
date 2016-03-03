@@ -1,12 +1,9 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -23,12 +20,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.enums.ContestTier;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
-import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
-import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
@@ -71,29 +65,9 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return getProposalTemplateSelectionItems();
     }
 
-    @ModelAttribute("contestLevelSelectionItems")
-    public List<LabelValue> populateContestLevelSelectionItems() {
-        return getContestLevelSelectionItems();
-    }
-
-    @ModelAttribute("contestTypeSelectionItems")
-    public List<LabelValue> populateContestTypeSelectionItems() {
-        return getContestTypeSelectionItems();
-    }
-
     @ModelAttribute("scheduleTemplateSelectionItems")
     public List<LabelValue> populateScheduleSelectionItems(PortletRequest request) {
         return getContestScheduleSelectionItems(request);
-    }
-
-    @ModelAttribute("modelIdsSelectionItems")
-    public List<LabelValue> populateModelIdsSelectionItems() {
-        return ContestModelSettingsBean.getAllModelIds();
-    }
-
-    @ModelAttribute("modelRegionsSelectionItems")
-    public List<LabelStringValue> populateModelRegionsSelectionItems() {
-        return ContestModelSettingsBean.getAllModelRegions();
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -179,30 +153,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return selectItems;
     }
 
-    private List<LabelValue> getContestLevelSelectionItems() {
-        List<LabelValue> selectItems = new ArrayList<>();
-        for (ContestTier contestLevel : ContestTier.values()) {
-            selectItems.add(new LabelValue(contestLevel.getTierType(), contestLevel.getTierName()));
-        }
-        return selectItems;
-    }
-
-    private List<LabelValue> getContestTypeSelectionItems() {
-        List<LabelValue> selectItems = new ArrayList<>();
-        try {
-            for (ContestType contestType : ContestTypeLocalServiceUtil
-                    .getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-                selectItems.add(new LabelValue(contestType.getId(),
-                        String.format("%d - %s with %s", contestType.getId(),
-                                contestType.getContestName(), contestType.getProposalNamePlural())));
-            }
-        } catch (SystemException e) {
-            _log.warn("Could not get contest type selection items: " + e);
-        }
-        return selectItems;
-    }
-
-    private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request) {
+    private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request){
         List<LabelValue> scheduleTemplateSelectionItems = new ArrayList<>();
         try {
             Contest contest = getContest(request);
