@@ -61,6 +61,8 @@ public class ConfigurationAttributeLocalServiceClpInvoker {
     private String[] _methodParameterTypes530;
     private String _methodName531;
     private String[] _methodParameterTypes531;
+    private String _methodName532;
+    private String[] _methodParameterTypes532;
 
     public ConfigurationAttributeLocalServiceClpInvoker() {
         _methodName0 = "addConfigurationAttribute";
@@ -195,9 +197,13 @@ public class ConfigurationAttributeLocalServiceClpInvoker {
 
         _methodParameterTypes530 = new String[] { "java.lang.String", "long" };
 
-        _methodName531 = "getAttributeDoubleValue";
+        _methodName531 = "getAttributeBooleanValue";
 
         _methodParameterTypes531 = new String[] { "java.lang.String", "long" };
+
+        _methodName532 = "getAttributeDoubleValue";
+
+        _methodParameterTypes532 = new String[] { "java.lang.String", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -347,6 +353,12 @@ public class ConfigurationAttributeLocalServiceClpInvoker {
 
         if (_methodName531.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes531, parameterTypes)) {
+            return ConfigurationAttributeLocalServiceUtil.getAttributeBooleanValue((java.lang.String) arguments[0],
+                ((Long) arguments[1]).longValue());
+        }
+
+        if (_methodName532.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
             return ConfigurationAttributeLocalServiceUtil.getAttributeDoubleValue((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
