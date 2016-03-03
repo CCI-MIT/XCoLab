@@ -28,6 +28,10 @@ public class UserProfilePermissions {
         return getCanAdmin();
     }
 
+    public boolean getCanAdminProfile(long userId) {
+        return themeDisplay.getUserId() == userId || getCanAdmin();
+    }
+
     public User getCurrentUser() {
         return themeDisplay.getUser();
     }

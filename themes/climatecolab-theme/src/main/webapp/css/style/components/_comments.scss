@@ -138,51 +138,6 @@ input.comm_butt[type="submit"]:focus {
   font: 12px/21px Verdana, Geneva, sans-serif;
 }
 
-.comm_rightcol-bdr {
-  border-bottom: 3px solid $primary-light-grey;
-  padding-bottom: 10px;
-  margin-top: 0;
-}
-
-.comm_rightcol {
-  padding-bottom: 10px;
-  margin-top: 40px;
-}
-
-.comm_rightcol-title {
-  font-size: 19px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-.comm_rightcol-title2 {
-  background: $primary-light-grey;
-  height: 22px;
-  padding: 10px 0 0 8px;
-  font-size: 12px;
-  line-height: normal;
-  font-weight: 600;
-  color: #444;
-  margin-bottom: 5px;
-}
-
-.wf-active .comm_rightcol-title2 {
-  font-size: 14px;
-}
-
-.comm_rightcol-time {
-  color: black;
-  padding: 0 10px;
-  font: 12px/21px Verdana, Geneva, sans-serif;
-}
-
-.comm_rightcol p, .comm_rightcol-bdr p {
-  color: #666;
-  padding: 0 10px;
-  margin-bottom: 15px;
-  font: 12px/21px Verdana, Geneva, sans-serif;
-}
-
 ul#blogArchives li {
   list-style: none;
   margin-bottom: 10px;

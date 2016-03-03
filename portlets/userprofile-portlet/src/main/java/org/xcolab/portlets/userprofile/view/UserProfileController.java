@@ -15,6 +15,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
@@ -22,8 +24,10 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.ImageLocalServiceUtil;
+import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
@@ -205,8 +209,10 @@ public class UserProfileController {
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
-            model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
-            model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
+            model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil
+                    .getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
+            model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil
+                    .getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
         } catch (PortalException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
@@ -369,6 +375,17 @@ public class UserProfileController {
 
         SessionErrors.clear(request);
         SessionMessages.clear(request);
+    }
+
+    @RequestMapping(params = "action=deleteProfile")
+    public void deleteUserProfile(ActionRequest request, ActionResponse response, Model model)
+            throws IOException, SystemException, PortalException {
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+        UserLocalServiceUtil.updateStatus(themeDisplay.getUserId(), WorkflowConstants.STATUS_INACTIVE,
+                ServiceContextFactory.getInstance(request));
+
+        response.sendRedirect("/c/portal/logout");
     }
 
     void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {
