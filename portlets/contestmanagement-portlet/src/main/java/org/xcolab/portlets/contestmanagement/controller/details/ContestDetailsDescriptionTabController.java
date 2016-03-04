@@ -153,7 +153,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return selectItems;
     }
 
-    private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request){
+    private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request) {
         List<LabelValue> scheduleTemplateSelectionItems = new ArrayList<>();
         try {
             Contest contest = getContest(request);
