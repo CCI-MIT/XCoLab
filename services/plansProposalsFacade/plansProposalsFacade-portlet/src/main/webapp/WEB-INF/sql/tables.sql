@@ -664,12 +664,6 @@ create table xcolab_ProposalAttribute (
 	realValue DOUBLE
 );
 
-create table xcolab_ProposalAttributeType (
-	name VARCHAR(75) not null primary key,
-	visibleInVersionHistory BOOLEAN,
-	copyOnPromote BOOLEAN
-);
-
 create table xcolab_ProposalContestPhaseAttribute (
 	id_ LONG not null primary key,
 	proposalId LONG,
@@ -679,11 +673,6 @@ create table xcolab_ProposalContestPhaseAttribute (
 	numericValue LONG,
 	stringValue TEXT null,
 	realValue DOUBLE
-);
-
-create table xcolab_ProposalContestPhaseAttributeType (
-	name VARCHAR(75) not null primary key,
-	copyOnPromote BOOLEAN
 );
 
 create table xcolab_ProposalRating (

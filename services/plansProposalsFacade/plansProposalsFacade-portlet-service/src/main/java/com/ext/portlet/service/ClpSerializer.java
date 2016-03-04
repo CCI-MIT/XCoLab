@@ -63,10 +63,8 @@ import com.ext.portlet.model.PointsClp;
 import com.ext.portlet.model.PointsDistributionConfigurationClp;
 import com.ext.portlet.model.Proposal2PhaseClp;
 import com.ext.portlet.model.ProposalAttributeClp;
-import com.ext.portlet.model.ProposalAttributeTypeClp;
 import com.ext.portlet.model.ProposalClp;
 import com.ext.portlet.model.ProposalContestPhaseAttributeClp;
-import com.ext.portlet.model.ProposalContestPhaseAttributeTypeClp;
 import com.ext.portlet.model.ProposalRatingClp;
 import com.ext.portlet.model.ProposalRatingTypeClp;
 import com.ext.portlet.model.ProposalRatingValueClp;
@@ -430,18 +428,9 @@ public class ClpSerializer {
             return translateInputProposalAttribute(oldModel);
         }
 
-        if (oldModelClassName.equals(ProposalAttributeTypeClp.class.getName())) {
-            return translateInputProposalAttributeType(oldModel);
-        }
-
         if (oldModelClassName.equals(
                     ProposalContestPhaseAttributeClp.class.getName())) {
             return translateInputProposalContestPhaseAttribute(oldModel);
-        }
-
-        if (oldModelClassName.equals(
-                    ProposalContestPhaseAttributeTypeClp.class.getName())) {
-            return translateInputProposalContestPhaseAttributeType(oldModel);
         }
 
         if (oldModelClassName.equals(ProposalRatingClp.class.getName())) {
@@ -1174,33 +1163,11 @@ public class ClpSerializer {
         return newModel;
     }
 
-    public static Object translateInputProposalAttributeType(
-        BaseModel<?> oldModel) {
-        ProposalAttributeTypeClp oldClpModel = (ProposalAttributeTypeClp) oldModel;
-
-        BaseModel<?> newModel = oldClpModel.getProposalAttributeTypeRemoteModel();
-
-        newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-        return newModel;
-    }
-
     public static Object translateInputProposalContestPhaseAttribute(
         BaseModel<?> oldModel) {
         ProposalContestPhaseAttributeClp oldClpModel = (ProposalContestPhaseAttributeClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getProposalContestPhaseAttributeRemoteModel();
-
-        newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-        return newModel;
-    }
-
-    public static Object translateInputProposalContestPhaseAttributeType(
-        BaseModel<?> oldModel) {
-        ProposalContestPhaseAttributeTypeClp oldClpModel = (ProposalContestPhaseAttributeTypeClp) oldModel;
-
-        BaseModel<?> newModel = oldClpModel.getProposalContestPhaseAttributeTypeRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -3578,78 +3545,8 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
-                    "com.ext.portlet.model.impl.ProposalAttributeTypeImpl")) {
-            return translateOutputProposalAttributeType(oldModel);
-        } else if (oldModelClassName.endsWith("Clp")) {
-            try {
-                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-                Method getClpSerializerClassMethod = oldModelClass.getMethod(
-                        "getClpSerializerClass");
-
-                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
-
-                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-                        BaseModel.class);
-
-                Class<?> oldModelModelClass = oldModel.getModelClass();
-
-                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-                        oldModelModelClass.getSimpleName() + "RemoteModel");
-
-                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
-                        oldRemoteModel);
-
-                return newModel;
-            } catch (Throwable t) {
-                if (_log.isInfoEnabled()) {
-                    _log.info("Unable to translate " + oldModelClassName, t);
-                }
-            }
-        }
-
-        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ProposalContestPhaseAttributeImpl")) {
             return translateOutputProposalContestPhaseAttribute(oldModel);
-        } else if (oldModelClassName.endsWith("Clp")) {
-            try {
-                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-                Method getClpSerializerClassMethod = oldModelClass.getMethod(
-                        "getClpSerializerClass");
-
-                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
-
-                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-                        BaseModel.class);
-
-                Class<?> oldModelModelClass = oldModel.getModelClass();
-
-                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-                        oldModelModelClass.getSimpleName() + "RemoteModel");
-
-                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
-                        oldRemoteModel);
-
-                return newModel;
-            } catch (Throwable t) {
-                if (_log.isInfoEnabled()) {
-                    _log.info("Unable to translate " + oldModelClassName, t);
-                }
-            }
-        }
-
-        if (oldModelClassName.equals(
-                    "com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl")) {
-            return translateOutputProposalContestPhaseAttributeType(oldModel);
         } else if (oldModelClassName.endsWith("Clp")) {
             try {
                 ClassLoader classLoader = ClpSerializer.class.getClassLoader();
@@ -4594,18 +4491,8 @@ public class ClpSerializer {
         }
 
         if (className.equals(
-                    "com.ext.portlet.NoSuchProposalAttributeTypeException")) {
-            return new com.ext.portlet.NoSuchProposalAttributeTypeException();
-        }
-
-        if (className.equals(
                     "com.ext.portlet.NoSuchProposalContestPhaseAttributeException")) {
             return new com.ext.portlet.NoSuchProposalContestPhaseAttributeException();
-        }
-
-        if (className.equals(
-                    "com.ext.portlet.NoSuchProposalContestPhaseAttributeTypeException")) {
-            return new com.ext.portlet.NoSuchProposalContestPhaseAttributeTypeException();
         }
 
         if (className.equals("com.ext.portlet.NoSuchProposalRatingException")) {
@@ -5333,17 +5220,6 @@ public class ClpSerializer {
         return newModel;
     }
 
-    public static Object translateOutputProposalAttributeType(
-        BaseModel<?> oldModel) {
-        ProposalAttributeTypeClp newModel = new ProposalAttributeTypeClp();
-
-        newModel.setModelAttributes(oldModel.getModelAttributes());
-
-        newModel.setProposalAttributeTypeRemoteModel(oldModel);
-
-        return newModel;
-    }
-
     public static Object translateOutputProposalContestPhaseAttribute(
         BaseModel<?> oldModel) {
         ProposalContestPhaseAttributeClp newModel = new ProposalContestPhaseAttributeClp();
@@ -5351,17 +5227,6 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setProposalContestPhaseAttributeRemoteModel(oldModel);
-
-        return newModel;
-    }
-
-    public static Object translateOutputProposalContestPhaseAttributeType(
-        BaseModel<?> oldModel) {
-        ProposalContestPhaseAttributeTypeClp newModel = new ProposalContestPhaseAttributeTypeClp();
-
-        newModel.setModelAttributes(oldModel.getModelAttributes());
-
-        newModel.setProposalContestPhaseAttributeTypeRemoteModel(oldModel);
 
         return newModel;
     }

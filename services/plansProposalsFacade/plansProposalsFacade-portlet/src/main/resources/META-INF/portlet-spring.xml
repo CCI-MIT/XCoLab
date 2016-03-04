@@ -210,15 +210,9 @@
 	<bean id="com.ext.portlet.service.ProposalAttributeService" class="com.ext.portlet.service.impl.ProposalAttributeServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalAttributePersistence" class="com.ext.portlet.service.persistence.ProposalAttributePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.persistence.ProposalAttributeFinder" class="com.ext.portlet.service.persistence.ProposalAttributeFinderImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ProposalAttributeTypeLocalService" class="com.ext.portlet.service.impl.ProposalAttributeTypeLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ProposalAttributeTypeService" class="com.ext.portlet.service.impl.ProposalAttributeTypeServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ProposalAttributeTypePersistence" class="com.ext.portlet.service.persistence.ProposalAttributeTypePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeLocalService" class="com.ext.portlet.service.impl.ProposalContestPhaseAttributeLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeService" class="com.ext.portlet.service.impl.ProposalContestPhaseAttributeServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence" class="com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService" class="com.ext.portlet.service.impl.ProposalContestPhaseAttributeTypeLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeTypeService" class="com.ext.portlet.service.impl.ProposalContestPhaseAttributeTypeServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence" class="com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ProposalRatingLocalService" class="com.ext.portlet.service.impl.ProposalRatingLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalRatingService" class="com.ext.portlet.service.impl.ProposalRatingServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalRatingPersistence" class="com.ext.portlet.service.persistence.ProposalRatingPersistenceImpl" parent="basePersistence" />

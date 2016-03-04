@@ -67,9 +67,7 @@
 	<import class="com.ext.portlet.model.Proposal" />
 	<import class="com.ext.portlet.model.Proposal2Phase" />
 	<import class="com.ext.portlet.model.ProposalAttribute" />
-	<import class="com.ext.portlet.model.ProposalAttributeType" />
 	<import class="com.ext.portlet.model.ProposalContestPhaseAttribute" />
-	<import class="com.ext.portlet.model.ProposalContestPhaseAttributeType" />
 	<import class="com.ext.portlet.model.ProposalRating" />
 	<import class="com.ext.portlet.model.ProposalRatingType" />
 	<import class="com.ext.portlet.model.ProposalRatingValue" />
@@ -862,14 +860,6 @@
 		<property name="stringValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="realValue" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.ProposalAttributeTypeImpl" table="xcolab_ProposalAttributeType">
-		<cache usage="read-write" />
-		<id name="name" type="java.lang.String">
-			<generator class="assigned" />
-		</id>
-		<property name="visibleInVersionHistory" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="copyOnPromote" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
 	<class name="com.ext.portlet.model.impl.ProposalContestPhaseAttributeImpl" table="xcolab_ProposalContestPhaseAttribute">
 		<cache usage="read-write" />
 		<id name="id" column="id_" type="long">
@@ -882,13 +872,6 @@
 		<property name="numericValue" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="stringValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="realValue" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl" table="xcolab_ProposalContestPhaseAttributeType">
-		<cache usage="read-write" />
-		<id name="name" type="java.lang.String">
-			<generator class="assigned" />
-		</id>
-		<property name="copyOnPromote" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalRatingImpl" table="xcolab_ProposalRating">
 		<cache usage="read-write" />

@@ -790,11 +790,6 @@
 		</field>
 		<field name="realValue" type="double" />
 	</model>
-	<model name="com.ext.portlet.model.ProposalAttributeType">
-		<field name="name" type="String" />
-		<field name="visibleInVersionHistory" type="boolean" />
-		<field name="copyOnPromote" type="boolean" />
-	</model>
 	<model name="com.ext.portlet.model.ProposalContestPhaseAttribute">
 		<field name="id" type="long" />
 		<field name="proposalId" type="long" />
@@ -806,10 +801,6 @@
 			<hint name="max-length">10000</hint>
 		</field>
 		<field name="realValue" type="double" />
-	</model>
-	<model name="com.ext.portlet.model.ProposalContestPhaseAttributeType">
-		<field name="name" type="String" />
-		<field name="copyOnPromote" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalRating">
 		<field name="id" type="long" />
