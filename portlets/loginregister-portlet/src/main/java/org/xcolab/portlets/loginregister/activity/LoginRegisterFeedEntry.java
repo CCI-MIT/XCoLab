@@ -14,17 +14,11 @@ import com.liferay.portlet.social.model.BaseSocialActivityInterpreter;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 
-/**
- * Social activity for login/register related activities.
- * 
- * @author janusz
- * 
- */
 public class LoginRegisterFeedEntry extends BaseSocialActivityInterpreter implements ICollabActivityInterpreter {
 
     private static final Log _log = LogFactoryUtil.getLog(LoginRegisterFeedEntry.class);
 
-    private static final String[] _CLASS_NAMES = { User.class.getName() };
+    private static final String[] _CLASS_NAMES = {User.class.getName()};
 
     @Override
     public String[] getClassNames() {
@@ -36,7 +30,7 @@ public class LoginRegisterFeedEntry extends BaseSocialActivityInterpreter implem
         try {
             User user = UserLocalServiceUtil.getUser(classPK);
             LoginRegisterActivityKeys key = LoginRegisterActivityKeys.getForType(type);
-            
+
             if (key != null) {
                 return key.getBody(user);
             } else {
@@ -49,10 +43,11 @@ public class LoginRegisterFeedEntry extends BaseSocialActivityInterpreter implem
     }
 
     @Override
-    protected SocialActivityFeedEntry doInterpret(SocialActivity activity, ThemeDisplay themeDisplay) throws PortalException, SystemException {
+    protected SocialActivityFeedEntry doInterpret(SocialActivity activity, ThemeDisplay themeDisplay)
+            throws PortalException, SystemException {
 
         LoginRegisterActivityKeys key = LoginRegisterActivityKeys.getForType(activity.getType());
-        
+
         if (key != null) {
             User user = UserLocalServiceUtil.getUser(activity.getClassPK());
             String mailSubject = key.getTitle(user);

@@ -20,15 +20,30 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
-/**
- * Created by Klemens Mang on 20.02.14.
- */
 public class ImageUploadUtils {
-
-    private static final Log _log = LogFactoryUtil.getLog(ImageUploadUtils.class);
 
     public static final int IMAGE_RESIZE_WIDTH = 300;
     public static final int IMAGE_RESIZE_HEIGHT = 300;
+    private static final Log _log = LogFactoryUtil.getLog(ImageUploadUtils.class);
+
+    public static void updateProfilePicture(User user, String picURL) throws SystemException {
+        // Link picture if it is not yet set
+        if (user.getPortraitId() == 0) {
+            user.setPortraitId(linkProfilePicture(picURL));
+            UserLocalServiceUtil.updateUser(user);
+        }
+    }
+
+    public static long linkProfilePicture(String picUrl) throws SystemException {
+        try {
+            URL url = new URL(picUrl);
+            return ImageUploadUtils.uploadImage(url);
+        } catch (MalformedURLException e) {
+            _log.warn("Could not upload  image with url " + picUrl, e);
+        }
+
+        return 0L;
+    }
 
     public static long uploadImage(URL url) throws SystemException {
         try {
@@ -84,24 +99,5 @@ public class ImageUploadUtils {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ImageIO.write(dimg, "jpg", bos);
         return bos.toByteArray();
-    }
-
-    public static void updateProfilePicture(User user, String picURL) throws SystemException {
-        // Link picture if it is not yet set
-        if (user.getPortraitId() == 0) {
-            user.setPortraitId(linkProfilePicture(picURL));
-            UserLocalServiceUtil.updateUser(user);
-        }
-    }
-
-    public static long linkProfilePicture(String picUrl) throws SystemException {
-        try {
-            URL url = new URL(picUrl);
-            return ImageUploadUtils.uploadImage(url);
-        } catch (MalformedURLException e) {
-            _log.warn("Could not upload  image with url " + picUrl, e);
-        }
-
-        return 0L;
     }
 }

@@ -36,17 +36,17 @@ public class SingleSignOnController {
 
     @RequestMapping(params = "action=provideSSOCredentials")
     public void linkUser(ActionRequest request, Model model, ActionResponse response,
-                             @RequestParam String login, @RequestParam String password) throws PortalException,
-                                SystemException, IOException {
+            @RequestParam String login, @RequestParam String password) throws PortalException,
+            SystemException, IOException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         User u;
-        try{
-            u = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(),login);
-        } catch (NoSuchUserException nsu){
+        try {
+            u = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), login);
+        } catch (NoSuchUserException nsu) {
             // username incorrect
             response.setRenderParameter("status", "registerOrLogin");
             response.setRenderParameter("SSO", "general");
-            request.setAttribute("credentialsError",true);
+            request.setAttribute("credentialsError", true);
             return;
         }
 
@@ -55,23 +55,28 @@ public class SingleSignOnController {
         try {
             Map<String, Object> resultsMap = new HashMap<>();
             // Use local authentication API to check credentials
-            int success = UserLocalServiceUtil.authenticateByScreenName(themeDisplay.getCompanyId(), login, password, null, request.getParameterMap(), resultsMap);
+            int success = UserLocalServiceUtil
+                    .authenticateByScreenName(themeDisplay.getCompanyId(), login, password, null,
+                            request.getParameterMap(), resultsMap);
             if (success == Authenticator.SUCCESS) {
                 // Do the actual login
                 AuthenticationServiceUtil.logUserIn(request, response, login, password);
 
                 // Do the linkage of OpenID or Facebook ID
                 u = UserLocalServiceUtil.getUser(MapUtil.getLong(resultsMap, "userId"));
-                String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
-                String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
-                String profileImageId = (String)portletSession.getAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, PortletSession.APPLICATION_SCOPE);
+                String fbIdString = (String) portletSession
+                        .getAttribute(SSOKeys.FACEBOOK_USER_ID, PortletSession.APPLICATION_SCOPE);
+                String openId =
+                        (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID, PortletSession.APPLICATION_SCOPE);
+                String profileImageId = (String) portletSession
+                        .getAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, PortletSession.APPLICATION_SCOPE);
 
                 if (Validator.isNotNull(profileImageId) && u.getPortraitId() == 0) {
                     long id = GetterUtil.getLong(profileImageId);
                     u.setPortraitId(id);
                     UserLocalServiceUtil.updateUser(u);
                 }
-                if (Validator.isNotNull(fbIdString)){
+                if (Validator.isNotNull(fbIdString)) {
                     // update FB credentials
                     long fbId = Long.parseLong(fbIdString);
                     u.setFacebookId(fbId);
@@ -79,7 +84,7 @@ public class SingleSignOnController {
                     response.sendRedirect(themeDisplay.getURLHome());
                     return;
                 }
-                if (Validator.isNotNull(openId)){
+                if (Validator.isNotNull(openId)) {
                     u.setOpenId(openId);
                     UserLocalServiceUtil.updateUser(u);
                     portletSession.setAttribute("OPEN_ID_LOGIN", u.getUserId(), PortletSession.APPLICATION_SCOPE);
@@ -88,7 +93,7 @@ public class SingleSignOnController {
                 }
                 response.setRenderParameter("error", "true");
                 response.setRenderParameter("SSO", "general");
-                request.setAttribute("error","An unknown error occured.");
+                request.setAttribute("error", "An unknown error occured.");
 
                 return;
             }
@@ -100,7 +105,7 @@ public class SingleSignOnController {
         // passwords don't match
         response.setRenderParameter("status", "registerOrLogin");
         response.setRenderParameter("SSO", "general");
-        request.setAttribute("credentialsError",true);
+        request.setAttribute("credentialsError", true);
     }
 
     @RequestMapping(params = "error=true")

@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.loginregister.CreateUserBean;
 import org.xcolab.portlets.loginregister.ImageUploadUtils;
 import org.xcolab.portlets.loginregister.MainViewController;
-import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableException;
+import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -47,10 +47,10 @@ import java.util.Locale;
 @RequestMapping(value = "view", params = "SSO=facebook")
 public class FacebookController {
 
-	private final static Log _log = LogFactoryUtil.getLog(FacebookController.class);
+    private final static Log _log = LogFactoryUtil.getLog(FacebookController.class);
 
-
-	private static final String FB_PROFILE_PIC_URL_FORMAT_STRING = "https://graph.facebook.com/%d/?fields=picture.type(large)";
+    private static final String FB_PROFILE_PIC_URL_FORMAT_STRING =
+            "https://graph.facebook.com/%d/?fields=picture.type(large)";
 
     @RequestMapping(params = "action=initiateLogin")
     public void initiateFbLogin(ActionRequest request, ActionResponse response) throws IOException, SystemException {
@@ -59,17 +59,6 @@ public class FacebookController {
 
         // Set property and do redirect
         session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_LOGIN);
-
-        initiateFbRequest(request, response);
-    }
-
-    @RequestMapping(params = "action=initiateRegistration")
-    public void initiateFbRegistration(ActionRequest request, ActionResponse response) throws IOException, SystemException {
-        HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
-        HttpSession session = httpReq.getSession();
-
-        // Set property and do redirect
-        session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_REGISTRATION);
 
         initiateFbRequest(request, response);
     }
@@ -83,13 +72,27 @@ public class FacebookController {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         String facebookAuthRedirectURL = FacebookConnectUtil.getRedirectURL(themeDisplay.getCompanyId());
-        facebookAuthRedirectURL = HttpUtil.addParameter(facebookAuthRedirectURL, "redirect", HttpUtil.encodeURL(themeDisplay.getURLCurrent()));
+        facebookAuthRedirectURL = HttpUtil.addParameter(facebookAuthRedirectURL, "redirect",
+                HttpUtil.encodeURL(themeDisplay.getURLCurrent()));
         String facebookAuthURL = FacebookConnectUtil.getAuthURL(themeDisplay.getCompanyId());
-        facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "client_id", FacebookConnectUtil.getAppId(themeDisplay.getCompanyId()));
+        facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "client_id",
+                FacebookConnectUtil.getAppId(themeDisplay.getCompanyId()));
         facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "redirect_uri", facebookAuthRedirectURL);
         facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "scope", "email");
 
         response.sendRedirect(facebookAuthURL);
+    }
+
+    @RequestMapping(params = "action=initiateRegistration")
+    public void initiateFbRegistration(ActionRequest request, ActionResponse response)
+            throws IOException, SystemException {
+        HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
+        HttpSession session = httpReq.getSession();
+
+        // Set property and do redirect
+        session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_REGISTRATION);
+
+        initiateFbRequest(request, response);
     }
 
     @RequestMapping(params = "action=fbCallback")
@@ -100,12 +103,12 @@ public class FacebookController {
         HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
         HttpSession session = httpReq.getSession();
 
-		session.removeAttribute(SSOKeys.SSO_OPENID_ID);
+        session.removeAttribute(SSOKeys.SSO_OPENID_ID);
 
-		String redirectUrl = (String)session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+        String redirectUrl = (String) session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
         if (Validator.isNull(redirectUrl) || Validator.isBlank(redirectUrl)) {
-			redirectUrl = themeDisplay.getURLHome();
-		}
+            redirectUrl = themeDisplay.getURLHome();
+        }
 
         String redirect = ParamUtil.getString(request, "redirect");
         String code = ParamUtil.getString(request, "code");
@@ -115,17 +118,18 @@ public class FacebookController {
                 themeDisplay.getCompanyId(), "/me", token,
                 "id,email,first_name,last_name,gender,verified,location,locale");
 
-        if ((jsonObject == null) || (jsonObject.getJSONObject("error") != null)){
+        if ((jsonObject == null) || (jsonObject.getJSONObject("error") != null)) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("SSO", "general");
-            request.setAttribute("error","No data received.");
+            request.setAttribute("error", "No data received.");
             return;
         }
 
-        if (FacebookConnectUtil.isVerifiedAccountRequired(themeDisplay.getCompanyId()) && !jsonObject.getBoolean("verified")){
+        if (FacebookConnectUtil.isVerifiedAccountRequired(themeDisplay.getCompanyId()) && !jsonObject
+                .getBoolean("verified")) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("SSO", "general");
-            request.setAttribute("error","Verified account required.");
+            request.setAttribute("error", "Verified account required.");
             return;
         }
 
@@ -138,7 +142,8 @@ public class FacebookController {
 
         if (facebookId > 0) {
             // SSO Attribute
-            portletSession.setAttribute(SSOKeys.FACEBOOK_USER_ID, String.valueOf(facebookId),PortletSession.APPLICATION_SCOPE);
+            portletSession.setAttribute(SSOKeys.FACEBOOK_USER_ID, String.valueOf(facebookId),
+                    PortletSession.APPLICATION_SCOPE);
 
             try {
                 user = UserLocalServiceUtil.getUserByFacebookId(themeDisplay.getCompanyId(), facebookId);
@@ -148,11 +153,11 @@ public class FacebookController {
                     ImageUploadUtils.updateProfilePicture(user, realPictureURLString);
                 }
 
-				LoginLogLocalServiceUtil.createLoginLog(user, httpReq.getRemoteAddr(), redirectUrl);
-				response.sendRedirect(redirectUrl);
-				return;
+                LoginLogLocalServiceUtil.createLoginLog(user, httpReq.getRemoteAddr(), redirectUrl);
+                response.sendRedirect(redirectUrl);
+                return;
             } catch (NoSuchUserException ignored) {
-			} catch (PortalException | IOException e) {
+            } catch (PortalException | IOException e) {
                 e.printStackTrace();
             }
         }
@@ -163,89 +168,94 @@ public class FacebookController {
             try {
                 user = UserLocalServiceUtil.getUserByEmailAddress(
                         themeDisplay.getCompanyId(), emailAddress);
-                updateUserWithFBId(user,facebookId);
+                updateUserWithFBId(user, facebookId);
 
                 String realPictureURLString = getFacebookPictureURLString(fbProfilePictureURL);
                 if (realPictureURLString != null) {
                     ImageUploadUtils.updateProfilePicture(user, realPictureURLString);
                 }
 
-				updateUserAccountInformation(user, jsonObject);
+                updateUserAccountInformation(user, jsonObject);
 
-				LoginLogLocalServiceUtil.createLoginLog(user, httpReq.getRemoteAddr(), redirectUrl);
-				response.sendRedirect(redirectUrl);
-				return;
-            } catch (NoSuchUserException ignored){
+                LoginLogLocalServiceUtil.createLoginLog(user, httpReq.getRemoteAddr(), redirectUrl);
+                response.sendRedirect(redirectUrl);
+                return;
+            } catch (NoSuchUserException ignored) {
             } catch (PortalException | IOException e) {
                 e.printStackTrace();
             }
         }
 
-        if (Validator.isNotNull(jsonObject.getString("first_name"))){
-            portletSession.setAttribute(SSOKeys.SSO_FIRST_NAME, jsonObject.getString("first_name"),PortletSession.APPLICATION_SCOPE);
+        if (Validator.isNotNull(jsonObject.getString("first_name"))) {
+            portletSession.setAttribute(SSOKeys.SSO_FIRST_NAME, jsonObject.getString("first_name"),
+                    PortletSession.APPLICATION_SCOPE);
         }
 
-        if (Validator.isNotNull(jsonObject.getString("last_name"))){
-            portletSession.setAttribute(SSOKeys.SSO_LAST_NAME, jsonObject.getString("last_name"),PortletSession.APPLICATION_SCOPE);
+        if (Validator.isNotNull(jsonObject.getString("last_name"))) {
+            portletSession.setAttribute(SSOKeys.SSO_LAST_NAME, jsonObject.getString("last_name"),
+                    PortletSession.APPLICATION_SCOPE);
         }
-        if (Validator.isNotNull(jsonObject.getString("email"))){
-            portletSession.setAttribute(SSOKeys.SSO_EMAIL, jsonObject.getString("email"),PortletSession.APPLICATION_SCOPE);
+        if (Validator.isNotNull(jsonObject.getString("email"))) {
+            portletSession
+                    .setAttribute(SSOKeys.SSO_EMAIL, jsonObject.getString("email"), PortletSession.APPLICATION_SCOPE);
             // Screenname = email prefix until @ character
             String screenName = emailAddress.substring(0, emailAddress.indexOf(CharPool.AT));
-            screenName = screenName.replaceAll("[^a-zA-Z0-9]","");
+            screenName = screenName.replaceAll("[^a-zA-Z0-9]", "");
             portletSession.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName, PortletSession.APPLICATION_SCOPE);
         }
 
-		try {
-			portletSession.setAttribute(SSOKeys.SSO_COUNTRY, getCountry(jsonObject),PortletSession.APPLICATION_SCOPE);
-		} catch (UserLocationNotResolveableException e) {
-			portletSession.setAttribute(SSOKeys.SSO_COUNTRY, null,PortletSession.APPLICATION_SCOPE);
-			_log.warn(e);
-		}
+        try {
+            portletSession.setAttribute(SSOKeys.SSO_COUNTRY, getCountry(jsonObject), PortletSession.APPLICATION_SCOPE);
+        } catch (UserLocationNotResolvableException e) {
+            portletSession.setAttribute(SSOKeys.SSO_COUNTRY, null, PortletSession.APPLICATION_SCOPE);
+            _log.warn(e);
+        }
 
         // Get the FB image url
         if (facebookId > 0) {
             String realPictureURLString = getFacebookPictureURLString(fbProfilePictureURL);
             if (realPictureURLString != null) {
                 long imageId = ImageUploadUtils.linkProfilePicture(getFacebookPictureURLString(fbProfilePictureURL));
-                portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId), PortletSession.APPLICATION_SCOPE);
+                portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId),
+                        PortletSession.APPLICATION_SCOPE);
             }
         }
 
-		// Finish registration
-		if (session.getAttribute(MainViewController.SSO_TARGET_KEY) != null &&
-				session.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_REGISTRATION)) {
+        // Finish registration
+        if (session.getAttribute(MainViewController.SSO_TARGET_KEY) != null &&
+                session.getAttribute(MainViewController.SSO_TARGET_KEY)
+                        .equals(MainViewController.SSO_TARGET_REGISTRATION)) {
 
-			// append SSO attributes
-			CreateUserBean userBean = new CreateUserBean();
-			String password = RandomStringUtils.random(12, true, true);
-			userBean.setPassword(password);
-			userBean.setRetypePassword(password);
+            // append SSO attributes
+            CreateUserBean userBean = new CreateUserBean();
+            String password = RandomStringUtils.random(12, true, true);
+            userBean.setPassword(password);
+            userBean.setRetypePassword(password);
 
-			MainViewController.getSSOUserInfo(request.getPortletSession(), userBean);
+            MainViewController.getSSOUserInfo(request.getPortletSession(), userBean);
 
-			// Validate uniqueness of the screen name
-			// The chance of a collision among 40 equal screennames is 50% -> 5 tries should be sufficient
-			String screenName = userBean.getScreenName();
-			for (int i = 0; i < 5; i++) {
-				try {
-					UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
+            // Validate uniqueness of the screen name
+            // The chance of a collision among 40 equal screennames is 50% -> 5 tries should be sufficient
+            String screenName = userBean.getScreenName();
+            for (int i = 0; i < 5; i++) {
+                try {
+                    UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
                     //TODO: find better way to resolve conflicts
-					screenName = userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
-				} catch (NoSuchUserException e) {
+                    screenName = userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
+                } catch (NoSuchUserException e) {
                     //user name is not in use -> we can continue
-					break;
-				}
-			}
+                    break;
+                }
+            }
 
-			userBean.setScreenName(screenName);
+            userBean.setScreenName(screenName);
 
-			MainViewController.completeRegistration(request, response, userBean, redirectUrl, true);
-		} else {
-			response.setRenderParameter("status", "registerOrLogin");
-			response.setRenderParameter("SSO", "general");
-			request.setAttribute("credentialsError",false);
-		}
+            MainViewController.completeRegistration(request, response, userBean, redirectUrl, true);
+        } else {
+            response.setRenderParameter("status", "registerOrLogin");
+            response.setRenderParameter("SSO", "general");
+            request.setAttribute("credentialsError", false);
+        }
     }
 
     @RequestMapping(params = "status=registerOrLogin")
@@ -253,7 +263,7 @@ public class FacebookController {
         return "SSO/registerOrLogin";
     }
 
-    private void updateUserWithFBId(User u, long fbId) throws SystemException, PortalException{
+    private void updateUserWithFBId(User u, long fbId) throws SystemException, PortalException {
         u.setFacebookId(fbId);
         UserLocalServiceUtil.updateUser(u);
     }
@@ -275,83 +285,83 @@ public class FacebookController {
             _log.error("Error while getting facebook picture url", e);
         }
 
-		return null;
+        return null;
     }
 
-	private void updateUserAccountInformation(User user, JSONObject jsonObject) throws SystemException {
-		try {
-			ExpandoValue country = getExpandoValue(user, CommunityConstants.COUNTRY);
+    private void updateUserAccountInformation(User user, JSONObject jsonObject) throws SystemException {
+        try {
+            ExpandoValue country = getExpandoValue(user, CommunityConstants.COUNTRY);
 
-			if (Validator.isNull(country) || Validator.isNull(country.getString())) {
-				try {
-					setExpandoValue(user, CommunityConstants.COUNTRY, getCountry(jsonObject));
-				} catch (UserLocationNotResolveableException e) {
-					_log.warn(e);
-				}
-			}
+            if (Validator.isNull(country) || Validator.isNull(country.getString())) {
+                try {
+                    setExpandoValue(user, CommunityConstants.COUNTRY, getCountry(jsonObject));
+                } catch (UserLocationNotResolvableException e) {
+                    _log.warn(e);
+                }
+            }
 
-			ExpandoValue city = getExpandoValue(user, CommunityConstants.CITY);
+            ExpandoValue city = getExpandoValue(user, CommunityConstants.CITY);
 
-			if (Validator.isNull(city) || Validator.isNull(city.getString())) {
-				try {
-					setExpandoValue(user, CommunityConstants.CITY, getCountry(jsonObject));
+            if (Validator.isNull(city) || Validator.isNull(city.getString())) {
+                try {
+                    setExpandoValue(user, CommunityConstants.CITY, getCountry(jsonObject));
 
-				} catch (UserLocationNotResolveableException e) {
-					_log.warn(e);
-				}
-			}
-		} catch (PortalException e) {
-			_log.error(e);
-		}
-	}
+                } catch (UserLocationNotResolvableException e) {
+                    _log.warn(e);
+                }
+            }
+        } catch (PortalException e) {
+            _log.error(e);
+        }
+    }
 
-	private String getCountry(JSONObject response) throws UserLocationNotResolveableException {
-		try {
-			return getCountryFromLocationObject(response);
-		} catch (UserLocationNotResolveableException e) {
-			return getCountryFromLocaleObject(response);
-		}
-	}
+    private String getCountry(JSONObject response) throws UserLocationNotResolvableException {
+        try {
+            return getCountryFromLocationObject(response);
+        } catch (UserLocationNotResolvableException e) {
+            return getCountryFromLocaleObject(response);
+        }
+    }
 
-	private String getCountryFromLocationObject(JSONObject response) throws UserLocationNotResolveableException {
-		if (Validator.isNotNull(response.getJSONObject("location"))) {
-			String locationString = response.getJSONObject("location").getString("name");
+    private String getCountryFromLocationObject(JSONObject response) throws UserLocationNotResolvableException {
+        if (Validator.isNotNull(response.getJSONObject("location"))) {
+            String locationString = response.getJSONObject("location").getString("name");
 
-			if (locationString.contains(",")) {
-				return locationString.split(",")[1].trim();
-			}
-		}
+            if (locationString.contains(",")) {
+                return locationString.split(",")[1].trim();
+            }
+        }
 
-		throw new UserLocationNotResolveableException("Could not retrieve country from Facebook location");
-	}
+        throw new UserLocationNotResolvableException("Could not retrieve country from Facebook location");
+    }
 
-	private String getCountryFromLocaleObject(JSONObject response) throws UserLocationNotResolveableException {
-		if (Validator.isNotNull(response.getString("locale"))) {
-			String[] localeParts = response.getString("locale").split("_");
-			Locale locale = new Locale(localeParts[0], localeParts[1]);
+    private String getCountryFromLocaleObject(JSONObject response) throws UserLocationNotResolvableException {
+        if (Validator.isNotNull(response.getString("locale"))) {
+            String[] localeParts = response.getString("locale").split("_");
+            Locale locale = new Locale(localeParts[0], localeParts[1]);
 
-			return locale.getDisplayCountry();
-		}
+            return locale.getDisplayCountry();
+        }
 
-		throw new UserLocationNotResolveableException("Could not retrieve country from Facebook locale");
-	}
+        throw new UserLocationNotResolvableException("Could not retrieve country from Facebook locale");
+    }
 
-	private void setExpandoValue(User user, String valueName, Object data) throws SystemException, PortalException {
-		ExpandoValueLocalServiceUtil.addValue(
-				user.getCompanyId(),
-				User.class.getName(),
-				CommunityConstants.EXPANDO,
-				valueName,
-				user.getUserId(),
-				data);
-	}
+    private void setExpandoValue(User user, String valueName, Object data) throws SystemException, PortalException {
+        ExpandoValueLocalServiceUtil.addValue(
+                user.getCompanyId(),
+                User.class.getName(),
+                CommunityConstants.EXPANDO,
+                valueName,
+                user.getUserId(),
+                data);
+    }
 
-	private ExpandoValue getExpandoValue(User user, String valueName) throws SystemException {
-		return ExpandoValueLocalServiceUtil.getValue(
-				user.getCompanyId(),
-				User.class.getName(),
-				CommunityConstants.EXPANDO,
-				valueName,
-				user.getUserId());
-	}
+    private ExpandoValue getExpandoValue(User user, String valueName) throws SystemException {
+        return ExpandoValueLocalServiceUtil.getValue(
+                user.getCompanyId(),
+                User.class.getName(),
+                CommunityConstants.EXPANDO,
+                valueName,
+                user.getUserId());
+    }
 }

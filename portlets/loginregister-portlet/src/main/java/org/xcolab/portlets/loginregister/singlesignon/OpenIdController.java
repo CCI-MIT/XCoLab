@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.loginregister.CreateUserBean;
 import org.xcolab.portlets.loginregister.ImageUploadUtils;
 import org.xcolab.portlets.loginregister.MainViewController;
-import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableException;
+import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -38,19 +38,11 @@ public class OpenIdController {
     private static final String GOOGLE_OAUTH_REQUEST_STATE_TOKEN = "GOOGLE_OAUTH_REQUEST_STATE_TOKEN";
 
     @RequestMapping(params = "action=initiateOpenIdRegistration")
-    public void initiateOpenIdRegistration(ActionRequest actionRequest, Model model, ActionResponse actionResponse) throws IOException {
+    public void initiateOpenIdRegistration(ActionRequest actionRequest, Model model, ActionResponse actionResponse)
+            throws IOException {
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
         HttpSession session = request.getSession();
         session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_REGISTRATION);
-
-        initiateOpenIdRequest(actionRequest, actionResponse);
-    }
-
-    @RequestMapping(params = "action=initiateOpenIdLogin")
-    public void initiateOpenIdLogin(ActionRequest actionRequest, Model model, ActionResponse actionResponse) throws IOException {
-        HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
-        HttpSession session = request.getSession();
-        session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_LOGIN);
 
         initiateOpenIdRequest(actionRequest, actionResponse);
     }
@@ -72,18 +64,28 @@ public class OpenIdController {
         session.setAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY, referrer);
     }
 
+    @RequestMapping(params = "action=initiateOpenIdLogin")
+    public void initiateOpenIdLogin(ActionRequest actionRequest, Model model, ActionResponse actionResponse)
+            throws IOException {
+        HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
+        HttpSession session = request.getSession();
+        session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_LOGIN);
+
+        initiateOpenIdRequest(actionRequest, actionResponse);
+    }
 
     @RequestMapping(params = "action=readOpenIdResponse")
-    public void readOpenIdResponse(ActionRequest actionRequest, Model model, ActionResponse actionResponse) throws Exception{
+    public void readOpenIdResponse(ActionRequest actionRequest, Model model, ActionResponse actionResponse)
+            throws Exception {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
         PortletSession portletSession = actionRequest.getPortletSession();
         HttpSession session = request.getSession();
-		session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
+        session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
 
-        String redirectUrl = (String)session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+        String redirectUrl = (String) session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
         if (Validator.isNull(redirectUrl) || Validator.isBlank(redirectUrl)) {
             redirectUrl = themeDisplay.getURLHome();
         }
@@ -92,8 +94,10 @@ public class OpenIdController {
         // Check whether the state token matches => CSRF protection
         String stateToken = request.getParameter("state");
         String authCode = request.getParameter("code");
-        if (authCode != null && stateToken != null && stateToken.equals(session.getAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN))) {
-            JSONObject json = new GoogleAuthHelper(themeDisplay.getPortalURL() + SSOKeys.OPEN_ID_RESPONSE_URL).getUserInfoJson(authCode);
+        if (authCode != null && stateToken != null && stateToken
+                .equals(session.getAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN))) {
+            JSONObject json = new GoogleAuthHelper(themeDisplay.getPortalURL() + SSOKeys.OPEN_ID_RESPONSE_URL)
+                    .getUserInfoJson(authCode);
 
             String openId = json.getString("openid_id");
             String firstName = json.getString("given_name").replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
@@ -101,11 +105,11 @@ public class OpenIdController {
             String emailAddress = json.getString("email");
             String profilePicURL = json.getString("picture");
 
-			String country = null;
+            String country = null;
 
-			try {
-				country = getCountry(json.getString("locale"));
-			} catch (UserLocationNotResolveableException ignored) { }
+            try {
+                country = getCountry(json.getString("locale"));
+            } catch (UserLocationNotResolvableException ignored) { }
 
             User user;
             try {
@@ -115,29 +119,29 @@ public class OpenIdController {
 
                 actionResponse.sendRedirect(redirectUrl);
                 ImageUploadUtils.updateProfilePicture(user, profilePicURL);
-				LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
-            }
-            catch (NoSuchUserException nsue) {
+                LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
+            } catch (NoSuchUserException nsue) {
                 // try to get user by email
                 try {
                     // Do not try to login via email address if not set
                     if (Validator.isNull(emailAddress)) {
                         throw nsue;
                     }
-                    user = UserLocalServiceUtil.getUserByEmailAddress(themeDisplay.getCompanyId(),emailAddress);
+                    user = UserLocalServiceUtil.getUserByEmailAddress(themeDisplay.getCompanyId(), emailAddress);
                     user.setOpenId(openId);
-					if (Validator.isNotNull(country)) {
-						setExpandoValue(user, CommunityConstants.COUNTRY, country);
-					}
+                    if (Validator.isNotNull(country)) {
+                        setExpandoValue(user, CommunityConstants.COUNTRY, country);
+                    }
 
                     UserLocalServiceUtil.updateUser(user);
-                    portletSession.setAttribute(SSOKeys.OPEN_ID_LOGIN, user.getUserId(), PortletSession.APPLICATION_SCOPE);
+                    portletSession
+                            .setAttribute(SSOKeys.OPEN_ID_LOGIN, user.getUserId(), PortletSession.APPLICATION_SCOPE);
                     actionResponse.sendRedirect(redirectUrl);
-					LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
+                    LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
 
                     ImageUploadUtils.updateProfilePicture(user, profilePicURL);
                     user.getPortraitURL(themeDisplay);
-                }catch (NoSuchUserException nsue2){
+                } catch (NoSuchUserException nsue2) {
                     // forward to login or register
                     portletSession.setAttribute(SSOKeys.SSO_OPENID_ID, openId, PortletSession.APPLICATION_SCOPE);
                     String screenName = null;
@@ -146,11 +150,13 @@ public class OpenIdController {
                         // Screenname = email prefix until @ character
                         screenName = emailAddress.substring(0, emailAddress.indexOf(CharPool.AT));
                         screenName = screenName.replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
-                        portletSession.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName, PortletSession.APPLICATION_SCOPE);
+                        portletSession
+                                .setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName, PortletSession.APPLICATION_SCOPE);
                     }
 
                     if (Validator.isNotNull(firstName)) {
-                        portletSession.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName, PortletSession.APPLICATION_SCOPE);
+                        portletSession
+                                .setAttribute(SSOKeys.SSO_FIRST_NAME, firstName, PortletSession.APPLICATION_SCOPE);
                     }
                     if (Validator.isNotNull(lastName)) {
                         portletSession.setAttribute(SSOKeys.SSO_LAST_NAME, lastName, PortletSession.APPLICATION_SCOPE);
@@ -158,19 +164,21 @@ public class OpenIdController {
                     portletSession.setAttribute(SSOKeys.SSO_COUNTRY, country, PortletSession.APPLICATION_SCOPE);
 
                     long imageId = 0;
-					if (Validator.isNotNull(profilePicURL)) {
+                    if (Validator.isNotNull(profilePicURL)) {
                         imageId = ImageUploadUtils.linkProfilePicture(profilePicURL);
                         portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
                     }
 
-                    if (session.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_LOGIN)) {
+                    if (session.getAttribute(MainViewController.SSO_TARGET_KEY)
+                            .equals(MainViewController.SSO_TARGET_LOGIN)) {
                         actionResponse.setRenderParameter("SSO", "general");
                         actionResponse.setRenderParameter("status", "registerOrLogin");
                         actionRequest.setAttribute("credentialsError", false);
                     }
 
                     // Create the user and login
-                    else if (session.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_REGISTRATION)) {
+                    else if (session.getAttribute(MainViewController.SSO_TARGET_KEY)
+                            .equals(MainViewController.SSO_TARGET_REGISTRATION)) {
                         // append SSO attributes
                         CreateUserBean userBean = new CreateUserBean();
                         String password = RandomStringUtils.random(12, true, true);
@@ -191,7 +199,8 @@ public class OpenIdController {
                                 try {
                                     UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
                                     // Generate a random suffix for the non-unique screenName
-                                    screenName = userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
+                                    screenName =
+                                            userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
                                 } catch (PortalException e) {
                                     break;
                                 }
@@ -200,7 +209,8 @@ public class OpenIdController {
 
                         userBean.setScreenName(screenName);
 
-                        MainViewController.completeRegistration(actionRequest, actionResponse, userBean, redirectUrl, true);
+                        MainViewController
+                                .completeRegistration(actionRequest, actionResponse, userBean, redirectUrl, true);
                     }
                 }
             }
@@ -209,27 +219,27 @@ public class OpenIdController {
         }
     }
 
-	private String getCountry(String localeCountryString) throws UserLocationNotResolveableException {
-		return getCountryFromLocaleObject(localeCountryString);
-	}
+    private String getCountry(String localeCountryString) throws UserLocationNotResolvableException {
+        return getCountryFromLocaleObject(localeCountryString);
+    }
 
-	private String getCountryFromLocaleObject(String localeCountryString) throws UserLocationNotResolveableException {
-		if (Validator.isNotNull(localeCountryString)) {
-			Locale locale = new Locale("en", localeCountryString);
+    private void setExpandoValue(User user, String valueName, Object data) throws SystemException, PortalException {
+        ExpandoValueLocalServiceUtil.addValue(
+                user.getCompanyId(),
+                User.class.getName(),
+                CommunityConstants.EXPANDO,
+                valueName,
+                user.getUserId(),
+                data);
+    }
 
-			return locale.getDisplayCountry();
-		}
+    private String getCountryFromLocaleObject(String localeCountryString) throws UserLocationNotResolvableException {
+        if (Validator.isNotNull(localeCountryString)) {
+            Locale locale = new Locale("en", localeCountryString);
 
-		throw new UserLocationNotResolveableException("Could not retrieve country from Google locale");
-	}
+            return locale.getDisplayCountry();
+        }
 
-	private void setExpandoValue(User user, String valueName, Object data) throws SystemException, PortalException {
-		ExpandoValueLocalServiceUtil.addValue(
-				user.getCompanyId(),
-				User.class.getName(),
-				CommunityConstants.EXPANDO,
-				valueName,
-				user.getUserId(),
-				data);
-	}
+        throw new UserLocationNotResolvableException("Could not retrieve country from Google locale");
+    }
 }
