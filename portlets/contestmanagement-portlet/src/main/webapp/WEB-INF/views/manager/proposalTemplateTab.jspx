@@ -109,83 +109,85 @@
 								</form:select>
 							</div>
 
-							<div class="levelVisible" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
-								<div>
-									<strong>Contest Types allowed:</strong>
-									<span class="ontology-term-label"><!-- --></span> <br/>
-									<form:select multiple="true" path="sections[${x.index}].allowedContestTypeIds" data-form-name="allowedContestTypeIds"
-												 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
-										<form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
-									</form:select>
-								</div>
+                            <div style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+                                <div class="levelVisible">
+                                    <div>
+                                        <strong>Contest Types allowed:</strong>
+                                        <span class="ontology-term-label"><!-- --></span> <br/>
+                                        <form:select multiple="true" path="sections[${x.index}].allowedContestTypeIds" data-form-name="allowedContestTypeIds"
+                                                     cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                            <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
+                                        </form:select>
+                                    </div>
 
-								<div>
-                                    <strong>Point override - PointType: </strong><br/>
-                                    <form:select path="sections[${x.index}].pointType" data-form-name="pointType">
-                                        <form:options items="${pointTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
-                                    </form:select>
-                                    <br/>
-                                    <strong>Point override - Percentage: </strong><br/>
-                                    <form:input path="sections[${x.index}].pointPercentage" data-form-name="pointPercentage"/>
-                                    <div class="clearfix"><!-- --></div>
-								</div>
+                                    <div>
+                                        <strong>Point override - PointType: </strong><br/>
+                                        <form:select path="sections[${x.index}].pointType" data-form-name="pointType">
+                                            <form:options items="${pointTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
+                                        </form:select>
+                                        <br/>
+                                        <strong>Point override - Percentage: </strong><br/>
+                                        <form:input path="sections[${x.index}].pointPercentage" data-form-name="pointPercentage"/>
+                                        <div class="clearfix"><!-- --></div>
+                                    </div>
 
-								<div>
-									<strong>Level:</strong><br/>
-									<form:select path="sections[${x.index}].level" data-form-name="level">
-										<form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
-									</form:select>
-								</div>
+                                    <div>
+                                        <strong>Level:</strong><br/>
+                                        <form:select path="sections[${x.index}].level" data-form-name="level">
+                                            <form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
+                                        </form:select>
+                                    </div>
 
-								<div>
-									<strong>Is this proposal reference field used for contest integration?</strong><br/>
-									<form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
-												   id="sections${x.index}.contestIntegrationRelevance"
-												   data-form-name="contestIntegrationRelevance">
-									</form:checkbox>
-								</div>
-							</div>
+                                    <div>
+                                        <strong>Is this proposal reference field used for contest integration?</strong><br/>
+                                        <form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
+                                                       id="sections${x.index}.contestIntegrationRelevance"
+                                                       data-form-name="contestIntegrationRelevance">
+                                        </form:checkbox>
+                                    </div>
+                                </div>
 
-							<div class="clearfix"><!-- --></div>
-							<div class="ontology-select-container" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
-								<form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
-								<div>
-									<strong>WHAT Ontology term:</strong>
-									<span class="ontology-term-label"><!-- --></span>
-									<br/>
-									<form:select multiple="true" path="sections[${x.index}].whatTermIds" data-form-name="whatTermId"
-												 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
-										<form:options items="${whatTerms}" itemValue="value" itemLabel="lable"/>
-									</form:select>
-								</div>
-								<div>
-									<strong>WHERE Ontology term:</strong>
-									<span class="ontology-term-label"><!-- --></span><br/>
-									<form:select multiple="true" path="sections[${x.index}].whereTermIds" data-form-name="whereTermId"
-												 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
-										<form:options items="${whereTerms}" itemValue="value" itemLabel="lable"/>
-									</form:select>
-								</div>
-								<div>
-									<strong>WHO Ontology term:</strong>
-									<span class="ontology-term-label"><!-- --></span><br/>
-									<form:select multiple="true" path="sections[${x.index}].whoTermIds" data-form-name="whoTermId"
-												 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
-										<form:options items="${whoTerms}" itemValue="value" itemLabel="lable"/>
-									</form:select>
-								</div>
-								<div>
-									<strong>HOW Ontology term:</strong>
-									<span class="ontology-term-label"><!-- --></span><br/>
-									<form:select multiple="true" path="sections[${x.index}].howTermIds" data-form-name="howTermId"
-												 cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
-										<form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
-									</form:select>
-								</div>
-								<div>
-									<strong>Exclude the following contest ids from ontology term filtering (Comma-separated list):</strong><br/><form:input path="sections[${x.index}].additionalIds" data-form-name="additionalIds"/>
-								</div>
-							</div>
+                                <div class="clearfix"><!-- --></div>
+                                <div class="ontology-select-container" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+                                    <form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
+                                    <div>
+                                        <strong>WHAT Ontology term:</strong>
+                                        <span class="ontology-term-label"><!-- --></span>
+                                        <br/>
+                                        <form:select multiple="true" path="sections[${x.index}].whatTermIds" data-form-name="whatTermId"
+                                                     cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                            <form:options items="${whatTerms}" itemValue="value" itemLabel="lable"/>
+                                        </form:select>
+                                    </div>
+                                    <div>
+                                        <strong>WHERE Ontology term:</strong>
+                                        <span class="ontology-term-label"><!-- --></span><br/>
+                                        <form:select multiple="true" path="sections[${x.index}].whereTermIds" data-form-name="whereTermId"
+                                                     cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                            <form:options items="${whereTerms}" itemValue="value" itemLabel="lable"/>
+                                        </form:select>
+                                    </div>
+                                    <div>
+                                        <strong>WHO Ontology term:</strong>
+                                        <span class="ontology-term-label"><!-- --></span><br/>
+                                        <form:select multiple="true" path="sections[${x.index}].whoTermIds" data-form-name="whoTermId"
+                                                     cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                            <form:options items="${whoTerms}" itemValue="value" itemLabel="lable"/>
+                                        </form:select>
+                                    </div>
+                                    <div>
+                                        <strong>HOW Ontology term:</strong>
+                                        <span class="ontology-term-label"><!-- --></span><br/>
+                                        <form:select multiple="true" path="sections[${x.index}].howTermIds" data-form-name="howTermId"
+                                                     cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                            <form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
+                                        </form:select>
+                                    </div>
+                                    <div>
+                                        <strong>Exclude the following contest ids from ontology term filtering (Comma-separated list):</strong><br/><form:input path="sections[${x.index}].additionalIds" data-form-name="additionalIds"/>
+                                    </div>
+                                </div>
+                            </div>
 							<div class="clearfix"><!-- --></div>
 							<div>
 								<div>
@@ -214,6 +216,11 @@
 									<form:errors cssClass="alert alert-error" path="sections[${x.index}].defaultText" />
 								</div>
 							</div>
+
+                            <div style="${fn:containsIgnoreCase(section.type, 'DROPDOWN_MENU') ? '' : 'display: none;'}">
+                                <strong>Dropdown options:</strong><br/>
+                                <form:input path="sections[${x.index}].allowedValues" data-form-name="allowedValues"/>
+                            </div>
 
 						</div>
 					</c:forEach>

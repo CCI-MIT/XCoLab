@@ -41,6 +41,7 @@ public class SectionDefinitionWrapper implements Serializable {
     private Long id;
     private String type = "";
     private String additionalIds = "";
+    private String allowedValues = "";
     private String title = "";
     private String defaultText = "";
     private String helpText = "";
@@ -103,6 +104,7 @@ public class SectionDefinitionWrapper implements Serializable {
         this.characterLimit = planSectionDefinition.getCharacterLimit();
         this.focusAreaId = planSectionDefinition.getFocusAreaId();
         this.additionalIds = planSectionDefinition.getAdditionalIds();
+        this.allowedValues = planSectionDefinition.getAllowedValues();
         this.locked = planSectionDefinition.getLocked();
         this.level = planSectionDefinition.getTier();
         this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
@@ -371,6 +373,14 @@ public class SectionDefinitionWrapper implements Serializable {
         this.id = id;
     }
 
+    public String getAllowedValues() {
+        return allowedValues;
+    }
+
+    public void setAllowedValues(String allowedValues) {
+        this.allowedValues = allowedValues;
+    }
+
     static class MyComparator implements Comparator<SectionDefinitionWrapper> {
 
         @Override
@@ -471,6 +481,7 @@ public class SectionDefinitionWrapper implements Serializable {
         psd.setTier(this.getLevel());
         psd.setFocusAreaId(this.getFocusAreaId());
         psd.setAdditionalIds(this.getAdditionalIds());
+        psd.setAllowedValues(this.getAllowedValues());
         psd.setAllowedContestTypeIds(IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
         psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
         psd.persist();
@@ -495,7 +506,8 @@ public class SectionDefinitionWrapper implements Serializable {
                 .append(helpText)
                 .append(allowedContestTypeIds)
                 .append(pointPercentage)
-                .append(additionalIds).toHashCode();
+                .append(additionalIds)
+                .append(allowedValues).toHashCode();
     }
 
     @Override
@@ -522,6 +534,7 @@ public class SectionDefinitionWrapper implements Serializable {
                 .append(other.getFocusAreaId(), this.getFocusAreaId())
                 .append(other.getLevel(), this.getLevel())
                 .append(other.getPointType(), this.getPointType())
-                .append(other.getPointPercentage(), this.getPointPercentage()).isEquals();
+                .append(other.getPointPercentage(), this.getPointPercentage())
+                .append(other.getAllowedValues(), this.getAllowedValues()).isEquals();
     }
 }
