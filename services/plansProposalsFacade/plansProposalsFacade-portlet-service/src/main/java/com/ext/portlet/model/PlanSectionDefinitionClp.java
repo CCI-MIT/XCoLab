@@ -30,6 +30,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     private long _focusAreaId;
     private long _tier;
     private String _allowedContestTypeIds;
+    private String _allowedValues;
     private String _additionalIds;
     private boolean _locked;
     private boolean _contestIntegrationRelevance;
@@ -83,6 +84,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("tier", getTier());
         attributes.put("allowedContestTypeIds", getAllowedContestTypeIds());
+        attributes.put("allowedValues", getAllowedValues());
         attributes.put("additionalIds", getAdditionalIds());
         attributes.put("locked", getLocked());
         attributes.put("contestIntegrationRelevance",
@@ -152,6 +154,12 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
         if (allowedContestTypeIds != null) {
             setAllowedContestTypeIds(allowedContestTypeIds);
+        }
+
+        String allowedValues = (String) attributes.get("allowedValues");
+
+        if (allowedValues != null) {
+            setAllowedValues(allowedValues);
         }
 
         String additionalIds = (String) attributes.get("additionalIds");
@@ -397,6 +405,28 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     }
 
     @Override
+    public String getAllowedValues() {
+        return _allowedValues;
+    }
+
+    @Override
+    public void setAllowedValues(String allowedValues) {
+        _allowedValues = allowedValues;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setAllowedValues", String.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, allowedValues);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public String getAdditionalIds() {
         return _additionalIds;
     }
@@ -554,6 +584,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         clone.setFocusAreaId(getFocusAreaId());
         clone.setTier(getTier());
         clone.setAllowedContestTypeIds(getAllowedContestTypeIds());
+        clone.setAllowedValues(getAllowedValues());
         clone.setAdditionalIds(getAdditionalIds());
         clone.setLocked(getLocked());
         clone.setContestIntegrationRelevance(getContestIntegrationRelevance());
@@ -606,7 +637,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(27);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{id=");
         sb.append(getId());
@@ -628,6 +659,8 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         sb.append(getTier());
         sb.append(", allowedContestTypeIds=");
         sb.append(getAllowedContestTypeIds());
+        sb.append(", allowedValues=");
+        sb.append(getAllowedValues());
         sb.append(", additionalIds=");
         sb.append(getAdditionalIds());
         sb.append(", locked=");
@@ -641,7 +674,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(43);
+        StringBundler sb = new StringBundler(46);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanSectionDefinition");
@@ -686,6 +719,10 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         sb.append(
             "<column><column-name>allowedContestTypeIds</column-name><column-value><![CDATA[");
         sb.append(getAllowedContestTypeIds());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>allowedValues</column-name><column-value><![CDATA[");
+        sb.append(getAllowedValues());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>additionalIds</column-name><column-value><![CDATA[");

@@ -699,6 +699,7 @@
 		<field name="focusAreaId" type="long" />
 		<field name="tier" type="long" />
 		<field name="allowedContestTypeIds" type="String" />
+		<field name="allowedValues" type="String" />
 		<field name="additionalIds" type="String" />
 		<field name="locked" type="boolean" />
 		<field name="contestIntegrationRelevance" type="boolean" />

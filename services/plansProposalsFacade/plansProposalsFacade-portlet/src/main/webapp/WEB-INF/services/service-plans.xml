@@ -18,6 +18,7 @@
         <column name="focusAreaId" type="long" />
         <column name="tier" type="long" />
         <column name="allowedContestTypeIds" type="String" />
+        <column name="allowedValues" type="String" />
         <column name="additionalIds" type="String" />
         <column name="locked" type="boolean" />
         <column name="contestIntegrationRelevance" type="boolean" />

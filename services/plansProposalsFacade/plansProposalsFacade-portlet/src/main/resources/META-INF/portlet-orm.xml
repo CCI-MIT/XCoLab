@@ -912,6 +912,7 @@
 			<basic name="focusAreaId" />
 			<basic name="tier" />
 			<basic name="allowedContestTypeIds" />
+			<basic name="allowedValues" />
 			<basic name="additionalIds" />
 			<basic name="locked" />
 			<basic name="contestIntegrationRelevance" />

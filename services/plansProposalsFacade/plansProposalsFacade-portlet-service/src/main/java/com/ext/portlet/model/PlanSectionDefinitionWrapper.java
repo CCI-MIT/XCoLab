@@ -48,6 +48,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("tier", getTier());
         attributes.put("allowedContestTypeIds", getAllowedContestTypeIds());
+        attributes.put("allowedValues", getAllowedValues());
         attributes.put("additionalIds", getAdditionalIds());
         attributes.put("locked", getLocked());
         attributes.put("contestIntegrationRelevance",
@@ -117,6 +118,12 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
 
         if (allowedContestTypeIds != null) {
             setAllowedContestTypeIds(allowedContestTypeIds);
+        }
+
+        String allowedValues = (String) attributes.get("allowedValues");
+
+        if (allowedValues != null) {
+            setAllowedValues(allowedValues);
         }
 
         String additionalIds = (String) attributes.get("additionalIds");
@@ -357,6 +364,26 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     @Override
     public void setAllowedContestTypeIds(java.lang.String allowedContestTypeIds) {
         _planSectionDefinition.setAllowedContestTypeIds(allowedContestTypeIds);
+    }
+
+    /**
+    * Returns the allowed values of this plan section definition.
+    *
+    * @return the allowed values of this plan section definition
+    */
+    @Override
+    public java.lang.String getAllowedValues() {
+        return _planSectionDefinition.getAllowedValues();
+    }
+
+    /**
+    * Sets the allowed values of this plan section definition.
+    *
+    * @param allowedValues the allowed values of this plan section definition
+    */
+    @Override
+    public void setAllowedValues(java.lang.String allowedValues) {
+        _planSectionDefinition.setAllowedValues(allowedValues);
     }
 
     /**
