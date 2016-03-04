@@ -322,6 +322,14 @@ public class ConfigurationAttributeLocalServiceUtil {
         return getService().getAttributeLongValue(attributeKeyName, additionalId);
     }
 
+    public static boolean getAttributeBooleanValue(
+        java.lang.String attributeKeyName, long additionalId)
+        throws com.ext.portlet.NoSuchConfigurationAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getAttributeBooleanValue(attributeKeyName, additionalId);
+    }
+
     public static double getAttributeDoubleValue(
         java.lang.String attributeKeyName, long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,

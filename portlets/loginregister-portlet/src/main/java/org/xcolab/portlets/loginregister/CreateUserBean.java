@@ -14,7 +14,7 @@ import java.io.Serializable;
 @UniqueScreenNameAndEmail(emailProperty = "email", screenNameProperty = "screenName")
 @ValidScreenName(screenNameProperty = "screenName")
 @ValidBioLength(bioProperty = "shortBio")
-public class CreateUserBean implements Serializable{
+public class CreateUserBean implements Serializable {
 
 	/**
 	 * 

@@ -1,7 +1,7 @@
 package org.xcolab.portlets.admintasks;
 
 import com.ext.portlet.community.CommunityConstants;
-import com.ext.utils.UserAccountGenerator;
+import org.xcolab.utils.UserCreationUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
@@ -32,7 +32,6 @@ public class BatchRegisterUsers {
 
         ServiceContext ctx = new ServiceContext();
         ctx.setAttribute("anonymousUser", true);
-        UserAccountGenerator userAccountGenerator = new UserAccountGenerator();
 
         //do some permission stuff necessary for being able to run the addUserWithWorkflow action
         Role adminRole = RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, "Administrator");
@@ -42,13 +41,13 @@ public class BatchRegisterUsers {
         PermissionThreadLocal.setPermissionChecker(permissionChecker);
 
         //register each line as a user
-        int skippedUsers = 0;
         resultMessage = "";
+        int skippedUsers = 0;
         for (String csvLine : csvLines) {
             if (!csvLine.trim().isEmpty()) {
                 //split once again into the specific fields
                 StringTokenizer st = new StringTokenizer(csvLine.replaceAll(";;", "; ;") + " ", ";");
-                List<String> fields = new ArrayList<String>();
+                List<String> fields = new ArrayList<>();
                 while (st.hasMoreTokens()) {
                     fields.add(st.nextToken().trim());
                 }
@@ -80,7 +79,7 @@ public class BatchRegisterUsers {
                     }
                 } catch (NoSuchUserException ignored) { }
 
-                String screenName = userAccountGenerator.generateUsername(firstName, lastName);
+                String screenName = UserCreationUtil.generateUsername(firstName, lastName);
 
                 User user = UserServiceUtil.addUserWithWorkflow(
                         DEFAULT_COMPANY_ID, true,

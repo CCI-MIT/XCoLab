@@ -15,8 +15,10 @@ public final class ModelAttributeUtil {
 
     public static void populateModelWithPlatformConstants(Model model) throws SystemException {
         try {
-            model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
-            model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
+            model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil
+                    .getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
+            model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil
+                    .getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
         } catch (NoSuchConfigurationAttributeException e) {
             throw new SystemException("Required ConfigurationAttributes not set", e);
         }

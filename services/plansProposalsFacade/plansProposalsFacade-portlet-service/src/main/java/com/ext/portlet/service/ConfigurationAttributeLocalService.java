@@ -282,6 +282,12 @@ public interface ConfigurationAttributeLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean getAttributeBooleanValue(java.lang.String attributeKeyName,
+        long additionalId)
+        throws com.ext.portlet.NoSuchConfigurationAttributeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public double getAttributeDoubleValue(java.lang.String attributeKeyName,
         long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,

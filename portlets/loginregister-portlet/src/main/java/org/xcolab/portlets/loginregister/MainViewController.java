@@ -2,13 +2,14 @@ package org.xcolab.portlets.loginregister;
 
 import com.ext.portlet.Activity.LoginRegisterActivityKeys;
 import com.ext.portlet.NoSuchBalloonUserTrackingException;
+import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
-import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.captcha.CaptchaException;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -48,6 +49,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.mail.ConnectorEmmaAPI;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
@@ -55,6 +57,7 @@ import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
 import org.xcolab.utils.ModelAttributeUtil;
+import org.xcolab.utils.UserCreationUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -74,6 +77,8 @@ import java.util.Date;
 @RequestMapping("view")
 public class MainViewController {
 
+    private final static Log _log = LogFactoryUtil.getLog(MainViewController.class);
+
     public static final String SSO_TARGET_KEY = "SSO_TARGET_KEY";
 
     public static final String SSO_TARGET_REGISTRATION = "SSO_TARGET_REGISTRATION";
@@ -86,8 +91,6 @@ public class MainViewController {
 
 	@Autowired
 	private Validator validator;
-	
-	private final static Log _log = LogFactoryUtil.getLog(MainViewController.class);
 
     @InitBinder("createUserBean")
 	public void initBinder(WebDataBinder binder) {
@@ -99,7 +102,8 @@ public class MainViewController {
 	 *
 	 */
     @RequestMapping
-    public String register(PortletRequest request, PortletResponse response, Model model) throws SystemException {
+    public String register(PortletRequest request, PortletResponse response, Model model)
+            throws SystemException, NoSuchConfigurationAttributeException {
 		
 		ThemeDisplay themeDisplay = (ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY);
@@ -148,6 +152,8 @@ public class MainViewController {
             }
         }
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
+        model.addAttribute("generateScreenName", ConfigurationAttributeLocalServiceUtil.getAttributeBooleanValue(
+                ConfigurationAttributeKey.GENERATE_SCREEN_NAME.name(), 0L));
         return "view";
 	}
 
@@ -264,28 +270,24 @@ public class MainViewController {
         User loggedInUser = ((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getUser();
 
         if (!loggedInUser.getScreenName().equals(screenName)) {
-            try {
-                UserLocalServiceUtil.getUserByScreenName(((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getCompanyId(), screenName);
+            if (StringUtils.isNotEmpty(screenName) && UserCreationUtil.isUsernameAvailable(screenName)
+                    && UserCreationUtil.isUsernameValid(screenName)) {
+                loggedInUser.setScreenName(screenName);
+                json.getJSONObject("screenName").put("success", true);
+            } else {
                 json.getJSONObject("screenName").put("success", false);
-            } catch (NoSuchUserException e) {
-                if (screenName.matches("[a-zA-Z0-9]+$") && !screenName.isEmpty()) {
-                    loggedInUser.setScreenName(screenName);
-                    json.getJSONObject("screenName").put("success", true);
-                } else {
-                    json.getJSONObject("screenName").put("success", false);
-                }
             }
         }
 
         json.getJSONObject("bio").put("success", true);
-        if ((bio != null && !bio.isEmpty() && bio.length() <= 2000)) {
-            ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID,
-                    User.class.getName(),
-                    CommunityConstants.EXPANDO,
-                    CommunityConstants.BIO, loggedInUser.getUserId(),
-                    HtmlUtil.cleanSome(bio, LinkUtils.getBaseUri(request)));
-        } else {
-            if (bio != null && bio.length() > 2000) {
+        if (StringUtils.isNotEmpty(bio)) {
+            if (bio.length() <= 2000) {
+                ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID,
+                        User.class.getName(),
+                        CommunityConstants.EXPANDO,
+                        CommunityConstants.BIO, loggedInUser.getUserId(),
+                        HtmlUtil.cleanSome(bio, LinkUtils.getBaseUri(request)));
+            } else {
                 json.getJSONObject("bio").put("success", false);
             }
         }
@@ -294,8 +296,28 @@ public class MainViewController {
 
         response.getWriter().write(json.toString());
     }
-	
-	@ResourceMapping
+
+    @ResourceMapping(value = "generateScreenName")
+    public void generateScreenName(ResourceRequest request, ResourceResponse response)
+            throws IOException, SystemException, PortalException {
+
+        JSONObject json = JSONFactoryUtil.createJSONObject();
+        final String firstName = request.getParameter("firstName");
+        final String lastName = request.getParameter("lastName");
+
+        try {
+            json.put("screenName", UserCreationUtil.generateUsername(firstName, lastName));
+            json.put("success", true);
+        } catch (SystemException | PortalException e) {
+            _log.warn("Failed to generate user name ", e);
+            json.put("success", false);
+            json.put("error", e.toString());
+        }
+
+        response.getWriter().write(json.toString());
+    }
+
+    @ResourceMapping
 	public void captchaHandler(ResourceRequest request, ResourceResponse response) throws IOException {
 	    CaptchaUtil.serveImage(request, response);
 	}
