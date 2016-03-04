@@ -23,47 +23,20 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("view")
-public class MessageSettingsJSONController extends JSONHelper{
+public class MessageSettingsJSONController extends JSONHelper {
 
-    public MessageSettingsJSONController(){
-    }
+    public MessageSettingsJSONController() { }
 
     @ResourceMapping("updateUserSendEmailOnMessageSettings")
-    public @ResponseBody
+    public
+    @ResponseBody
     void handleUpdateUserSendEmailOnMessageSettingAJAXRequest(
             PortletRequest request,
             ResourceResponse response,
-            @RequestParam("messageSetting") String messageSettingParameter
-    ) throws IOException {
+            @RequestParam("messageSetting") String messageSettingParameter) throws IOException {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
         boolean result = updateSendEmailOnMessageSettings(request, messageSetting);
-        this.writeSuccessResultResponseJSON(result, response);
-    }
-
-    @ResourceMapping("updateUserSendEmailOnActivitySettings")
-    public @ResponseBody
-    void handleUpdateUserSendEmailOnActivityAJAXRequest(
-            PortletRequest request,
-            ResourceResponse response,
-            @RequestParam("messageSetting") String messageSettingParameter
-    ) throws IOException {
-
-        boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
-        boolean result = updateSendEmailOnActivitySettings(request,messageSetting);
-        this.writeSuccessResultResponseJSON(result, response);
-    }
-
-    @ResourceMapping("updateUserSendDailyEmailOnActivitySettings")
-    public @ResponseBody
-    void handleUpdateUserSendDailyEmailOnActivityAJAXRequest(
-            PortletRequest request,
-            ResourceResponse response,
-            @RequestParam("messageSetting") String messageSettingParameter
-    ) throws PortalException, SystemException, IOException {
-
-        boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
-        boolean result = updateSendDailyEmailOnActivitySettings(request, messageSetting);
         this.writeSuccessResultResponseJSON(result, response);
     }
 
@@ -77,17 +50,69 @@ public class MessageSettingsJSONController extends JSONHelper{
         return true;
     }
 
+    private void updateUserSendEmailOnMessagePreferences(User user, boolean setting) throws SystemException {
+
+        MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
+        prefs.setEmailOnReceipt(setting);
+        MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+
+    }
+
+    @ResourceMapping("updateUserSendEmailOnActivitySettings")
+    public
+    @ResponseBody
+    void handleUpdateUserSendEmailOnActivityAJAXRequest(
+            PortletRequest request,
+            ResourceResponse response,
+            @RequestParam("messageSetting") String messageSettingParameter
+    ) throws IOException {
+
+        boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
+        boolean result = updateSendEmailOnActivitySettings(request, messageSetting);
+        this.writeSuccessResultResponseJSON(result, response);
+    }
+
     private boolean updateSendEmailOnActivitySettings(PortletRequest request, boolean messageSetting) {
         try {
             User user = PortalUtil.getUser(request);
             updateUserSendEmailOnActivityPreferences(user, messageSetting);
-            if(!messageSetting) {
+            if (!messageSetting) {
                 updateUserSendDailyEmailOnActivityPreferences(user, false);
             }
         } catch (PortalException | SystemException e) {
             return false;
         }
         return true;
+    }
+
+    private void updateUserSendEmailOnActivityPreferences(User user, boolean setting) throws SystemException {
+
+        MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
+        prefs.setEmailOnActivity(setting);
+        MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+
+    }
+
+    private void updateUserSendDailyEmailOnActivityPreferences(User user, boolean setting) throws SystemException {
+
+        MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
+        prefs.setEmailActivityDailyDigest(setting);
+        MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+
+    }
+
+    @ResourceMapping("updateUserSendDailyEmailOnActivitySettings")
+    public
+    @ResponseBody
+    void handleUpdateUserSendDailyEmailOnActivityAJAXRequest(
+            PortletRequest request,
+            ResourceResponse response,
+            @RequestParam("messageSetting") String messageSettingParameter)
+            throws PortalException, SystemException, IOException {
+
+        boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
+        boolean result = updateSendDailyEmailOnActivitySettings(request, messageSetting);
+        this.writeSuccessResultResponseJSON(result, response);
     }
 
     private boolean updateSendDailyEmailOnActivitySettings(PortletRequest request, boolean messageSetting) {
@@ -98,30 +123,6 @@ public class MessageSettingsJSONController extends JSONHelper{
             return false;
         }
         return true;
-    }
-
-    private void updateUserSendEmailOnMessagePreferences(User user, boolean setting) throws SystemException{
-
-        MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
-        prefs.setEmailOnReceipt(setting);
-        MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
-
-    }
-
-    private void updateUserSendEmailOnActivityPreferences(User user, boolean setting) throws SystemException{
-
-        MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
-        prefs.setEmailOnActivity(setting);
-        MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
-
-    }
-
-    private void updateUserSendDailyEmailOnActivityPreferences(User user, boolean setting) throws SystemException{
-
-        MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
-        prefs.setEmailActivityDailyDigest(setting);
-        MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
-
     }
 
 }

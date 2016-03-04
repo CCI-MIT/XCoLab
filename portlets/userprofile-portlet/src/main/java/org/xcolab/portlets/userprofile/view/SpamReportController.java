@@ -41,7 +41,8 @@ public class SpamReportController {
 
     @RenderMapping(params = "page=spamReport")
     public String showSpamReport(PortletRequest request, PortletResponse response, Model model,
-                                 @RequestParam(required = true) String userId) throws SystemException, PortalException, UserProfileAuthorizationException {
+            @RequestParam(required = true) String userId)
+            throws SystemException, PortalException, UserProfileAuthorizationException {
         UserProfilePermissions permissions = new UserProfilePermissions(request);
         permissions.checkCanAdminSpamReports();
 
@@ -52,7 +53,8 @@ public class SpamReportController {
     }
 
     @RenderMapping(params = "page=spamReports")
-    public String showSpamReports(PortletRequest request, PortletResponse response, Model model) throws PortalException, UserProfileAuthorizationException {
+    public String showSpamReports(PortletRequest request, PortletResponse response, Model model)
+            throws PortalException, UserProfileAuthorizationException {
         UserProfilePermissions permissions = new UserProfilePermissions(request);
         permissions.checkCanAdminSpamReports();
 
@@ -94,16 +96,21 @@ public class SpamReportController {
         List<Long> recipients = new ArrayList<>();
         recipients.add(userId);
         try {
-            String content = "This account has been terminated due to violation of the Climate CoLab Community Philosophy & Policy.<br/>" +
-                    "Link: <a href=\"http://climatecolab.org/resources/-/wiki/Main/Community+philosophy+and+policies\">" +
-                    "http://climatecolab.org/resources/-/wiki/Main/Community+philosophy+and+policies</a>";
+            String content =
+                    "This account has been terminated due to violation of the Climate CoLab Community Philosophy & Policy.<br/>"
+                            +
+                            "Link: <a href=\"http://climatecolab.org/resources/-/wiki/Main/Community+philosophy+and+policies\">"
+                            +
+                            "http://climatecolab.org/resources/-/wiki/Main/Community+philosophy+and+policies</a>";
             MessageUtil.sendMessage("Message from Climate CoLab Administrator", content,
-                    permissions.getCurrentUser().getUserId(), permissions.getCurrentUser().getUserId(), recipients, request);
+                    permissions.getCurrentUser().getUserId(), permissions.getCurrentUser().getUserId(), recipients,
+                    request);
         } catch (MailEngineException | AddressException e) {
             throw new SystemException("Failed to send message to user", e);
         }
 
-        UserLocalServiceUtil.updateStatus(userId, WorkflowConstants.STATUS_INACTIVE, ServiceContextFactory.getInstance(request));
+        UserLocalServiceUtil
+                .updateStatus(userId, WorkflowConstants.STATUS_INACTIVE, ServiceContextFactory.getInstance(request));
 
         if (deleteMessages) {
             List<DiscussionMessage> messages = DiscussionMessageLocalServiceUtil.getByAuthorId(userId);

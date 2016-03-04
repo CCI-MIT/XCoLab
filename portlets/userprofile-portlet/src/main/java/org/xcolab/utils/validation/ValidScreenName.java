@@ -10,11 +10,14 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy=ValidScreenNameValidator.class)
+@Constraint(validatedBy = ValidScreenNameValidator.class)
 @Documented
 public @interface ValidScreenName {
     String screenNameProperty();
+
     String message() default "";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

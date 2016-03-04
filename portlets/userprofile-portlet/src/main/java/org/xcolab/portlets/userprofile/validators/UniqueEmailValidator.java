@@ -19,9 +19,8 @@ public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
     public boolean isValid(Object value, ConstraintValidatorContext context) {
 
         String email = ConstraintValidatorHelper.getPropertyValue(String.class, emailProperty, value);
-        
+
         if (email == null) {
-            // ignore in case of null
             return true;
         }
 
@@ -34,7 +33,7 @@ public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
         }
 
         processDefaultErrorMessage("User with given email already exists", isValid, context);
-        
+
         return isValid;
     }
 }

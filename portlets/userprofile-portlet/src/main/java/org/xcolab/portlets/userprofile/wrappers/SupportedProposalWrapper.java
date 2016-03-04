@@ -11,8 +11,8 @@ import java.util.Date;
 
 public class SupportedProposalWrapper implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private final ProposalSupporter proposalSupporter;
+    private static final long serialVersionUID = 1L;
+    private final ProposalSupporter proposalSupporter;
     private final BaseProposalWrapper proposalWrapper;
 
     public SupportedProposalWrapper(ProposalSupporter ps) throws SystemException, PortalException {

@@ -24,11 +24,11 @@ public class NewsletterJSONController extends JSONHelper {
     private final static String MEMBER_ACCOUNT_ACTIVE_STATUS = "a";
     private ConnectorEmmaAPI connectorEmmaAPI;
 
-    public NewsletterJSONController(){
-    }
-        
+    public NewsletterJSONController() { }
+
     @ResourceMapping("newsletterSubscribe")
-    public @ResponseBody
+    public
+    @ResponseBody
     void handleNewsletterSubscribeAJAXRequest(
             PortletRequest request,
             ResourceResponse response,
@@ -39,14 +39,25 @@ public class NewsletterJSONController extends JSONHelper {
             JSONObject memberDetails = connectorEmmaAPI.subscribeMemberWithEmail(email);
             boolean memberHasActiveSubscription = hasNewMemberActiveSubscription(memberDetails);
             this.writeSuccessResultResponseJSON(memberHasActiveSubscription, response);
-        } catch (IOException |  JSONException e) {
+        } catch (IOException | JSONException e) {
             this.writeSuccessResultResponseJSON(false, response);
         }
 
     }
 
+    private void initializeConnectorIfNull() {
+        if (connectorEmmaAPI == null) {
+            connectorEmmaAPI = new ConnectorEmmaAPI();
+        }
+    }
+
+    private boolean hasNewMemberActiveSubscription(JSONObject memberDetails) {
+        return memberDetails.has("status") && memberDetails.getString("status").equals(MEMBER_ACCOUNT_ACTIVE_STATUS);
+    }
+
     @ResourceMapping("newsletterUnSubscribe")
-    public @ResponseBody
+    public
+    @ResponseBody
     void handleNewsletterUnSubscribeAJAXRequest(
             PortletRequest request,
             ResourceResponse response,
@@ -62,7 +73,8 @@ public class NewsletterJSONController extends JSONHelper {
     }
 
     @ResourceMapping("newsletterSubscribtionStatus")
-    public @ResponseBody
+    public
+    @ResponseBody
     void handleNewsletterSubscribtionStatusAJAXRequest(
             PortletRequest request,
             ResourceResponse response,
@@ -74,18 +86,9 @@ public class NewsletterJSONController extends JSONHelper {
         this.writeSuccessResultResponseJSON(memberHasActiveSubscription, response);
     }
 
-
-    private void initializeConnectorIfNull(){
-        if(connectorEmmaAPI == null) {
-            connectorEmmaAPI = new ConnectorEmmaAPI();
-        }
-    }
-
-    private boolean hasNewMemberActiveSubscription(JSONObject memberDetails){
-        return memberDetails.has("status") && memberDetails.getString("status").equals(MEMBER_ACCOUNT_ACTIVE_STATUS);
-    }
-    private boolean hasMemberActiveSubscription(JSONObject memberDetails){
-        return memberDetails.has("member_status_id") && memberDetails.getString("member_status_id").equals(MEMBER_ACCOUNT_ACTIVE_STATUS);
+    private boolean hasMemberActiveSubscription(JSONObject memberDetails) {
+        return memberDetails.has("member_status_id") && memberDetails.getString("member_status_id")
+                .equals(MEMBER_ACCOUNT_ACTIVE_STATUS);
     }
 
 }

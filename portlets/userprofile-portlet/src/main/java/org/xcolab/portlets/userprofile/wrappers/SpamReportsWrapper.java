@@ -19,14 +19,16 @@ public class SpamReportsWrapper {
     private final List<SpamCommentWrapper> spamComments = new ArrayList<>();
 
     public SpamReportsWrapper() throws SystemException {
-        final List<SpamReport> spamReports = SpamReportLocalServiceUtil.getSpamReports(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+        final List<SpamReport> spamReports =
+                SpamReportLocalServiceUtil.getSpamReports(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
         for (Map.Entry<Long, List<SpamReport>> userEntry : groupSpamReportsBySpamUserId(spamReports).entrySet()) {
             final Long userId = userEntry.getKey();
             final List<SpamReport> userSpamReports = userEntry.getValue();
             spamComments.add(new SpamCommentWrapper(userId, userSpamReports));
 
             List<SpamCommentWrapper> localSpamComments = new ArrayList<>();
-            for (Map.Entry<Long, List<SpamReport>> messageEntry : groupSpamReportsByMessage(userSpamReports).entrySet()) {
+            for (Map.Entry<Long, List<SpamReport>> messageEntry : groupSpamReportsByMessage(userSpamReports)
+                    .entrySet()) {
                 final List<SpamReport> messageSpamReports = messageEntry.getValue();
                 localSpamComments.add(new SpamCommentWrapper(userId, messageSpamReports));
             }
@@ -34,14 +36,8 @@ public class SpamReportsWrapper {
         }
     }
 
-    public SpamReportsWrapper(long userId) throws SystemException {
-        for (Map.Entry<Long, List<SpamReport>> entry : groupSpamReportsByMessage(SpamReportLocalServiceUtil.getBySpamUserId(userId)).entrySet()) {
-            spamComments.add(new SpamCommentWrapper(entry.getKey(), entry.getValue()));
-        }
-        spamCommentsBySpamUserId.put(userId, spamComments);
-    }
-
-    private Map<Long, List<SpamReport>> groupSpamReportsBySpamUserId(List<SpamReport> spamReports) throws SystemException {
+    private Map<Long, List<SpamReport>> groupSpamReportsBySpamUserId(List<SpamReport> spamReports)
+            throws SystemException {
         Map<Long, List<SpamReport>> spamReportsByMessage = new HashMap<>();
         for (SpamReport spamReport : spamReports) {
             final long userId = spamReport.getSpamUserId();
@@ -73,6 +69,14 @@ public class SpamReportsWrapper {
         return spamReportsByMessage;
     }
 
+    public SpamReportsWrapper(long userId) throws SystemException {
+        for (Map.Entry<Long, List<SpamReport>> entry : groupSpamReportsByMessage(
+                SpamReportLocalServiceUtil.getBySpamUserId(userId)).entrySet()) {
+            spamComments.add(new SpamCommentWrapper(entry.getKey(), entry.getValue()));
+        }
+        spamCommentsBySpamUserId.put(userId, spamComments);
+    }
+
     public List<SpamCommentWrapper> getSpamComments() {
         return spamComments;
     }
@@ -82,6 +86,7 @@ public class SpamReportsWrapper {
     }
 
     public String getDeleteUserUrl() {
-        return "/web/guest/member/-/member/spamReports/deleteUser/"+spamCommentsBySpamUserId.keySet().iterator().next();
+        return "/web/guest/member/-/member/spamReports/deleteUser/" + spamCommentsBySpamUserId.keySet().iterator()
+                .next();
     }
 }

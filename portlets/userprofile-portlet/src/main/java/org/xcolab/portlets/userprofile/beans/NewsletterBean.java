@@ -26,7 +26,7 @@ public class NewsletterBean implements Serializable {
             if (memberDetails.has("member_status_id") && memberDetails.getString("member_status_id").equals("a")) {
                 return true;
             }
-        } catch (IOException ignored){ }
+        } catch (IOException ignored) { }
 
         return false;
     }

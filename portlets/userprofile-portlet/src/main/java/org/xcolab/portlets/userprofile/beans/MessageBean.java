@@ -16,26 +16,19 @@ import java.util.List;
 import java.util.Random;
 
 public class MessageBean implements Serializable {
-    
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 1L;
+    private final List<User> recipients = new ArrayList<>();
     @NotBlank
     private String messageSubject;
-
     @NotBlank
     private String messageText;
-
     private String messageHoneypot;
     private int messageHoneypotPosition;
-
-	private Message message;
+    private Message message;
     private boolean selected;
-    private final List<User> recipients = new ArrayList<>();
 
-    public MessageBean(){
+    public MessageBean() {
         messageHoneypotPosition = ((new Random()).nextInt(10)) % 2;
     }
 
@@ -46,19 +39,33 @@ public class MessageBean implements Serializable {
         }
     }
 
-    public void setMessageSubject(String messageSubject) { this.messageSubject=messageSubject; }
+    public String getMessageSubject() {
+        return messageSubject;
+    }
 
-    public String getMessageSubject() { return messageSubject; }
+    public void setMessageSubject(String messageSubject) {
+        this.messageSubject = messageSubject;
+    }
 
-    public void setMessageText(String messageText) { this.messageText=messageText; }
+    public String getMessageText() {
+        return messageText;
+    }
 
-    public String getMessageText() { return messageText; }
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
 
-    public void setMessageHoneypot(String messageHoneypot) { this.messageHoneypot=messageHoneypot; }
+    public String getMessageHoneypot() {
+        return messageHoneypot;
+    }
 
-    public String getMessageHoneypot() { return messageHoneypot; }
+    public void setMessageHoneypot(String messageHoneypot) {
+        this.messageHoneypot = messageHoneypot;
+    }
 
-    public int getMessageHoneypotPosition() { return messageHoneypotPosition; }
+    public int getMessageHoneypotPosition() {
+        return messageHoneypotPosition;
+    }
 
     public String getSubject() {
         return message.getSubject();
@@ -83,12 +90,12 @@ public class MessageBean implements Serializable {
         return UserLocalServiceUtil.getUser(message.getFromId());
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
     public boolean isSelected() {
         return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public Message getMessage() {
@@ -100,7 +107,7 @@ public class MessageBean implements Serializable {
     }
 
     public void addRecipientUser(User recipientUser) {
-         recipients.add(recipientUser);
+        recipients.add(recipientUser);
     }
 
     public Long getMessageId() {

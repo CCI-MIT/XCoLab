@@ -77,35 +77,57 @@ public class UserProfileController {
     @Autowired
     private SmartValidator validator;
 
+    public UserProfileController() { }
+
     @InitBinder("userBean")
     public void initUserWrapperBeanBinder(WebDataBinder binder) {
         binder.setValidator(validator);
     }
 
-    public UserProfileController() { }
-
     @RenderMapping
     public String defaultShowUserProfileNotInitializedView(PortletRequest request) {
-        final String lifecycle = (String) PortalUtil.getHttpServletRequest(request).getAttribute(PortletRequest.LIFECYCLE_PHASE);
+        final String lifecycle =
+                (String) PortalUtil.getHttpServletRequest(request).getAttribute(PortletRequest.LIFECYCLE_PHASE);
         final StringBuilder prettyMapString = new StringBuilder().append("{");
         for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
-            prettyMapString.append(String.format("%s = %s, ", entry.getKey(), Arrays.asList(entry.getValue()).toString()));
+            prettyMapString.append(
+                    String.format("%s = %s, ", entry.getKey(), Arrays.asList(entry.getValue()).toString()));
         }
-        _log.error(String.format("No mapping found - using default render handler for request mode %s, lifecycle %s, parameters %s",
+        _log.error(String.format(
+                "No mapping found - using default render handler for request mode %s, lifecycle %s, parameters %s",
                 request.getPortletMode().toString(), lifecycle, prettyMapString.append("}")));
         return "showProfileNotInitialized";
     }
 
     @RequestMapping(params = "page=view")
     public String showUserProfileView(PortletRequest request, PortletResponse response, Model model,
-                                      @RequestParam(required = true) String userId)
+            @RequestParam(required = true) String userId)
             throws SystemException, PortalException {
         return showUserProfileOrNotInitialized(request, model, userId);
     }
 
+    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, String userId)
+            throws SystemException {
+        try {
+            populateUserWrapper(new UserProfileWrapper(userId, request), model);
+            ModelAttributeUtil.populateModelWithPlatformConstants(model);
+            return "showUserProfile";
+        } catch (PortalException e) {
+            _log.warn("Could not create user profile for " + userId);
+        }
+        return "showProfileNotInitialized";
+    }
+
+    void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {
+        model.addAttribute("currentUserProfile", currentUserProfile);
+        model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
+        model.addAttribute("userBean", currentUserProfile.getUserBean());
+        model.addAttribute("messageBean", new MessageBean());
+    }
+
     @RequestMapping(params = "page=edit")
     public String showUserProfileEdit(PortletRequest request, PortletResponse response, Model model,
-                                      @RequestParam(required = true) String userId)
+            @RequestParam(required = true) String userId)
             throws SystemException {
 
         try {
@@ -127,8 +149,8 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=subscriptions")
     public String showUserProfileSubscriptions(PortletRequest request, PortletResponse response, Model model,
-                                               @RequestParam(required = true) String userId,
-                                               @RequestParam(required = false, defaultValue = "1") int paginationId) {
+            @RequestParam(required = true) String userId,
+            @RequestParam(required = false, defaultValue = "1") int paginationId) {
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
             populateUserWrapper(currentUserProfile, model);
@@ -142,8 +164,8 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=subscriptionsManage")
     public String showUserSubscriptionsManage(PortletRequest request, PortletResponse response, Model model,
-                                              @RequestParam(required = true) String userId,
-                                              @RequestParam(required = false) String typeFilter)
+            @RequestParam(required = true) String userId,
+            @RequestParam(required = false) String typeFilter)
             throws SystemException {
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
@@ -165,7 +187,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "action=navigateSubscriptions")
     public void navigateSubscriptions(ActionRequest request, Model model, ActionResponse response,
-                                      @RequestParam(required = true) String paginationAction)
+            @RequestParam(required = true) String paginationAction)
             throws SystemException, PortalException, IOException {
 
         Integer paginationPageId = 1;
@@ -190,9 +212,9 @@ public class UserProfileController {
 
     @RequestMapping(params = "updateError=true")
     public String updateProfileError(PortletRequest request, Model model,
-                                     @RequestParam(required = false) boolean emailError,
-                                     @RequestParam(required = false) boolean passwordError,
-                                     @RequestParam(required = true) String userId)
+            @RequestParam(required = false) boolean emailError,
+            @RequestParam(required = false) boolean passwordError,
+            @RequestParam(required = true) String userId)
             throws SystemException {
         model.addAttribute("updateError", true);
         if (emailError) {
@@ -223,7 +245,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "updateSuccess=true")
     public String updateProfileSuccess(PortletRequest request, Model model,
-                                       @RequestParam(required = true) String userId) throws SystemException {
+            @RequestParam(required = true) String userId) throws SystemException {
 
         model.addAttribute("updateSuccess", true);
         try {
@@ -238,7 +260,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "action=update")
     public void updateUserProfile(ActionRequest request, Model model, ActionResponse response,
-                                  @ModelAttribute UserBean updatedUserBean, BindingResult result)
+            @ModelAttribute UserBean updatedUserBean, BindingResult result)
             throws IOException, UserProfileAuthorizationException, SystemException, PortalException {
         Long loggedInUserId = Long.parseLong(request.getRemoteUser());
         if (!loggedInUserId.equals(updatedUserBean.getUserId())) {
@@ -259,7 +281,8 @@ public class UserProfileController {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
-                    currentUserProfile.getUser().setPassword(PwdEncryptor.encrypt(updatedUserBean.getPassword().trim()));
+                    currentUserProfile.getUser()
+                            .setPassword(PwdEncryptor.encrypt(updatedUserBean.getPassword().trim()));
                     changedUserPart = true;
                 } else {
                     validationError = true;
@@ -267,7 +290,8 @@ public class UserProfileController {
                     _log.warn("CompareStrings password failed for userId: " + currentUserProfile.getUser().getUserId());
                 }
             } else {
-                result.addError(new ObjectError("currentPassword", "Password change failed: Current password is incorrect."));
+                result.addError(
+                        new ObjectError("currentPassword", "Password change failed: Current password is incorrect."));
                 validationError = true;
                 response.setRenderParameter("passwordError", "true");
                 _log.warn("Current password wrong for userId: " + currentUserProfile.getUser().getUserId());
@@ -329,7 +353,8 @@ public class UserProfileController {
         try {
             changedUserPart = changedUserPart | updateUserProfile(currentUserProfile, updatedUserBean);
         } catch (Exception e) {
-            _log.warn("Updating Expando settings or portrait image failed for userId: " + currentUserProfile.getUser().getUserId());
+            _log.warn("Updating Expando settings or portrait image failed for userId: " + currentUserProfile.getUser()
+                    .getUserId());
             _log.warn(e);
             if (e instanceof UserPortraitSizeException) {
                 model.addAttribute("imageSizeError", true);
@@ -364,7 +389,8 @@ public class UserProfileController {
                 try {
                     sendUpdatedEmail(currentUserProfile.getUser());
                 } catch (MailEngineException | AddressException | NoSuchConfigurationAttributeException e) {
-                    _log.warn("Sending eMail confirmation after email change failed for userId: " + currentUserProfile.getUser().getUserId());
+                    _log.warn("Sending eMail confirmation after email change failed for userId: " + currentUserProfile
+                            .getUser().getUserId());
                     _log.warn(e);
                 }
             }
@@ -377,36 +403,20 @@ public class UserProfileController {
         SessionMessages.clear(request);
     }
 
-    @RequestMapping(params = "action=deleteProfile")
-    public void deleteUserProfile(ActionRequest request, ActionResponse response, Model model)
-            throws IOException, SystemException, PortalException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
-        UserLocalServiceUtil.updateStatus(themeDisplay.getUserId(), WorkflowConstants.STATUS_INACTIVE,
-                ServiceContextFactory.getInstance(request));
-
-        response.sendRedirect("/c/portal/logout");
-    }
-
-    void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {
-        model.addAttribute("currentUserProfile", currentUserProfile);
-        model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
-        model.addAttribute("userBean", currentUserProfile.getUserBean());
-        model.addAttribute("messageBean", new MessageBean());
-    }
-
-    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, String userId) throws SystemException {
+    private boolean isPasswordMatchingExistingPassword(UserProfileWrapper currentUserProfile, String password) {
+        boolean existing = false;
         try {
-            populateUserWrapper(new UserProfileWrapper(userId, request), model);
-            ModelAttributeUtil.populateModelWithPlatformConstants(model);
-            return "showUserProfile";
-        } catch (PortalException e) {
-            _log.warn("Could not create user profile for " + userId);
+            final String existingPassword = currentUserProfile.getUser().getPassword();
+            final String existingPasswordWithoutSHA1 = currentUserProfile.getUser().getPassword().substring(7);
+            existing = PwdEncryptor.encrypt(password).equals(existingPassword) ||
+                    PwdEncryptor.encrypt(password).equals(existingPasswordWithoutSHA1);
+        } catch (PwdEncryptorException ignored) {
         }
-        return "showProfileNotInitialized";
+        return existing;
     }
 
-    private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean) throws Exception {
+    private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean)
+            throws Exception {
 
         boolean changedDetails = false;
 
@@ -439,7 +449,8 @@ public class UserProfileController {
         if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
-                    currentUserProfile.getUser().getUserId(), CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
+                    currentUserProfile.getUser().getUserId(),
+                    CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
             changedDetails = true;
         }
 
@@ -466,22 +477,28 @@ public class UserProfileController {
             }
         }
 
-        if (updatedUserBean.getSendEmailOnMessage() != MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailOnReceipt()) {
-            MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
+        if (updatedUserBean.getSendEmailOnMessage() != MessageUtil
+                .getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailOnReceipt()) {
+            MessagingUserPreferences prefs =
+                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
             prefs.setEmailOnReceipt(updatedUserBean.getSendEmailOnMessage());
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
         }
 
-        if (updatedUserBean.getSendEmailOnActivity() != MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailOnActivity()) {
-            MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
+        if (updatedUserBean.getSendEmailOnActivity() != MessageUtil
+                .getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailOnActivity()) {
+            MessagingUserPreferences prefs =
+                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
             prefs.setEmailOnActivity(updatedUserBean.getSendEmailOnActivity());
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
         }
 
-        if (updatedUserBean.getSendDailyEmailOnActivity() != MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailActivityDailyDigest()) {
-            MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
+        if (updatedUserBean.getSendDailyEmailOnActivity() != MessageUtil
+                .getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailActivityDailyDigest()) {
+            MessagingUserPreferences prefs =
+                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
             prefs.setEmailActivityDailyDigest(updatedUserBean.getSendDailyEmailOnActivity());
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
@@ -490,28 +507,20 @@ public class UserProfileController {
         return changedDetails;
     }
 
-    private boolean isPasswordMatchingExistingPassword(UserProfileWrapper currentUserProfile, String password) {
-        boolean existing = false;
-        try {
-            final String existingPassword = currentUserProfile.getUser().getPassword();
-            final String existingPasswordWithoutSHA1 = currentUserProfile.getUser().getPassword().substring(7);
-            existing = PwdEncryptor.encrypt(password).equals(existingPassword) ||
-                    PwdEncryptor.encrypt(password).equals(existingPasswordWithoutSHA1);
-        } catch (PwdEncryptorException ignored) { }
-        return existing;
-    }
-
     private void sendUpdatedEmail(User user) throws MailEngineException, AddressException, UnsupportedEncodingException,
             SystemException, NoSuchConfigurationAttributeException {
-        String messageSubject = TemplateReplacementUtil.replacePlatformConstants("Your email address on the <colab-name/> has been updated");
+        String messageSubject = TemplateReplacementUtil
+                .replacePlatformConstants("Your email address on the <colab-name/> has been updated");
         String messageBody = TemplateReplacementUtil.replacePlatformConstants("Dear " + user.getFirstName() + ",\n" +
                 "\n" +
-                "This is an automated message to confirm that you recently updated your email address on the <colab-name/> website.\n" +
+                "This is an automated message to confirm that you recently updated your email address on the <colab-name/> website.\n"
+                +
                 "\n" +
                 "Your username:  " + user.getScreenName() + "\n" +
                 "Your updated email address: " + user.getEmailAddress() + "\n" +
                 "\n" +
-                "You can login with your username at <colab-url/>.  If you have any questions or need additional help, simply reply to this message.\n" +
+                "You can login with your username at <colab-url/>.  If you have any questions or need additional help, simply reply to this message.\n"
+                +
                 "\n" +
                 "Thank you for engaging on the <colab-name/>!\n");
 
@@ -521,5 +530,16 @@ public class UserProfileController {
         InternetAddress[] replyTo = {addressFrom};
         MailEngine.send(addressFrom, addressTo, null, null, null,
                 messageSubject, messageBody, false, replyTo, null, null);
+    }
+
+    @RequestMapping(params = "action=deleteProfile")
+    public void deleteUserProfile(ActionRequest request, ActionResponse response, Model model)
+            throws IOException, SystemException, PortalException {
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+        UserLocalServiceUtil.updateStatus(themeDisplay.getUserId(), WorkflowConstants.STATUS_INACTIVE,
+                ServiceContextFactory.getInstance(request));
+
+        response.sendRedirect("/c/portal/logout");
     }
 }

@@ -7,9 +7,6 @@ import com.liferay.portal.theme.ThemeDisplay;
 
 import javax.portlet.PortletRequest;
 
-/**
- * Created by johannes on 11/20/15.
- */
 public class UserProfilePermissions {
 
     private final PermissionChecker permissionChecker;
@@ -20,16 +17,12 @@ public class UserProfilePermissions {
         permissionChecker = themeDisplay.getPermissionChecker();
     }
 
-    public boolean getCanAdmin() {
-        return permissionChecker.isOmniadmin();
-    }
-
-    public boolean getCanAdminSpamReports() {
-        return getCanAdmin();
-    }
-
     public boolean getCanAdminProfile(long userId) {
         return themeDisplay.getUserId() == userId || getCanAdmin();
+    }
+
+    public boolean getCanAdmin() {
+        return permissionChecker.isOmniadmin();
     }
 
     public User getCurrentUser() {
@@ -40,5 +33,9 @@ public class UserProfilePermissions {
         if (!getCanAdminSpamReports()) {
             throw new UserProfileAuthorizationException("Admin Spam Report permissions required");
         }
+    }
+
+    public boolean getCanAdminSpamReports() {
+        return getCanAdmin();
     }
 }

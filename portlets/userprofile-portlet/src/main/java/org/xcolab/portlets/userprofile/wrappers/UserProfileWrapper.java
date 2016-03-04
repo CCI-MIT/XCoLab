@@ -86,7 +86,7 @@ public class UserProfileWrapper implements Serializable {
             User loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
             if (loggedInUser != null) {
                 messagePermissionChecker = new SendMessagePermissionChecker(loggedInUser);
-                if(loggedInUser.getUserId() == user.getUserId()) {
+                if (loggedInUser.getUserId() == user.getUserId()) {
                     viewingOwnProfile = true;
                 }
             }
@@ -107,7 +107,9 @@ public class UserProfileWrapper implements Serializable {
             realName = user.getFirstName();
         }
 
-        attendsConference = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO, CommunityConstants.CONFERENCE2014, user.getUserId(), "").equals("1");
+        attendsConference = ExpandoValueLocalServiceUtil
+                .getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO,
+                        CommunityConstants.CONFERENCE2014, user.getUserId(), "").equals("1");
         badges = new BadgeBean(user.getUserId());
 
         role = MemberRole.getHighestRole(user.getRoles());
@@ -131,17 +133,27 @@ public class UserProfileWrapper implements Serializable {
         List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
         Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil.groupByContestType(proposals);
         for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
-            contestTypeProposalWrappersByContestTypeId.put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
+            contestTypeProposalWrappersByContestTypeId
+                    .put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
             for (Proposal p : proposalsInContestType) {
                 try {
-                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId()).getProposals().add(new BaseProposalWrapper(p));
-                } catch (NoSuchContestException ignored) { }
+                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId()).getProposals()
+                            .add(new BaseProposalWrapper(p));
+                } catch (NoSuchContestException ignored) {
+                }
             }
         }
     }
 
-    public boolean isStaffMemberProfile(){
+    private String getName(String name, String defaultName) {
+        if (name == null || name.trim().equals("")) {
+            return defaultName;
+        }
+        return name;
+    }
+
+    public boolean isStaffMemberProfile() {
         return this.role == MemberRole.STAFF;
     }
 
@@ -157,48 +169,63 @@ public class UserProfileWrapper implements Serializable {
         return viewingOwnProfile;
     }
 
-    public void setUser(User user){ this.user=user; }
-
-    public User getUser(){ return user; }
-
-    public Long getUserId() {
-        return user.getUserId();
+    public User getUser() {
+        return user;
     }
 
-    public UserBean getUserBean(){ return userBean; }
-
-    public void setUserBean(UserBean userBean){ this.userBean=userBean; }
-
-    private String getName(String name, String defaultName) {
-        if (name == null || name.trim().equals("")) {
-            return defaultName;
-        }
-        return name;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Date getJoinDate() { return user.getCreateDate(); }
+    public UserBean getUserBean() {
+        return userBean;
+    }
 
-    public Boolean getAttendsConference() { return attendsConference; }
+    public void setUserBean(UserBean userBean) {
+        this.userBean = userBean;
+    }
 
-    public void setAttendsConference(Boolean attendsConference) { this.attendsConference = attendsConference; }
+    public Date getJoinDate() {
+        return user.getCreateDate();
+    }
 
-    public String getRealName() { return realName; }
+    public Boolean getAttendsConference() {
+        return attendsConference;
+    }
 
-    public UserSubscriptionsWrapper getUserSubscriptions(){return userSubscriptions;}
+    public void setAttendsConference(Boolean attendsConference) {
+        this.attendsConference = attendsConference;
+    }
 
-    public int getSubscriptionsPageSize(){return subscriptionsPageSize; }
+    public String getRealName() {
+        return realName;
+    }
 
-    public void setSubscriptionsPageSize(int subscriptionsPageSize) {this.subscriptionsPageSize = subscriptionsPageSize;}
+    public UserSubscriptionsWrapper getUserSubscriptions() {
+        return userSubscriptions;
+    }
 
-    public int getSubscriptionsPaginationPageId() {return subscriptionsPaginationPageId;}
+    public int getSubscriptionsPageSize() {
+        return subscriptionsPageSize;
+    }
 
-    public void setSubscriptionsPaginationPageId(int subscriptionsPaginationPageId){this.subscriptionsPaginationPageId = subscriptionsPaginationPageId;}
+    public void setSubscriptionsPageSize(int subscriptionsPageSize) {
+        this.subscriptionsPageSize = subscriptionsPageSize;
+    }
 
-    public int getSubscriptionsPaginationPageMax(){
+    public int getSubscriptionsPaginationPageId() {
+        return subscriptionsPaginationPageId;
+    }
+
+    public void setSubscriptionsPaginationPageId(int subscriptionsPaginationPageId) {
+        this.subscriptionsPaginationPageId = subscriptionsPaginationPageId;
+    }
+
+    public int getSubscriptionsPaginationPageMax() {
         if (subscribedActivities != null && subscriptionsPageSize != 0) {
-            double d1=subscribedActivities.size();
-            double d2=subscriptionsPageSize;
-            return (int) Math.ceil(d1/d2);
+            double d1 = subscribedActivities.size();
+            double d2 = subscriptionsPageSize;
+            return (int) Math.ceil(d1 / d2);
         }
         return 0;
     }
@@ -218,12 +245,12 @@ public class UserProfileWrapper implements Serializable {
         return (user.getOpenId() != null && !user.getOpenId().isEmpty());
     }
 
-    public void setMessagingPortletId(String messagingPortletId) {
-        this.messagingPortletId = messagingPortletId;
-    }
-
     public String getMessagingPortletId() {
         return messagingPortletId;
+    }
+
+    public void setMessagingPortletId(String messagingPortletId) {
+        this.messagingPortletId = messagingPortletId;
     }
 
     public User getWrapped() {
@@ -234,7 +261,9 @@ public class UserProfileWrapper implements Serializable {
         return FIRE_GOOGLE_EVENT;
     }
 
-    public MemberRole getRole() { return role; }
+    public MemberRole getRole() {
+        return role;
+    }
 
     public boolean isDisplayEMailErrorMessage() {
         return DISPLAY_EMAIL_ERROR_MESSAGE;
@@ -251,7 +280,7 @@ public class UserProfileWrapper implements Serializable {
     public List<MessageBean> getMessages() throws SystemException, PortalException {
         if (messages == null) {
             messages = new ArrayList<>();
-            for (Message msg: MessageUtil.getMessages(this.user.getUserId(), 0, 2, MessageConstants.INBOX)) {
+            for (Message msg : MessageUtil.getMessages(this.user.getUserId(), 0, 2, MessageConstants.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
         }
@@ -261,22 +290,33 @@ public class UserProfileWrapper implements Serializable {
     public List<UserActivityWrapper> getSubscribedActivities() throws SystemException, PortalException {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
-            for (SocialActivity activity: ActivityUtil.groupActivities(ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getUserId(), 0, 1000))) {
+            for (SocialActivity activity : ActivityUtil.groupActivities(
+                    ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getUserId(), 0, 1000))) {
                 subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
             }
         }
         return subscribedActivities;
     }
 
-    public List<SupportedProposalWrapper> getSupportedProposals() { return supportedProposals; }
+    public List<SupportedProposalWrapper> getSupportedProposals() {
+        return supportedProposals;
+    }
 
-    public List<UserActivityWrapper> getActivities() { return userActivities; }
+    public List<UserActivityWrapper> getActivities() {
+        return userActivities;
+    }
 
     public Collection<ContestTypeProposalWrapper> getContestTypeProposalWrappersByContestTypeId() {
         return contestTypeProposalWrappersByContestTypeId.values();
     }
 
-    public List<Badge> getBadges() { return badges.getBadges(); }
+    public List<Badge> getBadges() {
+        return badges.getBadges();
+    }
+
+    public String getUserActivityCountFormatted() {
+        return String.format("%,d", getUserActivityCount());
+    }
 
     public long getUserActivityCount() {
         try {
@@ -286,8 +326,12 @@ public class UserProfileWrapper implements Serializable {
         }
     }
 
-    public String getUserActivityCountFormatted() {
-        return String.format("%,d", getUserActivityCount());
+    public Long getUserId() {
+        return user.getUserId();
+    }
+
+    public String getActualPointsFormatted() {
+        return String.format("%,d", getActualPoints());
     }
 
     public long getActualPoints() {
@@ -298,8 +342,8 @@ public class UserProfileWrapper implements Serializable {
         }
     }
 
-    public String getActualPointsFormatted() {
-        return String.format("%,d", getActualPoints());
+    public String getPotentialPointsFormatted() {
+        return String.format("%,d", getPotentialPoints());
     }
 
     public long getPotentialPoints() {
@@ -310,10 +354,6 @@ public class UserProfileWrapper implements Serializable {
         }
     }
 
-    public String getPotentialPointsFormatted() {
-        return String.format("%,d", getPotentialPoints());
-    }
-
     public List<BaseProposalWrapper> getLinkingProposals() {
         if (linkingProposals == null) {
             try {
@@ -322,15 +362,17 @@ public class UserProfileWrapper implements Serializable {
                 for (Proposal p : proposals) {
                     linkingProposals.add(new BaseProposalWrapper(p));
                 }
-            } catch (PortalException | SystemException ignored) { }
+            } catch (PortalException | SystemException ignored) {
+            }
         }
         return linkingProposals;
     }
 
     public String getProposalsString() {
         if (proposalsString == null) {
-                proposalsString = ContestTypeLocalServiceUtil.getProposalNames(
-                        new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.PLURAL.name(), "or");
+            proposalsString = ContestTypeLocalServiceUtil.getProposalNames(
+                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.PLURAL.name(),
+                    "or");
         }
         return proposalsString;
     }
@@ -338,7 +380,8 @@ public class UserProfileWrapper implements Serializable {
     public String getProposalString() {
         if (proposalString == null) {
             proposalString = ContestTypeLocalServiceUtil.getProposalNames(
-                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.SINGULAR.name(), "or");
+                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.SINGULAR.name(),
+                    "or");
         }
         return proposalString;
     }

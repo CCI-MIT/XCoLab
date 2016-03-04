@@ -10,31 +10,33 @@ import java.util.Date;
 
 public class UserActivityWrapper implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private final SocialActivity activity;
+    private static final long serialVersionUID = 1L;
+    private final SocialActivity activity;
     private String body;
 
     public UserActivityWrapper(SocialActivity activity, ThemeDisplay themeDisplay) {
         this.activity = activity;
 
-        SocialActivityFeedEntry activityFeedEntry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, themeDisplay);
+        SocialActivityFeedEntry activityFeedEntry =
+                SocialActivityInterpreterLocalServiceUtil.interpret(activity, themeDisplay);
         if (activityFeedEntry != null) {
             body = activityFeedEntry.getBody();
             if (body != null) {
                 body = body.trim().equals("") ? activityFeedEntry.getTitle() : body;
-                body = body.replaceAll("c.my_sites[^\\\"]*", "web/guest/member/-/member/userId/" + activity.getUserId());
+                body = body.replaceAll("c.my_sites[^\\\"]*",
+                        "web/guest/member/-/member/userId/" + activity.getUserId());
             }
         }
     }
-    
+
     public Date getCreatedDate() {
         return new Date(activity.getCreateDate());
     }
-    
+
     public String getBody() {
         return body;
     }
-    
+
     public long getDaysAgo() {
         final int millisecondsInDay = 1000 * 60 * 60 * 24;
         long createDay = activity.getCreateDate() / millisecondsInDay;
