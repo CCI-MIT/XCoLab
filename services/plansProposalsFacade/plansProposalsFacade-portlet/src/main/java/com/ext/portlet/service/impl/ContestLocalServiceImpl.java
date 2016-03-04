@@ -1184,12 +1184,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         try {
             ContestPhase latestPhase = getActiveOrLastPhase(contest);
             String[] contestNameParts = contest.getContestShortName().split(" ");
-
+            _log.info("addContestYearSuffixToContest: " + contest.getContestPK());
             // Is in completed phase and inactive? - or is flag set to false?
             boolean isCompleted = (ArrayUtil.isNotEmpty(contestNameParts) &&
                     (latestPhase.getContestPhaseType() == ContestPhaseTypeValue.COMPLETED.getTypeId() ||
                             latestPhase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_AWARDED.getTypeId()));
             if (!checkForCompleted || isCompleted) {
+                _log.info("Contest phase type : " + latestPhase.getContestPhaseType());
+
                 String lastNamePart = contestNameParts[contestNameParts.length - 1];
                 Integer phaseEndYear = getYearFromDate(latestPhase.getPhaseStartDate());
 
