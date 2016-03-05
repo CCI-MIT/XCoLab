@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 public class ProposalSectionWrapper {
 
     private final static Log _log = LogFactoryUtil.getLog(ProposalSectionWrapper.class);
+
     private final PlanSectionDefinition definition;
     private final ProposalWrapper wrappedProposal;
 
@@ -236,7 +237,11 @@ public class ProposalSectionWrapper {
     }
 
     public String getStringValue() throws SystemException, PortalException {
-        return getSectionAttribute().getStringValue();
+        ProposalAttribute attr = getSectionAttribute();
+        if (attr == null) {
+            return "";
+        }
+        return attr.getStringValue();
     }
 
     public List<OntologyTerm> getFocusAreaTerms() throws PortalException, SystemException {
