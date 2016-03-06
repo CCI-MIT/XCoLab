@@ -4,8 +4,10 @@ import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestEmailTemplate;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -30,18 +32,19 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * This abstract class defines common helper methods for Email Notification Util classes
- *
- * Created by kmang on 21/05/14.
- */
 public abstract class EmailNotification {
     protected static final long ADMINISTRATOR_USER_ID = 10144L;
 
     private static final String FIRSTNAME_PLACEHOLDER = "firstname";
     private static final String FULL_NAME_PLACEHOLDER = "fullname";
+
     private static final String PROPOSAL_LINK_PLACEHOLDER = "proposal-link";
     private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
+    private static final String PROPOSAL_STRING_PLACEHOLDER = "proposal-string";
+    private static final String PROPOSALS_STRING_PLACEHOLDER = "proposals-string";
+    private static final String CONTEST_STRING_PLACEHOLDER = "contest-string";
+    private static final String CONTESTS_STRING_PLACEHOLDER = "contests-string";
+
     private static final String TWITTER_PLACEHOLDER = "twitter";
     private static final String FACEBOOK_PLACEHOLDER = "facebook";
     private static final String PINTEREST_PLACEHOLDER = "pinterest";
@@ -248,6 +251,7 @@ public abstract class EmailNotification {
             Contest contest = getContest();
             Proposal proposal = getProposal();
             final boolean hasProposal = contest != null && proposal != null;
+            final ContestType contestType = contest != null ? ContestTypeLocalServiceUtil.getContestType(contest) : null;
 
             switch (tag.nodeName()) {
                 case FIRSTNAME_PLACEHOLDER:
@@ -255,35 +259,56 @@ public abstract class EmailNotification {
                 case FULL_NAME_PLACEHOLDER:
                     return new TextNode(getRecipient().getFullName(), "");
                 case CONTEST_LINK_PLACEHOLDER:
-                    if (contest == null) {
-                        break;
+                    if (contest != null) {
+                        return parseXmlNode(getContestLink(contest));
                     }
-                    return parseXmlNode(getContestLink(contest));
+                    break;
                 case PROPOSAL_LINK_PLACEHOLDER:
-                    if (!hasProposal) {
-                        break;
+                    if (hasProposal) {
+                        return parseXmlNode(getProposalLink(contest, proposal));
                     }
-                    return parseXmlNode(getProposalLink(contest, proposal));
+                    break;
+                case PROPOSAL_STRING_PLACEHOLDER:
+                    if (contest != null) {
+                        return new TextNode(contestType.getProposalName(), "");
+                    }
+                    break;
+                case PROPOSALS_STRING_PLACEHOLDER:
+                    if (contest != null) {
+                        return new TextNode(contestType.getProposalNamePlural(), "");
+                    }
+                    break;
+                case CONTEST_STRING_PLACEHOLDER:
+                    if (contest != null) {
+                        return new TextNode(contestType.getContestName(), "");
+                    }
+                    break;
+                case CONTESTS_STRING_PLACEHOLDER:
+                    if (contest != null) {
+                        return new TextNode(contestType.getContestNamePlural(), "");
+                    }
+                    break;
                 case TWITTER_PLACEHOLDER:
-                    if (!hasProposal) {
-                        break;
+                    if (hasProposal) {
+                        return parseXmlNode(getTwitterShareLink(getProposalLinkUrl(contest, proposal), tag.ownText()));
                     }
-                    return parseXmlNode(getTwitterShareLink(getProposalLinkUrl(contest, proposal), tag.ownText()));
+                    break;
                 case PINTEREST_PLACEHOLDER:
-                    if (!hasProposal) {
-                        break;
+                    if (hasProposal) {
+                        return parseXmlNode(getPinterestShareLink(getProposalLinkUrl(contest, proposal), tag.ownText()));
                     }
-                    return parseXmlNode(getPinterestShareLink(getProposalLinkUrl(contest, proposal), tag.ownText()));
+                    break;
                 case FACEBOOK_PLACEHOLDER:
-                    if (!hasProposal) {
-                        break;
+                    if (hasProposal) {
+                        return parseXmlNode(getFacebookShareLink(getProposalLinkUrl(contest, proposal)));
                     }
-                    return parseXmlNode(getFacebookShareLink(getProposalLinkUrl(contest, proposal)));
+                    break;
                 case LINKEDIN_PLACEHOLDER:
-                    if (!hasProposal) {
-                        break;
+                    if (hasProposal) {
+                        return parseXmlNode(getLinkedInShareLink(getProposalLinkUrl(contest, proposal), tag.attr("title") , tag.ownText()));
                     }
-                    return parseXmlNode(getLinkedInShareLink(getProposalLinkUrl(contest, proposal), tag.attr("title") , tag.ownText()));
+                    break;
+                default:
             }
             return null;
         }

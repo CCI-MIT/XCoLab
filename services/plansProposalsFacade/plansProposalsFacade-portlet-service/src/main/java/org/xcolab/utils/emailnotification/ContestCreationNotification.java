@@ -21,26 +21,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * This class is responsible for sending out email notifications regarding the creation of a new proposal
- *
- * Created by kmang on 21/05/14.
- */
 public class ContestCreationNotification extends EmailNotification {
 
     private static final String TEMPLATE_NAME = "CONTEST_CREATION_DEFAULT";
 
-    private static final String YEAR_FALLBACK = "2014";
-
     // Placeholder strings
-    private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
-    private static final String TWITTER_PLACEHOLDER = "twitter";
-    private static final String FACEBOOK_PLACEHOLDER = "facebook";
-    private static final String PINTEREST_PLACEHOLDER = "pinterest";
-    private static final String LINKEDIN_PLACEHOLDER = "linkedin";
     private static final String YEAR_PLACEHOLDER = "year";
     private static final String DEADLINE_PLACEHOLDER = "deadline";
-
 
     private final Contest createdContest;
     private ContestCreationTemplate templateWrapper;
@@ -96,21 +83,11 @@ public class ContestCreationNotification extends EmailNotification {
             }
 
             switch (tag.nodeName()) {
-                case CONTEST_LINK_PLACEHOLDER:
-                    return parseXmlNode(getContestLink(createdContest));
-                case TWITTER_PLACEHOLDER:
-                    return parseXmlNode(getTwitterShareLink(getContestLinkUrl(createdContest), tag.ownText()));
-                case PINTEREST_PLACEHOLDER:
-                    return parseXmlNode(getPinterestShareLink(getContestLinkUrl(createdContest), tag.ownText()));
-                case FACEBOOK_PLACEHOLDER:
-                    return parseXmlNode(getFacebookShareLink(getContestLinkUrl(createdContest)));
-                case LINKEDIN_PLACEHOLDER:
-                    return parseXmlNode(getLinkedInShareLink(getContestLinkUrl(createdContest), tag.attr("title"), tag.ownText()));
                 case YEAR_PLACEHOLDER:
                     DateFormat yearFormat = new SimpleDateFormat("yyyy");
                     // This should never happen when contests are properly set up
                     if (Validator.isNull(createdContest.getCreated())) {
-                        return new TextNode(YEAR_FALLBACK, "");
+                        return new TextNode(Long.toString(createdContest.getContestYear()), "");
                     } else {
                         return new TextNode(yearFormat.format(createdContest.getCreated()), "");
                     }

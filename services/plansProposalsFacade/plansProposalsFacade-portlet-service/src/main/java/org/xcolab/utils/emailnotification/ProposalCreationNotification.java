@@ -24,16 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * This class is responsible for sending out email notifications regarding the creation of a new proposal
- *
- * Created by kmang on 21/05/14.
- */
 public class ProposalCreationNotification extends EmailNotification {
 
     private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_CREATION_DEFAULT";
-
-    private static final String YEAR_FALLBACK = "2015";
 
     // Additional placeholder strings
     private static final String YEAR_PLACEHOLDER = "year";
@@ -131,7 +124,7 @@ public class ProposalCreationNotification extends EmailNotification {
                     DateFormat yearFormat = new SimpleDateFormat("yyyy");
                     // This should never happen when contests are properly set up
                     if (Validator.isNull(contest.getCreated())) {
-                        return new TextNode(YEAR_FALLBACK, "");
+                        return new TextNode(Long.toString(contest.getContestYear()), "");
                     } else {
                         return new TextNode(yearFormat.format(contest.getCreated()), "");
                     }

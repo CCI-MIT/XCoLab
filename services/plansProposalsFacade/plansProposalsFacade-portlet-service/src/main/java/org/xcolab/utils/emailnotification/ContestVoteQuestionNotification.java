@@ -14,9 +14,6 @@ import org.jsoup.nodes.Node;
 
 import java.util.List;
 
-/**
- * Created by kmang on 21/05/14.
- */
 public class ContestVoteQuestionNotification extends EmailNotification {
 
     private static final String DEFAULT_TEMPLATE_STRING = "CONTEST_VOTE_QUESTION_DEFAULT";

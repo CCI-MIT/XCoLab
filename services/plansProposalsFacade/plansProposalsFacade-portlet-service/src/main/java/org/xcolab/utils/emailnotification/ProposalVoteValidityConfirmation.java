@@ -12,9 +12,6 @@ import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
-/**
- * Created by johannes on 11/17/15.
- */
 public class ProposalVoteValidityConfirmation extends ProposalVoteNotification {
 
     private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_VOTE_CONFIRMATION_DEFAULT";

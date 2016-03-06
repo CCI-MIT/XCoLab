@@ -25,9 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by johannes on 8/14/15.
- */
 public class ProposalVoteNotification extends EmailNotification {
 
     private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_VOTE_DEFAULT";
@@ -112,7 +109,8 @@ public class ProposalVoteNotification extends EmailNotification {
             }
         }
 
-        throw new SystemException("Active proposal creation phase was not found for createdContest with id " + contest.getContestPK());
+        throw new SystemException("Active proposal creation phase was not found for createdContest with id "
+                + contest.getContestPK());
     }
 
     private String getOtherContestLink(String linkText) {

@@ -12,9 +12,6 @@ import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
-/**
- * Created by kmang on 21/05/14.
- */
 public class ContestVoteNotification extends EmailNotification {
 
     private static final String DEFAULT_TEMPLATE_STRING = "CONTEST_VOTE_DEFAULT";
