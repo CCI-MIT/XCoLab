@@ -10,7 +10,8 @@ public enum ConfigurationAttributeKey {
     ADMIN_FROM_EMAIL(AttributeType.STRING),
     DEFAULT_CONTEST_TYPE_ID(AttributeType.NUMERIC),
     COLAB_URL(AttributeType.STRING),
-    GENERATE_SCREEN_NAME(AttributeType.BOOLEAN);
+    GENERATE_SCREEN_NAME(AttributeType.BOOLEAN),
+    DEFAULT_TIME_ZONE_ID(AttributeType.STRING);
 
     private final AttributeType type;
 

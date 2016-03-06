@@ -1,4 +1,4 @@
-package org.xcolab.utils.emailnotification;
+package org.xcolab.utils.emailnotification.contest;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestEmailTemplate;
@@ -11,35 +11,23 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+import org.xcolab.utils.emailnotification.basic.ContestNotification;
 
 import java.util.List;
 
-public class ContestVoteQuestionNotification extends EmailNotification {
+public class ContestVoteQuestionNotification extends ContestNotification {
 
     private static final String DEFAULT_TEMPLATE_STRING = "CONTEST_VOTE_QUESTION_DEFAULT";
 
     private static final String SUPPORTED_PROPOSALS_PLACEHOLDER = "supported-proposals";
 
-    private final User recipient;
-    private final Contest contest;
     private final List<Proposal> supportedProposals;
     private ContestVoteQuestionTemplate templateWrapper;
 
-    public ContestVoteQuestionNotification(User recipient, Contest contest, List<Proposal> supportedProposals, ServiceContext serviceContext) {
-        super(serviceContext);
-        this.recipient = recipient;
-        this.contest = contest;
+    public ContestVoteQuestionNotification(User recipient, Contest contest, List<Proposal> supportedProposals,
+            ServiceContext serviceContext) {
+        super(contest, recipient, null, serviceContext);
         this.supportedProposals = supportedProposals;
-    }
-
-    @Override
-    protected User getRecipient() throws SystemException, PortalException {
-        return recipient;
-    }
-
-    @Override
-    protected Contest getContest() {
-        return contest;
     }
 
     @Override
@@ -52,16 +40,18 @@ public class ContestVoteQuestionNotification extends EmailNotification {
         if (voteQuestionTemplateString.isEmpty()) {
             voteQuestionTemplateString = DEFAULT_TEMPLATE_STRING;
         }
-        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(voteQuestionTemplateString);
+        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil
+                .getEmailTemplateByType(voteQuestionTemplateString);
         if (emailTemplate == null) {
-            throw new SystemException("Could not load template \""+voteQuestionTemplateString+"\" for "+this.getClass().getName());
+            throw new SystemException(String.format("Could not load template \"%s\" for %s",
+                    voteQuestionTemplateString, this.getClass().getName()));
         }
         templateWrapper = new ContestVoteQuestionTemplate(emailTemplate, contest.getContestShortName());
 
         return templateWrapper;
     }
 
-    private class ContestVoteQuestionTemplate extends EmailNotificationTemplate {
+    private class ContestVoteQuestionTemplate extends ContestNotificationTemplate {
 
         public ContestVoteQuestionTemplate(ContestEmailTemplate template, String contestName) {
             super(template, "", contestName);

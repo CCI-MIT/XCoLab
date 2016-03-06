@@ -36,7 +36,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
-import org.xcolab.utils.emailnotification.ProposalCreationNotification;
+import org.xcolab.utils.emailnotification.proposal.ProposalCreationNotification;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

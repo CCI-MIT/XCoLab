@@ -1,4 +1,4 @@
-package org.xcolab.utils.emailnotification;
+package org.xcolab.utils.emailnotification.basic;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.jsoup.nodes.Element;
@@ -107,14 +106,6 @@ public abstract class EmailNotification {
     protected String getContestLink(Contest contest) {
         final String contestLinkUrl = serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(contest);
         return String.format(LINK_FORMAT_STRING, contestLinkUrl, contest.getContestShortName());
-    }
-
-    protected User getProposalAuthor(Proposal proposal) throws SystemException, PortalException {
-        return UserLocalServiceUtil.getUserById(proposal.getAuthorId());
-    }
-
-    protected User getContestAuthor(Contest contest) throws SystemException, PortalException {
-        return UserLocalServiceUtil.getUserById(contest.getAuthorId());
     }
 
     protected Contest getContest() {

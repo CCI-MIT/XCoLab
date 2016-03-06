@@ -1,4 +1,4 @@
-package org.xcolab.utils.emailnotification;
+package org.xcolab.utils.emailnotification.proposal;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
@@ -11,24 +11,29 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+import org.xcolab.utils.emailnotification.basic.ProposalNotification;
 
-public class ProposalVoteValidityConfirmation extends ProposalVoteNotification {
+public class ProposalVoteValidityConfirmation extends ProposalNotification {
 
     private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_VOTE_CONFIRMATION_DEFAULT";
     private static final String CONFIRMATION_LINK_PLACEHOLDER = "confirmation-link";
 
-    private ProposalVoteTemplate templateWrapper;
+    private ProposalVoteConfirmationTemplate templateWrapper;
 
+    private final Proposal votedProposal;
     private final String confirmationToken;
+    private final User recipient;
 
     public ProposalVoteValidityConfirmation(Proposal votedProposal, Contest contest, User recipient,
                                             ServiceContext serviceContext, String confirmationToken) {
-        super(votedProposal, contest, recipient, serviceContext);
+        super(votedProposal, contest, recipient, null, serviceContext);
         this.confirmationToken = confirmationToken;
+        this.votedProposal = votedProposal;
+        this.recipient = recipient;
     }
 
     @Override
-    protected ProposalVoteTemplate getTemplateWrapper() throws SystemException, PortalException {
+    protected ProposalVoteConfirmationTemplate getTemplateWrapper() throws SystemException, PortalException {
         if (templateWrapper != null) {
             return templateWrapper;
         }
@@ -54,7 +59,7 @@ public class ProposalVoteValidityConfirmation extends ProposalVoteNotification {
         return String.format(LINK_FORMAT_STRING, confirmationUrl, linkText);
     }
 
-    private class ProposalVoteConfirmationTemplate extends ProposalVoteTemplate {
+    private class ProposalVoteConfirmationTemplate extends ProposalNotificationTemplate {
 
         public ProposalVoteConfirmationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);

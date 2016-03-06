@@ -4,6 +4,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.portlet.PortletRequest;
 import java.util.ArrayList;
@@ -67,5 +68,12 @@ public final class LinkUtils {
             } catch (NumberFormatException ignored) { }
         }
         return proposalIds;
+    }
+
+    public static String getNonBlankStringOrDefault(String string, String defaultString) {
+        if (StringUtils.isNotBlank(string)) {
+            return string;
+        }
+        return defaultString;
     }
 }

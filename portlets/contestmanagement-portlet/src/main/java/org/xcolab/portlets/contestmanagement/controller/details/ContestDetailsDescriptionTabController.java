@@ -26,7 +26,7 @@ import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
-import org.xcolab.utils.emailnotification.ContestCreationNotification;
+import org.xcolab.utils.emailnotification.contest.ContestCreationNotification;
 import org.xcolab.wrapper.TabWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
 

@@ -10,13 +10,10 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Parser;
 
-/**
- * Created by Manuel Thurner
- */
 public class EmailTemplateWrapper {
-    private ContestEmailTemplate template;
-    private String proposalName;
-    private String contestName;
+    private final ContestEmailTemplate template;
+    private final String proposalName;
+    private final String contestName;
 
     private static final String PROPOSAL_TITLE_PLACEHOLDER = "proposal-title";
     private static final String CONTEST_TITLE_PLACEHOLDER = "contest-title";
