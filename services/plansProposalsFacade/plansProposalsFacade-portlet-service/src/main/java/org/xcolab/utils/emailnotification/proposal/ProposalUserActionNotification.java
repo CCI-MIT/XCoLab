@@ -17,11 +17,9 @@ import org.xcolab.utils.emailnotification.basic.ProposalNotification;
 public class ProposalUserActionNotification extends ProposalNotification {
 
     private static final String SENDER_NAME_PLACEHOLDER = "sender-name";
-
-    private ProposalUserActionNotificationTemplate templateWrapper;
-
     private final User sender;
     private final String templateName;
+    private ProposalUserActionNotificationTemplate templateWrapper;
 
     public ProposalUserActionNotification(Proposal proposal, Contest contest, User sender, User recipient,
             String templateName, ServiceContext serviceContext) {
@@ -36,20 +34,25 @@ public class ProposalUserActionNotification extends ProposalNotification {
             return templateWrapper;
         }
 
-        final String proposalName = getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
+        final String proposalName =
+                getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateName);
+        final ContestEmailTemplate emailTemplate =
+                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateName);
         if (emailTemplate == null) {
-            throw new SystemException("Could not load template \""+templateName+"\" for "+this.getClass().getName());
+            throw new SystemException(
+                    "Could not load template \"" + templateName + "\" for " + this.getClass().getName());
         }
-        templateWrapper = new ProposalUserActionNotificationTemplate(emailTemplate, proposalName, contest.getContestShortName());
+        templateWrapper = new ProposalUserActionNotificationTemplate(emailTemplate,
+                proposalName, contest.getContestShortName());
 
         return templateWrapper;
     }
 
     protected class ProposalUserActionNotificationTemplate extends ProposalNotificationTemplate {
 
-        public ProposalUserActionNotificationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
+        public ProposalUserActionNotificationTemplate(ContestEmailTemplate template, String proposalName,
+                String contestName) {
             super(template, proposalName, contestName);
         }
 

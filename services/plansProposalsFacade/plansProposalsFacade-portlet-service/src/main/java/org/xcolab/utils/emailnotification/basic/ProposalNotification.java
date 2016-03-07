@@ -33,11 +33,14 @@ public class ProposalNotification extends ContestNotification {
             return templateWrapper;
         }
 
-        final String proposalName = getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
+        final String proposalName =
+                getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateName);
+        final ContestEmailTemplate emailTemplate =
+                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateName);
         if (emailTemplate == null) {
-            throw new SystemException("Could not load template \""+templateName+"\" for "+this.getClass().getName());
+            throw new SystemException(
+                    "Could not load template \"" + templateName + "\" for " + this.getClass().getName());
         }
         templateWrapper = new ProposalNotificationTemplate(emailTemplate, proposalName, contest.getContestShortName());
 

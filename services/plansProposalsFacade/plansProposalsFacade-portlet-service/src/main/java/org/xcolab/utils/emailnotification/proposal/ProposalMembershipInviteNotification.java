@@ -22,15 +22,12 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
 
     private static final String MEMBERSHIP_INVITE_STRUTS_ACTION_URL = "/c/portal/proposal_invite_response";
 
-    private static final String SENDER_NAME_PLACEHOLDER = "sender-name";
     private static final String MESSAGE_PLACEHOLDER = "message";
     private static final String ACCEPT_LINK_PLACEHOLDER = "accept-link";
     private static final String DECLINE_LINK_PLACEHOLDER = "decline-link";
-
-    private ProposalMembershipRequestTemplate templateWrapper;
-
     private final MembershipRequest membershipRequest;
     private final String message;
+    private ProposalMembershipRequestTemplate templateWrapper;
 
     public ProposalMembershipInviteNotification(Proposal proposal, Contest contest, User sender, User invitee,
             MembershipRequest membershipRequest, String message, ServiceContext serviceContext) {
@@ -51,12 +48,18 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
         final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil
                 .getEmailTemplateByType(DEFAULT_TEMPLATE_NAME);
         if (emailTemplate == null) {
-            throw new SystemException("Could not load template \""+DEFAULT_TEMPLATE_NAME+"\" for "+this.getClass().getName());
+            throw new SystemException(
+                    "Could not load template \"" + DEFAULT_TEMPLATE_NAME + "\" for " + this.getClass().getName());
         }
         templateWrapper = new ProposalMembershipRequestTemplate(emailTemplate,
                 proposalName, contest.getContestShortName());
 
         return templateWrapper;
+    }
+
+    private String getAcceptLink(String text) throws SystemException, NoSuchConfigurationAttributeException {
+        final String acceptUrl = HttpUtil.addParameter(getMembershipResponseUrl(), "do", "accept");
+        return String.format(LINK_FORMAT_STRING, acceptUrl, text);
     }
 
     private String getMembershipResponseUrl() throws SystemException, NoSuchConfigurationAttributeException {
@@ -65,11 +68,6 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
         baseUrl = HttpUtil.addParameter(baseUrl, "requestId", membershipRequest.getMembershipRequestId());
         baseUrl = HttpUtil.addParameter(baseUrl, "proposalId", proposal.getProposalId());
         return baseUrl;
-    }
-
-    private String getAcceptLink(String text) throws SystemException, NoSuchConfigurationAttributeException {
-        final String acceptUrl = HttpUtil.addParameter(getMembershipResponseUrl(), "do", "accept");
-        return String.format(LINK_FORMAT_STRING, acceptUrl, text);
     }
 
     private String getDeclineLink(String text) throws NoSuchConfigurationAttributeException, SystemException {

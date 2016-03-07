@@ -86,11 +86,11 @@ public abstract class EmailNotification {
     /**
      * Returns the HTML link for the passed proposal and contest
      *
-     * @param contest   The contest object in which the proposal was written
-     * @param proposal  The proposal object (must not be null)
-     * @return          Proposal URL as String
+     * @param contest  The contest object in which the proposal was written
+     * @param proposal The proposal object (must not be null)
+     * @return Proposal URL as String
      */
-    protected  String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) throws SystemException {
+    protected String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) throws SystemException {
         final String proposalName = new ProposalAttributeHelper(proposal)
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
         final String proposalLinkUrl = serviceContext.getPortalURL()
@@ -101,19 +101,16 @@ public abstract class EmailNotification {
     /**
      * Returns the HTML link for the passed contest
      *
-     * @param contest   The contest object
-     * @return          Contest URL as String
+     * @param contest The contest object
+     * @return Contest URL as String
      */
     protected String getContestLink(Contest contest) {
-        final String contestLinkUrl = serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(contest);
+        final String contestLinkUrl =
+                serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(contest);
         return String.format(LINK_FORMAT_STRING, contestLinkUrl, contest.getContestShortName());
     }
 
     protected Contest getContest() {
-        return null;
-    }
-
-    protected Proposal getProposal() {
         return null;
     }
 
@@ -124,21 +121,15 @@ public abstract class EmailNotification {
         return proposalAttributeHelper;
     }
 
-    protected void sendMessage(String subject, String body, User recipient) throws SystemException {
-        try {
-            InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
-            InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
-            MailEngine.send(fromEmail, toEmail, subject, body, true);
-        } catch (MailEngineException | UnsupportedEncodingException e) {
-            _log.error("Could not send vote message", e);
-        }
+    protected Proposal getProposal() {
+        return null;
     }
 
     /**
      * Returns the link url to the given proposal
      *
-     * @param contest                       Contest in which the proposal is in
-     * @param proposalToShare               The Proposal that should be shared
+     * @param contest         Contest in which the proposal is in
+     * @param proposalToShare The Proposal that should be shared
      * @throws SystemException
      * @throws PortalException
      */
@@ -150,7 +141,7 @@ public abstract class EmailNotification {
     /**
      * Returns the link url to the given contest
      *
-     * @param contest                       Contest to be shared
+     * @param contest Contest to be shared
      */
     protected String getContestLinkUrl(Contest contest) {
         return serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(contest);
@@ -159,19 +150,18 @@ public abstract class EmailNotification {
     /**
      * Returns a fully prepared Facebook share link for the given url
      *
-     * @param urlToShare            The url to be shared
+     * @param urlToShare The url to be shared
      */
     protected String getFacebookShareLink(String urlToShare) {
         String url = String.format(FACEBOOK_PROPOSAL_SHARE_LINK, urlToShare);
         return String.format(LINK_FORMAT_STRING, url, "Facebook");
     }
 
-
     /**
      * Returns a fully prepared Twitter share link for the given url including the specified share message
      *
-     * @param urlToShare    The url to be shared
-     * @param shareMessage                  The message that should be included for sharing
+     * @param urlToShare   The url to be shared
+     * @param shareMessage The message that should be included for sharing
      * @throws SystemException
      */
     protected String getTwitterShareLink(String urlToShare, String shareMessage) throws SystemException {
@@ -209,16 +199,26 @@ public abstract class EmailNotification {
         }
     }
 
-    protected abstract EmailTemplateWrapper getTemplateWrapper() throws SystemException, PortalException;
-
-    protected abstract User getRecipient() throws SystemException, PortalException;
-
     public void sendEmailNotification() throws SystemException, PortalException {
         EmailTemplateWrapper template = getTemplateWrapper();
         String subject = template.getSubject();
-        String body = template.getHeader()+"\n"+template.getFooter();
+        String body = template.getHeader() + "\n" + template.getFooter();
         sendMessage(subject, body, getRecipient());
     }
+
+    protected abstract EmailTemplateWrapper getTemplateWrapper() throws SystemException, PortalException;
+
+    protected void sendMessage(String subject, String body, User recipient) throws SystemException {
+        try {
+            InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
+            InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
+            MailEngine.send(fromEmail, toEmail, subject, body, true);
+        } catch (MailEngineException | UnsupportedEncodingException e) {
+            _log.error("Could not send vote message", e);
+        }
+    }
+
+    protected abstract User getRecipient() throws SystemException, PortalException;
 
     public void sendMessage() throws SystemException, PortalException {
         List<Long> recipients = new ArrayList<>();
@@ -269,8 +269,8 @@ public abstract class EmailNotification {
                         if (StringUtils.isNotBlank(tag.ownText())) {
                             linkText = tag.ownText();
                         } else {
-                             linkText = getProposalAttributeHelper()
-                                     .getAttributeValueString(ProposalAttributeKeys.NAME, "");
+                            linkText = getProposalAttributeHelper()
+                                    .getAttributeValueString(ProposalAttributeKeys.NAME, "");
                         }
                         return parseXmlNode(getProposalLinkWithLinkText(contest, proposal, linkText, tab));
                     }
@@ -314,7 +314,7 @@ public abstract class EmailNotification {
                 case LINKEDIN_PLACEHOLDER:
                     if (hasProposal) {
                         return parseXmlNode(getLinkedInShareLink(getProposalLinkUrl(contest, proposal),
-                                tag.attr("title") , tag.ownText()));
+                                tag.attr("title"), tag.ownText()));
                     }
                     break;
                 default:

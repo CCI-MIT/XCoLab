@@ -32,12 +32,9 @@ public class ContestNotification extends EmailNotification {
     private static final String OTHER_CONTESTS_PLACEHOLDER = "other-contests-link";
 
     private static final DateTimeFormatter customDateFormat = DateTimeFormat.forPattern("MMMM dd, HH:mm:ss a z");
-
-    private final User recipient;
-
     protected final Contest contest;
     protected final String templateName;
-
+    private final User recipient;
     private ContestNotificationTemplate templateWrapper;
 
     public ContestNotification(Contest contest, User recipient, String templateName,
@@ -64,9 +61,11 @@ public class ContestNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateName);
+        final ContestEmailTemplate emailTemplate =
+                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateName);
         if (emailTemplate == null) {
-            throw new SystemException("Could not load template \""+templateName+"\" for "+this.getClass().getName());
+            throw new SystemException(
+                    "Could not load template \"" + templateName + "\" for " + this.getClass().getName());
         }
         templateWrapper = new ContestNotificationTemplate(emailTemplate, "", contest.getContestShortName());
 
@@ -76,7 +75,7 @@ public class ContestNotification extends EmailNotification {
     private Date getActivePhaseDeadline() throws SystemException, PortalException {
         try {
             return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest).getPhaseEndDate();
-        } catch(SystemException e) {
+        } catch (SystemException e) {
             return null;
         }
     }

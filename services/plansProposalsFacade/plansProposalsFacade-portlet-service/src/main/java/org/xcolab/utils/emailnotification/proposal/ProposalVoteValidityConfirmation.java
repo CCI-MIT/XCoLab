@@ -18,14 +18,13 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
     private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_VOTE_CONFIRMATION_DEFAULT";
     private static final String CONFIRMATION_LINK_PLACEHOLDER = "confirmation-link";
 
-    private ProposalVoteConfirmationTemplate templateWrapper;
-
     private final Proposal votedProposal;
     private final String confirmationToken;
     private final User recipient;
+    private ProposalVoteConfirmationTemplate templateWrapper;
 
     public ProposalVoteValidityConfirmation(Proposal votedProposal, Contest contest, User recipient,
-                                            ServiceContext serviceContext, String confirmationToken) {
+            ServiceContext serviceContext, String confirmationToken) {
         super(votedProposal, contest, recipient, null, serviceContext);
         this.confirmationToken = confirmationToken;
         this.votedProposal = votedProposal;
@@ -38,30 +37,36 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
             return templateWrapper;
         }
 
-        final String proposalName = getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
+        final String proposalName =
+                getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         String proposalVoteConfirmationTemplateString = contest.getProposalVoteConfirmationTemplateString();
         if (proposalVoteConfirmationTemplateString.isEmpty()) {
             proposalVoteConfirmationTemplateString = DEFAULT_TEMPLATE_STRING;
         }
-        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(proposalVoteConfirmationTemplateString);
+        final ContestEmailTemplate emailTemplate =
+                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(proposalVoteConfirmationTemplateString);
         if (emailTemplate == null) {
-            throw new SystemException("Could not load template \""+proposalVoteConfirmationTemplateString+"\" for "+this.getClass().getName());
+            throw new SystemException(
+                    "Could not load template \"" + proposalVoteConfirmationTemplateString + "\" for " + this.getClass()
+                            .getName());
         }
-        templateWrapper = new ProposalVoteConfirmationTemplate(emailTemplate, proposalName, contest.getContestShortName());
+        templateWrapper =
+                new ProposalVoteConfirmationTemplate(emailTemplate, proposalName, contest.getContestShortName());
 
         return templateWrapper;
     }
 
     private String getConfirmationLink(String linkText) {
         final String confirmationUrl = String.format("%s/web/guest/plans/-/plans/confirmVote/%d/%d/%s",
-                serviceContext.getPortalURL(), votedProposal.getProposalId(), recipient.getUserId() , confirmationToken);
+                serviceContext.getPortalURL(), votedProposal.getProposalId(), recipient.getUserId(), confirmationToken);
         return String.format(LINK_FORMAT_STRING, confirmationUrl, linkText);
     }
 
     private class ProposalVoteConfirmationTemplate extends ProposalNotificationTemplate {
 
-        public ProposalVoteConfirmationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
+        public ProposalVoteConfirmationTemplate(ContestEmailTemplate template, String proposalName,
+                String contestName) {
             super(template, proposalName, contestName);
         }
 
