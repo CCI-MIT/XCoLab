@@ -17,6 +17,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
@@ -39,6 +40,7 @@ public abstract class EmailNotification {
 
     private static final String PROPOSAL_LINK_PLACEHOLDER = "proposal-link";
     private static final String CONTEST_LINK_PLACEHOLDER = "contest-link";
+
     private static final String PROPOSAL_STRING_PLACEHOLDER = "proposal-string";
     private static final String PROPOSALS_STRING_PLACEHOLDER = "proposals-string";
     private static final String CONTEST_STRING_PLACEHOLDER = "contest-string";
@@ -49,10 +51,14 @@ public abstract class EmailNotification {
     private static final String PINTEREST_PLACEHOLDER = "pinterest";
     private static final String LINKEDIN_PLACEHOLDER = "linkedin";
 
-    protected static final String FACEBOOK_PROPOSAL_SHARE_LINK = "https://www.facebook.com/sharer/sharer.php?u=%s&display=popup";
-    protected static final String TWITTER_PROPOSAL_SHARE_LINK = "https://twitter.com/share?url=%s&text=%s";
-    protected static final String LINKEDIN_PROPOSAL_SHARE_LINK = "https://www.linkedin.com/shareArticle?mini=true&url=%s&title=%s&summary=%s&source=";
-    protected static final String PINTEREST_PROPOSAL_SHARE_LINK = "https://pinterest.com/pin/create/button/?url=g%s&media=http://climatecolab.org/climatecolab-theme/images/logo-climate-colab.png&description=%s";
+    protected static final String FACEBOOK_PROPOSAL_SHARE_LINK
+            = "https://www.facebook.com/sharer/sharer.php?u=%s&display=popup";
+    protected static final String TWITTER_PROPOSAL_SHARE_LINK
+            = "https://twitter.com/share?url=%s&text=%s";
+    protected static final String LINKEDIN_PROPOSAL_SHARE_LINK
+            = "https://www.linkedin.com/shareArticle?mini=true&url=%s&title=%s&summary=%s&source=";
+    protected static final String PINTEREST_PROPOSAL_SHARE_LINK
+            = "https://pinterest.com/pin/create/button/?url=g%s&media=http://climatecolab.org/climatecolab-theme/images/logo-climate-colab.png&description=%s";
 
     protected static final String LINK_FORMAT_STRING = "<a href='%s' target='_blank'>%s</a>";
 
@@ -67,20 +73,13 @@ public abstract class EmailNotification {
         _log = LogFactoryUtil.getLog(this.getClass());
     }
 
-    /**
-     * Returns the HTML link for the passed proposal and contest
-     *
-     * @param contest   The contest object in which the proposal was written
-     * @param proposal  The proposal object (must not be null)
-     * @return          Proposal URL as String
-     */
-    protected  String getProposalLink(Contest contest, Proposal proposal) throws SystemException {
-        final String proposalName = getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
-        return getProposalLinkWithLinkText(contest, proposal, proposalName);
-    }
-
-    protected String getProposalLinkWithLinkText(Contest contest, Proposal proposal, String linkText) throws SystemException {
-        final String proposalLinkUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
+    protected String getProposalLinkWithLinkText(Contest contest, Proposal proposal, String linkText, String tab)
+            throws SystemException {
+        String proposalLinkUrl = serviceContext.getPortalURL()
+                + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
+        if (tab != null) {
+            proposalLinkUrl += "/tab/" + tab;
+        }
         return String.format(LINK_FORMAT_STRING, proposalLinkUrl, linkText);
     }
 
@@ -92,8 +91,10 @@ public abstract class EmailNotification {
      * @return          Proposal URL as String
      */
     protected  String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) throws SystemException {
-        final String proposalName = new ProposalAttributeHelper(proposal).getAttributeValueString(ProposalAttributeKeys.NAME, "");
-        final String proposalLinkUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + "/vote";
+        final String proposalName = new ProposalAttributeHelper(proposal)
+                .getAttributeValueString(ProposalAttributeKeys.NAME, "");
+        final String proposalLinkUrl = serviceContext.getPortalURL()
+                + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + "/vote";
         return String.format(LINK_FORMAT_STRING, proposalLinkUrl, proposalName);
     }
 
@@ -141,7 +142,8 @@ public abstract class EmailNotification {
      * @throws SystemException
      * @throws PortalException
      */
-    protected String getProposalLinkUrl(Contest contest, Proposal proposalToShare) throws SystemException, PortalException {
+    protected String getProposalLinkUrl(Contest contest, Proposal proposalToShare)
+            throws SystemException, PortalException {
         return serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
     }
 
@@ -174,7 +176,8 @@ public abstract class EmailNotification {
      */
     protected String getTwitterShareLink(String urlToShare, String shareMessage) throws SystemException {
         try {
-            String url = String.format(TWITTER_PROPOSAL_SHARE_LINK, urlToShare, URLEncoder.encode(shareMessage, "UTF-8"));
+            String url = String.format(TWITTER_PROPOSAL_SHARE_LINK, urlToShare,
+                    URLEncoder.encode(shareMessage, "UTF-8"));
             return String.format(LINK_FORMAT_STRING, url, "Twitter");
         } catch (UnsupportedEncodingException e) {
             // Should never happen
@@ -182,7 +185,8 @@ public abstract class EmailNotification {
         }
     }
 
-    protected String getLinkedInShareLink(String urlToShare, String shareTitle, String shareMessage) throws SystemException {
+    protected String getLinkedInShareLink(String urlToShare, String shareTitle, String shareMessage)
+            throws SystemException {
         try {
             String url = String.format(LINKEDIN_PROPOSAL_SHARE_LINK, urlToShare,
                     URLEncoder.encode(shareTitle, "UTF-8"),
@@ -196,7 +200,8 @@ public abstract class EmailNotification {
 
     protected String getPinterestShareLink(String urlToShare, String shareMessage) throws SystemException {
         try {
-            String url = String.format(PINTEREST_PROPOSAL_SHARE_LINK, urlToShare, URLEncoder.encode(shareMessage, "UTF-8"));
+            String url = String.format(PINTEREST_PROPOSAL_SHARE_LINK, urlToShare,
+                    URLEncoder.encode(shareMessage, "UTF-8"));
             return String.format(LINK_FORMAT_STRING, url, "Pinterest");
         } catch (UnsupportedEncodingException e) {
             // Should never happen
@@ -222,7 +227,8 @@ public abstract class EmailNotification {
         try {
             String content = template.getHeader() + template.getFooter();
             content = content.replace("\n", " ").replace("\r", " ");
-            MessageUtil.sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients, null);
+            MessageUtil.sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID,
+                    recipients, null);
         } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {
             throw new SystemException(e);
         }
@@ -242,7 +248,8 @@ public abstract class EmailNotification {
             Contest contest = getContest();
             Proposal proposal = getProposal();
             final boolean hasProposal = contest != null && proposal != null;
-            final ContestType contestType = contest != null ? ContestTypeLocalServiceUtil.getContestType(contest) : null;
+            final ContestType contestType = contest != null
+                    ? ContestTypeLocalServiceUtil.getContestType(contest) : null;
 
             switch (tag.nodeName()) {
                 case FIRSTNAME_PLACEHOLDER:
@@ -256,7 +263,16 @@ public abstract class EmailNotification {
                     break;
                 case PROPOSAL_LINK_PLACEHOLDER:
                     if (hasProposal) {
-                        return parseXmlNode(getProposalLink(contest, proposal));
+                        final String tab = tag.hasAttr("tab") ? tag.attr("tab") : null;
+
+                        final String linkText;
+                        if (StringUtils.isNotBlank(tag.ownText())) {
+                            linkText = tag.ownText();
+                        } else {
+                             linkText = getProposalAttributeHelper()
+                                     .getAttributeValueString(ProposalAttributeKeys.NAME, "");
+                        }
+                        return parseXmlNode(getProposalLinkWithLinkText(contest, proposal, linkText, tab));
                     }
                     break;
                 case PROPOSAL_STRING_PLACEHOLDER:
@@ -286,7 +302,8 @@ public abstract class EmailNotification {
                     break;
                 case PINTEREST_PLACEHOLDER:
                     if (hasProposal) {
-                        return parseXmlNode(getPinterestShareLink(getProposalLinkUrl(contest, proposal), tag.ownText()));
+                        return parseXmlNode(
+                                getPinterestShareLink(getProposalLinkUrl(contest, proposal), tag.ownText()));
                     }
                     break;
                 case FACEBOOK_PLACEHOLDER:
@@ -296,7 +313,8 @@ public abstract class EmailNotification {
                     break;
                 case LINKEDIN_PLACEHOLDER:
                     if (hasProposal) {
-                        return parseXmlNode(getLinkedInShareLink(getProposalLinkUrl(contest, proposal), tag.attr("title") , tag.ownText()));
+                        return parseXmlNode(getLinkedInShareLink(getProposalLinkUrl(contest, proposal),
+                                tag.attr("title") , tag.ownText()));
                     }
                     break;
                 default:

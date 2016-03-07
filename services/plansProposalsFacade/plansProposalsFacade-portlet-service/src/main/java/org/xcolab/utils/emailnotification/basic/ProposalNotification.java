@@ -12,7 +12,7 @@ import com.liferay.portal.service.ServiceContext;
 
 public class ProposalNotification extends ContestNotification {
 
-    private final Proposal proposal;
+    protected final Proposal proposal;
 
     private ProposalNotificationTemplate templateWrapper;
 
