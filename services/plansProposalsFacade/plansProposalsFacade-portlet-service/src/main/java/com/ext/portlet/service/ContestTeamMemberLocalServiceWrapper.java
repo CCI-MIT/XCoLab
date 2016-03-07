@@ -277,10 +277,11 @@ public class ContestTeamMemberLocalServiceWrapper
 
     @Override
     public com.ext.portlet.model.ContestTeamMember addContestTeamMember(
-        java.lang.Long userId, java.lang.Long contestPk, java.lang.String role)
+        java.lang.Long userId, java.lang.Long contestPk,
+        org.xcolab.enums.MemberRole memberRole)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestTeamMemberLocalService.addContestTeamMember(userId,
-            contestPk, role);
+            contestPk, memberRole);
     }
 
     @Override

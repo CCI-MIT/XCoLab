@@ -19,8 +19,8 @@ public class ContestTeamMemberWrapper {
         return ContestTeamMemberLocalServiceUtil.getUser(wrapped);
     }
     
-    public String getRole() {
-        return wrapped.getRole();
+    public long getRoleId() {
+        return wrapped.getRoleId();
     }
     
     public Long getUserId() {

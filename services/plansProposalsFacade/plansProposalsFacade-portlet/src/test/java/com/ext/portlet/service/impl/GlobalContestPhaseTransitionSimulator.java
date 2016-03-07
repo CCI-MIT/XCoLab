@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
 import com.liferay.portal.model.User;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.services.tasks.ProposalContestPhaseAutopromoteTask;
 import org.xcolab.utils.Clock;
 
@@ -125,7 +126,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
                 User randomUser = getRandomUserNotInList(fellows);
                 fellows.add(randomUser);
                 testInstance.userLocalService.addRoleUser(FELLOW_ROLE_ID, randomUser.getUserId());
-                testInstance.contestTeamMemberLocalService.addContestTeamMember(randomUser.getUserId(), contest.getContestPK(), "Fellow");
+                testInstance.contestTeamMemberLocalService.addContestTeamMember(randomUser.getUserId(), contest.getContestPK(), MemberRole.FELLOW);
             } while (doWithProbability(0.6));
 
             //judges
@@ -134,7 +135,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
                 User randomUser = getRandomUserNotInList(judges);
                 judges.add(randomUser);
                 testInstance.userLocalService.addRoleUser(JUDGE_ROLE_ID, randomUser.getUserId());
-                testInstance.contestTeamMemberLocalService.addContestTeamMember(randomUser.getUserId(), contest.getContestPK(), "Judge");
+                testInstance.contestTeamMemberLocalService.addContestTeamMember(randomUser.getUserId(), contest.getContestPK(), MemberRole.JUDGE);
 
 
             } while (doWithProbability(0.6));

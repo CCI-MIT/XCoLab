@@ -41,14 +41,14 @@ public class EmailListLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName518;
-    private String[] _methodParameterTypes518;
-    private String _methodName519;
-    private String[] _methodParameterTypes519;
     private String _methodName524;
     private String[] _methodParameterTypes524;
     private String _methodName525;
     private String[] _methodParameterTypes525;
+    private String _methodName530;
+    private String[] _methodParameterTypes530;
+    private String _methodName531;
+    private String[] _methodParameterTypes531;
 
     public EmailListLocalServiceClpInvoker() {
         _methodName0 = "addEmailList";
@@ -127,23 +127,23 @@ public class EmailListLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.EmailList" };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName524 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes524 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName525 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes525 = new String[] { "java.lang.String" };
 
-        _methodName524 = "findByListNameEmailAddress";
+        _methodName530 = "findByListNameEmailAddress";
 
-        _methodParameterTypes524 = new String[] {
+        _methodParameterTypes530 = new String[] {
                 "java.lang.String", "java.lang.String"
             };
 
-        _methodName525 = "findByListName";
+        _methodName531 = "findByListName";
 
-        _methodParameterTypes525 = new String[] { "java.lang.String" };
+        _methodParameterTypes531 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -235,26 +235,26 @@ public class EmailListLocalServiceClpInvoker {
             return EmailListLocalServiceUtil.updateEmailList((com.ext.portlet.model.EmailList) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName524.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
             return EmailListLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName525.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
             EmailListLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName530.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes530, parameterTypes)) {
             return EmailListLocalServiceUtil.findByListNameEmailAddress((java.lang.String) arguments[0],
                 (java.lang.String) arguments[1]);
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName531.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes531, parameterTypes)) {
             return EmailListLocalServiceUtil.findByListName((java.lang.String) arguments[0]);
         }
 

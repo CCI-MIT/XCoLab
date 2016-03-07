@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class OntologySpaceServiceClpInvoker {
-    private String _methodName502;
-    private String[] _methodParameterTypes502;
-    private String _methodName503;
-    private String[] _methodParameterTypes503;
+    private String _methodName508;
+    private String[] _methodParameterTypes508;
+    private String _methodName509;
+    private String[] _methodParameterTypes509;
 
     public OntologySpaceServiceClpInvoker() {
-        _methodName502 = "getBeanIdentifier";
+        _methodName508 = "getBeanIdentifier";
 
-        _methodParameterTypes502 = new String[] {  };
+        _methodParameterTypes508 = new String[] {  };
 
-        _methodName503 = "setBeanIdentifier";
+        _methodName509 = "setBeanIdentifier";
 
-        _methodParameterTypes503 = new String[] { "java.lang.String" };
+        _methodParameterTypes509 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName502.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes502, parameterTypes)) {
+        if (_methodName508.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
             return OntologySpaceServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName503.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes503, parameterTypes)) {
+        if (_methodName509.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes509, parameterTypes)) {
             OntologySpaceServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

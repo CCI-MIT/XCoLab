@@ -270,8 +270,8 @@
         <column name="id" type="long" primary="true" />
         <column name="contestId" type="long" />
         <column name="userId" type="long" />
-        <column name="role" type="String" />
-        
+        <column name="roleId" type="long" />
+
         <order>
             <order-column name="id" />
         </order>
@@ -297,6 +297,16 @@
             <finder-column name="ContestId"/>
             <finder-column name="Tab"/>
         </finder>
+    </entity>
+
+    <entity name="ContestTeamMemberRole"  local-service="true">
+        <column name="id" type="long" primary="true" />
+        <column name="role" type="String" />
+        <column name="sort" type="int" />
+
+        <order>
+            <order-column name="id" />
+        </order>
     </entity>
 
     <exceptions>

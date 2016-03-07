@@ -41,12 +41,12 @@ public class BalloonUserTrackingLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName518;
-    private String[] _methodParameterTypes518;
-    private String _methodName519;
-    private String[] _methodParameterTypes519;
     private String _methodName524;
     private String[] _methodParameterTypes524;
+    private String _methodName525;
+    private String[] _methodParameterTypes525;
+    private String _methodName530;
+    private String[] _methodParameterTypes530;
 
     public BalloonUserTrackingLocalServiceClpInvoker() {
         _methodName0 = "addBalloonUserTracking";
@@ -131,17 +131,17 @@ public class BalloonUserTrackingLocalServiceClpInvoker {
                 "com.ext.portlet.model.BalloonUserTracking"
             };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName524 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes524 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName525 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes525 = new String[] { "java.lang.String" };
 
-        _methodName524 = "findByEmail";
+        _methodName530 = "findByEmail";
 
-        _methodParameterTypes524 = new String[] { "java.lang.String" };
+        _methodParameterTypes530 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -233,20 +233,20 @@ public class BalloonUserTrackingLocalServiceClpInvoker {
             return BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking((com.ext.portlet.model.BalloonUserTracking) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName524.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
             return BalloonUserTrackingLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName525.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
             BalloonUserTrackingLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName530.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes530, parameterTypes)) {
             return BalloonUserTrackingLocalServiceUtil.findByEmail((java.lang.String) arguments[0]);
         }
 

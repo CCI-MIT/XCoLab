@@ -838,7 +838,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
         contestTeamMemberImpl.setId(contestTeamMember.getId());
         contestTeamMemberImpl.setContestId(contestTeamMember.getContestId());
         contestTeamMemberImpl.setUserId(contestTeamMember.getUserId());
-        contestTeamMemberImpl.setRole(contestTeamMember.getRole());
+        contestTeamMemberImpl.setRoleId(contestTeamMember.getRoleId());
 
         return contestTeamMemberImpl;
     }

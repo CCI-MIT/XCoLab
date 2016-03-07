@@ -41,28 +41,28 @@ public class ConfigurationAttributeLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName518;
-    private String[] _methodParameterTypes518;
-    private String _methodName519;
-    private String[] _methodParameterTypes519;
     private String _methodName524;
     private String[] _methodParameterTypes524;
     private String _methodName525;
     private String[] _methodParameterTypes525;
-    private String _methodName526;
-    private String[] _methodParameterTypes526;
-    private String _methodName527;
-    private String[] _methodParameterTypes527;
-    private String _methodName528;
-    private String[] _methodParameterTypes528;
-    private String _methodName529;
-    private String[] _methodParameterTypes529;
     private String _methodName530;
     private String[] _methodParameterTypes530;
     private String _methodName531;
     private String[] _methodParameterTypes531;
     private String _methodName532;
     private String[] _methodParameterTypes532;
+    private String _methodName533;
+    private String[] _methodParameterTypes533;
+    private String _methodName534;
+    private String[] _methodParameterTypes534;
+    private String _methodName535;
+    private String[] _methodParameterTypes535;
+    private String _methodName536;
+    private String[] _methodParameterTypes536;
+    private String _methodName537;
+    private String[] _methodParameterTypes537;
+    private String _methodName538;
+    private String[] _methodParameterTypes538;
 
     public ConfigurationAttributeLocalServiceClpInvoker() {
         _methodName0 = "addConfigurationAttribute";
@@ -155,55 +155,55 @@ public class ConfigurationAttributeLocalServiceClpInvoker {
                 "com.ext.portlet.model.ConfigurationAttribute"
             };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName524 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes524 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName525 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes525 = new String[] { "java.lang.String" };
 
-        _methodName524 = "getByAttributeName";
+        _methodName530 = "getByAttributeName";
 
-        _methodParameterTypes524 = new String[] { "java.lang.String" };
+        _methodParameterTypes530 = new String[] { "java.lang.String" };
 
-        _methodName525 = "getByAttributeNameAdditionalId";
-
-        _methodParameterTypes525 = new String[] { "java.lang.String", "long" };
-
-        _methodName526 = "getAttributeStringValue";
-
-        _methodParameterTypes526 = new String[] {
-                "java.lang.String", "long", "java.lang.String"
-            };
-
-        _methodName527 = "getAttributeLongValue";
-
-        _methodParameterTypes527 = new String[] {
-                "java.lang.String", "long", "long"
-            };
-
-        _methodName528 = "getAttributeDoubleValue";
-
-        _methodParameterTypes528 = new String[] {
-                "java.lang.String", "long", "double"
-            };
-
-        _methodName529 = "getAttributeStringValue";
-
-        _methodParameterTypes529 = new String[] { "java.lang.String", "long" };
-
-        _methodName530 = "getAttributeLongValue";
-
-        _methodParameterTypes530 = new String[] { "java.lang.String", "long" };
-
-        _methodName531 = "getAttributeBooleanValue";
+        _methodName531 = "getByAttributeNameAdditionalId";
 
         _methodParameterTypes531 = new String[] { "java.lang.String", "long" };
 
-        _methodName532 = "getAttributeDoubleValue";
+        _methodName532 = "getAttributeStringValue";
 
-        _methodParameterTypes532 = new String[] { "java.lang.String", "long" };
+        _methodParameterTypes532 = new String[] {
+                "java.lang.String", "long", "java.lang.String"
+            };
+
+        _methodName533 = "getAttributeLongValue";
+
+        _methodParameterTypes533 = new String[] {
+                "java.lang.String", "long", "long"
+            };
+
+        _methodName534 = "getAttributeDoubleValue";
+
+        _methodParameterTypes534 = new String[] {
+                "java.lang.String", "long", "double"
+            };
+
+        _methodName535 = "getAttributeStringValue";
+
+        _methodParameterTypes535 = new String[] { "java.lang.String", "long" };
+
+        _methodName536 = "getAttributeLongValue";
+
+        _methodParameterTypes536 = new String[] { "java.lang.String", "long" };
+
+        _methodName537 = "getAttributeBooleanValue";
+
+        _methodParameterTypes537 = new String[] { "java.lang.String", "long" };
+
+        _methodName538 = "getAttributeDoubleValue";
+
+        _methodParameterTypes538 = new String[] { "java.lang.String", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -295,70 +295,70 @@ public class ConfigurationAttributeLocalServiceClpInvoker {
             return ConfigurationAttributeLocalServiceUtil.updateConfigurationAttribute((com.ext.portlet.model.ConfigurationAttribute) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName524.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
             return ConfigurationAttributeLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName525.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
             ConfigurationAttributeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getByAttributeName((java.lang.String) arguments[0]);
-        }
-
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getByAttributeNameAdditionalId((java.lang.String) arguments[0],
-                ((Long) arguments[1]).longValue());
-        }
-
-        if (_methodName526.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeStringValue((java.lang.String) arguments[0],
-                ((Long) arguments[1]).longValue(),
-                (java.lang.String) arguments[2]);
-        }
-
-        if (_methodName527.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeLongValue((java.lang.String) arguments[0],
-                ((Long) arguments[1]).longValue(),
-                ((Long) arguments[2]).longValue());
-        }
-
-        if (_methodName528.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes528, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeDoubleValue((java.lang.String) arguments[0],
-                ((Long) arguments[1]).longValue(),
-                ((Double) arguments[2]).doubleValue());
-        }
-
-        if (_methodName529.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes529, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeStringValue((java.lang.String) arguments[0],
-                ((Long) arguments[1]).longValue());
-        }
-
         if (_methodName530.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes530, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeLongValue((java.lang.String) arguments[0],
-                ((Long) arguments[1]).longValue());
+            return ConfigurationAttributeLocalServiceUtil.getByAttributeName((java.lang.String) arguments[0]);
         }
 
         if (_methodName531.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes531, parameterTypes)) {
-            return ConfigurationAttributeLocalServiceUtil.getAttributeBooleanValue((java.lang.String) arguments[0],
+            return ConfigurationAttributeLocalServiceUtil.getByAttributeNameAdditionalId((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
 
         if (_methodName532.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
+            return ConfigurationAttributeLocalServiceUtil.getAttributeStringValue((java.lang.String) arguments[0],
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2]);
+        }
+
+        if (_methodName533.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes533, parameterTypes)) {
+            return ConfigurationAttributeLocalServiceUtil.getAttributeLongValue((java.lang.String) arguments[0],
+                ((Long) arguments[1]).longValue(),
+                ((Long) arguments[2]).longValue());
+        }
+
+        if (_methodName534.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
+            return ConfigurationAttributeLocalServiceUtil.getAttributeDoubleValue((java.lang.String) arguments[0],
+                ((Long) arguments[1]).longValue(),
+                ((Double) arguments[2]).doubleValue());
+        }
+
+        if (_methodName535.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
+            return ConfigurationAttributeLocalServiceUtil.getAttributeStringValue((java.lang.String) arguments[0],
+                ((Long) arguments[1]).longValue());
+        }
+
+        if (_methodName536.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes536, parameterTypes)) {
+            return ConfigurationAttributeLocalServiceUtil.getAttributeLongValue((java.lang.String) arguments[0],
+                ((Long) arguments[1]).longValue());
+        }
+
+        if (_methodName537.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes537, parameterTypes)) {
+            return ConfigurationAttributeLocalServiceUtil.getAttributeBooleanValue((java.lang.String) arguments[0],
+                ((Long) arguments[1]).longValue());
+        }
+
+        if (_methodName538.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes538, parameterTypes)) {
             return ConfigurationAttributeLocalServiceUtil.getAttributeDoubleValue((java.lang.String) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
