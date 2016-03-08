@@ -1,5 +1,7 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
+import com.ext.portlet.NoSuchConfigurationAttributeException;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
@@ -13,9 +15,11 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.liferay.portal.kernel.exception.SystemException;
 import jodd.util.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xcolab.enums.ConfigurationAttributeKey;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -33,17 +37,6 @@ import java.util.regex.Pattern;
  */
 public final class GoogleAuthHelper {
 
-    /**
-     * Please provide a value for the CLIENT_ID constant before proceeding, set this up at https://code.google.com/apis/console/
-     */
-    private static final String CLIENT_ID = "80428061050-82nn9e48p8qobkjsc6j531fv4quimjqi.apps.googleusercontent.com";
-
-    /**
-     * Please provide a value for the CLIENT_SECRET constant before proceeding, set this up at https://code.google.com/apis/console/
-     */
-    private static final String CLIENT_SECRET = "J2bw5mchXcEooJtcIIg5Rfpq";
-
-
     // start google authentication constants
     private static final Iterable<String> SCOPE = Arrays.asList(
             "https://www.googleapis.com/auth/userinfo.profile;https://www.googleapis.com/auth/userinfo.email"
@@ -54,15 +47,20 @@ public final class GoogleAuthHelper {
     // end google authentication constants
     private final GoogleAuthorizationCodeFlow flow;
     private String stateToken;
-    private String redirectUri;
+    private final String redirectUri;
 
     /**
      * Constructor initializes the Google Authorization Code Flow with CLIENT ID, SECRET, and SCOPE
      */
-    public GoogleAuthHelper(String redirectURI) {
+    public GoogleAuthHelper(String redirectURI) throws SystemException, NoSuchConfigurationAttributeException {
         this.redirectUri = redirectURI;
         flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT,
-                JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, SCOPE).build();
+                JSON_FACTORY,
+                ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
+                        ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_ID.name(), 0L),
+                ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
+                        ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_SECRET.name(), 0L),
+                SCOPE).build();
 
         generateStateToken();
     }

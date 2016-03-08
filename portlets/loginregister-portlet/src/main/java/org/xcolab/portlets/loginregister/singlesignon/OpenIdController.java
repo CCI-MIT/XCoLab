@@ -1,5 +1,6 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
+import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
@@ -39,7 +40,7 @@ public class OpenIdController {
 
     @RequestMapping(params = "action=initiateOpenIdRegistration")
     public void initiateOpenIdRegistration(ActionRequest actionRequest, Model model, ActionResponse actionResponse)
-            throws IOException {
+            throws IOException, SystemException, NoSuchConfigurationAttributeException {
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
         HttpSession session = request.getSession();
         session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_REGISTRATION);
@@ -47,7 +48,8 @@ public class OpenIdController {
         initiateOpenIdRequest(actionRequest, actionResponse);
     }
 
-    private void initiateOpenIdRequest(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException {
+    private void initiateOpenIdRequest(ActionRequest actionRequest, ActionResponse actionResponse)
+            throws IOException, NoSuchConfigurationAttributeException, SystemException {
         ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
         HttpSession session = request.getSession();
@@ -66,7 +68,7 @@ public class OpenIdController {
 
     @RequestMapping(params = "action=initiateOpenIdLogin")
     public void initiateOpenIdLogin(ActionRequest actionRequest, Model model, ActionResponse actionResponse)
-            throws IOException {
+            throws IOException, SystemException, NoSuchConfigurationAttributeException {
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
         HttpSession session = request.getSession();
         session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_LOGIN);
