@@ -9,12 +9,10 @@ import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.utils.FileUploadUtil;
 
 import javax.imageio.ImageIO;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,7 +31,7 @@ public class ImageUploadUtils {
     public static long uploadImage(URL url) throws SystemException {
         try {
             BufferedImage image = ImageIO.read(url);
-            byte[] imgBArr = resizeAndCropImage(image);
+            byte[] imgBArr = FileUploadUtil.resizeAndCropImage(image, IMAGE_RESIZE_WIDTH, IMAGE_RESIZE_HEIGHT);
 
             long imageId = CounterLocalServiceUtil.increment(Image.class.getName());
             Image img = ImageLocalServiceUtil.createImage(imageId);
@@ -47,39 +45,6 @@ public class ImageUploadUtils {
         }
 
         return 0L;
-    }
-
-    private static byte[] resizeAndCropImage(BufferedImage img) throws IOException {
-        int w = img.getWidth();
-        int h = img.getHeight();
-
-        int cropSize;
-        int cropX = 0;
-        int cropY = 0;
-
-        if (h < w) {
-            cropSize = h;
-            cropX = (w - h) / 2;
-        } else {
-            cropSize = w;
-            cropY = (h - w) / 2;
-        }
-
-        BufferedImage croppedImage = img.getSubimage(cropX, cropY, cropSize,
-                cropSize);
-
-        int imgType = BufferedImage.TYPE_3BYTE_BGR;
-        if (img.getType() != BufferedImage.TYPE_CUSTOM) {
-            imgType = img.getType();
-        }
-
-        BufferedImage dimg = new BufferedImage(IMAGE_RESIZE_WIDTH, IMAGE_RESIZE_HEIGHT, BufferedImage.TYPE_INT_RGB);
-        dimg.createGraphics().drawImage(croppedImage, 0, 0, IMAGE_RESIZE_WIDTH, IMAGE_RESIZE_HEIGHT, 0, 0, cropSize, cropSize,
-                null);
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ImageIO.write(dimg, "jpg", bos);
-        return bos.toByteArray();
     }
 
     public static void updateProfilePicture(User user, String picURL) throws SystemException {
