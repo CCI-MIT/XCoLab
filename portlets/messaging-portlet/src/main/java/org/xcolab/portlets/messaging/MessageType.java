@@ -6,13 +6,13 @@ public enum MessageType {
     INBOX(MessageConstants.INBOX),
     SENT(MessageConstants.SENT),
     ARCHIVED(MessageConstants.ARCHIVED);
-    
+
     private final String typeStr;
-    
+
     MessageType(String typeStr) {
         this.typeStr = typeStr;
     }
-    
+
     public String getTypeStr() {
         return typeStr;
     }

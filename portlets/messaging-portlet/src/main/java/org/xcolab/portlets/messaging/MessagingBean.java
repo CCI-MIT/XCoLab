@@ -26,241 +26,242 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessagingBean implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private User user;
-	private transient DataModel onePageDataModel;
-	private MessageType messageType = MessageType.INBOX;
-	private int pageSize = 25;
-	private static final Log _log = LogFactoryUtil.getLog(MessagingBean.class);
-	private int messagesCount = 0;
-	private List<MessageBean> items = new ArrayList<MessageBean>();
-	private boolean sendingMessage;
-	private SendMessageBean sendMessageBean;
-	private Long messageToShow;
-	private MessageBean replyMessage;
+    private static final long serialVersionUID = 1L;
 
-	public MessagingBean() throws SystemException, PortalException {
-		if (Helper.isUserLoggedIn()) {
-			user = Helper.getLiferayUser();
-			// MessageLocalServiceUtil.
-			messagesCount = MessageUtil.countMessages(user.getUserId(),
-					messageType.getTypeStr());
+    private static final Log _log = LogFactoryUtil.getLog(MessagingBean.class);
+    private static final int PAGE_SIZE = 25;
 
-			Object composeObj = FacesContext.getCurrentInstance()
-					.getExternalContext().getRequestParameterMap()
-					.get("compose");
-			Object messageIdObj = FacesContext.getCurrentInstance()
-					.getExternalContext().getRequestParameterMap()
-					.get("messageId");
+    private User user;
+    private transient DataModel onePageDataModel;
+    private MessageType messageType = MessageType.INBOX;
+    private int messagesCount = 0;
+    private List<MessageBean> items = new ArrayList<>();
+    private boolean sendingMessage;
+    private SendMessageBean sendMessageBean;
+    private Long messageToShow;
+    private MessageBean replyMessage;
 
-			if (composeObj != null && composeObj.toString().equals("true")) {
-				sendingMessage = true;
-			}
+    public MessagingBean() throws SystemException, PortalException {
+        if (Helper.isUserLoggedIn()) {
+            user = Helper.getLiferayUser();
+            // MessageLocalServiceUtil.
+            messagesCount = MessageUtil.countMessages(user.getUserId(),
+                    messageType.getTypeStr());
 
-			if (messageIdObj != null) {
-				try {
-					setMessageToShow(Long.parseLong(messageIdObj.toString()));
-				} catch (NumberFormatException e) {
-					// ignore
-				}
-			}
+            Object composeObj = FacesContext.getCurrentInstance()
+                    .getExternalContext().getRequestParameterMap()
+                    .get("compose");
+            Object messageIdObj = FacesContext.getCurrentInstance()
+                    .getExternalContext().getRequestParameterMap()
+                    .get("messageId");
 
-		}
-	}
+            if (composeObj != null && composeObj.toString().equals("true")) {
+                sendingMessage = true;
+            }
 
-	public boolean isInitialized() {
-		return user != null;
-	}
+            if (messageIdObj != null) {
+                try {
+                    setMessageToShow(Long.parseLong(messageIdObj.toString()));
+                } catch (NumberFormatException e) {
+                    // ignore
+                }
+            }
 
-	/**
-	 * Bound to DataTable value in the ui.
-	 */
-	public DataModel getData() {
-		if (onePageDataModel == null) {
-			onePageDataModel = new LocalDataModel(pageSize);
-		}
-		return onePageDataModel;
-	}
+        }
+    }
 
-	/**
-	 * This is where the Customer data is retrieved from the database and
-	 * returned as a list of CustomerBean objects for display in the UI.
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 * @throws PortalException
-	 * @throws SystemException
-	 */
-	private DataPage getDataPage(int startRow, int pageSize)
-			throws IOException, SystemException, PortalException {
+    public boolean isInitialized() {
+        return user != null;
+    }
 
-		messagesCount = MessageUtil.countMessages(user.getUserId(),
-				messageType.getTypeStr());
+    /**
+     * Bound to DataTable value in the ui.
+     */
+    public DataModel getData() {
+        if (onePageDataModel == null) {
+            onePageDataModel = new LocalDataModel(PAGE_SIZE);
+        }
+        return onePageDataModel;
+    }
 
-		// Calculate indices to be displayed in the ui.
-		int endIndex = startRow + pageSize;
-		if (endIndex > messagesCount) {
-			endIndex = messagesCount;
-		}
+    /**
+     * This is where the Customer data is retrieved from the database and
+     * returned as a list of CustomerBean objects for display in the UI.
+     *
+     * @throws IOException
+     * @throws ParseException
+     * @throws PortalException
+     * @throws SystemException
+     */
+    private DataPage getDataPage(int startRow, int pageSize)
+            throws IOException, SystemException, PortalException {
 
-		items = new ArrayList<MessageBean>();
-		for (Message message : MessageUtil.getMessages(user.getUserId(),
-				startRow, endIndex, messageType.getTypeStr())) {
-			items.add(new MessageBean(message));
-		}
+        messagesCount = MessageUtil.countMessages(user.getUserId(),
+                messageType.getTypeStr());
 
-		return new DataPage(messagesCount, startRow, items);
-	}
+        // Calculate indices to be displayed in the ui.
+        int endIndex = startRow + pageSize;
+        if (endIndex > messagesCount) {
+            endIndex = messagesCount;
+        }
 
-	public class LocalDataModel extends PagedListDataModel implements
-			Serializable {
-		private static final long serialVersionUID = 1L;
+        items = new ArrayList<MessageBean>();
+        for (Message message : MessageUtil.getMessages(user.getUserId(),
+                startRow, endIndex, messageType.getTypeStr())) {
+            items.add(new MessageBean(message));
+        }
 
-		public LocalDataModel(int pageSize) {
-			super(pageSize);
-		}
+        return new DataPage(messagesCount, startRow, items);
+    }
 
-		public DataPage fetchPage(int startRow, int pageSize) {
-			// call enclosing managed bean method to fetch the data
-			try {
-				return getDataPage(startRow, pageSize);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return new DataPage(0, 0, new ArrayList<MessageBean>());
-		}
-	}
+    public void changeType(ActionEvent e) {
+        try {
+            MessageType type = MessageType.valueOf(e.getComponent()
+                    .getAttributes().get("type").toString());
 
-	public void changeType(ActionEvent e) {
-		try {
-			MessageType type = MessageType.valueOf(e.getComponent()
-					.getAttributes().get("type").toString());
+            if (type != messageType) {
+                messageType = type;
+                onePageDataModel = null;
+                messagesCount = MessageUtil.countMessages(user.getUserId(),
+                        messageType.getTypeStr());
+            }
+        } catch (Exception ex) {
+            _log.error("There was an error when changing view type", ex);
+        }
+    }
 
-			if (type != messageType) {
-				messageType = type;
-				onePageDataModel = null;
-				messagesCount = MessageUtil.countMessages(user.getUserId(),
-						messageType.getTypeStr());
-			}
-		} catch (Exception ex) {
-			_log.error("There was an error when changing view type", ex);
-		}
-	}
+    public MessageType getType() {
+        return messageType;
+    }
 
-	public MessageType getType() {
-		return messageType;
-	}
+    public int getMessagesCount() {
+        return messagesCount;
+    }
 
-	public int getMessagesCount() {
-		return messagesCount;
-	}
+    public void archiveSelectedMessages(ActionEvent e) throws SystemException,
+            PortalException {
+        for (MessageBean item : items) {
+            if (item.isSelected()) {
+                Message message = item.getMessage();
+                if (!MessageLocalServiceUtil.isArchived(message,
+                        user.getUserId())) {
+                    MessageLocalServiceUtil.setArchived(message,
+                            user.getUserId());
+                }
+            }
+        }
+        messagesCount = MessageUtil.countMessages(user.getUserId(),
+                messageType.getTypeStr());
+        onePageDataModel = null;
+    }
 
-	public void archiveSelectedMessages(ActionEvent e) throws SystemException,
-			PortalException {
-		for (MessageBean item : items) {
-			if (item.isSelected()) {
-				Message message = item.getMessage();
-				if (!MessageLocalServiceUtil.isArchived(message,
-						user.getUserId())) {
-					MessageLocalServiceUtil.setArchived(message,
-							user.getUserId());
-				}
-			}
-		}
-		messagesCount = MessageUtil.countMessages(user.getUserId(),
-				messageType.getTypeStr());
-		onePageDataModel = null;
-	}
+    public void toggleSendMessage(ActionEvent e) throws PortalException,
+            SystemException {
+        Object replyMessageIdObj = e.getComponent().getAttributes()
+                .get("replyMessageId");
+        if (replyMessageIdObj != null) {
+            Long replyMessageId = Long.parseLong(replyMessageIdObj.toString());
+            for (MessageBean item : items) {
+                if (item.getMessageId().equals(replyMessageId)) {
+                    replyMessage = item;
+                    toggleSendMessage(item);
+                    return;
+                }
+            }
+        }
+        replyMessage = null;
+        toggleSendMessage((MessageBean) null);
 
-	public void toggleSendMessage(ActionEvent e) throws PortalException,
-			SystemException {
-		Object replyMessageIdObj = e.getComponent().getAttributes()
-				.get("replyMessageId");
-		if (replyMessageIdObj != null) {
-			Long replyMessageId = Long.parseLong(replyMessageIdObj.toString());
-			for (MessageBean item : items) {
-				if (item.getMessageId().equals(replyMessageId)) {
-					replyMessage = item;
-					toggleSendMessage(item);
-					return;
-				}
-			}
-		}
-		replyMessage = null;
-		toggleSendMessage((MessageBean) null);
+    }
 
-	}
+    public void toggleSendMessage(MessageBean replyMessage)
+            throws PortalException, SystemException {
+        sendingMessage = !sendingMessage;
+        if (sendingMessage) {
+            if (sendMessageBean != null) {
+                if (replyMessage != null) {
+                    sendMessageBean.init(replyMessage);
+                } else {
+                    sendMessageBean.init();
+                }
+            }
+        }
+        onePageDataModel = null;
+    }
 
-	public void toggleSendMessage(MessageBean replyMessage)
-			throws PortalException, SystemException {
-		sendingMessage = !sendingMessage;
-		if (sendingMessage) {
-			if (sendMessageBean != null) {
-				if (replyMessage != null) {
-					sendMessageBean.init(replyMessage);
-				} else {
-					sendMessageBean.init();
-				}
-			}
-		}
-		onePageDataModel = null;
-	}
+    public void messageSent() {
+        sendingMessage = false;
+    }
 
-	public void messageSent() {
-		sendingMessage = false;
-	}
+    public void setSendMessageBean(SendMessageBean sendMessageBean)
+            throws PortalException, SystemException {
+        this.sendMessageBean = sendMessageBean;
+        if (replyMessage != null) {
+            sendMessageBean.init(replyMessage);
+        } else {
+            sendMessageBean.init();
+        }
+    }
 
-	public void setSendMessageBean(SendMessageBean sendMessageBean)
-			throws PortalException, SystemException {
-		this.sendMessageBean = sendMessageBean;
-		if (replyMessage != null) {
-			sendMessageBean.init(replyMessage);
-		} else {
-			sendMessageBean.init();
-		}
-	}
+    public boolean getSendingMessage() {
+        return sendingMessage;
+    }
 
-	public boolean getSendingMessage() {
-		return sendingMessage;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public Long getMessageToShow() {
+        return messageToShow;
+    }
 
-	public void setMessageToShow(Long messageToShow) {
-		this.messageToShow = messageToShow;
-	}
+    public void setMessageToShow(Long messageToShow) {
+        this.messageToShow = messageToShow;
+    }
 
-	public Long getMessageToShow() {
-		return messageToShow;
-	}
+    public void send(ActionEvent e) throws AddressException, SystemException,
+            PortalException, MailEngineException, UnsupportedEncodingException {
+        sendMessageBean.send(e);
+    }
 
-	public void send(ActionEvent e) throws AddressException, SystemException,
-			PortalException, MailEngineException, UnsupportedEncodingException {
-		sendMessageBean.send(e);
-	}
+    public void cancel(ActionEvent e) throws PortalException, SystemException {
+        sendMessageBean.cancel(e);
+    }
 
-	public void cancel(ActionEvent e) throws PortalException, SystemException {
-		sendMessageBean.cancel(e);
-	}
-
-    public void markMessageAsOpened(ActionEvent e) throws PortalException, SystemException{
+    public void markMessageAsOpened(ActionEvent e) throws PortalException, SystemException {
         Object messageIdObject = e.getComponent().getAttributes()
                 .get("messageId");
         if (messageIdObject == null) {
-			return;
-		}
+            return;
+        }
         Long messageId = Long.parseLong(messageIdObject.toString());
-        List<MessageRecipientStatus> statuses = MessageRecipientStatusLocalServiceUtil.findByMessageId(messageId,0,Integer.MAX_VALUE);
-        for (MessageRecipientStatus mr : statuses){
-            if (mr.getUserId() == user.getUserId()){
+        List<MessageRecipientStatus> statuses =
+                MessageRecipientStatusLocalServiceUtil.findByMessageId(messageId, 0, Integer.MAX_VALUE);
+        for (MessageRecipientStatus mr : statuses) {
+            if (mr.getUserId() == user.getUserId()) {
                 mr.setOpened(true);
                 MessageRecipientStatusLocalServiceUtil.updateMessageRecipientStatus(mr);
             }
+        }
+    }
+
+    public class LocalDataModel extends PagedListDataModel implements
+            Serializable {
+        private static final long serialVersionUID = 1L;
+
+        public LocalDataModel(int pageSize) {
+            super(pageSize);
+        }
+
+        @Override
+        public DataPage fetchPage(int startRow, int pageSize) {
+            // call enclosing managed bean method to fetch the data
+            try {
+                return getDataPage(startRow, pageSize);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return new DataPage(0, 0, new ArrayList<MessageBean>());
         }
     }
 

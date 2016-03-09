@@ -1,13 +1,5 @@
 package org.xcolab.portlets.messaging.validators;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -16,6 +8,11 @@ import org.xcolab.portlets.messaging.Helper;
 import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.MessageLimitManager;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
 import java.util.List;
 
 /**

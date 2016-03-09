@@ -1,14 +1,12 @@
 package org.xcolab.portlets.messaging.utils;
 
-import java.util.Map;
-
-import javax.portlet.PortletRequest;
-
-import org.xcolab.portlets.messaging.Helper;
-
 import com.liferay.portal.kernel.portlet.BaseFriendlyURLMapper;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.util.Validator;
+import org.xcolab.portlets.messaging.Helper;
+
+import javax.portlet.PortletRequest;
+import java.util.Map;
 
 public class MessagingFriendlyURLMapper extends BaseFriendlyURLMapper {
     private static final String _MAPPING = "member";
@@ -38,7 +36,7 @@ public class MessagingFriendlyURLMapper extends BaseFriendlyURLMapper {
 
             friendlyURLPath = friendlyURLPathSB.toString();
         }
-        
+
         if (friendlyURLPath != null) {
             portletURL.addParameterIncludedInPath("p_p_id");
             portletURL.addParameterIncludedInPath("p_p_lifecycle");
@@ -55,6 +53,13 @@ public class MessagingFriendlyURLMapper extends BaseFriendlyURLMapper {
         return _MAPPING;
     }
 
+    @Override
+    public void populateParams(String friendlyURLPath, Map<String, String[]> parameterMap,
+            Map<String, Object> requestContext) {
+        populateParams(friendlyURLPath, parameterMap);
+
+    }
+
     public void populateParams(String friendlyURLPath, Map<String, String[]> params) {
 
         String[] urlParts = friendlyURLPath.split("/");
@@ -67,16 +72,9 @@ public class MessagingFriendlyURLMapper extends BaseFriendlyURLMapper {
             String key = urlParts[i];
             String value = urlParts[i + 1];
 
-            params.put(Helper.getUrlParameterKey(key), new String[] { value });
+            params.put(Helper.getUrlParameterKey(key), new String[]{value});
             addParam(params, key, value);
         }
-    }
-
-    @Override
-    public void populateParams(String friendlyURLPath, Map<String, String[]> parameterMap,
-            Map<String, Object> requestContext) {
-        populateParams(friendlyURLPath, parameterMap);
-        
     }
 
 }

@@ -6,24 +6,24 @@ import javax.faces.model.DataModel;
  * A special type of JSF DataModel to allow a datatable and datapaginator
  * to page through a large set of data without having to hold the entire
  * set of data in memory at once.
- *
+ * <p/>
  * Any time a managed bean wants to avoid holding an entire dataset,
  * the managed bean should declare an inner class which extends this
  * class and implements the fetchData method. This method is called
  * as needed when the table requires data that isn't available in the
  * current data page held by this object.
- *
+ * <p/>
  * This does require the managed bean (and in general the business
  * method that the managed bean uses) to provide the data wrapped in
  * a DataPage object that provides info on the full size of the dataset.
  */
 public abstract class PagedListDataModel extends DataModel {
 
+    // Triggers a fetch from the database
+    protected boolean dirtyData = false;
     int pageSize;
     int rowIndex;
     DataPage page;
-    // Triggers a fetch from the database
-    protected boolean dirtyData = false;
 
     /*
      * Create a datamodel that pages through the data showing the specified
@@ -34,20 +34,6 @@ public abstract class PagedListDataModel extends DataModel {
         this.pageSize = pageSize;
         this.rowIndex = -1;
         this.page = null;
-    }
-    @Override
-    public int getRowIndex() {
-        return rowIndex;
-    }
-
-    /**
-     * Specify what the "current row" within the dataset is. Note that
-     * the UIData component will repeatedly call this method followed
-     * by getRowData to obtain the objects to render in the table.
-     */
-    @Override
-    public void setRowIndex(int index) {
-        rowIndex = index;
     }
 
     /**
@@ -65,21 +51,43 @@ public abstract class PagedListDataModel extends DataModel {
      * returned includes the current rowIndex row; see getRowData.
      */
     private DataPage getPage() {
-        if (page != null)
+        if (page != null) {
             return page;
+        }
 
         int rowIndex = getRowIndex();
         int startRow = rowIndex;
         if (rowIndex == -1) {
             // even when no row is selected, we still need a page
             // object so that we know the amount of data available.
-           startRow = 0;
+            startRow = 0;
         }
 
         // invoke method on enclosing class
         page = fetchPage(startRow, pageSize);
         return page;
     }
+
+    @Override
+    public int getRowIndex() {
+        return rowIndex;
+    }
+
+    /**
+     * Specify what the "current row" within the dataset is. Note that
+     * the UIData component will repeatedly call this method followed
+     * by getRowData to obtain the objects to render in the table.
+     */
+    @Override
+    public void setRowIndex(int index) {
+        rowIndex = index;
+    }
+
+    /**
+     * Method which must be implemented in cooperation with the
+     * managed bean class to fetch data on demand.
+     */
+    public abstract DataPage fetchPage(int startRow, int pageSize);
 
     /**
      * Return the object corresponding to the current rowIndex.
@@ -88,10 +96,10 @@ public abstract class PagedListDataModel extends DataModel {
      * to retrieve the appropriate page.
      */
     @Override
-    public Object getRowData(){
+    public Object getRowData() {
         if (rowIndex < 0) {
             throw new IllegalArgumentException(
-                "Invalid rowIndex for PagedListDataModel; not within page");
+                    "Invalid rowIndex for PagedListDataModel; not within page");
         }
 
         // ensure page exists; if rowIndex is beyond dataset size, then
@@ -103,7 +111,7 @@ public abstract class PagedListDataModel extends DataModel {
 
         // Check if rowIndex is equal to startRow,
         // useful for dynamic sorting on pages
-        if (rowIndex == page.getStartRow() && dirtyData){
+        if (rowIndex == page.getStartRow() && dirtyData) {
             page = fetchPage(rowIndex, pageSize);
         }
 
@@ -134,6 +142,11 @@ public abstract class PagedListDataModel extends DataModel {
         return page.getData();
     }
 
+    @Override
+    public void setWrappedData(Object o) {
+        throw new UnsupportedOperationException("setWrappedData");
+    }
+
     /**
      * Return true if the rowIndex value is currently set to a
      * value that matches some element in the dataset. Note that
@@ -144,8 +157,9 @@ public abstract class PagedListDataModel extends DataModel {
     @Override
     public boolean isRowAvailable() {
         DataPage page = getPage();
-        if (page == null)
+        if (page == null) {
             return false;
+        }
 
         int rowIndex = getRowIndex();
         if (rowIndex < 0) {
@@ -157,12 +171,6 @@ public abstract class PagedListDataModel extends DataModel {
         }
     }
 
-    /**
-     * Method which must be implemented in cooperation with the
-     * managed bean class to fetch data on demand.
-     */
-    public abstract DataPage fetchPage(int startRow, int pageSize);
-
     public boolean isDirtyData() {
         return dirtyData;
     }
@@ -173,11 +181,5 @@ public abstract class PagedListDataModel extends DataModel {
 
     public void setDirtyData() {
         dirtyData = true;
-    }
-    
-
-    @Override
-    public void setWrappedData(Object o) {
-        throw new UnsupportedOperationException("setWrappedData");
     }
 }

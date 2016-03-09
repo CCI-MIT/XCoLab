@@ -16,16 +16,11 @@ public class DataPage {
 
     /**
      * Create an object representing a sublist of a dataset.
-     * 
-     * @param datasetSize
-     *            is the total number of matching rows available.
-     * 
-     * @param startRow
-     *            is the index within the complete dataset of the first element
-     *            in the data list.
-     * 
-     * @param data
-     *            is a list of consecutive objects from the dataset.
+     *
+     * @param datasetSize is the total number of matching rows available.
+     * @param startRow    is the index within the complete dataset of the first element
+     *                    in the data list.
+     * @param data        is a list of consecutive objects from the dataset.
      */
     public DataPage(int datasetSize, int startRow, List data) {
         this.datasetSize = datasetSize;

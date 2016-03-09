@@ -40,7 +40,7 @@ public abstract class DataSource {
      * @param sortColumnName column to sortColumnName
      */
     public void setSortColumnName(String sortColumnName) {
-        if(!sortColumnName.equals(this.sortColumnName)){
+        if (!sortColumnName.equals(this.sortColumnName)) {
             onePageDataModel.setDirtyData();
             this.sortColumnName = sortColumnName;
         }
@@ -61,7 +61,7 @@ public abstract class DataSource {
      * @param sortAscending true for sortAscending sortColumnName, false for descending sortColumnName.
      */
     public void setSortAscending(boolean sortAscending) {
-        if(sortAscending != (this.sortAscending)){
+        if (sortAscending != (this.sortAscending)) {
             onePageDataModel.setDirtyData();
             this.sortAscending = sortAscending;
         }
