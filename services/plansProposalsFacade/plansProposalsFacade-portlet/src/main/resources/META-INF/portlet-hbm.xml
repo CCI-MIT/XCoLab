@@ -19,6 +19,7 @@
 	<import class="com.ext.portlet.model.ContestPhaseType" />
 	<import class="com.ext.portlet.model.ContestSchedule" />
 	<import class="com.ext.portlet.model.ContestTeamMember" />
+	<import class="com.ext.portlet.model.ContestTeamMemberRole" />
 	<import class="com.ext.portlet.model.ContestType" />
 	<import class="com.ext.portlet.model.DiscussionCategory" />
 	<import class="com.ext.portlet.model.DiscussionCategoryGroup" />
@@ -334,7 +335,15 @@
 		</id>
 		<property name="contestId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="roleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ContestTeamMemberRoleImpl" table="xcolab_ContestTeamMemberRole">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
 		<property name="role" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="sort" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestTypeImpl" table="xcolab_ContestType">
 		<cache usage="read-write" />

@@ -224,7 +224,13 @@ create table xcolab_ContestTeamMember (
 	id_ LONG not null primary key,
 	contestId LONG,
 	userId LONG,
-	role VARCHAR(75) null
+	roleId LONG
+);
+
+create table xcolab_ContestTeamMemberRole (
+	id_ LONG not null primary key,
+	role VARCHAR(75) null,
+	sort INTEGER
 );
 
 create table xcolab_ContestType (

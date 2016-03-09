@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.enums.MemberRole;
 
 import java.util.List;
 
@@ -36,11 +37,11 @@ public class ContestTeamMemberLocalServiceImpl
      */
 
     @Override
-    public ContestTeamMember addContestTeamMember(Long userId, Long contestPk, String role) throws SystemException {
+    public ContestTeamMember addContestTeamMember(Long userId, Long contestPk, MemberRole memberRole) throws SystemException {
         ContestTeamMember member = ContestTeamMemberLocalServiceUtil.createContestTeamMember(CounterLocalServiceUtil.increment(ContestTeamMember.class.getName()));
         member.setUserId(userId);
         member.setContestId(contestPk);
-        member.setRole(role);
+        member.setRoleId(memberRole.getRoleId());
         store(member);
         
         return member;

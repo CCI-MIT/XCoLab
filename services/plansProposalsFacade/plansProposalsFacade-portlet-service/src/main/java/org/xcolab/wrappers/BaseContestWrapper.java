@@ -4,6 +4,7 @@ package org.xcolab.wrappers;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestTeamMember;
+import com.ext.portlet.model.ContestTeamMemberRole;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
@@ -15,11 +16,13 @@ import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
+import org.xcolab.helpers.Tuple;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -383,30 +386,34 @@ public class BaseContestWrapper {
 
     public List<BaseContestTeamRoleWrapper> getContestTeamMembersByRole() throws PortalException, SystemException {
         if (contestTeamMembersByRole == null) {
-            contestTeamMembersByRole = new ArrayList<>();
-            Map<String, List<User>> teamRoleUsersMap = new TreeMap<>();
+            Map<Tuple<String, Integer>, List<User>> teamRoleUsersMap = new HashMap<>();
             for (ContestTeamMember ctm : ContestLocalServiceUtil.getTeamMembers(contest)) {
-                List<User> roleUsers = teamRoleUsersMap.get(ctm.getRole());
-                if (roleUsers == null) {
-                    roleUsers = new ArrayList<>();
-                    teamRoleUsersMap.put(ctm.getRole(), roleUsers);
-                }
+                ContestTeamMemberRole role;
                 try {
-                    roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
-                } catch(SystemException e){
-                    _log.warn("Could not add user role: " + e);
+                    role = ContestLocalServiceUtil.getRoleForMember(ctm);
+                    List<User> roleUsers = teamRoleUsersMap.get(new Tuple<String, Integer>(role.getRole(), role.getSort()));
+                    if (roleUsers == null) {
+                        roleUsers = new ArrayList<>();
+                        teamRoleUsersMap.put(new Tuple<String, Integer>(role.getRole(), role.getSort()), roleUsers);
+                    }
+                    try {
+                        roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
+                    } catch(SystemException e){
+                        _log.warn("Could not add user role: " + e);
+                    }
+                } catch (NoSuchModelException e) {
+                    e.printStackTrace();
+                } catch (SystemException e) {
+                    e.printStackTrace();
                 }
             }
 
-            for (Map.Entry<String, List<User>> entry : teamRoleUsersMap.entrySet()) {
-                final String role = entry.getKey();
-                contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role, entry.getValue()));
+            contestTeamMembersByRole = new ArrayList<BaseContestTeamRoleWrapper>(teamRoleUsersMap.size());
+            for (Map.Entry<Tuple<String, Integer>, List<User>> entry : teamRoleUsersMap.entrySet()) {
+                final Tuple<String, Integer> role = entry.getKey();
+                contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role.getLeft(), entry.getValue(), role.getRight()));
             }
-
-            if (contestTeamMembersByRole.size() == 3) {
-                Collections.swap(contestTeamMembersByRole, 1, 2);
-            }
-
+            Collections.sort(contestTeamMembersByRole);
         }
         return contestTeamMembersByRole;
     }

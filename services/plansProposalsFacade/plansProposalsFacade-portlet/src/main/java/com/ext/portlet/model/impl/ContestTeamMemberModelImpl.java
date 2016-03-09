@@ -10,7 +10,6 @@ import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
@@ -54,9 +53,9 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
             { "id_", Types.BIGINT },
             { "contestId", Types.BIGINT },
             { "userId", Types.BIGINT },
-            { "role", Types.VARCHAR }
+            { "roleId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestTeamMember (id_ LONG not null primary key,contestId LONG,userId LONG,role VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestTeamMember (id_ LONG not null primary key,contestId LONG,userId LONG,roleId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestTeamMember";
     public static final String ORDER_BY_JPQL = " ORDER BY contestTeamMember.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestTeamMember.id_ ASC";
@@ -86,7 +85,7 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
     private boolean _setOriginalContestId;
     private long _userId;
     private String _userUuid;
-    private String _role;
+    private long _roleId;
     private long _columnBitmask;
     private ContestTeamMember _escapedModel;
 
@@ -109,7 +108,7 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
         model.setId(soapModel.getId());
         model.setContestId(soapModel.getContestId());
         model.setUserId(soapModel.getUserId());
-        model.setRole(soapModel.getRole());
+        model.setRoleId(soapModel.getRoleId());
 
         return model;
     }
@@ -172,7 +171,7 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
         attributes.put("id", getId());
         attributes.put("contestId", getContestId());
         attributes.put("userId", getUserId());
-        attributes.put("role", getRole());
+        attributes.put("roleId", getRoleId());
 
         return attributes;
     }
@@ -197,10 +196,10 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
             setUserId(userId);
         }
 
-        String role = (String) attributes.get("role");
+        Long roleId = (Long) attributes.get("roleId");
 
-        if (role != null) {
-            setRole(role);
+        if (roleId != null) {
+            setRoleId(roleId);
         }
     }
 
@@ -263,17 +262,13 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
 
     @JSON
     @Override
-    public String getRole() {
-        if (_role == null) {
-            return StringPool.BLANK;
-        } else {
-            return _role;
-        }
+    public long getRoleId() {
+        return _roleId;
     }
 
     @Override
-    public void setRole(String role) {
-        _role = role;
+    public void setRoleId(long roleId) {
+        _roleId = roleId;
     }
 
     public long getColumnBitmask() {
@@ -310,7 +305,7 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
         contestTeamMemberImpl.setId(getId());
         contestTeamMemberImpl.setContestId(getContestId());
         contestTeamMemberImpl.setUserId(getUserId());
-        contestTeamMemberImpl.setRole(getRole());
+        contestTeamMemberImpl.setRoleId(getRoleId());
 
         contestTeamMemberImpl.resetOriginalValues();
 
@@ -383,13 +378,7 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
 
         contestTeamMemberCacheModel.userId = getUserId();
 
-        contestTeamMemberCacheModel.role = getRole();
-
-        String role = contestTeamMemberCacheModel.role;
-
-        if ((role != null) && (role.length() == 0)) {
-            contestTeamMemberCacheModel.role = null;
-        }
+        contestTeamMemberCacheModel.roleId = getRoleId();
 
         return contestTeamMemberCacheModel;
     }
@@ -404,8 +393,8 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
         sb.append(getContestId());
         sb.append(", userId=");
         sb.append(getUserId());
-        sb.append(", role=");
-        sb.append(getRole());
+        sb.append(", roleId=");
+        sb.append(getRoleId());
         sb.append("}");
 
         return sb.toString();
@@ -432,8 +421,8 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
         sb.append(getUserId());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>role</column-name><column-value><![CDATA[");
-        sb.append(getRole());
+            "<column><column-name>roleId</column-name><column-value><![CDATA[");
+        sb.append(getRoleId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

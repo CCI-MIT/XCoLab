@@ -10,16 +10,18 @@ import java.util.List;
  * A wrapper class for contest team roles to be shared across portlets.
  * More specific wrappers should inherit from this one.
  */
-public class BaseContestTeamRoleWrapper implements Serializable {
+public class BaseContestTeamRoleWrapper implements Serializable, Comparable<BaseContestTeamRoleWrapper> {
 
     private static final long serialVersionUID = 1L;
     private String roleName;
     private List<User> users;
+    private int sort;
 
-    public BaseContestTeamRoleWrapper(String roleName, List<User> users) {
+    public BaseContestTeamRoleWrapper(String roleName, List<User> users, int sort) {
         super();
         this.roleName = roleName;
         this.users = users;
+        this.sort = sort;
     }
 
     public String getRoleName() {
@@ -38,4 +40,21 @@ public class BaseContestTeamRoleWrapper implements Serializable {
         this.users = users;
     }
 
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
+
+    public int compareTo(BaseContestTeamRoleWrapper bctrw) {
+        if (this.sort < bctrw.sort) {
+            return -1;
+        } else if (this.sort > bctrw.sort) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

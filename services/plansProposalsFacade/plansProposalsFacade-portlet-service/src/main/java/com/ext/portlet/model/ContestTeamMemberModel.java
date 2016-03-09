@@ -1,6 +1,5 @@
 package com.ext.portlet.model;
 
-import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -102,19 +101,18 @@ public interface ContestTeamMemberModel extends BaseModel<ContestTeamMember> {
     public void setUserUuid(String userUuid);
 
     /**
-     * Returns the role of this contest team member.
+     * Returns the role ID of this contest team member.
      *
-     * @return the role of this contest team member
+     * @return the role ID of this contest team member
      */
-    @AutoEscape
-    public String getRole();
+    public long getRoleId();
 
     /**
-     * Sets the role of this contest team member.
+     * Sets the role ID of this contest team member.
      *
-     * @param role the role of this contest team member
+     * @param roleId the role ID of this contest team member
      */
-    public void setRole(String role);
+    public void setRoleId(long roleId);
 
     @Override
     public boolean isNew();

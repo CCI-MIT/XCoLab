@@ -9,43 +9,42 @@ import java.util.Arrays;
  * @generated
  */
 public class ProposalUnversionedAttributeServiceClpInvoker {
-    private String _methodName490;
-    private String[] _methodParameterTypes490;
-    private String _methodName491;
-    private String[] _methodParameterTypes491;
-    private String _methodName496;
-    private String[] _methodParameterTypes496;
+    private String _methodName508;
+    private String[] _methodParameterTypes508;
+    private String _methodName509;
+    private String[] _methodParameterTypes509;
+    private String _methodName514;
+    private String[] _methodParameterTypes514;
 
     public ProposalUnversionedAttributeServiceClpInvoker() {
-        _methodName490 = "getBeanIdentifier";
+        _methodName508 = "getBeanIdentifier";
 
-        _methodParameterTypes490 = new String[] {  };
+        _methodParameterTypes508 = new String[] {  };
 
-        _methodName491 = "setBeanIdentifier";
+        _methodName509 = "setBeanIdentifier";
 
-        _methodParameterTypes491 = new String[] { "java.lang.String" };
+        _methodParameterTypes509 = new String[] { "java.lang.String" };
 
-        _methodName496 = "getAttributes";
+        _methodName514 = "getAttributes";
 
-        _methodParameterTypes496 = new String[] { "long" };
+        _methodParameterTypes514 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName490.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
+        if (_methodName508.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
             return ProposalUnversionedAttributeServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName491.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
+        if (_methodName509.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes509, parameterTypes)) {
             ProposalUnversionedAttributeServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
-
-        if (_methodName496.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes496, parameterTypes)) {
+        if (_methodName514.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
             return ProposalUnversionedAttributeServiceUtil.getAttributes(((Long) arguments[0]).longValue());
         }
 

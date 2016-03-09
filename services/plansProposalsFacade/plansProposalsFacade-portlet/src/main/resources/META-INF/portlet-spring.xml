@@ -65,6 +65,9 @@
 	<bean id="com.ext.portlet.service.ContestTeamMemberLocalService" class="com.ext.portlet.service.impl.ContestTeamMemberLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestTeamMemberService" class="com.ext.portlet.service.impl.ContestTeamMemberServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestTeamMemberPersistence" class="com.ext.portlet.service.persistence.ContestTeamMemberPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ContestTeamMemberRoleLocalService" class="com.ext.portlet.service.impl.ContestTeamMemberRoleLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ContestTeamMemberRoleService" class="com.ext.portlet.service.impl.ContestTeamMemberRoleServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ContestTeamMemberRolePersistence" class="com.ext.portlet.service.persistence.ContestTeamMemberRolePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ContestTypeLocalService" class="com.ext.portlet.service.impl.ContestTypeLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestTypeService" class="com.ext.portlet.service.impl.ContestTypeServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestTypePersistence" class="com.ext.portlet.service.persistence.ContestTypePersistenceImpl" parent="basePersistence" />

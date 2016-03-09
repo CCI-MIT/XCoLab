@@ -75,7 +75,7 @@ public class ContestTeamWrapper {
                     ContestTeamMemberLocalServiceUtil.createContestTeamMember(contestMemberId);
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);
-            contestTeamMember.setRole(memberRoleName);
+            contestTeamMember.setRoleId(memberRole.getRoleId());
             ContestTeamMemberLocalServiceUtil.addContestTeamMember(contestTeamMember);
         }
     }
@@ -84,36 +84,9 @@ public class ContestTeamWrapper {
             throws SystemException, PortalException {
         List<ContestTeamMember> contestTeamMembers = ContestTeamMemberLocalServiceUtil.findForContest(contestId);
         for (ContestTeamMember contestTeamMember : contestTeamMembers) {
-            String contestTeamMemberRole = contestTeamMember.getRole();
+            String contestTeamMemberRole = MemberRole.fromRoleId(contestTeamMember.getRoleId()).getRoleNames()[0];
             Long userId = contestTeamMember.getUserId();
             ContestTeamMemberLocalServiceUtil.deleteContestTeamMember(contestTeamMember);
-            removeUserRoleIfNotUsedInAnotherContest(userId, contestTeamMemberRole);
-        }
-    }
-
-
-    private void removeUserRoleIfNotUsedInAnotherContest(Long userId, String memberRoleName) {
-        try {
-            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
-                    ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
-
-            DynamicQuery queryContestTeamMembershipsByRoleAndUserId =
-                    DynamicQueryFactoryUtil.forClass(ContestTeamMember.class, portletClassLoader)
-                            .add(PropertyFactoryUtil.forName("userId").eq(userId))
-                            .add(PropertyFactoryUtil.forName("role").eq(memberRoleName))
-                            .setProjection(ProjectionFactoryUtil.count("role"));
-
-            List queryResult =
-                    ContestTeamMemberLocalServiceUtil.dynamicQuery(queryContestTeamMembershipsByRoleAndUserId);
-            Long roleCount = (Long) queryResult.get(0);
-
-            if (roleCount == 0) {
-                MemberRole memberRole = MemberRole.fromRoleName(memberRoleName);
-                Long roleId = memberRole.getRoleId();
-                RoleLocalServiceUtil.deleteUserRole(userId, roleId);
-            }
-        } catch (BeanLocatorException | SystemException | MemberRole.NoSuchMemberRoleException e) {
-            e.printStackTrace();
         }
     }
 

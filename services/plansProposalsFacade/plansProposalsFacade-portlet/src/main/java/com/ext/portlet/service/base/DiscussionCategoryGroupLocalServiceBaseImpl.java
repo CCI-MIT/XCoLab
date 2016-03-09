@@ -19,6 +19,7 @@ import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
 import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
 import com.ext.portlet.service.persistence.ContestSchedulePersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
+import com.ext.portlet.service.persistence.ContestTeamMemberRolePersistence;
 import com.ext.portlet.service.persistence.ContestTypePersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
@@ -224,6 +225,12 @@ public abstract class DiscussionCategoryGroupLocalServiceBaseImpl
     protected com.ext.portlet.service.ContestTeamMemberService contestTeamMemberService;
     @BeanReference(type = ContestTeamMemberPersistence.class)
     protected ContestTeamMemberPersistence contestTeamMemberPersistence;
+    @BeanReference(type = com.ext.portlet.service.ContestTeamMemberRoleLocalService.class)
+    protected com.ext.portlet.service.ContestTeamMemberRoleLocalService contestTeamMemberRoleLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestTeamMemberRoleService.class)
+    protected com.ext.portlet.service.ContestTeamMemberRoleService contestTeamMemberRoleService;
+    @BeanReference(type = ContestTeamMemberRolePersistence.class)
+    protected ContestTeamMemberRolePersistence contestTeamMemberRolePersistence;
     @BeanReference(type = com.ext.portlet.service.ContestTypeLocalService.class)
     protected com.ext.portlet.service.ContestTypeLocalService contestTypeLocalService;
     @BeanReference(type = com.ext.portlet.service.ContestTypeService.class)
@@ -1807,6 +1814,63 @@ public abstract class DiscussionCategoryGroupLocalServiceBaseImpl
     public void setContestTeamMemberPersistence(
         ContestTeamMemberPersistence contestTeamMemberPersistence) {
         this.contestTeamMemberPersistence = contestTeamMemberPersistence;
+    }
+
+    /**
+     * Returns the contest team member role local service.
+     *
+     * @return the contest team member role local service
+     */
+    public com.ext.portlet.service.ContestTeamMemberRoleLocalService getContestTeamMemberRoleLocalService() {
+        return contestTeamMemberRoleLocalService;
+    }
+
+    /**
+     * Sets the contest team member role local service.
+     *
+     * @param contestTeamMemberRoleLocalService the contest team member role local service
+     */
+    public void setContestTeamMemberRoleLocalService(
+        com.ext.portlet.service.ContestTeamMemberRoleLocalService contestTeamMemberRoleLocalService) {
+        this.contestTeamMemberRoleLocalService = contestTeamMemberRoleLocalService;
+    }
+
+    /**
+     * Returns the contest team member role remote service.
+     *
+     * @return the contest team member role remote service
+     */
+    public com.ext.portlet.service.ContestTeamMemberRoleService getContestTeamMemberRoleService() {
+        return contestTeamMemberRoleService;
+    }
+
+    /**
+     * Sets the contest team member role remote service.
+     *
+     * @param contestTeamMemberRoleService the contest team member role remote service
+     */
+    public void setContestTeamMemberRoleService(
+        com.ext.portlet.service.ContestTeamMemberRoleService contestTeamMemberRoleService) {
+        this.contestTeamMemberRoleService = contestTeamMemberRoleService;
+    }
+
+    /**
+     * Returns the contest team member role persistence.
+     *
+     * @return the contest team member role persistence
+     */
+    public ContestTeamMemberRolePersistence getContestTeamMemberRolePersistence() {
+        return contestTeamMemberRolePersistence;
+    }
+
+    /**
+     * Sets the contest team member role persistence.
+     *
+     * @param contestTeamMemberRolePersistence the contest team member role persistence
+     */
+    public void setContestTeamMemberRolePersistence(
+        ContestTeamMemberRolePersistence contestTeamMemberRolePersistence) {
+        this.contestTeamMemberRolePersistence = contestTeamMemberRolePersistence;
     }
 
     /**

@@ -392,6 +392,12 @@ public interface ContestLocalService extends BaseLocalService,
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ContestTeamMemberRole getRoleForMember(
+        com.ext.portlet.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.NoSuchModelException,
+            com.liferay.portal.kernel.exception.SystemException;
+
     /**
     * <p>Returns true if user is subscribed to a contest, false otherwise</p>
     *

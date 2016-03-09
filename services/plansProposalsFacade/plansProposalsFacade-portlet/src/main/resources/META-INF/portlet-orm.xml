@@ -349,11 +349,23 @@
 			</id>
 			<basic name="contestId" />
 			<basic name="userId" />
-			<basic name="role" />
+			<basic name="roleId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ContestTeamMemberRoleModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="role" />
+			<basic name="sort" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestTypeModelImpl">
@@ -1362,6 +1374,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestTeamMemberImpl" name="ContestTeamMember">
 		<table name="xcolab_ContestTeamMember" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ContestTeamMemberRoleImpl" name="ContestTeamMemberRole">
+		<table name="xcolab_ContestTeamMemberRole" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestTypeImpl" name="ContestType">

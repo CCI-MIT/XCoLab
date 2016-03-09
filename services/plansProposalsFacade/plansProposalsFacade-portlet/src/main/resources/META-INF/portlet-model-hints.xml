@@ -287,7 +287,12 @@
 		<field name="id" type="long" />
 		<field name="contestId" type="long" />
 		<field name="userId" type="long" />
+		<field name="roleId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ContestTeamMemberRole">
+		<field name="id" type="long" />
 		<field name="role" type="String" />
+		<field name="sort" type="int" />
 	</model>
 	<model name="com.ext.portlet.model.ContestType">
 		<field name="id" type="long" />
