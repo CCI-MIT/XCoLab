@@ -219,7 +219,7 @@ public class ContestScheduleWrapper {
         Date now = new Date();
         for(int i=0; i < existingContestPhasesForContest.size();i++) {
             ContestPhase phase = existingContestPhasesForContest.get(i);
-            if (!(phase.getPhaseStartDate().getTime() > now.getTime())) {
+            if (!(phase.getPhaseStartDate().after(now))) {
                 phase.setContestScheduleId(newScheduleId);
                 ContestPhaseLocalServiceUtil.updateContestPhase(phase);
             }
@@ -321,12 +321,11 @@ public class ContestScheduleWrapper {
             Date now = new Date();
             for(int i=0; i < curentContestSchedulePhases.size();i++){
                 ContestPhase phase =  curentContestSchedulePhases.get(i);
-                if(!(phase.getPhaseStartDate().getTime() > now.getTime())){
-                    //phases are always created in chronological order
-                    if(!(selectablePhases.size() > i &&
-                            selectablePhases.get(i).getContestPhaseType() == phase.getContestPhaseType()))
+                if (!(phase.getPhaseStartDate().after(now))) {
+                    boolean arePhaseTypesEqual = (selectablePhases.size() > i &&
+                            selectablePhases.get(i).getContestPhaseType() == phase.getContestPhaseType());
+                    if(!arePhaseTypesEqual)
                         return false;
-
                 }else{
                     break;
                 }
