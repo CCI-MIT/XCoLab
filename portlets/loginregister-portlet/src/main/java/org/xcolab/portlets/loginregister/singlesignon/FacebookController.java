@@ -2,8 +2,6 @@ package org.xcolab.portlets.loginregister.singlesignon;
 
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
-import com.ext.utils.iptranslation.Location;
-import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -42,7 +40,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
 
@@ -57,7 +54,6 @@ public class FacebookController {
 
     @RequestMapping(params = "action=initiateLogin")
     public void initiateFbLogin(ActionRequest request, ActionResponse response) throws IOException, SystemException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
         HttpSession session = httpReq.getSession();
 
@@ -69,7 +65,6 @@ public class FacebookController {
 
     @RequestMapping(params = "action=initiateRegistration")
     public void initiateFbRegistration(ActionRequest request, ActionResponse response) throws IOException, SystemException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
         HttpSession session = httpReq.getSession();
 
@@ -88,7 +83,7 @@ public class FacebookController {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         String facebookAuthRedirectURL = FacebookConnectUtil.getRedirectURL(themeDisplay.getCompanyId());
-        facebookAuthRedirectURL = HttpUtil.addParameter(facebookAuthRedirectURL, "redirect", HttpUtil.encodeURL(themeDisplay.getURLCurrent().toString()));
+        facebookAuthRedirectURL = HttpUtil.addParameter(facebookAuthRedirectURL, "redirect", HttpUtil.encodeURL(themeDisplay.getURLCurrent()));
         String facebookAuthURL = FacebookConnectUtil.getAuthURL(themeDisplay.getCompanyId());
         facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "client_id", FacebookConnectUtil.getAppId(themeDisplay.getCompanyId()));
         facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "redirect_uri", facebookAuthRedirectURL);
@@ -108,15 +103,13 @@ public class FacebookController {
 		session.removeAttribute(SSOKeys.SSO_OPENID_ID);
 
 		String redirectUrl = (String)session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
-        if(Validator.isNull(redirectUrl) || Validator.isBlank(redirectUrl)) redirectUrl =  themeDisplay.getURLHome();
+        if (Validator.isNull(redirectUrl) || Validator.isBlank(redirectUrl)) {
+			redirectUrl = themeDisplay.getURLHome();
+		}
 
         String redirect = ParamUtil.getString(request, "redirect");
         String code = ParamUtil.getString(request, "code");
-        String token=null;
-        try{
-            token = FacebookConnectUtil.getAccessToken(
-                    themeDisplay.getCompanyId(), redirect, code);
-        } catch (Exception e) { e.printStackTrace(); }
+        String token = FacebookConnectUtil.getAccessToken(themeDisplay.getCompanyId(), redirect, code);
 
         JSONObject jsonObject = FacebookConnectUtil.getGraphResources(
                 themeDisplay.getCompanyId(), "/me", token,
@@ -136,7 +129,6 @@ public class FacebookController {
             return;
         }
 
-
         User user = null;
 
         long facebookId = jsonObject.getLong("id");
@@ -144,14 +136,12 @@ public class FacebookController {
 
         PortletSession portletSession = request.getPortletSession();
 
-
         if (facebookId > 0) {
             // SSO Attribute
             portletSession.setAttribute(SSOKeys.FACEBOOK_USER_ID, String.valueOf(facebookId),PortletSession.APPLICATION_SCOPE);
 
             try {
-                user = UserLocalServiceUtil.getUserByFacebookId(
-                        themeDisplay.getCompanyId(), facebookId);
+                user = UserLocalServiceUtil.getUserByFacebookId(themeDisplay.getCompanyId(), facebookId);
 
                 String realPictureURLString = getFacebookPictureURLString(fbProfilePictureURL);
                 if (realPictureURLString != null) {
@@ -161,16 +151,11 @@ public class FacebookController {
 				LoginLogLocalServiceUtil.createLoginLog(user, httpReq.getRemoteAddr(), redirectUrl);
 				response.sendRedirect(redirectUrl);
 				return;
-            }
-            catch (NoSuchUserException e){
-
-            }
-            catch (Exception e) {
+            } catch (NoSuchUserException ignored) {
+			} catch (PortalException | IOException e) {
                 e.printStackTrace();
             }
-
         }
-
 
         // if email matches -> autologin
         String emailAddress = jsonObject.getString("email");
@@ -185,16 +170,13 @@ public class FacebookController {
                     ImageUploadUtils.updateProfilePicture(user, realPictureURLString);
                 }
 
-				updateUserAccountInformation(httpReq, user, jsonObject);
+				updateUserAccountInformation(user, jsonObject);
 
 				LoginLogLocalServiceUtil.createLoginLog(user, httpReq.getRemoteAddr(), redirectUrl);
 				response.sendRedirect(redirectUrl);
 				return;
-            }
-            catch (NoSuchUserException e){
-
-            }
-            catch (Exception e) {
+            } catch (NoSuchUserException ignored){
+            } catch (PortalException | IOException e) {
                 e.printStackTrace();
             }
         }
@@ -215,14 +197,7 @@ public class FacebookController {
         }
 
 		try {
-			portletSession.setAttribute(SSOKeys.SSO_CITY, getCity(httpReq, jsonObject),PortletSession.APPLICATION_SCOPE);
-		} catch (UserLocationNotResolveableException e) {
-			portletSession.setAttribute(SSOKeys.SSO_CITY, null,PortletSession.APPLICATION_SCOPE);
-			_log.warn(e);
-		}
-
-		try {
-			portletSession.setAttribute(SSOKeys.SSO_COUNTRY, getCountry(httpReq, jsonObject),PortletSession.APPLICATION_SCOPE);
+			portletSession.setAttribute(SSOKeys.SSO_COUNTRY, getCountry(jsonObject),PortletSession.APPLICATION_SCOPE);
 		} catch (UserLocationNotResolveableException e) {
 			portletSession.setAttribute(SSOKeys.SSO_COUNTRY, null,PortletSession.APPLICATION_SCOPE);
 			_log.warn(e);
@@ -254,10 +229,11 @@ public class FacebookController {
 			String screenName = userBean.getScreenName();
 			for (int i = 0; i < 5; i++) {
 				try {
-					User duplicateUser = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
-					// Generate a random suffix for the non-unique screenName
+					UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
+                    //TODO: find better way to resolve conflicts
 					screenName = userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
-				} catch (PortalException e) {
+				} catch (NoSuchUserException e) {
+                    //user name is not in use -> we can continue
 					break;
 				}
 			}
@@ -270,7 +246,6 @@ public class FacebookController {
 			response.setRenderParameter("SSO", "general");
 			request.setAttribute("credentialsError",false);
 		}
-
     }
 
     @RequestMapping(params = "status=registerOrLogin")
@@ -285,7 +260,6 @@ public class FacebookController {
 
     /**
      * Get the real image URL
-     * @return
      */
     private String getFacebookPictureURLString(String fbProfilePictureURL) {
         try {
@@ -297,24 +271,20 @@ public class FacebookController {
 
             JSONObject fbJson = JSONFactoryUtil.createJSONObject(json);
             return fbJson.getJSONObject("picture").getJSONObject("data").getString("url");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (JSONException | IOException e) {
+            _log.error("Error while getting facebook picture url", e);
         }
 
-        return null;
+		return null;
     }
 
-	private void updateUserAccountInformation(HttpServletRequest req, User user, JSONObject jsonObject) {
+	private void updateUserAccountInformation(User user, JSONObject jsonObject) throws SystemException {
 		try {
 			ExpandoValue country = getExpandoValue(user, CommunityConstants.COUNTRY);
 
 			if (Validator.isNull(country) || Validator.isNull(country.getString())) {
 				try {
-					setExpandoValue(user, CommunityConstants.COUNTRY, getCountry(req, jsonObject));
+					setExpandoValue(user, CommunityConstants.COUNTRY, getCountry(jsonObject));
 				} catch (UserLocationNotResolveableException e) {
 					_log.warn(e);
 				}
@@ -324,57 +294,22 @@ public class FacebookController {
 
 			if (Validator.isNull(city) || Validator.isNull(city.getString())) {
 				try {
-					setExpandoValue(user, CommunityConstants.CITY, getCountry(req, jsonObject));
+					setExpandoValue(user, CommunityConstants.CITY, getCountry(jsonObject));
 
 				} catch (UserLocationNotResolveableException e) {
 					_log.warn(e);
 				}
 			}
-		} catch (SystemException | PortalException e) {
+		} catch (PortalException e) {
 			_log.error(e);
 		}
 	}
 
-	private String getCountry(HttpServletRequest req, JSONObject response) throws UserLocationNotResolveableException {
+	private String getCountry(JSONObject response) throws UserLocationNotResolveableException {
 		try {
 			return getCountryFromLocationObject(response);
 		} catch (UserLocationNotResolveableException e) {
-			try {
-				return getCountryFromLocaleObject(response);
-			} catch (UserLocationNotResolveableException e1) {
-				return getCountryFromRemoteAddress(req.getRemoteAddr());
-			}
-		}
-	}
-
-	private String getCity(HttpServletRequest req, JSONObject response) throws UserLocationNotResolveableException {
-		try {
-			return getCityFromLocationObject(response);
-		} catch (UserLocationNotResolveableException e) {
-			return getCityFromRemoteAddress(req.getRemoteAddr());
-		}
-	}
-
-	private String getCityFromLocationObject(JSONObject response) throws UserLocationNotResolveableException {
-		if (Validator.isNotNull(response.getJSONObject("location"))) {
-			String locationString = response.getJSONObject("location").getString("name");
-
-			if (locationString.indexOf(",") != -1) {
-				return locationString.split(",")[0].trim();
-			}
-		}
-
-		throw new UserLocationNotResolveableException("Could not retrieve city from Facebook location");
-	}
-
-	private String getCityFromRemoteAddress(String ipAddr) throws UserLocationNotResolveableException {
-		try {
-			Location location = IpTranslationServiceUtil.getLocationForIp(ipAddr);
-			if (Validator.isNotNull(location)) {
-				return location.getCity();
-			}
-		} finally {
-			throw new UserLocationNotResolveableException("Could not retrieve city from IP address");
+			return getCountryFromLocaleObject(response);
 		}
 	}
 
@@ -382,7 +317,7 @@ public class FacebookController {
 		if (Validator.isNotNull(response.getJSONObject("location"))) {
 			String locationString = response.getJSONObject("location").getString("name");
 
-			if (locationString.indexOf(",") != -1) {
+			if (locationString.contains(",")) {
 				return locationString.split(",")[1].trim();
 			}
 		}
@@ -399,17 +334,6 @@ public class FacebookController {
 		}
 
 		throw new UserLocationNotResolveableException("Could not retrieve country from Facebook locale");
-	}
-
-	private String getCountryFromRemoteAddress(String ipAddr) throws UserLocationNotResolveableException {
-		try {
-			Location location = IpTranslationServiceUtil.getLocationForIp(ipAddr);
-			if (Validator.isNotNull(location)) {
-				return location.getCountryName();
-			}
-		} finally {
-			throw new UserLocationNotResolveableException("Could not retrieve country from IP address");
-		}
 	}
 
 	private void setExpandoValue(User user, String valueName, Object data) throws SystemException, PortalException {

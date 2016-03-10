@@ -43,7 +43,7 @@ public class SpamReportDiscussionMessageActionController extends BaseDiscussions
         DiscussionMessage message = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
         DiscussionPermissions permissions = new DiscussionPermissions(request, dcg);
 
-        SpamReportLocalServiceUtil.create(messageId, message.getAuthorId(), themeDisplay.getUserId(), permissions.getCanAdmin());
+        SpamReportLocalServiceUtil.create(messageId, message.getAuthorId(), themeDisplay.getUserId(), permissions.getCanAdminAll());
         new EmailToAdminDispatcher("New spam report on Climate CoLab",
                 String.format("User %s reported a <a href=\"%s/web/guest/member/-/member/spamReport/%d\">new spam message</a>",
                         themeDisplay.getUser().getScreenName(), PortalUtil.getPortalURL(request), message.getAuthorId()),

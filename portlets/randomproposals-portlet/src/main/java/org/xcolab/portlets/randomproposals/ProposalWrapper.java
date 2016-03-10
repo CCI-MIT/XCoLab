@@ -5,6 +5,7 @@ import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Proposal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.theme.ThemeDisplay;
 import org.xcolab.wrappers.BaseProposalWrapper;
 
 public class ProposalWrapper extends BaseProposalWrapper {

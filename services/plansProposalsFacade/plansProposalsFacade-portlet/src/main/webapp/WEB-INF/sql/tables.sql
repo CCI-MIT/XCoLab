@@ -77,6 +77,15 @@ create table xcolab_BalloonUserTracking (
 	userAgent VARCHAR(500) null
 );
 
+create table xcolab_ConfigurationAttribute (
+	name VARCHAR(75) not null,
+	additionalId LONG not null,
+	numericValue LONG,
+	stringValue VARCHAR(75) null,
+	realValue DOUBLE,
+	primary key (name, additionalId)
+);
+
 create table xcolab_Contest (
 	ContestPK LONG not null primary key,
 	contestTypeId LONG,
@@ -716,6 +725,20 @@ create table xcolab_ProposalSupporter (
 	userId LONG not null,
 	createDate DATE null,
 	primary key (proposalId, userId)
+);
+
+create table xcolab_ProposalUnversionedAttribute (
+	id_ LONG not null primary key,
+	proposalId LONG,
+	createAuthorId LONG,
+	lastAuthorId LONG,
+	createDate DATE null,
+	lastUpdateDate DATE null,
+	name VARCHAR(75) null,
+	addtionalId INTEGER,
+	numericValue LONG,
+	stringValue VARCHAR(75) null,
+	realValue DOUBLE
 );
 
 create table xcolab_ProposalVersion (

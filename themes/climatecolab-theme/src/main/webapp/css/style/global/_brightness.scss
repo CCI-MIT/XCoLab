@@ -18,7 +18,7 @@ $blue-magic-number: 0.068;
 
 //chooses the optimal color for good contrast.
 //param threshold is an optional cut-off value between 0 and 255
-@function contrasting-color($color, $light, $dark, $threshold: null) {
+@function contrasting-color($color, $light: $text-light, $dark: $text-dark, $threshold: null) {
   @if $threshold == null {
     $threshold: (brightness($light) + brightness($dark)) / 2;
   }

@@ -1,23 +1,10 @@
 package org.xcolab.portlets.messaging;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.model.DataModel;
-import javax.mail.internet.AddressException;
-
-import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
-import org.xcolab.portlets.messaging.utils.DataPage;
-import org.xcolab.portlets.messaging.utils.PagedListDataModel;
-
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Message;
 import com.ext.portlet.model.MessageRecipientStatus;
 import com.ext.portlet.service.MessageLocalServiceUtil;
+import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -25,6 +12,18 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.model.User;
 import com.liferay.util.mail.MailEngineException;
+import org.xcolab.portlets.messaging.utils.DataPage;
+import org.xcolab.portlets.messaging.utils.PagedListDataModel;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.model.DataModel;
+import javax.mail.internet.AddressException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MessagingBean implements Serializable {
 	/**
@@ -241,7 +240,7 @@ public class MessagingBean implements Serializable {
 	}
 
 	public void send(ActionEvent e) throws AddressException, SystemException,
-			PortalException, MailEngineException {
+			PortalException, MailEngineException, UnsupportedEncodingException {
 		sendMessageBean.send(e);
 	}
 
@@ -252,7 +251,9 @@ public class MessagingBean implements Serializable {
     public void markMessageAsOpened(ActionEvent e) throws PortalException, SystemException{
         Object messageIdObject = e.getComponent().getAttributes()
                 .get("messageId");
-        if (messageIdObject == null) return;
+        if (messageIdObject == null) {
+			return;
+		}
         Long messageId = Long.parseLong(messageIdObject.toString());
         List<MessageRecipientStatus> statuses = MessageRecipientStatusLocalServiceUtil.findByMessageId(messageId,0,Integer.MAX_VALUE);
         for (MessageRecipientStatus mr : statuses){

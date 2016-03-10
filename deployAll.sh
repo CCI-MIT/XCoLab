@@ -1,27 +1,4 @@
 #!/bin/bash
-mvn install -N
-cd taglibs
-mvn install -N
-cd ..
-cd themes
-mvn install -N
-cd ..
-cd services
-mvn install -N
-cd ..
-cd portlets
-mvn install -N
-cd ..
-cd hooks
-mvn install -N
-cd ..
-cd layouts
-mvn install -N
-cd ..
-
-cd services/plansProposalsFacade
-mvn install -N
-cd ../..
 
 cd services/plansProposalsFacade/plansProposalsFacade-portlet-service
 mvn clean compile package install clean
@@ -40,11 +17,6 @@ mvn clean compile package liferay:deploy -DskipTests=true clean
 cd ../../..
 
 cd themes/climatecolab-theme
-  mvn clean compile package install
-  mvn clean compile liferay:build-css package liferay:deploy clean
-cd ../..
-
-cd themes/fow-theme
   mvn clean compile liferay:build-css package liferay:deploy clean
 cd ../..
 

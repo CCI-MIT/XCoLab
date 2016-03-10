@@ -33,6 +33,7 @@ public class RandomProposalsPreferences {
     private String title;
     private Integer feedSize;
     private String allProposalsUrl;
+    private String allProposalsTitle;
 
     public String getTitle() {
         return title;
@@ -181,8 +182,6 @@ public class RandomProposalsPreferences {
     public void setAllProposalsTitle(String allProposalsTitle) {
         this.allProposalsTitle = allProposalsTitle;
     }
-
-    private String allProposalsTitle;
 
     public String getAllProposalsUrl() {
         return allProposalsUrl;

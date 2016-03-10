@@ -4,6 +4,7 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -22,8 +23,8 @@ import javax.portlet.PortletRequest;
 public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private final String discussionTabName;
-    private final Integer proposalId;
-    private final Integer contestPhaseId;
+    private final Long proposalId;
+    private final Long contestPhaseId;
 
     public ProposalDiscussionPermissions(PortletRequest request, DiscussionCategoryGroup categoryGroup)
             throws SystemException, PortalException {
@@ -45,30 +46,32 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         return discussionTabName;
     }
 
-    private Integer getProposalId(PortletRequest request){
-        Integer proposalId = null;
+    private Long getProposalId(PortletRequest request){
+        Long proposalId = null;
         try {
             String proposalIdParameter = request.getParameter("proposalId");
             if (proposalIdParameter != null) {
-                proposalId = Integer.parseInt(proposalIdParameter);
+                proposalId = Long.parseLong(proposalIdParameter);
             } else {
                 proposalIdParameter = request.getParameter("planId");
                 if (proposalIdParameter != null) {
-                    proposalId = Integer.parseInt(proposalIdParameter);
+                    proposalId = Long.parseLong(proposalIdParameter);
                 }
             }
         } catch (NumberFormatException ignored) { }
         return proposalId;
     }
 
-    private Integer getContestPhaseId(PortletRequest request){
-        Integer phaseId = null;
+    private Long getContestPhaseId(PortletRequest request){
+        Long phaseId = null;
         try {
             String contestPhaseIdParameter = request.getParameter("phaseId");
             if (contestPhaseIdParameter != null) {
-                phaseId = Integer.parseInt(contestPhaseIdParameter);
+                phaseId = Long.parseLong(contestPhaseIdParameter);
+            } else if (proposalId != null && proposalId > 0) {
+                phaseId = Proposal2PhaseLocalServiceUtil.getLatestContestPhaseInContest(proposalId).getContestPhasePK();
             }
-        } catch (NumberFormatException ignored) { }
+        } catch (NumberFormatException | SystemException | PortalException ignored) { }
         return phaseId;
     }
 
@@ -76,14 +79,16 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     public boolean getCanSeeAddCommentButton(){
         boolean canSeeAddCommentButton = false;
         boolean isIdsInitialized = proposalId != null && contestPhaseId != null;
-        boolean isEvaluationTabActive = discussionTabName != null && discussionTabName.equals(ProposalTab.EVALUATION.name());
+        boolean isEvaluationTabActive = discussionTabName != null
+                && discussionTabName.equals(ProposalTab.EVALUATION.name());
 
-        if(isEvaluationTabActive) {
-            if(isIdsInitialized){
-                canSeeAddCommentButton = isUserAllowedToAddCommentsToProposalEvaluationInContestPhase(currentUser, proposalId, contestPhaseId);
+        if (isEvaluationTabActive) {
+            if (isIdsInitialized) {
+                canSeeAddCommentButton = isUserAllowedToAddCommentsToProposalEvaluationInContestPhase(currentUser,
+                        proposalId, contestPhaseId);
             }
         } else {
-        canSeeAddCommentButton = true;
+            canSeeAddCommentButton = true;
         }
         return canSeeAddCommentButton;
     }
@@ -95,25 +100,26 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
                 Proposal proposal = ProposalLocalServiceUtil.fetchProposal(proposalId);
                 ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
-                return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdmin();
+                return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdminAll();
             } catch (PortalException | SystemException ignored) { }
         }
-        return message.getAuthorId() == currentUser.getUserId() || getCanAdmin();
+        return message.getAuthorId() == currentUser.getUserId() || getCanAdminAll();
     }
 
     private boolean isUserAllowedToAddCommentsToProposalEvaluationInContestPhase
-            (User user, Integer proposalId, Integer contestPhaseId){
+            (User user, Long proposalId, Long contestPhaseId){
 
         boolean isUserAllowed = false;
         try {
             Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
-            isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId) ||
-                    isUserProposalAuthorOrTeamMember(user, proposal);
+            isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId)
+                    || isUserProposalAuthorOrTeamMember(user, proposal)
+                    || getCanAdminAll();
         } catch (SystemException | PortalException ignored) { }
         return isUserAllowed;
     }
 
-    private boolean isUserFellowOrJudgeOrAdvisor(User user, Proposal proposal,Integer contestPhaseId){
+    private boolean isUserFellowOrJudgeOrAdvisor(User user, Proposal proposal, Long contestPhaseId) {
         boolean isFellow = false;
         boolean isJudge = false;
         boolean isAdvisor= false;

@@ -1,10 +1,15 @@
 package org.xcolab.portlets.proposals.view.interceptors;
 
+import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
+import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -22,6 +27,8 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
     private static final String MODEL_ATTRIBUTE_VIEW_CONTEST_PHASE_ID = "viewContestPhaseId";
     private static final String MODEL_ATTRIBUTE_PROPOSALS_PREFERENCES = "preferences";
     private static final String MODEL_ATTRIBUTE_CONTEST_TYPE = "contestType";
+    private static final String MODEL_ATTRIBUTE_COLAB_NAME = "colabName";
+    private static final String MODEL_ATTRIBUTE_COLAB_SHORT_NAME = "colabShortName";
     
     @Autowired
     private ProposalsContext proposalsContext;
@@ -29,7 +36,7 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
     
     @Override
     public void postHandleRender(RenderRequest request, RenderResponse response, Object handler,
-            org.springframework.web.portlet.ModelAndView modelAndView) throws Exception {
+            ModelAndView modelAndView) throws Exception {
         super.postHandleRender(request, response, handler, modelAndView);
         
         if (modelAndView != null) {
@@ -56,6 +63,14 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject(MODEL_ATTRIBUTE_VIEW_CONTEST_PHASE_ID, proposalsContext.getViewContestPhaseId(request));
             modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSALS_PREFERENCES, proposalsContext.getProposalsPreferences(request));
             modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST_TYPE, proposalsContext.getContestType(request));
+            try {
+                modelAndView.addObject(MODEL_ATTRIBUTE_COLAB_NAME, ConfigurationAttributeLocalServiceUtil
+                        .getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
+                modelAndView.addObject(MODEL_ATTRIBUTE_COLAB_SHORT_NAME, ConfigurationAttributeLocalServiceUtil
+                        .getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
+            } catch (NoSuchConfigurationAttributeException e) {
+                throw new SystemException("Required ConfigurationAttributes not set", e);
+            }
         }
     }
 }

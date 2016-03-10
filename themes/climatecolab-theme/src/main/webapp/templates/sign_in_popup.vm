@@ -2,7 +2,7 @@
     <div class="popup">
         <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_login').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
         
-        <h4>Please log in to the Climate CoLab</h4>
+        <h4>Please log in to the $_colab_name</h4>
     #if ($request.getParameter('isSigningIn')) 
         #parse ("$full_templates_path/signin_reg_error_message_translator.vm")
         #set($loginMessageClass='hidden')

@@ -28,6 +28,7 @@ import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.mail.EmailToAdminDispatcher;
 
 import javax.mail.internet.AddressException;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -155,7 +156,7 @@ public class AutoPromoteHelper {
                             try {
                                 ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
                                 PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(p.getProposalId(), phase.getContestPhasePK());
-                            } catch (SystemException | PortalException | AddressException | MailEngineException e) {
+                            } catch (SystemException | PortalException | AddressException | MailEngineException | UnsupportedEncodingException e) {
                                 _log.error("Could not send proposal promotion colab messaging notification", e);
                             }
                         }

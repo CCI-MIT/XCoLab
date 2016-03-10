@@ -7,7 +7,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
-import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
+import org.xcolab.utils.WikiUtil;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.validation.constraints.NotNull;
@@ -42,7 +42,7 @@ public class ContestDescriptionBean implements Serializable {
     @NotNull(message = "A schedule template must be selected.")
     private Long scheduleTemplateId;
 
-    private Boolean shouldUpdateContestUrlName;
+    private boolean shouldUpdateContestUrlName;
 
     @SuppressWarnings("unused")
     public ContestDescriptionBean() { }
@@ -161,8 +161,8 @@ public class ContestDescriptionBean implements Serializable {
 
         String newContestTitle = contest.getContestShortName();
         if (!oldContestTitle.equals(newContestTitle)) {
-            WikiPageWrapper.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
-            WikiPageWrapper.updateContestResourceUrl(contest, newContestTitle);
+            WikiUtil.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
+            WikiUtil.updateContestResourceUrl(contest, newContestTitle);
         }
     }
 

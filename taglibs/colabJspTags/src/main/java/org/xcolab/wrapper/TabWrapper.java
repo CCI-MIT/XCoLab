@@ -5,6 +5,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDiscussion;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -31,7 +32,6 @@ public class TabWrapper implements Serializable {
         this.context = context;
         this.permissions = context.getPermissions(request);
     }
-
 
     public TabEnum getTab() {
         return tab;
@@ -78,7 +78,7 @@ public class TabWrapper implements Serializable {
     }
 
     public long getDiscussionId() throws SystemException, PortalException{
-        Long discussionId = 0L;
+        Long discussionId;
         Contest contest = context.getContest(request);
         try {
             discussionId = ContestDiscussionLocalServiceUtil.
@@ -93,7 +93,7 @@ public class TabWrapper implements Serializable {
             throws SystemException, NoSuchContestDiscussionException{
 
         DiscussionCategoryGroup newDiscussionCategoryGroup = DiscussionCategoryGroupLocalServiceUtil.
-                createDiscussionCategoryGroup("Contest " + contestId + " " + tabName + " discussion");
+                createDiscussionCategoryGroup(ContestTypeLocalServiceUtil.getContestTypeFromContestId(contestId).getContestName() + " " + contestId + " " + tabName + " discussion");
 
         newDiscussionCategoryGroup.setUrl(UrlBuilder.getContestCreationTabCommentsUrl(contestId, tabName));
         DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(newDiscussionCategoryGroup);

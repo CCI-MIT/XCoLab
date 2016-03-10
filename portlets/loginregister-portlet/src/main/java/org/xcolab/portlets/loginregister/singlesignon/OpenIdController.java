@@ -2,15 +2,12 @@ package org.xcolab.portlets.loginregister.singlesignon;
 
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
-import com.ext.utils.iptranslation.Location;
-import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.*;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.*;
+import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -21,53 +18,44 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.portlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Locale;
-
-import org.json.*;
-
 import org.xcolab.portlets.loginregister.CreateUserBean;
 import org.xcolab.portlets.loginregister.ImageUploadUtils;
 import org.xcolab.portlets.loginregister.MainViewController;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableException;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Locale;
+
 @Controller
 @RequestMapping(value = "view", params = "SSO=google")
 public class OpenIdController {
 
-    private Log _log = LogFactoryUtil.getLog(OpenIdController.class);
-
     private static final String GOOGLE_OAUTH_REQUEST_STATE_TOKEN = "GOOGLE_OAUTH_REQUEST_STATE_TOKEN";
 
-
     @RequestMapping(params = "action=initiateOpenIdRegistration")
-    public void initiateOpenIdRegistration(ActionRequest actionRequest, Model model, ActionResponse actionResponse) throws Exception{
-        ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
+    public void initiateOpenIdRegistration(ActionRequest actionRequest, Model model, ActionResponse actionResponse) throws IOException {
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
         HttpSession session = request.getSession();
         session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_REGISTRATION);
 
-        initiateOpenIdRequest(actionRequest, model, actionResponse);
+        initiateOpenIdRequest(actionRequest, actionResponse);
     }
 
     @RequestMapping(params = "action=initiateOpenIdLogin")
-    public void initiateOpenIdLogin(ActionRequest actionRequest, Model model, ActionResponse actionResponse) throws Exception{
-
-        ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
+    public void initiateOpenIdLogin(ActionRequest actionRequest, Model model, ActionResponse actionResponse) throws IOException {
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
         HttpSession session = request.getSession();
         session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_LOGIN);
 
-        initiateOpenIdRequest(actionRequest, model, actionResponse);
-
+        initiateOpenIdRequest(actionRequest, actionResponse);
     }
 
-    private void initiateOpenIdRequest(ActionRequest actionRequest, Model model, ActionResponse actionResponse) throws Exception{
+    private void initiateOpenIdRequest(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException {
         ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
         HttpSession session = request.getSession();
@@ -96,7 +84,9 @@ public class OpenIdController {
 		session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
 
         String redirectUrl = (String)session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
-        if(Validator.isNull(redirectUrl) || Validator.isBlank(redirectUrl)) redirectUrl =  themeDisplay.getURLHome();
+        if (Validator.isNull(redirectUrl) || Validator.isBlank(redirectUrl)) {
+            redirectUrl = themeDisplay.getURLHome();
+        }
         session.removeAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
 
         // Check whether the state token matches => CSRF protection
@@ -111,26 +101,17 @@ public class OpenIdController {
             String emailAddress = json.getString("email");
             String profilePicURL = json.getString("picture");
 
-			String city = null;
 			String country = null;
-			try {
-				city = getCity(request.getRemoteAddr());
-
-			} catch (UserLocationNotResolveableException e) {
-				_log.warn(e);
-			}
 
 			try {
-				country = getCountry(request, json.getString("locale"));
-			} catch (UserLocationNotResolveableException e) {
-				_log.warn(e);
-			}
+				country = getCountry(json.getString("locale"));
+			} catch (UserLocationNotResolveableException ignored) { }
 
-            User user = null;
+            User user;
             try {
                 user = UserLocalServiceUtil.getUserByOpenId(
                         themeDisplay.getCompanyId(), openId);
-                portletSession.setAttribute(SSOKeys.OPEN_ID_LOGIN, new Long(user.getUserId()), PortletSession.APPLICATION_SCOPE);
+                portletSession.setAttribute(SSOKeys.OPEN_ID_LOGIN, user.getUserId(), PortletSession.APPLICATION_SCOPE);
 
                 actionResponse.sendRedirect(redirectUrl);
                 ImageUploadUtils.updateProfilePicture(user, profilePicURL);
@@ -145,15 +126,12 @@ public class OpenIdController {
                     }
                     user = UserLocalServiceUtil.getUserByEmailAddress(themeDisplay.getCompanyId(),emailAddress);
                     user.setOpenId(openId);
-					if (Validator.isNotNull(city)) {
-						setExpandoValue(user, CommunityConstants.CITY, city);
-					}
 					if (Validator.isNotNull(country)) {
 						setExpandoValue(user, CommunityConstants.COUNTRY, country);
 					}
 
                     UserLocalServiceUtil.updateUser(user);
-                    portletSession.setAttribute(SSOKeys.OPEN_ID_LOGIN, new Long(user.getUserId()), PortletSession.APPLICATION_SCOPE);
+                    portletSession.setAttribute(SSOKeys.OPEN_ID_LOGIN, user.getUserId(), PortletSession.APPLICATION_SCOPE);
                     actionResponse.sendRedirect(redirectUrl);
 					LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
 
@@ -171,20 +149,18 @@ public class OpenIdController {
                         portletSession.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName, PortletSession.APPLICATION_SCOPE);
                     }
 
-                    if (Validator.isNotNull(firstName)) portletSession.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName, PortletSession.APPLICATION_SCOPE);
-                    if (Validator.isNotNull(lastName)) portletSession.setAttribute(SSOKeys.SSO_LAST_NAME, lastName, PortletSession.APPLICATION_SCOPE);
-                    portletSession.setAttribute(SSOKeys.SSO_CITY, city, PortletSession.APPLICATION_SCOPE);
+                    if (Validator.isNotNull(firstName)) {
+                        portletSession.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName, PortletSession.APPLICATION_SCOPE);
+                    }
+                    if (Validator.isNotNull(lastName)) {
+                        portletSession.setAttribute(SSOKeys.SSO_LAST_NAME, lastName, PortletSession.APPLICATION_SCOPE);
+                    }
                     portletSession.setAttribute(SSOKeys.SSO_COUNTRY, country, PortletSession.APPLICATION_SCOPE);
 
                     long imageId = 0;
 					if (Validator.isNotNull(profilePicURL)) {
-                        try {
-                            imageId = ImageUploadUtils.linkProfilePicture(profilePicURL);
-                            portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
-                        } catch(Exception e) {
-                            _log.error("Could not link profile picture with URL " + profilePicURL + " to new user account", e);
-                        }
-
+                        imageId = ImageUploadUtils.linkProfilePicture(profilePicURL);
+                        portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
                     }
 
                     if (session.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_LOGIN)) {
@@ -233,19 +209,8 @@ public class OpenIdController {
         }
     }
 
-    protected String getFirstValue(List<String> values) {
-        if ((values == null) || (values.size() < 1)) {
-            return null;
-        }
-        return values.get(0);
-    }
-
-	private String getCountry(HttpServletRequest req, String localeCountryString) throws UserLocationNotResolveableException {
-		try {
-			return getCountryFromLocaleObject(localeCountryString);
-		} catch (UserLocationNotResolveableException e1) {
-			return getCountryFromRemoteAddress(req.getRemoteAddr());
-		}
+	private String getCountry(String localeCountryString) throws UserLocationNotResolveableException {
+		return getCountryFromLocaleObject(localeCountryString);
 	}
 
 	private String getCountryFromLocaleObject(String localeCountryString) throws UserLocationNotResolveableException {
@@ -256,28 +221,6 @@ public class OpenIdController {
 		}
 
 		throw new UserLocationNotResolveableException("Could not retrieve country from Google locale");
-	}
-
-	private String getCountryFromRemoteAddress(String ipAddr) throws UserLocationNotResolveableException {
-		try {
-			Location location = IpTranslationServiceUtil.getLocationForIp(ipAddr);
-			if (Validator.isNotNull(location)) {
-				return location.getCountryName();
-			}
-		} finally {
-			throw new UserLocationNotResolveableException("Could not retrieve country from IP address");
-		}
-	}
-
-	private String getCity(String ipAddr) throws UserLocationNotResolveableException {
-		try {
-			Location location = IpTranslationServiceUtil.getLocationForIp(ipAddr);
-			if (Validator.isNotNull(location)) {
-				return location.getCity();
-			}
-		} finally {
-			throw new UserLocationNotResolveableException("Could not retrieve city from IP address");
-		}
 	}
 
 	private void setExpandoValue(User user, String valueName, Object data) throws SystemException, PortalException {

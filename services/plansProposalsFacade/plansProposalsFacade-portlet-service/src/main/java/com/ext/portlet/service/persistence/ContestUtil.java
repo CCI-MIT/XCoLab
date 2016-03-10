@@ -263,60 +263,158 @@ public class ContestUtil {
     }
 
     /**
-    * Returns the contest where ContestUrlName = &#63; or throws a {@link com.ext.portlet.NoSuchContestException} if it could not be found.
+    * Returns all the contests where ContestUrlName = &#63;.
     *
     * @param ContestUrlName the contest url name
-    * @return the matching contest
-    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @return the matching contests
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.Contest findByContestUrlName(
+    public static java.util.List<com.ext.portlet.model.Contest> findByContestUrlName(
         java.lang.String ContestUrlName)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByContestUrlName(ContestUrlName);
     }
 
     /**
-    * Returns the contest where ContestUrlName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    * Returns a range of all the contests where ContestUrlName = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
     *
     * @param ContestUrlName the contest url name
-    * @return the matching contest, or <code>null</code> if a matching contest could not be found
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @return the range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.Contest fetchByContestUrlName(
-        java.lang.String ContestUrlName)
+    public static java.util.List<com.ext.portlet.model.Contest> findByContestUrlName(
+        java.lang.String ContestUrlName, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByContestUrlName(ContestUrlName);
+        return getPersistence().findByContestUrlName(ContestUrlName, start, end);
     }
 
     /**
-    * Returns the contest where ContestUrlName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    * Returns an ordered range of all the contests where ContestUrlName = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
     *
     * @param ContestUrlName the contest url name
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching contest, or <code>null</code> if a matching contest could not be found
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.Contest fetchByContestUrlName(
-        java.lang.String ContestUrlName, boolean retrieveFromCache)
+    public static java.util.List<com.ext.portlet.model.Contest> findByContestUrlName(
+        java.lang.String ContestUrlName, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .fetchByContestUrlName(ContestUrlName, retrieveFromCache);
+                   .findByContestUrlName(ContestUrlName, start, end,
+            orderByComparator);
     }
 
     /**
-    * Removes the contest where ContestUrlName = &#63; from the database.
+    * Returns the first contest in the ordered set where ContestUrlName = &#63;.
     *
     * @param ContestUrlName the contest url name
-    * @return the contest that was removed
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.Contest removeByContestUrlName(
-        java.lang.String ContestUrlName)
+    public static com.ext.portlet.model.Contest findByContestUrlName_First(
+        java.lang.String ContestUrlName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().removeByContestUrlName(ContestUrlName);
+        return getPersistence()
+                   .findByContestUrlName_First(ContestUrlName, orderByComparator);
+    }
+
+    /**
+    * Returns the first contest in the ordered set where ContestUrlName = &#63;.
+    *
+    * @param ContestUrlName the contest url name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Contest fetchByContestUrlName_First(
+        java.lang.String ContestUrlName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestUrlName_First(ContestUrlName,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the last contest in the ordered set where ContestUrlName = &#63;.
+    *
+    * @param ContestUrlName the contest url name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Contest findByContestUrlName_Last(
+        java.lang.String ContestUrlName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestUrlName_Last(ContestUrlName, orderByComparator);
+    }
+
+    /**
+    * Returns the last contest in the ordered set where ContestUrlName = &#63;.
+    *
+    * @param ContestUrlName the contest url name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Contest fetchByContestUrlName_Last(
+        java.lang.String ContestUrlName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestUrlName_Last(ContestUrlName, orderByComparator);
+    }
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where ContestUrlName = &#63;.
+    *
+    * @param ContestPK the primary key of the current contest
+    * @param ContestUrlName the contest url name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest
+    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Contest[] findByContestUrlName_PrevAndNext(
+        long ContestPK, java.lang.String ContestUrlName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestUrlName_PrevAndNext(ContestPK, ContestUrlName,
+            orderByComparator);
+    }
+
+    /**
+    * Removes all the contests where ContestUrlName = &#63; from the database.
+    *
+    * @param ContestUrlName the contest url name
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByContestUrlName(java.lang.String ContestUrlName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByContestUrlName(ContestUrlName);
     }
 
     /**
@@ -329,6 +427,88 @@ public class ContestUtil {
     public static int countByContestUrlName(java.lang.String ContestUrlName)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByContestUrlName(ContestUrlName);
+    }
+
+    /**
+    * Returns the contest where ContestUrlName = &#63; and ContestYear = &#63; or throws a {@link com.ext.portlet.NoSuchContestException} if it could not be found.
+    *
+    * @param ContestUrlName the contest url name
+    * @param ContestYear the contest year
+    * @return the matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Contest findByContestUrlNameContestYear(
+        java.lang.String ContestUrlName, long ContestYear)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestUrlNameContestYear(ContestUrlName, ContestYear);
+    }
+
+    /**
+    * Returns the contest where ContestUrlName = &#63; and ContestYear = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param ContestUrlName the contest url name
+    * @param ContestYear the contest year
+    * @return the matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Contest fetchByContestUrlNameContestYear(
+        java.lang.String ContestUrlName, long ContestYear)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestUrlNameContestYear(ContestUrlName, ContestYear);
+    }
+
+    /**
+    * Returns the contest where ContestUrlName = &#63; and ContestYear = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param ContestUrlName the contest url name
+    * @param ContestYear the contest year
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Contest fetchByContestUrlNameContestYear(
+        java.lang.String ContestUrlName, long ContestYear,
+        boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestUrlNameContestYear(ContestUrlName,
+            ContestYear, retrieveFromCache);
+    }
+
+    /**
+    * Removes the contest where ContestUrlName = &#63; and ContestYear = &#63; from the database.
+    *
+    * @param ContestUrlName the contest url name
+    * @param ContestYear the contest year
+    * @return the contest that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Contest removeByContestUrlNameContestYear(
+        java.lang.String ContestUrlName, long ContestYear)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .removeByContestUrlNameContestYear(ContestUrlName,
+            ContestYear);
+    }
+
+    /**
+    * Returns the number of contests where ContestUrlName = &#63; and ContestYear = &#63;.
+    *
+    * @param ContestUrlName the contest url name
+    * @param ContestYear the contest year
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByContestUrlNameContestYear(
+        java.lang.String ContestUrlName, long ContestYear)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByContestUrlNameContestYear(ContestUrlName, ContestYear);
     }
 
     /**

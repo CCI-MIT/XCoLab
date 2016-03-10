@@ -205,6 +205,8 @@
 
         </c:if>
 
+
+
         <!-- TODO show fallback Graph -->
         <div id="impact-chart"> &#160;</div>
         <div class="clear"><!--  --></div>
@@ -225,7 +227,7 @@
                         <th class="blue-bg" style="text-align: center" colspan="${fn:length(impactIterations)}">
                             Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
                             <a href="javascript:;" class="helpTrigger"><img
-                                    src="/climatecolab-theme/images/icon-addprop-question.png" width="15"
+                                    src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15"
                                     height="15"/></a><br/>
 
                             <div class="addprophelp" style="color:white;">
@@ -244,7 +246,7 @@
                     <tr>
                         <td class="blue-bg" style="text-align: left">Sector
                             <a href="javascript:;" class="helpTrigger"><img
-                                    src="/climatecolab-theme/images/icon-addprop-question.png" width="15"
+                                    src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15"
                                     height="15"/></a><br/>
 
                             <div class="addprophelp" style="color:white;">
@@ -338,11 +340,70 @@
             </div>
         </c:if>
     </div>
+    <div class="impactComments">
+        <c:if test="${edit}">
+                <div>
+                    <c:if test="${canCommentAsAuthor}">
+                        <div class="addpropbox q1">
+                            <label>
+                                <strong>Comments from Author </strong>
+                            </label>
+                            <div class="addprophelp">Give your comments for your proposal's estimation of impact.</div>
+                            <div class="addpropInputContainer">
+                                <textarea id="impactAuthorComment_text_area"><c:if test="${not empty authorComment}">${authorComment.stringValue}</c:if></textarea>
+                                <div class="clearfix"><!--  --></div>
+                            </div>
+                        </div>
+                    </c:if>
+                    <c:if test="${canCommentAsAIF}">
+                        <div class="addpropbox q1">
+                            <label>
+                                <strong>Comments from Impact Assessment Fellow</strong>
+                            </label>
+                            <div class="addprophelp">Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.</div>
+                            <div class="addpropInputContainer">
+                                <textarea  id="impactIAFComment_text_area"><c:if test="${not empty iafComment}">${iafComment.stringValue}</c:if></textarea>
+                                <div class="clearfix"><!--  --></div>
+
+                            </div>
+                        </div>
+                    </c:if>
+                </div>
+
+        </c:if>
+        <c:if test="${ not edit}">
+            <c:if test="${not empty authorComment}">
+                <h3>Comments from Author</h3>
+                <p>${authorComment.stringValue}</p>
+            </c:if>
+            <c:if test="${not empty iafComment}">
+                <h3>Comments from Impact Assessment Fellow</h3>
+                <p>${iafComment.stringValue}</p>
+            </c:if>
+        </c:if>
+    </div>
     <c:if test="${edit}">
         <script type="text/javascript">
             jQuery("#saveChangesButton").click(function () {
                 jQuery("#proposalScenarioId").val(jQuery("#modelingScenarioId").val());
                 jQuery("#scenarioModelId").val(jQuery("#modelingModelId").val());
+                if(jQuery("#impactAuthorComment_text_area")) {
+                    jQuery('<input></input>').attr({
+                        type: 'hidden',
+                        id: 'impactAuthorComment',
+                        name: 'impactAuthorComment'
+                    }).appendTo('#updateProposalScenarioForm');
+                    jQuery("#impactAuthorComment").val(jQuery("#impactAuthorComment_text_area").val());
+                }
+                if(jQuery("#impactIAFComment_text_area")) {
+                    jQuery('<input></input>').attr({
+                        type: 'hidden',
+                        id: 'impactIAFComment',
+                        name: 'impactIAFComment'
+                    }).appendTo('#updateProposalScenarioForm');
+                    jQuery("#impactIAFComment").val(jQuery("#impactIAFComment_text_area").val());
+                }
+
                 disableDirtyCheck();
                 jQuery("#updateProposalScenarioForm").submit();
             });

@@ -13,6 +13,8 @@ import com.ext.portlet.service.BalloonTextServiceUtil;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.portlet.service.BalloonUserTrackingServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
+import com.ext.portlet.service.ConfigurationAttributeServiceUtil;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestDebateServiceUtil;
 import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
@@ -145,6 +147,8 @@ import com.ext.portlet.service.ProposalReferenceServiceUtil;
 import com.ext.portlet.service.ProposalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterServiceUtil;
+import com.ext.portlet.service.ProposalUnversionedAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
@@ -194,6 +198,9 @@ public class ClpMessageListener extends BaseMessageListener {
             BalloonUserTrackingLocalServiceUtil.clearService();
 
             BalloonUserTrackingServiceUtil.clearService();
+            ConfigurationAttributeLocalServiceUtil.clearService();
+
+            ConfigurationAttributeServiceUtil.clearService();
             ContestLocalServiceUtil.clearService();
 
             ContestServiceUtil.clearService();
@@ -392,6 +399,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalSupporterLocalServiceUtil.clearService();
 
             ProposalSupporterServiceUtil.clearService();
+            ProposalUnversionedAttributeLocalServiceUtil.clearService();
+
+            ProposalUnversionedAttributeServiceUtil.clearService();
             ProposalVersionLocalServiceUtil.clearService();
 
             ProposalVersionServiceUtil.clearService();

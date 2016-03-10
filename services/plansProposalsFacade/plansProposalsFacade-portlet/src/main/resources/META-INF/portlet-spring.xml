@@ -32,6 +32,9 @@
 	<bean id="com.ext.portlet.service.BalloonUserTrackingLocalService" class="com.ext.portlet.service.impl.BalloonUserTrackingLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.BalloonUserTrackingService" class="com.ext.portlet.service.impl.BalloonUserTrackingServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.BalloonUserTrackingPersistence" class="com.ext.portlet.service.persistence.BalloonUserTrackingPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ConfigurationAttributeLocalService" class="com.ext.portlet.service.impl.ConfigurationAttributeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ConfigurationAttributeService" class="com.ext.portlet.service.impl.ConfigurationAttributeServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ConfigurationAttributePersistence" class="com.ext.portlet.service.persistence.ConfigurationAttributePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ContestLocalService" class="com.ext.portlet.service.impl.ContestLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestService" class="com.ext.portlet.service.impl.ContestServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestPersistence" class="com.ext.portlet.service.persistence.ContestPersistenceImpl" parent="basePersistence" />
@@ -232,6 +235,9 @@
 	<bean id="com.ext.portlet.service.ProposalSupporterLocalService" class="com.ext.portlet.service.impl.ProposalSupporterLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalSupporterService" class="com.ext.portlet.service.impl.ProposalSupporterServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalSupporterPersistence" class="com.ext.portlet.service.persistence.ProposalSupporterPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ProposalUnversionedAttributeLocalService" class="com.ext.portlet.service.impl.ProposalUnversionedAttributeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalUnversionedAttributeService" class="com.ext.portlet.service.impl.ProposalUnversionedAttributeServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ProposalUnversionedAttributePersistence" class="com.ext.portlet.service.persistence.ProposalUnversionedAttributePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ProposalVersionLocalService" class="com.ext.portlet.service.impl.ProposalVersionLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalVersionService" class="com.ext.portlet.service.impl.ProposalVersionServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalVersionPersistence" class="com.ext.portlet.service.persistence.ProposalVersionPersistenceImpl" parent="basePersistence" />
