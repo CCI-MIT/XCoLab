@@ -184,7 +184,9 @@ public class ContestScheduleWrapper {
     }
 
     public static void changeContestScheduleForContest(Contest contest, Long contestScheduleId) throws PortalException, SystemException {
+
         List<ContestPhase> contestPhasesForContestSchedule = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleId(contestScheduleId);
+        updateContestPhasesWithProposalsToNewScheduleId(contest, contestScheduleId);
         createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(contest, contestPhasesForContestSchedule, contestScheduleId);
         updateContestPhasesOfContestAccordingToContestSchedule(contest, contestScheduleId);
     }
@@ -211,7 +213,18 @@ public class ContestScheduleWrapper {
             contestPhaseBean.persist();
         }
     }
-
+    private static void updateContestPhasesWithProposalsToNewScheduleId(Contest contest, Long newScheduleId)
+            throws SystemException{
+        List<ContestPhase> existingContestPhasesForContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
+        Date now = new Date();
+        for(int i=0; i < existingContestPhasesForContest.size();i++) {
+            ContestPhase phase = existingContestPhasesForContest.get(i);
+            if (!(phase.getPhaseStartDate().getTime() > now.getTime())) {
+                phase.setContestScheduleId(newScheduleId);
+                ContestPhaseLocalServiceUtil.updateContestPhase(phase);
+            }
+        }
+    }
     private void updateContestsUsingSchedule(Long contestScheduleId) throws SystemException, PortalException {
         List<Contest> contestsUsingScheduleId = ContestLocalServiceUtil.getContestsByContestScheduleId(contestScheduleId);
         for (Contest contest : contestsUsingScheduleId) {
@@ -275,8 +288,9 @@ public class ContestScheduleWrapper {
             selectItems = getAllScheduleTemplateSelectionItems();
         } else {
             try {
+                List<ContestPhase> currentPhases = getCurrentPhasesForSchedule(existingScheduleId);
                 for (ContestSchedule scheduleTemplate : ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE)) {
-                    if (areAllPhaseTypesOfScheduleAvailableInOtherSchedule(existingScheduleId, scheduleTemplate.getId())) {
+                    if (arePhasesCompatibleUntilCurrentPhase(currentPhases, scheduleTemplate.getId())) {
                         selectItems.add(new LabelValue(scheduleTemplate.getId(), scheduleTemplate.getName()));
                     }
                 }
@@ -288,15 +302,37 @@ public class ContestScheduleWrapper {
         return selectItems;
     }
 
+    private static List<ContestPhase> getCurrentPhasesForSchedule(Long existingContestScheduleId) throws SystemException{
+           return ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(existingContestScheduleId, 0);
+    }
     private static List<Long> getContestSchedulePhaseTypes(Long existingContestScheduleId) throws SystemException {
         List<Long> contestSchedulePhaseTypes = new ArrayList<>();
-        List<ContestPhase> contestPhasesForContestSchedule = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(existingContestScheduleId, 0);
+        List<ContestPhase> contestPhasesForContestSchedule =
+                ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(existingContestScheduleId, 0);
         for (ContestPhase contestPhase : contestPhasesForContestSchedule) {
             contestSchedulePhaseTypes.add(contestPhase.getContestPhaseType());
         }
         return contestSchedulePhaseTypes;
     }
 
+    private static boolean arePhasesCompatibleUntilCurrentPhase(List<ContestPhase> curentContestSchedulePhases, Long selectableScheduleId)
+        throws SystemException {
+            List<ContestPhase> selectablePhases = getCurrentPhasesForSchedule(selectableScheduleId);
+            Date now = new Date();
+            for(int i=0; i < curentContestSchedulePhases.size();i++){
+                ContestPhase phase =  curentContestSchedulePhases.get(i);
+                if(!(phase.getPhaseStartDate().getTime() > now.getTime())){
+                    //phases are always created in chronological order
+                    if(!(selectablePhases.size() > i &&
+                            selectablePhases.get(i).getContestPhaseType() == phase.getContestPhaseType()))
+                        return false;
+
+                }else{
+                    break;
+                }
+            }
+        return true;
+    }
     private static boolean areAllPhaseTypesOfScheduleAvailableInOtherSchedule(Long contestScheduleId1, Long contestScheduleId2) throws SystemException {
         List<Long> contestSchedule1PhaseTypes = getContestSchedulePhaseTypes(contestScheduleId1);
         List<Long> contestSchedule2PhaseTypes = getContestSchedulePhaseTypes(contestScheduleId2);
