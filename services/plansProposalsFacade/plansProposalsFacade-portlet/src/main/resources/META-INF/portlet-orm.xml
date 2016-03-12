@@ -349,11 +349,23 @@
 			</id>
 			<basic name="contestId" />
 			<basic name="userId" />
-			<basic name="role" />
+			<basic name="roleId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ContestTeamMemberRoleModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="role" />
+			<basic name="sort" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestTypeModelImpl">
@@ -912,6 +924,7 @@
 			<basic name="focusAreaId" />
 			<basic name="tier" />
 			<basic name="allowedContestTypeIds" />
+			<basic name="allowedValues" />
 			<basic name="additionalIds" />
 			<basic name="locked" />
 			<basic name="contestIntegrationRelevance" />
@@ -1069,16 +1082,6 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.ProposalAttributeTypeModelImpl">
-		<attributes>
-			<id name="name" />
-			<basic name="visibleInVersionHistory" />
-			<basic name="copyOnPromote" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl">
 		<attributes>
 			<id name="id">
@@ -1091,15 +1094,6 @@
 			<basic name="numericValue" />
 			<basic name="stringValue" />
 			<basic name="realValue" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeModelImpl">
-		<attributes>
-			<id name="name" />
-			<basic name="copyOnPromote" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -1382,6 +1376,10 @@
 		<table name="xcolab_ContestTeamMember" />
 		<attributes />
 	</entity>
+	<entity class="com.ext.portlet.model.impl.ContestTeamMemberRoleImpl" name="ContestTeamMemberRole">
+		<table name="xcolab_ContestTeamMemberRole" />
+		<attributes />
+	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestTypeImpl" name="ContestType">
 		<table name="xcolab_ContestType" />
 		<attributes />
@@ -1570,16 +1568,8 @@
 		<table name="xcolab_ProposalAttribute" />
 		<attributes />
 	</entity>
-	<entity class="com.ext.portlet.model.impl.ProposalAttributeTypeImpl" name="ProposalAttributeType">
-		<table name="xcolab_ProposalAttributeType" />
-		<attributes />
-	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeImpl" name="ProposalContestPhaseAttribute">
 		<table name="xcolab_ProposalContestPhaseAttribute" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl" name="ProposalContestPhaseAttributeType">
-		<table name="xcolab_ProposalContestPhaseAttributeType" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalRatingImpl" name="ProposalRating">

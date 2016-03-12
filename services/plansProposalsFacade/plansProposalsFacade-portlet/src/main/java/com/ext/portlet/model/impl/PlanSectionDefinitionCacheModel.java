@@ -30,13 +30,14 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
     public long focusAreaId;
     public long tier;
     public String allowedContestTypeIds;
+    public String allowedValues;
     public String additionalIds;
     public boolean locked;
     public boolean contestIntegrationRelevance;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(27);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{id=");
         sb.append(id);
@@ -58,6 +59,8 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
         sb.append(tier);
         sb.append(", allowedContestTypeIds=");
         sb.append(allowedContestTypeIds);
+        sb.append(", allowedValues=");
+        sb.append(allowedValues);
         sb.append(", additionalIds=");
         sb.append(additionalIds);
         sb.append(", locked=");
@@ -115,6 +118,12 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
             planSectionDefinitionImpl.setAllowedContestTypeIds(allowedContestTypeIds);
         }
 
+        if (allowedValues == null) {
+            planSectionDefinitionImpl.setAllowedValues(StringPool.BLANK);
+        } else {
+            planSectionDefinitionImpl.setAllowedValues(allowedValues);
+        }
+
         if (additionalIds == null) {
             planSectionDefinitionImpl.setAdditionalIds(StringPool.BLANK);
         } else {
@@ -141,6 +150,7 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
         focusAreaId = objectInput.readLong();
         tier = objectInput.readLong();
         allowedContestTypeIds = objectInput.readUTF();
+        allowedValues = objectInput.readUTF();
         additionalIds = objectInput.readUTF();
         locked = objectInput.readBoolean();
         contestIntegrationRelevance = objectInput.readBoolean();
@@ -189,6 +199,12 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(allowedContestTypeIds);
+        }
+
+        if (allowedValues == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(allowedValues);
         }
 
         if (additionalIds == null) {

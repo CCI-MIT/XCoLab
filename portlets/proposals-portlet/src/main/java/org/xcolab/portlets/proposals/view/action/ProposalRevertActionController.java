@@ -51,10 +51,8 @@ public class ProposalRevertActionController {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         long userId = themeDisplay.getUserId();
 
-        ProposalWrapper oldProposalVersionToBeBecomeCurrent;
-
         if (proposalsContext.getProposal(request) != null) {
-            oldProposalVersionToBeBecomeCurrent = proposalsContext.getProposalWrapped(request);
+            ProposalWrapper oldProposalVersionToBeBecomeCurrent = proposalsContext.getProposalWrapped(request);
             updateProposalSpecialAttributes(userId, oldProposalVersionToBeBecomeCurrent);
 
             updateProposalAttributes(request, userId, oldProposalVersionToBeBecomeCurrent);
@@ -70,11 +68,17 @@ public class ProposalRevertActionController {
         boolean updateProposalReferences = false;
         for (ProposalSectionWrapper section: oldProposalVersionToBeBecomeCurrent.getSections()) {
             String newSectionValue = section.getStringValue();
-            if (section.getType() == PlanSectionTypeKeys.TEXT || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
-                    ProposalAttributeLocalServiceUtil.setAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newSectionValue);
-                    if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
-                        updateProposalReferences = true;
-                    }
+            if (section.getType() == PlanSectionTypeKeys.TEXT
+                    || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE
+                    || section.getType() == PlanSectionTypeKeys.DROPDOWN_MENU) {
+
+                ProposalAttributeLocalServiceUtil.setAttribute(userId,
+                        oldProposalVersionToBeBecomeCurrent.getProposalId(),
+                        ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newSectionValue);
+
+                if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
+                    updateProposalReferences = true;
+                }
             }
             if (section.getType() == PlanSectionTypeKeys.ONTOLOGY_REFERENCE) {
                 if (StringUtils.isNumeric(newSectionValue)) {

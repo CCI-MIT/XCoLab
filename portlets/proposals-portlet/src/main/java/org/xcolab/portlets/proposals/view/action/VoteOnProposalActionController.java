@@ -29,8 +29,8 @@ import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.utils.emailnotification.ProposalVoteNotification;
-import org.xcolab.utils.emailnotification.ProposalVoteValidityConfirmation;
+import org.xcolab.utils.emailnotification.proposal.ProposalVoteNotification;
+import org.xcolab.utils.emailnotification.proposal.ProposalVoteValidityConfirmation;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

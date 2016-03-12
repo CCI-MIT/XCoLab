@@ -1,7 +1,5 @@
 package org.xcolab.portlets.admintasks;
 
-import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.Activity.LoginRegisterActivityKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.model.Contest;
@@ -11,62 +9,38 @@ import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.icesoft.faces.async.render.SessionRenderer;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.ClassName;
-import com.liferay.portal.model.Resource;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-import com.liferay.portlet.wiki.model.WikiPage;
-import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
-import edu.emory.mathcs.backport.java.util.Collections;
 import org.apache.commons.lang3.StringUtils;
-import org.xcolab.portlets.admintasks.data.DataBean;
 import org.xcolab.utils.UrlBuilder;
-import org.xcolab.utils.WikiUtil;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -74,200 +48,21 @@ import java.util.Map;
 import java.util.Set;
 
 public class AdminTasksBean {
-	private Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
+	private static final Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
 
-	private final DataBean dataBean = new DataBean();
-	private final List<String> messages;
+    private final List<String> messages;
 
 	public List<String> getMessages() {
 		return messages;
 	}
-
 
     public AdminTasksBean(){
         SessionRenderer.addCurrentSession("pushMessages");
         messages = new ArrayList<>();
     }
 
-	private final static String REQUEST_PARAM_NAME = "com.liferay.portal.kernel.servlet.PortletServletRequest";
-
-	public static HttpServletRequest getRequest() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		return (HttpServletRequest) ((HttpServletRequestWrapper) context
-				.getExternalContext().getRequestMap().get(REQUEST_PARAM_NAME))
-				.getRequest();
-	}
-
-	private final static long defaultCompanyId = 10112L;
-
-	public String fixWikiPermissions() throws SystemException, PortalException {
-
-		if (true) {
-			throw new PortalException(
-					"Fix wiki permissions method needs to be adjusted to liferay 6.2");
-		}
-		Long companyId = defaultCompanyId;
-		Role guest = RoleLocalServiceUtil.getRole(companyId,
-				RoleConstants.GUEST);
-		Role userRole = RoleLocalServiceUtil.getRole(companyId,
-				RoleConstants.USER);
-		Role siteMemberRole = RoleLocalServiceUtil.getRole(companyId,
-				RoleConstants.SITE_MEMBER);
-
-		int idx = 0;
-		int total = WikiPageLocalServiceUtil.getWikiPagesCount();
-
-		for (WikiPage wp : WikiPageLocalServiceUtil.getWikiPages(0,
-				Integer.MAX_VALUE)) {
-			idx++;
-			System.out.println(idx + " of " + total);
-
-			Resource resource = null;
-
-			/*
-			 * try { resource =
-			 * ResourceLocalServiceUtil.getResource(defaultCompanyId,
-			 * WikiPage.class.getName(), ResourceConstants.SCOPE_INDIVIDUAL,
-			 * String.valueOf(wp.getResourcePrimKey())); } catch
-			 * (NoSuchResourceException nsre) {
-			 * System.out.println("Can't find resource for page: " +
-			 * wp.getPageId()); //resource =
-			 * ResourceLocalServiceUtil.addResource(defaultCompanyId,
-			 * WikiPage.class.getName(), ResourceConstants.SCOPE_INDIVIDUAL,
-			 * String.valueOf(wp.getResourcePrimKey()));
-			 * System.out.println("New resource created: " +
-			 * resource.getResourceId());
-			 * //ResourceLocalServiceUtil.updateResource(resource); }
-			 */
-			/*
-			 * PermissionLocalServiceUtil.setRolePermissions(guest.getRoleId(),
-			 * companyId, WikiPage.class.getName(),
-			 * ResourceConstants.SCOPE_COMPANY,
-			 * String.valueOf(wp.getResourcePrimKey()), guestActions);
-			 */
-			/*
-			 * PermissionLocalServiceUtil.setRolePermissions(guest.getRoleId(),
-			 * actionIds, resource.getResourceId());
-			 * PermissionLocalServiceUtil.setRolePermissions
-			 * (userRole.getRoleId(), actionIds, resource.getResourceId());
-			 * PermissionLocalServiceUtil
-			 * .setRolePermissions(siteMemberRole.getRoleId(), actionIds,
-			 * resource.getResourceId());
-			 */
-			/*
-			 * PermissionServiceUtil.setRolePermissions( guest.getRoleId(),
-			 * wp.getGroupId(), actionIds, resource.getResourceId());
-			 */
-		}
-		return null;
-	}
-
-    public String autopromoteProposals() throws PortalException,
-            SystemException {
-        ContestPhaseLocalServiceUtil.autoPromoteProposals();
-        return null;
-    }
-
-	public void addMissingCommentsSocialActivities() throws SystemException,
-			PortalException {
-
-		/*
-		 * ClassLoader portletClassLoader = (ClassLoader)
-		 * PortletBeanLocatorUtil.locate(servletContextName,
-		 * name))(MESSAGE_ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
-		 */
-		ClassName cn = ClassNameLocalServiceUtil
-				.getClassName(DiscussionCategoryGroup.class.getName());
-
-		Set<String> discussionNamesToIgnore = new HashSet<>();
-		List<DiscussionCategoryGroup> dcgs = DiscussionCategoryGroupLocalServiceUtil
-				.getDiscussionCategoryGroups(0, 10000);
-		Collections.sort(dcgs, new Comparator<DiscussionCategoryGroup>() {
-
-			public int compare(DiscussionCategoryGroup o1,
-					DiscussionCategoryGroup o2) {
-				if (o1.getCommentsThread() <= 0) {
-					if (o2.getCommentsThread() <= 0) {
-						return (int) (o1.getId() - o2.getId());
-					}
-					return 1;
-				}
-				if (o2.getCommentsThread() <= 0) {
-					return -1;
-				}
-				try {
-					DiscussionMessage o1m = DiscussionCategoryGroupLocalServiceUtil
-							.getCommentThread(o1);
-					DiscussionMessage o2m = DiscussionCategoryGroupLocalServiceUtil
-							.getCommentThread(o2);
-					if (o1m.getCreateDate().before(o2m.getCreateDate())) {
-						return -1;
-					} else if (o2m.getCreateDate().before(o1m.getCreateDate())) {
-						return 1;
-					}
-					return 0;
-
-				} catch (Exception e) {
-					// ignore
-				}
-				return 0;
-			}
-		});
-
-		Collections.reverse(dcgs);
-		for (DiscussionCategoryGroup dcg : dcgs) {
-			if (dcg.getCommentsThread() <= 0) {
-				continue;
-			}
-			DiscussionMessage message = DiscussionCategoryGroupLocalServiceUtil
-					.getCommentThread(dcg);
-
-			if (discussionNamesToIgnore.contains(message.getSubject().trim())) {
-				continue;
-			}
-			discussionNamesToIgnore.add(message.getSubject().trim());
-
-			DynamicQuery activityQuery = DynamicQueryFactoryUtil
-					.forClass(SocialActivity.class);// , portletClassLoader);
-
-			// ActivityUtil.getExtraDataForIds(wrapped.getCategoryGroupId(),
-			// getThreadId(wrapped), wrapped.getMessageId()), 0);
-
-			activityQuery.add(PropertyFactoryUtil.forName("userId").eq(
-					message.getAuthorId()));
-			activityQuery.add(PropertyFactoryUtil.forName("classNameId").eq(
-					cn.getClassNameId()));
-			activityQuery.add(PropertyFactoryUtil.forName("classPK").eq(
-					dcg.getId()));
-			activityQuery.add(PropertyFactoryUtil.forName("createDate").gt(
-					message.getCreateDate().getTime()));
-			activityQuery.add(PropertyFactoryUtil.forName("createDate").lt(
-					message.getCreateDate().getTime() + 10000));
-
-			activityQuery.addOrder(OrderFactoryUtil.desc("createDate"));
-
-			List<SocialActivity> activities = SocialActivityLocalServiceUtil.dynamicQuery(activityQuery);
-			if (activities.isEmpty()) {
-				System.out.println("---\tNo activity for discussion "
-						+ dcg.getId());
-
-				SocialActivityLocalServiceUtil
-						.addUniqueActivity(message.getAuthorId(), 10136L,
-								message.getCreateDate(),
-								DiscussionCategoryGroup.class.getName(), dcg
-										.getId(), 4, ActivityUtil
-										.getExtraDataForIds(dcg.getId(),
-												message.getMessageId(),
-												message.getMessageId()), 0);
-			} else {
-				System.out.println("+++\tActivity for discussion found "
-						+ dcg.getId());
-			}
-		}
-	}
-
-	public void fixSocialActivitiesErrors() throws SystemException,
-			PortalException {
+    //TODO: this might be useful but needs to be reworked
+	public void fixSocialActivitiesErrors() throws SystemException, PortalException {
 		PrincipalThreadLocal.setName(10144L);
 		FacesContext fc = FacesContext.getCurrentInstance();
 		ExternalContext ec = fc.getExternalContext();
@@ -332,9 +127,9 @@ public class AdminTasksBean {
 		System.out.println("Bad activities count: " + badCount);
 	}
 
+    //TODO: might be useful for migrating new urls
 	public String fixProposalDiscussionUrlsAndDescriptions() throws SystemException, PortalException {
-		for (Proposal proposal : ProposalLocalServiceUtil.getProposals(0,
-				Integer.MAX_VALUE)) {
+		for (Proposal proposal : ProposalLocalServiceUtil.getProposals(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
 			DiscussionCategoryGroup proposalDiscussion = DiscussionCategoryGroupLocalServiceUtil
 					.getDiscussionCategoryGroup(proposal.getDiscussionId());
 			final Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
@@ -346,28 +141,8 @@ public class AdminTasksBean {
 		}
 		return null;
 	}
-	
-	public String findWikiPageActivities() throws SystemException, PortalException {
-		long classNameId = ClassNameLocalServiceUtil.getClassNameId(WikiPage.class);
-		
-		for (SocialActivity activity: SocialActivityLocalServiceUtil.getActivities(classNameId, 0, Integer.MAX_VALUE)) {
-			try {
-				WikiPage page = WikiPageLocalServiceUtil.getPage(activity.getClassPK());
-				JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject();
 
-				extraDataJSONObject.put("title", page.getTitle());
-				extraDataJSONObject.put("version", page.getVersion());
-			
-				activity.setExtraData(extraDataJSONObject.toString());
-				SocialActivityLocalServiceUtil.updateSocialActivity(activity);
-			}
-			catch (SystemException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-	
+    //TODO: figure out the whole IpTranslation thing
 	public String translateIp() throws Exception {
 		System.out.println(IpTranslationServiceUtil.getLocationForIp("89.67.113.30"));
 		return null;
@@ -378,18 +153,6 @@ public class AdminTasksBean {
 		return null;
 		
 	}
-
-    public void migrateWikiPageTitles() throws SystemException, PortalException {
-        for (Contest contest : ContestLocalServiceUtil.getContests(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-
-            final String newTitle = contest.getContestUrlName() + "-"
-                    + contest.getContestYear();
-            WikiUtil.updateWikiPageTitleIfExists(contest.getContestShortName(), newTitle);
-            try {
-                WikiUtil.updateContestResourceUrl(contest, newTitle);
-            } catch (UnsupportedEncodingException ignored) { }
-        }
-    }
 
 	public String populateLocationDataIntoBalloon() throws Exception {
 		for (BalloonUserTracking but: BalloonUserTrackingLocalServiceUtil.getBalloonUserTrackings(0, Integer.MAX_VALUE)) {
@@ -417,45 +180,6 @@ public class AdminTasksBean {
 		//IpTranslationServiceUtil.reloadLocationAndBlockData();
 		return null;
 		
-	}
-
-    public void triggerSupportsToVote() throws SystemException, PortalException {
-        PortletRequest request = (PortletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        ServiceContext serviceContext = new ServiceContext();
-        serviceContext.setPortalURL(String.format("%s://%s%s", request.getScheme(), request.getServerName(),
-                request.getServerPort() != 80 ? ":" + request.getServerPort() : ""));
-
-        for (Contest activeContest : ContestLocalServiceUtil.getContestsByActivePrivate(true, false)) {
-            ContestLocalServiceUtil.transferSupportsToVote(activeContest, serviceContext);
-        }
-    }
-
-    public void addJoinedActivityToRequiredUsers() throws SystemException, PortalException {
-        _log.fatal("Starting to add events");
-        FacesContext context = FacesContext.getCurrentInstance();
-        PortletRequest portletRequest = (PortletRequest)context.getExternalContext().getRequest();
-        ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
-        for (User u : UserLocalServiceUtil.getUsers(0,Integer.MAX_VALUE)){
-            if (SocialActivityLocalServiceUtil.getUserActivitiesCount(u.getUserId()) == 0){
-                // Add "joined the colab" activity when user was created
-                SocialActivityLocalServiceUtil.addActivity(u.getUserId(), themeDisplay.getScopeGroupId(),u.getCreateDate(), User.class.getName(),
-                        u.getUserId(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
-                _log.debug("Added activity for user " + u.getUserId());
-            }
-        }
-        _log.fatal("Finished adding events");
-    }
-
-	public void addContestYearSuffix() throws SystemException, PortalException {
-		ContestLocalServiceUtil.addContestYearSuffixToCompletedContests();
-	}
-
-	public void populateProposalReferencesTable() throws SystemException, PortalException {
-		ProposalReferenceLocalServiceUtil.populateTable();
-	}
-
-	public void generateContestLinks() throws SystemException, PortalException {
-		ContestLinkMigrationUtil.generateContestUrls();
 	}
 
     // ----- Reindex Tasks -----
@@ -548,14 +272,4 @@ public class AdminTasksBean {
         messages.add(message);
         SessionRenderer.render("pushMessages");
     }
-
-    public void testLogs() {
-        _log.error("Test error log");
-        _log.info("Test info log");
-        _log.debug("Test debug log");
-    }
-
-	public DataBean getDataBean() {
-		return dataBean;
-	}
 }

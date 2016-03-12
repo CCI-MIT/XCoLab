@@ -45,10 +45,11 @@ import java.util.Map;
 @RequestMapping(value = "view", params = "isLoggingIn=true")
 public class LoginController {
     public static final long companyId = 10112L;
+    private final static Log _log = LogFactoryUtil.getLog(LoginController.class);
 
     @ActionMapping
     public void doLogin(ActionRequest request, ActionResponse response) throws IOException {
-    	
+
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
                 WebKeys.THEME_DISPLAY);
 
@@ -68,29 +69,30 @@ public class LoginController {
         redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
 
         //if (redirect == null || redirect.trim().length() == 0) {
-            redirect = PortalUtil.getHttpServletRequest(request).getHeader("referer");
+        redirect = PortalUtil.getHttpServletRequest(request).getHeader("referer");
         //}
 
         User user = null;
         try {
             String login = request.getParameter("login");
-            if (! StringUtils.isBlank(login) && login.contains("@")) {
+            if (!StringUtils.isBlank(login) && login.contains("@")) {
                 // search for user by email and after that take his/her screen name for logging in
                 user = UserLocalServiceUtil.getUserByEmailAddress(companyId, login);
-                
+
                 if (user != null) {
                     login = user.getScreenName();
                 }
             }
 
-    		AuthenticationServiceUtil.logUserIn(request, response, login, request.getParameter("password"));
+            AuthenticationServiceUtil.logUserIn(request, response, login, request.getParameter("password"));
             //LoginUtil.logUserIn(request, response, login, request.getParameter("password"));
 
             if (user == null) {
                 user = UserLocalServiceUtil.getUserByScreenName(companyId, login);
             }
 
-			LoginLogLocalServiceUtil.createLoginLog(user, PortalUtil.getHttpServletRequest(request).getRemoteAddr(), referer);
+            LoginLogLocalServiceUtil
+                    .createLoginLog(user, PortalUtil.getHttpServletRequest(request).getRemoteAddr(), referer);
 
         } catch (Exception e) {
             if (e instanceof AuthException) {
@@ -115,7 +117,7 @@ public class LoginController {
 
                 SessionErrors.add(request, e.getClass().getName());
             } else {
-            	_log.error("Can't log user in", e);
+                _log.error("Can't log user in", e);
                 PortalUtil.sendError(e, request, response);
             }
         }
@@ -123,15 +125,17 @@ public class LoginController {
         if (user != null) {
             try {
                 //display message if user is in the ignored recipients list
-                MessagingIgnoredRecipients r = MessagingIgnoredRecipientsLocalServiceUtil.findByEmail(user.getEmailAddress());
-                if(r.getUserId() == 0) {
+                MessagingIgnoredRecipients r =
+                        MessagingIgnoredRecipientsLocalServiceUtil.findByEmail(user.getEmailAddress());
+                if (r.getUserId() == 0) {
                     redirect = "/web/guest/member/-/member/userId/" + user.getUserId();
                 }
-            } catch (NoSuchMessagingIgnoredRecipientsException e) { /* Case is fine, user is not in ignored rec. list */  }
-            catch (SystemException e ) { _log.error("System exception while trying to log user in", e); }
+            } catch (NoSuchMessagingIgnoredRecipientsException e) { /* Case is fine, user is not in ignored rec. list */ } catch (SystemException e) {
+                _log.error("System exception while trying to log user in", e);
+            }
         }
 
-        
+
         if (!SessionErrors.isEmpty(request)) {
             // url parameters
             Map<String, String> parameters = new HashMap<>();
@@ -148,26 +152,25 @@ public class LoginController {
 
         BalloonCookie bc = BalloonCookie.fromCookieArray(request.getCookies());
         if (StringUtils.isNotBlank(bc.getUuid()) && Validator.isNotNull(user)) {
-        	// cookie is present, get BalloonUserTracking if it exists and update association to the current user
-        	try {
-        		BalloonUserTracking but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(bc.getUuid());
-        		if (but == null) {
-        			List<BalloonUserTracking> buts = BalloonUserTrackingLocalServiceUtil.findByEmail(user.getEmailAddress());
-        			if (! buts.isEmpty()) {
-        				but = buts.get(0);
-        			}
-        		}
+            // cookie is present, get BalloonUserTracking if it exists and update association to the current user
+            try {
+                BalloonUserTracking but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(bc.getUuid());
+                if (but == null) {
+                    List<BalloonUserTracking> buts =
+                            BalloonUserTrackingLocalServiceUtil.findByEmail(user.getEmailAddress());
+                    if (!buts.isEmpty()) {
+                        but = buts.get(0);
+                    }
+                }
 
-        		if (but != null && but.getUserId() != user.getUserId()) {
-        			but.setUserId(user.getUserId());
-        			BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
-        		}
-        	}
-        	catch (SystemException | PortalException ignored) { }
+                if (but != null && but.getUserId() != user.getUserId()) {
+                    but.setUserId(user.getUserId());
+                    BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+                }
+            } catch (SystemException | PortalException ignored) {
+            }
         }
 
         response.sendRedirect(redirect);
     }
-    
-    private final static Log _log = LogFactoryUtil.getLog(LoginController.class);
 }

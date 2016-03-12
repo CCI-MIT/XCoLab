@@ -9,6 +9,7 @@ import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestTeamMember;
+import com.ext.portlet.model.ContestTeamMemberRole;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
@@ -25,6 +26,8 @@ import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.models.CollaboratoriumModelingService;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
@@ -32,6 +35,7 @@ import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
 import com.google.common.collect.ImmutableSet;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -68,10 +72,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.helpers.Tuple;
 import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.WikiUtil;
-import org.xcolab.utils.emailnotification.ContestVoteNotification;
-import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
+import org.xcolab.utils.emailnotification.proposal.ContestVoteNotification;
+import org.xcolab.utils.emailnotification.contest.ContestVoteQuestionNotification;
 import org.xcolab.utils.judging.ProposalRatingWrapper;
 import org.xcolab.utils.judging.ProposalReview;
 import org.xcolab.utils.judging.ProposalReviewCsvExporter;
@@ -465,6 +470,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Override
     public List<ContestTeamMember> getTeamMembers(Contest contest) throws SystemException {
         return contestTeamMemberLocalService.findForContest(contest.getContestPK());
+    }
+
+    @Override
+    public ContestTeamMemberRole getRoleForMember(ContestTeamMember contestTeamMember) throws SystemException, NoSuchModelException {
+        return contestTeamMemberRoleLocalService.findForContestTeamMember(contestTeamMember.getRoleId());
     }
 
     /**
@@ -921,15 +931,22 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     private Map<MemberRole, List<User>> getContestTeamMembersByRole(Contest contest) throws PortalException, SystemException {
         Map<MemberRole, List<User>> teamRoleToUsersMap = new TreeMap<>();
         for (ContestTeamMember ctm : getTeamMembers(contest)) {
-            MemberRole teamRole = MemberRole.fromRoleName(ctm.getRole());
-            List<User> roleUsers = teamRoleToUsersMap.get(teamRole);
-            if (roleUsers == null) {
-                roleUsers = new ArrayList<>();
-                teamRoleToUsersMap.put(teamRole, roleUsers);
-            }
-            roleUsers.add(contestTeamMemberLocalService.getUser(ctm));
-        }
+            ContestTeamMemberRole role;
+            try {
+                role = ContestLocalServiceUtil.getRoleForMember(ctm);
+                MemberRole memberRole = MemberRole.fromRoleId(role.getPrimaryKey());
+                List<User> roleUsers = teamRoleToUsersMap.get(memberRole);
 
+                if (roleUsers == null) {
+                    roleUsers = new ArrayList<>();
+                    teamRoleToUsersMap.put(memberRole, roleUsers);
+                }
+
+                roleUsers.add(contestTeamMemberLocalService.getUser(ctm));
+            } catch (NoSuchModelException e) {
+                e.printStackTrace();
+            }
+        }
         return teamRoleToUsersMap;
     }
 
@@ -1184,12 +1201,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         try {
             ContestPhase latestPhase = getActiveOrLastPhase(contest);
             String[] contestNameParts = contest.getContestShortName().split(" ");
-
+            _log.info("addContestYearSuffixToContest: " + contest.getContestPK());
             // Is in completed phase and inactive? - or is flag set to false?
             boolean isCompleted = (ArrayUtil.isNotEmpty(contestNameParts) &&
                     (latestPhase.getContestPhaseType() == ContestPhaseTypeValue.COMPLETED.getTypeId() ||
                             latestPhase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_AWARDED.getTypeId()));
             if (!checkForCompleted || isCompleted) {
+                _log.info("Contest phase type : " + latestPhase.getContestPhaseType());
+
                 String lastNamePart = contestNameParts[contestNameParts.length - 1];
                 Integer phaseEndYear = getYearFromDate(latestPhase.getPhaseStartDate());
 

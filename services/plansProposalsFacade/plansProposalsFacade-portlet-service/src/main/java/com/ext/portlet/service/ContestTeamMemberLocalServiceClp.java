@@ -155,7 +155,8 @@ public class ContestTeamMemberLocalServiceClp
         _methodName19 = "addContestTeamMember";
 
         _methodParameterTypes19 = new String[] {
-                "java.lang.Long", "java.lang.Long", "java.lang.String"
+                "java.lang.Long", "java.lang.Long",
+                "org.xcolab.enums.MemberRole"
             };
 
         _methodName20 = "findForContest";
@@ -704,7 +705,8 @@ public class ContestTeamMemberLocalServiceClp
 
     @Override
     public com.ext.portlet.model.ContestTeamMember addContestTeamMember(
-        java.lang.Long userId, java.lang.Long contestPk, java.lang.String role)
+        java.lang.Long userId, java.lang.Long contestPk,
+        org.xcolab.enums.MemberRole memberRole)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -716,7 +718,7 @@ public class ContestTeamMemberLocalServiceClp
                         
                     ClpSerializer.translateInput(contestPk),
                         
-                    ClpSerializer.translateInput(role)
+                    ClpSerializer.translateInput(memberRole)
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);

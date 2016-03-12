@@ -19,6 +19,7 @@ import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
 import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
 import com.ext.portlet.service.persistence.ContestSchedulePersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
+import com.ext.portlet.service.persistence.ContestTeamMemberRolePersistence;
 import com.ext.portlet.service.persistence.ContestTypePersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
@@ -66,9 +67,7 @@ import com.ext.portlet.service.persistence.PointsPersistence;
 import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeFinder;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalFinder;
 import com.ext.portlet.service.persistence.ProposalPersistence;
 import com.ext.portlet.service.persistence.ProposalRatingFinder;
@@ -213,6 +212,12 @@ public abstract class ModelGlobalPreferenceServiceBaseImpl
     protected com.ext.portlet.service.ContestTeamMemberService contestTeamMemberService;
     @BeanReference(type = ContestTeamMemberPersistence.class)
     protected ContestTeamMemberPersistence contestTeamMemberPersistence;
+    @BeanReference(type = com.ext.portlet.service.ContestTeamMemberRoleLocalService.class)
+    protected com.ext.portlet.service.ContestTeamMemberRoleLocalService contestTeamMemberRoleLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestTeamMemberRoleService.class)
+    protected com.ext.portlet.service.ContestTeamMemberRoleService contestTeamMemberRoleService;
+    @BeanReference(type = ContestTeamMemberRolePersistence.class)
+    protected ContestTeamMemberRolePersistence contestTeamMemberRolePersistence;
     @BeanReference(type = com.ext.portlet.service.ContestTypeLocalService.class)
     protected com.ext.portlet.service.ContestTypeLocalService contestTypeLocalService;
     @BeanReference(type = com.ext.portlet.service.ContestTypeService.class)
@@ -503,24 +508,12 @@ public abstract class ModelGlobalPreferenceServiceBaseImpl
     protected ProposalAttributePersistence proposalAttributePersistence;
     @BeanReference(type = ProposalAttributeFinder.class)
     protected ProposalAttributeFinder proposalAttributeFinder;
-    @BeanReference(type = com.ext.portlet.service.ProposalAttributeTypeLocalService.class)
-    protected com.ext.portlet.service.ProposalAttributeTypeLocalService proposalAttributeTypeLocalService;
-    @BeanReference(type = com.ext.portlet.service.ProposalAttributeTypeService.class)
-    protected com.ext.portlet.service.ProposalAttributeTypeService proposalAttributeTypeService;
-    @BeanReference(type = ProposalAttributeTypePersistence.class)
-    protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
     @BeanReference(type = com.ext.portlet.service.ProposalContestPhaseAttributeLocalService.class)
     protected com.ext.portlet.service.ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalContestPhaseAttributeService.class)
     protected com.ext.portlet.service.ProposalContestPhaseAttributeService proposalContestPhaseAttributeService;
     @BeanReference(type = ProposalContestPhaseAttributePersistence.class)
     protected ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence;
-    @BeanReference(type = com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService.class)
-    protected com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService proposalContestPhaseAttributeTypeLocalService;
-    @BeanReference(type = com.ext.portlet.service.ProposalContestPhaseAttributeTypeService.class)
-    protected com.ext.portlet.service.ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService;
-    @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
-    protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
     @BeanReference(type = com.ext.portlet.service.ProposalRatingLocalService.class)
     protected com.ext.portlet.service.ProposalRatingLocalService proposalRatingLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalRatingService.class)
@@ -1587,6 +1580,63 @@ public abstract class ModelGlobalPreferenceServiceBaseImpl
     public void setContestTeamMemberPersistence(
         ContestTeamMemberPersistence contestTeamMemberPersistence) {
         this.contestTeamMemberPersistence = contestTeamMemberPersistence;
+    }
+
+    /**
+     * Returns the contest team member role local service.
+     *
+     * @return the contest team member role local service
+     */
+    public com.ext.portlet.service.ContestTeamMemberRoleLocalService getContestTeamMemberRoleLocalService() {
+        return contestTeamMemberRoleLocalService;
+    }
+
+    /**
+     * Sets the contest team member role local service.
+     *
+     * @param contestTeamMemberRoleLocalService the contest team member role local service
+     */
+    public void setContestTeamMemberRoleLocalService(
+        com.ext.portlet.service.ContestTeamMemberRoleLocalService contestTeamMemberRoleLocalService) {
+        this.contestTeamMemberRoleLocalService = contestTeamMemberRoleLocalService;
+    }
+
+    /**
+     * Returns the contest team member role remote service.
+     *
+     * @return the contest team member role remote service
+     */
+    public com.ext.portlet.service.ContestTeamMemberRoleService getContestTeamMemberRoleService() {
+        return contestTeamMemberRoleService;
+    }
+
+    /**
+     * Sets the contest team member role remote service.
+     *
+     * @param contestTeamMemberRoleService the contest team member role remote service
+     */
+    public void setContestTeamMemberRoleService(
+        com.ext.portlet.service.ContestTeamMemberRoleService contestTeamMemberRoleService) {
+        this.contestTeamMemberRoleService = contestTeamMemberRoleService;
+    }
+
+    /**
+     * Returns the contest team member role persistence.
+     *
+     * @return the contest team member role persistence
+     */
+    public ContestTeamMemberRolePersistence getContestTeamMemberRolePersistence() {
+        return contestTeamMemberRolePersistence;
+    }
+
+    /**
+     * Sets the contest team member role persistence.
+     *
+     * @param contestTeamMemberRolePersistence the contest team member role persistence
+     */
+    public void setContestTeamMemberRolePersistence(
+        ContestTeamMemberRolePersistence contestTeamMemberRolePersistence) {
+        this.contestTeamMemberRolePersistence = contestTeamMemberRolePersistence;
     }
 
     /**
@@ -4340,63 +4390,6 @@ public abstract class ModelGlobalPreferenceServiceBaseImpl
     }
 
     /**
-     * Returns the proposal attribute type local service.
-     *
-     * @return the proposal attribute type local service
-     */
-    public com.ext.portlet.service.ProposalAttributeTypeLocalService getProposalAttributeTypeLocalService() {
-        return proposalAttributeTypeLocalService;
-    }
-
-    /**
-     * Sets the proposal attribute type local service.
-     *
-     * @param proposalAttributeTypeLocalService the proposal attribute type local service
-     */
-    public void setProposalAttributeTypeLocalService(
-        com.ext.portlet.service.ProposalAttributeTypeLocalService proposalAttributeTypeLocalService) {
-        this.proposalAttributeTypeLocalService = proposalAttributeTypeLocalService;
-    }
-
-    /**
-     * Returns the proposal attribute type remote service.
-     *
-     * @return the proposal attribute type remote service
-     */
-    public com.ext.portlet.service.ProposalAttributeTypeService getProposalAttributeTypeService() {
-        return proposalAttributeTypeService;
-    }
-
-    /**
-     * Sets the proposal attribute type remote service.
-     *
-     * @param proposalAttributeTypeService the proposal attribute type remote service
-     */
-    public void setProposalAttributeTypeService(
-        com.ext.portlet.service.ProposalAttributeTypeService proposalAttributeTypeService) {
-        this.proposalAttributeTypeService = proposalAttributeTypeService;
-    }
-
-    /**
-     * Returns the proposal attribute type persistence.
-     *
-     * @return the proposal attribute type persistence
-     */
-    public ProposalAttributeTypePersistence getProposalAttributeTypePersistence() {
-        return proposalAttributeTypePersistence;
-    }
-
-    /**
-     * Sets the proposal attribute type persistence.
-     *
-     * @param proposalAttributeTypePersistence the proposal attribute type persistence
-     */
-    public void setProposalAttributeTypePersistence(
-        ProposalAttributeTypePersistence proposalAttributeTypePersistence) {
-        this.proposalAttributeTypePersistence = proposalAttributeTypePersistence;
-    }
-
-    /**
      * Returns the proposal contest phase attribute local service.
      *
      * @return the proposal contest phase attribute local service
@@ -4451,63 +4444,6 @@ public abstract class ModelGlobalPreferenceServiceBaseImpl
     public void setProposalContestPhaseAttributePersistence(
         ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence) {
         this.proposalContestPhaseAttributePersistence = proposalContestPhaseAttributePersistence;
-    }
-
-    /**
-     * Returns the proposal contest phase attribute type local service.
-     *
-     * @return the proposal contest phase attribute type local service
-     */
-    public com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService getProposalContestPhaseAttributeTypeLocalService() {
-        return proposalContestPhaseAttributeTypeLocalService;
-    }
-
-    /**
-     * Sets the proposal contest phase attribute type local service.
-     *
-     * @param proposalContestPhaseAttributeTypeLocalService the proposal contest phase attribute type local service
-     */
-    public void setProposalContestPhaseAttributeTypeLocalService(
-        com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService proposalContestPhaseAttributeTypeLocalService) {
-        this.proposalContestPhaseAttributeTypeLocalService = proposalContestPhaseAttributeTypeLocalService;
-    }
-
-    /**
-     * Returns the proposal contest phase attribute type remote service.
-     *
-     * @return the proposal contest phase attribute type remote service
-     */
-    public com.ext.portlet.service.ProposalContestPhaseAttributeTypeService getProposalContestPhaseAttributeTypeService() {
-        return proposalContestPhaseAttributeTypeService;
-    }
-
-    /**
-     * Sets the proposal contest phase attribute type remote service.
-     *
-     * @param proposalContestPhaseAttributeTypeService the proposal contest phase attribute type remote service
-     */
-    public void setProposalContestPhaseAttributeTypeService(
-        com.ext.portlet.service.ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService) {
-        this.proposalContestPhaseAttributeTypeService = proposalContestPhaseAttributeTypeService;
-    }
-
-    /**
-     * Returns the proposal contest phase attribute type persistence.
-     *
-     * @return the proposal contest phase attribute type persistence
-     */
-    public ProposalContestPhaseAttributeTypePersistence getProposalContestPhaseAttributeTypePersistence() {
-        return proposalContestPhaseAttributeTypePersistence;
-    }
-
-    /**
-     * Sets the proposal contest phase attribute type persistence.
-     *
-     * @param proposalContestPhaseAttributeTypePersistence the proposal contest phase attribute type persistence
-     */
-    public void setProposalContestPhaseAttributeTypePersistence(
-        ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence) {
-        this.proposalContestPhaseAttributeTypePersistence = proposalContestPhaseAttributeTypePersistence;
     }
 
     /**

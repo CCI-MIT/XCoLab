@@ -16,7 +16,7 @@ public class ContestTeamMemberSoap implements Serializable {
     private long _id;
     private long _contestId;
     private long _userId;
-    private String _role;
+    private long _roleId;
 
     public ContestTeamMemberSoap() {
     }
@@ -27,7 +27,7 @@ public class ContestTeamMemberSoap implements Serializable {
         soapModel.setId(model.getId());
         soapModel.setContestId(model.getContestId());
         soapModel.setUserId(model.getUserId());
-        soapModel.setRole(model.getRole());
+        soapModel.setRoleId(model.getRoleId());
 
         return soapModel;
     }
@@ -103,11 +103,11 @@ public class ContestTeamMemberSoap implements Serializable {
         _userId = userId;
     }
 
-    public String getRole() {
-        return _role;
+    public long getRoleId() {
+        return _roleId;
     }
 
-    public void setRole(String role) {
-        _role = role;
+    public void setRoleId(long roleId) {
+        _roleId = roleId;
     }
 }

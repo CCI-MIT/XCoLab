@@ -224,7 +224,13 @@ create table xcolab_ContestTeamMember (
 	id_ LONG not null primary key,
 	contestId LONG,
 	userId LONG,
-	role VARCHAR(75) null
+	roleId LONG
+);
+
+create table xcolab_ContestTeamMemberRole (
+	id_ LONG not null primary key,
+	role VARCHAR(75) null,
+	sort INTEGER
 );
 
 create table xcolab_ContestType (
@@ -565,6 +571,7 @@ create table xcolab_PlanSectionDefinition (
 	focusAreaId LONG,
 	tier LONG,
 	allowedContestTypeIds VARCHAR(75) null,
+	allowedValues VARCHAR(75) null,
 	additionalIds VARCHAR(75) null,
 	locked BOOLEAN,
 	contestIntegrationRelevance BOOLEAN
@@ -663,12 +670,6 @@ create table xcolab_ProposalAttribute (
 	realValue DOUBLE
 );
 
-create table xcolab_ProposalAttributeType (
-	name VARCHAR(75) not null primary key,
-	visibleInVersionHistory BOOLEAN,
-	copyOnPromote BOOLEAN
-);
-
 create table xcolab_ProposalContestPhaseAttribute (
 	id_ LONG not null primary key,
 	proposalId LONG,
@@ -678,11 +679,6 @@ create table xcolab_ProposalContestPhaseAttribute (
 	numericValue LONG,
 	stringValue TEXT null,
 	realValue DOUBLE
-);
-
-create table xcolab_ProposalContestPhaseAttributeType (
-	name VARCHAR(75) not null primary key,
-	copyOnPromote BOOLEAN
 );
 
 create table xcolab_ProposalRating (

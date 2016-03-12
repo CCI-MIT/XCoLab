@@ -240,7 +240,8 @@ public interface ContestTeamMemberLocalService extends BaseLocalService,
         throws java.lang.Throwable;
 
     public com.ext.portlet.model.ContestTeamMember addContestTeamMember(
-        java.lang.Long userId, java.lang.Long contestPk, java.lang.String role)
+        java.lang.Long userId, java.lang.Long contestPk,
+        org.xcolab.enums.MemberRole memberRole)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public java.util.List<com.ext.portlet.model.ContestTeamMember> findForContest(

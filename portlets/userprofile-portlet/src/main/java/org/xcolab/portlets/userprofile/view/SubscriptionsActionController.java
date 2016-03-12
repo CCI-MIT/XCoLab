@@ -21,25 +21,16 @@ public class SubscriptionsActionController {
 
     @RequestMapping(params = {"action=removeSubscription"})
     public void handleRemoveSubscriptionAction(ActionRequest request, Model model, ActionResponse response,
-                                               @ModelAttribute("userSubscriptions") UserSubscriptionsWrapper userSubscriptions,
-                                               @RequestParam(required = true) Long userId
-    ) throws PortalException, SystemException, IOException {
+            @ModelAttribute("userSubscriptions") UserSubscriptionsWrapper userSubscriptions,
+            @RequestParam(required = true) Long userId) throws PortalException, SystemException, IOException {
 
         for (ActivitySubscriptionWrapper subscription : userSubscriptions.getSubscriptions()) {
             if (subscription.getSelected()) {
-                ActivitySubscriptionLocalServiceUtil.delete(ActivitySubscriptionLocalServiceUtil.getActivitySubscription(subscription.getSubscriptionPk()));
+                ActivitySubscriptionLocalServiceUtil.delete(ActivitySubscriptionLocalServiceUtil
+                        .getActivitySubscription(subscription.getSubscriptionPk()));
             }
         }
-        response.sendRedirect("/web/guest/member/-/member/userId/" + userId.toString()+ "/page/subscriptionsManage");
+        response.sendRedirect("/web/guest/member/-/member/userId/" + userId.toString() + "/page/subscriptionsManage");
 
     }
-
-    /*
-    @RequestMapping(params = {"action=changeSubscriptionFilter"})
-    public void handleChangeSubscriptionFilterAction(ActionRequest request, Model model, ActionResponse response,
-                             @RequestParam(required = false) String filterType)
-            throws PortalException, SystemException {
-
-    }*/
-
 }

@@ -11,6 +11,11 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
+    <!--@elvariable id="generateScreenName" type="java.lang.Boolean"-->
+    <!--@elvariable id="colabName" type="java.lang.String"-->
+    <!--@elvariable id="colabShortName" type="java.lang.String"-->
+
+    <!--@elvariable id="createUserBean" type="org.xcolab.portlets.loginregister.CreateUserBean"-->
 
 	<portlet:actionURL var="createAccountURL">
 		<portlet:param name="saveLastPath" value="${isRegistering ? 0 : 1 }" />
@@ -25,6 +30,8 @@
         <portlet:param name="SSO" value="facebook" />
         <portlet:param name="action" value="initiateRegistration" />
     </portlet:actionURL>
+	<portlet:resourceURL id="generateScreenName" var="generateScreenNameUrl">
+	</portlet:resourceURL>
 
 	<div class="popupreg_form">
 
@@ -56,40 +63,17 @@
 			<input type="file" name="file" id="portraitUploadInput" />
 		</form>
 
-		<form:form action="${createAccountURL }" commandName="createUserBean"
-			id="registrationForm">
+		<form:form action="${createAccountURL }" commandName="createUserBean" id="registrationForm">
 			<input type="hidden" name="action" value="add" />
 			<div class="reg_errors"><!--  --></div>
 			<form:errors cssClass="alert alert-error" />
 			<table class="reg">
-				<tr>
+				<tr style="${ generateScreenName ? 'display: none;' : ''}">
 					<th nowrap="nowrap" class="required-field">Screen name </th>
 					<td><form:input cssClass="popupreg_input" path="screenName" /><br />
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="screenName" />
 						</div></td>
-
-					<th class="second" rowspan="4">Photo</th>
-					<td rowspan="4">
-                        <div style="float: right">
-                            <c:choose>
-							<c:when test="${ createUserBean.getImageId() != null }">
-								<img src="/image/contest?img_id=${createUserBean.getImageId() }" id="userPortrait"
-									width="150" height="150" />
-							</c:when>
-							<c:otherwise>
-								<img src="/image/user_male_portrait?img_id=" id="userPortrait"
-									width="150" height="150" />
-							</c:otherwise>
-						</c:choose>
-                        <div class="clearfix">
-                            <!--  -->
-                        </div>
-						<div id="uploadImageContainer"><!--  --></div>
-    </div>
-    </td>
-
-
 				</tr>
 				<tr>
 					<th nowrap="nowrap" class="required-field">Email </th>
@@ -97,6 +81,25 @@
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="email" />
 						</div>
+                    </td>
+                    <th class="second" rowspan="4">Photo</th>
+                    <td rowspan="4">
+                        <div style="float: right">
+                            <c:choose>
+                                <c:when test="${ createUserBean.imageId != null }">
+                                    <img src="/image/contest?img_id=${createUserBean.imageId }" id="userPortrait"
+                                         width="150" height="150" />
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="/image/user_male_portrait?img_id=" id="userPortrait"
+                                         width="150" height="150" />
+                                </c:otherwise>
+                            </c:choose>
+                            <div class="clearfix">
+                                <!--  -->
+                            </div>
+                            <div id="uploadImageContainer"><!--  --></div>
+                        </div>
                     </td>
 				</tr>
                 <tr>
@@ -110,7 +113,7 @@
 
 				<tr>
 					<th nowrap="nowrap" class="required-field">First name </th>
-					<td><form:input cssClass="popupreg_input" path="firstName" />
+					<td><form:input cssClass="popupreg_input" path="firstName" onchange="generateScreenName()"/>
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="firstName" />
 						</div></td>
@@ -118,7 +121,7 @@
 
 				<tr>
 					<th nowrap="nowrap" class="required-field">Last name </th>
-					<td><form:input cssClass="popupreg_input" path="lastName" />
+					<td><form:input cssClass="popupreg_input" path="lastName" onchange="generateScreenName()"/>
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="lastName" />
 						</div></td>
@@ -312,7 +315,30 @@
             }
 			
 		</script>
-
+        <c:if test="${generateScreenName}">
+            <script type="text/javascript">
+                function generateScreenName() {
+                    var submitUrl = '${generateScreenNameUrl}';
+                    jQuery.ajax({
+                        type: "POST",
+                        url: submitUrl,
+                        dataType: 'json',
+                        async: false,
+                        data: {
+                            firstName : jQuery('#firstName').val(),
+                            lastName: jQuery('#lastName').val()
+                        },
+                        success: function (data) {
+                            if (data.success == false) {
+                                console.log(data.error);
+                            } else {
+                                jQuery('#screenName').val(data.screenName);
+                            }
+                        }
+                    });
+                }
+            </script>
+        </c:if>
 
 
 	</div>

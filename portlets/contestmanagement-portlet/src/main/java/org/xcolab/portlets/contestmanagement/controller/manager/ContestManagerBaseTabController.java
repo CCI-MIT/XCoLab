@@ -28,7 +28,8 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException;
+    public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request)
+            throws PortalException, SystemException;
 
     @Override
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)

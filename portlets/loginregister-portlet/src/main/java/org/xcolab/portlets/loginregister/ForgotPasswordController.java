@@ -38,42 +38,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value="view")
+@RequestMapping(value = "view")
 public class ForgotPasswordController {
 
     private static final long DEFAULT_COMPANY_ID = 10112L;
-    
-    @ActionMapping(params={"isForgotpass=true"})
+
+    @ActionMapping(params = {"isForgotpass=true"})
     public void sendPassword(ActionRequest request, ActionResponse response) throws IOException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-                WebKeys.THEME_DISPLAY); 
-        
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
+                WebKeys.THEME_DISPLAY);
+
         HttpServletRequest httpRequest = PortletUtils.getOryginalRequest(request);
-        
+
         String redirect = httpRequest.getParameter("redirect");
         String referer = httpRequest.getHeader("referer");
-        redirect = ! StringUtils.isBlank(redirect) ? redirect : referer;
-        
-        redirect = ! StringUtils.isBlank(redirect) ? redirect : themeDisplay.getURLHome();
-        
-        
+        redirect = !StringUtils.isBlank(redirect) ? redirect : referer;
+
+        redirect = !StringUtils.isBlank(redirect) ? redirect : themeDisplay.getURLHome();
 
         redirect = Helper.removeParamFromRequestStr(redirect, "signinRegError");
         redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
         redirect = Helper.removeParamFromRequestStr(redirect, "isSigningIn");
         redirect = Helper.removeParamFromRequestStr(redirect, "isRegistering");
-        
+
         try {
-            
+
             PortletPreferences preferences = request.getPreferences();
             String userNameEmail = request.getParameter("screenName");
-            
+
             User user;
             if (userNameEmail.contains("@")) {
                 user = UserLocalServiceUtil.getUserByEmailAddress(DEFAULT_COMPANY_ID, userNameEmail);
-            }
-            else {
+            } else {
                 user = UserLocalServiceUtil.getUserByScreenName(DEFAULT_COMPANY_ID, userNameEmail);
             }
 
@@ -81,49 +78,46 @@ public class ForgotPasswordController {
 
             String emailFromName = preferences.getValue("emailFromName", null);
             String emailFromAddress = preferences.getValue(
-                "emailFromAddress", null);
+                    "emailFromAddress", null);
             String emailToAddress = user.getEmailAddress();
 
             String emailParam = "emailPasswordSent";
-            
+
             String subject = preferences.getValue(
-                emailParam + "Subject_" + languageId, null);
+                    emailParam + "Subject_" + languageId, null);
             String body = preferences.getValue(
-                emailParam + "Body_" + languageId, null);
-            
-            AuthenticationServiceUtil.sendPassword(request, emailFromName, emailFromAddress, emailToAddress, subject, body);
-        }
-        catch (Exception e) {
+                    emailParam + "Body_" + languageId, null);
+
+            AuthenticationServiceUtil
+                    .sendPassword(request, emailFromName, emailFromAddress, emailToAddress, subject, body);
+        } catch (Exception e) {
             if (e instanceof AuthException) {
                 Throwable cause = e.getCause();
 
                 if (cause instanceof PasswordExpiredException ||
-                    cause instanceof UserLockoutException) {
+                        cause instanceof UserLockoutException) {
 
                     SessionErrors.add(
-                        request, cause.getClass().getName());
-                }
-                else {
+                            request, cause.getClass().getName());
+                } else {
                     SessionErrors.add(request, e.getClass().getName());
                 }
-            }
-            else if (e instanceof CookieNotSupportedException ||
-                     e instanceof NoSuchUserException ||
-                     e instanceof PasswordExpiredException ||
-                     e instanceof UserEmailAddressException ||
-                     e instanceof UserIdException ||
-                     e instanceof UserLockoutException ||
-                     e instanceof UserPasswordException ||
-                     e instanceof UserScreenNameException) {
+            } else if (e instanceof CookieNotSupportedException ||
+                    e instanceof NoSuchUserException ||
+                    e instanceof PasswordExpiredException ||
+                    e instanceof UserEmailAddressException ||
+                    e instanceof UserIdException ||
+                    e instanceof UserLockoutException ||
+                    e instanceof UserPasswordException ||
+                    e instanceof UserScreenNameException) {
 
                 SessionErrors.add(request, e.getClass().getName());
-            }
-            else {
+            } else {
                 PortalUtil.sendError(e, request, response);
             }
         }
-        
-        if (! SessionErrors.isEmpty(request)) {
+
+        if (!SessionErrors.isEmpty(request)) {
             // url parameters
             Map<String, String> parameters = new HashMap<>();
             //boolean isSigningInPopup = ParamUtil.getBoolean(actionRequest, "isSigningInPopup");
@@ -131,27 +125,29 @@ public class ForgotPasswordController {
             parameters.put("isPasswordReminder", "true");
 
             redirect = Helper.modifyRedirectUrl(redirect, request, parameters);
-            
+
         } else {
-            GlobalMessagesUtil.addMessage("A password retrieval message has been sent, please check your email", request);
+            GlobalMessagesUtil
+                    .addMessage("A password retrieval message has been sent, please check your email", request);
         }
-        
+
         SessionErrors.clear(request);
         SessionMessages.clear(request);
-        
+
         response.sendRedirect(redirect);
     }
 
-	@RequestMapping(params="isError=true")
-	public String register(PortletRequest request, PortletResponse response,
-						   Model model) throws SystemException {
+    @RequestMapping(params = "isError=true")
+    public String register(PortletRequest request, PortletResponse response,
+            Model model) throws SystemException {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		model.addAttribute("message", "Your password reset ticket has expired. Please try to reset your password again.");
-		model.addAttribute("redirect_url", themeDisplay.getPortalURL());
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        model.addAttribute("message",
+                "Your password reset ticket has expired. Please try to reset your password again.");
+        model.addAttribute("redirect_url", themeDisplay.getPortalURL());
 
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
-		return "password_reset_error";
-	}
+        return "password_reset_error";
+    }
 
 }

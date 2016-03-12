@@ -43,7 +43,8 @@ public class ContestMassActionMethods {
             Arrays.asList("Contest", "Proposal Title", "Proposal Link", "Username", "First Name",
                     "Last Name", "Email Address", "Role", "Last phase");
 
-    public static void reportOfPeopleInCurrentPhase(List<Long> contestList, Object ResourceResponseObject, PortletRequest request) throws Exception {
+    public static void reportOfPeopleInCurrentPhase(List<Long> contestList, Object ResourceResponseObject,
+            PortletRequest request) throws Exception {
 
         ResourceResponse response = (ResourceResponse) ResourceResponseObject;
         CsvExportHelper csvExportHelper = new CsvExportHelper();
@@ -52,8 +53,10 @@ public class ContestMassActionMethods {
         for (Long contestId : contestList) {
             try {
                 List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
-                ContestPhase activeContestPhase = ContestLocalServiceUtil.getActivePhase(ContestLocalServiceUtil.getContest(contestId));
-                csvExportHelper.addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
+                ContestPhase activeContestPhase =
+                        ContestLocalServiceUtil.getActivePhase(ContestLocalServiceUtil.getContest(contestId));
+                csvExportHelper
+                        .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
             } catch (Exception e) {
                 _log.warn("Failed to export data for csv: ", e);
             }
@@ -64,7 +67,9 @@ public class ContestMassActionMethods {
 
     }
 
-    public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject, PortletRequest request) throws PortalException, SystemException, MailEngineException, AddressException, UnsupportedEncodingException {
+    public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject, PortletRequest request)
+            throws PortalException, SystemException, MailEngineException, AddressException,
+            UnsupportedEncodingException {
 
         MassMessageBean massMessageBean = (MassMessageBean) massMessageWrapperObject;
         Set<Long> recipientIds = new HashSet<>();
@@ -90,8 +95,10 @@ public class ContestMassActionMethods {
                 CLIMATE_COLAB_TEAM_USER_ID, CLIMATE_COLAB_TEAM_USER_ID, recipientIds, request);
 
         final String emailSubject = "Mass message: " + messageSubject;
-        final String emailBody = String.format("The following message was sent to %d users in %d contests (%s): <br /><br /><br />",
-                recipientIds.size(), contestList.size(), contestNames) + HtmlUtil.addHtmlLineBreaks(messageBody);
+        final String emailBody =
+                String.format("The following message was sent to %d users in %d contests (%s): <br /><br /><br />",
+                        recipientIds.size(), contestList.size(), contestNames) + HtmlUtil
+                        .addHtmlLineBreaks(messageBody);
 
         InternetAddress adminEmail = new InternetAddress("admin@climatecolab.org");
         InternetAddress[] adminEmailArray = {adminEmail};
@@ -99,7 +106,8 @@ public class ContestMassActionMethods {
                 emailSubject, emailBody, true, null, null, null);
     }
 
-    public static void sendSupport2VotesEmail(List<Long> contestList, Object tbd, PortletRequest request) throws PortalException, SystemException {
+    public static void sendSupport2VotesEmail(List<Long> contestList, Object tbd, PortletRequest request)
+            throws PortalException, SystemException {
         for (Long contestId : contestList) {
             Contest contest = ContestLocalServiceUtil.getContest(contestId);
             ServiceContext serviceContext = new ServiceContext();
@@ -109,7 +117,8 @@ public class ContestMassActionMethods {
         }
     }
 
-    public static void changeSubscriptionStatus(List<Long> contestList, Object subscriptionStatusObject, PortletRequest request) throws PortalException, SystemException {
+    public static void changeSubscriptionStatus(List<Long> contestList, Object subscriptionStatusObject,
+            PortletRequest request) throws PortalException, SystemException {
         Long loggedInUserId = PortalUtil.getUserId(request);
         for (Long contestId : contestList) {
             Boolean subscriptionStatus = (boolean) subscriptionStatusObject;
@@ -128,16 +137,19 @@ public class ContestMassActionMethods {
             ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
         }
     }
+
     private static void deleteContestAndPhases(Long contestId) throws PortalException, SystemException {
         deleteContestPhases(contestId);
         ContestLocalServiceUtil.deleteContest(contestId);
     }
 
-    public static void deleteContest(List<Long> contestList, Object deletePhasesObj, PortletRequest request) throws PortalException, SystemException, MassActionRequiresConfirmationException {
+    public static void deleteContest(List<Long> contestList, Object deletePhasesObj, PortletRequest request)
+            throws PortalException, SystemException, MassActionRequiresConfirmationException {
         Boolean deletePhases = (Boolean) deletePhasesObj;
         Boolean showContestPhaseDeleteConfirmation = false;
         for (Long contestId : contestList) {
-            List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(ContestLocalServiceUtil.getContest(contestId));
+            List<ContestPhase> contestPhases =
+                    ContestLocalServiceUtil.getAllPhases(ContestLocalServiceUtil.getContest(contestId));
             if (!contestPhases.isEmpty()) {
                 if (deletePhases) {
                     deleteContestAndPhases(contestId);
@@ -153,7 +165,8 @@ public class ContestMassActionMethods {
         }
     }
 
-    public static void setFlag(List<Long> contestList, Object flagTexToolTipValue, PortletRequest request) throws PortalException, SystemException {
+    public static void setFlag(List<Long> contestList, Object flagTexToolTipValue, PortletRequest request)
+            throws PortalException, SystemException {
         for (Long contestId : contestList) {
             Contest contest = ContestLocalServiceUtil.getContest(contestId);
             ContestFlagTextToolTipBean contestFlagTextToolTipBean = (ContestFlagTextToolTipBean) flagTexToolTipValue;
@@ -161,7 +174,8 @@ public class ContestMassActionMethods {
         }
     }
 
-    public static void setModelSettings(List<Long> contestList, Object modelSettings, PortletRequest request) throws PortalException, SystemException {
+    public static void setModelSettings(List<Long> contestList, Object modelSettings, PortletRequest request)
+            throws PortalException, SystemException {
         for (Long contestId : contestList) {
             Contest contest = ContestLocalServiceUtil.getContest(contestId);
             ContestModelSettingsBean contestModelSettingsBean = (ContestModelSettingsBean) modelSettings;
@@ -169,7 +183,8 @@ public class ContestMassActionMethods {
         }
     }
 
-    private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK) throws PortalException, SystemException {
+    private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK)
+            throws PortalException, SystemException {
         Contest contest = ContestLocalServiceUtil.getContest(contestPK);
         ContestPhase activeContestPhase = ContestLocalServiceUtil.getActivePhase(contest);
         return ProposalLocalServiceUtil.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());

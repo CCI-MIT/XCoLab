@@ -15,19 +15,18 @@ import java.io.IOException;
 @Controller
 @RequestMapping("edit")
 public class UserProfilePreferencesController {
-	
+
     @RequestMapping
     public String showPreferences(RenderRequest request, RenderResponse response, Model model) {
-    	model.addAttribute("UserProfilePreferencesBean", new UserProfilePreferencesBean(request));
+        model.addAttribute("UserProfilePreferencesBean", new UserProfilePreferencesBean(request));
         return "editUserProfilePreferences";
     }
-	
 
     @RequestMapping(params = {"action=savePreferences"})
     public void savePreferences(ActionRequest request, ActionRequest response, Model model,
-                                UserProfilePreferencesBean preferences)
+            UserProfilePreferencesBean preferences)
             throws ReadOnlyException, ValidatorException, IOException {
         preferences.store(request);
-	}
+    }
 
 }

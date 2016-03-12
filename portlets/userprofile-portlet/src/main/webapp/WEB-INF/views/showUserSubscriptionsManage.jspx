@@ -74,8 +74,8 @@
             <li class="${currentUserProfile.userSubscriptions.typeFilterName == 'DISCUSSION' ? 'c' : ''}">
               <subscriptions:subscriptionsPaginationFilterLink userId="${currentUserProfile.userId}" typeFilter="DISCUSSION" text="Discussions"/>
             </li>
-            <li class="${currentUserProfile.userSubscriptions.typeFilterName == 'PLAN' ? 'c' : ''}">
-              <subscriptions:subscriptionsPaginationFilterLink userId="${currentUserProfile.userId}" typeFilter="PLAN" text="Proposals"/>
+            <li class="${currentUserProfile.userSubscriptions.typeFilterName == 'PROPOSAL' ? 'c' : ''}">
+              <subscriptions:subscriptionsPaginationFilterLink userId="${currentUserProfile.userId}" typeFilter="PROPOSAL" text="Proposals"/>
             </li>
           </ul>
           <h3>Settings</h3>

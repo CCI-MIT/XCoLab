@@ -10,6 +10,7 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
+import org.xcolab.utils.FileUploadUtil;
 
 import javax.imageio.ImageIO;
 import javax.servlet.Filter;
@@ -20,12 +21,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -61,7 +57,8 @@ public class FileUploadFilter implements Filter {
 
 						byte[] imgBArr = IOUtils.toByteArray(is);
 						if(!keepFormat){
-							imgBArr = resizeAndCropImage(imgBArr);
+							imgBArr = FileUploadUtil.resizeAndCropImage(ImageIO.read(new ByteArrayInputStream(imgBArr)),
+									IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
 						}
 						
 						//Image img = ImageLocalServiceUtil..getImage(imgBArr);
@@ -98,40 +95,6 @@ public class FileUploadFilter implements Filter {
 				}
 			}
 		}
-	}
-
-	private byte[] resizeAndCropImage(byte[] imgBArr) throws IOException {
-		BufferedImage img = ImageIO.read(new ByteArrayInputStream(imgBArr));
-		// crop image
-
-		int w = img.getWidth();
-		int h = img.getHeight();
-
-		int cropSize;
-		int cropX = 0;
-		int cropY = 0;
-
-		if (h < w) {
-			cropSize = h;
-			cropX = (w - h) / 2;
-		} else {
-			cropSize = w;
-			cropY = (h - w) / 2;
-		}
-
-		BufferedImage cropedImage = img.getSubimage(cropX, cropY, cropSize, cropSize);
-		BufferedImage dimg = new BufferedImage(IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = dimg.createGraphics();
-		g.setComposite(AlphaComposite.Clear);
-		g.fillRect(0,0, IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g.setComposite(AlphaComposite.Src);
-		g.drawImage(cropedImage, 0, 0, IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS, 0, 0, cropSize, cropSize, null);
-		g.dispose();
-
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ImageIO.write(dimg, "png", bos);
-		return bos.toByteArray();
 	}
 
     @Override

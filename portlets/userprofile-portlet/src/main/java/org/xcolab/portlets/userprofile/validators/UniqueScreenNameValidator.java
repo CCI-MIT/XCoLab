@@ -32,7 +32,7 @@ public class UniqueScreenNameValidator extends CustomValidator<UniqueScreenName>
         }
 
         processDefaultErrorMessage("User with screen name already exists", isValid, context);
-        
+
         return isValid;
     }
 }

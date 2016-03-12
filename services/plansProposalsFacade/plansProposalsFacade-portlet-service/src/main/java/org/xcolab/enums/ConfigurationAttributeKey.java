@@ -9,7 +9,11 @@ public enum ConfigurationAttributeKey {
     ADMIN_EMAIL(AttributeType.STRING),
     ADMIN_FROM_EMAIL(AttributeType.STRING),
     DEFAULT_CONTEST_TYPE_ID(AttributeType.NUMERIC),
-    COLAB_URL(AttributeType.STRING);
+    COLAB_URL(AttributeType.STRING),
+    GENERATE_SCREEN_NAME(AttributeType.BOOLEAN),
+    DEFAULT_TIME_ZONE_ID(AttributeType.STRING),
+    GOOGLE_AUTH_CLIENT_ID(AttributeType.STRING),
+    GOOGLE_AUTH_CLIENT_SECRET(AttributeType.STRING);
 
     private final AttributeType type;
 

@@ -41,14 +41,14 @@ public class AnalyticsUserEventLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
+    private String _methodName512;
+    private String[] _methodParameterTypes512;
+    private String _methodName513;
+    private String[] _methodParameterTypes513;
     private String _methodName518;
     private String[] _methodParameterTypes518;
     private String _methodName519;
     private String[] _methodParameterTypes519;
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
-    private String _methodName525;
-    private String[] _methodParameterTypes525;
 
     public AnalyticsUserEventLocalServiceClpInvoker() {
         _methodName0 = "addAnalyticsUserEvent";
@@ -141,21 +141,21 @@ public class AnalyticsUserEventLocalServiceClpInvoker {
                 "com.ext.portlet.model.AnalyticsUserEvent"
             };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName512 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes512 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName513 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes513 = new String[] { "java.lang.String" };
 
-        _methodName524 = "eventExists";
+        _methodName518 = "eventExists";
 
-        _methodParameterTypes524 = new String[] { "long", "java.lang.String" };
+        _methodParameterTypes518 = new String[] { "long", "java.lang.String" };
 
-        _methodName525 = "createEvent";
+        _methodName519 = "createEvent";
 
-        _methodParameterTypes525 = new String[] {
+        _methodParameterTypes519 = new String[] {
                 "long", "java.lang.String", "java.lang.String",
                 "java.lang.String", "java.lang.String", "int"
             };
@@ -250,26 +250,26 @@ public class AnalyticsUserEventLocalServiceClpInvoker {
             return AnalyticsUserEventLocalServiceUtil.updateAnalyticsUserEvent((com.ext.portlet.model.AnalyticsUserEvent) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName512.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
             return AnalyticsUserEventLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName513.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
             AnalyticsUserEventLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             return AnalyticsUserEventLocalServiceUtil.eventExists(((Long) arguments[0]).longValue(),
                 (java.lang.String) arguments[1]);
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName519.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
             return AnalyticsUserEventLocalServiceUtil.createEvent(((Long) arguments[0]).longValue(),
                 (java.lang.String) arguments[1],
                 (java.lang.String) arguments[2],

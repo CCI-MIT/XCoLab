@@ -16,15 +16,15 @@ public final class SetRenderParameterUtil {
 
     private SetRenderParameterUtil() { }
 
-    public static void setNoPermissionErrorRenderParameter(ActionResponse response){
+    public static void setNoPermissionErrorRenderParameter(ActionResponse response) {
         setErrorRenderParameter(response, "showNoPermission");
     }
 
-    public static void setNotFoundErrorRenderParameter(ActionResponse response){
+    public static void setNotFoundErrorRenderParameter(ActionResponse response) {
         setErrorRenderParameter(response, "showNotFound");
     }
 
-    public static void setExceptionRenderParameter(ActionResponse response, Exception exception){
+    public static void setExceptionRenderParameter(ActionResponse response, Exception exception) {
         setErrorRenderParameter(response, "showException");
         response.setRenderParameter("exceptionMessage", exception.getMessage());
         response.setRenderParameter("exceptionStacktrace", getFullStackTraceInHtmlFormat(exception));
@@ -41,7 +41,7 @@ public final class SetRenderParameterUtil {
         return fullStackTraceString.toString();
     }
 
-    private static String getStackTraceInHtmlFormat(StackTraceElement[] stackTraceElements){
+    private static String getStackTraceInHtmlFormat(StackTraceElement[] stackTraceElements) {
         String htmlStacktrace = "<pre>";
         for (StackTraceElement stackTraceElement : stackTraceElements) {
             htmlStacktrace += stackTraceElement.toString() + "<br>";
@@ -50,42 +50,45 @@ public final class SetRenderParameterUtil {
         return htmlStacktrace;
     }
 
-    public static void addActionExceptionMessageToSession(PortletRequest request, Exception exception){
+    public static void addActionExceptionMessageToSession(PortletRequest request, Exception exception) {
         addMessageToSession(request, "exceptionMessage", exception.getMessage());
         addMessageToSession(request, "exceptionStacktrace", getFullStackTraceInHtmlFormat(exception));
     }
 
-    public static void addActionSuccessMessageToSession(PortletRequest request, String successMessage){
+    public static void addActionSuccessMessageToSession(PortletRequest request, String successMessage) {
         addMessageToSession(request, "actionSuccessMessage", successMessage);
     }
 
-    public static void addActionSuccessMessageToSession(PortletRequest request){
+    public static void addActionSuccessMessageToSession(PortletRequest request) {
         addActionSuccessMessageToSession(request, DEFAULT_SUCCESS_MESSAGE);
     }
 
-    private static void addMessageToSession(PortletRequest request, String key, String message){
+    private static void addMessageToSession(PortletRequest request, String key, String message) {
         PortletSession session = request.getPortletSession();
-        session.setAttribute( key, message, PortletSession.APPLICATION_SCOPE);
+        session.setAttribute(key, message, PortletSession.APPLICATION_SCOPE);
     }
 
-    public static void setErrorRenderParameter(ActionResponse response, String errorActionParameter){
+    public static void setErrorRenderParameter(ActionResponse response, String errorActionParameter) {
         response.setRenderParameter("error", "true");
         response.setRenderParameter("action", errorActionParameter);
     }
 
-    public static void setSuccessRenderRedirectDetailsTab (ActionResponse response, Long contestPK, String tabName) throws IOException {
+    public static void setSuccessRenderRedirectDetailsTab(ActionResponse response, Long contestPK, String tabName)
+            throws IOException {
         response.sendRedirect("/web/guest/cms/-/contestmanagement/contestId/" + contestPK + "/tab/" + tabName);
     }
 
-    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName) throws IOException {
+    public static void setSuccessRenderRedirectManagerTab(ActionResponse response, String tabName) throws IOException {
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName);
     }
 
-    public static void setSuccessRenderRedirectManagerTab (ActionResponse response, String tabName, Long elementId) throws IOException {
+    public static void setSuccessRenderRedirectManagerTab(ActionResponse response, String tabName, Long elementId)
+            throws IOException {
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tabName + "/elementId/" + elementId);
     }
 
-    public static void setConfirmMassActionRenderRedirect (ActionResponse response, ContestOverviewWrapper contestOverviewWrapper){
+    public static void setConfirmMassActionRenderRedirect(ActionResponse response,
+            ContestOverviewWrapper contestOverviewWrapper) {
         response.setRenderParameter("action", "showMassActionConfirmation");
         response.setRenderParameter("massActionId", contestOverviewWrapper.getSelectedMassAction().toString());
         response.setRenderParameter("contestIds", contestOverviewWrapper.getSelectedContestIds().toString());

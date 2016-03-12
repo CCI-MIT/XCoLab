@@ -5,6 +5,7 @@ package org.xcolab.enums;
  */
 public enum AttributeType {
     NUMERIC,
+    BOOLEAN,
     STRING,
     REAL;
 }

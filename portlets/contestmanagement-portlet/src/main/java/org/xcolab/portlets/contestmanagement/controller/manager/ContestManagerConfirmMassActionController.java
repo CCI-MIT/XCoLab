@@ -31,18 +31,20 @@ public class ContestManagerConfirmMassActionController {
         ContestMassActions contestMassAction = ContestMassActions.values()[massActionId];
         String confirmView = contestMassAction.getMethod().getName();
         List<Integer> contestIds = getContestIdsFromParameter(request.getParameter("contestIds"));
-        model.addAttribute("massActionConfirmationWrapper", new MassActionConfirmationWrapper(contestIds, massActionId));
+        model.addAttribute("massActionConfirmationWrapper",
+                new MassActionConfirmationWrapper(contestIds, massActionId));
         model.addAttribute("massActionId", massActionId);
         return CONFIRM_VIEW_PATH + confirmView;
     }
 
-    @RequestMapping(params="action=confirmMassActionExecution")
+    @RequestMapping(params = "action=confirmMassActionExecution")
     public void confirmMassActionExecution(ActionRequest request, Model model,
-                                             @ModelAttribute MassActionConfirmationWrapper massActionConfirmationWrapper,
-                                             ActionResponse response)  {
+            @ModelAttribute MassActionConfirmationWrapper massActionConfirmationWrapper,
+            ActionResponse response) {
         try {
             massActionConfirmationWrapper.invokeMassActionForSelectedContests();
-            SetRenderParameterUtil.addActionSuccessMessageToSession(request, massActionConfirmationWrapper.getSelectedMassActionTitle());
+            SetRenderParameterUtil.addActionSuccessMessageToSession(request,
+                    massActionConfirmationWrapper.getSelectedMassActionTitle());
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, ContestManagerTabs.OVERVIEW.getName());
         } catch (Exception e) {
             _log.warn("Update contest overview failed with: ", e);

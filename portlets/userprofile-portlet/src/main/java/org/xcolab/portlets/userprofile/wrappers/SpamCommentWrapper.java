@@ -26,7 +26,8 @@ public class SpamCommentWrapper {
     public SpamCommentWrapper(long messageId, List<SpamReport> spamReports) throws SystemException {
         this.spamReports = spamReports;
         this.message = DiscussionMessageLocalServiceUtil.fetchDiscussionMessage(messageId);
-        this.discussionCategoryGroup = DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(message.getCategoryGroupId());
+        this.discussionCategoryGroup =
+                DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(message.getCategoryGroupId());
         for (SpamReport spamReport : spamReports) {
             if (spamReport.isIsAdminReport()) {
                 this.adminReports.add(spamReport);
@@ -42,10 +43,6 @@ public class SpamCommentWrapper {
         return adminReports;
     }
 
-    public int getAdminReportCount() {
-        return adminReports.size();
-    }
-
     public DiscussionMessage getMessage() {
         return message;
     }
@@ -56,6 +53,10 @@ public class SpamCommentWrapper {
 
     public int getOtherReportCount() {
         return spamReports.size() - getAdminReportCount();
+    }
+
+    public int getAdminReportCount() {
+        return adminReports.size();
     }
 
     public Date getMessageDate() {
@@ -75,6 +76,6 @@ public class SpamCommentWrapper {
     }
 
     public String getDeleteCommentUrl() {
-        return "/web/guest/member/-/member/spamReports/deleteComment/"+message.getMessageId();
+        return "/web/guest/member/-/member/spamReports/deleteComment/" + message.getMessageId();
     }
 }

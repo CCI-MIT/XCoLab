@@ -41,12 +41,12 @@ public class ModelOutputChartOrderLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
+    private String _methodName512;
+    private String[] _methodParameterTypes512;
+    private String _methodName513;
+    private String[] _methodParameterTypes513;
     private String _methodName518;
     private String[] _methodParameterTypes518;
-    private String _methodName519;
-    private String[] _methodParameterTypes519;
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
 
     public ModelOutputChartOrderLocalServiceClpInvoker() {
         _methodName0 = "addModelOutputChartOrder";
@@ -131,17 +131,17 @@ public class ModelOutputChartOrderLocalServiceClpInvoker {
                 "com.ext.portlet.model.ModelOutputChartOrder"
             };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName512 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes512 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName513 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes513 = new String[] { "java.lang.String" };
 
-        _methodName524 = "getChartOrder";
+        _methodName518 = "getChartOrder";
 
-        _methodParameterTypes524 = new String[] {
+        _methodParameterTypes518 = new String[] {
                 "edu.mit.cci.roma.client.Simulation", "java.lang.String"
             };
     }
@@ -235,20 +235,20 @@ public class ModelOutputChartOrderLocalServiceClpInvoker {
             return ModelOutputChartOrderLocalServiceUtil.updateModelOutputChartOrder((com.ext.portlet.model.ModelOutputChartOrder) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName512.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
             return ModelOutputChartOrderLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName513.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
             ModelOutputChartOrderLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             return ModelOutputChartOrderLocalServiceUtil.getChartOrder((edu.mit.cci.roma.client.Simulation) arguments[0],
                 (java.lang.String) arguments[1]);
         }

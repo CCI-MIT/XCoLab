@@ -19,17 +19,16 @@ import javax.portlet.ResourceResponse;
  */
 @Controller
 @RequestMapping("view")
-public class SSOunlinkJSONController extends JSONHelper{
+public class SSOunlinkJSONController extends JSONHelper {
 
-
-    public SSOunlinkJSONController(){
-    }
+    public SSOunlinkJSONController() { }
 
     @ResourceMapping("unlinkFacebookSSO")
-    public @ResponseBody
+    public
+    @ResponseBody
     void handleUnlinkFacebookSSOAJAXRequest(
             PortletRequest request,
-            ResourceResponse response ){
+            ResourceResponse response) {
 
         boolean successStatus = true;
         try {
@@ -42,11 +41,17 @@ public class SSOunlinkJSONController extends JSONHelper{
         this.writeSuccessResultResponseJSON(successStatus, response);
     }
 
+    private void unlinkFacebookSSOuser(User user) throws SystemException {
+        user.setFacebookId(0);
+        UserLocalServiceUtil.updateUser(user);
+    }
+
     @ResourceMapping("unlinkGoogleSSO")
-    public @ResponseBody
+    public
+    @ResponseBody
     void handleUnlinkGoogleSSOAJAXRequest(
             PortletRequest request,
-            ResourceResponse response){
+            ResourceResponse response) {
 
         boolean successStatus = true;
         try {
@@ -57,15 +62,9 @@ public class SSOunlinkJSONController extends JSONHelper{
         }
 
         this.writeSuccessResultResponseJSON(successStatus, response);
-
     }
 
-    private void unlinkFacebookSSOuser(User user) throws SystemException{
-        user.setFacebookId(0);
-        UserLocalServiceUtil.updateUser(user);
-    }
-
-    private void unlinkGoogleSSOuser(User user) throws SystemException{
+    private void unlinkGoogleSSOuser(User user) throws SystemException {
         user.setOpenId("");
         UserLocalServiceUtil.updateUser(user);
     }

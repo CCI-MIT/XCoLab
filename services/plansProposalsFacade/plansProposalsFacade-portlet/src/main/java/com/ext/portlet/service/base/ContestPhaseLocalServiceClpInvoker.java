@@ -41,10 +41,22 @@ public class ContestPhaseLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
+    private String _methodName512;
+    private String[] _methodParameterTypes512;
+    private String _methodName513;
+    private String[] _methodParameterTypes513;
     private String _methodName518;
     private String[] _methodParameterTypes518;
     private String _methodName519;
     private String[] _methodParameterTypes519;
+    private String _methodName520;
+    private String[] _methodParameterTypes520;
+    private String _methodName521;
+    private String[] _methodParameterTypes521;
+    private String _methodName522;
+    private String[] _methodParameterTypes522;
+    private String _methodName523;
+    private String[] _methodParameterTypes523;
     private String _methodName524;
     private String[] _methodParameterTypes524;
     private String _methodName525;
@@ -77,18 +89,6 @@ public class ContestPhaseLocalServiceClpInvoker {
     private String[] _methodParameterTypes538;
     private String _methodName539;
     private String[] _methodParameterTypes539;
-    private String _methodName540;
-    private String[] _methodParameterTypes540;
-    private String _methodName541;
-    private String[] _methodParameterTypes541;
-    private String _methodName542;
-    private String[] _methodParameterTypes542;
-    private String _methodName543;
-    private String[] _methodParameterTypes543;
-    private String _methodName544;
-    private String[] _methodParameterTypes544;
-    private String _methodName545;
-    private String[] _methodParameterTypes545;
 
     public ContestPhaseLocalServiceClpInvoker() {
         _methodName0 = "addContestPhase";
@@ -173,127 +173,127 @@ public class ContestPhaseLocalServiceClpInvoker {
                 "com.ext.portlet.model.ContestPhase"
             };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName512 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes512 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName513 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes513 = new String[] { "java.lang.String" };
 
-        _methodName524 = "overrideClock";
+        _methodName518 = "overrideClock";
 
-        _methodParameterTypes524 = new String[] { "org.xcolab.utils.Clock" };
+        _methodParameterTypes518 = new String[] { "org.xcolab.utils.Clock" };
 
-        _methodName525 = "getContestStatus";
+        _methodName519 = "getContestStatus";
+
+        _methodParameterTypes519 = new String[] {
+                "com.ext.portlet.model.ContestPhase"
+            };
+
+        _methodName520 = "getContestStatusStr";
+
+        _methodParameterTypes520 = new String[] {
+                "com.ext.portlet.model.ContestPhase"
+            };
+
+        _methodName521 = "getPhaseColumns";
+
+        _methodParameterTypes521 = new String[] {
+                "com.ext.portlet.model.ContestPhase"
+            };
+
+        _methodName522 = "getPhaseColumnsRaw";
+
+        _methodParameterTypes522 = new String[] {
+                "com.ext.portlet.model.ContestPhase"
+            };
+
+        _methodName523 = "getPreviousPhases";
+
+        _methodParameterTypes523 = new String[] {
+                "com.ext.portlet.model.ContestPhase"
+            };
+
+        _methodName524 = "getNextContestPhase";
+
+        _methodParameterTypes524 = new String[] {
+                "com.ext.portlet.model.ContestPhase"
+            };
+
+        _methodName525 = "getPhaseActive";
 
         _methodParameterTypes525 = new String[] {
                 "com.ext.portlet.model.ContestPhase"
             };
 
-        _methodName526 = "getContestStatusStr";
+        _methodName526 = "getPhasesForContest";
 
-        _methodParameterTypes526 = new String[] {
+        _methodParameterTypes526 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName527 = "getPhasesForContest";
+
+        _methodParameterTypes527 = new String[] { "long" };
+
+        _methodName528 = "getPhasesForContestScheduleId";
+
+        _methodParameterTypes528 = new String[] { "long" };
+
+        _methodName529 = "getPhasesForContestScheduleIdAndContest";
+
+        _methodParameterTypes529 = new String[] { "long", "long" };
+
+        _methodName530 = "getPhasesForContestScheduleIdAndPhaseType";
+
+        _methodParameterTypes530 = new String[] { "long", "long" };
+
+        _methodName531 = "getActivePhaseForContest";
+
+        _methodParameterTypes531 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName532 = "getContest";
+
+        _methodParameterTypes532 = new String[] {
                 "com.ext.portlet.model.ContestPhase"
             };
 
-        _methodName527 = "getPhaseColumns";
+        _methodName533 = "getName";
 
-        _methodParameterTypes527 = new String[] {
+        _methodParameterTypes533 = new String[] {
                 "com.ext.portlet.model.ContestPhase"
             };
 
-        _methodName528 = "getPhaseColumnsRaw";
+        _methodName534 = "promoteProposal";
 
-        _methodParameterTypes528 = new String[] {
+        _methodParameterTypes534 = new String[] { "long", "long", "long" };
+
+        _methodName535 = "autoPromoteProposals";
+
+        _methodParameterTypes535 = new String[] {  };
+
+        _methodName536 = "createFromContestPhase";
+
+        _methodParameterTypes536 = new String[] {
                 "com.ext.portlet.model.ContestPhase"
             };
 
-        _methodName529 = "getPreviousPhases";
+        _methodName537 = "forcePromotionOfProposalInPhase";
 
-        _methodParameterTypes529 = new String[] {
-                "com.ext.portlet.model.ContestPhase"
-            };
-
-        _methodName530 = "getNextContestPhase";
-
-        _methodParameterTypes530 = new String[] {
-                "com.ext.portlet.model.ContestPhase"
-            };
-
-        _methodName531 = "getPhaseActive";
-
-        _methodParameterTypes531 = new String[] {
-                "com.ext.portlet.model.ContestPhase"
-            };
-
-        _methodName532 = "getPhasesForContest";
-
-        _methodParameterTypes532 = new String[] { "com.ext.portlet.model.Contest" };
-
-        _methodName533 = "getPhasesForContest";
-
-        _methodParameterTypes533 = new String[] { "long" };
-
-        _methodName534 = "getPhasesForContestScheduleId";
-
-        _methodParameterTypes534 = new String[] { "long" };
-
-        _methodName535 = "getPhasesForContestScheduleIdAndContest";
-
-        _methodParameterTypes535 = new String[] { "long", "long" };
-
-        _methodName536 = "getPhasesForContestScheduleIdAndPhaseType";
-
-        _methodParameterTypes536 = new String[] { "long", "long" };
-
-        _methodName537 = "getActivePhaseForContest";
-
-        _methodParameterTypes537 = new String[] { "com.ext.portlet.model.Contest" };
-
-        _methodName538 = "getContest";
-
-        _methodParameterTypes538 = new String[] {
-                "com.ext.portlet.model.ContestPhase"
-            };
-
-        _methodName539 = "getName";
-
-        _methodParameterTypes539 = new String[] {
-                "com.ext.portlet.model.ContestPhase"
-            };
-
-        _methodName540 = "promoteProposal";
-
-        _methodParameterTypes540 = new String[] { "long", "long", "long" };
-
-        _methodName541 = "autoPromoteProposals";
-
-        _methodParameterTypes541 = new String[] {  };
-
-        _methodName542 = "createFromContestPhase";
-
-        _methodParameterTypes542 = new String[] {
-                "com.ext.portlet.model.ContestPhase"
-            };
-
-        _methodName543 = "forcePromotionOfProposalInPhase";
-
-        _methodParameterTypes543 = new String[] {
+        _methodParameterTypes537 = new String[] {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.ContestPhase"
             };
 
-        _methodName544 = "getNumberOfProposalsForJudge";
+        _methodName538 = "getNumberOfProposalsForJudge";
 
-        _methodParameterTypes544 = new String[] {
+        _methodParameterTypes538 = new String[] {
                 "com.liferay.portal.model.User",
                 "com.ext.portlet.model.ContestPhase"
             };
 
-        _methodName545 = "getContestPhaseLinkUrl";
+        _methodName539 = "getContestPhaseLinkUrl";
 
-        _methodParameterTypes545 = new String[] {
+        _methodParameterTypes539 = new String[] {
                 "com.ext.portlet.model.ContestPhase"
             };
     }
@@ -387,104 +387,104 @@ public class ContestPhaseLocalServiceClpInvoker {
             return ContestPhaseLocalServiceUtil.updateContestPhase((com.ext.portlet.model.ContestPhase) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName512.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName513.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
             ContestPhaseLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             ContestPhaseLocalServiceUtil.overrideClock((org.xcolab.utils.Clock) arguments[0]);
 
             return null;
         }
 
+        if (_methodName519.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+            return ContestPhaseLocalServiceUtil.getContestStatus((com.ext.portlet.model.ContestPhase) arguments[0]);
+        }
+
+        if (_methodName520.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
+            return ContestPhaseLocalServiceUtil.getContestStatusStr((com.ext.portlet.model.ContestPhase) arguments[0]);
+        }
+
+        if (_methodName521.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
+            return ContestPhaseLocalServiceUtil.getPhaseColumns((com.ext.portlet.model.ContestPhase) arguments[0]);
+        }
+
+        if (_methodName522.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes522, parameterTypes)) {
+            return ContestPhaseLocalServiceUtil.getPhaseColumnsRaw((com.ext.portlet.model.ContestPhase) arguments[0]);
+        }
+
+        if (_methodName523.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes523, parameterTypes)) {
+            return ContestPhaseLocalServiceUtil.getPreviousPhases((com.ext.portlet.model.ContestPhase) arguments[0]);
+        }
+
+        if (_methodName524.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+            return ContestPhaseLocalServiceUtil.getNextContestPhase((com.ext.portlet.model.ContestPhase) arguments[0]);
+        }
+
         if (_methodName525.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
-            return ContestPhaseLocalServiceUtil.getContestStatus((com.ext.portlet.model.ContestPhase) arguments[0]);
+            return ContestPhaseLocalServiceUtil.getPhaseActive((com.ext.portlet.model.ContestPhase) arguments[0]);
         }
 
         if (_methodName526.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
-            return ContestPhaseLocalServiceUtil.getContestStatusStr((com.ext.portlet.model.ContestPhase) arguments[0]);
+            return ContestPhaseLocalServiceUtil.getPhasesForContest((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         if (_methodName527.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
-            return ContestPhaseLocalServiceUtil.getPhaseColumns((com.ext.portlet.model.ContestPhase) arguments[0]);
+            return ContestPhaseLocalServiceUtil.getPhasesForContest(((Long) arguments[0]).longValue());
         }
 
         if (_methodName528.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes528, parameterTypes)) {
-            return ContestPhaseLocalServiceUtil.getPhaseColumnsRaw((com.ext.portlet.model.ContestPhase) arguments[0]);
+            return ContestPhaseLocalServiceUtil.getPhasesForContestScheduleId(((Long) arguments[0]).longValue());
         }
 
         if (_methodName529.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes529, parameterTypes)) {
-            return ContestPhaseLocalServiceUtil.getPreviousPhases((com.ext.portlet.model.ContestPhase) arguments[0]);
-        }
-
-        if (_methodName530.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes530, parameterTypes)) {
-            return ContestPhaseLocalServiceUtil.getNextContestPhase((com.ext.portlet.model.ContestPhase) arguments[0]);
-        }
-
-        if (_methodName531.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes531, parameterTypes)) {
-            return ContestPhaseLocalServiceUtil.getPhaseActive((com.ext.portlet.model.ContestPhase) arguments[0]);
-        }
-
-        if (_methodName532.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
-            return ContestPhaseLocalServiceUtil.getPhasesForContest((com.ext.portlet.model.Contest) arguments[0]);
-        }
-
-        if (_methodName533.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes533, parameterTypes)) {
-            return ContestPhaseLocalServiceUtil.getPhasesForContest(((Long) arguments[0]).longValue());
-        }
-
-        if (_methodName534.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
-            return ContestPhaseLocalServiceUtil.getPhasesForContestScheduleId(((Long) arguments[0]).longValue());
-        }
-
-        if (_methodName535.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName536.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes536, parameterTypes)) {
+        if (_methodName530.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes530, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndPhaseType(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName537.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes537, parameterTypes)) {
+        if (_methodName531.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes531, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.getActivePhaseForContest((com.ext.portlet.model.Contest) arguments[0]);
         }
 
-        if (_methodName538.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes538, parameterTypes)) {
+        if (_methodName532.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.getContest((com.ext.portlet.model.ContestPhase) arguments[0]);
         }
 
-        if (_methodName539.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes539, parameterTypes)) {
+        if (_methodName533.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes533, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.getName((com.ext.portlet.model.ContestPhase) arguments[0]);
         }
 
-        if (_methodName540.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
+        if (_methodName534.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
             ContestPhaseLocalServiceUtil.promoteProposal(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue());
@@ -492,34 +492,34 @@ public class ContestPhaseLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName541.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
+        if (_methodName535.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
             ContestPhaseLocalServiceUtil.autoPromoteProposals();
 
             return null;
         }
 
-        if (_methodName542.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes542, parameterTypes)) {
+        if (_methodName536.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes536, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.createFromContestPhase((com.ext.portlet.model.ContestPhase) arguments[0]);
         }
 
-        if (_methodName543.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes543, parameterTypes)) {
+        if (_methodName537.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes537, parameterTypes)) {
             ContestPhaseLocalServiceUtil.forcePromotionOfProposalInPhase((com.ext.portlet.model.Proposal) arguments[0],
                 (com.ext.portlet.model.ContestPhase) arguments[1]);
 
             return null;
         }
 
-        if (_methodName544.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes544, parameterTypes)) {
+        if (_methodName538.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes538, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.getNumberOfProposalsForJudge((com.liferay.portal.model.User) arguments[0],
                 (com.ext.portlet.model.ContestPhase) arguments[1]);
         }
 
-        if (_methodName545.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes545, parameterTypes)) {
+        if (_methodName539.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes539, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.getContestPhaseLinkUrl((com.ext.portlet.model.ContestPhase) arguments[0]);
         }
 

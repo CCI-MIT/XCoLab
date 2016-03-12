@@ -515,7 +515,7 @@ div.selected {
 }
 
 .dd-options li {
-  margin-left: 0px !important;
+  margin-left: 0 !important;
   padding: inherit !important;
   background: none !important;
 }
@@ -579,7 +579,7 @@ div.selected {
 }
 
 #impact tr select {
-  margin: 0px;
+  margin: 0;
   width: 202px;
 }
 
@@ -680,13 +680,13 @@ tr#impact-new-series-row:hover {
 }
 
 .subcontests ul {
-  margin-left: 0px;
+  margin-left: 0;
   width: 100%;
   overflow: hidden;
 }
 
 .subcontests li {
-  margin-left: 0px;
+  margin-left: 0;
   width: 49%;
   line-height: 1.5em;
   float: left;

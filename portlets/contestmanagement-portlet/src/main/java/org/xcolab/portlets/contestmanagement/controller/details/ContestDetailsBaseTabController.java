@@ -36,10 +36,11 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException;
+    public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request)
+            throws PortalException, SystemException;
 
     @ModelAttribute("contestWrapper")
-    public BaseContestWrapper populateContestWrapper(Model model, PortletRequest request){
+    public BaseContestWrapper populateContestWrapper(Model model, PortletRequest request) {
         try {
             initContest(request);
             return contestWrapper;
@@ -65,24 +66,26 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         setSeoTexts(request, pageTitle, pageSubTitle, pageDescription);
     }
 
-    public static boolean getCreateNewContestParameterFromRequest(PortletRequest request){
+    public static boolean getCreateNewContestParameterFromRequest(PortletRequest request) {
         String createContestParameter = request.getParameter("createContest");
         return Boolean.parseBoolean(createContestParameter);
     }
 
-    public Long getContestPK(){ return contest.getContestPK();}
+    public Long getContestPK() {
+        return contest.getContestPK();
+    }
 
     public Contest getContest() {
         return contest;
     }
 
     public Contest getContest(PortletRequest request) {
-        if(contest != null){
+        if (contest != null) {
             return contest;
         }
         try {
             initContest(request);
-        } catch (SystemException | PortalException e){
+        } catch (SystemException | PortalException e) {
             _log.warn("Could not get contest: ", e);
         }
         return contest;

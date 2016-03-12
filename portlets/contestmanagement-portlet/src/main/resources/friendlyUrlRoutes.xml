@@ -9,16 +9,6 @@
     </route>
 
     <route>
-        <pattern>/create2015Tier1Contests</pattern>
-        <generated-parameter name="create2015Tier1Contests">true</generated-parameter>
-    </route>
-
-    <route>
-        <pattern>/create2015Tier2And3Contests</pattern>
-        <generated-parameter name="create2015Tier2And3Contests">true</generated-parameter>
-    </route>
-
-    <route>
         <pattern>/contestId/{contestId}</pattern>
         <generated-parameter name="tab">DESCRIPTION</generated-parameter>
         <generated-parameter name="contestId">{contestId}</generated-parameter>

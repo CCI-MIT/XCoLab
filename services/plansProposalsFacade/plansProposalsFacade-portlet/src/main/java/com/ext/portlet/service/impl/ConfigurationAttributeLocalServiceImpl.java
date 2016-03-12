@@ -86,6 +86,14 @@ public class ConfigurationAttributeLocalServiceImpl
         return getByAttributeNameAdditionalId(attributeKeyName, additionalId).getNumericValue();
     }
 
+    @Override
+    public boolean getAttributeBooleanValue(String attributeKeyName, long additionalId) throws SystemException, NoSuchConfigurationAttributeException {
+        ConfigurationAttributeKey attributeKey = ConfigurationAttributeKey.valueOf(attributeKeyName);
+        if (attributeKey.getType() != AttributeType.BOOLEAN) {
+            throw new UnsupportedOperationException("Cannot retrieve boolean value from non-boolean attribute; attribute type = " + attributeKey.getType().name());
+        }
+        return getByAttributeNameAdditionalId(attributeKeyName, additionalId).getNumericValue() > 0;
+    }
 
     @Override
     public double getAttributeDoubleValue(String attributeKeyName, long additionalId) throws SystemException, NoSuchConfigurationAttributeException {

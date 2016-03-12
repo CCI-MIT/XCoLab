@@ -24,70 +24,55 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created with IntelliJ IDEA.
- * User: patrickhiesel
- * Date: 9/6/13
- * Time: 5:13 PM
- * To change this template use File | Settings | File Templates.
- */
-public class BadgeBean implements Serializable{
+public class BadgeBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private final static Log _log = LogFactoryUtil.getLog(BadgeBean.class);
-    private final long userID; // USER the Badges belong to
+    private final long userID;
     private final List<Badge> badges;
 
-    public BadgeBean(long userID){
+    public BadgeBean(long userID) {
         this.userID = userID;
         badges = new ArrayList<>();
-        try{
+        try {
             fetchBadges();
         } catch (SystemException | PortalException e) {
             e.printStackTrace();
         }
     }
 
-    private void fetchBadges() throws SystemException,PortalException{
-        for(Proposal p : ProposalLocalServiceUtil.getProposals(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-            if (!ProposalLocalServiceUtil.isUserAMember(p.getProposalId(),userID)) {
+    private void fetchBadges() throws SystemException, PortalException {
+        for (Proposal p : ProposalLocalServiceUtil.getProposals(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            if (!ProposalLocalServiceUtil.isUserAMember(p.getProposalId(), userID)) {
                 continue;
             }
             try {
                 ContestPhaseRibbonType ribbon = getRibbonType(p);
                 int proposalRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
                 if (proposalRibbon > 0) {
-                    // Plan won a contest
                     String badgeText = ribbon.getHoverText();
                     Contest contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId());
-                    String proposalTitle =  ProposalAttributeLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0).getStringValue();
+                    String proposalTitle = ProposalAttributeLocalServiceUtil
+                            .getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
                     badges.add(new Badge(proposalRibbon, badgeText, p, proposalTitle, contest));
                 }
             } catch (SystemException | PortalException e) {
-                _log.warn("Could nod add badge to user profile view for userId: " + userID + " and proposalId: " + p.getProposalId(), e);
+                _log.warn("Could nod add badge to user profile view for userId: " + userID + " and proposalId: " + p
+                        .getProposalId(), e);
             }
         }
     }
 
-    public List<Badge> getBadges(){
-        return badges;
-    }
-
-    @Override
-    public String toString(){
-        return badges.toString();
-    }
-
     private ContestPhaseRibbonType getRibbonType(Proposal p) throws PortalException, SystemException {
         ContestPhaseRibbonType contestPhaseRibbonType = null;
-        List<Long> phasesForProposal =  Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
+        List<Long> phasesForProposal = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
 
         long contestPhaseType = 0;
         for (Long phaseId : phasesForProposal) {
             try {
-                long typeId = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),
-                        phaseId, ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
+                long typeId = ProposalContestPhaseAttributeLocalServiceUtil
+                        .getProposalContestPhaseAttribute(p.getProposalId(),
+                                phaseId, ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
 
                 ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
 
@@ -97,10 +82,19 @@ public class BadgeBean implements Serializable{
                     contestPhaseType = contestPhase.getContestPhaseType();
                 }
 
+            } catch (NoSuchProposalContestPhaseAttributeException ignored) {
             }
-            catch (NoSuchProposalContestPhaseAttributeException ignored) { }
         }
 
         return contestPhaseRibbonType;
+    }
+
+    public List<Badge> getBadges() {
+        return badges;
+    }
+
+    @Override
+    public String toString() {
+        return badges.toString();
     }
 }

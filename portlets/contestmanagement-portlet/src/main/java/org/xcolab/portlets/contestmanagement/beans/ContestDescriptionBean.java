@@ -45,7 +45,8 @@ public class ContestDescriptionBean implements Serializable {
     private boolean shouldUpdateContestUrlName;
 
     @SuppressWarnings("unused")
-    public ContestDescriptionBean() { }
+    public ContestDescriptionBean() {
+    }
 
     public ContestDescriptionBean(Contest contest) {
 
@@ -69,7 +70,7 @@ public class ContestDescriptionBean implements Serializable {
         updateContestSchedule(contest, scheduleTemplateId);
         updateContestWiki(contest, oldContestTitle);
 
-        if(shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestTitle)) {
+        if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestTitle)) {
             contest.setContestUrlName(ContestLocalServiceUtil.generateContestUrlName(contest));
             contest.persist();
         }
@@ -157,7 +158,8 @@ public class ContestDescriptionBean implements Serializable {
         contest.persist();
     }
 
-    public static void updateContestWiki(Contest contest, String oldContestTitle) throws SystemException, PortalException, UnsupportedEncodingException {
+    public static void updateContestWiki(Contest contest, String oldContestTitle)
+            throws SystemException, PortalException, UnsupportedEncodingException {
 
         String newContestTitle = contest.getContestShortName();
         if (!oldContestTitle.equals(newContestTitle)) {
@@ -166,17 +168,19 @@ public class ContestDescriptionBean implements Serializable {
         }
     }
 
-    public static void updateContestSchedule(Contest contest, Long contestScheduleId) throws SystemException, PortalException {
+    public static void updateContestSchedule(Contest contest, Long contestScheduleId)
+            throws SystemException, PortalException {
         Long oldScheduleTemplateId = contest.getContestScheduleId();
         boolean noScheduleSelected = contestScheduleId.equals(0L);
 
-        if(!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
+        if (!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
             BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
             boolean contestHasProposals = contestWrapper.getTotalProposalsCount() > 0;
             if (contestHasProposals) {
                 ContestScheduleWrapper.changeContestScheduleForContest(contest, contestScheduleId);
             } else {
-                ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest, contestScheduleId);
+                ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest,
+                        contestScheduleId);
             }
             contest.setContestScheduleId(contestScheduleId);
             contest.persist();

@@ -61,6 +61,8 @@ public class ConfigurationAttributeLocalServiceClp
     private String[] _methodParameterTypes25;
     private String _methodName26;
     private String[] _methodParameterTypes26;
+    private String _methodName27;
+    private String[] _methodParameterTypes27;
 
     public ConfigurationAttributeLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -198,9 +200,13 @@ public class ConfigurationAttributeLocalServiceClp
 
         _methodParameterTypes25 = new String[] { "java.lang.String", "long" };
 
-        _methodName26 = "getAttributeDoubleValue";
+        _methodName26 = "getAttributeBooleanValue";
 
         _methodParameterTypes26 = new String[] { "java.lang.String", "long" };
+
+        _methodName27 = "getAttributeDoubleValue";
+
+        _methodParameterTypes27 = new String[] { "java.lang.String", "long" };
     }
 
     @Override
@@ -984,7 +990,7 @@ public class ConfigurationAttributeLocalServiceClp
     }
 
     @Override
-    public double getAttributeDoubleValue(java.lang.String attributeKeyName,
+    public boolean getAttributeBooleanValue(java.lang.String attributeKeyName,
         long additionalId)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -993,6 +999,43 @@ public class ConfigurationAttributeLocalServiceClp
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName26,
                     _methodParameterTypes26,
+                    new Object[] {
+                        ClpSerializer.translateInput(attributeKeyName),
+                        
+                    additionalId
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.ext.portlet.NoSuchConfigurationAttributeException) {
+                throw (com.ext.portlet.NoSuchConfigurationAttributeException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
+    }
+
+    @Override
+    public double getAttributeDoubleValue(java.lang.String attributeKeyName,
+        long additionalId)
+        throws com.ext.portlet.NoSuchConfigurationAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName27,
+                    _methodParameterTypes27,
                     new Object[] {
                         ClpSerializer.translateInput(attributeKeyName),
                         

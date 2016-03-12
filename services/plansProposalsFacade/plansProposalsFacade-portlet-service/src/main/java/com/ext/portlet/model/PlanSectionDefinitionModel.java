@@ -190,6 +190,21 @@ public interface PlanSectionDefinitionModel extends BaseModel<PlanSectionDefinit
     public void setAllowedContestTypeIds(String allowedContestTypeIds);
 
     /**
+     * Returns the allowed values of this plan section definition.
+     *
+     * @return the allowed values of this plan section definition
+     */
+    @AutoEscape
+    public String getAllowedValues();
+
+    /**
+     * Sets the allowed values of this plan section definition.
+     *
+     * @param allowedValues the allowed values of this plan section definition
+     */
+    public void setAllowedValues(String allowedValues);
+
+    /**
      * Returns the additional IDs of this plan section definition.
      *
      * @return the additional IDs of this plan section definition

@@ -1,37 +1,20 @@
 package org.xcolab.portlets.loginregister;
 
-/**
- * 
- */
-
 import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-/**
- * @author pdeboer
- * 
- */
 public class BalloonCookie implements Serializable {
-    /**
-	 * 
-	 */
+    public static final String COOKIE_NAME = "climatecolabBalloonCookie2016";
+
     private static final long serialVersionUID = 1L;
-    /**
-	 * 
-	 */
     private String uuid;
     private String extraDataLogged;
 
-    public static final String COOKIE_NAME = "climatecolabBalloonCookie2016";
-
-    /**
-	 * 
-	 */
-    public BalloonCookie() {
-    }
+    public BalloonCookie() { }
 
     public BalloonCookie(BalloonCookie bc) {
         if (bc != null) {
@@ -40,27 +23,10 @@ public class BalloonCookie implements Serializable {
         }
     }
 
-    /**
-     * @param uuid
-     *            the uuid to set
-     */
-    public void setUuid(String uuid) {
-        if (uuid != null && !uuid.equals("null") && !uuid.equals(""))
-            this.uuid = uuid;
-        else {
-            uuid = "";
-        }
-    }
-
-    /**
-     * @return the uuid
-     */
-    public String getUuid() {
-        return uuid;
-    }
-
     public static BalloonCookie fromCookieArray(Cookie[] cookies) {
-    	if(cookies == null) return new BalloonCookie();
+        if (cookies == null) {
+            return new BalloonCookie();
+        }
         for (Cookie c : cookies) {
             if (c.getName().equals(COOKIE_NAME)) {
                 BalloonCookie bc = new BalloonCookie();
@@ -71,7 +37,7 @@ public class BalloonCookie implements Serializable {
                         if (vals.length > 1) {
                             bc.extraDataLogged = vals[1];
                         }
-                        
+
                         return bc;
                     }
                 } catch (IOException e) {
@@ -83,35 +49,46 @@ public class BalloonCookie implements Serializable {
     }
 
     /**
+     * @return the uuid
+     */
+    public String getUuid() {
+        return uuid;
+    }
+
+    /**
+     * @param uuid the uuid to set
+     */
+    public void setUuid(String uuid) {
+        if (uuid != null && !uuid.equals("null") && !uuid.equals("")) {
+            this.uuid = uuid;
+        } else {
+            uuid = "";
+        }
+    }
+
+    /**
      * convenience method for liferay
-     * 
-     * @return
      */
     public String getCookieName() {
         return COOKIE_NAME;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
+    public Cookie getHttpCookie() {
+        Cookie cookie = new Cookie(COOKIE_NAME, toString());
+        cookie.setMaxAge(Integer.MAX_VALUE);
+        cookie.setPath("/");
+
+        return cookie;
+    }
+
     @Override
     public String toString() {
         try {
-            return URLEncoder.encode((uuid == null ? "" : uuid) + "|" + (extraDataLogged == null ? "" : extraDataLogged), "UTF-8");
-        } catch (IOException e) {
-            //
+            return URLEncoder
+                    .encode((uuid == null ? "" : uuid) + "|" + (extraDataLogged == null ? "" : extraDataLogged),
+                            "UTF-8");
+        } catch (UnsupportedEncodingException ignored) {
         }
         return "";
     }
-
-
-	public Cookie getHttpCookie() {
-		Cookie cookie = new Cookie(COOKIE_NAME, toString());
-		cookie.setMaxAge(Integer.MAX_VALUE);
-		cookie.setPath("/");
-		
-		return cookie;
-	}
 }

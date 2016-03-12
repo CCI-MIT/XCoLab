@@ -19,6 +19,7 @@
 	<import class="com.ext.portlet.model.ContestPhaseType" />
 	<import class="com.ext.portlet.model.ContestSchedule" />
 	<import class="com.ext.portlet.model.ContestTeamMember" />
+	<import class="com.ext.portlet.model.ContestTeamMemberRole" />
 	<import class="com.ext.portlet.model.ContestType" />
 	<import class="com.ext.portlet.model.DiscussionCategory" />
 	<import class="com.ext.portlet.model.DiscussionCategoryGroup" />
@@ -67,9 +68,7 @@
 	<import class="com.ext.portlet.model.Proposal" />
 	<import class="com.ext.portlet.model.Proposal2Phase" />
 	<import class="com.ext.portlet.model.ProposalAttribute" />
-	<import class="com.ext.portlet.model.ProposalAttributeType" />
 	<import class="com.ext.portlet.model.ProposalContestPhaseAttribute" />
-	<import class="com.ext.portlet.model.ProposalContestPhaseAttributeType" />
 	<import class="com.ext.portlet.model.ProposalRating" />
 	<import class="com.ext.portlet.model.ProposalRatingType" />
 	<import class="com.ext.portlet.model.ProposalRatingValue" />
@@ -336,7 +335,15 @@
 		</id>
 		<property name="contestId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="roleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ContestTeamMemberRoleImpl" table="xcolab_ContestTeamMemberRole">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
 		<property name="role" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="sort" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestTypeImpl" table="xcolab_ContestType">
 		<cache usage="read-write" />
@@ -748,6 +755,7 @@
 		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="tier" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="allowedContestTypeIds" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="allowedValues" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="additionalIds" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="locked" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="contestIntegrationRelevance" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
@@ -861,14 +869,6 @@
 		<property name="stringValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="realValue" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.ProposalAttributeTypeImpl" table="xcolab_ProposalAttributeType">
-		<cache usage="read-write" />
-		<id name="name" type="java.lang.String">
-			<generator class="assigned" />
-		</id>
-		<property name="visibleInVersionHistory" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="copyOnPromote" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
 	<class name="com.ext.portlet.model.impl.ProposalContestPhaseAttributeImpl" table="xcolab_ProposalContestPhaseAttribute">
 		<cache usage="read-write" />
 		<id name="id" column="id_" type="long">
@@ -881,13 +881,6 @@
 		<property name="numericValue" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="stringValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="realValue" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl" table="xcolab_ProposalContestPhaseAttributeType">
-		<cache usage="read-write" />
-		<id name="name" type="java.lang.String">
-			<generator class="assigned" />
-		</id>
-		<property name="copyOnPromote" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalRatingImpl" table="xcolab_ProposalRating">
 		<cache usage="read-write" />

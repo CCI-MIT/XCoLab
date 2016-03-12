@@ -263,9 +263,10 @@ public class ContestTeamMemberLocalServiceUtil {
     }
 
     public static com.ext.portlet.model.ContestTeamMember addContestTeamMember(
-        java.lang.Long userId, java.lang.Long contestPk, java.lang.String role)
+        java.lang.Long userId, java.lang.Long contestPk,
+        org.xcolab.enums.MemberRole memberRole)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().addContestTeamMember(userId, contestPk, role);
+        return getService().addContestTeamMember(userId, contestPk, memberRole);
     }
 
     public static java.util.List<com.ext.portlet.model.ContestTeamMember> findForContest(

@@ -52,7 +52,8 @@ public class ContestAdminBean implements Serializable {
     public void persist(Contest contest) throws SystemException, UnsupportedEncodingException, PortalException {
         updateContestDescription(contest);
 
-        DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
+        DiscussionCategoryGroup dcg =
+                DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
         ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest.getContestTypeId());
         dcg.setDescription(String.format("%s %s", contestType.getContestName(), contest.getContestShortName()));
         dcg.persist();
@@ -94,7 +95,9 @@ public class ContestAdminBean implements Serializable {
         this.contestTier = contestTier;
     }
 
-    public Long getContestType() { return contestType; }
+    public Long getContestType() {
+        return contestType;
+    }
 
     public void setContestType(Long contestType) {
         this.contestType = contestType;

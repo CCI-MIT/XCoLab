@@ -1,8 +1,8 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.dao.orm.Criterion;
@@ -15,14 +15,15 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,35 +34,30 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.utils.HtmlUtil;
+import org.xcolab.utils.emailnotification.proposal.ProposalMembershipInviteNotification;
+import org.xcolab.utils.emailnotification.proposal.ProposalUserActionNotification;
 
+import javax.mail.internet.AddressException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("view")
 public class ProposalRequestMembershipActionController {
+    private static final String MEMBERSHIP_REQUEST_TEMPLATE = "PROPOSAL_MEMBERSHIP_REQUEST_DEFAULT";
 
-    // Membership request from non-group user
-    private static final String MSG_MEMBERSHIP_REQUEST_SUBJECT = "%s wants to join your proposal %s";
-    private static final String MSG_MEMBERSHIP_REQUEST_CONTENT = "User %s has requested to join your proposal %s. Click <a href='%s'>here</a> to respond to it.";
-    private static final String PROPOSAL_URL_ADMIN_TAB = "/tab/ADMIN";
     private static final String MSG_MEMBERSHIP_RESPONSE_SUBJECT = "Response to your membership request";
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED = "Your request has been accepted <br />Comments: ";
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED = "Your request has been rejected <br />Comments: ";
 
-    // Membership invite from group user
-    private static final String MSG_MEMBERSHIP_INVITE_SUBJECT = "%s invites you to join the proposal %s";
-    private static final String MSG_MEMBERSHIP_INVITE_CONTENT = "User %s invites you to contribute to the proposal %s with the following message: %n%n%s%n%n" +
-            "Click <a href='%s' target='_blank'>here</a> to <strong>accept</strong> the invitation.%n" +
-            "Click <a href='%s' target='_blank'>here</a> to <strong>decline</strong> the invitation. ";
-
-	private static final String MEMBERSHIP_INVITE_STRUTS_ACTION_URL = "/c/portal/proposal_invite_response";
     @Autowired
     private ProposalsContext proposalsContext;
 
@@ -76,28 +72,24 @@ public class ProposalRequestMembershipActionController {
             response.setRenderParameter("action", "requestMembership");
             return;
         }
-    	
-    	if (proposalsContext.getUser(request).getDefaultUser()) {
+
+        final User sender = proposalsContext.getUser(request);
+        if (sender.getDefaultUser()) {
     		return;
     	}
 
-        long userId = proposalsContext.getUser(request).getUserId();
-        long proposalId = proposalsContext.getProposal(request).getProposalId();
-        String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
-        ProposalLocalServiceUtil.addMembershipRequest(proposalId,userId,comment);
+        final Proposal proposal = proposalsContext.getProposal(request);
+        final long proposalId = proposal.getProposalId();
+        final User proposalAuthor = UserLocalServiceUtil.getUser(proposal.getAuthorId());
+        final Contest contest = proposalsContext.getContest(request);
 
-        for(User user : ProposalLocalServiceUtil.getMembers(proposalsContext.getProposal(request).getProposalId())){
-            if (proposalsContext.getProposal(request).getAuthorId() == user.getUserId()){
-                String subject = String.format(MSG_MEMBERSHIP_REQUEST_SUBJECT,
-                        proposalsContext.getUser(request).getFullName(),
-                        proposalName);
-                String proposalUrl = themeDisplay.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(proposalId) + PROPOSAL_URL_ADMIN_TAB;
-                String content = String.format(MSG_MEMBERSHIP_REQUEST_CONTENT,
-                        proposalsContext.getUser(request).getFullName(),
-                        proposalName, proposalUrl);
-                sendMessage(proposalsContext.getUser(request).getUserId(),user.getUserId(),subject,content);
-            }
-        }
+        ProposalLocalServiceUtil.addMembershipRequest(proposalId, sender.getUserId(), comment);
+
+        ServiceContext serviceContext = new ServiceContext();
+        serviceContext.setPortalURL(themeDisplay.getPortalURL());
+
+        new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor, MEMBERSHIP_REQUEST_TEMPLATE,
+                serviceContext).sendMessage();
 
         SessionMessages.add(request, "membershipRequestSent");
         
@@ -123,32 +115,23 @@ public class ProposalRequestMembershipActionController {
 				User recipient = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
 
 				if (recipient != null) {
-					long proposalId = proposalsContext.getProposal(request).getProposalId();
-					long contestId = proposalsContext.getContest(request).getContestPK();
+                    final Proposal proposal = proposalsContext.getProposal(request);
+                    final long proposalId = proposal.getProposalId();
+                    final Contest contest = proposalsContext.getContest(request);
 
-					String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
-					String comment = requestMembershipInviteBean.getInviteComment();
+					String comment = HtmlUtil.cleanAll(requestMembershipInviteBean.getInviteComment());
 
-					// A comment has to be specified
 					if (Validator.isNull(comment)) {
 						comment = "No message specified";
 					}
-					MembershipRequest memberRequest = ProposalLocalServiceUtil.addMembershipRequest(proposalId,recipient.getUserId(),comment);
+					MembershipRequest memberRequest = ProposalLocalServiceUtil
+                            .addMembershipRequest(proposalId,recipient.getUserId(),comment);
 
-					String baseUrl = themeDisplay.getPortalURL() + MEMBERSHIP_INVITE_STRUTS_ACTION_URL;
-					baseUrl = HttpUtil.addParameter(baseUrl, "contestId", contestId);
-					baseUrl = HttpUtil.addParameter(baseUrl, "requestId", memberRequest.getMembershipRequestId());
-					baseUrl = HttpUtil.addParameter(baseUrl, "proposalId", proposalId);
-					String acceptURL = HttpUtil.addParameter(baseUrl, "do", "accept");
-					String declineURL = HttpUtil.addParameter(baseUrl, "do", "decline");
-
-					String proposalLink = String.format("<a href='%s'>%s</a>", ProposalLocalServiceUtil.getProposalLinkUrl(proposalId), proposalName);
-					String subject = String.format(MSG_MEMBERSHIP_INVITE_SUBJECT,
-							proposalsContext.getUser(request).getFullName(), proposalName);
-					String content = String.format(MSG_MEMBERSHIP_INVITE_CONTENT,
-							proposalsContext.getUser(request).getFullName(),
-							proposalLink, comment, acceptURL, declineURL);
-					sendMessage(proposalsContext.getUser(request).getUserId(),recipient.getUserId(),subject,content);
+                    ServiceContext serviceContext = new ServiceContext();
+                    serviceContext.setPortalURL(themeDisplay.getPortalURL());
+                    final User sender = proposalsContext.getUser(request);
+                    new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,
+                            memberRequest, comment, serviceContext).sendMessage();
 
 					SessionMessages.add(request, "memberInviteSent");
 				}
@@ -159,8 +142,6 @@ public class ProposalRequestMembershipActionController {
 		} catch (NoSuchUserException e) {
 			SessionErrors.add(request, "memberInviteRecipientError");
 		}
-
-
     }
 
     @ResourceMapping("inviteMembers-validateRecipient")
@@ -204,6 +185,7 @@ public class ProposalRequestMembershipActionController {
         if (membershipRequest == null) {
             return;
         }
+        comment = HtmlUtil.cleanAll(comment);
         if (comment == null || comment.equalsIgnoreCase("Optional response")) {
             comment = "no comments";
         }
@@ -224,7 +206,8 @@ public class ProposalRequestMembershipActionController {
         try{
             MessageUtil.sendMessage(subject, content, sender,
                     sender,recipients , null);
-        } catch (Exception e){
+        } catch (PortalException | SystemException | AddressException
+                | MailEngineException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }

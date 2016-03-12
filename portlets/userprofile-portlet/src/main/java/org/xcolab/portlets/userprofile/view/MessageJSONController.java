@@ -29,7 +29,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("view")
-public class MessageJSONController extends JSONHelper{
+public class MessageJSONController extends JSONHelper {
 
     private final static Log _log = LogFactoryUtil.getLog(MessageJSONController.class);
     private final static String LIMIT_SUCCEEDED_EXCEPTION = "LIMIT_SUCCEEDED";
@@ -39,31 +39,25 @@ public class MessageJSONController extends JSONHelper{
     @Autowired
     private SmartValidator validator;
 
-    @InitBinder("messageBean")
-    public void initMessageBeanBinder(WebDataBinder binder) { binder.setValidator(validator); }
+    public MessageJSONController() { }
 
-    public MessageJSONController(){
+    @InitBinder("messageBean")
+    public void initMessageBeanBinder(WebDataBinder binder) {
+        binder.setValidator(validator);
     }
 
-    /*
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String findAll() {
-        return "todo/list";
-    }*/
-
-    @ResourceMapping( value = "submitSendMessageForm2")
-    void handleSubmitSendMessageFormAJAXReques2(
-    ){
+    @ResourceMapping(value = "submitSendMessageForm2")
+    void handleSubmitSendMessageFormAJAXReques2() {
         System.out.println("userIdRecipient");
     }
 
     @ResourceMapping("submitSendMessageForm")
-    public @ResponseBody
+    public
+    @ResponseBody
     void handleSubmitSendMessageFormAJAXRequest(
             ResourceRequest request, ResourceResponse response,
             @ModelAttribute MessageBean messageBean, BindingResult result,
-            @RequestParam("userIdRecipient") Long userIdRecipient
-    ){
+            @RequestParam("userIdRecipient") Long userIdRecipient) {
 
         if (!result.hasErrors()) {
             try {
@@ -73,19 +67,19 @@ public class MessageJSONController extends JSONHelper{
                 this.writeSuccessResultResponseJSON(true, response);
             } catch (Exception e) {
                 String exceptionMessage = e.getMessage();
-                if (exceptionMessage.equals(LIMIT_SUCCEEDED_EXCEPTION)){
+                if (exceptionMessage.equals(LIMIT_SUCCEEDED_EXCEPTION)) {
                     this.writeErrorResultResponseJSON(LIMIT_SUCCEEDED_EXCEPTION, response);
                 } else {
                     this.writeSuccessResultResponseJSON(false, response);
                 }
             }
-        } else{
+        } else {
             this.writeSuccessResultResponseJSON(false, response);
         }
 
     }
 
-    private void sendMessage(MessageBean messageBean, User userSender, User userRecipient) throws Exception{
+    private void sendMessage(MessageBean messageBean, User userSender, User userRecipient) throws Exception {
         init(messageBean, userSender, userRecipient);
         sendMessageToRecipientsInMessageBean();
     }
@@ -97,15 +91,16 @@ public class MessageJSONController extends JSONHelper{
             messageBean.addRecipientUser(userRecipient);
         }
     }
-    private void sendMessageToRecipientsInMessageBean()  throws Exception{
+
+    private void sendMessageToRecipientsInMessageBean() throws Exception {
         List<Long> recipients = new ArrayList<>();
-        for(User recipient: messageBean.getTo()){
+        for (User recipient : messageBean.getTo()) {
             recipients.add(recipient.getUserId());
         }
         boolean sendSuccess = MessageUtil.checkLimitAndSendMessage(
                 messageBean.getMessageSubject(), messageBean.getMessageText(), userSender, recipients);
 
-        if(!sendSuccess){
+        if (!sendSuccess) {
             throw new Exception(LIMIT_SUCCEEDED_EXCEPTION);
         }
     }

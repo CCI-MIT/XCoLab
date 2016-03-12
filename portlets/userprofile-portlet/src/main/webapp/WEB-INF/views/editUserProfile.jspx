@@ -5,7 +5,8 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
     <jsp:directive.include file="./init.jspx" />
 
-	<!--@elvariable id="colabShortName" type="java.lang.String"-->
+    <!--@elvariable id="colabShortName" type="java.lang.String"-->
+    <!--@elvariable id="colabName" type="java.lang.String"-->
 
 	<c:if test="${updateError}">
 		<script type="text/javascript" >
@@ -39,6 +40,10 @@
 	<portlet:actionURL var="updateUserProfileForm">
 		<portlet:param name="action" value="update" />
 	</portlet:actionURL>
+
+    <portlet:actionURL var="deleteProfileUrl">
+        <portlet:param name="action" value="deleteProfile" />
+    </portlet:actionURL>
 
 	<form style="margin-top: 20px;" action="/fileUpload" method="post"
 		  enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
@@ -220,10 +225,10 @@
 
 		<div class="right_col v1">
 			<div class="comm_rightcol">
-				<div class="comm_rightcol-title2">MESSAGE SETTINGS</div>
+				<div class="comm_rightcol-title2">Message Settings</div>
 				<table border="0" cellpadding="0" cellspacing="0" class="colab">
 					<tr class="colabRow">
-						<td>
+						<td class="actionColumn">
 							<form:checkbox id="sendEmailOnMessage" cssClass="cmn-toggle cmn-toggle-round"
 										   path="sendEmailOnMessage" onchange="updateUserSendEmailOnMessageSettings(this)"/>
 							<form:label path="sendEmailOnMessage"/>
@@ -233,7 +238,7 @@
 						</td>
 					</tr>
 					<tr class="colabRow">
-						<td>
+						<td class="actionColumn">
 							<form:checkbox id="sendEmailOnActivity" cssClass="cmn-toggle cmn-toggle-round"
 										   path="sendEmailOnActivity" onchange="updateUserSendEmailOnActivitySettings(this)"/>
 							<form:label path="sendEmailOnActivity"/>
@@ -243,7 +248,7 @@
 						</td>
 					</tr>
 					<tr class="colabRow">
-						<td>
+						<td class="actionColumn">
 							<form:checkbox id="sendDailyEmailOnActivity" disabled="${not userBean.sendEmailOnActivity}"
 										   cssClass="cmn-toggle cmn-toggle-round" path="sendDailyEmailOnActivity"
 										   onchange="updateUserSendDailyEmailOnActivitySettings(this)" />
@@ -263,11 +268,11 @@
 
 	<div class="right_col v1">
 		<div class="comm_rightcol">
-			<div class="comm_rightcol-title2" style="text-transform: uppercase">${colabShortName} NEWSLETTER SETTINGS</div>
+			<div class="comm_rightcol-title2">${colabShortName} Newsletter Settings</div>
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
 				<form:form commandName="newsletterBean">
 					<tr class="colabRow">
-						<td>
+						<td class="actionColumn">
 							<form:checkbox id="emailSubscribedToNewsletter" cssClass="cmn-toggle cmn-toggle-round"
 										   path="emailSubscribedToNewsletter" onchange="updateNewsletterSettings(this)" />
 							<form:label path="emailSubscribedToNewsletter"/>
@@ -284,10 +289,10 @@
 
 	<div class="right_col v1">
 		<div class="comm_rightcol">
-			<div class="comm_rightcol-title2">SSO SETTINGS</div>
+			<div class="comm_rightcol-title2">SSO Settings</div>
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
 				<tr class="colabRow">
-					<td>
+					<td class="actionColumn">
 						<c:choose>
 							<c:when test="${currentUserProfile.hasFacebookId}">
 								<input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
@@ -305,7 +310,7 @@
 					</td>
 				</tr>
 				<tr class="colabRow">
-					<td>
+					<td class="actionColumn">
 						<c:choose>
 							<c:when test="${currentUserProfile.hasOpenId}">
 								<input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
@@ -326,6 +331,25 @@
 			<div class="clearfix"><!-- --></div>
 		</div>
 	</div> <!-- /right_col3 -->
+
+	<div class="right_col v1">
+		<div class="comm_rightcol">
+			<div class="comm_rightcol-title2">Account Actions</div>
+			<table border="0" cellpadding="0" cellspacing="0" class="colab">
+				<tr class="colabRow">
+					<td class="actionColumn">
+						<a style="font-size: 12px;" class="grey-button" href="javascript:;" onclick="
+						if(confirm('Are you sure you want to delete your ${colabName} account?'))
+                           window.location = '${deleteProfileUrl}'">DELETE</a>
+					</td>
+                    <td>
+                        Delete your ${colabName} account.
+                    </td>
+				</tr>
+			</table>
+			<div class="clearfix"><!-- --></div>
+		</div>
+	</div> <!-- /right_col4 -->
 
 		<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
 	<script>

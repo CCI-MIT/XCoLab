@@ -12,10 +12,10 @@ import java.util.List;
 
 public class UserSubscriptionsWrapper implements Serializable {
     /**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
-	private User user;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private User user;
     private List<ActivitySubscriptionWrapper> subscriptions;
     private SubscriptionType typeFilter;
 
@@ -27,18 +27,19 @@ public class UserSubscriptionsWrapper implements Serializable {
         getSubscriptions();
     }
 
-    public List<ActivitySubscriptionWrapper> getSubscriptions(){
+    public List<ActivitySubscriptionWrapper> getSubscriptions() {
         if (subscriptions == null) {
             try {
                 subscriptions = new ArrayList<>();
 
-                    for (ActivitySubscription subscription : ActivitySubscriptionLocalServiceUtil.findByUser(user.getUserId())) {
+                for (ActivitySubscription subscription : ActivitySubscriptionLocalServiceUtil
+                        .findByUser(user.getUserId())) {
 
                     if (typeFilter == null || typeFilter == SubscriptionType.getSubscriptionType(subscription)) {
                         subscriptions.add(new ActivitySubscriptionWrapper(subscription));
                     }
                 }
-            } catch(SystemException e){
+            } catch (SystemException e) {
                 System.out.println("Could not get activity subscriptions");
             }
         }
@@ -46,15 +47,15 @@ public class UserSubscriptionsWrapper implements Serializable {
     }
 
     public void setFilterType(String filterType) {
-        if(filterType.equals("null")) {
+        if (filterType.equals("null")) {
             typeFilter = null;
-        } else{
+        } else {
             typeFilter = SubscriptionType.valueOf(filterType);
         }
         subscriptions = null;
         getSubscriptions();
     }
-    
+
     public int getSubscriptionsCount() {
         return getSubscriptions().size();
     }

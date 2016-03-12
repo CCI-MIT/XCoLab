@@ -21,12 +21,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.xcolab.enums.Plurality;
-import org.xcolab.utils.LinkUtils;
 import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.IdListUtil;
+import org.xcolab.utils.LinkUtils;
 
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +35,7 @@ import java.util.regex.Pattern;
 public class ProposalSectionWrapper {
 
     private final static Log _log = LogFactoryUtil.getLog(ProposalSectionWrapper.class);
+
     private final PlanSectionDefinition definition;
     private final ProposalWrapper wrappedProposal;
 
@@ -235,7 +237,11 @@ public class ProposalSectionWrapper {
     }
 
     public String getStringValue() throws SystemException, PortalException {
-        return getSectionAttribute().getStringValue();
+        ProposalAttribute attr = getSectionAttribute();
+        if (attr == null) {
+            return "";
+        }
+        return attr.getStringValue();
     }
 
     public List<OntologyTerm> getFocusAreaTerms() throws PortalException, SystemException {
@@ -246,6 +252,10 @@ public class ProposalSectionWrapper {
         FocusArea area = FocusAreaLocalServiceUtil.getFocusArea(definition.getFocusAreaId());
 
         return FocusAreaLocalServiceUtil.getTerms(area);
+    }
+
+    public List<String> getOptionsForDropdownMenu() {
+        return Arrays.asList(definition.getAllowedValues().split(";"));
     }
 
     public List<Long> getAllowedContestTypeIds() {

@@ -36,7 +36,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
-import org.xcolab.utils.emailnotification.ProposalCreationNotification;
+import org.xcolab.utils.emailnotification.proposal.ProposalCreationNotification;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -134,7 +134,7 @@ public class AddUpdateProposalDetailsActionController {
                             Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
                         }
 
-                        if(updateProposalSectionsBean.getMoveFromContestPhaseId() != null){
+                        if (updateProposalSectionsBean.getMoveFromContestPhaseId() != null) {
                             if (!ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId()).getPhaseStartDate().before(
                                     ContestPhaseLocalServiceUtil.getContestPhase(updateProposalSectionsBean.getMoveFromContestPhaseId()).getPhaseStartDate())) {
                                 // remove proposal from this contest in all phases that come after the selected one
@@ -194,50 +194,46 @@ public class AddUpdateProposalDetailsActionController {
         
         if (updateProposalSectionsBean.getName() != null && (proposal.getName() == null || !updateProposalSectionsBean.getName().equals(proposal.getName()))) {
             ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, HtmlUtil.cleanMost(updateProposalSectionsBean.getName()));
-        }
-        else {
+        } else {
         	filledAll = false;
         }
         
         if (updateProposalSectionsBean.getPitch() != null && (proposal.getName() == null || !updateProposalSectionsBean.getPitch().equals(proposal.getPitch()))) {
             ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch(), LinkUtils.getBaseUri(request)));
-        }
-        else {
+        } else {
         	filledAll = false;
         }
 
         if (updateProposalSectionsBean.getDescription() != null && (proposal.getName() == null || !updateProposalSectionsBean.getDescription().equals(proposal.getDescription()))) {
             ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.DESCRIPTION, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription(), LinkUtils.getBaseUri(request)));
-        }
-        else {
+        } else {
         	filledAll = false;
         }
 
         if (updateProposalSectionsBean.getTeam() != null && !updateProposalSectionsBean.getTeam().equals(proposal.getTeam())) {
             ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, HtmlUtil.cleanMost(updateProposalSectionsBean.getTeam()));
-        }
-        else {
+        } else {
         	filledAll = false;
         }
 
         if (updateProposalSectionsBean.getImageId() > 0 && updateProposalSectionsBean.getImageId() != proposal.getImageId()) {
             ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.IMAGE_ID, updateProposalSectionsBean.getImageId());
-        }
-        else {
+        } else {
         	filledAll = false;
         }
 
         boolean updateProposalReferences = false;
         for (ProposalSectionWrapper section: proposal.getSections()) {
             String newSectionValue = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
-            if (section.getType() == PlanSectionTypeKeys.TEXT || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
+            if (section.getType() == PlanSectionTypeKeys.TEXT
+                    || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE
+                    || section.getType() == PlanSectionTypeKeys.DROPDOWN_MENU) {
                 if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
                     ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), HtmlUtil.cleanSome(newSectionValue, LinkUtils.getBaseUri(request)));
                     if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                         updateProposalReferences = true;
                     }
-                }
-                else {
+                } else {
                 	filledAll = false;
                 }
             }
@@ -249,8 +245,7 @@ public class AddUpdateProposalDetailsActionController {
                         ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(),
                                 proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericVal);
                     }
-                }
-                else {
+                } else {
                 	filledAll = false;
                 }
             }

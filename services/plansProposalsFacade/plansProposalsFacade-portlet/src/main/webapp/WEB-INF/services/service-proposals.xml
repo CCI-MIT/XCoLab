@@ -83,12 +83,6 @@
     	</finder>
     </entity>
     
-    <entity name="ProposalAttributeType" local-service="true" >
-    	<column name="name" type="String" primary="true" />
-    	<column name="visibleInVersionHistory" type="boolean" />
-    	<column name="copyOnPromote" type="boolean" />
-    </entity>
-    
     <entity name="Proposal2Phase" local-service="true" >
     	<column name="proposalId" type="long" primary="true" />
     	<column name="contestPhaseId" type="long" primary="true" />
@@ -196,11 +190,6 @@
 			<finder-column name="contestPhaseId" />
 			<finder-column name="proposalId" />
 		</finder>
-    </entity>
-    
-    <entity name="ProposalContestPhaseAttributeType" local-service="true" >
-    	<column name="name" type="String" primary="true" />
-    	<column name="copyOnPromote" type="boolean" />
     </entity>
 
     <entity name="ProposalRating" local-service="true" >

@@ -287,7 +287,12 @@
 		<field name="id" type="long" />
 		<field name="contestId" type="long" />
 		<field name="userId" type="long" />
+		<field name="roleId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ContestTeamMemberRole">
+		<field name="id" type="long" />
 		<field name="role" type="String" />
+		<field name="sort" type="int" />
 	</model>
 	<model name="com.ext.portlet.model.ContestType">
 		<field name="id" type="long" />
@@ -699,6 +704,7 @@
 		<field name="focusAreaId" type="long" />
 		<field name="tier" type="long" />
 		<field name="allowedContestTypeIds" type="String" />
+		<field name="allowedValues" type="String" />
 		<field name="additionalIds" type="String" />
 		<field name="locked" type="boolean" />
 		<field name="contestIntegrationRelevance" type="boolean" />
@@ -789,11 +795,6 @@
 		</field>
 		<field name="realValue" type="double" />
 	</model>
-	<model name="com.ext.portlet.model.ProposalAttributeType">
-		<field name="name" type="String" />
-		<field name="visibleInVersionHistory" type="boolean" />
-		<field name="copyOnPromote" type="boolean" />
-	</model>
 	<model name="com.ext.portlet.model.ProposalContestPhaseAttribute">
 		<field name="id" type="long" />
 		<field name="proposalId" type="long" />
@@ -805,10 +806,6 @@
 			<hint name="max-length">10000</hint>
 		</field>
 		<field name="realValue" type="double" />
-	</model>
-	<model name="com.ext.portlet.model.ProposalContestPhaseAttributeType">
-		<field name="name" type="String" />
-		<field name="copyOnPromote" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalRating">
 		<field name="id" type="long" />

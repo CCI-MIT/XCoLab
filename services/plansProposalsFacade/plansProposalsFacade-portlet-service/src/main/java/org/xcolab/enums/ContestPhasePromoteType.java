@@ -12,9 +12,9 @@ public enum ContestPhasePromoteType {
     PROMOTE_RIBBONIZE(4, "PROMOTE_RIBBONIZE", "All proposals from previous phases will be copied to the next phase" +
             " and (semi) finalist ribbons will be distributed.");
 
-    private int index;
-    private String value;
-    private String description;
+    private final int index;
+    private final String value;
+    private final String description;
 
     ContestPhasePromoteType(int index, String value, String description) {
         this.index = index;

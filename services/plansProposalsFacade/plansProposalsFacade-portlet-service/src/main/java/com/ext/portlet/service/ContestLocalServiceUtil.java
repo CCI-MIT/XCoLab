@@ -454,6 +454,13 @@ public class ContestLocalServiceUtil {
         return getService().getTeamMembers(contest);
     }
 
+    public static com.ext.portlet.model.ContestTeamMemberRole getRoleForMember(
+        com.ext.portlet.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.NoSuchModelException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getRoleForMember(contestTeamMember);
+    }
+
     /**
     * <p>Returns true if user is subscribed to a contest, false otherwise</p>
     *

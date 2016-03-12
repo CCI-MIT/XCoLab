@@ -491,6 +491,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getTeamMembers(contest);
     }
 
+    @Override
+    public com.ext.portlet.model.ContestTeamMemberRole getRoleForMember(
+        com.ext.portlet.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.NoSuchModelException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getRoleForMember(contestTeamMember);
+    }
+
     /**
     * <p>Returns true if user is subscribed to a contest, false otherwise</p>
     *

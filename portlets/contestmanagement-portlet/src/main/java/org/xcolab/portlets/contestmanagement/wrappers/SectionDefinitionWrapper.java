@@ -41,6 +41,7 @@ public class SectionDefinitionWrapper implements Serializable {
     private Long id;
     private String type = "";
     private String additionalIds = "";
+    private String allowedValues = "";
     private String title = "";
     private String defaultText = "";
     private String helpText = "";
@@ -64,23 +65,23 @@ public class SectionDefinitionWrapper implements Serializable {
     private List<Long> whoTermIds = new ArrayList<>();
     private List<Long> howTermIds = new ArrayList<>();
 
-    public SectionDefinitionWrapper() {
+    public SectionDefinitionWrapper() { }
 
-    }
-
-    public SectionDefinitionWrapper(PlanSectionDefinition planSectionDefinition) throws PortalException, SystemException {
+    public SectionDefinitionWrapper(PlanSectionDefinition planSectionDefinition)
+            throws PortalException, SystemException {
         initPlanSectionDefinition(planSectionDefinition);
     }
 
-    public SectionDefinitionWrapper(PlanSectionDefinition planSectionDefinition, Long planTemplateId) throws SystemException, PortalException {
+    public SectionDefinitionWrapper(PlanSectionDefinition planSectionDefinition, Long planTemplateId)
+            throws SystemException, PortalException {
         initPlanSectionDefinition(planSectionDefinition);
 
         List<PlanTemplateSection> planTemplateSections =
                 PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(planTemplateId);
 
         // TODO very inefficient, add finder to service layer
-        for(PlanTemplateSection planTemplateSection : planTemplateSections){
-            if(planTemplateSection.getPlanSectionId() == planSectionDefinition.getId()) {
+        for (PlanTemplateSection planTemplateSection : planTemplateSections) {
+            if (planTemplateSection.getPlanSectionId() == planSectionDefinition.getId()) {
                 initPlanTemplateSection(planTemplateSection);
                 break;
             }
@@ -89,11 +90,12 @@ public class SectionDefinitionWrapper implements Serializable {
         initPlanSectionDefinition(planSectionDefinition);
     }
 
-    private void initPlanTemplateSection(PlanTemplateSection planTemplateSection){
+    private void initPlanTemplateSection(PlanTemplateSection planTemplateSection) {
         this.weight = planTemplateSection.getWeight();
     }
 
-    private void initPlanSectionDefinition(PlanSectionDefinition planSectionDefinition) throws SystemException, PortalException {
+    private void initPlanSectionDefinition(PlanSectionDefinition planSectionDefinition)
+            throws SystemException, PortalException {
         this.id = planSectionDefinition.getId();
         this.type = planSectionDefinition.getType();
         this.title = planSectionDefinition.getTitle();
@@ -102,13 +104,15 @@ public class SectionDefinitionWrapper implements Serializable {
         this.characterLimit = planSectionDefinition.getCharacterLimit();
         this.focusAreaId = planSectionDefinition.getFocusAreaId();
         this.additionalIds = planSectionDefinition.getAdditionalIds();
+        this.allowedValues = planSectionDefinition.getAllowedValues();
         this.locked = planSectionDefinition.getLocked();
         this.level = planSectionDefinition.getTier();
         this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
         this.allowedContestTypeIds = IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds());
 
         try {
-            PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(id);
+            PointsDistributionConfiguration pdc =
+                    PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(id);
             this.pointPercentage = Double.toString(pdc.getPercentage());
             this.pointType = pdc.getPointTypeId();
         } catch (NoSuchPointsDistributionConfigurationException e) {
@@ -118,7 +122,7 @@ public class SectionDefinitionWrapper implements Serializable {
 
         try {
             initOntologyTermIdsWithFocusAreaId();
-        } catch (NoSuchFocusAreaException e){
+        } catch (NoSuchFocusAreaException e) {
             _log.warn(e);
         }
     }
@@ -128,7 +132,8 @@ public class SectionDefinitionWrapper implements Serializable {
             FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(this.focusAreaId);
 
             OntologySpace space = OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.WHAT.getSpaceId());
-            List<OntologyTerm> terms = FocusAreaLocalServiceUtil.getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
+            List<OntologyTerm> terms =
+                    FocusAreaLocalServiceUtil.getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.whatTermIds = getIdsFromOntologyTerms(terms);
 
             space = OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.WHERE.getSpaceId());
@@ -161,7 +166,8 @@ public class SectionDefinitionWrapper implements Serializable {
         this.content = content;
     }
 
-    public SectionDefinitionWrapper(String title, Integer characterLimit, String helpText, String content, boolean deletable) {
+    public SectionDefinitionWrapper(String title, Integer characterLimit, String helpText, String content,
+            boolean deletable) {
         this.title = title;
         this.characterLimit = characterLimit;
         this.helpText = helpText;
@@ -309,7 +315,7 @@ public class SectionDefinitionWrapper implements Serializable {
         this.focusAreaId = focusAreaId;
     }
 
-    public long getFocusAreaId(){
+    public long getFocusAreaId() {
         try {
             if (ontologyTermsSet()) {
                 focusAreaId = getFocusAreaViaOntologyTerms().getId();
@@ -367,7 +373,15 @@ public class SectionDefinitionWrapper implements Serializable {
         this.id = id;
     }
 
-    static class MyComparator implements Comparator<SectionDefinitionWrapper>{
+    public String getAllowedValues() {
+        return allowedValues;
+    }
+
+    public void setAllowedValues(String allowedValues) {
+        this.allowedValues = allowedValues;
+    }
+
+    static class MyComparator implements Comparator<SectionDefinitionWrapper> {
 
         @Override
         public int compare(SectionDefinitionWrapper o1, SectionDefinitionWrapper o2) {
@@ -388,8 +402,10 @@ public class SectionDefinitionWrapper implements Serializable {
         return focusArea;
     }
 
-    private FocusArea createNewFocusAreaWithTerms(List<OntologyTerm> focusAreaOntologyTerms) throws SystemException, PortalException {
-        FocusArea newFocusArea = FocusAreaLocalServiceUtil.createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
+    private FocusArea createNewFocusAreaWithTerms(List<OntologyTerm> focusAreaOntologyTerms)
+            throws SystemException, PortalException {
+        FocusArea newFocusArea =
+                FocusAreaLocalServiceUtil.createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
         newFocusArea.setName("created for planSectionDefinition '" + this.title + "'");
         for (OntologyTerm ontologyTerm : focusAreaOntologyTerms) {
             FocusAreaLocalServiceUtil.addTerm(newFocusArea, ontologyTerm.getId());
@@ -428,7 +444,8 @@ public class SectionDefinitionWrapper implements Serializable {
         PointsDistributionConfiguration pdc = null;
         if (id == null || createNew) {
             psd = PlanSectionDefinitionLocalServiceUtil.
-                    createPlanSectionDefinition(CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName()));
+                    createPlanSectionDefinition(
+                            CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName()));
             id = psd.getId();
         } else {
             psd = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(id);
@@ -443,7 +460,8 @@ public class SectionDefinitionWrapper implements Serializable {
                     pdc.setTargetPlanSectionDefinitionId(id);
                     pdc.persist();
                 }
-            } catch (NoSuchPointsDistributionConfigurationException ignored) { }
+            } catch (NoSuchPointsDistributionConfigurationException ignored) {
+            }
         }
         if (pdc == null) {
             if (pointType > 0L) {
@@ -463,6 +481,7 @@ public class SectionDefinitionWrapper implements Serializable {
         psd.setTier(this.getLevel());
         psd.setFocusAreaId(this.getFocusAreaId());
         psd.setAdditionalIds(this.getAdditionalIds());
+        psd.setAllowedValues(this.getAllowedValues());
         psd.setAllowedContestTypeIds(IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
         psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
         psd.persist();
@@ -487,8 +506,9 @@ public class SectionDefinitionWrapper implements Serializable {
                 .append(helpText)
                 .append(allowedContestTypeIds)
                 .append(pointPercentage)
-                .append(additionalIds).toHashCode();
-}
+                .append(additionalIds)
+                .append(allowedValues).toHashCode();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -514,6 +534,7 @@ public class SectionDefinitionWrapper implements Serializable {
                 .append(other.getFocusAreaId(), this.getFocusAreaId())
                 .append(other.getLevel(), this.getLevel())
                 .append(other.getPointType(), this.getPointType())
-                .append(other.getPointPercentage(), this.getPointPercentage()).isEquals();
+                .append(other.getPointPercentage(), this.getPointPercentage())
+                .append(other.getAllowedValues(), this.getAllowedValues()).isEquals();
     }
 }

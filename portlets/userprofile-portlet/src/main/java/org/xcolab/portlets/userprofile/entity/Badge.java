@@ -27,21 +27,20 @@ public class Badge implements Serializable {
     private final String badgeTitle;    // "Winner", "Finalist", "Semi-Finalist"
     private final String badgeText; // "Popular Choice", "Judges Choice", etc
     private final Contest contest;
+    private final Proposal proposal;
+    private final String planTitle;
     private int year = 2013;
     private boolean hideRibbon;
 
-    private final Proposal proposal;
-    private final String planTitle;
 
-
-    public Badge(int ribbonType, String ribbonText, Proposal proposal, String planTitle, Contest contest){
+    public Badge(int ribbonType, String ribbonText, Proposal proposal, String planTitle, Contest contest) {
         this.badgeType = ribbonType;
         this.planTitle = planTitle;
         this.proposal = proposal;
         this.badgeText = ribbonText;
         this.contest = contest;
 
-        if (ribbonText.equalsIgnoreCase("Finalist") || ribbonText.equalsIgnoreCase("Judges' Special Commendation")){
+        if (ribbonText.equalsIgnoreCase("Finalist") || ribbonText.equalsIgnoreCase("Judges' Special Commendation")) {
             this.badgeTitle = "Finalist";
         } else if (ribbonText.equalsIgnoreCase("Semi-Finalist")) {
             this.badgeTitle = "Semi-Finalist";
@@ -54,7 +53,8 @@ public class Badge implements Serializable {
             hideRibbon = contest.getHideRibbons();
 
             ContestPhase lastPhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
-            Date referenceDate = lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate() : lastPhase.getPhaseEndDate();
+            Date referenceDate =
+                    lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate() : lastPhase.getPhaseEndDate();
             Calendar cal = Calendar.getInstance();
             cal.setTime(referenceDate);
 
@@ -64,19 +64,19 @@ public class Badge implements Serializable {
         }
     }
 
-    public String getBadgeTitle(){
+    public String getBadgeTitle() {
         return badgeTitle;
     }
 
-    public String getBadgeText(){
+    public String getBadgeText() {
         return badgeText;
     }
 
-    public int getBadgeType(){
+    public int getBadgeType() {
         return badgeType;
     }
 
-    public int getBadgeYear(){
+    public int getBadgeYear() {
         return year;
     }
 
@@ -93,7 +93,7 @@ public class Badge implements Serializable {
         return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
     }
 
-    public String getPlanTitle(){
+    public String getPlanTitle() {
         return planTitle;
     }
 
@@ -103,6 +103,7 @@ public class Badge implements Serializable {
 
     @Override
     public String toString() {
-        return "BadgeType: " + badgeType + " ,BadgeTitle: " + badgeTitle + ", BadgeText: " + badgeText + ", Year: " + year;
+        return String.format("BadgeType: %d ,BadgeTitle: %s, BadgeText: %s, Year: %d",
+                badgeType, badgeTitle, badgeText, year);
     }
 }
