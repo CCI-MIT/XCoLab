@@ -8,7 +8,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 public class BalloonCookie implements Serializable {
-    public static final String COOKIE_NAME = "climatecolabBalloonCookie2015";
+    public static final String COOKIE_NAME = "climatecolabBalloonCookie2016";
 
     private static final long serialVersionUID = 1L;
     private String uuid;

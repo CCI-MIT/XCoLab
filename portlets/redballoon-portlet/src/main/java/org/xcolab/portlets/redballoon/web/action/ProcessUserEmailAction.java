@@ -33,7 +33,7 @@ import java.util.UUID;
 @Controller
 public class ProcessUserEmailAction {
 	
-	private final static String BALLOON_LINK_PATTERN = "/socialnetworkprize2015";
+	private final static String BALLOON_LINK_PATTERN = "/socialnetworkprize2016";
 
 	private final static String FROM_ADDRESS = "no-reply@climatecolab.org";	
 
