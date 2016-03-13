@@ -1,4 +1,4 @@
-package org.xcolab.portlets.messaging;
+package org.xcolab.portlets.messaging.enums;
 
 import com.ext.portlet.messaging.MessageConstants;
 

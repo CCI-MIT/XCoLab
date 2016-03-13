@@ -84,7 +84,10 @@ public final class MessageUtil {
         return result;
     }
 
-    public static boolean checkLimitAndSendMessage(String subject, String content, User fromUser, Collection<Long> recipientIds) throws AddressException, PortalException, MailEngineException, SystemException, UnsupportedEncodingException {
+    public static boolean checkLimitAndSendMessage(String subject, String content,
+            User fromUser, Collection<Long> recipientIds)
+            throws AddressException, PortalException, MailEngineException,
+            SystemException, UnsupportedEncodingException {
         Long fromId = fromUser.getUserId();
         synchronized (MessageLimitManager.getMutex(fromId)) {
             // Send a validation problem mail to patrick if the daily limit is reached for a user
