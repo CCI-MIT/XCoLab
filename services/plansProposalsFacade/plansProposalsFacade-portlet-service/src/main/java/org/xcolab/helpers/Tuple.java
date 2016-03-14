@@ -1,8 +1,5 @@
 package org.xcolab.helpers;
 
-/**
- * Created by steve on 04/03/16.
- */
 public class Tuple<X, Y> {
 
     private final X left;
@@ -23,14 +20,16 @@ public class Tuple<X, Y> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Tuple<?, ?> tuple = (Tuple<?, ?>) o;
 
-        if (!left.equals(tuple.left)) return false;
-        return right.equals(tuple.right);
-
+        return left.equals(tuple.left) && right.equals(tuple.right);
     }
 
     @Override

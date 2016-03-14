@@ -1,6 +1,5 @@
 package org.xcolab.wrappers;
 
-
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestTeamMember;
@@ -32,14 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
-/**
- * Created by johannes on 10/27/15.
- *
- * A wrapper class for contests to be shared across portlets.
- * More specific wrappers should inherit from this one.
- */
 public class BaseContestWrapper {
 
     private final static Log _log = LogFactoryUtil.getLog(BaseContestWrapper.class);
@@ -391,24 +383,18 @@ public class BaseContestWrapper {
                 ContestTeamMemberRole role;
                 try {
                     role = ContestLocalServiceUtil.getRoleForMember(ctm);
-                    List<User> roleUsers = teamRoleUsersMap.get(new Tuple<String, Integer>(role.getRole(), role.getSort()));
+                    List<User> roleUsers = teamRoleUsersMap.get(new Tuple<>(role.getRole(), role.getSort()));
                     if (roleUsers == null) {
                         roleUsers = new ArrayList<>();
-                        teamRoleUsersMap.put(new Tuple<String, Integer>(role.getRole(), role.getSort()), roleUsers);
+                        teamRoleUsersMap.put(new Tuple<>(role.getRole(), role.getSort()), roleUsers);
                     }
-                    try {
-                        roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
-                    } catch(SystemException e){
-                        _log.warn("Could not add user role: " + e);
-                    }
-                } catch (NoSuchModelException e) {
-                    e.printStackTrace();
-                } catch (SystemException e) {
+                    roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
+                } catch (NoSuchModelException | SystemException e) {
                     e.printStackTrace();
                 }
             }
 
-            contestTeamMembersByRole = new ArrayList<BaseContestTeamRoleWrapper>(teamRoleUsersMap.size());
+            contestTeamMembersByRole = new ArrayList<>(teamRoleUsersMap.size());
             for (Map.Entry<Tuple<String, Integer>, List<User>> entry : teamRoleUsersMap.entrySet()) {
                 final Tuple<String, Integer> role = entry.getKey();
                 contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role.getLeft(), entry.getValue(), role.getRight()));
