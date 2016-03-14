@@ -17,7 +17,7 @@ import java.util.List;
 public class MessagingBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private static final int PAGE_SIZE = 5;
+    private static final int PAGE_SIZE = 10;
     private final static int PAGER_RANGE = 3;
 
     private User user;
