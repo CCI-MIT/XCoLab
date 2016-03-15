@@ -335,8 +335,8 @@ body .cke_dialog {
     color: #222;
     display: inline-block;
     cursor: default;
-    min-width: 60px;
-+margin: 2px 0;
+    min-width: 20px;
+    margin: 2px 0;
 }
 .cke_skin_colab .cke_browser_gecko18 .cke_dialog_footer_buttons span.cke_dialog_ui_button {
     display: block;
@@ -695,7 +695,7 @@ body .cke_dialog {
 }
 .cke_dialog .cke_dialog_body a.cke_dialog_ui_button span {
     background: url(/climatecolab-theme/images/button-blue-right.png) no-repeat right top;
-    padding: 10px 21px 0 8px;
+    padding: 10px 10px 0 10px;
     height: 31px;
     font-size: 16px;
     font-weight: 700;
@@ -704,4 +704,7 @@ body .cke_dialog {
     display: inline-block;
     margin-top: 0;
     margin-left: 0;
+    background: -webkit-linear-gradient(top, #1798fb, #047dda);
+    border: 1px solid #0483e4;
+    border-radius: 5px
 }
