@@ -5,11 +5,6 @@ import com.liferay.portal.model.User;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by johannes on 10/27/15.
- * A wrapper class for contest team roles to be shared across portlets.
- * More specific wrappers should inherit from this one.
- */
 public class BaseContestTeamRoleWrapper implements Serializable, Comparable<BaseContestTeamRoleWrapper> {
 
     private static final long serialVersionUID = 1L;
@@ -48,13 +43,8 @@ public class BaseContestTeamRoleWrapper implements Serializable, Comparable<Base
         this.sort = sort;
     }
 
+    @Override
     public int compareTo(BaseContestTeamRoleWrapper bctrw) {
-        if (this.sort < bctrw.sort) {
-            return -1;
-        } else if (this.sort > bctrw.sort) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return this.sort - bctrw.sort;
     }
 }
