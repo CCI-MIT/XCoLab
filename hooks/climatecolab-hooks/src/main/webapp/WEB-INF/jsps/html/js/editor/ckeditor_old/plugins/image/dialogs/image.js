@@ -66,6 +66,37 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             }
             n = 0;
         };
+
+        function commitURLFieldAction(B, C, field) {
+            if (B == d && (field.getValue() || field.isChanged())) {
+                C.data('cke-saved-src', field.getValue());
+                C.setAttribute('src', field.getValue());
+            } else if (B == g) {
+                C.setAttribute('src', '');
+                C.removeAttribute('src');
+            }
+        };
+
+        function setPreview(C, B) {
+            var D = B.originalElement;
+            B.preview.removeStyle('display');
+            D.setCustomData('isReady', 'false');
+            var E = CKEDITOR.document.getById(y);
+            if (E) E.setStyle('display', '');
+            D.on('load', t, B);
+            D.on('error', u, B);
+            D.on('abort', u, B);
+            D.setAttribute('src', C);
+            s.setAttribute('src', C);
+            B.preview.setAttribute('src', s.$.src);
+            l(B);
+        };
+
+        function unsetPreview(B) {
+            B.preview.removeAttribute('src');
+            B.preview.setStyle('display', 'none');
+        };
+
         var p = function(B, C) {
                 if (!B.getContentElement('info', 'ratioLock')) return null;
                 var D = B.originalElement;
@@ -294,35 +325,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                     padding: 0,
                     children: [{
                         type: 'hbox',
-                        widths: ['280px', '110px'],
+                        widths: ['280px', '50px', '20px'],
                         align: 'right',
                         children: [{
                             id: 'txtUrl',
                             type: 'text',
                             label: b.lang.common.url,
                             required: true,
-                            onChange: function() {
-                                var B = this.getDialog(),
-                                    C = this.getValue();
-                                if (C.length > 0) {
-                                    B = this.getDialog();
-                                    var D = B.originalElement;
-                                    B.preview.removeStyle('display');
-                                    D.setCustomData('isReady', 'false');
-                                    var E = CKEDITOR.document.getById(y);
-                                    if (E) E.setStyle('display', '');
-                                    D.on('load', t, B);
-                                    D.on('error', u, B);
-                                    D.on('abort', u, B);
-                                    D.setAttribute('src', C);
-                                    s.setAttribute('src', C);
-                                    B.preview.setAttribute('src', s.$.src);
-                                    l(B);
-                                } else if (B.preview) {
-                                    B.preview.removeAttribute('src');
-                                    B.preview.setStyle('display', 'none');
-                                }
-                            },
                             setup: function(B, C) {
                                 if (B == d) {
                                     var D = C.data('cke-saved-src') || C.getAttribute('src'),
@@ -330,27 +339,56 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                     this.getDialog().dontResetSize = true;
                                     E.setValue(D);
                                     E.setInitValue();
+                                    var B = this.getDialog(),
+                                        C = this.getValue();
+                                    if (C.length > 0) {
+                                        setPreview(C, B);
+                                    } else if (B.preview) {
+                                        unsetPreview(B);
+                                    }
                                 }
                             },
                             commit: function(B, C) {
-                                var D = this;
-                                if (B == d && (D.getValue() || D.isChanged())) {
-                                    C.data('cke-saved-src', D.getValue());
-                                    C.setAttribute('src', D.getValue());
-                                } else if (B == g) {
-                                    C.setAttribute('src', '');
-                                    C.removeAttribute('src');
-                                }
+                                commitURLFieldAction(B, C, this);
                             },
                             validate: CKEDITOR.dialog.validate.notEmpty(b.lang.image.urlMissing)
                         }, {
                             type: 'button',
-                            id: 'browse',
+                            id: 'upload',
                             style: 'display:inline-block;margin-top:10px;',
                             align: 'center',
-                            label: b.lang.common.browseServer,
-                            hidden: true,
-                            filebrowser: 'info:txtUrl'
+                            label: 'Upload',
+                            onClick: function() {
+                                var urlField = this.getDialog().getContentElement('info', 'txtUrl');
+                                var B = this.getDialog(),
+                                    C = urlField.getValue();
+                                if (C.length > 0) {
+                                    setPreview(C, B);
+                                } else if (B.preview) {
+                                    window.open('http://imgur.com/', '_blank');
+                                    unsetPreview(B);
+                                }
+                            },
+                            commit: function(B, C) {
+                                commitURLFieldAction(B, C, this.getDialog().getContentElement('info', 'txtUrl'));
+                            }
+                        }, {
+                            type: 'button',
+                            id: 'help',
+                            style: 'display:inline-block;margin-top:10px;',
+                            align: 'center',
+                            label: '?',
+                            onClick: function() {
+                                alert('Image upload in IMGUR:\n\n' +
+                                    '1. Click on "Upload"\n' +
+                                    '2. Select your picture\n' +
+                                    '3. Upload the picture to IMGUR\n' +
+                                    '4. Copy the URL of the IMGUR page\n' +
+                                    '5. Paste it into the URL field\n' +
+                                    '6. Click on "Upload" again\n' +
+                                    '7. Verify the image in the preview\n' +
+                                    '8. Click "OK" to insert the image');
+                            }
                         }]
                     }]
                 }, {
@@ -710,17 +748,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                             }
                     }
                 }, {
-                    type: 'button',
-                    id: 'browse',
-                    filebrowser: {
-                        action: 'Browse',
-                        target: 'Link:txtUrl',
-                        url: b.config.filebrowserImageBrowseLinkUrl
-                    },
-                    style: 'float:right',
-                    hidden: true,
-                    label: b.lang.common.browseServer
-                }, {
                     id: 'cmbTarget',
                     type: 'select',
                     label: b.lang.common.target,
@@ -739,24 +766,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         if (B == e)
                             if (this.getValue() || this.isChanged()) C.setAttribute('target', this.getValue());
                     }
-                }]
-            }, {
-                id: 'Upload',
-                hidden: true,
-                filebrowser: 'uploadButton',
-                label: b.lang.image.upload,
-                elements: [{
-                    type: 'file',
-                    id: 'upload',
-                    label: b.lang.image.btnUpload,
-                    style: 'height:40px',
-                    size: 38
-                }, {
-                    type: 'fileButton',
-                    id: 'uploadButton',
-                    filebrowser: 'info:txtUrl',
-                    label: b.lang.image.btnUpload,
-                    'for': ['Upload', 'upload']
                 }]
             }, {
                 id: 'advanced',
