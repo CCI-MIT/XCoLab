@@ -4,6 +4,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
@@ -128,6 +130,11 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
         
         if (editValidated || move) {
+            request.setAttribute("imageUploadServiceUrl", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
+                    ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.name(), 0L));
+            request.setAttribute("imageUploadHelpText", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
+                    ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.name(), 0L));
+
             return "proposalDetails_edit";
         }
 

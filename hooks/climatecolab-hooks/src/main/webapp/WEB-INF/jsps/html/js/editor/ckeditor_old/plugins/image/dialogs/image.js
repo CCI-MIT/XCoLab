@@ -365,7 +365,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 if (C.length > 0) {
                                     setPreview(C, B);
                                 } else if (B.preview) {
-                                    window.open('http://imgur.com/', '_blank');
+                                    window.open(EXTERNAL_IMAGE_UPLOAD_URL, '_blank');
                                     unsetPreview(B);
                                 }
                             },
@@ -379,15 +379,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                             align: 'center',
                             label: '?',
                             onClick: function() {
-                                alert('Image upload in IMGUR:\n\n' +
-                                    '1. Click on "Upload"\n' +
-                                    '2. Select your picture\n' +
-                                    '3. Upload the picture to IMGUR\n' +
-                                    '4. Copy the URL of the IMGUR page\n' +
-                                    '5. Paste it into the URL field\n' +
-                                    '6. Click on "Upload" again\n' +
-                                    '7. Verify the image in the preview\n' +
-                                    '8. Click "OK" to insert the image');
+                                alert(IMAGE_UPLOAD_HELP_TEXT);
                             }
                         }]
                     }]

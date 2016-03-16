@@ -11,6 +11,11 @@
 
     <jsp:directive.include file="./init_proposal.jspx"/>
 
+    <script type="text/javascript">
+        var EXTERNAL_IMAGE_UPLOAD_URL = '${requestScope.imageUploadServiceUrl}';
+        var IMAGE_UPLOAD_HELP_TEXT = '${requestScope.imageUploadHelpText}';
+    </script>
+
     <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
