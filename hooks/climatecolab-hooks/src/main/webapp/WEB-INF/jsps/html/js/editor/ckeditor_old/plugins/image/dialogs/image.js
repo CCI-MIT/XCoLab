@@ -389,7 +389,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                             align: 'center',
                             label: '?',
                             onClick: function() {
-                                alert(IMAGE_UPLOAD_HELP_TEXT);
+                                var tooltip = document.getElementById('help-tooltip');
+                                if (!tooltip) {
+                                    var helpButton = this.getDialog().getContentElement('info', 'help');
+                                    var dialog = document.createElement('div');
+                                    dialog.className = 'tooltip';
+                                    dialog.id = 'help-tooltip';
+                                    dialog.innerHTML = IMAGE_UPLOAD_HELP_TEXT;
+                                    var helpButtonDOMElement = document.getElementById(helpButton.domId);
+                                    helpButtonDOMElement.parentNode.insertBefore(dialog, helpButton.nextSibling);
+                                } else {
+                                    tooltip.parentNode.removeChild(tooltip);
+                                }
                             }
                         }]
                     }]

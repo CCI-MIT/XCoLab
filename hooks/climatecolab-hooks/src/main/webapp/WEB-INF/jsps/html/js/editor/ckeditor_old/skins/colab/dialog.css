@@ -708,3 +708,14 @@ body .cke_dialog {
     border: 1px solid #0483e4;
     border-radius: 5px
 }
+
+.tooltip {
+    display: block;
+    padding: 20px;
+    background-color: lightgray;
+    color: white;
+}
+
+.tooltip ol {
+    list-style-position: inside;
+}
