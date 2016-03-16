@@ -81,7 +81,7 @@ create table xcolab_ConfigurationAttribute (
 	name VARCHAR(75) not null,
 	additionalId LONG not null,
 	numericValue LONG,
-	stringValue VARCHAR(75) null,
+	stringValue TEXT null,
 	realValue DOUBLE,
 	primary key (name, additionalId)
 );

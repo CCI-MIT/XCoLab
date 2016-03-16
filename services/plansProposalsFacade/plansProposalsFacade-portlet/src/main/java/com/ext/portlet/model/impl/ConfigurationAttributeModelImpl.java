@@ -52,7 +52,7 @@ public class ConfigurationAttributeModelImpl extends BaseModelImpl<Configuration
             { "stringValue", Types.VARCHAR },
             { "realValue", Types.DOUBLE }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ConfigurationAttribute (name VARCHAR(75) not null,additionalId LONG not null,numericValue LONG,stringValue VARCHAR(75) null,realValue DOUBLE,primary key (name, additionalId))";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ConfigurationAttribute (name VARCHAR(75) not null,additionalId LONG not null,numericValue LONG,stringValue TEXT null,realValue DOUBLE,primary key (name, additionalId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ConfigurationAttribute";
     public static final String ORDER_BY_JPQL = " ORDER BY configurationAttribute.id.name ASC, configurationAttribute.id.additionalId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ConfigurationAttribute.name ASC, xcolab_ConfigurationAttribute.additionalId ASC";
