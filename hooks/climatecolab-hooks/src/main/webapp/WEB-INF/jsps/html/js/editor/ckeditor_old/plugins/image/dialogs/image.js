@@ -332,6 +332,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                             type: 'text',
                             label: b.lang.common.url,
                             required: true,
+                            onKeyUp: function() {
+                                var urlField = this.getDialog().getContentElement('info', 'txtUrl');
+                                var B = this.getDialog(),
+                                    C = urlField.getValue();
+                                if (C.length > 0) {
+                                    setPreview(C, B);
+                                } else if (B.preview) {
+                                    unsetPreview(B);
+                                }
+                            },
                             setup: function(B, C) {
                                 if (B == d) {
                                     var D = C.data('cke-saved-src') || C.getAttribute('src'),
