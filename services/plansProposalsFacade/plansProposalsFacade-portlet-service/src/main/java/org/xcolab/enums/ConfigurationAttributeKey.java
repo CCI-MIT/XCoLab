@@ -15,7 +15,8 @@ public enum ConfigurationAttributeKey {
     GOOGLE_AUTH_CLIENT_ID(AttributeType.STRING),
     GOOGLE_AUTH_CLIENT_SECRET(AttributeType.STRING),
     IMAGE_UPLOAD_EXTERNAL_SERVICE_URL(AttributeType.STRING),
-    IMAGE_UPLOAD_HELP_TEXT(AttributeType.STRING);
+    IMAGE_UPLOAD_HELP_TEXT(AttributeType.STRING),
+    SHOW_CONTESTS_DISPLAY_OPTIONS(AttributeType.BOOLEAN);
 
     private final AttributeType type;
 
