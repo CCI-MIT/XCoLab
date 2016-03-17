@@ -73,7 +73,7 @@
   display: inline-block;
 }
 
-.reg tr th:after {
+.required:after {
   content: "*";
   color: #30a3fb;
 }

@@ -16,7 +16,7 @@
 			
 			<table class="reg">
 				<tr>
-					<th nowrap="nowrap">Your name</th>
+					<th class="required" nowrap="nowrap">Your name</th>
 					<td><form:input cssClass="popupreg_input" path="name" /><br />
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="name" />
@@ -24,7 +24,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th nowrap="nowrap">Email (only for reply)</th>
+					<th class="required" nowrap="nowrap">Email (only for reply)</th>
 					<td><form:input cssClass="popupreg_input" path="email" />
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="email" />
@@ -33,7 +33,7 @@
 				</tr>
 
 				<tr>
-					<th nowrap="nowrap">Message</th>
+					<th class="required" nowrap="nowrap">Message</th>
 					<td><form:textarea cssClass="shortBioContent" path="message" style="width: 100%; height: 150px;" />
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="message" />
@@ -41,7 +41,7 @@
 				</tr>
 				
 				<tr>
-					<th nowrap="nowrap">Retype the words</th>
+					<th class="required" nowrap="nowrap">Retype the words</th>
 					<td colspan="3">
 						<portlet:resourceURL var="getCaptchaImage" id="ajaxHandler"/>
 						<img src="${getCaptchaImage }" style="margin-bottom: 10px;"/><br />
