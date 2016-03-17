@@ -72,3 +72,8 @@
 .form-erros span {
   display: inline-block;
 }
+
+.reg tr th:after {
+  content: "*";
+  color: #30a3fb;
+}
