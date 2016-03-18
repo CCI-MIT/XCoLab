@@ -6,6 +6,7 @@ import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
@@ -23,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean;
@@ -119,6 +121,9 @@ public class ContestsIndexController extends BaseProposalsController {
         PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
         boolean showContestManagementLink = permissionChecker.isOmniadmin();
         model.addAttribute("showContestManagementLink", showContestManagementLink);
+
+        model.addAttribute("showContestDisplayOptions", ConfigurationAttributeLocalServiceUtil.getAttributeBooleanValue(
+                ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.name(), 0L));
 
         setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
         
