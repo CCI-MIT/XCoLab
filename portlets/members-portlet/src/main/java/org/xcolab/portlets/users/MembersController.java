@@ -15,6 +15,7 @@ import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.users.utils.MemberItem;
+import org.xcolab.service.client.MembersClient;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -59,6 +60,7 @@ public class MembersController {
 
         List<MemberItem> users = new ArrayList<>();
 
+        MembersClient.getAllUsers();
         final String sortColumn = sortFilterPage.getSortColumn() != null ? sortFilterPage.getSortColumn() : "";
         List<User> dBUsers;
         if (memberCategoryParam == null || memberCategoryParam.compareTo("") == 0) {
