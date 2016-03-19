@@ -33,7 +33,7 @@ public class MemberDaoImpl implements MemberDao{
 
 
 
-    private List<User_> listAllMembersSortByScreenName(int startRecord, int limitRecord, String filter,
+    public List<User_> listAllMembersSortByScreenName(int startRecord, int limitRecord, String filter,
                                                        boolean isAscOrder) {
         return listAllMembersSortByField(startRecord,limitRecord,filter, USER_.SCREEN_NAME, isAscOrder);
     }
