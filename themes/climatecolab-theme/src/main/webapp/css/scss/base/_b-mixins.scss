@@ -28,3 +28,18 @@ $blue-magic-number: 0.068;
     @return $light;
   }
 }
+
+@function simple-gradient($base-color) {
+  @return linear-gradient(top, lighten($base-color, 5%), darken($base-color, 5%));
+}
+
+@mixin background-gradient($base-color, $image-url: null, $image-padding: 0) {
+  background-color: $base-color;
+  @if $image-url == null {
+    @include background(simple-gradient($base-color));
+  } @else {
+    @include background($image-url no-repeat, simple-gradient($base-color));
+    @include background-size(contain);
+    padding-left: $image-padding;
+  }
+}

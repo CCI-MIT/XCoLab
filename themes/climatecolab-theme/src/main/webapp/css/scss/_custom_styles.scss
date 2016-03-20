@@ -1,25 +1,24 @@
 @import "compass";
 
 //reset styles
-@import 'global/reset';
+@import 'base/b-reset';
 
 //import functions
-@import "global/brightness";
-@import "global/helper";
+@import "base/b-mixins";
 
 //import variables
-@import "global/color_scheme";
+@import "themes/t-climateColab";
 
 //import custom mixins
 @import 'components/buttons';
 
 /* --[global/fonts]------------------------------------------------ */
 
-@import 'global/fonts';
+@import 'base/b-typography';
 
 /* --[/END global/fonts]--[global/layout]-------------------------- */
 
-@import 'global/layout';
+@import 'base/layout';
 
 /* --[/END global/layout]--[components/header]--------------------- */
 
@@ -71,7 +70,7 @@
 
 /* --[/END components/comments]--[components/wiki]----------------- */
 
-@import 'components/wiki';
+@import 'liferay/wiki';
 
 /* --[/END components/wiki]--[pages/community]--------------------- */
 
@@ -83,11 +82,11 @@
 
 /* --[/END pages/points]--[pages/blog]-------------------------- */
 
-@import 'pages/blog';
+@import 'liferay/blog';
 
 /* --[/END pages/blog]--[components/helpbox]----------------------- */
 
-@import 'components/helpbox';
+@import 'components/c-Helpbox';
 
 /* --[/END components/helpbox]--[pages/userprofile]---------------- */
 
@@ -115,7 +114,7 @@
 
 /* --[/END components/alert]--[components/badges]------------------ */
 
-@import 'components/badges';
+@import 'components/c-Badge';
 
 /* --[/END components/badges]--[contest_manager]------------------- */
 
@@ -123,12 +122,16 @@
 
 /* --[/END contest_manager]--[components/liferay]------------------ */
 
-@import "components/liferay";
+@import "liferay/liferay";
 
 /* --[/END components/liferay]------------------------------------- */
 
 /* --[misc styles]------------------------------------- */
 
-@import "shame";
+@import "pages/shame";
 
 /* --[/END misc styles]------------------------------------- */
+
+@import "legacy/footer-legacy";
+@import "legacy/homepage-legacy";
+@import "legacy/about-legacy";
