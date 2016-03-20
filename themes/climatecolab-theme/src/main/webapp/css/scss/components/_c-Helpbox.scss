@@ -1,0 +1,55 @@
+$c-Helpbox__borderRadius: 10px !default;
+$c-Helpbox__backgroundColor: white !default;
+$c-Helpbox__borderColor: $primary-dark-grey !default;
+
+$c-Helpbox__header_background: url(../images/grid_t.gif) !default;
+
+$c-Helpbox__header__title__textColor: $secondary-color !default;
+
+$c-Helpbox__text__textColor: $darkest-grey;
+
+
+.c-Helpbox {
+  width: 970px;
+  background: $c-Helpbox__backgroundColor;
+  @include border-radius($c-Helpbox__borderRadius);
+  border: 1px solid $c-Helpbox__borderColor;
+  margin: 15px 0;
+}
+
+.c-Helpbox__header {
+  background: $c-Helpbox__header_background;
+  height: 24px;
+  padding: 14px 10px 0 19px;
+  color: black;
+  font-size: 15px;
+
+  //Typekit
+  .wf-active & {
+    font-size: 17px;
+  }
+}
+
+.c-Helpbox__header__title {
+  font-weight: 600;
+  color: $c-Helpbox__header__title__textColor;
+}
+
+.c-Helpbox__header__close {
+  float: right;
+  height: 20px;
+  width: 20px;
+  margin-top: -5px;
+}
+
+.c-Helpbox__text {
+  font-size: 14px;
+  color: $c-Helpbox__text__textColor;
+  padding: 15px 20px 18px 20px;
+  line-height: 24px;
+
+  //Typekit
+  .wf-active & {
+    font-size: 16px;
+  }
+}
