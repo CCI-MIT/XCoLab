@@ -10,7 +10,6 @@ import java.util.List;
 @Service
 public class MemberService {
 
-
     private final MemberDao memberDao;
 
     @Autowired
@@ -18,7 +17,6 @@ public class MemberService {
 
         this.memberDao = memberDao;
     }
-
 
     public List<User_> listAll(){
         return this.memberDao.listAllMembersSortByRoleName(0,10,"",false);

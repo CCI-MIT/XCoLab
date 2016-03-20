@@ -40,7 +40,6 @@ public class PersistenceContext {
         return dataSource;
     }
 
-
     public LazyConnectionDataSourceProxy lazyConnectionDataSource() {
         return new LazyConnectionDataSourceProxy(dataSource());
     }

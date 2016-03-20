@@ -14,7 +14,6 @@ public class MembersController {
     @Autowired
     private MemberService memberService;
 
-
 	@RequestMapping("/members")
     public List<User_> index() {
         return memberService.listAll();
